@@ -19,7 +19,7 @@ import java.time.Duration;
  * `/audio/content` route.
  */
 @Immutable
-public final class VoiceItemAudioResponse implements JsonSerializable<VoiceItemAudioResponse> {
+public final class VoiceAudioItemResponse implements JsonSerializable<VoiceAudioItemResponse> {
 
     /*
      * The id of the conversation the item belongs to.
@@ -84,13 +84,13 @@ public final class VoiceItemAudioResponse implements JsonSerializable<VoiceItemA
     private String blobUri;
 
     /**
-     * Creates an instance of VoiceItemAudioResponse class.
+     * Creates an instance of VoiceAudioItemResponse class.
      *
      * @param conversationId the conversationId value to set.
      * @param itemId the itemId value to set.
      */
     @Generated
-    private VoiceItemAudioResponse(String conversationId, String itemId) {
+    private VoiceAudioItemResponse(String conversationId, String itemId) {
         this.conversationId = conversationId;
         this.itemId = itemId;
     }
@@ -224,16 +224,16 @@ public final class VoiceItemAudioResponse implements JsonSerializable<VoiceItemA
     }
 
     /**
-     * Reads an instance of VoiceItemAudioResponse from the JsonReader.
+     * Reads an instance of VoiceAudioItemResponse from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VoiceItemAudioResponse if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of VoiceAudioItemResponse if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the VoiceItemAudioResponse.
+     * @throws IOException If an error occurs while reading the VoiceAudioItemResponse.
      */
     @Generated
-    public static VoiceItemAudioResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static VoiceAudioItemResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String conversationId = null;
             String itemId = null;
@@ -272,17 +272,17 @@ public final class VoiceItemAudioResponse implements JsonSerializable<VoiceItemA
                     reader.skipChildren();
                 }
             }
-            VoiceItemAudioResponse deserializedVoiceItemAudioResponse
-                = new VoiceItemAudioResponse(conversationId, itemId);
-            deserializedVoiceItemAudioResponse.role = role;
-            deserializedVoiceItemAudioResponse.format = format;
-            deserializedVoiceItemAudioResponse.codec = codec;
-            deserializedVoiceItemAudioResponse.sampleRate = sampleRate;
-            deserializedVoiceItemAudioResponse.channels = channels;
-            deserializedVoiceItemAudioResponse.startOffsetMs = startOffsetMs;
-            deserializedVoiceItemAudioResponse.durationMs = durationMs;
-            deserializedVoiceItemAudioResponse.blobUri = blobUri;
-            return deserializedVoiceItemAudioResponse;
+            VoiceAudioItemResponse deserializedVoiceAudioItemResponse
+                = new VoiceAudioItemResponse(conversationId, itemId);
+            deserializedVoiceAudioItemResponse.role = role;
+            deserializedVoiceAudioItemResponse.format = format;
+            deserializedVoiceAudioItemResponse.codec = codec;
+            deserializedVoiceAudioItemResponse.sampleRate = sampleRate;
+            deserializedVoiceAudioItemResponse.channels = channels;
+            deserializedVoiceAudioItemResponse.startOffsetMs = startOffsetMs;
+            deserializedVoiceAudioItemResponse.durationMs = durationMs;
+            deserializedVoiceAudioItemResponse.blobUri = blobUri;
+            return deserializedVoiceAudioItemResponse;
         });
     }
 }

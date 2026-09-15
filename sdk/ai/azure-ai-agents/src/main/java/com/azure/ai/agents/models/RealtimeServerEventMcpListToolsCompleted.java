@@ -11,18 +11,16 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Returned when an error occurs, which could be a client problem or a server
- * problem. Most errors are recoverable and the session will stay open, we
- * recommend to implementors to monitor and log error messages by default.
+ * Returned when listing MCP tools has completed for an item.
  */
 @Immutable
-public final class RealtimeServerEventRealtimeServerEventError extends RealtimeServerEvent {
+public final class RealtimeServerEventMcpListToolsCompleted extends RealtimeServerEvent {
 
     /*
      * The type property.
      */
     @Generated
-    private RealtimeServerEventType type = RealtimeServerEventType.ERROR;
+    private RealtimeServerEventType type = RealtimeServerEventType.MCP_LIST_TOOLS_COMPLETED;
 
     /*
      * The unique ID of the server event.
@@ -31,21 +29,21 @@ public final class RealtimeServerEventRealtimeServerEventError extends RealtimeS
     private final String eventId;
 
     /*
-     * Details of the error.
+     * The ID of the MCP list tools item.
      */
     @Generated
-    private final RealtimeServerEventErrorError error;
+    private final String itemId;
 
     /**
-     * Creates an instance of RealtimeServerEventRealtimeServerEventError class.
+     * Creates an instance of RealtimeServerEventMcpListToolsCompleted class.
      *
      * @param eventId the eventId value to set.
-     * @param error the error value to set.
+     * @param itemId the itemId value to set.
      */
     @Generated
-    private RealtimeServerEventRealtimeServerEventError(String eventId, RealtimeServerEventErrorError error) {
+    private RealtimeServerEventMcpListToolsCompleted(String eventId, String itemId) {
         this.eventId = eventId;
-        this.error = error;
+        this.itemId = itemId;
     }
 
     /**
@@ -70,13 +68,13 @@ public final class RealtimeServerEventRealtimeServerEventError extends RealtimeS
     }
 
     /**
-     * Get the error property: Details of the error.
+     * Get the itemId property: The ID of the MCP list tools item.
      *
-     * @return the error value.
+     * @return the itemId value.
      */
     @Generated
-    public RealtimeServerEventErrorError getError() {
-        return this.error;
+    public String getItemId() {
+        return this.itemId;
     }
 
     /**
@@ -87,43 +85,43 @@ public final class RealtimeServerEventRealtimeServerEventError extends RealtimeS
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("event_id", this.eventId);
-        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("item_id", this.itemId);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of RealtimeServerEventRealtimeServerEventError from the JsonReader.
+     * Reads an instance of RealtimeServerEventMcpListToolsCompleted from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeServerEventRealtimeServerEventError if the JsonReader was pointing to an instance
-     * of it, or null if it was pointing to JSON null.
+     * @return An instance of RealtimeServerEventMcpListToolsCompleted if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeServerEventRealtimeServerEventError.
+     * @throws IOException If an error occurs while reading the RealtimeServerEventMcpListToolsCompleted.
      */
     @Generated
-    public static RealtimeServerEventRealtimeServerEventError fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeServerEventMcpListToolsCompleted fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            RealtimeServerEventErrorError error = null;
-            RealtimeServerEventType type = RealtimeServerEventType.ERROR;
+            String itemId = null;
+            RealtimeServerEventType type = RealtimeServerEventType.MCP_LIST_TOOLS_COMPLETED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("event_id".equals(fieldName)) {
                     eventId = reader.getString();
-                } else if ("error".equals(fieldName)) {
-                    error = RealtimeServerEventErrorError.fromJson(reader);
+                } else if ("item_id".equals(fieldName)) {
+                    itemId = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeServerEventType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            RealtimeServerEventRealtimeServerEventError deserializedRealtimeServerEventRealtimeServerEventError
-                = new RealtimeServerEventRealtimeServerEventError(eventId, error);
-            deserializedRealtimeServerEventRealtimeServerEventError.type = type;
-            return deserializedRealtimeServerEventRealtimeServerEventError;
+            RealtimeServerEventMcpListToolsCompleted deserializedRealtimeServerEventMcpListToolsCompleted
+                = new RealtimeServerEventMcpListToolsCompleted(eventId, itemId);
+            deserializedRealtimeServerEventMcpListToolsCompleted.type = type;
+            return deserializedRealtimeServerEventMcpListToolsCompleted;
         });
     }
 }

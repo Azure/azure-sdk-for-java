@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
@@ -23,6 +24,39 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ReasoningDedupSerializationTests {
 
     private static final String TEST_MODEL = "gpt-4o";
+
+    @Test
+    public void testVoiceResponseAudioConfigRoundTrip() throws IOException {
+        try (JsonReader reader = JsonProviders.createReader("{\"audio\":{\"output\":{}}}")) {
+            VoiceAgentResponseCreateParams response = VoiceAgentResponseCreateParams.fromJson(reader);
+            assertNotNull(response.getAudio().getOutput());
+            VoiceAgentResponseCreateParams roundTrip
+                = BinaryData.fromObject(response).toObject(VoiceAgentResponseCreateParams.class);
+            assertNotNull(roundTrip.getAudio().getOutput());
+        }
+    }
+
+    @Test
+    public void testVoiceRealtimeResponseObjectRoundTrip() throws IOException {
+        try (JsonReader reader = JsonProviders.createReader("{\"object\":\"realtime.response\"}")) {
+            VoiceAgentRealtimeResponse response = VoiceAgentRealtimeResponse.fromJson(reader);
+            assertEquals(VoiceResponseBaseObject.fromString("realtime.response"), response.getObject());
+            VoiceAgentRealtimeResponse roundTrip
+                = BinaryData.fromObject(response).toObject(VoiceAgentRealtimeResponse.class);
+            assertEquals(response.getObject(), roundTrip.getObject());
+        }
+    }
+
+    @Test
+    public void testVoiceRealtimeResponseBaseObjectRoundTrip() throws IOException {
+        try (JsonReader reader = JsonProviders.createReader("{\"object\":\"realtime.response\"}")) {
+            VoiceAgentRealtimeResponseBase response = VoiceAgentRealtimeResponseBase.fromJson(reader);
+            assertEquals(VoiceResponseBaseObject.fromString("realtime.response"), response.getObject());
+            VoiceAgentRealtimeResponseBase roundTrip
+                = BinaryData.fromObject(response).toObject(VoiceAgentRealtimeResponseBase.class);
+            assertEquals(response.getObject(), roundTrip.getObject());
+        }
+    }
 
     // -----------------------------------------------------------------------
     // Reasoning on PromptAgentDefinition — getter / setter

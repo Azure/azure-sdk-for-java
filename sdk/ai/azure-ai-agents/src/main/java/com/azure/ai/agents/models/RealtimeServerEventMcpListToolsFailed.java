@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when listing MCP tools has failed for an item.
  */
 @Immutable
-public final class RealtimeServerEventMCPListToolsFailed extends RealtimeServerEvent {
+public final class RealtimeServerEventMcpListToolsFailed extends RealtimeServerEvent {
 
     /*
      * The type property.
@@ -35,13 +35,13 @@ public final class RealtimeServerEventMCPListToolsFailed extends RealtimeServerE
     private final String itemId;
 
     /**
-     * Creates an instance of RealtimeServerEventMCPListToolsFailed class.
+     * Creates an instance of RealtimeServerEventMcpListToolsFailed class.
      *
      * @param eventId the eventId value to set.
      * @param itemId the itemId value to set.
      */
     @Generated
-    private RealtimeServerEventMCPListToolsFailed(String eventId, String itemId) {
+    private RealtimeServerEventMcpListToolsFailed(String eventId, String itemId) {
         this.eventId = eventId;
         this.itemId = itemId;
     }
@@ -91,16 +91,16 @@ public final class RealtimeServerEventMCPListToolsFailed extends RealtimeServerE
     }
 
     /**
-     * Reads an instance of RealtimeServerEventMCPListToolsFailed from the JsonReader.
+     * Reads an instance of RealtimeServerEventMcpListToolsFailed from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeServerEventMCPListToolsFailed if the JsonReader was pointing to an instance of it,
+     * @return An instance of RealtimeServerEventMcpListToolsFailed if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeServerEventMCPListToolsFailed.
+     * @throws IOException If an error occurs while reading the RealtimeServerEventMcpListToolsFailed.
      */
     @Generated
-    public static RealtimeServerEventMCPListToolsFailed fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeServerEventMcpListToolsFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
             String itemId = null;
@@ -118,10 +118,10 @@ public final class RealtimeServerEventMCPListToolsFailed extends RealtimeServerE
                     reader.skipChildren();
                 }
             }
-            RealtimeServerEventMCPListToolsFailed deserializedRealtimeServerEventMCPListToolsFailed
-                = new RealtimeServerEventMCPListToolsFailed(eventId, itemId);
-            deserializedRealtimeServerEventMCPListToolsFailed.type = type;
-            return deserializedRealtimeServerEventMCPListToolsFailed;
+            RealtimeServerEventMcpListToolsFailed deserializedRealtimeServerEventMcpListToolsFailed
+                = new RealtimeServerEventMcpListToolsFailed(eventId, itemId);
+            deserializedRealtimeServerEventMcpListToolsFailed.type = type;
+            return deserializedRealtimeServerEventMcpListToolsFailed;
         });
     }
 }
