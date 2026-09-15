@@ -72,7 +72,7 @@ public final class BlobQueryHeaders {
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
-        return internalHeaders.getXMsMeta();
+        return internalHeaders.getMetadata();
     }
 
     /**
@@ -82,7 +82,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setMetadata(Map<String, String> metadata) {
-        internalHeaders.setXMsMeta(metadata);
+        internalHeaders.setMetadata(metadata);
         return this;
     }
 
@@ -746,7 +746,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setServerEncrypted(Boolean serverEncrypted) {
-        internalHeaders.setServerEncrypted(serverEncrypted);
+        internalHeaders.setIsServerEncrypted(serverEncrypted);
         return this;
     }
 

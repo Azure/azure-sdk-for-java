@@ -10,15 +10,12 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.LinkedHashMap;
@@ -414,18 +411,14 @@ public final class BlobsDownloadHeaders {
     public BlobsDownloadHeaders(HttpHeaders rawHeaders) {
         this.requestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.clientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
-        String objectReplicationRules = rawHeaders.getValue(X_MS_OR);
-        try {
-            if (objectReplicationRules != null) {
-                this.objectReplicationRules = JacksonAdapter.createDefaultSerializerAdapter()
-                    .deserializeHeader(rawHeaders.get("x-ms-or"), new TypeReference<Map<String, String>>() {
-                    }.getJavaType());
-            } else {
-                this.objectReplicationRules = null;
+        Map<String, String> objectReplicationRuleHeaderCollection = new LinkedHashMap<>();
+        rawHeaders.stream().forEach(header -> {
+            String headerName = header.getName();
+            if (headerName.toLowerCase(Locale.ROOT).startsWith("x-ms-or-")) {
+                objectReplicationRuleHeaderCollection.put(headerName.substring(8), header.getValue());
             }
-        } catch (IOException ex) {
-            throw LOGGER.atError().log(new UncheckedIOException(ex));
-        }
+        });
+        this.objectReplicationRules = objectReplicationRuleHeaderCollection;
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);

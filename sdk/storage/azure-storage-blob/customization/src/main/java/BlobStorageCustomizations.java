@@ -82,6 +82,8 @@ public class BlobStorageCustomizations extends Customization {
         restoreFluentModels(customization, logger);
         restoreHeaderSetters(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         addContentTypeHeaderProperty(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
+        restoreObjectReplicationHeaderCollection(editor, logger);
+        removeMultipartBatchConvenience(customization, editor, logger);
         // Follow-up stages (ported from the queue customization) build on this removal pass:
         //   - restoreMetadataHeaderCollection (x-ms-meta-* on *GetPropertiesHeaders)
         //   - updateImplToMapInternalException (BlobStorageExceptionInternal -> BlobStorageException)
@@ -119,7 +121,9 @@ public class BlobStorageCustomizations extends Customization {
 
     private static final List<String> IMPL_FLUENT_MODELS_TO_RESTORE = Arrays.asList(
         "BlobItemPropertiesInternal", "BlobItemInternal", "FilterBlobItem", "QueryFormat", "QueryRequest",
-        "QuerySerialization", "BlobTag", "BlobTags", "BlobName", "BlobHierarchyListSegment");
+        "QuerySerialization", "BlobTag", "BlobTags", "BlobName", "BlobHierarchyListSegment",
+        // BlobQueryReader builds these field by field when translating the public query serialization options.
+        "ArrowFieldInternal", "ArrowTextConfigurationInternal");
 
     // The public BlobDownloadHeaders and BlobQueryHeaders are @Fluent wrappers that delegate every setter to the
     // generated header class, which the emitter makes read-only. These need the setters back, but NOT the rest of
@@ -127,6 +131,86 @@ public class BlobStorageCustomizations extends Customization {
     // (HttpHeaders) constructor that restoreFluentModels replaces with a no-arg one.
     private static final List<String> HEADER_MODELS_TO_MAKE_SETTABLE
         = Arrays.asList("BlobsDownloadHeaders", "BlobsQueryHeaders");
+
+    // Submit Batch sends a multipart/mixed body of nested HTTP requests. The emitter models it as a
+    // SubmitBatchRequest whose single part is a BodyFileDetails, generates it as JsonSerializable, and types the
+    // convenience methods as ResponseBase<...Headers, SubmitBatchRequest> -- the REQUEST model as the response body.
+    // None of that compiles or describes the operation. The protocol methods
+    // (submitBatchWithResponseInternal(long contentLength, BinaryData body, RequestOptions)) are correct and are
+    // what azure-storage-blob-batch, which owns the batch clients, calls; so drop the convenience layer and the two
+    // multipart models and keep the protocol methods.
+    private static final List<String> BATCH_CLIENTS = Arrays.asList("BlobServiceAsyncClientInternal",
+        "BlobServiceClientInternal", "BlobContainerAsyncClientInternal", "BlobContainerClientInternal");
+
+    private static void removeMultipartBatchConvenience(LibraryCustomization customization, Editor editor,
+        Logger logger) {
+        PackageCustomization implementation = customization.getPackage(IMPL_PACKAGE);
+        for (String className : BATCH_CLIENTS) {
+            if (implementation.getClass(className) == null) {
+                logger.info("{} not present; skipping the batch convenience removal.", className);
+                continue;
+            }
+            implementation.getClass(className).customizeAst(ast -> {
+                ast.getImports()
+                    .removeIf(i -> i.getNameAsString().endsWith(".SubmitBatchRequest")
+                        || i.getNameAsString().endsWith(".BodyFileDetails"));
+                ast.getClassByName(className).ifPresent(clazz -> {
+                    int removed = 0;
+                    for (MethodDeclaration method : new ArrayList<>(clazz.getMethods())) {
+                        if (method.getNameAsString().startsWith("submitBatch")
+                            && !method.getNameAsString().contains("Internal")) {
+                            method.remove();
+                            removed++;
+                        }
+                    }
+                    logger.info("Removed {} batch convenience methods from {}.", removed, className);
+                });
+            });
+        }
+        removeFileIfPresent(editor, PKG_ROOT + "implementation/models/SubmitBatchRequest.java", logger);
+        removeFileIfPresent(editor, PKG_ROOT + "implementation/models/BodyFileDetails.java", logger);
+    }
+
+    // x-ms-or-* is a prefix collection, like x-ms-meta-*, but nothing in the spec can tell an emitter that (see the
+    // NOTE on ObjectReplicationHeaders in Common/models.tsp). With the property typed as Record<string> the emitter
+    // takes the only other reading available to it and JSON-deserializes a single x-ms-or header, which is the wrong
+    // wire shape and does not even compile -- it references TypeReference and JacksonAdapter without importing them.
+    // Replace that with the same prefix scan the emitter itself generates for x-ms-meta-.
+    private static final String OBJECT_REPLICATION_JSON_BLOCK
+        = "String objectReplicationRules = rawHeaders\\.getValue\\(X_MS_OR\\);\\s*try \\{[\\s\\S]*?"
+            + "\\} catch \\(IOException ex\\) \\{[^}]*\\}";
+
+    private static final String OBJECT_REPLICATION_PREFIX_SCAN
+        = "Map<String, String> objectReplicationRuleHeaderCollection = new LinkedHashMap<>();\n"
+            + "        rawHeaders.stream().forEach(header -> {\n"
+            + "            String headerName = header.getName();\n"
+            + "            if (headerName.toLowerCase(Locale.ROOT).startsWith(\"x-ms-or-\")) {\n"
+            + "                objectReplicationRuleHeaderCollection.put(headerName.substring(8), header.getValue());\n"
+            + "            }\n"
+            + "        });\n"
+            + "        this.objectReplicationRules = objectReplicationRuleHeaderCollection;";
+
+    private static final List<String> OBJECT_REPLICATION_HEADER_MODELS
+        = Arrays.asList("BlobsDownloadHeaders", "BlobsGetPropertiesHeaders");
+
+    private static void restoreObjectReplicationHeaderCollection(Editor editor, Logger logger) {
+        for (String className : OBJECT_REPLICATION_HEADER_MODELS) {
+            String path = PKG_ROOT + "implementation/models/" + className + ".java";
+            String content = editor.getContents().get(path);
+            if (content == null) {
+                logger.info("{} not present; skipping the object replication collection.", className);
+                continue;
+            }
+            String updated = content.replaceAll(OBJECT_REPLICATION_JSON_BLOCK,
+                Matcher.quoteReplacement(OBJECT_REPLICATION_PREFIX_SCAN));
+            if (updated.equals(content)) {
+                throw new IllegalStateException(
+                    "Object replication header block not found in " + className + "; the emitter output changed.");
+            }
+            editor.replaceFile(path, updated);
+            logger.info("Restored the x-ms-or-* header collection in {}.", className);
+        }
+    }
 
     // The spec does declare Content-Type on these responses, but TypeSpec treats it as the response's content-type
     // metadata rather than a header (hence the content-type-ignored suppressions on the operation templates), so

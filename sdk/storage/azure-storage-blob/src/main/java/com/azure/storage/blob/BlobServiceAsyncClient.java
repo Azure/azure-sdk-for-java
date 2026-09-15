@@ -22,6 +22,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.BlobContainerAsyncClientInternal;
+import com.azure.storage.blob.implementation.BlobServiceAsyncClientInternal;
 import com.azure.storage.blob.implementation.models.BlobContainersSegment;
 import com.azure.storage.blob.implementation.models.FilterBlobSegment;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -93,6 +95,10 @@ public final class BlobServiceAsyncClient {
 
     private final AzureBlobStorageImpl azureBlobStorage;
 
+    private final BlobServiceAsyncClientInternal serviceClientInternal;
+
+    private final BlobContainerAsyncClientInternal containerClientInternal;
+
     private final String accountName;
     private final BlobServiceVersion serviceVersion;
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
@@ -126,6 +132,8 @@ public final class BlobServiceAsyncClient {
         }
         this.azureBlobStorage
             = new AzureBlobStorageImplBuilder().pipeline(pipeline).url(url).version(serviceVersion).buildClient();
+        this.serviceClientInternal = new BlobServiceAsyncClientInternal(this.azureBlobStorage.getServices());
+        this.containerClientInternal = new BlobContainerAsyncClientInternal(this.azureBlobStorage.getContainers());
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -548,19 +556,13 @@ public final class BlobServiceAsyncClient {
         ListBlobContainersOptions options, Duration timeout) {
         options = options == null ? new ListBlobContainersOptions() : options;
 
-        RequestOptions requestOptions = RequestOptionsHelper.requestOptions(Context.NONE);
-        RequestOptionsHelper.addOptionalQueryParam(requestOptions, "prefix", options.getPrefix());
-        RequestOptionsHelper.addOptionalQueryParam(requestOptions, "marker", marker);
-        RequestOptionsHelper.addOptionalQueryParam(requestOptions, "maxresults", options.getMaxResultsPerPage());
-        RequestOptionsHelper.addOptionalCsvQueryParam(requestOptions, "include",
-            ModelHelper.toIncludeTypes(options.getDetails()));
-
-        return StorageImplUtils.applyOptionalTimeout(
-            this.azureBlobStorage.getServices().listContainersSegmentWithResponseAsync(requestOptions).map(response -> {
-                BlobContainersSegment segment
-                    = ModelHelper.deserializeXmlBody(response.getValue(), BlobContainersSegment::fromXml);
+        return StorageImplUtils.applyOptionalTimeout(this.serviceClientInternal
+            .listContainersSegmentWithResponse(options.getPrefix(), marker, options.getMaxResultsPerPage(), null,
+                ModelHelper.toIncludeTypes(options.getDetails()), RequestOptionsHelper.requestOptions(Context.NONE))
+            .map(response -> {
+                BlobContainersSegment segment = response.getValue();
                 return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    segment.getBlobContainerItems(), segment.getNextMarker(), null);
+                    segment.getContainerItems(), segment.getNextMarker(), null);
             }), timeout);
     }
 
@@ -628,19 +630,16 @@ public final class BlobServiceAsyncClient {
         Duration timeout, Context context) {
         throwOnAnonymousAccess();
         StorageImplUtils.assertNotNull("options", options);
-        RequestOptions requestOptions = RequestOptionsHelper.requestOptions(context);
-        RequestOptionsHelper.addOptionalQueryParam(requestOptions, "marker", marker);
-        RequestOptionsHelper.addOptionalQueryParam(requestOptions, "maxresults", options.getMaxResultsPerPage());
 
         return StorageImplUtils
-            .applyOptionalTimeout(
-                this.azureBlobStorage.getServices().filterBlobsWithResponseAsync(options.getQuery(), requestOptions),
-                timeout)
+            .applyOptionalTimeout(this.serviceClientInternal.filterBlobsWithResponse(options.getQuery(), null, marker,
+                options.getMaxResultsPerPage(), null, RequestOptionsHelper.requestOptions(context)), timeout)
             .map(response -> {
-                FilterBlobSegment segment
-                    = ModelHelper.deserializeXmlBody(response.getValue(), FilterBlobSegment::fromXml);
-                List<TaggedBlobItem> value
-                    = segment.getBlobs().stream().map(ModelHelper::populateTaggedBlobItem).collect(Collectors.toList());
+                FilterBlobSegment segment = response.getValue();
+                List<TaggedBlobItem> value = segment.getBlobItems()
+                    .stream()
+                    .map(ModelHelper::populateTaggedBlobItem)
+                    .collect(Collectors.toList());
                 return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     value, segment.getNextMarker(), null);
             });
@@ -698,10 +697,8 @@ public final class BlobServiceAsyncClient {
     Mono<Response<BlobServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.getServices()
-            .getPropertiesWithResponseAsync(RequestOptionsHelper.requestOptions(context))
-            .map(rb -> new SimpleResponse<>(rb,
-                ModelHelper.deserializeXmlBody(rb.getValue(), BlobServiceProperties::fromXml)));
+        return this.serviceClientInternal.getPropertiesWithResponse(null, RequestOptionsHelper.requestOptions(context))
+            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
     /**
@@ -848,9 +845,9 @@ public final class BlobServiceAsyncClient {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getServices()
-            .setPropertiesWithResponseAsync(ModelHelper.serializeXmlBody(finalProperties),
-                RequestOptionsHelper.requestOptions(context));
+        return this.serviceClientInternal
+            .setPropertiesWithResponse(finalProperties, null, RequestOptionsHelper.requestOptions(context))
+            .map(rb -> (Response<Void>) rb);
     }
 
     /**
@@ -940,14 +937,13 @@ public final class BlobServiceAsyncClient {
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
 
-        return this.azureBlobStorage.getServices()
-            .getUserDelegationKeyWithResponseAsync(ModelHelper.serializeXmlBody(
+        return this.serviceClientInternal
+            .getUserDelegationKeyWithResponse(
                 new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
                     .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
-                    .setDelegatedUserTenantId(delegatedUserTenantId)),
-                RequestOptionsHelper.requestOptions(context))
-            .map(rb -> new SimpleResponse<>(rb,
-                ModelHelper.deserializeXmlBody(rb.getValue(), UserDelegationKey::fromXml)));
+                    .setDelegatedUserTenantId(delegatedUserTenantId),
+                null, RequestOptionsHelper.requestOptions(context))
+            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
     /**
@@ -1003,10 +999,8 @@ public final class BlobServiceAsyncClient {
         throwOnAnonymousAccess();
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getServices()
-            .getStatisticsWithResponseAsync(RequestOptionsHelper.requestOptions(context))
-            .map(rb -> new SimpleResponse<>(rb,
-                ModelHelper.deserializeXmlBody(rb.getValue(), BlobServiceStatistics::fromXml)));
+        return this.serviceClientInternal.getStatisticsWithResponse(null, RequestOptionsHelper.requestOptions(context))
+            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
     /**
@@ -1056,12 +1050,11 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.getServices()
-            .getAccountInfoWithResponseAsync(RequestOptionsHelper.requestOptions(context))
+        return this.serviceClientInternal.getAccountInfoWithResponse(null, RequestOptionsHelper.requestOptions(context))
             .map(rb -> {
-                ServicesGetAccountInfoHeaders hd = new ServicesGetAccountInfoHeaders(rb.getHeaders());
+                ServicesGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
                 return new SimpleResponse<>(rb,
-                    new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind(), hd.isXMsIsHnsEnabled()));
+                    new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind(), hd.isHierarchicalNamespaceEnabled()));
             });
     }
 
@@ -1269,8 +1262,9 @@ public final class BlobServiceAsyncClient {
                 options.getDeletedContainerVersion());
         }
 
-        return this.azureBlobStorage.getContainers()
-            .restoreWithResponseAsync(requestOptions)
+        return this.containerClientInternal
+            .restoreWithResponse(options.getDeletedContainerName(), options.getDeletedContainerVersion(), null,
+                requestOptions)
             .map(
                 response -> new SimpleResponse<>(response, getBlobContainerAsyncClient(finalDestinationContainerName)));
     }

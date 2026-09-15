@@ -117,7 +117,7 @@ public final class BlobDownloadHeaders {
      * @return the objectReplicationSourcePolicies value.
      */
     public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
-        return Collections.unmodifiableList(ModelHelper.getObjectReplicationSourcePolicies(internalHeaders.getXMsOr()));
+        return Collections.unmodifiableList(ModelHelper.getObjectReplicationSourcePolicies(internalHeaders.getObjectReplicationRules()));
     }
 
     /**
@@ -139,7 +139,7 @@ public final class BlobDownloadHeaders {
             }
         }
 
-        internalHeaders.setXMsOr(xMsOr);
+        internalHeaders.setObjectReplicationRules(xMsOr);
         return this;
     }
 
@@ -777,7 +777,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
-        internalHeaders.setServerEncrypted(isServerEncrypted);
+        internalHeaders.setIsServerEncrypted(isServerEncrypted);
         return this;
     }
 
@@ -931,7 +931,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setSealed(Boolean sealed) {
-        internalHeaders.setSealed(sealed);
+        internalHeaders.setIsSealed(sealed);
         return this;
     }
 
@@ -971,7 +971,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setCurrentVersion(Boolean currentVersion) {
-        internalHeaders.setCurrentVersion(currentVersion);
+        internalHeaders.setIsCurrentVersion(currentVersion);
         return this;
     }
 

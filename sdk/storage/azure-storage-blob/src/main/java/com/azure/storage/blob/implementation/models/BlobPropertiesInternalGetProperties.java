@@ -172,7 +172,7 @@ public final class BlobPropertiesInternalGetProperties implements BlobProperties
 
     @Override
     public ArchiveStatus getArchiveStatus() {
-        return ArchiveStatus.fromString(headers.getArchiveStatus());
+        return headers.getArchiveStatus();
     }
 
     @Override
@@ -192,7 +192,7 @@ public final class BlobPropertiesInternalGetProperties implements BlobProperties
 
     @Override
     public Map<String, String> getMetadata() {
-        return headers.getXMsMeta();
+        return headers.getMetadata();
     }
 
     @Override
@@ -217,17 +217,17 @@ public final class BlobPropertiesInternalGetProperties implements BlobProperties
 
     @Override
     public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
-        return ModelHelper.getObjectReplicationSourcePolicies(headers.getXMsOr());
+        return ModelHelper.getObjectReplicationSourcePolicies(headers.getObjectReplicationRules());
     }
 
     @Override
     public String getObjectReplicationDestinationPolicyId() {
-        return ModelHelper.getObjectReplicationDestinationPolicyId(headers.getXMsOr());
+        return ModelHelper.getObjectReplicationDestinationPolicyId(headers.getObjectReplicationRules());
     }
 
     @Override
     public RehydratePriority getRehydratePriority() {
-        return RehydratePriority.fromString(headers.getRehydratePriority());
+        return headers.getRehydratePriority();
     }
 
     @Override
