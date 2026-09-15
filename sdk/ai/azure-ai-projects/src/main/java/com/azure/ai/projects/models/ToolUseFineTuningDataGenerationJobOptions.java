@@ -31,7 +31,7 @@ public final class ToolUseFineTuningDataGenerationJobOptions extends DataGenerat
      */
     @Generated
     public ToolUseFineTuningDataGenerationJobOptions(int maxSamples) {
-        super(maxSamples);
+        this.maxSamples = maxSamples;
     }
 
     /**
@@ -72,9 +72,9 @@ public final class ToolUseFineTuningDataGenerationJobOptions extends DataGenerat
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("max_samples", getMaxSamples());
         jsonWriter.writeNumberField("train_split", getTrainSplit());
         jsonWriter.writeJsonField("model_options", getModelOptions());
+        jsonWriter.writeIntField("max_samples", this.maxSamples);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -91,19 +91,19 @@ public final class ToolUseFineTuningDataGenerationJobOptions extends DataGenerat
     @Generated
     public static ToolUseFineTuningDataGenerationJobOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int maxSamples = 0;
             Double trainSplit = null;
             DataGenerationModelOptions modelOptions = null;
+            int maxSamples = 0;
             DataGenerationJobType type = DataGenerationJobType.TOOL_USE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("max_samples".equals(fieldName)) {
-                    maxSamples = reader.getInt();
-                } else if ("train_split".equals(fieldName)) {
+                if ("train_split".equals(fieldName)) {
                     trainSplit = reader.getNullable(JsonReader::getDouble);
                 } else if ("model_options".equals(fieldName)) {
                     modelOptions = DataGenerationModelOptions.fromJson(reader);
+                } else if ("max_samples".equals(fieldName)) {
+                    maxSamples = reader.getInt();
                 } else if ("type".equals(fieldName)) {
                     type = DataGenerationJobType.fromString(reader.getString());
                 } else {
@@ -117,5 +117,21 @@ public final class ToolUseFineTuningDataGenerationJobOptions extends DataGenerat
             deserializedToolUseFineTuningDataGenerationJobOptions.type = type;
             return deserializedToolUseFineTuningDataGenerationJobOptions;
         });
+    }
+
+    /*
+     * Maximum number of samples to generate, up to service-defined limits.
+     */
+    @Generated
+    private final int maxSamples;
+
+    /**
+     * Get the maxSamples property: Maximum number of samples to generate, up to service-defined limits.
+     *
+     * @return the maxSamples value.
+     */
+    @Generated
+    public int getMaxSamples() {
+        return this.maxSamples;
     }
 }
