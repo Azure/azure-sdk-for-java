@@ -8,20 +8,20 @@ import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.lib.SasTokenTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class WebSocketsReceiveTest extends SasTokenTestBase {
 
     private static ReceiveTest receiveTest;
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws Exception {
 
-        Assert.assertTrue(TestContext.getConnectionString().getSharedAccessSignature() != null
+        Assertions.assertTrue(TestContext.getConnectionString().getSharedAccessSignature() != null
                 && TestContext.getConnectionString().getSasKey() == null
                 && TestContext.getConnectionString().getSasKeyName() == null);
 
@@ -31,17 +31,17 @@ public class WebSocketsReceiveTest extends SasTokenTestBase {
         ReceiveTest.initializeEventHub(connectionString);
     }
 
-    @AfterClass()
+    @AfterAll
     public static void cleanup() throws EventHubException {
         ReceiveTest.cleanup();
     }
 
-    @Test()
+    @Test
     public void testReceiverStartOfStreamFilters() throws EventHubException {
         receiveTest.testReceiverStartOfStreamFilters();
     }
 
-    @After
+    @AfterEach
     public void testCleanup() throws EventHubException {
         receiveTest.testCleanup();
     }
