@@ -11,16 +11,16 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Returned when listing MCP tools is in progress for an item.
+ * Returned when listing MCP tools has failed for an item.
  */
 @Immutable
-public final class RealtimeServerEventMCPListToolsInProgress extends RealtimeServerEvent {
+public final class RealtimeServerEventMcpListToolsFailed extends RealtimeServerEvent {
 
     /*
      * The type property.
      */
     @Generated
-    private RealtimeServerEventType type = RealtimeServerEventType.MCP_LIST_TOOLS_IN_PROGRESS;
+    private RealtimeServerEventType type = RealtimeServerEventType.MCP_LIST_TOOLS_FAILED;
 
     /*
      * The unique ID of the server event.
@@ -35,13 +35,13 @@ public final class RealtimeServerEventMCPListToolsInProgress extends RealtimeSer
     private final String itemId;
 
     /**
-     * Creates an instance of RealtimeServerEventMCPListToolsInProgress class.
+     * Creates an instance of RealtimeServerEventMcpListToolsFailed class.
      *
      * @param eventId the eventId value to set.
      * @param itemId the itemId value to set.
      */
     @Generated
-    private RealtimeServerEventMCPListToolsInProgress(String eventId, String itemId) {
+    private RealtimeServerEventMcpListToolsFailed(String eventId, String itemId) {
         this.eventId = eventId;
         this.itemId = itemId;
     }
@@ -91,20 +91,20 @@ public final class RealtimeServerEventMCPListToolsInProgress extends RealtimeSer
     }
 
     /**
-     * Reads an instance of RealtimeServerEventMCPListToolsInProgress from the JsonReader.
+     * Reads an instance of RealtimeServerEventMcpListToolsFailed from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeServerEventMCPListToolsInProgress if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of RealtimeServerEventMcpListToolsFailed if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeServerEventMCPListToolsInProgress.
+     * @throws IOException If an error occurs while reading the RealtimeServerEventMcpListToolsFailed.
      */
     @Generated
-    public static RealtimeServerEventMCPListToolsInProgress fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeServerEventMcpListToolsFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
             String itemId = null;
-            RealtimeServerEventType type = RealtimeServerEventType.MCP_LIST_TOOLS_IN_PROGRESS;
+            RealtimeServerEventType type = RealtimeServerEventType.MCP_LIST_TOOLS_FAILED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -118,10 +118,10 @@ public final class RealtimeServerEventMCPListToolsInProgress extends RealtimeSer
                     reader.skipChildren();
                 }
             }
-            RealtimeServerEventMCPListToolsInProgress deserializedRealtimeServerEventMCPListToolsInProgress
-                = new RealtimeServerEventMCPListToolsInProgress(eventId, itemId);
-            deserializedRealtimeServerEventMCPListToolsInProgress.type = type;
-            return deserializedRealtimeServerEventMCPListToolsInProgress;
+            RealtimeServerEventMcpListToolsFailed deserializedRealtimeServerEventMcpListToolsFailed
+                = new RealtimeServerEventMcpListToolsFailed(eventId, itemId);
+            deserializedRealtimeServerEventMcpListToolsFailed.type = type;
+            return deserializedRealtimeServerEventMcpListToolsFailed;
         });
     }
 }

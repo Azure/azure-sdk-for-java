@@ -67,7 +67,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Initializes an instance of BetaVoiceAgentsTelephoniesImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     BetaVoiceAgentsTelephoniesImpl(AgentsClientImpl client) {
@@ -78,7 +78,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public AgentsServiceVersion getServiceVersion() {
@@ -633,7 +633,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Create an agent telephony binding
-     * 
+     *
      * Creates a telephony binding for the voice agent named in the path.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -645,7 +645,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -655,9 +655,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -670,7 +670,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -678,7 +678,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when updating or deleting the
      * binding.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The name of the voice agent that owns the binding.
      * @param telephonyBinding The provider-specific binding to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -715,7 +715,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Create an agent telephony binding
-     * 
+     *
      * Creates a telephony binding for the voice agent named in the path.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -727,7 +727,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -737,9 +737,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -752,7 +752,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -760,7 +760,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when updating or deleting the
      * binding.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The name of the voice agent that owns the binding.
      * @param telephonyBinding The provider-specific binding to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -796,7 +796,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * List agent telephony bindings
-     * 
+     *
      * Returns the telephony bindings owned by the voice agent named in the path.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -823,7 +823,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -837,7 +837,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent whose bindings are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -860,7 +860,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * List agent telephony bindings
-     * 
+     *
      * Returns the telephony bindings owned by the voice agent named in the path.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -887,7 +887,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -901,7 +901,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent whose bindings are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -917,7 +917,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * List agent telephony bindings
-     * 
+     *
      * Returns the telephony bindings owned by the voice agent named in the path.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -944,7 +944,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -958,7 +958,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent whose bindings are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -978,7 +978,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * List agent telephony bindings
-     * 
+     *
      * Returns the telephony bindings owned by the voice agent named in the path.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1005,7 +1005,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1019,7 +1019,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent whose bindings are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1035,10 +1035,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get an agent telephony binding
-     * 
+     *
      * Retrieves a telephony binding owned by the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1051,7 +1051,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -1059,7 +1059,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when updating or deleting the
      * binding.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The name of the voice agent that owns the binding.
      * @param bindingId The service-generated binding identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1068,7 +1068,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an agent telephony binding
-     * 
+     *
      * Retrieves a telephony binding owned by the voice agent named in the path along with {@link Response} on
      * successful completion of {@link Mono}.
      */
@@ -1082,10 +1082,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get an agent telephony binding
-     * 
+     *
      * Retrieves a telephony binding owned by the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1098,7 +1098,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -1106,7 +1106,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when updating or deleting the
      * binding.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The name of the voice agent that owns the binding.
      * @param bindingId The service-generated binding identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1115,7 +1115,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an agent telephony binding
-     * 
+     *
      * Retrieves a telephony binding owned by the voice agent named in the path along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1128,10 +1128,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Update an agent telephony binding
-     * 
+     *
      * Updates a telephony binding owned by the voice agent named in the path.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1142,9 +1142,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1157,7 +1157,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -1165,7 +1165,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when updating or deleting the
      * binding.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The name of the voice agent that owns the binding.
      * @param bindingId The service-generated binding identifier.
      * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
@@ -1191,10 +1191,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Update an agent telephony binding
-     * 
+     *
      * Updates a telephony binding owned by the voice agent named in the path.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1205,9 +1205,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1220,7 +1220,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -1228,7 +1228,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when updating or deleting the
      * binding.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The name of the voice agent that owns the binding.
      * @param bindingId The service-generated binding identifier.
      * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
@@ -1252,9 +1252,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Delete an agent telephony binding
-     * 
+     *
      * Deletes a telephony binding owned by the voice agent named in the path.
-     * 
+     *
      * @param agentName The name of the voice agent that owns the binding.
      * @param bindingId The service-generated binding identifier.
      * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
@@ -1275,9 +1275,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Delete an agent telephony binding
-     * 
+     *
      * Deletes a telephony binding owned by the voice agent named in the path.
-     * 
+     *
      * @param agentName The name of the voice agent that owns the binding.
      * @param bindingId The service-generated binding identifier.
      * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
@@ -1298,7 +1298,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * List agent telephony calls
-     * 
+     *
      * Returns the durable inbound call history for the voice agent named in the path.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1329,7 +1329,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1353,7 +1353,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent whose calls are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1376,7 +1376,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * List agent telephony calls
-     * 
+     *
      * Returns the durable inbound call history for the voice agent named in the path.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1407,7 +1407,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1431,7 +1431,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent whose calls are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1447,7 +1447,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * List agent telephony calls
-     * 
+     *
      * Returns the durable inbound call history for the voice agent named in the path.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1478,7 +1478,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1502,7 +1502,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent whose calls are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1522,7 +1522,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * List agent telephony calls
-     * 
+     *
      * Returns the durable inbound call history for the voice agent named in the path.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1553,7 +1553,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1577,7 +1577,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent whose calls are listed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1593,10 +1593,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get an agent telephony call
-     * 
+     *
      * Retrieves a durable inbound call record owned by the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1658,7 +1658,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent that owns the call record.
      * @param callId The service-generated call identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1667,7 +1667,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an agent telephony call
-     * 
+     *
      * Retrieves a durable inbound call record owned by the voice agent named in the path along with {@link Response} on
      * successful completion of {@link Mono}.
      */
@@ -1681,10 +1681,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get an agent telephony call
-     * 
+     *
      * Retrieves a durable inbound call record owned by the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1746,7 +1746,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent that owns the call record.
      * @param callId The service-generated call identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1755,7 +1755,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an agent telephony call
-     * 
+     *
      * Retrieves a durable inbound call record owned by the voice agent named in the path along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1768,10 +1768,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Transfer an active agent telephony call
-     * 
+     *
      * Transfers an active inbound call to a configured target for the voice agent named in the path.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1779,9 +1779,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1843,7 +1843,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent that owns the active call.
      * @param callId The service-generated call identifier.
      * @param transferTelephonyCallRequest The transferTelephonyCallRequest parameter.
@@ -1867,10 +1867,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Transfer an active agent telephony call
-     * 
+     *
      * Transfers an active inbound call to a configured target for the voice agent named in the path.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1878,9 +1878,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1942,7 +1942,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent that owns the active call.
      * @param callId The service-generated call identifier.
      * @param transferTelephonyCallRequest The transferTelephonyCallRequest parameter.
@@ -1965,10 +1965,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * End an active agent telephony call
-     * 
+     *
      * Ends an active inbound call owned by the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2030,7 +2030,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent that owns the active call.
      * @param callId The service-generated call identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2051,10 +2051,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * End an active agent telephony call
-     * 
+     *
      * Ends an active inbound call owned by the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2116,7 +2116,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The name of the voice agent that owns the active call.
      * @param callId The service-generated call identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2136,10 +2136,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get agent telephony transfer targets
-     * 
+     *
      * Returns all transfer targets configured for the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2155,7 +2155,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -2163,7 +2163,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when replacing the transfer
      * targets.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The name of the voice agent whose transfer targets are retrieved.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2171,7 +2171,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return agent telephony transfer targets
-     * 
+     *
      * Returns all transfer targets configured for the voice agent named in the path along with {@link Response} on
      * successful completion of {@link Mono}.
      */
@@ -2185,10 +2185,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get agent telephony transfer targets
-     * 
+     *
      * Returns all transfer targets configured for the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2204,7 +2204,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -2212,7 +2212,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when replacing the transfer
      * targets.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The name of the voice agent whose transfer targets are retrieved.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2220,7 +2220,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return agent telephony transfer targets
-     * 
+     *
      * Returns all transfer targets configured for the voice agent named in the path along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2233,10 +2233,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Replace agent telephony transfer targets
-     * 
+     *
      * Replaces all transfer targets configured for the voice agent named in the path.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2252,9 +2252,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2270,7 +2270,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -2278,7 +2278,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when replacing the transfer
      * targets.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The name of the voice agent whose transfer targets are replaced.
      * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
      * read.
@@ -2303,10 +2303,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Replace agent telephony transfer targets
-     * 
+     *
      * Replaces all transfer targets configured for the voice agent named in the path.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2322,9 +2322,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2340,7 +2340,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -2348,7 +2348,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>ETag</td><td>String</td><td>The entity tag to send in the `If-Match` header when replacing the transfer
      * targets.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The name of the voice agent whose transfer targets are replaced.
      * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
      * read.
@@ -2372,10 +2372,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Create an outbound telephony call job
-     * 
+     *
      * Creates one durable direct outbound call job. The latest agent definition is resolved when each attempt executes.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2400,9 +2400,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2443,7 +2443,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -2452,7 +2452,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
      * <tr><td>Retry-After</td><td>Duration</td><td>The Retry-After response header.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The name of the voice agent that executes the call.
      * @param idempotencyKey A customer-generated idempotency key. Reusing it with an equivalent request returns the
      * same call job.
@@ -2477,10 +2477,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Create an outbound telephony call job
-     * 
+     *
      * Creates one durable direct outbound call job. The latest agent definition is resolved when each attempt executes.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2505,9 +2505,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2548,7 +2548,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -2557,7 +2557,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
      * <tr><td>Retry-After</td><td>Duration</td><td>The Retry-After response header.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The name of the voice agent that executes the call.
      * @param idempotencyKey A customer-generated idempotency key. Reusing it with an equivalent request returns the
      * same call job.
@@ -2580,10 +2580,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get an outbound telephony call job
-     * 
+     *
      * Retrieves a durable direct or campaign-created outbound call job.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2624,14 +2624,14 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param callJobId The callJobId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2640,7 +2640,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an outbound telephony call job
-     * 
+     *
      * Retrieves a durable direct or campaign-created outbound call job along with {@link Response} on successful
      * completion of {@link Mono}.
      */
@@ -2654,10 +2654,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get an outbound telephony call job
-     * 
+     *
      * Retrieves a durable direct or campaign-created outbound call job.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2698,14 +2698,14 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>ETag</td><td>String</td><td>The ETag response header.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param callJobId The callJobId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2714,7 +2714,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an outbound telephony call job
-     * 
+     *
      * Retrieves a durable direct or campaign-created outbound call job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2727,10 +2727,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Cancel an outbound telephony call job
-     * 
+     *
      * Requests cancellation of a durable outbound call job. A connected call is allowed to finish.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2771,7 +2771,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -2780,7 +2780,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
      * <tr><td>Retry-After</td><td>Duration</td><td>The Retry-After response header.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param callJobId The callJobId parameter.
      * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
@@ -2803,10 +2803,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Cancel an outbound telephony call job
-     * 
+     *
      * Requests cancellation of a durable outbound call job. A connected call is allowed to finish.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2847,7 +2847,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -2856,7 +2856,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
      * <tr><td>Retry-After</td><td>Duration</td><td>The Retry-After response header.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param callJobId The callJobId parameter.
      * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
@@ -2878,10 +2878,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Create an outbound telephony campaign
-     * 
+     *
      * Creates a draft outbound campaign. Recipients are imported and validated before the campaign can be published.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2900,9 +2900,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2942,14 +2942,14 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2971,10 +2971,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Create an outbound telephony campaign
-     * 
+     *
      * Creates a draft outbound campaign. Recipients are imported and validated before the campaign can be published.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2993,9 +2993,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3035,14 +3035,14 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
      * </table>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3063,10 +3063,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get an outbound telephony campaign
-     * 
+     *
      * Retrieves an outbound campaign, including configuration, execution state, and aggregate call-job counts.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3106,7 +3106,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3115,7 +3115,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an outbound telephony campaign
-     * 
+     *
      * Retrieves an outbound campaign, including configuration, execution state, and aggregate call-job counts along
      * with {@link Response} on successful completion of {@link Mono}.
      */
@@ -3129,10 +3129,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get an outbound telephony campaign
-     * 
+     *
      * Retrieves an outbound campaign, including configuration, execution state, and aggregate call-job counts.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3172,7 +3172,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3181,7 +3181,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an outbound telephony campaign
-     * 
+     *
      * Retrieves an outbound campaign, including configuration, execution state, and aggregate call-job counts along
      * with {@link Response}.
      */
@@ -3195,10 +3195,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Import outbound telephony campaign recipients
-     * 
+     *
      * Starts an asynchronous import of campaign recipients from a Dataset CSV, JSON array, or JSONL file.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3220,9 +3220,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3236,7 +3236,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param idempotencyKey The idempotencyKey parameter.
@@ -3261,10 +3261,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Import outbound telephony campaign recipients
-     * 
+     *
      * Starts an asynchronous import of campaign recipients from a Dataset CSV, JSON array, or JSONL file.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3286,9 +3286,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3302,7 +3302,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param idempotencyKey The idempotencyKey parameter.
@@ -3326,10 +3326,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Import outbound telephony campaign recipients
-     * 
+     *
      * Starts an asynchronous import of campaign recipients from a Dataset CSV, JSON array, or JSONL file.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3351,9 +3351,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3367,7 +3367,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param idempotencyKey The idempotencyKey parameter.
@@ -3400,10 +3400,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Import outbound telephony campaign recipients
-     * 
+     *
      * Starts an asynchronous import of campaign recipients from a Dataset CSV, JSON array, or JSONL file.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3425,9 +3425,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3441,7 +3441,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param idempotencyKey The idempotencyKey parameter.
@@ -3473,10 +3473,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Import outbound telephony campaign recipients
-     * 
+     *
      * Starts an asynchronous import of campaign recipients from a Dataset CSV, JSON array, or JSONL file.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3498,9 +3498,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3514,7 +3514,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param idempotencyKey The idempotencyKey parameter.
@@ -3545,10 +3545,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Import outbound telephony campaign recipients
-     * 
+     *
      * Starts an asynchronous import of campaign recipients from a Dataset CSV, JSON array, or JSONL file.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3570,9 +3570,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3586,7 +3586,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param idempotencyKey The idempotencyKey parameter.
@@ -3617,10 +3617,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get an outbound telephony campaign recipient import
-     * 
+     *
      * Retrieves the durable status and counters for a campaign recipient import.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3653,7 +3653,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param importId The importId parameter.
@@ -3663,7 +3663,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an outbound telephony campaign recipient import
-     * 
+     *
      * Retrieves the durable status and counters for a campaign recipient import along with {@link Response} on
      * successful completion of {@link Mono}.
      */
@@ -3678,10 +3678,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get an outbound telephony campaign recipient import
-     * 
+     *
      * Retrieves the durable status and counters for a campaign recipient import.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3714,7 +3714,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param importId The importId parameter.
@@ -3724,7 +3724,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an outbound telephony campaign recipient import
-     * 
+     *
      * Retrieves the durable status and counters for a campaign recipient import along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3737,10 +3737,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Validate an outbound telephony campaign
-     * 
+     *
      * Starts asynchronous validation of the current campaign draft and imported recipient snapshot.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3754,7 +3754,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3775,10 +3775,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Validate an outbound telephony campaign
-     * 
+     *
      * Starts asynchronous validation of the current campaign draft and imported recipient snapshot.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3792,7 +3792,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3812,10 +3812,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Validate an outbound telephony campaign
-     * 
+     *
      * Starts asynchronous validation of the current campaign draft and imported recipient snapshot.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3829,7 +3829,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3858,10 +3858,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Validate an outbound telephony campaign
-     * 
+     *
      * Starts asynchronous validation of the current campaign draft and imported recipient snapshot.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3875,7 +3875,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3904,10 +3904,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Validate an outbound telephony campaign
-     * 
+     *
      * Starts asynchronous validation of the current campaign draft and imported recipient snapshot.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3921,7 +3921,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3949,10 +3949,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Validate an outbound telephony campaign
-     * 
+     *
      * Starts asynchronous validation of the current campaign draft and imported recipient snapshot.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3966,7 +3966,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3994,10 +3994,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Publish an outbound telephony campaign
-     * 
+     *
      * Permanently locks the validated campaign draft and starts asynchronous call-job materialization.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4005,9 +4005,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4021,7 +4021,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param body The body parameter.
@@ -4045,10 +4045,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Publish an outbound telephony campaign
-     * 
+     *
      * Permanently locks the validated campaign draft and starts asynchronous call-job materialization.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4056,9 +4056,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4072,7 +4072,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param body The body parameter.
@@ -4094,10 +4094,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Publish an outbound telephony campaign
-     * 
+     *
      * Permanently locks the validated campaign draft and starts asynchronous call-job materialization.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4105,9 +4105,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4121,7 +4121,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param body The body parameter.
@@ -4151,10 +4151,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Publish an outbound telephony campaign
-     * 
+     *
      * Permanently locks the validated campaign draft and starts asynchronous call-job materialization.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4162,9 +4162,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4178,7 +4178,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param body The body parameter.
@@ -4208,10 +4208,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Publish an outbound telephony campaign
-     * 
+     *
      * Permanently locks the validated campaign draft and starts asynchronous call-job materialization.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4219,9 +4219,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4235,7 +4235,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param body The body parameter.
@@ -4264,10 +4264,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Publish an outbound telephony campaign
-     * 
+     *
      * Permanently locks the validated campaign draft and starts asynchronous call-job materialization.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4275,9 +4275,9 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4291,7 +4291,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param body The body parameter.
@@ -4320,10 +4320,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Pause an outbound telephony campaign
-     * 
+     *
      * Pauses dispatch of call jobs owned by a published campaign.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4363,7 +4363,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4384,10 +4384,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Pause an outbound telephony campaign
-     * 
+     *
      * Pauses dispatch of call jobs owned by a published campaign.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4427,7 +4427,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4447,10 +4447,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Resume an outbound telephony campaign
-     * 
+     *
      * Resumes dispatch of call jobs owned by a paused campaign.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4490,7 +4490,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4511,10 +4511,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Resume an outbound telephony campaign
-     * 
+     *
      * Resumes dispatch of call jobs owned by a paused campaign.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4554,7 +4554,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4574,10 +4574,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Cancel an outbound telephony campaign
-     * 
+     *
      * Cancels a campaign and prevents any further call-job dispatch.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4617,7 +4617,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4638,10 +4638,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Cancel an outbound telephony campaign
-     * 
+     *
      * Cancels a campaign and prevents any further call-job dispatch.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4681,7 +4681,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param campaignId The campaignId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4701,10 +4701,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get an outbound telephony operation
-     * 
+     *
      * Retrieves an asynchronous outbound campaign operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4734,7 +4734,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param operationId The operationId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4743,7 +4743,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an outbound telephony operation
-     * 
+     *
      * Retrieves an asynchronous outbound campaign operation along with {@link Response} on successful completion of
      * {@link Mono}.
      */
@@ -4757,10 +4757,10 @@ public final class BetaVoiceAgentsTelephoniesImpl {
 
     /**
      * Get an outbound telephony operation
-     * 
+     *
      * Retrieves an asynchronous outbound campaign operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -4790,7 +4790,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param agentName The agentName parameter.
      * @param operationId The operationId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4799,7 +4799,7 @@ public final class BetaVoiceAgentsTelephoniesImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an outbound telephony operation
-     * 
+     *
      * Retrieves an asynchronous outbound campaign operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

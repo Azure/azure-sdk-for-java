@@ -79,7 +79,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -89,9 +89,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -104,7 +104,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -158,7 +158,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -192,7 +192,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Retrieves a telephony binding owned by the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -205,7 +205,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -237,7 +237,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Updates a telephony binding owned by the voice agent named in the path.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -248,9 +248,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -263,7 +263,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -348,7 +348,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -392,7 +392,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Retrieves a durable inbound call record owned by the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -478,7 +478,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Transfers an active inbound call to a configured target for the voice agent named in the path.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -486,9 +486,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -574,7 +574,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Ends an active inbound call owned by the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -658,7 +658,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Returns all transfer targets configured for the voice agent named in the path.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -674,7 +674,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -705,7 +705,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Replaces all transfer targets configured for the voice agent named in the path.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -721,9 +721,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -739,7 +739,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -772,7 +772,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Creates one durable direct outbound call job. The latest agent definition is resolved when each attempt executes.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -797,9 +797,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -840,7 +840,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -873,7 +873,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Retrieves a durable direct or campaign-created outbound call job.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -914,7 +914,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -945,7 +945,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Requests cancellation of a durable outbound call job. A connected call is allowed to finish.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -986,7 +986,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -1019,7 +1019,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Creates a draft outbound campaign. Recipients are imported and validated before the campaign can be published.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1038,9 +1038,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1080,7 +1080,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -1109,7 +1109,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Retrieves an outbound campaign, including configuration, execution state, and aggregate call-job counts.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1174,7 +1174,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Starts an asynchronous import of campaign recipients from a Dataset CSV, JSON array, or JSONL file.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1196,9 +1196,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1237,7 +1237,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Retrieves the durable status and counters for a campaign recipient import.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1296,7 +1296,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Starts asynchronous validation of the current campaign draft and imported recipient snapshot.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1332,7 +1332,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Permanently locks the validated campaign draft and starts asynchronous call-job materialization.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1340,9 +1340,9 @@ public final class BetaVoiceAgentsTelephonyClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1379,7 +1379,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Pauses dispatch of call jobs owned by a published campaign.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1441,7 +1441,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Resumes dispatch of call jobs owned by a paused campaign.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1503,7 +1503,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Cancels a campaign and prevents any further call-job dispatch.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1565,7 +1565,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *
      * Retrieves an asynchronous outbound campaign operation.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
