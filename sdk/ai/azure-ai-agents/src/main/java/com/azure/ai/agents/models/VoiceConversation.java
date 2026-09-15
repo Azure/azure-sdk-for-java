@@ -4,6 +4,7 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
+import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
@@ -25,6 +26,7 @@ import java.util.Map;
  * responses, items, and item audio remain readable.
  */
 @Immutable
+@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class VoiceConversation implements JsonSerializable<VoiceConversation> {
 
     /*
