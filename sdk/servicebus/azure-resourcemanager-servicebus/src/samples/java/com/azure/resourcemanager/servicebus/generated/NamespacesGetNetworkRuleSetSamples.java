@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class NamespacesGetNetworkRuleSetSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetGet.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetGet.json
      */
     /**
      * Sample code: NameSpaceNetworkRuleSetGet.
