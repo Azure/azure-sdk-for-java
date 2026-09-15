@@ -112,18 +112,6 @@
           </rules>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <analysisConfigurationFiles combine.children="append">
-            <configurationFile>
-              <path>${project.basedir}/revapi.json</path>
-            </configurationFile>
-          </analysisConfigurationFiles>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 </project>

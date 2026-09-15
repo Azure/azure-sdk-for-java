@@ -12,11 +12,6 @@ import java.util.Collection;
  */
 public final class DeadlineType extends ExpandableStringEnum<DeadlineType> {
     /**
-     * Default value of Unknown.
-     */
-    public static final DeadlineType UNKNOWN = fromString("Unknown");
-
-    /**
      * Initiate the operation at the given deadline.
      */
     public static final DeadlineType INITIATE_AT = fromString("InitiateAt");

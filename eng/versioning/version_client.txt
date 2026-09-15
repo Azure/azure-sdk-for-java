@@ -167,6 +167,7 @@ com.azure:azure-messaging-servicebus;7.17.20;7.18.0-beta.4
 com.azure:azure-messaging-servicebus-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-webpubsub;1.5.7;1.6.0-beta.1
+com.azure:azure-messaging-webpubsub-chat;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-webpubsub-client;1.1.10;1.2.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.32;1.0.0-beta.33
 com.azure:azure-monitor-opentelemetry-autoconfigure;1.6.0;1.7.0-beta.1
@@ -276,6 +277,7 @@ com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;7.4.0;7.5.0-be
 com.azure.spring:spring-cloud-azure-stream-binder-servicebus;7.4.0;7.5.0-beta.1
 com.azure.spring:spring-cloud-azure-testcontainers;7.4.0;7.5.0-beta.1
 com.azure:azure-spring-data-cosmos;7.4.0;7.5.0-beta.1
+com.azure:azure-iot-deviceregistry-softwareupdate;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager;2.63.0;2.64.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.51.0;2.52.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appservice;2.56.1;2.57.0-beta.1
@@ -446,7 +448,7 @@ com.azure.resourcemanager:azure-resourcemanager-paloaltonetworks-ngfw;1.3.0;1.4.
 com.azure.resourcemanager:azure-resourcemanager-newrelicobservability;1.3.0;1.4.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-qumulo;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-selfhelp;1.0.0;1.1.0-beta.7
-com.azure.resourcemanager:azure-resourcemanager-networkcloud;2.1.0;2.2.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-networkcloud;2.1.0;2.2.0
 com.azure.resourcemanager:azure-resourcemanager-cosmosdbforpostgresql;1.0.0;1.1.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-managementgroups;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-managednetworkfabric;2.0.0;2.1.0-beta.1
@@ -533,7 +535,7 @@ com.azure.resourcemanager:azure-resourcemanager-monitor-workspaces;1.0.0;1.1.0-b
 com.azure.resourcemanager:azure-resourcemanager-programenrollment;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resiliencemanagement;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-napsteromniagentapi;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-compute-bulkactions;1.0.0-beta.3;1.0.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-compute-bulkactions;1.0.0-beta.4;1.0.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-commvaultcontentstore;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-billing-trust;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-containerservicepreparedimgspec;1.0.0-beta.1;1.0.0-beta.2

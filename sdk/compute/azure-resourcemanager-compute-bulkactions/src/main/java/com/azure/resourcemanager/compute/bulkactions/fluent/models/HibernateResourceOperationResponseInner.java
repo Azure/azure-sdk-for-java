@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 import java.io.IOException;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public final class HibernateResourceOperationResponseInner
     /*
      * The results from the Hibernate request if no errors exist
      */
-    private List<ResourceOperationInner> results;
+    private List<ResourceOperation> results;
 
     /**
      * Creates an instance of HibernateResourceOperationResponseInner class.
@@ -76,7 +77,7 @@ public final class HibernateResourceOperationResponseInner
      * 
      * @return the results value.
      */
-    public List<ResourceOperationInner> results() {
+    public List<ResourceOperation> results() {
         return this.results;
     }
 
@@ -117,8 +118,7 @@ public final class HibernateResourceOperationResponseInner
                 } else if ("location".equals(fieldName)) {
                     deserializedHibernateResourceOperationResponseInner.location = reader.getString();
                 } else if ("results".equals(fieldName)) {
-                    List<ResourceOperationInner> results
-                        = reader.readArray(reader1 -> ResourceOperationInner.fromJson(reader1));
+                    List<ResourceOperation> results = reader.readArray(reader1 -> ResourceOperation.fromJson(reader1));
                     deserializedHibernateResourceOperationResponseInner.results = results;
                 } else {
                     reader.skipChildren();

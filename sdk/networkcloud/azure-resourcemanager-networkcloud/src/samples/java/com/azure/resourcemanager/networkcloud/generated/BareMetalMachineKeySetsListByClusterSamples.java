@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class BareMetalMachineKeySetsListByClusterSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachineKeySets_ListByCluster.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachineKeySets_ListByCluster.json
      */
     /**
      * Sample code: List bare metal machine key sets of the cluster.
