@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 - Ensure the SDKStats all-disable setting also suppresses internal Statsbeat exports and background tasks.
+- Harden the local telemetry spool directory against symlink and path-squatting attacks, and reject telemetry retries whose stored connection string targets an untrusted endpoint. ([#50463](https://github.com/Azure/azure-sdk-for-java/pull/50463))
 
 ### Other Changes
 

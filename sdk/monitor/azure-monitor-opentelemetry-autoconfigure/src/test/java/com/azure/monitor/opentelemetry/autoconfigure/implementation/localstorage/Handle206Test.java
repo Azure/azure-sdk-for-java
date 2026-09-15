@@ -55,7 +55,7 @@ public class Handle206Test {
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build(), null);
         telemetryItemExporter
             = new TelemetryItemExporter(telemetryPipeline, new LocalStorageTelemetryPipelineListener(50, tempFolder,
-                telemetryPipeline, LocalStorageStats.noop(), false));
+                telemetryPipeline, LocalStorageStats.noop(), false, null));
     }
 
     @Test

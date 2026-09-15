@@ -4,12 +4,16 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.DiagnosticTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipelineListener;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.RedirectPolicyHelper;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ThreadPoolUtils;
 import io.opentelemetry.sdk.common.CompletableResultCode;
+import reactor.util.annotation.Nullable;
 
+import java.net.URL;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -26,11 +30,14 @@ class LocalFileSender implements Runnable {
         = Executors.newSingleThreadScheduledExecutor(ThreadPoolUtils.createDaemonThreadFactory(LocalFileLoader.class));
 
     private final TelemetryPipelineListener diagnosticListener;
+    private final URL trustedEndpoint;
 
     LocalFileSender(long intervalSeconds, LocalFileLoader localFileLoader, TelemetryPipeline telemetryPipeline,
-        boolean suppressWarnings) { // used to suppress warnings from statsbeat
+        boolean suppressWarnings, // used to suppress warnings from statsbeat
+        @Nullable URL trustedEndpoint) {
         this.localFileLoader = localFileLoader;
         this.telemetryPipeline = telemetryPipeline;
+        this.trustedEndpoint = trustedEndpoint;
 
         diagnosticListener = suppressWarnings
             ? TelemetryPipelineListener.noop()
@@ -55,6 +62,12 @@ class LocalFileSender implements Runnable {
         try {
             LocalFileLoader.PersistedFile persistedFile = localFileLoader.loadTelemetriesFromDisk();
             if (persistedFile != null) {
+                if (!isTrustedEndpoint(persistedFile.connectionString)) {
+                    logger.warning("Discarding persisted telemetry: its connection string does not target the"
+                        + " currently configured endpoint ({})", trustedEndpoint);
+                    localFileLoader.updateProcessedFileStatus(true, persistedFile.file);
+                    return;
+                }
                 CompletableResultCode resultCode = telemetryPipeline.send(singletonList(persistedFile.rawBytes),
                     persistedFile.connectionString, TelemetryPipelineListener.composite(diagnosticListener,
                         new LocalFileSenderTelemetryPipelineListener(localFileLoader, persistedFile.file)));
@@ -62,6 +75,20 @@ class LocalFileSender implements Runnable {
             }
         } catch (RuntimeException ex) {
             logger.error("Unexpected error occurred while sending telemetries from the local storage.", ex);
+        }
+    }
+
+    // a persisted file's connection string is untrusted input: it may have been written by anyone with
+    // write access to the spool directory, so its destination must still match the configured one.
+    private boolean isTrustedEndpoint(String connectionString) {
+        if (trustedEndpoint == null) {
+            return true;
+        }
+        try {
+            URL persistedEndpoint = ConnectionString.parse(connectionString).getIngestionEndpointUrl();
+            return RedirectPolicyHelper.isTrustedRedirect(trustedEndpoint, persistedEndpoint);
+        } catch (RuntimeException e) {
+            return false;
         }
     }
 }

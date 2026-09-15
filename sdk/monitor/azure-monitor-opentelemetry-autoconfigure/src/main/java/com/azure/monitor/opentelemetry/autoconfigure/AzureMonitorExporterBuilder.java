@@ -112,8 +112,9 @@ class AzureMonitorExporterBuilder {
         CustomerSdkStatsTelemetryPipelineListener customerSdkStatsListener
             = customerSdkStats != null ? new CustomerSdkStatsTelemetryPipelineListener(customerSdkStats) : null;
         // TODO (heya) change LocalStorageStats.noop() to statsbeatModule.getNonessentialStatsbeat() when we decide to collect non-essential Statsbeat by default.
-        this.builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule,
-            tempDir, LocalStorageStats.noop(), customerSdkStatsListener);
+        this.builtTelemetryItemExporter
+            = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule, tempDir,
+                LocalStorageStats.noop(), customerSdkStatsListener, getConnectionString().getIngestionEndpointUrl());
         if (LiveMetrics.isEnabled(configProperties)) {
             this.quickPulse = createQuickPulse(resource);
         }
