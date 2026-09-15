@@ -2759,7 +2759,7 @@ public final class ContainersImpl {
      *         ]
      *         BlobPrefix (Optional): [
      *              (Optional){
-     *                 Name (Required): (recursive schema, see Name above)
+     *                 Name: String (Required)
      *             }
      *         ]
      *     }
@@ -2910,7 +2910,7 @@ public final class ContainersImpl {
      *         ]
      *         BlobPrefix (Optional): [
      *              (Optional){
-     *                 Name (Required): (recursive schema, see Name above)
+     *                 Name: String (Required)
      *             }
      *         ]
      *     }

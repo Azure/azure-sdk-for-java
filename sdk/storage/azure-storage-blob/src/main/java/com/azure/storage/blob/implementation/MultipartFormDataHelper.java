@@ -49,7 +49,7 @@ public final class MultipartFormDataHelper {
     private InputStream requestDataStream = new ByteArrayInputStream(new byte[0]);
     private long requestLength = 0;
 
-    private RequestOptions requestOptions;
+    private final RequestOptions requestOptions;
     private BinaryData requestBody;
 
     /**

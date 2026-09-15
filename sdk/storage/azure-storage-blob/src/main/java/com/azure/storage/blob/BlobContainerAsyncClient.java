@@ -1416,8 +1416,7 @@ public final class BlobContainerAsyncClient {
                     value = new ArrayList<>(segment.getBlobItems().size() + segment.getBlobPrefixes().size());
                     segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
                     segment.getBlobPrefixes()
-                        .forEach(prefix -> value.add(
-                            new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName())).setIsPrefix(true)));
+                        .forEach(prefix -> value.add(new BlobItem().setName(prefix.getName()).setIsPrefix(true)));
                 }
 
                 return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -1491,8 +1490,7 @@ public final class BlobContainerAsyncClient {
                                     .forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
                                 segment.getBlobPrefixes()
                                     .forEach(prefix -> value
-                                        .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName()))
-                                            .setIsPrefix(true)));
+                                        .add(new BlobItem().setName(prefix.getName()).setIsPrefix(true)));
                             }
 
                             return (PagedResponse<BlobItem>) new PagedResponseBase<>(response.getRequest(),

@@ -1257,7 +1257,7 @@ public final class BlobContainerAsyncClientInternal {
      *         ]
      *         BlobPrefix (Optional): [
      *              (Optional){
-     *                 Name (Required): (recursive schema, see Name above)
+     *                 Name: String (Required)
      *             }
      *         ]
      *     }

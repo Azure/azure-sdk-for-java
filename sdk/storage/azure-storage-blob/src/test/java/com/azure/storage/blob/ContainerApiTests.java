@@ -61,22 +61,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
-import com.azure.storage.blob.implementation.BlobContainerAsyncClientInternal;
 import com.azure.storage.blob.implementation.BlobContainerClientInternal;
 import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
 import java.io.ByteArrayInputStream;
-import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
-import com.azure.core.http.rest.ResponseBase;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.net.URL;
 import java.time.OffsetDateTime;

@@ -24,13 +24,13 @@ public final class PageList implements XmlSerializable<PageList> {
      * The page ranges.
      */
     @Generated
-    private List<PageRange> pageRange = new ArrayList<>();
+    private final List<PageRange> pageRange = new ArrayList<>();
 
     /*
      * The clear ranges.
      */
     @Generated
-    private List<ClearRange> clearRange = new ArrayList<>();
+    private final List<ClearRange> clearRange = new ArrayList<>();
 
     /*
      * An opaque string value that identifies the portion of the result set to be returned with the next operation. Use

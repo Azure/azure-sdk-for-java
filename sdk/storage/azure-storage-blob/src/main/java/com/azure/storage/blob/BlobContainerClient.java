@@ -29,9 +29,7 @@ import com.azure.storage.blob.implementation.models.ContainersFilterBlobsHeaders
 import com.azure.storage.blob.implementation.models.ContainersGetAccessPolicyHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetPropertiesHeaders;
-import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentHeaders;
-import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.FilterBlobSegment;
@@ -1082,8 +1080,8 @@ public final class BlobContainerClient {
 
                 // The response body is a stream over the network buffer. It must be closed to release the underlying
                 // buffer, otherwise the transport (e.g. Netty) will report a resource leak.
-                try (InputStream responseBody
-                    = new ByteArrayInputStream(FluxUtil.collectBytesInByteBufferStream(response.getValue()).block())) {
+                byte[] arrowBody = FluxUtil.collectBytesInByteBufferStream(response.getValue()).block();
+                try (InputStream responseBody = new ByteArrayInputStream(arrowBody == null ? new byte[0] : arrowBody)) {
                     if (StorageImplUtils.hasMatchingHeaderValue(contentType,
                         Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM)) {
                         // Arrow response — parse with Arrow parser entrypoint
@@ -1283,8 +1281,8 @@ public final class BlobContainerClient {
 
             // The response body is a stream over the network buffer. It must be closed to release the underlying
             // buffer, otherwise the transport (e.g. Netty) will report a resource leak.
-            try (InputStream responseBody
-                = new ByteArrayInputStream(FluxUtil.collectBytesInByteBufferStream(response.getValue()).block())) {
+            byte[] arrowBody = FluxUtil.collectBytesInByteBufferStream(response.getValue()).block();
+            try (InputStream responseBody = new ByteArrayInputStream(arrowBody == null ? new byte[0] : arrowBody)) {
                 if (StorageImplUtils.hasMatchingHeaderValue(contentType,
                     Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM)) {
                     ArrowListBlobsResult arrowResult = ArrowBlobListDeserializer.deserialize(responseBody);
@@ -1307,9 +1305,8 @@ public final class BlobContainerClient {
                         if (segment != null) {
                             segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
                             segment.getBlobPrefixes()
-                                .forEach(prefix -> value
-                                    .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName()))
-                                        .setIsPrefix(true)));
+                                .forEach(
+                                    prefix -> value.add(new BlobItem().setName(prefix.getName()).setIsPrefix(true)));
                         }
 
                         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
@@ -1337,8 +1334,7 @@ public final class BlobContainerClient {
             if (segment != null) {
                 segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
                 segment.getBlobPrefixes()
-                    .forEach(prefix -> value
-                        .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName())).setIsPrefix(true)));
+                    .forEach(prefix -> value.add(new BlobItem().setName(prefix.getName()).setIsPrefix(true)));
             }
 
             return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),

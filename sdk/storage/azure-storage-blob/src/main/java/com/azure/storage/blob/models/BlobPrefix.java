@@ -5,7 +5,6 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.storage.blob.implementation.models.BlobName;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,7 +22,7 @@ public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
      * The blob name.
      */
     @Generated
-    private BlobName name;
+    private String name;
 
     /**
      * Get the name property: The blob name.
@@ -31,7 +30,7 @@ public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
      * @return the name value.
      */
     @Generated
-    public BlobName getName() {
+    public String getName() {
         return this.name;
     }
 
@@ -46,7 +45,7 @@ public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
         rootElementName = rootElementName == null || rootElementName.isEmpty() ? "BlobPrefix" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeXml(this.name, "Name");
+        xmlWriter.writeStringElement("Name", this.name);
         return xmlWriter.writeEndElement();
     }
 
@@ -80,11 +79,11 @@ public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
         String finalRootElementName
             = rootElementName == null || rootElementName.isEmpty() ? "BlobPrefix" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
-            BlobName name = null;
+            String name = null;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
                 if ("Name".equals(elementName.getLocalPart())) {
-                    name = BlobName.fromXml(reader, "Name");
+                    name = reader.getStringElement();
                 } else {
                     reader.skipElement();
                 }
@@ -109,7 +108,7 @@ public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
      * @return the BlobPrefix object itself.
      */
     @Generated
-    public BlobPrefix setName(BlobName name) {
+    public BlobPrefix setName(String name) {
         this.name = name;
         return this;
     }

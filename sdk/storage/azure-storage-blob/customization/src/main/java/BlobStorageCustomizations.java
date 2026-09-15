@@ -73,6 +73,7 @@ public class BlobStorageCustomizations extends Customization {
         relocateConvenienceClientsToImplementation(editor, logger);
         removeGeneratedFiles(editor, logger);
         fixXmlSerializerRedundantCast(editor, logger);
+        satisfyCheckstyleOnGeneratedFiles(editor, logger);
         fixUrlAcronymHeaderNames(editor, logger);
         customizeQueryFormat(editor, logger);
         retypeStreamingResponses(editor, logger);
@@ -288,6 +289,49 @@ public class BlobStorageCustomizations extends Customization {
             setSize.setBody(StaticJavaParser.parseBlock("{ return this.setSizeLong(sizeInt); }"));
         }));
         logger.info("Restored the deprecated int size accessors on Block.");
+    }
+
+    // Checkstyle rules the emitter output does not satisfy. These are fixed here rather than suppressed: a
+    // suppression would hide the same rule for every future regeneration of the file.
+    //   - XmlSerializer throws IOException/RuntimeException directly; the ThrowFromClientLogger rule requires them
+    //     to go through a ClientLogger.
+    //   - MultipartFormDataHelper.requestOptions and PageList's two list fields are assigned once and never
+    //     reassigned, which EnforceFinalFields wants declared final.
+    private static void satisfyCheckstyleOnGeneratedFiles(Editor editor, Logger logger) {
+        String xmlSerializerPath = PKG_ROOT + "implementation/XmlSerializer.java";
+        String xmlSerializer = editor.getContents().get(xmlSerializerPath);
+        if (xmlSerializer != null && !xmlSerializer.contains("ClientLogger")) {
+            String updated = xmlSerializer
+                .replace("public final class XmlSerializer implements ObjectSerializer {",
+                    "public final class XmlSerializer implements ObjectSerializer {\n\n"
+                        + "    private static final ClientLogger LOGGER = new ClientLogger(XmlSerializer.class);")
+                .replaceAll("throw new (\\w+)\\(([^;]*?)\\);", "throw LOGGER.logExceptionAsError(new $1($2));");
+            updated = addImport(updated, "import com.azure.core.util.logging.ClientLogger;");
+            editor.replaceFile(xmlSerializerPath, updated);
+            logger.info("Routed the XmlSerializer exceptions through a ClientLogger.");
+        }
+
+        makeFieldsFinal(editor, logger, PKG_ROOT + "implementation/MultipartFormDataHelper.java",
+            new String[] { "private RequestOptions requestOptions;" });
+        makeFieldsFinal(editor, logger, PKG_ROOT + "models/PageList.java",
+            new String[] { "private List<PageRange> pageRange = new ArrayList<>();",
+                "private List<ClearRange> clearRange = new ArrayList<>();" });
+    }
+
+    private static void makeFieldsFinal(Editor editor, Logger logger, String path, String[] fields) {
+        String content = editor.getContents().get(path);
+        if (content == null) {
+            logger.info("{} not present; skipping the final-field fix.", path);
+            return;
+        }
+        String updated = content;
+        for (String field : fields) {
+            updated = updated.replace(field, field.replace("private ", "private final "));
+        }
+        if (!updated.equals(content)) {
+            editor.replaceFile(path, updated);
+            logger.info("Made the single-assignment fields final in {}.", path);
+        }
     }
 
     private static void restoreHeaderSetters(PackageCustomization implModels, Logger logger) {
@@ -776,7 +820,15 @@ public class BlobStorageCustomizations extends Customization {
             return content;
         }
         String anchor = "import com.azure.core.http.rest.Response;";
-        return content.replace(anchor, anchor + "\n" + importLine);
+        if (content.contains(anchor)) {
+            return content.replace(anchor, anchor + "\n" + importLine);
+        }
+        // Not every generated file imports Response; fall back to the first import in the block.
+        int firstImport = content.indexOf("\nimport ");
+        if (firstImport < 0) {
+            throw new IllegalStateException("No import block to add " + importLine + " to.");
+        }
+        return content.substring(0, firstImport + 1) + importLine + "\n" + content.substring(firstImport + 1);
     }
 
     private static String removeImportIfUnused(String content, String qualifiedName) {
