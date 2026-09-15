@@ -33,72 +33,12 @@ public class AgentsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        customizeVoicePreviewBuilders(libraryCustomization);
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
         // makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
-    }
-
-    private void customizeVoicePreviewBuilders(LibraryCustomization customization) {
-        customization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast -> {
-            ClassOrInterfaceDeclaration builder = ast.getClassByName("AgentsClientBuilder")
-                .orElseThrow(() -> new IllegalStateException("Generated AgentsClientBuilder was not found."));
-            customizeAgentEndpointConversationBuildMethods(builder);
-            customizeAgentTelephonyBuildMethods(builder);
-            for (String methodName : new String[] { "buildBetaVoiceAgentsConversationsAsyncClient",
-                "buildBetaVoiceAgentsConversationsClient", "buildBetaVoiceAgentsTelephonyAsyncClient",
-                "buildBetaVoiceAgentsTelephonyClient" }) {
-                getSingleMethod(builder, methodName)
-                    .setModifier(Modifier.Keyword.PUBLIC, false)
-                    .setModifier(Modifier.Keyword.PRIVATE, true);
-            }
-            builder.getAnnotationByName("ServiceClientBuilder")
-                .orElseThrow(() -> new IllegalStateException("Generated ServiceClientBuilder annotation was not found."))
-                .asNormalAnnotationExpr().getPairs().stream()
-                .filter(pair -> "serviceClients".equals(pair.getNameAsString()))
-                .forEach(pair -> pair.getValue().asArrayInitializerExpr().getValues().removeIf(value ->
-                    Arrays.asList("BetaVoiceAgentsTelephonyClient.class", "BetaVoiceAgentsTelephonyAsyncClient.class",
-                        "BetaVoiceAgentsConversationsClient.class", "BetaVoiceAgentsConversationsAsyncClient.class")
-                        .contains(value.toString())));
-        });
-    }
-
-    private static void customizeAgentEndpointConversationBuildMethods(ClassOrInterfaceDeclaration builder) {
-        MethodDeclaration asyncMethod
-            = getSingleMethod(builder, "buildBetaVoiceAgentsConversationsAsyncClient");
-        asyncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaVoiceAgentsConversationsAsyncClient("
-            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
-            + ".getBetaVoiceAgentsConversations()); }"));
-
-        MethodDeclaration syncMethod = getSingleMethod(builder, "buildBetaVoiceAgentsConversationsClient");
-        syncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaVoiceAgentsConversationsClient("
-            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
-            + ".getBetaVoiceAgentsConversations()); }"));
-    }
-
-    private static void customizeAgentTelephonyBuildMethods(ClassOrInterfaceDeclaration builder) {
-        MethodDeclaration asyncMethod = getSingleMethod(builder, "buildBetaVoiceAgentsTelephonyAsyncClient");
-        asyncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaVoiceAgentsTelephonyAsyncClient("
-            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
-            + ".getBetaVoiceAgentsTelephonies()); }"));
-
-        MethodDeclaration syncMethod = getSingleMethod(builder, "buildBetaVoiceAgentsTelephonyClient");
-        syncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaVoiceAgentsTelephonyClient("
-            + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
-            + ".getBetaVoiceAgentsTelephonies()); }"));
-    }
-
-    private static MethodDeclaration getSingleMethod(ClassOrInterfaceDeclaration model, String methodName) {
-        List<MethodDeclaration> methods = model.getMethodsByName(methodName);
-        if (methods.size() != 1) {
-            throw new IllegalStateException(
-                "Expected one " + model.getNameAsString() + "." + methodName + " method, found " + methods.size()
-                    + ".");
-        }
-        return methods.get(0);
     }
 
     private static final String MODELS_PACKAGE = "com.azure.ai.agents.models";
