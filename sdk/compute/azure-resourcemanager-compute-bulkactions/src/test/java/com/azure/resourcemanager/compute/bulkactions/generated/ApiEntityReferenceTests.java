@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiEntityReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiEntityReference model = BinaryData.fromString("{\"id\":\"ripl\"}").toObject(ApiEntityReference.class);
-        Assertions.assertEquals("ripl", model.id());
+        ApiEntityReference model
+            = BinaryData.fromString("{\"id\":\"srtslhspkdeem\"}").toObject(ApiEntityReference.class);
+        Assertions.assertEquals("srtslhspkdeem", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiEntityReference model = new ApiEntityReference().withId("ripl");
+        ApiEntityReference model = new ApiEntityReference().withId("srtslhspkdeem");
         model = BinaryData.fromObject(model).toObject(ApiEntityReference.class);
-        Assertions.assertEquals("ripl", model.id());
+        Assertions.assertEquals("srtslhspkdeem", model.id());
     }
 }

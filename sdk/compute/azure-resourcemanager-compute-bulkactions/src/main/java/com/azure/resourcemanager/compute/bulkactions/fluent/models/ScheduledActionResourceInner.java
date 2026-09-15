@@ -14,33 +14,32 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Represents an scheduled action resource metadata.
+ * A compute resource associated with a scheduled action.
  */
 @Immutable
 public final class ScheduledActionResourceInner implements JsonSerializable<ScheduledActionResourceInner> {
     /*
-     * The name of the resource
+     * Read-only. The name of the association resource.
      */
     private String name;
 
     /*
-     * The compute RP resource id of the resource in the scheduled actions scope.
+     * Read-only. The Azure resource ID of the association resource.
      */
     private String id;
 
     /*
-     * The type of resource
+     * Read-only. The Azure resource type of the associated resource.
      */
     private String type;
 
     /*
-     * The ARM Id of the resource.
-     * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
+     * The Azure resource ID of the targeted virtual machine.
      */
     private String resourceId;
 
     /*
-     * The desired notification settings for the specified resource.
+     * Notification settings that apply only to this resource.
      */
     private List<NotificationProperties> notificationSettings;
 
@@ -51,7 +50,7 @@ public final class ScheduledActionResourceInner implements JsonSerializable<Sche
     }
 
     /**
-     * Get the name property: The name of the resource.
+     * Get the name property: Read-only. The name of the association resource.
      * 
      * @return the name value.
      */
@@ -60,7 +59,7 @@ public final class ScheduledActionResourceInner implements JsonSerializable<Sche
     }
 
     /**
-     * Get the id property: The compute RP resource id of the resource in the scheduled actions scope.
+     * Get the id property: Read-only. The Azure resource ID of the association resource.
      * 
      * @return the id value.
      */
@@ -69,7 +68,7 @@ public final class ScheduledActionResourceInner implements JsonSerializable<Sche
     }
 
     /**
-     * Get the type property: The type of resource.
+     * Get the type property: Read-only. The Azure resource type of the associated resource.
      * 
      * @return the type value.
      */
@@ -78,8 +77,7 @@ public final class ScheduledActionResourceInner implements JsonSerializable<Sche
     }
 
     /**
-     * Get the resourceId property: The ARM Id of the resource.
-     * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}".
+     * Get the resourceId property: The Azure resource ID of the targeted virtual machine.
      * 
      * @return the resourceId value.
      */
@@ -88,7 +86,7 @@ public final class ScheduledActionResourceInner implements JsonSerializable<Sche
     }
 
     /**
-     * Get the notificationSettings property: The desired notification settings for the specified resource.
+     * Get the notificationSettings property: Notification settings that apply only to this resource.
      * 
      * @return the notificationSettings value.
      */
