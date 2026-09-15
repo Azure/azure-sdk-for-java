@@ -21,7 +21,7 @@ public final class SavedSearchesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"category\":\"cz\",\"displayName\":\"vodrrslblxydkxr\",\"query\":\"vvbxiwkgfbqljnq\",\"functionAlias\":\"ychocokulehu\",\"functionParameters\":\"lrqff\",\"version\":2398233648986691088,\"tags\":[{\"name\":\"kphyjdxrav\",\"value\":\"uqd\"},{\"name\":\"rxmrgchbapx\",\"value\":\"iyfjjkbajbuscg\"},{\"name\":\"uusioycblev\",\"value\":\"mclujyxkyxlzgs\"}]},\"etag\":\"kzzltafhbzf\",\"id\":\"vwmbjlzqsczpg\",\"name\":\"dwnapf\",\"type\":\"qwowftptnuw\"}";
+            = "{\"properties\":{\"category\":\"clgsc\",\"displayName\":\"orim\",\"query\":\"rsrrmoucsofldp\",\"functionAlias\":\"iyfc\",\"functionParameters\":\"beolh\",\"version\":7597535851858875115,\"tags\":[{\"name\":\"xuqibsxtkcudf\",\"value\":\"sfar\"}]},\"etag\":\"iowl\",\"id\":\"xnq\",\"name\":\"vwgf\",\"type\":\"tmhqykiz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,17 +31,17 @@ public final class SavedSearchesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SavedSearch response = manager.savedSearches()
-            .getWithResponse("lghwzhome", "jjstliuhqawmo", "ia", com.azure.core.util.Context.NONE)
+            .getWithResponse("mehqepvufh", "zeh", "whoqhnlbqnbldxe", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kzzltafhbzf", response.etag());
-        Assertions.assertEquals("cz", response.category());
-        Assertions.assertEquals("vodrrslblxydkxr", response.displayName());
-        Assertions.assertEquals("vvbxiwkgfbqljnq", response.query());
-        Assertions.assertEquals("ychocokulehu", response.functionAlias());
-        Assertions.assertEquals("lrqff", response.functionParameters());
-        Assertions.assertEquals(2398233648986691088L, response.version());
-        Assertions.assertEquals("kphyjdxrav", response.tags().get(0).name());
-        Assertions.assertEquals("uqd", response.tags().get(0).value());
+        Assertions.assertEquals("iowl", response.etag());
+        Assertions.assertEquals("clgsc", response.category());
+        Assertions.assertEquals("orim", response.displayName());
+        Assertions.assertEquals("rsrrmoucsofldp", response.query());
+        Assertions.assertEquals("iyfc", response.functionAlias());
+        Assertions.assertEquals("beolh", response.functionParameters());
+        Assertions.assertEquals(7597535851858875115L, response.version());
+        Assertions.assertEquals("xuqibsxtkcudf", response.tags().get(0).name());
+        Assertions.assertEquals("sfar", response.tags().get(0).value());
     }
 }

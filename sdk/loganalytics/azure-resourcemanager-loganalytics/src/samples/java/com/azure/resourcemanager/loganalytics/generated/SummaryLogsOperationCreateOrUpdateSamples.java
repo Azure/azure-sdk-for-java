@@ -6,14 +6,19 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.resourcemanager.loganalytics.models.RuleDefinition;
 import com.azure.resourcemanager.loganalytics.models.RuleTypeEnum;
+import com.azure.resourcemanager.loganalytics.models.SummaryLogsIdentity;
+import com.azure.resourcemanager.loganalytics.models.SummaryLogsIdentityType;
+import com.azure.resourcemanager.loganalytics.models.SummaryLogsUserIdentityProperties;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for SummaryLogsOperation CreateOrUpdate.
  */
 public final class SummaryLogsOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/SummaryLogsUpsert.json
+     * x-ms-original-file: 2026-03-01/SummaryLogsUpsert.json
      */
     /**
      * Sample code: SummaryLogsUpsert.
@@ -24,6 +29,10 @@ public final class SummaryLogsOperationCreateOrUpdateSamples {
         manager.summaryLogsOperations()
             .define("summarylogs1")
             .withExistingWorkspace("oiautorest6685", "oiautorest6685")
+            .withIdentity(new SummaryLogsIdentity().withType(SummaryLogsIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity",
+                    new SummaryLogsUserIdentityProperties())))
             .withRuleType(RuleTypeEnum.USER)
             .withRuleDefinition(new RuleDefinition().withQuery("MyTable_CL")
                 .withBinSize(180)
@@ -31,5 +40,17 @@ public final class SummaryLogsOperationCreateOrUpdateSamples {
                 .withBinStartTime(OffsetDateTime.parse("2020-02-03T04:05:06Z"))
                 .withDestinationTable("MyDestinationTable_CL"))
             .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

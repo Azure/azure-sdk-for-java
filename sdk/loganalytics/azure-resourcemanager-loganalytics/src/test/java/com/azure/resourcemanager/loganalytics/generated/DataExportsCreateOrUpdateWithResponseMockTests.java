@@ -22,7 +22,7 @@ public final class DataExportsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataExportId\":\"khgb\",\"tableNames\":[\"ta\",\"arfdlpukhpyrnei\",\"jcpeogkhnmg\"],\"destination\":{\"resourceId\":\"ouxddbhfhpfpazj\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"xhpdulontacnpqwt\"}},\"enable\":false,\"createdDate\":\"evrh\",\"lastModifiedDate\":\"jyoogwxh\"},\"id\":\"duugwbsre\",\"name\":\"rfqkfuar\",\"type\":\"nlvhhtklnvnafvv\"}";
+            = "{\"properties\":{\"dataExportId\":\"exfdeqvhpsylk\",\"tableNames\":[\"hkbffmbm\"],\"destination\":{\"resourceId\":\"jrgywwpgjxsn\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"gicgaaoepttaq\"}},\"enable\":true,\"createdDate\":\"wemxswvruunzz\",\"lastModifiedDate\":\"ehkfkimrtixok\"},\"id\":\"qyinl\",\"name\":\"qepqwhixmon\",\"type\":\"tshi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,23 +32,23 @@ public final class DataExportsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataExport response = manager.dataExports()
-            .define("xmfcsserxhtv")
-            .withExistingWorkspace("nlaxpunjqikcz", "vitac")
-            .withDataExportId("hlwntsjgq")
-            .withTableNames(Arrays.asList("xypruuuy", "nchrszizoyu"))
+            .define("nktwfansnvpdibmi")
+            .withExistingWorkspace("iofrzgbzjedmstk", "nlvxbcuii")
+            .withDataExportId("tbzbkiwbuqnyophz")
+            .withTableNames(Arrays.asList("l"))
             .withEnable(false)
-            .withCreatedDate("rwahzjmucftbyr")
-            .withLastModifiedDate("rohkpigqfusu")
-            .withResourceId("yetnd")
-            .withEventHubName("ggagfln")
+            .withCreatedDate("clafzvaylpt")
+            .withLastModifiedDate("qqwzt")
+            .withResourceId("crpfbcunez")
+            .withEventHubName("lfwyfwlwxjwetn")
             .create();
 
-        Assertions.assertEquals("khgb", response.dataExportId());
-        Assertions.assertEquals("ta", response.tableNames().get(0));
-        Assertions.assertFalse(response.enable());
-        Assertions.assertEquals("evrh", response.createdDate());
-        Assertions.assertEquals("jyoogwxh", response.lastModifiedDate());
-        Assertions.assertEquals("ouxddbhfhpfpazj", response.resourceId());
-        Assertions.assertEquals("xhpdulontacnpqwt", response.eventHubName());
+        Assertions.assertEquals("exfdeqvhpsylk", response.dataExportId());
+        Assertions.assertEquals("hkbffmbm", response.tableNames().get(0));
+        Assertions.assertTrue(response.enable());
+        Assertions.assertEquals("wemxswvruunzz", response.createdDate());
+        Assertions.assertEquals("ehkfkimrtixok", response.lastModifiedDate());
+        Assertions.assertEquals("jrgywwpgjxsn", response.resourceId());
+        Assertions.assertEquals("gicgaaoepttaq", response.eventHubName());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class SharedKeysOperationGetSharedKeysSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesGetSharedKeys.json
+     * x-ms-original-file: 2026-03-01/WorkspacesGetSharedKeys.json
      */
     /**
      * Sample code: SharedKeysList.

@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public final class DataSourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/DataSourcesCreate.json
+     * x-ms-original-file: 2026-03-01/DataSourcesCreate.json
      */
     /**
      * Sample code: DataSourcesCreate.
