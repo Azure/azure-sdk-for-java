@@ -411,11 +411,11 @@ jobs:
         parameters:
           ServiceDirectories: $(PRServiceDirectories)
 
-      # Use BasePathLength of 30 instead of the default 49 as some released files fail when the number is higher.
+      # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
       - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
         parameters:
           SourceDirectory: $(Build.SourcesDirectory)
-          BasePathLength: 30
+          BasePathLength: 38
 
       # Authenticate with Azure Artifacts
       - template: /eng/pipelines/templates/steps/maven-authenticate.yml
