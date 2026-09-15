@@ -43,11 +43,11 @@ def generate_suppression_files(project_folder: str):
     generate_spotbugs_suppression_file(project_folder)
 
 def generate_linting_violations(project_folder: str):
-    # Run mvn clean verify -f <project_folder> "-Dcheckstyle.failOnViolation=false" "-Dcheckstyle.failsOnError=false" "-Dspotbugs.failOnError=false" "-Dcheckstyle.suppressionsLocation=" "-Dspotbugs.excludeFilterFile="
+    # Disable SDK-local SpotBugs exclusions while retaining shared policy, so generated filters contain only local exceptions.
     # This will generate the following files:
     #   target/checkstyle-result.xml
     #   target/spotbugs.xml
-    subprocess.run(f'mvn clean verify "-Dcodesnippet.skip=true" "-Dspotless.skip=true" -DskipTests "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" -f {project_folder} "-Dcheckstyle.failOnViolation=false" "-Dcheckstyle.failsOnError=false" "-Dspotbugs.failOnError=false" "-Dcheckstyle.suppressionsLocation=" "-Dspotbugs.excludeFilterFile="', shell = True)
+    subprocess.run(f'mvn clean verify "-Dcodesnippet.skip=true" "-Dspotless.skip=true" -DskipTests "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" -f {project_folder} "-Dcheckstyle.failOnViolation=false" "-Dcheckstyle.failsOnError=false" "-Dspotbugs.failOnError=false" "-Dcheckstyle.suppressionsLocation=" "-P!local-spotbugs-exclude"', shell = True)
 
 def generate_checkstyle_suppression_file(project_folder: str):
     # Get the path to the checkstyle violations file.
@@ -169,8 +169,10 @@ def generate_spotbugs_suppression_file(project_folder: str):
     # The format of the suppression file is as follows:
     #
     # <?xml version="1.0" encoding="UTF-8"?>
-    # <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    #     xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+    # <FindBugsFilter
+    #     xmlns="https://github.com/spotbugs/filter/4.10.0"
+    #     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    #     xsi:schemaLocation="https://github.com/spotbugs/filter/4.10.0 https://raw.githubusercontent.com/spotbugs/spotbugs/4.10.0/spotbugs/etc/findbugsfilter.xsd">
     #   <Match>
     #     <Bug pattern="..." />
     #     <Class name="..." />
@@ -192,8 +194,10 @@ def generate_spotbugs_suppression_file(project_folder: str):
     # This is to make it easier to understand what the violation is for, and how to remedy it.
     with open(file=os.path.join(project_folder, 'spotbugs-exclude.xml'), mode='w') as spotbugs_suppressions:
         spotbugs_suppressions.write('<?xml version="1.0" encoding="UTF-8"?>\n\n')
-        spotbugs_suppressions.write('<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n')
-        spotbugs_suppressions.write('                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">\n')
+        spotbugs_suppressions.write('<FindBugsFilter\n')
+        spotbugs_suppressions.write('    xmlns="https://github.com/spotbugs/filter/4.10.0"\n')
+        spotbugs_suppressions.write('    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n')
+        spotbugs_suppressions.write('    xsi:schemaLocation="https://github.com/spotbugs/filter/4.10.0 https://raw.githubusercontent.com/spotbugs/spotbugs/4.10.0/spotbugs/etc/findbugsfilter.xsd">\n')
 
         for violation in sorted(violations.items(), key=lambda x: x[0]):
             spotbugs_suppressions.write('  <Match>\n')
