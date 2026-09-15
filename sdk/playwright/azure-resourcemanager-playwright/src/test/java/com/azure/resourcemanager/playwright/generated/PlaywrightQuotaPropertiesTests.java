@@ -10,9 +10,8 @@ import com.azure.resourcemanager.playwright.models.PlaywrightQuotaProperties;
 public final class PlaywrightQuotaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PlaywrightQuotaProperties model = BinaryData
-            .fromString(
-                "{\"freeTrial\":{\"workspaceId\":\"igeho\",\"state\":\"Expired\"},\"provisioningState\":\"Creating\"}")
+        PlaywrightQuotaProperties model = BinaryData.fromString(
+            "{\"freeTrial\":{\"workspaceId\":\"hcbonqvpkvlr\",\"state\":\"NotApplicable\"},\"provisioningState\":\"Creating\"}")
             .toObject(PlaywrightQuotaProperties.class);
     }
 }
