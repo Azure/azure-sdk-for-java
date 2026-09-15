@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.io.Closeable;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 /**
@@ -40,7 +41,7 @@ public final class CloseableIterableStream<T> extends IterableStream<T> implemen
     private static final ClientLogger LOGGER = new ClientLogger(CloseableIterableStream.class);
 
     private final Closeable ownedResource;
-    private boolean closed;
+    private final AtomicBoolean closed = new AtomicBoolean();
 
     /**
      * Creates an iterable stream that owns the resource associated with its iteration.
@@ -75,12 +76,11 @@ public final class CloseableIterableStream<T> extends IterableStream<T> implemen
      * <p>This method is idempotent.</p>
      */
     @Override
-    public synchronized void close() {
-        if (closed) {
+    public void close() {
+        if (!closed.compareAndSet(false, true)) {
             return;
         }
 
-        closed = true;
         try {
             ownedResource.close();
         } catch (Exception exception) {
