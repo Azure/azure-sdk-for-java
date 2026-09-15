@@ -108,6 +108,10 @@
 
   <!-- Suppress the long package name in kubernetesconfiguration and all its sub services/packages  -->
   <suppress checks="PackageName" files="com.azure.resourcemanager.kubernetesconfiguration.*" />
+  <suppress checks="PackageName" files="com.azure.resourcemanager.containerservicenodecustomization.*" />
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.resourcemanager.containerservicenodecustomization.implementation.NodeCustomizationImpl.java" />
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.resourcemanager.containerservicenodecustomization.implementation.NodeCustomizationVersionImpl.java" />
+  <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.resourcemanager.containerservicenodecustomization.implementation.OperationImpl.java" />
 
   <!-- Suppress the @Immutable class with a property named "setPasswordLink"  -->
   <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ImmutableClassCheck" files="com.azure.resourcemanager.datadog.fluent.models.DatadogSetPasswordLinkInner" />
