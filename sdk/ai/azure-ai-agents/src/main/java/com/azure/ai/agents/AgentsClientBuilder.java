@@ -537,8 +537,8 @@ public final class AgentsClientBuilder
      * policies, retry settings, logging options, client options, and service version. Use this method
      * when you want to build a client whose type is prefixed with {@code Beta}, such as {@link BetaAgentsClient},
      * {@link BetaAgentsAsyncClient}, {@link BetaMemoryStoresClient}, {@link BetaMemoryStoresAsyncClient},
-     * {@link BetaAgentTelephonyClient}, {@link BetaAgentTelephonyAsyncClient},
-     * {@link BetaAgentEndpointConversationsClient}, or {@link BetaAgentEndpointConversationsAsyncClient}.
+     * {@link BetaVoiceAgentsTelephonyClient}, {@link BetaVoiceAgentsTelephonyAsyncClient},
+     * {@link BetaVoiceAgentsConversationsClient}, or {@link BetaVoiceAgentsConversationsAsyncClient}.
      * <p>
      * Clients created by this sub-builder automatically opt in to the preview service area they target by adding the
      * required {@code Foundry-Features} header. Calling {@link #allowPreview(boolean)} is not required for these
