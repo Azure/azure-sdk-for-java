@@ -166,9 +166,6 @@
 # ServiceLabel: %azure-spring
 
 # PRLabel: %Azure.Identity
-/sdk/e2e/                                                          @g2vinay @vcolin7 @Azure/azure-java-sdk
-
-# PRLabel: %Azure.Identity
 /sdk/identity/                                                     @Azure/azure-sdk-write-identity @g2vinay @vcolin7 @Azure/azure-java-sdk
 
 # AzureSdkOwners:                                                  @g2vinay @vcolin7
@@ -320,7 +317,7 @@
 # ServiceOwners:                                                   @berndverst @cgillum @kaibocai @philliphoff @RyanLettieri @torosent
 
 # PRLabel: %EngSys
-/sdk/template/                                                     @raych1 @benbp @Azure/azure-java-sdk
+/sdk/template/                                                     @raych1 @Azure/azure-java-sdk
 
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                                    @Azure/azure-java-sdk
@@ -956,8 +953,8 @@
 
 # ######## Eng Sys ########
 
-/eng/                                                              @raych1 @mikeharder @benbp
-/eng/automation/                                                   @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @raych1 @benbp
+/eng/                                                              @raych1 @mikeharder
+/eng/automation/                                                   @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @raych1
 /eng/bomgenerator/                                                 @vcolin7 @alzimmermsft @jonathangiles @Azure/azure-java-sdk
 /eng/code-quality-reports/                                         @JonathanGiles @alzimmermsft @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
 /eng/lintingconfigs/                                               @JonathanGiles @alzimmermsft @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
@@ -969,7 +966,7 @@
 /.github/workflows/                                                @Azure/azure-sdk-eng
 /.github/copilot-instructions.md                                   @praveenkuttappan
 /.github/skills/                                                   @Azure/azsdk-cli
-/.config/1espt/                                                    @benbp @mikeharder
+/.config/1espt/                                                    @mikeharder
 /eng/tools/mcp/                                                    @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @praveenkuttappan @Azure/azure-sdk-eng
 
 # Removing owners for this file to not require codeowner approval for changes to them given they are shared with project
@@ -978,7 +975,7 @@
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                               @alzimmermsft @jonathangiles @Azure/azure-java-sdk
 /eng/common/pipelines/codeowners-linter.yml                        @alzimmermsft @Azure/azure-java-sdk
-/eng/pipelines/docindex.yml                                        @danieljurek @raych1 @benbp
+/eng/pipelines/docindex.yml                                        @danieljurek @raych1
 
 # Add Cosmos source owners as the owners of their specialized matrix
 /eng/pipelines/templates/stages/cosmos-emulator-matrix.json        @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors

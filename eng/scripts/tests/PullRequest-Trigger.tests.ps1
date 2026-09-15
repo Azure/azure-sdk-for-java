@@ -95,7 +95,6 @@ BeforeAll {
         'sdk/batch/microsoft-azure-batch/',
         'sdk/boms/',
         'sdk/cosmos/',
-        'sdk/e2e/',
         'sdk/eventhubs/microsoft-azure-eventhubs/',
         'sdk/eventhubs/microsoft-azure-eventhubs-eph/',
         'sdk/servicebus/microsoft-azure-servicebus/',
