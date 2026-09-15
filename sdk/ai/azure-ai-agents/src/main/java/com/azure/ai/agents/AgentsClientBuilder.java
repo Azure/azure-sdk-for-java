@@ -75,9 +75,7 @@ import java.util.stream.Stream;
         BetaMemoryStoresAsyncClient.class,
         BetaAgentsAsyncClient.class,
         AgentsAsyncClient.class,
-        ToolboxesAsyncClient.class,
-        BetaVoiceAgentWebSocketClient.class,
-        BetaVoiceAgentWebSocketAsyncClient.class })
+        ToolboxesAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,
     TokenCredentialTrait<AgentsClientBuilder>, EndpointTrait<AgentsClientBuilder> {
