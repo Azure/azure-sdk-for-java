@@ -165,12 +165,36 @@ function Test-PRRootDocumentationOnly {
 }
 
 function Initialize-PRValidationYaml {
+    [CmdletBinding(DefaultParameterSetName = 'Restore')]
     param(
-        [Parameter(Mandatory = $true)][string]$DependencyDirectory,
+        [Parameter(Mandatory = $true, ParameterSetName = 'Restore')][string]$DependencyDirectory,
+        [Parameter(Mandatory = $true, ParameterSetName = 'Available')][switch]$UseAvailableModule,
         [string]$RequirementsPath = (Join-Path $PSScriptRoot '..' 'pr-validation-requirements.psd1')
     )
 
     $requirement = Import-PowerShellDataFile -LiteralPath $RequirementsPath
+    if ($PSCmdlet.ParameterSetName -eq 'Available') {
+        # Azure's preceding metadata task already bootstrapped YAML, possibly in another PowerShell process.
+        $modules = @(Get-Module -Name $requirement.ModuleName)
+        if ($modules.Count -eq 0) {
+            $available = Get-Module -ListAvailable -Name $requirement.ModuleName |
+                Where-Object Version -EQ ([version]$requirement.RequiredVersion) | Select-Object -First 1
+            if (-not $available) {
+                throw "$($requirement.ModuleName) $($requirement.RequiredVersion) must already be available for Azure PR routing. Public dependency restore is disabled for this path."
+            }
+            $modules = @(Import-Module -Name $available.Path -RequiredVersion $requirement.RequiredVersion `
+                -PassThru -ErrorAction Stop | Where-Object Name -EQ $requirement.ModuleName)
+        }
+        if ($modules.Count -ne 1 -or $modules[0].Version -ne [version]$requirement.RequiredVersion) {
+            throw "Expected exactly $($requirement.ModuleName) $($requirement.RequiredVersion) for Azure PR routing. Run validation in a fresh PowerShell process with the pinned module available."
+        }
+        if (-not $modules[0].ExportedCommands.ContainsKey('ConvertFrom-Yaml')) {
+            throw "$($requirement.ModuleName) $($requirement.RequiredVersion) does not export ConvertFrom-Yaml."
+        }
+        Write-Host "Using available $($modules[0].Name) $($modules[0].Version) without a dependency restore."
+        return
+    }
+
     $modulePath = Join-Path $DependencyDirectory $requirement.ModuleName $requirement.RequiredVersion `
         "$($requirement.ModuleName).psd1"
     if (-not (Test-Path -LiteralPath $modulePath -PathType Leaf)) {

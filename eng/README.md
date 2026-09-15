@@ -86,6 +86,12 @@ The matrix checkout already retains full commit history and checks out `Build.So
 preflight job, or agent is introduced. An unavailable/mismatched snapshot retains all Java jobs and the Build
 changelog check.
 
+Azure routing reuses exactly `powershell-yaml` 0.4.7 from a loaded or installed/discoverable module left by the
+existing metadata preparation. It does not create another module cache or restore from PSGallery. The shared
+bootstrap accepts newer versions, but that is not evidence of this exact pin: an absent pin, incompatible loaded
+version, or import failure retains Java workers with an explicit diagnostic. The GitHub runner keeps its separate,
+public, run-owned cold bootstrap described above.
+
 Skipping Build, Analyze, and tests requires at least one actual, applicable package changelog edit. Every path
 must be either its exact `sdk/<service>/<package>/CHANGELOG.md` or an already-reviewed root document / `docs/`
 text file (`.md` or `.txt`) outside protected input directories. Packages must be track 2 with metadata SDK type

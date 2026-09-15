@@ -304,7 +304,7 @@ if ($UseCombinedPRValidation) {
 
             # Inspect original metadata before the existing test-suppression code clears it below.
             $eligibility = Get-PRChangeLogOnlyEligibility -Snapshot $snapshot -RepositoryRoot $RepositoryRoot `
-                -PackageInfoDirectory $PackageInfoDirectory -DependencyDirectory (Join-Path $ValidationDirectory 'modules')
+                -PackageInfoDirectory $PackageInfoDirectory
             if ($eligibility.Eligible) {
                 $originalMetadata = Join-Path $ValidationDirectory 'PackageInfo'
                 New-Item -ItemType Directory -Path $originalMetadata -Force | Out-Null

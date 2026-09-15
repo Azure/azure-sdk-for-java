@@ -181,7 +181,7 @@ $($artifacts -join "`n")
         param($Fixture)
 
         return Get-PRChangeLogOnlyEligibility -Snapshot $Fixture.Snapshot -RepositoryRoot $Fixture.Root `
-            -PackageInfoDirectory (Join-Path $Fixture.Output 'PackageInfo') -DependencyDirectory $script:ModuleCache
+            -PackageInfoDirectory (Join-Path $Fixture.Output 'PackageInfo')
     }
 
     function New-CoveredRoutingContext {
@@ -203,9 +203,6 @@ $($artifacts -join "`n")
         $env:BUILD_SOURCEVERSION = $SourceVersion
         $routingDirectory = Join-Path $Fixture.Output 'routing'
         New-Item -ItemType Directory -Path $routingDirectory -Force | Out-Null
-        if (-not (Test-Path -LiteralPath (Join-Path $routingDirectory 'modules'))) {
-            Copy-Item -LiteralPath $script:Modules -Destination (Join-Path $routingDirectory 'modules') -Recurse
-        }
         $arguments = @{
             DiffPath = $Fixture.DiffPath
             PackageInfoDirectory = Join-Path $Fixture.Output 'PackageInfo'
@@ -390,13 +387,22 @@ Describe 'Pinned YAML bootstrap' -Tag 'UnitTest' {
             Should -Not -Match 'Register-PSRepository|Set-PSRepository|Install-Module|CurrentUser|AllUsers'
     }
 
-    It 'only restores a missing task-owned module and surfaces bootstrap errors' {
+    It 'retains the GitHub cold restore even when the exact module is already loaded and surfaces errors' {
+        Initialize-ValidationTestModule
         Mock Save-Module { throw 'Public module download unavailable.' }
         { Initialize-PRValidationYaml -DependencyDirectory (Join-Path $TestDrive 'unavailable-modules') } |
             Should -Throw '*Public module download unavailable*'
         Should -Invoke Save-Module -Times 1 -ParameterFilter {
             $Name -eq 'powershell-yaml' -and $RequiredVersion -eq '0.4.7' -and $Repository -eq 'PSGallery'
         }
+    }
+
+    It 'reuses an already loaded exact module in available-only mode without calling the public restore' {
+        Initialize-ValidationTestModule
+        Mock Save-Module { throw 'Public restore must not run for Azure routing.' }
+        Initialize-PRValidationYaml -UseAvailableModule
+        (Get-Module powershell-yaml).Version | Should -Be ([version]'0.4.7')
+        Should -Invoke Save-Module -Times 0
     }
 
     It 'loads from the task-owned cache in a fresh process without optional modules on PSModulePath' {
@@ -752,7 +758,7 @@ Describe 'Package-root changelog routing eligibility' -Tag 'UnitTest' {
                 'duplicate' { $snapshot.ChangedFiles += $snapshot.ChangedFiles }
             }
             $result = Get-PRChangeLogOnlyEligibility $snapshot $fixture.Root `
-                (Join-Path $fixture.Output 'PackageInfo') $script:ModuleCache
+                (Join-Path $fixture.Output 'PackageInfo')
             $result.Eligible | Should -BeFalse -Because $case
             $result.RequiresFullValidation | Should -BeTrue -Because $case
         }
@@ -956,6 +962,74 @@ Describe 'Preflight changelog routing integration' -Tag 'UnitTest' {
     AfterEach {
         foreach ($name in $previousEnvironment.Keys) {
             [Environment]::SetEnvironmentVariable($name, $previousEnvironment[$name])
+        }
+    }
+
+    It 'uses exact available YAML without a public restore and retains Java when unavailable: <Case>' -TestCases @(
+        @{ Case = 'installed'; Eligible = $true },
+        @{ Case = 'loaded'; Eligible = $true },
+        @{ Case = 'installed-with-newer'; Eligible = $true },
+        @{ Case = 'missing'; Eligible = $false },
+        @{ Case = 'wrong-available-version'; Eligible = $false },
+        @{ Case = 'wrong-loaded-version'; Eligible = $false },
+        @{ Case = 'broken-exact-module'; Eligible = $false },
+        @{ Case = 'missing-parser'; Eligible = $false }
+    ) {
+        param($Case, $Eligible)
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture)
+        $modulePaths = @(Join-Path $PSHOME 'Modules')
+        if ($Case -in @('installed', 'loaded', 'installed-with-newer', 'wrong-loaded-version')) {
+            $modulePaths += $script:ModuleCache
+        }
+        if ($Case -in @('installed-with-newer', 'wrong-available-version', 'broken-exact-module', 'missing-parser')) {
+            $invalidModules = Join-Path $fixture.Output 'invalid-modules'
+            $version = if ($Case -in @('broken-exact-module', 'missing-parser')) { '0.4.7' } else { '0.4.12' }
+            Set-ValidationFixtureFile $invalidModules "powershell-yaml/$version/powershell-yaml.psd1" `
+                "@{ RootModule = 'powershell-yaml.psm1'; ModuleVersion = '$version' }"
+            $moduleContent = if ($Case -eq 'missing-parser') { '# No parser exported.' } else { "throw 'INVALID_YAML_MODULE_IMPORTED'" }
+            Set-ValidationFixtureFile $invalidModules "powershell-yaml/$version/powershell-yaml.psm1" `
+                $moduleContent
+            $modulePaths = @($invalidModules) + $modulePaths
+        }
+        $load = switch ($Case) {
+            'loaded' { 'Import-Module powershell-yaml -RequiredVersion 0.4.7 -ErrorAction Stop' }
+            'wrong-loaded-version' { 'New-Module -Name powershell-yaml -ScriptBlock {} | Import-Module' }
+            default { '' }
+        }
+        $modulePath = ($modulePaths -join [System.IO.Path]::PathSeparator).Replace("'", "''")
+        $classifier = (Join-Path $script:Scripts 'Classify-PRChanges.ps1').Replace("'", "''")
+        $routingDirectory = Join-Path $fixture.Output 'routing'
+        $env:BUILD_SOURCEVERSION = $fixture.Snapshot.SourceCommit
+        $command = @"
+`$ErrorActionPreference = 'Stop'
+`$env:PSModulePath = '$modulePath'
+if (Get-Module powershell-yaml) { throw 'YAML unexpectedly preloaded in the fresh preflight process.' }
+function Save-Module { throw 'PUBLIC_RESTORE_CALLED' }
+$load
+& '$classifier' -DiffPath '$($fixture.DiffPath.Replace("'", "''"))' ``
+    -PackageInfoDirectory '$((Join-Path $fixture.Output 'PackageInfo').Replace("'", "''"))' ``
+    -ValidationDirectory '$($routingDirectory.Replace("'", "''"))' ``
+    -RepositoryRoot '$($fixture.Root.Replace("'", "''"))' -UseCombinedPRValidation -ServiceDirectory auto -SdkType client
+"@
+        $process = Invoke-PRValidationProcess -FilePath $script:PowerShell -WorkingDirectory $fixture.Root `
+            -Arguments @('-NoLogo', '-NoProfile', '-NonInteractive', '-Command', $command)
+        $process.ExitCode | Should -Be 0 -Because ($process.Output + $process.Error)
+        ($process.Output + $process.Error) | Should -Not -Match 'PUBLIC_RESTORE_CALLED'
+        $expectedRun = if ($Eligible) { 'false' } else { 'true' }
+        foreach ($name in @('RunBuild', 'RunAnalyze', 'RunTests')) {
+            $process.Output | Should -Match "variable=$name;isOutput=true\]$expectedRun"
+        }
+        $report = Get-Content (Join-Path $routingDirectory 'routing.json') -Raw | ConvertFrom-Json
+        $report.Eligible | Should -Be $Eligible
+        $report.RequiresFullValidation | Should -Be (-not $Eligible)
+        Test-Path (Join-Path $fixture.Output 'PackageInfo/azure-fixture-alpha.json') | Should -Be (-not $Eligible)
+        Test-Path (Join-Path $routingDirectory 'modules') | Should -BeFalse
+        if ($Eligible) {
+            $process.Output | Should -Match 'Using available powershell-yaml 0\.4\.7 without a dependency restore'
+            $process.Output | Should -Not -Match 'INVALID_YAML_MODULE_IMPORTED'
+        }
+        else {
+            $report.Reason | Should -Match '0\.4\.7|INVALID_YAML_MODULE_IMPORTED'
         }
     }
 
@@ -1315,6 +1389,10 @@ Describe 'Combined documentation workflow and final result contracts' -Tag 'Unit
         }
         $summary | Should -Match '### Spelling'
         $summary | Should -Match '### Changelogs'
+        $summary | Should -Match 'Covered public unified main PRs use this combined check'
+        $summary | Should -Match 'Other scopes and ForceFullValidation retain their existing Azure checks'
+        $summary | Should -Match 'Release validation is unchanged'
+        $summary | Should -Not -Match 'parity burn-in|Azure Build still repeats'
     }
 
     It 'fails for failed, cancelled, missing, or unexpectedly skipped stages: <Stage> <Outcome>' -TestCases @(

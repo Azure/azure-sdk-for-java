@@ -61,8 +61,7 @@ function Get-PRChangeLogOnlyEligibility {
     param(
         [Parameter(Mandatory = $true)][hashtable]$Snapshot,
         [Parameter(Mandatory = $true)][string]$RepositoryRoot,
-        [string]$PackageInfoDirectory,
-        [Parameter(Mandatory = $true)][string]$DependencyDirectory
+        [string]$PackageInfoDirectory
     )
 
     $result = [pscustomobject]@{
@@ -173,7 +172,7 @@ function Get-PRChangeLogOnlyEligibility {
             }
         }
 
-        Initialize-PRValidationYaml -DependencyDirectory $DependencyDirectory
+        Initialize-PRValidationYaml -UseAvailableModule
         $env:SDKTYPE = 'client'
         $env:GITHUB_ACTIONS = 'true'
         . (Join-Path $RepositoryRoot 'eng' 'common' 'scripts' 'common.ps1')
