@@ -62,6 +62,11 @@ public class KeyVaultCredentialPolicyTest {
             + "error=\"insufficient_claims\", "
             + "claims=\"eyJhY2Nlc3NfdG9rZW4iOnsiYWNycyI6eyJlc3NlbnRpYWwiOnRydWUsInZhbHVlIjoiY3AxIn19fQ==\"";
     private static final String DECODED_CLAIMS = "{\"access_token\":{\"acrs\":{\"essential\":true,\"value\":\"cp1\"}}}";
+    private static final String ENTRA_TENANT_ID = "72f988bf-86f1-41af-91ab-2d7cd022db57";
+    private static final String DSTS_TENANT_ID = "de763a21-49f7-4b08-a8e1-52c8fbc103b4";
+    private static final String AUTHENTICATE_HEADER_DSTS_V2
+        = "Bearer authorization=\"https://uswest2-passive-dsts.dsts.core.windows.net/dstsv2/" + DSTS_TENANT_ID
+            + "\", resource=\"https://vault.azure.net\"";
     private static final String BEARER = "Bearer";
     private static final String BODY = "this is a sample body";
     private static final Flux<ByteBuffer> BODY_FLUX = Flux.defer(
@@ -77,6 +82,7 @@ public class KeyVaultCredentialPolicyTest {
     private HttpResponse unauthorizedHttpResponseWithHeader;
     private HttpResponse unauthorizedHttpResponseWithoutHeader;
     private HttpResponse unauthorizedHttpResponseWithHeaderAndClaims;
+    private HttpResponse unauthorizedHttpResponseWithDstsV2Header;
     private HttpPipelineCallContext callContext;
     private HttpPipelineCallContext differentScopeContext;
     private HttpPipelineCallContext testContext;
@@ -126,11 +132,16 @@ public class KeyVaultCredentialPolicyTest {
             = new MockHttpResponse(new HttpRequest(HttpMethod.GET, "https://azure.com"), 401,
                 new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE, AUTHENTICATE_HEADER_WITH_CLAIMS));
 
+        MockHttpResponse unauthorizedResponseWithDstsV2Header
+            = new MockHttpResponse(new HttpRequest(HttpMethod.GET, "https://azure.com"), 401,
+                new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE, AUTHENTICATE_HEADER_DSTS_V2));
+
         this.simpleResponse = simpleResponse;
         this.unauthorizedHttpResponseWithWrongStatusCode = unauthorizedResponseWithWrongStatusCode;
         this.unauthorizedHttpResponseWithHeader = unauthorizedResponseWithHeader;
         this.unauthorizedHttpResponseWithoutHeader = unauthorizedResponseWithoutHeader;
         this.unauthorizedHttpResponseWithHeaderAndClaims = unauthorizedResponseWithHeaderAndClaims;
+        this.unauthorizedHttpResponseWithDstsV2Header = unauthorizedResponseWithDstsV2Header;
         this.callContext = createCallContext(request, Context.NONE);
         this.differentScopeContext = createCallContext(requestWithDifferentScope, Context.NONE);
         this.testContext = createCallContext(request, Context.NONE);
@@ -195,6 +206,70 @@ public class KeyVaultCredentialPolicyTest {
         String tokenValue = this.callContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION);
         assertFalse(tokenValue.isEmpty());
         assertTrue(tokenValue.startsWith(BEARER));
+    }
+
+    @SyncAsyncTest
+    public void onChallengeExtractsTenantIdFromEntraAuthorizationUri() {
+        AtomicReference<String> requestedTenantId = new AtomicReference<>();
+        KeyVaultCredentialPolicy policy
+            = new KeyVaultCredentialPolicy(createTenantCapturingCredential(requestedTenantId), false);
+
+        boolean onChallenge = SyncAsyncExtension.execute(
+            () -> onChallengeAndClearCacheSync(policy, this.callContext, this.unauthorizedHttpResponseWithHeader),
+            () -> onChallengeAndClearCache(policy, this.callContext, this.unauthorizedHttpResponseWithHeader));
+
+        assertTrue(onChallenge);
+        assertEquals(ENTRA_TENANT_ID, requestedTenantId.get());
+
+        String tokenValue = this.callContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION);
+        assertNotNull(tokenValue);
+        assertTrue(tokenValue.startsWith(BEARER));
+    }
+
+    @SyncAsyncTest
+    public void onChallengeExtractsTenantIdFromDstsV2AuthorizationUri() {
+        AtomicReference<String> requestedTenantId = new AtomicReference<>();
+        KeyVaultCredentialPolicy policy
+            = new KeyVaultCredentialPolicy(createTenantCapturingCredential(requestedTenantId), false);
+
+        boolean onChallenge = SyncAsyncExtension.execute(
+            () -> onChallengeAndClearCacheSync(policy, this.callContext, this.unauthorizedHttpResponseWithDstsV2Header),
+            () -> onChallengeAndClearCache(policy, this.callContext, this.unauthorizedHttpResponseWithDstsV2Header));
+
+        assertTrue(onChallenge);
+        // The tenant ID follows the 'dstsv2' path segment rather than being the first path segment.
+        assertEquals(DSTS_TENANT_ID, requestedTenantId.get());
+
+        String tokenValue = this.callContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION);
+        assertNotNull(tokenValue);
+        assertTrue(tokenValue.startsWith(BEARER));
+    }
+
+    // Normal flow against a DSTSv2 authority: 401 Unauthorized -> 200 OK
+    @SyncAsyncTest
+    public void processDstsV2ChallengeResponse() {
+        AtomicReference<String> requestedTenantId = new AtomicReference<>();
+        HttpResponse[] responses = new HttpResponse[] { unauthorizedHttpResponseWithDstsV2Header, simpleResponse };
+        AtomicInteger currentResponse = new AtomicInteger();
+        KeyVaultCredentialPolicy policy
+            = new KeyVaultCredentialPolicy(createTenantCapturingCredential(requestedTenantId), false);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policy)
+            .httpClient(ignored -> Mono.just(responses[currentResponse.getAndIncrement()]))
+            .build();
+
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(this.callContext.getHttpRequest(), this.callContext.getContext()),
+            () -> pipeline.send(this.callContext.getHttpRequest(), this.callContext.getContext()));
+
+        assertEquals(simpleResponse, response);
+        assertEquals(DSTS_TENANT_ID, requestedTenantId.get());
+
+        String tokenValue = this.callContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION);
+        assertNotNull(tokenValue);
+        assertTrue(tokenValue.startsWith(BEARER));
+
+        KeyVaultCredentialPolicy.clearCache();
     }
 
     @Test
@@ -587,6 +662,14 @@ public class KeyVaultCredentialPolicyTest {
         assertEquals(simpleResponse, firstResponse);
 
         KeyVaultCredentialPolicy.clearCache();
+    }
+
+    private static TokenCredential createTenantCapturingCredential(AtomicReference<String> requestedTenantId) {
+        return tokenRequestContext -> {
+            requestedTenantId.set(tokenRequestContext.getTenantId());
+
+            return Mono.fromCallable(() -> new AccessToken(FAKE_ENCODED_CREDENTIAL, OffsetDateTime.MAX.minusYears(1)));
+        };
     }
 
     private Mono<Boolean> onChallengeAndClearCache(KeyVaultCredentialPolicy policy, HttpPipelineCallContext callContext,
