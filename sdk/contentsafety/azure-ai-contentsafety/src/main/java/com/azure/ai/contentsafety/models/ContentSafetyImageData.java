@@ -60,6 +60,16 @@ public final class ContentSafetyImageData implements JsonSerializable<ContentSaf
     }
 
     /**
+     * Set the content property: The Base64 encoding of the image.
+     *
+     * @param content the content value to set.
+     * @return the ContentSafetyImageData object itself.
+     */
+    public ContentSafetyImageData setContent(byte[] content) {
+        return setContent(content == null ? null : BinaryData.fromBytes(content));
+    }
+
+    /**
      * Get the blobUrl property: The blob url of the image.
      *
      * @return the blobUrl value.
