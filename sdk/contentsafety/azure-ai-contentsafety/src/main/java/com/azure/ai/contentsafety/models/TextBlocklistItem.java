@@ -140,30 +140,27 @@ public final class TextBlocklistItem implements JsonSerializable<TextBlocklistIt
     }
 
     /*
-     * An optional properties indicating whether this item is to be matched as a regular expression.
+     * An optional property indicating whether this item is to be matched as a regular expression.
      */
-    @Generated
     private Boolean isRegex;
 
     /**
-     * Get the isRegex property: An optional properties indicating whether this item is to be matched as a regular
+     * Get the isRegex property: An optional property indicating whether this item is to be matched as a regular
      * expression.
      *
      * @return the isRegex value.
      */
-    @Generated
     public Boolean isRegex() {
         return this.isRegex;
     }
 
     /**
-     * Set the isRegex property: An optional properties indicating whether this item is to be matched as a regular
+     * Set the isRegex property: An optional property indicating whether this item is to be matched as a regular
      * expression.
      *
      * @param isRegex the isRegex value to set.
      * @return the TextBlocklistItem object itself.
      */
-    @Generated
     public TextBlocklistItem setIsRegex(Boolean isRegex) {
         this.isRegex = isRegex;
         return this;

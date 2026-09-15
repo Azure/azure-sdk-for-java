@@ -13,6 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Status and result of an asynchronous Content Provenance Detection operation.
@@ -145,13 +146,18 @@ public final class ProvenanceDetectOperation implements JsonSerializable<Provena
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeJsonField("result", this.result);
+        jsonWriter.writeStringField("createdAt",
+            this.createdAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdAt));
+        jsonWriter.writeStringField("lastUpdatedAt",
+            this.lastUpdatedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedAt));
         return jsonWriter.writeEndObject();
     }
 
