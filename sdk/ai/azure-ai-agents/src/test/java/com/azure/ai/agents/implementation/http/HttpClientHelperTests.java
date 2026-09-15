@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.openai.core.http.HttpRequestBody;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,8 +22,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,6 +37,41 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class HttpClientHelperTests {
+
+    @ParameterizedTest
+    @MethodSource("responseContentTypes")
+    void responseBodyLoggingOnlyWrapsEventStreams(String contentType, boolean eventStream) throws IOException {
+        for (boolean logBody : new boolean[] { false, true }) {
+            HttpHeaders headers = new HttpHeaders();
+            if (contentType != null) {
+                headers.set(HttpHeaderName.CONTENT_TYPE, contentType);
+            }
+            InputStream original = new ByteArrayInputStream("data: hello\n\n".getBytes(StandardCharsets.UTF_8));
+            MockHttpResponse response = new MockHttpResponse(
+                new HttpRequest(com.azure.core.http.HttpMethod.GET, "https://localhost/stream"), 200, headers) {
+                @Override
+                public InputStream getBodyAsInputStreamSync() {
+                    return original;
+                }
+            };
+            try (AzureHttpResponseAdapter adapter = new AzureHttpResponseAdapter(response, logBody);
+                InputStream body = adapter.body()) {
+                assertEquals(logBody && eventStream, body != original);
+                assertEquals("data: hello\n\n", new String(readAllBytes(body), StandardCharsets.UTF_8));
+            }
+        }
+    }
+
+    private static Stream<Arguments> responseContentTypes() {
+        return Stream.of(Arguments.of("text/event-stream", true),
+            Arguments.of("Text/Event-Stream; Charset=UTF-8", true),
+            Arguments.of(" \ttext/event-stream \t; charset=\"utf-8\"", true),
+            Arguments.of("text/event-stream; extension=\"value;with;semicolons\"", true),
+            Arguments.of("application/json", false), Arguments.of("text/event-stream-extra", false),
+            Arguments.of("application/json; extension=\"text/event-stream\"", false),
+            Arguments.of("text/event-stream, application/json", false), Arguments.of("", false),
+            Arguments.of((String) null, false));
+    }
 
     @Test
     void multipartUploadsSkipBodyLoggerAndPreservePayload() {

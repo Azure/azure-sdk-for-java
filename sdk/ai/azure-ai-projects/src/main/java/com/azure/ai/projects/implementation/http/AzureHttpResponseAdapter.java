@@ -4,6 +4,7 @@
 package com.azure.ai.projects.implementation.http;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.logging.ClientLogger;
 import com.openai.core.http.Headers;
@@ -47,7 +48,7 @@ final class AzureHttpResponseAdapter implements HttpResponse {
     }
 
     private static boolean isEventStream(com.azure.core.http.HttpResponse response) {
-        String contentType = response.getHeaderValue("Content-Type");
+        String contentType = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
         return contentType != null && "text/event-stream".equalsIgnoreCase(contentType.split(";", 2)[0].trim());
     }
 

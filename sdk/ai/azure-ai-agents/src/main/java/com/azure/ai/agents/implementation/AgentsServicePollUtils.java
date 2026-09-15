@@ -102,6 +102,20 @@ public final class AgentsServicePollUtils {
         return getFinalResultBody(body, "result", TypeReference.createInstance(resultType)).toObject(resultType);
     }
 
+    /**
+     * Extracts the final result without replacing a non-null service result.
+     *
+     * <p>For a missing or null memory-update result, this matches the Python memory-update poller's fallback:
+     * empty operations and zero-valued usage. These are synthetic defaults, not service-reported usage.
+     * The fallback uses JSON because the generated output model has a private constructor. Other result types
+     * still fail when their result is absent.</p>
+     *
+     * @param response the final polling response body.
+     * @param propertyName the final result property.
+     * @param resultType the expected result type.
+     * @param <U> the result type.
+     * @return the service result, or the memory-update fallback when absent.
+     */
     static <U> BinaryData getFinalResultBody(Map<String, Object> response, String propertyName,
         TypeReference<U> resultType) {
         Object result = response == null ? null : response.get(propertyName);

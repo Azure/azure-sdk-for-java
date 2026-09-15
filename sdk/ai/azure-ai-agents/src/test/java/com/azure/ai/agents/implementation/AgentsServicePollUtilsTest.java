@@ -17,6 +17,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -107,6 +108,18 @@ class AgentsServicePollUtilsTest {
     void missingNonMemoryResultStillFails() {
         assertThrows(AzureException.class, () -> AgentsServicePollUtils.getFinalResultBody(Collections.emptyMap(),
             "result", TypeReference.createInstance(AgentOptimizationJobResult.class)));
+    }
+
+    @Test
+    void suppliedMemoryResultIsPreserved() {
+        java.util.Map<String, Object> suppliedResult = BinaryData
+            .fromString("{\"memory_operations\":[{\"operation\":\"create\",\"memory_id\":\"memory-123\"}],"
+                + "\"usage\":{\"total_tokens\":17},\"additional_property\":\"preserved\"}")
+            .toObject(PollingUtils.POST_POLL_RESULT_TYPE_REFERENCE);
+        BinaryData result
+            = AgentsServicePollUtils.getFinalResultBody(Collections.singletonMap("result", suppliedResult), "result",
+                TypeReference.createInstance(MemoryStoreUpdateCompletedResult.class));
+        assertEquals(suppliedResult, result.toObject(PollingUtils.POST_POLL_RESULT_TYPE_REFERENCE));
     }
 
     @ParameterizedTest
