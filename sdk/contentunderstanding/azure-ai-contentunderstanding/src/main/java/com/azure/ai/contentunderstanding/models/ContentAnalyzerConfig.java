@@ -119,6 +119,34 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
     @Generated
     private Boolean omitContent;
 
+    /*
+     * Workflow used for content analysis.
+     */
+    @Generated
+    private ContentAnalyzerWorkflow workflow;
+
+    /*
+     * When true, input that exceeds the service's processable-unit limit is truncated to the limit and returned as a
+     * partial result with a warning, instead of failing. Field extraction and segmentation, where configured, run over
+     * the processed content and may be inaccurate. Defaults to false. Overridable per request by the
+     * allowInputTruncation
+     * query parameter.
+     */
+    @Generated
+    private Boolean allowInputTruncation;
+
+    /*
+     * Enable sub-page segmentation. When true, segments may cover a portion of a page instead of full pages.
+     */
+    @Generated
+    private Boolean allowInPageSegments;
+
+    /*
+     * Strategy for chunking document content into smaller units for RAG scenarios. When omitted, chunking is disabled.
+     */
+    @Generated
+    private ChunkingStrategy chunkingStrategy;
+
     /**
      * Stores updated model property, the value is property name, not serialized name.
      */
@@ -529,6 +557,112 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
     }
 
     /**
+     * Get the workflow property: Workflow used for content analysis.
+     * 
+     * @return the workflow value.
+     */
+    @Generated
+    public ContentAnalyzerWorkflow getWorkflow() {
+        return this.workflow;
+    }
+
+    /**
+     * Set the workflow property: Workflow used for content analysis.
+     * 
+     * @param workflow the workflow value to set.
+     * @return the ContentAnalyzerConfig object itself.
+     */
+    @Generated
+    public ContentAnalyzerConfig setWorkflow(ContentAnalyzerWorkflow workflow) {
+        this.workflow = workflow;
+        this.updatedProperties.add("workflow");
+        return this;
+    }
+
+    /**
+     * Get the allowInputTruncation property: When true, input that exceeds the service's processable-unit limit is
+     * truncated to the limit and returned as a
+     * partial result with a warning, instead of failing. Field extraction and segmentation, where configured, run over
+     * the processed content and may be inaccurate. Defaults to false. Overridable per request by the
+     * allowInputTruncation
+     * query parameter.
+     * 
+     * @return the allowInputTruncation value.
+     */
+    @Generated
+    public Boolean isAllowInputTruncation() {
+        return this.allowInputTruncation;
+    }
+
+    /**
+     * Set the allowInputTruncation property: When true, input that exceeds the service's processable-unit limit is
+     * truncated to the limit and returned as a
+     * partial result with a warning, instead of failing. Field extraction and segmentation, where configured, run over
+     * the processed content and may be inaccurate. Defaults to false. Overridable per request by the
+     * allowInputTruncation
+     * query parameter.
+     * 
+     * @param allowInputTruncation the allowInputTruncation value to set.
+     * @return the ContentAnalyzerConfig object itself.
+     */
+    @Generated
+    public ContentAnalyzerConfig setAllowInputTruncation(Boolean allowInputTruncation) {
+        this.allowInputTruncation = allowInputTruncation;
+        this.updatedProperties.add("allowInputTruncation");
+        return this;
+    }
+
+    /**
+     * Get the allowInPageSegments property: Enable sub-page segmentation. When true, segments may cover a portion of a
+     * page instead of full pages.
+     * 
+     * @return the allowInPageSegments value.
+     */
+    @Generated
+    public Boolean isAllowInPageSegments() {
+        return this.allowInPageSegments;
+    }
+
+    /**
+     * Set the allowInPageSegments property: Enable sub-page segmentation. When true, segments may cover a portion of a
+     * page instead of full pages.
+     * 
+     * @param allowInPageSegments the allowInPageSegments value to set.
+     * @return the ContentAnalyzerConfig object itself.
+     */
+    @Generated
+    public ContentAnalyzerConfig setAllowInPageSegments(Boolean allowInPageSegments) {
+        this.allowInPageSegments = allowInPageSegments;
+        this.updatedProperties.add("allowInPageSegments");
+        return this;
+    }
+
+    /**
+     * Get the chunkingStrategy property: Strategy for chunking document content into smaller units for RAG scenarios.
+     * When omitted, chunking is disabled.
+     * 
+     * @return the chunkingStrategy value.
+     */
+    @Generated
+    public ChunkingStrategy getChunkingStrategy() {
+        return this.chunkingStrategy;
+    }
+
+    /**
+     * Set the chunkingStrategy property: Strategy for chunking document content into smaller units for RAG scenarios.
+     * When omitted, chunking is disabled.
+     * 
+     * @param chunkingStrategy the chunkingStrategy value to set.
+     * @return the ContentAnalyzerConfig object itself.
+     */
+    @Generated
+    public ContentAnalyzerConfig setChunkingStrategy(ChunkingStrategy chunkingStrategy) {
+        this.chunkingStrategy = chunkingStrategy;
+        this.updatedProperties.add("chunkingStrategy");
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -556,6 +690,10 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
             jsonWriter.writeBooleanField("enableSegment", this.segmentEnabled);
             jsonWriter.writeBooleanField("segmentPerPage", this.segmentPerPage);
             jsonWriter.writeBooleanField("omitContent", this.omitContent);
+            jsonWriter.writeStringField("workflow", this.workflow == null ? null : this.workflow.toString());
+            jsonWriter.writeBooleanField("allowInputTruncation", this.allowInputTruncation);
+            jsonWriter.writeBooleanField("allowInPageSegments", this.allowInPageSegments);
+            jsonWriter.writeJsonField("chunkingStrategy", this.chunkingStrategy);
             return jsonWriter.writeEndObject();
         }
     }
@@ -685,6 +823,38 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
                 jsonWriter.writeBooleanField("omitContent", this.omitContent);
             }
         }
+        if (updatedProperties.contains("workflow")) {
+            if (this.workflow == null) {
+                jsonWriter.writeNullField("workflow");
+            } else {
+                jsonWriter.writeStringField("workflow", this.workflow.toString());
+            }
+        }
+        if (updatedProperties.contains("allowInputTruncation")) {
+            if (this.allowInputTruncation == null) {
+                jsonWriter.writeNullField("allowInputTruncation");
+            } else {
+                jsonWriter.writeBooleanField("allowInputTruncation", this.allowInputTruncation);
+            }
+        }
+        if (updatedProperties.contains("allowInPageSegments")) {
+            if (this.allowInPageSegments == null) {
+                jsonWriter.writeNullField("allowInPageSegments");
+            } else {
+                jsonWriter.writeBooleanField("allowInPageSegments", this.allowInPageSegments);
+            }
+        }
+        if (updatedProperties.contains("chunkingStrategy")) {
+            if (this.chunkingStrategy == null) {
+                jsonWriter.writeNullField("chunkingStrategy");
+            } else {
+                JsonMergePatchHelper.getChunkingStrategyAccessor()
+                    .prepareModelForJsonMergePatch(this.chunkingStrategy, true);
+                jsonWriter.writeJsonField("chunkingStrategy", this.chunkingStrategy);
+                JsonMergePatchHelper.getChunkingStrategyAccessor()
+                    .prepareModelForJsonMergePatch(this.chunkingStrategy, false);
+            }
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -743,6 +913,14 @@ public final class ContentAnalyzerConfig implements JsonSerializable<ContentAnal
                     deserializedContentAnalyzerConfig.segmentPerPage = reader.getNullable(JsonReader::getBoolean);
                 } else if ("omitContent".equals(fieldName)) {
                     deserializedContentAnalyzerConfig.omitContent = reader.getNullable(JsonReader::getBoolean);
+                } else if ("workflow".equals(fieldName)) {
+                    deserializedContentAnalyzerConfig.workflow = ContentAnalyzerWorkflow.fromString(reader.getString());
+                } else if ("allowInputTruncation".equals(fieldName)) {
+                    deserializedContentAnalyzerConfig.allowInputTruncation = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowInPageSegments".equals(fieldName)) {
+                    deserializedContentAnalyzerConfig.allowInPageSegments = reader.getNullable(JsonReader::getBoolean);
+                } else if ("chunkingStrategy".equals(fieldName)) {
+                    deserializedContentAnalyzerConfig.chunkingStrategy = ChunkingStrategy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

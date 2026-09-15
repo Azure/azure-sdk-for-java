@@ -459,6 +459,8 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
                 } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
                     deserializedAzureFileshareProtectedItem
                         .withSoftDeleteRetentionPeriodInDays(reader.getNullable(JsonReader::getInt));
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.withSourceLocation(reader.getString());
                 } else if ("vaultId".equals(fieldName)) {
                     deserializedAzureFileshareProtectedItem.withVaultId(reader.getString());
                 } else if ("sourceSideScanInfo".equals(fieldName)) {

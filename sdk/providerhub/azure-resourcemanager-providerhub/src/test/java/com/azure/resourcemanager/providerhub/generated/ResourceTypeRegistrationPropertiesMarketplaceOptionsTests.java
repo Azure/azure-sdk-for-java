@@ -12,16 +12,16 @@ public final class ResourceTypeRegistrationPropertiesMarketplaceOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesMarketplaceOptions model
-            = BinaryData.fromString("{\"addOnPlanConversionAllowed\":false}")
+            = BinaryData.fromString("{\"addOnPlanConversionAllowed\":true}")
                 .toObject(ResourceTypeRegistrationPropertiesMarketplaceOptions.class);
-        Assertions.assertFalse(model.addOnPlanConversionAllowed());
+        Assertions.assertTrue(model.addOnPlanConversionAllowed());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesMarketplaceOptions model
-            = new ResourceTypeRegistrationPropertiesMarketplaceOptions().withAddOnPlanConversionAllowed(false);
+            = new ResourceTypeRegistrationPropertiesMarketplaceOptions().withAddOnPlanConversionAllowed(true);
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesMarketplaceOptions.class);
-        Assertions.assertFalse(model.addOnPlanConversionAllowed());
+        Assertions.assertTrue(model.addOnPlanConversionAllowed());
     }
 }

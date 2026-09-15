@@ -14,7 +14,6 @@ import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.HealthReportEvaluationRule;
 import com.azure.resourcemanager.cloudhealth.models.HealthReportRequest;
 import com.azure.resourcemanager.cloudhealth.models.HealthState;
-import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
 import java.nio.charset.StandardCharsets;
@@ -35,21 +34,19 @@ public final class EntitiesIngestHealthReportWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.entities()
-            .ingestHealthReportWithResponse("bpxuckpggqoweyi", "dhlisngwflqqmpi", "ruwnpqxpx",
-                new HealthReportRequest().withSignalName("wfcngjsaas")
+            .ingestHealthReportWithResponse("ky", "cxcjxgry", "fmpcycilrmca",
+                new HealthReportRequest().withSignalName("kggnoxu")
                     .withHealthState(HealthState.HEALTHY)
-                    .withValue(98.92737058101937D)
+                    .withValue(40.05409029458903D)
                     .withEvaluationRules(new HealthReportEvaluationRule()
-                        .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
-                            .withThreshold(12.26289221097444D)
-                            .withSensitivity(DynamicThresholdSensitivity.HIGH)
-                            .withLookBackWindow(LookBackWindow.PT15M))
-                        .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.DYNAMIC)
-                            .withThreshold(33.32866768215571D)
-                            .withSensitivity(DynamicThresholdSensitivity.LOW)
-                            .withLookBackWindow(LookBackWindow.PT1H)))
-                    .withExpiresInMinutes(360439780)
-                    .withAdditionalContext("t"),
+                        .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.EQUAL)
+                            .withThreshold(1.8801026148641653D)
+                            .withSensitivity(DynamicThresholdSensitivity.LOW))
+                        .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.NOT_EQUAL)
+                            .withThreshold(19.389890070162185D)
+                            .withSensitivity(DynamicThresholdSensitivity.LOW)))
+                    .withExpiresInMinutes(784891190)
+                    .withAdditionalContext("kjaosrxuzv"),
                 com.azure.core.util.Context.NONE);
 
     }

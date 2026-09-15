@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
+import com.azure.search.documents.indexes.models.KnowledgeSourceResultsProcessing;
 import java.io.IOException;
 
 /**
@@ -197,8 +198,11 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
         jsonWriter.writeBooleanField("includeReferences", isIncludeReferences());
         jsonWriter.writeBooleanField("includeReferenceSourceData", isIncludeReferenceSourceData());
         jsonWriter.writeBooleanField("alwaysQuerySource", isAlwaysQuerySource());
+        jsonWriter.writeBooleanField("neverQuerySource", isNeverQuerySource());
         jsonWriter.writeBooleanField("failOnError", isFailOnError());
         jsonWriter.writeNumberField("rerankerThreshold", getRerankerThreshold());
+        jsonWriter.writeStringField("resultsProcessing",
+            getResultsProcessing() == null ? null : getResultsProcessing().toString());
         jsonWriter.writeNumberField("maxOutputDocuments", getMaxOutputDocuments());
         jsonWriter.writeBooleanField("enableImageServing", isEnableImageServing());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
@@ -225,8 +229,10 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
             Boolean alwaysQuerySource = null;
+            Boolean neverQuerySource = null;
             Boolean failOnError = null;
             Float rerankerThreshold = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
             Integer maxOutputDocuments = null;
             Boolean enableImageServing = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.WEB;
@@ -245,10 +251,14 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
                 } else if ("alwaysQuerySource".equals(fieldName)) {
                     alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
+                } else if ("neverQuerySource".equals(fieldName)) {
+                    neverQuerySource = reader.getNullable(JsonReader::getBoolean);
                 } else if ("failOnError".equals(fieldName)) {
                     failOnError = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("maxOutputDocuments".equals(fieldName)) {
                     maxOutputDocuments = reader.getNullable(JsonReader::getInt);
                 } else if ("enableImageServing".equals(fieldName)) {
@@ -272,8 +282,10 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
             deserializedWebKnowledgeSourceParams.setIncludeReferences(includeReferences);
             deserializedWebKnowledgeSourceParams.setIncludeReferenceSourceData(includeReferenceSourceData);
             deserializedWebKnowledgeSourceParams.setAlwaysQuerySource(alwaysQuerySource);
+            deserializedWebKnowledgeSourceParams.setNeverQuerySource(neverQuerySource);
             deserializedWebKnowledgeSourceParams.setFailOnError(failOnError);
             deserializedWebKnowledgeSourceParams.setRerankerThreshold(rerankerThreshold);
+            deserializedWebKnowledgeSourceParams.setResultsProcessing(resultsProcessing);
             deserializedWebKnowledgeSourceParams.setMaxOutputDocuments(maxOutputDocuments);
             deserializedWebKnowledgeSourceParams.setEnableImageServing(enableImageServing);
             deserializedWebKnowledgeSourceParams.kind = kind;
@@ -322,6 +334,26 @@ public final class WebKnowledgeSourceParams extends KnowledgeSourceParams {
     @Override
     public WebKnowledgeSourceParams setEnableImageServing(Boolean enableImageServing) {
         super.setEnableImageServing(enableImageServing);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public WebKnowledgeSourceParams setNeverQuerySource(Boolean neverQuerySource) {
+        super.setNeverQuerySource(neverQuerySource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public WebKnowledgeSourceParams setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        super.setResultsProcessing(resultsProcessing);
         return this;
     }
 }

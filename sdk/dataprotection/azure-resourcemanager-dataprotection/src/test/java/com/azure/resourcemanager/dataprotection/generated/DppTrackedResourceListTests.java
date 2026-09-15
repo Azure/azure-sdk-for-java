@@ -12,7 +12,7 @@ public final class DppTrackedResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DppTrackedResourceList model
-            = BinaryData.fromString("{\"nextLink\":\"elwuipi\"}").toObject(DppTrackedResourceList.class);
-        Assertions.assertEquals("elwuipi", model.nextLink());
+            = BinaryData.fromString("{\"nextLink\":\"ynl\"}").toObject(DppTrackedResourceList.class);
+        Assertions.assertEquals("ynl", model.nextLink());
     }
 }

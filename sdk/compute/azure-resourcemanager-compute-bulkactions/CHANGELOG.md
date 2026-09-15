@@ -1,5 +1,301 @@
 # Release History
 
+## 1.0.0-beta.4 (2026-09-11)
+
+- Azure Resource Manager Compute BulkActions client library for Java. This package contains Microsoft Azure SDK for Compute BulkActions Management SDK.  Package api-version 2026-09-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.LaunchBulkInstancesOperationProperties` was removed
+
+#### `models.LocationBasedLaunchBulkInstancesOperation$UpdateStages` was removed
+
+#### `models.ExecuteCreateContent` was removed
+
+#### `models.ApiError` was removed
+
+#### `models.AcceleratorType` was removed
+
+#### `models.AcknowledgeBulkOperationErrorsRequest` was removed
+
+#### `models.BulkInstancesInnerError` was removed
+
+#### `models.FlexProperties` was removed
+
+#### `models.ExecuteVdiCreateRequest` was removed
+
+#### `models.ApiErrorBase` was removed
+
+#### `models.LocationBasedLaunchBulkInstancesOperation` was removed
+
+#### `models.AcceleratorManufacturer` was removed
+
+#### `models.LocationBasedLaunchBulkInstancesOperation$Definition` was removed
+
+#### `models.VMAttributeSupport` was removed
+
+#### `models.ResourceProvisionVdiPayload` was removed
+
+#### `models.OptimizationPreference` was removed
+
+#### `models.LocationBasedLaunchBulkInstancesOperation$Update` was removed
+
+#### `models.VirtualMachine` was removed
+
+#### `models.VMCategory` was removed
+
+#### `models.LocalStorageDiskType` was removed
+
+#### `models.LocationBasedLaunchBulkInstancesOperation$DefinitionStages` was removed
+
+#### `models.CpuManufacturer` was removed
+
+#### `models.VMOperationStatus` was removed
+
+#### `models.VMAttributeMinMaxInteger` was removed
+
+#### `models.VmSizeProfile` was removed
+
+#### `models.ResourceProvisionPayload` was removed
+
+#### `models.CreateResourceOperationResponse` was removed
+
+#### `models.ArchitectureType` was removed
+
+#### `models.AcknowledgeBulkOperationErrorsResponse` was removed
+
+#### `models.LaunchBulkInstancesOperations` was removed
+
+#### `models.VMAttributeMinMaxDouble` was removed
+
+#### `models.OsType` was removed
+
+#### `models.VMAttributes` was removed
+
+#### `models.HyperVGeneration` was removed
+
+#### `models.VirtualMachineBulkOperations` was modified
+
+* `bulkCreateOperation(java.lang.String,java.lang.String,models.ExecuteCreateContent)` was removed
+* `bulkAcknowledgeOperationErrors(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest)` was removed
+* `bulkListOperationErrors(java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
+* `bulkCreateOperationWithResponse(java.lang.String,java.lang.String,models.ExecuteCreateContent,com.azure.core.util.Context)` was removed
+* `bulkVdiFlexCreateOperation(java.lang.String,java.lang.String,models.ExecuteVdiCreateRequest)` was removed
+* `bulkVdiFlexCreateOperationWithResponse(java.lang.String,java.lang.String,models.ExecuteVdiCreateRequest,com.azure.core.util.Context)` was removed
+* `bulkAcknowledgeOperationErrorsWithResponse(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest,com.azure.core.util.Context)` was removed
+* `bulkListOperationErrors(java.lang.String,java.lang.String)` was removed
+
+#### `models.ScheduledActionsResourceOperationType` was modified
+
+* `UNKNOWN` was removed
+
+#### `models.ScheduledActionsDeadlineType` was modified
+
+* `UNKNOWN` was removed
+
+#### `models.ResourceOperation` was modified
+
+* `models.VirtualMachineInfo virtualMachineInfo()` -> `models.VirtualMachineInfo virtualMachineInfo()`
+* `innerModel()` was removed
+* `models.ResourceOperationDetails operation()` -> `models.ResourceOperationDetails operation()`
+* `java.lang.String resourceId()` -> `java.lang.String resourceId()`
+* `java.lang.String errorDetails()` -> `java.lang.String errorDetails()`
+* `java.lang.String errorCode()` -> `java.lang.String errorCode()`
+
+#### `models.ScheduledActionsExecutionParameters` was modified
+
+* `optimizationPreference()` was removed
+* `withOptimizationPreference(models.OptimizationPreference)` was removed
+
+#### `models.ExecutionParameters` was modified
+
+* `optimizationPreference()` was removed
+* `withOptimizationPreference(models.OptimizationPreference)` was removed
+
+#### `models.ResourceOperationType` was modified
+
+* `GET_INSTANCE_VIEW` was removed
+* `UNKNOWN` was removed
+
+#### `models.OperationState` was modified
+
+* `PENDING_SCHEDULING` was removed
+* `PENDING_EXECUTION` was removed
+* `UNKNOWN` was removed
+
+#### `ComputeBulkActionsManager` was modified
+
+* `launchBulkInstancesOperations()` was removed
+
+#### `models.LocationBasedBulkCreateCustom$Update` was modified
+
+* `withZones(java.util.List)` was removed
+
+#### `models.DeadlineType` was modified
+
+* `UNKNOWN` was removed
+
+### Features Added
+
+* `models.LocationBasedBulkCreate$Definition` was added
+
+* `models.BulkCreateVmSizeProfile` was added
+
+* `models.LocationBasedBulkCreate` was added
+
+* `models.BulkCreateProperties` was added
+
+* `models.LocationBasedBulkCreate$DefinitionStages` was added
+
+* `models.LocationBasedBulkCreate$UpdateStages` was added
+
+* `models.BulkCreates` was added
+
+* `models.LocationBasedBulkCreate$Update` was added
+
+#### `models.ZonePreference` was modified
+
+* `withTargetMaxCapacity(java.lang.Integer)` was added
+* `targetMaxCapacity()` was added
+
+#### `models.ResourceOperation` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.VirtualMachineInfo` was modified
+
+* `name()` was added
+
+#### `ComputeBulkActionsManager` was modified
+
+* `bulkCreates()` was added
+
+#### `models.ScheduledActionsProvisioningState` was modified
+
+* `UPDATING` was added
+
+## 1.0.0-beta.3 (2026-08-21)
+
+- Azure Resource Manager Compute BulkActions client library for Java. This package contains Microsoft Azure SDK for Compute BulkActions Management SDK.  Package api-version 2026-08-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.RecurringScheduledActionsExecutionParameters` was removed
+
+#### `models.RecurringScheduledActionsProvisioningState` was removed
+
+#### `models.RecurringScheduledActionsDeadlineType` was removed
+
+#### `models.RecurringScheduledActionsRetryPolicy` was removed
+
+#### `models.ResourceProvisioningState` was removed
+
+#### `models.RecurringScheduledActionsResourceOperationType` was removed
+
+#### `models.OccurrenceResource` was modified
+
+* `models.ResourceProvisioningState provisioningState()` -> `models.OccurrenceResourceProvisioningState provisioningState()`
+
+#### `models.OccurrenceExtensionProperties` was modified
+
+* `models.ResourceProvisioningState provisioningState()` -> `models.OccurrenceResourceProvisioningState provisioningState()`
+
+#### `models.ScheduledActionProperties` was modified
+
+* `models.RecurringScheduledActionsProvisioningState provisioningState()` -> `models.ScheduledActionsProvisioningState provisioningState()`
+
+#### `models.ScheduledActionsScheduleUpdate` was modified
+
+* `withExecutionParameters(models.RecurringScheduledActionsExecutionParameters)` was removed
+* `models.RecurringScheduledActionsDeadlineType deadlineType()` -> `models.ScheduledActionsDeadlineType deadlineType()`
+* `models.RecurringScheduledActionsExecutionParameters executionParameters()` -> `models.ScheduledActionsExecutionParameters executionParameters()`
+* `withDeadlineType(models.RecurringScheduledActionsDeadlineType)` was removed
+
+#### `models.ScheduledActionsSchedule` was modified
+
+* `models.RecurringScheduledActionsExecutionParameters executionParameters()` -> `models.ScheduledActionsExecutionParameters executionParameters()`
+* `withDeadlineType(models.RecurringScheduledActionsDeadlineType)` was removed
+* `models.RecurringScheduledActionsDeadlineType deadlineType()` -> `models.ScheduledActionsDeadlineType deadlineType()`
+* `withExecutionParameters(models.RecurringScheduledActionsExecutionParameters)` was removed
+
+#### `models.ScheduledActionsExtensionProperties` was modified
+
+* `models.RecurringScheduledActionsProvisioningState provisioningState()` -> `models.ScheduledActionsProvisioningState provisioningState()`
+
+### Features Added
+
+* `models.ScheduledActionsResourceOperationType` was added
+
+* `models.ScheduledActionsDeadlineType` was added
+
+* `models.ScheduledActionsExecutionParameters` was added
+
+* `models.CapacityRecommendationDetails` was added
+
+* `models.BulkCreateCustomVirtualMachineInfo` was added
+
+* `models.CapacityRecommendationStatus` was added
+
+* `models.CapacityRecommendation` was added
+
+* `models.PartialFulfillmentReason` was added
+
+* `models.CapacityRecommendationParameters` was added
+
+* `models.ScheduledActionsRetryPolicy` was added
+
+* `models.CapacityRecommendationPlacementScore` was added
+
+* `models.OccurrenceResourceProvisioningState` was added
+
+* `models.BulkCreateCustomResource` was added
+
+* `models.CapacityRecommendationSize` was added
+
+* `models.PartialFulfillmentPolicy` was added
+
+* `models.PartialFulfillmentMode` was added
+
+* `models.ScheduledActionsProvisioningState` was added
+
+#### `models.BulkCreateCustoms` was modified
+
+* `virtualMachinesGetOperationStatus(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `virtualMachinesGetOperationStatus(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.LocationBasedBulkCreateCustom` was modified
+
+* `virtualMachinesGetOperationStatus(com.azure.core.util.Context)` was added
+* `virtualMachinesGetOperationStatus()` was added
+
+#### `models.ResourceOperationDetails` was modified
+
+* `capacityRecommendation()` was added
+
+#### `models.ExecutionParameters` was modified
+
+* `capacityRecommendationParameters()` was added
+* `withCapacityRecommendationParameters(models.CapacityRecommendationParameters)` was added
+
+#### `models.BulkCreateCustomProperties` was modified
+
+* `withPartialFulfillmentPolicy(models.PartialFulfillmentPolicy)` was added
+* `minCapacity()` was added
+* `withMinCapacity(java.lang.Integer)` was added
+* `resources()` was added
+* `partialFulfillmentPolicy()` was added
+
+#### `models.ScheduledActionsScheduleUpdate` was modified
+
+* `withExecutionParameters(models.ScheduledActionsExecutionParameters)` was added
+* `withDeadlineType(models.ScheduledActionsDeadlineType)` was added
+
+#### `models.ScheduledActionsSchedule` was modified
+
+* `withDeadlineType(models.ScheduledActionsDeadlineType)` was added
+* `withExecutionParameters(models.ScheduledActionsExecutionParameters)` was added
+
 ## 1.0.0-beta.2 (2026-07-22)
 
 - Azure Resource Manager Compute BulkActions client library for Java. This package contains Microsoft Azure SDK for Compute BulkActions Management SDK.  Package api-version 2026-07-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

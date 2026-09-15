@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dataprotection.generated;
  */
 public final class ResourceGuardsGetDefaultUpdateProtectedItemRequestsObjectSamples {
     /*
-     * x-ms-original-file: 2026-03-01/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
+     * x-ms-original-file: 2026-06-01/ResourceGuardCRUD/GetDefaultUpdateProtectedItemRequests.json
      */
     /**
      * Sample code: Get DefaultOperationsRequestObject.

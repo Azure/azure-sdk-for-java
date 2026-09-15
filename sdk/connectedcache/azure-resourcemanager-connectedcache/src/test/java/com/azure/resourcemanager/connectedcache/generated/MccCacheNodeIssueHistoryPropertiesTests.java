@@ -11,7 +11,7 @@ public final class MccCacheNodeIssueHistoryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MccCacheNodeIssueHistoryProperties model = BinaryData.fromString(
-            "{\"customerId\":\"pvjymjhxxjyng\",\"cacheNodeId\":\"ivkrtsw\",\"mccIssueHistory\":[{\"mccIssueType\":\"vszjfauvjfdxxi\",\"toastString\":\"tvtc\",\"detailString\":\"qtdo\",\"helpLink\":\"cbxvwvxyslqbh\",\"issueStartDate\":\"2021-02-23T20:11:15Z\",\"issueEndDate\":\"2021-01-17T13:22:14Z\"},{\"mccIssueType\":\"ytkblmpew\",\"toastString\":\"fbkrvrnsvs\",\"detailString\":\"johxcrsb\",\"helpLink\":\"vasrruvwb\",\"issueStartDate\":\"2021-03-04T21:23:46Z\",\"issueEndDate\":\"2021-08-12T15:23:33Z\"}]}")
+            "{\"customerId\":\"wncwzzhxgktrmg\",\"cacheNodeId\":\"napkteoellw\",\"mccIssueHistory\":[{\"mccIssueType\":\"ygpfqb\",\"toastString\":\"ceopzfqrhhuaopp\",\"detailString\":\"qeqxo\",\"helpLink\":\"dahzxctobg\",\"issueStartDate\":\"2021-09-01T00:32:36Z\",\"issueEndDate\":\"2021-03-02T22:54:24Z\"},{\"mccIssueType\":\"zpostmgrcfbu\",\"toastString\":\"mfqjhhkxbp\",\"detailString\":\"ymjhxxjyngudivkr\",\"helpLink\":\"wbxqzvszjfau\",\"issueStartDate\":\"2021-09-23T21:18:01Z\",\"issueEndDate\":\"2021-06-22T13:14:17Z\"},{\"mccIssueType\":\"ivetvtcq\",\"toastString\":\"tdo\",\"detailString\":\"cbxvwvxyslqbh\",\"helpLink\":\"xoblytkbl\",\"issueStartDate\":\"2021-08-02T07:01:05Z\",\"issueEndDate\":\"2021-04-08T22:30:52Z\"},{\"mccIssueType\":\"fbkrvrnsvs\",\"toastString\":\"johxcrsb\",\"detailString\":\"vasrruvwb\",\"helpLink\":\"qfsubcgjbirx\",\"issueStartDate\":\"2021-09-14T01:07:05Z\",\"issueEndDate\":\"2021-06-28T04:15:27Z\"}]}")
             .toObject(MccCacheNodeIssueHistoryProperties.class);
     }
 }

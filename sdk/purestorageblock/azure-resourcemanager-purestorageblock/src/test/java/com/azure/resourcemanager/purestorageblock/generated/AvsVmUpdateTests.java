@@ -14,16 +14,16 @@ public final class AvsVmUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvsVmUpdate model = BinaryData
-            .fromString("{\"properties\":{\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"bdsrez\"}}}")
+            .fromString("{\"properties\":{\"softDeletion\":{\"destroyed\":false,\"eradicationTimestamp\":\"hwyg\"}}}")
             .toObject(AvsVmUpdate.class);
-        Assertions.assertTrue(model.properties().softDeletion().destroyed());
+        Assertions.assertFalse(model.properties().softDeletion().destroyed());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AvsVmUpdate model = new AvsVmUpdate()
-            .withProperties(new AvsVmUpdateProperties().withSoftDeletion(new SoftDeletion().withDestroyed(true)));
+            .withProperties(new AvsVmUpdateProperties().withSoftDeletion(new SoftDeletion().withDestroyed(false)));
         model = BinaryData.fromObject(model).toObject(AvsVmUpdate.class);
-        Assertions.assertTrue(model.properties().softDeletion().destroyed());
+        Assertions.assertFalse(model.properties().softDeletion().destroyed());
     }
 }

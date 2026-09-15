@@ -12,13 +12,14 @@ public final class ProtectionPolicyResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionPolicyResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1939182119,\"resourceGuardOperationRequests\":[\"liohrd\",\"dtfgxqbawpcbb\",\"zqcyknap\"]},\"tags\":{\"wwgbdv\":\"yuicdhzbdy\",\"hmwffplfmuv\":\"bid\"},\"location\":\"ck\",\"eTag\":\"rrvwey\",\"id\":\"oy\",\"name\":\"ukphaimmoiroq\",\"type\":\"oshbragapyy\"}],\"nextLink\":\"fsv\"}")
+            "{\"value\":[{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":184475150,\"resourceGuardOperationRequests\":[\"vmfqhppubo\",\"sepdfgk\",\"tdherngbtcjuahok\"]},\"tags\":{\"ofshfphwpnulaiyw\":\"bkau\",\"ywhslwkojpllndnp\":\"e\",\"yetefyp\":\"wrpqafgfugsnnf\"},\"location\":\"octfjgtixrjvzuyt\",\"eTag\":\"mlmuowol\",\"id\":\"uir\",\"name\":\"p\",\"type\":\"ons\"},{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1067511250,\"resourceGuardOperationRequests\":[\"gajinnixjawrtmj\",\"jmyccxlzhcoxov\",\"ekhenl\",\"sfnrdtjxt\"]},\"tags\":{\"jvidttge\":\"cq\",\"iesfuug\":\"uslvyjtcvuwkasi\",\"xu\":\"tuqfecjxeygtu\"},\"location\":\"buew\",\"eTag\":\"s\",\"id\":\"jlxuz\",\"name\":\"hwpusxj\",\"type\":\"aqehg\"},{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1004006437,\"resourceGuardOperationRequests\":[\"qatucoigebxnc\",\"wfepbnwgfmx\",\"gcgbjb\",\"dlfgtdysnaq\"]},\"tags\":{\"zjrwdkqze\":\"qbctqha\",\"fza\":\"yjleziunjx\",\"eg\":\"tkw\",\"uooqjagmdit\":\"amlbnseqacjjvpil\"},\"location\":\"eiookjbsah\",\"eTag\":\"dt\",\"id\":\"elqacslmot\",\"name\":\"ebnfxofvc\",\"type\":\"k\"}],\"nextLink\":\"irazftxejwabmd\"}")
             .toObject(ProtectionPolicyResourceList.class);
-        Assertions.assertEquals("fsv", model.nextLink());
-        Assertions.assertEquals(1939182119, model.value().get(0).properties().protectedItemsCount());
-        Assertions.assertEquals("liohrd", model.value().get(0).properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("yuicdhzbdy", model.value().get(0).tags().get("wwgbdv"));
-        Assertions.assertEquals("ck", model.value().get(0).location());
-        Assertions.assertEquals("rrvwey", model.value().get(0).etag());
+        Assertions.assertEquals("irazftxejwabmd", model.nextLink());
+        Assertions.assertEquals(184475150, model.value().get(0).properties().protectedItemsCount());
+        Assertions.assertEquals("vmfqhppubo",
+            model.value().get(0).properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("bkau", model.value().get(0).tags().get("ofshfphwpnulaiyw"));
+        Assertions.assertEquals("octfjgtixrjvzuyt", model.value().get(0).location());
+        Assertions.assertEquals("mlmuowol", model.value().get(0).etag());
     }
 }

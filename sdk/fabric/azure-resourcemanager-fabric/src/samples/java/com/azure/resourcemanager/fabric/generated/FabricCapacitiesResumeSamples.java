@@ -9,7 +9,7 @@ package com.azure.resourcemanager.fabric.generated;
  */
 public final class FabricCapacitiesResumeSamples {
     /*
-     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_Resume.json
+     * x-ms-original-file: 2026-08-01-preview/FabricCapacities_Resume.json
      */
     /**
      * Sample code: Resume capacity.

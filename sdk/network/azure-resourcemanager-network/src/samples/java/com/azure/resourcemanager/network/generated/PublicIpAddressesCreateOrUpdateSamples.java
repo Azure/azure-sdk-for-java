@@ -6,19 +6,45 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
+import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettingsDomainNameLabelScope;
 import com.azure.resourcemanager.network.models.PublicIpAddressSku;
 import com.azure.resourcemanager.network.models.PublicIpAddressSkuName;
 import com.azure.resourcemanager.network.models.PublicIpAddressSkuTier;
+import java.util.Arrays;
 
 /**
  * Samples for PublicIpAddresses CreateOrUpdate.
  */
 public final class PublicIpAddressesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/PublicIpAddressCreateDns.json
+     * x-ms-original-file: 2025-09-01/PublicIpAddressCreateWithFirstPartyServiceTag.json
+     */
+    /**
+     * Sample code: Create public IP address with first party service tag.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void
+        createPublicIPAddressWithFirstPartyServiceTag(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getPublicIpAddresses()
+            .createOrUpdate("rg1", "test-ip", new PublicIpAddressInner().withLocation("eastus")
+                .withSku(new PublicIpAddressSku().withName(PublicIpAddressSkuName.STANDARD)
+                    .withTier(PublicIpAddressSkuTier.GLOBAL))
+                .withPublicIpAllocationMethod(IpAllocationMethod.STATIC)
+                .withPublicIpAddressVersion(IpVersion.IPV4)
+                .withIpTags(Arrays.asList(new IpTag().withIpTagType("FirstPartyUsage")
+                    .withTag("SQL")
+                    .withFirstPartyServiceTagId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/firstPartyServiceTags/myServiceTag")))
+                .withIdleTimeoutInMinutes(10), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-09-01/PublicIpAddressCreateDns.json
      */
     /**
      * Sample code: Create public IP address DNS.
@@ -35,7 +61,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/PublicIpAddressCreateCustomizedValues.json
+     * x-ms-original-file: 2025-09-01/PublicIpAddressCreateCustomizedValues.json
      */
     /**
      * Sample code: Create public IP address allocation method.
@@ -56,7 +82,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/PublicIpAddressCreateDefaults.json
+     * x-ms-original-file: 2025-09-01/PublicIpAddressCreateDefaults.json
      */
     /**
      * Sample code: Create public IP address defaults.
@@ -71,7 +97,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/PublicIpAddressCreateDnsWithDomainNameLabelScope.json
+     * x-ms-original-file: 2025-09-01/PublicIpAddressCreateDnsWithDomainNameLabelScope.json
      */
     /**
      * Sample code: Create public IP address DNS with Domain Name Label Scope.
@@ -90,7 +116,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/PublicIpAddressCreateDefaultsStandardV2Sku.json
+     * x-ms-original-file: 2025-09-01/PublicIpAddressCreateDefaultsStandardV2Sku.json
      */
     /**
      * Sample code: Create public IP address defaults with StandardV2 Sku.

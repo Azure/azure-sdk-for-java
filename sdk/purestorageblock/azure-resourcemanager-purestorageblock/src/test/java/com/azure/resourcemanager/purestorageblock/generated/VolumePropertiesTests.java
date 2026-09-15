@@ -12,8 +12,8 @@ public final class VolumePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeProperties model = BinaryData.fromString(
-            "{\"storagePoolInternalId\":\"aivwitqscywu\",\"storagePoolResourceId\":\"woluhczbwemhair\",\"volumeInternalId\":\"rgzdwmsweyp\",\"displayName\":\"dxggicccnxqhuexm\",\"space\":{\"totalUsed\":3156915060684863023,\"unique\":6329699081347667156,\"snapshots\":3065309169479098927,\"shared\":8425311151798703351},\"softDeletion\":{\"destroyed\":false,\"eradicationTimestamp\":\"mhzrn\"},\"createdTimestamp\":\"dtclusiypb\",\"provisionedSize\":3348711626603759532,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"sl\",\"diskName\":\"eadcygqukyhejhz\",\"folder\":\"sx\",\"avsVmInternalId\":\"fpel\",\"avsVmResourceId\":\"lppvksrpq\",\"avsVmName\":\"ujzra\",\"avsStorageContainerResourceId\":\"htwdwrftswibyrcd\"},\"provisioningState\":\"Failed\"}")
+            "{\"storagePoolInternalId\":\"rfdwoyu\",\"storagePoolResourceId\":\"ziuiefozbhdm\",\"volumeInternalId\":\"l\",\"displayName\":\"qhoftrmaequiah\",\"space\":{\"totalUsed\":8019424807793011172,\"unique\":7362779030746859122,\"snapshots\":5475411267046068461,\"shared\":6940065807913814544},\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"yylhalnswhccsp\"},\"createdTimestamp\":\"aivwitqscywu\",\"provisionedSize\":7899440760081636989,\"volumeType\":\"avs\",\"avs\":{\"diskId\":\"czbwemhairsbr\",\"diskName\":\"z\",\"folder\":\"wmsweypqwd\",\"avsVmInternalId\":\"ggicccnxqhue\",\"avsVmResourceId\":\"mkttlstvlzywem\",\"avsVmName\":\"zrncsdt\",\"avsStorageContainerResourceId\":\"lusiy\"},\"provisioningState\":\"Failed\"}")
             .toObject(VolumeProperties.class);
-        Assertions.assertFalse(model.softDeletion().destroyed());
+        Assertions.assertTrue(model.softDeletion().destroyed());
     }
 }

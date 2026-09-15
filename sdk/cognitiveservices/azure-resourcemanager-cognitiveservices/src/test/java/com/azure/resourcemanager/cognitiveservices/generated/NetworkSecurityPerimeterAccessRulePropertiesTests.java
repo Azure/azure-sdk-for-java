@@ -13,14 +13,14 @@ public final class NetworkSecurityPerimeterAccessRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterAccessRuleProperties model = BinaryData.fromString(
-            "{\"direction\":\"Inbound\",\"addressPrefixes\":[\"ebrqbsmswziqgfuh\"],\"subscriptions\":[{\"id\":\"uswhvhczznvfbycj\"},{\"id\":\"jww\"}],\"networkSecurityPerimeters\":[{\"id\":\"umwmxqhnd\",\"perimeterGuid\":\"oamld\",\"location\":\"haohdjhhflzokxc\"}],\"fullyQualifiedDomainNames\":[\"e\",\"nje\",\"agltsxoa\"]}")
+            "{\"direction\":\"Inbound\",\"addressPrefixes\":[\"cq\",\"jvidttge\",\"uslvyjtcvuwkasi\"],\"subscriptions\":[{\"id\":\"fuughtuqfec\"},{\"id\":\"ey\"}],\"networkSecurityPerimeters\":[{\"id\":\"xu\",\"perimeterGuid\":\"buew\",\"location\":\"s\"}],\"fullyQualifiedDomainNames\":[\"lx\",\"zrhwp\"]}")
             .toObject(NetworkSecurityPerimeterAccessRuleProperties.class);
         Assertions.assertEquals(NspAccessRuleDirection.INBOUND, model.direction());
-        Assertions.assertEquals("ebrqbsmswziqgfuh", model.addressPrefixes().get(0));
-        Assertions.assertEquals("uswhvhczznvfbycj", model.subscriptions().get(0).id());
-        Assertions.assertEquals("umwmxqhnd", model.networkSecurityPerimeters().get(0).id());
-        Assertions.assertEquals("oamld", model.networkSecurityPerimeters().get(0).perimeterGuid());
-        Assertions.assertEquals("haohdjhhflzokxc", model.networkSecurityPerimeters().get(0).location());
-        Assertions.assertEquals("e", model.fullyQualifiedDomainNames().get(0));
+        Assertions.assertEquals("cq", model.addressPrefixes().get(0));
+        Assertions.assertEquals("fuughtuqfec", model.subscriptions().get(0).id());
+        Assertions.assertEquals("xu", model.networkSecurityPerimeters().get(0).id());
+        Assertions.assertEquals("buew", model.networkSecurityPerimeters().get(0).perimeterGuid());
+        Assertions.assertEquals("s", model.networkSecurityPerimeters().get(0).location());
+        Assertions.assertEquals("lx", model.fullyQualifiedDomainNames().get(0));
     }
 }

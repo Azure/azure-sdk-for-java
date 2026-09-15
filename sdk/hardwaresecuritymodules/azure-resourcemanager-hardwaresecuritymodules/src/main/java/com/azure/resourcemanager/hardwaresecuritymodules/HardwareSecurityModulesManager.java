@@ -33,6 +33,9 @@ import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsm
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.DedicatedHsmsImpl;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.HardwareSecurityModulesManagementClientBuilder;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.OperationsImpl;
+import com.azure.resourcemanager.hardwaresecuritymodules.implementation.PaymentHsmClusterPrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.hardwaresecuritymodules.implementation.PaymentHsmClusterPrivateLinkResourcesImpl;
+import com.azure.resourcemanager.hardwaresecuritymodules.implementation.PaymentHsmClustersImpl;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterBackupStatus;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterPrivateEndpointConnections;
@@ -41,6 +44,9 @@ import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterR
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusters;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsms;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.Operations;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PaymentHsmClusterPrivateEndpointConnections;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PaymentHsmClusterPrivateLinkResources;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PaymentHsmClusters;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.PrivateEndpointConnections;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -61,6 +67,10 @@ public final class HardwareSecurityModulesManager {
 
     private PrivateEndpointConnections privateEndpointConnections;
 
+    private PaymentHsmClusters paymentHsmClusters;
+
+    private PaymentHsmClusterPrivateEndpointConnections paymentHsmClusterPrivateEndpointConnections;
+
     private CloudHsmClusterPrivateLinkResources cloudHsmClusterPrivateLinkResources;
 
     private CloudHsmClusterBackupStatus cloudHsmClusterBackupStatus;
@@ -70,6 +80,8 @@ public final class HardwareSecurityModulesManager {
     private CloudHsmClusterPrivateEndpointConnections cloudHsmClusterPrivateEndpointConnections;
 
     private DedicatedHsms dedicatedHsms;
+
+    private PaymentHsmClusterPrivateLinkResources paymentHsmClusterPrivateLinkResources;
 
     private final HardwareSecurityModulesManagementClient clientObject;
 
@@ -326,6 +338,32 @@ public final class HardwareSecurityModulesManager {
     }
 
     /**
+     * Gets the resource collection API of PaymentHsmClusters. It manages PaymentHsmCluster.
+     * 
+     * @return Resource collection API of PaymentHsmClusters.
+     */
+    public PaymentHsmClusters paymentHsmClusters() {
+        if (this.paymentHsmClusters == null) {
+            this.paymentHsmClusters = new PaymentHsmClustersImpl(clientObject.getPaymentHsmClusters(), this);
+        }
+        return paymentHsmClusters;
+    }
+
+    /**
+     * Gets the resource collection API of PaymentHsmClusterPrivateEndpointConnections. It manages
+     * PaymentHsmClusterPrivateEndpointConnection.
+     * 
+     * @return Resource collection API of PaymentHsmClusterPrivateEndpointConnections.
+     */
+    public PaymentHsmClusterPrivateEndpointConnections paymentHsmClusterPrivateEndpointConnections() {
+        if (this.paymentHsmClusterPrivateEndpointConnections == null) {
+            this.paymentHsmClusterPrivateEndpointConnections = new PaymentHsmClusterPrivateEndpointConnectionsImpl(
+                clientObject.getPaymentHsmClusterPrivateEndpointConnections(), this);
+        }
+        return paymentHsmClusterPrivateEndpointConnections;
+    }
+
+    /**
      * Gets the resource collection API of CloudHsmClusterPrivateLinkResources.
      * 
      * @return Resource collection API of CloudHsmClusterPrivateLinkResources.
@@ -388,6 +426,19 @@ public final class HardwareSecurityModulesManager {
             this.dedicatedHsms = new DedicatedHsmsImpl(clientObject.getDedicatedHsms(), this);
         }
         return dedicatedHsms;
+    }
+
+    /**
+     * Gets the resource collection API of PaymentHsmClusterPrivateLinkResources.
+     * 
+     * @return Resource collection API of PaymentHsmClusterPrivateLinkResources.
+     */
+    public PaymentHsmClusterPrivateLinkResources paymentHsmClusterPrivateLinkResources() {
+        if (this.paymentHsmClusterPrivateLinkResources == null) {
+            this.paymentHsmClusterPrivateLinkResources = new PaymentHsmClusterPrivateLinkResourcesImpl(
+                clientObject.getPaymentHsmClusterPrivateLinkResources(), this);
+        }
+        return paymentHsmClusterPrivateLinkResources;
     }
 
     /**

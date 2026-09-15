@@ -21,7 +21,7 @@ public final class HorizonDbFirewallRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"startIpAddress\":\"keqdcvdrhvoods\",\"endIpAddress\":\"tbobz\",\"description\":\"pcjwv\",\"provisioningState\":\"Failed\"},\"id\":\"d\",\"name\":\"mgxcxrslpm\",\"type\":\"twuoegrpkhjwni\"}";
+            = "{\"properties\":{\"startIpAddress\":\"zrpzb\",\"endIpAddress\":\"hckqqzqioxiy\",\"description\":\"iizynkedyatrwyh\",\"provisioningState\":\"InProgress\"},\"id\":\"zyh\",\"name\":\"itsmypyyn\",\"type\":\"cdpu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class HorizonDbFirewallRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HorizonDbFirewallRule response = manager.horizonDbFirewallRules()
-            .getWithResponse("hdlxyjrxsagafcn", "hgw", "apnedgfbcvkc", "q", com.azure.core.util.Context.NONE)
+            .getWithResponse("op", "odlqiyntor", "ihleos", "swsrms", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("keqdcvdrhvoods", response.properties().startIpAddress());
-        Assertions.assertEquals("tbobz", response.properties().endIpAddress());
-        Assertions.assertEquals("pcjwv", response.properties().description());
+        Assertions.assertEquals("zrpzb", response.properties().startIpAddress());
+        Assertions.assertEquals("hckqqzqioxiy", response.properties().endIpAddress());
+        Assertions.assertEquals("iizynkedyatrwyh", response.properties().description());
     }
 }

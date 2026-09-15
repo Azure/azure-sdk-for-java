@@ -192,5 +192,5 @@ See the `MeterFilter.ignoreTags` documentation in the micrometer documentation h
 
 ## How can I filter which metrics I want to collect?
 
-See the `MeterFilter.accceptXXX/denyXXX` documentation in the micrometer documentation here - `https://micrometer.io/docs/concepts#_convenience_methods`
+See the `MeterFilter.acceptXXX/denyXXX` documentation in the micrometer documentation here - `https://micrometer.io/docs/concepts#_convenience_methods`
 

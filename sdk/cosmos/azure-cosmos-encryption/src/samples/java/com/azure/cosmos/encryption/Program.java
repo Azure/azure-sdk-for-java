@@ -235,7 +235,7 @@ public class Program {
             cosmosEncryptionAsyncContainer.queryItemsOnEncryptedProperties(sqlQuerySpecWithEncryption,
                 new CosmosQueryRequestOptions(), SalesOrder.class).byPage().blockFirst();
         if (salesOrderFeedResponse.getResults().size() < 1) {
-            throw new IllegalStateException("Error while querying on encrpted field");
+            throw new IllegalStateException("Error while querying on encrypted field");
         }
         System.out.println("Sale order is retrieved from query on account number = " + salesOrderFeedResponse.getResults().get(0).accountNumber);
 
@@ -284,7 +284,7 @@ public class Program {
         }
     }
 
-    // load config from resource samples/resoruces/settings.properties
+    // load config from resource samples/resources/settings.properties
     private static Properties loadConfig() throws IOException {
 
         try (InputStream input = new FileInputStream("src/samples/resources/settings.properties")) {

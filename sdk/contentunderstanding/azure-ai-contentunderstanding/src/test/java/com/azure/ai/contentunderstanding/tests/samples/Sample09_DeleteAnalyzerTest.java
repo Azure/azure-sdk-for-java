@@ -6,11 +6,11 @@ package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
-import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
-import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
-import com.azure.ai.contentunderstanding.models.ContentFieldType;
-import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,33 +38,21 @@ public class Sample09_DeleteAnalyzerTest extends ContentUnderstandingClientTestB
         // First, create a temporary analyzer to delete
         String analyzerId = testResourceNamer.randomName("analyzer_to_delete_", 50);
 
-        Map<String, ContentFieldDefinition> fields = new HashMap<>();
-        ContentFieldDefinition titleDef = new ContentFieldDefinition();
-        titleDef.setType(ContentFieldType.STRING);
-        titleDef.setMethod(GenerationMethod.EXTRACT);
-        titleDef.setDescription("Document title");
-        fields.put("title", titleDef);
-
-        ContentFieldSchema fieldSchema = new ContentFieldSchema();
-        fieldSchema.setName("temp_schema");
-        fieldSchema.setDescription("Temporary schema for deletion demo");
-        fieldSchema.setFields(fields);
-
         Map<String, String> models = new HashMap<>();
-        models.put("completion", "gpt-4.1");
-        models.put("embedding", "text-embedding-3-large");
+        models.put("completion", getModelProfile().getCompletionModel());
 
         ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
-            .setDescription("Temporary analyzer for deletion demo")
-            .setConfig(new ContentAnalyzerConfig().setOcrEnabled(true).setLayoutEnabled(true))
-            .setFieldSchema(fieldSchema)
+            .setDescription("Simple analyzer for deletion example")
+            .setConfig(new ContentAnalyzerConfig().setReturnDetails(true))
             .setModels(models);
 
-        contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer).getFinalResult();
+        contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer, true).getFinalResult();
         System.out.println("Temporary analyzer created: " + analyzerId);
 
         // Verify the analyzer exists
-        ContentAnalyzer retrievedAnalyzer = contentUnderstandingClient.getAnalyzer(analyzerId);
+        Response<BinaryData> getResponse
+            = contentUnderstandingClient.getAnalyzerWithResponse(analyzerId, new RequestOptions());
+        ContentAnalyzer retrievedAnalyzer = getResponse.getValue().toObject(ContentAnalyzer.class);
         System.out.println("Verified analyzer exists with ID: " + retrievedAnalyzer.getAnalyzerId());
 
         // Delete the analyzer
@@ -72,13 +60,10 @@ public class Sample09_DeleteAnalyzerTest extends ContentUnderstandingClientTestB
         System.out.println("Analyzer deleted successfully: " + analyzerId);
 
         // Verify the analyzer no longer exists
-        boolean analyzerDeleted = false;
-        try {
-            contentUnderstandingClient.getAnalyzer(analyzerId);
-        } catch (ResourceNotFoundException e) {
-            analyzerDeleted = true;
-            System.out.println("Confirmed: Analyzer no longer exists");
-        }
+        HttpResponseException deletionException = org.junit.jupiter.api.Assertions
+            .assertThrows(HttpResponseException.class, () -> contentUnderstandingClient.getAnalyzer(analyzerId));
+        int deletionStatus = deletionException.getResponse().getStatusCode();
+        System.out.println("Confirmed: Analyzer no longer exists (status " + deletionStatus + ")");
         // END:ContentUnderstandingDeleteAnalyzer
 
         // BEGIN:Assertion_ContentUnderstandingDeleteAnalyzer
@@ -88,9 +73,28 @@ public class Sample09_DeleteAnalyzerTest extends ContentUnderstandingClientTestB
 
         assertNotNull(retrievedAnalyzer, "Retrieved analyzer should not be null before deletion");
         assertEquals(analyzerId, retrievedAnalyzer.getAnalyzerId(), "Retrieved analyzer ID should match");
+        assertEquals(200, getResponse.getStatusCode(), "Get analyzer response status should be 200");
+        assertEquals("prebuilt-document", retrievedAnalyzer.getBaseAnalyzerId(), "Base analyzer ID should match");
+        assertEquals("Simple analyzer for deletion example", retrievedAnalyzer.getDescription(),
+            "Description should match");
+        assertNotNull(retrievedAnalyzer.getConfig(), "Config should not be null");
+        assertEquals(Boolean.TRUE, retrievedAnalyzer.getConfig().isReturnDetails(), "ReturnDetails should be true");
+        assertNotNull(retrievedAnalyzer.getModels(), "Models should not be null");
+        assertEquals(getModelProfile().getCompletionModel(), retrievedAnalyzer.getModels().get("completion"),
+            "Completion model should match the configured model");
         System.out.println("Analyzer existence verified before deletion");
 
-        assertTrue(analyzerDeleted, "Analyzer should be deleted and not retrievable");
+        assertTrue(deletionStatus == 404 || deletionStatus == 400,
+            "Deleted analyzer should return 404 or 400, but returned " + deletionStatus);
+
+        boolean foundDeletedAnalyzer = false;
+        for (ContentAnalyzer listedAnalyzer : contentUnderstandingClient.listAnalyzers()) {
+            if (analyzerId.equals(listedAnalyzer.getAnalyzerId())) {
+                foundDeletedAnalyzer = true;
+                break;
+            }
+        }
+        assertFalse(foundDeletedAnalyzer, "Deleted analyzer should not appear in the analyzer list");
         System.out.println("Analyzer deletion verified");
 
         System.out.println("All analyzer deletion properties validated successfully");

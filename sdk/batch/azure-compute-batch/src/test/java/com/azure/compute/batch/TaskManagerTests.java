@@ -83,11 +83,11 @@ public class TaskManagerTests {
         CreateTasksErrorException ex = assertThrows(CreateTasksErrorException.class, () -> runCreateTasks(fake, tasks));
 
         // Client error task must be in failures.
-        assertTrue(ex.failureTaskList().stream().anyMatch(r -> "C".equals(r.getTaskId())),
+        assertTrue(ex.getFailureTaskList().stream().anyMatch(r -> "C".equals(r.getTaskId())),
             "Client-error task C should be reported as failure");
 
         assertTrue(fake.getSubmissionCount("S") >= 1, "S should have been retried at least once");
-        assertFalse(ex.failureTaskList().stream().anyMatch(r -> "S".equals(r.getTaskId())),
+        assertFalse(ex.getFailureTaskList().stream().anyMatch(r -> "S".equals(r.getTaskId())),
             "S should have eventually succeeded");
 
         // OK submitted once, succeeded.

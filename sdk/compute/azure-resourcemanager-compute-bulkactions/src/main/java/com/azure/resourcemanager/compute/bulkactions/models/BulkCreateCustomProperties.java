@@ -40,6 +40,27 @@ public final class BulkCreateCustomProperties implements JsonSerializable<BulkCr
     private CapacityType capacityType;
 
     /*
+     * The minimum capacity, expressed in units specified by capacityType, that Azure must be able to allocate for the
+     * request to proceed. If Azure cannot allocate at least this capacity with high confidence, the request is rejected
+     * with 409 Conflict (InsufficientCapacity) and no VMs are created. Otherwise, Azure allocates as much capacity as
+     * possible, up to the requested capacity. Must be greater than 0, less than capacity, and requires
+     * partialFulfillmentPolicy.mode to be Enabled.
+     */
+    private Integer minCapacity;
+
+    /*
+     * Controls how partial fulfillment is handled for a BulkCreateCustom request. When enabled, Azure creates only the
+     * VMs or vCPUs it has high confidence can be successfully allocated, instead of attempting the entire request and
+     * potentially returning allocation failures.
+     */
+    private PartialFulfillmentPolicy partialFulfillmentPolicy;
+
+    /*
+     * The virtual machine resources resolved for the operation.
+     */
+    private List<BulkCreateCustomResource> resources;
+
+    /*
      * Configuration Options for Regular or Spot instances in BulkCreateCustom.
      */
     private BulkCreateCustomPriorityProfile priorityProfile;
@@ -133,6 +154,67 @@ public final class BulkCreateCustomProperties implements JsonSerializable<BulkCr
     public BulkCreateCustomProperties withCapacityType(CapacityType capacityType) {
         this.capacityType = capacityType;
         return this;
+    }
+
+    /**
+     * Get the minCapacity property: The minimum capacity, expressed in units specified by capacityType, that Azure must
+     * be able to allocate for the request to proceed. If Azure cannot allocate at least this capacity with high
+     * confidence, the request is rejected with 409 Conflict (InsufficientCapacity) and no VMs are created. Otherwise,
+     * Azure allocates as much capacity as possible, up to the requested capacity. Must be greater than 0, less than
+     * capacity, and requires partialFulfillmentPolicy.mode to be Enabled.
+     * 
+     * @return the minCapacity value.
+     */
+    public Integer minCapacity() {
+        return this.minCapacity;
+    }
+
+    /**
+     * Set the minCapacity property: The minimum capacity, expressed in units specified by capacityType, that Azure must
+     * be able to allocate for the request to proceed. If Azure cannot allocate at least this capacity with high
+     * confidence, the request is rejected with 409 Conflict (InsufficientCapacity) and no VMs are created. Otherwise,
+     * Azure allocates as much capacity as possible, up to the requested capacity. Must be greater than 0, less than
+     * capacity, and requires partialFulfillmentPolicy.mode to be Enabled.
+     * 
+     * @param minCapacity the minCapacity value to set.
+     * @return the BulkCreateCustomProperties object itself.
+     */
+    public BulkCreateCustomProperties withMinCapacity(Integer minCapacity) {
+        this.minCapacity = minCapacity;
+        return this;
+    }
+
+    /**
+     * Get the partialFulfillmentPolicy property: Controls how partial fulfillment is handled for a BulkCreateCustom
+     * request. When enabled, Azure creates only the VMs or vCPUs it has high confidence can be successfully allocated,
+     * instead of attempting the entire request and potentially returning allocation failures.
+     * 
+     * @return the partialFulfillmentPolicy value.
+     */
+    public PartialFulfillmentPolicy partialFulfillmentPolicy() {
+        return this.partialFulfillmentPolicy;
+    }
+
+    /**
+     * Set the partialFulfillmentPolicy property: Controls how partial fulfillment is handled for a BulkCreateCustom
+     * request. When enabled, Azure creates only the VMs or vCPUs it has high confidence can be successfully allocated,
+     * instead of attempting the entire request and potentially returning allocation failures.
+     * 
+     * @param partialFulfillmentPolicy the partialFulfillmentPolicy value to set.
+     * @return the BulkCreateCustomProperties object itself.
+     */
+    public BulkCreateCustomProperties withPartialFulfillmentPolicy(PartialFulfillmentPolicy partialFulfillmentPolicy) {
+        this.partialFulfillmentPolicy = partialFulfillmentPolicy;
+        return this;
+    }
+
+    /**
+     * Get the resources property: The virtual machine resources resolved for the operation.
+     * 
+     * @return the resources value.
+     */
+    public List<BulkCreateCustomResource> resources() {
+        return this.resources;
     }
 
     /**
@@ -270,6 +352,8 @@ public final class BulkCreateCustomProperties implements JsonSerializable<BulkCr
         jsonWriter.writeJsonField("priorityProfile", this.priorityProfile);
         jsonWriter.writeJsonField("computeProfile", this.computeProfile);
         jsonWriter.writeStringField("capacityType", this.capacityType == null ? null : this.capacityType.toString());
+        jsonWriter.writeNumberField("minCapacity", this.minCapacity);
+        jsonWriter.writeJsonField("partialFulfillmentPolicy", this.partialFulfillmentPolicy);
         jsonWriter.writeArrayField("vmSizesProfile", this.vmSizesProfile,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("zoneAllocationPolicy", this.zoneAllocationPolicy);
@@ -309,6 +393,15 @@ public final class BulkCreateCustomProperties implements JsonSerializable<BulkCr
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("capacityType".equals(fieldName)) {
                     deserializedBulkCreateCustomProperties.capacityType = CapacityType.fromString(reader.getString());
+                } else if ("minCapacity".equals(fieldName)) {
+                    deserializedBulkCreateCustomProperties.minCapacity = reader.getNullable(JsonReader::getInt);
+                } else if ("partialFulfillmentPolicy".equals(fieldName)) {
+                    deserializedBulkCreateCustomProperties.partialFulfillmentPolicy
+                        = PartialFulfillmentPolicy.fromJson(reader);
+                } else if ("resources".equals(fieldName)) {
+                    List<BulkCreateCustomResource> resources
+                        = reader.readArray(reader1 -> BulkCreateCustomResource.fromJson(reader1));
+                    deserializedBulkCreateCustomProperties.resources = resources;
                 } else if ("vmSizesProfile".equals(fieldName)) {
                     List<BulkCreateCustomVmSizeProfile> vmSizesProfile
                         = reader.readArray(reader1 -> BulkCreateCustomVmSizeProfile.fromJson(reader1));

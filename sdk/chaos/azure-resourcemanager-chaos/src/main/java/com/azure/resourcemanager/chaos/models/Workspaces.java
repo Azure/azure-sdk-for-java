@@ -106,7 +106,7 @@ public interface Workspaces {
     PagedIterable<Workspace> list(String continuationToken, Context context);
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers resource discovery for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -115,10 +115,10 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    WorkspaceEvaluation refreshRecommendations(String resourceGroupName, String workspaceName);
+    WorkspaceDiscovery discover(String resourceGroupName, String workspaceName);
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers resource discovery for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -128,7 +128,32 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    WorkspaceEvaluation refreshRecommendations(String resourceGroupName, String workspaceName, Context context);
+    WorkspaceDiscovery discover(String resourceGroupName, String workspaceName, Context context);
+
+    /**
+     * Triggers scenario evaluation for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    WorkspaceEvaluation evaluate(String resourceGroupName, String workspaceName);
+
+    /**
+     * Triggers scenario evaluation for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    WorkspaceEvaluation evaluate(String resourceGroupName, String workspaceName, Context context);
 
     /**
      * Get a Workspace resource.

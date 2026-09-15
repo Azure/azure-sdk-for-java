@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class InterconnectGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-07-01/InterconnectGroupUpdateTags.json
+     * x-ms-original-file: 2025-09-01/InterconnectGroupUpdateTags.json
      */
     /**
      * Sample code: Update interconnect group tags.

@@ -16,17 +16,20 @@ public final class GenericRecoveryPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GenericRecoveryPoint model = BinaryData.fromString(
-            "{\"objectType\":\"GenericRecoveryPoint\",\"friendlyName\":\"gogczhonnxkrlgny\",\"recoveryPointType\":\"ossxk\",\"recoveryPointTime\":\"2021-01-10T00:28:10Z\",\"recoveryPointAdditionalInfo\":\"rrghxjbdhqxvcxgf\",\"recoveryPointProperties\":{\"expiryTime\":\"sofbshrn\",\"ruleName\":\"buswdvzyy\",\"isSoftDeleted\":false},\"threatStatus\":\"Unknown\",\"threatInfo\":[{\"threatTitle\":\"srtkfa\",\"threatDescription\":\"opqgikyzirtxdyux\",\"lastUpdatedTime\":\"2021-05-05T23:09:26Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-07-14T22:05:57Z\",\"threatEndTime\":\"2021-11-18T04:28:14Z\",\"threatURI\":\"ioilqukrydxtq\",\"threatSeverity\":\"Informational\"}]}")
+            "{\"objectType\":\"GenericRecoveryPoint\",\"friendlyName\":\"jylwbtlhflsj\",\"recoveryPointType\":\"hszfjvfb\",\"recoveryPointTime\":\"2021-08-02T20:09:46Z\",\"recoveryPointAdditionalInfo\":\"ljagrqmqhl\",\"recoveryPointProperties\":{\"expiryTime\":\"iiiojnalghf\",\"ruleName\":\"tvsexsowuel\",\"isSoftDeleted\":true,\"immutabilityProperties\":{\"isImmutable\":false,\"expiryTime\":\"2021-06-13T10:08:13Z\"}},\"threatStatus\":\"NotAvailable\",\"threatInfo\":[{\"threatTitle\":\"zkw\",\"threatDescription\":\"g\",\"lastUpdatedTime\":\"2021-10-11T18:28:46Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-03-26T20:29:02Z\",\"threatEndTime\":\"2021-10-04T11:20:51Z\",\"threatURI\":\"sxhqxujx\",\"threatSeverity\":\"Informational\"}]}")
             .toObject(GenericRecoveryPoint.class);
-        Assertions.assertEquals(ThreatStatus.UNKNOWN, model.threatStatus());
+        Assertions.assertEquals(ThreatStatus.NOT_AVAILABLE, model.threatStatus());
         Assertions.assertEquals(ThreatState.IN_PROGRESS, model.threatInfo().get(0).threatState());
         Assertions.assertEquals(ThreatSeverity.INFORMATIONAL, model.threatInfo().get(0).threatSeverity());
-        Assertions.assertEquals("gogczhonnxkrlgny", model.friendlyName());
-        Assertions.assertEquals("ossxk", model.recoveryPointType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-10T00:28:10Z"), model.recoveryPointTime());
-        Assertions.assertEquals("rrghxjbdhqxvcxgf", model.recoveryPointAdditionalInfo());
-        Assertions.assertEquals("sofbshrn", model.recoveryPointProperties().expiryTime());
-        Assertions.assertEquals("buswdvzyy", model.recoveryPointProperties().ruleName());
-        Assertions.assertFalse(model.recoveryPointProperties().isSoftDeleted());
+        Assertions.assertEquals("jylwbtlhflsj", model.friendlyName());
+        Assertions.assertEquals("hszfjvfb", model.recoveryPointType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-02T20:09:46Z"), model.recoveryPointTime());
+        Assertions.assertEquals("ljagrqmqhl", model.recoveryPointAdditionalInfo());
+        Assertions.assertEquals("iiiojnalghf", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("tvsexsowuel", model.recoveryPointProperties().ruleName());
+        Assertions.assertTrue(model.recoveryPointProperties().isSoftDeleted());
+        Assertions.assertFalse(model.recoveryPointProperties().immutabilityProperties().isImmutable());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-13T10:08:13Z"),
+            model.recoveryPointProperties().immutabilityProperties().expiryTime());
     }
 }

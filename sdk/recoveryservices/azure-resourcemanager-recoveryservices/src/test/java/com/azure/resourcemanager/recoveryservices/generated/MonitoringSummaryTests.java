@@ -12,13 +12,13 @@ public final class MonitoringSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MonitoringSummary model = BinaryData.fromString(
-            "{\"unHealthyVmCount\":1043765409,\"unHealthyProviderCount\":1207160281,\"eventsCount\":1518480421,\"deprecatedProviderCount\":712970145,\"supportedProviderCount\":962796998,\"unsupportedProviderCount\":1757218598}")
+            "{\"unHealthyVmCount\":927719856,\"unHealthyProviderCount\":661305446,\"eventsCount\":1227353846,\"deprecatedProviderCount\":1314028538,\"supportedProviderCount\":750170905,\"unsupportedProviderCount\":1467620924}")
             .toObject(MonitoringSummary.class);
-        Assertions.assertEquals(1043765409, model.unHealthyVmCount());
-        Assertions.assertEquals(1207160281, model.unHealthyProviderCount());
-        Assertions.assertEquals(1518480421, model.eventsCount());
-        Assertions.assertEquals(712970145, model.deprecatedProviderCount());
-        Assertions.assertEquals(962796998, model.supportedProviderCount());
-        Assertions.assertEquals(1757218598, model.unsupportedProviderCount());
+        Assertions.assertEquals(927719856, model.unHealthyVmCount());
+        Assertions.assertEquals(661305446, model.unHealthyProviderCount());
+        Assertions.assertEquals(1227353846, model.eventsCount());
+        Assertions.assertEquals(1314028538, model.deprecatedProviderCount());
+        Assertions.assertEquals(750170905, model.supportedProviderCount());
+        Assertions.assertEquals(1467620924, model.unsupportedProviderCount());
     }
 }

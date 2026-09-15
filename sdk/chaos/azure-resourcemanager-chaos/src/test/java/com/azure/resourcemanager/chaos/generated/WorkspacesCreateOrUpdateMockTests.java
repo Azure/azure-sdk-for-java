@@ -28,7 +28,7 @@ public final class WorkspacesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"identity\":{\"principalId\":\"kzxuiz\",\"tenantId\":\"hnepkpeti\",\"type\":\"None\",\"userAssignedIdentities\":{\"nsntrpcaqki\":{\"principalId\":\"ubxdukecpxdazvdh\",\"clientId\":\"mmkoszudb\"},\"pvcbhhe\":{\"principalId\":\"kb\",\"clientId\":\"mhklbnl\"},\"r\":{\"principalId\":\"quwusq\",\"clientId\":\"trpb\"},\"b\":{\"principalId\":\"uuatvlmbjwcol\",\"clientId\":\"x\"}}},\"properties\":{\"provisioningState\":\"Succeeded\",\"communicationEndpoint\":\"cpahprzrvxhm\",\"scopes\":[\"hocn\",\"zcmjhngxnoqrxt\",\"isn\"]},\"location\":\"vhdl\",\"tags\":{\"tjfdoesxxhmw\":\"idwhepfw\"},\"id\":\"dbckyo\",\"name\":\"kxkxhnegk\",\"type\":\"jzrbhtmeplv\"}";
+            = "{\"identity\":{\"principalId\":\"eh\",\"tenantId\":\"ddacbcbgydlqidy\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"swbnfddepldwqjns\":{\"principalId\":\"tyrilkfbnrqqxvz\",\"clientId\":\"bnfnqtxjtoma\"},\"carycsjjzyvoaqa\":{\"principalId\":\"ygleexa\",\"clientId\":\"mywhsb\"},\"rbhmpfulubef\":{\"principalId\":\"vehzp\",\"clientId\":\"mk\"},\"ctnkjjwgcwnph\":{\"principalId\":\"bpmfbfununmpzkrv\",\"clientId\":\"ifkdschlzvf\"}}},\"properties\":{\"provisioningState\":\"Succeeded\",\"communicationEndpoint\":\"y\",\"scopes\":[\"ogmhmjpj\",\"cdf\",\"dqwty\",\"ev\"]},\"location\":\"mseharx\",\"tags\":{\"wjhrsidqpxlbtpa\":\"qnrxtmbpjptn\",\"ngatwmy\":\"f\",\"mfjhpycvjqdvdwkq\":\"yutrymd\"},\"id\":\"ldrlefgnaavua\",\"name\":\"n\",\"type\":\"etaoutnpdc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,22 +37,23 @@ public final class WorkspacesCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Workspace response = manager.workspaces()
-            .define("vadswzs")
-            .withRegion("d")
-            .withExistingResourceGroup("qladywrxwhydtlu")
-            .withProperties(new WorkspaceProperties()
-                .withScopes(Arrays.asList("ixh", "fratqxmbjroumzz", "valqjrhuzgfxo", "jtpusllywpvtiotz")))
-            .withTags(mapOf("qiuasigrows", "lgry", "equygdjboqgrmtq", "c", "uawvcmjzk", "kqevadrmmw", "zugamxzkrrcoiis",
-                "iidisczskoswoqiq"))
-            .withIdentity(new ResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("dhftukvhdxlwy", new UserAssignedIdentity())))
-            .create();
+        Workspace response
+            = manager.workspaces()
+                .define("dvwnjkgvfnmxa")
+                .withRegion("bc")
+                .withExistingResourceGroup("pnx")
+                .withProperties(
+                    new WorkspaceProperties().withScopes(Arrays.asList("lqxsjxtelex", "vuqbozoo", "zqocarku")))
+                .withTags(mapOf("nx", "t", "llhdyzm", "wqy", "nxakckyw", "ckze", "zvkiwrsiwdy", "mxgaabjkdtfohfao"))
+                .withIdentity(new ResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("cnulgmnhjevdy", new UserAssignedIdentity(), "liizjixlqfhef",
+                        new UserAssignedIdentity())))
+                .create();
 
-        Assertions.assertEquals("vhdl", response.location());
-        Assertions.assertEquals("idwhepfw", response.tags().get("tjfdoesxxhmw"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("hocn", response.properties().scopes().get(0));
+        Assertions.assertEquals("mseharx", response.location());
+        Assertions.assertEquals("qnrxtmbpjptn", response.tags().get("wjhrsidqpxlbtpa"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("ogmhmjpj", response.properties().scopes().get(0));
     }
 
     // Use "Map.of" if available

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.LoadBalancerDetailLevel;
  */
 public final class LoadBalancersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/LoadBalancerGet.json
+     * x-ms-original-file: 2025-09-01/LoadBalancerGet.json
      */
     /**
      * Sample code: Get load balancer.
@@ -25,7 +25,7 @@ public final class LoadBalancersGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/LoadBalancerGetReduced.json
+     * x-ms-original-file: 2025-09-01/LoadBalancerGetReduced.json
      */
     /**
      * Sample code: Get load balancer reduced.
@@ -40,7 +40,7 @@ public final class LoadBalancersGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/LoadBalancerGetInboundNatRulePortMapping.json
+     * x-ms-original-file: 2025-09-01/LoadBalancerGetInboundNatRulePortMapping.json
      */
     /**
      * Sample code: Get load balancer with inbound NAT rule port mapping.

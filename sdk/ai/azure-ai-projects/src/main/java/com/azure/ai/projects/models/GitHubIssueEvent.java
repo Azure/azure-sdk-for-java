@@ -11,7 +11,7 @@ import java.util.Collection;
 /**
  * Known GitHub issue events that can fire a routine.
  */
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class GitHubIssueEvent extends ExpandableStringEnum<GitHubIssueEvent> {
 
     /**

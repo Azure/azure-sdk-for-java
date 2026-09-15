@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -19,10 +20,18 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FluxInputStreamTests {
     private static final int KB = 1024;
@@ -93,6 +102,85 @@ public class FluxInputStreamTests {
         }
     }
 
+    @Test
+    public void closeBeforeFirstReadSubscribesAndCancelsWithoutDemand() throws IOException {
+        AtomicInteger subscribeCalls = new AtomicInteger();
+        AtomicInteger cancelCalls = new AtomicInteger();
+        AtomicInteger disposeCalls = new AtomicInteger();
+        AtomicLong requested = new AtomicLong();
+        Flux<ByteBuffer> data = Flux.using(Object::new,
+            ignored -> Flux.<ByteBuffer>never()
+                .doOnSubscribe(subscription -> subscribeCalls.incrementAndGet())
+                .doOnRequest(requested::addAndGet)
+                .doOnCancel(cancelCalls::incrementAndGet),
+            ignored -> disposeCalls.incrementAndGet());
+
+        FluxInputStream stream = new FluxInputStream(data);
+        stream.close();
+        stream.close();
+
+        assertEquals(1, subscribeCalls.get());
+        assertEquals(0, requested.get());
+        assertEquals(1, cancelCalls.get());
+        assertEquals(1, disposeCalls.get());
+    }
+
+    @Test
+    public void closeDuringFirstSubscriptionCancelsPublishedSubscription() throws Exception {
+        CountDownLatch subscribeEntered = new CountDownLatch(1);
+        AtomicInteger cancelCalls = new AtomicInteger();
+        AtomicInteger disposeCalls = new AtomicInteger();
+        AtomicLong requested = new AtomicLong();
+        AtomicReference<Thread> closeThreadReference = new AtomicReference<>();
+        Flux<ByteBuffer> data = Flux.using(Object::new, ignored -> Flux.from(subscriber -> {
+            subscribeEntered.countDown();
+            awaitThreadWaiting(closeThreadReference);
+            subscriber.onSubscribe(new Subscription() {
+                @Override
+                public void request(long count) {
+                    requested.addAndGet(count);
+                }
+
+                @Override
+                public void cancel() {
+                    cancelCalls.incrementAndGet();
+                }
+            });
+        }), ignored -> disposeCalls.incrementAndGet());
+        FluxInputStream stream = new FluxInputStream(data);
+        AtomicReference<Throwable> readError = new AtomicReference<>();
+        AtomicReference<Throwable> closeError = new AtomicReference<>();
+        Thread readThread = new Thread(() -> {
+            try {
+                stream.read();
+            } catch (Throwable throwable) {
+                readError.set(throwable);
+            }
+        });
+        Thread closeThread = new Thread(() -> {
+            try {
+                stream.close();
+            } catch (Throwable throwable) {
+                closeError.set(throwable);
+            }
+        });
+        closeThreadReference.set(closeThread);
+
+        readThread.start();
+        assertTrue(subscribeEntered.await(5, TimeUnit.SECONDS));
+        closeThread.start();
+        readThread.join(TimeUnit.SECONDS.toMillis(5));
+        closeThread.join(TimeUnit.SECONDS.toMillis(5));
+
+        assertFalse(readThread.isAlive());
+        assertFalse(closeThread.isAlive());
+        assertEquals(1, cancelCalls.get());
+        assertEquals(0, requested.get());
+        assertEquals(1, disposeCalls.get());
+        assertNull(closeError.get());
+        assertTrue(readError.get() instanceof IllegalStateException);
+    }
+
     @ParameterizedTest
     @MethodSource("fluxInputStreamErrorSupplier")
     public void fluxInputStreamError(RuntimeException exception) {
@@ -144,5 +232,17 @@ public class FluxInputStreamTests {
         return Stream.of(new IllegalArgumentException("Mock illegal argument exception."),
             new HttpResponseException("Mock exception", httpResponse, null),
             new UncheckedIOException(new IOException("Mock IO Exception.")));
+    }
+
+    private static void awaitThreadWaiting(AtomicReference<Thread> threadReference) {
+        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+        while (System.nanoTime() < deadline) {
+            Thread thread = threadReference.get();
+            if (thread != null && thread.getState() == Thread.State.WAITING) {
+                return;
+            }
+            Thread.yield();
+        }
+        throw new AssertionError("Close thread didn't wait for the stream lock.");
     }
 }

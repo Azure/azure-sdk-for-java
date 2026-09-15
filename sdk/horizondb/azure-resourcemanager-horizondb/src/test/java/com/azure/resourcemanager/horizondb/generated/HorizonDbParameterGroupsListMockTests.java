@@ -22,7 +22,7 @@ public final class HorizonDbParameterGroupsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"parameters\":[{\"name\":\"qtvcofudflvkgj\",\"description\":\"gdknnqv\",\"value\":\"znqntoru\",\"dataType\":\"gsahmkycgrauw\",\"allowedValues\":\"etaebu\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"vsmzlxwab\",\"unit\":\"oefki\"},{\"name\":\"vtpuqujmqlgk\",\"description\":\"tndoaongbjc\",\"value\":\"ujitcjedftww\",\"dataType\":\"zkoj\",\"allowedValues\":\"c\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"uicybxarzgszuf\",\"unit\":\"ciqopidoa\"},{\"name\":\"iodhkhazxkhnz\",\"description\":\"nlwntoe\",\"value\":\"kdwbwhkszz\",\"dataType\":\"rvexztvb\",\"allowedValues\":\"gsfraoyzkoow\",\"isDynamic\":true,\"isReadOnly\":true,\"documentationLink\":\"xawqaldsyuuxim\",\"unit\":\"qfobwyz\"}],\"description\":\"bykutw\",\"pgVersion\":1229081734,\"version\":237488555,\"applyImmediately\":false,\"provisioningState\":\"Canceled\"},\"location\":\"kdsnfdsdoakgtdl\",\"tags\":{\"l\":\"zev\",\"ejdcngqqmoakuf\":\"ewpusdsttwvogvb\",\"zr\":\"m\",\"enuuzkopbm\":\"rdgrtw\"},\"id\":\"nrfdw\",\"name\":\"yuhhziu\",\"type\":\"efozbhdms\"}]}";
+            = "{\"value\":[{\"properties\":{\"parameters\":[{\"name\":\"nyhgbijtji\",\"description\":\"xzsjabib\",\"value\":\"stawfsdjpvkv\",\"dataType\":\"jxbkzbzkdvn\",\"allowedValues\":\"abudurgk\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"hjjklff\",\"unit\":\"ouw\"},{\"name\":\"gzrf\",\"description\":\"eyebizikayuhql\",\"value\":\"bs\",\"dataType\":\"bqwrvtldgm\",\"allowedValues\":\"gvmpipaslthaqfx\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"wbdsr\",\"unit\":\"pdrhne\"}],\"description\":\"owqkdwytisi\",\"pgVersion\":909535969,\"version\":1043585640,\"applyImmediately\":true,\"provisioningState\":\"Failed\"},\"location\":\"imejzanl\",\"tags\":{\"zonokixrjqci\":\"iavrm\"},\"id\":\"gzpfrla\",\"name\":\"szrnwo\",\"type\":\"indfpwpjyl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,12 @@ public final class HorizonDbParameterGroupsListMockTests {
         PagedIterable<HorizonDbParameterGroup> response
             = manager.horizonDbParameterGroups().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kdsnfdsdoakgtdl", response.iterator().next().location());
-        Assertions.assertEquals("zev", response.iterator().next().tags().get("l"));
-        Assertions.assertEquals("qtvcofudflvkgj", response.iterator().next().properties().parameters().get(0).name());
-        Assertions.assertEquals("znqntoru", response.iterator().next().properties().parameters().get(0).value());
-        Assertions.assertEquals("bykutw", response.iterator().next().properties().description());
-        Assertions.assertEquals(1229081734, response.iterator().next().properties().pgVersion());
-        Assertions.assertFalse(response.iterator().next().properties().applyImmediately());
+        Assertions.assertEquals("imejzanl", response.iterator().next().location());
+        Assertions.assertEquals("iavrm", response.iterator().next().tags().get("zonokixrjqci"));
+        Assertions.assertEquals("nyhgbijtji", response.iterator().next().properties().parameters().get(0).name());
+        Assertions.assertEquals("stawfsdjpvkv", response.iterator().next().properties().parameters().get(0).value());
+        Assertions.assertEquals("owqkdwytisi", response.iterator().next().properties().description());
+        Assertions.assertEquals(909535969, response.iterator().next().properties().pgVersion());
+        Assertions.assertTrue(response.iterator().next().properties().applyImmediately());
     }
 }

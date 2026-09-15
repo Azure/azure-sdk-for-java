@@ -14,11 +14,11 @@ public final class MaintenanceStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceState model = BinaryData.fromString(
-            "{\"name\":\"NotScheduled\",\"message\":\"ytdxwit\",\"startedAt\":\"2021-05-14T21:36:27Z\",\"endedAt\":\"2021-01-30T10:40:13Z\"}")
+            "{\"name\":\"Success\",\"message\":\"jvzunluthnnp\",\"startedAt\":\"2021-01-27T13:07:29Z\",\"endedAt\":\"2021-11-18T19:16:34Z\"}")
             .toObject(MaintenanceState.class);
-        Assertions.assertEquals(MaintenanceStateName.NOT_SCHEDULED, model.name());
-        Assertions.assertEquals("ytdxwit", model.message());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-14T21:36:27Z"), model.startedAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-30T10:40:13Z"), model.endedAt());
+        Assertions.assertEquals(MaintenanceStateName.SUCCESS, model.name());
+        Assertions.assertEquals("jvzunluthnnp", model.message());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-27T13:07:29Z"), model.startedAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-18T19:16:34Z"), model.endedAt());
     }
 }
