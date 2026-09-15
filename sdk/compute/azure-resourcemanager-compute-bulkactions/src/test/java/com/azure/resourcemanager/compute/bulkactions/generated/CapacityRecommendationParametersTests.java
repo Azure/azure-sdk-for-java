@@ -13,22 +13,22 @@ public final class CapacityRecommendationParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapacityRecommendationParameters model = BinaryData.fromString(
-            "{\"desiredLocations\":[\"ryo\",\"psoacctazakljl\",\"hbcryffdfdosyge\"],\"desiredSizes\":[\"ojakhmsbzjhcrze\",\"dphlxaolt\",\"qtrgqjbpfzfsinzg\",\"f\"],\"availabilityZones\":true}")
+            "{\"desiredLocations\":[\"kjozkrwfnd\",\"odjpslwejd\",\"vwryoqpso\"],\"desiredSizes\":[\"tazak\",\"j\",\"ahbc\",\"yffdfdos\"],\"availabilityZones\":false}")
             .toObject(CapacityRecommendationParameters.class);
-        Assertions.assertEquals("ryo", model.desiredLocations().get(0));
-        Assertions.assertEquals("ojakhmsbzjhcrze", model.desiredSizes().get(0));
-        Assertions.assertTrue(model.availabilityZones());
+        Assertions.assertEquals("kjozkrwfnd", model.desiredLocations().get(0));
+        Assertions.assertEquals("tazak", model.desiredSizes().get(0));
+        Assertions.assertFalse(model.availabilityZones());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CapacityRecommendationParameters model = new CapacityRecommendationParameters()
-            .withDesiredLocations(Arrays.asList("ryo", "psoacctazakljl", "hbcryffdfdosyge"))
-            .withDesiredSizes(Arrays.asList("ojakhmsbzjhcrze", "dphlxaolt", "qtrgqjbpfzfsinzg", "f"))
-            .withAvailabilityZones(true);
+            .withDesiredLocations(Arrays.asList("kjozkrwfnd", "odjpslwejd", "vwryoqpso"))
+            .withDesiredSizes(Arrays.asList("tazak", "j", "ahbc", "yffdfdos"))
+            .withAvailabilityZones(false);
         model = BinaryData.fromObject(model).toObject(CapacityRecommendationParameters.class);
-        Assertions.assertEquals("ryo", model.desiredLocations().get(0));
-        Assertions.assertEquals("ojakhmsbzjhcrze", model.desiredSizes().get(0));
-        Assertions.assertTrue(model.availabilityZones());
+        Assertions.assertEquals("kjozkrwfnd", model.desiredLocations().get(0));
+        Assertions.assertEquals("tazak", model.desiredSizes().get(0));
+        Assertions.assertFalse(model.availabilityZones());
     }
 }

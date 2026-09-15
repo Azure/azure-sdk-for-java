@@ -10,9 +10,11 @@ trigger:
     include:
       - sdk/deviceregistry/ci.yml
       - sdk/deviceregistry/azure-resourcemanager-deviceregistry/
+      - sdk/deviceregistry/azure-iot-deviceregistry-softwareupdate/
     exclude:
       - sdk/deviceregistry/pom.xml
       - sdk/deviceregistry/azure-resourcemanager-deviceregistry/pom.xml
+      - sdk/deviceregistry/azure-iot-deviceregistry-softwareupdate/pom.xml
 
 pr:
   branches:
@@ -25,15 +27,21 @@ pr:
     include:
       - sdk/deviceregistry/ci.yml
       - sdk/deviceregistry/azure-resourcemanager-deviceregistry/
+      - sdk/deviceregistry/azure-iot-deviceregistry-softwareupdate/
     exclude:
       - sdk/deviceregistry/pom.xml
       - sdk/deviceregistry/azure-resourcemanager-deviceregistry/pom.xml
+      - sdk/deviceregistry/azure-iot-deviceregistry-softwareupdate/pom.xml
 
 parameters:
   - name: release_azureresourcemanagerdeviceregistry
     displayName: azure-resourcemanager-deviceregistry
     type: boolean
     default: false
+  - name: release_azureiotdeviceregistrysoftwareupdate
+    displayName: azure-iot-deviceregistry-softwareupdate
+    type: boolean
+    default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -44,3 +52,7 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerdeviceregistry
         releaseInBatch: ${{ parameters.release_azureresourcemanagerdeviceregistry }}
+      - name: azure-iot-deviceregistry-softwareupdate
+        groupId: com.azure
+        safeName: azureiotdeviceregistrysoftwareupdate
+        releaseInBatch: ${{ parameters.release_azureiotdeviceregistrysoftwareupdate }}

@@ -9,17 +9,17 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class OccurrencesListResourcesSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/Occurrences_ListResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/Occurrences_ListResources_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Occurrences_ListResources_MaximumSet.
+     * Sample code: List resources in a scheduled action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void occurrencesListResourcesMaximumSet(
+    public static void listResourcesInAScheduledActionOccurrence(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
-            .listResources("rgcompute", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245",
+            .listResources("rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45",
                 com.azure.core.util.Context.NONE);
     }
 }

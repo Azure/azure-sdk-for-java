@@ -11,9 +11,9 @@ import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.concurrent.Executors;
@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 public class EventDataBatchTest extends ApiTestBase {
     private EventHubClient ehClient;
 
-    @Test(expected = PayloadSizeExceededException.class)
+    @Test
     public void payloadExceededException() throws EventHubException, IOException {
         final ConnectionStringBuilder connStrBuilder = TestContext.getConnectionString();
         ehClient = EventHubClient.createFromConnectionStringSync(connStrBuilder.toString(), Executors.newScheduledThreadPool(1));
@@ -31,11 +31,11 @@ public class EventDataBatchTest extends ApiTestBase {
         final EventData within = EventData.create(new byte[1024]);
         final EventData tooBig = EventData.create(new byte[1024 * 1024 * 2]);
 
-        Assert.assertTrue(batch.tryAdd(within));
-        batch.tryAdd(tooBig);
+        Assertions.assertTrue(batch.tryAdd(within));
+        Assertions.assertThrows(PayloadSizeExceededException.class, () -> batch.tryAdd(tooBig));
     }
 
-    @After
+    @AfterEach
     public void cleanup() throws EventHubException {
         if (ehClient != null) {
             ehClient.closeSync();

@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public final class BulkCreateCustomOperationStatusListResult
     /*
      * The virtual machine operation statuses on this page.
      */
-    private List<ResourceOperationInner> results;
+    private List<ResourceOperation> results;
 
     /*
      * The link to the next page of operation statuses.
@@ -40,7 +40,7 @@ public final class BulkCreateCustomOperationStatusListResult
      * 
      * @return the results value.
      */
-    public List<ResourceOperationInner> results() {
+    public List<ResourceOperation> results() {
         return this.results;
     }
 
@@ -82,8 +82,7 @@ public final class BulkCreateCustomOperationStatusListResult
                 reader.nextToken();
 
                 if ("results".equals(fieldName)) {
-                    List<ResourceOperationInner> results
-                        = reader.readArray(reader1 -> ResourceOperationInner.fromJson(reader1));
+                    List<ResourceOperation> results = reader.readArray(reader1 -> ResourceOperation.fromJson(reader1));
                     deserializedBulkCreateCustomOperationStatusListResult.results = results;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedBulkCreateCustomOperationStatusListResult.nextLink = reader.getString();

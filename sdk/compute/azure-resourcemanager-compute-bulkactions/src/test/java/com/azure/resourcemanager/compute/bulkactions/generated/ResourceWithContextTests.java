@@ -12,18 +12,18 @@ public final class ResourceWithContextTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceWithContext model
-            = BinaryData.fromString("{\"resourceId\":\"nfygxgispemvtz\",\"resourceContext\":\"kufubljo\"}")
+            = BinaryData.fromString("{\"resourceId\":\"nmayhuybb\",\"resourceContext\":\"podepoo\"}")
                 .toObject(ResourceWithContext.class);
-        Assertions.assertEquals("nfygxgispemvtz", model.resourceId());
-        Assertions.assertEquals("kufubljo", model.resourceContext());
+        Assertions.assertEquals("nmayhuybb", model.resourceId());
+        Assertions.assertEquals("podepoo", model.resourceContext());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceWithContext model
-            = new ResourceWithContext().withResourceId("nfygxgispemvtz").withResourceContext("kufubljo");
+            = new ResourceWithContext().withResourceId("nmayhuybb").withResourceContext("podepoo");
         model = BinaryData.fromObject(model).toObject(ResourceWithContext.class);
-        Assertions.assertEquals("nfygxgispemvtz", model.resourceId());
-        Assertions.assertEquals("kufubljo", model.resourceContext());
+        Assertions.assertEquals("nmayhuybb", model.resourceId());
+        Assertions.assertEquals("podepoo", model.resourceContext());
     }
 }
