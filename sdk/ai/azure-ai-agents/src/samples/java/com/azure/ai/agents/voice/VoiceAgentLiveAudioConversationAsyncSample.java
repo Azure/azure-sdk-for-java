@@ -5,14 +5,14 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentEndpointConversationsAsyncClient;
+import com.azure.ai.agents.BetaVoiceAgentsConversationsAsyncClient;
 import com.azure.ai.agents.BetaAgentsAsyncClient;
 import com.azure.ai.agents.BetaVoiceAgentWebSocketAsyncClient;
 import com.azure.ai.agents.VoiceAgentWebSocketSessionAsyncClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeServerEventConversationItemInputAudioTranscriptionCompleted;
 import com.azure.ai.agents.models.RealtimeServerEventInputAudioBufferSpeechStarted;
-import com.azure.ai.agents.models.RealtimeServerEventRealtimeServerEventError;
+import com.azure.ai.agents.models.RealtimeServerEventError;
 import com.azure.ai.agents.models.RealtimeServerEventResponseAudioDelta;
 import com.azure.ai.agents.models.RealtimeServerEventResponseAudioTranscriptDone;
 import com.azure.ai.agents.models.RealtimeServerEventResponseCreated;
@@ -82,15 +82,15 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
         AgentsAsyncClient agents = builder.buildAgentsAsyncClient();
         BetaAgentsAsyncClient betaAgents = builder.beta().buildBetaAgentsAsyncClient();
         BetaVoiceAgentWebSocketAsyncClient realtime = builder.buildBetaVoiceAgentWebSocketAsyncClient();
-        BetaAgentEndpointConversationsAsyncClient conversations
-            = builder.beta().buildBetaAgentEndpointConversationsAsyncClient();
+        BetaVoiceAgentsConversationsAsyncClient conversations
+            = builder.beta().buildBetaVoiceAgentsConversationsAsyncClient();
 
         Map<String, String> request = new LinkedHashMap<>();
         request.put("kind", "voice");
         request.put("name", agentName);
         AtomicReference<String> conversationId = new AtomicReference<>();
 
-        betaAgents.generateAgent(BinaryData.fromObject(request))
+        betaAgents.createAgentFromPrompt(BinaryData.fromObject(request))
             .flatMap(generated -> {
                 VoiceAgentDefinition definition
                     = (VoiceAgentDefinition) generated.getVersions().getLatest().getDefinition();
@@ -149,9 +149,9 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
             } else if (event instanceof RealtimeServerEventResponseAudioTranscriptDone) {
                 System.out.println("Agent: "
                     + ((RealtimeServerEventResponseAudioTranscriptDone) event).getTranscript());
-            } else if (event instanceof RealtimeServerEventRealtimeServerEventError) {
-                RealtimeServerEventRealtimeServerEventError error
-                    = (RealtimeServerEventRealtimeServerEventError) event;
+            } else if (event instanceof RealtimeServerEventError) {
+                RealtimeServerEventError error
+                    = (RealtimeServerEventError) event;
                 System.out.println("Session error: " + error.getError().getMessage());
             }
             return Mono.<Void>empty();

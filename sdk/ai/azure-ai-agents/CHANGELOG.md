@@ -12,7 +12,7 @@
 - Added opt-in HTTP logging defaults through `AZURE_AI_PROJECTS_CONSOLE_LOGGING` and chunk-as-consumed SSE body logging in the OpenAI bridge, using the configured Java logging backend.
 - Added realtime handshake options for session IDs, structured inputs, API versions, credential scopes, preview features, extra headers and query parameters, and same-host secure connection URL overrides.
 
-- Added preview `BetaAgentTelephonyClient` and `BetaAgentTelephonyAsyncClient` for outbound call jobs and campaign management, including recipient import, validation, publishing, pausing, resuming, and cancellation.
+- Added preview `BetaVoiceAgentsTelephonyClient` and `BetaVoiceAgentsTelephonyAsyncClient` for outbound call jobs and campaign management, including recipient import, validation, publishing, pausing, resuming, and cancellation.
 - Added session-affinity routing configuration through `AzureCreateResponseOptions.setRoutingConfig(...)`, `RoutingConfiguration`, and `SessionAffinityConfiguration`, with response details exposed by `ModelRouterDetails.getSessionAffinity()`.
 - Added preview synchronous and asynchronous voice-agent WebSocket clients and session APIs with typed realtime events, text and PCM16 audio input, response cancellation, function-call output, persisted-conversation options, and authenticated `wss://` transport.
 - Added synchronous and asynchronous live text conversation samples, an asynchronous Java Sound microphone/speaker sample with barge-in, and a live client-executed function-tool sample.
@@ -21,10 +21,27 @@
 
 - Voice-agent WebSocket connections now require secure endpoints, including localhost. Configure certificate trust for
   local TLS servers through the transport callbacks. Synchronous sessions now enforce a 32 MiB default message limit.
-- Renamed `AgentTelephonyClient` and `AgentTelephonyAsyncClient` to `BetaAgentTelephonyClient` and `BetaAgentTelephonyAsyncClient`; use `AgentsClientBuilder.buildBetaAgentTelephonyClient()` or `buildBetaAgentTelephonyAsyncClient()`.
-- Moved telephony operations from `AgentsClient` and `AgentsAsyncClient` to `BetaAgentsClient` and `BetaAgentsAsyncClient`.
-- Moved `generateAgent` and `generateAgentWithResponse` from `AgentsClient` and `AgentsAsyncClient` to `BetaAgentsClient` and `BetaAgentsAsyncClient`.
+- Replaced `generateAgent` and `generateAgentWithResponse` on `AgentsClient` and `AgentsAsyncClient` with
+  `createAgentFromPrompt` and `createAgentFromPromptWithResponse` on `BetaAgentsClient` and `BetaAgentsAsyncClient`.
 - Moved `getId()` and `getConversationId()` from `VoiceResponseBase` to `VoiceResponse`.
+- Renamed the unreleased `BetaAgentEndpointConversationsClient` and `BetaAgentTelephonyClient` to
+  `BetaVoiceAgentsConversationsClient` and `BetaVoiceAgentsTelephonyClient`, including async clients and their
+  `.beta()` builder factories, to match the upstream voice operation groups.
+- Updated the unreleased voice preview APIs: telephony binding, call, and transfer-target operations now belong to
+  `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` instead of `BetaAgentsClient` /
+  `BetaAgentsAsyncClient`.
+- Renamed `VoiceItemAudioResponse` to `VoiceAudioItemResponse` and `VoiceGeneratedItemAudioResponse` to
+  `VoiceGeneratedAudioItemResponse`. Renamed the conversation audio content methods to
+  `downloadAgentConversationAudioItem`, `downloadAgentConversationGeneratedAudioItem`, and
+  `downloadAgentConversationAudio`, including async and `WithResponse` variants.
+- Removed the unreleased `BrowserAutomationTool`, `BrowserAutomationToolboxTool`, and
+  `ToolboxToolType.BROWSER_AUTOMATION`; the browser automation preview types remain available.
+- Aligned unreleased model names with TypeSpec: `MCP` and `PSTN` become `Mcp` and `Pstn` in affected type names;
+  `PickPropertiesVoiceAgentAudioConfig` becomes `VoiceAgentResponseAudioConfig`;
+  `RealtimeClientEventSessionUpdateSessionTruncation1` becomes
+  `RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio`; and the realtime error event and details become
+  `RealtimeServerEventError` and `RealtimeServerErrorDetails`. Voice realtime responses now reuse
+  `VoiceResponseBaseObject` instead of `VoiceResponseBaseObject1`.
 
 ### Bugs Fixed
 
@@ -44,7 +61,8 @@
 ### Other Changes
 
 - Streamed replayable code-upload content when computing SHA-256 to avoid materializing the entire upload in memory.
-- Regenerated client from the updated TypeSpec specification.
+- Regenerated from TypeSpec commit `2ba065c423a4c08ddb4e517a9f16deb17cb378c2`. Customization retains `.beta()` factory
+  placement and automatic voice preview headers after the upstream voice operation namespace relocation.
 
 ## 2.5.0 (2026-09-09)
 

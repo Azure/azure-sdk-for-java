@@ -15,8 +15,7 @@ import java.io.IOException;
  * The template for picking properties.
  */
 @Fluent
-public final class PickPropertiesVoiceAgentAudioConfig
-    implements JsonSerializable<PickPropertiesVoiceAgentAudioConfig> {
+public final class VoiceAgentResponseAudioConfig implements JsonSerializable<VoiceAgentResponseAudioConfig> {
 
     /*
      * Output (agent speech) audio configuration.
@@ -25,10 +24,10 @@ public final class PickPropertiesVoiceAgentAudioConfig
     private VoiceAgentAudioOutputConfig output;
 
     /**
-     * Creates an instance of PickPropertiesVoiceAgentAudioConfig class.
+     * Creates an instance of VoiceAgentResponseAudioConfig class.
      */
     @Generated
-    public PickPropertiesVoiceAgentAudioConfig() {
+    public VoiceAgentResponseAudioConfig() {
     }
 
     /**
@@ -45,10 +44,10 @@ public final class PickPropertiesVoiceAgentAudioConfig
      * Set the output property: Output (agent speech) audio configuration.
      *
      * @param output the output value to set.
-     * @return the PickPropertiesVoiceAgentAudioConfig object itself.
+     * @return the VoiceAgentResponseAudioConfig object itself.
      */
     @Generated
-    public PickPropertiesVoiceAgentAudioConfig setOutput(VoiceAgentAudioOutputConfig output) {
+    public VoiceAgentResponseAudioConfig setOutput(VoiceAgentAudioOutputConfig output) {
         this.output = output;
         return this;
     }
@@ -65,29 +64,28 @@ public final class PickPropertiesVoiceAgentAudioConfig
     }
 
     /**
-     * Reads an instance of PickPropertiesVoiceAgentAudioConfig from the JsonReader.
+     * Reads an instance of VoiceAgentResponseAudioConfig from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PickPropertiesVoiceAgentAudioConfig if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PickPropertiesVoiceAgentAudioConfig.
+     * @return An instance of VoiceAgentResponseAudioConfig if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VoiceAgentResponseAudioConfig.
      */
     @Generated
-    public static PickPropertiesVoiceAgentAudioConfig fromJson(JsonReader jsonReader) throws IOException {
+    public static VoiceAgentResponseAudioConfig fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PickPropertiesVoiceAgentAudioConfig deserializedPickPropertiesVoiceAgentAudioConfig
-                = new PickPropertiesVoiceAgentAudioConfig();
+            VoiceAgentResponseAudioConfig deserializedVoiceAgentResponseAudioConfig
+                = new VoiceAgentResponseAudioConfig();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("output".equals(fieldName)) {
-                    deserializedPickPropertiesVoiceAgentAudioConfig.output
-                        = VoiceAgentAudioOutputConfig.fromJson(reader);
+                    deserializedVoiceAgentResponseAudioConfig.output = VoiceAgentAudioOutputConfig.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedPickPropertiesVoiceAgentAudioConfig;
+            return deserializedVoiceAgentResponseAudioConfig;
         });
     }
 }

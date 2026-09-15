@@ -80,7 +80,7 @@ public class ToolChoiceParam implements JsonSerializable<ToolChoiceParam> {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("mcp".equals(discriminatorValue)) {
-                    return ToolChoiceMCP.fromJson(readerToUse.reset());
+                    return ToolChoiceMcp.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {
                     return ToolChoiceFunction.fromJson(readerToUse.reset());
                 } else {

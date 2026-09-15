@@ -131,7 +131,7 @@ public class VoiceAgentCrudTests {
             if (scenario == Scenario.GENERATE) {
                 AgentDetails generated = builder.beta()
                     .buildBetaAgentsClient()
-                    .generateAgent(BinaryData.fromObject(object("kind", "voice", "name", name)));
+                    .createAgentFromPrompt(BinaryData.fromObject(object("kind", "voice", "name", name)));
                 created = true;
                 validateAgent(generated, name, null);
                 VoiceAgentDefinition voice

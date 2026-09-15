@@ -3,10 +3,10 @@
 
 package com.azure.ai.agents.voice;
 
-import com.azure.ai.agents.BetaAgentEndpointConversationsAsyncClient;
-import com.azure.ai.agents.BetaAgentEndpointConversationsClient;
+import com.azure.ai.agents.BetaVoiceAgentsConversationsAsyncClient;
+import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
 import com.azure.ai.agents.models.RealtimeServerEvent;
-import com.azure.ai.agents.models.RealtimeServerEventRealtimeServerEventError;
+import com.azure.ai.agents.models.RealtimeServerEventError;
 import com.azure.ai.agents.models.RealtimeServerEventResponseAudioDelta;
 import com.azure.ai.agents.models.RealtimeServerEventResponseAudioTranscriptDone;
 import com.azure.ai.agents.models.RealtimeServerEventResponseDone;
@@ -42,16 +42,16 @@ final class VoiceAgentRealtimeSampleUtils {
         } else if (event instanceof RealtimeServerEventResponseAudioTranscriptDone) {
             System.out.println("Agent: "
                 + ((RealtimeServerEventResponseAudioTranscriptDone) event).getTranscript());
-        } else if (event instanceof RealtimeServerEventRealtimeServerEventError) {
-            RealtimeServerEventRealtimeServerEventError error
-                = (RealtimeServerEventRealtimeServerEventError) event;
+        } else if (event instanceof RealtimeServerEventError) {
+            RealtimeServerEventError error
+                = (RealtimeServerEventError) event;
             System.out.println("Session error: " + error.getError().getMessage());
             return true;
         }
         return event instanceof RealtimeServerEventResponseDone;
     }
 
-    static void readConversation(BetaAgentEndpointConversationsClient conversations, String agentName,
+    static void readConversation(BetaVoiceAgentsConversationsClient conversations, String agentName,
         String conversationId) {
         VoiceConversation conversation = conversations.getAgentConversation(agentName, conversationId);
         System.out.printf("Conversation %s: status=%s, created=%s%n", conversation.getId(),
@@ -62,7 +62,7 @@ final class VoiceAgentRealtimeSampleUtils {
         }
     }
 
-    static Mono<Void> readConversation(BetaAgentEndpointConversationsAsyncClient conversations, String agentName,
+    static Mono<Void> readConversation(BetaVoiceAgentsConversationsAsyncClient conversations, String agentName,
         String conversationId) {
         return conversations.getAgentConversation(agentName, conversationId)
             .doOnNext(conversation -> System.out.printf("Conversation %s: status=%s, created=%s%n",

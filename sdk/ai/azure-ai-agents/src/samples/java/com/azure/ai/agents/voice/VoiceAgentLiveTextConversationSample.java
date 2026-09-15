@@ -5,7 +5,7 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentEndpointConversationsClient;
+import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
 import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.ai.agents.BetaVoiceAgentWebSocketClient;
 import com.azure.ai.agents.VoiceAgentWebSocketSessionClient;
@@ -57,12 +57,12 @@ public class VoiceAgentLiveTextConversationSample {
         AgentsClient agents = builder.buildAgentsClient();
         BetaAgentsClient betaAgents = builder.beta().buildBetaAgentsClient();
         BetaVoiceAgentWebSocketClient realtime = builder.buildBetaVoiceAgentWebSocketClient();
-        BetaAgentEndpointConversationsClient conversations = builder.beta().buildBetaAgentEndpointConversationsClient();
+        BetaVoiceAgentsConversationsClient conversations = builder.beta().buildBetaVoiceAgentsConversationsClient();
 
         Map<String, String> request = new LinkedHashMap<>();
         request.put("kind", "voice");
         request.put("name", agentName);
-        AgentDetails generated = betaAgents.generateAgent(BinaryData.fromObject(request));
+        AgentDetails generated = betaAgents.createAgentFromPrompt(BinaryData.fromObject(request));
 
         try {
             AgentVersionDetails latest = generated.getVersions().getLatest();

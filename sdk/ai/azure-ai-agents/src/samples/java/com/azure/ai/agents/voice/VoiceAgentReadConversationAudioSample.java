@@ -3,9 +3,9 @@
 
 package com.azure.ai.agents.voice;
 
-import com.azure.ai.agents.BetaAgentEndpointConversationsClient;
+import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.models.VoiceItemAudioResponse;
+import com.azure.ai.agents.models.VoiceAudioItemResponse;
 import com.azure.ai.agents.models.VoiceRecordingResponse;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
@@ -34,11 +34,11 @@ public class VoiceAgentReadConversationAudioSample {
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
         String agentName = configuration.get("FOUNDRY_VOICE_AGENT_NAME");
         String conversationId = configuration.get("FOUNDRY_VOICE_CONVERSATION_ID");
-        BetaAgentEndpointConversationsClient conversations = new AgentsClientBuilder()
+        BetaVoiceAgentsConversationsClient conversations = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint)
             .beta()
-            .buildBetaAgentEndpointConversationsClient();
+            .buildBetaVoiceAgentsConversationsClient();
 
         VoiceRecordingResponse recording = conversations.getAgentConversationAudio(agentName, conversationId);
         System.out.printf("Recording: format=%s, rate=%d, channels=%d, duration=%s%n",
@@ -47,7 +47,7 @@ public class VoiceAgentReadConversationAudioSample {
             System.out.println("Recording is stored in customer storage: " + recording.getBlobUri());
         } else {
             Path output = Files.createTempFile(conversationId + "-", ".wav");
-            Files.write(output, conversations.getAgentConversationAudioContent(agentName, conversationId).toBytes());
+            Files.write(output, conversations.downloadAgentConversationAudio(agentName, conversationId).toBytes());
             System.out.println("Wrote merged recording: " + output);
         }
 
@@ -60,13 +60,13 @@ public class VoiceAgentReadConversationAudioSample {
                 continue;
             }
             try {
-                VoiceItemAudioResponse metadata = conversations.getAgentConversationItemAudio(
+                VoiceAudioItemResponse metadata = conversations.getAgentConversationAudioItem(
                     agentName, conversationId, itemId);
                 if (metadata.getBlobUri() != null) {
                     System.out.println("Item audio is stored in customer storage: " + metadata.getBlobUri());
                 } else {
                     Path output = Files.createTempFile(conversationId + "-" + itemId + "-", ".wav");
-                    Files.write(output, conversations.getAgentConversationItemAudioContent(
+                    Files.write(output, conversations.downloadAgentConversationAudioItem(
                         agentName, conversationId, itemId).toBytes());
                     System.out.println("Wrote item audio: " + output);
                 }

@@ -140,9 +140,9 @@ public class AgentsCustomizations extends Customization {
                 });
             customizeAgentEndpointConversationBuildMethods(builder);
             customizeAgentTelephonyBuildMethods(builder);
-            for (String methodName : new String[] { "buildBetaAgentEndpointConversationsAsyncClient",
-                "buildBetaAgentEndpointConversationsClient", "buildBetaAgentTelephonyAsyncClient",
-                "buildBetaAgentTelephonyClient" }) {
+            for (String methodName : new String[] { "buildBetaVoiceAgentsConversationsAsyncClient",
+                "buildBetaVoiceAgentsConversationsClient", "buildBetaVoiceAgentsTelephonyAsyncClient",
+                "buildBetaVoiceAgentsTelephonyClient" }) {
                 getSingleMethod(builder, methodName)
                     .setModifier(Modifier.Keyword.PUBLIC, false)
                     .setModifier(Modifier.Keyword.PRIVATE, true);
@@ -152,35 +152,35 @@ public class AgentsCustomizations extends Customization {
                 .asNormalAnnotationExpr().getPairs().stream()
                 .filter(pair -> "serviceClients".equals(pair.getNameAsString()))
                 .forEach(pair -> pair.getValue().asArrayInitializerExpr().getValues().removeIf(value ->
-                    Arrays.asList("BetaAgentTelephonyClient.class", "BetaAgentTelephonyAsyncClient.class",
-                        "BetaAgentEndpointConversationsClient.class", "BetaAgentEndpointConversationsAsyncClient.class")
+                    Arrays.asList("BetaVoiceAgentsTelephonyClient.class", "BetaVoiceAgentsTelephonyAsyncClient.class",
+                        "BetaVoiceAgentsConversationsClient.class", "BetaVoiceAgentsConversationsAsyncClient.class")
                         .contains(value.toString())));
         });
     }
 
     private static void customizeAgentEndpointConversationBuildMethods(ClassOrInterfaceDeclaration builder) {
         MethodDeclaration asyncMethod
-            = getSingleMethod(builder, "buildBetaAgentEndpointConversationsAsyncClient");
-        asyncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentEndpointConversationsAsyncClient("
+            = getSingleMethod(builder, "buildBetaVoiceAgentsConversationsAsyncClient");
+        asyncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaVoiceAgentsConversationsAsyncClient("
             + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
-            + ".getBetaAgentEndpointConversations()); }"));
+            + ".getBetaVoiceAgentsConversations()); }"));
 
-        MethodDeclaration syncMethod = getSingleMethod(builder, "buildBetaAgentEndpointConversationsClient");
-        syncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentEndpointConversationsClient("
+        MethodDeclaration syncMethod = getSingleMethod(builder, "buildBetaVoiceAgentsConversationsClient");
+        syncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaVoiceAgentsConversationsClient("
             + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
-            + ".getBetaAgentEndpointConversations()); }"));
+            + ".getBetaVoiceAgentsConversations()); }"));
     }
 
     private static void customizeAgentTelephonyBuildMethods(ClassOrInterfaceDeclaration builder) {
-        MethodDeclaration asyncMethod = getSingleMethod(builder, "buildBetaAgentTelephonyAsyncClient");
-        asyncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentTelephonyAsyncClient("
+        MethodDeclaration asyncMethod = getSingleMethod(builder, "buildBetaVoiceAgentsTelephonyAsyncClient");
+        asyncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaVoiceAgentsTelephonyAsyncClient("
             + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
-            + ".getBetaAgentTelephonies()); }"));
+            + ".getBetaVoiceAgentsTelephonies()); }"));
 
-        MethodDeclaration syncMethod = getSingleMethod(builder, "buildBetaAgentTelephonyClient");
-        syncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaAgentTelephonyClient("
+        MethodDeclaration syncMethod = getSingleMethod(builder, "buildBetaVoiceAgentsTelephonyClient");
+        syncMethod.setBody(StaticJavaParser.parseBlock("{ return new BetaVoiceAgentsTelephonyClient("
             + "buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())"
-            + ".getBetaAgentTelephonies()); }"));
+            + ".getBetaVoiceAgentsTelephonies()); }"));
     }
 
     private static MethodDeclaration getSingleMethod(ClassOrInterfaceDeclaration model, String methodName) {

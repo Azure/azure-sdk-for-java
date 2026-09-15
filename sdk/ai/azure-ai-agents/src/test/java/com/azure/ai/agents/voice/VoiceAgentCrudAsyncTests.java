@@ -131,7 +131,7 @@ public class VoiceAgentCrudAsyncTests {
         Mono<?> create = scenario == Scenario.GENERATE
             ? builder.beta()
                 .buildBetaAgentsAsyncClient()
-                .generateAgent(BinaryData.fromObject(object("kind", "voice", "name", name)))
+                .createAgentFromPrompt(BinaryData.fromObject(object("kind", "voice", "name", name)))
             : client.createAgentVersion(name, new CreateAgentVersionInput(definition(model, INSTRUCTIONS)));
         return Mono.usingWhen(create, created -> {
             if (scenario == Scenario.GENERATE) {

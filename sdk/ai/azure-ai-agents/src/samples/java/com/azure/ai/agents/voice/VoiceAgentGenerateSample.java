@@ -41,7 +41,7 @@ public class VoiceAgentGenerateSample {
         Map<String, String> request = new LinkedHashMap<>();
         request.put("kind", "voice");
         request.put("name", agentName);
-        AgentDetails generated = betaClient.generateAgent(BinaryData.fromObject(request));
+        AgentDetails generated = betaClient.createAgentFromPrompt(BinaryData.fromObject(request));
         try {
             System.out.println("Generated voice agent: " + generated.getName());
             AgentVersionDetails latest = generated.getVersions().getLatest();

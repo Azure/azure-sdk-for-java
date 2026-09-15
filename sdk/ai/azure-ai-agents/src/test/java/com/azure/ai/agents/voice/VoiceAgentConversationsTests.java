@@ -5,7 +5,7 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.BetaAgentEndpointConversationsClient;
+import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
 import com.azure.ai.agents.VoiceAgentWebSocketSessionClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeServerEvent;
@@ -16,7 +16,7 @@ import com.azure.ai.agents.models.VoiceAgentAudioOutputConfig;
 import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.ai.agents.models.VoiceConversation;
 import com.azure.ai.agents.models.VoiceConversationStatus;
-import com.azure.ai.agents.models.VoiceItemAudioResponse;
+import com.azure.ai.agents.models.VoiceAudioItemResponse;
 import com.azure.ai.agents.models.VoiceModelType;
 import com.azure.ai.agents.models.VoiceOutputModality;
 import com.azure.ai.agents.models.VoiceRecordingResponse;
@@ -92,7 +92,7 @@ public class VoiceAgentConversationsTests {
             .credential(new DefaultAzureCredentialBuilder().build())
             .allowPreview(true);
         AgentsClient agents = builder.buildAgentsClient();
-        BetaAgentEndpointConversationsClient conversations = builder.beta().buildBetaAgentEndpointConversationsClient();
+        BetaVoiceAgentsConversationsClient conversations = builder.beta().buildBetaVoiceAgentsConversationsClient();
         VoiceAgentDefinition definition = new VoiceAgentDefinition().setModelType(VoiceModelType.MANAGED)
             .setModel(model)
             .setInstructions("You are a helpful voice assistant. Keep replies short.")
@@ -203,16 +203,16 @@ public class VoiceAgentConversationsTests {
         transport.get(PATH + "/items/user-1", 200, USER_ITEM);
     }
 
-    private static BetaAgentEndpointConversationsClient client(HttpClient transport) {
+    private static BetaVoiceAgentsConversationsClient client(HttpClient transport) {
         return new AgentsClientBuilder().endpoint("https://localhost")
             .credential(new MockTokenCredential())
             .httpClient(transport)
             .allowPreview(true)
             .beta()
-            .buildBetaAgentEndpointConversationsClient();
+            .buildBetaVoiceAgentsConversationsClient();
     }
 
-    private static void assertPersistedConversation(BetaAgentEndpointConversationsClient client, String agentName,
+    private static void assertPersistedConversation(BetaVoiceAgentsConversationsClient client, String agentName,
         String conversationId) {
         try {
             assertTrue(client.listAgentConversations(agentName)
@@ -258,16 +258,16 @@ public class VoiceAgentConversationsTests {
             assertNotNull(recording);
             assertNotNull(recording.getFormat());
             if (recording.getBlobUri() == null || recording.getBlobUri().isEmpty()) {
-                assertAudio(client.getAgentConversationAudioContent(agentName, conversationId));
+                assertAudio(client.downloadAgentConversationAudio(agentName, conversationId));
             }
             for (BinaryData item : items) {
                 String id = itemId(item);
                 if (id == null || id.isEmpty()) {
                     continue;
                 }
-                VoiceItemAudioResponse audio;
+                VoiceAudioItemResponse audio;
                 try {
-                    audio = client.getAgentConversationItemAudio(agentName, conversationId, id);
+                    audio = client.getAgentConversationAudioItem(agentName, conversationId, id);
                 } catch (HttpResponseException error) {
                     if (error.getResponse().getStatusCode() == 404) {
                         continue;
@@ -277,7 +277,7 @@ public class VoiceAgentConversationsTests {
                 assertNotNull(audio);
                 assertNotNull(audio.getRole());
                 if (audio.getBlobUri() == null || audio.getBlobUri().isEmpty()) {
-                    assertAudio(client.getAgentConversationItemAudioContent(agentName, conversationId, id));
+                    assertAudio(client.downloadAgentConversationAudioItem(agentName, conversationId, id));
                 }
                 break;
             }

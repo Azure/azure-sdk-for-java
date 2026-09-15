@@ -11,7 +11,7 @@ import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeConversationItem;
 import com.azure.ai.agents.models.RealtimeConversationItemType;
 import com.azure.ai.agents.models.RealtimeServerEvent;
-import com.azure.ai.agents.models.RealtimeServerEventRealtimeServerEventError;
+import com.azure.ai.agents.models.RealtimeServerEventError;
 import com.azure.ai.agents.models.RealtimeServerEventResponseDone;
 import com.azure.ai.agents.models.RealtimeServerEventResponseFunctionCallArgumentsDone;
 import com.azure.ai.agents.models.RealtimeServerEventResponseTextDone;
@@ -126,9 +126,9 @@ public class VoiceAgentLiveFunctionToolSample {
                 if (!containsFunctionCall((RealtimeServerEventResponseDone) event)) {
                     return;
                 }
-            } else if (event instanceof RealtimeServerEventRealtimeServerEventError) {
-                RealtimeServerEventRealtimeServerEventError error
-                    = (RealtimeServerEventRealtimeServerEventError) event;
+            } else if (event instanceof RealtimeServerEventError) {
+                RealtimeServerEventError error
+                    = (RealtimeServerEventError) event;
                 System.out.println("Session error: " + error.getError().getMessage());
                 return;
             }

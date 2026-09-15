@@ -17,7 +17,7 @@ import com.azure.ai.agents.models.RealtimeConversationItemMessageUser;
 import com.azure.ai.agents.models.RealtimeConversationItemMessageUserContent;
 import com.azure.ai.agents.models.RealtimeConversationItemMessageUserContentType;
 import com.azure.ai.agents.models.RealtimeServerEvent;
-import com.azure.ai.agents.models.RealtimeServerEventRealtimeServerEventError;
+import com.azure.ai.agents.models.RealtimeServerEventError;
 import com.azure.ai.agents.models.RealtimeServerEventResponseAudioDelta;
 import com.azure.ai.agents.models.RealtimeServerEventResponseAudioTranscriptDone;
 import com.azure.ai.agents.models.RealtimeServerEventResponseDone;
@@ -315,8 +315,8 @@ public class VoiceAgentRealtimeLiveTests {
         }
 
         private List<RealtimeClientEvent> accept(RealtimeServerEvent event) {
-            if (event instanceof RealtimeServerEventRealtimeServerEventError) {
-                fail("Session error: " + ((RealtimeServerEventRealtimeServerEventError) event).getError().getMessage());
+            if (event instanceof RealtimeServerEventError) {
+                fail("Session error: " + ((RealtimeServerEventError) event).getError().getMessage());
             }
             if (!started) {
                 assertInstanceOf(RealtimeServerEventSessionCreated.class, event,

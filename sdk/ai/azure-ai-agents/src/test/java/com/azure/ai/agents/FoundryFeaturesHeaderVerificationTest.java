@@ -160,10 +160,10 @@ public class FoundryFeaturesHeaderVerificationTest {
     public void voicePreviewFactoriesAreOnlyPublicOnBetaBuilder() throws ReflectiveOperationException {
         AgentsClientBuilder builder = createBuilder(new RecordingHttpClient());
         for (Class<?> clientType : new Class<?>[] {
-            BetaAgentTelephonyClient.class,
-            BetaAgentTelephonyAsyncClient.class,
-            BetaAgentEndpointConversationsClient.class,
-            BetaAgentEndpointConversationsAsyncClient.class }) {
+            BetaVoiceAgentsTelephonyClient.class,
+            BetaVoiceAgentsTelephonyAsyncClient.class,
+            BetaVoiceAgentsConversationsClient.class,
+            BetaVoiceAgentsConversationsAsyncClient.class }) {
             String methodName = "build" + clientType.getSimpleName();
             assertThrows(NoSuchMethodException.class, () -> AgentsClientBuilder.class.getMethod(methodName));
             assertTrue(clientType.isInstance(
@@ -179,17 +179,31 @@ public class FoundryFeaturesHeaderVerificationTest {
                 = customPipeline ? createBuilder(createCustomPipeline(httpClient)) : createBuilder(httpClient);
             List<Runnable> requests = Arrays.asList(
                 () -> builder.beta()
-                    .buildBetaAgentTelephonyClient()
+                    .buildBetaVoiceAgentsTelephonyClient()
+                    .getTelephonyBindingWithResponse("agent", "binding", new RequestOptions()),
+                () -> builder.beta()
+                    .buildBetaVoiceAgentsTelephonyAsyncClient()
+                    .getTelephonyBindingWithResponse("agent", "binding", new RequestOptions())
+                    .block(),
+                () -> builder.beta()
+                    .buildBetaVoiceAgentsConversationsClient()
+                    .downloadAgentConversationAudioWithResponse("agent", "conversation", new RequestOptions()),
+                () -> builder.beta()
+                    .buildBetaVoiceAgentsConversationsAsyncClient()
+                    .downloadAgentConversationAudioWithResponse("agent", "conversation", new RequestOptions())
+                    .block(),
+                () -> builder.beta()
+                    .buildBetaVoiceAgentsTelephonyClient()
                     .getTelephonyCallJobWithResponse("agent", "job", new RequestOptions()),
                 () -> builder.beta()
-                    .buildBetaAgentTelephonyAsyncClient()
+                    .buildBetaVoiceAgentsTelephonyAsyncClient()
                     .getTelephonyCallJobWithResponse("agent", "job", new RequestOptions())
                     .block(),
                 () -> builder.beta()
-                    .buildBetaAgentEndpointConversationsClient()
+                    .buildBetaVoiceAgentsConversationsClient()
                     .getAgentConversationWithResponse("agent", "conversation", new RequestOptions()),
                 () -> builder.beta()
-                    .buildBetaAgentEndpointConversationsAsyncClient()
+                    .buildBetaVoiceAgentsConversationsAsyncClient()
                     .getAgentConversationWithResponse("agent", "conversation", new RequestOptions())
                     .block());
             for (Runnable request : requests) {
