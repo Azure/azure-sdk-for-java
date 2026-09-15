@@ -3,6 +3,8 @@
 
 BeforeAll {
     $script:RepositoryRoot = Resolve-Path (Join-Path $PSScriptRoot '..' '..' '..')
+    . (Join-Path $script:RepositoryRoot 'eng/common/scripts/Package-Properties.ps1')
+    . (Join-Path $script:RepositoryRoot 'eng/scripts/Language-Settings.ps1')
 
     function Get-YamlSequence {
         param(
@@ -72,10 +74,36 @@ BeforeAll {
         'hotfix/*',
         'release/*'
     )
+    $script:RootDocuments = @(
+        'AGENTS.md',
+        'CODE_OF_CONDUCT.md',
+        'CONTRIBUTING.md',
+        'LICENSE.txt',
+        'NOTICE.txt',
+        'README.md',
+        'SECURITY.md',
+        'SUPPORT.md'
+    )
     $script:ExpectedStaticTriggerExclusions = @(
         '.github/skills/azsdk-common-*/**',
         'docs/**'
+    ) + $script:RootDocuments
+    $script:ExpectedPackageExclusions = @('docs/') + $script:RootDocuments + @(
+        'eng/versioning/external_dependencies.txt',
+        'eng/versioning/version_client.txt',
+        'eng/versioning/version_java_files.txt',
+        'sdk/batch/microsoft-azure-batch/',
+        'sdk/boms/',
+        'sdk/cosmos/',
+        'sdk/e2e/',
+        'sdk/eventhubs/microsoft-azure-eventhubs/',
+        'sdk/eventhubs/microsoft-azure-eventhubs-eph/',
+        'sdk/servicebus/microsoft-azure-servicebus/',
+        'sdk/spring/'
     )
+    $script:TriggerExclusions = Get-YamlSequence -Path $script:PullRequestPath -KeyPath @('pr', 'paths', 'exclude')
+    $script:PackageExclusions = Get-YamlSequence `
+        -Path $script:PullRequestPath -KeyPath @('extends', 'parameters', 'ExcludePaths')
 }
 
 Describe 'Pull request trigger contracts' -Tag 'UnitTest' {
@@ -104,7 +132,7 @@ Describe 'Pull request trigger contracts' -Tag 'UnitTest' {
 
         Compare-Object `
             -ReferenceObject $script:ExpectedStaticTriggerExclusions `
-            -DifferenceObject $actualExclusions |
+            -DifferenceObject $actualExclusions -CaseSensitive |
                 Should -BeNullOrEmpty
         @($actualExclusions | Where-Object { $_ -in @('**/*.md', '**/*.txt') }) |
             Should -BeNullOrEmpty
@@ -112,12 +140,110 @@ Describe 'Pull request trigger contracts' -Tag 'UnitTest' {
             Should -BeNullOrEmpty
     }
 
-    It 'keeps static documentation exclusions available to mixed-PR classification' {
-        $actualExcludePaths = Get-YamlSequence `
-            -Path $script:PullRequestPath `
-            -KeyPath @('extends', 'parameters', 'ExcludePaths')
+    It 'mirrors root documents and preserves existing package-selection exclusions' {
+        Compare-Object `
+            -ReferenceObject $script:ExpectedPackageExclusions `
+            -DifferenceObject $script:PackageExclusions -CaseSensitive |
+                Should -BeNullOrEmpty
+    }
 
-        $actualExcludePaths | Should -Contain 'docs/'
+    It 'excludes each reviewed root document in both package-selection consumers' {
+        foreach ($document in $script:RootDocuments) {
+            @($script:TriggerExclusions | Where-Object { $document -clike $_ }) |
+                Should -Be @($document)
+            Update-TargetedFilesForExclude @($document) $script:PackageExclusions |
+                Should -BeNullOrEmpty
+
+            $diff = [pscustomobject]@{
+                ChangedFiles = @($document)
+                DeletedFiles = @()
+                ExcludePaths = $script:PackageExclusions
+            }
+            $template = [pscustomobject]@{ Name = 'template'; ServiceDirectory = 'template' }
+            Get-java-AdditionalValidationPackagesFromPackageSet `
+                -LocatedPackages @() -diffObj $diff -AllPkgProps @($template) |
+                    Should -BeNullOrEmpty
+        }
+    }
+
+    It 'preserves trigger and package selection for <Path>' -TestCases @(
+        @{ Path = 'sdk/example/README.md' }
+        @{ Path = 'sdk/example/example/README.md' }
+        @{ Path = 'sdk/example/example/CHANGELOG.md' }
+        @{ Path = 'sdk/example/example/LICENSE.txt' }
+        @{ Path = 'sdk/example/example/swagger/README.md' }
+        @{ Path = 'sdk/example/example/src/main/resources/NOTICE.txt' }
+        @{ Path = 'sdk/example/example/src/test/resources/README.md' }
+        @{ Path = 'sdk/example/example/src/test-shared/AGENTS.md' }
+        @{ Path = 'sdk/example/example/src/main/java/Example.java' }
+        @{ Path = 'sdk/example/example/tsp-location.yaml' }
+        @{ Path = 'eng/scripts/build.ps1' }
+        @{ Path = 'pom.xml' }
+        @{ Path = 'README.txt' }
+        @{ Path = 'README.template.md' }
+        @{ Path = 'NOTICE.md' }
+        @{ Path = 'unknown.md' }
+    ) {
+        param($Path)
+
+        @($script:TriggerExclusions | Where-Object { $Path -clike $_ }) | Should -BeNullOrEmpty
+        Update-TargetedFilesForExclude @($Path) $script:PackageExclusions | Should -Be @($Path)
+    }
+
+    It 'keeps functional paths in mixed PRs after filtering root documents' {
+        $functionalPaths = @('pom.xml', 'sdk/example/README.md', 'sdk/example/example/src/test/resources/NOTICE.txt')
+        $diff = [pscustomobject]@{
+            ChangedFiles = $script:RootDocuments + $functionalPaths
+            DeletedFiles = @()
+            ExcludePaths = $script:PackageExclusions
+        }
+        $selectedPaths = Update-TargetedFilesForExclude $diff.ChangedFiles $diff.ExcludePaths
+        $selectedPaths | Should -Be $functionalPaths
+
+        $packages = @(
+            [pscustomobject]@{ Name = 'template'; ServiceDirectory = 'template'; IncludedForValidation = $false }
+            [pscustomobject]@{ Name = 'example'; ServiceDirectory = 'example'; IncludedForValidation = $false }
+        )
+        $additional = @(Get-java-AdditionalValidationPackagesFromPackageSet `
+            -LocatedPackages @() -diffObj $diff -AllPkgProps $packages)
+        $additional.Name | Should -Be @('template', 'example')
+    }
+
+    It 'preserves deleted functional paths in mixed PRs' {
+        $diff = [pscustomobject]@{
+            ChangedFiles = @('README.md')
+            DeletedFiles = @('NOTICE.txt', 'sdk/example/README.md')
+            ExcludePaths = $script:PackageExclusions
+        }
+        $selectedPaths = Update-TargetedFilesForExclude `
+            ($diff.ChangedFiles + $diff.DeletedFiles) $diff.ExcludePaths
+        $selectedPaths | Should -Be @('sdk/example/README.md')
+
+        $package = [pscustomobject]@{
+            Name = 'example'
+            ServiceDirectory = 'example'
+            IncludedForValidation = $false
+        }
+        $additional = @(Get-java-AdditionalValidationPackagesFromPackageSet `
+            -LocatedPackages @() -diffObj $diff -AllPkgProps @($package))
+        $additional.Name | Should -Be @('example')
+    }
+
+    It 'keeps the required Check Spelling job unrestricted' {
+        $workflow = Get-Content `
+            -LiteralPath (Join-Path $script:RepositoryRoot '.github/workflows/check-spelling.yml') -Raw
+        $jobs = [regex]::Match($workflow, '(?ms)^jobs:\r?\n(.*)').Groups[1].Value
+        $steps = $workflow -split '(?m)^      - name: '
+        $spellingSteps = @($steps | Where-Object { $_ -match '^Check spelling\r?\n' })
+
+        @([regex]::Matches($jobs, '(?m)^  [\w-]+:')).Count | Should -Be 1
+        $workflow | Should -Match '(?m)^  check-spelling:\s*\r?\n    name: Check Spelling\s*\r?\n    runs-on: ubuntu-slim'
+        $workflow | Should -Not -Match '(?m)^\s+(paths|paths-ignore|continue-on-error|sparse-checkout):'
+        $jobs | Should -Not -Match '(?m)^    if:'
+        $spellingSteps.Count | Should -Be 1
+        $spellingSteps[0] | Should -Match '(?m)^        shell: pwsh\s*$'
+        $spellingSteps[0] | Should -Match ('(?s)run: >\s*\./eng/common/scripts/check-spelling-in-changed-files\.ps1\s*' +
+            '-CspellConfigPath \.vscode/cspell\.json\s*-ExitWithError\s*-SourceCommittish HEAD\s*-TargetCommittish HEAD\^')
     }
 
     It 'tracks the reviewed top-level docs file types' {
