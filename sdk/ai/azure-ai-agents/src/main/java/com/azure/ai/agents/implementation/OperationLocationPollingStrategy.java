@@ -113,24 +113,17 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
     public Mono<U> getResult(PollingContext<T> pollingContext, TypeReference<U> resultType) {
         if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {
             return Mono.error(new AzureException("Long running operation failed."));
-        } else if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
+        }
+        if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
             return Mono.error(new AzureException("Long running operation cancelled."));
         }
         if (propertyName != null) {
-            // take the last poll response body from PollingContext,
-            // and de-serialize the <propertyName> property as final result
             BinaryData latestResponseBody
                 = BinaryData.fromString(pollingContext.getData(PollingUtils.POLL_RESPONSE_BODY));
             return PollingUtils
                 .deserializeResponse(latestResponseBody, serializer, PollingUtils.POST_POLL_RESULT_TYPE_REFERENCE)
-                .flatMap(value -> {
-                    if (value.get(propertyName) != null) {
-                        return BinaryData.fromObjectAsync(value.get(propertyName))
-                            .flatMap(result -> PollingUtils.deserializeResponse(result, serializer, resultType));
-                    } else {
-                        return Mono.error(new AzureException("Cannot get final result"));
-                    }
-                })
+                .flatMap(value -> PollingUtils.deserializeResponse(
+                    AgentsServicePollUtils.getFinalResultBody(value, propertyName, resultType), serializer, resultType))
                 .switchIfEmpty(Mono.error(new AzureException("Cannot get final result")));
         } else {
             return super.getResult(pollingContext, resultType);

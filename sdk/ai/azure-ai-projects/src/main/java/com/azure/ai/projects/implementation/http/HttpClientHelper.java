@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -29,9 +30,6 @@ import com.openai.errors.RateLimitException;
 import com.openai.errors.UnauthorizedException;
 import com.openai.errors.UnexpectedStatusCodeException;
 import com.openai.errors.UnprocessableEntityException;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
-
 import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -39,6 +37,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * Utility entry point that adapts an Azure {@link com.azure.core.http.HttpClient} so it can be consumed by
@@ -54,6 +54,45 @@ public final class HttpClientHelper {
     }
 
     /**
+     * Creates a logging policy that never logs multipart upload bodies.
+     * @param options caller logging settings, which are not modified.
+     * @return multipart-aware logging policy.
+     */
+    public static com.azure.core.http.policy.HttpPipelinePolicy
+        createLoggingPolicy(com.azure.core.http.policy.HttpLogOptions options) {
+        com.azure.core.http.policy.HttpLoggingPolicy normal = new com.azure.core.http.policy.HttpLoggingPolicy(options);
+        com.azure.core.http.policy.HttpLoggingPolicy headers
+            = new com.azure.core.http.policy.HttpLoggingPolicy(new com.azure.core.http.policy.HttpLogOptions()
+                .setLogLevel(options.getLogLevel().shouldLogHeaders()
+                    ? com.azure.core.http.policy.HttpLogDetailLevel.HEADERS
+                    : com.azure.core.http.policy.HttpLogDetailLevel.BASIC)
+                .setAllowedHeaderNames(options.getAllowedHeaderNames())
+                .setAllowedQueryParamNames(options.getAllowedQueryParamNames())
+                .disableRedactedHeaderLogging(options.isRedactedHeaderLoggingDisabled()));
+        return new com.azure.core.http.policy.HttpPipelinePolicy() {
+            private com.azure.core.http.policy.HttpLoggingPolicy
+                select(com.azure.core.http.HttpPipelineCallContext context) {
+                String contentType = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+                return options.getLogLevel().shouldLogBody()
+                    && contentType != null
+                    && contentType.toLowerCase(java.util.Locale.ROOT).startsWith("multipart/") ? headers : normal;
+            }
+
+            @Override
+            public Mono<com.azure.core.http.HttpResponse> process(com.azure.core.http.HttpPipelineCallContext context,
+                com.azure.core.http.HttpPipelineNextPolicy next) {
+                return select(context).process(context, next);
+            }
+
+            @Override
+            public com.azure.core.http.HttpResponse processSync(com.azure.core.http.HttpPipelineCallContext context,
+                com.azure.core.http.HttpPipelineNextSyncPolicy next) {
+                return select(context).processSync(context, next);
+            }
+        };
+    }
+
+    /**
      * Implements the OpenAI {@link HttpClient} interface that sends the HTTP request through the Azure HTTP pipeline.
      * All requests and responses are converted on the fly.
      *
@@ -61,15 +100,28 @@ public final class HttpClientHelper {
      * @return A bridge client that honors the OpenAI interface but delegates execution to the Azure pipeline.
      */
     public static HttpClient mapToOpenAIHttpClient(HttpPipeline httpPipeline) {
-        return new HttpClientWrapper(httpPipeline);
+        return mapToOpenAIHttpClient(httpPipeline, false);
+    }
+
+    /**
+     * Adapts an Azure pipeline with optional logging of SSE bodies as they are consumed.
+     *
+     * @param httpPipeline the pipeline used to execute requests.
+     * @param logBody whether to log consumed SSE response bytes. Body content may contain sensitive data.
+     * @return the OpenAI transport adapter.
+     */
+    public static HttpClient mapToOpenAIHttpClient(HttpPipeline httpPipeline, boolean logBody) {
+        return new HttpClientWrapper(httpPipeline, logBody);
     }
 
     private static final class HttpClientWrapper implements HttpClient {
 
         private final HttpPipeline httpPipeline;
+        private final boolean logBody;
 
-        private HttpClientWrapper(HttpPipeline httpPipeline) {
+        private HttpClientWrapper(HttpPipeline httpPipeline, boolean logBody) {
             this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+            this.logBody = logBody;
         }
 
         @Override
@@ -90,7 +142,8 @@ public final class HttpClientHelper {
             try {
                 com.azure.core.http.HttpRequest azureRequest = buildAzureRequest(request);
                 return new AzureHttpResponseAdapter(
-                    this.httpPipeline.sendSync(azureRequest, buildRequestContext(requestOptions)));
+                    this.httpPipeline.sendSync(azureRequest, buildRequestContext(requestOptions, azureRequest)),
+                    logBody);
             } catch (MalformedURLException exception) {
                 throw new OpenAIException("Invalid URL in request: " + exception.getMessage(),
                     LOGGER.logThrowableAsError(exception));
@@ -108,8 +161,9 @@ public final class HttpClientHelper {
             Objects.requireNonNull(requestOptions, "requestOptions");
 
             return Mono.fromCallable(() -> buildAzureRequest(request))
-                .flatMap(azureRequest -> this.httpPipeline.send(azureRequest, buildRequestContext(requestOptions)))
-                .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response))
+                .flatMap(azureRequest -> this.httpPipeline.send(azureRequest,
+                    buildRequestContext(requestOptions, azureRequest)))
+                .map(response -> (HttpResponse) new AzureHttpResponseAdapter(response, logBody))
                 .onErrorMap(HttpClientWrapper::mapAzureExceptionToOpenAI)
                 // publishOn moves the CompletableFuture completion (and all OpenAI SDK continuations that
                 // run synchronously on it) off the Netty/OkHttp I/O thread and onto a thread pool that
@@ -244,8 +298,13 @@ public final class HttpClientHelper {
          * @param requestOptions OpenAI SDK request options
          * @return Azure request {@link Context}
          */
-        private static Context buildRequestContext(RequestOptions requestOptions) {
+        private static Context buildRequestContext(RequestOptions requestOptions,
+            com.azure.core.http.HttpRequest request) {
             Context context = Context.NONE;
+            String userAgent = request.getHeaders().getValue(HttpHeaderName.USER_AGENT);
+            if (!CoreUtils.isNullOrEmpty(userAgent)) {
+                context = context.addData(UserAgentPolicy.OVERRIDE_USER_AGENT_CONTEXT_KEY, userAgent);
+            }
             Timeout timeout = requestOptions.getTimeout();
             // we use "read" as it's the closest thing to the "response timeout"
             if (timeout != null && !timeout.read().isZero() && !timeout.read().isNegative()) {

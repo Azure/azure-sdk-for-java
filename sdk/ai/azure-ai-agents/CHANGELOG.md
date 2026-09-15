@@ -4,8 +4,26 @@
 
 ### Features Added
 
+- Added raw JSON WebSocket sends, complete unknown-event payloads, UTF-8 binary JSON reception, transport customization,
+  configurable receive limits and overflow policies, and opt-in recovery from malformed events.
+- Added saved-job polling resumption for memory updates and agent optimization jobs.
+- Added custom WebSocket close codes and reasons, and per-event synchronous receive timeouts.
+- Added synchronous and asynchronous OpenAI factory overloads accepting a native OpenAI options callback for URL, credential, headers, query parameters, and transport overrides.
+- Added opt-in HTTP logging defaults through `AZURE_AI_PROJECTS_CONSOLE_LOGGING` and chunk-as-consumed SSE body logging in the OpenAI bridge, using the configured Java logging backend.
+- Added realtime handshake options for session IDs, structured inputs, API versions, credential scopes, preview features, extra headers and query parameters, and same-host secure connection URL overrides.
+
+- Added preview `BetaVoiceAgentsTelephonyClient` and `BetaVoiceAgentsTelephonyAsyncClient` for outbound call jobs and campaign management, including recipient import, validation, publishing, pausing, resuming, and cancellation.
+- Added session-affinity routing configuration through `AzureCreateResponseOptions.setRoutingConfig(...)`, `RoutingConfiguration`, and `SessionAffinityConfiguration`, with response details exposed by `ModelRouterDetails.getSessionAffinity()`.
+- Added preview synchronous and asynchronous voice-agent WebSocket clients and session APIs with typed realtime events, text and PCM16 audio input, response cancellation, function-call output, persisted-conversation options, and authenticated `wss://` transport.
+- Added synchronous and asynchronous live text conversation samples, an asynchronous Java Sound microphone/speaker sample with barge-in, and a live client-executed function-tool sample.
+
 ### Breaking Changes
 
+- Voice-agent WebSocket connections now require secure endpoints, including localhost. Configure certificate trust for
+  local TLS servers through the transport callbacks. Synchronous sessions now enforce a 32 MiB default message limit.
+- Replaced `generateAgent` and `generateAgentWithResponse` on `AgentsClient` and `AgentsAsyncClient` with
+  `createAgentFromPrompt` and `createAgentFromPromptWithResponse` on `BetaAgentsClient` and `BetaAgentsAsyncClient`.
+- Moved `getId()` and `getConversationId()` from `VoiceResponseBase` to `VoiceResponse`.
 - Renamed the unreleased `BetaAgentEndpointConversationsClient` and `BetaAgentTelephonyClient` to
   `BetaVoiceAgentsConversationsClient` and `BetaVoiceAgentsTelephonyClient`, including async clients and their
   `.beta()` builder factories, to match the upstream voice operation groups.
@@ -27,8 +45,22 @@
 
 ### Bugs Fixed
 
+- Reject insecure voice-agent WebSocket URLs before token acquisition to prevent sending credentials over plaintext.
+- Native asynchronous OpenAI factories and `ResponsesAsyncClient` now retrieve Azure tokens asynchronously, including factory-supplied custom OpenAI transports.
+- Treated superseded memory updates as completed and supplied empty operations with zero usage when completed memory results are omitted or null.
+- Omitted multipart request and response bodies from SDK pipeline logging.
+- Preserved UTF-8 characters split across reads when logging OpenAI SSE response bodies.
+- Made synchronous voice-agent receive-buffer overflow signaling atomic across concurrent callbacks.
+- Rejected code-upload paths without a file name with an explicit argument error.
+- Agent-scoped OpenAI clients now automatically send agent preview features, including model router controls, and use an overridable API-version query parameter.
+- Preserved OpenAI credential and user-agent overrides through the default Azure HTTP bridge. User-supplied pipelines retain their authentication policies.
+
+- Added Java opt-in guidance to `403 preview_feature_required` errors when preview is disabled, preserving the service response and error details.
+- Preserved explicitly supplied empty `Foundry-Features` headers instead of replacing them with automatic preview opt-ins.
+
 ### Other Changes
 
+- Streamed replayable code-upload content when computing SHA-256 to avoid materializing the entire upload in memory.
 - Regenerated from TypeSpec commit `2ba065c423a4c08ddb4e517a9f16deb17cb378c2`. Customization retains `.beta()` factory
   placement and automatic voice preview headers after the upstream voice operation namespace relocation.
 

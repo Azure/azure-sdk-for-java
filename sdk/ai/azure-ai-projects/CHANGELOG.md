@@ -4,11 +4,28 @@
 
 ### Features Added
 
+- Added local model upload and registration helpers, dataset filename filtering, and configurable Blob upload options.
+- Added saved-job polling resumption for data generation, evaluator generation, and agent-insight runs.
+- Added Azure evaluation data-source factories and native OpenAI conversion helpers.
+- Added synchronous and asynchronous OpenAI factory overloads accepting a native OpenAI options callback for URL, credential, headers, query parameters, and transport overrides.
+- Added `TelemetryClient` and `TelemetryAsyncClient` for retrieving and caching the project's Application Insights connection string.
+- Added opt-in HTTP logging defaults through `AZURE_AI_PROJECTS_CONSOLE_LOGGING` and chunk-as-consumed SSE body logging in the OpenAI bridge, using the configured Java logging backend.
+
 ### Breaking Changes
 
 - Moved `maxSamples` from `DataGenerationJobOptions` to supported scenario-specific models. `SimulationSeedDataGenerationJobOptions` no longer accepts it, while `TracesDataGenerationJobOptions` now has a no-argument constructor and optional `Integer` value configured through `setMaxSamples(...)`.
 
 ### Bugs Fixed
+
+- Native asynchronous OpenAI factories now retrieve Azure tokens asynchronously, including when a custom transport is supplied through the factory callback.
+- Added preview opt-in guidance to evaluation-rule `preview_feature_required` errors without consuming their response bodies.
+- Omitted multipart request and response bodies from SDK pipeline logging.
+- Rejected empty dataset folders and filters matching no files before requesting upload storage.
+- Preserved UTF-8 characters split across reads when logging OpenAI SSE response bodies.
+- Validated dataset upload file names before making service requests.
+- Agent-scoped OpenAI clients now automatically send agent preview features and the configured API version, with explicit caller overrides preserved.
+- Preserved OpenAI credential and user-agent overrides through the default Azure HTTP bridge. User-supplied pipelines retain their authentication policies.
+- Preserved explicitly empty `Foundry-Features` headers.
 
 ### Other Changes
 

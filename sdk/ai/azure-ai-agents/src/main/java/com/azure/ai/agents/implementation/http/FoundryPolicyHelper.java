@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.implementation.http;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -11,10 +12,15 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
-import reactor.core.publisher.Mono;
-
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
  * Utility methods for adding AI Foundry-specific policies to Azure Core {@link HttpPipeline HttpPipelines}.
@@ -22,6 +28,7 @@ import java.util.List;
 public final class FoundryPolicyHelper {
 
     private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
+    private static final ClientLogger LOGGER = new ClientLogger(FoundryPolicyHelper.class);
 
     private FoundryPolicyHelper() {
     }
@@ -34,6 +41,16 @@ public final class FoundryPolicyHelper {
      */
     public static HttpPipelinePolicy createFoundryFeaturesPolicy(String foundryFeatures) {
         return CoreUtils.isNullOrEmpty(foundryFeatures) ? null : new FoundryFeaturesPolicy(foundryFeatures);
+    }
+
+    /**
+     * Creates a policy that adds Java preview opt-in guidance to preview-required service errors.
+     *
+     * @param allowPreview Whether automatic preview opt-in is enabled for the client.
+     * @return The error policy, or {@code null} when preview is already enabled.
+     */
+    public static HttpPipelinePolicy createPreviewErrorPolicy(boolean allowPreview) {
+        return allowPreview ? null : new PreviewErrorPolicy();
     }
 
     /**
@@ -76,10 +93,47 @@ public final class FoundryPolicyHelper {
 
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            if (CoreUtils.isNullOrEmpty(context.getHttpRequest().getHeaders().getValue(FOUNDRY_FEATURES))) {
+            if (context.getHttpRequest().getHeaders().get(FOUNDRY_FEATURES) == null) {
                 context.getHttpRequest().getHeaders().set(FOUNDRY_FEATURES, foundryFeatures);
             }
             return next.process();
+        }
+    }
+
+    private static final class PreviewErrorPolicy implements HttpPipelinePolicy {
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            return next.process().flatMap(response -> {
+                if (response.getStatusCode() != 403) {
+                    return Mono.just(response);
+                }
+                HttpResponse bufferedResponse = response.buffer();
+                return bufferedResponse.getBodyAsByteArray().flatMap(bytes -> {
+                    HttpResponseException exception = previewException(bufferedResponse, bytes);
+                    return exception == null
+                        ? Mono.just(bufferedResponse)
+                        : Mono.error(LOGGER.logExceptionAsError(exception));
+                });
+            });
+        }
+
+        private static HttpResponseException previewException(HttpResponse response, byte[] bytes) {
+            Object value;
+            try (JsonReader reader = JsonProviders.createReader(bytes)) {
+                value = reader.readUntyped();
+            } catch (IOException | IllegalStateException exception) {
+                return null;
+            }
+            if (!(value instanceof Map)) {
+                return null;
+            }
+            Object error = ((Map<?, ?>) value).get("error");
+            if (!(error instanceof Map) || !"preview_feature_required".equals(((Map<?, ?>) error).get("code"))) {
+                return null;
+            }
+            String message = "Status code 403, \"" + new String(bytes, StandardCharsets.UTF_8)
+                + "\". To use preview features, configure AgentsClientBuilder.allowPreview(true).";
+            return new HttpResponseException(message, response, value);
         }
     }
 }
