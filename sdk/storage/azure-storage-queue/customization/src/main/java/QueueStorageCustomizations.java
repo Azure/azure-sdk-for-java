@@ -1,0 +1,490 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
+import com.azure.autorest.customization.LibraryCustomization;
+import com.azure.autorest.customization.PackageCustomization;
+import com.github.javaparser.ParseProblemException;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.CatchClause;
+import com.github.javaparser.ast.stmt.ReturnStmt;
+import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.ast.stmt.TryStmt;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.ast.type.Type;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
+import org.slf4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * TypeSpec customization for azure-storage-queue.
+ */
+public class QueueStorageCustomizations extends Customization {
+
+    private static final String PKG_ROOT = "src/main/java/com/azure/storage/queue/";
+
+    private static final String MODELS_PACKAGE = "com.azure.storage.queue.models";
+
+    private static final String IMPL_PACKAGE = "com.azure.storage.queue.implementation";
+
+    // Models that shipped as @Fluent (public no-arg ctor + setters) before the TypeSpec migration. With
+    // required-fields-as-ctor-args:true these regenerate as @Immutable with a required-args ctor and no setters --
+    // a breaking change. restoreFluentModels restores the shipped fluent shape per-model. Expand from the RevApi
+    // "method removed" report.
+    private static final List<String> FLUENT_MODELS_TO_RESTORE = Arrays.asList(
+        "QueueRetentionPolicy", "QueueMetrics", "QueueCorsRule", "QueueAnalyticsLogging", "QueueSignedIdentifier",
+        "GeoReplication", "QueueItem", "QueueServiceStatistics", "SendMessageResult", "UserDelegationKey");
+
+    // The generated builder and service version duplicate the hand-written QueueClientBuilder /
+    // QueueServiceClientBuilder / QueueServiceVersion, so they are dropped outright. The generated convenience
+    // clients are kept -- see GENERATED_CLIENTS_TO_RELOCATE.
+    private static final List<String> GENERATED_CLIENTS_TO_REMOVE = Arrays.asList(
+        "AzureQueueStorageBuilder",
+        "QueuesServiceVersion");
+
+    // Per-operation-group convenience clients emitted by typespec-java under max-overload:model. They carry the
+    // typed WithResponse methods (ResponseBase<XxxHeaders, Model> / Response<XxxHeaders>) that wrap the protocol
+    // *WithResponseInternal methods, so they are RETAINED as the internal typed layer rather than deleted. They are
+    // moved out of the public package into implementation so they add no public API, and the hand-written Queue*
+    // clients delegate to them. The generated QueueClient/QueueAsyncClient names collide with the hand-written
+    // public ones; relocating into implementation resolves it. Mirrors azure-storage-file-share's
+    // ShareStorageCustomization.relocateConvenienceClientsToImplementation.
+    private static final List<String> CONVENIENCE_CLIENTS_TO_RELOCATE = Arrays.asList(
+        "ServiceClient", "ServiceAsyncClient",
+        "QueueClient", "QueueAsyncClient",
+        "MessagesClient", "MessagesAsyncClient",
+        "MessageIdsClient", "MessageIdsAsyncClient");
+
+    // Types the generated clients import from com.azure.storage.queue.implementation; once the client itself lives
+    // in that package those imports are same-package and Checkstyle rejects them as redundant.
+    private static final List<String> IMPL_PACKAGE_TYPES = Arrays.asList(
+        "ServicesImpl", "QueuesImpl", "MessagesImpl", "MessageIdsImpl", "XmlSerializerProviders");
+
+    // module-info.java is hand-authored: the module descriptor carries the full requires/exports/opens (incl. the
+    // transitive com.azure.storage.common visibility). typespec-java regenerates a minimal version that overwrites
+    // it, so drop the generated copy and keep the hand-written descriptor.
+    private static final List<String> GENERATED_DESCRIPTOR_FILES_TO_REMOVE = Arrays.asList(
+        "src/main/java/module-info.java");
+
+    @Override
+    public void customize(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        removeGeneratedFiles(editor, logger);
+        relocateConvenienceClientsToImplementation(customization, logger);
+        fixXmlSerializerRedundantCast(editor, logger);
+        retargetServiceVersionReferences(editor, logger);
+        restoreFluentModels(customization, logger);
+        updateImplToMapInternalException(customization.getPackage(IMPL_PACKAGE), logger);
+    }
+
+    private static void restoreFluentModels(LibraryCustomization customization, Logger logger) {
+        PackageCustomization models = customization.getPackage(MODELS_PACKAGE);
+        for (String className : FLUENT_MODELS_TO_RESTORE) {
+            if (models.getClass(className) == null) {
+                logger.info("Model {} not present; skipping fluent restoration.", className);
+                continue;
+            }
+            models.getClass(className).customizeAst(ast -> {
+                ast.addImport("com.azure.core.annotation.Fluent");
+                ast.getImports().removeIf(i -> i.getNameAsString().equals("com.azure.core.annotation.Immutable"));
+                ast.getClassByName(className).ifPresent(clazz -> makeModelFluent(clazz, logger));
+            });
+            logger.info("Restored @Fluent shape for {}.", className);
+        }
+    }
+
+    private static void makeModelFluent(ClassOrInterfaceDeclaration clazz, Logger logger) {
+        String className = clazz.getNameAsString();
+
+        clazz.getAnnotationByName("Immutable").ifPresent(a -> a.remove());
+        if (!clazz.isAnnotationPresent("Fluent")) {
+            clazz.addMarkerAnnotation("Fluent");
+        }
+
+        clazz.getFields().forEach(field -> {
+            if (!field.isStatic()) {
+                field.setFinal(false);
+            }
+        });
+
+        new ArrayList<>(clazz.getConstructors()).forEach(ConstructorDeclaration::remove);
+        ConstructorDeclaration ctor = clazz.addConstructor(Modifier.Keyword.PUBLIC);
+        ctor.addMarkerAnnotation("Generated");
+        ctor.setJavadocComment(
+            new Javadoc(JavadocDescription.parseText("Creates an instance of " + className + " class.")));
+        ctor.setBody(new BlockStmt());
+
+        for (FieldDeclaration field : clazz.getFields()) {
+            if (field.isStatic()) {
+                continue;
+            }
+            String fieldName = field.getVariable(0).getNameAsString();
+            String setterName = "set" + capitalize(fieldName);
+            if (!clazz.getMethodsByName(setterName).isEmpty()) {
+                continue;
+            }
+            String fieldType = field.getElementType().asString();
+            Type accessorType = accessorReturnType(clazz, fieldName).orElse(field.getElementType()).clone();
+            String body;
+            if ("DateTimeRfc1123".equals(fieldType) && "OffsetDateTime".equals(accessorType.asString())) {
+                body = "{ if (" + fieldName + " == null) { this." + fieldName + " = null; } else { this."
+                    + fieldName + " = new DateTimeRfc1123(" + fieldName + "); } return this; }";
+            } else {
+                body = "{ this." + fieldName + " = " + fieldName + "; return this; }";
+            }
+            MethodDeclaration setter = clazz.addMethod(setterName, Modifier.Keyword.PUBLIC);
+            setter.addMarkerAnnotation("Generated");
+            setter.setType(className);
+            setter.addParameter(new Parameter(accessorType, fieldName));
+            String description = accessorDescription(clazz, fieldName);
+            String summary = description == null
+                ? "Set the " + fieldName + " property."
+                : "Set the " + fieldName + " property: " + description;
+            setter.setJavadocComment(new Javadoc(JavadocDescription.parseText(summary))
+                .addBlockTag("param", fieldName, "the " + fieldName + " value to set.")
+                .addBlockTag("return", "the " + className + " object itself."));
+            setter.setBody(StaticJavaParser.parseBlock(body));
+        }
+
+        clazz.findAll(ObjectCreationExpr.class).stream()
+            .filter(oce -> oce.getType().getNameAsString().equals(className) && !oce.getArguments().isEmpty())
+            .forEach(oce -> rewriteFromXmlConstruction(clazz, oce));
+    }
+
+    private static void rewriteFromXmlConstruction(ClassOrInterfaceDeclaration clazz, ObjectCreationExpr oce) {
+        String className = clazz.getNameAsString();
+        List<String> argNames = new ArrayList<>();
+        oce.getArguments().forEach(arg -> argNames.add(arg.toString()));
+        oce.setArguments(new NodeList<>()); // new X()
+
+        Optional<VariableDeclarator> asInitializer = oce.getParentNode()
+            .filter(p -> p instanceof VariableDeclarator).map(p -> (VariableDeclarator) p);
+        if (asInitializer.isPresent()) {
+            // Shape: `X deserializedX = new X(args); <existing optional assignments>`
+            String localName = asInitializer.get().getNameAsString();
+            Statement declStmt = findAncestor(oce, Statement.class).orElseThrow(
+                () -> new IllegalStateException("No enclosing statement for " + className + " construction."));
+            BlockStmt block = (BlockStmt) declStmt.getParentNode().orElseThrow(
+                () -> new IllegalStateException("No enclosing block for " + className + " construction."));
+            int idx = block.getStatements().indexOf(declStmt);
+            int offset = 1;
+            for (String argName : argNames) {
+                block.addStatement(idx + offset, StaticJavaParser.parseStatement(
+                    fieldAssignment(clazz, localName, argName)));
+                offset++;
+            }
+        } else {
+            // Shape: `return new X(args);` -> introduce a local, assign its fields, and return it. The statements are
+            // inserted directly into the enclosing block (not wrapped in a nested block, which Checkstyle rejects).
+            ReturnStmt ret = findAncestor(oce, ReturnStmt.class).orElseThrow(
+                () -> new IllegalStateException("Unexpected " + className + " construction context."));
+            BlockStmt block = (BlockStmt) ret.getParentNode().orElseThrow(
+                () -> new IllegalStateException("No enclosing block for " + className + " return."));
+            String localName = "deserialized" + className;
+            int idx = block.getStatements().indexOf(ret);
+            block.addStatement(idx,
+                StaticJavaParser.parseStatement(className + " " + localName + " = new " + className + "();"));
+            int offset = 1;
+            for (String argName : argNames) {
+                block.addStatement(idx + offset, StaticJavaParser.parseStatement(
+                    fieldAssignment(clazz, localName, argName)));
+                offset++;
+            }
+            ret.setExpression(StaticJavaParser.parseExpression(localName));
+        }
+    }
+
+    private static String fieldAssignment(ClassOrInterfaceDeclaration clazz, String localName, String fieldName) {
+        boolean rfc1123 = clazz.getFieldByName(fieldName)
+            .map(f -> "DateTimeRfc1123".equals(f.getElementType().asString())).orElse(false);
+        if (rfc1123) {
+            return localName + "." + fieldName + " = " + fieldName + " == null ? null : new DateTimeRfc1123("
+                + fieldName + ");";
+        }
+        return localName + "." + fieldName + " = " + fieldName + ";";
+    }
+
+    private static Optional<Type> accessorReturnType(ClassOrInterfaceDeclaration clazz, String fieldName) {
+        String suffix = capitalize(fieldName);
+        for (String prefix : new String[] { "get", "is" }) {
+            List<MethodDeclaration> getters = clazz.getMethodsByName(prefix + suffix);
+            for (MethodDeclaration getter : getters) {
+                if (getter.getParameters().isEmpty()) {
+                    return Optional.of(getter.getType());
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    private static String accessorDescription(ClassOrInterfaceDeclaration clazz, String fieldName) {
+        String suffix = capitalize(fieldName);
+        for (String prefix : new String[] { "get", "is" }) {
+            for (MethodDeclaration getter : clazz.getMethodsByName(prefix + suffix)) {
+                if (getter.getParameters().isEmpty() && getter.getJavadoc().isPresent()) {
+                    String text = getter.getJavadoc().get().getDescription().toText().trim();
+                    int idx = text.indexOf(": ");
+                    return idx >= 0 ? text.substring(idx + 2).trim() : text;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static String capitalize(String value) {
+        return Character.toUpperCase(value.charAt(0)) + value.substring(1);
+    }
+
+    private static <T extends Node> Optional<T> findAncestor(Node node, Class<T> type) {
+        Optional<Node> parent = node.getParentNode();
+        while (parent.isPresent()) {
+            Node current = parent.get();
+            if (type.isInstance(current)) {
+                return Optional.of(type.cast(current));
+            }
+            parent = current.getParentNode();
+        }
+        return Optional.empty();
+    }
+
+    private static void retargetServiceVersionReferences(Editor editor, Logger logger) {
+        String implDir = PKG_ROOT + "implementation/";
+        for (String fileName : new String[] {
+            "AzureQueueStorageImpl.java", "ServicesImpl.java", "QueuesImpl.java",
+            "MessagesImpl.java", "MessageIdsImpl.java" }) {
+            String path = implDir + fileName;
+            String content = editor.getContents().get(path);
+            if (content == null || !content.contains("QueuesServiceVersion")) {
+                continue;
+            }
+            String updated = content.replace("QueuesServiceVersion", "QueueServiceVersion");
+            editor.replaceFile(path, updated);
+            logger.info("Retargeted QueuesServiceVersion -> QueueServiceVersion in {}.", fileName);
+        }
+    }
+
+    /**
+     * Moves the generated per-operation-group convenience clients from the public
+     * {@code com.azure.storage.queue} package into {@code com.azure.storage.queue.implementation} and renames them
+     * to the hand-written {@code Queue*} naming with an {@code Internal} suffix (e.g. {@code MessagesClient} ->
+     * {@code QueueMessagesClientInternal}, {@code QueueClient} -> {@code QueueClientInternal}).
+     * They carry the typed {@code WithResponse} methods (e.g.
+     * {@code ResponseBase<QueuesGetAccessPolicyHeaders, SignedIdentifiers> getAccessPolicyWithResponse(...)}) that
+     * wrap the protocol {@code *WithResponseInternal} methods, so they are kept as the internal typed layer instead
+     * of being hand-written. Relocating them (1) keeps them off the public API surface (implementation is not
+     * exported) and (2) resolves the name collision between the generated {@code QueueClient}/{@code QueueAsyncClient}
+     * and the hand-written public ones. The package-private constructors are made public so the hand-written Queue*
+     * clients (now in a different package) can construct them from {@code AzureQueueStorageImpl.get*()}. The
+     * {@code @ServiceClient} marker annotation is dropped because its {@code AzureQueueStorageBuilder} is deleted.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void relocateConvenienceClientsToImplementation(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        for (String className : CONVENIENCE_CLIENTS_TO_RELOCATE) {
+            String newName = internalClientName(className);
+            String oldPath = PKG_ROOT + className + ".java";
+            String content = editor.getContents().get(oldPath);
+            if (content == null) {
+                logger.info("Generated convenience client {} not present; skipping relocation.", className);
+                continue;
+            }
+
+            // Move to the implementation package.
+            content = content.replace("package com.azure.storage.queue;",
+                "package com.azure.storage.queue.implementation;");
+            // Drop the @ServiceClient marker annotation (its builder AzureQueueStorageBuilder is deleted). The class
+            // literally named ServiceClient carries the annotation fully-qualified to avoid the name clash, so match
+            // both @ServiceClient(...) and @com.azure.core.annotation.ServiceClient(...).
+            content = content.replaceAll("(?m)^@(com\\.azure\\.core\\.annotation\\.)?ServiceClient\\([^)]*\\)\\r?\\n", "");
+            content = content.replace("import com.azure.core.annotation.ServiceClient;\n", "");
+            // The *Impl operation classes and XmlSerializerProviders are same-package once the client moves, so
+            // their imports become redundant and Checkstyle rejects them.
+            for (String implType : IMPL_PACKAGE_TYPES) {
+                content = content.replace("import com.azure.storage.queue.implementation." + implType + ";\n", "");
+            }
+            // Make the package-private constructor public; callers now live in a different package.
+            content = content.replaceFirst("(?m)^(\\s*)" + className + "\\(", "$1public " + className + "(");
+            // Rename the class (declaration, constructor, self-references) to the Queue*-Internal name.
+            content = content.replaceAll("\\b" + className + "\\b", newName);
+            editor.removeFile(oldPath);
+            editor.addFile(PKG_ROOT + "implementation/" + newName + ".java", content);
+            logger.info("Relocated convenience client {} -> implementation/{}", className, newName);
+        }
+    }
+
+    /**
+     * Maps a generated convenience client name to its internal name: the hand-written {@code Queue*} naming with an
+     * {@code Internal} suffix. E.g. {@code ServiceClient} -> {@code QueueServiceClientInternal},
+     * {@code MessageIdsAsyncClient} -> {@code QueueMessageIdsAsyncClientInternal}, {@code QueueClient} ->
+     * {@code QueueClientInternal}.
+     *
+     * @param generatedName The generated convenience client name.
+     * @return The internal client name.
+     */
+    private static String internalClientName(String generatedName) {
+        String withQueuePrefix = generatedName.startsWith("Queue") ? generatedName : "Queue" + generatedName;
+        return withQueuePrefix + "Internal";
+    }
+
+    // The generated XmlSerializer casts typeReference.getJavaClass() (already Class<T>) to Class<T> -- a redundant
+    // cast that trips the module's warnings-as-errors build. The file backs the relocated convenience
+    // clients' XML (de)serialization, so it cannot be removed; drop the redundant cast here instead.
+    private static void fixXmlSerializerRedundantCast(Editor editor, Logger logger) {
+        String path = PKG_ROOT + "implementation/XmlSerializer.java";
+        String content = editor.getContents().get(path);
+        if (content == null) {
+            logger.info("XmlSerializer not present in editor; skipping cast fix.");
+            return;
+        }
+        String updated = content.replace("(Class<T>) typeReference.getJavaClass()", "typeReference.getJavaClass()");
+        if (!updated.equals(content)) {
+            editor.replaceFile(path, updated);
+            logger.info("Removed redundant cast in XmlSerializer.");
+        } else {
+            logger.info("XmlSerializer redundant cast not found; skipping.");
+        }
+    }
+
+    private static void removeGeneratedFiles(Editor editor, Logger logger) {
+        for (String className : GENERATED_CLIENTS_TO_REMOVE) {
+            removeFileIfPresent(editor, PKG_ROOT + className + ".java", logger);
+        }
+        for (String path : GENERATED_DESCRIPTOR_FILES_TO_REMOVE) {
+            removeFileIfPresent(editor, path, logger);
+        }
+    }
+
+    private static void removeFileIfPresent(Editor editor, String path, Logger logger) {
+        if (editor.getContents().containsKey(path)) {
+            editor.removeFile(path);
+            logger.info("Removed generated file {}", path);
+        } else {
+            logger.info("Generated file {} not present; skipping removal.", path);
+        }
+    }
+
+    private static void updateImplToMapInternalException(PackageCustomization implPackage, Logger logger) {
+        List<String> implClassesToUpdate
+            = Arrays.asList("MessageIdsImpl", "MessagesImpl", "QueuesImpl", "ServicesImpl");
+        for (String implToUpdate : implClassesToUpdate) {
+            if (implPackage.getClass(implToUpdate) == null) {
+                logger.info("Impl class {} not present; skipping exception mapping.", implToUpdate);
+                continue;
+            }
+            implPackage.getClass(implToUpdate).customizeAst(ast -> {
+                ast.addImport("com.azure.storage.queue.implementation.util.ModelHelper");
+                ast.addImport("com.azure.storage.queue.models.QueueStorageException");
+                ast.addImport("com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal");
+                ast.findAll(NormalAnnotationExpr.class).stream()
+                    .filter(anno -> anno.getNameAsString().equals("UnexpectedResponseExceptionType")
+                        && anno.getPairs().stream().anyMatch(p -> p.getNameAsString().equals("code")))
+                    .collect(java.util.stream.Collectors.toList())
+                    .forEach(Node::remove);
+                ast.findAll(SingleMemberAnnotationExpr.class).forEach(anno -> {
+                    if (anno.getNameAsString().equals("UnexpectedResponseExceptionType")
+                        && "HttpResponseException.class".equals(anno.getMemberValue().toString())) {
+                        anno.setMemberValue(StaticJavaParser.parseExpression("QueueStorageExceptionInternal.class"));
+                    }
+                });
+                ast.getClassByName(implToUpdate).ifPresent(clazz -> {
+                    clazz.getMethods().forEach(methodDeclaration -> {
+                        Type returnType = methodDeclaration.getType();
+                        // The way code generation works we only need to update the methods that have a class return type.
+                        // As non-class return types, such as "void", call into the Response<Void> methods.
+                        if (!returnType.isClassOrInterfaceType()) {
+                            return;
+                        }
+
+                        ClassOrInterfaceType returnTypeClass = returnType.asClassOrInterfaceType();
+                        String returnTypeName = returnTypeClass.getNameAsString();
+                        if (returnTypeName.equals("PagedFlux") || returnTypeName.equals("PagedIterable")
+                            || returnTypeName.equals("PollerFlux") || returnTypeName.equals("SyncPoller")) {
+                            return;
+                        }
+
+                        if (returnTypeName.equals("Mono") || returnTypeName.equals("Flux")) {
+                            addErrorMappingToAsyncMethod(methodDeclaration);
+                        } else {
+                            addErrorMappingToSyncMethod(methodDeclaration);
+                        }
+                    });
+                });
+            });
+            logger.info("Applied QueueStorageExceptionInternal -> QueueStorageException mapping to {}.", implToUpdate);
+        }
+    }
+
+    private static void addErrorMappingToAsyncMethod(MethodDeclaration method) {
+        BlockStmt body = method.getBody().get();
+
+        // Bit of hack to insert the 'onErrorMap' in the right location.
+        // Unfortunately, 'onErrorMap' returns <T> which for some calls breaks typing, such as Void -> Object or
+        // PagedResponse -> PagedResponseBase. So, 'onErrorMap' needs to be inserted after the first method call.
+        // To do this, we track the first found '(' and the associated closing ')' to insert 'onErrorMap' after the ')'.
+        // So, 'service.methodCall(parameters).map()' becomes 'service.methodCall(parameters).onErrorMap().map()'.
+        String originalReturnStatement = body.getStatement(body.getStatements().size() - 1).asReturnStmt()
+            .getExpression().get().toString();
+        int insertionPoint = findAsyncOnErrorMapInsertionPoint(originalReturnStatement);
+        String newReturnStatement = "return " + originalReturnStatement.substring(0, insertionPoint)
+            + ".onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)"
+            + originalReturnStatement.substring(insertionPoint) + ";";
+        try {
+            Statement newReturn = StaticJavaParser.parseStatement(newReturnStatement);
+            body.getStatements().set(body.getStatements().size() - 1, newReturn);
+        } catch (ParseProblemException ex) {
+            throw new RuntimeException("Failed to parse: " + newReturnStatement, ex);
+        }
+    }
+
+    private static int findAsyncOnErrorMapInsertionPoint(String returnStatement) {
+        int openParenthesis = 0;
+        int closeParenthesis = 0;
+        for (int i = 0; i < returnStatement.length(); i++) {
+            char c = returnStatement.charAt(i);
+            if (c == '(') {
+                openParenthesis++;
+            } else if (c == ')') {
+                closeParenthesis++;
+                if (openParenthesis == closeParenthesis) {
+                    return i + 1;
+                }
+            }
+        }
+        return -1;
+    }
+
+    private static void addErrorMappingToSyncMethod(MethodDeclaration method) {
+        // Turn the entire method into a BlockStmt that will be used as the try block.
+        BlockStmt tryBlock = method.getBody().get();
+        BlockStmt catchBlock = new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement(
+            "throw ModelHelper.mapToQueueStorageException(internalException);")));
+        Parameter catchParameter = new Parameter().setType("QueueStorageExceptionInternal")
+            .setName("internalException");
+        CatchClause catchClause = new CatchClause(catchParameter, catchBlock);
+        TryStmt tryCatchMap = new TryStmt(tryBlock, new NodeList<>(catchClause), null);
+
+        // Replace the last statement with the try-catch block.
+        method.setBody(new BlockStmt(new NodeList<>(tryCatchMap)));
+    }
+}

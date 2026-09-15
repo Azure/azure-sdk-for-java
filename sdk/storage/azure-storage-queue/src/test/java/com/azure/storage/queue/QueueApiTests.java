@@ -20,6 +20,7 @@ import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.QueueStorageException;
+import com.azure.storage.queue.models.UpdateMessageResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -50,6 +51,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.INVALID_V
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -751,11 +753,16 @@ public class QueueApiTests extends QueueTestBase {
 
         QueueMessageItem dequeueMsg = queueClient.receiveMessage();
 
-        assertEquals(204,
-            queueClient
-                .updateMessageWithResponse(dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(), updateMsg,
-                    Duration.ofSeconds(1), null, null)
-                .getStatusCode());
+        Response<UpdateMessageResult> updateResponse = queueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
+            dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1), null, null);
+
+        assertEquals(204, updateResponse.getStatusCode());
+        // Update Message returns its result purely in the x-ms-popreceipt and x-ms-time-next-visible response
+        // headers, which reach the client through the generated MessageIdsUpdateHeaders model. Assert the values
+        // actually come through, not just the status code.
+        assertNotNull(updateResponse.getValue().getPopReceipt());
+        assertNotEquals(dequeueMsg.getPopReceipt(), updateResponse.getValue().getPopReceipt());
+        assertNotNull(updateResponse.getValue().getTimeNextVisible());
 
         sleepIfRunningAgainstService(2000);
 
