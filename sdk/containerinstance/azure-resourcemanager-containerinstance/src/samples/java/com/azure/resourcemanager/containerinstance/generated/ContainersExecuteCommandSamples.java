@@ -12,7 +12,7 @@ import com.azure.resourcemanager.containerinstance.models.ContainerExecRequestTe
  */
 public final class ContainersExecuteCommandSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerExec.json
+     * x-ms-original-file: 2026-08-01-preview/ContainerExec.json
      */
     /**
      * Sample code: ContainerExec.
