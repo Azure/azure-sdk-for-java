@@ -400,7 +400,7 @@ stages:
             parameters:
               PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-auto-release-$(Build.BuildId)
               CommitMsg: "Increment package versions for ${{ parameters.ServiceDirectory }} auto-releases"
-              PRTitle: "Increment versions for ${{ parameters.ServiceDirectory }} auto-releases"
+              PRTitle: "[skip ci] Increment versions for ${{ parameters.ServiceDirectory }} auto-releases"
               CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
               AuthToken: ''
 
