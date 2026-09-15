@@ -4,51 +4,46 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.utils.Beta;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
- * Realtime MCP approval request
+ * Realtime MCP list tools
  *
- * A Realtime item requesting human approval of a tool invocation.
+ * A Realtime item listing tools available on an MCP server.
  */
-@Immutable
+@Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class RealtimeMCPApprovalRequest extends RealtimeConversationItem {
+public final class RealtimeMcpListTools extends RealtimeConversationItem {
 
     /*
      * The type property.
      */
     @Generated
-    private RealtimeConversationItemType type = RealtimeConversationItemType.MCP_APPROVAL_REQUEST;
+    private RealtimeConversationItemType type = RealtimeConversationItemType.MCP_LIST_TOOLS;
 
     /*
-     * The unique ID of the approval request.
+     * The unique ID of the list.
      */
     @Generated
-    private final String id;
+    private String id;
 
     /*
-     * The label of the MCP server making the request.
+     * The label of the MCP server.
      */
     @Generated
     private final String serverLabel;
 
     /*
-     * The name of the tool to run.
+     * The tools available on the server.
      */
     @Generated
-    private final String name;
-
-    /*
-     * A JSON string of arguments for the tool.
-     */
-    @Generated
-    private final String arguments;
+    private final List<McpListToolsTool> tools;
 
     /*
      * The Unix timestamp (in seconds) for when the item was persisted.
@@ -63,19 +58,15 @@ public final class RealtimeMCPApprovalRequest extends RealtimeConversationItem {
     private String responseId;
 
     /**
-     * Creates an instance of RealtimeMCPApprovalRequest class.
+     * Creates an instance of RealtimeMcpListTools class.
      *
-     * @param id the id value to set.
      * @param serverLabel the serverLabel value to set.
-     * @param name the name value to set.
-     * @param arguments the arguments value to set.
+     * @param tools the tools value to set.
      */
     @Generated
-    public RealtimeMCPApprovalRequest(String id, String serverLabel, String name, String arguments) {
-        this.id = id;
+    public RealtimeMcpListTools(String serverLabel, List<McpListToolsTool> tools) {
         this.serverLabel = serverLabel;
-        this.name = name;
-        this.arguments = arguments;
+        this.tools = tools;
     }
 
     /**
@@ -90,7 +81,7 @@ public final class RealtimeMCPApprovalRequest extends RealtimeConversationItem {
     }
 
     /**
-     * Get the id property: The unique ID of the approval request.
+     * Get the id property: The unique ID of the list.
      *
      * @return the id value.
      */
@@ -100,7 +91,19 @@ public final class RealtimeMCPApprovalRequest extends RealtimeConversationItem {
     }
 
     /**
-     * Get the serverLabel property: The label of the MCP server making the request.
+     * Set the id property: The unique ID of the list.
+     *
+     * @param id the id value to set.
+     * @return the RealtimeMcpListTools object itself.
+     */
+    @Generated
+    public RealtimeMcpListTools setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the serverLabel property: The label of the MCP server.
      *
      * @return the serverLabel value.
      */
@@ -110,23 +113,13 @@ public final class RealtimeMCPApprovalRequest extends RealtimeConversationItem {
     }
 
     /**
-     * Get the name property: The name of the tool to run.
+     * Get the tools property: The tools available on the server.
      *
-     * @return the name value.
+     * @return the tools value.
      */
     @Generated
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Get the arguments property: A JSON string of arguments for the tool.
-     *
-     * @return the arguments value.
-     */
-    @Generated
-    public String getArguments() {
-        return this.arguments;
+    public List<McpListToolsTool> getTools() {
+        return this.tools;
     }
 
     /**
@@ -156,46 +149,42 @@ public final class RealtimeMCPApprovalRequest extends RealtimeConversationItem {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("server_label", this.serverLabel);
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("arguments", this.arguments);
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of RealtimeMCPApprovalRequest from the JsonReader.
+     * Reads an instance of RealtimeMcpListTools from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeMCPApprovalRequest if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of RealtimeMcpListTools if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeMCPApprovalRequest.
+     * @throws IOException If an error occurs while reading the RealtimeMcpListTools.
      */
     @Generated
-    public static RealtimeMCPApprovalRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeMcpListTools fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String id = null;
             String serverLabel = null;
-            String name = null;
-            String arguments = null;
-            RealtimeConversationItemType type = RealtimeConversationItemType.MCP_APPROVAL_REQUEST;
+            List<McpListToolsTool> tools = null;
+            RealtimeConversationItemType type = RealtimeConversationItemType.MCP_LIST_TOOLS;
+            String id = null;
             Long createdAt = null;
             String responseId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("server_label".equals(fieldName)) {
+                if ("server_label".equals(fieldName)) {
                     serverLabel = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("arguments".equals(fieldName)) {
-                    arguments = reader.getString();
+                } else if ("tools".equals(fieldName)) {
+                    tools = reader.readArray(reader1 -> McpListToolsTool.fromJson(reader1));
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeConversationItemType.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = reader.getNullable(JsonReader::getLong);
                 } else if ("response_id".equals(fieldName)) {
@@ -204,12 +193,12 @@ public final class RealtimeMCPApprovalRequest extends RealtimeConversationItem {
                     reader.skipChildren();
                 }
             }
-            RealtimeMCPApprovalRequest deserializedRealtimeMCPApprovalRequest
-                = new RealtimeMCPApprovalRequest(id, serverLabel, name, arguments);
-            deserializedRealtimeMCPApprovalRequest.type = type;
-            deserializedRealtimeMCPApprovalRequest.createdAt = createdAt;
-            deserializedRealtimeMCPApprovalRequest.responseId = responseId;
-            return deserializedRealtimeMCPApprovalRequest;
+            RealtimeMcpListTools deserializedRealtimeMcpListTools = new RealtimeMcpListTools(serverLabel, tools);
+            deserializedRealtimeMcpListTools.type = type;
+            deserializedRealtimeMcpListTools.id = id;
+            deserializedRealtimeMcpListTools.createdAt = createdAt;
+            deserializedRealtimeMcpListTools.responseId = responseId;
+            return deserializedRealtimeMcpListTools;
         });
     }
 }

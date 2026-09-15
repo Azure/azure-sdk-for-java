@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when an MCP tool call has completed successfully.
  */
 @Immutable
-public final class RealtimeServerEventResponseMCPCallCompleted extends RealtimeServerEvent {
+public final class RealtimeServerEventResponseMcpCallCompleted extends RealtimeServerEvent {
 
     /*
      * The type property.
@@ -41,14 +41,14 @@ public final class RealtimeServerEventResponseMCPCallCompleted extends RealtimeS
     private final String itemId;
 
     /**
-     * Creates an instance of RealtimeServerEventResponseMCPCallCompleted class.
+     * Creates an instance of RealtimeServerEventResponseMcpCallCompleted class.
      *
      * @param eventId the eventId value to set.
      * @param outputIndex the outputIndex value to set.
      * @param itemId the itemId value to set.
      */
     @Generated
-    private RealtimeServerEventResponseMCPCallCompleted(String eventId, long outputIndex, String itemId) {
+    private RealtimeServerEventResponseMcpCallCompleted(String eventId, long outputIndex, String itemId) {
         this.eventId = eventId;
         this.outputIndex = outputIndex;
         this.itemId = itemId;
@@ -110,16 +110,16 @@ public final class RealtimeServerEventResponseMCPCallCompleted extends RealtimeS
     }
 
     /**
-     * Reads an instance of RealtimeServerEventResponseMCPCallCompleted from the JsonReader.
+     * Reads an instance of RealtimeServerEventResponseMcpCallCompleted from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeServerEventResponseMCPCallCompleted if the JsonReader was pointing to an instance
+     * @return An instance of RealtimeServerEventResponseMcpCallCompleted if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeServerEventResponseMCPCallCompleted.
+     * @throws IOException If an error occurs while reading the RealtimeServerEventResponseMcpCallCompleted.
      */
     @Generated
-    public static RealtimeServerEventResponseMCPCallCompleted fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeServerEventResponseMcpCallCompleted fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
             long outputIndex = 0L;
@@ -140,10 +140,10 @@ public final class RealtimeServerEventResponseMCPCallCompleted extends RealtimeS
                     reader.skipChildren();
                 }
             }
-            RealtimeServerEventResponseMCPCallCompleted deserializedRealtimeServerEventResponseMCPCallCompleted
-                = new RealtimeServerEventResponseMCPCallCompleted(eventId, outputIndex, itemId);
-            deserializedRealtimeServerEventResponseMCPCallCompleted.type = type;
-            return deserializedRealtimeServerEventResponseMCPCallCompleted;
+            RealtimeServerEventResponseMcpCallCompleted deserializedRealtimeServerEventResponseMcpCallCompleted
+                = new RealtimeServerEventResponseMcpCallCompleted(eventId, outputIndex, itemId);
+            deserializedRealtimeServerEventResponseMcpCallCompleted.type = type;
+            return deserializedRealtimeServerEventResponseMcpCallCompleted;
         });
     }
 }

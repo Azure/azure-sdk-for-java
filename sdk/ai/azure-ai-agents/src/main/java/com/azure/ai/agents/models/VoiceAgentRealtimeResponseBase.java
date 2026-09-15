@@ -35,7 +35,7 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
      * The object type, must be `realtime.response`.
      */
     @Generated
-    private VoiceResponseBaseObject1 object;
+    private VoiceResponseBaseObject object;
 
     /*
      * The final status of the response (`completed`, `cancelled`, `failed`, or
@@ -126,7 +126,7 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
      * @return the object value.
      */
     @Generated
-    public VoiceResponseBaseObject1 getObject() {
+    public VoiceResponseBaseObject getObject() {
         return this.object;
     }
 
@@ -137,7 +137,7 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
      * @return the VoiceAgentRealtimeResponseBase object itself.
      */
     @Generated
-    VoiceAgentRealtimeResponseBase setObject(VoiceResponseBaseObject1 object) {
+    VoiceAgentRealtimeResponseBase setObject(VoiceResponseBaseObject object) {
         this.object = object;
         return this;
     }
@@ -174,6 +174,18 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
     @Generated
     public RealtimeResponseStatus getStatusDetails() {
         return this.statusDetails;
+    }
+
+    /**
+     * Set the statusDetails property: Additional details about the status.
+     *
+     * @param statusDetails the statusDetails value to set.
+     * @return the VoiceAgentRealtimeResponseBase object itself.
+     */
+    @Generated
+    VoiceAgentRealtimeResponseBase setStatusDetails(RealtimeResponseStatus statusDetails) {
+        this.statusDetails = statusDetails;
+        return this;
     }
 
     /**
@@ -358,7 +370,7 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
                     deserializedVoiceAgentRealtimeResponseBase.id = reader.getString();
                 } else if ("object".equals(fieldName)) {
                     deserializedVoiceAgentRealtimeResponseBase.object
-                        = VoiceResponseBaseObject1.fromString(reader.getString());
+                        = VoiceResponseBaseObject.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     deserializedVoiceAgentRealtimeResponseBase.status
                         = VoiceResponseBaseStatus.fromString(reader.getString());
@@ -391,17 +403,5 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
             }
             return deserializedVoiceAgentRealtimeResponseBase;
         });
-    }
-
-    /**
-     * Set the statusDetails property: Additional details about the status.
-     *
-     * @param statusDetails the statusDetails value to set.
-     * @return the VoiceAgentRealtimeResponseBase object itself.
-     */
-    @Generated
-    VoiceAgentRealtimeResponseBase setStatusDetails(RealtimeResponseStatus statusDetails) {
-        this.statusDetails = statusDetails;
-        return this;
     }
 }

@@ -81,7 +81,7 @@ public class TelephonyTransferDestination implements JsonSerializable<TelephonyT
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("pstn".equals(discriminatorValue)) {
-                    return PSTNTelephonyTransferDestination.fromJson(readerToUse.reset());
+                    return PstnTelephonyTransferDestination.fromJson(readerToUse.reset());
                 } else if ("teams".equals(discriminatorValue)) {
                     return TeamsTelephonyTransferDestination.fromJson(readerToUse.reset());
                 } else if ("sip".equals(discriminatorValue)) {

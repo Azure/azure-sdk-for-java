@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class RealtimeMCPApprovalResponse extends RealtimeConversationItem {
+public final class RealtimeMcpApprovalResponse extends RealtimeConversationItem {
 
     /*
      * The type property.
@@ -63,14 +63,14 @@ public final class RealtimeMCPApprovalResponse extends RealtimeConversationItem 
     private String responseId;
 
     /**
-     * Creates an instance of RealtimeMCPApprovalResponse class.
+     * Creates an instance of RealtimeMcpApprovalResponse class.
      *
      * @param id the id value to set.
      * @param approvalRequestId the approvalRequestId value to set.
      * @param approve the approve value to set.
      */
     @Generated
-    public RealtimeMCPApprovalResponse(String id, String approvalRequestId, boolean approve) {
+    public RealtimeMcpApprovalResponse(String id, String approvalRequestId, boolean approve) {
         this.id = id;
         this.approvalRequestId = approvalRequestId;
         this.approve = approve;
@@ -131,10 +131,10 @@ public final class RealtimeMCPApprovalResponse extends RealtimeConversationItem 
      * Set the reason property: The reason property.
      *
      * @param reason the reason value to set.
-     * @return the RealtimeMCPApprovalResponse object itself.
+     * @return the RealtimeMcpApprovalResponse object itself.
      */
     @Generated
-    public RealtimeMCPApprovalResponse setReason(String reason) {
+    public RealtimeMcpApprovalResponse setReason(String reason) {
         this.reason = reason;
         return this;
     }
@@ -175,16 +175,16 @@ public final class RealtimeMCPApprovalResponse extends RealtimeConversationItem 
     }
 
     /**
-     * Reads an instance of RealtimeMCPApprovalResponse from the JsonReader.
+     * Reads an instance of RealtimeMcpApprovalResponse from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeMCPApprovalResponse if the JsonReader was pointing to an instance of it, or null
+     * @return An instance of RealtimeMcpApprovalResponse if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeMCPApprovalResponse.
+     * @throws IOException If an error occurs while reading the RealtimeMcpApprovalResponse.
      */
     @Generated
-    public static RealtimeMCPApprovalResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeMcpApprovalResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             String approvalRequestId = null;
@@ -214,13 +214,13 @@ public final class RealtimeMCPApprovalResponse extends RealtimeConversationItem 
                     reader.skipChildren();
                 }
             }
-            RealtimeMCPApprovalResponse deserializedRealtimeMCPApprovalResponse
-                = new RealtimeMCPApprovalResponse(id, approvalRequestId, approve);
-            deserializedRealtimeMCPApprovalResponse.type = type;
-            deserializedRealtimeMCPApprovalResponse.reason = reason;
-            deserializedRealtimeMCPApprovalResponse.createdAt = createdAt;
-            deserializedRealtimeMCPApprovalResponse.responseId = responseId;
-            return deserializedRealtimeMCPApprovalResponse;
+            RealtimeMcpApprovalResponse deserializedRealtimeMcpApprovalResponse
+                = new RealtimeMcpApprovalResponse(id, approvalRequestId, approve);
+            deserializedRealtimeMcpApprovalResponse.type = type;
+            deserializedRealtimeMcpApprovalResponse.reason = reason;
+            deserializedRealtimeMcpApprovalResponse.createdAt = createdAt;
+            deserializedRealtimeMcpApprovalResponse.responseId = responseId;
+            return deserializedRealtimeMcpApprovalResponse;
         });
     }
 }

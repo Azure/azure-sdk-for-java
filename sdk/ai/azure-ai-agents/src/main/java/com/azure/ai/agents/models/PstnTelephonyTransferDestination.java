@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class PSTNTelephonyTransferDestination extends TelephonyTransferDestination {
+public final class PstnTelephonyTransferDestination extends TelephonyTransferDestination {
 
     /*
      * The telephony transfer destination type.
@@ -31,12 +31,12 @@ public final class PSTNTelephonyTransferDestination extends TelephonyTransferDes
     private final String value;
 
     /**
-     * Creates an instance of PSTNTelephonyTransferDestination class.
+     * Creates an instance of PstnTelephonyTransferDestination class.
      *
      * @param value the value value to set.
      */
     @Generated
-    public PSTNTelephonyTransferDestination(String value) {
+    public PstnTelephonyTransferDestination(String value) {
         this.value = value;
     }
 
@@ -74,16 +74,16 @@ public final class PSTNTelephonyTransferDestination extends TelephonyTransferDes
     }
 
     /**
-     * Reads an instance of PSTNTelephonyTransferDestination from the JsonReader.
+     * Reads an instance of PstnTelephonyTransferDestination from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PSTNTelephonyTransferDestination if the JsonReader was pointing to an instance of it, or
+     * @return An instance of PstnTelephonyTransferDestination if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PSTNTelephonyTransferDestination.
+     * @throws IOException If an error occurs while reading the PstnTelephonyTransferDestination.
      */
     @Generated
-    public static PSTNTelephonyTransferDestination fromJson(JsonReader jsonReader) throws IOException {
+    public static PstnTelephonyTransferDestination fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String value = null;
             TelephonyTransferDestinationKind kind = TelephonyTransferDestinationKind.PSTN;
@@ -98,10 +98,10 @@ public final class PSTNTelephonyTransferDestination extends TelephonyTransferDes
                     reader.skipChildren();
                 }
             }
-            PSTNTelephonyTransferDestination deserializedPSTNTelephonyTransferDestination
-                = new PSTNTelephonyTransferDestination(value);
-            deserializedPSTNTelephonyTransferDestination.kind = kind;
-            return deserializedPSTNTelephonyTransferDestination;
+            PstnTelephonyTransferDestination deserializedPstnTelephonyTransferDestination
+                = new PstnTelephonyTransferDestination(value);
+            deserializedPstnTelephonyTransferDestination.kind = kind;
+            return deserializedPstnTelephonyTransferDestination;
         });
     }
 }
