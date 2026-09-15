@@ -80,6 +80,7 @@ public class BlobStorageCustomizations extends Customization {
         addSdkOnlyIsPrefix(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         removeBufferedStreamingConvenienceMethods(customization.getPackage(IMPL_PACKAGE), logger);
         restoreFluentModels(customization, logger);
+        restoreHeaderSetters(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         // Follow-up stages (ported from the queue customization) build on this removal pass:
         //   - restoreMetadataHeaderCollection (x-ms-meta-* on *GetPropertiesHeaders)
         //   - updateImplToMapInternalException (BlobStorageExceptionInternal -> BlobStorageException)
@@ -118,6 +119,39 @@ public class BlobStorageCustomizations extends Customization {
     private static final List<String> IMPL_FLUENT_MODELS_TO_RESTORE = Arrays.asList(
         "BlobItemPropertiesInternal", "BlobItemInternal", "FilterBlobItem", "QueryFormat", "QueryRequest",
         "QuerySerialization", "BlobTag", "BlobTags", "BlobName", "BlobHierarchyListSegment");
+
+    // The public BlobDownloadHeaders and BlobQueryHeaders are @Fluent wrappers that delegate every setter to the
+    // generated header class, which the emitter makes read-only. These need the setters back, but NOT the rest of
+    // the fluent-model treatment: a header class is built from the raw HttpHeaders, so it must keep the
+    // (HttpHeaders) constructor that restoreFluentModels replaces with a no-arg one.
+    private static final List<String> HEADER_MODELS_TO_MAKE_SETTABLE
+        = Arrays.asList("BlobsDownloadHeaders", "BlobsQueryHeaders");
+
+    private static void restoreHeaderSetters(PackageCustomization implModels, Logger logger) {
+        for (String className : HEADER_MODELS_TO_MAKE_SETTABLE) {
+            if (implModels.getClass(className) == null) {
+                logger.info("Header model {} not present; skipping setter restoration.", className);
+                continue;
+            }
+            implModels.getClass(className).customizeAst(ast -> {
+                ast.addImport("com.azure.core.annotation.Fluent");
+                ast.getImports().removeIf(i -> i.getNameAsString().equals("com.azure.core.annotation.Immutable"));
+                ast.getClassByName(className).ifPresent(clazz -> {
+                    clazz.getAnnotationByName("Immutable").ifPresent(a -> a.remove());
+                    if (!clazz.isAnnotationPresent("Fluent")) {
+                        clazz.addMarkerAnnotation("Fluent");
+                    }
+                    clazz.getFields().forEach(field -> {
+                        if (!field.isStatic()) {
+                            field.setFinal(false);
+                        }
+                    });
+                    addFluentSetters(clazz);
+                });
+            });
+            logger.info("Restored the fluent setters on {}.", className);
+        }
+    }
 
     private static void restoreFluentModels(LibraryCustomization customization, Logger logger) {
         restoreFluentModels(customization.getPackage(MODELS_PACKAGE), PUBLIC_FLUENT_MODELS_TO_RESTORE, logger);
@@ -161,6 +195,18 @@ public class BlobStorageCustomizations extends Customization {
             new Javadoc(JavadocDescription.parseText("Creates an instance of " + className + " class.")));
         ctor.setBody(new BlockStmt());
 
+        addFluentSetters(clazz);
+
+        clazz.findAll(ObjectCreationExpr.class).stream()
+            .filter(oce -> oce.getType().getNameAsString().equals(className) && !oce.getArguments().isEmpty())
+            .forEach(oce -> rewriteFromXmlConstruction(clazz, oce));
+    }
+
+    // Adds a fluent setter for each instance field that does not already have one, immediately after the field's
+    // getter so the pairs sit together as they did in the shipped models. Shared by the fluent-model restoration
+    // and the header-setter restoration.
+    private static void addFluentSetters(ClassOrInterfaceDeclaration clazz) {
+        String className = clazz.getNameAsString();
         for (FieldDeclaration field : clazz.getFields()) {
             if (field.isStatic()) {
                 continue;
@@ -192,10 +238,6 @@ public class BlobStorageCustomizations extends Customization {
                 .addBlockTag("return", "the " + className + " object itself."));
             setter.setBody(StaticJavaParser.parseBlock(body));
         }
-
-        clazz.findAll(ObjectCreationExpr.class).stream()
-            .filter(oce -> oce.getType().getNameAsString().equals(className) && !oce.getArguments().isEmpty())
-            .forEach(oce -> rewriteFromXmlConstruction(clazz, oce));
     }
 
     private static void rewriteFromXmlConstruction(ClassOrInterfaceDeclaration clazz, ObjectCreationExpr oce) {

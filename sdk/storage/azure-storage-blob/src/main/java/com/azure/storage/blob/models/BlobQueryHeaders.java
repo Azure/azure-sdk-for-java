@@ -186,7 +186,7 @@ public final class BlobQueryHeaders {
      * @return the contentMd5 value.
      */
     public byte[] getContentMd5() {
-        return internalHeaders.getContentMD5();
+        return internalHeaders.getContentMd5();
     }
 
     /**
@@ -198,7 +198,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setContentMd5(byte[] contentMd5) {
-        internalHeaders.setContentMD5(contentMd5);
+        internalHeaders.setContentMd5(contentMd5);
         return this;
     }
 
@@ -309,7 +309,7 @@ public final class BlobQueryHeaders {
      * @return the blobSequenceNumber value.
      */
     public Long getBlobSequenceNumber() {
-        return internalHeaders.getXMsBlobSequenceNumber();
+        return internalHeaders.getBlobSequenceNumber();
     }
 
     /**
@@ -320,7 +320,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setBlobSequenceNumber(Long blobSequenceNumber) {
-        internalHeaders.setXMsBlobSequenceNumber(blobSequenceNumber);
+        internalHeaders.setBlobSequenceNumber(blobSequenceNumber);
         return this;
     }
 
@@ -331,7 +331,7 @@ public final class BlobQueryHeaders {
      * @return the blobType value.
      */
     public BlobType getBlobType() {
-        return internalHeaders.getXMsBlobType();
+        return internalHeaders.getBlobType();
     }
 
     /**
@@ -342,7 +342,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setBlobType(BlobType blobType) {
-        internalHeaders.setXMsBlobType(blobType);
+        internalHeaders.setBlobType(blobType);
         return this;
     }
 
@@ -358,7 +358,7 @@ public final class BlobQueryHeaders {
      * @return the copyCompletionTime value.
      */
     public OffsetDateTime getCopyCompletionTime() {
-        return internalHeaders.getXMsCopyCompletionTime();
+        return internalHeaders.getCopyCompletionTime();
     }
 
     /**
@@ -374,7 +374,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
-        internalHeaders.setXMsCopyCompletionTime(copyCompletionTime);
+        internalHeaders.setCopyCompletionTime(copyCompletionTime);
         return this;
     }
 
@@ -389,7 +389,7 @@ public final class BlobQueryHeaders {
      * @return the copyStatusDescription value.
      */
     public String getCopyStatusDescription() {
-        return internalHeaders.getXMsCopyStatusDescription();
+        return internalHeaders.getCopyStatusDescription();
     }
 
     /**
@@ -404,7 +404,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setCopyStatusDescription(String copyStatusDescription) {
-        internalHeaders.setXMsCopyStatusDescription(copyStatusDescription);
+        internalHeaders.setCopyStatusDescription(copyStatusDescription);
         return this;
     }
 
@@ -416,7 +416,7 @@ public final class BlobQueryHeaders {
      * @return the copyId value.
      */
     public String getCopyId() {
-        return internalHeaders.getXMsCopyId();
+        return internalHeaders.getCopyId();
     }
 
     /**
@@ -428,7 +428,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setCopyId(String copyId) {
-        internalHeaders.setXMsCopyId(copyId);
+        internalHeaders.setCopyId(copyId);
         return this;
     }
 
@@ -444,7 +444,7 @@ public final class BlobQueryHeaders {
      * @return the copyProgress value.
      */
     public String getCopyProgress() {
-        return internalHeaders.getXMsCopyProgress();
+        return internalHeaders.getCopyProgress();
     }
 
     /**
@@ -460,7 +460,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setCopyProgress(String copyProgress) {
-        internalHeaders.setXMsCopyProgress(copyProgress);
+        internalHeaders.setCopyProgress(copyProgress);
         return this;
     }
 
@@ -475,7 +475,7 @@ public final class BlobQueryHeaders {
      * @return the copySource value.
      */
     public String getCopySource() {
-        return internalHeaders.getXMsCopySource();
+        return internalHeaders.getCopySource();
     }
 
     /**
@@ -490,7 +490,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setCopySource(String copySource) {
-        internalHeaders.setXMsCopySource(copySource);
+        internalHeaders.setCopySource(copySource);
         return this;
     }
 
@@ -502,7 +502,7 @@ public final class BlobQueryHeaders {
      * @return the copyStatus value.
      */
     public CopyStatusType getCopyStatus() {
-        return internalHeaders.getXMsCopyStatus();
+        return internalHeaders.getCopyStatus();
     }
 
     /**
@@ -514,7 +514,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setCopyStatus(CopyStatusType copyStatus) {
-        internalHeaders.setXMsCopyStatus(copyStatus);
+        internalHeaders.setCopyStatus(copyStatus);
         return this;
     }
 
@@ -526,7 +526,7 @@ public final class BlobQueryHeaders {
      * @return the leaseDuration value.
      */
     public LeaseDurationType getLeaseDuration() {
-        return internalHeaders.getXMsLeaseDuration();
+        return internalHeaders.getDuration();
     }
 
     /**
@@ -538,7 +538,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setLeaseDuration(LeaseDurationType leaseDuration) {
-        internalHeaders.setXMsLeaseDuration(leaseDuration);
+        internalHeaders.setDuration(leaseDuration);
         return this;
     }
 
@@ -549,7 +549,7 @@ public final class BlobQueryHeaders {
      * @return the leaseState value.
      */
     public LeaseStateType getLeaseState() {
-        return internalHeaders.getXMsLeaseState();
+        return internalHeaders.getLeaseState();
     }
 
     /**
@@ -560,7 +560,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setLeaseState(LeaseStateType leaseState) {
-        internalHeaders.setXMsLeaseState(leaseState);
+        internalHeaders.setLeaseState(leaseState);
         return this;
     }
 
@@ -571,7 +571,7 @@ public final class BlobQueryHeaders {
      * @return the leaseStatus value.
      */
     public LeaseStatusType getLeaseStatus() {
-        return internalHeaders.getXMsLeaseStatus();
+        return internalHeaders.getLeaseStatus();
     }
 
     /**
@@ -582,7 +582,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setLeaseStatus(LeaseStatusType leaseStatus) {
-        internalHeaders.setXMsLeaseStatus(leaseStatus);
+        internalHeaders.setLeaseStatus(leaseStatus);
         return this;
     }
 
@@ -594,7 +594,7 @@ public final class BlobQueryHeaders {
      * @return the clientRequestId value.
      */
     public String getClientRequestId() {
-        return internalHeaders.getXMsClientRequestId();
+        return internalHeaders.getClientRequestId();
     }
 
     /**
@@ -606,7 +606,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setClientRequestId(String clientRequestId) {
-        internalHeaders.setXMsClientRequestId(clientRequestId);
+        internalHeaders.setClientRequestId(clientRequestId);
         return this;
     }
 
@@ -617,7 +617,7 @@ public final class BlobQueryHeaders {
      * @return the requestId value.
      */
     public String getRequestId() {
-        return internalHeaders.getXMsRequestId();
+        return internalHeaders.getRequestId();
     }
 
     /**
@@ -628,7 +628,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setRequestId(String requestId) {
-        internalHeaders.setXMsRequestId(requestId);
+        internalHeaders.setRequestId(requestId);
         return this;
     }
 
@@ -640,7 +640,7 @@ public final class BlobQueryHeaders {
      * @return the version value.
      */
     public String getVersion() {
-        return internalHeaders.getXMsVersion();
+        return internalHeaders.getVersion();
     }
 
     /**
@@ -652,7 +652,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setVersion(String version) {
-        internalHeaders.setXMsVersion(version);
+        internalHeaders.setVersion(version);
         return this;
     }
 
@@ -707,7 +707,7 @@ public final class BlobQueryHeaders {
      * @return the blobCommittedBlockCount value.
      */
     public Integer getBlobCommittedBlockCount() {
-        return internalHeaders.getXMsBlobCommittedBlockCount();
+        return internalHeaders.getBlobCommittedBlockCount();
     }
 
     /**
@@ -718,7 +718,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
-        internalHeaders.setXMsBlobCommittedBlockCount(blobCommittedBlockCount);
+        internalHeaders.setBlobCommittedBlockCount(blobCommittedBlockCount);
         return this;
     }
 
@@ -732,7 +732,7 @@ public final class BlobQueryHeaders {
      * @return the serverEncrypted value.
      */
     public Boolean isServerEncrypted() {
-        return internalHeaders.isXMsServerEncrypted();
+        return internalHeaders.isServerEncrypted();
     }
 
     /**
@@ -746,7 +746,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setServerEncrypted(Boolean serverEncrypted) {
-        internalHeaders.setXMsServerEncrypted(serverEncrypted);
+        internalHeaders.setServerEncrypted(serverEncrypted);
         return this;
     }
 
@@ -758,7 +758,7 @@ public final class BlobQueryHeaders {
      * @return the encryptionKeySha256 value.
      */
     public String getEncryptionKeySha256() {
-        return internalHeaders.getXMsEncryptionKeySha256();
+        return internalHeaders.getEncryptionKeySha256();
     }
 
     /**
@@ -770,7 +770,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setEncryptionKeySha256(String encryptionKeySha256) {
-        internalHeaders.setXMsEncryptionKeySha256(encryptionKeySha256);
+        internalHeaders.setEncryptionKeySha256(encryptionKeySha256);
         return this;
     }
 
@@ -783,7 +783,7 @@ public final class BlobQueryHeaders {
      * @return the encryptionScope value.
      */
     public String getEncryptionScope() {
-        return internalHeaders.getXMsEncryptionScope();
+        return internalHeaders.getEncryptionScope();
     }
 
     /**
@@ -796,7 +796,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setEncryptionScope(String encryptionScope) {
-        internalHeaders.setXMsEncryptionScope(encryptionScope);
+        internalHeaders.setEncryptionScope(encryptionScope);
         return this;
     }
 
@@ -810,7 +810,7 @@ public final class BlobQueryHeaders {
      * @return the blobContentMd5 value.
      */
     public byte[] getBlobContentMd5() {
-        return internalHeaders.getXMsBlobContentMd5();
+        return internalHeaders.getBlobContentMd5();
     }
 
     /**
@@ -824,7 +824,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setBlobContentMd5(byte[] blobContentMd5) {
-        internalHeaders.setXMsBlobContentMd5(blobContentMd5);
+        internalHeaders.setBlobContentMd5(blobContentMd5);
         return this;
     }
 
@@ -839,7 +839,7 @@ public final class BlobQueryHeaders {
      * @return the contentCrc64 value.
      */
     public byte[] getContentCrc64() {
-        return internalHeaders.getXMsContentCrc64();
+        return internalHeaders.getContentCrc64();
     }
 
     /**
@@ -854,7 +854,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setContentCrc64(byte[] contentCrc64) {
-        internalHeaders.setXMsContentCrc64(contentCrc64);
+        internalHeaders.setContentCrc64(contentCrc64);
         return this;
     }
 

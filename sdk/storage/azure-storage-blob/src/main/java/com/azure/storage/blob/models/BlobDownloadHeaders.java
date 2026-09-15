@@ -96,7 +96,7 @@ public final class BlobDownloadHeaders {
      * @return the objectReplicationDestinationPolicyId value.
      */
     public String getObjectReplicationDestinationPolicyId() {
-        return internalHeaders.getXMsOrPolicyId();
+        return internalHeaders.getObjectReplicationPolicyId();
     }
 
     /**
@@ -107,7 +107,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setObjectReplicationDestinationPolicyId(String objectReplicationDestinationPolicyId) {
-        internalHeaders.setXMsOrPolicyId(objectReplicationDestinationPolicyId);
+        internalHeaders.setObjectReplicationPolicyId(objectReplicationDestinationPolicyId);
         return this;
     }
 
@@ -236,7 +236,7 @@ public final class BlobDownloadHeaders {
      * @return the contentMd5 value.
      */
     public byte[] getContentMd5() {
-        return CoreUtils.clone(internalHeaders.getContentMD5());
+        return CoreUtils.clone(internalHeaders.getContentMd5());
     }
 
     /**
@@ -247,7 +247,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setContentMd5(byte[] contentMd5) {
-        internalHeaders.setContentMD5(CoreUtils.clone(contentMd5));
+        internalHeaders.setContentMd5(CoreUtils.clone(contentMd5));
         return this;
     }
 
@@ -350,7 +350,7 @@ public final class BlobDownloadHeaders {
      * @return the blobSequenceNumber value.
      */
     public Long getBlobSequenceNumber() {
-        return internalHeaders.getXMsBlobSequenceNumber();
+        return internalHeaders.getBlobSequenceNumber();
     }
 
     /**
@@ -361,7 +361,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setBlobSequenceNumber(Long blobSequenceNumber) {
-        internalHeaders.setXMsBlobSequenceNumber(blobSequenceNumber);
+        internalHeaders.setBlobSequenceNumber(blobSequenceNumber);
         return this;
     }
 
@@ -371,7 +371,7 @@ public final class BlobDownloadHeaders {
      * @return the blobType value.
      */
     public BlobType getBlobType() {
-        return internalHeaders.getXMsBlobType();
+        return internalHeaders.getBlobType();
     }
 
     /**
@@ -381,7 +381,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setBlobType(BlobType blobType) {
-        internalHeaders.setXMsBlobType(blobType);
+        internalHeaders.setBlobType(blobType);
         return this;
     }
 
@@ -395,7 +395,7 @@ public final class BlobDownloadHeaders {
      * @return the copyCompletionTime value.
      */
     public OffsetDateTime getCopyCompletionTime() {
-        return internalHeaders.getXMsCopyCompletionTime();
+        return internalHeaders.getCopyCompletionTime();
     }
 
     /**
@@ -409,7 +409,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
-        internalHeaders.setXMsCopyCompletionTime(copyCompletionTime);
+        internalHeaders.setCopyCompletionTime(copyCompletionTime);
         return this;
     }
 
@@ -422,7 +422,7 @@ public final class BlobDownloadHeaders {
      * @return the copyStatusDescription value.
      */
     public String getCopyStatusDescription() {
-        return internalHeaders.getXMsCopyStatusDescription();
+        return internalHeaders.getCopyStatusDescription();
     }
 
     /**
@@ -435,7 +435,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setCopyStatusDescription(String copyStatusDescription) {
-        internalHeaders.setXMsCopyStatusDescription(copyStatusDescription);
+        internalHeaders.setCopyStatusDescription(copyStatusDescription);
         return this;
     }
 
@@ -446,7 +446,7 @@ public final class BlobDownloadHeaders {
      * @return the copyId value.
      */
     public String getCopyId() {
-        return internalHeaders.getXMsCopyId();
+        return internalHeaders.getCopyId();
     }
 
     /**
@@ -457,7 +457,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setCopyId(String copyId) {
-        internalHeaders.setXMsCopyId(copyId);
+        internalHeaders.setCopyId(copyId);
         return this;
     }
 
@@ -471,7 +471,7 @@ public final class BlobDownloadHeaders {
      * @return the copyProgress value.
      */
     public String getCopyProgress() {
-        return internalHeaders.getXMsCopyProgress();
+        return internalHeaders.getCopyProgress();
     }
 
     /**
@@ -485,7 +485,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setCopyProgress(String copyProgress) {
-        internalHeaders.setXMsCopyProgress(copyProgress);
+        internalHeaders.setCopyProgress(copyProgress);
         return this;
     }
 
@@ -498,7 +498,7 @@ public final class BlobDownloadHeaders {
      * @return the copySource value.
      */
     public String getCopySource() {
-        return internalHeaders.getXMsCopySource();
+        return internalHeaders.getCopySource();
     }
 
     /**
@@ -511,7 +511,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setCopySource(String copySource) {
-        internalHeaders.setXMsCopySource(copySource);
+        internalHeaders.setCopySource(copySource);
         return this;
     }
 
@@ -522,7 +522,7 @@ public final class BlobDownloadHeaders {
      * @return the copyStatus value.
      */
     public CopyStatusType getCopyStatus() {
-        return internalHeaders.getXMsCopyStatus();
+        return internalHeaders.getCopyStatus();
     }
 
     /**
@@ -533,7 +533,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setCopyStatus(CopyStatusType copyStatus) {
-        internalHeaders.setXMsCopyStatus(copyStatus);
+        internalHeaders.setCopyStatus(copyStatus);
         return this;
     }
 
@@ -544,7 +544,7 @@ public final class BlobDownloadHeaders {
      * @return the leaseDuration value.
      */
     public LeaseDurationType getLeaseDuration() {
-        return internalHeaders.getXMsLeaseDuration();
+        return internalHeaders.getDuration();
     }
 
     /**
@@ -555,7 +555,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setLeaseDuration(LeaseDurationType leaseDuration) {
-        internalHeaders.setXMsLeaseDuration(leaseDuration);
+        internalHeaders.setDuration(leaseDuration);
         return this;
     }
 
@@ -566,7 +566,7 @@ public final class BlobDownloadHeaders {
      * @return the leaseState value.
      */
     public LeaseStateType getLeaseState() {
-        return internalHeaders.getXMsLeaseState();
+        return internalHeaders.getLeaseState();
     }
 
     /**
@@ -577,7 +577,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setLeaseState(LeaseStateType leaseState) {
-        internalHeaders.setXMsLeaseState(leaseState);
+        internalHeaders.setLeaseState(leaseState);
         return this;
     }
 
@@ -588,7 +588,7 @@ public final class BlobDownloadHeaders {
      * @return the leaseStatus value.
      */
     public LeaseStatusType getLeaseStatus() {
-        return internalHeaders.getXMsLeaseStatus();
+        return internalHeaders.getLeaseStatus();
     }
 
     /**
@@ -599,7 +599,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setLeaseStatus(LeaseStatusType leaseStatus) {
-        internalHeaders.setXMsLeaseStatus(leaseStatus);
+        internalHeaders.setLeaseStatus(leaseStatus);
         return this;
     }
 
@@ -610,7 +610,7 @@ public final class BlobDownloadHeaders {
      * @return the clientRequestId value.
      */
     public String getClientRequestId() {
-        return internalHeaders.getXMsClientRequestId();
+        return internalHeaders.getClientRequestId();
     }
 
     /**
@@ -621,7 +621,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setClientRequestId(String clientRequestId) {
-        internalHeaders.setXMsClientRequestId(clientRequestId);
+        internalHeaders.setClientRequestId(clientRequestId);
         return this;
     }
 
@@ -632,7 +632,7 @@ public final class BlobDownloadHeaders {
      * @return the requestId value.
      */
     public String getRequestId() {
-        return internalHeaders.getXMsRequestId();
+        return internalHeaders.getRequestId();
     }
 
     /**
@@ -643,7 +643,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setRequestId(String requestId) {
-        internalHeaders.setXMsRequestId(requestId);
+        internalHeaders.setRequestId(requestId);
         return this;
     }
 
@@ -654,7 +654,7 @@ public final class BlobDownloadHeaders {
      * @return the version value.
      */
     public String getVersion() {
-        return internalHeaders.getXMsVersion();
+        return internalHeaders.getVersion();
     }
 
     /**
@@ -665,7 +665,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setVersion(String version) {
-        internalHeaders.setXMsVersion(version);
+        internalHeaders.setVersion(version);
         return this;
     }
 
@@ -677,7 +677,7 @@ public final class BlobDownloadHeaders {
      * @return the versionId value.
      */
     public String getVersionId() {
-        return internalHeaders.getXMsVersionId();
+        return internalHeaders.getVersionId();
     }
 
     /**
@@ -689,7 +689,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setVersionId(String versionId) {
-        internalHeaders.setXMsVersionId(versionId);
+        internalHeaders.setVersionId(versionId);
         return this;
     }
 
@@ -742,7 +742,7 @@ public final class BlobDownloadHeaders {
      * @return the blobCommittedBlockCount value.
      */
     public Integer getBlobCommittedBlockCount() {
-        return internalHeaders.getXMsBlobCommittedBlockCount();
+        return internalHeaders.getBlobCommittedBlockCount();
     }
 
     /**
@@ -753,7 +753,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
-        internalHeaders.setXMsBlobCommittedBlockCount(blobCommittedBlockCount);
+        internalHeaders.setBlobCommittedBlockCount(blobCommittedBlockCount);
         return this;
     }
 
@@ -765,7 +765,7 @@ public final class BlobDownloadHeaders {
      * @return the isServerEncrypted value.
      */
     public Boolean isServerEncrypted() {
-        return internalHeaders.isXMsServerEncrypted();
+        return internalHeaders.isServerEncrypted();
     }
 
     /**
@@ -777,7 +777,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
-        internalHeaders.setXMsServerEncrypted(isServerEncrypted);
+        internalHeaders.setServerEncrypted(isServerEncrypted);
         return this;
     }
 
@@ -788,7 +788,7 @@ public final class BlobDownloadHeaders {
      * @return the encryptionKeySha256 value.
      */
     public String getEncryptionKeySha256() {
-        return internalHeaders.getXMsEncryptionKeySha256();
+        return internalHeaders.getEncryptionKeySha256();
     }
 
     /**
@@ -799,7 +799,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setEncryptionKeySha256(String encryptionKeySha256) {
-        internalHeaders.setXMsEncryptionKeySha256(encryptionKeySha256);
+        internalHeaders.setEncryptionKeySha256(encryptionKeySha256);
         return this;
     }
 
@@ -810,7 +810,7 @@ public final class BlobDownloadHeaders {
      * @return the encryptionScope value.
      */
     public String getEncryptionScope() {
-        return internalHeaders.getXMsEncryptionScope();
+        return internalHeaders.getEncryptionScope();
     }
 
     /**
@@ -821,7 +821,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setEncryptionScope(String encryptionScope) {
-        internalHeaders.setXMsEncryptionScope(encryptionScope);
+        internalHeaders.setEncryptionScope(encryptionScope);
         return this;
     }
 
@@ -833,7 +833,7 @@ public final class BlobDownloadHeaders {
      * @return the blobContentMD5 value.
      */
     public byte[] getBlobContentMD5() {
-        return CoreUtils.clone(internalHeaders.getXMsBlobContentMd5());
+        return CoreUtils.clone(internalHeaders.getBlobContentMd5());
     }
 
     /**
@@ -845,7 +845,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setBlobContentMD5(byte[] blobContentMD5) {
-        internalHeaders.setXMsBlobContentMd5(CoreUtils.clone(blobContentMD5));
+        internalHeaders.setBlobContentMd5(CoreUtils.clone(blobContentMD5));
         return this;
     }
 
@@ -855,7 +855,7 @@ public final class BlobDownloadHeaders {
      * @return the tagCount value.
      */
     public Long getTagCount() {
-        return internalHeaders.getXMsTagCount();
+        return internalHeaders.getTagCount();
     }
 
     /**
@@ -865,7 +865,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setTagCount(Long tagCount) {
-        internalHeaders.setXMsTagCount(tagCount);
+        internalHeaders.setTagCount(tagCount);
         return this;
     }
 
@@ -878,7 +878,7 @@ public final class BlobDownloadHeaders {
      * @return the contentCrc64 value.
      */
     public byte[] getContentCrc64() {
-        return CoreUtils.clone(internalHeaders.getXMsContentCrc64());
+        return CoreUtils.clone(internalHeaders.getContentCrc64());
     }
 
     /**
@@ -891,7 +891,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setContentCrc64(byte[] contentCrc64) {
-        internalHeaders.setXMsContentCrc64(CoreUtils.clone(contentCrc64));
+        internalHeaders.setContentCrc64(CoreUtils.clone(contentCrc64));
         return this;
     }
 
@@ -921,7 +921,7 @@ public final class BlobDownloadHeaders {
      * @return Whether the blob is sealed  (marked as read only). This is only applicable for Append blobs.
      */
     public Boolean isSealed() {
-        return internalHeaders.isXMsBlobSealed();
+        return internalHeaders.isSealed();
     }
 
     /**
@@ -931,7 +931,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setSealed(Boolean sealed) {
-        internalHeaders.setXMsBlobSealed(sealed);
+        internalHeaders.setSealed(sealed);
         return this;
     }
 
@@ -941,7 +941,7 @@ public final class BlobDownloadHeaders {
      * @return the lastAccessedTime value.
      */
     public OffsetDateTime getLastAccessedTime() {
-        return internalHeaders.getXMsLastAccessTime();
+        return internalHeaders.getLastAccessed();
     }
 
     /**
@@ -951,7 +951,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setLastAccessedTime(OffsetDateTime lastAccessedTime) {
-        internalHeaders.setXMsLastAccessTime(lastAccessedTime);
+        internalHeaders.setLastAccessed(lastAccessedTime);
         return this;
     }
 
@@ -961,7 +961,7 @@ public final class BlobDownloadHeaders {
      * @return the currentVersion value.
      */
     public Boolean isCurrentVersion() {
-        return internalHeaders.isXMsIsCurrentVersion();
+        return internalHeaders.isCurrentVersion();
     }
 
     /**
@@ -971,7 +971,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setCurrentVersion(Boolean currentVersion) {
-        internalHeaders.setXMsIsCurrentVersion(currentVersion);
+        internalHeaders.setCurrentVersion(currentVersion);
         return this;
     }
 
@@ -983,8 +983,8 @@ public final class BlobDownloadHeaders {
      */
     public BlobImmutabilityPolicy getImmutabilityPolicy() {
         return new BlobImmutabilityPolicy()
-            .setPolicyMode(BlobImmutabilityPolicyMode.fromString(internalHeaders.getXMsImmutabilityPolicyMode()))
-            .setExpiryTime(internalHeaders.getXMsImmutabilityPolicyUntilDate());
+            .setPolicyMode(internalHeaders.getImmutabilityPolicyMode())
+            .setExpiryTime(internalHeaders.getImmutabilityPolicyExpiresOn());
     }
 
     /**
@@ -996,11 +996,11 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setImmutabilityPolicy(BlobImmutabilityPolicy immutabilityPolicy) {
         if (immutabilityPolicy == null) {
-            internalHeaders.setXMsImmutabilityPolicyMode(null);
-            internalHeaders.setXMsImmutabilityPolicyUntilDate(null);
+            internalHeaders.setImmutabilityPolicyMode(null);
+            internalHeaders.setImmutabilityPolicyExpiresOn(null);
         } else {
-            internalHeaders.setXMsImmutabilityPolicyMode(immutabilityPolicy.getPolicyMode().toString());
-            internalHeaders.setXMsImmutabilityPolicyUntilDate(immutabilityPolicy.getExpiryTime());
+            internalHeaders.setImmutabilityPolicyMode(immutabilityPolicy.getPolicyMode());
+            internalHeaders.setImmutabilityPolicyExpiresOn(immutabilityPolicy.getExpiryTime());
         }
         return this;
     }
@@ -1011,7 +1011,7 @@ public final class BlobDownloadHeaders {
      * @return the hasLegalHold value.
      */
     public Boolean hasLegalHold() {
-        return internalHeaders.isXMsLegalHold();
+        return internalHeaders.isLegalHold();
     }
 
     /**
@@ -1021,7 +1021,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setHasLegalHold(Boolean hasLegalHold) {
-        internalHeaders.setXMsLegalHold(hasLegalHold);
+        internalHeaders.setLegalHold(hasLegalHold);
         return this;
     }
 
@@ -1031,7 +1031,7 @@ public final class BlobDownloadHeaders {
      * @return the creation time value.
      */
     public OffsetDateTime getCreationTime() {
-        return internalHeaders.getXMsCreationTime();
+        return internalHeaders.getCreationTime();
     }
 
     /**
@@ -1041,7 +1041,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setCreationTime(OffsetDateTime creationTime) {
-        internalHeaders.setXMsCreationTime(creationTime);
+        internalHeaders.setCreationTime(creationTime);
         return this;
     }
 }
