@@ -10,8 +10,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentityType;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistry;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentityType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +23,7 @@ public final class SchemaRegistriesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"vsqxfxjelgcmpzqj\",\"namespace\":\"hhqxuwyvcacoyviv\",\"displayName\":\"izus\",\"description\":\"zlbscmnlziji\",\"storageAccountContainerUrl\":\"fehgmv\",\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"v\",\"tenantId\":\"xrerlniylylyf\",\"type\":\"SystemAssigned\"},\"location\":\"utgqztwh\",\"tags\":{\"abe\":\"upgxyjtcdxabbujf\",\"e\":\"bbklqpxzuca\"},\"id\":\"dwwnl\",\"name\":\"a\",\"type\":\"wxudgn\"}";
+            = "{\"properties\":{\"uuid\":\"wogtgitsq\",\"namespace\":\"zvbrzcdbanfzndsc\",\"displayName\":\"xeatkd\",\"description\":\"wnrdjyibqbnaom\",\"storageAccountContainerUrl\":\"jrmkuhmaxljalf\",\"outboundIdentity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"mobcan\"},\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"qcwgaxfgvaknokz\",\"tenantId\":\"jzrltixldzy\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ujivyqlkjuvsm\":{\"principalId\":\"qsix\",\"clientId\":\"m\"}}},\"location\":\"slzoyov\",\"tags\":{\"mx\":\"bpqvybefg\",\"vcuartrhun\":\"okcvtlubses\",\"reuykbbmnwagl\":\"pirykycndzfqiv\"},\"id\":\"bxoeeonql\",\"name\":\"fwmyymv\",\"type\":\"dbpb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +33,17 @@ public final class SchemaRegistriesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaRegistry response = manager.schemaRegistries()
-            .getByResourceGroupWithResponse("ypsjoq", "jenkyh", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("tcjb", "tvivuzqym", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("utgqztwh", response.location());
-        Assertions.assertEquals("upgxyjtcdxabbujf", response.tags().get("abe"));
-        Assertions.assertEquals("hhqxuwyvcacoyviv", response.properties().namespace());
-        Assertions.assertEquals("izus", response.properties().displayName());
-        Assertions.assertEquals("zlbscmnlziji", response.properties().description());
-        Assertions.assertEquals("fehgmv", response.properties().storageAccountContainerUrl());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("slzoyov", response.location());
+        Assertions.assertEquals("bpqvybefg", response.tags().get("mx"));
+        Assertions.assertEquals("zvbrzcdbanfzndsc", response.properties().namespace());
+        Assertions.assertEquals("xeatkd", response.properties().displayName());
+        Assertions.assertEquals("wnrdjyibqbnaom", response.properties().description());
+        Assertions.assertEquals("jrmkuhmaxljalf", response.properties().storageAccountContainerUrl());
+        Assertions.assertEquals(OutboundIdentityType.USER_ASSIGNED, response.properties().outboundIdentity().type());
+        Assertions.assertEquals("mobcan", response.properties().outboundIdentity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 }

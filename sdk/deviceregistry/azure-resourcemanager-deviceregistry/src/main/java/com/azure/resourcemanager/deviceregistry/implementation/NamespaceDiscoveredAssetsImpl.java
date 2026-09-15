@@ -53,16 +53,16 @@ public final class NamespaceDiscoveredAssetsImpl implements NamespaceDiscoveredA
         this.serviceClient().delete(resourceGroupName, namespaceName, discoveredAssetName, context);
     }
 
-    public PagedIterable<NamespaceDiscoveredAsset> listByResourceGroup(String resourceGroupName, String namespaceName) {
+    public PagedIterable<NamespaceDiscoveredAsset> listByNamespace(String resourceGroupName, String namespaceName) {
         PagedIterable<NamespaceDiscoveredAssetInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, namespaceName);
+            = this.serviceClient().listByNamespace(resourceGroupName, namespaceName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceDiscoveredAssetImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<NamespaceDiscoveredAsset> listByResourceGroup(String resourceGroupName, String namespaceName,
+    public PagedIterable<NamespaceDiscoveredAsset> listByNamespace(String resourceGroupName, String namespaceName,
         Context context) {
         PagedIterable<NamespaceDiscoveredAssetInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, namespaceName, context);
+            = this.serviceClient().listByNamespace(resourceGroupName, namespaceName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceDiscoveredAssetImpl(inner1, this.manager()));
     }
 

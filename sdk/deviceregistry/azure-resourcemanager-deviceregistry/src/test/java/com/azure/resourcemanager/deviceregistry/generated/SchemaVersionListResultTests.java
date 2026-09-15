@@ -12,10 +12,10 @@ public final class SchemaVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"uuid\":\"ihchrphkmcrjdqn\",\"description\":\"fzpbgtgkyl\",\"schemaContent\":\"dgh\",\"hash\":\"euutlwxezwzh\",\"provisioningState\":\"Succeeded\"},\"id\":\"wnhhtqlgehgppip\",\"name\":\"fhpfeoajvgcxtx\",\"type\":\"csheafidltugsr\"},{\"properties\":{\"uuid\":\"kssjhoiftxfk\",\"description\":\"egprhptil\",\"schemaContent\":\"ucb\",\"hash\":\"tgdqohmcwsldriz\",\"provisioningState\":\"Failed\"},\"id\":\"bra\",\"name\":\"llibphbqzmizak\",\"type\":\"kan\"},{\"properties\":{\"uuid\":\"dnjzh\",\"description\":\"oylhjlmuoyxprimr\",\"schemaContent\":\"opteecj\",\"hash\":\"islstv\",\"provisioningState\":\"Failed\"},\"id\":\"wxdzaumweoohgu\",\"name\":\"fuzboyjathwtzolb\",\"type\":\"emwmdxmebwjs\"},{\"properties\":{\"uuid\":\"ahlxveabfqxnm\",\"description\":\"qtibxyijddtv\",\"schemaContent\":\"cttadi\",\"hash\":\"eukmr\",\"provisioningState\":\"Succeeded\"},\"id\":\"kpn\",\"name\":\"zaapmudqmeqwi\",\"type\":\"pibudqwyxebeybpm\"}],\"nextLink\":\"nrtffyaqi\"}")
+            "{\"value\":[{\"properties\":{\"uuid\":\"txfkfweg\",\"description\":\"hpt\",\"schemaContent\":\"llu\",\"hash\":\"iqtgdqoh\",\"provisioningState\":\"Succeeded\"},\"id\":\"ldrizetpwbra\",\"name\":\"llibphbqzmizak\",\"type\":\"kan\"},{\"properties\":{\"uuid\":\"dnjzh\",\"description\":\"oylhjlmuoyxprimr\",\"schemaContent\":\"opteecj\",\"hash\":\"islstv\",\"provisioningState\":\"Failed\"},\"id\":\"wxdzaumweoohgu\",\"name\":\"fuzboyjathwtzolb\",\"type\":\"emwmdxmebwjs\"},{\"properties\":{\"uuid\":\"ahlxveabfqxnm\",\"description\":\"qtibxyijddtv\",\"schemaContent\":\"cttadi\",\"hash\":\"eukmr\",\"provisioningState\":\"Succeeded\"},\"id\":\"kpn\",\"name\":\"zaapmudqmeqwi\",\"type\":\"pibudqwyxebeybpm\"},{\"properties\":{\"uuid\":\"rtffyaqitmh\",\"description\":\"ioqaqhvs\",\"schemaContent\":\"ufuqyrx\",\"hash\":\"lcgqlsismj\",\"provisioningState\":\"Failed\"},\"id\":\"dgamquhiosrsj\",\"name\":\"ivfcdisyirnx\",\"type\":\"hcz\"}],\"nextLink\":\"rxzbujr\"}")
             .toObject(SchemaVersionListResult.class);
-        Assertions.assertEquals("fzpbgtgkyl", model.value().get(0).properties().description());
-        Assertions.assertEquals("dgh", model.value().get(0).properties().schemaContent());
-        Assertions.assertEquals("nrtffyaqi", model.nextLink());
+        Assertions.assertEquals("hpt", model.value().get(0).properties().description());
+        Assertions.assertEquals("llu", model.value().get(0).properties().schemaContent());
+        Assertions.assertEquals("rxzbujr", model.nextLink());
     }
 }
