@@ -337,6 +337,13 @@
                 </goals>
               </execution>
             </executions>
+            <dependencies>
+              <dependency>
+                <groupId>org.apache.groovy</groupId>
+                <artifactId>groovy</artifactId>
+                <version>5.1.2</version> <!-- {x-version-update;org.apache.groovy:groovy;external_dependency} -->
+              </dependency>
+            </dependencies>
           </plugin>
         </plugins>
       </build>
