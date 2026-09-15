@@ -46,7 +46,7 @@ public final class Block implements XmlSerializable<Block> {
      * @return the size value.
      */
     @Generated
-    public long getSize() {
+    public long getSizeLong() {
         return this.size;
     }
 
@@ -140,8 +140,31 @@ public final class Block implements XmlSerializable<Block> {
      * @return the Block object itself.
      */
     @Generated
-    public Block setSize(long size) {
+    public Block setSizeLong(long size) {
         this.size = size;
         return this;
+    }
+
+    /**
+     * Get the sizeInt property: The Size property.
+     *
+     * @return the sizeInt value.
+     * @deprecated Use {@link #getSizeLong()}
+     */
+    @Deprecated
+    public int getSize() {
+        return (int) this.size;
+    }
+
+    /**
+     * Set the sizeInt property: The Size property.
+     *
+     * @param sizeInt the sizeInt value to set.
+     * @return the Block object itself.
+     * @deprecated Use {@link #setSizeLong(long)}
+     */
+    @Deprecated
+    public Block setSize(int sizeInt) {
+        return this.setSizeLong(sizeInt);
     }
 }

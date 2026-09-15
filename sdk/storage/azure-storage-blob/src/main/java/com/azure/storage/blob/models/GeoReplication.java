@@ -6,7 +6,6 @@ package com.azure.storage.blob.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.storage.blob.implementation.models.BlobGeoReplicationStatus;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -26,7 +25,7 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      * The status of the secondary location.
      */
     @Generated
-    private BlobGeoReplicationStatus status;
+    private GeoReplicationStatus status;
 
     /*
      * A date-time value that indicates where all primary writes preceding this value are guaranteed to be available for
@@ -41,7 +40,7 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      * @return the status value.
      */
     @Generated
-    public BlobGeoReplicationStatus getStatus() {
+    public GeoReplicationStatus getStatus() {
         return this.status;
     }
 
@@ -106,12 +105,12 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
         String finalRootElementName
             = rootElementName == null || rootElementName.isEmpty() ? "GeoReplication" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
-            BlobGeoReplicationStatus status = null;
+            GeoReplicationStatus status = null;
             OffsetDateTime lastSyncTime = null;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
                 if ("Status".equals(elementName.getLocalPart())) {
-                    status = BlobGeoReplicationStatus.fromString(reader.getStringElement());
+                    status = GeoReplicationStatus.fromString(reader.getStringElement());
                 } else if ("LastSyncTime".equals(elementName.getLocalPart())) {
                     DateTimeRfc1123 lastSyncTimeHolder = reader.getNullableElement(DateTimeRfc1123::new);
                     if (lastSyncTimeHolder != null) {
@@ -142,7 +141,7 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      * @return the GeoReplication object itself.
      */
     @Generated
-    public GeoReplication setStatus(BlobGeoReplicationStatus status) {
+    public GeoReplication setStatus(GeoReplicationStatus status) {
         this.status = status;
         return this;
     }

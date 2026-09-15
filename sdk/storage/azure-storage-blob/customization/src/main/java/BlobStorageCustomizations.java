@@ -80,6 +80,7 @@ public class BlobStorageCustomizations extends Customization {
         addSdkOnlyIsPrefix(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         removeBufferedStreamingConvenienceMethods(customization.getPackage(IMPL_PACKAGE), logger);
         restoreFluentModels(customization, logger);
+        restoreBlockSizeAccessors(customization.getPackage(MODELS_PACKAGE), logger);
         restoreHeaderSetters(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         addContentTypeHeaderProperty(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         restoreObjectReplicationHeaderCollection(editor, logger);
@@ -117,6 +118,7 @@ public class BlobStorageCustomizations extends Customization {
     private static final List<String> PUBLIC_FLUENT_MODELS_TO_RESTORE = Arrays.asList(
         "UserDelegationKey", "BlobCorsRule", "BlobAnalyticsLogging", "BlobRetentionPolicy", "BlobAccessPolicy",
         "BlobSignedIdentifier", "BlobMetrics", "BlobServiceStatistics", "KeyInfo", "Block", "BlockList",
+        "BlobContainerItemProperties",
         "BlockLookupList", "PageRange", "ClearRange", "GeoReplication", "StaticWebsite", "BlobPrefix");
 
     private static final List<String> IMPL_FLUENT_MODELS_TO_RESTORE = Arrays.asList(
@@ -250,6 +252,42 @@ public class BlobStorageCustomizations extends Customization {
             }));
             logger.info("Added the Content-Type property to {}.", className);
         }
+    }
+
+    // The shipped Block exposes the block length as getSizeLong()/setSizeLong(long), with int-typed
+    // getSize()/setSize(int) kept as deprecated shims over them. The emitter names the property `size` and types it
+    // long, which both removes getSizeLong and changes getSize's return type -- two breaking changes. Restore the
+    // shipped shape: rename the generated accessors to ...SizeLong and re-add the deprecated int pair.
+    private static void restoreBlockSizeAccessors(PackageCustomization models, Logger logger) {
+        if (models.getClass("Block") == null) {
+            logger.info("Block not present; skipping the size accessor restoration.");
+            return;
+        }
+        models.getClass("Block").customizeAst(ast -> ast.getClassByName("Block").ifPresent(clazz -> {
+            clazz.getMethodsByName("getSize").forEach(m -> m.setName("getSizeLong"));
+            clazz.getMethodsByName("setSize").forEach(m -> m.setName("setSizeLong"));
+
+            MethodDeclaration getSize = clazz.addMethod("getSize", Modifier.Keyword.PUBLIC);
+            getSize.setType("int");
+            getSize.addMarkerAnnotation("Deprecated");
+            getSize.setJavadocComment(
+                new Javadoc(JavadocDescription.parseText("Get the sizeInt property: The Size property."))
+                    .addBlockTag("return", "the sizeInt value.")
+                    .addBlockTag("deprecated", "Use {@link #getSizeLong()}"));
+            getSize.setBody(StaticJavaParser.parseBlock("{ return (int) this.size; }"));
+
+            MethodDeclaration setSize = clazz.addMethod("setSize", Modifier.Keyword.PUBLIC);
+            setSize.setType("Block");
+            setSize.addMarkerAnnotation("Deprecated");
+            setSize.addParameter(new Parameter(StaticJavaParser.parseType("int"), "sizeInt"));
+            setSize.setJavadocComment(
+                new Javadoc(JavadocDescription.parseText("Set the sizeInt property: The Size property."))
+                    .addBlockTag("param", "sizeInt", "the sizeInt value to set.")
+                    .addBlockTag("return", "the Block object itself.")
+                    .addBlockTag("deprecated", "Use {@link #setSizeLong(long)}"));
+            setSize.setBody(StaticJavaParser.parseBlock("{ return this.setSizeLong(sizeInt); }"));
+        }));
+        logger.info("Restored the deprecated int size accessors on Block.");
     }
 
     private static void restoreHeaderSetters(PackageCustomization implModels, Logger logger) {

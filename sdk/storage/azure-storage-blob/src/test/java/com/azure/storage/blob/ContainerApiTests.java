@@ -61,7 +61,14 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.BlobContainerAsyncClientInternal;
+import com.azure.storage.blob.implementation.BlobContainerClientInternal;
+import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
+import java.io.ByteArrayInputStream;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -2326,27 +2333,28 @@ public class ContainerApiTests extends BlobTestBase {
 
         AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(cc.getHttpPipeline())
             .url(cc.getAccountUrl())
-            .version(BlobServiceVersion.getLatest().getVersion())
+            .version(BlobServiceVersion.getLatest())
             .buildClient();
 
         // Call the Arrow endpoint
         ArrayList<ListBlobsIncludeItem> include = new ArrayList<>();
         include.add(ListBlobsIncludeItem.METADATA);
 
-        ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream> response = impl.getContainers()
-            .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, null, null, include, null, null, null,
-                null, com.azure.core.util.Context.NONE);
+        StreamResponse response
+            = new BlobContainerClientInternal(impl.getContainers()).listBlobFlatSegmentApacheArrowWithResponse(null,
+                null, null, include, null, null, null, RequestOptionsHelper
+                    .containerRequestOptions(com.azure.core.util.Context.NONE, impl.getUrl(), containerName));
 
         // Verify Content-Type is Arrow
-        String contentType = response.getDeserializedHeaders().getContentType();
+        String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
         assertTrue(
             StorageImplUtils.hasMatchingHeaderValue(contentType,
                 Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
             "Expected Arrow content type but got: " + contentType);
 
         // Deserialize using ArrowBlobListDeserializer
-        ArrowBlobListDeserializer.ArrowListBlobsResult result
-            = ArrowBlobListDeserializer.deserialize(response.getValue());
+        ArrowBlobListDeserializer.ArrowListBlobsResult result = ArrowBlobListDeserializer.deserialize(
+            new ByteArrayInputStream(FluxUtil.collectBytesInByteBufferStream(response.getValue()).block()));
 
         // Verify pagination — single blob, no next page
         assertNull(result.getNextMarker());

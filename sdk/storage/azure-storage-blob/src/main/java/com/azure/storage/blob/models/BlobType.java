@@ -11,17 +11,17 @@ public enum BlobType {
     /**
      * The blob is a block blob.
      */
-    BLOCK("BlockBlob"),
+    BLOCK_BLOB("BlockBlob"),
 
     /**
      * The blob is a page blob.
      */
-    PAGE("PageBlob"),
+    PAGE_BLOB("PageBlob"),
 
     /**
      * The blob is an append blob.
      */
-    APPEND("AppendBlob");
+    APPEND_BLOB("AppendBlob");
 
     /**
      * The actual serialized value for a BlobType instance.
