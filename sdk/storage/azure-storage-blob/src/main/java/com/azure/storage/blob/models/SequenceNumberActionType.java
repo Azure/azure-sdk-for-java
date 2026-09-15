@@ -9,11 +9,6 @@ package com.azure.storage.blob.models;
  */
 public enum SequenceNumberActionType {
     /**
-     * Increment the sequence number.
-     */
-    INCREMENT("increment"),
-
-    /**
      * Set the maximum for the sequence number.
      */
     MAX("max"),
@@ -21,7 +16,12 @@ public enum SequenceNumberActionType {
     /**
      * Update the sequence number.
      */
-    UPDATE("update");
+    UPDATE("update"),
+
+    /**
+     * Increment the sequence number.
+     */
+    INCREMENT("increment");
 
     /**
      * The actual serialized value for a SequenceNumberActionType instance.

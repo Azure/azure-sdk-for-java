@@ -19,14 +19,14 @@ public enum CopyStatusType {
     SUCCESS("success"),
 
     /**
-     * The copy operation failed.
-     */
-    FAILED("failed"),
-
-    /**
      * The copy operation was aborted.
      */
-    ABORTED("aborted");
+    ABORTED("aborted"),
+
+    /**
+     * The copy operation failed.
+     */
+    FAILED("failed");
 
     /**
      * The actual serialized value for a CopyStatusType instance.

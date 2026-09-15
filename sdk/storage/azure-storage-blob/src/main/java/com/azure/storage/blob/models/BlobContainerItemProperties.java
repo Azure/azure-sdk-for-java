@@ -198,8 +198,8 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
      * @return the encryptionScopeOverridePrevented value.
      */
     @Generated
-    public Boolean isEncryptionScopeOverridePrevented() {
-        return this.encryptionScopeOverridePrevented;
+    public boolean isEncryptionScopeOverridePrevented() {
+        return Boolean.TRUE.equals(this.encryptionScopeOverridePrevented);
     }
 
     /**
@@ -490,7 +490,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
      * @return the BlobContainerItemProperties object itself.
      */
     @Generated
-    public BlobContainerItemProperties setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {
+    public BlobContainerItemProperties setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {
         this.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
         return this;
     }
@@ -531,7 +531,7 @@ public final class BlobContainerItemProperties implements XmlSerializable<BlobCo
      */
     @Generated
     public BlobContainerItemProperties
-        setIsImmutableStorageWithVersioningEnabled(Boolean isImmutableStorageWithVersioningEnabled) {
+        setImmutableStorageWithVersioningEnabled(Boolean isImmutableStorageWithVersioningEnabled) {
         this.isImmutableStorageWithVersioningEnabled = isImmutableStorageWithVersioningEnabled;
         return this;
     }

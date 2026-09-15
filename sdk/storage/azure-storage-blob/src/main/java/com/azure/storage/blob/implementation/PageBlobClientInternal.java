@@ -114,7 +114,7 @@ public final class PageBlobClientInternal {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -759,7 +759,7 @@ public final class PageBlobClientInternal {
      * </table>
      * 
      * @param sequenceNumberAction Required if the blob sequence number is provided. This property indicates how the
-     * service should modify the blob's sequence number. Allowed values: "increment", "max", "update".
+     * service should modify the blob's sequence number. Allowed values: "max", "update", "increment".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

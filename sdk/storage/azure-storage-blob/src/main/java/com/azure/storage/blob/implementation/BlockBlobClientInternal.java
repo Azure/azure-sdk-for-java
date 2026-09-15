@@ -115,7 +115,7 @@ public final class BlockBlobClientInternal {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * <tr><td>x-ms-content-crc64</td><td>byte[]</td><td>No</td><td>Specifies the transactional CRC64 hash for the
      * body.</td></tr>
@@ -547,7 +547,7 @@ public final class BlockBlobClientInternal {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}

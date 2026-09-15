@@ -77,7 +77,7 @@ public final class ServicesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> setProperties(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/xml") BinaryData storageServiceProperties, RequestOptions requestOptions,
             Context context);
 
@@ -88,7 +88,7 @@ public final class ServicesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> setPropertiesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/xml") BinaryData storageServiceProperties, RequestOptions requestOptions,
             Context context);
 
@@ -181,7 +181,8 @@ public final class ServicesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> getAccountInfo(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("?restype=account&comp=properties")
         @ExpectedResponses({ 200 })
@@ -190,7 +191,7 @@ public final class ServicesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> getAccountInfoSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("?comp=batch")
         @ExpectedResponses({ 202 })
@@ -317,9 +318,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesWithResponseInternalAsync(BinaryData storageServiceProperties,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String contentType = "application/xml";
         return FluxUtil.withContext(
-            context -> service.setProperties(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+            context -> service.setProperties(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
                 contentType, storageServiceProperties, requestOptions, context));
     }
 
@@ -405,8 +407,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponseInternal(BinaryData storageServiceProperties,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String contentType = "application/xml";
-        return service.setPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+        return service.setPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             contentType, storageServiceProperties, requestOptions, Context.NONE);
     }
 
@@ -726,7 +729,7 @@ public final class ServicesImpl {
      *             Properties (Required): {
      *                 Last-Modified: DateTimeRfc1123 (Required)
      *                 Etag: String (Required)
-     *                 LeaseStatus: String(unlocked/locked) (Optional)
+     *                 LeaseStatus: String(locked/unlocked) (Optional)
      *                 LeaseState: String(available/leased/expired/breaking/broken) (Optional)
      *                 LeaseDuration: String(infinite/fixed) (Optional)
      *                 PublicAccess: String(blob/container) (Optional)
@@ -815,7 +818,7 @@ public final class ServicesImpl {
      *             Properties (Required): {
      *                 Last-Modified: DateTimeRfc1123 (Required)
      *                 Etag: String (Required)
-     *                 LeaseStatus: String(unlocked/locked) (Optional)
+     *                 LeaseStatus: String(locked/unlocked) (Optional)
      *                 LeaseState: String(available/leased/expired/breaking/broken) (Optional)
      *                 LeaseDuration: String(infinite/fixed) (Optional)
      *                 PublicAccess: String(blob/container) (Optional)
@@ -1050,8 +1053,9 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getAccountInfoWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.getAccountInfo(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1093,7 +1097,8 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getAccountInfoWithResponseInternal(RequestOptions requestOptions) {
-        return service.getAccountInfoSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+        final String accept = "application/xml";
+        return service.getAccountInfoSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 

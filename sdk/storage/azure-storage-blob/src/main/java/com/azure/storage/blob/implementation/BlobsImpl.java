@@ -100,7 +100,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> getProperties(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Head("/")
         @ExpectedResponses({ 200 })
@@ -109,7 +109,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> getPropertiesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/")
         @ExpectedResponses({ 202 })
@@ -118,7 +118,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/")
         @ExpectedResponses({ 202 })
@@ -127,7 +127,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?comp=undelete")
         @ExpectedResponses({ 200 })
@@ -136,7 +136,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> undelete(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?comp=undelete")
         @ExpectedResponses({ 200 })
@@ -145,7 +145,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> undeleteSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?comp=expiry")
         @ExpectedResponses({ 200 })
@@ -154,7 +154,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> setExpiry(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-expiry-option") String expiryOptions, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-expiry-option") String expiryOptions,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=expiry")
         @ExpectedResponses({ 200 })
@@ -163,7 +164,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> setExpirySync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-expiry-option") String expiryOptions, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-expiry-option") String expiryOptions,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=properties")
         @ExpectedResponses({ 200 })
@@ -172,7 +174,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> setHttpHeaders(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=properties")
         @ExpectedResponses({ 200 })
@@ -181,7 +184,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> setHttpHeadersSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?comp=immutabilityPolicies")
         @ExpectedResponses({ 200 })
@@ -190,7 +193,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> setImmutabilityPolicy(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion,
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 expiry, RequestOptions requestOptions,
             Context context);
 
@@ -201,7 +204,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> setImmutabilityPolicySync(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion,
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 expiry, RequestOptions requestOptions,
             Context context);
 
@@ -212,7 +215,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteImmutabilityPolicy(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("?comp=immutabilityPolicies")
         @ExpectedResponses({ 200 })
@@ -221,7 +225,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteImmutabilityPolicySync(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=legalhold")
         @ExpectedResponses({ 200 })
@@ -230,7 +235,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> setLegalHold(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-legal-hold") boolean legalHold, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-legal-hold") boolean legalHold,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=legalhold")
         @ExpectedResponses({ 200 })
@@ -239,7 +245,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> setLegalHoldSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-legal-hold") boolean legalHold, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-legal-hold") boolean legalHold,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=metadata")
         @ExpectedResponses({ 200 })
@@ -248,7 +255,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> setMetadata(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?comp=metadata")
         @ExpectedResponses({ 200 })
@@ -257,7 +264,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> setMetadataSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease")
         @ExpectedResponses({ 201 })
@@ -266,8 +273,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> acquireLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-duration") int duration, @HeaderParam("x-ms-lease-action") String action,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-duration") int duration,
+            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease")
         @ExpectedResponses({ 201 })
@@ -276,8 +283,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> acquireLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-duration") int duration, @HeaderParam("x-ms-lease-action") String action,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-duration") int duration,
+            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease")
         @ExpectedResponses({ 200 })
@@ -286,8 +293,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> releaseLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") String action,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease")
         @ExpectedResponses({ 200 })
@@ -296,8 +303,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> releaseLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") String action,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease")
         @ExpectedResponses({ 200 })
@@ -306,8 +313,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> renewLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") String action,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease")
         @ExpectedResponses({ 200 })
@@ -316,8 +323,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> renewLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") String action,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease")
         @ExpectedResponses({ 200 })
@@ -326,7 +333,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> changeLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
             @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease")
@@ -336,7 +344,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> changeLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
             @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease")
@@ -346,7 +355,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> breakLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-action") String action,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease")
         @ExpectedResponses({ 202 })
@@ -355,7 +365,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> breakLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-action") String action,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=snapshot")
         @ExpectedResponses({ 201 })
@@ -364,7 +375,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> createSnapshot(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=snapshot")
         @ExpectedResponses({ 201 })
@@ -373,7 +385,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createSnapshotSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/")
         @ExpectedResponses({ 202 })
@@ -382,8 +394,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> startCopyFromUrl(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-copy-source") String copySource,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            @HeaderParam("x-ms-copy-source") String copySource, RequestOptions requestOptions, Context context);
 
         @Put("/")
         @ExpectedResponses({ 202 })
@@ -392,8 +404,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> startCopyFromUrlSync(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-copy-source") String copySource,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            @HeaderParam("x-ms-copy-source") String copySource, RequestOptions requestOptions, Context context);
 
         @Put("/")
         @ExpectedResponses({ 202 })
@@ -402,8 +414,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> copyFromUrl(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-copy-source") String copySource, @HeaderParam("x-ms-requires-sync") String requiresSync,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-copy-source") String copySource,
+            @HeaderParam("x-ms-requires-sync") String requiresSync, RequestOptions requestOptions, Context context);
 
         @Put("/")
         @ExpectedResponses({ 202 })
@@ -412,8 +424,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> copyFromUrlSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-copy-source") String copySource, @HeaderParam("x-ms-requires-sync") String requiresSync,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-copy-source") String copySource,
+            @HeaderParam("x-ms-requires-sync") String requiresSync, RequestOptions requestOptions, Context context);
 
         @Put("?comp=copy")
         @ExpectedResponses({ 204 })
@@ -422,9 +434,9 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> abortCopyFromUrl(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @QueryParam("copyid") String copyId,
-            @HeaderParam("x-ms-copy-action") String copyActionAbortConstant, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("copyid") String copyId, @HeaderParam("x-ms-copy-action") String copyActionAbortConstant,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=copy")
         @ExpectedResponses({ 204 })
@@ -433,9 +445,9 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> abortCopyFromUrlSync(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @QueryParam("copyid") String copyId,
-            @HeaderParam("x-ms-copy-action") String copyActionAbortConstant, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            @QueryParam("copyid") String copyId, @HeaderParam("x-ms-copy-action") String copyActionAbortConstant,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=tier")
         @ExpectedResponses({ 200, 202 })
@@ -444,7 +456,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> setTier(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-access-tier") String tier, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-access-tier") String tier,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=tier")
         @ExpectedResponses({ 200, 202 })
@@ -453,7 +466,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> setTierSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-access-tier") String tier, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-access-tier") String tier,
+            RequestOptions requestOptions, Context context);
 
         @Get("?restype=account&comp=properties")
         @ExpectedResponses({ 200 })
@@ -462,7 +476,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> getAccountInfo(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("?restype=account&comp=properties")
         @ExpectedResponses({ 200 })
@@ -471,7 +486,7 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> getAccountInfoSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("?comp=tags")
         @ExpectedResponses({ 200 })
@@ -498,8 +513,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> setTags(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/xml") BinaryData tags,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/xml") BinaryData tags, RequestOptions requestOptions, Context context);
 
         @Put("?comp=tags")
         @ExpectedResponses({ 204 })
@@ -508,8 +523,8 @@ public final class BlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> setTagsSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/xml") BinaryData tags,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/xml") BinaryData tags, RequestOptions requestOptions, Context context);
 
         @Post("?comp=query")
         @ExpectedResponses({ 200, 206 })
@@ -954,8 +969,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getPropertiesWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.getProperties(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1084,7 +1100,8 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
-        return service.getPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+        final String accept = "application/xml";
+        return service.getPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 
@@ -1111,7 +1128,7 @@ public final class BlobsImpl {
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>x-ms-delete-snapshots</td><td>String</td><td>No</td><td>Required if the blob has associated snapshots.
-     * Specifies the delete behavior. Allowed values: "only", "include".</td></tr>
+     * Specifies the delete behavior. Allowed values: "include", "only".</td></tr>
      * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a blob
      * if it has been modified since the specified date-time.</td></tr>
      * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a
@@ -1151,8 +1168,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.delete(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1178,7 +1196,7 @@ public final class BlobsImpl {
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>x-ms-delete-snapshots</td><td>String</td><td>No</td><td>Required if the blob has associated snapshots.
-     * Specifies the delete behavior. Allowed values: "only", "include".</td></tr>
+     * Specifies the delete behavior. Allowed values: "include", "only".</td></tr>
      * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a blob
      * if it has been modified since the specified date-time.</td></tr>
      * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a
@@ -1218,8 +1236,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponseInternal(RequestOptions requestOptions) {
-        return service.deleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), requestOptions,
-            Context.NONE);
+        final String accept = "application/xml";
+        return service.deleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1257,8 +1276,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> undeleteWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.undelete(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1296,8 +1316,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> undeleteWithResponseInternal(RequestOptions requestOptions) {
-        return service.undeleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), requestOptions,
-            Context.NONE);
+        final String accept = "application/xml";
+        return service.undeleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1347,8 +1368,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setExpiryWithResponseInternalAsync(String expiryOptions,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setExpiry(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), expiryOptions, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, expiryOptions, requestOptions, context));
     }
 
     /**
@@ -1397,8 +1419,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setExpiryWithResponseInternal(String expiryOptions, RequestOptions requestOptions) {
-        return service.setExpirySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), expiryOptions,
-            requestOptions, Context.NONE);
+        final String accept = "application/xml";
+        return service.setExpirySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            expiryOptions, requestOptions, Context.NONE);
     }
 
     /**
@@ -1469,8 +1492,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setHttpHeadersWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setHttpHeaders(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1541,7 +1565,8 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setHttpHeadersWithResponseInternal(RequestOptions requestOptions) {
-        return service.setHttpHeadersSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+        final String accept = "application/xml";
+        return service.setHttpHeadersSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 
@@ -1566,7 +1591,7 @@ public final class BlobsImpl {
      * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a
      * blob if it has not been modified since the specified date-time.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -1598,9 +1623,10 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setImmutabilityPolicyWithResponseInternalAsync(OffsetDateTime expiry,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         DateTimeRfc1123 expiryConverted = new DateTimeRfc1123(expiry);
         return FluxUtil.withContext(context -> service.setImmutabilityPolicy(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), expiryConverted, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, expiryConverted, requestOptions, context));
     }
 
     /**
@@ -1624,7 +1650,7 @@ public final class BlobsImpl {
      * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a
      * blob if it has not been modified since the specified date-time.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -1656,9 +1682,10 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setImmutabilityPolicyWithResponseInternal(OffsetDateTime expiry,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         DateTimeRfc1123 expiryConverted = new DateTimeRfc1123(expiry);
         return service.setImmutabilityPolicySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-            expiryConverted, requestOptions, Context.NONE);
+            accept, expiryConverted, requestOptions, Context.NONE);
     }
 
     /**
@@ -1698,8 +1725,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteImmutabilityPolicyWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.deleteImmutabilityPolicy(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1739,8 +1767,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteImmutabilityPolicyWithResponseInternal(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return service.deleteImmutabilityPolicySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-            requestOptions, Context.NONE);
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1783,8 +1812,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setLegalHoldWithResponseInternalAsync(boolean legalHold,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setLegalHold(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), legalHold, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, legalHold, requestOptions, context));
     }
 
     /**
@@ -1826,8 +1856,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setLegalHoldWithResponseInternal(boolean legalHold, RequestOptions requestOptions) {
-        return service.setLegalHoldSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), legalHold,
-            requestOptions, Context.NONE);
+        final String accept = "application/xml";
+        return service.setLegalHoldSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            legalHold, requestOptions, Context.NONE);
     }
 
     /**
@@ -1901,8 +1932,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setMetadataWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setMetadata(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1976,7 +2008,8 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataWithResponseInternal(RequestOptions requestOptions) {
-        return service.setMetadataSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+        final String accept = "application/xml";
+        return service.setMetadataSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 
@@ -2037,9 +2070,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> acquireLeaseWithResponseInternalAsync(int duration, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "acquire";
         return FluxUtil.withContext(context -> service.acquireLease(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), duration, action, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, duration, action, requestOptions, context));
     }
 
     /**
@@ -2099,9 +2133,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> acquireLeaseWithResponseInternal(int duration, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "acquire";
-        return service.acquireLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), duration,
-            action, requestOptions, Context.NONE);
+        return service.acquireLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            duration, action, requestOptions, Context.NONE);
     }
 
     /**
@@ -2159,9 +2194,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> releaseLeaseWithResponseInternalAsync(String leaseId, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "release";
         return FluxUtil.withContext(context -> service.releaseLease(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), leaseId, action, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, leaseId, action, requestOptions, context));
     }
 
     /**
@@ -2219,9 +2255,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> releaseLeaseWithResponseInternal(String leaseId, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "release";
-        return service.releaseLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
-            action, requestOptions, Context.NONE);
+        return service.releaseLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            leaseId, action, requestOptions, Context.NONE);
     }
 
     /**
@@ -2279,9 +2316,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renewLeaseWithResponseInternalAsync(String leaseId, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "renew";
         return FluxUtil.withContext(context -> service.renewLease(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), leaseId, action, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, leaseId, action, requestOptions, context));
     }
 
     /**
@@ -2339,9 +2377,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renewLeaseWithResponseInternal(String leaseId, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "renew";
-        return service.renewLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
-            action, requestOptions, Context.NONE);
+        return service.renewLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            leaseId, action, requestOptions, Context.NONE);
     }
 
     /**
@@ -2401,9 +2440,11 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> changeLeaseWithResponseInternalAsync(String leaseId, String proposedLeaseId,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "change";
-        return FluxUtil.withContext(context -> service.changeLease(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), leaseId, proposedLeaseId, action, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.changeLease(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+                leaseId, proposedLeaseId, action, requestOptions, context));
     }
 
     /**
@@ -2463,9 +2504,10 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> changeLeaseWithResponseInternal(String leaseId, String proposedLeaseId,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "change";
-        return service.changeLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
-            proposedLeaseId, action, requestOptions, Context.NONE);
+        return service.changeLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            leaseId, proposedLeaseId, action, requestOptions, Context.NONE);
     }
 
     /**
@@ -2526,9 +2568,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> breakLeaseWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "break";
         return FluxUtil.withContext(context -> service.breakLease(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), action, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, action, requestOptions, context));
     }
 
     /**
@@ -2589,9 +2632,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> breakLeaseWithResponseInternal(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "break";
-        return service.breakLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), action,
-            requestOptions, Context.NONE);
+        return service.breakLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            action, requestOptions, Context.NONE);
     }
 
     /**
@@ -2663,8 +2707,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createSnapshotWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.createSnapshot(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2736,7 +2781,8 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createSnapshotWithResponseInternal(RequestOptions requestOptions) {
-        return service.createSnapshotSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+        final String accept = "application/xml";
+        return service.createSnapshotSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 
@@ -2790,7 +2836,7 @@ public final class BlobsImpl {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2825,8 +2871,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startCopyFromUrlWithResponseInternalAsync(String copySource,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.startCopyFromUrl(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), copySource, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, copySource, requestOptions, context));
     }
 
     /**
@@ -2879,7 +2926,7 @@ public final class BlobsImpl {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -2913,7 +2960,8 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> startCopyFromUrlWithResponseInternal(String copySource, RequestOptions requestOptions) {
-        return service.startCopyFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+        final String accept = "application/xml";
+        return service.startCopyFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             copySource, requestOptions, Context.NONE);
     }
 
@@ -2963,7 +3011,7 @@ public final class BlobsImpl {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * <tr><td>x-ms-copy-source-authorization</td><td>String</td><td>No</td><td>Only the Bearer authorization scheme is
      * supported, and the value must be a valid OAuth access token for the copy source.</td></tr>
@@ -3009,9 +3057,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> copyFromUrlWithResponseInternalAsync(String copySource, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String requiresSync = "true";
         return FluxUtil.withContext(context -> service.copyFromUrl(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), copySource, requiresSync, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, copySource, requiresSync, requestOptions, context));
     }
 
     /**
@@ -3060,7 +3109,7 @@ public final class BlobsImpl {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * <tr><td>x-ms-copy-source-authorization</td><td>String</td><td>No</td><td>Only the Bearer authorization scheme is
      * supported, and the value must be a valid OAuth access token for the copy source.</td></tr>
@@ -3106,9 +3155,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> copyFromUrlWithResponseInternal(String copySource, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String requiresSync = "true";
-        return service.copyFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), copySource,
-            requiresSync, requestOptions, Context.NONE);
+        return service.copyFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            copySource, requiresSync, requestOptions, Context.NONE);
     }
 
     /**
@@ -3156,9 +3206,11 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> abortCopyFromUrlWithResponseInternalAsync(String copyId,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String copyActionAbortConstant = "abort";
-        return FluxUtil.withContext(context -> service.abortCopyFromUrl(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), copyId, copyActionAbortConstant, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.abortCopyFromUrl(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                accept, copyId, copyActionAbortConstant, requestOptions, context));
     }
 
     /**
@@ -3205,9 +3257,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> abortCopyFromUrlWithResponseInternal(String copyId, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String copyActionAbortConstant = "abort";
-        return service.abortCopyFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), copyId,
-            copyActionAbortConstant, requestOptions, Context.NONE);
+        return service.abortCopyFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            copyId, copyActionAbortConstant, requestOptions, Context.NONE);
     }
 
     /**
@@ -3261,8 +3314,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setTierWithResponseInternalAsync(String tier, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setTier(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), tier, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, tier, requestOptions, context));
     }
 
     /**
@@ -3316,7 +3370,8 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setTierWithResponseInternal(String tier, RequestOptions requestOptions) {
-        return service.setTierSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), tier,
+        final String accept = "application/xml";
+        return service.setTierSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept, tier,
             requestOptions, Context.NONE);
     }
 
@@ -3359,8 +3414,9 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getAccountInfoWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.getAccountInfo(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -3402,7 +3458,8 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getAccountInfoWithResponseInternal(RequestOptions requestOptions) {
-        return service.getAccountInfoSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+        final String accept = "application/xml";
+        return service.getAccountInfoSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 
@@ -3630,9 +3687,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setTagsWithResponseInternalAsync(BinaryData tags, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String contentType = "application/xml";
         return FluxUtil.withContext(context -> service.setTags(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), contentType, tags, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, contentType, tags, requestOptions, context));
     }
 
     /**
@@ -3709,9 +3767,10 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setTagsWithResponseInternal(BinaryData tags, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String contentType = "application/xml";
-        return service.setTagsSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), contentType,
-            tags, requestOptions, Context.NONE);
+        return service.setTagsSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            contentType, tags, requestOptions, Context.NONE);
     }
 
     /**

@@ -9,14 +9,14 @@ package com.azure.storage.blob.models;
  */
 public enum DeleteSnapshotsOptionType {
     /**
-     * Only delete the snapshots.
-     */
-    ONLY("only"),
-
-    /**
      * Delete the blob and snapshots.
      */
-    INCLUDE("include");
+    INCLUDE("include"),
+
+    /**
+     * Only delete the snapshots.
+     */
+    ONLY("only");
 
     /**
      * The actual serialized value for a DeleteSnapshotsOptionType instance.

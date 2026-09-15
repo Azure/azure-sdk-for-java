@@ -14,14 +14,14 @@ public enum BlobImmutabilityPolicyMode {
     MUTABLE("mutable"),
 
     /**
-     * The immutability policy is locked.
-     */
-    LOCKED("locked"),
-
-    /**
      * The immutability policy is unlocked.
      */
-    UNLOCKED("unlocked");
+    UNLOCKED("unlocked"),
+
+    /**
+     * The immutability policy is locked.
+     */
+    LOCKED("locked");
 
     /**
      * The actual serialized value for a BlobImmutabilityPolicyMode instance.

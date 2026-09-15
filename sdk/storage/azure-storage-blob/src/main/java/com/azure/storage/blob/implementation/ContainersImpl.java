@@ -81,7 +81,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> create(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?restype=container")
         @ExpectedResponses({ 201 })
@@ -90,7 +90,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("?restype=container")
         @ExpectedResponses({ 200 })
@@ -99,7 +99,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> getProperties(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("?restype=container")
         @ExpectedResponses({ 200 })
@@ -108,7 +108,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> getPropertiesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("?restype=container")
         @ExpectedResponses({ 202 })
@@ -117,7 +117,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> delete(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("?restype=container")
         @ExpectedResponses({ 202 })
@@ -126,7 +126,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?restype=container&comp=metadata")
         @ExpectedResponses({ 200 })
@@ -135,7 +135,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> setMetadata(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?restype=container&comp=metadata")
         @ExpectedResponses({ 200 })
@@ -144,7 +144,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> setMetadataSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("?restype=container&comp=acl")
         @ExpectedResponses({ 200 })
@@ -173,7 +173,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> setAccessPolicy(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("?restype=container&comp=acl")
         @ExpectedResponses({ 200 })
@@ -182,7 +183,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> setAccessPolicySync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?restype=container&comp=undelete")
         @ExpectedResponses({ 201 })
@@ -191,7 +192,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> restore(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?restype=container&comp=undelete")
         @ExpectedResponses({ 201 })
@@ -200,7 +201,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> restoreSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?restype=container&comp=rename")
         @ExpectedResponses({ 200 })
@@ -209,8 +210,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> rename(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-source-container-name") String sourceContainerName, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-source-container-name") String sourceContainerName,
+            RequestOptions requestOptions, Context context);
 
         @Put("?restype=container&comp=rename")
         @ExpectedResponses({ 200 })
@@ -219,8 +220,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> renameSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-source-container-name") String sourceContainerName, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-source-container-name") String sourceContainerName,
+            RequestOptions requestOptions, Context context);
 
         @Post("?restype=container&comp=batch")
         @ExpectedResponses({ 202 })
@@ -271,8 +272,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> acquireLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-duration") int duration, @HeaderParam("x-ms-lease-action") String action,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-duration") int duration,
+            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease&restype=container")
         @ExpectedResponses({ 201 })
@@ -281,8 +282,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> acquireLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-duration") int duration, @HeaderParam("x-ms-lease-action") String action,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-duration") int duration,
+            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease&restype=container")
         @ExpectedResponses({ 200 })
@@ -291,8 +292,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> releaseLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") String action,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease&restype=container")
         @ExpectedResponses({ 200 })
@@ -301,8 +302,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> releaseLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") String action,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease&restype=container")
         @ExpectedResponses({ 200 })
@@ -311,8 +312,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> renewLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") String action,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease&restype=container")
         @ExpectedResponses({ 200 })
@@ -321,8 +322,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> renewLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") String action,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease&restype=container")
         @ExpectedResponses({ 202 })
@@ -331,7 +332,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> breakLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-action") String action,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease&restype=container")
         @ExpectedResponses({ 202 })
@@ -340,7 +342,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> breakLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-action") String action,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease&restype=container")
         @ExpectedResponses({ 200 })
@@ -349,7 +352,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> changeLease(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
             @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Put("?comp=lease&restype=container")
@@ -359,7 +363,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> changeLeaseSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
             @HeaderParam("x-ms-lease-action") String action, RequestOptions requestOptions, Context context);
 
         @Get("?restype=container&comp=list")
@@ -449,7 +454,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> getAccountInfo(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("?restype=account&comp=properties")
         @ExpectedResponses({ 200 })
@@ -458,7 +464,7 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> getAccountInfoSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -512,8 +518,9 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.create(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -567,8 +574,9 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createWithResponseInternal(RequestOptions requestOptions) {
-        return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), requestOptions,
-            Context.NONE);
+        final String accept = "application/xml";
+        return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -631,8 +639,9 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getPropertiesWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.getProperties(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -695,7 +704,8 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
-        return service.getPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+        final String accept = "application/xml";
+        return service.getPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 
@@ -746,8 +756,9 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.delete(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -797,8 +808,9 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponseInternal(RequestOptions requestOptions) {
-        return service.deleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), requestOptions,
-            Context.NONE);
+        final String accept = "application/xml";
+        return service.deleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -849,8 +861,9 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setMetadataWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setMetadata(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -901,7 +914,8 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataWithResponseInternal(RequestOptions requestOptions) {
-        return service.setMetadataSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+        final String accept = "application/xml";
+        return service.setMetadataSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 
@@ -1118,6 +1132,7 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setAccessPolicyWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -1125,7 +1140,7 @@ public final class ContainersImpl {
             }
         });
         return FluxUtil.withContext(context -> service.setAccessPolicy(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptionsLocal, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptionsLocal, context));
     }
 
     /**
@@ -1200,13 +1215,14 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPolicyWithResponseInternal(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
             }
         });
-        return service.setAccessPolicySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+        return service.setAccessPolicySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptionsLocal, Context.NONE);
     }
 
@@ -1255,8 +1271,9 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> restoreWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.restore(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1304,8 +1321,9 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> restoreWithResponseInternal(RequestOptions requestOptions) {
-        return service.restoreSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), requestOptions,
-            Context.NONE);
+        final String accept = "application/xml";
+        return service.restoreSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1353,8 +1371,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameWithResponseInternalAsync(String sourceContainerName,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.rename(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), sourceContainerName, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, sourceContainerName, requestOptions, context));
     }
 
     /**
@@ -1401,7 +1420,8 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameWithResponseInternal(String sourceContainerName, RequestOptions requestOptions) {
-        return service.renameSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+        final String accept = "application/xml";
+        return service.renameSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             sourceContainerName, requestOptions, Context.NONE);
     }
 
@@ -1747,9 +1767,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> acquireLeaseWithResponseInternalAsync(int duration, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "acquire";
         return FluxUtil.withContext(context -> service.acquireLease(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), duration, action, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, duration, action, requestOptions, context));
     }
 
     /**
@@ -1803,9 +1824,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> acquireLeaseWithResponseInternal(int duration, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "acquire";
-        return service.acquireLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), duration,
-            action, requestOptions, Context.NONE);
+        return service.acquireLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            duration, action, requestOptions, Context.NONE);
     }
 
     /**
@@ -1857,9 +1879,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> releaseLeaseWithResponseInternalAsync(String leaseId, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "release";
         return FluxUtil.withContext(context -> service.releaseLease(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), leaseId, action, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, leaseId, action, requestOptions, context));
     }
 
     /**
@@ -1911,9 +1934,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> releaseLeaseWithResponseInternal(String leaseId, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "release";
-        return service.releaseLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
-            action, requestOptions, Context.NONE);
+        return service.releaseLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            leaseId, action, requestOptions, Context.NONE);
     }
 
     /**
@@ -1965,9 +1989,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renewLeaseWithResponseInternalAsync(String leaseId, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "renew";
         return FluxUtil.withContext(context -> service.renewLease(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), leaseId, action, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, leaseId, action, requestOptions, context));
     }
 
     /**
@@ -2019,9 +2044,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renewLeaseWithResponseInternal(String leaseId, RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "renew";
-        return service.renewLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
-            action, requestOptions, Context.NONE);
+        return service.renewLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            leaseId, action, requestOptions, Context.NONE);
     }
 
     /**
@@ -2076,9 +2102,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> breakLeaseWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "break";
         return FluxUtil.withContext(context -> service.breakLease(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), action, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, action, requestOptions, context));
     }
 
     /**
@@ -2133,9 +2160,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> breakLeaseWithResponseInternal(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "break";
-        return service.breakLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), action,
-            requestOptions, Context.NONE);
+        return service.breakLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            action, requestOptions, Context.NONE);
     }
 
     /**
@@ -2189,9 +2217,11 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> changeLeaseWithResponseInternalAsync(String leaseId, String proposedLeaseId,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "change";
-        return FluxUtil.withContext(context -> service.changeLease(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), leaseId, proposedLeaseId, action, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.changeLease(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+                leaseId, proposedLeaseId, action, requestOptions, context));
     }
 
     /**
@@ -2245,9 +2275,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> changeLeaseWithResponseInternal(String leaseId, String proposedLeaseId,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String action = "change";
-        return service.changeLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
-            proposedLeaseId, action, requestOptions, Context.NONE);
+        return service.changeLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            leaseId, proposedLeaseId, action, requestOptions, Context.NONE);
     }
 
     /**
@@ -2307,11 +2338,11 @@ public final class ContainersImpl {
      *                 Cache-Control: String (Optional)
      *                 x-ms-blob-sequence-number: Long (Optional)
      *                 BlobType: String(BlockBlob/PageBlob/AppendBlob) (Optional)
-     *                 LeaseStatus: String(unlocked/locked) (Optional)
+     *                 LeaseStatus: String(locked/unlocked) (Optional)
      *                 LeaseState: String(available/leased/expired/breaking/broken) (Optional)
      *                 LeaseDuration: String(infinite/fixed) (Optional)
      *                 CopyId: String (Optional)
-     *                 CopyStatus: String(pending/success/failed/aborted) (Optional)
+     *                 CopyStatus: String(pending/success/aborted/failed) (Optional)
      *                 CopySource: String (Optional)
      *                 CopyProgress: String (Optional)
      *                 CopyCompletionTime: DateTimeRfc1123 (Optional)
@@ -2334,7 +2365,7 @@ public final class ContainersImpl {
      *                 RehydratePriority: String(High/Standard) (Optional)
      *                 LastAccessTime: DateTimeRfc1123 (Optional)
      *                 ImmutabilityPolicyUntilDate: DateTimeRfc1123 (Optional)
-     *                 ImmutabilityPolicyMode: String(mutable/locked/unlocked) (Optional)
+     *                 ImmutabilityPolicyMode: String(mutable/unlocked/locked) (Optional)
      *                 LegalHold: Boolean (Optional)
      *             }
      *             Metadata (Optional): {
@@ -2444,11 +2475,11 @@ public final class ContainersImpl {
      *                 Cache-Control: String (Optional)
      *                 x-ms-blob-sequence-number: Long (Optional)
      *                 BlobType: String(BlockBlob/PageBlob/AppendBlob) (Optional)
-     *                 LeaseStatus: String(unlocked/locked) (Optional)
+     *                 LeaseStatus: String(locked/unlocked) (Optional)
      *                 LeaseState: String(available/leased/expired/breaking/broken) (Optional)
      *                 LeaseDuration: String(infinite/fixed) (Optional)
      *                 CopyId: String (Optional)
-     *                 CopyStatus: String(pending/success/failed/aborted) (Optional)
+     *                 CopyStatus: String(pending/success/aborted/failed) (Optional)
      *                 CopySource: String (Optional)
      *                 CopyProgress: String (Optional)
      *                 CopyCompletionTime: DateTimeRfc1123 (Optional)
@@ -2471,7 +2502,7 @@ public final class ContainersImpl {
      *                 RehydratePriority: String(High/Standard) (Optional)
      *                 LastAccessTime: DateTimeRfc1123 (Optional)
      *                 ImmutabilityPolicyUntilDate: DateTimeRfc1123 (Optional)
-     *                 ImmutabilityPolicyMode: String(mutable/locked/unlocked) (Optional)
+     *                 ImmutabilityPolicyMode: String(mutable/unlocked/locked) (Optional)
      *                 LegalHold: Boolean (Optional)
      *             }
      *             Metadata (Optional): {
@@ -2710,11 +2741,11 @@ public final class ContainersImpl {
      *                     Cache-Control: String (Optional)
      *                     x-ms-blob-sequence-number: Long (Optional)
      *                     BlobType: String(BlockBlob/PageBlob/AppendBlob) (Optional)
-     *                     LeaseStatus: String(unlocked/locked) (Optional)
+     *                     LeaseStatus: String(locked/unlocked) (Optional)
      *                     LeaseState: String(available/leased/expired/breaking/broken) (Optional)
      *                     LeaseDuration: String(infinite/fixed) (Optional)
      *                     CopyId: String (Optional)
-     *                     CopyStatus: String(pending/success/failed/aborted) (Optional)
+     *                     CopyStatus: String(pending/success/aborted/failed) (Optional)
      *                     CopySource: String (Optional)
      *                     CopyProgress: String (Optional)
      *                     CopyCompletionTime: DateTimeRfc1123 (Optional)
@@ -2737,7 +2768,7 @@ public final class ContainersImpl {
      *                     RehydratePriority: String(High/Standard) (Optional)
      *                     LastAccessTime: DateTimeRfc1123 (Optional)
      *                     ImmutabilityPolicyUntilDate: DateTimeRfc1123 (Optional)
-     *                     ImmutabilityPolicyMode: String(mutable/locked/unlocked) (Optional)
+     *                     ImmutabilityPolicyMode: String(mutable/unlocked/locked) (Optional)
      *                     LegalHold: Boolean (Optional)
      *                 }
      *                 Metadata (Optional): {
@@ -2861,11 +2892,11 @@ public final class ContainersImpl {
      *                     Cache-Control: String (Optional)
      *                     x-ms-blob-sequence-number: Long (Optional)
      *                     BlobType: String(BlockBlob/PageBlob/AppendBlob) (Optional)
-     *                     LeaseStatus: String(unlocked/locked) (Optional)
+     *                     LeaseStatus: String(locked/unlocked) (Optional)
      *                     LeaseState: String(available/leased/expired/breaking/broken) (Optional)
      *                     LeaseDuration: String(infinite/fixed) (Optional)
      *                     CopyId: String (Optional)
-     *                     CopyStatus: String(pending/success/failed/aborted) (Optional)
+     *                     CopyStatus: String(pending/success/aborted/failed) (Optional)
      *                     CopySource: String (Optional)
      *                     CopyProgress: String (Optional)
      *                     CopyCompletionTime: DateTimeRfc1123 (Optional)
@@ -2888,7 +2919,7 @@ public final class ContainersImpl {
      *                     RehydratePriority: String(High/Standard) (Optional)
      *                     LastAccessTime: DateTimeRfc1123 (Optional)
      *                     ImmutabilityPolicyUntilDate: DateTimeRfc1123 (Optional)
-     *                     ImmutabilityPolicyMode: String(mutable/locked/unlocked) (Optional)
+     *                     ImmutabilityPolicyMode: String(mutable/unlocked/locked) (Optional)
      *                     LegalHold: Boolean (Optional)
      *                 }
      *                 Metadata (Optional): {
@@ -3126,8 +3157,9 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getAccountInfoWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.getAccountInfo(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -3169,7 +3201,8 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getAccountInfoWithResponseInternal(RequestOptions requestOptions) {
-        return service.getAccountInfoSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+        final String accept = "application/xml";
+        return service.getAccountInfoSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 }

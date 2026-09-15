@@ -9,14 +9,14 @@ package com.azure.storage.blob.models;
  */
 public enum LeaseStatusType {
     /**
-     * The lease is unlocked.
-     */
-    UNLOCKED("unlocked"),
-
-    /**
      * The lease is locked.
      */
-    LOCKED("locked");
+    LOCKED("locked"),
+
+    /**
+     * The lease is unlocked.
+     */
+    UNLOCKED("unlocked");
 
     /**
      * The actual serialized value for a LeaseStatusType instance.

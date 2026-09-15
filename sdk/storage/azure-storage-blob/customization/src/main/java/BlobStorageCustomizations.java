@@ -82,6 +82,9 @@ public class BlobStorageCustomizations extends Customization {
         removeBufferedStreamingConvenienceMethods(customization.getPackage(IMPL_PACKAGE), logger);
         restoreFluentModels(customization, logger);
         restoreBlockSizeAccessors(customization.getPackage(MODELS_PACKAGE), logger);
+        restoreDeprecatedBlobErrorCodes(customization.getPackage(MODELS_PACKAGE), logger);
+        restoreContainerPropertiesPrimitiveFlag(customization.getPackage(MODELS_PACKAGE), logger);
+        restorePageListMarkerVisibility(customization.getPackage(MODELS_PACKAGE), logger);
         restoreHeaderSetters(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         addContentTypeHeaderProperty(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         restoreObjectReplicationHeaderCollection(editor, logger);
@@ -119,7 +122,7 @@ public class BlobStorageCustomizations extends Customization {
     private static final List<String> PUBLIC_FLUENT_MODELS_TO_RESTORE = Arrays.asList(
         "UserDelegationKey", "BlobCorsRule", "BlobAnalyticsLogging", "BlobRetentionPolicy", "BlobAccessPolicy",
         "BlobSignedIdentifier", "BlobMetrics", "BlobServiceStatistics", "KeyInfo", "Block", "BlockList",
-        "BlobContainerItemProperties",
+        "BlobContainerItemProperties", "BlobContainerItem", "PageList",
         "BlockLookupList", "PageRange", "ClearRange", "GeoReplication", "StaticWebsite", "BlobPrefix");
 
     private static final List<String> IMPL_FLUENT_MODELS_TO_RESTORE = Arrays.asList(
@@ -332,6 +335,77 @@ public class BlobStorageCustomizations extends Customization {
             editor.replaceFile(path, updated);
             logger.info("Made the single-assignment fields final in {}.", path);
         }
+    }
+
+    // Two BlobErrorCode constants shipped with a typo in their Java name (SNAPHOT, ERALIER). The correctly spelled
+    // constants exist alongside them, but removing the misspelled ones is a breaking change, so they are kept as
+    // deprecated aliases pointing at the same wire value -- which is what the AutoRest customization did.
+    private static void restoreDeprecatedBlobErrorCodes(PackageCustomization models, Logger logger) {
+        if (models.getClass("BlobErrorCode") == null) {
+            logger.info("BlobErrorCode not present; skipping the deprecated constant restoration.");
+            return;
+        }
+        models.getClass("BlobErrorCode").customizeAst(ast -> ast.getClassByName("BlobErrorCode").ifPresent(clazz -> {
+            addDeprecatedErrorCode(clazz, "SNAPHOT_OPERATION_RATE_EXCEEDED", "SnapshotOperationRateExceeded",
+                "SNAPSHOT_OPERATION_RATE_EXCEEDED");
+            addDeprecatedErrorCode(clazz, "INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED",
+                "IncrementalCopyOfEralierVersionSnapshotNotAllowed",
+                "INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED");
+        }));
+        logger.info("Restored the deprecated misspelled BlobErrorCode constants.");
+    }
+
+    private static void addDeprecatedErrorCode(ClassOrInterfaceDeclaration clazz, String constant, String wireValue,
+        String replacement) {
+        if (clazz.getFieldByName(constant).isPresent()) {
+            return;
+        }
+        FieldDeclaration field = clazz.addFieldWithInitializer("BlobErrorCode", constant,
+            StaticJavaParser.parseExpression("fromString(\"" + wireValue + "\")"), Modifier.Keyword.PUBLIC,
+            Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
+        field.addMarkerAnnotation("Generated");
+        field.addMarkerAnnotation("Deprecated");
+        field.setJavadocComment(
+            new Javadoc(JavadocDescription.parseText("Static value " + wireValue + " for BlobErrorCode."))
+                .addBlockTag("deprecated", "Please use {@link BlobErrorCode#" + replacement + "}"));
+    }
+
+    // The shipped BlobContainerItemProperties exposes the flag as a primitive boolean; the generated property is a
+    // nullable Boolean, so the accessors are narrowed and a null is read as false.
+    private static void restoreContainerPropertiesPrimitiveFlag(PackageCustomization models, Logger logger) {
+        if (models.getClass("BlobContainerItemProperties") == null) {
+            logger.info("BlobContainerItemProperties not present; skipping the primitive flag restoration.");
+            return;
+        }
+        models.getClass("BlobContainerItemProperties")
+            .customizeAst(ast -> ast.getClassByName("BlobContainerItemProperties").ifPresent(clazz -> {
+                clazz.getMethodsByName("isEncryptionScopeOverridePrevented").forEach(method -> {
+                    method.setType("boolean");
+                    method.setBody(StaticJavaParser
+                        .parseBlock("{ return Boolean.TRUE.equals(this.encryptionScopeOverridePrevented); }"));
+                });
+                clazz.getMethodsByName("setEncryptionScopeOverridePrevented")
+                    .forEach(method -> method.getParameter(0).setType("boolean"));
+                // The field is named isImmutableStorageWithVersioningEnabled, so the generated setter picks up the
+                // "is"; the shipped setter does not carry it.
+                clazz.getMethodsByName("setIsImmutableStorageWithVersioningEnabled")
+                    .forEach(method -> method.setName("setImmutableStorageWithVersioningEnabled"));
+            }));
+        logger.info("Restored the primitive boolean flag on BlobContainerItemProperties.");
+    }
+
+    // PageList reaches its continuation token through PageListHelper, not through public accessors: the shipped
+    // getNextMarker/setNextMarker are package-private, and widening them would add public API.
+    private static void restorePageListMarkerVisibility(PackageCustomization models, Logger logger) {
+        if (models.getClass("PageList") == null) {
+            logger.info("PageList not present; skipping the marker visibility restoration.");
+            return;
+        }
+        models.getClass("PageList").customizeAst(ast -> ast.getClassByName("PageList").ifPresent(clazz -> {
+            clazz.getMethodsByName("getNextMarker").forEach(m -> m.removeModifier(Modifier.Keyword.PUBLIC));
+            clazz.getMethodsByName("setNextMarker").forEach(m -> m.removeModifier(Modifier.Keyword.PUBLIC));
+        }));
+        logger.info("Restored the package-private next marker accessors on PageList.");
     }
 
     private static void restoreHeaderSetters(PackageCustomization implModels, Logger logger) {

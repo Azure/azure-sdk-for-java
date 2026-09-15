@@ -378,7 +378,7 @@ public final class BlobAsyncClientInternal {
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>x-ms-delete-snapshots</td><td>String</td><td>No</td><td>Required if the blob has associated snapshots.
-     * Specifies the delete behavior. Allowed values: "only", "include".</td></tr>
+     * Specifies the delete behavior. Allowed values: "include", "only".</td></tr>
      * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a blob
      * if it has been modified since the specified date-time.</td></tr>
      * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a
@@ -604,7 +604,7 @@ public final class BlobAsyncClientInternal {
      * <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a
      * blob if it has not been modified since the specified date-time.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Headers</strong></p>
@@ -1224,7 +1224,7 @@ public final class BlobAsyncClientInternal {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -1308,7 +1308,7 @@ public final class BlobAsyncClientInternal {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * <tr><td>x-ms-copy-source-authorization</td><td>String</td><td>No</td><td>Only the Bearer authorization scheme is
      * supported, and the value must be a valid OAuth access token for the copy source.</td></tr>

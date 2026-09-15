@@ -316,7 +316,7 @@ public final class BlobServiceClientInternal {
      *             Properties (Required): {
      *                 Last-Modified: DateTimeRfc1123 (Required)
      *                 Etag: String (Required)
-     *                 LeaseStatus: String(unlocked/locked) (Optional)
+     *                 LeaseStatus: String(locked/unlocked) (Optional)
      *                 LeaseState: String(available/leased/expired/breaking/broken) (Optional)
      *                 LeaseDuration: String(infinite/fixed) (Optional)
      *                 PublicAccess: String(blob/container) (Optional)

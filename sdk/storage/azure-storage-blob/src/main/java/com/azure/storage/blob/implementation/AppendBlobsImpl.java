@@ -75,8 +75,8 @@ public final class AppendBlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> create(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Content-Length") int contentLength, @HeaderParam("x-ms-blob-type") String blobType,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Length") int contentLength,
+            @HeaderParam("x-ms-blob-type") String blobType, RequestOptions requestOptions, Context context);
 
         @Put("/")
         @ExpectedResponses({ 201 })
@@ -85,8 +85,8 @@ public final class AppendBlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> createSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Content-Length") int contentLength, @HeaderParam("x-ms-blob-type") String blobType,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Length") int contentLength,
+            @HeaderParam("x-ms-blob-type") String blobType, RequestOptions requestOptions, Context context);
 
         @Put("?comp=appendblock")
         @ExpectedResponses({ 201 })
@@ -95,8 +95,9 @@ public final class AppendBlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> appendBlock(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") long contentLength,
-            @BodyParam("application/octet-stream") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=appendblock")
         @ExpectedResponses({ 201 })
@@ -105,8 +106,9 @@ public final class AppendBlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> appendBlockSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") long contentLength,
-            @BodyParam("application/octet-stream") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=appendblock")
         @ExpectedResponses({ 201 })
@@ -115,8 +117,9 @@ public final class AppendBlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> appendBlockFromUrl(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-copy-source") String sourceUrl,
-            @HeaderParam("Content-Length") long contentLength, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            @HeaderParam("x-ms-copy-source") String sourceUrl, @HeaderParam("Content-Length") long contentLength,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=appendblock")
         @ExpectedResponses({ 201 })
@@ -125,8 +128,9 @@ public final class AppendBlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> appendBlockFromUrlSync(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-copy-source") String sourceUrl,
-            @HeaderParam("Content-Length") long contentLength, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            @HeaderParam("x-ms-copy-source") String sourceUrl, @HeaderParam("Content-Length") long contentLength,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=seal")
         @ExpectedResponses({ 200 })
@@ -135,7 +139,7 @@ public final class AppendBlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> seal(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("?comp=seal")
         @ExpectedResponses({ 200 })
@@ -144,7 +148,7 @@ public final class AppendBlobsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> sealSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -200,7 +204,7 @@ public final class AppendBlobsImpl {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -238,10 +242,11 @@ public final class AppendBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final int contentLength = 0;
         final String blobType = "AppendBlob";
         return FluxUtil.withContext(context -> service.create(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), contentLength, blobType, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, contentLength, blobType, requestOptions, context));
     }
 
     /**
@@ -297,7 +302,7 @@ public final class AppendBlobsImpl {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
+     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -335,10 +340,11 @@ public final class AppendBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createWithResponseInternal(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final int contentLength = 0;
         final String blobType = "AppendBlob";
-        return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), contentLength,
-            blobType, requestOptions, Context.NONE);
+        return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            contentLength, blobType, requestOptions, Context.NONE);
     }
 
     /**
@@ -445,9 +451,11 @@ public final class AppendBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendBlockWithResponseInternalAsync(long contentLength, BinaryData body,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String contentType = "application/octet-stream";
-        return FluxUtil.withContext(context -> service.appendBlock(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), contentType, contentLength, body, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.appendBlock(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+                contentType, contentLength, body, requestOptions, context));
     }
 
     /**
@@ -554,9 +562,10 @@ public final class AppendBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> appendBlockWithResponseInternal(long contentLength, BinaryData body,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         final String contentType = "application/octet-stream";
-        return service.appendBlockSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), contentType,
-            contentLength, body, requestOptions, Context.NONE);
+        return service.appendBlockSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            contentType, contentLength, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -670,8 +679,9 @@ public final class AppendBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> appendBlockFromUrlWithResponseInternalAsync(String sourceUrl, long contentLength,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.appendBlockFromUrl(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), sourceUrl, contentLength, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, sourceUrl, contentLength, requestOptions, context));
     }
 
     /**
@@ -785,8 +795,9 @@ public final class AppendBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> appendBlockFromUrlWithResponseInternal(String sourceUrl, long contentLength,
         RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return service.appendBlockFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-            sourceUrl, contentLength, requestOptions, Context.NONE);
+            accept, sourceUrl, contentLength, requestOptions, Context.NONE);
     }
 
     /**
@@ -846,8 +857,9 @@ public final class AppendBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sealWithResponseInternalAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.seal(this.client.getUrl(),
-            this.client.getServiceVersion().getVersion(), requestOptions, context));
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -907,7 +919,8 @@ public final class AppendBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sealWithResponseInternal(RequestOptions requestOptions) {
-        return service.sealSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), requestOptions,
-            Context.NONE);
+        final String accept = "application/xml";
+        return service.sealSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
     }
 }
