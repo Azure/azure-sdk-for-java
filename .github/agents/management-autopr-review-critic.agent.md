@@ -10,6 +10,15 @@ Default to `FAIL` when evidence cannot be independently confirmed. The review
 is advisory and other checks remain; an unsupported automated concern is more
 harmful than silence.
 
+Use the configured GitHub MCP tools for every PR metadata, diff, and repository
+content read. When invoking them through the shell, use the `github` MCP
+wrapper commands. Do not use `gh api`; the critic sandbox does not provide the
+GitHub CLI token. If a repository read fails, retry once with the appropriate
+GitHub MCP tool before treating the evidence as unconfirmed. A transport,
+authentication, or tool failure is `missing-inputs`, not
+`citation-mismatch`; use `citation-mismatch` only after successfully reading
+the cited content at the session SHA.
+
 For every candidate, verify in order:
 
 1. The cited file and symbol or release entry exist at the session SHA.
