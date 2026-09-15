@@ -294,7 +294,7 @@ public final class WebPubSubChatServiceClientBuilder implements HttpTrait<WebPub
         return client;
     }
 
-    @Generated
+    // Not marked @Generated so partial-update preserves the custom hub validation.
     private void validateClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         if (hub == null || hub.isEmpty()) {
@@ -303,7 +303,7 @@ public final class WebPubSubChatServiceClientBuilder implements HttpTrait<WebPub
         }
     }
 
-    @Generated
+    // Not marked @Generated so partial-update preserves key authentication and reverse proxy policies.
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -348,22 +348,22 @@ public final class WebPubSubChatServiceClientBuilder implements HttpTrait<WebPub
             .build();
     }
 
+    // Not marked @Generated so partial-update preserves passing the key credential to the customized client.
     /**
      * Builds an instance of WebPubSubChatServiceAsyncClient class.
      *
      * @return an instance of WebPubSubChatServiceAsyncClient.
      */
-    @Generated
     public WebPubSubChatServiceAsyncClient buildAsyncClient() {
         return new WebPubSubChatServiceAsyncClient(buildInnerClient(), keyCredential);
     }
 
+    // Not marked @Generated so partial-update preserves passing the key credential to the customized client.
     /**
      * Builds an instance of WebPubSubChatServiceClient class.
      *
      * @return an instance of WebPubSubChatServiceClient.
      */
-    @Generated
     public WebPubSubChatServiceClient buildClient() {
         return new WebPubSubChatServiceClient(buildInnerClient(), keyCredential);
     }
