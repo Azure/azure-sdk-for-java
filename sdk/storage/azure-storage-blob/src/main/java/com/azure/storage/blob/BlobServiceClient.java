@@ -589,8 +589,9 @@ public final class BlobServiceClient {
     public Response<BlobServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         throwOnAnonymousAccess();
-        Callable<ResponseBase<ServicesGetPropertiesHeaders, BlobServiceProperties>> operation = () -> this.serviceClientInternal
-            .getPropertiesWithResponse(null, RequestOptionsHelper.requestOptions(finalContext));
+        Callable<ResponseBase<ServicesGetPropertiesHeaders, BlobServiceProperties>> operation
+            = () -> this.serviceClientInternal.getPropertiesWithResponse(null,
+                RequestOptionsHelper.requestOptions(finalContext));
         ResponseBase<ServicesGetPropertiesHeaders, BlobServiceProperties> response
             = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
 
@@ -826,13 +827,14 @@ public final class BlobServiceClient {
         }
 
         Callable<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> operation
-            = () -> this.serviceClientInternal.getUserDelegationKeyWithResponse(new KeyInfo()
-                .setStart(options.getStartsOn() == null
-                    ? ""
-                    : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
-                .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
-                .setDelegatedUserTenantId(options.getDelegatedUserTenantId()), null,
-                RequestOptionsHelper.requestOptions(finalContext));
+            = () -> this.serviceClientInternal.getUserDelegationKeyWithResponse(
+                new KeyInfo()
+                    .setStart(options.getStartsOn() == null
+                        ? ""
+                        : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
+                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
+                    .setDelegatedUserTenantId(options.getDelegatedUserTenantId()),
+                null, RequestOptionsHelper.requestOptions(finalContext));
 
         ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> response
             = sendRequest(operation, timeout, BlobStorageException.class);
@@ -925,9 +927,8 @@ public final class BlobServiceClient {
     public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context) {
         throwOnAnonymousAccess();
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<ServicesGetAccountInfoHeaders, Void>> operation
-            = () -> this.serviceClientInternal.getAccountInfoWithResponse(null,
-                RequestOptionsHelper.requestOptions(finalContext));
+        Callable<ResponseBase<ServicesGetAccountInfoHeaders, Void>> operation = () -> this.serviceClientInternal
+            .getAccountInfoWithResponse(null, RequestOptionsHelper.requestOptions(finalContext));
         ResponseBase<ServicesGetAccountInfoHeaders, Void> response
             = sendRequest(operation, timeout, BlobStorageException.class);
         ServicesGetAccountInfoHeaders hd = response.getDeserializedHeaders();
@@ -1126,8 +1127,9 @@ public final class BlobServiceClient {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-deleted-container-version"),
                 options.getDeletedContainerVersion());
         }
-        Callable<Response<Void>> operation = () -> this.containerClientInternal.restoreWithResponse(
-            options.getDeletedContainerName(), options.getDeletedContainerVersion(), null, requestOptions);
+        Callable<Response<Void>> operation
+            = () -> this.containerClientInternal.restoreWithResponse(options.getDeletedContainerName(),
+                options.getDeletedContainerVersion(), null, requestOptions);
         Response<Void> response = sendRequest(operation, timeout, BlobStorageException.class);
         return new SimpleResponse<>(response, getBlobContainerClient(finalDestinationContainerName));
     }

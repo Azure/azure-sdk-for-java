@@ -374,9 +374,9 @@ public final class AppendBlobClient extends BlobClientBase {
 
         Callable<ResponseBase<AppendBlobsCreateHeaders, Void>> operation
             = () -> this.appendBlobClientInternal.createWithResponse(null, null, createHeaders.getContentType(),
-                createHeaders.getContentEncoding(), createHeaders.getContentLanguage(),
-                createHeaders.getContentMd5(), createHeaders.getCacheControl(), requestConditions.getLeaseId(),
-                createHeaders.getContentDisposition(), createCpk == null ? null : createCpk.getEncryptionKey(),
+                createHeaders.getContentEncoding(), createHeaders.getContentLanguage(), createHeaders.getContentMd5(),
+                createHeaders.getCacheControl(), requestConditions.getLeaseId(), createHeaders.getContentDisposition(),
+                createCpk == null ? null : createCpk.getEncryptionKey(),
                 createCpk == null ? null : createCpk.getEncryptionKeySha256(),
                 createCpk == null ? null : createCpk.getEncryptionAlgorithm(),
                 encryptionScope == null ? null : encryptionScope.getEncryptionScope(),
@@ -386,9 +386,9 @@ public final class AppendBlobClient extends BlobClientBase {
         ResponseBase<AppendBlobsCreateHeaders, Void> response
             = sendRequest(operation, timeout, BlobStorageException.class);
         AppendBlobsCreateHeaders hd = response.getDeserializedHeaders();
-        AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMd5(),
-            hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, null,
-            hd.getVersionId());
+        AppendBlobItem item
+            = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMd5(), hd.isServerEncrypted(),
+                hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, null, hd.getVersionId());
         return new SimpleResponse<>(response, item);
     }
 

@@ -1206,11 +1206,9 @@ public final class BlobContainerAsyncClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        return StorageImplUtils.applyOptionalTimeout(
-            this.containerClientInternal.listBlobFlatSegmentWithResponse(options.getPrefix(), marker,
-                options.getMaxResultsPerPage(), include, null, options.getStartFrom(),
-                containerRequestOptions(Context.NONE)),
-            timeout);
+        return StorageImplUtils.applyOptionalTimeout(this.containerClientInternal.listBlobFlatSegmentWithResponse(
+            options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null, options.getStartFrom(),
+            containerRequestOptions(Context.NONE)), timeout);
     }
 
     private Mono<PagedResponse<BlobItem>> listBlobsFlatSegmentArrow(String marker, ListBlobsOptions options,
@@ -1241,8 +1239,7 @@ public final class BlobContainerAsyncClient {
                             .collect(Collectors.toList());
 
                         return (PagedResponse<BlobItem>) new PagedResponseBase<>(response.getRequest(),
-                            response.getStatusCode(), response.getHeaders(), value, arrowResult.getNextMarker(),
-                            null);
+                            response.getStatusCode(), response.getHeaders(), value, arrowResult.getNextMarker(), null);
                     } else {
                         // XML fallback
                         try {
@@ -1441,11 +1438,9 @@ public final class BlobContainerAsyncClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        return StorageImplUtils.applyOptionalTimeout(
-            this.containerClientInternal.listBlobHierarchySegmentWithResponse(delimiter, options.getPrefix(), marker,
-                options.getMaxResultsPerPage(), include, null, options.getStartFrom(),
-                containerRequestOptions(Context.NONE)),
-            timeout);
+        return StorageImplUtils.applyOptionalTimeout(this.containerClientInternal.listBlobHierarchySegmentWithResponse(
+            delimiter, options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null,
+            options.getStartFrom(), containerRequestOptions(Context.NONE)), timeout);
     }
 
     private Mono<PagedResponse<BlobItem>> listBlobsHierarchySegmentArrow(String marker, String delimiter,
@@ -1461,9 +1456,10 @@ public final class BlobContainerAsyncClient {
 
         ListBlobsOptions finalOptions = options;
         return StorageImplUtils
-            .applyOptionalTimeout(this.containerClientInternal.listBlobHierarchySegmentApacheArrowWithResponse(
-                delimiter, finalOptions.getPrefix(), marker, finalOptions.getMaxResultsPerPage(), include, null,
-                finalOptions.getStartFrom(), finalOptions.getEndBefore(), containerRequestOptions(Context.NONE)),
+            .applyOptionalTimeout(
+                this.containerClientInternal.listBlobHierarchySegmentApacheArrowWithResponse(delimiter,
+                    finalOptions.getPrefix(), marker, finalOptions.getMaxResultsPerPage(), include, null,
+                    finalOptions.getStartFrom(), finalOptions.getEndBefore(), containerRequestOptions(Context.NONE)),
                 timeout)
             .flatMap(response -> {
                 String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
@@ -1481,8 +1477,7 @@ public final class BlobContainerAsyncClient {
                             .collect(Collectors.toList());
 
                         return (PagedResponse<BlobItem>) new PagedResponseBase<>(response.getRequest(),
-                            response.getStatusCode(), response.getHeaders(), value, arrowResult.getNextMarker(),
-                            null);
+                            response.getStatusCode(), response.getHeaders(), value, arrowResult.getNextMarker(), null);
                     } else {
                         // XML fallback
                         try {
@@ -1586,10 +1581,10 @@ public final class BlobContainerAsyncClient {
     private Mono<PagedResponse<TaggedBlobItem>> findBlobsByTags(FindBlobsOptions options, String marker,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        return StorageImplUtils.applyOptionalTimeout(
-            this.containerClientInternal.filterBlobsWithResponse(options.getQuery(), null, marker,
-                options.getMaxResultsPerPage(), null, containerRequestOptions(context)),
-            timeout).map(response -> {
+        return StorageImplUtils
+            .applyOptionalTimeout(this.containerClientInternal.filterBlobsWithResponse(options.getQuery(), null, marker,
+                options.getMaxResultsPerPage(), null, containerRequestOptions(context)), timeout)
+            .map(response -> {
                 List<TaggedBlobItem> value = response.getValue()
                     .getBlobItems()
                     .stream()

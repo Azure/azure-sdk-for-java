@@ -429,13 +429,13 @@ public final class BlobContainerClient {
     public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<Response<Void>> operation = () -> this.containerClientInternal.createWithResponse(null, metadata,
-            accessType,
-            blobContainerEncryptionScope == null ? null : blobContainerEncryptionScope.getDefaultEncryptionScope(),
-            blobContainerEncryptionScope == null
-                ? null
-                : blobContainerEncryptionScope.isEncryptionScopeOverridePrevented(),
-            containerRequestOptions(finalContext));
+        Callable<Response<Void>> operation
+            = () -> this.containerClientInternal.createWithResponse(null, metadata, accessType,
+                blobContainerEncryptionScope == null ? null : blobContainerEncryptionScope.getDefaultEncryptionScope(),
+                blobContainerEncryptionScope == null
+                    ? null
+                    : blobContainerEncryptionScope.isEncryptionScopeOverridePrevented(),
+                containerRequestOptions(finalContext));
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
@@ -567,10 +567,9 @@ public final class BlobContainerClient {
         }
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<Response<Void>> operation
-            = () -> this.containerClientInternal.deleteWithResponse(null, finalRequestConditions.getLeaseId(),
-                finalRequestConditions.getIfModifiedSince(), finalRequestConditions.getIfUnmodifiedSince(),
-                containerRequestOptions(finalContext));
+        Callable<Response<Void>> operation = () -> this.containerClientInternal.deleteWithResponse(null,
+            finalRequestConditions.getLeaseId(), finalRequestConditions.getIfModifiedSince(),
+            finalRequestConditions.getIfUnmodifiedSince(), containerRequestOptions(finalContext));
 
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
@@ -933,10 +932,10 @@ public final class BlobContainerClient {
         }
         List<BlobSignedIdentifier> finalIdentifiers = ModelHelper.truncateTimeForBlobSignedIdentifier(identifiers);
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<Response<Void>> operation = () -> this.containerClientInternal.setAccessPolicyWithResponse(null,
-            finalRequestConditions.getLeaseId(), accessType, finalRequestConditions.getIfModifiedSince(),
-            finalRequestConditions.getIfUnmodifiedSince(), new BlobSignedIdentifiers(finalIdentifiers),
-            containerRequestOptions(finalContext));
+        Callable<Response<Void>> operation
+            = () -> this.containerClientInternal.setAccessPolicyWithResponse(null, finalRequestConditions.getLeaseId(),
+                accessType, finalRequestConditions.getIfModifiedSince(), finalRequestConditions.getIfUnmodifiedSince(),
+                new BlobSignedIdentifiers(finalIdentifiers), containerRequestOptions(finalContext));
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
@@ -1096,8 +1095,7 @@ public final class BlobContainerClient {
                             .collect(Collectors.toList());
 
                         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), value, arrowResult.getNextMarker(),
-                            null);
+                            response.getHeaders(), value, arrowResult.getNextMarker(), null);
                     } else {
                         // XML fallback — service returned XML instead of Arrow
                         try {
@@ -1275,10 +1273,10 @@ public final class BlobContainerClient {
 
         if (ModelHelper.resolveSerializationFormat(options.getStorageResponseSerializationFormat())
             == StorageResponseSerializationFormat.ARROW) {
-            Callable<StreamResponse> operation = () -> this.containerClientInternal
-                .listBlobHierarchySegmentApacheArrowWithResponse(delimiter, options.getPrefix(), marker,
-                    options.getMaxResultsPerPage(), include, null, options.getStartFrom(), options.getEndBefore(),
-                    containerRequestOptions(Context.NONE));
+            Callable<StreamResponse> operation
+                = () -> this.containerClientInternal.listBlobHierarchySegmentApacheArrowWithResponse(delimiter,
+                    options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null, options.getStartFrom(),
+                    options.getEndBefore(), containerRequestOptions(Context.NONE));
             StreamResponse response = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
 
             String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
@@ -1328,8 +1326,8 @@ public final class BlobContainerClient {
         } else {
             Callable<ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>> operation
                 = () -> this.containerClientInternal.listBlobHierarchySegmentWithResponse(delimiter,
-                    options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null,
-                    options.getStartFrom(), containerRequestOptions(Context.NONE));
+                    options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null, options.getStartFrom(),
+                    containerRequestOptions(Context.NONE));
 
             ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse> response
                 = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);

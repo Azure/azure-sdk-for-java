@@ -315,7 +315,8 @@ public class BlobQueryReader {
         if (jsonSerialization == null) {
             return null;
         }
-        return new JsonTextConfigurationInternal().setRecordSeparator(charToString(jsonSerialization.getRecordSeparator()));
+        return new JsonTextConfigurationInternal()
+            .setRecordSeparator(charToString(jsonSerialization.getRecordSeparator()));
     }
 
     /**

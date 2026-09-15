@@ -414,8 +414,8 @@ public final class BlobLeaseAsyncClient {
 
         if (this.isBlob) {
             return this.blobClientInternal
-                .releaseLeaseWithResponse(this.leaseId, null, requestConditions.getTagsConditions(),
-                    requestConditions, leaseRequestOptions(context))
+                .releaseLeaseWithResponse(this.leaseId, null, requestConditions.getTagsConditions(), requestConditions,
+                    leaseRequestOptions(context))
                 .map(rb -> (Response<Void>) rb);
         } else {
             return this.containerClientInternal

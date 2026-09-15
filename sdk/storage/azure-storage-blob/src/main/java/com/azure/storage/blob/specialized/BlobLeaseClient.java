@@ -228,8 +228,8 @@ public final class BlobLeaseClient {
             return new SimpleResponse<>(response, response.getDeserializedHeaders().getLeaseId());
         } else {
             Callable<ResponseBase<ContainersAcquireLeaseHeaders, Void>> operation
-                = () -> this.containerClientInternal.acquireLeaseWithResponse(options.getDuration(), null,
-                    this.leaseId, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                = () -> this.containerClientInternal.acquireLeaseWithResponse(options.getDuration(), null, this.leaseId,
+                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                     leaseRequestOptions(finalContext));
             ResponseBase<ContainersAcquireLeaseHeaders, Void> response
                 = sendRequest(operation, timeout, BlobStorageException.class);

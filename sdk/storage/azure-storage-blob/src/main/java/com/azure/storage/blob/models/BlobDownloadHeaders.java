@@ -117,7 +117,8 @@ public final class BlobDownloadHeaders {
      * @return the objectReplicationSourcePolicies value.
      */
     public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
-        return Collections.unmodifiableList(ModelHelper.getObjectReplicationSourcePolicies(internalHeaders.getObjectReplicationRules()));
+        return Collections.unmodifiableList(
+            ModelHelper.getObjectReplicationSourcePolicies(internalHeaders.getObjectReplicationRules()));
     }
 
     /**
@@ -982,8 +983,7 @@ public final class BlobDownloadHeaders {
      * @return the immutabilityPolicy value.
      */
     public BlobImmutabilityPolicy getImmutabilityPolicy() {
-        return new BlobImmutabilityPolicy()
-            .setPolicyMode(internalHeaders.getImmutabilityPolicyMode())
+        return new BlobImmutabilityPolicy().setPolicyMode(internalHeaders.getImmutabilityPolicyMode())
             .setExpiryTime(internalHeaders.getImmutabilityPolicyExpiresOn());
     }
 
