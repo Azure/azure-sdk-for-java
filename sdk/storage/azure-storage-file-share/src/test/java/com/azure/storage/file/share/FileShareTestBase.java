@@ -453,7 +453,7 @@ public class FileShareTestBase extends TestProxyTestBase {
      * @param fc The blob on which to acquire a lease.
      * @param leaseID The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or
      * {@code null}.
-     * @return The actual lease ID of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
+     * @return The actual lease ID of the blob if receivedLeaseID is passed, otherwise whatever was passed will be
      * returned.
      */
     protected String setupFileLeaseCondition(ShareFileClient fc, String leaseID) {

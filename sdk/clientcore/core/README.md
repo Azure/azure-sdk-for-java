@@ -134,7 +134,7 @@ implementation.
 
 ### Accessing HTTP Response Details Using `Response<T>`
 
-_Service clients_ have methods that call Core services, we refer call these methods _service methods_.
+_Service clients_ have methods that call Core services, we call these methods _service methods_.
 
 _Service methods_ can return a shared Core type `Response<T>`. This type provides access to both the deserialized result
 of the service call and to the details of the HTTP response returned from the server.
