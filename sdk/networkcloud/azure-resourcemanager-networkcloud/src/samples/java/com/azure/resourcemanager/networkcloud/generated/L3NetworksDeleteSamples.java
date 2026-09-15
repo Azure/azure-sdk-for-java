@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class L3NetworksDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/L3Networks_Delete.json
+     * x-ms-original-file: 2026-07-01/L3Networks_Delete.json
      */
     /**
      * Sample code: Delete L3 network.

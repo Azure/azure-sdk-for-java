@@ -15,24 +15,24 @@ public final class PriorityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PriorityProfile model = BinaryData.fromString(
-            "{\"type\":\"Spot\",\"maxPricePerVM\":4.94014724072419,\"evictionPolicy\":\"Deallocate\",\"allocationStrategy\":\"Prioritized\"}")
+            "{\"type\":\"Spot\",\"maxPricePerVM\":26.50868276392747,\"evictionPolicy\":\"Delete\",\"allocationStrategy\":\"Prioritized\"}")
             .toObject(PriorityProfile.class);
         Assertions.assertEquals(PriorityType.SPOT, model.type());
-        Assertions.assertEquals(4.94014724072419D, model.maxPricePerVM());
-        Assertions.assertEquals(EvictionPolicy.DEALLOCATE, model.evictionPolicy());
+        Assertions.assertEquals(26.50868276392747D, model.maxPricePerVM());
+        Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
         Assertions.assertEquals(AllocationStrategy.PRIORITIZED, model.allocationStrategy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PriorityProfile model = new PriorityProfile().withType(PriorityType.SPOT)
-            .withMaxPricePerVM(4.94014724072419D)
-            .withEvictionPolicy(EvictionPolicy.DEALLOCATE)
+            .withMaxPricePerVM(26.50868276392747D)
+            .withEvictionPolicy(EvictionPolicy.DELETE)
             .withAllocationStrategy(AllocationStrategy.PRIORITIZED);
         model = BinaryData.fromObject(model).toObject(PriorityProfile.class);
         Assertions.assertEquals(PriorityType.SPOT, model.type());
-        Assertions.assertEquals(4.94014724072419D, model.maxPricePerVM());
-        Assertions.assertEquals(EvictionPolicy.DEALLOCATE, model.evictionPolicy());
+        Assertions.assertEquals(26.50868276392747D, model.maxPricePerVM());
+        Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
         Assertions.assertEquals(AllocationStrategy.PRIORITIZED, model.allocationStrategy());
     }
 }

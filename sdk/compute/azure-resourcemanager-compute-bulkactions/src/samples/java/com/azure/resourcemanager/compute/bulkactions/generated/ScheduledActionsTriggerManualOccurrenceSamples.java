@@ -9,14 +9,14 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionsTriggerManualOccurrenceSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_TriggerManualOccurrence_MaximumSet.
+     * Sample code: Run a scheduled action immediately.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void scheduledActionsTriggerManualOccurrenceMaximumSet(
+    public static void runAScheduledActionImmediately(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .triggerManualOccurrence("rgcompute", "myScheduledAction", com.azure.core.util.Context.NONE);

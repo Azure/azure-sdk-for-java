@@ -6,6 +6,7 @@ package com.azure.storage.blob.batch;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -20,6 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Immutable
 final class BlobBatchOperationInfo {
+    private static final ClientLogger LOGGER = new ClientLogger(BlobBatchOperationInfo.class);
     private static final String X_MS_VERSION = "x-ms-version";
     private static final String BATCH_OPERATION_CONTENT_TYPE = "Content-Type: application/http";
     private static final String BATCH_OPERATION_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding: binary";
@@ -102,7 +104,8 @@ final class BlobBatchOperationInfo {
         request.getHeaders()
             .stream()
             .filter(header -> !X_MS_VERSION.equalsIgnoreCase(header.getName()))
-            .forEach(header -> appendWithNewline(batchRequestBuilder, header.getName() + ": " + header.getValue()));
+            .forEach(header -> appendWithNewline(batchRequestBuilder,
+                validateHeader(header.getName()) + ": " + validateHeader(header.getValue())));
 
         batchRequestBuilder.append(BlobBatchHelper.HTTP_NEWLINE);
 
@@ -139,5 +142,28 @@ final class BlobBatchOperationInfo {
 
     private static void appendWithNewline(StringBuilder stringBuilder, String value) {
         stringBuilder.append(value).append(BlobBatchHelper.HTTP_NEWLINE);
+    }
+
+    /*
+     * Rejects any carriage-return or line-feed character in an inner request header name or value before it is
+     * serialized into the multipart batch body. The inner headers are emitted as bytes inside the outer request body,
+     * so the HTTP transport layer never validates them. Without this check, a caller-controlled header value (such as a
+     * blob tag condition supplied via BlobRequestConditions.setTagsConditions) could terminate the intended header and
+     * inject additional Azure Storage operation-control headers. Rejecting (rather than stripping) preserves the
+     * semantics of the authorized request.
+     */
+    private static String validateHeader(String value) {
+        if (value != null) {
+            for (int i = 0; i < value.length(); i++) {
+                char c = value.charAt(i);
+                if (c == '\r' || c == '\n') {
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                        "Batch operation header names and values must not contain carriage-return ('\\r') or "
+                            + "line-feed ('\\n') characters. Prohibited character 0x" + Integer.toHexString(c)
+                            + " found at index " + i + "."));
+                }
+            }
+        }
+        return value;
     }
 }
