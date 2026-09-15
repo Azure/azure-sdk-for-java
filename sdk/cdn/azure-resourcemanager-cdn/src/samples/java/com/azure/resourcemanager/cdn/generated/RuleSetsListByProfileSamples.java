@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class RuleSetsListByProfileSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/RuleSets_ListByProfile.json
+     * x-ms-original-file: 2026-07-01/RuleSets_ListByProfile.json
      */
     /**
      * Sample code: RuleSets_ListByProfile.

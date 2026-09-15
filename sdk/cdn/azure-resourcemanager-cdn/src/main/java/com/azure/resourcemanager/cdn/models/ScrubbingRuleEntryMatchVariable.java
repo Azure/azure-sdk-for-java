@@ -27,28 +27,6 @@ public final class ScrubbingRuleEntryMatchVariable extends ExpandableStringEnum<
     public static final ScrubbingRuleEntryMatchVariable QUERY_STRING_ARG_NAMES = fromString("QueryStringArgNames");
 
     /**
-     * Static value RequestHeaderNames for ScrubbingRuleEntryMatchVariable.
-     */
-    public static final ScrubbingRuleEntryMatchVariable REQUEST_HEADER_NAMES = fromString("RequestHeaderNames");
-
-    /**
-     * Static value RequestCookieNames for ScrubbingRuleEntryMatchVariable.
-     */
-    public static final ScrubbingRuleEntryMatchVariable REQUEST_COOKIE_NAMES = fromString("RequestCookieNames");
-
-    /**
-     * Static value RequestBodyPostArgNames for ScrubbingRuleEntryMatchVariable.
-     */
-    public static final ScrubbingRuleEntryMatchVariable REQUEST_BODY_POST_ARG_NAMES
-        = fromString("RequestBodyPostArgNames");
-
-    /**
-     * Static value RequestBodyJsonArgNames for ScrubbingRuleEntryMatchVariable.
-     */
-    public static final ScrubbingRuleEntryMatchVariable REQUEST_BODY_JSON_ARG_NAMES
-        = fromString("RequestBodyJsonArgNames");
-
-    /**
      * Creates a new instance of ScrubbingRuleEntryMatchVariable value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

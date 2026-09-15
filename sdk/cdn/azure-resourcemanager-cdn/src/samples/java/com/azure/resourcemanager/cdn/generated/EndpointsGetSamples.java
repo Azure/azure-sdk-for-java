@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class EndpointsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Endpoints_Get.json
+     * x-ms-original-file: 2026-07-01/Endpoints_Get.json
      */
     /**
      * Sample code: Endpoints_Get.

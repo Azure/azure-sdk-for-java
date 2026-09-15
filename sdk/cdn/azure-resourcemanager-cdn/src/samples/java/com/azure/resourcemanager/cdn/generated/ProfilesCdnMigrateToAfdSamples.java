@@ -13,7 +13,7 @@ import com.azure.resourcemanager.cdn.models.SkuName;
  */
 public final class ProfilesCdnMigrateToAfdSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/CdnProfiles_Migrate.json
+     * x-ms-original-file: 2026-07-01/CdnProfiles_Migrate.json
      */
     /**
      * Sample code: Profiles_CdnMigrate.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class AfdOriginsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDOrigins_Get.json
+     * x-ms-original-file: 2026-07-01/AFDOrigins_Get.json
      */
     /**
      * Sample code: AFDOrigins_Get.

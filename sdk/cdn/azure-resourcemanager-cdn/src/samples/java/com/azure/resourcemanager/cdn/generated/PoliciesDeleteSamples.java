@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class PoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/WafPolicyDelete.json
+     * x-ms-original-file: 2026-07-01/WafPolicyDelete.json
      */
     /**
      * Sample code: Delete protection policy.
