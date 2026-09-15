@@ -348,7 +348,6 @@ public final class WebPubSubChatServiceClientBuilder implements HttpTrait<WebPub
             .build();
     }
 
-    // Not marked @Generated so partial-update preserves passing the key credential to the customized client.
     /**
      * Builds an instance of WebPubSubChatServiceAsyncClient class.
      *
@@ -358,7 +357,6 @@ public final class WebPubSubChatServiceClientBuilder implements HttpTrait<WebPub
         return new WebPubSubChatServiceAsyncClient(buildInnerClient(), keyCredential);
     }
 
-    // Not marked @Generated so partial-update preserves passing the key credential to the customized client.
     /**
      * Builds an instance of WebPubSubChatServiceClient class.
      *

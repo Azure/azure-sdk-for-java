@@ -53,6 +53,7 @@ final class WebPubSubClientAccessTokenFactory {
 
     private static RequestOptions createRequestOptions(GetClientAccessTokenOptions options, Duration expiresAfter) {
         RequestOptions requestOptions = new RequestOptions();
+        requestOptions.addQueryParam("clientType", "default");
         if (options.getUserId() != null) {
             requestOptions.addQueryParam("userId", options.getUserId());
         }

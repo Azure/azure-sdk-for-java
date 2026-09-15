@@ -569,8 +569,7 @@ public final class WebPubSubChatServiceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> generateClientToken(@HostParam("endpoint") String endpoint,
             @PathParam("hub") String hub, @QueryParam("api-version") String apiVersion,
-            @QueryParam("clientType") String clientType, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/api/hubs/{hub}/:generateToken")
         @ExpectedResponses({ 200 })
@@ -580,8 +579,7 @@ public final class WebPubSubChatServiceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> generateClientTokenSync(@HostParam("endpoint") String endpoint,
             @PathParam("hub") String hub, @QueryParam("api-version") String apiVersion,
-            @QueryParam("clientType") String clientType, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -2504,10 +2502,9 @@ public final class WebPubSubChatServiceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> generateClientTokenWithResponseAsync(String hub, RequestOptions requestOptions) {
         final String apiVersion = "2024-12-01";
-        final String clientType = "default";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.generateClientToken(this.getEndpoint(), hub, apiVersion,
-            clientType, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.generateClientToken(this.getEndpoint(), hub, apiVersion, accept,
+            requestOptions, context));
     }
 
     /**
@@ -2543,9 +2540,8 @@ public final class WebPubSubChatServiceClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> generateClientTokenWithResponse(String hub, RequestOptions requestOptions) {
         final String apiVersion = "2024-12-01";
-        final String clientType = "default";
         final String accept = "application/json";
-        return service.generateClientTokenSync(this.getEndpoint(), hub, apiVersion, clientType, accept, requestOptions,
+        return service.generateClientTokenSync(this.getEndpoint(), hub, apiVersion, accept, requestOptions,
             Context.NONE);
     }
 

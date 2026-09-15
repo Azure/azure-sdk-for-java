@@ -44,7 +44,6 @@ public final class WebPubSubChatServiceAsyncClient {
     @Generated
     private final WebPubSubChatServiceClientImpl serviceClient;
 
-    // Not marked @Generated so partial-update preserves the key credential used for client access tokens.
     /**
      * Initializes an instance of WebPubSubChatServiceAsyncClient class.
      *
@@ -58,7 +57,7 @@ public final class WebPubSubChatServiceAsyncClient {
     /**
      * Get conversation information.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -97,7 +96,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -169,7 +168,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -184,9 +183,9 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -201,7 +200,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -237,7 +236,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -266,7 +265,7 @@ public final class WebPubSubChatServiceAsyncClient {
     /**
      * Get role information.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -306,7 +305,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -318,9 +317,9 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -332,7 +331,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -401,7 +400,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -412,9 +411,9 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -425,7 +424,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -452,7 +451,7 @@ public final class WebPubSubChatServiceAsyncClient {
     /**
      * Get room information.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -516,7 +515,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -554,7 +553,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -564,9 +563,9 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -576,7 +575,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -636,7 +635,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * Get a user's profile. The response is a polymorphic `ChatUser` (e.g. `HumanChatUser`) selected by the `kind`
      * discriminator.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -680,7 +679,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -691,9 +690,9 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -704,7 +703,7 @@ public final class WebPubSubChatServiceAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -1610,7 +1609,6 @@ public final class WebPubSubChatServiceAsyncClient {
     // Retained by partial-update for key-based client access token generation.
     private final AzureKeyCredential keyCredential;
 
-    // Not marked @Generated so partial-update preserves client access token generation.
     /**
      * Creates a client access token for connecting to Azure Web PubSub Chat.
      *
