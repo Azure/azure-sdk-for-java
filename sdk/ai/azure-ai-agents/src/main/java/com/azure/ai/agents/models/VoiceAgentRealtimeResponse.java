@@ -93,7 +93,7 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
      * The object type, must be `realtime.response`.
      */
     @Generated
-    private VoiceResponseBaseObject1 object;
+    private VoiceResponseBaseObject object;
 
     /*
      * The unique ID of the response, will look like `resp_1234`.
@@ -226,7 +226,7 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
      */
     @Generated
     @Override
-    public VoiceResponseBaseObject1 getObject() {
+    public VoiceResponseBaseObject getObject() {
         return this.object;
     }
 
@@ -290,7 +290,7 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
                     deserializedVoiceAgentRealtimeResponse.id = reader.getString();
                 } else if ("object".equals(fieldName)) {
                     deserializedVoiceAgentRealtimeResponse.object
-                        = VoiceResponseBaseObject1.fromString(reader.getString());
+                        = VoiceResponseBaseObject.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     deserializedVoiceAgentRealtimeResponse.status
                         = VoiceResponseBaseStatus.fromString(reader.getString());

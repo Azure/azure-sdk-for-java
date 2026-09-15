@@ -19,7 +19,7 @@ import java.time.Duration;
  * `/audio/generated/content` route.
  */
 @Immutable
-public final class VoiceGeneratedItemAudioResponse implements JsonSerializable<VoiceGeneratedItemAudioResponse> {
+public final class VoiceGeneratedAudioItemResponse implements JsonSerializable<VoiceGeneratedAudioItemResponse> {
 
     /*
      * The id of the conversation the item belongs to.
@@ -84,13 +84,13 @@ public final class VoiceGeneratedItemAudioResponse implements JsonSerializable<V
     private String blobUri;
 
     /**
-     * Creates an instance of VoiceGeneratedItemAudioResponse class.
+     * Creates an instance of VoiceGeneratedAudioItemResponse class.
      *
      * @param conversationId the conversationId value to set.
      * @param itemId the itemId value to set.
      */
     @Generated
-    private VoiceGeneratedItemAudioResponse(String conversationId, String itemId) {
+    private VoiceGeneratedAudioItemResponse(String conversationId, String itemId) {
         this.conversationId = conversationId;
         this.itemId = itemId;
     }
@@ -225,16 +225,16 @@ public final class VoiceGeneratedItemAudioResponse implements JsonSerializable<V
     }
 
     /**
-     * Reads an instance of VoiceGeneratedItemAudioResponse from the JsonReader.
+     * Reads an instance of VoiceGeneratedAudioItemResponse from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VoiceGeneratedItemAudioResponse if the JsonReader was pointing to an instance of it, or
+     * @return An instance of VoiceGeneratedAudioItemResponse if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the VoiceGeneratedItemAudioResponse.
+     * @throws IOException If an error occurs while reading the VoiceGeneratedAudioItemResponse.
      */
     @Generated
-    public static VoiceGeneratedItemAudioResponse fromJson(JsonReader jsonReader) throws IOException {
+    public static VoiceGeneratedAudioItemResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String conversationId = null;
             String itemId = null;
@@ -273,17 +273,17 @@ public final class VoiceGeneratedItemAudioResponse implements JsonSerializable<V
                     reader.skipChildren();
                 }
             }
-            VoiceGeneratedItemAudioResponse deserializedVoiceGeneratedItemAudioResponse
-                = new VoiceGeneratedItemAudioResponse(conversationId, itemId);
-            deserializedVoiceGeneratedItemAudioResponse.role = role;
-            deserializedVoiceGeneratedItemAudioResponse.format = format;
-            deserializedVoiceGeneratedItemAudioResponse.codec = codec;
-            deserializedVoiceGeneratedItemAudioResponse.sampleRate = sampleRate;
-            deserializedVoiceGeneratedItemAudioResponse.channels = channels;
-            deserializedVoiceGeneratedItemAudioResponse.startOffsetMs = startOffsetMs;
-            deserializedVoiceGeneratedItemAudioResponse.durationMs = durationMs;
-            deserializedVoiceGeneratedItemAudioResponse.blobUri = blobUri;
-            return deserializedVoiceGeneratedItemAudioResponse;
+            VoiceGeneratedAudioItemResponse deserializedVoiceGeneratedAudioItemResponse
+                = new VoiceGeneratedAudioItemResponse(conversationId, itemId);
+            deserializedVoiceGeneratedAudioItemResponse.role = role;
+            deserializedVoiceGeneratedAudioItemResponse.format = format;
+            deserializedVoiceGeneratedAudioItemResponse.codec = codec;
+            deserializedVoiceGeneratedAudioItemResponse.sampleRate = sampleRate;
+            deserializedVoiceGeneratedAudioItemResponse.channels = channels;
+            deserializedVoiceGeneratedAudioItemResponse.startOffsetMs = startOffsetMs;
+            deserializedVoiceGeneratedAudioItemResponse.durationMs = durationMs;
+            deserializedVoiceGeneratedAudioItemResponse.blobUri = blobUri;
+            return deserializedVoiceGeneratedAudioItemResponse;
         });
     }
 }

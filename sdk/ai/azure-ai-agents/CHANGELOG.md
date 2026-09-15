@@ -6,9 +6,31 @@
 
 ### Breaking Changes
 
+- Renamed the unreleased `BetaAgentEndpointConversationsClient` and `BetaAgentTelephonyClient` to
+  `BetaVoiceAgentsConversationsClient` and `BetaVoiceAgentsTelephonyClient`, including async clients and their
+  `.beta()` builder factories, to match the upstream voice operation groups.
+- Updated the unreleased voice preview APIs: telephony binding, call, and transfer-target operations now belong to
+  `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` instead of `BetaAgentsClient` /
+  `BetaAgentsAsyncClient`.
+- Renamed `VoiceItemAudioResponse` to `VoiceAudioItemResponse` and `VoiceGeneratedItemAudioResponse` to
+  `VoiceGeneratedAudioItemResponse`. Renamed the conversation audio content methods to
+  `downloadAgentConversationAudioItem`, `downloadAgentConversationGeneratedAudioItem`, and
+  `downloadAgentConversationAudio`, including async and `WithResponse` variants.
+- Removed the unreleased `BrowserAutomationTool`, `BrowserAutomationToolboxTool`, and
+  `ToolboxToolType.BROWSER_AUTOMATION`; the browser automation preview types remain available.
+- Aligned unreleased model names with TypeSpec: `MCP` and `PSTN` become `Mcp` and `Pstn` in affected type names;
+  `PickPropertiesVoiceAgentAudioConfig` becomes `VoiceAgentResponseAudioConfig`;
+  `RealtimeClientEventSessionUpdateSessionTruncation1` becomes
+  `RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio`; and the realtime error event and details become
+  `RealtimeServerEventError` and `RealtimeServerErrorDetails`. Voice realtime responses now reuse
+  `VoiceResponseBaseObject` instead of `VoiceResponseBaseObject1`.
+
 ### Bugs Fixed
 
 ### Other Changes
+
+- Regenerated from TypeSpec commit `2ba065c423a4c08ddb4e517a9f16deb17cb378c2`. Customization retains `.beta()` factory
+  placement and automatic voice preview headers after the upstream voice operation namespace relocation.
 
 ## 2.5.0 (2026-09-09)
 

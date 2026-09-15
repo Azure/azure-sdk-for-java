@@ -11,16 +11,16 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Returned when listing MCP tools has completed for an item.
+ * Returned when an MCP tool call has failed.
  */
 @Immutable
-public final class RealtimeServerEventMCPListToolsCompleted extends RealtimeServerEvent {
+public final class RealtimeServerEventResponseMcpCallFailed extends RealtimeServerEvent {
 
     /*
      * The type property.
      */
     @Generated
-    private RealtimeServerEventType type = RealtimeServerEventType.MCP_LIST_TOOLS_COMPLETED;
+    private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_MCP_CALL_FAILED;
 
     /*
      * The unique ID of the server event.
@@ -29,20 +29,28 @@ public final class RealtimeServerEventMCPListToolsCompleted extends RealtimeServ
     private final String eventId;
 
     /*
-     * The ID of the MCP list tools item.
+     * The index of the output item in the response.
+     */
+    @Generated
+    private final long outputIndex;
+
+    /*
+     * The ID of the MCP tool call item.
      */
     @Generated
     private final String itemId;
 
     /**
-     * Creates an instance of RealtimeServerEventMCPListToolsCompleted class.
+     * Creates an instance of RealtimeServerEventResponseMcpCallFailed class.
      *
      * @param eventId the eventId value to set.
+     * @param outputIndex the outputIndex value to set.
      * @param itemId the itemId value to set.
      */
     @Generated
-    private RealtimeServerEventMCPListToolsCompleted(String eventId, String itemId) {
+    private RealtimeServerEventResponseMcpCallFailed(String eventId, long outputIndex, String itemId) {
         this.eventId = eventId;
+        this.outputIndex = outputIndex;
         this.itemId = itemId;
     }
 
@@ -68,7 +76,17 @@ public final class RealtimeServerEventMCPListToolsCompleted extends RealtimeServ
     }
 
     /**
-     * Get the itemId property: The ID of the MCP list tools item.
+     * Get the outputIndex property: The index of the output item in the response.
+     *
+     * @return the outputIndex value.
+     */
+    @Generated
+    public long getOutputIndex() {
+        return this.outputIndex;
+    }
+
+    /**
+     * Get the itemId property: The ID of the MCP tool call item.
      *
      * @return the itemId value.
      */
@@ -85,31 +103,35 @@ public final class RealtimeServerEventMCPListToolsCompleted extends RealtimeServ
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("event_id", this.eventId);
+        jsonWriter.writeLongField("output_index", this.outputIndex);
         jsonWriter.writeStringField("item_id", this.itemId);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of RealtimeServerEventMCPListToolsCompleted from the JsonReader.
+     * Reads an instance of RealtimeServerEventResponseMcpCallFailed from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeServerEventMCPListToolsCompleted if the JsonReader was pointing to an instance of
+     * @return An instance of RealtimeServerEventResponseMcpCallFailed if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeServerEventMCPListToolsCompleted.
+     * @throws IOException If an error occurs while reading the RealtimeServerEventResponseMcpCallFailed.
      */
     @Generated
-    public static RealtimeServerEventMCPListToolsCompleted fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeServerEventResponseMcpCallFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
+            long outputIndex = 0L;
             String itemId = null;
-            RealtimeServerEventType type = RealtimeServerEventType.MCP_LIST_TOOLS_COMPLETED;
+            RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_MCP_CALL_FAILED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("event_id".equals(fieldName)) {
                     eventId = reader.getString();
+                } else if ("output_index".equals(fieldName)) {
+                    outputIndex = reader.getLong();
                 } else if ("item_id".equals(fieldName)) {
                     itemId = reader.getString();
                 } else if ("type".equals(fieldName)) {
@@ -118,10 +140,10 @@ public final class RealtimeServerEventMCPListToolsCompleted extends RealtimeServ
                     reader.skipChildren();
                 }
             }
-            RealtimeServerEventMCPListToolsCompleted deserializedRealtimeServerEventMCPListToolsCompleted
-                = new RealtimeServerEventMCPListToolsCompleted(eventId, itemId);
-            deserializedRealtimeServerEventMCPListToolsCompleted.type = type;
-            return deserializedRealtimeServerEventMCPListToolsCompleted;
+            RealtimeServerEventResponseMcpCallFailed deserializedRealtimeServerEventResponseMcpCallFailed
+                = new RealtimeServerEventResponseMcpCallFailed(eventId, outputIndex, itemId);
+            deserializedRealtimeServerEventResponseMcpCallFailed.type = type;
+            return deserializedRealtimeServerEventResponseMcpCallFailed;
         });
     }
 }

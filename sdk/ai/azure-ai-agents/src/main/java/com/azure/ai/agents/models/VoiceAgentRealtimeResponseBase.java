@@ -33,7 +33,7 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
      * The object type, must be `realtime.response`.
      */
     @Generated
-    private VoiceResponseBaseObject1 object;
+    private VoiceResponseBaseObject object;
 
     /*
      * The final status of the response (`completed`, `cancelled`, `failed`, or
@@ -124,20 +124,8 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
      * @return the object value.
      */
     @Generated
-    public VoiceResponseBaseObject1 getObject() {
+    public VoiceResponseBaseObject getObject() {
         return this.object;
-    }
-
-    /**
-     * Set the object property: The object type, must be `realtime.response`.
-     *
-     * @param object the object value to set.
-     * @return the VoiceAgentRealtimeResponseBase object itself.
-     */
-    @Generated
-    VoiceAgentRealtimeResponseBase setObject(VoiceResponseBaseObject1 object) {
-        this.object = object;
-        return this;
     }
 
     /**
@@ -356,7 +344,7 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
                     deserializedVoiceAgentRealtimeResponseBase.id = reader.getString();
                 } else if ("object".equals(fieldName)) {
                     deserializedVoiceAgentRealtimeResponseBase.object
-                        = VoiceResponseBaseObject1.fromString(reader.getString());
+                        = VoiceResponseBaseObject.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     deserializedVoiceAgentRealtimeResponseBase.status
                         = VoiceResponseBaseStatus.fromString(reader.getString());
@@ -400,6 +388,18 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
     @Generated
     VoiceAgentRealtimeResponseBase setStatusDetails(RealtimeResponseStatus statusDetails) {
         this.statusDetails = statusDetails;
+        return this;
+    }
+
+    /**
+     * Set the object property: The object type, must be `realtime.response`.
+     *
+     * @param object the object value to set.
+     * @return the VoiceAgentRealtimeResponseBase object itself.
+     */
+    @Generated
+    VoiceAgentRealtimeResponseBase setObject(VoiceResponseBaseObject object) {
+        this.object = object;
         return this;
     }
 }

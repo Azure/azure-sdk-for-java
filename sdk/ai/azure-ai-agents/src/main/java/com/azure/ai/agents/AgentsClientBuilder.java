@@ -556,10 +556,10 @@ public final class AgentsClientBuilder
             BetaMemoryStoresClient.class,
             BetaAgentsAsyncClient.class,
             BetaMemoryStoresAsyncClient.class,
-            BetaAgentTelephonyClient.class,
-            BetaAgentTelephonyAsyncClient.class,
-            BetaAgentEndpointConversationsClient.class,
-            BetaAgentEndpointConversationsAsyncClient.class })
+            BetaVoiceAgentsTelephonyClient.class,
+            BetaVoiceAgentsTelephonyAsyncClient.class,
+            BetaVoiceAgentsConversationsClient.class,
+            BetaVoiceAgentsConversationsAsyncClient.class })
     public final class BetaAgentsClientBuilder {
 
         /**
@@ -633,44 +633,44 @@ public final class AgentsClientBuilder
          * Builds an asynchronous beta telephony client using this builder's configuration.
          * Requests automatically include the {@code Foundry-Features: VoiceAgents=V1Preview} header.
          *
-         * @return an instance of BetaAgentTelephonyAsyncClient.
+         * @return an instance of BetaVoiceAgentsTelephonyAsyncClient.
          */
         @Beta
-        public BetaAgentTelephonyAsyncClient buildBetaAgentTelephonyAsyncClient() {
-            return AgentsClientBuilder.this.buildBetaAgentTelephonyAsyncClient();
+        public BetaVoiceAgentsTelephonyAsyncClient buildBetaVoiceAgentsTelephonyAsyncClient() {
+            return AgentsClientBuilder.this.buildBetaVoiceAgentsTelephonyAsyncClient();
         }
 
         /**
          * Builds a synchronous beta telephony client using this builder's configuration.
          * Requests automatically include the {@code Foundry-Features: VoiceAgents=V1Preview} header.
          *
-         * @return an instance of BetaAgentTelephonyClient.
+         * @return an instance of BetaVoiceAgentsTelephonyClient.
          */
         @Beta
-        public BetaAgentTelephonyClient buildBetaAgentTelephonyClient() {
-            return AgentsClientBuilder.this.buildBetaAgentTelephonyClient();
+        public BetaVoiceAgentsTelephonyClient buildBetaVoiceAgentsTelephonyClient() {
+            return AgentsClientBuilder.this.buildBetaVoiceAgentsTelephonyClient();
         }
 
         /**
          * Builds an asynchronous beta endpoint conversations client using this builder's configuration.
          * Requests automatically include the {@code Foundry-Features: VoiceAgents=V1Preview} header.
          *
-         * @return an instance of BetaAgentEndpointConversationsAsyncClient.
+         * @return an instance of BetaVoiceAgentsConversationsAsyncClient.
          */
         @Beta
-        public BetaAgentEndpointConversationsAsyncClient buildBetaAgentEndpointConversationsAsyncClient() {
-            return AgentsClientBuilder.this.buildBetaAgentEndpointConversationsAsyncClient();
+        public BetaVoiceAgentsConversationsAsyncClient buildBetaVoiceAgentsConversationsAsyncClient() {
+            return AgentsClientBuilder.this.buildBetaVoiceAgentsConversationsAsyncClient();
         }
 
         /**
          * Builds a synchronous beta endpoint conversations client using this builder's configuration.
          * Requests automatically include the {@code Foundry-Features: VoiceAgents=V1Preview} header.
          *
-         * @return an instance of BetaAgentEndpointConversationsClient.
+         * @return an instance of BetaVoiceAgentsConversationsClient.
          */
         @Beta
-        public BetaAgentEndpointConversationsClient buildBetaAgentEndpointConversationsClient() {
-            return AgentsClientBuilder.this.buildBetaAgentEndpointConversationsClient();
+        public BetaVoiceAgentsConversationsClient buildBetaVoiceAgentsConversationsClient() {
+            return AgentsClientBuilder.this.buildBetaVoiceAgentsConversationsClient();
         }
     }
 
@@ -731,48 +731,50 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * Builds an instance of BetaAgentTelephonyAsyncClient class.
+     * Builds an instance of BetaVoiceAgentsTelephonyAsyncClient class.
      *
-     * @return an instance of BetaAgentTelephonyAsyncClient.
+     * @return an instance of BetaVoiceAgentsTelephonyAsyncClient.
      */
     @Generated
-    private BetaAgentTelephonyAsyncClient buildBetaAgentTelephonyAsyncClient() {
-        return new BetaAgentTelephonyAsyncClient(
-            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString()).getBetaAgentTelephonies());
-    }
-
-    /**
-     * Builds an instance of BetaAgentEndpointConversationsAsyncClient class.
-     *
-     * @return an instance of BetaAgentEndpointConversationsAsyncClient.
-     */
-    @Generated
-    private BetaAgentEndpointConversationsAsyncClient buildBetaAgentEndpointConversationsAsyncClient() {
-        return new BetaAgentEndpointConversationsAsyncClient(
+    private BetaVoiceAgentsTelephonyAsyncClient buildBetaVoiceAgentsTelephonyAsyncClient() {
+        return new BetaVoiceAgentsTelephonyAsyncClient(
             buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())
-                .getBetaAgentEndpointConversations());
+                .getBetaVoiceAgentsTelephonies());
     }
 
     /**
-     * Builds an instance of BetaAgentTelephonyClient class.
+     * Builds an instance of BetaVoiceAgentsConversationsAsyncClient class.
      *
-     * @return an instance of BetaAgentTelephonyClient.
+     * @return an instance of BetaVoiceAgentsConversationsAsyncClient.
      */
     @Generated
-    private BetaAgentTelephonyClient buildBetaAgentTelephonyClient() {
-        return new BetaAgentTelephonyClient(
-            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString()).getBetaAgentTelephonies());
-    }
-
-    /**
-     * Builds an instance of BetaAgentEndpointConversationsClient class.
-     *
-     * @return an instance of BetaAgentEndpointConversationsClient.
-     */
-    @Generated
-    private BetaAgentEndpointConversationsClient buildBetaAgentEndpointConversationsClient() {
-        return new BetaAgentEndpointConversationsClient(
+    private BetaVoiceAgentsConversationsAsyncClient buildBetaVoiceAgentsConversationsAsyncClient() {
+        return new BetaVoiceAgentsConversationsAsyncClient(
             buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())
-                .getBetaAgentEndpointConversations());
+                .getBetaVoiceAgentsConversations());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsTelephonyClient class.
+     *
+     * @return an instance of BetaVoiceAgentsTelephonyClient.
+     */
+    @Generated
+    private BetaVoiceAgentsTelephonyClient buildBetaVoiceAgentsTelephonyClient() {
+        return new BetaVoiceAgentsTelephonyClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())
+                .getBetaVoiceAgentsTelephonies());
+    }
+
+    /**
+     * Builds an instance of BetaVoiceAgentsConversationsClient class.
+     *
+     * @return an instance of BetaVoiceAgentsConversationsClient.
+     */
+    @Generated
+    private BetaVoiceAgentsConversationsClient buildBetaVoiceAgentsConversationsClient() {
+        return new BetaVoiceAgentsConversationsClient(
+            buildInnerClient(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString())
+                .getBetaVoiceAgentsConversations());
     }
 }

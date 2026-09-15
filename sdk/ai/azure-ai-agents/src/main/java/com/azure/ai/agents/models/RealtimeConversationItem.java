@@ -84,13 +84,13 @@ public class RealtimeConversationItem implements JsonSerializable<RealtimeConver
                 } else if ("function_call_output".equals(discriminatorValue)) {
                     return RealtimeConversationItemFunctionCallOutput.fromJson(readerToUse.reset());
                 } else if ("mcp_approval_response".equals(discriminatorValue)) {
-                    return RealtimeMCPApprovalResponse.fromJson(readerToUse.reset());
+                    return RealtimeMcpApprovalResponse.fromJson(readerToUse.reset());
                 } else if ("mcp_list_tools".equals(discriminatorValue)) {
-                    return RealtimeMCPListTools.fromJson(readerToUse.reset());
+                    return RealtimeMcpListTools.fromJson(readerToUse.reset());
                 } else if ("mcp_call".equals(discriminatorValue)) {
-                    return RealtimeMCPToolCall.fromJson(readerToUse.reset());
+                    return RealtimeMcpToolCall.fromJson(readerToUse.reset());
                 } else if ("mcp_approval_request".equals(discriminatorValue)) {
-                    return RealtimeMCPApprovalRequest.fromJson(readerToUse.reset());
+                    return RealtimeMcpApprovalRequest.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

@@ -16,7 +16,7 @@ import java.io.IOException;
  * Use this option to force the model to call a specific tool on a remote MCP server.
  */
 @Fluent
-public final class ToolChoiceMCP extends ToolChoiceParam {
+public final class ToolChoiceMcp extends ToolChoiceParam {
 
     /*
      * The type property.
@@ -37,12 +37,12 @@ public final class ToolChoiceMCP extends ToolChoiceParam {
     private String name;
 
     /**
-     * Creates an instance of ToolChoiceMCP class.
+     * Creates an instance of ToolChoiceMcp class.
      *
      * @param serverLabel the serverLabel value to set.
      */
     @Generated
-    public ToolChoiceMCP(String serverLabel) {
+    public ToolChoiceMcp(String serverLabel) {
         this.serverLabel = serverLabel;
     }
 
@@ -81,10 +81,10 @@ public final class ToolChoiceMCP extends ToolChoiceParam {
      * Set the name property: The name property.
      *
      * @param name the name value to set.
-     * @return the ToolChoiceMCP object itself.
+     * @return the ToolChoiceMcp object itself.
      */
     @Generated
-    public ToolChoiceMCP setName(String name) {
+    public ToolChoiceMcp setName(String name) {
         this.name = name;
         return this;
     }
@@ -103,16 +103,16 @@ public final class ToolChoiceMCP extends ToolChoiceParam {
     }
 
     /**
-     * Reads an instance of ToolChoiceMCP from the JsonReader.
+     * Reads an instance of ToolChoiceMcp from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ToolChoiceMCP if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of ToolChoiceMcp if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ToolChoiceMCP.
+     * @throws IOException If an error occurs while reading the ToolChoiceMcp.
      */
     @Generated
-    public static ToolChoiceMCP fromJson(JsonReader jsonReader) throws IOException {
+    public static ToolChoiceMcp fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String serverLabel = null;
             ToolChoiceParamType type = ToolChoiceParamType.MCP;
@@ -130,10 +130,10 @@ public final class ToolChoiceMCP extends ToolChoiceParam {
                     reader.skipChildren();
                 }
             }
-            ToolChoiceMCP deserializedToolChoiceMCP = new ToolChoiceMCP(serverLabel);
-            deserializedToolChoiceMCP.type = type;
-            deserializedToolChoiceMCP.name = name;
-            return deserializedToolChoiceMCP;
+            ToolChoiceMcp deserializedToolChoiceMcp = new ToolChoiceMcp(serverLabel);
+            deserializedToolChoiceMcp.type = type;
+            deserializedToolChoiceMcp.name = name;
+            return deserializedToolChoiceMcp;
         });
     }
 }
