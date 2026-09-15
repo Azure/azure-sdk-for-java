@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyAssignmentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyAssignmentProperties model = BinaryData.fromString("{\"policyInitiativeAssignmentId\":\"nmayhuybb\"}")
+        PolicyAssignmentProperties model = BinaryData.fromString("{\"policyInitiativeAssignmentId\":\"lahbcryff\"}")
             .toObject(PolicyAssignmentProperties.class);
-        Assertions.assertEquals("nmayhuybb", model.policyInitiativeAssignmentId());
+        Assertions.assertEquals("lahbcryff", model.policyInitiativeAssignmentId());
     }
 }
