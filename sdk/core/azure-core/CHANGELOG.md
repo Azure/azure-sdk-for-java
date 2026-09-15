@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `CloseableIterableStream<T>` for resource-backed iteration with deterministic cleanup.
+
 ### Breaking Changes
 
 ### Bugs Fixed
