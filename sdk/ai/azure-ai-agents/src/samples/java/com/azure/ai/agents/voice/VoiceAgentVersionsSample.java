@@ -64,6 +64,7 @@ public class VoiceAgentVersionsSample {
             System.out.println("Fetched version: " + fetched.getVersion());
         } finally {
             client.deleteAgent(agentName);
+            System.out.println("Deleted agent: " + agentName);
         }
     }
 }

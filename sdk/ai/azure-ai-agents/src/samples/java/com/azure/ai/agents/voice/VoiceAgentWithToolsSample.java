@@ -105,6 +105,7 @@ public class VoiceAgentWithToolsSample {
         } finally {
             if (agentCreated) {
                 client.deleteAgent(agentName);
+                System.out.println("Deleted agent: " + agentName);
             }
         }
     }

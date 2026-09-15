@@ -55,8 +55,10 @@ public class VoiceAgentBasicAsyncSample {
             .doOnNext(updated -> System.out.println("Created updated version: " + updated.getVersion()))
             .then(client.disableAgent(agentName))
             .then(client.enableAgent(agentName))
-            .then(client.deleteAgent(agentName))
+            .then(client.deleteAgent(agentName)
+                .doOnSuccess(ignored -> System.out.println("Deleted agent after successful completion: " + agentName)))
             .onErrorResume(error -> client.deleteAgent(agentName)
+                .doOnSuccess(ignored -> System.out.println("Deleted agent during error cleanup: " + agentName))
                 .onErrorResume(cleanupError -> Mono.empty())
                 .then(Mono.error(error)))
             .block();

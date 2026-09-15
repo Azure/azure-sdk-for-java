@@ -51,6 +51,7 @@ public class VoiceAgentGenerateSample {
             }
         } finally {
             client.deleteAgent(generated.getName());
+            System.out.println("Deleted agent: " + generated.getName());
         }
     }
 }
