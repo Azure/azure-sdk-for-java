@@ -2250,8 +2250,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
-    public void listBlobsArrowNullUseArrowUsesXml() {
-        // Default apacheArrowEnabled is null — should use XML path without error
+    public void listBlobsArrowNullDefaultsToArrow() {
         String blobName = generateBlobName();
         BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
 
