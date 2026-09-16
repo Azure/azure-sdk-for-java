@@ -809,10 +809,11 @@ See the full samples in [SimpleStreamingSync.java](https://github.com/Azure/azur
 
 #### Asynchronous streaming
 
-The OpenAI SDK's asynchronous `createStreaming` method returns an `AsyncStreamResponse<ResponseStreamEvent>`. Subscribe to its event callbacks and use `onCompleteFuture()` to track terminal completion:
+The OpenAI SDK's asynchronous `createStreaming` method returns an `AsyncStreamResponse<ResponseStreamEvent>`.
+Use `StreamingResponseUtils.toFlux` to adapt it to a Reactor `Flux` and manage the underlying stream lifecycle:
 
 ```java com.azure.ai.agents.streaming.simple_async
-// OpenAI streaming events arrive through callbacks. This Mono only tracks terminal completion.
+// Adapt OpenAI streaming events to a Reactor Flux.
 Mono<Void> streamingCompletion = Mono.defer(() -> {
     ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
     AsyncStreamResponse<ResponseStreamEvent> stream = openAIAsyncClient.responses().createStreaming(
@@ -820,19 +821,18 @@ Mono<Void> streamingCompletion = Mono.defer(() -> {
             .input("Tell me a short story about a brave explorer.")
             .build());
 
-    stream.subscribe(event -> responseAccumulator.accumulate(event)
-        .outputTextDelta()
-        .ifPresent(textEvent -> System.out.print(textEvent.delta())));
-
-    return Mono.fromFuture(stream.onCompleteFuture())
+    return StreamingResponseUtils.toFlux(stream)
+        .doOnNext(event -> responseAccumulator.accumulate(event)
+            .outputTextDelta()
+            .ifPresent(textEvent -> System.out.print(textEvent.delta())))
+        .then()
         .doOnSuccess(unused -> {
             System.out.println(); // newline after streamed text
 
             // Access the complete accumulated response
             Response response = responseAccumulator.response();
             System.out.println("\nResponse ID: " + response.id());
-        })
-        .doFinally(signal -> stream.close());
+        });
 });
 ```
 

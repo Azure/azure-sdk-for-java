@@ -8,6 +8,7 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.util.StreamingResponseUtils;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
@@ -55,7 +56,7 @@ public class SimpleStreamingAsync {
                 OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agent.getName());
 
                 // BEGIN: com.azure.ai.agents.streaming.simple_async
-                // OpenAI streaming events arrive through callbacks. This Mono only tracks terminal completion.
+                // Adapt OpenAI streaming events to a Reactor Flux.
                 Mono<Void> streamingCompletion = Mono.defer(() -> {
                     ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
                     AsyncStreamResponse<ResponseStreamEvent> stream = openAIAsyncClient.responses().createStreaming(
@@ -63,19 +64,18 @@ public class SimpleStreamingAsync {
                             .input("Tell me a short story about a brave explorer.")
                             .build());
 
-                    stream.subscribe(event -> responseAccumulator.accumulate(event)
-                        .outputTextDelta()
-                        .ifPresent(textEvent -> System.out.print(textEvent.delta())));
-
-                    return Mono.fromFuture(stream.onCompleteFuture())
+                    return StreamingResponseUtils.toFlux(stream)
+                        .doOnNext(event -> responseAccumulator.accumulate(event)
+                            .outputTextDelta()
+                            .ifPresent(textEvent -> System.out.print(textEvent.delta())))
+                        .then()
                         .doOnSuccess(unused -> {
                             System.out.println(); // newline after streamed text
 
                             // Access the complete accumulated response
                             Response response = responseAccumulator.response();
                             System.out.println("\nResponse ID: " + response.id());
-                        })
-                        .doFinally(signal -> stream.close());
+                        });
                 });
                 // END: com.azure.ai.agents.streaming.simple_async
 
