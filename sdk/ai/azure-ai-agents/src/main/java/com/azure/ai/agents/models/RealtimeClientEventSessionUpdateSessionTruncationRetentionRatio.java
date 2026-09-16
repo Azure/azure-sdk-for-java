@@ -13,11 +13,11 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The RealtimeSessionCreateRequestGATruncation1 model.
+ * The RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio model.
  */
 @Fluent
-public final class RealtimeSessionCreateRequestGATruncation1
-    implements JsonSerializable<RealtimeSessionCreateRequestGATruncation1> {
+public final class RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio
+    implements JsonSerializable<RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio> {
     /*
      * The type property.
      */
@@ -37,12 +37,12 @@ public final class RealtimeSessionCreateRequestGATruncation1
     private TokenLimits tokenLimits;
 
     /**
-     * Creates an instance of RealtimeSessionCreateRequestGATruncation1 class.
+     * Creates an instance of RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio class.
      * 
      * @param retentionRatio the retentionRatio value to set.
      */
     @Generated
-    public RealtimeSessionCreateRequestGATruncation1(double retentionRatio) {
+    public RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio(double retentionRatio) {
         this.retentionRatio = retentionRatio;
     }
 
@@ -80,10 +80,10 @@ public final class RealtimeSessionCreateRequestGATruncation1
      * Set the tokenLimits property: The token_limits property.
      * 
      * @param tokenLimits the tokenLimits value to set.
-     * @return the RealtimeSessionCreateRequestGATruncation1 object itself.
+     * @return the RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio object itself.
      */
     @Generated
-    public RealtimeSessionCreateRequestGATruncation1 setTokenLimits(TokenLimits tokenLimits) {
+    public RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio setTokenLimits(TokenLimits tokenLimits) {
         this.tokenLimits = tokenLimits;
         return this;
     }
@@ -102,16 +102,18 @@ public final class RealtimeSessionCreateRequestGATruncation1
     }
 
     /**
-     * Reads an instance of RealtimeSessionCreateRequestGATruncation1 from the JsonReader.
+     * Reads an instance of RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RealtimeSessionCreateRequestGATruncation1 if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RealtimeSessionCreateRequestGATruncation1.
+     * @throws IOException If an error occurs while reading the
+     * RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio.
      */
     @Generated
-    public static RealtimeSessionCreateRequestGATruncation1 fromJson(JsonReader jsonReader) throws IOException {
+    public static RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio fromJson(JsonReader jsonReader)
+        throws IOException {
         return jsonReader.readObject(reader -> {
             double retentionRatio = 0.0;
             TokenLimits tokenLimits = null;
@@ -127,11 +129,11 @@ public final class RealtimeSessionCreateRequestGATruncation1
                     reader.skipChildren();
                 }
             }
-            RealtimeSessionCreateRequestGATruncation1 deserializedRealtimeSessionCreateRequestGATruncation1
-                = new RealtimeSessionCreateRequestGATruncation1(retentionRatio);
-            deserializedRealtimeSessionCreateRequestGATruncation1.tokenLimits = tokenLimits;
+            RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio deserializedRealtimeClientEventSessionUpdateSessionTruncationRetentionRatio
+                = new RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio(retentionRatio);
+            deserializedRealtimeClientEventSessionUpdateSessionTruncationRetentionRatio.tokenLimits = tokenLimits;
 
-            return deserializedRealtimeSessionCreateRequestGATruncation1;
+            return deserializedRealtimeClientEventSessionUpdateSessionTruncationRetentionRatio;
         });
     }
 }
