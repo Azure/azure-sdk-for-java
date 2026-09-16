@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.AzureCreateResponseDetails;
 import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.ProtocolConfiguration;
@@ -85,6 +86,8 @@ public final class ReadmeSamples {
         Response response = agentScopedClient.responses().create(ResponseCreateParams.builder()
             .conversation(conversation.id())
             .build());
+        // To extract Azure-specific response details:
+        AzureCreateResponseDetails azureResults = ResponsesClient.getAzureFields(response);
         // END: com.azure.ai.agents.create_response
 
         // BEGIN: com.azure.ai.agents.openai_official_library

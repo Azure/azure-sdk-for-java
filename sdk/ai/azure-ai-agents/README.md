@@ -296,6 +296,8 @@ OpenAIClient agentScopedClient = builder.buildAgentScopedOpenAIClient(agent.getN
 Response response = agentScopedClient.responses().create(ResponseCreateParams.builder()
     .conversation(conversation.id())
     .build());
+// To extract Azure-specific response details:
+AzureCreateResponseDetails azureResults = ResponsesClient.getAzureFields(response);
 ```
 
 For asynchronous calls, use `buildAgentScopedOpenAIAsyncClient`.
