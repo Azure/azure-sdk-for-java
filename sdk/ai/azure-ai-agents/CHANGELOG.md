@@ -14,6 +14,8 @@
 
 ### Bugs Fixed
 
+- Fixed polling for optimization jobs and telephony operations that return the `cancelled` status spelling.
+
 ### Other Changes
 
 - Regenerated from TypeSpec commit `2ba065c423a4c08ddb4e517a9f16deb17cb378c2`. Customization retains `.beta()` factory

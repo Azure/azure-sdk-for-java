@@ -57,7 +57,6 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
      */
     public OperationLocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions, String propertyName) {
         super(PollingUtils.OPERATION_LOCATION_HEADER, pollingStrategyOptions);
-        this.pollingStrategyOptions = pollingStrategyOptions;
         this.propertyName = propertyName;
         this.endpoint = pollingStrategyOptions.getEndpoint();
         this.serializer = pollingStrategyOptions.getSerializer() != null
@@ -137,11 +136,8 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
         }
     }
 
-    private final PollingStrategyOptions pollingStrategyOptions;
-
     @Override
     public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
-        return AgentsServicePollUtils.poll(pollingStrategyOptions, serializer, endpoint, pollingContext,
-            pollResponseType);
+        return super.poll(pollingContext, pollResponseType).map(AgentsServicePollUtils::remapStatus);
     }
 }

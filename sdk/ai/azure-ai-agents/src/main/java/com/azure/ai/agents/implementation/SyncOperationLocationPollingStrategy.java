@@ -58,7 +58,6 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
      */
     public SyncOperationLocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions, String propertyName) {
         super(PollingUtils.OPERATION_LOCATION_HEADER, pollingStrategyOptions);
-        this.pollingStrategyOptions = pollingStrategyOptions;
         this.propertyName = propertyName;
         this.endpoint = pollingStrategyOptions.getEndpoint();
         this.serializer = pollingStrategyOptions.getSerializer() != null
@@ -129,11 +128,8 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
         }
     }
 
-    private final PollingStrategyOptions pollingStrategyOptions;
-
     @Override
     public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
-        return AgentsServicePollUtils.pollSync(pollingStrategyOptions, serializer, endpoint, pollingContext,
-            pollResponseType);
+        return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType));
     }
 }
