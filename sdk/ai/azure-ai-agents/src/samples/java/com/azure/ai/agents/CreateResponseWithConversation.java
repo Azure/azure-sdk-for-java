@@ -25,7 +25,7 @@ import java.util.Collections;
 
 /**
  * This sample demonstrates how to invoke the OpenAI Responses API against a Prompt Agent,
- * routing all traffic through the agent's endpoint URL.
+ * routing the Responses API request through the agent's endpoint URL.
  */
 public class CreateResponseWithConversation {
     public static void main(String[] args) {
