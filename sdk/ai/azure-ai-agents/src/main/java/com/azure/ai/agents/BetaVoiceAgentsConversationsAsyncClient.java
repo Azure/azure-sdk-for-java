@@ -7,10 +7,10 @@ import com.azure.ai.agents.implementation.BetaVoiceAgentsConversationsImpl;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.RealtimeConversationItem;
-import com.azure.ai.agents.models.VoiceAudioItemResponse;
+import com.azure.ai.agents.models.VoiceAudioItem;
 import com.azure.ai.agents.models.VoiceConversation;
-import com.azure.ai.agents.models.VoiceGeneratedAudioItemResponse;
-import com.azure.ai.agents.models.VoiceRecordingResponse;
+import com.azure.ai.agents.models.VoiceGeneratedAudioItem;
+import com.azure.ai.agents.models.VoiceRecording;
 import com.azure.ai.agents.models.VoiceResponse;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -1392,13 +1392,12 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoiceAudioItemResponse> getAgentConversationAudioItem(String agentName, String conversationId,
-        String itemId) {
+    public Mono<VoiceAudioItem> getAgentConversationAudioItem(String agentName, String conversationId, String itemId) {
         // Generated convenience method for getAgentConversationAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAgentConversationAudioItemWithResponse(agentName, conversationId, itemId, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(VoiceAudioItemResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(VoiceAudioItem.class));
     }
 
     /**
@@ -1453,13 +1452,13 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoiceGeneratedAudioItemResponse> getAgentConversationGeneratedAudioItem(String agentName,
-        String conversationId, String itemId) {
+    public Mono<VoiceGeneratedAudioItem> getAgentConversationGeneratedAudioItem(String agentName, String conversationId,
+        String itemId) {
         // Generated convenience method for getAgentConversationGeneratedAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAgentConversationGeneratedAudioItemWithResponse(agentName, conversationId, itemId, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(VoiceGeneratedAudioItemResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(VoiceGeneratedAudioItem.class));
     }
 
     /**
@@ -1522,12 +1521,12 @@ public final class BetaVoiceAgentsConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VoiceRecordingResponse> getAgentConversationAudio(String agentName, String conversationId) {
+    public Mono<VoiceRecording> getAgentConversationAudio(String agentName, String conversationId) {
         // Generated convenience method for getAgentConversationAudioWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAgentConversationAudioWithResponse(agentName, conversationId, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(VoiceRecordingResponse.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(VoiceRecording.class));
     }
 
     /**
