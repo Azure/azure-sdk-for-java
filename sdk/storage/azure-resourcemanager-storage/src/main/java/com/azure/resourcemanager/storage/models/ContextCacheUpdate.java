@@ -25,7 +25,7 @@ public final class ContextCacheUpdate implements JsonSerializable<ContextCacheUp
     /*
      * The managed service identity.
      */
-    private SystemAssignedServiceIdentity identity;
+    private Identity identity;
 
     /*
      * The updatable properties of the Context Cache.
@@ -63,7 +63,7 @@ public final class ContextCacheUpdate implements JsonSerializable<ContextCacheUp
      * 
      * @return the identity value.
      */
-    public SystemAssignedServiceIdentity identity() {
+    public Identity identity() {
         return this.identity;
     }
 
@@ -73,7 +73,7 @@ public final class ContextCacheUpdate implements JsonSerializable<ContextCacheUp
      * @param identity the identity value to set.
      * @return the ContextCacheUpdate object itself.
      */
-    public ContextCacheUpdate withIdentity(SystemAssignedServiceIdentity identity) {
+    public ContextCacheUpdate withIdentity(Identity identity) {
         this.identity = identity;
         return this;
     }
@@ -143,7 +143,7 @@ public final class ContextCacheUpdate implements JsonSerializable<ContextCacheUp
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedContextCacheUpdate.tags = tags;
                 } else if ("identity".equals(fieldName)) {
-                    deserializedContextCacheUpdate.identity = SystemAssignedServiceIdentity.fromJson(reader);
+                    deserializedContextCacheUpdate.identity = Identity.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedContextCacheUpdate.properties = ContextCachePropertiesUpdate.fromJson(reader);
                 } else {

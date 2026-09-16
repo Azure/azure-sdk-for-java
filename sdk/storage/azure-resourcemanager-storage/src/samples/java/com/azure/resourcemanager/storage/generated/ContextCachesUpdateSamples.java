@@ -7,11 +7,11 @@ package com.azure.resourcemanager.storage.generated;
 import com.azure.resourcemanager.storage.models.ContextCachePropertiesUpdate;
 import com.azure.resourcemanager.storage.models.ContextCacheUpdate;
 import com.azure.resourcemanager.storage.models.CustomerManagedKeyEncryption;
+import com.azure.resourcemanager.storage.models.Identity;
+import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.KeyEncryptionKeyIdentity;
 import com.azure.resourcemanager.storage.models.KeyEncryptionKeyIdentityType;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryption;
-import com.azure.resourcemanager.storage.models.SystemAssignedServiceIdentity;
-import com.azure.resourcemanager.storage.models.SystemAssignedServiceIdentityType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,8 +33,7 @@ public final class ContextCachesUpdateSamples {
             .getContextCaches()
             .update("testrg", "testaccount",
                 new ContextCacheUpdate().withTags(mapOf("environment", "production", "team", "context-cache"))
-                    .withIdentity(
-                        new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+                    .withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED))
                     .withProperties(
                         new ContextCachePropertiesUpdate().withDescription("Updated Prompt Service account description")
                             .withEncryption(new StorageAccountEncryption()
@@ -56,12 +55,11 @@ public final class ContextCachesUpdateSamples {
     public static void updateAContextCacheTags(com.azure.resourcemanager.storage.StorageManager manager) {
         manager.serviceClient()
             .getContextCaches()
-            .update("testrg", "testaccount", new ContextCacheUpdate()
-                .withTags(mapOf("environment", "production", "team", "context-cache"))
-                .withIdentity(
-                    new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
-                .withProperties(
-                    new ContextCachePropertiesUpdate().withDescription("Updated Prompt Service account description")),
+            .update("testrg", "testaccount",
+                new ContextCacheUpdate().withTags(mapOf("environment", "production", "team", "context-cache"))
+                    .withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED))
+                    .withProperties(new ContextCachePropertiesUpdate()
+                        .withDescription("Updated Prompt Service account description")),
                 com.azure.core.util.Context.NONE);
     }
 

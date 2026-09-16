@@ -16,8 +16,6 @@
 
 * `models.ContextCacheAccountKind` was added
 
-* `models.SystemAssignedServiceIdentityType` was added
-
 * `models.ContextCacheContainerUpdate` was added
 
 * `models.PolicyViolationAction` was added
@@ -38,24 +36,22 @@
 
 * `models.ContextCachePropertiesUpdate` was added
 
-* `models.SystemAssignedServiceIdentity` was added
-
 #### `models.SasPolicy` was modified
 
-* `requireUserBoundUserDelegationSas()` was added
 * `withRequireUserBoundUserDelegationSas(java.lang.Boolean)` was added
-* `withRequireUserBoundUserDelegationSasAction(models.PolicyViolationAction)` was added
+* `requireUserBoundUserDelegationSas()` was added
 * `requireUserBoundUserDelegationSasAction()` was added
+* `withRequireUserBoundUserDelegationSasAction(models.PolicyViolationAction)` was added
 
 #### `models.StorageAccountUpdateParameters` was modified
 
-* `withAllowCrossTenantDelegationSas(java.lang.Boolean)` was added
 * `allowCrossTenantDelegationSas()` was added
+* `withAllowCrossTenantDelegationSas(java.lang.Boolean)` was added
 
 #### `models.StorageAccountCreateParameters` was modified
 
-* `withAllowCrossTenantDelegationSas(java.lang.Boolean)` was added
 * `allowCrossTenantDelegationSas()` was added
+* `withAllowCrossTenantDelegationSas(java.lang.Boolean)` was added
 
 ## 2.57.2 (2026-08-18)
 

@@ -8,11 +8,11 @@ import com.azure.resourcemanager.storage.fluent.models.ContextCacheInner;
 import com.azure.resourcemanager.storage.models.ContextCacheAccountKind;
 import com.azure.resourcemanager.storage.models.ContextCacheProperties;
 import com.azure.resourcemanager.storage.models.CustomerManagedKeyEncryption;
+import com.azure.resourcemanager.storage.models.Identity;
+import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.KeyEncryptionKeyIdentity;
 import com.azure.resourcemanager.storage.models.KeyEncryptionKeyIdentityType;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryption;
-import com.azure.resourcemanager.storage.models.SystemAssignedServiceIdentity;
-import com.azure.resourcemanager.storage.models.SystemAssignedServiceIdentityType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,8 +42,7 @@ public final class ContextCachesCreateOrUpdateSamples {
                                 .withKeyEncryptionKeyIdentity(new KeyEncryptionKeyIdentity()
                                     .withIdentityType(KeyEncryptionKeyIdentityType.SYSTEM_ASSIGNED_IDENTITY))
                                 .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
-                    .withIdentity(new SystemAssignedServiceIdentity()
-                        .withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED)),
+                    .withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED)),
                 com.azure.core.util.Context.NONE);
     }
 

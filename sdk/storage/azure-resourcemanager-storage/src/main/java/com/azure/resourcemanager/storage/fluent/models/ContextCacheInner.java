@@ -12,7 +12,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.ContextCacheProperties;
-import com.azure.resourcemanager.storage.models.SystemAssignedServiceIdentity;
+import com.azure.resourcemanager.storage.models.Identity;
 import java.io.IOException;
 import java.util.Map;
 
@@ -29,7 +29,7 @@ public final class ContextCacheInner extends Resource {
     /*
      * The managed service identities assigned to this resource.
      */
-    private SystemAssignedServiceIdentity identity;
+    private Identity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -82,7 +82,7 @@ public final class ContextCacheInner extends Resource {
      * 
      * @return the identity value.
      */
-    public SystemAssignedServiceIdentity identity() {
+    public Identity identity() {
         return this.identity;
     }
 
@@ -92,7 +92,7 @@ public final class ContextCacheInner extends Resource {
      * @param identity the identity value to set.
      * @return the ContextCacheInner object itself.
      */
-    public ContextCacheInner withIdentity(SystemAssignedServiceIdentity identity) {
+    public ContextCacheInner withIdentity(Identity identity) {
         this.identity = identity;
         return this;
     }
@@ -216,7 +216,7 @@ public final class ContextCacheInner extends Resource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedContextCacheInner.properties = ContextCacheProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
-                    deserializedContextCacheInner.identity = SystemAssignedServiceIdentity.fromJson(reader);
+                    deserializedContextCacheInner.identity = Identity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedContextCacheInner.systemData = SystemData.fromJson(reader);
                 } else {
