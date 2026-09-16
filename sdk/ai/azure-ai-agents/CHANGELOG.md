@@ -4,32 +4,13 @@
 
 ### Features Added
 
-- Added `BetaAgentTelephonyClient` and `BetaAgentTelephonyAsyncClient`, built through
+- Added `BetaVoiceAgentsTelephonyClient` and `BetaVoiceAgentsTelephonyAsyncClient`, built through
   `AgentsClientBuilder.beta()`, for managing voice-agent outbound call jobs and telephony campaigns.
-- Added `BetaAgentEndpointConversationsClient` and `BetaAgentEndpointConversationsAsyncClient`, built through
+- Added `BetaVoiceAgentsConversationsClient` and `BetaVoiceAgentsConversationsAsyncClient`, built through
   `AgentsClientBuilder.beta()`, for managing persisted voice-agent conversations and their responses, items, and
   audio content.
 
 ### Breaking Changes
-
-- Renamed the unreleased `BetaAgentEndpointConversationsClient` and `BetaAgentTelephonyClient` to
-  `BetaVoiceAgentsConversationsClient` and `BetaVoiceAgentsTelephonyClient`, including async clients and their
-  `.beta()` builder factories, to match the upstream voice operation groups.
-- Updated the unreleased voice preview APIs: telephony binding, call, and transfer-target operations now belong to
-  `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` instead of `BetaAgentsClient` /
-  `BetaAgentsAsyncClient`.
-- Renamed `VoiceItemAudioResponse` to `VoiceAudioItemResponse` and `VoiceGeneratedItemAudioResponse` to
-  `VoiceGeneratedAudioItemResponse`. Renamed the conversation audio content methods to
-  `downloadAgentConversationAudioItem`, `downloadAgentConversationGeneratedAudioItem`, and
-  `downloadAgentConversationAudio`, including async and `WithResponse` variants.
-- Removed the unreleased `BrowserAutomationTool`, `BrowserAutomationToolboxTool`, and
-  `ToolboxToolType.BROWSER_AUTOMATION`; the browser automation preview types remain available.
-- Aligned unreleased model names with TypeSpec: `MCP` and `PSTN` become `Mcp` and `Pstn` in affected type names;
-  `PickPropertiesVoiceAgentAudioConfig` becomes `VoiceAgentResponseAudioConfig`;
-  `RealtimeClientEventSessionUpdateSessionTruncation1` becomes
-  `RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio`; and the realtime error event and details become
-  `RealtimeServerEventError` and `RealtimeServerErrorDetails`. Voice realtime responses now reuse
-  `VoiceResponseBaseObject` instead of `VoiceResponseBaseObject1`.
 
 ### Bugs Fixed
 
