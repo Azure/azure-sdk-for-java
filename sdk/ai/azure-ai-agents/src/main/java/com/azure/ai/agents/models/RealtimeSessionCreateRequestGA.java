@@ -463,6 +463,18 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
     }
 
     /**
+     * Set the prompt property: The prompt property.
+     *
+     * @param prompt the prompt value to set.
+     * @return the RealtimeSessionCreateRequestGA object itself.
+     */
+    @Generated
+    public RealtimeSessionCreateRequestGA setPrompt(ResponsePrompt prompt) {
+        this.prompt = prompt;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -581,17 +593,5 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
             }
             return deserializedRealtimeSessionCreateRequestGA;
         });
-    }
-
-    /**
-     * Set the prompt property: The prompt property.
-     *
-     * @param prompt the prompt value to set.
-     * @return the RealtimeSessionCreateRequestGA object itself.
-     */
-    @Generated
-    public RealtimeSessionCreateRequestGA setPrompt(ResponsePrompt prompt) {
-        this.prompt = prompt;
-        return this;
     }
 }

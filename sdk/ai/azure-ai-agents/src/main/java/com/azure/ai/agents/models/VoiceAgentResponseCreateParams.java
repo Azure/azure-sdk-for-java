@@ -363,6 +363,18 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
     }
 
     /**
+     * Set the audio property: Response-specific audio settings.
+     *
+     * @param audio the audio value to set.
+     * @return the VoiceAgentResponseCreateParams object itself.
+     */
+    @Generated
+    public VoiceAgentResponseCreateParams setAudio(VoiceAgentResponseAudioConfig audio) {
+        this.audio = audio;
+        return this;
+    }
+
+    /**
      * Get the input property: Conversation items used as inline response input.
      *
      * @return the input value.
@@ -532,17 +544,5 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
             }
             return deserializedVoiceAgentResponseCreateParams;
         });
-    }
-
-    /**
-     * Set the audio property: Response-specific audio settings.
-     *
-     * @param audio the audio value to set.
-     * @return the VoiceAgentResponseCreateParams object itself.
-     */
-    @Generated
-    public VoiceAgentResponseCreateParams setAudio(VoiceAgentResponseAudioConfig audio) {
-        this.audio = audio;
-        return this;
     }
 }

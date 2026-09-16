@@ -131,6 +131,18 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
     }
 
     /**
+     * Set the statusDetails property: Additional details about the status.
+     *
+     * @param statusDetails the statusDetails value to set.
+     * @return the VoiceResponseBase object itself.
+     */
+    @Generated
+    VoiceResponseBase setStatusDetails(RealtimeResponseStatus statusDetails) {
+        this.statusDetails = statusDetails;
+        return this;
+    }
+
+    /**
      * Get the usage property: Usage statistics for the Response, this will correspond to billing. A
      * Realtime API session will maintain a conversation context and append new
      * Items to the Conversation, thus output from previous turns (text and
@@ -278,17 +290,5 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
             }
             return deserializedVoiceResponseBase;
         });
-    }
-
-    /**
-     * Set the statusDetails property: Additional details about the status.
-     *
-     * @param statusDetails the statusDetails value to set.
-     * @return the VoiceResponseBase object itself.
-     */
-    @Generated
-    VoiceResponseBase setStatusDetails(RealtimeResponseStatus statusDetails) {
-        this.statusDetails = statusDetails;
-        return this;
     }
 }

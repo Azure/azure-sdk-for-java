@@ -279,9 +279,11 @@ public final class PromptAgentDefinition extends AgentDefinition {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("rai_config", getRaiConfig());
+        jsonWriter.writeJsonField("harness", this.harness);
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("instructions", this.instructions);
+        jsonWriter.writeArrayField("skills", this.skills, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("temperature", this.temperature);
         jsonWriter.writeNumberField("top_p", this.topP);
         // AI Tooling: openai-java de-dup
@@ -297,8 +299,6 @@ public final class PromptAgentDefinition extends AgentDefinition {
         jsonWriter.writeJsonField("text", this.text);
         jsonWriter.writeMapField("structured_inputs", this.structuredInputs,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("harness", this.harness);
-        jsonWriter.writeArrayField("skills", this.skills, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -314,9 +314,11 @@ public final class PromptAgentDefinition extends AgentDefinition {
     public static PromptAgentDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RaiConfig raiConfig = null;
+            AgentHarness harness = null;
             String model = null;
             AgentKind kind = AgentKind.PROMPT;
             String instructions = null;
+            List<SkillReference> skills = null;
             Double temperature = null;
             Double topP = null;
             // AI Tooling: openai-java de-dup
@@ -325,19 +327,21 @@ public final class PromptAgentDefinition extends AgentDefinition {
             BinaryData toolChoice = null;
             PromptAgentDefinitionTextOptions text = null;
             Map<String, StructuredInputDefinition> structuredInputs = null;
-            AgentHarness harness = null;
-            List<SkillReference> skills = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("rai_config".equals(fieldName)) {
                     raiConfig = RaiConfig.fromJson(reader);
+                } else if ("harness".equals(fieldName)) {
+                    harness = AgentHarness.fromJson(reader);
                 } else if ("model".equals(fieldName)) {
                     model = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     kind = AgentKind.fromString(reader.getString());
                 } else if ("instructions".equals(fieldName)) {
                     instructions = reader.getString();
+                } else if ("skills".equals(fieldName)) {
+                    skills = reader.readArray(reader1 -> SkillReference.fromJson(reader1));
                 } else if ("temperature".equals(fieldName)) {
                     temperature = reader.getNullable(JsonReader::getDouble);
                 } else if ("top_p".equals(fieldName)) {
@@ -356,18 +360,16 @@ public final class PromptAgentDefinition extends AgentDefinition {
                     text = PromptAgentDefinitionTextOptions.fromJson(reader);
                 } else if ("structured_inputs".equals(fieldName)) {
                     structuredInputs = reader.readMap(reader1 -> StructuredInputDefinition.fromJson(reader1));
-                } else if ("harness".equals(fieldName)) {
-                    harness = AgentHarness.fromJson(reader);
-                } else if ("skills".equals(fieldName)) {
-                    skills = reader.readArray(reader1 -> SkillReference.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
             PromptAgentDefinition deserializedPromptAgentDefinition = new PromptAgentDefinition(model);
             deserializedPromptAgentDefinition.setRaiConfig(raiConfig);
+            deserializedPromptAgentDefinition.harness = harness;
             deserializedPromptAgentDefinition.kind = kind;
             deserializedPromptAgentDefinition.instructions = instructions;
+            deserializedPromptAgentDefinition.skills = skills;
             deserializedPromptAgentDefinition.temperature = temperature;
             deserializedPromptAgentDefinition.topP = topP;
             deserializedPromptAgentDefinition.reasoning = reasoning;
@@ -375,8 +377,6 @@ public final class PromptAgentDefinition extends AgentDefinition {
             deserializedPromptAgentDefinition.toolChoice = toolChoice;
             deserializedPromptAgentDefinition.text = text;
             deserializedPromptAgentDefinition.structuredInputs = structuredInputs;
-            deserializedPromptAgentDefinition.harness = harness;
-            deserializedPromptAgentDefinition.skills = skills;
             return deserializedPromptAgentDefinition;
         });
     }

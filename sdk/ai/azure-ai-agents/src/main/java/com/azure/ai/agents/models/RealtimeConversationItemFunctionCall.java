@@ -132,6 +132,19 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
     }
 
     /**
+     * Set the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
+     * creating a new item.
+     *
+     * @param object the object value to set.
+     * @return the RealtimeConversationItemFunctionCall object itself.
+     */
+    @Generated
+    public RealtimeConversationItemFunctionCall setObject(RealtimeConversationItemObject object) {
+        this.object = object;
+        return this;
+    }
+
+    /**
      * Get the status property: The status of the item. Has no effect on the conversation.
      *
      * @return the status value.
@@ -290,18 +303,5 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
             deserializedRealtimeConversationItemFunctionCall.responseId = responseId;
             return deserializedRealtimeConversationItemFunctionCall;
         });
-    }
-
-    /**
-     * Set the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
-     * creating a new item.
-     *
-     * @param object the object value to set.
-     * @return the RealtimeConversationItemFunctionCall object itself.
-     */
-    @Generated
-    public RealtimeConversationItemFunctionCall setObject(RealtimeConversationItemObject object) {
-        this.object = object;
-        return this;
     }
 }

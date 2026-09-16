@@ -103,6 +103,18 @@ public final class VoiceAgentFunctionTool extends VoiceAgentTool {
     }
 
     /**
+     * Set the parameters property: Parameters of the function in JSON Schema.
+     *
+     * @param parameters the parameters value to set.
+     * @return the VoiceAgentFunctionTool object itself.
+     */
+    @Generated
+    public VoiceAgentFunctionTool setParameters(BinaryData parameters) {
+        this.parameters = parameters;
+        return this;
+    }
+
+    /**
      * Get the name property: The function name.
      *
      * @return the name value.
@@ -167,17 +179,5 @@ public final class VoiceAgentFunctionTool extends VoiceAgentTool {
             deserializedVoiceAgentFunctionTool.parameters = parameters;
             return deserializedVoiceAgentFunctionTool;
         });
-    }
-
-    /**
-     * Set the parameters property: Parameters of the function in JSON Schema.
-     *
-     * @param parameters the parameters value to set.
-     * @return the VoiceAgentFunctionTool object itself.
-     */
-    @Generated
-    public VoiceAgentFunctionTool setParameters(BinaryData parameters) {
-        this.parameters = parameters;
-        return this;
     }
 }

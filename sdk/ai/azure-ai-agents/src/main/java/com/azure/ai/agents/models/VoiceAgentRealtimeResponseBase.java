@@ -131,6 +131,18 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
     }
 
     /**
+     * Set the object property: The object type, must be `realtime.response`.
+     *
+     * @param object the object value to set.
+     * @return the VoiceAgentRealtimeResponseBase object itself.
+     */
+    @Generated
+    VoiceAgentRealtimeResponseBase setObject(VoiceResponseBaseObject object) {
+        this.object = object;
+        return this;
+    }
+
+    /**
      * Get the status property: The final status of the response (`completed`, `cancelled`, `failed`, or
      * `incomplete`, `in_progress`).
      *
@@ -162,6 +174,18 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
     @Generated
     public RealtimeResponseStatus getStatusDetails() {
         return this.statusDetails;
+    }
+
+    /**
+     * Set the statusDetails property: Additional details about the status.
+     *
+     * @param statusDetails the statusDetails value to set.
+     * @return the VoiceAgentRealtimeResponseBase object itself.
+     */
+    @Generated
+    VoiceAgentRealtimeResponseBase setStatusDetails(RealtimeResponseStatus statusDetails) {
+        this.statusDetails = statusDetails;
+        return this;
     }
 
     /**
@@ -379,29 +403,5 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
             }
             return deserializedVoiceAgentRealtimeResponseBase;
         });
-    }
-
-    /**
-     * Set the statusDetails property: Additional details about the status.
-     *
-     * @param statusDetails the statusDetails value to set.
-     * @return the VoiceAgentRealtimeResponseBase object itself.
-     */
-    @Generated
-    VoiceAgentRealtimeResponseBase setStatusDetails(RealtimeResponseStatus statusDetails) {
-        this.statusDetails = statusDetails;
-        return this;
-    }
-
-    /**
-     * Set the object property: The object type, must be `realtime.response`.
-     *
-     * @param object the object value to set.
-     * @return the VoiceAgentRealtimeResponseBase object itself.
-     */
-    @Generated
-    VoiceAgentRealtimeResponseBase setObject(VoiceResponseBaseObject object) {
-        this.object = object;
-        return this;
     }
 }
