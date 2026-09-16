@@ -16,8 +16,11 @@ public class VoiceAgentLlmGeneratedGreetingConfigSerializationTests {
 
     @Test
     public void toolChoiceVariantsRoundTrip() throws IOException {
-        VoiceAgentLlmGeneratedGreetingConfig optionsResult
-            = roundTrip(new VoiceAgentLlmGeneratedGreetingConfig("Say hello").setToolChoice(ToolChoiceOptions.NONE));
+        VoiceAgentLlmGeneratedGreetingConfig config
+            = new VoiceAgentLlmGeneratedGreetingConfig("Say hello").setToolChoice(ToolChoiceOptions.NONE);
+        assertEquals(ToolChoiceOptions.NONE, config.getToolChoiceAsToolChoiceOptions());
+
+        VoiceAgentLlmGeneratedGreetingConfig optionsResult = roundTrip(config);
         assertEquals(ToolChoiceOptions.NONE, optionsResult.getToolChoiceAsToolChoiceOptions());
         assertNull(optionsResult.getToolChoiceAsToolChoiceFunction());
         assertNull(optionsResult.getToolChoiceAsToolChoiceMcp());

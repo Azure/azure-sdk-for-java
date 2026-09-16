@@ -68,8 +68,11 @@ public class RealtimeSessionCreateRequestGASerializationTests {
 
     @Test
     public void toolChoiceVariantsRoundTrip() throws IOException {
-        RealtimeSessionCreateRequestGA stringResult
-            = roundTrip(new RealtimeSessionCreateRequestGA().setToolChoice(ToolChoiceOptions.REQUIRED));
+        RealtimeSessionCreateRequestGA request
+            = new RealtimeSessionCreateRequestGA().setToolChoice(ToolChoiceOptions.REQUIRED);
+        assertEquals(ToolChoiceOptions.REQUIRED, request.getToolChoiceAsToolChoiceOptions());
+
+        RealtimeSessionCreateRequestGA stringResult = roundTrip(request);
         assertEquals(ToolChoiceOptions.REQUIRED, stringResult.getToolChoiceAsToolChoiceOptions());
         assertNull(stringResult.getToolChoiceAsToolChoiceFunction());
         assertNull(stringResult.getToolChoiceAsToolChoiceMcp());

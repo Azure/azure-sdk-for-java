@@ -641,7 +641,7 @@ public final class VoiceAgentSessionUpdateConfig implements JsonSerializable<Voi
      */
     public VoiceAgentSessionUpdateConfig setToolChoice(ToolChoiceOptions toolChoice) {
         // AI Tooling: union type
-        this.toolChoice = toolChoice == null ? null : BinaryData.fromString(toolChoice.toString());
+        this.toolChoice = toolChoice == null ? null : BinaryData.fromObject(toolChoice.toString());
         return this;
     }
 

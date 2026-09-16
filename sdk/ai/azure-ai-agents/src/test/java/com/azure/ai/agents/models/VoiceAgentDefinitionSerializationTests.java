@@ -27,7 +27,10 @@ public class VoiceAgentDefinitionSerializationTests {
 
     @Test
     public void toolChoiceVariantsRoundTrip() throws IOException {
-        VoiceAgentDefinition stringResult = roundTrip(new VoiceAgentDefinition().setToolChoice(ToolChoiceOptions.AUTO));
+        VoiceAgentDefinition definition = new VoiceAgentDefinition().setToolChoice(ToolChoiceOptions.AUTO);
+        assertEquals(ToolChoiceOptions.AUTO, definition.getToolChoiceAsToolChoiceOptions());
+
+        VoiceAgentDefinition stringResult = roundTrip(definition);
         assertEquals(ToolChoiceOptions.AUTO, stringResult.getToolChoiceAsToolChoiceOptions());
         assertNull(stringResult.getToolChoiceAsToolChoiceFunction());
         assertNull(stringResult.getToolChoiceAsToolChoiceMcp());

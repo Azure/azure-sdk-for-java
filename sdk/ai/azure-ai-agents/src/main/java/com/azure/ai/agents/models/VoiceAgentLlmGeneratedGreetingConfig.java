@@ -154,7 +154,7 @@ public final class VoiceAgentLlmGeneratedGreetingConfig extends VoiceAgentGreeti
      */
     public VoiceAgentLlmGeneratedGreetingConfig setToolChoice(ToolChoiceOptions toolChoice) {
         // AI Tooling: union type
-        this.toolChoice = toolChoice == null ? null : BinaryData.fromString(toolChoice.toString());
+        this.toolChoice = toolChoice == null ? null : BinaryData.fromObject(toolChoice.toString());
         return this;
     }
 

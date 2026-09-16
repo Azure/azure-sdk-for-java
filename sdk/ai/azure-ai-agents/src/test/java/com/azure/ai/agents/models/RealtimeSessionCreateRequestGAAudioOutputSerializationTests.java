@@ -17,6 +17,7 @@ public class RealtimeSessionCreateRequestGAAudioOutputSerializationTests {
     public void builtInVoiceRoundTrips() throws IOException {
         RealtimeSessionCreateRequestGAAudioOutput output
             = new RealtimeSessionCreateRequestGAAudioOutput().setVoice(VoiceIdsShared.ALLOY);
+        assertEquals(VoiceIdsShared.ALLOY, output.getVoiceAsVoiceIdsShared());
 
         String json = UnionTypeSerializationTestUtils.serialize(output);
         RealtimeSessionCreateRequestGAAudioOutput result

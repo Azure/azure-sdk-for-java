@@ -69,8 +69,11 @@ public class VoiceAgentResponseCreateParamsSerializationTests {
 
     @Test
     public void toolChoiceVariantsRoundTrip() throws IOException {
-        VoiceAgentResponseCreateParams optionsResult
-            = roundTrip(new VoiceAgentResponseCreateParams().setToolChoice(ToolChoiceOptions.REQUIRED));
+        VoiceAgentResponseCreateParams params
+            = new VoiceAgentResponseCreateParams().setToolChoice(ToolChoiceOptions.REQUIRED);
+        assertEquals(ToolChoiceOptions.REQUIRED, params.getToolChoiceAsToolChoiceOptions());
+
+        VoiceAgentResponseCreateParams optionsResult = roundTrip(params);
         assertEquals(ToolChoiceOptions.REQUIRED, optionsResult.getToolChoiceAsToolChoiceOptions());
         assertNull(optionsResult.getToolChoiceAsToolChoiceFunction());
         assertNull(optionsResult.getToolChoiceAsToolChoiceMcp());

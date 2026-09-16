@@ -29,8 +29,11 @@ public class VoiceAgentSessionUpdateConfigSerializationTests {
 
     @Test
     public void toolChoiceVariantsRoundTrip() throws IOException {
-        VoiceAgentSessionUpdateConfig optionsResult
-            = roundTrip(new VoiceAgentSessionUpdateConfig().setToolChoice(ToolChoiceOptions.AUTO));
+        VoiceAgentSessionUpdateConfig config
+            = new VoiceAgentSessionUpdateConfig().setToolChoice(ToolChoiceOptions.AUTO);
+        assertEquals(ToolChoiceOptions.AUTO, config.getToolChoiceAsToolChoiceOptions());
+
+        VoiceAgentSessionUpdateConfig optionsResult = roundTrip(config);
         assertEquals(ToolChoiceOptions.AUTO, optionsResult.getToolChoiceAsToolChoiceOptions());
         assertNull(optionsResult.getToolChoiceAsToolChoiceFunction());
         assertNull(optionsResult.getToolChoiceAsToolChoiceMcp());

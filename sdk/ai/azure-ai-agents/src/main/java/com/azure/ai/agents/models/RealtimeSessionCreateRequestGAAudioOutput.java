@@ -167,7 +167,7 @@ public final class RealtimeSessionCreateRequestGAAudioOutput
      */
     public RealtimeSessionCreateRequestGAAudioOutput setVoice(VoiceIdsShared voice) {
         // AI Tooling: union type
-        this.voice = voice == null ? null : BinaryData.fromString(voice.toString());
+        this.voice = voice == null ? null : BinaryData.fromObject(voice.toString());
         return this;
     }
 

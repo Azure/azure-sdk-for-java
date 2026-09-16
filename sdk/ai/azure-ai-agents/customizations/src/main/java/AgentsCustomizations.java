@@ -393,7 +393,7 @@ public class AgentsCustomizations extends Customization {
             return OPENAI_JSON_HELPER + ".toBinaryData(" + property + ")";
         }
         if (variant[V_STRING_ENUM_TYPE] != null) {
-            return property + " == null ? null : BinaryData.fromString(" + property + ".toString())";
+            return property + " == null ? null : BinaryData." + variant[V_FACTORY] + "(" + property + ".toString())";
         }
         String expression = "BinaryData." + variant[V_FACTORY] + "(" + property + ")";
         return "true".equals(variant[V_SETTER_NULLABLE]) ? property + " == null ? null : " + expression : expression;
@@ -501,7 +501,7 @@ public class AgentsCustomizations extends Customization {
     }
 
     private static String[] stringEnumUnionVariant(String type, String paramDoc) {
-        String[] variant = unionVariant(type, type, "String.class", type, "fromString", paramDoc,
+        String[] variant = unionVariant(type, type, "String.class", type, "fromObject", paramDoc,
             "a {@link " + type + "}, or {@code null} when it is not set or holds another variant",
             "json.startsWith(\"\\\"\")", null, true);
         variant[V_STRING_ENUM_TYPE] = type;
