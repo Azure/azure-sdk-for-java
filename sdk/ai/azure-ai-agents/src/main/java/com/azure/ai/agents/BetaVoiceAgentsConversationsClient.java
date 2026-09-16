@@ -72,7 +72,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -143,7 +143,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * Retrieves a single conversation recorded for the specified voice agent endpoint by its id.
      * Returns `404` when the conversation was not persisted (`store = false`) or does not exist.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -263,7 +263,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -350,7 +350,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * Retrieves a single response from the specified conversation by its id, including its `output` items,
      * `usage`, and status. Returns `404` when the conversation or response was not persisted (`store = false`).
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -464,7 +464,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -518,7 +518,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -552,7 +552,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * `/items/{item_id}/audio/content`. Returns `404` when the conversation or item was not persisted
      * (`store = false`).
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -592,7 +592,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * Requires the conversation to have persisted audio (`store = true`); returns `404` when the conversation,
      * item, or its audio was not persisted.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -644,7 +644,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * returned by the item's `/audio` metadata route — so this route returns `409 Conflict` for BYOS recordings.
      * Returns `404` when the conversation, item, or its audio was not persisted (`store = false`).
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -677,7 +677,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * than the listener heard, including when the response ends as cancelled. Returns `404` when the conversation or
      * item was not persisted, or when no generated audio exists beyond the heard segment.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -725,7 +725,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * Returns `404` when the conversation or item was not persisted, or when no generated audio exists beyond the
      * heard segment.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -764,7 +764,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * For a `completed` conversation, metadata is available subject to the existing BYOS behavior. Requires the
      * conversation to have persisted audio (`store = true`); otherwise returns `404`.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -814,7 +814,7 @@ public final class BetaVoiceAgentsConversationsClient {
      * For a `completed` conversation, content is available subject to the existing BYOS behavior. A conversation
      * without persisted audio (`store = false`) returns `404`.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData

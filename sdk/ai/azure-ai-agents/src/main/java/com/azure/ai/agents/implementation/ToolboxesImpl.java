@@ -55,7 +55,7 @@ public final class ToolboxesImpl {
 
     /**
      * Initializes an instance of ToolboxesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ToolboxesImpl(AgentsClientImpl client) {
@@ -66,7 +66,7 @@ public final class ToolboxesImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public AgentsServiceVersion getServiceVersion() {
@@ -271,10 +271,10 @@ public final class ToolboxesImpl {
 
     /**
      * Create a new version of a toolbox
-     *
+     * 
      * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -325,9 +325,9 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -382,7 +382,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param createToolboxVersionRequest The createToolboxVersionRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -404,10 +404,10 @@ public final class ToolboxesImpl {
 
     /**
      * Create a new version of a toolbox
-     *
+     * 
      * Creates a new toolbox version, provisioning the toolbox itself if it does not already exist.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -458,9 +458,9 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -515,7 +515,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param name The name of the toolbox. If the toolbox does not exist, it will be created.
      * @param createToolboxVersionRequest The createToolboxVersionRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -537,10 +537,10 @@ public final class ToolboxesImpl {
 
     /**
      * Retrieve a toolbox
-     *
+     * 
      * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -603,7 +603,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param name The name of the toolbox to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -622,10 +622,10 @@ public final class ToolboxesImpl {
 
     /**
      * Retrieve a toolbox
-     *
+     * 
      * Retrieves the specified toolbox and its current configuration.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -688,7 +688,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param name The name of the toolbox to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -706,7 +706,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolboxes
-     *
+     * 
      * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -729,7 +729,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -792,7 +792,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -813,7 +813,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolboxes
-     *
+     * 
      * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -836,7 +836,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -899,7 +899,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -914,7 +914,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolboxes
-     *
+     * 
      * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -937,7 +937,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1000,7 +1000,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1019,7 +1019,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolboxes
-     *
+     * 
      * Returns the toolboxes available in the current project.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1042,7 +1042,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1105,7 +1105,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1120,7 +1120,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolbox versions
-     *
+     * 
      * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1143,7 +1143,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1198,7 +1198,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param name The name of the toolbox to list versions for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1221,7 +1221,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolbox versions
-     *
+     * 
      * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1244,7 +1244,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1299,7 +1299,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param name The name of the toolbox to list versions for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1315,7 +1315,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolbox versions
-     *
+     * 
      * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1338,7 +1338,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1393,7 +1393,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param name The name of the toolbox to list versions for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1413,7 +1413,7 @@ public final class ToolboxesImpl {
 
     /**
      * List toolbox versions
-     *
+     * 
      * Returns the available versions for the specified toolbox.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1436,7 +1436,7 @@ public final class ToolboxesImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1491,7 +1491,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param name The name of the toolbox to list versions for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1507,10 +1507,10 @@ public final class ToolboxesImpl {
 
     /**
      * Retrieve a specific version of a toolbox
-     *
+     * 
      * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1565,7 +1565,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param name The name of the toolbox.
      * @param version The version identifier to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1585,10 +1585,10 @@ public final class ToolboxesImpl {
 
     /**
      * Retrieve a specific version of a toolbox
-     *
+     * 
      * Retrieves the specified version of a toolbox by name and version identifier.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1643,7 +1643,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param name The name of the toolbox.
      * @param version The version identifier to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1663,31 +1663,31 @@ public final class ToolboxesImpl {
 
     /**
      * Invoke the latest toolbox version through MCP
-     *
+     * 
      * Invokes the latest version of the specified toolbox through its MCP endpoint.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>content-type</td><td>String</td><td>The content type of the MCP response body.</td></tr>
      * </table>
-     *
+     * 
      * @param name The name of the toolbox.
      * @param contentType The content type of the MCP request body.
      * @param request The MCP request body.
@@ -1708,31 +1708,31 @@ public final class ToolboxesImpl {
 
     /**
      * Invoke the latest toolbox version through MCP
-     *
+     * 
      * Invokes the latest version of the specified toolbox through its MCP endpoint.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>content-type</td><td>String</td><td>The content type of the MCP response body.</td></tr>
      * </table>
-     *
+     * 
      * @param name The name of the toolbox.
      * @param contentType The content type of the MCP request body.
      * @param request The MCP request body.
@@ -1753,10 +1753,10 @@ public final class ToolboxesImpl {
 
     /**
      * Update a toolbox to point to a specific version
-     *
+     * 
      * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1764,9 +1764,9 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1829,7 +1829,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param name The name of the toolbox to update.
      * @param updateToolboxRequest The updateToolboxRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1852,10 +1852,10 @@ public final class ToolboxesImpl {
 
     /**
      * Update a toolbox to point to a specific version
-     *
+     * 
      * Updates the toolbox's default version pointer to the specified version.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1863,9 +1863,9 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1928,7 +1928,7 @@ public final class ToolboxesImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param name The name of the toolbox to update.
      * @param updateToolboxRequest The updateToolboxRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1949,9 +1949,9 @@ public final class ToolboxesImpl {
 
     /**
      * Delete a toolbox
-     *
+     * 
      * Removes the specified toolbox along with all of its versions.
-     *
+     * 
      * @param name The name of the toolbox to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1968,9 +1968,9 @@ public final class ToolboxesImpl {
 
     /**
      * Delete a toolbox
-     *
+     * 
      * Removes the specified toolbox along with all of its versions.
-     *
+     * 
      * @param name The name of the toolbox to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1987,9 +1987,9 @@ public final class ToolboxesImpl {
 
     /**
      * Delete a specific version of a toolbox
-     *
+     * 
      * Removes the specified version of a toolbox.
-     *
+     * 
      * @param name The name of the toolbox.
      * @param version The version identifier to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2008,9 +2008,9 @@ public final class ToolboxesImpl {
 
     /**
      * Delete a specific version of a toolbox
-     *
+     * 
      * Removes the specified version of a toolbox.
-     *
+     * 
      * @param name The name of the toolbox.
      * @param version The version identifier to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

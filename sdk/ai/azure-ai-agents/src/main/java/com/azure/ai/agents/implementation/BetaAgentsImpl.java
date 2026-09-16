@@ -61,7 +61,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Initializes an instance of BetaAgentsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BetaAgentsImpl(AgentsClientImpl client) {
@@ -72,7 +72,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public AgentsServiceVersion getServiceVersion() {
@@ -213,19 +213,19 @@ public final class BetaAgentsImpl {
 
     /**
      * Generate an agent
-     *
+     * 
      * Generates and creates an agent from kind-specific high-level inputs.
      * The generated definition remains fully editable through the standard agent versioning operations.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -341,7 +341,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param body The kind-specific inputs for generating and creating an agent.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -361,19 +361,19 @@ public final class BetaAgentsImpl {
 
     /**
      * Generate an agent
-     *
+     * 
      * Generates and creates an agent from kind-specific high-level inputs.
      * The generated definition remains fully editable through the standard agent versioning operations.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -489,7 +489,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param body The kind-specific inputs for generating and creating an agent.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -508,7 +508,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Create an agent optimization job
-     *
+     * 
      * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -519,7 +519,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -601,9 +601,9 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -685,7 +685,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -707,7 +707,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Create an agent optimization job
-     *
+     * 
      * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -718,7 +718,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -800,9 +800,9 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -884,7 +884,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -904,7 +904,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Create an agent optimization job
-     *
+     * 
      * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -915,7 +915,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -997,9 +997,9 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1081,7 +1081,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1110,7 +1110,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Create an agent optimization job
-     *
+     * 
      * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1121,7 +1121,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1203,9 +1203,9 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1287,7 +1287,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1316,7 +1316,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Create an agent optimization job
-     *
+     * 
      * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1327,7 +1327,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1409,9 +1409,9 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1493,7 +1493,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1521,7 +1521,7 @@ public final class BetaAgentsImpl {
 
     /**
      * Create an agent optimization job
-     *
+     * 
      * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1532,7 +1532,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1614,9 +1614,9 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1698,7 +1698,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param job The job to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1726,10 +1726,10 @@ public final class BetaAgentsImpl {
 
     /**
      * Get an agent optimization job
-     *
+     * 
      * Retrieves an optimization job by its identifier.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1811,14 +1811,14 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
      * </table>
-     *
+     * 
      * @param jobId The ID of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1826,7 +1826,7 @@ public final class BetaAgentsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an agent optimization job
-     *
+     * 
      * Retrieves an optimization job by its identifier along with {@link Response} on successful completion of
      * {@link Mono}.
      */
@@ -1839,10 +1839,10 @@ public final class BetaAgentsImpl {
 
     /**
      * Get an agent optimization job
-     *
+     * 
      * Retrieves an optimization job by its identifier.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1924,14 +1924,14 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
      * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
      * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
      * </table>
-     *
+     * 
      * @param jobId The ID of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1939,7 +1939,7 @@ public final class BetaAgentsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an agent optimization job
-     *
+     * 
      * Retrieves an optimization job by its identifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1951,7 +1951,7 @@ public final class BetaAgentsImpl {
 
     /**
      * List agent optimization jobs
-     *
+     * 
      * Lists optimization jobs with cursor pagination and optional status or agent name filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1977,7 +1977,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2012,7 +2012,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2033,7 +2033,7 @@ public final class BetaAgentsImpl {
 
     /**
      * List agent optimization jobs
-     *
+     * 
      * Lists optimization jobs with cursor pagination and optional status or agent name filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -2059,7 +2059,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2094,7 +2094,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2109,7 +2109,7 @@ public final class BetaAgentsImpl {
 
     /**
      * List agent optimization jobs
-     *
+     * 
      * Lists optimization jobs with cursor pagination and optional status or agent name filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -2135,7 +2135,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2170,7 +2170,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2189,7 +2189,7 @@ public final class BetaAgentsImpl {
 
     /**
      * List agent optimization jobs
-     *
+     * 
      * Lists optimization jobs with cursor pagination and optional status or agent name filters.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -2215,7 +2215,7 @@ public final class BetaAgentsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2250,7 +2250,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2265,10 +2265,10 @@ public final class BetaAgentsImpl {
 
     /**
      * Cancel an agent optimization job
-     *
+     * 
      * Requests cancellation of a running or queued job and returns an error if the job is already in a terminal state.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2350,7 +2350,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the job to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2371,10 +2371,10 @@ public final class BetaAgentsImpl {
 
     /**
      * Cancel an agent optimization job
-     *
+     * 
      * Requests cancellation of a running or queued job and returns an error if the job is already in a terminal state.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2456,7 +2456,7 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
-     *
+     * 
      * @param jobId The ID of the job to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2475,9 +2475,9 @@ public final class BetaAgentsImpl {
 
     /**
      * Delete an agent optimization job
-     *
+     * 
      * Deletes the job and its candidate artifacts, canceling the job first if it is non-terminal.
-     *
+     * 
      * @param jobId The ID of the job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2494,9 +2494,9 @@ public final class BetaAgentsImpl {
 
     /**
      * Delete an agent optimization job
-     *
+     * 
      * Deletes the job and its candidate artifacts, canceling the job first if it is non-terminal.
-     *
+     * 
      * @param jobId The ID of the job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

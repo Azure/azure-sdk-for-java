@@ -51,7 +51,7 @@ public final class BetaAgentsClient {
      *
      * Retrieves an optimization job by its identifier.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -133,7 +133,7 @@ public final class BetaAgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -185,7 +185,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -239,7 +239,7 @@ public final class BetaAgentsClient {
      *
      * Requests cancellation of a running or queued job and returns an error if the job is already in a terminal state.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -511,7 +511,7 @@ public final class BetaAgentsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -593,9 +593,9 @@ public final class BetaAgentsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -753,15 +753,15 @@ public final class BetaAgentsClient {
      * Generates and creates an agent from kind-specific high-level inputs.
      * The generated definition remains fully editable through the standard agent versioning operations.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
