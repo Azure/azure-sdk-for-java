@@ -77,7 +77,9 @@ public class Tool implements JsonSerializable<Tool> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("bing_grounding".equals(discriminatorValue)) {
+                if ("github_copilot_toolset_preview".equals(discriminatorValue)) {
+                    return GitHubCopilotToolsetPreview.fromJson(readerToUse.reset());
+                } else if ("bing_grounding".equals(discriminatorValue)) {
                     return BingGroundingTool.fromJson(readerToUse.reset());
                 } else if ("fabric_dataagent_preview".equals(discriminatorValue)) {
                     return MicrosoftFabricPreviewTool.fromJson(readerToUse.reset());

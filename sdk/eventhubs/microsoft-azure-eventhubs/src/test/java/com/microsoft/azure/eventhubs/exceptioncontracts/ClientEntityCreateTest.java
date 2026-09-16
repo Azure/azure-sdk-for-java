@@ -13,9 +13,9 @@ import com.microsoft.azure.eventhubs.impl.MessageReceiver;
 import com.microsoft.azure.eventhubs.impl.MessageSender;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.time.Duration;
@@ -27,12 +27,12 @@ public class ClientEntityCreateTest extends ApiTestBase {
     static ConnectionStringBuilder connStr;
     static final int SHORT_TIMEOUT = 8;
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() {
         connStr = TestContext.getConnectionString();
     }
 
-    @Test()
+    @Test
     public void createReceiverShouldRetryAndThrowTimeoutExceptionUponRepeatedTransientErrors() throws Exception {
         setIsTransientOnIllegalEntityException(true);
 
@@ -44,9 +44,9 @@ public class ClientEntityCreateTest extends ApiTestBase {
 
             try {
                 eventHubClient.createReceiverSync("nonexistantcg", PARTITION_ID, EventPosition.fromStartOfStream());
-                Assert.assertTrue(false); // this should be unreachable
+                Assertions.assertTrue(false); // this should be unreachable
             } catch (TimeoutException exception) {
-                Assert.assertTrue(exception.getCause() instanceof IllegalEntityException);
+                Assertions.assertTrue(exception.getCause() instanceof IllegalEntityException);
             }
 
             eventHubClient.closeSync();
@@ -55,7 +55,7 @@ public class ClientEntityCreateTest extends ApiTestBase {
         }
     }
 
-    @Test()
+    @Test
     public void createSenderShouldRetryAndThrowTimeoutExceptionUponRepeatedTransientErrors() throws Exception {
         setIsTransientOnIllegalEntityException(true);
 
@@ -67,9 +67,9 @@ public class ClientEntityCreateTest extends ApiTestBase {
 
             try {
                 eventHubClient.createPartitionSenderSync(PARTITION_ID);
-                Assert.assertTrue(false); // this should be unreachable
+                Assertions.assertTrue(false); // this should be unreachable
             } catch (TimeoutException exception) {
-                Assert.assertTrue(exception.getCause() instanceof IllegalEntityException);
+                Assertions.assertTrue(exception.getCause() instanceof IllegalEntityException);
             }
 
             eventHubClient.closeSync();
@@ -78,7 +78,7 @@ public class ClientEntityCreateTest extends ApiTestBase {
         }
     }
 
-    @Test()
+    @Test
     public void createInternalSenderShouldRetryAndThrowTimeoutExceptionUponRepeatedTransientErrors() throws Exception {
         setIsTransientOnIllegalEntityException(true);
 
@@ -90,9 +90,9 @@ public class ClientEntityCreateTest extends ApiTestBase {
 
             try {
                 eventHubClient.sendSync(EventData.create("Testmessage".getBytes()));
-                Assert.assertTrue(false); // this should be unreachable
+                Assertions.assertTrue(false); // this should be unreachable
             } catch (TimeoutException exception) {
-                Assert.assertTrue(exception.getCause() instanceof IllegalEntityException);
+                Assertions.assertTrue(exception.getCause() instanceof IllegalEntityException);
             }
 
             eventHubClient.closeSync();
@@ -101,7 +101,7 @@ public class ClientEntityCreateTest extends ApiTestBase {
         }
     }
 
-    @Test()
+    @Test
     public void createReceiverFailsOnTransientErrorAndThenSucceedsOnRetry() throws Exception {
         final TestObject testObject = new TestObject();
         testObject.isRetried = false;
@@ -144,10 +144,10 @@ public class ClientEntityCreateTest extends ApiTestBase {
             setIsTransientOnIllegalEntityException(false);
         }
 
-        Assert.assertTrue(testObject.isRetried);
+        Assertions.assertTrue(testObject.isRetried);
     }
 
-    @Test()
+    @Test
     public void createSenderFailsOnTransientErrorAndThenSucceedsOnRetry() throws Exception {
         final TestObject testObject = new TestObject();
         testObject.isRetried = false;
@@ -192,10 +192,10 @@ public class ClientEntityCreateTest extends ApiTestBase {
             setIsTransientOnIllegalEntityException(false);
         }
 
-        Assert.assertTrue(testObject.isRetried);
+        Assertions.assertTrue(testObject.isRetried);
     }
 
-    @Test(expected = IllegalEntityException.class)
+    @Test
     public void createReceiverShouldThrowRespectiveExceptionUponNonTransientErrors() throws Exception {
         setIsTransientOnIllegalEntityException(false);
         final ConnectionStringBuilder localConnStr = new ConnectionStringBuilder(connStr.toString());
@@ -204,7 +204,8 @@ public class ClientEntityCreateTest extends ApiTestBase {
         final EventHubClient eventHubClient = EventHubClient.createFromConnectionStringSync(localConnStr.toString(), TestContext.EXECUTOR_SERVICE);
 
         try {
-            eventHubClient.createReceiverSync("nonexistantcg", PARTITION_ID, EventPosition.fromStartOfStream());
+            Assertions.assertThrows(IllegalEntityException.class,
+                () -> eventHubClient.createReceiverSync("nonexistantcg", PARTITION_ID, EventPosition.fromStartOfStream()));
         } finally {
             eventHubClient.closeSync();
         }
