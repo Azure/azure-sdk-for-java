@@ -41,6 +41,15 @@ def should_remove_generated_source_code(module: str) -> bool:
     return module not in GENERATED_SOURCE_CLEANUP_EXCLUDED_MODULES
 
 
+def parse_boolean(value: str) -> bool:
+    normalized_value = value.lower()
+    if normalized_value == "true":
+        return True
+    if normalized_value == "false":
+        return False
+    raise argparse.ArgumentTypeError("Expected 'true' or 'false'.")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -65,10 +74,19 @@ def parse_args() -> argparse.Namespace:
         help="published @azure-tools/typespec-java version to regenerate with. When empty, the "
         "emitter is built from source (dev route) instead.",
     )
+    parser.add_argument(
+        "--upgrade-openai-typespec",
+        type=parse_boolean,
+        required=False,
+        default=True,
+        help="whether to update @azure-tools/openai-typespec to the version used by "
+        "azure-rest-api-specs. Defaults to true.",
+    )
     return parser.parse_args()
 
 
 EMITTER_PACKAGE_NAME = "@azure-tools/typespec-java"
+OPENAI_TYPESPEC_PACKAGE_NAME = "@azure-tools/openai-typespec"
 
 # Prefixes of the TypeSpec dependency entries in emitter-package.json whose versions we resolve to
 # the latest published npm version (see resolve_dependency_versions_to_latest).
@@ -85,7 +103,7 @@ TYPESPEC_DEPENDENCY_PREFIXES = ("@azure-tools/", "@typespec/")
 # libraries, so their specs-pinned version does not have to move in lockstep with the emitter's
 # other dependencies.
 DESIGNATED_LIBRARIES_FROM_SPECS = [
-    "@azure-tools/openai-typespec",
+    OPENAI_TYPESPEC_PACKAGE_NAME,
     "@azure-tools/typespec-liftr-base",
 ]
 
@@ -124,7 +142,12 @@ def extract_package_json_from_tgz(tgz_path: str, dest_path: str) -> None:
                 f.write(member.read())
 
 
-def generate_config_files(emitter_package_json: str, use_npm_pinning: bool, overrides_path: str = "") -> None:
+def generate_config_files(
+    emitter_package_json: str,
+    use_npm_pinning: bool,
+    upgrade_openai_typespec: bool,
+    overrides_path: str = "",
+) -> None:
     # tsp-client generate-config-files seeds eng/emitter-package.json from an emitter package.json
     # (its peerDependencies) and then generates the lock file (via "npm install"). Used by both
     # routes:
@@ -141,12 +164,13 @@ def generate_config_files(emitter_package_json: str, use_npm_pinning: bool, over
     # which is NOT an emitter peer) would survive the merge with its stale version and break the
     # lock-generation "npm install" with ERESOLVE. We add the designated libraries back (from npm
     # latest or the specs repo) after seeding, so the merge starts from only the emitter's own peers.
+    # When the OpenAI TypeSpec upgrade is disabled, its existing exact pin is retained instead.
     #
     # Alternative: delete the whole eng/emitter-package.json before generating (os.remove) so it is
     # seeded entirely from scratch. That is more robust against non-designated orphans (e.g. an
     # emitter peer that was dropped), but it regenerates the key order from the emitter manifest,
     # producing noisier diffs. We remove only the designated entries to keep the existing key order.
-    remove_designated_libraries()
+    remove_designated_libraries(upgrade_openai_typespec)
 
     command = [
         "tsp-client",
@@ -183,19 +207,32 @@ def save_emitter_package_json(package_json: dict) -> None:
         json.dump(package_json, json_file, indent=2)
 
 
-def remove_designated_libraries() -> None:
+def validate_preserved_openai_typespec_version() -> None:
+    package_json = load_emitter_package_json()
+    version = package_json.get("devDependencies", {}).get(OPENAI_TYPESPEC_PACKAGE_NAME)
+    if not version:
+        raise ValueError(
+            f"{OPENAI_TYPESPEC_PACKAGE_NAME} must already exist in eng/emitter-package.json "
+            "when --upgrade-openai-typespec=false."
+        )
+
+
+def remove_designated_libraries(upgrade_openai_typespec: bool) -> None:
     # Remove the designated libraries from an existing eng/emitter-package.json before seeding.
     # generate-config-files merges into that file and only overwrites emitter-peer entries, so a
     # designated library carried over from a previous run (e.g. @typespec/openapi3) would keep its
     # stale version and conflict with the freshly pinned peers. They are added back afterward by
-    # add_designated_libraries. The skipped designated libraries (still emitter peers) are re-added
-    # by generate-config-files itself from the emitter's peerDependencies.
+    # add_designated_libraries. OpenAI TypeSpec is intentionally retained when its upgrade is
+    # disabled so generate-config-files carries the current exact pin forward.
     path = emitter_package_json_path()
     if not os.path.exists(path):
         return
     package_json = load_emitter_package_json()
     dev_dependencies = package_json.get("devDependencies", {})
     for library in DESIGNATED_LIBRARIES:
+        if library == OPENAI_TYPESPEC_PACKAGE_NAME and not upgrade_openai_typespec:
+            logging.info(f"Preserve designated library {library} at {dev_dependencies[library]}")
+            continue
         if library in dev_dependencies:
             logging.info(f"Remove designated library {library} before seeding")
             del dev_dependencies[library]
@@ -228,18 +265,22 @@ def fetch_specs_dev_dependencies() -> dict:
     return specs_package_json.get("devDependencies", {})
 
 
-def add_designated_libraries() -> None:
+def add_designated_libraries(upgrade_openai_typespec: bool) -> None:
     # Add the designated libraries (not declared by the emitter) to emitter-package.json. Two
     # groups, versioned from different sources:
     #   - DESIGNATED_LIBRARIES_FROM_SPECS: pinned to the exact version declared in the specs repo
     #     package.json (the version the specs actually use). If a library is missing there (the
     #     specs repo may not have updated yet), fall back to its latest published npm version.
+    #     OpenAI TypeSpec can instead retain its existing pin when requested.
     #   - DESIGNATED_LIBRARIES_FROM_NPM_LATEST: pinned to the latest published npm version.
     specs_dev_dependencies = fetch_specs_dev_dependencies()
     package_json = load_emitter_package_json()
     dev_dependencies = package_json.setdefault("devDependencies", {})
 
     for library in DESIGNATED_LIBRARIES_FROM_SPECS:
+        if library == OPENAI_TYPESPEC_PACKAGE_NAME and not upgrade_openai_typespec:
+            logging.info(f"Keep designated library {library}@{dev_dependencies[library]}")
+            continue
         version = specs_dev_dependencies.get(library)
         if version:
             logging.info(f"Add designated library {library}@{version} (from specs repo)")
@@ -256,11 +297,14 @@ def add_designated_libraries() -> None:
     save_emitter_package_json(package_json)
 
 
-def update_emitter(package_json_path: str, emitter_version: str):
+def update_emitter(package_json_path: str, emitter_version: str, upgrade_openai_typespec: bool):
     # 'none' is the pipeline sentinel for "not specified" (Azure DevOps string parameters
     # cannot be left truly empty in the run UI), so normalize it to empty here.
     if emitter_version.lower() == "none":
         emitter_version = ""
+
+    if not upgrade_openai_typespec:
+        validate_preserved_openai_typespec_version()
 
     if emitter_version:
         # Published route (post-publish): seed emitter-package.json from the published emitter.
@@ -279,7 +323,11 @@ def update_emitter(package_json_path: str, emitter_version: str):
                 f.write(manifest)
 
             logging.info("Update emitter-package.json")
-            generate_config_files(published_package_json_path, use_npm_pinning=True)
+            generate_config_files(
+                published_package_json_path,
+                use_npm_pinning=True,
+                upgrade_openai_typespec=upgrade_openai_typespec,
+            )
     else:
         # Dev route: build the emitter from source, then seed emitter-package.json from the local
         # dev package. The dev emitter version is unpublished, so generate-config-files consumes
@@ -314,13 +362,18 @@ def update_emitter(package_json_path: str, emitter_version: str):
                 json.dump({EMITTER_PACKAGE_NAME: dev_package_path}, f)
 
             logging.info("Update emitter-package.json")
-            generate_config_files(resolved_package_json_path, use_npm_pinning=False, overrides_path=overrides_path)
+            generate_config_files(
+                resolved_package_json_path,
+                use_npm_pinning=False,
+                upgrade_openai_typespec=upgrade_openai_typespec,
+                overrides_path=overrides_path,
+            )
 
     # Both routes: pin the emitter's TypeSpec dependencies to their latest published versions and
-    # add the designated libraries from the specs repo, then (re)generate the lock file so it
-    # reflects the final dependency set.
+    # add the designated libraries from the specs repo (optionally preserving OpenAI TypeSpec),
+    # then (re)generate the lock file so it reflects the final dependency set.
     resolve_dependency_versions_to_latest()
-    add_designated_libraries()
+    add_designated_libraries(upgrade_openai_typespec)
 
     logging.info("Update emitter-package-lock.json")
     generate_lock_file()
@@ -485,6 +538,7 @@ def main():
     update_emitter(
         args["package_json_path"],
         args["emitter_version"],
+        args["upgrade_openai_typespec"],
     )
 
     update_sdks()
