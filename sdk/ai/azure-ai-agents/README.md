@@ -278,8 +278,8 @@ An agent can have multiple versions. Before invoking it through the OpenAI Respo
 
 ```java com.azure.ai.agents.configure_agent_endpoint
 AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+    .setVersionSelector(new VersionSelector().setVersionSelectionRule(
+        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion())))
     .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
 
 agentsClient.updateAgentDetails(agent.getName(),

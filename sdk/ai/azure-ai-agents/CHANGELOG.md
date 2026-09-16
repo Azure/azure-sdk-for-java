@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Added `VersionSelector.setVersionSelectionRule` as a convenience for configuring a single version selection rule.
 - Added public `StreamingResponseUtils` in the `com.azure.ai.agents.util` package for converting OpenAI streaming
   responses to Azure SDK `IterableStream` and Reactor `Flux` types.
 - Added `BetaAgentTelephonyClient` and `BetaAgentTelephonyAsyncClient`, built through

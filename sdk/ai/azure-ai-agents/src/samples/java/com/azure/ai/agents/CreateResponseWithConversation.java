@@ -21,8 +21,6 @@ import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
 import com.openai.services.blocking.ConversationService;
 
-import java.util.Collections;
-
 /**
  * This sample demonstrates how to invoke the OpenAI Responses API against a Prompt Agent,
  * routing the Responses API request through the agent's endpoint URL.
@@ -52,8 +50,8 @@ public class CreateResponseWithConversation {
             System.out.printf("Agent created (id: %s, version: %s)\n", agent.getId(), agent.getVersion());
 
             AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-                .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                    new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion()))))
+                .setVersionSelector(new VersionSelector().setVersionSelectionRule(
+                    new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion())))
                 .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
             agentsClient.updateAgentDetails(agent.getName(),
                 new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));

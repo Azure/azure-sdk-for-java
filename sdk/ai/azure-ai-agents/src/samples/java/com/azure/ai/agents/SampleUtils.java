@@ -18,7 +18,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 
 public class SampleUtils {
 
@@ -75,8 +74,8 @@ public class SampleUtils {
 
     private static UpdateAgentDetailsOptions createPinnedEndpointOptions(AgentVersionDetails versionDetails) {
         AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-            .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                new FixedRatioVersionSelectionRule(100).setAgentVersion(versionDetails.getVersion()))))
+            .setVersionSelector(new VersionSelector().setVersionSelectionRule(
+                new FixedRatioVersionSelectionRule(100).setAgentVersion(versionDetails.getVersion())))
             .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
 
         return new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig);
