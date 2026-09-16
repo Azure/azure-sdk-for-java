@@ -18,9 +18,6 @@
 
 ### Other Changes
 
-- Regenerated from TypeSpec commit `2ba065c423a4c08ddb4e517a9f16deb17cb378c2`. Customization retains `.beta()` factory
-  placement and automatic voice preview headers after the upstream voice operation namespace relocation.
-
 ## 2.5.0 (2026-09-09)
 
 ### Features Added
