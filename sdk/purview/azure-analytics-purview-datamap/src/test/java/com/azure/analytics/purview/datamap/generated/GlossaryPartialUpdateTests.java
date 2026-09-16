@@ -21,7 +21,7 @@ public final class GlossaryPartialUpdateTests extends DataMapClientTestBase {
     public void testGlossaryPartialUpdateTests() {
         // method invocation
         AtlasGlossary response = glossaryClient.partialUpdate("c018ddaf-7c21-4b37-a838-dae5f110c3d8",
-            mapOf("longDescription", "Example Long Description"), null);
+            mapOf("longDescription", "Example Long Description"), (Boolean) null);
 
         // response assertion
         Assertions.assertNotNull(response);

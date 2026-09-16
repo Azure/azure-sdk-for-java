@@ -4,6 +4,10 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.TileMatrixSetId;
+import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -14,8 +18,10 @@ public final class MosaicSearchesWmtsGetCapabilitiesXmlTests extends PlanetaryCo
     @Disabled
     public void testMosaicSearchesWmtsGetCapabilitiesXmlTests() {
         // method invocation
-        byte[] response = dataClient.getSearchWmtsCapabilities("ba13fc7947b9b585690d84ee61aaa653", null, null, null,
-            null, null, null, null, null, null, null, null, null, null);
+        byte[] response = dataClient.getSearchWmtsCapabilities("ba13fc7947b9b585690d84ee61aaa653",
+            (TileMatrixSetId) null, (TilerImageFormat) null, (Integer) null, (Integer) null, (Integer) null,
+            (List<Integer>) null, (List<String>) null, (String) null, (List<String>) null, (Boolean) null,
+            (String) null, (Boolean) null, (WarpKernelResampling) null);
 
         // response assertion
         Assertions.assertNotNull(response);

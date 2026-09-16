@@ -4,6 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TileSetEntry;
 import com.azure.analytics.planetarycomputer.models.TileSetLink;
 import com.azure.analytics.planetarycomputer.models.TileSetList;
@@ -19,7 +20,8 @@ public final class MosaicCollectionsTileSetListGetTests extends PlanetaryCompute
     public void testMosaicCollectionsTileSetListGetTests() {
         // method invocation
         TileSetList response = dataClient.getCollectionTilesets("naip-atl", "item-id-1,item-id-2", "-180,-90,180,90",
-            "{}", "-datetime", null, null, null, null, null, null);
+            "{}", "-datetime", (String) null, (String) null, (List<Integer>) null, (String) null, (List<String>) null,
+            (SelMethod) null);
 
         // response assertion
         Assertions.assertNotNull(response);
