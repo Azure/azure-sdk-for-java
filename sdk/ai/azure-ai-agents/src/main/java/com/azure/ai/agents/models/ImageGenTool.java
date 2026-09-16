@@ -70,11 +70,8 @@ public final class ImageGenTool extends Tool {
     private ImageGenToolModeration moderation;
 
     /*
-     * Set the background of the generated image. One of `transparent`,
-     * `opaque`, or `auto`. Transparent backgrounds are available for
-     * supported GPT Image models. For `gpt-image-2` and
-     * `gpt-image-2-2026-04-21`, this support is in preview. When using
-     * `transparent`, set the output format to `png` or `webp`. Default: `auto`.
+     * Background type for the generated image. One of `transparent`,
+     * `opaque`, or `auto`. Default: `auto`.
      */
     @Generated
     private ImageGenToolBackground background;
@@ -247,11 +244,8 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Get the background property: Set the background of the generated image. One of `transparent`,
-     * `opaque`, or `auto`. Transparent backgrounds are available for
-     * supported GPT Image models. For `gpt-image-2` and
-     * `gpt-image-2-2026-04-21`, this support is in preview. When using
-     * `transparent`, set the output format to `png` or `webp`. Default: `auto`.
+     * Get the background property: Background type for the generated image. One of `transparent`,
+     * `opaque`, or `auto`. Default: `auto`.
      *
      * @return the background value.
      */
@@ -261,11 +255,8 @@ public final class ImageGenTool extends Tool {
     }
 
     /**
-     * Set the background property: Set the background of the generated image. One of `transparent`,
-     * `opaque`, or `auto`. Transparent backgrounds are available for
-     * supported GPT Image models. For `gpt-image-2` and
-     * `gpt-image-2-2026-04-21`, this support is in preview. When using
-     * `transparent`, set the output format to `png` or `webp`. Default: `auto`.
+     * Set the background property: Background type for the generated image. One of `transparent`,
+     * `opaque`, or `auto`. Default: `auto`.
      *
      * @param background the background value to set.
      * @return the ImageGenTool object itself.

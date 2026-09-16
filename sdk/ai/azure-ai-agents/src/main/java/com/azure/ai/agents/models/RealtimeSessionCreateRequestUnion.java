@@ -78,10 +78,10 @@ public class RealtimeSessionCreateRequestUnion implements JsonSerializable<Realt
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("realtime".equals(discriminatorValue)) {
-                    return RealtimeSessionCreateRequestGA.fromJson(readerToUse.reset());
-                } else if ("transcription".equals(discriminatorValue)) {
+                if ("transcription".equals(discriminatorValue)) {
                     return RealtimeTranscriptionSessionCreateRequestGA.fromJson(readerToUse.reset());
+                } else if ("realtime".equals(discriminatorValue)) {
+                    return RealtimeSessionCreateRequestGA.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

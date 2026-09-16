@@ -128,7 +128,6 @@ public final class CustomToolParameter extends Tool {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeBooleanField("async", this.async);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("format", this.format);
         jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
@@ -151,7 +150,6 @@ public final class CustomToolParameter extends Tool {
         return jsonReader.readObject(reader -> {
             String name = null;
             ToolType type = ToolType.CUSTOM;
-            Boolean async = null;
             String description = null;
             CustomToolParamFormat format = null;
             Boolean deferLoading = null;
@@ -163,8 +161,6 @@ public final class CustomToolParameter extends Tool {
                     name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
-                } else if ("async".equals(fieldName)) {
-                    async = reader.getNullable(JsonReader::getBoolean);
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("format".equals(fieldName)) {
@@ -180,7 +176,6 @@ public final class CustomToolParameter extends Tool {
             }
             CustomToolParameter deserializedCustomToolParameter = new CustomToolParameter(name);
             deserializedCustomToolParameter.type = type;
-            deserializedCustomToolParameter.async = async;
             deserializedCustomToolParameter.description = description;
             deserializedCustomToolParameter.format = format;
             deserializedCustomToolParameter.deferLoading = deferLoading;
@@ -242,36 +237,6 @@ public final class CustomToolParameter extends Tool {
     @Generated
     public CustomToolParameter setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
         this.allowedCallers = allowedCallers;
-        return this;
-    }
-
-    /*
-     * Whether the tool response can be returned asynchronously versus immediately returned on next response creation.
-     */
-    @Generated
-    private Boolean async;
-
-    /**
-     * Get the async property: Whether the tool response can be returned asynchronously versus immediately returned on
-     * next response creation.
-     *
-     * @return the async value.
-     */
-    @Generated
-    public Boolean isAsync() {
-        return this.async;
-    }
-
-    /**
-     * Set the async property: Whether the tool response can be returned asynchronously versus immediately returned on
-     * next response creation.
-     *
-     * @param async the async value to set.
-     * @return the CustomToolParameter object itself.
-     */
-    @Generated
-    public CustomToolParameter setAsync(Boolean async) {
-        this.async = async;
         return this;
     }
 }

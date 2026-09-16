@@ -35,13 +35,13 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      * the model respond with text only. It is not possible to request both `text` and `audio` at the same time.
      */
     @Generated
-    private List<RealtimeSessionCreateRequestGAOutputModality> outputModalities;
+    private List<RealtimeClientEventSessionUpdateSessionOutputModality> outputModalities;
 
     /*
      * The Realtime model used for this session.
      */
     @Generated
-    private RealtimeSessionCreateRequestGAModel model;
+    private RealtimeClientEventSessionUpdateSessionModel model;
 
     /*
      * The default system instructions (i.e. system message) prepended to model calls. This field allows the client to
@@ -154,7 +154,7 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      * @return the outputModalities value.
      */
     @Generated
-    public List<RealtimeSessionCreateRequestGAOutputModality> getOutputModalities() {
+    public List<RealtimeClientEventSessionUpdateSessionOutputModality> getOutputModalities() {
         return this.outputModalities;
     }
 
@@ -169,7 +169,7 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      */
     @Generated
     public RealtimeSessionCreateRequestGA
-        setOutputModalities(List<RealtimeSessionCreateRequestGAOutputModality> outputModalities) {
+        setOutputModalities(List<RealtimeClientEventSessionUpdateSessionOutputModality> outputModalities) {
         this.outputModalities = outputModalities;
         return this;
     }
@@ -180,7 +180,7 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      * @return the model value.
      */
     @Generated
-    public RealtimeSessionCreateRequestGAModel getModel() {
+    public RealtimeClientEventSessionUpdateSessionModel getModel() {
         return this.model;
     }
 
@@ -590,7 +590,7 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      * @return the RealtimeSessionCreateRequestGA object itself.
      */
     @Generated
-    public RealtimeSessionCreateRequestGA setModel(RealtimeSessionCreateRequestGAModel model) {
+    public RealtimeSessionCreateRequestGA setModel(RealtimeClientEventSessionUpdateSessionModel model) {
         this.model = model;
         return this;
     }

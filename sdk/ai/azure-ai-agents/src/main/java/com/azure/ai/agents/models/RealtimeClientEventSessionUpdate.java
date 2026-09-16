@@ -5,6 +5,7 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -42,7 +43,7 @@ public final class RealtimeClientEventSessionUpdate extends RealtimeClientEvent 
      * session or a transcription session.
      */
     @Generated
-    private final RealtimeSessionCreateRequestUnion session;
+    private final BinaryData session;
 
     /**
      * Get the type property: The type property.
@@ -88,7 +89,7 @@ public final class RealtimeClientEventSessionUpdate extends RealtimeClientEvent 
      * @return the session value.
      */
     @Generated
-    public RealtimeSessionCreateRequestUnion getSession() {
+    public BinaryData getSession() {
         return this.session;
     }
 
@@ -99,7 +100,8 @@ public final class RealtimeClientEventSessionUpdate extends RealtimeClientEvent 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("session", this.session);
+        jsonWriter.writeFieldName("session");
+        this.session.writeTo(jsonWriter);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("event_id", this.eventId);
         return jsonWriter.writeEndObject();
@@ -117,14 +119,14 @@ public final class RealtimeClientEventSessionUpdate extends RealtimeClientEvent 
     @Generated
     public static RealtimeClientEventSessionUpdate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RealtimeSessionCreateRequestUnion session = null;
+            BinaryData session = null;
             RealtimeClientEventType type = RealtimeClientEventType.SESSION_UPDATE;
             String eventId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("session".equals(fieldName)) {
-                    session = RealtimeSessionCreateRequestUnion.fromJson(reader);
+                    session = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeClientEventType.fromString(reader.getString());
                 } else if ("event_id".equals(fieldName)) {
@@ -147,7 +149,7 @@ public final class RealtimeClientEventSessionUpdate extends RealtimeClientEvent 
      * @param session the session value to set.
      */
     @Generated
-    public RealtimeClientEventSessionUpdate(RealtimeSessionCreateRequestUnion session) {
+    public RealtimeClientEventSessionUpdate(BinaryData session) {
         this.session = session;
     }
 }
