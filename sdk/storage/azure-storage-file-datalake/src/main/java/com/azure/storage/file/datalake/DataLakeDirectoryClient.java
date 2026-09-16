@@ -17,7 +17,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
@@ -77,8 +76,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         super(dataLakePathClient.dataLakePathAsyncClient, dataLakePathClient.blockBlobClient,
             dataLakePathClient.getHttpPipeline(), dataLakePathClient.getAccountUrl(),
             dataLakePathClient.getServiceVersion(), dataLakePathClient.getAccountName(),
-            dataLakePathClient.getFileSystemName(), Utility.urlEncode(dataLakePathClient.pathName),
-            PathResourceType.DIRECTORY, dataLakePathClient.getSasToken(), dataLakePathClient.getCpkInfo(),
+            dataLakePathClient.getFileSystemName(), dataLakePathClient.pathName, PathResourceType.DIRECTORY,
+            dataLakePathClient.getSasToken(), dataLakePathClient.getCpkInfo(),
             dataLakePathClient.isTokenCredentialAuthenticated());
         this.dataLakeDirectoryAsyncClient
             = new DataLakeDirectoryAsyncClient(dataLakePathClient.dataLakePathAsyncClient);

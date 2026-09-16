@@ -13,10 +13,10 @@ public final class HorizonDbReplicaListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HorizonDbReplicaListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"role\":\"ReadWrite\",\"status\":\"Disabled\",\"fullyQualifiedDomainName\":\"bmdg\",\"availabilityZone\":\"jfddgmbmbe\",\"provisioningState\":\"InProgress\"},\"id\":\"htqqrolfp\",\"name\":\"psalgbqux\",\"type\":\"gjyjgzjaoyfhrtxi\"},{\"properties\":{\"role\":\"Read\",\"status\":\"Starting\",\"fullyQualifiedDomainName\":\"ysvlejuvf\",\"availabilityZone\":\"wrlyxwjkcprb\",\"provisioningState\":\"Provisioning\"},\"id\":\"gjvtbv\",\"name\":\"ysszdnrujqguh\",\"type\":\"uouq\"},{\"properties\":{\"role\":\"ReadWrite\",\"status\":\"Stopped\",\"fullyQualifiedDomainName\":\"nguitnwuizgazxu\",\"availabilityZone\":\"zuckyfi\",\"provisioningState\":\"Failed\"},\"id\":\"dfvzwdzuhty\",\"name\":\"wisdkft\",\"type\":\"wxmnteiwao\"},{\"properties\":{\"role\":\"ReadWrite\",\"status\":\"Updating\",\"fullyQualifiedDomainName\":\"mmxdcu\",\"availabilityZone\":\"fsrpymzidnse\",\"provisioningState\":\"Failed\"},\"id\":\"bzsgfyccsne\",\"name\":\"mdwzjeiachboo\",\"type\":\"flnrosfqpteehzz\"}],\"nextLink\":\"pyqr\"}")
+            "{\"value\":[{\"properties\":{\"role\":\"ReadWrite\",\"status\":\"Ready\",\"fullyQualifiedDomainName\":\"ejk\",\"availabilityZone\":\"ynqgoulzndlikwyq\",\"provisioningState\":\"Failed\"},\"id\":\"ibmadgakeqsrxy\",\"name\":\"zqqedq\",\"type\":\"tbciqfouflmm\"},{\"properties\":{\"role\":\"ReadWrite\",\"status\":\"Ready\",\"fullyQualifiedDomainName\":\"mglougpbkw\",\"availabilityZone\":\"utduqktapspwgcu\",\"provisioningState\":\"InProgress\"},\"id\":\"mkdo\",\"name\":\"vqwhbmdgbbjfd\",\"type\":\"gmbmbexppbh\"},{\"properties\":{\"role\":\"Read\",\"status\":\"Updating\",\"fullyQualifiedDomainName\":\"p\",\"availabilityZone\":\"s\",\"provisioningState\":\"Succeeded\"},\"id\":\"qux\",\"name\":\"gjyjgzjaoyfhrtxi\",\"type\":\"n\"}],\"nextLink\":\"kujysvlejuvfq\"}")
             .toObject(HorizonDbReplicaListResult.class);
         Assertions.assertEquals(ReplicaRole.READ_WRITE, model.value().get(0).properties().role());
-        Assertions.assertEquals("jfddgmbmbe", model.value().get(0).properties().availabilityZone());
-        Assertions.assertEquals("pyqr", model.nextLink());
+        Assertions.assertEquals("ynqgoulzndlikwyq", model.value().get(0).properties().availabilityZone());
+        Assertions.assertEquals("kujysvlejuvfq", model.nextLink());
     }
 }

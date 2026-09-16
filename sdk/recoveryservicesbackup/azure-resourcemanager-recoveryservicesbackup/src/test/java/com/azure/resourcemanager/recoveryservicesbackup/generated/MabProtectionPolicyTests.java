@@ -15,20 +15,20 @@ public final class MabProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MabProtectionPolicy model = BinaryData.fromString(
-            "{\"backupManagementType\":\"MAB\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":67510907,\"resourceGuardOperationRequests\":[\"xv\",\"sasbcrymodizrx\",\"lobdxna\",\"pmkmlmvevfx\"]}")
+            "{\"backupManagementType\":\"MAB\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":715189012,\"resourceGuardOperationRequests\":[\"weooxffifhxwrs\",\"ewmozqvbu\",\"qmamhsycxhxzga\"]}")
             .toObject(MabProtectionPolicy.class);
-        Assertions.assertEquals(67510907, model.protectedItemsCount());
-        Assertions.assertEquals("xv", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(715189012, model.protectedItemsCount());
+        Assertions.assertEquals("weooxffifhxwrs", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MabProtectionPolicy model = new MabProtectionPolicy().withProtectedItemsCount(67510907)
-            .withResourceGuardOperationRequests(Arrays.asList("xv", "sasbcrymodizrx", "lobdxna", "pmkmlmvevfx"))
+        MabProtectionPolicy model = new MabProtectionPolicy().withProtectedItemsCount(715189012)
+            .withResourceGuardOperationRequests(Arrays.asList("weooxffifhxwrs", "ewmozqvbu", "qmamhsycxhxzga"))
             .withSchedulePolicy(new SchedulePolicy())
             .withRetentionPolicy(new RetentionPolicy());
         model = BinaryData.fromObject(model).toObject(MabProtectionPolicy.class);
-        Assertions.assertEquals(67510907, model.protectedItemsCount());
-        Assertions.assertEquals("xv", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(715189012, model.protectedItemsCount());
+        Assertions.assertEquals("weooxffifhxwrs", model.resourceGuardOperationRequests().get(0));
     }
 }

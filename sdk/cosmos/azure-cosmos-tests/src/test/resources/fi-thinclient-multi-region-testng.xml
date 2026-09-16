@@ -24,6 +24,7 @@
 <suite name="fi-thinclient-multi-region">
   <listeners>
     <listener class-name="com.azure.cosmos.CosmosNettyLeakDetectorFactory"/>
+    <listener class-name="com.azure.cosmos.CosmosTestResourceJanitor"/>
   </listeners>
   <test name="fi-thinclient-multi-region" group-by-instances="true">
     <groups>

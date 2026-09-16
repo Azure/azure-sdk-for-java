@@ -28,7 +28,7 @@ public final class FleetMembersDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.fleetMembers()
-            .delete("ujxukndxd", "grjguufzd", "syqtfi", "whbotzingamv", com.azure.core.util.Context.NONE);
+            .delete("woycqucwyha", "nomdrkywuhpsv", "uurutlwexxwlalni", "xzsrzpge", com.azure.core.util.Context.NONE);
 
     }
 }

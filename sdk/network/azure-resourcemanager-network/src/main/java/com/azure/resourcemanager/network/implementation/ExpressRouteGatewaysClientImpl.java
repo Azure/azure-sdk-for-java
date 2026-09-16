@@ -229,7 +229,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -267,7 +267,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -359,7 +359,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -406,7 +406,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -612,7 +612,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             expressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -659,7 +659,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             expressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -854,7 +854,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, expressRouteGatewayName, context))
@@ -892,7 +892,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             expressRouteGatewayName, context);
@@ -1062,7 +1062,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -1095,7 +1095,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1163,7 +1163,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBySubscription(this.client.getEndpoint(), apiVersion,
@@ -1190,7 +1190,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listBySubscription(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1267,7 +1267,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getFailoverAllTestsDetails(this.client.getEndpoint(), apiVersion,
@@ -1309,7 +1309,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getFailoverAllTestsDetails(this.client.getEndpoint(), apiVersion,
@@ -1586,7 +1586,7 @@ public final class ExpressRouteGatewaysClientImpl
         if (failoverTestId == null) {
             return Mono.error(new IllegalArgumentException("Parameter failoverTestId is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getFailoverSingleTestDetails(this.client.getEndpoint(), apiVersion,
@@ -1634,7 +1634,7 @@ public final class ExpressRouteGatewaysClientImpl
         if (failoverTestId == null) {
             return Mono.error(new IllegalArgumentException("Parameter failoverTestId is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getFailoverSingleTestDetails(this.client.getEndpoint(), apiVersion,
@@ -1858,7 +1858,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter peeringLocation is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startSiteFailoverTest(this.client.getEndpoint(), apiVersion,
@@ -1902,7 +1902,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter peeringLocation is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startSiteFailoverTest(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2097,7 +2097,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             stopParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2143,7 +2143,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             stopParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -2333,7 +2333,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getRoutesInformation(this.client.getEndpoint(), apiVersion,
@@ -2373,7 +2373,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getRoutesInformation(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2606,7 +2606,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getResiliencyInformation(this.client.getEndpoint(), apiVersion,
@@ -2646,7 +2646,7 @@ public final class ExpressRouteGatewaysClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter expressRouteGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getResiliencyInformation(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),

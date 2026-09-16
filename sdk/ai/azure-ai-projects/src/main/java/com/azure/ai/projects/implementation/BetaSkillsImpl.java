@@ -894,7 +894,7 @@ public final class BetaSkillsImpl {
      * </pre>
      * 
      * @param name The name of the skill.
-     * @param content The content parameter.
+     * @param content The multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -903,8 +903,8 @@ public final class BetaSkillsImpl {
      * @return a specific version of a skill along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createSkillVersionFromFilesWithResponseAsync(String name, BinaryData content,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createSkillVersionFromFilesWithResponseInternalAsync(String name,
+        BinaryData content, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createSkillVersionFromFiles(this.client.getEndpoint(), name,
@@ -931,7 +931,7 @@ public final class BetaSkillsImpl {
      * </pre>
      * 
      * @param name The name of the skill.
-     * @param content The content parameter.
+     * @param content The multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -940,7 +940,7 @@ public final class BetaSkillsImpl {
      * @return a specific version of a skill along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createSkillVersionFromFilesWithResponse(String name, BinaryData content,
+    public Response<BinaryData> createSkillVersionFromFilesWithResponseInternal(String name, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
@@ -1419,20 +1419,26 @@ public final class BetaSkillsImpl {
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

@@ -150,4 +150,11 @@ public interface ChaosManagementClient {
      * @return the ScenarioRunsClient object.
      */
     ScenarioRunsClient getScenarioRuns();
+
+    /**
+     * Gets the ConnectionsClient object to access its operations.
+     * 
+     * @return the ConnectionsClient object.
+     */
+    ConnectionsClient getConnections();
 }

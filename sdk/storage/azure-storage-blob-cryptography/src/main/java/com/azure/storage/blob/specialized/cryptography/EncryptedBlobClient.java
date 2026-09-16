@@ -52,6 +52,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_NONCE_VALIDATOR_KEY;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -485,12 +486,18 @@ public class EncryptedBlobClient extends BlobClient {
         return range != null && (range.getOffset() != 0 || range.getCount() != null);
     }
 
+    static BlobRequestConditions applyETagLock(BlobRequestConditions requestConditions, String eTag) {
+        BlobRequestConditions finalConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        return finalConditions.setIfMatch(StorageImplUtils.toETagHeaderValue(eTag));
+    }
+
     private Context populateRequestConditionsAndContext(BlobRequestConditions requestConditions, Duration timeout,
         Context context) {
         BlobProperties initialProperties
             = this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
 
-        requestConditions.setIfMatch(initialProperties.getETag());
+        applyETagLock(requestConditions, initialProperties.getETag());
 
         String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(initialProperties.getMetadata());
         if (encryptionDataKey != null) {
@@ -498,6 +505,7 @@ public class EncryptedBlobClient extends BlobClient {
                 encryptedBlobAsyncClient.isEncryptionRequired());
 
             context = context.addData(ENCRYPTION_DATA_KEY, encryptionData)
+                .addData(GCM_NONCE_VALIDATOR_KEY, new CseV2NonceOrderValidator())
                 .addData(Constants.ADJUSTED_BLOB_LENGTH_KEY,
                     EncryptedBlobLength.computeAdjustedBlobLength(encryptionData, initialProperties.getBlobSize()));
         }

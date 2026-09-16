@@ -115,6 +115,16 @@ public final class VirtualHubProperties implements JsonSerializable<VirtualHubPr
     private List<String> virtualRouterIps;
 
     /*
+     * IPv6 Address-prefix for this VirtualHub.
+     */
+    private String addressPrefixV6;
+
+    /*
+     * VirtualRouter IPv6 IPs.
+     */
+    private List<String> virtualRouterIpsV6;
+
+    /*
      * Flag to control transit for VirtualRouter hub.
      */
     private Boolean allowBranchToBranchTraffic;
@@ -448,6 +458,46 @@ public final class VirtualHubProperties implements JsonSerializable<VirtualHubPr
     }
 
     /**
+     * Get the addressPrefixV6 property: IPv6 Address-prefix for this VirtualHub.
+     * 
+     * @return the addressPrefixV6 value.
+     */
+    public String addressPrefixV6() {
+        return this.addressPrefixV6;
+    }
+
+    /**
+     * Set the addressPrefixV6 property: IPv6 Address-prefix for this VirtualHub.
+     * 
+     * @param addressPrefixV6 the addressPrefixV6 value to set.
+     * @return the VirtualHubProperties object itself.
+     */
+    public VirtualHubProperties withAddressPrefixV6(String addressPrefixV6) {
+        this.addressPrefixV6 = addressPrefixV6;
+        return this;
+    }
+
+    /**
+     * Get the virtualRouterIpsV6 property: VirtualRouter IPv6 IPs.
+     * 
+     * @return the virtualRouterIpsV6 value.
+     */
+    public List<String> virtualRouterIpsV6() {
+        return this.virtualRouterIpsV6;
+    }
+
+    /**
+     * Set the virtualRouterIpsV6 property: VirtualRouter IPv6 IPs.
+     * 
+     * @param virtualRouterIpsV6 the virtualRouterIpsV6 value to set.
+     * @return the VirtualHubProperties object itself.
+     */
+    public VirtualHubProperties withVirtualRouterIpsV6(List<String> virtualRouterIpsV6) {
+        this.virtualRouterIpsV6 = virtualRouterIpsV6;
+        return this;
+    }
+
+    /**
      * Get the allowBranchToBranchTraffic property: Flag to control transit for VirtualRouter hub.
      * 
      * @return the allowBranchToBranchTraffic value.
@@ -566,6 +616,9 @@ public final class VirtualHubProperties implements JsonSerializable<VirtualHubPr
         jsonWriter.writeNumberField("virtualRouterAsn", this.virtualRouterAsn);
         jsonWriter.writeArrayField("virtualRouterIps", this.virtualRouterIps,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("addressPrefixV6", this.addressPrefixV6);
+        jsonWriter.writeArrayField("virtualRouterIpsV6", this.virtualRouterIpsV6,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("allowBranchToBranchTraffic", this.allowBranchToBranchTraffic);
         jsonWriter.writeStringField("preferredRoutingGateway",
             this.preferredRoutingGateway == null ? null : this.preferredRoutingGateway.toString());
@@ -633,6 +686,11 @@ public final class VirtualHubProperties implements JsonSerializable<VirtualHubPr
                 } else if ("virtualRouterIps".equals(fieldName)) {
                     List<String> virtualRouterIps = reader.readArray(reader1 -> reader1.getString());
                     deserializedVirtualHubProperties.virtualRouterIps = virtualRouterIps;
+                } else if ("addressPrefixV6".equals(fieldName)) {
+                    deserializedVirtualHubProperties.addressPrefixV6 = reader.getString();
+                } else if ("virtualRouterIpsV6".equals(fieldName)) {
+                    List<String> virtualRouterIpsV6 = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualHubProperties.virtualRouterIpsV6 = virtualRouterIpsV6;
                 } else if ("allowBranchToBranchTraffic".equals(fieldName)) {
                     deserializedVirtualHubProperties.allowBranchToBranchTraffic
                         = reader.getNullable(JsonReader::getBoolean);

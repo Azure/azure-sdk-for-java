@@ -13,18 +13,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Represents the writable fields of a scheduled action resource used in attach and patch requests.
+ * A compute resource to add to or update in a scheduled action.
  */
 @Fluent
 public final class ScheduledActionResourceInput implements JsonSerializable<ScheduledActionResourceInput> {
     /*
-     * The ARM Id of the resource.
-     * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
+     * The Azure resource ID of the targeted virtual machine.
      */
     private String resourceId;
 
     /*
-     * The desired notification settings for the specified resource.
+     * Notification settings that apply only to this resource.
      */
     private List<NotificationProperties> notificationSettings;
 
@@ -35,8 +34,7 @@ public final class ScheduledActionResourceInput implements JsonSerializable<Sche
     }
 
     /**
-     * Get the resourceId property: The ARM Id of the resource.
-     * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}".
+     * Get the resourceId property: The Azure resource ID of the targeted virtual machine.
      * 
      * @return the resourceId value.
      */
@@ -45,8 +43,7 @@ public final class ScheduledActionResourceInput implements JsonSerializable<Sche
     }
 
     /**
-     * Set the resourceId property: The ARM Id of the resource.
-     * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}".
+     * Set the resourceId property: The Azure resource ID of the targeted virtual machine.
      * 
      * @param resourceId the resourceId value to set.
      * @return the ScheduledActionResourceInput object itself.
@@ -57,7 +54,7 @@ public final class ScheduledActionResourceInput implements JsonSerializable<Sche
     }
 
     /**
-     * Get the notificationSettings property: The desired notification settings for the specified resource.
+     * Get the notificationSettings property: Notification settings that apply only to this resource.
      * 
      * @return the notificationSettings value.
      */
@@ -66,7 +63,7 @@ public final class ScheduledActionResourceInput implements JsonSerializable<Sche
     }
 
     /**
-     * Set the notificationSettings property: The desired notification settings for the specified resource.
+     * Set the notificationSettings property: Notification settings that apply only to this resource.
      * 
      * @param notificationSettings the notificationSettings value to set.
      * @return the ScheduledActionResourceInput object itself.

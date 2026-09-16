@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class RoutesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/RouteTableRouteCreate.json
+     * x-ms-original-file: 2025-09-01/RouteTableRouteCreate.json
      */
     /**
      * Sample code: Create route.
@@ -29,7 +29,7 @@ public final class RoutesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/RouteTableRouteCreateEcmp.json
+     * x-ms-original-file: 2025-09-01/RouteTableRouteCreateEcmp.json
      */
     /**
      * Sample code: Create ECMP route.

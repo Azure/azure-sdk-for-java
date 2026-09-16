@@ -17,7 +17,7 @@ public class StacItemsGetFeatures {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-item-collection.stac-items-get-features
-        StacItemCollection response = stacClient.getItemCollection("naip-atl", 10, null, null);
+        StacItemCollection response = stacClient.getItemCollection("naip-atl", 10, null, null, null, null, null);
         // END:com.azure.analytics.planetarycomputer.generated.stac-get-item-collection.stac-items-get-features
     }
 }

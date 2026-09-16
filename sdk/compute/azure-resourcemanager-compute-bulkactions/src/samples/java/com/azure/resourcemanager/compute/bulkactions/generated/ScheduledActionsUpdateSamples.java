@@ -8,14 +8,13 @@ import com.azure.resourcemanager.compute.bulkactions.models.Language;
 import com.azure.resourcemanager.compute.bulkactions.models.Month;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationType;
-import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsDeadlineType;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdate;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdateProperties;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsDeadlineType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsExecutionParameters;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsScheduleUpdate;
 import com.azure.resourcemanager.compute.bulkactions.models.WeekDay;
 import java.time.OffsetDateTime;
@@ -28,15 +27,15 @@ import java.util.Map;
  */
 public final class ScheduledActionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_Update_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_Update_MaximumSet.
+     * Sample code: Update a scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void scheduledActionsUpdateMaximumSet(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void
+        updateAScheduledAction(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .update("rgcompute", "myScheduledAction",
                 new ScheduledActionUpdate().withTags(mapOf("key9989", "fakeTokenPlaceholder"))
@@ -49,11 +48,9 @@ public final class ScheduledActionsUpdateSamples {
                             .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
                             .withRequestedMonths(Arrays.asList(Month.JANUARY))
                             .withRequestedDaysOfTheMonth(Arrays.asList(15))
-                            .withExecutionParameters(new RecurringScheduledActionsExecutionParameters()
-                                .withOptimizationPreference(OptimizationPreference.COST)
-                                .withRetryPolicy(new RecurringScheduledActionsRetryPolicy().withRetryCount(17)
-                                    .withRetryWindowInMinutes(29)))
-                            .withDeadlineType(RecurringScheduledActionsDeadlineType.UNKNOWN))
+                            .withExecutionParameters(new ScheduledActionsExecutionParameters().withRetryPolicy(
+                                new ScheduledActionsRetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
+                            .withDeadlineType(ScheduledActionsDeadlineType.INITIATE_AT))
                         .withNotificationSettings(
                             Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
                                 .withType(NotificationType.EMAIL)

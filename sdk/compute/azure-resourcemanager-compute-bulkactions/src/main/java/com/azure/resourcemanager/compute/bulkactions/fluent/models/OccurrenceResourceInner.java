@@ -12,54 +12,53 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.bulkactions.models.Error;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationProperties;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourceProvisioningState;
+import com.azure.resourcemanager.compute.bulkactions.models.OccurrenceResourceProvisioningState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * Represents an scheduled action resource metadata.
+ * Scheduling and status details for a resource included in a scheduled action occurrence.
  */
 @Immutable
 public final class OccurrenceResourceInner implements JsonSerializable<OccurrenceResourceInner> {
     /*
-     * The name of the resource
+     * Read-only. The name of the association resource.
      */
     private String name;
 
     /*
-     * The compute RP resource id of the resource in the scheduled actions scope.
+     * Read-only. The Azure resource ID of the association resource.
      */
     private String id;
 
     /*
-     * The type of resource
+     * Read-only. The Azure resource type of the associated resource.
      */
     private String type;
 
     /*
-     * The ARM Id of the resource.
-     * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}"
+     * The Azure resource ID of the targeted virtual machine.
      */
     private String resourceId;
 
     /*
-     * The desired notification settings for the specified resource.
+     * Notification settings that apply only to this resource.
      */
     private List<NotificationProperties> notificationSettings;
 
     /*
-     * The time the occurrence is scheduled for the resource.
+     * Read-only. The UTC date and time when the operation is scheduled for this resource.
      */
     private OffsetDateTime scheduledTime;
 
     /*
-     * The current state of the resource
+     * Read-only. The current state of the operation for this resource.
      */
-    private ResourceProvisioningState provisioningState;
+    private OccurrenceResourceProvisioningState provisioningState;
 
     /*
-     * Error details for the resource. Only populated if resource is in failed state.
+     * Read-only. Error details when the operation fails for this resource.
      */
     private Error errorDetails;
 
@@ -70,7 +69,7 @@ public final class OccurrenceResourceInner implements JsonSerializable<Occurrenc
     }
 
     /**
-     * Get the name property: The name of the resource.
+     * Get the name property: Read-only. The name of the association resource.
      * 
      * @return the name value.
      */
@@ -79,7 +78,7 @@ public final class OccurrenceResourceInner implements JsonSerializable<Occurrenc
     }
 
     /**
-     * Get the id property: The compute RP resource id of the resource in the scheduled actions scope.
+     * Get the id property: Read-only. The Azure resource ID of the association resource.
      * 
      * @return the id value.
      */
@@ -88,7 +87,7 @@ public final class OccurrenceResourceInner implements JsonSerializable<Occurrenc
     }
 
     /**
-     * Get the type property: The type of resource.
+     * Get the type property: Read-only. The Azure resource type of the associated resource.
      * 
      * @return the type value.
      */
@@ -97,8 +96,7 @@ public final class OccurrenceResourceInner implements JsonSerializable<Occurrenc
     }
 
     /**
-     * Get the resourceId property: The ARM Id of the resource.
-     * "subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}".
+     * Get the resourceId property: The Azure resource ID of the targeted virtual machine.
      * 
      * @return the resourceId value.
      */
@@ -107,7 +105,7 @@ public final class OccurrenceResourceInner implements JsonSerializable<Occurrenc
     }
 
     /**
-     * Get the notificationSettings property: The desired notification settings for the specified resource.
+     * Get the notificationSettings property: Notification settings that apply only to this resource.
      * 
      * @return the notificationSettings value.
      */
@@ -116,7 +114,8 @@ public final class OccurrenceResourceInner implements JsonSerializable<Occurrenc
     }
 
     /**
-     * Get the scheduledTime property: The time the occurrence is scheduled for the resource.
+     * Get the scheduledTime property: Read-only. The UTC date and time when the operation is scheduled for this
+     * resource.
      * 
      * @return the scheduledTime value.
      */
@@ -125,16 +124,16 @@ public final class OccurrenceResourceInner implements JsonSerializable<Occurrenc
     }
 
     /**
-     * Get the provisioningState property: The current state of the resource.
+     * Get the provisioningState property: Read-only. The current state of the operation for this resource.
      * 
      * @return the provisioningState value.
      */
-    public ResourceProvisioningState provisioningState() {
+    public OccurrenceResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Get the errorDetails property: Error details for the resource. Only populated if resource is in failed state.
+     * Get the errorDetails property: Read-only. Error details when the operation fails for this resource.
      * 
      * @return the errorDetails value.
      */
@@ -187,7 +186,7 @@ public final class OccurrenceResourceInner implements JsonSerializable<Occurrenc
                     deserializedOccurrenceResourceInner.notificationSettings = notificationSettings;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedOccurrenceResourceInner.provisioningState
-                        = ResourceProvisioningState.fromString(reader.getString());
+                        = OccurrenceResourceProvisioningState.fromString(reader.getString());
                 } else if ("errorDetails".equals(fieldName)) {
                     deserializedOccurrenceResourceInner.errorDetails = Error.fromJson(reader);
                 } else {

@@ -9,14 +9,14 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbReplicasListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Replicas_List.json
+     * x-ms-original-file: 2026-05-01-preview/Replicas_List.json
      */
     /**
-     * Sample code: List HorizonDb replicas in a pool.
+     * Sample code: List HorizonDB replicas in a pool.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void listHorizonDbReplicasInAPool(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void listHorizonDBReplicasInAPool(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbReplicas()
             .list("exampleresourcegroup", "examplecluster", "examplepool", com.azure.core.util.Context.NONE);
     }

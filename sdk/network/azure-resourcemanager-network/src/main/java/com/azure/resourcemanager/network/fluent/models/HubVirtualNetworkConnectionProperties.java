@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.EnableOnlyIpv6PeeringState;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import java.io.IOException;
@@ -49,6 +50,11 @@ public final class HubVirtualNetworkConnectionProperties
      * The Routing Configuration indicating the associated and propagated route tables on this connection.
      */
     private RoutingConfiguration routingConfiguration;
+
+    /*
+     * Enable Only IPv6 Peering for this connection.
+     */
+    private EnableOnlyIpv6PeeringState enableOnlyIpv6Peering;
 
     /*
      * The provisioning state of the hub virtual network connection resource.
@@ -187,6 +193,27 @@ public final class HubVirtualNetworkConnectionProperties
     }
 
     /**
+     * Get the enableOnlyIpv6Peering property: Enable Only IPv6 Peering for this connection.
+     * 
+     * @return the enableOnlyIpv6Peering value.
+     */
+    public EnableOnlyIpv6PeeringState enableOnlyIpv6Peering() {
+        return this.enableOnlyIpv6Peering;
+    }
+
+    /**
+     * Set the enableOnlyIpv6Peering property: Enable Only IPv6 Peering for this connection.
+     * 
+     * @param enableOnlyIpv6Peering the enableOnlyIpv6Peering value to set.
+     * @return the HubVirtualNetworkConnectionProperties object itself.
+     */
+    public HubVirtualNetworkConnectionProperties
+        withEnableOnlyIpv6Peering(EnableOnlyIpv6PeeringState enableOnlyIpv6Peering) {
+        this.enableOnlyIpv6Peering = enableOnlyIpv6Peering;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the hub virtual network connection resource.
      * 
      * @return the provisioningState value.
@@ -218,6 +245,8 @@ public final class HubVirtualNetworkConnectionProperties
         jsonWriter.writeJsonField("connectionPolicy", this.connectionPolicy);
         jsonWriter.writeBooleanField("enableInternetSecurity", this.enableInternetSecurity);
         jsonWriter.writeJsonField("routingConfiguration", this.routingConfiguration);
+        jsonWriter.writeStringField("enableOnlyIpv6Peering",
+            this.enableOnlyIpv6Peering == null ? null : this.enableOnlyIpv6Peering.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -254,6 +283,9 @@ public final class HubVirtualNetworkConnectionProperties
                 } else if ("routingConfiguration".equals(fieldName)) {
                     deserializedHubVirtualNetworkConnectionProperties.routingConfiguration
                         = RoutingConfiguration.fromJson(reader);
+                } else if ("enableOnlyIpv6Peering".equals(fieldName)) {
+                    deserializedHubVirtualNetworkConnectionProperties.enableOnlyIpv6Peering
+                        = EnableOnlyIpv6PeeringState.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedHubVirtualNetworkConnectionProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

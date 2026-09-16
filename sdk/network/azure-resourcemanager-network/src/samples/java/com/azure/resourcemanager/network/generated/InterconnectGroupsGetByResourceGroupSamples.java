@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class InterconnectGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/InterconnectGroupGet.json
+     * x-ms-original-file: 2025-09-01/InterconnectGroupGet.json
      */
     /**
      * Sample code: Get interconnect group.

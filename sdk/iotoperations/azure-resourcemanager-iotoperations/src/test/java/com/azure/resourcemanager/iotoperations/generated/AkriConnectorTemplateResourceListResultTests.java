@@ -15,32 +15,34 @@ public final class AkriConnectorTemplateResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorTemplateResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"aioMetadata\":{\"aioMinVersion\":\"zh\",\"aioMaxVersion\":\"wesgogczh\"},\"runtimeConfiguration\":{\"runtimeConfigurationType\":\"AkriConnectorTemplateRuntimeConfiguration\"},\"diagnostics\":{\"logs\":{\"level\":\"xkr\"}},\"deviceInboundEndpointTypes\":[{\"displayName\":\"yhmossxkkg\",\"endpointType\":\"h\",\"version\":\"gh\"},{\"displayName\":\"bdhqxvcxgf\",\"endpointType\":\"pdso\",\"version\":\"shrnsvbuswdvz\"},{\"displayName\":\"bycnunvjsrtkf\",\"endpointType\":\"wnopqgikyzirtx\",\"version\":\"uxzejntpsew\"}],\"mqttConnectionConfiguration\":{\"authentication\":{\"method\":\"AkriConnectorsMqttAuthentication\"},\"host\":\"l\",\"protocol\":\"Mqtt\",\"keepAliveSeconds\":1456439071,\"maxInflightMessages\":381588306,\"sessionExpirySeconds\":793974310,\"tls\":{\"mode\":\"Disabled\",\"trustedCaCertificateConfigMapRef\":\"xorgg\"}},\"connectorMetadataRef\":\"hyaomtbghhavgr\",\"healthState\":\"Unavailable\"},\"extendedLocation\":{\"name\":\"ovjzhpjbibgjmfx\",\"type\":\"CustomLocation\"},\"id\":\"fcluyov\",\"name\":\"xnbkfezzxscyhwzd\",\"type\":\"irujbz\"}],\"nextLink\":\"mvzzbtdcqvp\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"aioMetadata\":{\"aioMinVersion\":\"hirctymoxoftpipi\",\"aioMaxVersion\":\"czuhxacpqjlihh\"},\"runtimeConfiguration\":{\"runtimeConfigurationType\":\"AkriConnectorTemplateRuntimeConfiguration\"},\"diagnostics\":{\"logs\":{\"level\":\"pskasdvlmfwdg\"}},\"deviceInboundEndpointTypes\":[{\"displayName\":\"lucvpam\",\"endpointType\":\"sreuzvxurisjnh\",\"version\":\"txifqj\"}],\"mqttConnectionConfiguration\":{\"authentication\":{\"method\":\"AkriConnectorsMqttAuthentication\"},\"host\":\"rhublwpcesutrg\",\"protocol\":\"Mqtt\",\"keepAliveSeconds\":431834289,\"maxInflightMessages\":657567576,\"sessionExpirySeconds\":1683686139,\"tls\":{\"mode\":\"Disabled\",\"trustedCaCertificateConfigMapRef\":\"hej\"}},\"connectorMetadataRef\":\"w\",\"healthState\":\"Available\"},\"extendedLocation\":{\"name\":\"qntcypsxjvfoimwk\",\"type\":\"CustomLocation\"},\"id\":\"rcizjxvyd\",\"name\":\"ceacvlhvygdy\",\"type\":\"t\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"aioMetadata\":{\"aioMinVersion\":\"awjs\",\"aioMaxVersion\":\"iw\"},\"runtimeConfiguration\":{\"runtimeConfigurationType\":\"AkriConnectorTemplateRuntimeConfiguration\"},\"diagnostics\":{\"logs\":{\"level\":\"gcyztsfmznbae\"}},\"deviceInboundEndpointTypes\":[{\"displayName\":\"chqnrnrpxehuwry\",\"endpointType\":\"qgaifmviklbydv\",\"version\":\"bejdznxcv\"}],\"mqttConnectionConfiguration\":{\"authentication\":{\"method\":\"AkriConnectorsMqttAuthentication\"},\"host\":\"njivolvtnovq\",\"protocol\":\"Mqtt\",\"keepAliveSeconds\":1600023368,\"maxInflightMessages\":1068336147,\"sessionExpirySeconds\":566007686,\"tls\":{\"mode\":\"Disabled\",\"trustedCaCertificateConfigMapRef\":\"tduceamt\"}},\"connectorMetadataRef\":\"zuo\",\"healthState\":\"Available\"},\"extendedLocation\":{\"name\":\"cwwqiokn\",\"type\":\"CustomLocation\"},\"id\":\"mojmsvpkjprvkw\",\"name\":\"fz\",\"type\":\"ljyxgtczhe\"}],\"nextLink\":\"bsdshmkxmaehvbbx\"}")
             .toObject(AkriConnectorTemplateResourceListResult.class);
-        Assertions.assertEquals("zh", model.value().get(0).properties().aioMetadata().aioMinVersion());
-        Assertions.assertEquals("wesgogczh", model.value().get(0).properties().aioMetadata().aioMaxVersion());
-        Assertions.assertEquals("xkr", model.value().get(0).properties().diagnostics().logs().level());
-        Assertions.assertEquals("yhmossxkkg",
+        Assertions.assertEquals("hirctymoxoftpipi", model.value().get(0).properties().aioMetadata().aioMinVersion());
+        Assertions.assertEquals("czuhxacpqjlihh", model.value().get(0).properties().aioMetadata().aioMaxVersion());
+        Assertions.assertEquals("pskasdvlmfwdg", model.value().get(0).properties().diagnostics().logs().level());
+        Assertions.assertEquals("lucvpam",
             model.value().get(0).properties().deviceInboundEndpointTypes().get(0).displayName());
-        Assertions.assertEquals("h",
+        Assertions.assertEquals("sreuzvxurisjnh",
             model.value().get(0).properties().deviceInboundEndpointTypes().get(0).endpointType());
-        Assertions.assertEquals("gh", model.value().get(0).properties().deviceInboundEndpointTypes().get(0).version());
-        Assertions.assertEquals("l", model.value().get(0).properties().mqttConnectionConfiguration().host());
+        Assertions.assertEquals("txifqj",
+            model.value().get(0).properties().deviceInboundEndpointTypes().get(0).version());
+        Assertions.assertEquals("rhublwpcesutrg",
+            model.value().get(0).properties().mqttConnectionConfiguration().host());
         Assertions.assertEquals(AkriConnectorsMqttProtocolType.MQTT,
             model.value().get(0).properties().mqttConnectionConfiguration().protocol());
-        Assertions.assertEquals(1456439071,
+        Assertions.assertEquals(431834289,
             model.value().get(0).properties().mqttConnectionConfiguration().keepAliveSeconds());
-        Assertions.assertEquals(381588306,
+        Assertions.assertEquals(657567576,
             model.value().get(0).properties().mqttConnectionConfiguration().maxInflightMessages());
-        Assertions.assertEquals(793974310,
+        Assertions.assertEquals(1683686139,
             model.value().get(0).properties().mqttConnectionConfiguration().sessionExpirySeconds());
         Assertions.assertEquals(OperationalMode.DISABLED,
             model.value().get(0).properties().mqttConnectionConfiguration().tls().mode());
-        Assertions.assertEquals("xorgg",
+        Assertions.assertEquals("hej",
             model.value().get(0).properties().mqttConnectionConfiguration().tls().trustedCaCertificateConfigMapRef());
-        Assertions.assertEquals("hyaomtbghhavgr", model.value().get(0).properties().connectorMetadataRef());
-        Assertions.assertEquals("ovjzhpjbibgjmfx", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("w", model.value().get(0).properties().connectorMetadataRef());
+        Assertions.assertEquals("qntcypsxjvfoimwk", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("mvzzbtdcqvp", model.nextLink());
+        Assertions.assertEquals("bsdshmkxmaehvbbx", model.nextLink());
     }
 }

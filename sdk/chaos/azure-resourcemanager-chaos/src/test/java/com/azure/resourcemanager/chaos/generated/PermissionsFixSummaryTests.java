@@ -12,7 +12,7 @@ public final class PermissionsFixSummaryTests {
     public void testDeserialize() throws Exception {
         PermissionsFixSummary model = BinaryData
             .fromString(
-                "{\"totalRequired\":21303775,\"succeeded\":517502566,\"failed\":1115734201,\"skipped\":1138354387}")
+                "{\"totalRequired\":1970813350,\"succeeded\":1755183867,\"failed\":109325859,\"skipped\":495711129}")
             .toObject(PermissionsFixSummary.class);
     }
 }

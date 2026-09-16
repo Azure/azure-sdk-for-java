@@ -372,7 +372,7 @@ public interface Tracer {
      * </pre>
      * <!-- end com.azure.core.util.tracing.set-attribute#int -->
      * @param key attribute name
-     * @param value atteribute value
+     * @param value attribute value
      * @param context tracing context
      */
     default void setAttribute(String key, long value, Context context) {

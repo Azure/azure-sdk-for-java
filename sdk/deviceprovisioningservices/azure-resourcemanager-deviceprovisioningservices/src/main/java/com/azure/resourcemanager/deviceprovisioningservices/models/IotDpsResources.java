@@ -52,8 +52,8 @@ public interface IotDpsResources {
     /**
      * Get the metadata of the provisioning service without SAS keys.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
@@ -61,46 +61,46 @@ public interface IotDpsResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metadata of the provisioning service without SAS keys along with {@link Response}.
      */
-    Response<ProvisioningServiceDescription> getByResourceGroupWithResponse(String provisioningServiceName,
-        String resourceGroupName, Context context);
+    Response<ProvisioningServiceDescription> getByResourceGroupWithResponse(String resourceGroupName,
+        String provisioningServiceName, Context context);
 
     /**
      * Get the metadata of the provisioning service without SAS keys.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metadata of the provisioning service without SAS keys.
      */
-    ProvisioningServiceDescription getByResourceGroup(String provisioningServiceName, String resourceGroupName);
+    ProvisioningServiceDescription getByResourceGroup(String resourceGroupName, String provisioningServiceName);
 
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByResourceGroup(String provisioningServiceName, String resourceGroupName);
+    void deleteByResourceGroup(String resourceGroupName, String provisioningServiceName);
 
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String provisioningServiceName, String resourceGroupName, Context context);
+    void delete(String resourceGroupName, String provisioningServiceName, Context context);
 
     /**
      * Get a list of all provisioning services in the given resource group.

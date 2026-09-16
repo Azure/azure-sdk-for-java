@@ -23,7 +23,7 @@ public final class SecretArchiveSettings implements JsonSerializable<SecretArchi
     private IdentitySelector associatedIdentity;
 
     /*
-     * The URI for the key vault used as the secret archive.
+     * The URI of the secret archive endpoint. The URI must use the `https://` scheme.
      */
     private String vaultUri;
 
@@ -56,7 +56,7 @@ public final class SecretArchiveSettings implements JsonSerializable<SecretArchi
     }
 
     /**
-     * Get the vaultUri property: The URI for the key vault used as the secret archive.
+     * Get the vaultUri property: The URI of the secret archive endpoint. The URI must use the `https://` scheme.
      * 
      * @return the vaultUri value.
      */
@@ -65,7 +65,7 @@ public final class SecretArchiveSettings implements JsonSerializable<SecretArchi
     }
 
     /**
-     * Set the vaultUri property: The URI for the key vault used as the secret archive.
+     * Set the vaultUri property: The URI of the secret archive endpoint. The URI must use the `https://` scheme.
      * 
      * @param vaultUri the vaultUri value to set.
      * @return the SecretArchiveSettings object itself.

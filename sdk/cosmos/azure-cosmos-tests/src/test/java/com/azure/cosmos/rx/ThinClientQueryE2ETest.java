@@ -51,6 +51,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -295,7 +296,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         if (directContainer != null && !seededDocs.isEmpty()) {
             try {
@@ -303,7 +304,9 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
                     .map(doc -> CosmosBulkOperations.getDeleteItemOperation(
                         doc.get(ID_FIELD).asText(), new PartitionKey(commonPk)))
                     .collect(Collectors.toList());
-                directContainer.executeBulkOperations(Flux.fromIterable(deleteOps)).blockLast();
+                directContainer.executeBulkOperations(Flux.fromIterable(deleteOps))
+                    .timeout(Duration.ofSeconds(20))
+                    .blockLast();
             } catch (Exception e) {
                 logger.warn("Bulk delete of seeded docs failed: {}", e.getMessage());
             }
@@ -1830,7 +1833,11 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
 
     private static void safeDeleteContainer(CosmosAsyncContainer container) {
         if (container != null) {
-            try { container.delete().block(); } catch (Exception e) { logger.warn("Container cleanup failed: {}", e.getMessage()); }
+            try {
+                container.delete().timeout(Duration.ofSeconds(20)).block();
+            } catch (Exception e) {
+                logger.warn("Container cleanup failed: {}", e.getMessage());
+            }
         }
     }
 

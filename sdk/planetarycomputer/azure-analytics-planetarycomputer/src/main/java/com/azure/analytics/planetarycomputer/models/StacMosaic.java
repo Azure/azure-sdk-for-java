@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -41,7 +42,7 @@ public final class StacMosaic implements JsonSerializable<StacMosaic> {
      * A list of valid CQL2-JSON expressions used to filter the collection to moasic.
      */
     @Generated
-    private final List<Map<String, Object>> cql;
+    private final List<Map<String, BinaryData>> cql;
 
     /**
      * Creates an instance of StacMosaic class.
@@ -51,7 +52,7 @@ public final class StacMosaic implements JsonSerializable<StacMosaic> {
      * @param cql the cql value to set.
      */
     @Generated
-    public StacMosaic(String id, String name, List<Map<String, Object>> cql) {
+    public StacMosaic(String id, String name, List<Map<String, BinaryData>> cql) {
         this.id = id;
         this.name = name;
         this.cql = cql;
@@ -105,7 +106,7 @@ public final class StacMosaic implements JsonSerializable<StacMosaic> {
      * @return the cql value.
      */
     @Generated
-    public List<Map<String, Object>> getCql() {
+    public List<Map<String, BinaryData>> getCql() {
         return this.cql;
     }
 
@@ -119,7 +120,13 @@ public final class StacMosaic implements JsonSerializable<StacMosaic> {
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("cql", this.cql,
-            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeUntyped(element1)));
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> {
+                if (element1 == null) {
+                    writer1.writeNull();
+                } else {
+                    element1.writeTo(writer1);
+                }
+            }));
         jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
@@ -138,7 +145,7 @@ public final class StacMosaic implements JsonSerializable<StacMosaic> {
         return jsonReader.readObject(reader -> {
             String id = null;
             String name = null;
-            List<Map<String, Object>> cql = null;
+            List<Map<String, BinaryData>> cql = null;
             String description = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -149,7 +156,8 @@ public final class StacMosaic implements JsonSerializable<StacMosaic> {
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("cql".equals(fieldName)) {
-                    cql = reader.readArray(reader1 -> reader1.readMap(reader2 -> reader2.readUntyped()));
+                    cql = reader.readArray(reader1 -> reader1.readMap(reader2 -> reader2
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()))));
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else {

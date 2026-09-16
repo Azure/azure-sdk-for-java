@@ -23,7 +23,7 @@ public final class DedicatedHsmsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"viacegfnmntfpmv\"},\"networkInterfaces\":[{\"resourceId\":\"nczdwvv\",\"privateIpAddress\":\"lxlllchpo\"},{\"resourceId\":\"zevwrdnhfukuv\",\"privateIpAddress\":\"cswsmystul\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"fcvlerch\"},\"networkInterfaces\":[{\"resourceId\":\"f\",\"privateIpAddress\":\"babwidfcxss\"}]},\"stampId\":\"unnoxyhk\",\"statusMessage\":\"qddrihpfhoqcaae\",\"provisioningState\":\"CheckingQuota\"},\"sku\":{\"name\":\"payShield10K_LMK1_CPS60\"},\"zones\":[\"vlp\",\"x\",\"kzbrmsgeivsiy\"],\"location\":\"kdncj\",\"tags\":{\"apzwyrpgog\":\"nbzoggcu\",\"yjt\":\"qxepnylbfuaj\",\"byfmowuxr\":\"vofqzhvfc\",\"xfzwi\":\"jpvd\"},\"id\":\"vwzjbhyz\",\"name\":\"xjrk\",\"type\":\"mbtrnegvmnvu\"}]}";
+            = "{\"value\":[{\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"fdeqvhpsyl\"},\"networkInterfaces\":[{\"resourceId\":\"kbffmbmx\",\"privateIpAddress\":\"rgywwp\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"nptfujgi\"},\"networkInterfaces\":[{\"resourceId\":\"o\",\"privateIpAddress\":\"ttaqutdew\"},{\"resourceId\":\"xswvru\",\"privateIpAddress\":\"zzjgehkfki\"},{\"resourceId\":\"tixo\",\"privateIpAddress\":\"fqyinljqepqw\"}]},\"stampId\":\"xmonstshi\",\"statusMessage\":\"gvelfc\",\"provisioningState\":\"Succeeded\"},\"sku\":{\"name\":\"payShield10K_LMK1_CPS60\"},\"zones\":[\"rds\",\"uwc\",\"b\"],\"location\":\"gstmninwjizciln\",\"tags\":{\"luxlxqzvnersby\":\"shejjtbxqm\",\"ze\":\"ucrwnami\",\"fuhok\":\"rqbsmswziq\",\"czznvfbycjsxj\":\"ruswhv\"},\"id\":\"wix\",\"name\":\"vumwmxqh\",\"type\":\"dvnoamldsehaohdj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class DedicatedHsmsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DedicatedHsm> response
-            = manager.dedicatedHsms().list(1726404593, com.azure.core.util.Context.NONE);
+            = manager.dedicatedHsms().list(636641870, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kdncj", response.iterator().next().location());
-        Assertions.assertEquals("nbzoggcu", response.iterator().next().tags().get("apzwyrpgog"));
-        Assertions.assertEquals("viacegfnmntfpmv",
+        Assertions.assertEquals("gstmninwjizciln", response.iterator().next().location());
+        Assertions.assertEquals("shejjtbxqm", response.iterator().next().tags().get("luxlxqzvnersby"));
+        Assertions.assertEquals("fdeqvhpsyl",
             response.iterator().next().properties().networkProfile().subnet().resourceId());
-        Assertions.assertEquals("lxlllchpo",
+        Assertions.assertEquals("rgywwp",
             response.iterator().next().properties().networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("fcvlerch",
+        Assertions.assertEquals("nptfujgi",
             response.iterator().next().properties().managementNetworkProfile().subnet().resourceId());
-        Assertions.assertEquals("babwidfcxss",
+        Assertions.assertEquals("ttaqutdew",
             response.iterator()
                 .next()
                 .properties()
@@ -51,8 +51,8 @@ public final class DedicatedHsmsListMockTests {
                 .networkInterfaces()
                 .get(0)
                 .privateIpAddress());
-        Assertions.assertEquals("unnoxyhk", response.iterator().next().properties().stampId());
+        Assertions.assertEquals("xmonstshi", response.iterator().next().properties().stampId());
         Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS60, response.iterator().next().sku().name());
-        Assertions.assertEquals("vlp", response.iterator().next().zones().get(0));
+        Assertions.assertEquals("rds", response.iterator().next().zones().get(0));
     }
 }

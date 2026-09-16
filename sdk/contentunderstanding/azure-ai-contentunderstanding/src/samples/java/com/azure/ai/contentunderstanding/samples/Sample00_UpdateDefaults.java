@@ -10,7 +10,6 @@ import com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,24 +19,37 @@ import java.util.Map;
  * 2. Updating default configuration with your model deployments
  * 3. Verifying the updated configuration
  *
- * <p><strong>Prerequisites:</strong></p>
- * <p>Before running this sample, make sure you have:</p>
+ * <p><b>Prerequisites:</b></p>
  * <ol>
- *   <li>Created a Microsoft Foundry resource (see README.md)</li>
- *   <li>Deployed the required models (gpt-4.1, gpt-4.1-mini, text-embedding-3-large)</li>
- *   <li>Set the environment variables:
+ *   <li>Create a Microsoft Foundry resource (see README.md).</li>
+ *   <li>Deploy completion and embedding models.</li>
+ *   <li>Set these environment variables:
  *     <ul>
- *       <li>{@code CONTENTUNDERSTANDING_ENDPOINT} - Your Foundry resource endpoint</li>
- *       <li>{@code CONTENTUNDERSTANDING_KEY} - (Optional) Your API key</li>
- *       <li>{@code GPT_4_1_DEPLOYMENT} - Your GPT-4.1 deployment name</li>
- *       <li>{@code GPT_4_1_MINI_DEPLOYMENT} - Your GPT-4.1-mini deployment name</li>
- *       <li>{@code TEXT_EMBEDDING_3_LARGE_DEPLOYMENT} - Your text-embedding-3-large deployment name</li>
+ *       <li>{@code CONTENTUNDERSTANDING_ENDPOINT}: Your Foundry resource endpoint.</li>
+ *       <li>{@code CONTENTUNDERSTANDING_KEY}: Optional API key.</li>
+ *       <li>{@code CU_COMPLETION_MODEL_DEPLOYMENT}: Completion model deployment name.</li>
+ *       <li>{@code CU_EMBEDDING_DEPLOYMENT}: Embedding model deployment name.</li>
+ *       <li>{@code CU_COMPLETION_MODEL}: Optional completion model name; defaults to {@code gpt-5.2}.</li>
+ *       <li>{@code CU_COMPLETION_MODEL_MINI}: Optional mini completion model name; defaults to
+ *           {@code CU_COMPLETION_MODEL}.</li>
+ *       <li>{@code CU_COMPLETION_MINI_DEPLOYMENT}: Optional mini deployment; defaults to
+ *           {@code CU_COMPLETION_MODEL_DEPLOYMENT}.</li>
+ *       <li>{@code CU_EMBEDDING_MODEL}: Optional embedding model name; defaults to
+ *           {@code text-embedding-3-large}.</li>
  *     </ul>
  *   </li>
  * </ol>
  *
  * <p>This sample demonstrates the one-time setup required to map your deployed models
  * to those required by prebuilt and custom analyzers.</p>
+ *
+ * <p>Create the Microsoft Foundry resource in a region that supports Content Understanding. When authenticating with
+ * {@link DefaultAzureCredentialBuilder}, assign yourself the Cognitive Services User role before updating defaults;
+ * this role is required even for a resource owner. Map both concrete model names and the prebuilt analyzer aliases,
+ * even when several aliases use the same deployment.</p>
+ *
+ * <p>API key authentication is intended for testing with test resources. For production, use
+ * {@link DefaultAzureCredentialBuilder} or another secure token credential.</p>
  */
 public class Sample00_UpdateDefaults {
 
@@ -69,22 +81,12 @@ public class Sample00_UpdateDefaults {
         // These map model names to your deployed model names in Azure AI Foundry
         System.out.println("\nConfiguring model deployments from environment variables...");
 
-        // Get deployment names from environment variables
-        String gpt41Deployment = getEnvOrDefault("GPT_4_1_DEPLOYMENT", "gpt-4.1");
-        String gpt41MiniDeployment = getEnvOrDefault("GPT_4_1_MINI_DEPLOYMENT", "gpt-4.1-mini");
-        String textEmbedding3LargeDeployment
-            = getEnvOrDefault("TEXT_EMBEDDING_3_LARGE_DEPLOYMENT", "text-embedding-3-large");
-
-        // Create model deployments map
-        Map<String, String> modelDeployments = new HashMap<>();
-        modelDeployments.put("gpt-4.1", gpt41Deployment);
-        modelDeployments.put("gpt-4.1-mini", gpt41MiniDeployment);
-        modelDeployments.put("text-embedding-3-large", textEmbedding3LargeDeployment);
+        Map<String, String> modelDeployments = SampleModelConfiguration.getDefaultModelDeployments();
 
         System.out.println("Model deployments to configure:");
-        System.out.println("  gpt-4.1 -> " + gpt41Deployment);
-        System.out.println("  gpt-4.1-mini -> " + gpt41MiniDeployment);
-        System.out.println("  text-embedding-3-large -> " + textEmbedding3LargeDeployment);
+        for (Map.Entry<String, String> deployment : modelDeployments.entrySet()) {
+            System.out.println("  " + deployment.getKey() + " -> " + deployment.getValue());
+        }
 
         // Step 3: Update defaults with the new configuration
         System.out.println("\nUpdating default configuration...");
@@ -101,17 +103,5 @@ public class Sample00_UpdateDefaults {
         System.out.println("Updated model deployments: " + updatedDefaults.getModelDeployments());
 
         System.out.println("\nConfiguration management completed.");
-    }
-
-    /**
-     * Gets an environment variable value or returns a default value if not set.
-     *
-     * @param envVar the environment variable name
-     * @param defaultValue the default value to return if the environment variable is not set
-     * @return the environment variable value or the default value
-     */
-    private static String getEnvOrDefault(String envVar, String defaultValue) {
-        String value = System.getenv(envVar);
-        return (value != null && !value.trim().isEmpty()) ? value : defaultValue;
     }
 }

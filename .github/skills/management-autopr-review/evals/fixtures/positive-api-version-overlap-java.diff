@@ -1,0 +1,13 @@
+diff --git a/sdk/contosomaintenance/azure-resourcemanager-contosomaintenance/src/main/java/com/azure/resourcemanager/contosomaintenance/MaintenanceManager.java b/sdk/contosomaintenance/azure-resourcemanager-contosomaintenance/src/main/java/com/azure/resourcemanager/contosomaintenance/MaintenanceManager.java
+index e2da8a5..d522ebd 100644
+--- a/sdk/contosomaintenance/azure-resourcemanager-contosomaintenance/src/main/java/com/azure/resourcemanager/contosomaintenance/MaintenanceManager.java
++++ b/sdk/contosomaintenance/azure-resourcemanager-contosomaintenance/src/main/java/com/azure/resourcemanager/contosomaintenance/MaintenanceManager.java
+@@ -22,4 +22,8 @@ public final class MaintenanceManager {
+     public MaintenanceConfigurations configurations() {
+         return configurations;
+     }
++
++    public ConfigurationAssignments assignments() {
++        return assignments;
++    }
+ }

@@ -11,6 +11,7 @@ import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
@@ -19,11 +20,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.time.Duration;
+import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
 
 /**
  * Sample demonstrates how to retrieve result files (like keyframe images) from video analysis operations
@@ -31,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Sample12_GetResultFileAsync {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         // BEGIN: com.azure.ai.contentunderstanding.sample12Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -65,201 +66,139 @@ public class Sample12_GetResultFileAsync {
 
         System.out.println("Started analysis operation");
 
-        CountDownLatch latch = new CountDownLatch(1);
-
-        poller.last()
-            .flatMap(pollResponse -> {
-                if (pollResponse.getStatus().isComplete()) {
-                    System.out.println("Polling completed successfully");
-
-                    // Get the operation ID from the polling result using the getId() convenience method
-                    // The operation ID is extracted from the Operation-Location header and can be used with
-                    // getResultFile() and deleteResult() APIs
-                    String operationId = pollResponse.getValue().getId();
-                    System.out.println("Operation ID: " + operationId);
-
-                    return pollResponse.getFinalResult()
-                        .map(result -> {
-                            // Store operationId and result together for use in doOnNext
-                            return new java.util.AbstractMap.SimpleEntry<>(operationId, result);
-                        });
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                }
-            })
-            .doOnNext(entry -> {
-                String operationId = entry.getKey();
-                AnalysisResult result = entry.getValue();
-
-                System.out.println("Analysis completed successfully!");
-                System.out.println("Video URL: " + videoUrl);
-                System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
-
-                // BEGIN: com.azure.ai.contentunderstanding.getResultFileAsync.keyframes
-                // Step 2: Get keyframes from video analysis result
-                AudioVisualContent videoContent = null;
-                for (Object content : result.getContents()) {
-                    if (content instanceof AudioVisualContent) {
-                        videoContent = (AudioVisualContent) content;
-                        break;
+        Map.Entry<String, AnalysisResult> analysis = poller.last()
+            .flatMap(pollResponse -> requireSuccessfulResult(pollResponse.getStatus(),
+                pollResponse.getFinalResult(), "Video analysis").map(result -> {
+                    String operationId
+                        = pollResponse.getValue() == null ? null : pollResponse.getValue().getId();
+                    if (operationId == null || operationId.trim().isEmpty()) {
+                        throw new IllegalStateException("Video analysis completed without an operation ID.");
                     }
-                }
-
-                if (videoContent != null
-                    && videoContent.getKeyFrameTimes() != null
-                    && !videoContent.getKeyFrameTimes().isEmpty()) {
-                    List<Duration> keyFrameTimes = videoContent.getKeyFrameTimes();
-                    System.out.println("Total keyframes: " + keyFrameTimes.size());
-
-                    // Get the first keyframe
-                    long firstFrameTimeMs = keyFrameTimes.get(0).toMillis();
-                    System.out.println("First keyframe time: " + firstFrameTimeMs + " ms");
-
-                    // Construct the keyframe path
-                    String framePath = "keyframes/" + firstFrameTimeMs;
-                    System.out.println("Getting result file: " + framePath);
-
-                    // Retrieve the keyframe image with retry logic
-                    // Note: Result files may not be immediately available after analysis completion
-                    // The service requires additional time for keyframe extraction
-                    BinaryData fileData = null;
-                    int maxRetries = 12;
-                    int retryDelayMs = 10000; // 10 seconds between retries
-                    for (int attempt = 1; attempt <= maxRetries; attempt++) {
-                        try {
-                            fileData = client.getResultFile(operationId, framePath).block();
-                            break; // Success
-                        } catch (Exception e) {
-                            if (attempt == maxRetries) {
-                                throw e;
-                            }
-                            System.out.println("Attempt " + attempt + " failed: " + e.getMessage());
-                            System.out.println("Waiting " + (retryDelayMs / 1000) + " seconds before retry...");
-                            try {
-                                Thread.sleep(retryDelayMs);
-                            } catch (InterruptedException ie) {
-                                Thread.currentThread().interrupt();
-                                throw new RuntimeException("Interrupted while waiting for retry", ie);
-                            }
-                        }
-                    }
-                    byte[] imageBytes = fileData.toBytes();
-                    System.out.println("Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes)");
-
-                    // Save the keyframe image
-                    Path outputDir = Paths.get("target", "sample_output");
-                    try {
-                        Files.createDirectories(outputDir);
-                    } catch (IOException e) {
-                        throw new RuntimeException("Failed to create output directory", e);
-                    }
-                    String outputFileName = "keyframe_" + firstFrameTimeMs + ".jpg";
-                    Path outputPath = outputDir.resolve(outputFileName);
-                    try {
-                        Files.write(outputPath, imageBytes);
-                    } catch (IOException e) {
-                        throw new RuntimeException("Failed to write keyframe image", e);
-                    }
-
-                    System.out.println("Keyframe image saved to: " + outputPath.toAbsolutePath());
-                    // END: com.azure.ai.contentunderstanding.getResultFileAsync.keyframes
-
-                    System.out.println("\n🎬 Keyframe Information:");
-                    System.out.println("Total keyframes: " + keyFrameTimes.size());
-
-                    // Get keyframe statistics
-                    long lastFrameTimeMs = keyFrameTimes.get(keyFrameTimes.size() - 1).toMillis();
-                    double avgFrameInterval = keyFrameTimes.size() > 1
-                        ? (double) (lastFrameTimeMs - firstFrameTimeMs) / (keyFrameTimes.size() - 1)
-                        : 0;
-
-                    System.out.println("  First keyframe: " + firstFrameTimeMs + " ms ("
-                        + String.format("%.2f", firstFrameTimeMs / 1000.0) + " seconds)");
-                    System.out.println("  Last keyframe: " + lastFrameTimeMs + " ms ("
-                        + String.format("%.2f", lastFrameTimeMs / 1000.0) + " seconds)");
-                    if (keyFrameTimes.size() > 1) {
-                        System.out.println("  Average interval: " + String.format("%.2f", avgFrameInterval) + " ms");
-                    }
-
-                    System.out.println("\n📥 File Data Retrieved");
-
-                    System.out.println("\nVerifying image data...");
-                    System.out.println("Image size: " + String.format("%,d", imageBytes.length) + " bytes ("
-                        + String.format("%.2f", imageBytes.length / 1024.0) + " KB)");
-
-                    // Verify image format
-                    String imageFormat = detectImageFormat(imageBytes);
-                    System.out.println("Detected image format: " + imageFormat);
-
-                    System.out.println("\n💾 Saved File:");
-                    long fileSize;
-                    try {
-                        fileSize = Files.size(outputPath);
-                    } catch (IOException e) {
-                        throw new RuntimeException("Failed to get file size", e);
-                    }
-                    System.out.println("File saved: " + outputPath.toAbsolutePath());
-                    System.out.println("File size: " + String.format("%,d", fileSize) + " bytes");
-
-                    // Test additional keyframes if available
-                    if (keyFrameTimes.size() > 1) {
-                        System.out.println("\nTesting additional keyframes (" + (keyFrameTimes.size() - 1)
-                            + " more available)...");
-                        int middleIndex = keyFrameTimes.size() / 2;
-                        long middleFrameTimeMs = keyFrameTimes.get(middleIndex).toMillis();
-                        String middleFramePath = "keyframes/" + middleFrameTimeMs;
-
-                        // Note: Using .block() in retry loops is acceptable per skill documentation
-                        BinaryData middleFileData = client.getResultFile(operationId, middleFramePath).block();
-                        System.out.println(
-                            "Successfully retrieved keyframe at index " + middleIndex + " (" + middleFrameTimeMs + " ms)");
-                        System.out.println("  Size: " + String.format("%,d", middleFileData.toBytes().length) + " bytes");
-                    }
-
-                    // Summary
-                    System.out.println("\nKeyframe retrieval completed successfully:");
-                    System.out.println("  Operation ID: " + operationId);
-                    System.out.println("  Total keyframes: " + keyFrameTimes.size());
-                    System.out.println("  First keyframe time: " + firstFrameTimeMs + " ms");
-                    System.out.println("  Image format: " + imageFormat);
-                    System.out.println("  Image size: " + String.format("%,d", imageBytes.length) + " bytes");
-                    System.out.println("  Saved to: " + outputPath.toAbsolutePath());
-                } else {
-                    // No video content (expected for document analysis)
-                    System.out.println("\nGetResultFile API Usage Example:");
-                    System.out.println("   For video analysis with keyframes:");
-                    System.out.println("   1. Analyze video with prebuilt-videoSearch");
-                    System.out.println("   2. Get keyframe times from AudioVisualContent.getKeyFrameTimes()");
-                    System.out.println("   3. Retrieve keyframes using getResultFile():");
-                    System.out.println("      Mono<BinaryData> fileData = client.getResultFile(\"" + operationId
-                        + "\", \"keyframes/1000\");");
-                    System.out.println("   4. Save or process the keyframe image");
-
-                    System.out.println("Operation ID available for GetResultFile API: " + operationId);
-                }
-            })
-            .doOnError(error -> {
-                System.err.println("Error occurred: " + error.getMessage());
-                error.printStackTrace();
-            })
-            .subscribe(
-                result -> {
-                    // Success - operations completed
-                    latch.countDown();
-                },
-                error -> {
-                    // Error already handled in doOnError
-                    latch.countDown();
-                }
-            );
-        // END: com.azure.ai.contentunderstanding.getResultFileAsync
-
-        // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we use a CountDownLatch so the program does not end before the async operations complete.
-        if (!latch.await(5, TimeUnit.MINUTES)) {
-            System.err.println("Timed out waiting for async operations to complete.");
+                    return new AbstractMap.SimpleImmutableEntry<>(operationId, result);
+                }))
+            .block();
+        if (analysis == null) {
+            throw new IllegalStateException("Video analysis completed without an operation result.");
         }
+
+        String operationId = analysis.getKey();
+        AnalysisResult result = analysis.getValue();
+        System.out.println("Polling completed successfully");
+        System.out.println("Operation ID: " + operationId);
+        System.out.println("Analysis completed successfully!");
+        System.out.println("Video URL: " + videoUrl);
+        System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
+
+        // BEGIN: com.azure.ai.contentunderstanding.getResultFileAsync.keyframes
+        // Step 2: Get keyframes from video analysis result
+        AudioVisualContent videoContent = null;
+        for (Object content : result.getContents()) {
+            if (content instanceof AudioVisualContent) {
+                videoContent = (AudioVisualContent) content;
+                break;
+            }
+        }
+
+        if (videoContent == null
+            || videoContent.getKeyFrameTimes() == null
+            || videoContent.getKeyFrameTimes().isEmpty()) {
+            throw new IllegalStateException("Video analysis did not return AudioVisualContent with keyframes.");
+        }
+
+        List<Duration> keyFrameTimes = videoContent.getKeyFrameTimes();
+        System.out.println("Total keyframes: " + keyFrameTimes.size());
+
+        // Get the first keyframe
+        long firstFrameTimeMs = keyFrameTimes.get(0).toMillis();
+        System.out.println("First keyframe time: " + firstFrameTimeMs + " ms");
+
+        // Construct the keyframe path
+        String framePath = "keyframes/" + firstFrameTimeMs;
+        System.out.println("Getting result file: " + framePath);
+
+        BinaryData fileData = client.getResultFile(operationId, framePath)
+            .switchIfEmpty(Mono.error(new IllegalStateException("Result file response did not contain data.")))
+            .block();
+        byte[] imageBytes = fileData.toBytes();
+        System.out.println("Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes)");
+
+        // Save the keyframe image
+        Path outputDir = Paths.get("target", "sample_output");
+        Files.createDirectories(outputDir);
+        String outputFileName = "keyframe_" + firstFrameTimeMs + ".jpg";
+        Path outputPath = outputDir.resolve(outputFileName);
+        Files.write(outputPath, imageBytes);
+
+        System.out.println("Keyframe image saved to: " + outputPath.toAbsolutePath());
+        // END: com.azure.ai.contentunderstanding.getResultFileAsync.keyframes
+
+        System.out.println("\n🎬 Keyframe Information:");
+        System.out.println("Total keyframes: " + keyFrameTimes.size());
+
+        // Get keyframe statistics
+        long lastFrameTimeMs = keyFrameTimes.get(keyFrameTimes.size() - 1).toMillis();
+        double avgFrameInterval = keyFrameTimes.size() > 1
+            ? (double) (lastFrameTimeMs - firstFrameTimeMs) / (keyFrameTimes.size() - 1)
+            : 0;
+
+        System.out.println("  First keyframe: " + firstFrameTimeMs + " ms ("
+            + String.format("%.2f", firstFrameTimeMs / 1000.0) + " seconds)");
+        System.out.println("  Last keyframe: " + lastFrameTimeMs + " ms ("
+            + String.format("%.2f", lastFrameTimeMs / 1000.0) + " seconds)");
+        if (keyFrameTimes.size() > 1) {
+            System.out.println("  Average interval: " + String.format("%.2f", avgFrameInterval) + " ms");
+        }
+
+        System.out.println("\n📥 File Data Retrieved");
+
+        System.out.println("\nVerifying image data...");
+        System.out.println("Image size: " + String.format("%,d", imageBytes.length) + " bytes ("
+            + String.format("%.2f", imageBytes.length / 1024.0) + " KB)");
+
+        // Verify image format
+        String imageFormat = detectImageFormat(imageBytes);
+        System.out.println("Detected image format: " + imageFormat);
+
+        System.out.println("\n💾 Saved File:");
+        long fileSize = Files.size(outputPath);
+        System.out.println("File saved: " + outputPath.toAbsolutePath());
+        System.out.println("File size: " + String.format("%,d", fileSize) + " bytes");
+
+        // Test additional keyframes if available
+        if (keyFrameTimes.size() > 1) {
+            System.out
+                .println("\nTesting additional keyframes (" + (keyFrameTimes.size() - 1) + " more available)...");
+            int middleIndex = keyFrameTimes.size() / 2;
+            long middleFrameTimeMs = keyFrameTimes.get(middleIndex).toMillis();
+            String middleFramePath = "keyframes/" + middleFrameTimeMs;
+
+            BinaryData middleFileData = client.getResultFile(operationId, middleFramePath)
+                .switchIfEmpty(Mono.error(new IllegalStateException("Middle keyframe response did not contain data.")))
+                .block();
+            System.out.println(
+                "Successfully retrieved keyframe at index " + middleIndex + " (" + middleFrameTimeMs + " ms)");
+            System.out.println("  Size: " + String.format("%,d", middleFileData.toBytes().length) + " bytes");
+        }
+
+        // Summary
+        System.out.println("\nKeyframe retrieval completed successfully:");
+        System.out.println("  Operation ID: " + operationId);
+        System.out.println("  Total keyframes: " + keyFrameTimes.size());
+        System.out.println("  First keyframe time: " + firstFrameTimeMs + " ms");
+        System.out.println("  Image format: " + imageFormat);
+        System.out.println("  Image size: " + String.format("%,d", imageBytes.length) + " bytes");
+        System.out.println("  Saved to: " + outputPath.toAbsolutePath());
+        // END: com.azure.ai.contentunderstanding.getResultFileAsync
+    }
+
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
     }
 
     /**

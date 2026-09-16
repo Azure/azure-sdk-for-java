@@ -22,7 +22,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"hpvgqz\",\"display\":{\"provider\":\"vxdjzlmwlxkvugf\",\"resource\":\"ovawjvzunlu\",\"operation\":\"nnprn\",\"description\":\"peilpjzuaejxdu\"},\"origin\":\"skzbb\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"e\",\"displayName\":\"gpw\",\"blobDuration\":\"uh\"}]}}}]}";
+            = "{\"value\":[{\"name\":\"xyawj\",\"display\":{\"provider\":\"qcslyjpkiid\",\"resource\":\"exznelixhnr\",\"operation\":\"folhbnxknal\",\"description\":\"lp\"},\"origin\":\"gdtpnapnyiro\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"vpgylgqgitxmed\",\"displayName\":\"c\",\"blobDuration\":\"ynqwwncwzzhxgk\"},{\"name\":\"mgucna\",\"displayName\":\"t\",\"blobDuration\":\"ellwptfdy\"}]}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +34,17 @@ public final class OperationsListMockTests {
         PagedIterable<ClientDiscoveryValueForSingleApi> response
             = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hpvgqz", response.iterator().next().name());
-        Assertions.assertEquals("vxdjzlmwlxkvugf", response.iterator().next().display().provider());
-        Assertions.assertEquals("ovawjvzunlu", response.iterator().next().display().resource());
-        Assertions.assertEquals("nnprn", response.iterator().next().display().operation());
-        Assertions.assertEquals("peilpjzuaejxdu", response.iterator().next().display().description());
-        Assertions.assertEquals("skzbb", response.iterator().next().origin());
-        Assertions.assertEquals("e",
+        Assertions.assertEquals("xyawj", response.iterator().next().name());
+        Assertions.assertEquals("qcslyjpkiid", response.iterator().next().display().provider());
+        Assertions.assertEquals("exznelixhnr", response.iterator().next().display().resource());
+        Assertions.assertEquals("folhbnxknal", response.iterator().next().display().operation());
+        Assertions.assertEquals("lp", response.iterator().next().display().description());
+        Assertions.assertEquals("gdtpnapnyiro", response.iterator().next().origin());
+        Assertions.assertEquals("vpgylgqgitxmed",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).name());
-        Assertions.assertEquals("gpw",
+        Assertions.assertEquals("c",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions.assertEquals("uh",
+        Assertions.assertEquals("ynqwwncwzzhxgk",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 }
