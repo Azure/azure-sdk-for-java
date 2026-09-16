@@ -837,6 +837,77 @@ public class RxDocumentClientImplTest {
         }
     }
 
+    @Test(groups = "unit")
+    public void accountDisabledHedgingPreservesPointOperationTimeout() throws Exception {
+        AtomicReference<DatabaseAccount> account = new AtomicReference<>(hedgingAccount(true, true));
+        try (MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class)) {
+            httpClientMock.when(() -> HttpClient.createFixed(Mockito.any(HttpClientConfig.class)))
+                .thenReturn(dummyHttpClient());
+            RxDocumentClientImpl client = createClientWithAccount(account);
+            try {
+                client.init(null, null);
+                Duration timeout = Duration.ofSeconds(5);
+                CosmosEndToEndOperationLatencyPolicyConfig policy =
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(timeout)
+                        .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
+                        .build();
+                RequestOptions options = new RequestOptions();
+                options.setCosmosEndToEndLatencyPolicyConfig(policy);
+                AtomicInteger attempts = new AtomicInteger();
+                AtomicBoolean cancelled = new AtomicBoolean();
+                AtomicBoolean timeoutReported = new AtomicBoolean();
+                options.getMarkE2ETimeoutInRequestContextCallbackHook().set(() -> timeoutReported.set(true));
+                Class<?> diagnosticsFactoryType = ReflectionUtils.getClassBySimpleName(
+                    RxDocumentClientImpl.class.getDeclaredClasses(), "ScopedDiagnosticsFactory");
+                java.lang.reflect.Constructor<?> diagnosticsFactoryConstructor =
+                    diagnosticsFactoryType.getDeclaredConstructor(DiagnosticsClientContext.class, boolean.class);
+                diagnosticsFactoryConstructor.setAccessible(true);
+                Method applyTimeout = RxDocumentClientImpl.class.getDeclaredMethod("getPointOperationResponseMonoWithE2ETimeout",
+                    RequestOptions.class, CosmosEndToEndOperationLatencyPolicyConfig.class, Mono.class,
+                    diagnosticsFactoryType);
+                applyTimeout.setAccessible(true);
+                Class<?> callbackType = ReflectionUtils.getClassBySimpleName(
+                    RxDocumentClientImpl.class.getDeclaredClasses(), "DocumentPointOperation");
+                Object callback = java.lang.reflect.Proxy.newProxyInstance(callbackType.getClassLoader(),
+                    new Class<?>[] {callbackType}, (proxy, method, arguments) -> {
+                        assertThat(arguments[1]).isSameAs(policy);
+                        CrossRegionAvailabilityContextForRxDocumentServiceRequest context =
+                            (CrossRegionAvailabilityContextForRxDocumentServiceRequest) arguments[3];
+                        assertThat(context.getAvailabilityStrategyContext().isAvailabilityStrategyEnabled()).isFalse();
+                        Mono<ResourceResponse<Document>> transport = Mono.<ResourceResponse<Document>>never()
+                            .doOnSubscribe(subscription -> attempts.incrementAndGet())
+                            .doOnCancel(() -> cancelled.set(true));
+                        return applyTimeout.invoke(null, arguments[0], arguments[1], transport,
+                            diagnosticsFactoryConstructor.newInstance(client, false));
+                    });
+                Method wrap = RxDocumentClientImpl.class.getDeclaredMethod("wrapPointOperationWithAvailabilityStrategy",
+                    ResourceType.class, OperationType.class, callbackType, RequestOptions.class, boolean.class,
+                    DiagnosticsClientContext.class, String.class);
+                wrap.setAccessible(true);
+                StepVerifier.withVirtualTime(() -> {
+                    try {
+                        return (Mono<ResourceResponse<Document>>) wrap.invoke(client, ResourceType.Document,
+                            OperationType.Read, callback, options, false, client, "collectionRid");
+                    } catch (ReflectiveOperationException error) {
+                        throw new IllegalStateException(error);
+                    }
+                }).expectSubscription()
+                    .expectNoEvent(timeout.minusMillis(1))
+                    .thenAwait(Duration.ofMillis(1))
+                    .expectError(OperationCancelledException.class)
+                    .verify(Duration.ofSeconds(5));
+                assertThat(attempts.get()).isEqualTo(1);
+                assertThat(cancelled.get()).isTrue();
+                assertThat(timeoutReported.get()).isTrue();
+                assertThat(options.getCosmosEndToEndLatencyPolicyConfig()).isSameAs(policy);
+                assertThat(policy.isEnabled()).isTrue();
+                assertThat(policy.getAvailabilityStrategy()).isInstanceOf(ThresholdBasedAvailabilityStrategy.class);
+            } finally {
+                client.close();
+            }
+        }
+    }
+
     @Test(groups = "unit", dataProvider = "accountHedgingDisabled")
     public void accountHedgingOverrideControlsFeedSpeculation(boolean disabled) throws Exception {
         AtomicReference<DatabaseAccount> account = new AtomicReference<>(hedgingAccount(true, disabled));
@@ -850,10 +921,24 @@ public class RxDocumentClientImplTest {
                     ResourceType.class, OperationType.class, Supplier.class, RxDocumentServiceRequest.class,
                     BiFunction.class, String.class);
                 execute.setAccessible(true);
+                Method applyTimeout = RxDocumentClientImpl.class.getDeclaredMethod("getFeedResponseFluxWithTimeout",
+                    Flux.class, CosmosEndToEndOperationLatencyPolicyConfig.class, CosmosQueryRequestOptions.class,
+                    AtomicBoolean.class, DiagnosticsClientContext.class);
+                applyTimeout.setAccessible(true);
+                Duration timeout = Duration.ofSeconds(5);
+                CosmosEndToEndOperationLatencyPolicyConfig policy =
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(timeout)
+                        .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
+                        .build();
                 for (OperationType operationType : new OperationType[] {OperationType.Query, OperationType.ReadFeed}) {
                     List<String> contactedRegions = new ArrayList<>();
+                    AtomicBoolean cancelled = new AtomicBoolean();
+                    AtomicBoolean timeoutReported = new AtomicBoolean();
                     BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<String>> transport =
                         (retryPolicy, request) -> Mono.defer(() -> {
+                            assertThat(request.requestContext.getEndToEndOperationLatencyPolicyConfig()).isSameAs(policy);
+                            assertThat(request.requestContext.getCrossRegionAvailabilityContext()
+                                .getAvailabilityStrategyContext().isAvailabilityStrategyEnabled()).isEqualTo(!disabled);
                             GlobalEndpointManager endpointManager = client.getGlobalEndpointManager();
                             RegionalRoutingContext target = endpointManager.getApplicableReadRegionalRoutingContexts(
                                 request.requestContext.getExcludeRegions()).get(0);
@@ -862,29 +947,39 @@ public class RxDocumentClientImplTest {
                             request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange("0", "", "FF");
                             request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRange;
                             contactedRegions.add(region);
-                            return region.equals("east us") ? Mono.never() : Mono.just(region);
+                            return region.equals("east us")
+                                ? Mono.<String>never().doOnCancel(() -> cancelled.set(true)) : Mono.just(region);
                         });
                     Supplier<Mono<String>> operation = () -> {
                         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(client, operationType, ResourceType.Document);
                         request.setResourceId("collectionRid");
                         request.requestContext.setExcludeRegions(Collections.emptyList());
+                        request.requestContext.setEndToEndOperationLatencyPolicyConfig(policy);
                         try {
-                            return (Mono<String>) execute.invoke(client, ResourceType.Document, operationType,
+                            Mono<String> response = (Mono<String>) execute.invoke(client, ResourceType.Document, operationType,
                                 (Supplier<DocumentClientRetryPolicy>) () -> Mockito.mock(DocumentClientRetryPolicy.class),
                                 request, transport, "collectionRid");
+                            return ((Flux<String>) applyTimeout.invoke(null, response.flux(), policy,
+                                new CosmosQueryRequestOptions(), timeoutReported, client)).next();
                         } catch (ReflectiveOperationException error) {
                             throw new IllegalStateException(error);
                         }
                     };
                     if (disabled) {
                         StepVerifier.withVirtualTime(operation).expectSubscription()
-                            .expectNoEvent(Duration.ofSeconds(2)).thenCancel().verify(Duration.ofSeconds(5));
+                            .expectNoEvent(timeout.minusMillis(1)).thenAwait(Duration.ofMillis(1))
+                            .expectError(OperationCancelledException.class).verify(Duration.ofSeconds(5));
                         assertThat(contactedRegions).containsExactly("east us");
+                        assertThat(timeoutReported.get()).isTrue();
                     } else {
                         StepVerifier.withVirtualTime(operation).thenAwait(Duration.ofSeconds(2))
                             .expectNext("west us").expectComplete().verify(Duration.ofSeconds(5));
                         assertThat(contactedRegions).containsExactly("east us", "west us");
+                        assertThat(timeoutReported.get()).isFalse();
                     }
+                    assertThat(cancelled.get()).isTrue();
+                    assertThat(policy.isEnabled()).isTrue();
+                    assertThat(policy.getAvailabilityStrategy()).isInstanceOf(ThresholdBasedAvailabilityStrategy.class);
                 }
             } finally {
                 client.close();
