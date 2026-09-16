@@ -66,4 +66,10 @@ public final class AgentKind extends ExpandableStringEnum<AgentKind> {
      */
     @Generated
     public static final AgentKind EXTERNAL = fromString("external");
+
+    /**
+     * Static value voice for AgentKind.
+     */
+    @Generated
+    public static final AgentKind VOICE = fromString("voice");
 }

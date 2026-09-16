@@ -58,7 +58,7 @@ public class RoutinesSample {
             triggers.put("manual", trigger);
 
             Routine created = routinesClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Routine created by the azure-ai-projects sample.", true, triggers, action);
+                "Routine created by the azure-ai-projects sample.", true, triggers, action, null);
             System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
             // END:com.azure.ai.projects.RoutinesSample.createRoutine
 

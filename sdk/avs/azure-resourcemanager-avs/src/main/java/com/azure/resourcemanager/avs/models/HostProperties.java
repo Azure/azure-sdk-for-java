@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The properties of a host.
@@ -50,6 +51,11 @@ public class HostProperties implements JsonSerializable<HostProperties> {
      * The faultDomain property.
      */
     private String faultDomain;
+
+    /*
+     * The licenses assigned to the host.
+     */
+    private List<HostLicense> licenses;
 
     /**
      * Creates an instance of HostProperties class.
@@ -187,11 +193,34 @@ public class HostProperties implements JsonSerializable<HostProperties> {
     }
 
     /**
+     * Get the licenses property: The licenses assigned to the host.
+     * 
+     * @return the licenses value.
+     */
+    public List<HostLicense> licenses() {
+        return this.licenses;
+    }
+
+    /**
+     * Set the licenses property: The licenses assigned to the host.
+     * 
+     * @param licenses the licenses value to set.
+     * @return the HostProperties object itself.
+     */
+    HostProperties withLicenses(List<HostLicense> licenses) {
+        this.licenses = licenses;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (licenses() != null) {
+            licenses().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -203,6 +232,7 @@ public class HostProperties implements JsonSerializable<HostProperties> {
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("maintenance", this.maintenance == null ? null : this.maintenance.toString());
+        jsonWriter.writeArrayField("licenses", this.licenses, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -262,6 +292,9 @@ public class HostProperties implements JsonSerializable<HostProperties> {
                     deserializedHostProperties.maintenance = HostMaintenance.fromString(reader.getString());
                 } else if ("faultDomain".equals(fieldName)) {
                     deserializedHostProperties.faultDomain = reader.getString();
+                } else if ("licenses".equals(fieldName)) {
+                    List<HostLicense> licenses = reader.readArray(reader1 -> HostLicense.fromJson(reader1));
+                    deserializedHostProperties.licenses = licenses;
                 } else {
                     reader.skipChildren();
                 }

@@ -13,12 +13,12 @@ public final class KubernetesVersionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KubernetesVersionList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"values\":[{\"description\":\"izqzdwlvwlyou\",\"version\":\"gfbkjubdyh\"},{\"description\":\"fminsgowzf\",\"version\":\"sttktlahbqa\"},{\"description\":\"xtgzukxitmmqtgqq\",\"version\":\"hrnxrxc\"}],\"provisioningState\":\"Canceled\"},\"etag\":\"savokqdzf\",\"extendedLocation\":{\"name\":\"azivjlfrqttbajl\",\"type\":\"CustomLocation\"},\"location\":\"nwxyiop\",\"tags\":{\"cxkdmligovi\":\"qqfkuv\",\"goorbteo\":\"rxkpmloazuruoc\"},\"id\":\"bfhjxakvvjgsl\",\"name\":\"r\",\"type\":\"il\"},{\"properties\":{\"values\":[{\"description\":\"t\",\"version\":\"kxn\"},{\"description\":\"dabg\",\"version\":\"udtjuewbc\"}],\"provisioningState\":\"Canceled\"},\"etag\":\"uwhcjyxccybv\",\"extendedLocation\":{\"name\":\"ayakkudzpx\",\"type\":\"EdgeZone\"},\"location\":\"plmag\",\"tags\":{\"jkmnwq\":\"yohpfkyrkdbdgiog\",\"m\":\"nobaiyhddviacegf\",\"vbalxlllc\":\"tfpmvmemfnczdw\",\"ukuv\":\"podbzevwrdnh\"},\"id\":\"jcswsmys\",\"name\":\"uluqypfc\",\"type\":\"lerchpq\"}],\"nextLink\":\"f\"}")
+            "{\"value\":[{\"properties\":{\"values\":[{\"description\":\"smystuluqypfc\",\"version\":\"er\"},{\"description\":\"pqbmfpjbab\",\"version\":\"dfc\"}],\"provisioningState\":\"Succeeded\"},\"etag\":\"uunnoxyhkxgqdd\",\"extendedLocation\":{\"name\":\"i\",\"type\":\"CustomLocation\"},\"location\":\"hoqca\",\"tags\":{\"djvlpj\":\"dao\",\"msgeivsiykzk\":\"xkzb\",\"xonbzoggculapz\":\"ncj\",\"pgogtqxepny\":\"y\"},\"id\":\"b\",\"name\":\"uajlyj\",\"type\":\"lvofqzhvfcibyfmo\"},{\"properties\":{\"values\":[{\"description\":\"kjpvdwxf\",\"version\":\"iivwzjbhyzsxjrka\"},{\"description\":\"trnegvmnvuqeqvld\",\"version\":\"astjbkkdmflvestm\"}],\"provisioningState\":\"Failed\"},\"etag\":\"ril\",\"extendedLocation\":{\"name\":\"zapeewchpx\",\"type\":\"CustomLocation\"},\"location\":\"wk\",\"tags\":{\"tqedcgzulwm\":\"ycslevufuztcktyh\",\"rjvpglydzgkrvqee\":\"rqzz\",\"nwy\":\"toepryu\"},\"id\":\"pzdm\",\"name\":\"vzvfvaawzqadfl\",\"type\":\"z\"}],\"nextLink\":\"iglaecx\"}")
             .toObject(KubernetesVersionList.class);
-        Assertions.assertEquals("nwxyiop", model.value().get(0).location());
-        Assertions.assertEquals("qqfkuv", model.value().get(0).tags().get("cxkdmligovi"));
-        Assertions.assertEquals("azivjlfrqttbajl", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("hoqca", model.value().get(0).location());
+        Assertions.assertEquals("dao", model.value().get(0).tags().get("djvlpj"));
+        Assertions.assertEquals("i", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("f", model.nextLink());
+        Assertions.assertEquals("iglaecx", model.nextLink());
     }
 }

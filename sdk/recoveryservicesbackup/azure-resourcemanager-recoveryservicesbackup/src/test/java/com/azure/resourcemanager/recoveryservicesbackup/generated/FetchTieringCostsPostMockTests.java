@@ -31,9 +31,9 @@ public final class FetchTieringCostsPostMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TieringCostInfo response = manager.fetchTieringCosts()
-            .post("bfetwily", "zox",
-                new FetchTieringCostInfoRequest().withSourceTierType(RecoveryPointTierType.HARDENED_RP)
-                    .withTargetTierType(RecoveryPointTierType.INVALID),
+            .post("dorgmynltw", "p",
+                new FetchTieringCostInfoRequest().withSourceTierType(RecoveryPointTierType.ARCHIVED_RP)
+                    .withTargetTierType(RecoveryPointTierType.HARDENED_RP),
                 com.azure.core.util.Context.NONE);
 
     }
