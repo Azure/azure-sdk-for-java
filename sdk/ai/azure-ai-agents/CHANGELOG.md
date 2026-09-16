@@ -4,9 +4,20 @@
 
 ### Features Added
 
+- Added `VersionSelector.setVersionSelectionRule` as a convenience for configuring a single version selection rule.
+- Added public `StreamingResponseUtils` in the `com.azure.ai.agents.util` package for converting OpenAI streaming
+  responses to Azure SDK `IterableStream` and Reactor `Flux` types.
+- Added `BetaVoiceAgentsTelephonyClient` and `BetaVoiceAgentsTelephonyAsyncClient`, built through
+  `AgentsClientBuilder.beta()`, for managing voice-agent outbound call jobs and telephony campaigns.
+- Added `BetaVoiceAgentsConversationsClient` and `BetaVoiceAgentsConversationsAsyncClient`, built through
+  `AgentsClientBuilder.beta()`, for managing persisted voice-agent conversations and their responses, items, and
+  audio content.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed polling for optimization jobs and telephony operations that return the `cancelled` status spelling.
 
 ### Other Changes
 

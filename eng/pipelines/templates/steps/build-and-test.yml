@@ -86,6 +86,24 @@ steps:
       VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
+  - task: Maven@4
+    displayName: 'Build for From Source run'
+    inputs:
+      mavenPomFile: ClientFromSourcePom.xml
+      goals: 'install'
+      # Build and install every track 2, client, library. The purpose is to have all the libraries installed on the
+      # machine, so we can simply run tests with the -amd switch and we can remove the SNAFU of dependencies that
+      # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
+      # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
+      # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }}
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: $(JavaTestVersion)
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+
   - ${{ parameters.PreTestRunSteps }}
 
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
@@ -159,26 +177,6 @@ steps:
       jdkArchitectureOption: 'x64'
       goals: jacoco:report-aggregate
     condition: eq(variables['RunAggregateReports'], 'true')
-
-  - task: Maven@4
-    displayName: 'Build for From Source run'
-    inputs:
-      mavenPomFile: ClientFromSourcePom.xml
-      goals: 'install'
-      # Build and install every track 2, client, library. The purpose is to have all the libraries installed on the
-      # machine, so we can simply run tests with the -amd switch and we can remove the SNAFU of dependencies that
-      # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
-      # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
-      # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
-      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }}
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaTestVersion)
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
-
-  - ${{ parameters.PreTestRunSteps }}
 
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
     - ${{ if eq(parameters.IsLiveTest, 'true') }}:

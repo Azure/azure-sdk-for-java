@@ -102,11 +102,11 @@
 /sdk/ai/azure-ai-inference/                                        @dargilco @glharper @Azure/azure-java-sdk
 
 # PRLabel: %App Configuration
-/sdk/appconfiguration/                                             @alzimmermsft @avanigupta @mrm9084 @rossgrambo @nroutray @Azure/azure-java-sdk
+/sdk/appconfiguration/                                             @alzimmermsft @avanigupta @mrm9084 @nroutray @yuanqu72 @Azure/azure-java-sdk
 
 # AzureSdkOwners:                                                  @mrm9084
 # ServiceLabel: %App Configuration
-# ServiceOwners:                                                   @avanigupta @mrm9084 @rossgrambo @shenmuxiaosen
+# ServiceOwners:                                                   @avanigupta @mrm9084 @shenmuxiaosen @yuanqu72
 
 # PRLabel: %Attestation
 /sdk/attestation/                                                  @anilba06 @Azure/azure-sdk-write-attestation @gkostal @Azure/azure-java-sdk
@@ -154,19 +154,16 @@
 /sdk/spring/azure-spring-data-cosmos/                              @Azure/azure-cosmos-java-sdk-connectors @moarychan @netyyyy @rujche @saragluna
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @avanigupta @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna @nroutray @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @avanigupta @moarychan @mrm9084 @netyyyy @rujche @saragluna @nroutray @yuanqu72 @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-feature-management*/                @avanigupta @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna @nroutray @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-feature-management*/                @avanigupta @moarychan @mrm9084 @netyyyy @rujche @saragluna @nroutray @yuanqu72 @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @avanigupta @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna @nroutray @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @avanigupta @moarychan @mrm9084 @netyyyy @rujche @saragluna @nroutray @yuanqu72 @Azure/azure-java-sdk
 
 # AzureSdkOwners:                                                  @moarychan @netyyyy @rujche @saragluna
 # ServiceLabel: %azure-spring
-
-# PRLabel: %Azure.Identity
-/sdk/e2e/                                                          @g2vinay @vcolin7 @Azure/azure-java-sdk
 
 # PRLabel: %Azure.Identity
 /sdk/identity/                                                     @Azure/azure-sdk-write-identity @g2vinay @vcolin7 @Azure/azure-java-sdk
@@ -320,7 +317,7 @@
 # ServiceOwners:                                                   @berndverst @cgillum @kaibocai @philliphoff @RyanLettieri @torosent
 
 # PRLabel: %EngSys
-/sdk/template/                                                     @raych1 @benbp @Azure/azure-java-sdk
+/sdk/template/                                                     @raych1 @Azure/azure-java-sdk
 
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                                    @Azure/azure-java-sdk
@@ -956,8 +953,8 @@
 
 # ######## Eng Sys ########
 
-/eng/                                                              @raych1 @mikeharder @benbp
-/eng/automation/                                                   @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @raych1 @benbp
+/eng/                                                              @raych1 @mikeharder
+/eng/automation/                                                   @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @raych1
 /eng/bomgenerator/                                                 @vcolin7 @alzimmermsft @jonathangiles @Azure/azure-java-sdk
 /eng/code-quality-reports/                                         @JonathanGiles @alzimmermsft @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
 /eng/lintingconfigs/                                               @JonathanGiles @alzimmermsft @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
@@ -969,7 +966,7 @@
 /.github/workflows/                                                @Azure/azure-sdk-eng
 /.github/copilot-instructions.md                                   @praveenkuttappan
 /.github/skills/                                                   @Azure/azsdk-cli
-/.config/1espt/                                                    @benbp @mikeharder
+/.config/1espt/                                                    @mikeharder
 /eng/tools/mcp/                                                    @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @praveenkuttappan @Azure/azure-sdk-eng
 
 # Removing owners for this file to not require codeowner approval for changes to them given they are shared with project
@@ -978,7 +975,7 @@
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                               @alzimmermsft @jonathangiles @Azure/azure-java-sdk
 /eng/common/pipelines/codeowners-linter.yml                        @alzimmermsft @Azure/azure-java-sdk
-/eng/pipelines/docindex.yml                                        @danieljurek @raych1 @benbp
+/eng/pipelines/docindex.yml                                        @danieljurek @raych1
 
 # Add Cosmos source owners as the owners of their specialized matrix
 /eng/pipelines/templates/stages/cosmos-emulator-matrix.json        @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors

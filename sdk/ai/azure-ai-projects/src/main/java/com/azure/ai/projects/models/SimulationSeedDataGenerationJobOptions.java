@@ -27,16 +27,6 @@ public final class SimulationSeedDataGenerationJobOptions extends DataGeneration
     private DataGenerationJobType type = DataGenerationJobType.SIMULATION_SEED;
 
     /**
-     * Creates an instance of SimulationSeedDataGenerationJobOptions class.
-     *
-     * @param maxSamples the maxSamples value to set.
-     */
-    @Generated
-    public SimulationSeedDataGenerationJobOptions(int maxSamples) {
-        super(maxSamples);
-    }
-
-    /**
      * Get the type property: The data generation job type.
      *
      * @return the type value.
@@ -74,7 +64,6 @@ public final class SimulationSeedDataGenerationJobOptions extends DataGeneration
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("max_samples", getMaxSamples());
         jsonWriter.writeNumberField("train_split", getTrainSplit());
         jsonWriter.writeJsonField("model_options", getModelOptions());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
@@ -87,37 +76,37 @@ public final class SimulationSeedDataGenerationJobOptions extends DataGeneration
      * @param jsonReader The JsonReader being read.
      * @return An instance of SimulationSeedDataGenerationJobOptions if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SimulationSeedDataGenerationJobOptions.
      */
     @Generated
     public static SimulationSeedDataGenerationJobOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int maxSamples = 0;
-            Double trainSplit = null;
-            DataGenerationModelOptions modelOptions = null;
-            DataGenerationJobType type = DataGenerationJobType.SIMULATION_SEED;
+            SimulationSeedDataGenerationJobOptions deserializedSimulationSeedDataGenerationJobOptions
+                = new SimulationSeedDataGenerationJobOptions();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("max_samples".equals(fieldName)) {
-                    maxSamples = reader.getInt();
-                } else if ("train_split".equals(fieldName)) {
-                    trainSplit = reader.getNullable(JsonReader::getDouble);
+                if ("train_split".equals(fieldName)) {
+                    deserializedSimulationSeedDataGenerationJobOptions
+                        .setTrainSplit(reader.getNullable(JsonReader::getDouble));
                 } else if ("model_options".equals(fieldName)) {
-                    modelOptions = DataGenerationModelOptions.fromJson(reader);
+                    deserializedSimulationSeedDataGenerationJobOptions
+                        .setModelOptions(DataGenerationModelOptions.fromJson(reader));
                 } else if ("type".equals(fieldName)) {
-                    type = DataGenerationJobType.fromString(reader.getString());
+                    deserializedSimulationSeedDataGenerationJobOptions.type
+                        = DataGenerationJobType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            SimulationSeedDataGenerationJobOptions deserializedSimulationSeedDataGenerationJobOptions
-                = new SimulationSeedDataGenerationJobOptions(maxSamples);
-            deserializedSimulationSeedDataGenerationJobOptions.setTrainSplit(trainSplit);
-            deserializedSimulationSeedDataGenerationJobOptions.setModelOptions(modelOptions);
-            deserializedSimulationSeedDataGenerationJobOptions.type = type;
             return deserializedSimulationSeedDataGenerationJobOptions;
         });
+    }
+
+    /**
+     * Creates an instance of SimulationSeedDataGenerationJobOptions class.
+     */
+    @Generated
+    public SimulationSeedDataGenerationJobOptions() {
     }
 }
