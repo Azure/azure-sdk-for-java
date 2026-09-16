@@ -16,13 +16,12 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.St
 import reactor.util.annotation.Nullable;
 
 import java.io.File;
-import java.net.URL;
 
 public final class AzureMonitorHelper {
 
     public static TelemetryItemExporter createTelemetryItemExporter(HttpPipeline httpPipeline,
         StatsbeatModule statsbeatModule, File tempDir, LocalStorageStats localStorageStats,
-        @Nullable CustomerSdkStatsTelemetryPipelineListener customerSdkStatsListener, URL trustedIngestionEndpoint) {
+        @Nullable CustomerSdkStatsTelemetryPipelineListener customerSdkStatsListener) {
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(httpPipeline, statsbeatModule::shutdown);
 
         // Listener ordering matters: localStorageListener must come before customerSdkStatsListener
@@ -43,8 +42,7 @@ public final class AzureMonitorHelper {
             DiagnosticTelemetryPipelineListener diagnosticListener
                 = new DiagnosticTelemetryPipelineListener("Sending telemetry to the ingestion service", false, "");
             LocalStorageTelemetryPipelineListener localStorageListener = new LocalStorageTelemetryPipelineListener(50, // default to 50MB
-                TempDirs.getSubDir(tempDir, "telemetry"), telemetryPipeline, localStorageStats, false,
-                trustedIngestionEndpoint);
+                TempDirs.getSubDir(tempDir, "telemetry"), telemetryPipeline, localStorageStats, false);
             telemetryPipelineListener = customerSdkStatsListener != null
                 ? TelemetryPipelineListener.composite(diagnosticListener, localStorageListener,
                     customerSdkStatsListener)
@@ -65,7 +63,7 @@ public final class AzureMonitorHelper {
             LocalStorageTelemetryPipelineListener localStorageTelemetryPipelineListener
                 = new LocalStorageTelemetryPipelineListener(1, // only store at most 1mb of statsbeat telemetry
                     TempDirs.getSubDir(tempDir, "statsbeat"), statsbeatTelemetryPipeline, LocalStorageStats.noop(),
-                    true, null);
+                    true);
             statsbeatTelemetryPipelineListener
                 = TelemetryPipelineListener.composite(new StatsbeatTelemetryPipelineListener(() -> {
                     statsbeatModule.shutdown();

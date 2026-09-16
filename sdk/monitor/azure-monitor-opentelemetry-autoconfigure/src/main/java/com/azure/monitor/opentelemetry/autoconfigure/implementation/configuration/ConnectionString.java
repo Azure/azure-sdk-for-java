@@ -14,7 +14,7 @@ public final class ConnectionString {
     private static final Map<String, ConnectionString> cache = new ConcurrentHashMap<>();
 
     private final String instrumentationKey;
-    private final URL ingestionEndpoint;
+    private final String ingestionEndpoint;
     private final URL liveEndpoint;
     private final URL profilerEndpoint;
 
@@ -24,7 +24,7 @@ public final class ConnectionString {
     ConnectionString(String instrumentationKey, URL ingestionEndpoint, URL liveEndpoint, URL profilerEndpoint,
         String originalString, String aadAudience) {
         this.instrumentationKey = instrumentationKey;
-        this.ingestionEndpoint = ingestionEndpoint;
+        this.ingestionEndpoint = ingestionEndpoint.toExternalForm();
         this.liveEndpoint = liveEndpoint;
         this.profilerEndpoint = profilerEndpoint;
         this.originalString = originalString;
@@ -42,10 +42,6 @@ public final class ConnectionString {
     }
 
     public String getIngestionEndpoint() {
-        return ingestionEndpoint.toExternalForm();
-    }
-
-    public URL getIngestionEndpointUrl() {
         return ingestionEndpoint;
     }
 
