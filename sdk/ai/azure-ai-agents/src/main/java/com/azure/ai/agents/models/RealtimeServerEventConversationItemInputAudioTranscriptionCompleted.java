@@ -94,14 +94,52 @@ public final class RealtimeServerEventConversationItemInputAudioTranscriptionCom
      * @param transcript the transcript value to set.
      * @param usage the usage value to set.
      */
-    @Generated
-    private RealtimeServerEventConversationItemInputAudioTranscriptionCompleted(String eventId, String itemId,
+    RealtimeServerEventConversationItemInputAudioTranscriptionCompleted(String eventId, String itemId,
         long contentIndex, String transcript, BinaryData usage) {
+        // AI Tooling: union type
         this.eventId = eventId;
         this.itemId = itemId;
         this.contentIndex = contentIndex;
         this.transcript = transcript;
         this.usage = usage;
+    }
+
+    /**
+     * Creates an instance of RealtimeServerEventConversationItemInputAudioTranscriptionCompleted class.
+     *
+     * @param eventId the eventId value to set.
+     * @param itemId the itemId value to set.
+     * @param contentIndex the contentIndex value to set.
+     * @param transcript the transcript value to set.
+     * @param usage the {@link TranscriptTextUsageTokens} usage to set.
+     */
+    public RealtimeServerEventConversationItemInputAudioTranscriptionCompleted(String eventId, String itemId,
+        long contentIndex, String transcript, TranscriptTextUsageTokens usage) {
+        // AI Tooling: union type
+        this.eventId = eventId;
+        this.itemId = itemId;
+        this.contentIndex = contentIndex;
+        this.transcript = transcript;
+        this.usage = usage == null ? null : BinaryData.fromObject(usage);
+    }
+
+    /**
+     * Creates an instance of RealtimeServerEventConversationItemInputAudioTranscriptionCompleted class.
+     *
+     * @param eventId the eventId value to set.
+     * @param itemId the itemId value to set.
+     * @param contentIndex the contentIndex value to set.
+     * @param transcript the transcript value to set.
+     * @param usage the {@link TranscriptTextUsageDuration} usage to set.
+     */
+    public RealtimeServerEventConversationItemInputAudioTranscriptionCompleted(String eventId, String itemId,
+        long contentIndex, String transcript, TranscriptTextUsageDuration usage) {
+        // AI Tooling: union type
+        this.eventId = eventId;
+        this.itemId = itemId;
+        this.contentIndex = contentIndex;
+        this.transcript = transcript;
+        this.usage = usage == null ? null : BinaryData.fromObject(usage);
     }
 
     /**
@@ -182,8 +220,8 @@ public final class RealtimeServerEventConversationItemInputAudioTranscriptionCom
      *
      * @return the usage value.
      */
-    @Generated
-    public BinaryData getUsage() {
+    BinaryData getUsage() {
+        // AI Tooling: union type
         return this.usage;
     }
 
@@ -285,5 +323,43 @@ public final class RealtimeServerEventConversationItemInputAudioTranscriptionCom
             deserializedRealtimeServerEventConversationItemInputAudioTranscriptionCompleted.phrases = phrases;
             return deserializedRealtimeServerEventConversationItemInputAudioTranscriptionCompleted;
         });
+    }
+
+    /**
+     * Get the usage property: Usage statistics for the transcription.
+     *
+     * @return the usage value as a {@link TranscriptTextUsageTokens}, or {@code null} when it is not set or holds
+     * another variant.
+     */
+    public TranscriptTextUsageTokens getUsageAsTranscriptTextUsageTokens() {
+        // AI Tooling: union type
+        if (this.usage == null) {
+            return null;
+        }
+        CreateTranscriptionResponseJsonUsage unionValue
+            = this.usage.toObject(CreateTranscriptionResponseJsonUsage.class);
+        if (!(unionValue instanceof TranscriptTextUsageTokens)) {
+            return null;
+        }
+        return (TranscriptTextUsageTokens) unionValue;
+    }
+
+    /**
+     * Get the usage property: Usage statistics for the transcription.
+     *
+     * @return the usage value as a {@link TranscriptTextUsageDuration}, or {@code null} when it is not set or holds
+     * another variant.
+     */
+    public TranscriptTextUsageDuration getUsageAsTranscriptTextUsageDuration() {
+        // AI Tooling: union type
+        if (this.usage == null) {
+            return null;
+        }
+        CreateTranscriptionResponseJsonUsage unionValue
+            = this.usage.toObject(CreateTranscriptionResponseJsonUsage.class);
+        if (!(unionValue instanceof TranscriptTextUsageDuration)) {
+            return null;
+        }
+        return (TranscriptTextUsageDuration) unionValue;
     }
 }

@@ -304,8 +304,8 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
      *
      * @return the maxOutputTokens value.
      */
-    @Generated
-    public BinaryData getMaxOutputTokens() {
+    BinaryData getMaxOutputTokens() {
+        // AI Tooling: union type
         return this.maxOutputTokens;
     }
 
@@ -316,8 +316,8 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
      * @param maxOutputTokens the maxOutputTokens value to set.
      * @return the VoiceAgentRealtimeResponseBase object itself.
      */
-    @Generated
     VoiceAgentRealtimeResponseBase setMaxOutputTokens(BinaryData maxOutputTokens) {
+        // AI Tooling: union type
         this.maxOutputTokens = maxOutputTokens;
         return this;
     }
@@ -403,5 +403,43 @@ public class VoiceAgentRealtimeResponseBase implements JsonSerializable<VoiceAge
             }
             return deserializedVoiceAgentRealtimeResponseBase;
         });
+    }
+
+    /**
+     * Get the maxOutputTokens property: Maximum number of output tokens for a single assistant response, inclusive of
+     * tool calls, that was used in this response.
+     *
+     * @return the maxOutputTokens value as a Long, or {@code null} when it is not set or holds another variant.
+     */
+    public final Long getMaxOutputTokensAsLong() {
+        // AI Tooling: union type
+        BinaryData value = getMaxOutputTokens();
+        if (value == null) {
+            return null;
+        }
+        String json = value.toString().trim();
+        if (!(!json.isEmpty() && (Character.isDigit(json.charAt(0)) || json.charAt(0) == '-'))) {
+            return null;
+        }
+        return value.toObject(Long.class);
+    }
+
+    /**
+     * Get the maxOutputTokens property: Maximum number of output tokens for a single assistant response, inclusive of
+     * tool calls, that was used in this response.
+     *
+     * @return the maxOutputTokens value as a String, or {@code null} when it is not set or holds another variant.
+     */
+    public final String getMaxOutputTokensAsString() {
+        // AI Tooling: union type
+        BinaryData value = getMaxOutputTokens();
+        if (value == null) {
+            return null;
+        }
+        String json = value.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return value.toObject(String.class);
     }
 }
