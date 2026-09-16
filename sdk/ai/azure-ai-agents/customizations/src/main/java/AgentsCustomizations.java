@@ -33,12 +33,36 @@ public class AgentsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        libraryCustomization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast ->
+            customizeBuilder(ast.getClassByName("AgentsClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("Generated AgentsClientBuilder was not found."))));
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
         // makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
+    }
+
+    private static void customizeBuilder(ClassOrInterfaceDeclaration builder) {
+        builder.getMethodsByName("buildInnerClient").stream()
+            .filter(method -> method.getParameters().isEmpty())
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Generated buildInnerClient was not found."))
+            .getBody().ifPresent(body -> {
+                if (!body.toString().contains("createPreviewErrorPolicy")) {
+                    body.addStatement(2, StaticJavaParser.parseStatement(
+                        "localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline, "
+                            + "FoundryPolicyHelper.createPreviewErrorPolicy(allowPreview));"));
+                }
+            });
+        MethodDeclaration pipelineMethod = builder.getMethodsByName("createHttpPipeline").stream()
+            .filter(method -> method.getParameters().isEmpty())
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Generated createHttpPipeline was not found."));
+        pipelineMethod.setBody(StaticJavaParser.parseBlock("{ return createHttpPipeline(true); }"));
+        builder.findCompilationUnit().ifPresent(unit -> unit.getImports().removeIf(declaration ->
+            "com.azure.core.http.policy.HttpLoggingPolicy".equals(declaration.getNameAsString())));
     }
 
     private static final String MODELS_PACKAGE = "com.azure.ai.agents.models";
@@ -657,6 +681,38 @@ public class AgentsCustomizations extends Customization {
         customization.getClass("com.azure.ai.agents.implementation", "SyncOperationLocationPollingStrategy")
             .customizeAst(ast -> ast.getClassByName("SyncOperationLocationPollingStrategy")
                 .ifPresent(clazz -> clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"))));
+
+        customizePollingResult(customization, "OperationLocationPollingStrategy");
+        customizePollingResult(customization, "SyncOperationLocationPollingStrategy");
+    }
+
+    private static void customizePollingResult(LibraryCustomization customization, String className) {
+        customization.getClass("com.azure.ai.agents.implementation", className).customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(className)
+                .orElseThrow(() -> new IllegalStateException("Generated " + className + " was not found."));
+            MethodDeclaration getResult = clazz.getMethodsByName("getResult").get(0);
+            String statusChecks = className.startsWith("Sync")
+                ? "if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {"
+                    + " throw LOGGER.logExceptionAsError(new AzureException(\"Long running operation failed.\")); }"
+                    + "if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {"
+                    + " throw LOGGER.logExceptionAsError(new AzureException(\"Long running operation cancelled.\")); }"
+                : "if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {"
+                    + " return Mono.error(new AzureException(\"Long running operation failed.\")); }"
+                    + "if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {"
+                    + " return Mono.error(new AzureException(\"Long running operation cancelled.\")); }";
+            String deserialize = className.startsWith("Sync")
+                ? "Map<String, Object> pollResult = PollingUtils.deserializeResponseSync(latestResponseBody, serializer,"
+                    + " PollingUtils.POST_POLL_RESULT_TYPE_REFERENCE);"
+                    + "return PollingUtils.deserializeResponseSync(AgentsServicePollUtils.getFinalResultBody("
+                    + "pollResult, propertyName, resultType), serializer, resultType);"
+                : "return PollingUtils.deserializeResponse(latestResponseBody, serializer,"
+                    + " PollingUtils.POST_POLL_RESULT_TYPE_REFERENCE).flatMap(value -> PollingUtils.deserializeResponse("
+                    + "AgentsServicePollUtils.getFinalResultBody(value, propertyName, resultType), serializer, resultType))"
+                    + ".switchIfEmpty(Mono.error(new AzureException(\"Cannot get final result\")));";
+            getResult.setBody(StaticJavaParser.parseBlock("{" + statusChecks + "if (propertyName != null) {"
+                + "BinaryData latestResponseBody = BinaryData.fromString(pollingContext.getData(PollingUtils.POLL_RESPONSE_BODY));"
+                + deserialize + "} else { return super.getResult(pollingContext, resultType); }}"));
+        });
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {

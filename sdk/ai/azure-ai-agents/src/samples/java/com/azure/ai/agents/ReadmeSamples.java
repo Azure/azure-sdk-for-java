@@ -10,10 +10,15 @@ import com.azure.ai.agents.models.AzureCreateResponseDetails;
 import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.ProtocolConfiguration;
+import com.azure.ai.agents.models.RawRealtimeServerEvent;
+import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
 import com.azure.ai.agents.models.SessionLogEvent;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
 import com.azure.ai.agents.models.VersionSelector;
+import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
+import com.azure.ai.agents.models.VoiceAgentWebSocketOverflowStrategy;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -28,6 +33,27 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.services.blocking.ConversationService;
 
 public final class ReadmeSamples {
+    public void realtimeForwardCompatibility(BetaVoiceAgentWebSocketClient realtimeClient, String agentName) {
+        // BEGIN: com.azure.ai.agents.realtime_forward_compatibility
+        VoiceAgentWebSocketConnectionOptions options
+            = new VoiceAgentWebSocketConnectionOptions()
+                .setReceiveBufferCapacity(512)
+                .setMaxMessageSize(8 * 1024 * 1024)
+                .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR);
+        try (VoiceAgentWebSocketSessionClient session = realtimeClient.connect(agentName, options)) {
+            session.sendEvent(BinaryData.fromString(
+                "{\"type\":\"response.create\",\"event_id\":\"response-1\"}"));
+            for (RealtimeServerEvent event : session.receiveEvents()) {
+                if (event instanceof RawRealtimeServerEvent) {
+                    BinaryData payload
+                        = ((RawRealtimeServerEvent) event).getRawEvent();
+                    System.out.println("Received an unrecognized event with " + payload.getLength() + " bytes.");
+                }
+            }
+        }
+        // END: com.azure.ai.agents.realtime_forward_compatibility
+    }
+
     public void readmeSamples() {
         String endpoint = "my-resource-url";
         String model = "model";

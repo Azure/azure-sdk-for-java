@@ -47,11 +47,16 @@ public final class CodeFileDetails {
      * Creates an instance of CodeFileDetails class.
      *
      * @param filePath path to the file on disk to upload.
+    * @throws IllegalArgumentException if the path has no file name.
      */
     public CodeFileDetails(String filePath) {
         Path path = Paths.get(filePath);
+        Path fileName = path.getFileName();
+        if (fileName == null) {
+            throw new IllegalArgumentException("The provided path has no file name: " + filePath);
+        }
         this.content = BinaryData.fromFile(path);
-        this.filename = path.getFileName().toString();
+        this.filename = fileName.toString();
     }
 
     /**

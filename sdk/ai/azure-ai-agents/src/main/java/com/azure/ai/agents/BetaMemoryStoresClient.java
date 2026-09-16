@@ -49,6 +49,20 @@ import java.util.Map;
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaMemoryStoresClient {
 
+    /**
+     * Resumes polling an existing memory update without creating another update.
+     *
+     * @param name memory store name.
+     * @param updateId saved update ID from a previous poll response.
+     * @return a poller exposing update metadata and the completed result.
+     */
+    public SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> resumeUpdateMemories(String name,
+        String updateId) {
+        return com.azure.ai.agents.implementation.AgentsServicePollUtils.resume(
+            () -> getUpdateResultWithResponse(name, updateId, new RequestOptions()), MemoryStoreUpdateResponse.class,
+            MemoryStoreUpdateCompletedResult.class);
+    }
+
     @Generated
     private final BetaMemoryStoresImpl serviceClient;
 
