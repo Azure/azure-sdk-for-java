@@ -6,6 +6,7 @@
 
 - Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications. ([#48472](https://github.com/Azure/azure-sdk-for-java/pull/48472))
 - Improved `AzureDeveloperCliCredential` error handling to extract meaningful messages from `azd auth token` JSON output, providing cleaner error messages to users. ([#47975](https://github.com/Azure/azure-sdk-for-java/pull/47975))
+- Fixed misleading authentication error reporting when token requests are interrupted or the JVM shuts down. ([#50585](https://github.com/Azure/azure-sdk-for-java/issues/50585))
 
 ### Other Changes
 
