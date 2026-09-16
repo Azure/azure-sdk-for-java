@@ -45,16 +45,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     private String model;
 
     /*
-     * The engine that owns conversation handling for this voice agent. Exactly one of this property and the
-     * model-backed configuration (`model_type` with `model`) must be provided. When this property is provided,
-     * `model_type`, `model`, `instructions`, `tools`, and `tool_choice` must be omitted, and `greeting.tool_choice`
-     * cannot be `required`, because the engine owns the conversation logic. The initial implementation supports a
-     * hosted-agent engine.
-     */
-    @Generated
-    private VoiceConversationEngine conversationEngine;
-
-    /*
      * A system (or developer) message inserted into the model's context. Supports template substitution via
      * `structured_inputs`, rendered per session before the live session starts.
      */
@@ -136,13 +126,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     private Map<String, StructuredInputDefinition> structuredInputs;
 
     /*
-     * Optional configuration for sibling Foundry text agents that this voice agent may consult as background
-     * specialists.
-     */
-    @Generated
-    private VoiceAgentSubagentConfig subagentConfig;
-
-    /*
      * Whether conversations with this agent are persisted. A single, all-or-nothing persistence switch that defaults to
      * `false` (privacy-safe: off by default). When `true`, Foundry persists the full conversation — the
      * transcript/event
@@ -153,13 +136,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      */
     @Generated
     private Boolean store;
-
-    /**
-     * Creates an instance of VoiceAgentDefinition class.
-     */
-    @Generated
-    public VoiceAgentDefinition() {
-    }
 
     /**
      * Get the kind property: The kind property.
@@ -185,20 +161,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Set the modelType property: How the model backing this voice agent is served. Required with `model` for a
-     * model-backed voice agent and omitted when `conversation_engine` is provided. This is independent of the
-     * architecture (realtime or cascaded), which the service derives from the selected model.
-     *
-     * @param modelType the modelType value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setModelType(VoiceModelType modelType) {
-        this.modelType = modelType;
-        return this;
-    }
-
-    /**
      * Get the model property: The model to use for this agent. Required with `model_type` for a model-backed voice
      * agent and omitted when `conversation_engine` is provided. The model must support realtime or cascaded voice.
      *
@@ -207,49 +169,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     @Generated
     public String getModel() {
         return this.model;
-    }
-
-    /**
-     * Set the model property: The model to use for this agent. Required with `model_type` for a model-backed voice
-     * agent and omitted when `conversation_engine` is provided. The model must support realtime or cascaded voice.
-     *
-     * @param model the model value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setModel(String model) {
-        this.model = model;
-        return this;
-    }
-
-    /**
-     * Get the conversationEngine property: The engine that owns conversation handling for this voice agent. Exactly one
-     * of this property and the model-backed configuration (`model_type` with `model`) must be provided. When this
-     * property is provided, `model_type`, `model`, `instructions`, `tools`, and `tool_choice` must be omitted, and
-     * `greeting.tool_choice` cannot be `required`, because the engine owns the conversation logic. The initial
-     * implementation supports a hosted-agent engine.
-     *
-     * @return the conversationEngine value.
-     */
-    @Generated
-    public VoiceConversationEngine getConversationEngine() {
-        return this.conversationEngine;
-    }
-
-    /**
-     * Set the conversationEngine property: The engine that owns conversation handling for this voice agent. Exactly one
-     * of this property and the model-backed configuration (`model_type` with `model`) must be provided. When this
-     * property is provided, `model_type`, `model`, `instructions`, `tools`, and `tool_choice` must be omitted, and
-     * `greeting.tool_choice` cannot be `required`, because the engine owns the conversation logic. The initial
-     * implementation supports a hosted-agent engine.
-     *
-     * @param conversationEngine the conversationEngine value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setConversationEngine(VoiceConversationEngine conversationEngine) {
-        this.conversationEngine = conversationEngine;
-        return this;
     }
 
     /**
@@ -545,30 +464,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Get the subagentConfig property: Optional configuration for sibling Foundry text agents that this voice agent may
-     * consult as background specialists.
-     *
-     * @return the subagentConfig value.
-     */
-    @Generated
-    public VoiceAgentSubagentConfig getSubagentConfig() {
-        return this.subagentConfig;
-    }
-
-    /**
-     * Set the subagentConfig property: Optional configuration for sibling Foundry text agents that this voice agent may
-     * consult as background specialists.
-     *
-     * @param subagentConfig the subagentConfig value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setSubagentConfig(VoiceAgentSubagentConfig subagentConfig) {
-        this.subagentConfig = subagentConfig;
-        return this;
-    }
-
-    /**
      * Get the store property: Whether conversations with this agent are persisted. A single, all-or-nothing persistence
      * switch that defaults to
      * `false` (privacy-safe: off by default). When `true`, Foundry persists the full conversation — the
@@ -720,5 +615,110 @@ public final class VoiceAgentDefinition extends AgentDefinition {
             }
             return deserializedVoiceAgentDefinition;
         });
+    }
+
+    /*
+     * The engine that owns conversation handling for this voice agent. Exactly one of this property and the
+     * model-backed configuration (`model_type` with `model`) must be provided. When this property is provided,
+     * `model_type`, `model`, `instructions`, `tools`, and `tool_choice` must be omitted, and `greeting.tool_choice`
+     * cannot be `required`, because the engine owns the conversation logic. The initial implementation supports a
+     * hosted-agent engine.
+     */
+    @Generated
+    private VoiceConversationEngine conversationEngine;
+
+    /*
+     * Optional configuration for sibling Foundry text agents that this voice agent may consult as background
+     * specialists.
+     */
+    @Generated
+    private VoiceAgentSubagentConfig subagentConfig;
+
+    /**
+     * Creates an instance of VoiceAgentDefinition class.
+     */
+    @Generated
+    public VoiceAgentDefinition() {
+    }
+
+    /**
+     * Set the modelType property: How the model backing this voice agent is served. Required with `model` for a
+     * model-backed voice agent and omitted when `conversation_engine` is provided. This is independent of the
+     * architecture (realtime or cascaded), which the service derives from the selected model.
+     *
+     * @param modelType the modelType value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setModelType(VoiceModelType modelType) {
+        this.modelType = modelType;
+        return this;
+    }
+
+    /**
+     * Set the model property: The model to use for this agent. Required with `model_type` for a model-backed voice
+     * agent and omitted when `conversation_engine` is provided. The model must support realtime or cascaded voice.
+     *
+     * @param model the model value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setModel(String model) {
+        this.model = model;
+        return this;
+    }
+
+    /**
+     * Get the conversationEngine property: The engine that owns conversation handling for this voice agent. Exactly one
+     * of this property and the model-backed configuration (`model_type` with `model`) must be provided. When this
+     * property is provided, `model_type`, `model`, `instructions`, `tools`, and `tool_choice` must be omitted, and
+     * `greeting.tool_choice` cannot be `required`, because the engine owns the conversation logic. The initial
+     * implementation supports a hosted-agent engine.
+     *
+     * @return the conversationEngine value.
+     */
+    @Generated
+    public VoiceConversationEngine getConversationEngine() {
+        return this.conversationEngine;
+    }
+
+    /**
+     * Set the conversationEngine property: The engine that owns conversation handling for this voice agent. Exactly one
+     * of this property and the model-backed configuration (`model_type` with `model`) must be provided. When this
+     * property is provided, `model_type`, `model`, `instructions`, `tools`, and `tool_choice` must be omitted, and
+     * `greeting.tool_choice` cannot be `required`, because the engine owns the conversation logic. The initial
+     * implementation supports a hosted-agent engine.
+     *
+     * @param conversationEngine the conversationEngine value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setConversationEngine(VoiceConversationEngine conversationEngine) {
+        this.conversationEngine = conversationEngine;
+        return this;
+    }
+
+    /**
+     * Get the subagentConfig property: Optional configuration for sibling Foundry text agents that this voice agent may
+     * consult as background specialists.
+     *
+     * @return the subagentConfig value.
+     */
+    @Generated
+    public VoiceAgentSubagentConfig getSubagentConfig() {
+        return this.subagentConfig;
+    }
+
+    /**
+     * Set the subagentConfig property: Optional configuration for sibling Foundry text agents that this voice agent may
+     * consult as background specialists.
+     *
+     * @param subagentConfig the subagentConfig value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setSubagentConfig(VoiceAgentSubagentConfig subagentConfig) {
+        this.subagentConfig = subagentConfig;
+        return this;
     }
 }
