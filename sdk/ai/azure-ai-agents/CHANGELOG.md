@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added public `StreamingResponseUtils` in the `com.azure.ai.agents.util` package for converting OpenAI streaming
+  responses to Azure SDK `IterableStream` and Reactor `Flux` types.
 - Added `BetaAgentTelephonyClient` and `BetaAgentTelephonyAsyncClient`, built through
   `AgentsClientBuilder.beta()`, for managing voice-agent outbound call jobs and telephony campaigns.
 - Added `BetaAgentEndpointConversationsClient` and `BetaAgentEndpointConversationsAsyncClient`, built through
