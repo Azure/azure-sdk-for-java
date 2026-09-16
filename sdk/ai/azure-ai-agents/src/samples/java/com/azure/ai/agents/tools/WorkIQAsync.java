@@ -71,10 +71,10 @@ public class WorkIQAsync {
 
                     return SampleUtils.pinAgentVersion(agentsAsyncClient, createdAgent)
                         .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
-                        ResponseCreateParams.builder()
-                            .toolChoice(ToolChoiceOptions.REQUIRED)
-                            .input(userInput)
-                            .build())))
+                            ResponseCreateParams.builder()
+                                .toolChoice(ToolChoiceOptions.REQUIRED)
+                                .input(userInput)
+                                .build())))
                         .doOnNext(response -> {
                             System.out.println("Response status: "
                                 + response.status().map(Object::toString).orElse("unknown"));

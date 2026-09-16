@@ -96,10 +96,10 @@ public class MemorySearchAsync {
                         firstConvRef.set(conv.id());
                         return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
                             .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
-                            ResponseCreateParams.builder()
-                                .conversation(conv.id())
-                                .input("I prefer dark roast coffee")
-                                .build())));
+                                ResponseCreateParams.builder()
+                                    .conversation(conv.id())
+                                    .input("I prefer dark roast coffee")
+                                    .build())));
                     });
             })
             .doOnNext(response -> System.out.println("First response received"))
