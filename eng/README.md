@@ -127,9 +127,10 @@ Azure does [not expose `System.PullRequest.TargetBranch` in templates](https://l
 so non-main public unified PRs wait too, although they do not use the new bypass. Service/private/non-PR/release jobs
 are not serialized by this change. Ordinary PRs must now wait for the preflight's checkout, metadata discovery, and
 matrix generation before Build/Analyze can be scheduled; this is not a claim of lower latency for every PR.
-Local Windows measurements were 0.23-0.37 seconds for a complete non-changelog snapshot/routing probe (five runs,
-no optional modules loaded), and 1.6-2.3 seconds for eligibility against copied real core, communication, and
-management metadata (excluding dependency restore and prior package selection). Hosted queue time and end-to-end
+Historical local Windows measurements, before the latest main merge, were 0.23-0.37 seconds for a complete
+non-changelog snapshot/routing probe (five runs, no optional modules loaded), and 1.6-2.3 seconds for eligibility
+against copied real core, communication, and management metadata (excluding dependency restore and prior package
+selection). Hosted queue time and end-to-end
 Azure scheduling were not measured locally. The focused tests verify YAML wiring/conditions, not server-side
 template expansion.
 
@@ -168,9 +169,14 @@ Remove-Item Env:PR_VALIDATION_TEST_COLD_NPM
 ./eng/scripts/Invoke-PRValidation.ps1 -Check Changelogs -OutputDirectory "$env:TEMP/pr-validation-local"
 ```
 
-The true-empty npm download-cache probe is a separate network check, not equivalent to a successful run using
-cached locked packages. Local empty-cache validation was blocked by verified TLS connectivity to
-`registry.npmjs.org`; it was not counted as passing. Do not disable TLS or change global feeds to bypass that failure.
+The normal locked-CSpell integration case is mandatory; the optional true-empty npm download-cache probe adds
+another cache condition, not a replacement for that case. With the current CSpell 10.2.2 lock, normal local setup
+failed while fetching uncached `fast-equals` 6.0.3 from `registry.npmjs.org` with
+`ERR_SSL_SSL/TLS_ALERT_HANDSHAKE_FAILURE`. CSpell 10.2.2 did not execute, so its behavioral integration cases,
+changed-file spelling, and successful end-to-end spelling/changelog completion remain unverified. This is broader
+than the earlier true-cold-only limitation; cached CSpell 10.1.1 results do not validate the updated lock.
+Do not downgrade, use global CSpell, skip the normal case, make it opt-in, or relax TLS/change feeds to bypass
+this failure. The separate Azure Build YAML/module failure is unrelated and is not fixed by these local checks.
 
 The snapshot, package-selection diff, exported `PackageInfo` JSON, and per-check results stay in that output
 directory. On a failure, inspect the named step log and summary, then correct the reported file, POM version,
