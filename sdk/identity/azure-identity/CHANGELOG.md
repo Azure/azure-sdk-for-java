@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 - Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications.
+- Token requests that fail because of a shutdown signal are no longer reported as authentication errors. When the calling thread is interrupted while waiting for a token (for example by a Reactor scheduler disposing its worker on cancellation), the interrupt status is now restored, the interruption is logged at verbose level instead of error level, and it is rethrown as a `RuntimeException` caused by the `InterruptedException` instead of being wrapped in a `ClientAuthenticationException` or `CredentialUnavailableException`. A token request that runs into the JVM shutting down (`IllegalStateException: Shutdown in progress` from the shared executor) is logged at verbose level as well, on both the synchronous and the asynchronous paths. `ChainedTokenCredential` and `DefaultAzureCredential` surface such a signal unchanged instead of reporting the credential as failed. The credentials no longer treat a cancellation raised during their token-cache lookup as a cache miss, which previously let a cancelled request fall through to a full acquisition and, for the interactive credentials, prompt the user for a request that was already cancelled. ([#49239](https://github.com/Azure/azure-sdk-for-java/issues/49239))
 
 ### Other Changes
 

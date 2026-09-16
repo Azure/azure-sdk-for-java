@@ -108,6 +108,7 @@
 
   <!-- Suppress the long package name in kubernetesconfiguration and all its sub services/packages  -->
   <suppress checks="PackageName" files="com.azure.resourcemanager.kubernetesconfiguration.*" />
+  <suppress checks="PackageName" files="com.azure.resourcemanager.containerservicenodecustomization.*" />
 
   <!-- Suppress the @Immutable class with a property named "setPasswordLink"  -->
   <suppress checks="io.clientcore.linting.extensions.checkstyle.checks.ImmutableClassCheck" files="com.azure.resourcemanager.datadog.fluent.models.DatadogSetPasswordLinkInner" />

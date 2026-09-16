@@ -4,15 +4,17 @@
 
 ### Features Added
 
-- Added `BetaAgentTelephonyClient` and `BetaAgentTelephonyAsyncClient`, built through
+- Added `BetaVoiceAgentsTelephonyClient` and `BetaVoiceAgentsTelephonyAsyncClient`, built through
   `AgentsClientBuilder.beta()`, for managing voice-agent outbound call jobs and telephony campaigns.
-- Added `BetaAgentEndpointConversationsClient` and `BetaAgentEndpointConversationsAsyncClient`, built through
+- Added `BetaVoiceAgentsConversationsClient` and `BetaVoiceAgentsConversationsAsyncClient`, built through
   `AgentsClientBuilder.beta()`, for managing persisted voice-agent conversations and their responses, items, and
   audio content.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed polling for optimization jobs and telephony operations that return the `cancelled` status spelling.
 
 ### Other Changes
 
