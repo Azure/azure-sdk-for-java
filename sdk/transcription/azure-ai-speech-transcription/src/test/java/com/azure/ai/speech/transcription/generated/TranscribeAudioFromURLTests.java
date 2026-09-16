@@ -7,7 +7,6 @@ package com.azure.ai.speech.transcription.generated;
 import com.azure.ai.speech.transcription.models.ChannelCombinedPhrases;
 import com.azure.ai.speech.transcription.models.TranscribedPhrase;
 import com.azure.ai.speech.transcription.models.TranscribedWord;
-import com.azure.ai.speech.transcription.models.TranscriptionContent;
 import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -20,7 +19,7 @@ public final class TranscribeAudioFromURLTests extends TranscriptionClientTestBa
     @Disabled
     public void testTranscribeAudioFromURLTests() {
         // method invocation
-        TranscriptionResult response = transcriptionClient.transcribe((TranscriptionContent) null);
+        TranscriptionResult response = transcriptionClient.transcribe(null);
 
         // response assertion
         Assertions.assertNotNull(response);
