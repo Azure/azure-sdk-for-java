@@ -4,12 +4,16 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.utils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -18,12 +22,16 @@ import java.nio.file.attribute.AclEntryFlag;
 import java.nio.file.attribute.AclEntryPermission;
 import java.nio.file.attribute.AclEntryType;
 import java.nio.file.attribute.AclFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipal;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TestUtils.createSymbolicLinkOrSkip;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -102,6 +110,70 @@ class TempDirsTests {
         assertThatThrownBy(() -> TempDirs.createSecureDirectories(tempDir, link.resolve("applicationinsights")))
             .isInstanceOf(IOException.class)
             .hasMessageContaining("symbolic link");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "directory", "parent", "sharedTemp", "intermediate" })
+    @EnabledOnOs(OS.WINDOWS)
+    void shouldRejectJunctions(String location) throws Exception {
+        Path target = Files.createDirectory(tempDir.resolve("target"));
+        Path marker = Files.createFile(target.resolve("marker"));
+        List<AclEntry> originalAcl = Files.getFileAttributeView(target, AclFileAttributeView.class).getAcl();
+        Path junction = tempDir.resolve("junction");
+        try {
+            createJunction(junction, target);
+            BasicFileAttributes attributes
+                = Files.readAttributes(junction, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+            assertThat(attributes.isSymbolicLink()).isFalse();
+            assertThat(attributes.isDirectory()).isTrue();
+            assertThat(attributes.isOther()).isTrue();
+
+            assertThatThrownBy(() -> {
+                switch (location) {
+                    case "directory":
+                        TempDirs.createSecureDirectory(junction);
+                        break;
+
+                    case "parent":
+                        TempDirs.createSecureDirectory(junction.resolve("telemetry"));
+                        break;
+
+                    case "sharedTemp":
+                        TempDirs.createSecureDirectories(junction, junction.resolve("applicationinsights"));
+                        break;
+
+                    case "intermediate":
+                        TempDirs.createSecureDirectories(tempDir, junction.resolve("applicationinsights"));
+                        break;
+
+                    default:
+                        throw new AssertionError("Unexpected location: " + location);
+                }
+            }).isInstanceOf(IOException.class).hasMessageContaining("junction");
+
+            assertThat(Files.getFileAttributeView(target, AclFileAttributeView.class).getAcl()).isEqualTo(originalAcl);
+            try (Stream<Path> contents = Files.list(target)) {
+                assertThat(contents.collect(Collectors.toList())).containsExactly(marker);
+            }
+        } finally {
+            // Remove the junction itself before JUnit cleans up the temporary directory.
+            Files.deleteIfExists(junction);
+        }
+    }
+
+    private static void createJunction(Path junction, Path target) throws Exception {
+        Process process = new ProcessBuilder("cmd.exe", "/c", "mklink", "/J", junction.toString(), target.toString())
+            .redirectErrorStream(true)
+            .start();
+        try {
+            assertThat(process.waitFor(10, SECONDS)).as("junction creation completed").isTrue();
+            try (BufferedReader output = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                assertThat(process.exitValue()).as(output.lines().collect(Collectors.joining(System.lineSeparator())))
+                    .isZero();
+            }
+        } finally {
+            process.destroyForcibly();
+        }
     }
 
     private static void assertOwnerOnlyAcl(Path path, UserPrincipal owner, boolean directory) throws IOException {

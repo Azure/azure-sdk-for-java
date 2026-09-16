@@ -18,6 +18,7 @@ import java.nio.file.attribute.AclEntryFlag;
 import java.nio.file.attribute.AclEntryPermission;
 import java.nio.file.attribute.AclEntryType;
 import java.nio.file.attribute.AclFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipal;
 import java.util.Arrays;
@@ -33,17 +34,15 @@ public class TempDirs {
 
     @Nullable
     public static File getApplicationInsightsTempDir(ClientLogger logger, String message) {
-        File sharedTempDir = new File(System.getProperty("java.io.tmpdir"));
-        File tempDir = maybeAddUserSubDir(sharedTempDir);
-        tempDir = new File(tempDir, "applicationinsights");
-
+        File tempDir = null;
         try {
+            File sharedTempDir = new File(System.getProperty("java.io.tmpdir"));
+            tempDir = new File(maybeAddUserSubDir(sharedTempDir), "applicationinsights");
             createSecureDirectories(sharedTempDir.toPath(), tempDir.toPath());
-        } catch (IOException | UnsupportedOperationException e) {
-            logger.info(
-                "Unable to securely create directory: {}. {}. If this is unexpected, please check"
-                    + " that the directory is owned by the current user and is not a symbolic link.",
-                tempDir.getAbsolutePath(), message, e);
+        } catch (IOException | UnsupportedOperationException | SecurityException e) {
+            logger.info("Unable to securely create directory: {}. {}. If this is unexpected, please check"
+                + " that the process has the necessary permissions, the directory is owned by the current user,"
+                + " and it is not a symbolic link or junction.", tempDir, message, e);
             return null;
         }
         return tempDir;
@@ -53,7 +52,7 @@ public class TempDirs {
         File dir = new File(parent, name);
         try {
             createSecureDirectory(dir.toPath());
-        } catch (IOException | UnsupportedOperationException e) {
+        } catch (IOException | UnsupportedOperationException | SecurityException e) {
             throw new IllegalArgumentException("Unable to securely create directory: " + dir, e);
         }
         return dir;
@@ -63,11 +62,10 @@ public class TempDirs {
         Path normalizedSharedTempDirectory = sharedTempDirectory.toAbsolutePath().normalize();
         Path normalizedDirectory = directory.toAbsolutePath().normalize();
         if (!normalizedDirectory.startsWith(normalizedSharedTempDirectory)
-            || normalizedDirectory.equals(normalizedSharedTempDirectory)
-            || Files.isSymbolicLink(normalizedSharedTempDirectory)
-            || !Files.isDirectory(normalizedSharedTempDirectory, LinkOption.NOFOLLOW_LINKS)) {
+            || normalizedDirectory.equals(normalizedSharedTempDirectory)) {
             throw new IOException("Invalid temporary directory path: " + directory);
         }
+        validateDirectory(normalizedSharedTempDirectory);
 
         Path current = normalizedSharedTempDirectory;
         for (Path component : normalizedSharedTempDirectory.relativize(normalizedDirectory)) {
@@ -78,9 +76,10 @@ public class TempDirs {
 
     static void createSecureDirectory(Path directory) throws IOException {
         Path parent = directory.getParent();
-        if (parent == null || Files.isSymbolicLink(parent) || !Files.isDirectory(parent, LinkOption.NOFOLLOW_LINKS)) {
-            throw new IOException("Directory parent is missing, invalid, or a symbolic link: " + parent);
+        if (parent == null) {
+            throw new IOException("Directory parent is missing: " + directory);
         }
+        validateDirectory(parent);
 
         boolean posix = Files.getFileStore(parent).supportsFileAttributeView("posix");
         Path ownerProbe = posix
@@ -107,9 +106,7 @@ public class TempDirs {
             // Validated below without following links.
         }
 
-        if (Files.isSymbolicLink(directory) || !Files.isDirectory(directory, LinkOption.NOFOLLOW_LINKS)) {
-            throw new IOException("Directory is invalid or a symbolic link: " + directory);
-        }
+        validateDirectory(directory);
         UserPrincipal owner = Files.getOwner(directory, LinkOption.NOFOLLOW_LINKS);
         if (!owner.equals(currentOwner)) {
             throw new IOException("Directory is not owned by the current user: " + directory);
@@ -123,6 +120,15 @@ public class TempDirs {
 
         if (!created && !Files.isReadable(directory)) {
             throw new IOException("Directory is not readable: " + directory);
+        }
+    }
+
+    private static void validateDirectory(Path directory) throws IOException {
+        BasicFileAttributes attributes
+            = Files.readAttributes(directory, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+        // Windows junctions are directories and "other" files, but are not symbolic links.
+        if (!attributes.isDirectory() || attributes.isSymbolicLink() || attributes.isOther()) {
+            throw new IOException("Directory is invalid, a symbolic link, or a junction: " + directory);
         }
     }
 
