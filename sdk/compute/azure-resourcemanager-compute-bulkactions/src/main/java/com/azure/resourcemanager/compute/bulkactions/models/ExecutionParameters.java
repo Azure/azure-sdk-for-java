@@ -17,11 +17,6 @@ import java.io.IOException;
 @Fluent
 public final class ExecutionParameters implements JsonSerializable<ExecutionParameters> {
     /*
-     * Details that could optimize the user's request
-     */
-    private OptimizationPreference optimizationPreference;
-
-    /*
      * Retry policy the user can pass
      */
     private RetryPolicy retryPolicy;
@@ -32,30 +27,18 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
      */
     private Boolean verifyVmAgentHealth;
 
+    /*
+     * Capacity recommendation parameters for the request. When provided on an executeStart request, the service
+     * computes placement recommendations only if the VM fails to start due to an allocation failure; the
+     * recommendations for the desired sizes and locations are then surfaced in the operation's capacityRecommendation
+     * response.
+     */
+    private CapacityRecommendationParameters capacityRecommendationParameters;
+
     /**
      * Creates an instance of ExecutionParameters class.
      */
     public ExecutionParameters() {
-    }
-
-    /**
-     * Get the optimizationPreference property: Details that could optimize the user's request.
-     * 
-     * @return the optimizationPreference value.
-     */
-    public OptimizationPreference optimizationPreference() {
-        return this.optimizationPreference;
-    }
-
-    /**
-     * Set the optimizationPreference property: Details that could optimize the user's request.
-     * 
-     * @param optimizationPreference the optimizationPreference value to set.
-     * @return the ExecutionParameters object itself.
-     */
-    public ExecutionParameters withOptimizationPreference(OptimizationPreference optimizationPreference) {
-        this.optimizationPreference = optimizationPreference;
-        return this;
     }
 
     /**
@@ -101,15 +84,41 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     }
 
     /**
+     * Get the capacityRecommendationParameters property: Capacity recommendation parameters for the request. When
+     * provided on an executeStart request, the service computes placement recommendations only if the VM fails to start
+     * due to an allocation failure; the recommendations for the desired sizes and locations are then surfaced in the
+     * operation's capacityRecommendation response.
+     * 
+     * @return the capacityRecommendationParameters value.
+     */
+    public CapacityRecommendationParameters capacityRecommendationParameters() {
+        return this.capacityRecommendationParameters;
+    }
+
+    /**
+     * Set the capacityRecommendationParameters property: Capacity recommendation parameters for the request. When
+     * provided on an executeStart request, the service computes placement recommendations only if the VM fails to start
+     * due to an allocation failure; the recommendations for the desired sizes and locations are then surfaced in the
+     * operation's capacityRecommendation response.
+     * 
+     * @param capacityRecommendationParameters the capacityRecommendationParameters value to set.
+     * @return the ExecutionParameters object itself.
+     */
+    public ExecutionParameters
+        withCapacityRecommendationParameters(CapacityRecommendationParameters capacityRecommendationParameters) {
+        this.capacityRecommendationParameters = capacityRecommendationParameters;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("optimizationPreference",
-            this.optimizationPreference == null ? null : this.optimizationPreference.toString());
         jsonWriter.writeJsonField("retryPolicy", this.retryPolicy);
         jsonWriter.writeBooleanField("verifyVmAgentHealth", this.verifyVmAgentHealth);
+        jsonWriter.writeJsonField("capacityRecommendationParameters", this.capacityRecommendationParameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -128,13 +137,13 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("optimizationPreference".equals(fieldName)) {
-                    deserializedExecutionParameters.optimizationPreference
-                        = OptimizationPreference.fromString(reader.getString());
-                } else if ("retryPolicy".equals(fieldName)) {
+                if ("retryPolicy".equals(fieldName)) {
                     deserializedExecutionParameters.retryPolicy = RetryPolicy.fromJson(reader);
                 } else if ("verifyVmAgentHealth".equals(fieldName)) {
                     deserializedExecutionParameters.verifyVmAgentHealth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("capacityRecommendationParameters".equals(fieldName)) {
+                    deserializedExecutionParameters.capacityRecommendationParameters
+                        = CapacityRecommendationParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

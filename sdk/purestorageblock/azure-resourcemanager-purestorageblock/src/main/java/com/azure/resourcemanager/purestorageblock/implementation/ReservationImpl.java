@@ -9,7 +9,9 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.purestorageblock.fluent.models.ReservationInner;
+import com.azure.resourcemanager.purestorageblock.models.LatestLinkedSaaSResponse;
 import com.azure.resourcemanager.purestorageblock.models.LimitDetails;
+import com.azure.resourcemanager.purestorageblock.models.LinkSaaSRequest;
 import com.azure.resourcemanager.purestorageblock.models.Reservation;
 import com.azure.resourcemanager.purestorageblock.models.ReservationBillingStatus;
 import com.azure.resourcemanager.purestorageblock.models.ReservationBillingUsageReport;
@@ -173,6 +175,22 @@ public final class ReservationImpl implements Reservation, Reservation.Definitio
 
     public ReservationBillingUsageReport getBillingReport() {
         return serviceManager.reservations().getBillingReport(resourceGroupName, reservationName);
+    }
+
+    public Reservation linkSaaS(LinkSaaSRequest body) {
+        return serviceManager.reservations().linkSaaS(resourceGroupName, reservationName, body);
+    }
+
+    public Reservation linkSaaS(LinkSaaSRequest body, Context context) {
+        return serviceManager.reservations().linkSaaS(resourceGroupName, reservationName, body, context);
+    }
+
+    public Response<LatestLinkedSaaSResponse> latestLinkedSaaSWithResponse(Context context) {
+        return serviceManager.reservations().latestLinkedSaaSWithResponse(resourceGroupName, reservationName, context);
+    }
+
+    public LatestLinkedSaaSResponse latestLinkedSaaS() {
+        return serviceManager.reservations().latestLinkedSaaS(resourceGroupName, reservationName);
     }
 
     public ReservationImpl withRegion(Region location) {

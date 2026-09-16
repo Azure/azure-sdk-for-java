@@ -2,9 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
@@ -22,18 +33,20 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,6 +92,9 @@ public class ReactiveCourseRepositoryIT {
     private CosmosConfig cosmosConfig;
 
     @Autowired
+    private CosmosFactory cosmosFactory;
+
+    @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
     private CosmosEntityInformation<Course, ?> entityInformation;
@@ -110,6 +126,63 @@ public class ReactiveCourseRepositoryIT {
     public void testFindById() {
         final Mono<Course> idMono = repository.findById(COURSE_ID_4);
         StepVerifier.create(idMono).expectNext(COURSE_4).expectComplete().verify();
+    }
+
+    @Test
+    public void saveAllPropagatesBulkTransportFailure() {
+        FaultInjectionRule connectionCloseRule = new FaultInjectionRuleBuilder("connectionClose-" + UUID.randomUUID())
+            .condition(new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.BATCH_ITEM)
+                .build())
+            .result(FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionConnectionErrorType.CONNECTION_CLOSE)
+                .interval(Duration.ofMillis(200))
+                .build())
+            .duration(Duration.ofSeconds(10))
+            .build();
+        FaultInjectionRule responseDelayRule = new FaultInjectionRuleBuilder("responseDelay-" + UUID.randomUUID())
+            .condition(new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.BATCH_ITEM)
+                .build())
+            .result(FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                .delay(Duration.ofSeconds(1))
+                .build())
+            .duration(Duration.ofSeconds(10))
+            .build();
+        CosmosAsyncContainer container = cosmosFactory.getCosmosAsyncClient()
+            .getDatabase(cosmosFactory.getDatabaseName())
+            .getContainer(template.getContainerNameOverride(entityInformation.getContainerName()));
+
+        try {
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                container, Arrays.asList(connectionCloseRule, responseDelayRule)).block();
+
+            Course course = new Course("fault-" + UUID.randomUUID(), COURSE_NAME_1, DEPARTMENT_NAME_1);
+            StepVerifier.create(repository.saveAll(Collections.singleton(course)).collectList())
+                .expectErrorSatisfies(error -> {
+                    assertThat(error).isInstanceOf(CosmosAccessException.class);
+                    CosmosException cosmosException = ((CosmosAccessException) error).getCosmosException();
+                    assertThat(cosmosException).isNotNull();
+                    assertThat(cosmosException.getDiagnostics()).isNotNull();
+                    assertThat(containsCosmosStatus(cosmosException, 410)).isTrue();
+                })
+                .verify();
+        } finally {
+            connectionCloseRule.disable();
+            responseDelayRule.disable();
+        }
+    }
+
+    private static boolean containsCosmosStatus(Throwable error, int statusCode) {
+        Throwable current = error;
+        while (current != null) {
+            if (current instanceof CosmosException && ((CosmosException) current).getStatusCode() == statusCode) {
+                return true;
+            }
+            current = current.getCause();
+        }
+        return false;
     }
 
     @Test

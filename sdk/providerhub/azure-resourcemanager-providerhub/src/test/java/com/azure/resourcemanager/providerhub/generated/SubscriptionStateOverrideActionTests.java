@@ -14,19 +14,19 @@ public final class SubscriptionStateOverrideActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionStateOverrideAction model
-            = BinaryData.fromString("{\"state\":\"SuspendedToWarned\",\"action\":\"DeleteAllResources\"}")
+            = BinaryData.fromString("{\"state\":\"Deleted\",\"action\":\"SoftDeleteAllResources\"}")
                 .toObject(SubscriptionStateOverrideAction.class);
-        Assertions.assertEquals(SubscriptionTransitioningState.SUSPENDED_TO_WARNED, model.state());
-        Assertions.assertEquals(SubscriptionNotificationOperation.DELETE_ALL_RESOURCES, model.action());
+        Assertions.assertEquals(SubscriptionTransitioningState.DELETED, model.state());
+        Assertions.assertEquals(SubscriptionNotificationOperation.SOFT_DELETE_ALL_RESOURCES, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubscriptionStateOverrideAction model
-            = new SubscriptionStateOverrideAction().withState(SubscriptionTransitioningState.SUSPENDED_TO_WARNED)
-                .withAction(SubscriptionNotificationOperation.DELETE_ALL_RESOURCES);
+            = new SubscriptionStateOverrideAction().withState(SubscriptionTransitioningState.DELETED)
+                .withAction(SubscriptionNotificationOperation.SOFT_DELETE_ALL_RESOURCES);
         model = BinaryData.fromObject(model).toObject(SubscriptionStateOverrideAction.class);
-        Assertions.assertEquals(SubscriptionTransitioningState.SUSPENDED_TO_WARNED, model.state());
-        Assertions.assertEquals(SubscriptionNotificationOperation.DELETE_ALL_RESOURCES, model.action());
+        Assertions.assertEquals(SubscriptionTransitioningState.DELETED, model.state());
+        Assertions.assertEquals(SubscriptionNotificationOperation.SOFT_DELETE_ALL_RESOURCES, model.action());
     }
 }

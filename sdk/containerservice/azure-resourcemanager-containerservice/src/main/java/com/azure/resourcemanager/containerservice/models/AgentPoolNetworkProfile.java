@@ -52,6 +52,11 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
      */
     private List<AgentPoolNetworkInterface> secondaryNetworkInterfaces;
 
+    /*
+     * DRANET settings of an agent pool.
+     */
+    private DRANETProfile dranet;
+
     /**
      * Creates an instance of AgentPoolNetworkProfile class.
      */
@@ -184,6 +189,26 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
     }
 
     /**
+     * Get the dranet property: DRANET settings of an agent pool.
+     * 
+     * @return the dranet value.
+     */
+    public DRANETProfile dranet() {
+        return this.dranet;
+    }
+
+    /**
+     * Set the dranet property: DRANET settings of an agent pool.
+     * 
+     * @param dranet the dranet value to set.
+     * @return the AgentPoolNetworkProfile object itself.
+     */
+    public AgentPoolNetworkProfile withDranet(DRANETProfile dranet) {
+        this.dranet = dranet;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -197,6 +222,9 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
         }
         if (secondaryNetworkInterfaces() != null) {
             secondaryNetworkInterfaces().forEach(e -> e.validate());
+        }
+        if (dranet() != null) {
+            dranet().validate();
         }
     }
 
@@ -216,6 +244,7 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("secondaryNetworkInterfaces", this.secondaryNetworkInterfaces,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("dranet", this.dranet);
         return jsonWriter.writeEndObject();
     }
 
@@ -250,6 +279,8 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
                     List<AgentPoolNetworkInterface> secondaryNetworkInterfaces
                         = reader.readArray(reader1 -> AgentPoolNetworkInterface.fromJson(reader1));
                     deserializedAgentPoolNetworkProfile.secondaryNetworkInterfaces = secondaryNetworkInterfaces;
+                } else if ("dranet".equals(fieldName)) {
+                    deserializedAgentPoolNetworkProfile.dranet = DRANETProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

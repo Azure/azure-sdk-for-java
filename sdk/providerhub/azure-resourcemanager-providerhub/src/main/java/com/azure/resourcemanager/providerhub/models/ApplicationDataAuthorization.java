@@ -31,6 +31,11 @@ public final class ApplicationDataAuthorization implements JsonSerializable<Appl
      */
     private List<String> resourceTypes;
 
+    /*
+     * Exclude application id from 'providerAuthorizations' section of manifest?
+     */
+    private Boolean excludeApplicationIdFromManifest;
+
     /**
      * Creates an instance of ApplicationDataAuthorization class.
      */
@@ -86,6 +91,28 @@ public final class ApplicationDataAuthorization implements JsonSerializable<Appl
     }
 
     /**
+     * Get the excludeApplicationIdFromManifest property: Exclude application id from 'providerAuthorizations' section
+     * of manifest?.
+     * 
+     * @return the excludeApplicationIdFromManifest value.
+     */
+    public Boolean excludeApplicationIdFromManifest() {
+        return this.excludeApplicationIdFromManifest;
+    }
+
+    /**
+     * Set the excludeApplicationIdFromManifest property: Exclude application id from 'providerAuthorizations' section
+     * of manifest?.
+     * 
+     * @param excludeApplicationIdFromManifest the excludeApplicationIdFromManifest value to set.
+     * @return the ApplicationDataAuthorization object itself.
+     */
+    public ApplicationDataAuthorization withExcludeApplicationIdFromManifest(Boolean excludeApplicationIdFromManifest) {
+        this.excludeApplicationIdFromManifest = excludeApplicationIdFromManifest;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -109,6 +136,7 @@ public final class ApplicationDataAuthorization implements JsonSerializable<Appl
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeArrayField("resourceTypes", this.resourceTypes,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("excludeApplicationIdFromManifest", this.excludeApplicationIdFromManifest);
         return jsonWriter.writeEndObject();
     }
 
@@ -133,6 +161,9 @@ public final class ApplicationDataAuthorization implements JsonSerializable<Appl
                 } else if ("resourceTypes".equals(fieldName)) {
                     List<String> resourceTypes = reader.readArray(reader1 -> reader1.getString());
                     deserializedApplicationDataAuthorization.resourceTypes = resourceTypes;
+                } else if ("excludeApplicationIdFromManifest".equals(fieldName)) {
+                    deserializedApplicationDataAuthorization.excludeApplicationIdFromManifest
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

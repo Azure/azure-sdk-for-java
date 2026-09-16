@@ -14,19 +14,21 @@ public final class ResourcesWithContextTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourcesWithContext model = BinaryData.fromString(
-            "{\"resources\":[{\"resourceId\":\"rtfw\",\"resourceContext\":\"ukxgaud\"},{\"resourceId\":\"cs\",\"resourceContext\":\"h\"}]}")
+            "{\"resources\":[{\"resourceId\":\"s\",\"resourceContext\":\"n\"},{\"resourceId\":\"gvfcj\",\"resourceContext\":\"wzo\"},{\"resourceId\":\"xjtfelluwfzit\",\"resourceContext\":\"np\"},{\"resourceId\":\"qfpjk\",\"resourceContext\":\"lxofpdvhpfxxypin\"}]}")
             .toObject(ResourcesWithContext.class);
-        Assertions.assertEquals("rtfw", model.resources().get(0).resourceId());
-        Assertions.assertEquals("ukxgaud", model.resources().get(0).resourceContext());
+        Assertions.assertEquals("s", model.resources().get(0).resourceId());
+        Assertions.assertEquals("n", model.resources().get(0).resourceContext());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourcesWithContext model = new ResourcesWithContext().withResources(
-            Arrays.asList(new ResourceWithContext().withResourceId("rtfw").withResourceContext("ukxgaud"),
-                new ResourceWithContext().withResourceId("cs").withResourceContext("h")));
+        ResourcesWithContext model = new ResourcesWithContext()
+            .withResources(Arrays.asList(new ResourceWithContext().withResourceId("s").withResourceContext("n"),
+                new ResourceWithContext().withResourceId("gvfcj").withResourceContext("wzo"),
+                new ResourceWithContext().withResourceId("xjtfelluwfzit").withResourceContext("np"),
+                new ResourceWithContext().withResourceId("qfpjk").withResourceContext("lxofpdvhpfxxypin")));
         model = BinaryData.fromObject(model).toObject(ResourcesWithContext.class);
-        Assertions.assertEquals("rtfw", model.resources().get(0).resourceId());
-        Assertions.assertEquals("ukxgaud", model.resources().get(0).resourceContext());
+        Assertions.assertEquals("s", model.resources().get(0).resourceId());
+        Assertions.assertEquals("n", model.resources().get(0).resourceContext());
     }
 }

@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class ResourceGuardsGetDefaultDeleteProtectedItemRequestsObjectWithResponseMockTests {
     @Test
     public void testGetDefaultDeleteProtectedItemRequestsObjectWithResponse() throws Exception {
-        String responseStr = "{\"id\":\"ysi\",\"name\":\"sgqcwdho\",\"type\":\"sdtmcdzs\"}";
+        String responseStr = "{\"id\":\"cyjtotpvop\",\"name\":\"pbdbzqgqqi\",\"type\":\"edsvqwthmk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class ResourceGuardsGetDefaultDeleteProtectedItemRequestsObjectWith
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DppBaseResource response = manager.resourceGuards()
-            .getDefaultDeleteProtectedItemRequestsObjectWithResponse("dbzqgqqihed", "vqwt", "mkyi",
+            .getDefaultDeleteProtectedItemRequestsObjectWithResponse("undmbx", "ugcmjkavlgorb", "ftpmdtzfjltfv",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

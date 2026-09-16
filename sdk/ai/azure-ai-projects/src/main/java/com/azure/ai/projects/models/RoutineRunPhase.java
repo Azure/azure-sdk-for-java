@@ -11,7 +11,7 @@ import java.util.Collection;
 /**
  * Known lifecycle phases recorded for a routine run.
  */
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class RoutineRunPhase extends ExpandableStringEnum<RoutineRunPhase> {
 
     /**

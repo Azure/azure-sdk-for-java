@@ -10,11 +10,11 @@ import com.microsoft.azure.eventhubs.jproxy.ProxyServer;
 import com.microsoft.azure.eventhubs.lib.SasTokenTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import com.microsoft.azure.eventhubs.sendrecv.ReceiveTest;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -32,7 +32,7 @@ public class ProxyReceiveTest extends SasTokenTestBase {
     private static ReceiveTest receiveTest;
     private static ProxySelector defaultProxySelector;
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws Exception {
         proxyServer = ProxyServer.create("localhost", PROXY_PORT);
         proxyServer.start(t -> {
@@ -53,7 +53,7 @@ public class ProxyReceiveTest extends SasTokenTestBase {
             }
         });
 
-        Assert.assertTrue(TestContext.getConnectionString().getSharedAccessSignature() != null
+        Assertions.assertTrue(TestContext.getConnectionString().getSharedAccessSignature() != null
                 && TestContext.getConnectionString().getSasKey() == null
                 && TestContext.getConnectionString().getSasKeyName() == null);
 
@@ -63,7 +63,7 @@ public class ProxyReceiveTest extends SasTokenTestBase {
         ReceiveTest.initializeEventHub(connectionString);
     }
 
-    @AfterClass()
+    @AfterAll
     public static void cleanup() throws Exception {
         ReceiveTest.cleanup();
 
@@ -74,12 +74,12 @@ public class ProxyReceiveTest extends SasTokenTestBase {
         ProxySelector.setDefault(defaultProxySelector);
     }
 
-    @Test()
+    @Test
     public void testReceiverStartOfStreamFilters() throws EventHubException {
         receiveTest.testReceiverStartOfStreamFilters();
     }
 
-    @After
+    @AfterEach
     public void testCleanup() throws EventHubException {
         receiveTest.testCleanup();
     }

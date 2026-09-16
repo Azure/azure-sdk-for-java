@@ -13,21 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderManifestPropertiesRequestHeaderOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderManifestPropertiesRequestHeaderOptions model
-            = BinaryData.fromString("{\"optInHeaders\":\"PrivateLinkId\",\"optOutHeaders\":\"NotSpecified\"}")
-                .toObject(ResourceProviderManifestPropertiesRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.PRIVATE_LINK_ID, model.optInHeaders());
-        Assertions.assertEquals(OptOutHeaderType.NOT_SPECIFIED, model.optOutHeaders());
+        ResourceProviderManifestPropertiesRequestHeaderOptions model = BinaryData.fromString(
+            "{\"optInHeaders\":\"UnboundedClientGroupMembership\",\"optOutHeaders\":\"SystemDataCreatedByLastModifiedBy\"}")
+            .toObject(ResourceProviderManifestPropertiesRequestHeaderOptions.class);
+        Assertions.assertEquals(OptInHeaderType.UNBOUNDED_CLIENT_GROUP_MEMBERSHIP, model.optInHeaders());
+        Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProviderManifestPropertiesRequestHeaderOptions model
             = new ResourceProviderManifestPropertiesRequestHeaderOptions()
-                .withOptInHeaders(OptInHeaderType.PRIVATE_LINK_ID)
-                .withOptOutHeaders(OptOutHeaderType.NOT_SPECIFIED);
+                .withOptInHeaders(OptInHeaderType.UNBOUNDED_CLIENT_GROUP_MEMBERSHIP)
+                .withOptOutHeaders(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY);
         model = BinaryData.fromObject(model).toObject(ResourceProviderManifestPropertiesRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.PRIVATE_LINK_ID, model.optInHeaders());
-        Assertions.assertEquals(OptOutHeaderType.NOT_SPECIFIED, model.optOutHeaders());
+        Assertions.assertEquals(OptInHeaderType.UNBOUNDED_CLIENT_GROUP_MEMBERSHIP, model.optInHeaders());
+        Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
     }
 }

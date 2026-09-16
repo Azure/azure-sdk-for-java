@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation.utils;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaPropertyNames;
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.x509.AccessDescription;
 import org.bouncycastle.asn1.x509.AuthorityInformationAccess;
@@ -45,12 +46,12 @@ import static java.util.logging.Level.WARNING;
  * a valid PKIX path to a trusted root CA and reports "PKIX path building failed" on verify.
  *
  * <p><strong>Security note:</strong> completion issues outbound HTTP(S) requests to URLs embedded in certificates.
- * Set the system property {@code azure.keyvault.jca.disable-aia-download=true} to disable it in locked-down
+ * Set the system property {@value KeyVaultJcaPropertyNames#KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD} to {@code true} to
+ * disable it in locked-down
  * environments or when loading untrusted certificates.
  */
 final class AiaCertificateChainUtil {
     private static final Logger LOGGER = Logger.getLogger(AiaCertificateChainUtil.class.getName());
-    static final String DISABLE_AIA_DOWNLOAD_PROPERTY = "azure.keyvault.jca.disable-aia-download";
     private static final int AIA_CACHE_MAX_SIZE = 128;
     private static final long MAX_SUCCESS_TTL_IN_MILLIS = TimeUnit.HOURS.toMillis(24);
     private static final long NEGATIVE_TTL_IN_MILLIS = TimeUnit.MINUTES.toMillis(1);
@@ -83,8 +84,7 @@ final class AiaCertificateChainUtil {
     }
 
     /**
-     * Completes an incomplete certificate chain by downloading missing intermediate CA certificates
-     * using the AIA (Authority Information Access) extension embedded in each certificate.
+     * Completes an incomplete certificate chain when Authority Information Access (AIA) downloads are allowed for the owning Key Vault client.
      *
      * <p>Because completion may issue outbound HTTP requests on a cache miss, callers must restrict it to chains
      * whose valid path does not end in a self-signed root (see {@link #shouldCompleteChainViaAia(Certificate[])}).
@@ -95,19 +95,18 @@ final class AiaCertificateChainUtil {
      * This process repeats until the chain reaches a self-signed root CA, no more AIA URLs are found, or
      * the safety download limit is reached.
      *
-     * @param orderedCertificates certificate array with contiguous issuer path + any unplaced certs appended
-     * @return the (potentially extended) certificate array with missing intermediates inserted in the valid chain
+     * @param orderedCertificates Certificate array with a contiguous issuer path and any unplaced certificates.
+     * @param disableAiaDownload Indicates if AIA certificate downloads should be disabled.
+     * @return The original or completed certificate chain.
      */
-    static Certificate[] completeChainViaAia(Certificate[] orderedCertificates) {
+    static Certificate[] completeChainViaAia(Certificate[] orderedCertificates, boolean disableAiaDownload) {
         if (orderedCertificates == null || orderedCertificates.length == 0) {
             return orderedCertificates;
         }
 
-        // Check if AIA downloading is disabled by system property
-        String disableAiaDownload = System.getProperty(DISABLE_AIA_DOWNLOAD_PROPERTY);
-        if ("true".equalsIgnoreCase(disableAiaDownload)) {
-            LOGGER.log(FINE, "AIA chain completion is disabled by system property [{0}]",
-                DISABLE_AIA_DOWNLOAD_PROPERTY);
+        if (disableAiaDownload) {
+            LOGGER.log(FINE, "AIA chain completion is disabled for this Key Vault client by configuration [{0}]",
+                KeyVaultJcaPropertyNames.KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD);
             return orderedCertificates;
         }
 

@@ -14,11 +14,11 @@ public final class ScheduledEventsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledEventsProfile model = BinaryData.fromString(
-            "{\"terminateNotificationProfile\":{\"notBeforeTimeout\":\"xoruzfgsquyfxrx\",\"enable\":false},\"osImageNotificationProfile\":{\"notBeforeTimeout\":\"ramxjezwlwnw\",\"enable\":false}}")
+            "{\"terminateNotificationProfile\":{\"notBeforeTimeout\":\"zpof\",\"enable\":false},\"osImageNotificationProfile\":{\"notBeforeTimeout\":\"yfzqwhxxbu\",\"enable\":false}}")
             .toObject(ScheduledEventsProfile.class);
-        Assertions.assertEquals("xoruzfgsquyfxrx", model.terminateNotificationProfile().notBeforeTimeout());
+        Assertions.assertEquals("zpof", model.terminateNotificationProfile().notBeforeTimeout());
         Assertions.assertFalse(model.terminateNotificationProfile().enable());
-        Assertions.assertEquals("ramxjezwlwnw", model.osImageNotificationProfile().notBeforeTimeout());
+        Assertions.assertEquals("yfzqwhxxbu", model.osImageNotificationProfile().notBeforeTimeout());
         Assertions.assertFalse(model.osImageNotificationProfile().enable());
     }
 
@@ -26,13 +26,13 @@ public final class ScheduledEventsProfileTests {
     public void testSerialize() throws Exception {
         ScheduledEventsProfile model = new ScheduledEventsProfile()
             .withTerminateNotificationProfile(
-                new TerminateNotificationProfile().withNotBeforeTimeout("xoruzfgsquyfxrx").withEnable(false))
+                new TerminateNotificationProfile().withNotBeforeTimeout("zpof").withEnable(false))
             .withOsImageNotificationProfile(
-                new OSImageNotificationProfile().withNotBeforeTimeout("ramxjezwlwnw").withEnable(false));
+                new OSImageNotificationProfile().withNotBeforeTimeout("yfzqwhxxbu").withEnable(false));
         model = BinaryData.fromObject(model).toObject(ScheduledEventsProfile.class);
-        Assertions.assertEquals("xoruzfgsquyfxrx", model.terminateNotificationProfile().notBeforeTimeout());
+        Assertions.assertEquals("zpof", model.terminateNotificationProfile().notBeforeTimeout());
         Assertions.assertFalse(model.terminateNotificationProfile().enable());
-        Assertions.assertEquals("ramxjezwlwnw", model.osImageNotificationProfile().notBeforeTimeout());
+        Assertions.assertEquals("yfzqwhxxbu", model.osImageNotificationProfile().notBeforeTimeout());
         Assertions.assertFalse(model.osImageNotificationProfile().enable());
     }
 }

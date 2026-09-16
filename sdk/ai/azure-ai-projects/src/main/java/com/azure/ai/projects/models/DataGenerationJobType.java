@@ -64,8 +64,8 @@ public final class DataGenerationJobType extends ExpandableStringEnum<DataGenera
     }
 
     /**
-     * Task generation for evaluation scenarios.
+     * Simulation seed for evaluation scenarios.
      */
     @Generated
-    public static final DataGenerationJobType TASK_GENERATION = fromString("task_generation");
+    public static final DataGenerationJobType SIMULATION_SEED = fromString("simulation_seed");
 }

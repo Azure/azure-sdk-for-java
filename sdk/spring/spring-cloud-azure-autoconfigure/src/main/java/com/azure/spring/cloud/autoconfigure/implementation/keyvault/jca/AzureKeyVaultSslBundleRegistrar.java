@@ -46,6 +46,7 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
     private final Map<String, AzureKeyVaultSslBundleProperties.KeyVaultSslBundleProperties> sslBundles;
     private static final String CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY
         = "azure.keyvault.jca.certificate-alias-filter-pattern";
+    private static final String DISABLE_AIA_DOWNLOAD_PROPERTY = "azure.keyvault.jca.disable-aia-download";
     private static final String[] JCA_SYSTEM_PROPERTY_KEYS = new String[]{
         "azure.keyvault.uri",
         "azure.keyvault.tenant-id",
@@ -54,6 +55,7 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
         "azure.keyvault.managed-identity",
         "azure.keyvault.jca.certificates-refresh-interval",
         CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY,
+        DISABLE_AIA_DOWNLOAD_PROPERTY,
         "azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate",
         "azure.cert-path.well-known",
         "azure.cert-path.custom"
@@ -221,6 +223,8 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
             });
         pm.from(keyStoreProperties.isRefreshCertificatesWhenHaveUntrustedCertificate())
             .to(v -> System.setProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate", Boolean.toString(v)));
+        pm.from(keyStoreProperties.isDisableAiaDownload())
+            .to(v -> System.setProperty(DISABLE_AIA_DOWNLOAD_PROPERTY, Boolean.toString(v)));
 
         pm.from(keyStoreProperties.getCertificatePaths().getWellKnown())
             .to(v -> resolvePath(resourceLoader, v).ifPresent(path -> System.setProperty("azure.cert-path.well-known", path)));

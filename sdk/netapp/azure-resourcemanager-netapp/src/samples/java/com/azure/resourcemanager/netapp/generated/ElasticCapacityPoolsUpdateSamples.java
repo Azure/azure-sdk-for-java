@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.ElasticCapacityPoolUpdateProperti
  */
 public final class ElasticCapacityPoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticCapacityPools_Update.json
+     * x-ms-original-file: 2026-06-15-preview/ElasticCapacityPools_Update.json
      */
     /**
      * Sample code: ElasticCapacityPools_Update.

@@ -17,9 +17,9 @@ public final class VmPriority extends ExpandableStringEnum<VmPriority> {
     public static final VmPriority REGULAR = fromString("Regular");
 
     /**
-     * Low-priority VM.
+     * Spot VM priority.
      */
-    public static final VmPriority LOW_PRIORITY = fromString("LowPriority");
+    public static final VmPriority SPOT = fromString("Spot");
 
     /**
      * Creates a new instance of VmPriority value.

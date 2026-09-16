@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class MaintenanceWindowsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/MaintenanceWindowsCreateOrUpdate.json
+     * x-ms-original-file: 2026-06-02-preview/MaintenanceWindowsCreateOrUpdate.json
      */
     /**
      * Sample code: Create/Update Maintenance Window.

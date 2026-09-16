@@ -804,7 +804,7 @@ public interface VirtualMachine {
              * to the specified image.
              * @return the next definition stage.
              */
-            Update withVmImageRepositoryCredentials(ImageRepositoryCredentials vmImageRepositoryCredentials);
+            Update withVmImageRepositoryCredentials(ImageRepositoryCredentialsPatch vmImageRepositoryCredentials);
         }
 
         /**

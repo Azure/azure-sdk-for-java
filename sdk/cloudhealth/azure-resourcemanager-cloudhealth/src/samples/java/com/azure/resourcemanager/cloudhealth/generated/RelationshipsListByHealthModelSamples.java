@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class RelationshipsListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Relationships_ListByHealthModel.json
+     * x-ms-original-file: 2026-09-01-preview/Relationships_ListByHealthModel.json
      */
     /**
      * Sample code: Relationships_ListByHealthModel.

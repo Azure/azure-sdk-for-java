@@ -14,7 +14,7 @@ import com.azure.resourcemanager.containerservice.models.AlertNotification;
  */
 public final class AlertConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/AlertConfigurations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-02-preview/AlertConfigurations_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Alert Configuration.

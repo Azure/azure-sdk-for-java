@@ -13,21 +13,21 @@ public final class L2NetworkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L2NetworkProperties model = BinaryData.fromString(
-            "{\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"vwzjbhyz\",\"l2IsolationDomainId\":\"xjrk\",\"associatedResourceIds\":[\"trnegvmnvuqeqvld\",\"pa\"],\"clusterId\":\"jbkkdmflvestmjl\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"lozapeewchpxlk\",\"hybridAksClustersAssociatedIds\":[\"uziycsl\",\"vu\",\"uztcktyhjtqed\"],\"virtualMachinesAssociatedIds\":[\"ulwm\",\"rqzz\",\"rjvpglydzgkrvqee\",\"toepryu\"],\"provisioningState\":\"Accepted\"}")
+            "{\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"kqo\",\"l2IsolationDomainId\":\"py\",\"associatedResourceIds\":[\"trdcnifmzzs\"],\"clusterId\":\"m\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"suxmpraf\",\"hybridAksClustersAssociatedIds\":[\"khocxvdfffwaf\"],\"virtualMachinesAssociatedIds\":[\"udaspavehh\",\"vkbunzozudh\",\"xg\",\"moy\"],\"provisioningState\":\"Canceled\"}")
             .toObject(L2NetworkProperties.class);
         Assertions.assertEquals(HybridAksPluginType.OSDEVICE, model.hybridAksPluginType());
-        Assertions.assertEquals("vwzjbhyz", model.interfaceName());
-        Assertions.assertEquals("xjrk", model.l2IsolationDomainId());
+        Assertions.assertEquals("kqo", model.interfaceName());
+        Assertions.assertEquals("py", model.l2IsolationDomainId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L2NetworkProperties model = new L2NetworkProperties().withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
-            .withInterfaceName("vwzjbhyz")
-            .withL2IsolationDomainId("xjrk");
+            .withInterfaceName("kqo")
+            .withL2IsolationDomainId("py");
         model = BinaryData.fromObject(model).toObject(L2NetworkProperties.class);
         Assertions.assertEquals(HybridAksPluginType.OSDEVICE, model.hybridAksPluginType());
-        Assertions.assertEquals("vwzjbhyz", model.interfaceName());
-        Assertions.assertEquals("xjrk", model.l2IsolationDomainId());
+        Assertions.assertEquals("kqo", model.interfaceName());
+        Assertions.assertEquals("py", model.l2IsolationDomainId());
     }
 }

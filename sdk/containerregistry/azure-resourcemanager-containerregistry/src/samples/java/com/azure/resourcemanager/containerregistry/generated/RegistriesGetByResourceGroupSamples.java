@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class RegistriesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/RegistryGet.json
+     * x-ms-original-file: 2026-09-01-preview/RegistryGet.json
      */
     /**
      * Sample code: RegistryGet.

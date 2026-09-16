@@ -26,132 +26,141 @@ import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdat
  */
 public interface ScheduledActionsClient {
     /**
-     * Get a ScheduledAction.
+     * Gets the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScheduledAction along with {@link Response}.
+     * @return the specified scheduled action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ScheduledActionInner> getByResourceGroupWithResponse(String resourceGroupName, String scheduledActionName,
         Context context);
 
     /**
-     * Get a ScheduledAction.
+     * Gets the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ScheduledAction.
+     * @return the specified scheduled action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ScheduledActionInner getByResourceGroup(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Create a ScheduledAction.
+     * Creates or updates a scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param resource Resource create parameters.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param resource The scheduled action to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the scheduled action resource.
+     * @return the {@link SyncPoller} for polling of a recurring action that operates on specified compute resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ScheduledActionInner>, ScheduledActionInner> beginCreateOrUpdate(String resourceGroupName,
         String scheduledActionName, ScheduledActionInner resource);
 
     /**
-     * Create a ScheduledAction.
+     * Creates or updates a scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param resource Resource create parameters.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param resource The scheduled action to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the scheduled action resource.
+     * @return the {@link SyncPoller} for polling of a recurring action that operates on specified compute resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ScheduledActionInner>, ScheduledActionInner> beginCreateOrUpdate(String resourceGroupName,
         String scheduledActionName, ScheduledActionInner resource, Context context);
 
     /**
-     * Create a ScheduledAction.
+     * Creates or updates a scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param resource Resource create parameters.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param resource The scheduled action to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled action resource.
+     * @return a recurring action that operates on specified compute resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ScheduledActionInner createOrUpdate(String resourceGroupName, String scheduledActionName,
         ScheduledActionInner resource);
 
     /**
-     * Create a ScheduledAction.
+     * Creates or updates a scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param resource Resource create parameters.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param resource The scheduled action to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the scheduled action resource.
+     * @return a recurring action that operates on specified compute resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ScheduledActionInner createOrUpdate(String resourceGroupName, String scheduledActionName,
         ScheduledActionInner resource, Context context);
 
     /**
-     * Update a ScheduledAction.
+     * Updates the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param properties The resource properties to be updated.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param properties The scheduled action properties to update. Omitted properties keep their current values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the scheduled action resource.
+     * @return the {@link SyncPoller} for polling of a recurring action that operates on specified compute resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String scheduledActionName,
         ScheduledActionUpdate properties);
 
     /**
-     * Update a ScheduledAction.
+     * Updates the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param properties The resource properties to be updated.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param properties The scheduled action properties to update. Omitted properties keep their current values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the scheduled action resource.
+     * @return the {@link SyncPoller} for polling of a recurring action that operates on specified compute resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String scheduledActionName,
         ScheduledActionUpdate properties, Context context);
 
     /**
-     * Update a ScheduledAction.
+     * Updates the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param properties The resource properties to be updated.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param properties The scheduled action properties to update. Omitted properties keep their current values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -160,11 +169,12 @@ public interface ScheduledActionsClient {
     void update(String resourceGroupName, String scheduledActionName, ScheduledActionUpdate properties);
 
     /**
-     * Update a ScheduledAction.
+     * Updates the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param properties The resource properties to be updated.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param properties The scheduled action properties to update. Omitted properties keep their current values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -175,10 +185,11 @@ public interface ScheduledActionsClient {
         Context context);
 
     /**
-     * Delete a ScheduledAction.
+     * Deletes the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -188,10 +199,11 @@ public interface ScheduledActionsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Delete a ScheduledAction.
+     * Deletes the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -203,10 +215,11 @@ public interface ScheduledActionsClient {
         Context context);
 
     /**
-     * Delete a ScheduledAction.
+     * Deletes the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -215,10 +228,11 @@ public interface ScheduledActionsClient {
     void delete(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Delete a ScheduledAction.
+     * Deletes the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -228,7 +242,7 @@ public interface ScheduledActionsClient {
     void delete(String resourceGroupName, String scheduledActionName, Context context);
 
     /**
-     * List ScheduledAction resources by resource group.
+     * Lists scheduled actions in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,7 +254,7 @@ public interface ScheduledActionsClient {
     PagedIterable<ScheduledActionInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List ScheduledAction resources by resource group.
+     * Lists scheduled actions in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -253,7 +267,7 @@ public interface ScheduledActionsClient {
     PagedIterable<ScheduledActionInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List ScheduledAction resources by subscription ID.
+     * Lists scheduled actions in the specified subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -263,7 +277,7 @@ public interface ScheduledActionsClient {
     PagedIterable<ScheduledActionInner> list();
 
     /**
-     * List ScheduledAction resources by subscription ID.
+     * Lists scheduled actions in the specified subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,198 +289,208 @@ public interface ScheduledActionsClient {
     PagedIterable<ScheduledActionInner> list(Context context);
 
     /**
-     * List resources attached to Scheduled Actions.
+     * Lists resources associated with the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items as paginated response with {@link PagedIterable}.
+     * @return a paged list of compute resources associated with a scheduled action as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScheduledActionResourceInner> listResources(String resourceGroupName, String scheduledActionName);
 
     /**
-     * List resources attached to Scheduled Actions.
+     * Lists resources associated with the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of ScheduledActionResource items as paginated response with {@link PagedIterable}.
+     * @return a paged list of compute resources associated with a scheduled action as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScheduledActionResourceInner> listResources(String resourceGroupName, String scheduledActionName,
         Context context);
 
     /**
-     * Attach resources to the scheduled action so they are included in future occurrences.
+     * Adds resources to the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resources to add to the scheduled action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
-     * contains the status of each resource.
+     * @return the {@link SyncPoller} for polling of results of a scheduled action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner>
         beginAttachResources(String resourceGroupName, String scheduledActionName, ResourceAttachRequest body);
 
     /**
-     * Attach resources to the scheduled action so they are included in future occurrences.
+     * Adds resources to the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resources to add to the scheduled action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
-     * contains the status of each resource.
+     * @return the {@link SyncPoller} for polling of results of a scheduled action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner> beginAttachResources(
         String resourceGroupName, String scheduledActionName, ResourceAttachRequest body, Context context);
 
     /**
-     * Attach resources to the scheduled action so they are included in future occurrences.
+     * Adds resources to the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resources to add to the scheduled action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceOperationResponseInner attachResources(String resourceGroupName, String scheduledActionName,
         ResourceAttachRequest body);
 
     /**
-     * Attach resources to the scheduled action so they are included in future occurrences.
+     * Adds resources to the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resources to add to the scheduled action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceOperationResponseInner attachResources(String resourceGroupName, String scheduledActionName,
         ResourceAttachRequest body, Context context);
 
     /**
-     * Detach resources from the scheduled action so they are excluded from future occurrences.
+     * Removes resources from the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resources to remove from the scheduled action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
-     * contains the status of each resource.
+     * @return the {@link SyncPoller} for polling of results of a scheduled action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner>
         beginDetachResources(String resourceGroupName, String scheduledActionName, ResourceDetachRequest body);
 
     /**
-     * Detach resources from the scheduled action so they are excluded from future occurrences.
+     * Removes resources from the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resources to remove from the scheduled action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
-     * contains the status of each resource.
+     * @return the {@link SyncPoller} for polling of results of a scheduled action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner> beginDetachResources(
         String resourceGroupName, String scheduledActionName, ResourceDetachRequest body, Context context);
 
     /**
-     * Detach resources from the scheduled action so they are excluded from future occurrences.
+     * Removes resources from the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resources to remove from the scheduled action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceOperationResponseInner detachResources(String resourceGroupName, String scheduledActionName,
         ResourceDetachRequest body);
 
     /**
-     * Detach resources from the scheduled action so they are excluded from future occurrences.
+     * Removes resources from the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resources to remove from the scheduled action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceOperationResponseInner detachResources(String resourceGroupName, String scheduledActionName,
         ResourceDetachRequest body, Context context);
 
     /**
-     * A synchronous resource action.
+     * Updates resource-specific settings for the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resource-specific settings to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource along
-     * with {@link Response}.
+     * @return results of a scheduled action operation for targeted resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourceOperationResponseInner> patchResourcesWithResponse(String resourceGroupName,
         String scheduledActionName, ResourcePatchRequest body, Context context);
 
     /**
-     * A synchronous resource action.
+     * Updates resource-specific settings for the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resource-specific settings to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceOperationResponseInner patchResources(String resourceGroupName, String scheduledActionName,
         ResourcePatchRequest body);
 
     /**
-     * Disable the scheduled action so its future occurrences do not run.
+     * Disables the specified scheduled action so future occurrences do not run.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -476,10 +500,11 @@ public interface ScheduledActionsClient {
     SyncPoller<PollResult<Void>, Void> beginDisable(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Disable the scheduled action so its future occurrences do not run.
+     * Disables the specified scheduled action so future occurrences do not run.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -491,10 +516,11 @@ public interface ScheduledActionsClient {
         Context context);
 
     /**
-     * Disable the scheduled action so its future occurrences do not run.
+     * Disables the specified scheduled action so future occurrences do not run.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -503,10 +529,11 @@ public interface ScheduledActionsClient {
     void disable(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Disable the scheduled action so its future occurrences do not run.
+     * Disables the specified scheduled action so future occurrences do not run.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -516,10 +543,11 @@ public interface ScheduledActionsClient {
     void disable(String resourceGroupName, String scheduledActionName, Context context);
 
     /**
-     * Enable a previously disabled scheduled action so its future occurrences run.
+     * Enables the specified scheduled action so new occurrences run.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -529,10 +557,11 @@ public interface ScheduledActionsClient {
     SyncPoller<PollResult<Void>, Void> beginEnable(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Enable a previously disabled scheduled action so its future occurrences run.
+     * Enables the specified scheduled action so new occurrences run.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -544,10 +573,11 @@ public interface ScheduledActionsClient {
         Context context);
 
     /**
-     * Enable a previously disabled scheduled action so its future occurrences run.
+     * Enables the specified scheduled action so new occurrences run.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -556,10 +586,11 @@ public interface ScheduledActionsClient {
     void enable(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Enable a previously disabled scheduled action so its future occurrences run.
+     * Enables the specified scheduled action so new occurrences run.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -569,123 +600,131 @@ public interface ScheduledActionsClient {
     void enable(String resourceGroupName, String scheduledActionName, Context context);
 
     /**
-     * Cancel the next scheduled occurrence of the scheduled action.
+     * Cancels the next occurrence of the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
+     * canceled for all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
-     * contains the status of each resource.
+     * @return the {@link SyncPoller} for polling of results of a scheduled action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner>
         beginCancelNextOccurrence(String resourceGroupName, String scheduledActionName, CancelOccurrenceRequest body);
 
     /**
-     * Cancel the next scheduled occurrence of the scheduled action.
+     * Cancels the next occurrence of the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
+     * canceled for all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
-     * contains the status of each resource.
+     * @return the {@link SyncPoller} for polling of results of a scheduled action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ResourceOperationResponseInner>, ResourceOperationResponseInner> beginCancelNextOccurrence(
         String resourceGroupName, String scheduledActionName, CancelOccurrenceRequest body, Context context);
 
     /**
-     * Cancel the next scheduled occurrence of the scheduled action.
+     * Cancels the next occurrence of the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
+     * canceled for all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceOperationResponseInner cancelNextOccurrence(String resourceGroupName, String scheduledActionName,
         CancelOccurrenceRequest body);
 
     /**
-     * Cancel the next scheduled occurrence of the scheduled action.
+     * Cancels the next occurrence of the specified scheduled action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
-     * @param body The content of the action request.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
+     * @param body The resources to cancel in the next occurrence. If no resource IDs are provided, the occurrence is
+     * canceled for all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from scheduled action resource requests, which contains the status of each resource.
+     * @return results of a scheduled action operation for targeted resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceOperationResponseInner cancelNextOccurrence(String resourceGroupName, String scheduledActionName,
         CancelOccurrenceRequest body, Context context);
 
     /**
-     * Trigger a manual occurrence of the scheduled action immediately, outside its normal schedule.
+     * Runs the specified scheduled action immediately.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
+     * @return the {@link SyncPoller} for polling of one scheduled execution of a scheduled action.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OccurrenceInner>, OccurrenceInner> beginTriggerManualOccurrence(String resourceGroupName,
         String scheduledActionName);
 
     /**
-     * Trigger a manual occurrence of the scheduled action immediately, outside its normal schedule.
+     * Runs the specified scheduled action immediately.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete proxy resource types can be created by aliasing this type
-     * using a specific property type.
+     * @return the {@link SyncPoller} for polling of one scheduled execution of a scheduled action.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OccurrenceInner>, OccurrenceInner> beginTriggerManualOccurrence(String resourceGroupName,
         String scheduledActionName, Context context);
 
     /**
-     * Trigger a manual occurrence of the scheduled action immediately, outside its normal schedule.
+     * Runs the specified scheduled action immediately.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
+     * @return one scheduled execution of a scheduled action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OccurrenceInner triggerManualOccurrence(String resourceGroupName, String scheduledActionName);
 
     /**
-     * Trigger a manual occurrence of the scheduled action immediately, outside its normal schedule.
+     * Runs the specified scheduled action immediately.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scheduledActionName The name of the ScheduledAction.
+     * @param scheduledActionName The name of the scheduled action. It must be 3 to 24 characters and can contain only
+     * letters, numbers, and hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
+     * @return one scheduled execution of a scheduled action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OccurrenceInner triggerManualOccurrence(String resourceGroupName, String scheduledActionName, Context context);

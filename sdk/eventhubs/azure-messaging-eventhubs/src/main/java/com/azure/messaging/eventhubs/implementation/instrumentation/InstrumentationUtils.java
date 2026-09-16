@@ -99,7 +99,7 @@ public final class InstrumentationUtils {
 
             default:
                 // other operations are not documented in the otel semantic conventions
-                // they are not 'core' messaging operations and therefor don't have type
+                // they are not 'core' messaging operations and therefore don't have type
                 // we'll still report operation name attribute for them.
                 return null;
         }

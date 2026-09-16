@@ -51,11 +51,18 @@ public class FoundryFeaturesHeaderVerificationTest {
         builder.beta().buildBetaAgentsClient().getOptimizationJobWithResponse("job", new RequestOptions());
         assertEquals(AGENT_PREVIEW_FEATURES, foundryFeatures(httpClient));
 
-        builder.beta().buildBetaAgentsClient().getOptimizationJobWithResponse("job", new RequestOptions());
-        assertEquals(AGENT_PREVIEW_FEATURES, foundryFeatures(httpClient));
-
         builder.beta().buildBetaMemoryStoresClient().getMemoryStoreWithResponse("store", new RequestOptions());
         assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+
+        builder.beta()
+            .buildBetaVoiceAgentsTelephonyClient()
+            .getTelephonyCallJobWithResponse("agent", "call-job", new RequestOptions());
+        assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+
+        builder.beta()
+            .buildBetaVoiceAgentsConversationsClient()
+            .getAgentConversationWithResponse("agent", "conversation", new RequestOptions());
+        assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
 
         builder.buildAgentsClient()
             .createAgentVersionWithResponse("agent", BinaryData.fromString("{}"), new RequestOptions());
@@ -72,6 +79,43 @@ public class FoundryFeaturesHeaderVerificationTest {
 
         builder.beta().buildBetaMemoryStoresClient().getMemoryStoreWithResponse("store", new RequestOptions());
         assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+
+        builder.beta()
+            .buildBetaVoiceAgentsTelephonyClient()
+            .getTelephonyCallJobWithResponse("agent", "call-job", new RequestOptions());
+        assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+
+        builder.beta()
+            .buildBetaVoiceAgentsConversationsClient()
+            .getAgentConversationWithResponse("agent", "conversation", new RequestOptions());
+        assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+    }
+
+    @Test
+    public void betaAsyncClientsAddAreaSpecificHeadersByDefault() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        AgentsClientBuilder builder = createBuilder(httpClient);
+
+        builder.beta().buildBetaAgentsAsyncClient().getOptimizationJobWithResponse("job", new RequestOptions()).block();
+        assertEquals(AGENT_PREVIEW_FEATURES, foundryFeatures(httpClient));
+
+        builder.beta()
+            .buildBetaMemoryStoresAsyncClient()
+            .getMemoryStoreWithResponse("store", new RequestOptions())
+            .block();
+        assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+
+        builder.beta()
+            .buildBetaVoiceAgentsTelephonyAsyncClient()
+            .getTelephonyCallJobWithResponse("agent", "call-job", new RequestOptions())
+            .block();
+        assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+
+        builder.beta()
+            .buildBetaVoiceAgentsConversationsAsyncClient()
+            .getAgentConversationWithResponse("agent", "conversation", new RequestOptions())
+            .block();
+        assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
     }
 
     @Test
@@ -79,12 +123,14 @@ public class FoundryFeaturesHeaderVerificationTest {
         RecordingHttpClient httpClient = new RecordingHttpClient();
         AgentsClientBuilder builder = createBuilder(httpClient);
 
-        builder.beta().buildBetaMemoryStoresClient().getMemoryStoreWithResponse("store", new RequestOptions());
-        assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        builder.beta()
+            .buildBetaVoiceAgentsConversationsClient()
+            .getAgentConversationWithResponse("agent", "conversation", new RequestOptions());
+        assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
 
-        // Beta clients temporarily add their required Foundry-Features policy while their pipeline is being built.
-        // The policy must not remain on the reusable builder, otherwise a later GA client built from the same builder
-        // would silently inherit a beta opt-in header despite allowPreview defaulting to false for GA clients.
+        // Each beta client adds its required Foundry-Features policy only to its resolved pipeline. The policy must not
+        // remain on the reusable builder, otherwise a later GA client would silently inherit a beta opt-in header
+        // despite allowPreview defaulting to false for GA clients.
         builder.buildAgentsClient()
             .createAgentVersionWithResponse("agent", BinaryData.fromString("{}"), new RequestOptions());
         assertNull(foundryFeatures(httpClient));
@@ -139,6 +185,22 @@ public class FoundryFeaturesHeaderVerificationTest {
             .getMemoryStoreWithResponse("store", new RequestOptions());
 
         assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+        assertEquals(originalPolicyCount, customPipeline.getPolicyCount());
+
+        createBuilder(customPipeline).beta()
+            .buildBetaVoiceAgentsTelephonyClient()
+            .getTelephonyCallJobWithResponse("agent", "call-job", new RequestOptions());
+
+        assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+        assertEquals(originalPolicyCount, customPipeline.getPolicyCount());
+
+        createBuilder(customPipeline).beta()
+            .buildBetaVoiceAgentsConversationsClient()
+            .getAgentConversationWithResponse("agent", "conversation", new RequestOptions());
+
+        assertEquals(AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString(), foundryFeatures(httpClient));
         assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
         assertEquals(originalPolicyCount, customPipeline.getPolicyCount());
     }

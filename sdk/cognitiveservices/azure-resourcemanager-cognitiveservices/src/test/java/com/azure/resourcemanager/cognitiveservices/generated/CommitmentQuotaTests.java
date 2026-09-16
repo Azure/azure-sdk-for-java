@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CommitmentQuotaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommitmentQuota model = BinaryData.fromString("{\"quantity\":8572095075412575290,\"unit\":\"t\"}")
+        CommitmentQuota model = BinaryData.fromString("{\"quantity\":456815432362653733,\"unit\":\"df\"}")
             .toObject(CommitmentQuota.class);
-        Assertions.assertEquals(8572095075412575290L, model.quantity());
-        Assertions.assertEquals("t", model.unit());
+        Assertions.assertEquals(456815432362653733L, model.quantity());
+        Assertions.assertEquals("df", model.unit());
     }
 }

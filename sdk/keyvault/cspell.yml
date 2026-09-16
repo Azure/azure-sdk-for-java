@@ -1,0 +1,42 @@
+# Spell-check overrides for this SDK group.
+# Inherits the global config at the repo root.
+#
+# Add words that only appear in this folder here, in alphabetical order.
+# Cross-cutting terms should go in the root cspell.json instead.
+version: "0.2"
+import:
+  - ../../.vscode/cspell.json
+words:
+  - "acurve"
+  - "aesgcm"
+  - "aeskw"
+  - "apair"
+  - "apub"
+  - "asdsdfsdf"
+  - "aspec"
+  - "assginment"
+  - "azkeyvault"
+  - "baos"
+  - "bcpkix"
+  - "bhjd"
+  - "cbpad"
+  - "certifcates"
+  - "certificat"
+  - "cryptograhpy"
+  - "eddsa"
+  - "fdsgjsk"
+  - "fihk"
+  - "fnlk"
+  - "geta"
+  - "issuefr"
+  - "jsse"
+  - "kwpad"
+  - "moditect"
+  - "mshade"
+  - "pkix"
+  - "propeties"
+  - "rwdlactfx"
+  - "sdpath"
+  - "sskdjfsdasdjsd"
+  - "verifyng"
+  - "verison"
