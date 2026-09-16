@@ -3,6 +3,7 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
@@ -584,10 +585,10 @@ public class AgentsCustomizations extends Customization {
                     clazz.getMethodsByName("fromJson")
                         .forEach(method -> method.findAll(AssignExpr.class).stream()
                             .filter(assignment -> assignment.getTarget().toString().endsWith(".role"))
-                            .forEach(assignment -> assignment.getParentNode()
+                            .forEach(assignment -> assignment.stream(Node.TreeTraversal.PARENTS)
                                 .filter(ExpressionStmt.class::isInstance)
-                                .map(ExpressionStmt.class::cast)
-                                .ifPresent(ExpressionStmt::remove)));
+                                .findFirst()
+                                .ifPresent(Node::remove)));
                 }));
         }
     }

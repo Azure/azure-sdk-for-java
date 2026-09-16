@@ -353,7 +353,7 @@ stages:
               parameters:
                 PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
                 CommitMsg: "Increment package versions for ${{ parameters.ServiceDirectory }} releases"
-                PRTitle: "Increment versions for ${{ parameters.ServiceDirectory }} releases"
+                PRTitle: "[skip ci] Increment versions for ${{ parameters.ServiceDirectory }} releases"
                 CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
                 AuthToken: ''
 
