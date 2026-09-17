@@ -26,6 +26,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -270,6 +273,30 @@ public class KeyVaultCredentialPolicyTest {
         assertTrue(tokenValue.startsWith(BEARER));
 
         KeyVaultCredentialPolicy.clearCache();
+    }
+
+    @ParameterizedTest
+    @MethodSource("authorizationUriTenantIds")
+    public void onChallengeExtractsTenantIdFromAuthorizationUriVariants(String authorizationUri,
+        String expectedTenantId) {
+        HttpResponse challengeResponse = new MockHttpResponse(new HttpRequest(HttpMethod.GET, "https://azure.com"), 401,
+            new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE,
+                "Bearer authorization=\"" + authorizationUri + "\", resource=\"https://vault.azure.net\""));
+        AtomicReference<String> requestedTenantId = new AtomicReference<>();
+        KeyVaultCredentialPolicy policy
+            = new KeyVaultCredentialPolicy(createTenantCapturingCredential(requestedTenantId), false);
+
+        assertTrue(onChallengeAndClearCacheSync(policy, this.callContext, challengeResponse));
+        assertEquals(expectedTenantId, requestedTenantId.get());
+
+        // A new policy, since the first one caches the token it acquired.
+        requestedTenantId.set(null);
+        KeyVaultCredentialPolicy asyncPolicy
+            = new KeyVaultCredentialPolicy(createTenantCapturingCredential(requestedTenantId), false);
+        StepVerifier.create(onChallengeAndClearCache(asyncPolicy, this.testContext, challengeResponse))
+            .expectNext(true)
+            .verifyComplete();
+        assertEquals(expectedTenantId, requestedTenantId.get());
     }
 
     @Test
@@ -670,6 +697,29 @@ public class KeyVaultCredentialPolicyTest {
 
             return Mono.fromCallable(() -> new AccessToken(FAKE_ENCODED_CREDENTIAL, OffsetDateTime.MAX.minusYears(1)));
         };
+    }
+
+    private static Stream<Arguments> authorizationUriTenantIds() {
+        String dstsAuthority = "https://uswest2-passive-dsts.dsts.core.windows.net";
+        String entraAuthority = "https://login.microsoftonline.com/" + ENTRA_TENANT_ID;
+
+        return Stream.of(
+            // The 'dstsv2' segment is matched case-insensitively.
+            Arguments.of(dstsAuthority + "/DSTSv2/" + DSTS_TENANT_ID, DSTS_TENANT_ID),
+            // A trailing slash after the tenant ID does not change it.
+            Arguments.of(dstsAuthority + "/dstsv2/" + DSTS_TENANT_ID + "/", DSTS_TENANT_ID),
+            // Neither do further path segments after the tenant ID.
+            Arguments.of(dstsAuthority + "/dstsv2/" + DSTS_TENANT_ID + "/oauth2/token", DSTS_TENANT_ID),
+            // Without a segment after 'dstsv2', the first path segment is used, as before.
+            Arguments.of(dstsAuthority + "/dstsv2", "dstsv2"),
+            // The same applies when only a slash follows 'dstsv2'.
+            Arguments.of(dstsAuthority + "/dstsv2/", "dstsv2"),
+            // An empty segment after 'dstsv2' is not used as the tenant ID either.
+            Arguments.of(dstsAuthority + "/dstsv2//" + DSTS_TENANT_ID, "dstsv2"),
+            // Only a first path segment that is exactly 'dstsv2' denotes a DSTSv2 authority.
+            Arguments.of(dstsAuthority + "/dstsv2x/" + DSTS_TENANT_ID, "dstsv2x"),
+            // A 'dstsv2' segment later in an Entra ID authorization URI is ignored.
+            Arguments.of(entraAuthority + "/dstsv2/" + DSTS_TENANT_ID, ENTRA_TENANT_ID));
     }
 
     private Mono<Boolean> onChallengeAndClearCache(KeyVaultCredentialPolicy policy, HttpPipelineCallContext callContext,
