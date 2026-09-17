@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AddressPrefixSetsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/AddressPrefixSetList.json
+     * x-ms-original-file: 2026-01-01/AddressPrefixSetList.json
      */
     /**
      * Sample code: List address prefix sets.

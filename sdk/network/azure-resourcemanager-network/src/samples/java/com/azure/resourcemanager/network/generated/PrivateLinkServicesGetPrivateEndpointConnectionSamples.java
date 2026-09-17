@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PrivateLinkServicesGetPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PrivateLinkServiceGetPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-01-01/PrivateLinkServiceGetPrivateEndpointConnection.json
      */
     /**
      * Sample code: Get private end point connection.
