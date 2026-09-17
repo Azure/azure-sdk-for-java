@@ -1,15 +1,10 @@
 # Release History
 
-## 1.7.1 (Unreleased)
-
-### Bugs Fixed
-
-- Route internal SDKStats using OneSettings data-boundary connection strings, with the existing Breeze endpoint as the fallback.
-
 ## 1.7.0 (2026-09-17)
 
 ### Bugs Fixed
 
+- Route internal SDKStats using OneSettings data-boundary endpoints, with the existing Breeze endpoint as the fallback.
 - Ensure the SDKStats all-disable setting also suppresses internal Statsbeat exports and background tasks. ([#50382](https://github.com/Azure/azure-sdk-for-java/pull/50382))
 - Harden the local telemetry spool directory against symlink, Windows junction, and path-squatting attacks. If secure directory initialization is denied, continue exporting without disk persistence. ([#50463](https://github.com/Azure/azure-sdk-for-java/pull/50463))
 
