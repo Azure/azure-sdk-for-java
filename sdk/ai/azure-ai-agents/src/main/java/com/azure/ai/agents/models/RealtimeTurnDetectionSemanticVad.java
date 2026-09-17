@@ -8,6 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.RealtimeAudioInputTurnDetection.SemanticVad.Eagerness;
 import java.io.IOException;
 
 /**
@@ -22,11 +23,8 @@ public final class RealtimeTurnDetectionSemanticVad extends RealtimeTurnDetectio
     @Generated
     private RealtimeTurnDetectionType type = RealtimeTurnDetectionType.SEMANTIC_VAD;
 
-    /*
-     * The eagerness property.
-     */
-    @Generated
-    private VoiceAgentSemanticVadTurnDetectionEagerness eagerness;
+    // AI Tooling: openai-java de-dup
+    private Eagerness eagerness;
 
     /*
      * The create_response property.
@@ -63,21 +61,9 @@ public final class RealtimeTurnDetectionSemanticVad extends RealtimeTurnDetectio
      *
      * @return the eagerness value.
      */
-    @Generated
-    public VoiceAgentSemanticVadTurnDetectionEagerness getEagerness() {
+    public Eagerness getEagerness() {
+        // AI Tooling: openai-java de-dup
         return this.eagerness;
-    }
-
-    /**
-     * Set the eagerness property: The eagerness property.
-     *
-     * @param eagerness the eagerness value to set.
-     * @return the RealtimeTurnDetectionSemanticVad object itself.
-     */
-    @Generated
-    public RealtimeTurnDetectionSemanticVad setEagerness(VoiceAgentSemanticVadTurnDetectionEagerness eagerness) {
-        this.eagerness = eagerness;
-        return this;
     }
 
     /**
@@ -127,12 +113,12 @@ public final class RealtimeTurnDetectionSemanticVad extends RealtimeTurnDetectio
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        // AI Tooling: openai-java de-dup
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("eagerness", this.eagerness == null ? null : this.eagerness.toString());
+        jsonWriter.writeStringField("eagerness", this.eagerness == null ? null : this.eagerness.asString());
         jsonWriter.writeBooleanField("create_response", this.createResponse);
         jsonWriter.writeBooleanField("interrupt_response", this.interruptResponse);
         return jsonWriter.writeEndObject();
@@ -146,8 +132,8 @@ public final class RealtimeTurnDetectionSemanticVad extends RealtimeTurnDetectio
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RealtimeTurnDetectionSemanticVad.
      */
-    @Generated
     public static RealtimeTurnDetectionSemanticVad fromJson(JsonReader jsonReader) throws IOException {
+        // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
             RealtimeTurnDetectionSemanticVad deserializedRealtimeTurnDetectionSemanticVad
                 = new RealtimeTurnDetectionSemanticVad();
@@ -159,7 +145,7 @@ public final class RealtimeTurnDetectionSemanticVad extends RealtimeTurnDetectio
                         = RealtimeTurnDetectionType.fromString(reader.getString());
                 } else if ("eagerness".equals(fieldName)) {
                     deserializedRealtimeTurnDetectionSemanticVad.eagerness
-                        = VoiceAgentSemanticVadTurnDetectionEagerness.fromString(reader.getString());
+                        = reader.getNullable(r -> Eagerness.of(r.getString()));
                 } else if ("create_response".equals(fieldName)) {
                     deserializedRealtimeTurnDetectionSemanticVad.createResponse
                         = reader.getNullable(JsonReader::getBoolean);
@@ -172,5 +158,17 @@ public final class RealtimeTurnDetectionSemanticVad extends RealtimeTurnDetectio
             }
             return deserializedRealtimeTurnDetectionSemanticVad;
         });
+    }
+
+    /**
+     * Set the eagerness property: The eagerness property.
+     *
+     * @param eagerness the eagerness value to set.
+     * @return the RealtimeTurnDetectionSemanticVad object itself.
+     */
+    public RealtimeTurnDetectionSemanticVad setEagerness(Eagerness eagerness) {
+        // AI Tooling: openai-java de-dup
+        this.eagerness = eagerness;
+        return this;
     }
 }

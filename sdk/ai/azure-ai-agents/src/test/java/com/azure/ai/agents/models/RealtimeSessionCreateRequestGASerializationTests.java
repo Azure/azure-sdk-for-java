@@ -3,14 +3,18 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.util.BinaryData;
 import com.openai.models.realtime.RealtimeFunctionTool;
 import com.openai.models.realtime.RealtimeToolsConfigUnion;
+import com.openai.models.realtime.RealtimeTruncationRetentionRatio;
 import com.openai.models.responses.ToolChoiceFunction;
 import com.openai.models.responses.ToolChoiceMcp;
+import com.openai.models.responses.ToolChoiceOptions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,10 +32,16 @@ public class RealtimeSessionCreateRequestGASerializationTests {
         assertNull(stringResult.getTracingAsRealtimeSessionCreateRequestGATracing());
 
         RealtimeSessionCreateRequestGATracing tracing
-            = new RealtimeSessionCreateRequestGATracing().setWorkflowName("workflow");
+            = new RealtimeSessionCreateRequestGATracing().setWorkflowName("workflow")
+                .setMetadata(Collections.singletonMap("key", BinaryData.fromObject("value")));
         RealtimeSessionCreateRequestGA modelResult
             = roundTrip(new RealtimeSessionCreateRequestGA().setTracing(tracing));
         assertEquals("workflow", modelResult.getTracingAsRealtimeSessionCreateRequestGATracing().getWorkflowName());
+        assertEquals("value",
+            modelResult.getTracingAsRealtimeSessionCreateRequestGATracing()
+                .getMetadata()
+                .get("key")
+                .toObject(String.class));
         assertNull(modelResult.getTracingAsString());
     }
 
@@ -109,14 +119,13 @@ public class RealtimeSessionCreateRequestGASerializationTests {
         RealtimeSessionCreateRequestGA stringResult
             = roundTrip(new RealtimeSessionCreateRequestGA().setTruncation("disabled"));
         assertEquals("disabled", stringResult.getTruncationAsString());
-        assertNull(stringResult.getTruncationAsRealtimeClientEventSessionUpdateSessionTruncationRetentionRatio());
+        assertNull(stringResult.getTruncationAsRealtimeTruncationRetentionRatio());
 
-        RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio truncation
-            = new RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio(0.8);
+        RealtimeTruncationRetentionRatio truncation
+            = RealtimeTruncationRetentionRatio.builder().retentionRatio(0.8).build();
         RealtimeSessionCreateRequestGA modelResult
             = roundTrip(new RealtimeSessionCreateRequestGA().setTruncation(truncation));
-        assertEquals(0.8, modelResult.getTruncationAsRealtimeClientEventSessionUpdateSessionTruncationRetentionRatio()
-            .getRetentionRatio());
+        assertEquals(0.8, modelResult.getTruncationAsRealtimeTruncationRetentionRatio().retentionRatio());
         assertNull(modelResult.getTruncationAsString());
     }
 
@@ -132,8 +141,7 @@ public class RealtimeSessionCreateRequestGASerializationTests {
         assertEquals("workflow", result.getTracingAsRealtimeSessionCreateRequestGATracing().getWorkflowName());
         assertEquals("lookup", result.getToolChoiceAsToolChoiceFunction().name());
         assertEquals(123L, result.getMaxOutputTokensAsLong());
-        assertEquals(0.5, result.getTruncationAsRealtimeClientEventSessionUpdateSessionTruncationRetentionRatio()
-            .getRetentionRatio());
+        assertEquals(0.5, result.getTruncationAsRealtimeTruncationRetentionRatio().retentionRatio());
     }
 
     @Test
@@ -149,7 +157,7 @@ public class RealtimeSessionCreateRequestGASerializationTests {
         assertNull(result.getMaxOutputTokensAsLong());
         assertNull(result.getMaxOutputTokensAsString());
         assertNull(result.getTruncationAsString());
-        assertNull(result.getTruncationAsRealtimeClientEventSessionUpdateSessionTruncationRetentionRatio());
+        assertNull(result.getTruncationAsRealtimeTruncationRetentionRatio());
 
         String serialized
             = UnionTypeSerializationTestUtils.serialize(new RealtimeSessionCreateRequestGA().setTracing((String) null)

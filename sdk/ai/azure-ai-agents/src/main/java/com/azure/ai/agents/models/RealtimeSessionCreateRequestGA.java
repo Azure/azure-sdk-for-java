@@ -11,11 +11,15 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.openai.models.realtime.RealtimeReasoning;
+import com.openai.models.realtime.RealtimeSessionCreateRequest.Model;
+import com.openai.models.realtime.RealtimeSessionCreateRequest.OutputModality;
 import com.openai.models.realtime.RealtimeToolsConfigUnion;
+import com.openai.models.realtime.RealtimeTruncationRetentionRatio;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponsePrompt;
 import com.openai.models.responses.ToolChoiceFunction;
 import com.openai.models.responses.ToolChoiceMcp;
+import com.openai.models.responses.ToolChoiceOptions;
 import java.io.IOException;
 import java.util.List;
 
@@ -39,13 +43,13 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      * the model respond with text only. It is not possible to request both `text` and `audio` at the same time.
      */
     @Generated
-    private List<RealtimeClientEventSessionUpdateSessionOutputModality> outputModalities;
+    private List<OutputModality> outputModalities;
 
     /*
      * The Realtime model used for this session.
      */
     @Generated
-    private RealtimeClientEventSessionUpdateSessionModel model;
+    private Model model;
 
     /*
      * The default system instructions (i.e. system message) prepended to model calls. This field allows the client to
@@ -158,7 +162,7 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      * @return the outputModalities value.
      */
     @Generated
-    public List<RealtimeClientEventSessionUpdateSessionOutputModality> getOutputModalities() {
+    public List<OutputModality> getOutputModalities() {
         return this.outputModalities;
     }
 
@@ -172,8 +176,7 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      * @return the RealtimeSessionCreateRequestGA object itself.
      */
     @Generated
-    public RealtimeSessionCreateRequestGA
-        setOutputModalities(List<RealtimeClientEventSessionUpdateSessionOutputModality> outputModalities) {
+    public RealtimeSessionCreateRequestGA setOutputModalities(List<OutputModality> outputModalities) {
         this.outputModalities = outputModalities;
         return this;
     }
@@ -184,20 +187,8 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      * @return the model value.
      */
     @Generated
-    public RealtimeClientEventSessionUpdateSessionModel getModel() {
+    public Model getModel() {
         return this.model;
-    }
-
-    /**
-     * Set the model property: The Realtime model used for this session.
-     *
-     * @param model the model value to set.
-     * @return the RealtimeSessionCreateRequestGA object itself.
-     */
-    @Generated
-    public RealtimeSessionCreateRequestGA setModel(RealtimeClientEventSessionUpdateSessionModel model) {
-        this.model = model;
-        return this;
     }
 
     /**
@@ -512,8 +503,8 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeArrayField("output_modalities", this.outputModalities,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeStringField("model", this.model == null ? null : this.model.toString());
+            (writer, element) -> writer.writeString(element == null ? null : element.asString()));
+        jsonWriter.writeStringField("model", this.model == null ? null : this.model.asString());
         jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeJsonField("audio", this.audio);
         jsonWriter.writeArrayField("include", this.include, (writer, element) -> writer.writeString(element));
@@ -572,13 +563,11 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
                     deserializedRealtimeSessionCreateRequestGA.type
                         = RealtimeSessionCreateRequestUnionType.fromString(reader.getString());
                 } else if ("output_modalities".equals(fieldName)) {
-                    List<RealtimeClientEventSessionUpdateSessionOutputModality> outputModalities
-                        = reader.readArray(reader1 -> RealtimeClientEventSessionUpdateSessionOutputModality
-                            .fromString(reader1.getString()));
+                    List<OutputModality> outputModalities
+                        = reader.readArray(reader1 -> reader1.getNullable(r -> OutputModality.of(r.getString())));
                     deserializedRealtimeSessionCreateRequestGA.outputModalities = outputModalities;
                 } else if ("model".equals(fieldName)) {
-                    deserializedRealtimeSessionCreateRequestGA.model
-                        = RealtimeClientEventSessionUpdateSessionModel.fromString(reader.getString());
+                    deserializedRealtimeSessionCreateRequestGA.model = reader.getNullable(r -> Model.of(r.getString()));
                 } else if ("instructions".equals(fieldName)) {
                     deserializedRealtimeSessionCreateRequestGA.instructions = reader.getString();
                 } else if ("audio".equals(fieldName)) {
@@ -667,24 +656,6 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
     }
 
     /**
-     * Get the tracing property: Tracing configuration.
-     *
-     * @return the tracing value as a {@link RealtimeSessionCreateRequestGATracing}, or {@code null} when it is not set
-     * or holds another variant.
-     */
-    public RealtimeSessionCreateRequestGATracing getTracingAsRealtimeSessionCreateRequestGATracing() {
-        // AI Tooling: union type
-        if (this.tracing == null) {
-            return null;
-        }
-        String json = this.tracing.toString().trim();
-        if (!(json.startsWith("{"))) {
-            return null;
-        }
-        return this.tracing.toObject(RealtimeSessionCreateRequestGATracing.class);
-    }
-
-    /**
      * Set the toolChoice property: How the model chooses tools.
      *
      * @param toolChoice the {@link ToolChoiceOptions} mode to set ({@code NONE}, {@code AUTO} or {@code REQUIRED}).
@@ -692,7 +663,8 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      */
     public RealtimeSessionCreateRequestGA setToolChoice(ToolChoiceOptions toolChoice) {
         // AI Tooling: union type
-        this.toolChoice = toolChoice == null ? null : BinaryData.fromObject(toolChoice.toString());
+        // AI Tooling: openai-java de-dup
+        this.toolChoice = OpenAIJsonHelper.toBinaryData(toolChoice);
         return this;
     }
 
@@ -855,34 +827,14 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
     /**
      * Set the truncation property: The truncation policy for the session.
      *
-     * @param truncation the {@link RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio} configuration to
-     * set.
+     * @param truncation the openai-java {@link RealtimeTruncationRetentionRatio} configuration to set.
      * @return the RealtimeSessionCreateRequestGA object itself.
      */
-    public RealtimeSessionCreateRequestGA
-        setTruncation(RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio truncation) {
+    public RealtimeSessionCreateRequestGA setTruncation(RealtimeTruncationRetentionRatio truncation) {
         // AI Tooling: union type
-        this.truncation = truncation == null ? null : BinaryData.fromObject(truncation);
+        // AI Tooling: openai-java de-dup
+        this.truncation = OpenAIJsonHelper.toBinaryData(truncation);
         return this;
-    }
-
-    /**
-     * Get the truncation property: The truncation policy for the session.
-     *
-     * @return the truncation value as a {@link RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio}, or
-     * {@code null} when it is not set or holds another variant.
-     */
-    public RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio
-        getTruncationAsRealtimeClientEventSessionUpdateSessionTruncationRetentionRatio() {
-        // AI Tooling: union type
-        if (this.truncation == null) {
-            return null;
-        }
-        String json = this.truncation.toString().trim();
-        if (!(json.startsWith("{"))) {
-            return null;
-        }
-        return this.truncation.toObject(RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio.class);
     }
 
     /**
@@ -893,6 +845,7 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      */
     public ToolChoiceOptions getToolChoiceAsToolChoiceOptions() {
         // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
         if (this.toolChoice == null) {
             return null;
         }
@@ -900,6 +853,56 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
         if (!(json.startsWith("\""))) {
             return null;
         }
-        return ToolChoiceOptions.fromString(this.toolChoice.toObject(String.class));
+        return OpenAIJsonHelper.fromBinaryData(this.toolChoice, ToolChoiceOptions.class);
+    }
+
+    /**
+     * Set the model property: The Realtime model used for this session.
+     *
+     * @param model the model value to set.
+     * @return the RealtimeSessionCreateRequestGA object itself.
+     */
+    @Generated
+    public RealtimeSessionCreateRequestGA setModel(Model model) {
+        this.model = model;
+        return this;
+    }
+
+    /**
+     * Get the truncation property: The truncation policy for the session.
+     *
+     * @return the truncation value as an openai-java {@link RealtimeTruncationRetentionRatio}, or {@code null} when it
+     * is not set or holds another variant.
+     */
+    public RealtimeTruncationRetentionRatio getTruncationAsRealtimeTruncationRetentionRatio() {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        if (this.truncation == null) {
+            return null;
+        }
+        String json = this.truncation.toString().trim();
+        if (!(json.startsWith("{"))) {
+            return null;
+        }
+        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.truncation,
+            RealtimeTruncationRetentionRatio.class);
+    }
+
+    /**
+     * Get the tracing property: Tracing configuration.
+     *
+     * @return the tracing value as a {@link RealtimeSessionCreateRequestGATracing}, or {@code null} when it is not set
+     * or holds another variant.
+     */
+    public RealtimeSessionCreateRequestGATracing getTracingAsRealtimeSessionCreateRequestGATracing() {
+        // AI Tooling: union type
+        if (this.tracing == null) {
+            return null;
+        }
+        String json = this.tracing.toString().trim();
+        if (!(json.startsWith("{"))) {
+            return null;
+        }
+        return this.tracing.toObject(RealtimeSessionCreateRequestGATracing.class);
     }
 }

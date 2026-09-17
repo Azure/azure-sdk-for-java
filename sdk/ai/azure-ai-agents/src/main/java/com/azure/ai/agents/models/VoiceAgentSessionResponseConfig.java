@@ -16,6 +16,7 @@ import com.openai.models.realtime.RealtimeReasoning;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ToolChoiceFunction;
 import com.openai.models.responses.ToolChoiceMcp;
+import com.openai.models.responses.ToolChoiceOptions;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -592,6 +593,7 @@ public final class VoiceAgentSessionResponseConfig implements JsonSerializable<V
      */
     public ToolChoiceOptions getToolChoiceAsToolChoiceOptions() {
         // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
         if (this.toolChoice == null) {
             return null;
         }
@@ -599,6 +601,7 @@ public final class VoiceAgentSessionResponseConfig implements JsonSerializable<V
         if (!(json.startsWith("\""))) {
             return null;
         }
-        return ToolChoiceOptions.fromString(this.toolChoice.toObject(String.class));
+        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
+            ToolChoiceOptions.class);
     }
 }

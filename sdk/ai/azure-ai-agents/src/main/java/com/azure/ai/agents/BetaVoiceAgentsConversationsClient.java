@@ -268,7 +268,8 @@ public final class BetaVoiceAgentsConversationsClient {
      * {@code
      * {
      *     object: String(realtime.response) (Optional)
-     *     status: String(completed/cancelled/failed/incomplete/in_progress) (Optional)
+     *     status (Optional): {
+     *     }
      *     status_details (Optional): {
      *         type: String(completed/cancelled/failed/incomplete) (Optional)
      *         reason: String(turn_detected/client_cancelled/max_output_tokens/content_filter) (Optional)
@@ -298,7 +299,8 @@ public final class BetaVoiceAgentsConversationsClient {
      *         }
      *     }
      *     output_modalities (Optional): [
-     *         String(text/audio) (Optional)
+     *          (Optional){
+     *         }
      *     ]
      *     max_output_tokens: BinaryData (Optional)
      *     id: String (Required)
@@ -355,7 +357,8 @@ public final class BetaVoiceAgentsConversationsClient {
      * {@code
      * {
      *     object: String(realtime.response) (Optional)
-     *     status: String(completed/cancelled/failed/incomplete/in_progress) (Optional)
+     *     status (Optional): {
+     *     }
      *     status_details (Optional): {
      *         type: String(completed/cancelled/failed/incomplete) (Optional)
      *         reason: String(turn_detected/client_cancelled/max_output_tokens/content_filter) (Optional)
@@ -385,7 +388,8 @@ public final class BetaVoiceAgentsConversationsClient {
      *         }
      *     }
      *     output_modalities (Optional): [
-     *         String(text/audio) (Optional)
+     *          (Optional){
+     *         }
      *     ]
      *     max_output_tokens: BinaryData (Optional)
      *     id: String (Required)

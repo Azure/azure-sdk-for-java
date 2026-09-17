@@ -104,22 +104,33 @@ public class RealtimeOpenAIDedupSerializationTests {
         NoiseReductionType[] types = { NoiseReductionType.NEAR_FIELD, NoiseReductionType.FAR_FIELD };
 
         for (NoiseReductionType type : types) {
-            RealtimeSessionCreateRequestGAAudioInputNoiseReduction realtime
-                = new RealtimeSessionCreateRequestGAAudioInputNoiseReduction().setType(type);
-            RealtimeTranscriptionSessionCreateRequestGAAudioInputNoiseReduction transcription
-                = new RealtimeTranscriptionSessionCreateRequestGAAudioInputNoiseReduction().setType(type);
+            com.openai.models.realtime.RealtimeAudioConfigInput.NoiseReduction realtimeNoiseReduction
+                = com.openai.models.realtime.RealtimeAudioConfigInput.NoiseReduction.builder().type(type).build();
+            com.openai.models.realtime.RealtimeTranscriptionSessionAudioInput.NoiseReduction transcriptionNoiseReduction
+                = com.openai.models.realtime.RealtimeTranscriptionSessionAudioInput.NoiseReduction.builder()
+                    .type(type)
+                    .build();
+            RealtimeSessionCreateRequestGAAudioInput realtime
+                = new RealtimeSessionCreateRequestGAAudioInput().setNoiseReduction(realtimeNoiseReduction);
+            RealtimeTranscriptionSessionCreateRequestGAAudioInput transcription
+                = new RealtimeTranscriptionSessionCreateRequestGAAudioInput()
+                    .setNoiseReduction(transcriptionNoiseReduction);
 
             String realtimeJson = serialize(realtime);
             String transcriptionJson = serialize(transcription);
-            assertEquals("{\"type\":\"" + type.asString() + "\"}", realtimeJson);
+            assertEquals("{\"noise_reduction\":{\"type\":\"" + type.asString() + "\"}}", realtimeJson);
             assertEquals(realtimeJson, transcriptionJson);
 
             try (JsonReader reader = JsonProviders.createReader(realtimeJson)) {
-                assertEquals(type, RealtimeSessionCreateRequestGAAudioInputNoiseReduction.fromJson(reader).getType());
+                assertEquals(type,
+                    RealtimeSessionCreateRequestGAAudioInput.fromJson(reader).getNoiseReduction().type().get());
             }
             try (JsonReader reader = JsonProviders.createReader(transcriptionJson)) {
                 assertEquals(type,
-                    RealtimeTranscriptionSessionCreateRequestGAAudioInputNoiseReduction.fromJson(reader).getType());
+                    RealtimeTranscriptionSessionCreateRequestGAAudioInput.fromJson(reader)
+                        .getNoiseReduction()
+                        .type()
+                        .get());
             }
         }
     }

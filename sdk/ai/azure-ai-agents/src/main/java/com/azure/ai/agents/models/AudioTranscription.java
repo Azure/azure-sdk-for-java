@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.AudioTranscription.Delay;
 import java.io.IOException;
 import java.util.List;
 
@@ -61,13 +62,8 @@ public final class AudioTranscription implements JsonSerializable<AudioTranscrip
     @Generated
     private String prompt;
 
-    /*
-     * Controls how long the model waits before emitting transcription text.
-     * Higher values can improve transcription accuracy at the cost of latency.
-     * Only supported with `gpt-realtime-whisper` in GA Realtime sessions.
-     */
-    @Generated
-    private VoiceAgentAudioInputConfigTranscriptionDelay delay;
+    // AI Tooling: openai-java de-dup
+    private Delay delay;
 
     /**
      * Creates an instance of AudioTranscription class.
@@ -223,38 +219,24 @@ public final class AudioTranscription implements JsonSerializable<AudioTranscrip
      *
      * @return the delay value.
      */
-    @Generated
-    public VoiceAgentAudioInputConfigTranscriptionDelay getDelay() {
+    public Delay getDelay() {
+        // AI Tooling: openai-java de-dup
         return this.delay;
-    }
-
-    /**
-     * Set the delay property: Controls how long the model waits before emitting transcription text.
-     * Higher values can improve transcription accuracy at the cost of latency.
-     * Only supported with `gpt-realtime-whisper` in GA Realtime sessions.
-     *
-     * @param delay the delay value to set.
-     * @return the AudioTranscription object itself.
-     */
-    @Generated
-    public AudioTranscription setDelay(VoiceAgentAudioInputConfigTranscriptionDelay delay) {
-        this.delay = delay;
-        return this;
     }
 
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        // AI Tooling: openai-java de-dup
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("model", this.model == null ? null : this.model.toString());
         jsonWriter.writeStringField("language", this.language);
         jsonWriter.writeArrayField("languages", this.languages, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("keywords", this.keywords, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("prompt", this.prompt);
-        jsonWriter.writeStringField("delay", this.delay == null ? null : this.delay.toString());
+        jsonWriter.writeStringField("delay", this.delay == null ? null : this.delay.asString());
         return jsonWriter.writeEndObject();
     }
 
@@ -266,8 +248,8 @@ public final class AudioTranscription implements JsonSerializable<AudioTranscrip
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AudioTranscription.
      */
-    @Generated
     public static AudioTranscription fromJson(JsonReader jsonReader) throws IOException {
+        // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
             AudioTranscription deserializedAudioTranscription = new AudioTranscription();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -286,13 +268,26 @@ public final class AudioTranscription implements JsonSerializable<AudioTranscrip
                 } else if ("prompt".equals(fieldName)) {
                     deserializedAudioTranscription.prompt = reader.getString();
                 } else if ("delay".equals(fieldName)) {
-                    deserializedAudioTranscription.delay
-                        = VoiceAgentAudioInputConfigTranscriptionDelay.fromString(reader.getString());
+                    deserializedAudioTranscription.delay = reader.getNullable(r -> Delay.of(r.getString()));
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedAudioTranscription;
         });
+    }
+
+    /**
+     * Set the delay property: Controls how long the model waits before emitting transcription text.
+     * Higher values can improve transcription accuracy at the cost of latency.
+     * Only supported with `gpt-realtime-whisper` in GA Realtime sessions.
+     *
+     * @param delay the delay value to set.
+     * @return the AudioTranscription object itself.
+     */
+    public AudioTranscription setDelay(Delay delay) {
+        // AI Tooling: openai-java de-dup
+        this.delay = delay;
+        return this;
     }
 }

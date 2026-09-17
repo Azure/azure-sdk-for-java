@@ -14,9 +14,11 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.openai.models.realtime.RealtimeReasoning;
 import com.openai.models.realtime.RealtimeResponseCreateParams;
+import com.openai.models.realtime.RealtimeResponseCreateParams.Conversation;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ToolChoiceFunction;
 import com.openai.models.responses.ToolChoiceMcp;
+import com.openai.models.responses.ToolChoiceOptions;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +85,7 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      * will not add items to default conversation.
      */
     @Generated
-    private VoiceAgentResponseCreateParamsConversation conversation;
+    private Conversation conversation;
 
     /*
      * The metadata property.
@@ -318,24 +320,8 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      * @return the conversation value.
      */
     @Generated
-    public VoiceAgentResponseCreateParamsConversation getConversation() {
+    public Conversation getConversation() {
         return this.conversation;
-    }
-
-    /**
-     * Set the conversation property: Controls which conversation the response is added to. Currently supports
-     * `auto` and `none`, with `auto` as the default value. The `auto` value
-     * means that the contents of the response will be added to the default
-     * conversation. Set this to `none` to create an out-of-band response which
-     * will not add items to default conversation.
-     *
-     * @param conversation the conversation value to set.
-     * @return the VoiceAgentResponseCreateParams object itself.
-     */
-    @Generated
-    public VoiceAgentResponseCreateParams setConversation(VoiceAgentResponseCreateParamsConversation conversation) {
-        this.conversation = conversation;
-        return this;
     }
 
     /**
@@ -499,7 +485,7 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
             jsonWriter.writeFieldName("max_output_tokens");
             this.maxOutputTokens.writeTo(jsonWriter);
         }
-        jsonWriter.writeStringField("conversation", this.conversation == null ? null : this.conversation.toString());
+        jsonWriter.writeStringField("conversation", this.conversation == null ? null : this.conversation.asString());
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("output_modalities", this.outputModalities,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
@@ -548,7 +534,7 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("conversation".equals(fieldName)) {
                     deserializedVoiceAgentResponseCreateParams.conversation
-                        = VoiceAgentResponseCreateParamsConversation.fromString(reader.getString());
+                        = reader.getNullable(r -> Conversation.of(r.getString()));
                 } else if ("metadata".equals(fieldName)) {
                     Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
                     deserializedVoiceAgentResponseCreateParams.metadata = metadata;
@@ -584,7 +570,8 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      */
     public VoiceAgentResponseCreateParams setToolChoice(ToolChoiceOptions toolChoice) {
         // AI Tooling: union type
-        this.toolChoice = toolChoice == null ? null : BinaryData.fromObject(toolChoice.toString());
+        // AI Tooling: openai-java de-dup
+        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
         return this;
     }
 
@@ -723,6 +710,7 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
      */
     public ToolChoiceOptions getToolChoiceAsToolChoiceOptions() {
         // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
         if (this.toolChoice == null) {
             return null;
         }
@@ -730,6 +718,23 @@ public final class VoiceAgentResponseCreateParams implements JsonSerializable<Vo
         if (!(json.startsWith("\""))) {
             return null;
         }
-        return ToolChoiceOptions.fromString(this.toolChoice.toObject(String.class));
+        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
+            ToolChoiceOptions.class);
+    }
+
+    /**
+     * Set the conversation property: Controls which conversation the response is added to. Currently supports
+     * `auto` and `none`, with `auto` as the default value. The `auto` value
+     * means that the contents of the response will be added to the default
+     * conversation. Set this to `none` to create an out-of-band response which
+     * will not add items to default conversation.
+     *
+     * @param conversation the conversation value to set.
+     * @return the VoiceAgentResponseCreateParams object itself.
+     */
+    @Generated
+    public VoiceAgentResponseCreateParams setConversation(Conversation conversation) {
+        this.conversation = conversation;
+        return this;
     }
 }

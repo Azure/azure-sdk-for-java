@@ -5,6 +5,7 @@ package com.azure.ai.agents.models;
 
 import com.openai.models.responses.ToolChoiceFunction;
 import com.openai.models.responses.ToolChoiceMcp;
+import com.openai.models.responses.ToolChoiceOptions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

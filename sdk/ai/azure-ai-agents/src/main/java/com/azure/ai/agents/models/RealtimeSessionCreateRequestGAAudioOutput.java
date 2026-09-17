@@ -172,6 +172,23 @@ public final class RealtimeSessionCreateRequestGAAudioOutput
     }
 
     /**
+     * Get the voice property: The built-in or custom voice used for audio output.
+     *
+     * @return the voice value as a {@link VoiceIdsShared}, or {@code null} when it is not set or holds another variant.
+     */
+    public VoiceIdsShared getVoiceAsVoiceIdsShared() {
+        // AI Tooling: union type
+        if (this.voice == null) {
+            return null;
+        }
+        String json = this.voice.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return VoiceIdsShared.fromString(this.voice.toObject(String.class));
+    }
+
+    /**
      * Set the voice property: The built-in or custom voice used for audio output.
      *
      * @param voice the {@link RealtimeSessionCreateRequestGAAudioOutputVoice} custom voice to set.
@@ -199,22 +216,5 @@ public final class RealtimeSessionCreateRequestGAAudioOutput
             return null;
         }
         return this.voice.toObject(RealtimeSessionCreateRequestGAAudioOutputVoice.class);
-    }
-
-    /**
-     * Get the voice property: The built-in or custom voice used for audio output.
-     *
-     * @return the voice value as a {@link VoiceIdsShared}, or {@code null} when it is not set or holds another variant.
-     */
-    public VoiceIdsShared getVoiceAsVoiceIdsShared() {
-        // AI Tooling: union type
-        if (this.voice == null) {
-            return null;
-        }
-        String json = this.voice.toString().trim();
-        if (!(json.startsWith("\""))) {
-            return null;
-        }
-        return VoiceIdsShared.fromString(this.voice.toObject(String.class));
     }
 }

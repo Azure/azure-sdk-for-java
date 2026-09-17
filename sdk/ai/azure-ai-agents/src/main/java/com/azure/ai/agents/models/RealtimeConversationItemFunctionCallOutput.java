@@ -9,6 +9,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.RealtimeConversationItemFunctionCallOutput.Status;
 import java.io.IOException;
 
 /**
@@ -38,11 +39,8 @@ public final class RealtimeConversationItemFunctionCallOutput extends RealtimeCo
     @Generated
     private RealtimeConversationItemObject object;
 
-    /*
-     * The status of the item. Has no effect on the conversation.
-     */
-    @Generated
-    private RealtimeConversationItemFunctionCallOutputStatus status;
+    // AI Tooling: openai-java de-dup
+    private Status status;
 
     /*
      * The ID of the function call this output is for.
@@ -149,22 +147,9 @@ public final class RealtimeConversationItemFunctionCallOutput extends RealtimeCo
      *
      * @return the status value.
      */
-    @Generated
-    public RealtimeConversationItemFunctionCallOutputStatus getStatus() {
+    public Status getStatus() {
+        // AI Tooling: openai-java de-dup
         return this.status;
-    }
-
-    /**
-     * Set the status property: The status of the item. Has no effect on the conversation.
-     *
-     * @param status the status value to set.
-     * @return the RealtimeConversationItemFunctionCallOutput object itself.
-     */
-    @Generated
-    public RealtimeConversationItemFunctionCallOutput
-        setStatus(RealtimeConversationItemFunctionCallOutputStatus status) {
-        this.status = status;
-        return this;
     }
 
     /**
@@ -235,16 +220,16 @@ public final class RealtimeConversationItemFunctionCallOutput extends RealtimeCo
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        // AI Tooling: openai-java de-dup
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("call_id", this.callId);
         jsonWriter.writeStringField("output", this.output);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.asString());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -258,15 +243,15 @@ public final class RealtimeConversationItemFunctionCallOutput extends RealtimeCo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RealtimeConversationItemFunctionCallOutput.
      */
-    @Generated
     public static RealtimeConversationItemFunctionCallOutput fromJson(JsonReader jsonReader) throws IOException {
+        // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
             String callId = null;
             String output = null;
             RealtimeConversationItemType type = RealtimeConversationItemType.FUNCTION_CALL_OUTPUT;
             String id = null;
             RealtimeConversationItemObject object = null;
-            RealtimeConversationItemFunctionCallOutputStatus status = null;
+            Status status = null;
             Long createdAt = null;
             String responseId = null;
             String name = null;
@@ -284,7 +269,7 @@ public final class RealtimeConversationItemFunctionCallOutput extends RealtimeCo
                 } else if ("object".equals(fieldName)) {
                     object = RealtimeConversationItemObject.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
-                    status = RealtimeConversationItemFunctionCallOutputStatus.fromString(reader.getString());
+                    status = reader.getNullable(r -> Status.of(r.getString()));
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = reader.getNullable(JsonReader::getLong);
                 } else if ("response_id".equals(fieldName)) {
@@ -306,5 +291,17 @@ public final class RealtimeConversationItemFunctionCallOutput extends RealtimeCo
             deserializedRealtimeConversationItemFunctionCallOutput.name = name;
             return deserializedRealtimeConversationItemFunctionCallOutput;
         });
+    }
+
+    /**
+     * Set the status property: The status of the item. Has no effect on the conversation.
+     *
+     * @param status the status value to set.
+     * @return the RealtimeConversationItemFunctionCallOutput object itself.
+     */
+    public RealtimeConversationItemFunctionCallOutput setStatus(Status status) {
+        // AI Tooling: openai-java de-dup
+        this.status = status;
+        return this;
     }
 }

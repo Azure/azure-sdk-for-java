@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.ResponseContentPartDoneEvent.Part.Type;
 import java.io.IOException;
 
 /**
@@ -18,11 +19,8 @@ import java.io.IOException;
 public final class RealtimeServerEventResponseContentPartDonePart
     implements JsonSerializable<RealtimeServerEventResponseContentPartDonePart> {
 
-    /*
-     * The type property.
-     */
-    @Generated
-    private RealtimeServerEventResponseContentPartDonePartType type;
+    // AI Tooling: openai-java de-dup
+    private Type type;
 
     /*
      * The text property.
@@ -60,8 +58,8 @@ public final class RealtimeServerEventResponseContentPartDonePart
      *
      * @return the type value.
      */
-    @Generated
-    public RealtimeServerEventResponseContentPartDonePartType getType() {
+    public Type getType() {
+        // AI Tooling: openai-java de-dup
         return this.type;
     }
 
@@ -108,11 +106,11 @@ public final class RealtimeServerEventResponseContentPartDonePart
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        // AI Tooling: openai-java de-dup
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.asString());
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("audio", this.audio);
         jsonWriter.writeStringField("transcript", this.transcript);
@@ -128,8 +126,8 @@ public final class RealtimeServerEventResponseContentPartDonePart
      * instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RealtimeServerEventResponseContentPartDonePart.
      */
-    @Generated
     public static RealtimeServerEventResponseContentPartDonePart fromJson(JsonReader jsonReader) throws IOException {
+        // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
             RealtimeServerEventResponseContentPartDonePart deserializedRealtimeServerEventResponseContentPartDonePart
                 = new RealtimeServerEventResponseContentPartDonePart();
@@ -138,7 +136,7 @@ public final class RealtimeServerEventResponseContentPartDonePart
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
                     deserializedRealtimeServerEventResponseContentPartDonePart.type
-                        = RealtimeServerEventResponseContentPartDonePartType.fromString(reader.getString());
+                        = reader.getNullable(r -> Type.of(r.getString()));
                 } else if ("text".equals(fieldName)) {
                     deserializedRealtimeServerEventResponseContentPartDonePart.text = reader.getString();
                 } else if ("audio".equals(fieldName)) {

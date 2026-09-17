@@ -8,6 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.RealtimeAudioFormats.AudioPcm.Rate;
 import java.io.IOException;
 
 /**
@@ -22,11 +23,8 @@ public final class RealtimeAudioFormatsAudioPcm extends RealtimeAudioFormats {
     @Generated
     private RealtimeAudioFormatsType type = RealtimeAudioFormatsType.AUDIO_PCM;
 
-    /*
-     * The rate property.
-     */
-    @Generated
-    private RealtimeAudioFormatsAudioPcmRate rate;
+    // AI Tooling: openai-java de-dup
+    private Rate rate;
 
     /**
      * Creates an instance of RealtimeAudioFormatsAudioPcm class.
@@ -51,8 +49,8 @@ public final class RealtimeAudioFormatsAudioPcm extends RealtimeAudioFormats {
      *
      * @return the rate value.
      */
-    @Generated
-    public RealtimeAudioFormatsAudioPcmRate getRate() {
+    public Rate getRate() {
+        // AI Tooling: openai-java de-dup
         return this.rate;
     }
 
@@ -62,8 +60,8 @@ public final class RealtimeAudioFormatsAudioPcm extends RealtimeAudioFormats {
      * @param rate the rate value to set.
      * @return the RealtimeAudioFormatsAudioPcm object itself.
      */
-    @Generated
-    public RealtimeAudioFormatsAudioPcm setRate(RealtimeAudioFormatsAudioPcmRate rate) {
+    public RealtimeAudioFormatsAudioPcm setRate(Rate rate) {
+        // AI Tooling: openai-java de-dup
         this.rate = rate;
         return this;
     }
@@ -71,12 +69,12 @@ public final class RealtimeAudioFormatsAudioPcm extends RealtimeAudioFormats {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        // AI Tooling: openai-java de-dup
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeNumberField("rate", this.rate == null ? null : this.rate.toInt());
+        jsonWriter.writeNumberField("rate", this.rate == null ? null : this.rate.asLong());
         return jsonWriter.writeEndObject();
     }
 
@@ -88,8 +86,8 @@ public final class RealtimeAudioFormatsAudioPcm extends RealtimeAudioFormats {
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RealtimeAudioFormatsAudioPcm.
      */
-    @Generated
     public static RealtimeAudioFormatsAudioPcm fromJson(JsonReader jsonReader) throws IOException {
+        // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
             RealtimeAudioFormatsAudioPcm deserializedRealtimeAudioFormatsAudioPcm = new RealtimeAudioFormatsAudioPcm();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -99,8 +97,7 @@ public final class RealtimeAudioFormatsAudioPcm extends RealtimeAudioFormats {
                     deserializedRealtimeAudioFormatsAudioPcm.type
                         = RealtimeAudioFormatsType.fromString(reader.getString());
                 } else if ("rate".equals(fieldName)) {
-                    deserializedRealtimeAudioFormatsAudioPcm.rate
-                        = RealtimeAudioFormatsAudioPcmRate.fromInt(reader.getInt());
+                    deserializedRealtimeAudioFormatsAudioPcm.rate = reader.getNullable(r -> Rate.of(r.getLong()));
                 } else {
                     reader.skipChildren();
                 }

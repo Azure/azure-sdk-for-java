@@ -8,6 +8,7 @@ import com.openai.models.realtime.RealtimeResponseCreateMcpTool;
 import com.openai.models.realtime.RealtimeResponseCreateParams;
 import com.openai.models.responses.ToolChoiceFunction;
 import com.openai.models.responses.ToolChoiceMcp;
+import com.openai.models.responses.ToolChoiceOptions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
