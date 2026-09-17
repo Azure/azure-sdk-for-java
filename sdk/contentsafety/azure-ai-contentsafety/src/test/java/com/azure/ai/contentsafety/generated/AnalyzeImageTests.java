@@ -20,8 +20,9 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     @Disabled
     public void testAnalyzeImageTests() {
         // method invocation
-        AnalyzeImageResult response = contentSafetyClient
-            .analyzeImage(new AnalyzeImageOptions(new ContentSafetyImageData().setContent("Y29udGVudDE=".getBytes())));
+        AnalyzeImageResult response
+            = contentSafetyClient.analyzeImage(new AnalyzeImageOptions(new ContentSafetyImageData()
+                .setContent(com.azure.core.util.BinaryData.fromBytes("Y29udGVudDE=".getBytes()))));
 
         // response assertion
         Assertions.assertNotNull(response);

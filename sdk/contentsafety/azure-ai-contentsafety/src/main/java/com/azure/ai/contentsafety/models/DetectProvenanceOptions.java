@@ -26,9 +26,8 @@ public final class DetectProvenanceOptions implements JsonSerializable<DetectPro
     /**
      * Creates an instance of DetectProvenanceOptions class.
      *
-     * @param content the content value to set.
+     * @param content Source content to inspect.
      */
-    @Generated
     public DetectProvenanceOptions(ProvenanceContent content) {
         this.content = content;
     }

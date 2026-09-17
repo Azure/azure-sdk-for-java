@@ -19,8 +19,9 @@ public class AnalyzeImage {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.ai.contentsafety.generated.analyze-image.analyze-image
-        AnalyzeImageResult response = contentSafetyClient
-            .analyzeImage(new AnalyzeImageOptions(new ContentSafetyImageData().setContent("Y29udGVudDE=".getBytes())));
+        AnalyzeImageResult response
+            = contentSafetyClient.analyzeImage(new AnalyzeImageOptions(new ContentSafetyImageData()
+                .setContent(com.azure.core.util.BinaryData.fromBytes("Y29udGVudDE=".getBytes()))));
         // END:com.azure.ai.contentsafety.generated.analyze-image.analyze-image
     }
 }
