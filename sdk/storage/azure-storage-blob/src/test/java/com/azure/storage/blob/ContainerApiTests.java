@@ -2279,8 +2279,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
-    public void listBlobsArrowNullUseArrowUsesXml() {
-        // Default apacheArrowEnabled is null — should use XML path without error
+    public void listBlobsArrowNullDefaultsToArrow() {
         String blobName = generateBlobName();
         cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
