@@ -536,9 +536,7 @@ public class ReactorSession implements AmqpSession {
             }
             // Link is disposed (e.g. after silent AMQP detach). Fall through to recreate.
             // The compute() lambda below will atomically handle cache replacement.
-            logger.atInfo()
-                .addKeyValue(LINK_NAME_KEY, linkName)
-                .log("Cached send link is disposed. Will recreate.");
+            logger.atInfo().addKeyValue(LINK_NAME_KEY, linkName).log("Cached send link is disposed. Will recreate.");
         }
 
         final TokenManager tokenManager;

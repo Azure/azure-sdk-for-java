@@ -342,8 +342,7 @@ public class ReactorSessionTest {
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults())
             .thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.ACCEPTED)));
-        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath))
-            .thenReturn(sendLinkHandler1)
+        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath)).thenReturn(sendLinkHandler1)
             .thenReturn(sendLinkHandler2);
 
         handler.onSessionRemoteOpen(event);
