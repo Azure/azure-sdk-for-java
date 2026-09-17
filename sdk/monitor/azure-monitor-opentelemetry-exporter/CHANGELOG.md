@@ -4,11 +4,11 @@
 
 ### Features Added
 
+- Route internal SDKStats using OneSettings data-boundary endpoints, with the existing Breeze endpoint as the fallback.
+
 ### Breaking Changes
 
 ### Bugs Fixed
-
-- Route internal SDKStats using OneSettings data-boundary endpoints, with the existing Breeze endpoint as the fallback.
 
 ### Other Changes
 
