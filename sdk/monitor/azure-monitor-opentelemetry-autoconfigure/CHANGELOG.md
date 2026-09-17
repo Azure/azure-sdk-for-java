@@ -1,17 +1,11 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.7.0 (2026-09-17)
 
 ### Bugs Fixed
 
-- Ensure the SDKStats all-disable setting also suppresses internal Statsbeat exports and background tasks.
+- Ensure the SDKStats all-disable setting also suppresses internal Statsbeat exports and background tasks. ([#50382](https://github.com/Azure/azure-sdk-for-java/pull/50382))
 - Harden the local telemetry spool directory against symlink, Windows junction, and path-squatting attacks. If secure directory initialization is denied, continue exporting without disk persistence. ([#50463](https://github.com/Azure/azure-sdk-for-java/pull/50463))
-
-### Other Changes
 
 ## 1.6.0 (2026-08-17)
 
