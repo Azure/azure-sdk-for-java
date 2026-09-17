@@ -6,11 +6,11 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.BetaVoiceAgentsConversationsAsyncClient;
 import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
 import com.azure.ai.agents.models.RealtimeServerEvent;
-import com.azure.ai.agents.models.RealtimeServerEventError;
-import com.azure.ai.agents.models.RealtimeServerEventResponseAudioDelta;
-import com.azure.ai.agents.models.RealtimeServerEventResponseAudioTranscriptDone;
-import com.azure.ai.agents.models.RealtimeServerEventResponseDone;
-import com.azure.ai.agents.models.RealtimeServerEventSessionCreated;
+import com.azure.ai.agents.models.RealtimeErrorEvent;
+import com.azure.ai.agents.models.RealtimeResponseAudioDeltaEvent;
+import com.azure.ai.agents.models.RealtimeResponseAudioTranscriptDoneEvent;
+import com.azure.ai.agents.models.RealtimeResponseDoneEvent;
+import com.azure.ai.agents.models.RealtimeSessionCreatedEvent;
 import com.azure.ai.agents.models.VoiceConversation;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -32,23 +32,23 @@ final class VoiceAgentRealtimeSampleUtils {
 
     static boolean handleResponseEvent(RealtimeServerEvent event, AtomicReference<String> conversationId,
         SpeakerPlayer player) {
-        if (event instanceof RealtimeServerEventSessionCreated) {
-            String id = ((RealtimeServerEventSessionCreated) event).getConversationId();
+        if (event instanceof RealtimeSessionCreatedEvent) {
+            String id = ((RealtimeSessionCreatedEvent) event).getConversationId();
             if (id != null) {
                 conversationId.set(id);
             }
-        } else if (event instanceof RealtimeServerEventResponseAudioDelta) {
-            player.play(((RealtimeServerEventResponseAudioDelta) event).getDelta());
-        } else if (event instanceof RealtimeServerEventResponseAudioTranscriptDone) {
+        } else if (event instanceof RealtimeResponseAudioDeltaEvent) {
+            player.play(((RealtimeResponseAudioDeltaEvent) event).getDelta());
+        } else if (event instanceof RealtimeResponseAudioTranscriptDoneEvent) {
             System.out.println("Agent: "
-                + ((RealtimeServerEventResponseAudioTranscriptDone) event).getTranscript());
-        } else if (event instanceof RealtimeServerEventError) {
-            RealtimeServerEventError error
-                = (RealtimeServerEventError) event;
-            System.out.println("Session error: " + error.getError().getMessage());
+                + ((RealtimeResponseAudioTranscriptDoneEvent) event).getTranscript());
+        } else if (event instanceof RealtimeErrorEvent) {
+            RealtimeErrorEvent error
+                = (RealtimeErrorEvent) event;
+            System.out.println("Session error: " + error.getError().message());
             return true;
         }
-        return event instanceof RealtimeServerEventResponseDone;
+        return event instanceof RealtimeResponseDoneEvent;
     }
 
     static void readConversation(BetaVoiceAgentsConversationsClient conversations, String agentName,

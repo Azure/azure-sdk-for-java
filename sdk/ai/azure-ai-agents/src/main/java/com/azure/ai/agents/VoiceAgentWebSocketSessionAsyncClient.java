@@ -8,19 +8,17 @@ import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketHandshakeH
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketHttpResponse;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.RealtimeClientEvent;
-import com.azure.ai.agents.models.RealtimeClientEventConversationItemCreate;
-import com.azure.ai.agents.models.RealtimeClientEventInputAudioBufferAppend;
-import com.azure.ai.agents.models.RealtimeClientEventInputAudioBufferClear;
-import com.azure.ai.agents.models.RealtimeClientEventInputAudioBufferCommit;
-import com.azure.ai.agents.models.RealtimeClientEventResponseCancel;
-import com.azure.ai.agents.models.RealtimeClientEventResponseCreate;
+import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
+import com.azure.ai.agents.models.RealtimeInputAudioBufferAppendEvent;
+import com.azure.ai.agents.models.RealtimeInputAudioBufferClearEvent;
+import com.azure.ai.agents.models.RealtimeInputAudioBufferCommitEvent;
+import com.azure.ai.agents.models.RealtimeResponseCancelEvent;
+import com.azure.ai.agents.models.RealtimeResponseCreateEvent;
 import com.azure.ai.agents.models.RealtimeConversationItem;
 import com.azure.ai.agents.models.RealtimeConversationItemFunctionCallOutput;
-import com.azure.ai.agents.models.RealtimeConversationItemMessageUser;
-import com.azure.ai.agents.models.RealtimeConversationItemMessageUserContent;
-import com.azure.ai.agents.models.RealtimeConversationItemMessageUserContentType;
+import com.azure.ai.agents.models.RealtimeConversationItemUserMessage;
 import com.azure.ai.agents.models.RealtimeServerEvent;
-import com.azure.ai.agents.models.VoiceAgentResponseCreateParams;
+import com.azure.ai.agents.models.VoiceAgentResponseCreateOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
@@ -32,6 +30,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
+import com.openai.models.realtime.RealtimeConversationItemUserMessage.Content;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
@@ -255,7 +254,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
      */
     public Mono<Void> createConversationItem(RealtimeConversationItem item, String previousItemId) {
         Objects.requireNonNull(item, "'item' cannot be null.");
-        return sendEvent(new RealtimeClientEventConversationItemCreate(item).setPreviousItemId(previousItemId));
+        return sendEvent(new RealtimeConversationItemCreateEvent(item).setPreviousItemId(previousItemId));
     }
 
     /**
@@ -266,10 +265,8 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
      */
     public Mono<Void> sendText(String text) {
         Objects.requireNonNull(text, "'text' cannot be null.");
-        RealtimeConversationItemMessageUserContent content = new RealtimeConversationItemMessageUserContent()
-            .setType(RealtimeConversationItemMessageUserContentType.INPUT_TEXT)
-            .setText(text);
-        return createConversationItem(new RealtimeConversationItemMessageUser(Collections.singletonList(content)));
+        Content content = Content.builder().type(Content.Type.INPUT_TEXT).text(text).build();
+        return createConversationItem(new RealtimeConversationItemUserMessage(Collections.singletonList(content)));
     }
 
     /**
@@ -281,7 +278,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
     public Mono<Void> appendInputAudio(BinaryData audio) {
         Objects.requireNonNull(audio, "'audio' cannot be null.");
         String encoded = Base64.getEncoder().encodeToString(audio.toBytes());
-        return sendEvent(new RealtimeClientEventInputAudioBufferAppend(encoded));
+        return sendEvent(new RealtimeInputAudioBufferAppendEvent(encoded));
     }
 
     /**
@@ -290,7 +287,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
      * @return a completion signal emitted after the event is written.
      */
     public Mono<Void> clearInputAudio() {
-        return sendEvent(new RealtimeClientEventInputAudioBufferClear());
+        return sendEvent(new RealtimeInputAudioBufferClearEvent());
     }
 
     /**
@@ -299,7 +296,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
      * @return a completion signal emitted after the event is written.
      */
     public Mono<Void> commitInputAudio() {
-        return sendEvent(new RealtimeClientEventInputAudioBufferCommit());
+        return sendEvent(new RealtimeInputAudioBufferCommitEvent());
     }
 
     /**
@@ -308,7 +305,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
      * @return a completion signal emitted after the event is written.
      */
     public Mono<Void> createResponse() {
-        return sendEvent(new RealtimeClientEventResponseCreate());
+        return sendEvent(new RealtimeResponseCreateEvent());
     }
 
     /**
@@ -317,9 +314,9 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
      * @param responseOptions the response options.
      * @return a completion signal emitted after the event is written.
      */
-    public Mono<Void> createResponse(VoiceAgentResponseCreateParams responseOptions) {
+    public Mono<Void> createResponse(VoiceAgentResponseCreateOptions responseOptions) {
         Objects.requireNonNull(responseOptions, "'responseOptions' cannot be null.");
-        return sendEvent(new RealtimeClientEventResponseCreate().setResponse(responseOptions));
+        return sendEvent(new RealtimeResponseCreateEvent().setResponse(responseOptions));
     }
 
     /**
@@ -328,7 +325,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
      * @return a completion signal emitted after the event is written.
      */
     public Mono<Void> cancelResponse() {
-        return sendEvent(new RealtimeClientEventResponseCancel());
+        return sendEvent(new RealtimeResponseCancelEvent());
     }
 
     /**
@@ -339,7 +336,7 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
      */
     public Mono<Void> cancelResponse(String responseId) {
         Objects.requireNonNull(responseId, "'responseId' cannot be null.");
-        return sendEvent(new RealtimeClientEventResponseCancel().setResponseId(responseId));
+        return sendEvent(new RealtimeResponseCancelEvent().setResponseId(responseId));
     }
 
     /**

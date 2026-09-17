@@ -10,6 +10,7 @@ import com.azure.json.JsonWriter;
 import com.openai.models.responses.ToolChoiceFunction;
 import com.openai.models.responses.ToolChoiceMcp;
 import com.openai.models.responses.ToolChoiceOptions;
+import com.openai.models.realtime.RealtimeAudioFormats.AudioPcm.Rate;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -81,14 +82,13 @@ public class VoiceAgentDefinitionSerializationTests {
 
     @Test
     public void fullVoiceDefinitionRoundTrips() throws IOException {
-        RealtimeAudioFormatsAudioPcm pcm
-            = new RealtimeAudioFormatsAudioPcm().setRate(RealtimeAudioFormatsAudioPcmRate.TWO_FOUR_ZERO_ZERO_ZERO);
-        VoiceAgentAudioInputConfig input = new VoiceAgentAudioInputConfig().setFormat(pcm)
+        RealtimePcmAudioFormat pcm = new RealtimePcmAudioFormat().setRate(Rate._24000);
+        VoiceAgentAudioInputConfiguration input = new VoiceAgentAudioInputConfiguration().setFormat(pcm)
             .setTurnDetection(new VoiceAgentServerVadTurnDetection().setThreshold(0.5)
                 .setPrefixPaddingMs(300L)
                 .setSilenceDurationMs(500L))
             .setTranscription(new VoiceAgentInputTranscription(VoiceAgentInputTranscriptionModel.WHISPER_1));
-        VoiceAgentAudioOutputConfig output = new VoiceAgentAudioOutputConfig().setFormat(pcm)
+        VoiceAgentAudioOutputConfiguration output = new VoiceAgentAudioOutputConfiguration().setFormat(pcm)
             .setVoice("en-US-AvaNeural")
             .setVoiceType(VoiceType.AZURE_STANDARD);
         VoiceAgentFunctionTool functionTool
@@ -99,7 +99,7 @@ public class VoiceAgentDefinitionSerializationTests {
         VoiceAgentDefinition original = new VoiceAgentDefinition().setModelType(VoiceModelType.MANAGED)
             .setModel("gpt-realtime")
             .setInstructions("Keep replies short and natural.")
-            .setAudio(new VoiceAgentAudioConfig().setInput(input).setOutput(output))
+            .setAudio(new VoiceAgentAudioConfiguration().setInput(input).setOutput(output))
             .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
             .setTools(Arrays.<VoiceAgentTool>asList(functionTool, systemTool))
             .setStore(true);
@@ -131,9 +131,9 @@ public class VoiceAgentDefinitionSerializationTests {
         assertEquals(Boolean.TRUE, voice.isStore());
         assertEquals(VoiceOutputModality.AUDIO, voice.getOutputModalities().get(0));
 
-        VoiceAgentAudioInputConfig deserializedInput = voice.getAudio().getInput();
-        RealtimeAudioFormatsAudioPcm deserializedInputFormat
-            = assertInstanceOf(RealtimeAudioFormatsAudioPcm.class, deserializedInput.getFormat());
+        VoiceAgentAudioInputConfiguration deserializedInput = voice.getAudio().getInput();
+        RealtimePcmAudioFormat deserializedInputFormat
+            = assertInstanceOf(RealtimePcmAudioFormat.class, deserializedInput.getFormat());
         assertEquals(pcm.getRate(), deserializedInputFormat.getRate());
         VoiceAgentServerVadTurnDetection deserializedVad
             = assertInstanceOf(VoiceAgentServerVadTurnDetection.class, deserializedInput.getTurnDetection());
@@ -143,9 +143,9 @@ public class VoiceAgentDefinitionSerializationTests {
         assertEquals(originalVad.getSilenceDurationMs(), deserializedVad.getSilenceDurationMs());
         assertEquals(input.getTranscription().getModel(), deserializedInput.getTranscription().getModel());
 
-        VoiceAgentAudioOutputConfig deserializedOutput = voice.getAudio().getOutput();
-        RealtimeAudioFormatsAudioPcm deserializedOutputFormat
-            = assertInstanceOf(RealtimeAudioFormatsAudioPcm.class, deserializedOutput.getFormat());
+        VoiceAgentAudioOutputConfiguration deserializedOutput = voice.getAudio().getOutput();
+        RealtimePcmAudioFormat deserializedOutputFormat
+            = assertInstanceOf(RealtimePcmAudioFormat.class, deserializedOutput.getFormat());
         assertEquals(pcm.getRate(), deserializedOutputFormat.getRate());
         assertEquals(output.getVoice(), deserializedOutput.getVoice());
         assertEquals(output.getVoiceType(), deserializedOutput.getVoiceType());

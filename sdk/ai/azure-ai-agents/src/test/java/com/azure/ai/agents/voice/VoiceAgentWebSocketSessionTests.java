@@ -10,10 +10,10 @@ import com.azure.ai.agents.VoiceAgentWebSocketSessionAsyncClient;
 import com.azure.ai.agents.VoiceAgentWebSocketSessionClient;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketHttpResponse;
 import com.azure.ai.agents.models.RawRealtimeServerEvent;
-import com.azure.ai.agents.models.RealtimeClientEventResponseCreate;
-import com.azure.ai.agents.models.RealtimeServerEventSessionCreated;
+import com.azure.ai.agents.models.RealtimeResponseCreateEvent;
+import com.azure.ai.agents.models.RealtimeSessionCreatedEvent;
 import com.azure.ai.agents.models.RealtimeServerEvent;
-import com.azure.ai.agents.models.VoiceAgentServerEventWarning;
+import com.azure.ai.agents.models.VoiceAgentWarningEvent;
 import com.azure.ai.agents.models.VoiceAgentTransport;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketOverflowStrategy;
@@ -167,7 +167,7 @@ public class VoiceAgentWebSocketSessionTests {
                 StepVerifier.create(session.sendEvent(BinaryData.fromString("not valid json")))
                     .expectError(IllegalArgumentException.class)
                     .verify(Duration.ofSeconds(5));
-                session.sendEvent(new RealtimeClientEventResponseCreate())
+                session.sendEvent(new RealtimeResponseCreateEvent())
                     .then(session.sendEvent(BinaryData.fromString(raw)))
                     .then(session.sendEvent(mapping))
                     .block(Duration.ofSeconds(5));
@@ -180,7 +180,7 @@ public class VoiceAgentWebSocketSessionTests {
                 = builder.beta().buildBetaVoiceAgentWebSocketClient().connect("agent", tlsOptions())) {
                 assertThrows(IllegalArgumentException.class,
                     () -> session.sendEvent(BinaryData.fromString("not valid json")));
-                session.sendEvent(new RealtimeClientEventResponseCreate());
+                session.sendEvent(new RealtimeResponseCreateEvent());
                 session.sendEvent(BinaryData.fromString(raw));
                 session.sendEvent(mapping);
                 Iterator<RealtimeServerEvent> events = session.receiveEvents(Duration.ofSeconds(5)).iterator();
@@ -229,7 +229,7 @@ public class VoiceAgentWebSocketSessionTests {
             }
         }
         assertEquals(2, events.size());
-        assertInstanceOf(RealtimeServerEventSessionCreated.class, events.get(0));
+        assertInstanceOf(RealtimeSessionCreatedEvent.class, events.get(0));
         RawRealtimeServerEvent unknown = assertInstanceOf(RawRealtimeServerEvent.class, events.get(1));
         assertEquals("bar", unknown.getRawEvent().toObject(Map.class).get("foo"));
     }
@@ -1012,7 +1012,7 @@ public class VoiceAgentWebSocketSessionTests {
     }
 
     private void assertWarningEvent(RealtimeServerEvent event) {
-        VoiceAgentServerEventWarning warning = assertInstanceOf(VoiceAgentServerEventWarning.class, event);
+        VoiceAgentWarningEvent warning = assertInstanceOf(VoiceAgentWarningEvent.class, event);
         assertEquals("loopback warning", warning.getWarning().getMessage());
         assertEquals("test_warning", warning.getWarning().getCode());
     }

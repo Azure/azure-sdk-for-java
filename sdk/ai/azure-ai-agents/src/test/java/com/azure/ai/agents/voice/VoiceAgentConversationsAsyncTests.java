@@ -9,17 +9,17 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentsConversationsAsyncClient;
 import com.azure.ai.agents.VoiceAgentWebSocketSessionAsyncClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
-import com.azure.ai.agents.models.RealtimeServerEventResponseDone;
-import com.azure.ai.agents.models.RealtimeServerEventSessionCreated;
-import com.azure.ai.agents.models.VoiceAgentAudioConfig;
-import com.azure.ai.agents.models.VoiceAgentAudioOutputConfig;
+import com.azure.ai.agents.models.RealtimeResponseDoneEvent;
+import com.azure.ai.agents.models.RealtimeSessionCreatedEvent;
+import com.azure.ai.agents.models.VoiceAgentAudioConfiguration;
+import com.azure.ai.agents.models.VoiceAgentAudioOutputConfiguration;
 import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.ai.agents.models.VoiceModelType;
 import com.azure.ai.agents.models.VoiceOutputModality;
 import com.azure.ai.agents.models.VoiceType;
 import com.azure.ai.agents.models.VoiceConversationStatus;
-import com.azure.ai.agents.models.VoiceAudioItemResponse;
-import com.azure.ai.agents.models.VoiceRecordingResponse;
+import com.azure.ai.agents.models.VoiceAudioItem;
+import com.azure.ai.agents.models.VoiceRecording;
 import com.azure.ai.agents.models.VoiceResponse;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -94,8 +94,9 @@ public class VoiceAgentConversationsAsyncTests {
         VoiceAgentDefinition definition = new VoiceAgentDefinition().setModelType(VoiceModelType.MANAGED)
             .setModel(model)
             .setInstructions("You are a helpful voice assistant. Keep replies short.")
-            .setAudio(new VoiceAgentAudioConfig().setOutput(
-                new VoiceAgentAudioOutputConfig().setVoice("en-US-AvaNeural").setVoiceType(VoiceType.AZURE_STANDARD)))
+            .setAudio(new VoiceAgentAudioConfiguration()
+                .setOutput(new VoiceAgentAudioOutputConfiguration().setVoice("en-US-AvaNeural")
+                    .setVoiceType(VoiceType.AZURE_STANDARD)))
             .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
             .setStore(true);
         AtomicReference<String> conversationId = new AtomicReference<>();
@@ -107,9 +108,9 @@ public class VoiceAgentConversationsAsyncTests {
             Mono.usingWhen(builder.beta().buildBetaVoiceAgentWebSocketAsyncClient().connect(agentName),
                 session -> session.receiveEvents().index().concatMap(indexed -> {
                     if (indexed.getT1() == 0) {
-                        assertTrue(indexed.getT2() instanceof RealtimeServerEventSessionCreated,
+                        assertTrue(indexed.getT2() instanceof RealtimeSessionCreatedEvent,
                             "The first event must be session.created.");
-                        conversationId.set(((RealtimeServerEventSessionCreated) indexed.getT2()).getConversationId());
+                        conversationId.set(((RealtimeSessionCreatedEvent) indexed.getT2()).getConversationId());
                         assertNotNull(conversationId.get(), "store=True must return a conversation ID.");
                         return session.sendText("Say hello.")
                             .then(session.createResponse())
@@ -117,7 +118,7 @@ public class VoiceAgentConversationsAsyncTests {
                     }
                     return Mono.just(indexed.getT2());
                 })
-                    .filter(RealtimeServerEventResponseDone.class::isInstance)
+                    .filter(RealtimeResponseDoneEvent.class::isInstance)
                     .next()
                     .switchIfEmpty(Mono.error(new AssertionError("Session ended without response.done.")))
                     .timeout(Duration.ofSeconds(45))
@@ -255,8 +256,7 @@ public class VoiceAgentConversationsAsyncTests {
 
             assertEquals(VoiceConversationStatus.COMPLETED, conversation.getStatus(),
                 "Audio assertions require a finalized conversation.");
-            VoiceRecordingResponse recording
-                = client.getAgentConversationAudio(agentName, conversationId).block(TIMEOUT);
+            VoiceRecording recording = client.getAgentConversationAudio(agentName, conversationId).block(TIMEOUT);
             assertNotNull(recording);
             assertNotNull(recording.getFormat());
             if (recording.getBlobUri() == null || recording.getBlobUri().isEmpty()) {
@@ -267,7 +267,7 @@ public class VoiceAgentConversationsAsyncTests {
                 if (id == null || id.isEmpty()) {
                     continue;
                 }
-                VoiceAudioItemResponse audio;
+                VoiceAudioItem audio;
                 try {
                     audio = client.getAgentConversationAudioItem(agentName, conversationId, id).block(TIMEOUT);
                 } catch (HttpResponseException error) {

@@ -7,8 +7,8 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentsTelephonyClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
-import com.azure.ai.agents.models.CreateTelephonyCallJobRequest;
-import com.azure.ai.agents.models.CreateTwilioTelephonyBindingRequest;
+import com.azure.ai.agents.models.CreateTelephonyCallJobInput;
+import com.azure.ai.agents.models.CreateTwilioTelephonyBindingInput;
 import com.azure.ai.agents.models.PstnTelephonyTransferDestination;
 import com.azure.ai.agents.models.TelephonyBinding;
 import com.azure.ai.agents.models.TelephonyBindingListItem;
@@ -22,9 +22,9 @@ import com.azure.ai.agents.models.TelephonyOutboundDestinationType;
 import com.azure.ai.agents.models.TelephonyProvider;
 import com.azure.ai.agents.models.TelephonyTransferTarget;
 import com.azure.ai.agents.models.TelephonyTransferTargets;
-import com.azure.ai.agents.models.UpdateTelephonyBindingRequest;
-import com.azure.ai.agents.models.VoiceAgentAudioConfig;
-import com.azure.ai.agents.models.VoiceAgentAudioOutputConfig;
+import com.azure.ai.agents.models.UpdateTelephonyBindingInput;
+import com.azure.ai.agents.models.VoiceAgentAudioConfiguration;
+import com.azure.ai.agents.models.VoiceAgentAudioOutputConfiguration;
 import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.ai.agents.models.VoiceModelType;
 import com.azure.ai.agents.models.VoiceOutputModality;
@@ -87,17 +87,17 @@ public class VoiceAgentTelephonyLiveTests {
                 new CreateAgentVersionInput(definition(model, "Greet the caller briefly, then say goodbye.")));
             agentCreated = true;
             TelephonyBinding binding = telephony.createTelephonyBinding(agentName,
-                new CreateTwilioTelephonyBindingRequest(connection, number).setLabel("Java SDK live test"));
+                new CreateTwilioTelephonyBindingInput(connection, number).setLabel("Java SDK live test"));
             TelephonyBindingListItem listedBinding = findBinding(telephony, agentName, binding.getId());
-            assertNotNull(listedBinding.getEtag());
+            assertNotNull(listedBinding.getETag());
 
             TelephonyBinding retrieved = telephony.getTelephonyBinding(agentName, binding.getId());
             assertEquals(binding.getId(), retrieved.getId());
             TelephonyBinding updated = telephony.updateTelephonyBinding(agentName, binding.getId(),
-                listedBinding.getEtag(), new UpdateTelephonyBindingRequest().setLabel("Updated Java SDK live test"));
+                listedBinding.getETag(), new UpdateTelephonyBindingInput().setLabel("Updated Java SDK live test"));
             assertEquals("Updated Java SDK live test", updated.getLabel());
 
-            String updatedEtag = findBinding(telephony, agentName, binding.getId()).getEtag();
+            String updatedEtag = findBinding(telephony, agentName, binding.getId()).getETag();
             assertNotNull(updatedEtag);
             telephony.deleteTelephonyBinding(agentName, binding.getId(), updatedEtag);
             assertTrue(telephony.listTelephonyBindings(agentName)
@@ -144,7 +144,7 @@ public class VoiceAgentTelephonyLiveTests {
             outboundAgentCreated = true;
 
             TelephonyBinding binding = telephony.createTelephonyBinding(inboundAgent,
-                new CreateTwilioTelephonyBindingRequest(connection1, number1).setLabel("Java SDK live test"));
+                new CreateTwilioTelephonyBindingInput(connection1, number1).setLabel("Java SDK live test"));
             assertNotNull(binding.getId());
             assertEquals(TelephonyProvider.TWILIO, binding.getProvider());
             assertEquals(TelephonyBindingStatus.ACTIVE, binding.getStatus());
@@ -162,7 +162,7 @@ public class VoiceAgentTelephonyLiveTests {
                 Collections.singletonList(transferTarget));
             assertEquals(1, replacedTargets.getTransferTargets().size());
 
-            CreateTelephonyCallJobRequest request = new CreateTelephonyCallJobRequest(
+            CreateTelephonyCallJobInput request = new CreateTelephonyCallJobInput(
                 new TelephonyOutboundDestination(TelephonyOutboundDestinationType.PHONE_NUMBER, number1), connection2,
                 number2).setPurpose("Java SDK live telephony validation");
             TelephonyCallJob job
@@ -191,7 +191,7 @@ public class VoiceAgentTelephonyLiveTests {
             assertTrue(dispatchedJob.getAttemptCount() > 0, "The outbound call job did not create an attempt.");
 
             OffsetDateTime notBefore = OffsetDateTime.now().plusMinutes(10);
-            CreateTelephonyCallJobRequest scheduledRequest = new CreateTelephonyCallJobRequest(
+            CreateTelephonyCallJobInput scheduledRequest = new CreateTelephonyCallJobInput(
                 new TelephonyOutboundDestination(TelephonyOutboundDestinationType.PHONE_NUMBER, number1), connection2,
                 number2).setPurpose("Java SDK live cancellation validation")
                     .setSchedule(
@@ -256,8 +256,9 @@ public class VoiceAgentTelephonyLiveTests {
             .setModel(model)
             .setInstructions(instructions)
             .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
-            .setAudio(new VoiceAgentAudioConfig().setOutput(
-                new VoiceAgentAudioOutputConfig().setVoice("en-US-AvaNeural").setVoiceType(VoiceType.AZURE_STANDARD)));
+            .setAudio(new VoiceAgentAudioConfiguration()
+                .setOutput(new VoiceAgentAudioOutputConfiguration().setVoice("en-US-AvaNeural")
+                    .setVoiceType(VoiceType.AZURE_STANDARD)));
     }
 
     private static String e164(Configuration configuration, String name, String defaultValue) {

@@ -10,11 +10,11 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
-import com.azure.ai.agents.models.RealtimeAudioFormatsAudioPcm;
-import com.azure.ai.agents.models.RealtimeAudioFormatsAudioPcmRate;
-import com.azure.ai.agents.models.VoiceAgentAudioConfig;
-import com.azure.ai.agents.models.VoiceAgentAudioInputConfig;
-import com.azure.ai.agents.models.VoiceAgentAudioOutputConfig;
+import com.azure.ai.agents.models.RealtimePcmAudioFormat;
+import com.openai.models.realtime.RealtimeAudioFormats.AudioPcm.Rate;
+import com.azure.ai.agents.models.VoiceAgentAudioConfiguration;
+import com.azure.ai.agents.models.VoiceAgentAudioInputConfiguration;
+import com.azure.ai.agents.models.VoiceAgentAudioOutputConfiguration;
 import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.ai.agents.models.VoiceAgentFunctionTool;
 import com.azure.ai.agents.models.VoiceAgentInputTranscription;
@@ -57,16 +57,16 @@ public class VoiceAgentWithToolsSample {
             .allowPreview(true)
             .buildAgentsClient();
 
-        RealtimeAudioFormatsAudioPcm pcm = new RealtimeAudioFormatsAudioPcm()
-            .setRate(RealtimeAudioFormatsAudioPcmRate.TWO_FOUR_ZERO_ZERO_ZERO);
-        VoiceAgentAudioInputConfig input = new VoiceAgentAudioInputConfig()
+        RealtimePcmAudioFormat pcm = new RealtimePcmAudioFormat()
+            .setRate(Rate._24000);
+        VoiceAgentAudioInputConfiguration input = new VoiceAgentAudioInputConfiguration()
             .setFormat(pcm)
             .setTurnDetection(new VoiceAgentServerVadTurnDetection()
                 .setThreshold(0.5)
                 .setPrefixPaddingMs(300L)
                 .setSilenceDurationMs(500L))
             .setTranscription(new VoiceAgentInputTranscription(VoiceAgentInputTranscriptionModel.WHISPER_1));
-        VoiceAgentAudioOutputConfig output = new VoiceAgentAudioOutputConfig()
+        VoiceAgentAudioOutputConfiguration output = new VoiceAgentAudioOutputConfiguration()
             .setVoice("en-US-AvaNeural")
             .setVoiceType(VoiceType.AZURE_STANDARD);
         Map<String, Object> cityProperty = new LinkedHashMap<>();
@@ -86,7 +86,7 @@ public class VoiceAgentWithToolsSample {
                 .setModelType(modelType)
                 .setModel(model)
                 .setInstructions("Use tools when they help answer the caller.")
-                .setAudio(new VoiceAgentAudioConfig().setInput(input).setOutput(output))
+                .setAudio(new VoiceAgentAudioConfiguration().setInput(input).setOutput(output))
                 .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
                 .setTools(Arrays.<VoiceAgentTool>asList(weather, endCall))
                 .setStore(true);

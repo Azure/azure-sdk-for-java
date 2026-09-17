@@ -9,17 +9,17 @@ import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
 import com.azure.ai.agents.VoiceAgentWebSocketSessionClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeServerEvent;
-import com.azure.ai.agents.models.RealtimeServerEventResponseDone;
-import com.azure.ai.agents.models.RealtimeServerEventSessionCreated;
-import com.azure.ai.agents.models.VoiceAgentAudioConfig;
-import com.azure.ai.agents.models.VoiceAgentAudioOutputConfig;
+import com.azure.ai.agents.models.RealtimeResponseDoneEvent;
+import com.azure.ai.agents.models.RealtimeSessionCreatedEvent;
+import com.azure.ai.agents.models.VoiceAgentAudioConfiguration;
+import com.azure.ai.agents.models.VoiceAgentAudioOutputConfiguration;
 import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.ai.agents.models.VoiceConversation;
 import com.azure.ai.agents.models.VoiceConversationStatus;
-import com.azure.ai.agents.models.VoiceAudioItemResponse;
+import com.azure.ai.agents.models.VoiceAudioItem;
 import com.azure.ai.agents.models.VoiceModelType;
 import com.azure.ai.agents.models.VoiceOutputModality;
-import com.azure.ai.agents.models.VoiceRecordingResponse;
+import com.azure.ai.agents.models.VoiceRecording;
 import com.azure.ai.agents.models.VoiceResponse;
 import com.azure.ai.agents.models.VoiceType;
 import com.azure.core.exception.HttpResponseException;
@@ -96,8 +96,9 @@ public class VoiceAgentConversationsTests {
         VoiceAgentDefinition definition = new VoiceAgentDefinition().setModelType(VoiceModelType.MANAGED)
             .setModel(model)
             .setInstructions("You are a helpful voice assistant. Keep replies short.")
-            .setAudio(new VoiceAgentAudioConfig().setOutput(
-                new VoiceAgentAudioOutputConfig().setVoice("en-US-AvaNeural").setVoiceType(VoiceType.AZURE_STANDARD)))
+            .setAudio(new VoiceAgentAudioConfiguration()
+                .setOutput(new VoiceAgentAudioOutputConfiguration().setVoice("en-US-AvaNeural")
+                    .setVoiceType(VoiceType.AZURE_STANDARD)))
             .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
             .setStore(true);
         String conversationId = null;
@@ -111,16 +112,15 @@ public class VoiceAgentConversationsTests {
                 Iterator<RealtimeServerEvent> events = session.receiveEvents(TIMEOUT).iterator();
                 assertTrue(events.hasNext(), "Expected session.created.");
                 RealtimeServerEvent first = events.next();
-                assertTrue(first instanceof RealtimeServerEventSessionCreated,
-                    "The first event must be session.created.");
-                conversationId = ((RealtimeServerEventSessionCreated) first).getConversationId();
+                assertTrue(first instanceof RealtimeSessionCreatedEvent, "The first event must be session.created.");
+                conversationId = ((RealtimeSessionCreatedEvent) first).getConversationId();
                 assertNotNull(conversationId, "store=True must return a conversation ID.");
                 session.sendText("Say hello.");
                 session.createResponse();
                 long deadline = System.nanoTime() + Duration.ofSeconds(45).toNanos();
                 boolean responseDone = false;
                 while (System.nanoTime() < deadline && events.hasNext()) {
-                    if (events.next() instanceof RealtimeServerEventResponseDone) {
+                    if (events.next() instanceof RealtimeResponseDoneEvent) {
                         responseDone = true;
                         break;
                     }
@@ -254,7 +254,7 @@ public class VoiceAgentConversationsTests {
 
             assertEquals(VoiceConversationStatus.COMPLETED, conversation.getStatus(),
                 "Audio assertions require a finalized conversation.");
-            VoiceRecordingResponse recording = client.getAgentConversationAudio(agentName, conversationId);
+            VoiceRecording recording = client.getAgentConversationAudio(agentName, conversationId);
             assertNotNull(recording);
             assertNotNull(recording.getFormat());
             if (recording.getBlobUri() == null || recording.getBlobUri().isEmpty()) {
@@ -265,7 +265,7 @@ public class VoiceAgentConversationsTests {
                 if (id == null || id.isEmpty()) {
                     continue;
                 }
-                VoiceAudioItemResponse audio;
+                VoiceAudioItem audio;
                 try {
                     audio = client.getAgentConversationAudioItem(agentName, conversationId, id);
                 } catch (HttpResponseException error) {

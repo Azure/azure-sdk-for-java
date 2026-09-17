@@ -5,8 +5,8 @@ package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.models.VoiceAudioItemResponse;
-import com.azure.ai.agents.models.VoiceRecordingResponse;
+import com.azure.ai.agents.models.VoiceAudioItem;
+import com.azure.ai.agents.models.VoiceRecording;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -40,7 +40,7 @@ public class VoiceAgentReadConversationAudioSample {
             .beta()
             .buildBetaVoiceAgentsConversationsClient();
 
-        VoiceRecordingResponse recording = conversations.getAgentConversationAudio(agentName, conversationId);
+        VoiceRecording recording = conversations.getAgentConversationAudio(agentName, conversationId);
         System.out.printf("Recording: format=%s, rate=%d, channels=%d, duration=%s%n",
             recording.getFormat(), recording.getSampleRate(), recording.getChannels(), recording.getDurationMs());
         if (recording.getBlobUri() != null) {
@@ -60,7 +60,7 @@ public class VoiceAgentReadConversationAudioSample {
                 continue;
             }
             try {
-                VoiceAudioItemResponse metadata = conversations.getAgentConversationAudioItem(
+                VoiceAudioItem metadata = conversations.getAgentConversationAudioItem(
                     agentName, conversationId, itemId);
                 if (metadata.getBlobUri() != null) {
                     System.out.println("Item audio is stored in customer storage: " + metadata.getBlobUri());

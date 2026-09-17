@@ -9,8 +9,8 @@ import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentState;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
-import com.azure.ai.agents.models.VoiceAgentAudioConfig;
-import com.azure.ai.agents.models.VoiceAgentAudioOutputConfig;
+import com.azure.ai.agents.models.VoiceAgentAudioConfiguration;
+import com.azure.ai.agents.models.VoiceAgentAudioOutputConfiguration;
 import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.ai.agents.models.VoiceModelType;
 import com.azure.ai.agents.models.VoiceOutputModality;
@@ -187,8 +187,9 @@ public class VoiceAgentCrudAsyncTests {
         return new VoiceAgentDefinition().setModelType(VoiceModelType.MANAGED)
             .setModel(model)
             .setInstructions(instructions)
-            .setAudio(new VoiceAgentAudioConfig().setOutput(
-                new VoiceAgentAudioOutputConfig().setVoice("en-US-AvaNeural").setVoiceType(VoiceType.AZURE_STANDARD)))
+            .setAudio(new VoiceAgentAudioConfiguration()
+                .setOutput(new VoiceAgentAudioOutputConfiguration().setVoice("en-US-AvaNeural")
+                    .setVoiceType(VoiceType.AZURE_STANDARD)))
             .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO));
     }
 

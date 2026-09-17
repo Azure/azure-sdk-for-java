@@ -7,19 +7,17 @@ import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConf
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketHttpResponse;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.RealtimeClientEvent;
-import com.azure.ai.agents.models.RealtimeClientEventConversationItemCreate;
-import com.azure.ai.agents.models.RealtimeClientEventInputAudioBufferAppend;
-import com.azure.ai.agents.models.RealtimeClientEventInputAudioBufferClear;
-import com.azure.ai.agents.models.RealtimeClientEventInputAudioBufferCommit;
-import com.azure.ai.agents.models.RealtimeClientEventResponseCancel;
-import com.azure.ai.agents.models.RealtimeClientEventResponseCreate;
+import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
+import com.azure.ai.agents.models.RealtimeInputAudioBufferAppendEvent;
+import com.azure.ai.agents.models.RealtimeInputAudioBufferClearEvent;
+import com.azure.ai.agents.models.RealtimeInputAudioBufferCommitEvent;
+import com.azure.ai.agents.models.RealtimeResponseCancelEvent;
+import com.azure.ai.agents.models.RealtimeResponseCreateEvent;
 import com.azure.ai.agents.models.RealtimeConversationItem;
 import com.azure.ai.agents.models.RealtimeConversationItemFunctionCallOutput;
-import com.azure.ai.agents.models.RealtimeConversationItemMessageUser;
-import com.azure.ai.agents.models.RealtimeConversationItemMessageUserContent;
-import com.azure.ai.agents.models.RealtimeConversationItemMessageUserContentType;
+import com.azure.ai.agents.models.RealtimeConversationItemUserMessage;
 import com.azure.ai.agents.models.RealtimeServerEvent;
-import com.azure.ai.agents.models.VoiceAgentResponseCreateParams;
+import com.azure.ai.agents.models.VoiceAgentResponseCreateOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -28,6 +26,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.BinaryData;
+import com.openai.models.realtime.RealtimeConversationItemUserMessage.Content;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import java.io.IOException;
@@ -231,7 +230,7 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
      */
     public void createConversationItem(RealtimeConversationItem item, String previousItemId) {
         Objects.requireNonNull(item, "'item' cannot be null.");
-        sendEvent(new RealtimeClientEventConversationItemCreate(item).setPreviousItemId(previousItemId));
+        sendEvent(new RealtimeConversationItemCreateEvent(item).setPreviousItemId(previousItemId));
     }
 
     /**
@@ -241,10 +240,8 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
      */
     public void sendText(String text) {
         Objects.requireNonNull(text, "'text' cannot be null.");
-        RealtimeConversationItemMessageUserContent content = new RealtimeConversationItemMessageUserContent()
-            .setType(RealtimeConversationItemMessageUserContentType.INPUT_TEXT)
-            .setText(text);
-        createConversationItem(new RealtimeConversationItemMessageUser(Collections.singletonList(content)));
+        Content content = Content.builder().type(Content.Type.INPUT_TEXT).text(text).build();
+        createConversationItem(new RealtimeConversationItemUserMessage(Collections.singletonList(content)));
     }
 
     /**
@@ -254,22 +251,22 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
      */
     public void appendInputAudio(BinaryData audio) {
         Objects.requireNonNull(audio, "'audio' cannot be null.");
-        sendEvent(new RealtimeClientEventInputAudioBufferAppend(Base64.getEncoder().encodeToString(audio.toBytes())));
+        sendEvent(new RealtimeInputAudioBufferAppendEvent(Base64.getEncoder().encodeToString(audio.toBytes())));
     }
 
     /** Clears the input audio buffer. */
     public void clearInputAudio() {
-        sendEvent(new RealtimeClientEventInputAudioBufferClear());
+        sendEvent(new RealtimeInputAudioBufferClearEvent());
     }
 
     /** Commits the input audio buffer. */
     public void commitInputAudio() {
-        sendEvent(new RealtimeClientEventInputAudioBufferCommit());
+        sendEvent(new RealtimeInputAudioBufferCommitEvent());
     }
 
     /** Requests a response using the voice agent's configuration. */
     public void createResponse() {
-        sendEvent(new RealtimeClientEventResponseCreate());
+        sendEvent(new RealtimeResponseCreateEvent());
     }
 
     /**
@@ -277,14 +274,14 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
      *
      * @param responseOptions response options.
      */
-    public void createResponse(VoiceAgentResponseCreateParams responseOptions) {
+    public void createResponse(VoiceAgentResponseCreateOptions responseOptions) {
         Objects.requireNonNull(responseOptions, "'responseOptions' cannot be null.");
-        sendEvent(new RealtimeClientEventResponseCreate().setResponse(responseOptions));
+        sendEvent(new RealtimeResponseCreateEvent().setResponse(responseOptions));
     }
 
     /** Cancels the active response. */
     public void cancelResponse() {
-        sendEvent(new RealtimeClientEventResponseCancel());
+        sendEvent(new RealtimeResponseCancelEvent());
     }
 
     /**
@@ -294,7 +291,7 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
      */
     public void cancelResponse(String responseId) {
         Objects.requireNonNull(responseId, "'responseId' cannot be null.");
-        sendEvent(new RealtimeClientEventResponseCancel().setResponseId(responseId));
+        sendEvent(new RealtimeResponseCancelEvent().setResponseId(responseId));
     }
 
     /**

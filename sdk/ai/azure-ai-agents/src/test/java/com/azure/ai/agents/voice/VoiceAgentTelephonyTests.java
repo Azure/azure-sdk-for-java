@@ -6,8 +6,8 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentsTelephonyAsyncClient;
 import com.azure.ai.agents.BetaVoiceAgentsTelephonyClient;
-import com.azure.ai.agents.models.CreateTelephonyCallJobRequest;
-import com.azure.ai.agents.models.CreateTwilioTelephonyBindingRequest;
+import com.azure.ai.agents.models.CreateTelephonyCallJobInput;
+import com.azure.ai.agents.models.CreateTwilioTelephonyBindingInput;
 import com.azure.ai.agents.models.TelephonyBinding;
 import com.azure.ai.agents.models.TelephonyBindingListItem;
 import com.azure.ai.agents.models.TelephonyBindingStatus;
@@ -17,9 +17,8 @@ import com.azure.ai.agents.models.TelephonyCallJobStatus;
 import com.azure.ai.agents.models.TelephonyCallSummary;
 import com.azure.ai.agents.models.TelephonyOutboundDestination;
 import com.azure.ai.agents.models.TelephonyOutboundDestinationType;
-import com.azure.ai.agents.models.TelephonyOperation;
 import com.azure.ai.agents.models.TelephonyTransferTargets;
-import com.azure.ai.agents.models.UpdateTelephonyBindingRequest;
+import com.azure.ai.agents.models.UpdateTelephonyBindingInput;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -90,9 +89,6 @@ public class VoiceAgentTelephonyTests {
             + "\"created_at\":1,\"updated_at\":1}";
         String cancelledJobResponse = jobResponse.replace("\"status\":\"accepted\"", "\"status\":\"cancelled\"")
             .replace("\"revision\":1", "\"revision\":2");
-        String operationResponse = "{\"id\":\"operation-1\",\"object\":\"telephony.operation\","
-            + "\"status\":\"succeeded\",\"created_at\":1,"
-            + "\"resource\":{\"id\":\"job-1\",\"type\":\"telephony.call_job\"}}";
         ScriptedTransport transport = new ScriptedTransport(async);
         transport.expect(HttpMethod.POST, ROOT + "/bindings", bindingRequest, 201, bindingResponse);
         transport.expect(HttpMethod.POST, ROOT + "/call_jobs", jobRequest,
@@ -100,19 +96,18 @@ public class VoiceAgentTelephonyTests {
         transport.expect(HttpMethod.GET, ROOT + "/call_jobs/job-1", null, 200, jobResponse);
         transport.expect(HttpMethod.POST, ROOT + "/call_jobs/job-1:cancel", null, header(HttpHeaderName.IF_MATCH, "1"),
             200, cancelledJobResponse, new HttpHeaders());
-        transport.expect(HttpMethod.GET, ROOT + "/operations/operation-1", null, 200, operationResponse);
         AgentsClientBuilder builder = builder(transport);
         BetaVoiceAgentsTelephonyClient syncClient = builder.beta().buildBetaVoiceAgentsTelephonyClient();
         BetaVoiceAgentsTelephonyAsyncClient asyncClient = builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient();
 
-        CreateTwilioTelephonyBindingRequest bindingRequestModel
-            = new CreateTwilioTelephonyBindingRequest(CONNECTION_1, NUMBER_1).setLabel("Java SDK test");
+        CreateTwilioTelephonyBindingInput bindingRequestModel
+            = new CreateTwilioTelephonyBindingInput(CONNECTION_1, NUMBER_1).setLabel("Java SDK test");
         TelephonyBinding binding = call(async, () -> syncClient.createTelephonyBinding(AGENT, bindingRequestModel),
             () -> asyncClient.createTelephonyBinding(AGENT, bindingRequestModel));
         assertEquals("binding-1", binding.getId());
         assertEquals(TelephonyBindingStatus.ACTIVE, binding.getStatus());
 
-        CreateTelephonyCallJobRequest jobRequestModel = new CreateTelephonyCallJobRequest(
+        CreateTelephonyCallJobInput jobRequestModel = new CreateTelephonyCallJobInput(
             new TelephonyOutboundDestination(TelephonyOutboundDestinationType.PHONE_NUMBER, NUMBER_1), CONNECTION_2,
             NUMBER_2).setPurpose("Java SDK telephony validation");
         TelephonyCallJob job
@@ -127,10 +122,6 @@ public class VoiceAgentTelephonyTests {
             () -> asyncClient.cancelTelephonyCallJob(AGENT, "job-1", "1"));
         assertEquals(TelephonyCallJobStatus.CANCELLED, cancelled.getStatus());
         assertEquals(2L, cancelled.getRevision());
-        TelephonyOperation operation = call(async, () -> syncClient.getTelephonyOperation(AGENT, "operation-1"),
-            () -> asyncClient.getTelephonyOperation(AGENT, "operation-1"));
-        assertEquals("operation-1", operation.getId());
-        assertEquals("job-1", operation.getResource().getId());
         transport.assertComplete();
     }
 
@@ -174,10 +165,9 @@ public class VoiceAgentTelephonyTests {
             ? asyncClient.listTelephonyBindings(AGENT).blockFirst(TIMEOUT)
             : syncClient.listTelephonyBindings(AGENT).iterator().next();
         assertNotNull(listed);
-        assertEquals("binding-etag", listed.getEtag());
-        UpdateTelephonyBindingRequest update
-            = new UpdateTelephonyBindingRequest().setStatus(TelephonyBindingStatus.ACTIVE)
-                .setLabel("Updated Java SDK test");
+        assertEquals("binding-etag", listed.getETag());
+        UpdateTelephonyBindingInput update = new UpdateTelephonyBindingInput().setStatus(TelephonyBindingStatus.ACTIVE)
+            .setLabel("Updated Java SDK test");
         assertEquals("Updated Java SDK test",
             call(async, () -> syncClient.updateTelephonyBinding(AGENT, "binding-1", "*", update),
                 () -> asyncClient.updateTelephonyBinding(AGENT, "binding-1", "*", update)).getLabel());
@@ -248,8 +238,8 @@ public class VoiceAgentTelephonyTests {
                 .isEmpty());
         assertNotFound(() -> call(async, () -> syncClient.getTelephonyBinding(AGENT, MISSING),
             () -> asyncClient.getTelephonyBinding(AGENT, MISSING)), true);
-        UpdateTelephonyBindingRequest update
-            = new UpdateTelephonyBindingRequest().setStatus(TelephonyBindingStatus.SUSPENDED);
+        UpdateTelephonyBindingInput update
+            = new UpdateTelephonyBindingInput().setStatus(TelephonyBindingStatus.SUSPENDED);
         assertNotFound(() -> call(async, () -> syncClient.updateTelephonyBinding(AGENT, MISSING, null, update),
             () -> asyncClient.updateTelephonyBinding(AGENT, MISSING, null, update)), true);
         assertNotFound(() -> call(async, () -> {
@@ -325,20 +315,6 @@ public class VoiceAgentTelephonyTests {
             () -> asyncClient.getTelephonyCallJob(AGENT, MISSING)), true);
         assertNotFound(() -> call(async, () -> syncClient.cancelTelephonyCallJob(AGENT, MISSING, null),
             () -> asyncClient.cancelTelephonyCallJob(AGENT, MISSING, null)), true);
-        transport.assertComplete();
-    }
-
-    @ParameterizedTest
-    @ValueSource(booleans = { false, true })
-    public void operationNotFound(boolean async) {
-        ScriptedTransport transport = new ScriptedTransport(async);
-        transport.notFound(HttpMethod.GET, ROOT + "/operations/" + MISSING, null);
-        AgentsClientBuilder builder = builder(transport);
-        assertNotFound(
-            () -> call(async,
-                () -> builder.beta().buildBetaVoiceAgentsTelephonyClient().getTelephonyOperation(AGENT, MISSING),
-                () -> builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient().getTelephonyOperation(AGENT, MISSING)),
-            true);
         transport.assertComplete();
     }
 

@@ -11,10 +11,10 @@ import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeConversationItem;
 import com.azure.ai.agents.models.RealtimeConversationItemType;
 import com.azure.ai.agents.models.RealtimeServerEvent;
-import com.azure.ai.agents.models.RealtimeServerEventError;
-import com.azure.ai.agents.models.RealtimeServerEventResponseDone;
-import com.azure.ai.agents.models.RealtimeServerEventResponseFunctionCallArgumentsDone;
-import com.azure.ai.agents.models.RealtimeServerEventResponseTextDone;
+import com.azure.ai.agents.models.RealtimeErrorEvent;
+import com.azure.ai.agents.models.RealtimeResponseDoneEvent;
+import com.azure.ai.agents.models.RealtimeResponseFunctionCallArgumentsDoneEvent;
+import com.azure.ai.agents.models.RealtimeResponseTextDoneEvent;
 import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.ai.agents.models.VoiceAgentFunctionTool;
 import com.azure.ai.agents.models.VoiceAgentTool;
@@ -116,27 +116,27 @@ public class VoiceAgentLiveFunctionToolSample {
 
     private static void receiveResponse(VoiceAgentWebSocketSessionClient session) {
         for (RealtimeServerEvent event : session.receiveEvents()) {
-            if (event instanceof RealtimeServerEventResponseFunctionCallArgumentsDone) {
-                RealtimeServerEventResponseFunctionCallArgumentsDone call
-                    = (RealtimeServerEventResponseFunctionCallArgumentsDone) event;
+            if (event instanceof RealtimeResponseFunctionCallArgumentsDoneEvent) {
+                RealtimeResponseFunctionCallArgumentsDoneEvent call
+                    = (RealtimeResponseFunctionCallArgumentsDoneEvent) event;
                 session.sendFunctionCallOutput(call.getCallId(), executeTool(call));
-            } else if (event instanceof RealtimeServerEventResponseTextDone) {
-                System.out.println("Agent: " + ((RealtimeServerEventResponseTextDone) event).getText());
-            } else if (event instanceof RealtimeServerEventResponseDone) {
-                if (!containsFunctionCall((RealtimeServerEventResponseDone) event)) {
+            } else if (event instanceof RealtimeResponseTextDoneEvent) {
+                System.out.println("Agent: " + ((RealtimeResponseTextDoneEvent) event).getText());
+            } else if (event instanceof RealtimeResponseDoneEvent) {
+                if (!containsFunctionCall((RealtimeResponseDoneEvent) event)) {
                     return;
                 }
-            } else if (event instanceof RealtimeServerEventError) {
-                RealtimeServerEventError error
-                    = (RealtimeServerEventError) event;
-                System.out.println("Session error: " + error.getError().getMessage());
+            } else if (event instanceof RealtimeErrorEvent) {
+                RealtimeErrorEvent error
+                    = (RealtimeErrorEvent) event;
+                System.out.println("Session error: " + error.getError().message());
                 return;
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    private static String executeTool(RealtimeServerEventResponseFunctionCallArgumentsDone call) {
+    private static String executeTool(RealtimeResponseFunctionCallArgumentsDoneEvent call) {
         Map<String, Object> arguments = BinaryData.fromString(call.getArguments()).toObject(Map.class);
         System.out.printf("Tool call: %s(%s)%n", call.getName(), arguments);
         Map<String, Object> result = new LinkedHashMap<>();
@@ -150,7 +150,7 @@ public class VoiceAgentLiveFunctionToolSample {
         return BinaryData.fromObject(result).toString();
     }
 
-    private static boolean containsFunctionCall(RealtimeServerEventResponseDone event) {
+    private static boolean containsFunctionCall(RealtimeResponseDoneEvent event) {
         List<RealtimeConversationItem> output = event.getResponse().getOutput();
         if (output == null) {
             return false;

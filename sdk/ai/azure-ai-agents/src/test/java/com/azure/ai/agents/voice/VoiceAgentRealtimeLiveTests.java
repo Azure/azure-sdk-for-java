@@ -10,22 +10,20 @@ import com.azure.ai.agents.VoiceAgentWebSocketSessionAsyncClient;
 import com.azure.ai.agents.VoiceAgentWebSocketSessionClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeClientEvent;
-import com.azure.ai.agents.models.RealtimeClientEventConversationItemCreate;
-import com.azure.ai.agents.models.RealtimeClientEventResponseCreate;
+import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
+import com.azure.ai.agents.models.RealtimeResponseCreateEvent;
 import com.azure.ai.agents.models.RealtimeConversationItemFunctionCallOutput;
-import com.azure.ai.agents.models.RealtimeConversationItemMessageUser;
-import com.azure.ai.agents.models.RealtimeConversationItemMessageUserContent;
-import com.azure.ai.agents.models.RealtimeConversationItemMessageUserContentType;
+import com.azure.ai.agents.models.RealtimeConversationItemUserMessage;
 import com.azure.ai.agents.models.RealtimeServerEvent;
-import com.azure.ai.agents.models.RealtimeServerEventError;
-import com.azure.ai.agents.models.RealtimeServerEventResponseAudioDelta;
-import com.azure.ai.agents.models.RealtimeServerEventResponseAudioTranscriptDone;
-import com.azure.ai.agents.models.RealtimeServerEventResponseDone;
-import com.azure.ai.agents.models.RealtimeServerEventResponseFunctionCallArgumentsDone;
-import com.azure.ai.agents.models.RealtimeServerEventResponseTextDone;
-import com.azure.ai.agents.models.RealtimeServerEventSessionCreated;
-import com.azure.ai.agents.models.VoiceAgentAudioConfig;
-import com.azure.ai.agents.models.VoiceAgentAudioOutputConfig;
+import com.azure.ai.agents.models.RealtimeErrorEvent;
+import com.azure.ai.agents.models.RealtimeResponseAudioDeltaEvent;
+import com.azure.ai.agents.models.RealtimeResponseAudioTranscriptDoneEvent;
+import com.azure.ai.agents.models.RealtimeResponseDoneEvent;
+import com.azure.ai.agents.models.RealtimeResponseFunctionCallArgumentsDoneEvent;
+import com.azure.ai.agents.models.RealtimeResponseTextDoneEvent;
+import com.azure.ai.agents.models.RealtimeSessionCreatedEvent;
+import com.azure.ai.agents.models.VoiceAgentAudioConfiguration;
+import com.azure.ai.agents.models.VoiceAgentAudioOutputConfiguration;
 import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.ai.agents.models.VoiceAgentFunctionTool;
 import com.azure.ai.agents.models.VoiceModelType;
@@ -34,6 +32,7 @@ import com.azure.ai.agents.models.VoiceType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.models.realtime.RealtimeConversationItemUserMessage.Content;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -147,8 +146,8 @@ public class VoiceAgentRealtimeLiveTests {
         List<RealtimeClientEvent> initial = turn.accept(event(SESSION));
         assertEquals(scenario == Scenario.LIFECYCLE ? 0 : 2, initial.size());
         if (scenario != Scenario.LIFECYCLE) {
-            assertInstanceOf(RealtimeClientEventConversationItemCreate.class, initial.get(0));
-            assertInstanceOf(RealtimeClientEventResponseCreate.class, initial.get(1));
+            assertInstanceOf(RealtimeConversationItemCreateEvent.class, initial.get(0));
+            assertInstanceOf(RealtimeResponseCreateEvent.class, initial.get(1));
         }
         if (scenario == Scenario.AUDIO) {
             turn.accept(event("{\"type\":\"response.output_audio.delta\",\"delta\":\"AQID\"}"));
@@ -161,8 +160,8 @@ public class VoiceAgentRealtimeLiveTests {
             List<RealtimeClientEvent> outputs = turn.accept(event(TOOL_DONE));
             assertEquals(3, outputs.size());
             for (int index = 0; index < 2; index++) {
-                RealtimeClientEventConversationItemCreate create
-                    = assertInstanceOf(RealtimeClientEventConversationItemCreate.class, outputs.get(index));
+                RealtimeConversationItemCreateEvent create
+                    = assertInstanceOf(RealtimeConversationItemCreateEvent.class, outputs.get(index));
                 RealtimeConversationItemFunctionCallOutput output
                     = assertInstanceOf(RealtimeConversationItemFunctionCallOutput.class, create.getItem());
                 assertEquals("call-" + (index + 1), output.getCallId());
@@ -171,7 +170,7 @@ public class VoiceAgentRealtimeLiveTests {
                 assertEquals("sunny", result.get("condition"));
                 assertEquals(72, result.get("temperature_f"));
             }
-            assertInstanceOf(RealtimeClientEventResponseCreate.class, outputs.get(2));
+            assertInstanceOf(RealtimeResponseCreateEvent.class, outputs.get(2));
             assertFalse(turn.done);
             turn.accept(event("{\"type\":\"response.output_text.done\",\"text\":\"Sunny in Seattle.\"}"));
             turn.accept(event(DONE));
@@ -283,8 +282,8 @@ public class VoiceAgentRealtimeLiveTests {
                         .setParameters(BinaryData.fromObject(parameters))));
         } else {
             definition.setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
-                .setAudio(
-                    new VoiceAgentAudioConfig().setOutput(new VoiceAgentAudioOutputConfig().setVoice("en-US-AvaNeural")
+                .setAudio(new VoiceAgentAudioConfiguration()
+                    .setOutput(new VoiceAgentAudioOutputConfiguration().setVoice("en-US-AvaNeural")
                         .setVoiceType(VoiceType.AZURE_STANDARD)));
         }
         return definition;
@@ -315,12 +314,11 @@ public class VoiceAgentRealtimeLiveTests {
         }
 
         private List<RealtimeClientEvent> accept(RealtimeServerEvent event) {
-            if (event instanceof RealtimeServerEventError) {
-                fail("Session error: " + ((RealtimeServerEventError) event).getError().getMessage());
+            if (event instanceof RealtimeErrorEvent) {
+                fail("Session error: " + ((RealtimeErrorEvent) event).getError().message());
             }
             if (!started) {
-                assertInstanceOf(RealtimeServerEventSessionCreated.class, event,
-                    "The first event must be session.created.");
+                assertInstanceOf(RealtimeSessionCreatedEvent.class, event, "The first event must be session.created.");
                 assertEquals("session.created", event.getType().toString());
                 started = true;
                 done = scenario == Scenario.LIFECYCLE;
@@ -328,26 +326,24 @@ public class VoiceAgentRealtimeLiveTests {
                     String prompt = scenario == Scenario.FUNCTION
                         ? "What's the weather like in Seattle right now?"
                         : "Say the word 'hello' and nothing else.";
-                    return Arrays
-                        .asList(new RealtimeClientEventConversationItemCreate(new RealtimeConversationItemMessageUser(
-                            Collections.singletonList(new RealtimeConversationItemMessageUserContent()
-                                .setType(RealtimeConversationItemMessageUserContentType.INPUT_TEXT)
-                                .setText(prompt)))),
-                            new RealtimeClientEventResponseCreate());
+                    return Arrays.asList(
+                        new RealtimeConversationItemCreateEvent(new RealtimeConversationItemUserMessage(Collections
+                            .singletonList(Content.builder().type(Content.Type.INPUT_TEXT).text(prompt).build()))),
+                        new RealtimeResponseCreateEvent());
                 }
-            } else if (event instanceof RealtimeServerEventResponseAudioDelta) {
+            } else if (event instanceof RealtimeResponseAudioDeltaEvent) {
                 audioDeltas++;
-                byte[] delta = ((RealtimeServerEventResponseAudioDelta) event).getDelta();
+                byte[] delta = ((RealtimeResponseAudioDeltaEvent) event).getDelta();
                 assertNotNull(delta);
                 audioBytes += delta.length;
-            } else if (event instanceof RealtimeServerEventResponseAudioTranscriptDone) {
+            } else if (event instanceof RealtimeResponseAudioTranscriptDoneEvent) {
                 transcripts++;
-                String transcript = ((RealtimeServerEventResponseAudioTranscriptDone) event).getTranscript();
+                String transcript = ((RealtimeResponseAudioTranscriptDoneEvent) event).getTranscript();
                 assertNotNull(transcript);
                 assertFalse(transcript.trim().isEmpty());
-            } else if (event instanceof RealtimeServerEventResponseFunctionCallArgumentsDone) {
-                RealtimeServerEventResponseFunctionCallArgumentsDone call
-                    = (RealtimeServerEventResponseFunctionCallArgumentsDone) event;
+            } else if (event instanceof RealtimeResponseFunctionCallArgumentsDoneEvent) {
+                RealtimeResponseFunctionCallArgumentsDoneEvent call
+                    = (RealtimeResponseFunctionCallArgumentsDoneEvent) event;
                 assertEquals("get_weather", call.getName());
                 Map<?, ?> arguments = BinaryData.fromString(call.getArguments()).toObject(Map.class);
                 String city = assertInstanceOf(String.class, arguments.get("city"));
@@ -356,20 +352,19 @@ public class VoiceAgentRealtimeLiveTests {
                 result.put("city", city);
                 result.put("condition", "sunny");
                 result.put("temperature_f", 72);
-                pending
-                    .add(new RealtimeClientEventConversationItemCreate(new RealtimeConversationItemFunctionCallOutput(
-                        call.getCallId(), BinaryData.fromObject(result).toString())));
+                pending.add(new RealtimeConversationItemCreateEvent(new RealtimeConversationItemFunctionCallOutput(
+                    call.getCallId(), BinaryData.fromObject(result).toString())));
                 toolCalls++;
-            } else if (event instanceof RealtimeServerEventResponseTextDone) {
-                finalText = ((RealtimeServerEventResponseTextDone) event).getText();
-            } else if (event instanceof RealtimeServerEventResponseDone) {
+            } else if (event instanceof RealtimeResponseTextDoneEvent) {
+                finalText = ((RealtimeResponseTextDoneEvent) event).getText();
+            } else if (event instanceof RealtimeResponseDoneEvent) {
                 if (!pending.isEmpty()) {
                     List<RealtimeClientEvent> outputs = new ArrayList<>(pending);
                     pending.clear();
-                    outputs.add(new RealtimeClientEventResponseCreate());
+                    outputs.add(new RealtimeResponseCreateEvent());
                     return outputs;
                 }
-                RealtimeServerEventResponseDone response = (RealtimeServerEventResponseDone) event;
+                RealtimeResponseDoneEvent response = (RealtimeResponseDoneEvent) event;
                 assertNotNull(response.getResponse());
                 done = scenario != Scenario.FUNCTION
                     || response.getResponse().getOutput() == null

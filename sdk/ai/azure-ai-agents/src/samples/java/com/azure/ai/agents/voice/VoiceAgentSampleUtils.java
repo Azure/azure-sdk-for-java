@@ -3,8 +3,8 @@
 
 package com.azure.ai.agents.voice;
 
-import com.azure.ai.agents.models.VoiceAgentAudioConfig;
-import com.azure.ai.agents.models.VoiceAgentAudioOutputConfig;
+import com.azure.ai.agents.models.VoiceAgentAudioConfiguration;
+import com.azure.ai.agents.models.VoiceAgentAudioOutputConfiguration;
 import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.ai.agents.models.VoiceModelType;
 import com.azure.ai.agents.models.VoiceOutputModality;
@@ -17,14 +17,14 @@ final class VoiceAgentSampleUtils {
     }
 
     static VoiceAgentDefinition createDefinition(VoiceModelType modelType, String model, String instructions) {
-        VoiceAgentAudioOutputConfig output = new VoiceAgentAudioOutputConfig()
+        VoiceAgentAudioOutputConfiguration output = new VoiceAgentAudioOutputConfiguration()
             .setVoice("en-US-AvaNeural")
             .setVoiceType(VoiceType.AZURE_STANDARD);
         return new VoiceAgentDefinition()
             .setModelType(modelType)
             .setModel(model)
             .setInstructions(instructions)
-            .setAudio(new VoiceAgentAudioConfig().setOutput(output))
+            .setAudio(new VoiceAgentAudioConfiguration().setOutput(output))
             .setOutputModalities(Collections.singletonList(VoiceOutputModality.AUDIO))
             .setStore(true);
     }

@@ -4,7 +4,7 @@
 package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.models.RealtimeServerEvent;
-import com.azure.ai.agents.models.RealtimeServerEventConversationCreated;
+import com.azure.ai.agents.models.RealtimeConversationCreatedEvent;
 import com.azure.core.util.BinaryData;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -42,7 +42,7 @@ public class VoiceAgentLiveAudioConversationAsyncSampleTests {
             .fromString("{\"type\":\"conversation.created\","
                 + "\"conversation\":{\"id\":\"test\",\"object\":\"realtime.conversation\"}}")
             .toObject(RealtimeServerEvent.class);
-        assertTrue(event instanceof RealtimeServerEventConversationCreated);
+        assertTrue(event instanceof RealtimeConversationCreatedEvent);
     }
 
     @ParameterizedTest
