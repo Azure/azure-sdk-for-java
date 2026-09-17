@@ -360,7 +360,7 @@ public class ReactorSessionTest {
         // Wait for the endpoint states completion to propagate through the ReactorSender's
         // async doOnComplete callback, which sets isDisposed = true.
         StepVerifier.create(firstLink.getEndpointStates())
-            .thenAwait(Duration.ofSeconds(1))
+            .thenConsumeWhile(state -> true)
             .expectComplete()
             .verify(TIMEOUT);
 
