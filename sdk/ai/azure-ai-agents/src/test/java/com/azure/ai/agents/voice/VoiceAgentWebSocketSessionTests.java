@@ -665,10 +665,10 @@ public class VoiceAgentWebSocketSessionTests {
                 .buildBetaVoiceAgentWebSocketAsyncClient();
         VoiceAgentWebSocketConnectionOptions options = tlsOptions().setHandshakeTimeout(Duration.ofSeconds(1));
 
-        StepVerifier.create(client.connect("agent", options).flatMap(session -> {
+        StepVerifier.withVirtualTime(() -> client.connect("agent", options).flatMap(session -> {
             assertTrue(session.isOpen());
             return session.closeAsync();
-        })).verifyComplete();
+        })).thenAwait(Duration.ofMillis(1500)).verifyComplete();
     }
 
     @Test
