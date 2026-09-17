@@ -45,24 +45,11 @@ public class AgentsCustomizations extends Customization {
     }
 
     private static void customizeBuilder(ClassOrInterfaceDeclaration builder) {
-        builder.getMethodsByName("buildInnerClient").stream()
+        MethodDeclaration buildInnerClient = builder.getMethodsByName("buildInnerClient").stream()
             .filter(method -> method.getParameters().isEmpty())
             .findFirst()
-            .orElseThrow(() -> new IllegalStateException("Generated buildInnerClient was not found."))
-            .getBody().ifPresent(body -> {
-                if (!body.toString().contains("createPreviewErrorPolicy")) {
-                    body.addStatement(2, StaticJavaParser.parseStatement(
-                        "localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline, "
-                            + "FoundryPolicyHelper.createPreviewErrorPolicy(allowPreview));"));
-                }
-            });
-        MethodDeclaration pipelineMethod = builder.getMethodsByName("createHttpPipeline").stream()
-            .filter(method -> method.getParameters().isEmpty())
-            .findFirst()
-            .orElseThrow(() -> new IllegalStateException("Generated createHttpPipeline was not found."));
-        pipelineMethod.setBody(StaticJavaParser.parseBlock("{ return createHttpPipeline(true); }"));
-        builder.findCompilationUnit().ifPresent(unit -> unit.getImports().removeIf(declaration ->
-            "com.azure.core.http.policy.HttpLoggingPolicy".equals(declaration.getNameAsString())));
+            .orElseThrow(() -> new IllegalStateException("Generated buildInnerClient was not found."));
+        buildInnerClient.setBody(StaticJavaParser.parseBlock("{ return buildInnerClient(null); }"));
     }
 
     private static final String MODELS_PACKAGE = "com.azure.ai.agents.models";

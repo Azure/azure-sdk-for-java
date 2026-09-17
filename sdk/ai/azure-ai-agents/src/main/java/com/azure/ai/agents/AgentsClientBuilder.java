@@ -317,28 +317,23 @@ public final class AgentsClientBuilder
      */
     @Generated
     private AgentsClientImpl buildInnerClient() {
-        this.validateClient();
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline,
-            FoundryPolicyHelper.createPreviewErrorPolicy(allowPreview));
-        AgentsServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : AgentsServiceVersion.getLatest();
-        AgentsClientImpl client = new AgentsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
-            this.endpoint, localServiceVersion);
-        return client;
+        return buildInnerClient(null);
     }
 
     private AgentsClientImpl buildInnerClient(String previewFeatures) {
         this.validateClient();
+        HttpPipeline localPipeline;
         if (CoreUtils.isNullOrEmpty(previewFeatures)) {
-            return buildInnerClient();
+            localPipeline = pipeline != null ? pipeline : createHttpPipeline(true);
+            localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline,
+                FoundryPolicyHelper.createPreviewErrorPolicy(allowPreview));
+        } else {
+            localPipeline = resolvePipeline(previewFeatures);
         }
-        HttpPipeline localPipeline = resolvePipeline(previewFeatures);
         AgentsServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : AgentsServiceVersion.getLatest();
-        AgentsClientImpl client = new AgentsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
-            this.endpoint, localServiceVersion);
-        return client;
+            = serviceVersion != null ? serviceVersion : AgentsServiceVersion.getLatest();
+        return new AgentsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint,
+            localServiceVersion);
     }
 
     @Generated
@@ -346,11 +341,6 @@ public final class AgentsClientBuilder
         // This method is invoked from 'buildInnerClient'/'buildClient' method.
         // Developer can customize this method, to validate that the necessary conditions are met for the new client.
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-    }
-
-    @Generated
-    private HttpPipeline createHttpPipeline() {
-        return createHttpPipeline(true);
     }
 
     private HttpPipeline createHttpPipeline(boolean authenticate) {
@@ -391,7 +381,7 @@ public final class AgentsClientBuilder
     }
 
     private HttpPipeline resolvePipeline(String foundryFeatures) {
-        HttpPipeline localPipeline = pipeline != null ? pipeline : createHttpPipeline();
+        HttpPipeline localPipeline = pipeline != null ? pipeline : createHttpPipeline(true);
         HttpPipelinePolicy foundryFeaturesPolicy = FoundryPolicyHelper.createFoundryFeaturesPolicy(foundryFeatures);
         return FoundryPolicyHelper.prependPolicy(localPipeline, foundryFeaturesPolicy);
     }
