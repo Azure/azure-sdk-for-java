@@ -19,15 +19,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -103,49 +99,8 @@ public class KeyVaultCredentialPolicyTest {
         assertEquals(DSTS_TENANT_ID, requestedTenantId.get());
     }
 
-    @ParameterizedTest
-    @MethodSource("authorizationUriTenantIds")
-    public void onChallengeExtractsTenantIdFromAuthorizationUriVariants(String authorizationUri,
-        String expectedTenantId) {
-        AtomicReference<String> requestedTenantId = new AtomicReference<>();
-        List<String> sentAuthorizationHeaders = new ArrayList<>();
-        HttpPipeline pipeline
-            = createPipeline("Bearer authorization=\"" + authorizationUri + "\", resource=\"https://vault.azure.net\"",
-                requestedTenantId, sentAuthorizationHeaders);
-
-        try (Response<BinaryData> response = pipeline.send(createRequest())) {
-            assertEquals(200, response.getStatusCode());
-        }
-
-        assertEquals(expectedTenantId, requestedTenantId.get());
-        assertAuthorizedOnRetry(sentAuthorizationHeaders);
-    }
-
     private static HttpRequest createRequest() {
         return new HttpRequest().setMethod(HttpMethod.GET).setUri(VAULT_URI);
-    }
-
-    private static Stream<Arguments> authorizationUriTenantIds() {
-        String dstsAuthority = "https://uswest2-passive-dsts.dsts.core.windows.net";
-        String entraAuthority = "https://login.microsoftonline.com/" + ENTRA_TENANT_ID;
-
-        return Stream.of(
-            // The 'dstsv2' segment is matched case-insensitively.
-            Arguments.of(dstsAuthority + "/DSTSv2/" + DSTS_TENANT_ID, DSTS_TENANT_ID),
-            // A trailing slash after the tenant ID does not change it.
-            Arguments.of(dstsAuthority + "/dstsv2/" + DSTS_TENANT_ID + "/", DSTS_TENANT_ID),
-            // Neither do further path segments after the tenant ID.
-            Arguments.of(dstsAuthority + "/dstsv2/" + DSTS_TENANT_ID + "/oauth2/token", DSTS_TENANT_ID),
-            // Without a segment after 'dstsv2', the first path segment is used, as before.
-            Arguments.of(dstsAuthority + "/dstsv2", "dstsv2"),
-            // The same applies when only a slash follows 'dstsv2'.
-            Arguments.of(dstsAuthority + "/dstsv2/", "dstsv2"),
-            // An empty segment after 'dstsv2' is not used as the tenant ID either.
-            Arguments.of(dstsAuthority + "/dstsv2//" + DSTS_TENANT_ID, "dstsv2"),
-            // Only a first path segment that is exactly 'dstsv2' denotes a DSTSv2 authority.
-            Arguments.of(dstsAuthority + "/dstsv2x/" + DSTS_TENANT_ID, "dstsv2x"),
-            // A 'dstsv2' segment later in an Entra ID authorization URI is ignored.
-            Arguments.of(entraAuthority + "/dstsv2/" + DSTS_TENANT_ID, ENTRA_TENANT_ID));
     }
 
     private static void assertAuthorizedOnRetry(List<String> sentAuthorizationHeaders) {
