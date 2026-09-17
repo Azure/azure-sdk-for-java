@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentSemanticVadTurnDetection extends VoiceAgentTurnDetectionConfig {
+public final class VoiceAgentSemanticVadTurnDetection extends VoiceAgentTurnDetectionConfiguration {
 
     /*
      * The turn-detection strategy.

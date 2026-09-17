@@ -57,12 +57,6 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     private final String id;
 
     /*
-     * The object type. Always `telephony.call_job`.
-     */
-    @Generated
-    private final String object = "telephony.call_job";
-
-    /*
      * The name of the voice agent used at execution time.
      */
     @Generated
@@ -175,16 +169,6 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Get the object property: The object type. Always `telephony.call_job`.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public String getObject() {
-        return this.object;
     }
 
     /**
@@ -303,7 +287,7 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
         jsonWriter.writeStringField("connection_name", this.connectionName);
         jsonWriter.writeStringField("source", this.source);
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("object", this.objectType);
         jsonWriter.writeStringField("agent_name", this.agentName);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeJsonField("retry_policy", this.retryPolicy);
@@ -489,5 +473,21 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
         } else {
             this.updatedAt = updatedAt.toEpochSecond();
         }
+    }
+
+    /*
+     * The object type. Always `telephony.call_job`.
+     */
+    @Generated
+    private final String objectType = "telephony.call_job";
+
+    /**
+     * Get the objectType property: The object type. Always `telephony.call_job`.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public String getObjectType() {
+        return this.objectType;
     }
 }

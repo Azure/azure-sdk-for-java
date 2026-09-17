@@ -16,7 +16,7 @@ import java.io.IOException;
  * The RealtimeSessionCreateRequestGAAudioOutputVoice model.
  */
 @Immutable
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
+@Beta(warningText = "Preview API.")
 public final class RealtimeSessionCreateRequestGAAudioOutputVoice
     implements JsonSerializable<RealtimeSessionCreateRequestGAAudioOutputVoice> {
 

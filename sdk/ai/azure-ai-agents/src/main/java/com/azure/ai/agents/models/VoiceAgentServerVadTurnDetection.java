@@ -17,7 +17,7 @@ import java.time.Duration;
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentServerVadTurnDetection extends VoiceAgentTurnDetectionConfig {
+public final class VoiceAgentServerVadTurnDetection extends VoiceAgentTurnDetectionConfiguration {
 
     /*
      * The turn-detection strategy.

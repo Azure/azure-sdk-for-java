@@ -8,8 +8,8 @@ import com.azure.ai.agents.implementation.JsonMergePatchHelper;
 import com.azure.ai.agents.implementation.models.ReplaceTelephonyTransferTargetsRequest;
 import com.azure.ai.agents.implementation.models.TransferTelephonyCallRequest;
 import com.azure.ai.agents.implementation.utils.Beta;
-import com.azure.ai.agents.models.CreateTelephonyBindingRequest;
-import com.azure.ai.agents.models.CreateTelephonyCallJobRequest;
+import com.azure.ai.agents.models.CreateTelephonyBindingInput;
+import com.azure.ai.agents.models.CreateTelephonyCallJobInput;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.TelephonyBinding;
 import com.azure.ai.agents.models.TelephonyBindingListItem;
@@ -21,7 +21,7 @@ import com.azure.ai.agents.models.TelephonyCallSummary;
 import com.azure.ai.agents.models.TelephonyProvider;
 import com.azure.ai.agents.models.TelephonyTransferTarget;
 import com.azure.ai.agents.models.TelephonyTransferTargets;
-import com.azure.ai.agents.models.UpdateTelephonyBindingRequest;
+import com.azure.ai.agents.models.UpdateTelephonyBindingInput;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -1007,31 +1007,6 @@ public final class BetaVoiceAgentsTelephonyClient {
     }
 
     /**
-     * Create an agent telephony binding
-     *
-     * Creates a telephony binding for the voice agent named in the path.
-     *
-     * @param agentName The name of the voice agent that owns the binding.
-     * @param telephonyBinding The provider-specific binding to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a telephony binding owned by a voice agent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyBinding createTelephonyBinding(String agentName, CreateTelephonyBindingRequest telephonyBinding) {
-        // Generated convenience method for createTelephonyBindingWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createTelephonyBindingWithResponse(agentName, BinaryData.fromObject(telephonyBinding), requestOptions)
-            .getValue()
-            .toObject(TelephonyBinding.class);
-    }
-
-    /**
      * List agent telephony bindings
      *
      * Returns the telephony bindings owned by the voice agent named in the path.
@@ -1131,40 +1106,6 @@ public final class BetaVoiceAgentsTelephonyClient {
         // Generated convenience method for getTelephonyBindingWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getTelephonyBindingWithResponse(agentName, bindingId, requestOptions).getValue()
-            .toObject(TelephonyBinding.class);
-    }
-
-    /**
-     * Update an agent telephony binding
-     *
-     * Updates a telephony binding owned by the voice agent named in the path.
-     *
-     * @param agentName The name of the voice agent that owns the binding.
-     * @param bindingId The service-generated binding identifier.
-     * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
-     * read.
-     * @param body The binding properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a telephony binding owned by a voice agent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyBinding updateTelephonyBinding(String agentName, String bindingId, String ifMatch,
-        UpdateTelephonyBindingRequest body) {
-        // Generated convenience method for updateTelephonyBindingWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getUpdateTelephonyBindingRequestAccessor().prepareModelForJsonMergePatch(body, true);
-        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        bodyInBinaryData.getLength();
-        JsonMergePatchHelper.getUpdateTelephonyBindingRequestAccessor().prepareModelForJsonMergePatch(body, false);
-        return updateTelephonyBindingWithResponse(agentName, bindingId, ifMatch, bodyInBinaryData, requestOptions)
-            .getValue()
             .toObject(TelephonyBinding.class);
     }
 
@@ -1414,33 +1355,6 @@ public final class BetaVoiceAgentsTelephonyClient {
     }
 
     /**
-     * Create an outbound telephony call job
-     *
-     * Creates one durable direct outbound call job. The latest agent definition is resolved when each attempt executes.
-     *
-     * @param agentName The name of the voice agent that executes the call.
-     * @param idempotencyKey A customer-generated idempotency key. Reusing it with an equivalent request returns the
-     * same call job.
-     * @param body The direct outbound call to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a durable direct or campaign-created outbound call intent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCallJob createTelephonyCallJob(String agentName, String idempotencyKey,
-        CreateTelephonyCallJobRequest body) {
-        // Generated convenience method for createTelephonyCallJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createTelephonyCallJobWithResponse(agentName, idempotencyKey, BinaryData.fromObject(body),
-            requestOptions).getValue().toObject(TelephonyCallJob.class);
-    }
-
-    /**
      * Get an outbound telephony call job
      *
      * Retrieves a durable direct or campaign-created outbound call job.
@@ -1490,5 +1404,91 @@ public final class BetaVoiceAgentsTelephonyClient {
         RequestOptions requestOptions = new RequestOptions();
         return cancelTelephonyCallJobWithResponse(agentName, callJobId, ifMatch, requestOptions).getValue()
             .toObject(TelephonyCallJob.class);
+    }
+
+    /**
+     * Create an agent telephony binding
+     *
+     * Creates a telephony binding for the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent that owns the binding.
+     * @param telephonyBinding The provider-specific binding to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a telephony binding owned by a voice agent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TelephonyBinding createTelephonyBinding(String agentName, CreateTelephonyBindingInput telephonyBinding) {
+        // Generated convenience method for createTelephonyBindingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createTelephonyBindingWithResponse(agentName, BinaryData.fromObject(telephonyBinding), requestOptions)
+            .getValue()
+            .toObject(TelephonyBinding.class);
+    }
+
+    /**
+     * Update an agent telephony binding
+     *
+     * Updates a telephony binding owned by the voice agent named in the path.
+     *
+     * @param agentName The name of the voice agent that owns the binding.
+     * @param bindingId The service-generated binding identifier.
+     * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
+     * read.
+     * @param body The binding properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a telephony binding owned by a voice agent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TelephonyBinding updateTelephonyBinding(String agentName, String bindingId, String ifMatch,
+        UpdateTelephonyBindingInput body) {
+        // Generated convenience method for updateTelephonyBindingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getUpdateTelephonyBindingInputAccessor().prepareModelForJsonMergePatch(body, true);
+        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        bodyInBinaryData.getLength();
+        JsonMergePatchHelper.getUpdateTelephonyBindingInputAccessor().prepareModelForJsonMergePatch(body, false);
+        return updateTelephonyBindingWithResponse(agentName, bindingId, ifMatch, bodyInBinaryData, requestOptions)
+            .getValue()
+            .toObject(TelephonyBinding.class);
+    }
+
+    /**
+     * Create an outbound telephony call job
+     *
+     * Creates one durable direct outbound call job. The latest agent definition is resolved when each attempt executes.
+     *
+     * @param agentName The name of the voice agent that executes the call.
+     * @param idempotencyKey A customer-generated idempotency key. Reusing it with an equivalent request returns the
+     * same call job.
+     * @param body The direct outbound call to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a durable direct or campaign-created outbound call intent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TelephonyCallJob createTelephonyCallJob(String agentName, String idempotencyKey,
+        CreateTelephonyCallJobInput body) {
+        // Generated convenience method for createTelephonyCallJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createTelephonyCallJobWithResponse(agentName, idempotencyKey, BinaryData.fromObject(body),
+            requestOptions).getValue().toObject(TelephonyCallJob.class);
     }
 }

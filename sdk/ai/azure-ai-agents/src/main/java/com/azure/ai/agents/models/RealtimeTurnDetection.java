@@ -91,9 +91,9 @@ public class RealtimeTurnDetection implements JsonSerializable<RealtimeTurnDetec
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("server_vad".equals(discriminatorValue)) {
-                    return RealtimeTurnDetectionServerVad.fromJson(readerToUse.reset());
+                    return RealtimeServerVadTurnDetection.fromJson(readerToUse.reset());
                 } else if ("semantic_vad".equals(discriminatorValue)) {
-                    return RealtimeTurnDetectionSemanticVad.fromJson(readerToUse.reset());
+                    return RealtimeSemanticVadTurnDetection.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

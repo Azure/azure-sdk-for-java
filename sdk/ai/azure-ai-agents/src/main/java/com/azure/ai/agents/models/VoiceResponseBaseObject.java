@@ -8,7 +8,7 @@ import com.azure.ai.agents.implementation.utils.Beta;
 /**
  * Defines values for VoiceResponseBaseObject.
  */
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
+@Beta(warningText = "Preview API.")
 public enum VoiceResponseBaseObject {
 
     /**

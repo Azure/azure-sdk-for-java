@@ -28,10 +28,10 @@ public class ReasoningDedupSerializationTests {
     @Test
     public void testVoiceResponseAudioConfigRoundTrip() throws IOException {
         try (JsonReader reader = JsonProviders.createReader("{\"audio\":{\"output\":{}}}")) {
-            VoiceAgentResponseCreateParams response = VoiceAgentResponseCreateParams.fromJson(reader);
+            VoiceAgentResponseCreateOptions response = VoiceAgentResponseCreateOptions.fromJson(reader);
             assertNotNull(response.getAudio().getOutput());
-            VoiceAgentResponseCreateParams roundTrip
-                = BinaryData.fromObject(response).toObject(VoiceAgentResponseCreateParams.class);
+            VoiceAgentResponseCreateOptions roundTrip
+                = BinaryData.fromObject(response).toObject(VoiceAgentResponseCreateOptions.class);
             assertNotNull(roundTrip.getAudio().getOutput());
         }
     }

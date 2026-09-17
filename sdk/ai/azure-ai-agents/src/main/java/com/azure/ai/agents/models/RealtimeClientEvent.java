@@ -80,31 +80,31 @@ public class RealtimeClientEvent implements JsonSerializable<RealtimeClientEvent
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("conversation.item.create".equals(discriminatorValue)) {
-                    return RealtimeClientEventConversationItemCreate.fromJson(readerToUse.reset());
+                    return RealtimeConversationItemCreateEvent.fromJson(readerToUse.reset());
                 } else if ("conversation.item.delete".equals(discriminatorValue)) {
-                    return RealtimeClientEventConversationItemDelete.fromJson(readerToUse.reset());
+                    return RealtimeConversationItemDeleteEvent.fromJson(readerToUse.reset());
                 } else if ("conversation.item.retrieve".equals(discriminatorValue)) {
-                    return RealtimeClientEventConversationItemRetrieve.fromJson(readerToUse.reset());
+                    return RealtimeConversationItemRetrieveEvent.fromJson(readerToUse.reset());
                 } else if ("conversation.item.truncate".equals(discriminatorValue)) {
-                    return RealtimeClientEventConversationItemTruncate.fromJson(readerToUse.reset());
+                    return RealtimeConversationItemTruncateEvent.fromJson(readerToUse.reset());
                 } else if ("input_audio_buffer.append".equals(discriminatorValue)) {
-                    return RealtimeClientEventInputAudioBufferAppend.fromJson(readerToUse.reset());
+                    return RealtimeInputAudioBufferAppendEvent.fromJson(readerToUse.reset());
                 } else if ("input_audio_buffer.clear".equals(discriminatorValue)) {
-                    return RealtimeClientEventInputAudioBufferClear.fromJson(readerToUse.reset());
+                    return RealtimeInputAudioBufferClearEvent.fromJson(readerToUse.reset());
                 } else if ("output_audio_buffer.clear".equals(discriminatorValue)) {
-                    return RealtimeClientEventOutputAudioBufferClear.fromJson(readerToUse.reset());
+                    return RealtimeOutputAudioBufferClearEvent.fromJson(readerToUse.reset());
                 } else if ("input_audio_buffer.commit".equals(discriminatorValue)) {
-                    return RealtimeClientEventInputAudioBufferCommit.fromJson(readerToUse.reset());
+                    return RealtimeInputAudioBufferCommitEvent.fromJson(readerToUse.reset());
                 } else if ("response.cancel".equals(discriminatorValue)) {
-                    return RealtimeClientEventResponseCancel.fromJson(readerToUse.reset());
+                    return RealtimeResponseCancelEvent.fromJson(readerToUse.reset());
                 } else if ("response.create".equals(discriminatorValue)) {
-                    return RealtimeClientEventResponseCreate.fromJson(readerToUse.reset());
+                    return RealtimeResponseCreateEvent.fromJson(readerToUse.reset());
                 } else if ("session.update".equals(discriminatorValue)) {
-                    return RealtimeClientEventSessionUpdate.fromJson(readerToUse.reset());
+                    return RealtimeSessionUpdateEvent.fromJson(readerToUse.reset());
                 } else if ("rtc.call.sdp.create".equals(discriminatorValue)) {
-                    return VoiceAgentClientEventRtcCallSdpCreate.fromJson(readerToUse.reset());
+                    return VoiceAgentRtcCallSdpCreateEvent.fromJson(readerToUse.reset());
                 } else if ("session.avatar.connect".equals(discriminatorValue)) {
-                    return VoiceAgentClientEventSessionAvatarConnect.fromJson(readerToUse.reset());
+                    return VoiceAgentSessionAvatarConnectEvent.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

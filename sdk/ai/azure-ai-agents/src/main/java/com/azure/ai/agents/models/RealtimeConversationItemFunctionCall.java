@@ -37,7 +37,7 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
      * Identifier for the API object being returned - always `realtime.item`. Optional when creating a new item.
      */
     @Generated
-    private RealtimeConversationItemObject object;
+    private RealtimeConversationItemObjectType object;
 
     // AI Tooling: openai-java de-dup
     private Status status;
@@ -125,21 +125,8 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
      * @return the object value.
      */
     @Generated
-    public RealtimeConversationItemObject getObject() {
+    public RealtimeConversationItemObjectType getObject() {
         return this.object;
-    }
-
-    /**
-     * Set the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
-     * creating a new item.
-     *
-     * @param object the object value to set.
-     * @return the RealtimeConversationItemFunctionCall object itself.
-     */
-    @Generated
-    public RealtimeConversationItemFunctionCall setObject(RealtimeConversationItemObject object) {
-        this.object = object;
-        return this;
     }
 
     /**
@@ -248,7 +235,7 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
             String arguments = null;
             RealtimeConversationItemType type = RealtimeConversationItemType.FUNCTION_CALL;
             String id = null;
-            RealtimeConversationItemObject object = null;
+            RealtimeConversationItemObjectType object = null;
             Status status = null;
             String callId = null;
             Long createdAt = null;
@@ -265,7 +252,7 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("object".equals(fieldName)) {
-                    object = RealtimeConversationItemObject.fromString(reader.getString());
+                    object = RealtimeConversationItemObjectType.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     status = reader.getNullable(r -> Status.of(r.getString()));
                 } else if ("call_id".equals(fieldName)) {
@@ -300,6 +287,19 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
     public RealtimeConversationItemFunctionCall setStatus(Status status) {
         // AI Tooling: openai-java de-dup
         this.status = status;
+        return this;
+    }
+
+    /**
+     * Set the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
+     * creating a new item.
+     *
+     * @param object the object value to set.
+     * @return the RealtimeConversationItemFunctionCall object itself.
+     */
+    @Generated
+    public RealtimeConversationItemFunctionCall setObject(RealtimeConversationItemObjectType object) {
+        this.object = object;
         return this;
     }
 }

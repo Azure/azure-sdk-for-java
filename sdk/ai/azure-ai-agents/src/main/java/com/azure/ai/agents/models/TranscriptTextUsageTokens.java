@@ -18,13 +18,13 @@ import java.io.IOException;
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class TranscriptTextUsageTokens extends CreateTranscriptionResponseJsonUsage {
+public final class TranscriptTextUsageTokens extends TranscriptTextUsage {
 
     /*
      * The type property.
      */
     @Generated
-    private CreateTranscriptionResponseJsonUsageType type = CreateTranscriptionResponseJsonUsageType.TOKENS;
+    private TranscriptTextUsageType type = TranscriptTextUsageType.TOKENS;
 
     /*
      * Number of input tokens billed for this request.
@@ -36,7 +36,7 @@ public final class TranscriptTextUsageTokens extends CreateTranscriptionResponse
      * Details about the input tokens billed for this request.
      */
     @Generated
-    private TranscriptTextUsageTokensInputTokenDetails inputTokenDetails;
+    private TranscriptTextInputTokenDetails inputTokenDetails;
 
     /*
      * Number of output tokens generated.
@@ -71,7 +71,7 @@ public final class TranscriptTextUsageTokens extends CreateTranscriptionResponse
      */
     @Generated
     @Override
-    public CreateTranscriptionResponseJsonUsageType getType() {
+    public TranscriptTextUsageType getType() {
         return this.type;
     }
 
@@ -91,7 +91,7 @@ public final class TranscriptTextUsageTokens extends CreateTranscriptionResponse
      * @return the inputTokenDetails value.
      */
     @Generated
-    public TranscriptTextUsageTokensInputTokenDetails getInputTokenDetails() {
+    public TranscriptTextInputTokenDetails getInputTokenDetails() {
         return this.inputTokenDetails;
     }
 
@@ -145,8 +145,8 @@ public final class TranscriptTextUsageTokens extends CreateTranscriptionResponse
             long inputTokens = 0L;
             long outputTokens = 0L;
             long totalTokens = 0L;
-            CreateTranscriptionResponseJsonUsageType type = CreateTranscriptionResponseJsonUsageType.TOKENS;
-            TranscriptTextUsageTokensInputTokenDetails inputTokenDetails = null;
+            TranscriptTextUsageType type = TranscriptTextUsageType.TOKENS;
+            TranscriptTextInputTokenDetails inputTokenDetails = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -157,9 +157,9 @@ public final class TranscriptTextUsageTokens extends CreateTranscriptionResponse
                 } else if ("total_tokens".equals(fieldName)) {
                     totalTokens = reader.getLong();
                 } else if ("type".equals(fieldName)) {
-                    type = CreateTranscriptionResponseJsonUsageType.fromString(reader.getString());
+                    type = TranscriptTextUsageType.fromString(reader.getString());
                 } else if ("input_token_details".equals(fieldName)) {
-                    inputTokenDetails = TranscriptTextUsageTokensInputTokenDetails.fromJson(reader);
+                    inputTokenDetails = TranscriptTextInputTokenDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

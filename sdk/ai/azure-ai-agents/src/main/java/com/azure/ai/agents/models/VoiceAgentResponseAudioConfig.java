@@ -16,14 +16,14 @@ import java.io.IOException;
  * The template for picking properties.
  */
 @Fluent
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
+@Beta(warningText = "Preview API.")
 public final class VoiceAgentResponseAudioConfig implements JsonSerializable<VoiceAgentResponseAudioConfig> {
 
     /*
      * Output (agent speech) audio configuration.
      */
     @Generated
-    private VoiceAgentAudioOutputConfig output;
+    private VoiceAgentAudioOutputConfiguration output;
 
     /**
      * Creates an instance of VoiceAgentResponseAudioConfig class.
@@ -38,20 +38,8 @@ public final class VoiceAgentResponseAudioConfig implements JsonSerializable<Voi
      * @return the output value.
      */
     @Generated
-    public VoiceAgentAudioOutputConfig getOutput() {
+    public VoiceAgentAudioOutputConfiguration getOutput() {
         return this.output;
-    }
-
-    /**
-     * Set the output property: Output (agent speech) audio configuration.
-     *
-     * @param output the output value to set.
-     * @return the VoiceAgentResponseAudioConfig object itself.
-     */
-    @Generated
-    public VoiceAgentResponseAudioConfig setOutput(VoiceAgentAudioOutputConfig output) {
-        this.output = output;
-        return this;
     }
 
     /**
@@ -82,12 +70,25 @@ public final class VoiceAgentResponseAudioConfig implements JsonSerializable<Voi
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("output".equals(fieldName)) {
-                    deserializedVoiceAgentResponseAudioConfig.output = VoiceAgentAudioOutputConfig.fromJson(reader);
+                    deserializedVoiceAgentResponseAudioConfig.output
+                        = VoiceAgentAudioOutputConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedVoiceAgentResponseAudioConfig;
         });
+    }
+
+    /**
+     * Set the output property: Output (agent speech) audio configuration.
+     *
+     * @param output the output value to set.
+     * @return the VoiceAgentResponseAudioConfig object itself.
+     */
+    @Generated
+    public VoiceAgentResponseAudioConfig setOutput(VoiceAgentAudioOutputConfiguration output) {
+        this.output = output;
+        return this;
     }
 }

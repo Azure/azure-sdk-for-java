@@ -34,9 +34,9 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
     public void testPcmRateRoundTripPolymorphically() throws IOException {
         com.openai.models.realtime.RealtimeAudioFormats.AudioPcm.Rate rate
             = com.openai.models.realtime.RealtimeAudioFormats.AudioPcm.Rate._24000;
-        RealtimeAudioFormatsAudioPcm original = new RealtimeAudioFormatsAudioPcm().setRate(rate);
-        RealtimeAudioFormatsAudioPcm result = assertInstanceOf(RealtimeAudioFormatsAudioPcm.class,
-            deserialize(serialize(original), RealtimeAudioFormats::fromJson));
+        RealtimePcmAudioFormat original = new RealtimePcmAudioFormat().setRate(rate);
+        RealtimePcmAudioFormat result = assertInstanceOf(RealtimePcmAudioFormat.class,
+            deserialize(serialize(original), RealtimeAudioFormat::fromJson));
 
         assertEquals(rate, result.getRate());
         assertEquals(serialize(original), serialize(result));
@@ -66,11 +66,10 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
             "gpt-audio-mini-2025-12-15" };
 
         for (String modelValue : modelValues) {
-            RealtimeSessionCreateRequestGA original
-                = new RealtimeSessionCreateRequestGA().setModel(Model.of(modelValue))
-                    .setOutputModalities(Arrays.asList(OutputModality.TEXT, OutputModality.AUDIO));
+            RealtimeSessionConfiguration original = new RealtimeSessionConfiguration().setModel(Model.of(modelValue))
+                .setOutputModalities(Arrays.asList(OutputModality.TEXT, OutputModality.AUDIO));
             String json = serialize(original);
-            RealtimeSessionCreateRequestGA result = deserialize(json, RealtimeSessionCreateRequestGA::fromJson);
+            RealtimeSessionConfiguration result = deserialize(json, RealtimeSessionConfiguration::fromJson);
 
             assertEquals(modelValue, result.getModel().asString());
             assertEquals(OutputModality.TEXT, result.getOutputModalities().get(0));
@@ -86,26 +85,26 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
             .tokenLimits(RealtimeTruncationRetentionRatio.TokenLimits.builder().postInstructions(1024).build())
             .build();
         for (String strategy : Arrays.asList("auto", "disabled")) {
-            RealtimeSessionCreateRequestGA original = new RealtimeSessionCreateRequestGA().setTruncation(strategy);
-            RealtimeSessionCreateRequestGA result
-                = deserialize(serialize(original), RealtimeSessionCreateRequestGA::fromJson);
+            RealtimeSessionConfiguration original = new RealtimeSessionConfiguration().setTruncation(strategy);
+            RealtimeSessionConfiguration result
+                = deserialize(serialize(original), RealtimeSessionConfiguration::fromJson);
             assertEquals(strategy, result.getTruncationAsString());
-            assertStable(original, RealtimeSessionCreateRequestGA::fromJson);
+            assertStable(original, RealtimeSessionConfiguration::fromJson);
         }
-        RealtimeSessionCreateRequestGA retained = new RealtimeSessionCreateRequestGA().setTruncation(retentionRatio);
-        RealtimeSessionCreateRequestGA retainedResult
-            = deserialize(serialize(retained), RealtimeSessionCreateRequestGA::fromJson);
+        RealtimeSessionConfiguration retained = new RealtimeSessionConfiguration().setTruncation(retentionRatio);
+        RealtimeSessionConfiguration retainedResult
+            = deserialize(serialize(retained), RealtimeSessionConfiguration::fromJson);
         assertEquals(0.8, retainedResult.getTruncationAsRealtimeTruncationRetentionRatio().retentionRatio());
-        assertStable(retained, RealtimeSessionCreateRequestGA::fromJson);
+        assertStable(retained, RealtimeSessionConfiguration::fromJson);
 
-        RealtimeSessionCreateRequestGATracing tracing
-            = new RealtimeSessionCreateRequestGATracing().setWorkflowName("voice").setGroupId("group-1");
-        RealtimeSessionCreateRequestGA traced = new RealtimeSessionCreateRequestGA().setTracing(tracing);
-        RealtimeSessionCreateRequestGA tracedResult
-            = deserialize(serialize(traced), RealtimeSessionCreateRequestGA::fromJson);
-        assertEquals("voice", tracedResult.getTracingAsRealtimeSessionCreateRequestGATracing().getWorkflowName());
-        assertStable(new RealtimeSessionCreateRequestGA().setTracing("auto"), RealtimeSessionCreateRequestGA::fromJson);
-        assertFalse(serialize(new RealtimeSessionCreateRequestGA().setTracing((String) null)).contains("tracing"));
+        RealtimeSessionTracingConfiguration tracing
+            = new RealtimeSessionTracingConfiguration().setWorkflowName("voice").setGroupId("group-1");
+        RealtimeSessionConfiguration traced = new RealtimeSessionConfiguration().setTracing(tracing);
+        RealtimeSessionConfiguration tracedResult
+            = deserialize(serialize(traced), RealtimeSessionConfiguration::fromJson);
+        assertEquals("voice", tracedResult.getTracingAsRealtimeSessionTracingConfiguration().getWorkflowName());
+        assertStable(new RealtimeSessionConfiguration().setTracing("auto"), RealtimeSessionConfiguration::fromJson);
+        assertFalse(serialize(new RealtimeSessionConfiguration().setTracing((String) null)).contains("tracing"));
     }
 
     @Test
@@ -153,10 +152,10 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
                         .type(contentType)
                         .text("hello")
                         .build();
-                RealtimeConversationItemMessageAssistant assistant
-                    = new RealtimeConversationItemMessageAssistant(Arrays.asList(content)).setStatus(status);
-                RealtimeConversationItemMessageAssistant result
-                    = assertInstanceOf(RealtimeConversationItemMessageAssistant.class,
+                RealtimeConversationItemAssistantMessage assistant
+                    = new RealtimeConversationItemAssistantMessage(Arrays.asList(content)).setStatus(status);
+                RealtimeConversationItemAssistantMessage result
+                    = assertInstanceOf(RealtimeConversationItemAssistantMessage.class,
                         deserialize(serialize(assistant), RealtimeConversationItem::fromJson));
                 assertEquals(contentType, result.getContent().get(0).type().get());
                 assertEquals(status, result.getStatus());
@@ -174,9 +173,9 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
             com.openai.models.realtime.RealtimeConversationItemSystemMessage.Status.INCOMPLETE,
             com.openai.models.realtime.RealtimeConversationItemSystemMessage.Status.IN_PROGRESS };
         for (com.openai.models.realtime.RealtimeConversationItemSystemMessage.Status status : systemStatuses) {
-            RealtimeConversationItemMessageSystem system
-                = new RealtimeConversationItemMessageSystem(Arrays.asList(systemContent)).setStatus(status);
-            RealtimeConversationItemMessageSystem result = assertInstanceOf(RealtimeConversationItemMessageSystem.class,
+            RealtimeConversationItemSystemMessage system
+                = new RealtimeConversationItemSystemMessage(Arrays.asList(systemContent)).setStatus(status);
+            RealtimeConversationItemSystemMessage result = assertInstanceOf(RealtimeConversationItemSystemMessage.class,
                 deserialize(serialize(system), RealtimeConversationItem::fromJson));
             assertEquals("policy", result.getContent().get(0).text().get());
             assertEquals(status, result.getStatus());
@@ -202,9 +201,9 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
                     .detail(details[i])
                     .text("user content")
                     .build();
-            RealtimeConversationItemMessageUser user
-                = new RealtimeConversationItemMessageUser(Arrays.asList(content)).setStatus(userStatuses[i]);
-            RealtimeConversationItemMessageUser result = assertInstanceOf(RealtimeConversationItemMessageUser.class,
+            RealtimeConversationItemUserMessage user
+                = new RealtimeConversationItemUserMessage(Arrays.asList(content)).setStatus(userStatuses[i]);
+            RealtimeConversationItemUserMessage result = assertInstanceOf(RealtimeConversationItemUserMessage.class,
                 deserialize(serialize(user), RealtimeConversationItem::fromJson));
             assertEquals(userTypes[i], result.getContent().get(0).type().get());
             assertEquals(details[i], result.getContent().get(0).detail().get());
@@ -215,15 +214,14 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
 
     @Test
     public void testServerEventStandaloneModelsRoundTripPolymorphically() throws IOException {
-        RealtimeServerEventConversationCreated conversationCreated
-            = assertInstanceOf(RealtimeServerEventConversationCreated.class,
-                deserialize("{\"type\":\"conversation.created\",\"event_id\":\"evt-1\",\"conversation\":"
-                    + "{\"id\":\"conv-1\",\"object\":\"realtime.conversation\"}}", RealtimeServerEvent::fromJson));
+        RealtimeConversationCreatedEvent conversationCreated = assertInstanceOf(RealtimeConversationCreatedEvent.class,
+            deserialize("{\"type\":\"conversation.created\",\"event_id\":\"evt-1\",\"conversation\":"
+                + "{\"id\":\"conv-1\",\"object\":\"realtime.conversation\"}}", RealtimeServerEvent::fromJson));
         assertEquals("conv-1", conversationCreated.getConversation().id().get());
         assertStable(conversationCreated, RealtimeServerEvent::fromJson);
 
-        RealtimeServerEventConversationItemInputAudioTranscriptionFailed failed
-            = assertInstanceOf(RealtimeServerEventConversationItemInputAudioTranscriptionFailed.class,
+        RealtimeConversationItemInputAudioTranscriptionFailedEvent failed
+            = assertInstanceOf(RealtimeConversationItemInputAudioTranscriptionFailedEvent.class,
                 deserialize(
                     "{\"type\":\"conversation.item.input_audio_transcription.failed\",\"event_id\":\"evt-2\","
                         + "\"item_id\":\"item-1\",\"content_index\":0,\"error\":{\"type\":\"server_error\","
@@ -232,7 +230,7 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
         assertEquals("bad_audio", failed.getError().code().get());
         assertStable(failed, RealtimeServerEvent::fromJson);
 
-        RealtimeServerEventError errorEvent = assertInstanceOf(RealtimeServerEventError.class,
+        RealtimeErrorEvent errorEvent = assertInstanceOf(RealtimeErrorEvent.class,
             deserialize("{\"type\":\"error\",\"event_id\":\"evt-3\",\"error\":{\"type\":\"server_error\","
                 + "\"code\":\"bad_request\",\"message\":\"failed\",\"param\":\"request\","
                 + "\"event_id\":\"source-event\"}}", RealtimeServerEvent::fromJson));
@@ -242,7 +240,7 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
         for (RateLimit.Name name : new RateLimit.Name[] { RateLimit.Name.REQUESTS, RateLimit.Name.TOKENS }) {
             String json = "{\"type\":\"rate_limits.updated\",\"event_id\":\"evt-4\",\"rate_limits\":[{" + "\"name\":\""
                 + name.asString() + "\",\"limit\":100,\"remaining\":75,\"reset_seconds\":1.5}]}";
-            RealtimeServerEventRateLimitsUpdated result = assertInstanceOf(RealtimeServerEventRateLimitsUpdated.class,
+            RealtimeRateLimitsUpdatedEvent result = assertInstanceOf(RealtimeRateLimitsUpdatedEvent.class,
                 deserialize(json, RealtimeServerEvent::fromJson));
             assertEquals(name, result.getRateLimits().get(0).name().get());
             assertStable(result, RealtimeServerEvent::fromJson);
@@ -255,8 +253,8 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
             String json = "{\"type\":\"response.content_part.added\",\"event_id\":\"evt-5\","
                 + "\"response_id\":\"resp-1\",\"item_id\":\"item-1\",\"output_index\":0,"
                 + "\"content_index\":0,\"part\":{\"type\":\"" + type.asString() + "\",\"text\":\"hi\"}}";
-            RealtimeServerEventResponseContentPartAdded added = assertInstanceOf(
-                RealtimeServerEventResponseContentPartAdded.class, deserialize(json, RealtimeServerEvent::fromJson));
+            RealtimeResponseContentPartAddedEvent added = assertInstanceOf(RealtimeResponseContentPartAddedEvent.class,
+                deserialize(json, RealtimeServerEvent::fromJson));
             assertEquals(type, added.getPart().type().get());
             assertStable(added, RealtimeServerEvent::fromJson);
         }
@@ -265,8 +263,7 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
             com.openai.models.realtime.ResponseContentPartDoneEvent.Part.Type.TEXT,
             com.openai.models.realtime.ResponseContentPartDoneEvent.Part.Type.AUDIO }) {
             String json = "{\"type\":\"" + type.asString() + "\",\"text\":\"done\"}";
-            RealtimeServerEventResponseContentPartDonePart result
-                = deserialize(json, RealtimeServerEventResponseContentPartDonePart::fromJson);
+            RealtimeResponseContentPart result = deserialize(json, RealtimeResponseContentPart::fromJson);
             assertEquals(type, result.getType());
             assertEquals(json, serialize(result));
         }
@@ -286,10 +283,10 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
         }
 
         for (Conversation conversation : new Conversation[] { Conversation.AUTO, Conversation.NONE }) {
-            VoiceAgentResponseCreateParams original
-                = new VoiceAgentResponseCreateParams().setConversation(conversation);
+            VoiceAgentResponseCreateOptions original
+                = new VoiceAgentResponseCreateOptions().setConversation(conversation);
             assertEquals(conversation,
-                deserialize(serialize(original), VoiceAgentResponseCreateParams::fromJson).getConversation());
+                deserialize(serialize(original), VoiceAgentResponseCreateOptions::fromJson).getConversation());
         }
 
         for (Eagerness eagerness : new Eagerness[] {
@@ -297,9 +294,9 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
             Eagerness.MEDIUM,
             Eagerness.HIGH,
             Eagerness.AUTO }) {
-            RealtimeTurnDetectionSemanticVad realtime = new RealtimeTurnDetectionSemanticVad().setEagerness(eagerness);
+            RealtimeSemanticVadTurnDetection realtime = new RealtimeSemanticVadTurnDetection().setEagerness(eagerness);
             assertEquals(eagerness,
-                deserialize(serialize(realtime), RealtimeTurnDetectionSemanticVad::fromJson).getEagerness());
+                deserialize(serialize(realtime), RealtimeSemanticVadTurnDetection::fromJson).getEagerness());
             VoiceAgentSemanticVadTurnDetection voice = new VoiceAgentSemanticVadTurnDetection().setEagerness(eagerness);
             assertEquals(eagerness,
                 deserialize(serialize(voice), VoiceAgentSemanticVadTurnDetection::fromJson).getEagerness());
@@ -310,12 +307,12 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
     public void testTranscriptionTokenDetailsRoundTripPolymorphically() throws IOException {
         String json = "{\"type\":\"tokens\",\"input_tokens\":10,\"output_tokens\":5,\"total_tokens\":15,"
             + "\"input_token_details\":{\"audio_tokens\":7,\"text_tokens\":3}}";
-        TranscriptTextUsageTokens usage = assertInstanceOf(TranscriptTextUsageTokens.class,
-            deserialize(json, CreateTranscriptionResponseJsonUsage::fromJson));
-        TranscriptTextUsageTokensInputTokenDetails details = usage.getInputTokenDetails();
+        TranscriptTextUsageTokens usage
+            = assertInstanceOf(TranscriptTextUsageTokens.class, deserialize(json, TranscriptTextUsage::fromJson));
+        TranscriptTextInputTokenDetails details = usage.getInputTokenDetails();
         assertEquals(7L, details.getAudioTokens());
         assertEquals(3L, details.getTextTokens());
-        assertStable(usage, CreateTranscriptionResponseJsonUsage::fromJson);
+        assertStable(usage, TranscriptTextUsage::fromJson);
     }
 
     @Test
@@ -343,11 +340,11 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
         String emptyAudio = serialize(new AudioTranscription());
         assertFalse(emptyAudio.contains("delay"));
         assertNull(deserialize(emptyAudio, AudioTranscription::fromJson).getDelay());
-        String emptySession = serialize(new RealtimeSessionCreateRequestGA());
+        String emptySession = serialize(new RealtimeSessionConfiguration());
         assertFalse(emptySession.contains("tracing"));
         assertFalse(emptySession.contains("truncation"));
-        assertNull(deserialize(emptySession, RealtimeSessionCreateRequestGA::fromJson)
-            .getTracingAsRealtimeSessionCreateRequestGATracing());
+        assertNull(deserialize(emptySession, RealtimeSessionConfiguration::fromJson)
+            .getTracingAsRealtimeSessionTracingConfiguration());
         assertTrue(emptySession.contains("\"type\":\"realtime\""));
     }
 

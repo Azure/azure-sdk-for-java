@@ -49,7 +49,7 @@ public class RealtimeOpenAIDedupSerializationTests {
         for (RealtimeReasoningEffort effort : efforts) {
             RealtimeReasoning reasoning = RealtimeReasoning.builder().effort(effort).build();
             ResponsePrompt prompt = ResponsePrompt.builder().id("pmpt_123").version("2").build();
-            RealtimeSessionCreateRequestGA original = new RealtimeSessionCreateRequestGA().setInstructions("Be concise")
+            RealtimeSessionConfiguration original = new RealtimeSessionConfiguration().setInstructions("Be concise")
                 .setReasoning(reasoning)
                 .setPrompt(prompt);
 
@@ -57,9 +57,9 @@ public class RealtimeOpenAIDedupSerializationTests {
             assertTrue(json.contains("\"effort\":\"" + effort.asString() + "\""));
             assertTrue(json.contains("\"prompt\":{\"id\":\"pmpt_123\""));
 
-            RealtimeSessionCreateRequestGA result;
+            RealtimeSessionConfiguration result;
             try (JsonReader reader = JsonProviders.createReader(json)) {
-                result = RealtimeSessionCreateRequestGA.fromJson(reader);
+                result = RealtimeSessionConfiguration.fromJson(reader);
             }
 
             assertEquals(effort, result.getReasoning().effort().get());
@@ -71,7 +71,7 @@ public class RealtimeOpenAIDedupSerializationTests {
 
     @Test
     public void testAbsentRealtimeReasoningAndPromptRemainAbsent() throws IOException {
-        String json = serialize(new RealtimeSessionCreateRequestGA().setInstructions("No reasoning"));
+        String json = serialize(new RealtimeSessionConfiguration().setInstructions("No reasoning"));
 
         assertFalse(json.contains("\"reasoning\""));
         assertFalse(json.contains("\"prompt\""));
@@ -81,17 +81,17 @@ public class RealtimeOpenAIDedupSerializationTests {
     public void testRealtimeReasoningAcrossVoiceSessionModels() throws IOException {
         String input = "{\"reasoning\":{\"effort\":\"high\"}}";
 
-        VoiceAgentResponseCreateParams createParams;
-        VoiceAgentSessionUpdateConfig updateConfig;
-        VoiceAgentSessionResponseConfig responseConfig;
+        VoiceAgentResponseCreateOptions createParams;
+        VoiceAgentSessionUpdateConfiguration updateConfig;
+        VoiceAgentSessionResponseConfiguration responseConfig;
         try (JsonReader reader = JsonProviders.createReader(input)) {
-            createParams = VoiceAgentResponseCreateParams.fromJson(reader);
+            createParams = VoiceAgentResponseCreateOptions.fromJson(reader);
         }
         try (JsonReader reader = JsonProviders.createReader(input)) {
-            updateConfig = VoiceAgentSessionUpdateConfig.fromJson(reader);
+            updateConfig = VoiceAgentSessionUpdateConfiguration.fromJson(reader);
         }
         try (JsonReader reader = JsonProviders.createReader(input)) {
-            responseConfig = VoiceAgentSessionResponseConfig.fromJson(reader);
+            responseConfig = VoiceAgentSessionResponseConfiguration.fromJson(reader);
         }
 
         assertReasoningRoundTrip(createParams.getReasoning(), serialize(createParams));
@@ -110,11 +110,10 @@ public class RealtimeOpenAIDedupSerializationTests {
                 = com.openai.models.realtime.RealtimeTranscriptionSessionAudioInput.NoiseReduction.builder()
                     .type(type)
                     .build();
-            RealtimeSessionCreateRequestGAAudioInput realtime
-                = new RealtimeSessionCreateRequestGAAudioInput().setNoiseReduction(realtimeNoiseReduction);
-            RealtimeTranscriptionSessionCreateRequestGAAudioInput transcription
-                = new RealtimeTranscriptionSessionCreateRequestGAAudioInput()
-                    .setNoiseReduction(transcriptionNoiseReduction);
+            RealtimeSessionAudioInput realtime
+                = new RealtimeSessionAudioInput().setNoiseReduction(realtimeNoiseReduction);
+            RealtimeTranscriptionSessionAudioInput transcription
+                = new RealtimeTranscriptionSessionAudioInput().setNoiseReduction(transcriptionNoiseReduction);
 
             String realtimeJson = serialize(realtime);
             String transcriptionJson = serialize(transcription);
@@ -122,15 +121,11 @@ public class RealtimeOpenAIDedupSerializationTests {
             assertEquals(realtimeJson, transcriptionJson);
 
             try (JsonReader reader = JsonProviders.createReader(realtimeJson)) {
-                assertEquals(type,
-                    RealtimeSessionCreateRequestGAAudioInput.fromJson(reader).getNoiseReduction().type().get());
+                assertEquals(type, RealtimeSessionAudioInput.fromJson(reader).getNoiseReduction().type().get());
             }
             try (JsonReader reader = JsonProviders.createReader(transcriptionJson)) {
                 assertEquals(type,
-                    RealtimeTranscriptionSessionCreateRequestGAAudioInput.fromJson(reader)
-                        .getNoiseReduction()
-                        .type()
-                        .get());
+                    RealtimeTranscriptionSessionAudioInput.fromJson(reader).getNoiseReduction().type().get());
             }
         }
     }
@@ -146,8 +141,8 @@ public class RealtimeOpenAIDedupSerializationTests {
             event = RealtimeServerEvent.fromJson(reader);
         }
 
-        RealtimeServerEventConversationItemInputAudioTranscriptionDelta delta
-            = assertInstanceOf(RealtimeServerEventConversationItemInputAudioTranscriptionDelta.class, event);
+        RealtimeConversationItemInputAudioTranscriptionDeltaEvent delta
+            = assertInstanceOf(RealtimeConversationItemInputAudioTranscriptionDeltaEvent.class, event);
         LogProbProperties logProb = delta.getLogprobs().get(0);
         assertEquals("hello", logProb.token());
         assertEquals(-0.25, logProb.logprob());
@@ -158,8 +153,8 @@ public class RealtimeOpenAIDedupSerializationTests {
         try (JsonReader reader = JsonProviders.createReader(json)) {
             reparsed = RealtimeServerEvent.fromJson(reader);
         }
-        assertEquals(json, serialize(
-            assertInstanceOf(RealtimeServerEventConversationItemInputAudioTranscriptionDelta.class, reparsed)));
+        assertEquals(json,
+            serialize(assertInstanceOf(RealtimeConversationItemInputAudioTranscriptionDeltaEvent.class, reparsed)));
     }
 
     @Test
@@ -172,7 +167,7 @@ public class RealtimeOpenAIDedupSerializationTests {
             event = RealtimeServerEvent.fromJson(reader);
         }
 
-        RealtimeServerEventResponseDone done = assertInstanceOf(RealtimeServerEventResponseDone.class, event);
+        RealtimeResponseDoneEvent done = assertInstanceOf(RealtimeResponseDoneEvent.class, event);
         assertResponseFields(done.getResponse().getStatusDetails(), done.getResponse().getUsage());
 
         String json = serialize(done);
@@ -180,8 +175,7 @@ public class RealtimeOpenAIDedupSerializationTests {
         try (JsonReader reader = JsonProviders.createReader(json)) {
             reparsed = RealtimeServerEvent.fromJson(reader);
         }
-        RealtimeServerEventResponseDone reparsedDone
-            = assertInstanceOf(RealtimeServerEventResponseDone.class, reparsed);
+        RealtimeResponseDoneEvent reparsedDone = assertInstanceOf(RealtimeResponseDoneEvent.class, reparsed);
         assertResponseFields(reparsedDone.getResponse().getStatusDetails(), reparsedDone.getResponse().getUsage());
         assertEquals(json, serialize(reparsedDone));
     }

@@ -11,7 +11,7 @@ import java.util.Collection;
 /**
  * Defines values for AudioTranscriptionModel.
  */
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
+@Beta(warningText = "Preview API.")
 public final class AudioTranscriptionModel extends ExpandableStringEnum<AudioTranscriptionModel> {
 
     /**
