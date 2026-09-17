@@ -200,6 +200,26 @@ class AgentsServicePollUtilsTest {
         });
     }
 
+    static Stream<Arguments> mapStatusCases() {
+        return Stream.of(Arguments.of(null, LongRunningOperationStatus.IN_PROGRESS),
+            Arguments.of("", LongRunningOperationStatus.IN_PROGRESS),
+            Arguments.of("   ", LongRunningOperationStatus.IN_PROGRESS),
+            Arguments.of("queued", LongRunningOperationStatus.IN_PROGRESS),
+            Arguments.of(" IN_PROGRESS ", LongRunningOperationStatus.IN_PROGRESS),
+            Arguments.of("succeeded", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED),
+            Arguments.of("failed", LongRunningOperationStatus.FAILED),
+            Arguments.of("cancelled", LongRunningOperationStatus.USER_CANCELLED),
+            Arguments.of(" completed ", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED),
+            Arguments.of("SUPERSEDED", LongRunningOperationStatus.USER_CANCELLED),
+            Arguments.of("future_status", LongRunningOperationStatus.fromString("future_status", false)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("mapStatusCases")
+    void mapStatusMapsServiceStatuses(String status, LongRunningOperationStatus expected) {
+        assertEquals(expected, AgentsServicePollUtils.mapStatus(status));
+    }
+
     static Stream<Arguments> remapStatusCases() {
         return Stream.of(
             // Custom statuses that need remapping

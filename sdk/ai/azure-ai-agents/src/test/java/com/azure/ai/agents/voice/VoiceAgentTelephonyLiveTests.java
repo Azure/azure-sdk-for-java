@@ -43,8 +43,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -55,8 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * It runs only when AZURE_TEST_MODE=LIVE, requires FOUNDRY_VOICE_MODEL_NAME, and uses
  * DefaultAzureCredential authentication. FOUNDRY_PROJECT_ENDPOINT, FOUNDRY_TELEPHONY_CONNECTION_1,
  * FOUNDRY_TELEPHONY_CONNECTION_2, FOUNDRY_TELEPHONY_NUMBER_1, and FOUNDRY_TELEPHONY_NUMBER_2 can override the test
- * project defaults. Binding get, update, and delete have isolated live tests so a failure in one operation does not
- * prevent the other operations from running.
+ * project defaults.
  */
 @Execution(ExecutionMode.SAME_THREAD)
 public class VoiceAgentTelephonyLiveTests {
@@ -69,14 +66,9 @@ public class VoiceAgentTelephonyLiveTests {
     private static final Duration CALL_TIMEOUT = Duration.ofMinutes(2);
     private static final Duration POLL_INTERVAL = Duration.ofSeconds(2);
 
-    private enum BindingMutation {
-        GET, UPDATE, DELETE
-    }
-
-    @ParameterizedTest
-    @EnumSource(BindingMutation.class)
+    @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
-    public void bindingMutationLive(BindingMutation mutation) {
+    public void bindingLifecycleLive() {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT", DEFAULT_ENDPOINT);
         String model = configuration.get("FOUNDRY_VOICE_MODEL_NAME");
@@ -88,7 +80,7 @@ public class VoiceAgentTelephonyLiveTests {
             .allowPreview(true);
         AgentsClient agents = builder.buildAgentsClient();
         BetaVoiceAgentsTelephonyClient telephony = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        String agentName = "test-telephony-binding-" + mutation.toString().toLowerCase() + "-" + shortId();
+        String agentName = "test-telephony-binding-" + shortId();
         boolean agentCreated = false;
         try {
             agents.createAgentVersion(agentName,
@@ -99,20 +91,18 @@ public class VoiceAgentTelephonyLiveTests {
             TelephonyBindingListItem listedBinding = findBinding(telephony, agentName, binding.getId());
             assertNotNull(listedBinding.getEtag());
 
-            if (mutation == BindingMutation.GET) {
-                TelephonyBinding retrieved = telephony.getTelephonyBinding(agentName, binding.getId());
-                assertEquals(binding.getId(), retrieved.getId());
-            } else if (mutation == BindingMutation.UPDATE) {
-                TelephonyBinding updated
-                    = telephony.updateTelephonyBinding(agentName, binding.getId(), listedBinding.getEtag(),
-                        new UpdateTelephonyBindingRequest().setLabel("Updated Java SDK live test"));
-                assertEquals("Updated Java SDK live test", updated.getLabel());
-            } else {
-                telephony.deleteTelephonyBinding(agentName, binding.getId(), listedBinding.getEtag());
-                assertTrue(telephony.listTelephonyBindings(agentName)
-                    .stream()
-                    .noneMatch(item -> binding.getId().equals(item.getId())));
-            }
+            TelephonyBinding retrieved = telephony.getTelephonyBinding(agentName, binding.getId());
+            assertEquals(binding.getId(), retrieved.getId());
+            TelephonyBinding updated = telephony.updateTelephonyBinding(agentName, binding.getId(),
+                listedBinding.getEtag(), new UpdateTelephonyBindingRequest().setLabel("Updated Java SDK live test"));
+            assertEquals("Updated Java SDK live test", updated.getLabel());
+
+            String updatedEtag = findBinding(telephony, agentName, binding.getId()).getEtag();
+            assertNotNull(updatedEtag);
+            telephony.deleteTelephonyBinding(agentName, binding.getId(), updatedEtag);
+            assertTrue(telephony.listTelephonyBindings(agentName)
+                .stream()
+                .noneMatch(item -> binding.getId().equals(item.getId())));
         } finally {
             if (agentCreated) {
                 safeCleanup("delete binding test agent", () -> agents.deleteAgent(agentName));
@@ -160,9 +150,6 @@ public class VoiceAgentTelephonyLiveTests {
             assertEquals(TelephonyBindingStatus.ACTIVE, binding.getStatus());
             assertNotNull(binding.getIncomingCallUrl());
 
-            TelephonyBindingListItem listedBinding = findBinding(telephony, inboundAgent, binding.getId());
-            assertNotNull(listedBinding.getEtag());
-
             Response<BinaryData> initialTargetsResponse
                 = telephony.getTelephonyTransferTargetsWithResponse(inboundAgent, new RequestOptions());
             TelephonyTransferTargets initialTargets
@@ -195,8 +182,9 @@ public class VoiceAgentTelephonyLiveTests {
 
             TelephonyCallRecord callRecord = telephony.getTelephonyCall(inboundAgent, inboundCallId);
             assertEquals(inboundCallId, callRecord.getId());
-            TelephonyCallRecord endedCall = telephony.endTelephonyCall(inboundAgent, inboundCallId);
-            assertEquals(inboundCallId, endedCall.getId());
+            TelephonyCallRecord transferredCall
+                = telephony.transferTelephonyCall(inboundAgent, inboundCallId, "test_number_2");
+            assertEquals(inboundCallId, transferredCall.getId());
             inboundCallId = null;
 
             TelephonyCallJob dispatchedJob = telephony.getTelephonyCallJob(outboundAgent, callJobId);

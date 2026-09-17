@@ -51,7 +51,8 @@ public final class AgentsServicePollUtils {
             com.azure.core.http.rest.Response<BinaryData> response = getResponse.get();
             BinaryData body = response.getValue();
             context.setData(PollingUtils.POLL_RESPONSE_BODY, body.toString());
-            return new PollResponse<>(mapStatus(body.toObject(Map.class).get("status")), body.toObject(pollType),
+            return new PollResponse<>(mapStatus((String) body.toObject(Map.class).get("status")),
+                body.toObject(pollType),
                 PollingUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now));
         };
         return com.azure.core.util.polling.SyncPoller.createPoller(Duration.ofSeconds(1), poll, poll,
@@ -76,7 +77,8 @@ public final class AgentsServicePollUtils {
             = context -> Mono.defer(getResponse).map(response -> {
                 BinaryData body = response.getValue();
                 context.setData(PollingUtils.POLL_RESPONSE_BODY, body.toString());
-                return new PollResponse<>(mapStatus(body.toObject(Map.class).get("status")), body.toObject(pollType),
+                return new PollResponse<>(mapStatus((String) body.toObject(Map.class).get("status")),
+                    body.toObject(pollType),
                     PollingUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now));
             });
         return new com.azure.core.util.polling.PollerFlux<>(Duration.ofSeconds(1),
@@ -138,10 +140,11 @@ public final class AgentsServicePollUtils {
     }
 
     private static LongRunningOperationStatus mapCustomStatus(LongRunningOperationStatus status) {
-        // Standard statuses (Succeeded, Failed, Canceled, InProgress, NotStarted) are already
-        // mapped correctly by the parent's PollResult; only remap the custom ones.
+        // Standard statuses (Failed, Canceled, InProgress, NotStarted) are already mapped by the caller or parent's
+        // PollResult. Remap the service's Succeeded spelling and service-specific terminal statuses here.
         String name = status.toString();
-        if (MemoryStoreUpdateStatus.COMPLETED.toString().equalsIgnoreCase(name)) {
+        if (JobStatus.SUCCEEDED.toString().equalsIgnoreCase(name)
+            || MemoryStoreUpdateStatus.COMPLETED.toString().equalsIgnoreCase(name)) {
             return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
         } else if (MemoryStoreUpdateStatus.SUPERSEDED.toString().equalsIgnoreCase(name)
             // Optimization jobs and telephony use "cancelled"; MemoryStoreUpdateStatus intentionally has no CANCELLED.
@@ -151,23 +154,18 @@ public final class AgentsServicePollUtils {
         return status;
     }
 
-    private static LongRunningOperationStatus mapStatus(Object statusValue) {
-        if (statusValue == null || CoreUtils.isNullOrEmpty(statusValue.toString().trim())) {
+    static LongRunningOperationStatus mapStatus(String statusValue) {
+        if (CoreUtils.isNullOrEmpty(statusValue) || CoreUtils.isNullOrEmpty(statusValue.trim())) {
             return LongRunningOperationStatus.IN_PROGRESS;
         }
-        String status = statusValue.toString().trim();
+        String status = statusValue.trim();
         if (JobStatus.QUEUED.toString().equalsIgnoreCase(status)
             || JobStatus.IN_PROGRESS.toString().equalsIgnoreCase(status)) {
             return LongRunningOperationStatus.IN_PROGRESS;
-        } else if (JobStatus.SUCCEEDED.toString().equalsIgnoreCase(status)
-            || MemoryStoreUpdateStatus.COMPLETED.toString().equalsIgnoreCase(status)) {
-            return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
         } else if (JobStatus.FAILED.toString().equalsIgnoreCase(status)) {
             return LongRunningOperationStatus.FAILED;
-        } else if (JobStatus.CANCELLED.toString().equalsIgnoreCase(status)
-            || MemoryStoreUpdateStatus.SUPERSEDED.toString().equalsIgnoreCase(status)) {
-            return LongRunningOperationStatus.USER_CANCELLED;
+        } else {
+            return mapCustomStatus(LongRunningOperationStatus.fromString(status, false));
         }
-        return LongRunningOperationStatus.fromString(status, false);
     }
 }
