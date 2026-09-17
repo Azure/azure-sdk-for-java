@@ -1,4 +1,4 @@
 directory: specification/containerservice/resource-manager/Microsoft.ContainerService/nodecustomization
-commit: 150220a3520f0d8fa42c202f9adb6d5cf53fd278
+commit: 2547c2f9618e4622de1f10e40e971563f22ca9af
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 
