@@ -19,8 +19,13 @@ these repository-root documents: `AGENTS.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTIN
 SDK-package documents, CHANGELOGs, source/resources, and unknown paths gain no trigger exclusions.
 Build/Analyze orchestration and the existing test-matrix classifier are unchanged.
 
-The required **Check Spelling** status remains one `check-spelling` job on one `ubuntu-slim` runner, without path
-filters. One checkout and Node 24 setup serve named spelling, changelog, and reporting steps.
+The existing required **Check Spelling** workflow remains unchanged and checks spelling only.
+The new [Validate documentation workflow](../.github/workflows/validate-documentation.yml) runs combined spelling,
+changelog, and reporting steps in one `validate-documentation` job on one `ubuntu-slim` runner. Its distinct
+**Validate documentation** check starts alongside the existing required check; this change does not update rulesets.
+Both workflows cover the same supported PR branches without path filters.
+
+Within the combined workflow, one checkout and Node 24 setup serve all validation steps.
 [Save-PRValidationInputs.ps1](scripts/Save-PRValidationInputs.ps1) saves the entire synthetic merge commit's diff
 against its first parent. It includes deletions and both sides of renames, not just the last source commit.
 Spelling uses the existing CSpell configuration and ignore rules, with one `npm ci` from the shared spelling
@@ -45,13 +50,19 @@ build, authenticated Azure feed, or Azure resources are needed.
 
 Spelling failures do not skip changelog validation. The final reporting step includes each
 step outcome, package/version/path, and validation errors in the job summary; failed, missing, or unexpectedly
-skipped required steps fail the existing check. Setup failures stay failures, and cancellation is not converted to
+skipped required steps fail the combined check. Setup failures stay failures, and cancellation is not converted to
 success. File content is printed with runner-command processing suspended and escaped when added to annotations
 or the summary. Azure Build's existing PR changelog verification remains temporarily enabled for parity burn-in;
 non-PR and release validation are unchanged.
 
 **Verify Links** remains a separate, unchanged workflow.
 Package selection retains the existing `ExcludePaths` prefix-matching behavior.
+
+During migration, both workflows run, temporarily duplicating spelling work and using two runners.
+After **Validate documentation** has successful runs and its failure behavior is verified, make that check required
+while **Check Spelling** is still required. Then remove the old requirement before deleting `check-spelling.yml`
+in a separate cleanup. Existing PRs may need an update/new run to report the new check. Until that ruleset transition,
+the combined check is not a replacement for existing required validation.
 
 Run the trigger and classifier regression tests with PowerShell 7, Git, and the CI-declared Pester 5.7.1
 (no YAML module required):

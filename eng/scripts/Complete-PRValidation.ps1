@@ -3,7 +3,7 @@
 
 <#
 .SYNOPSIS
-Reports every validation and fails the existing Check Spelling job for any failed or omitted check.
+Reports every validation and fails the combined documentation job for any failed or omitted check.
 #>
 [CmdletBinding()]
 param(

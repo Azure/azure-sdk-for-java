@@ -488,16 +488,17 @@ Describe 'Shared Java package selection and changelog validation' -Tag 'UnitTest
     }
 }
 
-Describe 'Single-job workflow and final result contracts' -Tag 'UnitTest' {
+Describe 'Combined documentation workflow and final result contracts' -Tag 'UnitTest' {
     BeforeAll {
         Initialize-ValidationTestModule
-        $script:Workflow = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot '.github/workflows/check-spelling.yml') -Raw)
+        $script:Workflow = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot '.github/workflows/validate-documentation.yml') -Raw)
     }
 
-    It 'retains exactly one runner, the required context, read-only permission, and unrestricted PR branches' {
+    It 'uses one combined runner, a distinct check name, read-only permission, and unrestricted PR branches' {
+        $script:Workflow.name | Should -Be 'Validate documentation'
         $script:Workflow.jobs.Count | Should -Be 1
-        $job = $script:Workflow.jobs['check-spelling']
-        $job.name | Should -Be 'Check Spelling'
+        $job = $script:Workflow.jobs['validate-documentation']
+        $job.name | Should -Be 'Validate documentation'
         $job.'runs-on' | Should -Be 'ubuntu-slim'
         $script:Workflow.permissions.Count | Should -Be 1
         $script:Workflow.permissions.contents | Should -Be 'read'
@@ -515,8 +516,21 @@ Describe 'Single-job workflow and final result contracts' -Tag 'UnitTest' {
             Should -Be @('checkout', 'node', 'inputs', 'spelling', 'changelogs')
     }
 
+    It 'keeps the existing required spelling workflow separate during migration' {
+        $legacy = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot '.github/workflows/check-spelling.yml') -Raw)
+        $legacy.name | Should -Be 'Check Spelling'
+        $legacy.jobs.Count | Should -Be 1
+        $legacyJob = $legacy.jobs['check-spelling']
+        $legacyJob.name | Should -Be 'Check Spelling'
+        $legacyJob.name | Should -Not -Be $script:Workflow.jobs['validate-documentation'].name
+        $legacyJob.steps.name | Should -Be @('Checkout', 'Use Node.js 24', 'Check spelling')
+        $legacyJob.steps[-1].run | Should -Match 'eng/common/scripts/check-spelling-in-changed-files\.ps1'
+        $legacyJob.steps[-1].run | Should -Not -Match 'Invoke-PRValidation'
+        $legacy.on.pull_request.branches | Should -Be $script:Workflow.on.pull_request.branches
+    }
+
     It 'runs all useful validations after failures without continue-on-error' {
-        $steps = $script:Workflow.jobs['check-spelling'].steps
+        $steps = $script:Workflow.jobs['validate-documentation'].steps
         @($steps | Where-Object { $_.ContainsKey('continue-on-error') }).Count | Should -Be 0
         ($steps | Where-Object id -EQ 'inputs').if | Should -Be '${{ !cancelled() && steps.checkout.outcome == ''success'' }}'
         ($steps | Where-Object id -EQ 'spelling').if |
