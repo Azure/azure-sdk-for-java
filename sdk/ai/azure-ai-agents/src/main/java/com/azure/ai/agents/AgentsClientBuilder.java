@@ -317,10 +317,26 @@ public final class AgentsClientBuilder
      */
     @Generated
     private AgentsClientImpl buildInnerClient() {
-        return buildInnerClient(null);
+        this.validateClient();
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        AgentsServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : AgentsServiceVersion.getLatest();
+        AgentsClientImpl client = new AgentsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
+            this.endpoint, localServiceVersion);
+        return client;
     }
 
     private AgentsClientImpl buildInnerClient(String previewFeatures) {
+        return createInnerClientWithPreviewFeatures(previewFeatures);
+    }
+
+    /**
+     * Builds an instance of AgentsClientImpl with the provided parameters.
+     *
+     * @return an instance of AgentsClientImpl.
+     */
+    @Generated
+    private AgentsClientImpl createInnerClientWithPreviewFeatures(String previewFeatures) {
         this.validateClient();
         HttpPipeline localPipeline;
         if (CoreUtils.isNullOrEmpty(previewFeatures)) {
@@ -331,9 +347,10 @@ public final class AgentsClientBuilder
             localPipeline = resolvePipeline(previewFeatures);
         }
         AgentsServiceVersion localServiceVersion
-            = serviceVersion != null ? serviceVersion : AgentsServiceVersion.getLatest();
-        return new AgentsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint,
-            localServiceVersion);
+            = (serviceVersion != null) ? serviceVersion : AgentsServiceVersion.getLatest();
+        AgentsClientImpl client = new AgentsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
+            this.endpoint, localServiceVersion);
+        return client;
     }
 
     @Generated
