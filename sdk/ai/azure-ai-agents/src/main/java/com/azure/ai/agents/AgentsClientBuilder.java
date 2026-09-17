@@ -435,7 +435,6 @@ public final class AgentsClientBuilder
     private void configureOpenAIOptions(com.openai.core.ClientOptions.Builder options, String foundryFeatures) {
         // Route native OpenAI requests through the Azure pipeline and apply any required preview feature policy.
         options.httpClient(createOpenAIHttpClient(foundryFeatures));
-
         // Preserve the native OpenAI identity while adding the Azure SDK identity used for telemetry.
         String openAIUserAgent = String.join(" ", options.build().headers().values("User-Agent"));
         Configuration buildConfiguration
@@ -485,10 +484,10 @@ public final class AgentsClientBuilder
      */
     public OpenAIClient buildOpenAIClient() {
         // A null agent name selects the project-scoped OpenAI endpoint rather than an agent-specific endpoint.
+        // The original implementation only replaced the HTTP transport. Because the native OpenAI user agent was
+        // already present, the Azure pipeline did not add the Azure SDK identity required for telemetry. Configure
+        // both the Azure transport and the combined user agent; null indicates that no preview features are needed.
         return getOpenAIClientBuilder(null).build()
-            // The original implementation only replaced the HTTP transport. Because the native OpenAI user agent was
-            // already present, the Azure pipeline did not add the Azure SDK identity required for telemetry. Configure
-            // both the Azure transport and the combined user agent; null indicates that no preview features are needed.
             .withOptions(optionBuilder -> configureOpenAIOptions(optionBuilder, null));
     }
 
