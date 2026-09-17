@@ -82,8 +82,10 @@ foreach ($check in @('Spelling', 'Changelogs')) {
 $summary.Add('')
 $summary.Add('Verify Links is unchanged.')
 $summary.Add('')
-$summary.Add('Covered public unified main PRs use this combined check for changelog validation. ' +
-    'Azure skips duplicate Build verification only when coverage is established and ForceFullValidation is disabled. ' +
+$summary.Add('Validate documentation is optional during the staged rollout. ' +
+    'Azure routing is disabled by default; Build/Analyze scheduling and Build changelog verification are unchanged. ' +
+    'Future opt-in requires an approved, verified required-check migration to Validate documentation. ' +
+    'After activation, only covered public unified main PRs can omit duplicate Build verification. ' +
     'Other scopes and ForceFullValidation retain their existing Azure checks. Release validation is unchanged.')
 if ($SummaryPath) {
     $summary -join "`n" | Add-Content -LiteralPath $SummaryPath

@@ -11,9 +11,10 @@ defaults unknown paths to full Java test validation. When every changed path has
 specialized non-Java validation route, it clears the job-local PackageInfo directory
 so Create-PrJobMatrix produces an empty matrix.
 
-Build and Analyze remain enabled except for proven package-root changelog-only
-changes in the opted-in public unified main PR pipeline. Successful test
-suppression adds the JavaTestsSuppressed build tag for reporting.
+Build and Analyze remain enabled by default. After an approved required-check
+migration to Validate documentation, explicit opt-in can suppress them for proven
+package-root changelog-only public unified main PRs. Existing test-only suppression
+is unchanged and adds the JavaTestsSuppressed build tag for reporting.
 
 .PARAMETER DiffPath
 Path to the diff.json file produced by Generate-PR-Diff.ps1. ChangedFiles and
@@ -42,8 +43,9 @@ Writes the classification object to the output pipeline for local diagnostics
 and tests. Azure Pipelines normally consumes the emitted task variables instead.
 
 .PARAMETER UseCombinedPRValidation
-Opts in to main-target changelog coverage checks. Runtime repository and pipeline
-scope is still verified; this switch alone cannot authorize skipping Java jobs.
+Opts in only after the required-check migration to Validate documentation is
+explicitly approved and verified. The optional workflow's presence is not coverage.
+Runtime repository, pipeline, and path scope still constrain the future enabled route.
 
 .PARAMETER ValidationDirectory
 Directory for the complete merge-parent snapshot, routing report, and original

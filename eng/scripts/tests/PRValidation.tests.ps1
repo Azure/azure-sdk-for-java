@@ -198,7 +198,12 @@ $($artifacts -join "`n")
     }
 
     function Invoke-FixtureClassifier {
-        param($Fixture, [switch]$Force, [string]$SourceVersion = $Fixture.Snapshot.SourceCommit)
+        param(
+            $Fixture,
+            [switch]$Force,
+            [string]$SourceVersion = $Fixture.Snapshot.SourceCommit,
+            [bool]$UseCombinedPRValidation = $true
+        )
 
         $env:BUILD_SOURCEVERSION = $SourceVersion
         $routingDirectory = Join-Path $Fixture.Output 'routing'
@@ -208,7 +213,7 @@ $($artifacts -join "`n")
             PackageInfoDirectory = Join-Path $Fixture.Output 'PackageInfo'
             ValidationDirectory = $routingDirectory
             RepositoryRoot = $Fixture.Root
-            UseCombinedPRValidation = $true
+            UseCombinedPRValidation = $UseCombinedPRValidation
             ServiceDirectory = 'auto'
             SdkType = 'client'
             ForceFullValidation = $Force.IsPresent
@@ -900,8 +905,13 @@ Describe 'Package-root changelog routing eligibility' -Tag 'UnitTest' {
 Describe 'Combined changelog pipeline coverage' -Tag 'UnitTest' {
     It 'covers only explicitly opted-in public unified main PRs' {
         $context = New-CoveredRoutingContext
-        (Get-PRChangeLogCoverage $true 'auto' 'client' $context).Covered | Should -BeTrue
-        (Get-PRChangeLogCoverage $false 'auto' 'client' $context).Covered | Should -BeFalse
+        $enabled = Get-PRChangeLogCoverage $true 'auto' 'client' $context
+        $enabled.Covered | Should -BeTrue
+        $enabled.Reason | Should -Match 'verified required Validate documentation coverage'
+        $enabled.Reason | Should -Not -Match 'Check Spelling'
+        $disabled = Get-PRChangeLogCoverage $false 'auto' 'client' $context
+        $disabled.Covered | Should -BeFalse
+        $disabled.Reason | Should -Match 'disabled.*Validate documentation.*approved and verified'
         (Get-PRChangeLogCoverage $true 'auto' 'client' @{}).Covered | Should -BeFalse
         $context.TargetBranch = 'refs/heads/main'
         (Get-PRChangeLogCoverage $true 'auto' 'client' $context).Covered | Should -BeTrue
@@ -963,6 +973,28 @@ Describe 'Preflight changelog routing integration' -Tag 'UnitTest' {
         foreach ($name in $previousEnvironment.Keys) {
             [Environment]::SetEnvironmentVariable($name, $previousEnvironment[$name])
         }
+    }
+
+    It 'keeps production Build/Analyze and changelog verification enabled for <Path>' -TestCases @(
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md'; LegacyRunTests = $false },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/README.md'; LegacyRunTests = $false },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/src/main/java/Example.java'; LegacyRunTests = $true }
+    ) {
+        param($Path, $LegacyRunTests)
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture) @($Path)
+        $pipeline = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/pipelines/pullrequest.yml') -Raw)
+        $enabled = $pipeline.extends.parameters.UseCombinedPRValidation
+        $enabled | Should -BeFalse
+        $combined = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot '.github/workflows/validate-documentation.yml') -Raw)
+        $combined.jobs['validate-documentation'].name | Should -Be 'Validate documentation'
+        $invocation = Invoke-FixtureClassifier $fixture -UseCombinedPRValidation $enabled
+        $invocation.Result.RunBuild | Should -BeTrue
+        $invocation.Result.RunAnalyze | Should -BeTrue
+        $invocation.Result.SkipBuildChangeLogValidation | Should -BeFalse
+        $invocation.Result.ChangeLogOnly | Should -BeFalse
+        $invocation.Result.RunTests | Should -Be $LegacyRunTests
+        $invocation.Log | Should -Not -Match 'Combined PR changelog coverage:'
+        Test-Path (Join-Path $fixture.Output 'routing/routing.json') | Should -BeFalse
     }
 
     It 'uses exact available YAML without a public restore and retains Java when unavailable: <Case>' -TestCases @(
@@ -1211,9 +1243,9 @@ Describe 'Azure changelog routing job graph' -Tag 'UnitTest' {
         $script:MatrixReference = @(Get-ValidationTemplateReference $script:CiJobs '/eng/common/pipelines/templates/jobs/generate-job-matrix.yml')[0]
     }
 
-    It 'opts in only from the unified entry point and scopes dependencies without a runtime-only template variable' {
+    It 'keeps the production opt-in off and preserves future enabled scopes without runtime-only template variables' {
         $pipeline = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/pipelines/pullrequest.yml') -Raw)
-        $pipeline.extends.parameters.UseCombinedPRValidation | Should -BeTrue
+        $pipeline.extends.parameters.UseCombinedPRValidation | Should -BeFalse
         ($script:CiStage.parameters | Where-Object name -EQ 'UseCombinedPRValidation').default | Should -BeFalse
         ($script:CiJobs.parameters | Where-Object name -EQ 'UseCombinedPRValidation').default | Should -BeFalse
         $call = @(Get-ValidationTemplateReference $script:CiStage '/eng/pipelines/templates/jobs/ci.yml')[0]
@@ -1222,6 +1254,21 @@ Describe 'Azure changelog routing job graph' -Tag 'UnitTest' {
         $cosmos = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/pipelines/templates/stages/cosmos-sdk-client.yml') -Raw)
         $cosmosCall = @(Get-ValidationTemplateReference $cosmos '/eng/pipelines/templates/jobs/ci.yml')[0]
         $cosmosCall.parameters.ContainsKey('UseCombinedPRValidation') | Should -BeFalse
+    }
+
+    It 'does not add default scheduling dependencies or override the default Build changelog condition' {
+        $pipeline = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/pipelines/pullrequest.yml') -Raw)
+        $pipeline.extends.parameters.UseCombinedPRValidation | Should -BeFalse
+        foreach ($job in @($script:BuildJob, $script:AnalyzeJob)) {
+            $job.ContainsKey('dependsOn') | Should -BeFalse
+        }
+        $script:BuildJob.ContainsKey('condition') | Should -BeFalse
+        $script:BuildJob.variables.ContainsKey('SkipBuildChangeLogValidation') | Should -BeFalse
+        $script:AnalyzeJob['${{ else }}'].condition | Should -Be 'and(succeeded(), ne(variables[''Skip.Analyze''], ''true''))'
+        $verify = @(Get-ValidationTemplateReference $script:BuildJob '/eng/common/pipelines/templates/steps/verify-changelogs.yml')[0]
+        $verify.parameters.ContainsKey('Condition') | Should -BeFalse
+        $wrapper = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/common/pipelines/templates/steps/verify-changelogs.yml') -Raw)
+        ($wrapper.parameters | Where-Object name -EQ 'Condition').default | Should -Be 'succeeded()'
     }
 
     It 'adds no job and only makes opted-in Build and Analyze wait on existing preflight' {
@@ -1348,6 +1395,8 @@ Describe 'Combined documentation workflow and final result contracts' -Tag 'Unit
         $legacy.jobs.Count | Should -Be 1
         $legacyJob = $legacy.jobs['check-spelling']
         $legacyJob.name | Should -Be 'Check Spelling'
+        $legacyJob.'runs-on' | Should -Be 'ubuntu-slim'
+        ($legacy.jobs.Count + $script:Workflow.jobs.Count) | Should -Be 2
         $legacyJob.name | Should -Not -Be $script:Workflow.jobs['validate-documentation'].name
         $legacyJob.steps.name | Should -Be @('Checkout', 'Use Node.js 24', 'Check spelling')
         $legacyJob.steps[-1].run | Should -Match 'eng/common/scripts/check-spelling-in-changed-files\.ps1'
@@ -1389,7 +1438,10 @@ Describe 'Combined documentation workflow and final result contracts' -Tag 'Unit
         }
         $summary | Should -Match '### Spelling'
         $summary | Should -Match '### Changelogs'
-        $summary | Should -Match 'Covered public unified main PRs use this combined check'
+        $summary | Should -Match 'Validate documentation is optional during the staged rollout'
+        $summary | Should -Match 'Azure routing is disabled by default'
+        $summary | Should -Match 'approved, verified required-check migration to Validate documentation'
+        $summary | Should -Match 'After activation, only covered public unified main PRs'
         $summary | Should -Match 'Other scopes and ForceFullValidation retain their existing Azure checks'
         $summary | Should -Match 'Release validation is unchanged'
         $summary | Should -Not -Match 'parity burn-in|Azure Build still repeats'

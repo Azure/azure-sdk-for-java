@@ -12,7 +12,7 @@ function Get-PRChangeLogCoverage {
     )
 
     $reason = if (-not $Enabled) {
-        'The pipeline has not opted in to combined PR validation.'
+        'Combined PR routing is disabled until the Validate documentation required-check migration is approved and verified.'
     }
     elseif ($ServiceDirectory -cne 'auto' -or $SdkType -cne 'client') {
         'Only the unified auto/client pipeline is covered.'
@@ -33,7 +33,7 @@ function Get-PRChangeLogCoverage {
         'Only a pull request merge build is covered.'
     }
     elseif ($Context['TargetBranch'] -cnotin @('main', 'refs/heads/main')) {
-        'Only main-target PRs have established required Check Spelling coverage.'
+        'Only main-target PRs can use required Validate documentation coverage after migration.'
     }
     else {
         ''
@@ -41,7 +41,9 @@ function Get-PRChangeLogCoverage {
 
     return [pscustomobject]@{
         Covered = $reason.Length -eq 0
-        Reason = if ($reason) { $reason } else { 'The required Check Spelling job covers this public unified main PR.' }
+        Reason = if ($reason) { $reason } else {
+            'Explicit opt-in assumes verified required Validate documentation coverage for this public unified main PR.'
+        }
     }
 }
 
