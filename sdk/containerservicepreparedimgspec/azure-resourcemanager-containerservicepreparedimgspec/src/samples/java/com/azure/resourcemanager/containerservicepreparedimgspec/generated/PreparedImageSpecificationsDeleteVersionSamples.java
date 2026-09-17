@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservicepreparedimgspec.generated;
 /**
  * Samples for PreparedImageSpecifications DeleteVersion.
  */
-public final class PreparedImageSpecificationsDeleteVeSamples {
+public final class PreparedImageSpecificationsDeleteVersionSamples {
     /*
      * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_DeleteVersion.json
      */

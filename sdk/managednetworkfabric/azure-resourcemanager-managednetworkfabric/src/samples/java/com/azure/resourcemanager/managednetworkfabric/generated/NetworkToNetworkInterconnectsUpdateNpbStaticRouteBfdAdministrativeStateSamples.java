@@ -11,7 +11,7 @@ import java.util.Arrays;
 /**
  * Samples for NetworkToNetworkInterconnects UpdateNpbStaticRouteBfdAdministrativeState.
  */
-public final class NetworkToNetworkInterconnectsUpdateNpbStaticRouteBfdAdministrativeStSamples {
+public final class NetworkToNetworkInterconnectsUpdateNpbStaticRouteBfdAdministrativeStateSamples {
     /*
      * x-ms-original-file: 2025-07-15/NetworkToNetworkInterconnects_UpdateNpbStaticRouteBfdAdministrativeState.json
      */

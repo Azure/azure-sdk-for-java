@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.hardwaresecuritymodules.generated;
 
 /**
- * Samples for PaymentHsmClusterPrivateEndpointConnections ListByPaymentHsmCluster.
+ * Samples for PaymentHsmClusterPrivateLinkResources ListByPaymentHsmCluster.
  */
-public final class PaymentHsmClusterPrivateEndpointConnectionsListByPaymentHsmSamples {
+public final class PaymentHsmClusterPrivateLinkResourcesListByPaymentHsmClusterSamples {
     /*
      * x-ms-original-file:
-     * 2025-12-01-preview/PaymentHsmClusterPrivateEndpointConnection_ListByPaymentHsmCluster_MaximumSet_Gen.json
+     * 2025-12-01-preview/PaymentHsmClusterPrivateLinkResource_ListByPaymentHsmCluster_MaximumSet_Gen.json
      */
     /**
-     * Sample code: PaymentHsmClusterPrivateEndpointConnection_ListByPaymentHsmCluster_MaximumSet_Gen.
+     * Sample code: PaymentHsmClusterPrivateLinkResource_ListByPaymentHsmCluster_MaximumSet_Gen.
      * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
-    public static void paymentHsmClusterPrivateEndpointConnectionListByPaymentHsmClusterMaximumSetGen(
+    public static void paymentHsmClusterPrivateLinkResourceListByPaymentHsmClusterMaximumSetGen(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.paymentHsmClusterPrivateEndpointConnections()
+        manager.paymentHsmClusterPrivateLinkResources()
             .listByPaymentHsmCluster("rgpaymenthsm", "phsm1", com.azure.core.util.Context.NONE);
     }
 }
