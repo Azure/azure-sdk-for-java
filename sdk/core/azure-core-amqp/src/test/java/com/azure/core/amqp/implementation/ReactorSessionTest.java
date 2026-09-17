@@ -355,8 +355,15 @@ public class ReactorSessionTest {
         assertNotNull(firstLink);
 
         // Simulate the link being silently detached by completing the handler's endpoint
-        // states (which sets isDisposed on the ReactorSender) without blocking.
+        // states (which sets isDisposed on the ReactorSender).
         sendLinkHandler1.close();
+
+        // Wait for the endpoint states completion to propagate through the ReactorSender's
+        // async doOnComplete callback, which sets isDisposed = true.
+        StepVerifier.create(firstLink.getEndpointStates())
+            .thenAwait(Duration.ofSeconds(1))
+            .expectComplete()
+            .verify(TIMEOUT);
 
         assertTrue(firstLink.isDisposed());
 

@@ -446,7 +446,7 @@ public class ReactorSession implements AmqpSession {
                                     if (link != null && link.isDisposed()) {
                                         logger.atInfo()
                                             .addKeyValue(LINK_NAME_KEY, linkName)
-                                            .log("Cached receive link is disposed. Closing old subscription and creating a new receiver link.");
+                                            .log("Cached receive link is disposed. Recreating.");
                                         existing.closeAsync(null).subscribe();
                                     } else {
                                         logger.atInfo()
@@ -563,7 +563,7 @@ public class ReactorSession implements AmqpSession {
                                 if (link != null && link.isDisposed()) {
                                     logger.atInfo()
                                         .addKeyValue(LINK_NAME_KEY, linkName)
-                                        .log("Cached send link is disposed. Closing old subscription and creating a new send link.");
+                                        .log("Cached send link is disposed. Recreating.");
                                     existingLink.closeAsync(null).subscribe();
                                 } else {
                                     logger.atInfo()
