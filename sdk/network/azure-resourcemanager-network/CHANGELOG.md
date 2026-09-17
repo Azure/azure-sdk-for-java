@@ -1,14 +1,137 @@
 # Release History
 
-## 2.61.0-beta.1 (Unreleased)
+## 2.61.0 (2026-09-15)
 
-### Features Added
+- Package api-version Microsoft.Network: 2026-01-01, Microsoft.Compute: 2018-10-01.
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.EnableOnlyIpv6PeeringState` was removed
 
-### Other Changes
+### Features Added
+
+* `models.AuthenticationPolicyUpdateParameters` was added
+
+* `models.ApplicationGatewayAdvancedRoutingCondition` was added
+
+* `models.SessionRecordingIdentityType` was added
+
+* `models.ApplicationGatewayAdvancedRoutingMapPropertiesFormat` was added
+
+* `models.PeeringHealth` was added
+
+* `models.MigrateExpressRouteCircuitRequest` was added
+
+* `models.ApplicationGatewayAdvancedRoutingRule` was added
+
+* `models.ApplicationGatewayAdvancedRoutingConditionType` was added
+
+* `models.BastionHostUpdate` was added
+
+* `models.PeeringStats` was added
+
+* `models.AuthenticationPolicyPropertiesFormat` was added
+
+* `models.ApprovalReference` was added
+
+* `models.AuthenticationProviderProperties` was added
+
+* `models.OnUnauthenticatedRequest` was added
+
+* `models.SessionRecordingIdentity` was added
+
+* `models.PortMigrationInfo` was added
+
+* `models.SourcePortStats` was added
+
+* `models.ApplicationGatewayWafRuleParanoiaLevel` was added
+
+* `models.UserTrustProviderType` was added
+
+* `models.ApplicationGatewayAdvancedRoutingPropertyValueMatcher` was added
+
+* `models.BastionSessionRecordingConfiguration` was added
+
+* `models.ApplicationGatewayAdvancedRoutingMap` was added
+
+* `models.Metric` was added
+
+* `models.ApplicationGatewayAdvancedRoutingRulePropertiesFormat` was added
+
+* `models.ApplicationGatewayAuthConfig` was added
+
+* `models.PortMapping` was added
+
+* `models.MigrateExpressRouteCircuitHealthCheckDetails` was added
+
+* `models.ApplicationGatewayAdvancedRoutingConditionSetPropertiesFormat` was added
+
+* `models.WebApplicationFirewallPolicyTier` was added
+
+* `models.MigrateExpressRouteCircuitValidateAndHealthCheckRequest` was added
+
+* `models.ApplicationGatewayAdvancedRoutingConditionSet` was added
+
+#### `models.ApplicationGatewayFirewallRule` was modified
+
+* `paranoiaLevel()` was added
+
+#### `models.NetworkRule` was modified
+
+* `sourceGeoLocations()` was added
+* `withDestinationGeoLocations(java.util.List)` was added
+* `withSourceGeoLocations(java.util.List)` was added
+* `destinationGeoLocations()` was added
+
+#### `models.IpamPoolUpdateProperties` was modified
+
+* `withMaxAllocationSize(java.lang.String)` was added
+* `minAllocationSize()` was added
+* `maxAllocationSize()` was added
+* `withMinAllocationSize(java.lang.String)` was added
+
+#### `models.ApplicationGatewaySkuName` was modified
+
+* `BASIC_V2` was added
+* `BASIC_WAF_V2` was added
+
+#### `models.IpamPoolProperties` was modified
+
+* `maxAllocationSize()` was added
+* `minAllocationSize()` was added
+* `withMaxAllocationSize(java.lang.String)` was added
+* `withMinAllocationSize(java.lang.String)` was added
+
+#### `models.ExpressRouteLagPropertiesFormat` was modified
+
+* `circuits()` was added
+
+#### `models.ApplicationGatewayFirewallRuleSet` was modified
+
+* `displayName()` was added
+
+#### `models.ApplicationGatewayFirewallManifestRuleSet` was modified
+
+* `displayName()` was added
+
+#### `models.ApplicationGatewayTier` was modified
+
+* `BASIC_V2` was added
+* `BASIC_WAF_V2` was added
+
+#### `models.PrivateLinkServiceConnection` was modified
+
+* `approvalReference()` was added
+* `withApprovalReference(models.ApprovalReference)` was added
+
+#### `models.ApplicationGatewayRequestRoutingRuleType` was modified
+
+* `ADVANCED_ROUTING` was added
+
+#### `models.VirtualNetworkGatewayMigrationType` was modified
+
+* `UPGRADE_GATEWAY_TO_DUAL_STACK` was added
+* `MIGRATE_GATEWAY_FOR_POINT_TO_SITE_PROFILE` was added
 
 ## 2.60.1 (2026-08-18)
 

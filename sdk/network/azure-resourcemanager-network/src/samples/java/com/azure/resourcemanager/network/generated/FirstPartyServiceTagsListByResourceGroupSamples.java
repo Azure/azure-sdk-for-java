@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirstPartyServiceTagsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/FirstPartyServiceTagList.json
+     * x-ms-original-file: 2026-01-01/FirstPartyServiceTagList.json
      */
     /**
      * Sample code: List first party service tags in resource group.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysGetEffectiveRoutesSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VirtualNetworkGatewayGetEffectiveRoutes.json
+     * x-ms-original-file: 2026-01-01/VirtualNetworkGatewayGetEffectiveRoutes.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayEffectiveRoutes.

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -56,6 +57,11 @@ public final class ExpressRouteLagPropertiesFormat implements JsonSerializable<E
      * The set of links of the ExpressRouteLag resource.
      */
     private List<ExpressRouteLagLinkInner> links;
+
+    /*
+     * Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRouteLag resource.
+     */
+    private List<SubResource> circuits;
 
     /*
      * The date and time when the ExpressRouteLag was allocated.
@@ -209,6 +215,16 @@ public final class ExpressRouteLagPropertiesFormat implements JsonSerializable<E
     public ExpressRouteLagPropertiesFormat withLinks(List<ExpressRouteLagLinkInner> links) {
         this.links = links;
         return this;
+    }
+
+    /**
+     * Get the circuits property: Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRouteLag
+     * resource.
+     * 
+     * @return the circuits value.
+     */
+    public List<SubResource> circuits() {
+        return this.circuits;
     }
 
     /**
@@ -381,6 +397,9 @@ public final class ExpressRouteLagPropertiesFormat implements JsonSerializable<E
                     List<ExpressRouteLagLinkInner> links
                         = reader.readArray(reader1 -> ExpressRouteLagLinkInner.fromJson(reader1));
                     deserializedExpressRouteLagPropertiesFormat.links = links;
+                } else if ("circuits".equals(fieldName)) {
+                    List<SubResource> circuits = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedExpressRouteLagPropertiesFormat.circuits = circuits;
                 } else if ("allocationDate".equals(fieldName)) {
                     deserializedExpressRouteLagPropertiesFormat.allocationDate = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {

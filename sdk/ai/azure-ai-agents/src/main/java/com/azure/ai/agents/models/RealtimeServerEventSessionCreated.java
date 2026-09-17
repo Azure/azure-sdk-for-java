@@ -50,10 +50,22 @@ public final class RealtimeServerEventSessionCreated extends RealtimeServerEvent
      * @param eventId the eventId value to set.
      * @param session the session value to set.
      */
-    @Generated
-    private RealtimeServerEventSessionCreated(String eventId, BinaryData session) {
+    RealtimeServerEventSessionCreated(String eventId, BinaryData session) {
+        // AI Tooling: union type
         this.eventId = eventId;
         this.session = session;
+    }
+
+    /**
+     * Creates an instance of RealtimeServerEventSessionCreated class.
+     *
+     * @param eventId the eventId value to set.
+     * @param session the {@link VoiceAgentSessionResponseConfig} session to set.
+     */
+    public RealtimeServerEventSessionCreated(String eventId, VoiceAgentSessionResponseConfig session) {
+        // AI Tooling: union type
+        this.eventId = eventId;
+        this.session = session == null ? null : BinaryData.fromObject(session);
     }
 
     /**
@@ -82,8 +94,8 @@ public final class RealtimeServerEventSessionCreated extends RealtimeServerEvent
      *
      * @return the session value.
      */
-    @Generated
-    public BinaryData getSession() {
+    BinaryData getSession() {
+        // AI Tooling: union type
         return this.session;
     }
 
@@ -150,5 +162,23 @@ public final class RealtimeServerEventSessionCreated extends RealtimeServerEvent
             deserializedRealtimeServerEventSessionCreated.conversationId = conversationId;
             return deserializedRealtimeServerEventSessionCreated;
         });
+    }
+
+    /**
+     * Get the session property: The session configuration.
+     *
+     * @return the session value as a {@link VoiceAgentSessionResponseConfig}, or {@code null} when it is not set or
+     * holds another variant.
+     */
+    public VoiceAgentSessionResponseConfig getSessionAsVoiceAgentSessionResponseConfig() {
+        // AI Tooling: union type
+        if (this.session == null) {
+            return null;
+        }
+        String json = this.session.toString().trim();
+        if (!(json.startsWith("{"))) {
+            return null;
+        }
+        return this.session.toObject(VoiceAgentSessionResponseConfig.class);
     }
 }

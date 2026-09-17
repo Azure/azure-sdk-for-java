@@ -11,6 +11,14 @@ pr:
     exclude:
       - .github/skills/azsdk-common-*/**
       - docs/**
+      - AGENTS.md
+      - CODE_OF_CONDUCT.md
+      - CONTRIBUTING.md
+      - LICENSE.txt
+      - NOTICE.txt
+      - README.md
+      - SECURITY.md
+      - SUPPORT.md
 
 parameters:
   - name: Service
@@ -48,9 +56,17 @@ extends:
     # This is Necessary since FromSource runs hover around 60,
     # which is the default, and intermittently time out.
     TimeoutInMinutes: 90
-    # Keep the docs path synchronized with pr.paths.exclude above.
+    # Keep these documentation paths synchronized with pr.paths.exclude above.
     ExcludePaths:
     - docs/
+    - AGENTS.md
+    - CODE_OF_CONDUCT.md
+    - CONTRIBUTING.md
+    - LICENSE.txt
+    - NOTICE.txt
+    - README.md
+    - SECURITY.md
+    - SUPPORT.md
     - eng/versioning/external_dependencies.txt
     - eng/versioning/version_client.txt
     - eng/versioning/version_java_files.txt
