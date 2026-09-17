@@ -257,7 +257,7 @@ The async `Beta*AsyncClient` counterparts follow the same behavior.
 
 ## Examples
 
-The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples]. Additional preview samples are available for data generation jobs (`DataGenerationJobsSample`, `DataGenerationJobsAsyncSample`, and `DataGenerationJobWithEvaluationSample`), model management (`ModelsSample` and `ModelsAsyncSample`), routines (`RoutinesSample`, `RoutinesAsyncSample`, `RoutinesManualDispatchSample`, `RoutinesManualDispatchAsyncSample`, and related trigger samples), and packaged skills (`SkillsPackageSample` and `SkillsPackageAsyncSample`).
+The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples]. Additional preview samples are available for data generation jobs (`DataGenerationJobsSample`, `DataGenerationJobsAsyncSample`, and `DataGenerationJobWithEvaluationSample`), model management (`ModelsSample`, `ModelsAsyncSample`, and `ModelsCreateAndPollSample`), routines (`RoutinesSample`, `RoutinesAsyncSample`, `RoutinesManualDispatchSample`, `RoutinesManualDispatchAsyncSample`, and related trigger samples), and packaged skills (`SkillsPackageSample` and `SkillsPackageAsyncSample`).
 
 ### Connections operations
 
@@ -638,7 +638,7 @@ Index operations allow you to create and enumerate search indexes used by your A
 
 #### Create or update an index version
 
-```java com.azure.ai.projects.IndexesGetSample.createOrUpdateIndex
+```java com.azure.ai.projects.IndexesSample.createOrUpdateIndex
 String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
 String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "2.0");
 String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
@@ -657,7 +657,7 @@ System.out.println("Index created: " + index.getName());
 
 #### List indexes
 
-```java com.azure.ai.projects.IndexesListSample.listIndexes
+```java com.azure.ai.projects.IndexesSample.listIndexes
 indexesClient.listLatestIndexVersions().forEach(index -> {
     System.out.println("Index name: " + index.getName());
     System.out.println("Index version: " + index.getVersion());
@@ -668,7 +668,7 @@ indexesClient.listLatestIndexVersions().forEach(index -> {
 
 #### List index versions
 
-```java com.azure.ai.projects.IndexesListVersionsSample.listIndexVersions
+```java com.azure.ai.projects.IndexesSample.listIndexVersions
 
 String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
 
@@ -682,7 +682,7 @@ indexesClient.listIndexVersions(indexName).forEach(index -> {
 
 #### Get an index version
 
-```java com.azure.ai.projects.IndexesGetSample.getIndex
+```java com.azure.ai.projects.IndexesSample.getIndex
 
 String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
 String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
@@ -698,7 +698,7 @@ System.out.println("Type: " + index.getType());
 
 #### Delete an index version
 
-```java com.azure.ai.projects.IndexesDeleteSample.deleteIndex
+```java com.azure.ai.projects.IndexesSample.deleteIndex
 
 String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
 String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");

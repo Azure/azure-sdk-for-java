@@ -69,7 +69,8 @@ The Agents client library has the following sub-clients which group the differen
 - `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
 - `ToolboxesClient` / `ToolboxesAsyncClient`: Manage toolboxes and toolbox versions.
 - `BetaVoiceAgentWebSocketClient` / `BetaVoiceAgentWebSocketAsyncClient` **(preview)**: Open typed realtime WebSocket sessions with voice agents.
-- `BetaAgentEndpointConversationsClient` / `BetaAgentEndpointConversationsAsyncClient` **(preview)**: Read persisted voice-agent conversations, transcripts, and audio metadata.
+- `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` **(preview)**: Manage voice-agent outbound calls and telephony campaigns.
+- `BetaVoiceAgentsConversationsClient` / `BetaVoiceAgentsConversationsAsyncClient` **(preview)**: Read persisted voice-agent conversations, transcripts, and audio metadata.
 
 Conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s `ConversationService`. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
 
@@ -241,7 +242,8 @@ Build clients whose names start with `Beta` from `AgentsClientBuilder.beta()`. T
 | `BetaAgentsClient` | `WorkflowAgents=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,AgentsOptimization=V2Preview` |
 | `BetaMemoryStoresClient` | `MemoryStores=V1Preview` |
 | `BetaVoiceAgentWebSocketClient` | `VoiceAgents=V1Preview` |
-| `BetaAgentEndpointConversationsClient` | `VoiceAgents=V1Preview` |
+| `BetaVoiceAgentsTelephonyClient` | `VoiceAgents=V1Preview` |
+| `BetaVoiceAgentsConversationsClient` | `VoiceAgents=V1Preview` |
 
 The async `Beta*AsyncClient` counterparts follow the same behavior.
 
@@ -1132,8 +1134,7 @@ The live audio example requires a Java Sound-compatible microphone and speaker. 
 
 All agent samples use `FOUNDRY_PROJECT_ENDPOINT`. Prompt-agent samples also use `FOUNDRY_MODEL_NAME`.
 
-- **Agent lifecycle and structured output:** [CreateAgent.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/CreateAgent.java), [GetAgent.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/GetAgent.java), and the `AgentStructuredOutput*` samples.
-- **Workflow agents:** `WorkflowMultiAgentSample`, `WorkflowMultiAgentAsyncSample`, and `WorkflowMultiAgentMcpApprovalSample` demonstrate CSDL workflows and MCP approval handling.
+- **Agent lifecycle and structured inputs:** [CreateAgent.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/CreateAgent.java), [GetAgent.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/GetAgent.java), and [CreateResponseWithStructuredInput.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/CreateResponseWithStructuredInput.java).
 - **Optimization jobs:** the [optimization samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/optimization) cover SDK polling, application-managed polling, cancellation, listing, retrieval, and deletion.
 - **Advanced tools:** additional samples cover structured inputs, generated-file download, File Search streaming, non-preview Web Search, custom search, and end-to-end toolbox search.
 
