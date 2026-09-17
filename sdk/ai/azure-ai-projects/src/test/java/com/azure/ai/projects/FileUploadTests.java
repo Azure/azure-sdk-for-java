@@ -47,6 +47,7 @@ class FileUploadTests {
                 AtomicInteger uploadCalls = new AtomicInteger();
                 HttpClient blob = request -> {
                     uploadCalls.incrementAndGet();
+                    request.getBodyAsBinaryData().toBytes();
                     assertTrue(request.getUrl().getPath().endsWith("weights.bin"));
                     assertEquals("review", request.getHeaders().getValue("x-ms-meta-purpose"));
                     assertEquals("*", request.getHeaders().getValue(HttpHeaderName.IF_NONE_MATCH));
@@ -119,6 +120,7 @@ class FileUploadTests {
         AtomicInteger polls = new AtomicInteger();
         AtomicInteger calls = new AtomicInteger();
         HttpClient blobClient = request -> {
+            request.getBodyAsBinaryData().toBytes();
             uploads.add(request);
             return Mono.just(new MockHttpResponse(request, 201, new HttpHeaders().set(HttpHeaderName.ETAG, "\"etag\""),
                 new byte[0]));
