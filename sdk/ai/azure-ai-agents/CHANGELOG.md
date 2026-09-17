@@ -27,6 +27,7 @@
 - Replaced `generateAgent` and `generateAgentWithResponse` on `AgentsClient` and `AgentsAsyncClient` with
   `createAgentFromPrompt` and `createAgentFromPromptWithResponse` on `BetaAgentsClient` and `BetaAgentsAsyncClient`.
 - Moved `getId()` and `getConversationId()` from `VoiceResponseBase` to `VoiceResponse`.
+
 ### Bugs Fixed
 
 - Reject insecure voice-agent WebSocket URLs before token acquisition to prevent sending credentials over plaintext.
