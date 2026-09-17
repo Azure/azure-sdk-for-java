@@ -64,11 +64,13 @@ public interface DiagnosticsClientContext {
                 generator.writeStringField("machineId", ClientTelemetry.getMachineId(clientConfig));
                 generator.writeStringField("connectionMode", clientConfig.getConnectionMode().toString());
                 generator.writeNumberField("numberOfClients", clientConfig.getActiveClientsCount());
-                generator.writeStringField("isPpafEnabled", clientConfig.isPerPartitionAutomaticFailoverEnabledAsString);
-                generator.writeBooleanField("isHedgingDisabledByAccount",
-                    "true".equals(clientConfig.isPerPartitionAutomaticFailoverEnabledAsString)
-                        && clientConfig.crossRegionalHedgingDisabledByAccount != null
-                        && clientConfig.crossRegionalHedgingDisabledByAccount.get());
+                String isPpafEnabled = clientConfig.isPerPartitionAutomaticFailoverEnabledAsString;
+                generator.writeStringField("isPpafEnabled", isPpafEnabled);
+                if ("true".equals(isPpafEnabled)) {
+                    generator.writeBooleanField("isPpafBasedAvailabilityStrategyEnabled",
+                        clientConfig.crossRegionalHedgingDisabledByAccount == null
+                            || !clientConfig.crossRegionalHedgingDisabledByAccount.get());
+                }
                 generator.writeStringField("isFalseProgSessionTokenMergeEnabled", Configs.isSessionTokenFalseProgressMergeEnabled() ? "true" : "false");
                 generator.writeStringField("excrgns", clientConfig.excludedRegionsRelatedConfig());
                 generator.writeObjectFieldStart("clientEndpoints");

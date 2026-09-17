@@ -2358,8 +2358,12 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         JsonNode clientConfig = OBJECT_MAPPER.readTree(diagnostics.toString()).findValue("clientCfgs");
         assertThat(clientConfig).isNotNull();
         assertThat(clientConfig.path("isPpafEnabled").asBoolean()).isEqualTo(ppafEnabled);
-        assertThat(clientConfig.has("isHedgingDisabledByAccount")).isTrue();
-        assertThat(clientConfig.path("isHedgingDisabledByAccount").asBoolean()).isEqualTo(disabled);
+        assertThat(clientConfig.has("isHedgingDisabledByAccount")).isFalse();
+        assertThat(clientConfig.has("isPpafBasedAvailabilityStrategyEnabled")).isEqualTo(ppafEnabled);
+        if (ppafEnabled) {
+            assertThat(clientConfig.get("isPpafBasedAvailabilityStrategyEnabled").isBoolean()).isTrue();
+            assertThat(clientConfig.get("isPpafBasedAvailabilityStrategyEnabled").asBoolean()).isEqualTo(!disabled);
+        }
         assertThat(clientConfig.path("partitionLevelCircuitBreakerCfg").asText()).isNotEmpty();
     }
 
