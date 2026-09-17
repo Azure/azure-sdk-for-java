@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -79,6 +80,7 @@ public class RealtimeSessionConfigurationSerializationTests {
         RealtimeSessionConfiguration request
             = new RealtimeSessionConfiguration().setToolChoice(ToolChoiceOptions.REQUIRED);
         assertEquals(ToolChoiceOptions.REQUIRED, request.getToolChoiceAsToolChoiceOptions());
+        assertEquals("required", getSerializedToolChoice(request));
 
         RealtimeSessionConfiguration stringResult = roundTrip(request);
         assertEquals(ToolChoiceOptions.REQUIRED, stringResult.getToolChoiceAsToolChoiceOptions());
@@ -86,8 +88,11 @@ public class RealtimeSessionConfigurationSerializationTests {
         assertNull(stringResult.getToolChoiceAsToolChoiceMcp());
 
         ToolChoiceFunction function = ToolChoiceFunction.builder().name("lookup").build();
-        RealtimeSessionConfiguration functionResult
-            = roundTrip(new RealtimeSessionConfiguration().setToolChoice(function));
+        RealtimeSessionConfiguration functionRequest = new RealtimeSessionConfiguration().setToolChoice(function);
+        assertEquals(parseJson("{\"type\":\"function\",\"name\":\"lookup\"}"),
+            getSerializedToolChoice(functionRequest));
+
+        RealtimeSessionConfiguration functionResult = roundTrip(functionRequest);
         assertEquals("lookup", functionResult.getToolChoiceAsToolChoiceFunction().name());
         assertNull(functionResult.getToolChoiceAsToolChoiceOptions());
         assertNull(functionResult.getToolChoiceAsToolChoiceMcp());
@@ -169,6 +174,15 @@ public class RealtimeSessionConfigurationSerializationTests {
             && !serialized.contains("\"tool_choice\"")
             && !serialized.contains("\"max_output_tokens\"")
             && !serialized.contains("\"truncation\""));
+    }
+
+    private Object getSerializedToolChoice(RealtimeSessionConfiguration value) throws IOException {
+        Object serialized = parseJson(UnionTypeSerializationTestUtils.serialize(value));
+        return ((Map<?, ?>) serialized).get("tool_choice");
+    }
+
+    private Object parseJson(String json) throws IOException {
+        return UnionTypeSerializationTestUtils.deserialize(json, reader -> reader.readUntyped());
     }
 
     private RealtimeSessionConfiguration roundTrip(RealtimeSessionConfiguration value) throws IOException {

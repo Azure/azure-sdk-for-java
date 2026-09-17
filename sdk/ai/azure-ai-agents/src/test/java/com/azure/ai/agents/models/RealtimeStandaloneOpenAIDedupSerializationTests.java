@@ -63,7 +63,8 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
             "gpt-audio-1.5",
             "gpt-audio-mini",
             "gpt-audio-mini-2025-10-06",
-            "gpt-audio-mini-2025-12-15" };
+            "gpt-audio-mini-2025-12-15",
+            "future-realtime-model" };
 
         for (String modelValue : modelValues) {
             RealtimeSessionConfiguration original = new RealtimeSessionConfiguration().setModel(Model.of(modelValue))
@@ -322,7 +323,8 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
             RealtimeResponse.Status.CANCELLED,
             RealtimeResponse.Status.FAILED,
             RealtimeResponse.Status.INCOMPLETE,
-            RealtimeResponse.Status.IN_PROGRESS };
+            RealtimeResponse.Status.IN_PROGRESS,
+            RealtimeResponse.Status.of("future-response-status") };
         for (RealtimeResponse.Status status : statuses) {
             for (RealtimeResponse.OutputModality modality : new RealtimeResponse.OutputModality[] {
                 RealtimeResponse.OutputModality.TEXT,
