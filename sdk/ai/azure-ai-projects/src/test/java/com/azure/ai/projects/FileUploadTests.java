@@ -216,8 +216,9 @@ class FileUploadTests {
     private static void consumeBody(HttpRequest request) {
         try (InputStream stream = request.getBodyAsBinaryData().toStream()) {
             byte[] buffer = new byte[8192];
-            while (stream.read(buffer) != -1) {
-                // Drain the file-backed body so the mock behaves like a real transport.
+            int bytesRead = stream.read(buffer);
+            while (bytesRead != -1) {
+                bytesRead = stream.read(buffer);
             }
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);

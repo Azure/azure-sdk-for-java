@@ -9,6 +9,7 @@ import com.azure.ai.projects.models.ModelUploadOptions;
 import com.azure.ai.projects.models.ModelVersion;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import reactor.core.publisher.Flux;
 
 /** Shared local-file validation and blob upload configuration. */
 public final class FileUploadHelper {
@@ -140,7 +142,14 @@ public final class FileUploadHelper {
      * @return the blob upload options.
      */
     public static BlobParallelUploadOptions createUploadOptions(Path file, FileUploadOptions options) {
-        BlobParallelUploadOptions upload = new BlobParallelUploadOptions(BinaryData.fromFile(file));
+        BlobParallelUploadOptions upload = new BlobParallelUploadOptions(
+            Flux.using(() -> Files.newInputStream(file), FluxUtil::toFluxByteBuffer, stream -> {
+                try {
+                    stream.close();
+                } catch (IOException exception) {
+                    throw new UncheckedIOException(exception);
+                }
+            }));
         if (options != null && options.getBlobUploadConfiguration() != null) {
             options.getBlobUploadConfiguration().accept(upload);
         }
