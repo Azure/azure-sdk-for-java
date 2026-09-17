@@ -1,5 +1,11 @@
 # Release History
 
+## 1.7.1 (Unreleased)
+
+### Bugs Fixed
+
+- Route internal SDKStats using OneSettings data-boundary connection strings, with the existing Breeze endpoint as the fallback.
+
 ## 1.7.0 (2026-09-17)
 
 ### Bugs Fixed
