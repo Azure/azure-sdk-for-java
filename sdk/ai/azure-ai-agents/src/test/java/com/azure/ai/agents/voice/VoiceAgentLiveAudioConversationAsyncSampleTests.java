@@ -109,18 +109,17 @@ public class VoiceAgentLiveAudioConversationAsyncSampleTests {
     @Test
     public void cancellationClosesAudioAndCancelsReceive() throws Exception {
         FakeAudio audio = new FakeAudio();
-        AtomicBoolean cancelled = new AtomicBoolean();
+        CountDownLatch cancelled = new CountDownLatch(1);
         CountDownLatch receiving = new CountDownLatch(1);
         VoiceAgentLiveAudioConversationAsyncSample.AudioProcessor processor = audio.processor();
-        CompletableFuture<Void> conversation
-            = VoiceAgentLiveAudioConversationAsyncSample.runConversation(Mono.<Void>never()
-                .doOnSubscribe(subscription -> receiving.countDown())
-                .doOnCancel(() -> cancelled.set(true)), processor, emptyInput()).toFuture();
+        CompletableFuture<Void> conversation = VoiceAgentLiveAudioConversationAsyncSample.runConversation(
+            Mono.<Void>never().doOnSubscribe(subscription -> receiving.countDown()).doOnCancel(cancelled::countDown),
+            processor, emptyInput()).toFuture();
         try {
             assertTrue(receiving.await(5, TimeUnit.SECONDS));
             conversation.cancel(true);
             assertTrue(audio.closed.await(5, TimeUnit.SECONDS));
-            assertTrue(cancelled.get());
+            assertTrue(cancelled.await(5, TimeUnit.SECONDS));
         } finally {
             conversation.cancel(true);
             processor.close();

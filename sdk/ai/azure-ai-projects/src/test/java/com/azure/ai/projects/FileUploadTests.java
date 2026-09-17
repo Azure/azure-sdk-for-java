@@ -14,6 +14,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.test.http.MockHttpResponse;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,7 +49,7 @@ class FileUploadTests {
                 AtomicInteger uploadCalls = new AtomicInteger();
                 HttpClient blob = request -> {
                     uploadCalls.incrementAndGet();
-                    request.getBodyAsBinaryData().toBytes();
+                    consumeBody(request);
                     assertTrue(request.getUrl().getPath().endsWith("weights.bin"));
                     assertEquals("review", request.getHeaders().getValue("x-ms-meta-purpose"));
                     assertEquals("*", request.getHeaders().getValue(HttpHeaderName.IF_NONE_MATCH));
@@ -120,7 +122,7 @@ class FileUploadTests {
         AtomicInteger polls = new AtomicInteger();
         AtomicInteger calls = new AtomicInteger();
         HttpClient blobClient = request -> {
-            request.getBodyAsBinaryData().toBytes();
+            consumeBody(request);
             uploads.add(request);
             return Mono.just(new MockHttpResponse(request, 201, new HttpHeaders().set(HttpHeaderName.ETAG, "\"etag\""),
                 new byte[0]));
@@ -209,5 +211,16 @@ class FileUploadTests {
         return new MockHttpResponse(request, status,
             new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"),
             body.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static void consumeBody(HttpRequest request) {
+        try (InputStream stream = request.getBodyAsBinaryData().toStream()) {
+            byte[] buffer = new byte[8192];
+            while (stream.read(buffer) != -1) {
+                // Drain the file-backed body so the mock behaves like a real transport.
+            }
+        } catch (IOException exception) {
+            throw new UncheckedIOException(exception);
+        }
     }
 }
