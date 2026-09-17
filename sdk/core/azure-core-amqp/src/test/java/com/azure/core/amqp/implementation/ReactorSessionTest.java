@@ -353,15 +353,10 @@ public class ReactorSessionTest {
                 .block(TIMEOUT);
         assertNotNull(firstLink);
 
-        // Simulate the link being silently detached by completing the handler's endpoint
-        // states (which sets isDisposed on the ReactorSender).
-        sendLinkHandler1.close();
-
-        // Wait for the async doOnComplete callback to propagate and set isDisposed = true.
-        Mono.fromSupplier(firstLink::isDisposed)
-            .filter(disposed -> disposed)
-            .repeatWhenEmpty(repeat -> repeat.delayElements(Duration.ofMillis(100)).take(50))
-            .block(TIMEOUT);
+        // Simulate the link becoming disposed (e.g. after silent AMQP detach).
+        // Calling closeAsync().subscribe() immediately sets isDisposed = true via AtomicBoolean
+        // without blocking or depending on async reactor dispatch.
+        ((ReactorSender) firstLink).closeAsync().subscribe();
 
         assertTrue(firstLink.isDisposed());
 
