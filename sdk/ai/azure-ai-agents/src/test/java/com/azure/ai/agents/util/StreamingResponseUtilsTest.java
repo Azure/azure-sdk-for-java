@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents.implementation;
+package com.azure.ai.agents.util;
 
 import com.azure.core.util.IterableStream;
 import com.openai.core.http.AsyncStreamResponse;
@@ -27,9 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Unit tests for {@link StreamingUtils}.
+ * Unit tests for {@link StreamingResponseUtils}.
  */
-public class StreamingUtilsTest {
+public class StreamingResponseUtilsTest {
 
     // ========================================================================
     // toIterableStream tests
@@ -40,7 +40,7 @@ public class StreamingUtilsTest {
         AtomicBoolean closed = new AtomicBoolean(false);
         StreamResponse<String> streamResponse = testStreamResponse(Stream.of("hello"), closed);
 
-        IterableStream<String> result = StreamingUtils.toIterableStream(streamResponse);
+        IterableStream<String> result = StreamingResponseUtils.toIterableStream(streamResponse);
 
         List<String> items = collect(result);
         assertEquals(1, items.size());
@@ -53,7 +53,7 @@ public class StreamingUtilsTest {
         AtomicBoolean closed = new AtomicBoolean(false);
         StreamResponse<String> streamResponse = testStreamResponse(Stream.of("event1", "event2", "event3"), closed);
 
-        IterableStream<String> result = StreamingUtils.toIterableStream(streamResponse);
+        IterableStream<String> result = StreamingResponseUtils.toIterableStream(streamResponse);
 
         List<String> items = collect(result);
         assertEquals(3, items.size());
@@ -68,7 +68,7 @@ public class StreamingUtilsTest {
         AtomicBoolean closed = new AtomicBoolean(false);
         StreamResponse<String> streamResponse = testStreamResponse(Stream.empty(), closed);
 
-        IterableStream<String> result = StreamingUtils.toIterableStream(streamResponse);
+        IterableStream<String> result = StreamingResponseUtils.toIterableStream(streamResponse);
 
         List<String> items = collect(result);
         assertTrue(items.isEmpty());
@@ -84,7 +84,7 @@ public class StreamingUtilsTest {
         }
         StreamResponse<String> streamResponse = testStreamResponse(expected.stream(), closed);
 
-        IterableStream<String> result = StreamingUtils.toIterableStream(streamResponse);
+        IterableStream<String> result = StreamingResponseUtils.toIterableStream(streamResponse);
 
         List<String> items = collect(result);
         assertEquals(expected, items);
@@ -96,7 +96,7 @@ public class StreamingUtilsTest {
         AtomicBoolean closed = new AtomicBoolean(false);
         StreamResponse<String> streamResponse = testStreamResponse(Stream.of("a", "b", "c"), closed);
 
-        IterableStream<String> result = StreamingUtils.toIterableStream(streamResponse);
+        IterableStream<String> result = StreamingResponseUtils.toIterableStream(streamResponse);
         Iterator<String> iterator = result.iterator();
 
         // Consume only one item
@@ -116,7 +116,7 @@ public class StreamingUtilsTest {
         AtomicBoolean closed = new AtomicBoolean(false);
         StreamResponse<String> streamResponse = testStreamResponse(Stream.of("only"), closed);
 
-        IterableStream<String> result = StreamingUtils.toIterableStream(streamResponse);
+        IterableStream<String> result = StreamingResponseUtils.toIterableStream(streamResponse);
         Iterator<String> iterator = result.iterator();
 
         assertEquals("only", iterator.next());
@@ -129,7 +129,7 @@ public class StreamingUtilsTest {
         AtomicBoolean closed = new AtomicBoolean(false);
         StreamResponse<String> streamResponse = testStreamResponse(Stream.of("a", "b"), closed);
 
-        IterableStream<String> result = StreamingUtils.toIterableStream(streamResponse);
+        IterableStream<String> result = StreamingResponseUtils.toIterableStream(streamResponse);
 
         // First iterator() call should succeed
         Iterator<String> first = result.iterator();
@@ -144,7 +144,7 @@ public class StreamingUtilsTest {
         AtomicBoolean closed = new AtomicBoolean(false);
         StreamResponse<String> streamResponse = testStreamResponse(Stream.of("a", "b"), closed);
 
-        IterableStream<String> result = StreamingUtils.toIterableStream(streamResponse);
+        IterableStream<String> result = StreamingResponseUtils.toIterableStream(streamResponse);
 
         // Fully consume the first iterator
         List<String> items = collect(result);
@@ -164,7 +164,7 @@ public class StreamingUtilsTest {
     public void toFluxSingleItem() {
         TestAsyncStreamResponse<String> asyncStream = new TestAsyncStreamResponse<>();
 
-        Flux<String> flux = StreamingUtils.toFlux(asyncStream);
+        Flux<String> flux = StreamingResponseUtils.toFlux(asyncStream);
 
         StepVerifier.create(flux).then(() -> {
             asyncStream.emit("hello");
@@ -176,7 +176,7 @@ public class StreamingUtilsTest {
     public void toFluxMultipleItems() {
         TestAsyncStreamResponse<String> asyncStream = new TestAsyncStreamResponse<>();
 
-        Flux<String> flux = StreamingUtils.toFlux(asyncStream);
+        Flux<String> flux = StreamingResponseUtils.toFlux(asyncStream);
 
         StepVerifier.create(flux).then(() -> {
             asyncStream.emit("event1");
@@ -190,7 +190,7 @@ public class StreamingUtilsTest {
     public void toFluxEmptyStream() {
         TestAsyncStreamResponse<String> asyncStream = new TestAsyncStreamResponse<>();
 
-        Flux<String> flux = StreamingUtils.toFlux(asyncStream);
+        Flux<String> flux = StreamingResponseUtils.toFlux(asyncStream);
 
         StepVerifier.create(flux).then(asyncStream::complete).verifyComplete();
     }
@@ -200,7 +200,7 @@ public class StreamingUtilsTest {
         TestAsyncStreamResponse<String> asyncStream = new TestAsyncStreamResponse<>();
         RuntimeException expectedError = new RuntimeException("stream failed");
 
-        Flux<String> flux = StreamingUtils.toFlux(asyncStream);
+        Flux<String> flux = StreamingResponseUtils.toFlux(asyncStream);
 
         StepVerifier.create(flux).then(() -> {
             asyncStream.emit("before-error");
@@ -216,7 +216,7 @@ public class StreamingUtilsTest {
         TestAsyncStreamResponse<String> asyncStream = new TestAsyncStreamResponse<>();
         RuntimeException expectedError = new RuntimeException("immediate failure");
 
-        Flux<String> flux = StreamingUtils.toFlux(asyncStream);
+        Flux<String> flux = StreamingResponseUtils.toFlux(asyncStream);
 
         StepVerifier.create(flux)
             .then(() -> asyncStream.completeWithError(expectedError))
@@ -232,7 +232,7 @@ public class StreamingUtilsTest {
             expected.add("item-" + i);
         }
 
-        Flux<String> flux = StreamingUtils.toFlux(asyncStream);
+        Flux<String> flux = StreamingResponseUtils.toFlux(asyncStream);
 
         StepVerifier.create(flux).then(() -> {
             for (String item : expected) {
@@ -250,7 +250,7 @@ public class StreamingUtilsTest {
     public void toFluxClosesOnDispose() {
         TestAsyncStreamResponse<String> asyncStream = new TestAsyncStreamResponse<>();
 
-        Flux<String> flux = StreamingUtils.toFlux(asyncStream);
+        Flux<String> flux = StreamingResponseUtils.toFlux(asyncStream);
 
         // Subscribe and immediately dispose
         flux.subscribe().dispose();

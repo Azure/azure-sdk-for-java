@@ -5,14 +5,13 @@ package com.azure.ai.agents.streaming;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
+import com.openai.core.http.StreamResponse;
 import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
@@ -38,7 +37,6 @@ public class SimpleStreamingSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         AgentVersionDetails agent = null;
 
@@ -50,24 +48,24 @@ public class SimpleStreamingSync {
             agent = agentsClient.createAgentVersion("streaming-agent", agentDefinition);
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            SampleUtils.pinAgentVersion(agentsClient, agent);
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // BEGIN: com.azure.ai.agents.streaming.simple_sync
             // Use ResponseAccumulator to collect streamed events into a final Response
             ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
             // Stream response - text is printed as it arrives
-            IterableStream<ResponseStreamEvent> events =
-                responsesClient.createStreamingAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+            try (StreamResponse<ResponseStreamEvent> events = openAIClient.responses().createStreaming(
                     ResponseCreateParams.builder()
-                        .input("Tell me a short story about a brave explorer."));
+                        .input("Tell me a short story about a brave explorer.")
+                        .build())) {
 
-            for (ResponseStreamEvent event : events) {
-                responseAccumulator.accumulate(event);
-                event.outputTextDelta()
-                    .ifPresent(textEvent -> System.out.print(textEvent.delta()));
+                events.stream().forEach(event -> {
+                    responseAccumulator.accumulate(event);
+                    event.outputTextDelta()
+                        .ifPresent(textEvent -> System.out.print(textEvent.delta()));
+                });
             }
             System.out.println(); // newline after streamed text
 
