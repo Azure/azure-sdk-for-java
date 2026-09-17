@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class FirstPartyServiceTagsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-09-01/FirstPartyServiceTagUpdateTags.json
+     * x-ms-original-file: 2026-01-01/FirstPartyServiceTagUpdateTags.json
      */
     /**
      * Sample code: Update first party service tag tags.

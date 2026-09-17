@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ApprovalReference;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
@@ -44,6 +45,12 @@ public final class PrivateLinkServiceConnectionProperties
      * A collection of read-only information about the state of the connection to the remote resource.
      */
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+
+    /*
+     * A reference to an existing approved private endpoint whose connection approval state should be inherited by this
+     * connection at creation time.
+     */
+    private ApprovalReference approvalReference;
 
     /**
      * Creates an instance of PrivateLinkServiceConnectionProperties class.
@@ -148,6 +155,28 @@ public final class PrivateLinkServiceConnectionProperties
     }
 
     /**
+     * Get the approvalReference property: A reference to an existing approved private endpoint whose connection
+     * approval state should be inherited by this connection at creation time.
+     * 
+     * @return the approvalReference value.
+     */
+    public ApprovalReference approvalReference() {
+        return this.approvalReference;
+    }
+
+    /**
+     * Set the approvalReference property: A reference to an existing approved private endpoint whose connection
+     * approval state should be inherited by this connection at creation time.
+     * 
+     * @param approvalReference the approvalReference value to set.
+     * @return the PrivateLinkServiceConnectionProperties object itself.
+     */
+    public PrivateLinkServiceConnectionProperties withApprovalReference(ApprovalReference approvalReference) {
+        this.approvalReference = approvalReference;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -155,6 +184,9 @@ public final class PrivateLinkServiceConnectionProperties
     public void validate() {
         if (privateLinkServiceConnectionState() != null) {
             privateLinkServiceConnectionState().validate();
+        }
+        if (approvalReference() != null) {
+            approvalReference().validate();
         }
     }
 
@@ -168,6 +200,7 @@ public final class PrivateLinkServiceConnectionProperties
         jsonWriter.writeArrayField("groupIds", this.groupIds, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("requestMessage", this.requestMessage);
         jsonWriter.writeJsonField("privateLinkServiceConnectionState", this.privateLinkServiceConnectionState);
+        jsonWriter.writeJsonField("approvalReference", this.approvalReference);
         return jsonWriter.writeEndObject();
     }
 
@@ -200,6 +233,9 @@ public final class PrivateLinkServiceConnectionProperties
                 } else if ("privateLinkServiceConnectionState".equals(fieldName)) {
                     deserializedPrivateLinkServiceConnectionProperties.privateLinkServiceConnectionState
                         = PrivateLinkServiceConnectionState.fromJson(reader);
+                } else if ("approvalReference".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnectionProperties.approvalReference
+                        = ApprovalReference.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

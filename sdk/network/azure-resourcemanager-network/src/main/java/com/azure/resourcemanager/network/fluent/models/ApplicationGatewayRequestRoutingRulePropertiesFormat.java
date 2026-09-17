@@ -10,9 +10,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAuthConfig;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Properties of request routing rule of the application gateway.
@@ -51,6 +53,11 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
     private SubResource urlPathMap;
 
     /*
+     * Advanced routing map resource of the application gateway.
+     */
+    private SubResource advancedRoutingMap;
+
+    /*
      * Rewrite Rule Set resource in Basic rule of the application gateway.
      */
     private SubResource rewriteRuleSet;
@@ -69,6 +76,14 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
      * Entra JWT validation configuration resource of the application gateway.
      */
     private SubResource entraJWTValidationConfig;
+
+    /*
+     * Authentication configuration bindings of the request routing rule. Only one authentication configuration is
+     * supported. Authentication configuration names must be unique across the Application Gateway, and an Application
+     * Gateway can reference at most 100 distinct authentication policies. Authentication policies can only be bound to
+     * Application Gateways using the Standard_v2 or WAF_v2 SKU.
+     */
+    private List<ApplicationGatewayAuthConfig> authConfigs;
 
     /*
      * The provisioning state of the request routing rule resource.
@@ -204,6 +219,26 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
     }
 
     /**
+     * Get the advancedRoutingMap property: Advanced routing map resource of the application gateway.
+     * 
+     * @return the advancedRoutingMap value.
+     */
+    public SubResource advancedRoutingMap() {
+        return this.advancedRoutingMap;
+    }
+
+    /**
+     * Set the advancedRoutingMap property: Advanced routing map resource of the application gateway.
+     * 
+     * @param advancedRoutingMap the advancedRoutingMap value to set.
+     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
+     */
+    public ApplicationGatewayRequestRoutingRulePropertiesFormat withAdvancedRoutingMap(SubResource advancedRoutingMap) {
+        this.advancedRoutingMap = advancedRoutingMap;
+        return this;
+    }
+
+    /**
      * Get the rewriteRuleSet property: Rewrite Rule Set resource in Basic rule of the application gateway.
      * 
      * @return the rewriteRuleSet value.
@@ -289,6 +324,33 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
     }
 
     /**
+     * Get the authConfigs property: Authentication configuration bindings of the request routing rule. Only one
+     * authentication configuration is supported. Authentication configuration names must be unique across the
+     * Application Gateway, and an Application Gateway can reference at most 100 distinct authentication policies.
+     * Authentication policies can only be bound to Application Gateways using the Standard_v2 or WAF_v2 SKU.
+     * 
+     * @return the authConfigs value.
+     */
+    public List<ApplicationGatewayAuthConfig> authConfigs() {
+        return this.authConfigs;
+    }
+
+    /**
+     * Set the authConfigs property: Authentication configuration bindings of the request routing rule. Only one
+     * authentication configuration is supported. Authentication configuration names must be unique across the
+     * Application Gateway, and an Application Gateway can reference at most 100 distinct authentication policies.
+     * Authentication policies can only be bound to Application Gateways using the Standard_v2 or WAF_v2 SKU.
+     * 
+     * @param authConfigs the authConfigs value to set.
+     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
+     */
+    public ApplicationGatewayRequestRoutingRulePropertiesFormat
+        withAuthConfigs(List<ApplicationGatewayAuthConfig> authConfigs) {
+        this.authConfigs = authConfigs;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the request routing rule resource.
      * 
      * @return the provisioningState value.
@@ -303,6 +365,9 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (authConfigs() != null) {
+            authConfigs().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -317,10 +382,12 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
         jsonWriter.writeJsonField("backendHttpSettings", this.backendHttpSettings);
         jsonWriter.writeJsonField("httpListener", this.httpListener);
         jsonWriter.writeJsonField("urlPathMap", this.urlPathMap);
+        jsonWriter.writeJsonField("advancedRoutingMap", this.advancedRoutingMap);
         jsonWriter.writeJsonField("rewriteRuleSet", this.rewriteRuleSet);
         jsonWriter.writeJsonField("redirectConfiguration", this.redirectConfiguration);
         jsonWriter.writeJsonField("loadDistributionPolicy", this.loadDistributionPolicy);
         jsonWriter.writeJsonField("entraJWTValidationConfig", this.entraJWTValidationConfig);
+        jsonWriter.writeArrayField("authConfigs", this.authConfigs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -359,6 +426,9 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
                 } else if ("urlPathMap".equals(fieldName)) {
                     deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.urlPathMap
                         = SubResource.fromJson(reader);
+                } else if ("advancedRoutingMap".equals(fieldName)) {
+                    deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.advancedRoutingMap
+                        = SubResource.fromJson(reader);
                 } else if ("rewriteRuleSet".equals(fieldName)) {
                     deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.rewriteRuleSet
                         = SubResource.fromJson(reader);
@@ -371,6 +441,10 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
                 } else if ("entraJWTValidationConfig".equals(fieldName)) {
                     deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.entraJWTValidationConfig
                         = SubResource.fromJson(reader);
+                } else if ("authConfigs".equals(fieldName)) {
+                    List<ApplicationGatewayAuthConfig> authConfigs
+                        = reader.readArray(reader1 -> ApplicationGatewayAuthConfig.fromJson(reader1));
+                    deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.authConfigs = authConfigs;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());

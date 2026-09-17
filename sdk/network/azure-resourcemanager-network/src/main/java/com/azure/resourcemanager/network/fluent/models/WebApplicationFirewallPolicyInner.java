@@ -16,6 +16,7 @@ import com.azure.resourcemanager.network.models.PolicySettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallCustomRule;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicyResourceState;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicyTier;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -254,6 +255,29 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
      */
     public List<ApplicationGatewayForContainersReferenceDefinition> applicationGatewayForContainers() {
         return this.innerProperties() == null ? null : this.innerProperties().applicationGatewayForContainers();
+    }
+
+    /**
+     * Get the tier property: Tier of a web application firewall policy.
+     * 
+     * @return the tier value.
+     */
+    public WebApplicationFirewallPolicyTier tier() {
+        return this.innerProperties() == null ? null : this.innerProperties().tier();
+    }
+
+    /**
+     * Set the tier property: Tier of a web application firewall policy.
+     * 
+     * @param tier the tier value to set.
+     * @return the WebApplicationFirewallPolicyInner object itself.
+     */
+    public WebApplicationFirewallPolicyInner withTier(WebApplicationFirewallPolicyTier tier) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebApplicationFirewallPolicyPropertiesFormat();
+        }
+        this.innerProperties().withTier(tier);
+        return this;
     }
 
     /**
