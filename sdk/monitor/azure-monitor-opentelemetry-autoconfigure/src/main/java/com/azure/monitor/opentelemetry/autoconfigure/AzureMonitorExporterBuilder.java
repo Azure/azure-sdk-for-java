@@ -19,6 +19,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.MetricDataMa
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.SpanDataMapper;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.OneSettingsStatsbeatConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage.LocalStorageStats;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.StatsbeatConnectionString;
@@ -164,6 +165,10 @@ class AzureMonitorExporterBuilder {
         return StatsbeatConnectionString.create(exporterOptions.connectionString, null, null);
     }
 
+    private StatsbeatConnectionString getOneSettingsStatsbeatConnectionString() {
+        return OneSettingsStatsbeatConfiguration.fetch(getConnectionString());
+    }
+
     private SpanDataMapper createSpanDataMapper() {
         return new SpanDataMapper(true, createDefaultsPopulator(), (event, instrumentationName) -> false,
             (span, event) -> false);
@@ -258,7 +263,7 @@ class AzureMonitorExporterBuilder {
             = AzureMonitorHelper.createStatsbeatTelemetryItemExporter(statsbeatHttpPipeline, statsbeatModule, tempDir);
 
         statsbeatModule.start(statsbeatTelemetryItemExporter, this::getStatsbeatConnectionString,
-            getConnectionString()::getInstrumentationKey, false,
+            this::getOneSettingsStatsbeatConnectionString, getConnectionString()::getInstrumentationKey, false,
             configProperties.getLong(STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME, MINUTES.toSeconds(15)), // Statsbeat short interval
             configProperties.getLong(STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME, DAYS.toSeconds(1)), // Statsbeat long interval
             false, initStatsbeatFeatures());

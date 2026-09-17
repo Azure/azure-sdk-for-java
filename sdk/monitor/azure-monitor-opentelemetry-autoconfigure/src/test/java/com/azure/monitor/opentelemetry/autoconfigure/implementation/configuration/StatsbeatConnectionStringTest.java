@@ -5,6 +5,9 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.configurati
 
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StatsbeatConnectionStringTest {
@@ -146,5 +149,37 @@ public class StatsbeatConnectionStringTest {
             = StatsbeatConnectionString.getInstrumentationKeyAndEndpointPair("https://westus2-2.example.com/");
         assertThat(pair.instrumentationKey).isEqualTo(StatsbeatConnectionString.NON_EU_REGION_STATSBEAT_IKEY);
         assertThat(pair.endpoint).isEqualTo(StatsbeatConnectionString.NON_EU_REGION_STATSBEAT_ENDPOINT);
+    }
+
+    @Test
+    public void testOneSettingsDataBoundaryConnectionString() {
+        ConnectionString customer = ConnectionString.parse("InstrumentationKey=00000000-0000-0000-0000-000000000000;"
+            + "IngestionEndpoint=https://westeurope-1.example.com/");
+        Map<String, String> settings = new HashMap<>();
+        settings.put("SUPPORTED_DATA_BOUNDARIES", "[\"EU\"]");
+        settings.put("EU_REGIONS", "[\"westeurope\",\"northeurope\"]");
+        settings.put("EU_STATS_CONNECTION_STRING", "InstrumentationKey=00000000-0000-0000-0000-000000000001;"
+            + "IngestionEndpoint=https://eu.stats.example.com/");
+        settings.put("EU_SDK_STATS_ENDPOINT", "https://eu.collector.example.com/");
+
+        StatsbeatConnectionString result = OneSettingsStatsbeatConfiguration.resolve(customer, settings);
+
+        assertThat(result.getInstrumentationKey()).isEqualTo("00000000-0000-0000-0000-000000000001");
+        assertThat(result.getIngestionEndpoint()).isEqualTo("https://eu.collector.example.com/");
+    }
+
+    @Test
+    public void testInvalidOneSettingsConnectionStringUsesBreezeFallback() {
+        ConnectionString customer = ConnectionString.parse("InstrumentationKey=00000000-0000-0000-0000-000000000000;"
+            + "IngestionEndpoint=https://westeurope-1.example.com/");
+        Map<String, String> settings = new HashMap<>();
+        settings.put("DEFAULT_STATS_CONNECTION_STRING", "invalid");
+
+        StatsbeatConnectionString configured = OneSettingsStatsbeatConfiguration.resolve(customer, settings);
+        StatsbeatConnectionString result
+            = configured != null ? configured : StatsbeatConnectionString.create(customer, null, null);
+
+        assertThat(result.getInstrumentationKey()).isEqualTo(StatsbeatConnectionString.EU_REGION_STATSBEAT_IKEY);
+        assertThat(result.getIngestionEndpoint()).isEqualTo(StatsbeatConnectionString.EU_REGION_STATSBEAT_ENDPOINT);
     }
 }
