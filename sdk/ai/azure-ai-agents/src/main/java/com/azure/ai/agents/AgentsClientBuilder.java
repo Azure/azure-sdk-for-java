@@ -324,7 +324,7 @@ public final class AgentsClientBuilder
         this.validateClient();
         HttpPipeline localPipeline;
         if (CoreUtils.isNullOrEmpty(previewFeatures)) {
-            localPipeline = pipeline != null ? pipeline : createHttpPipeline(true);
+            localPipeline = pipeline != null ? pipeline : createHttpPipeline();
             localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline,
                 FoundryPolicyHelper.createPreviewErrorPolicy(allowPreview));
         } else {
@@ -343,7 +343,8 @@ public final class AgentsClientBuilder
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-    private HttpPipeline createHttpPipeline(boolean authenticate) {
+    @Generated
+    private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = resolveHttpLogOptions();
@@ -365,7 +366,7 @@ public final class AgentsClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        if (authenticate && tokenCredential != null) {
+        if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
         this.pipelinePolicies.stream()
@@ -381,13 +382,13 @@ public final class AgentsClientBuilder
     }
 
     private HttpPipeline resolvePipeline(String foundryFeatures) {
-        HttpPipeline localPipeline = pipeline != null ? pipeline : createHttpPipeline(true);
+        HttpPipeline localPipeline = pipeline != null ? pipeline : createHttpPipeline();
         HttpPipelinePolicy foundryFeaturesPolicy = FoundryPolicyHelper.createFoundryFeaturesPolicy(foundryFeatures);
         return FoundryPolicyHelper.prependPolicy(localPipeline, foundryFeaturesPolicy);
     }
 
     private com.openai.core.http.HttpClient createOpenAIHttpClient(String foundryFeatures) {
-        HttpPipeline localPipeline = pipeline != null ? pipeline : createHttpPipeline(false);
+        HttpPipeline localPipeline = pipeline != null ? pipeline : createOpenAIHttpPipeline();
         return HttpClientHelper.mapToOpenAIHttpClient(
             FoundryPolicyHelper.prependPolicy(localPipeline,
                 FoundryPolicyHelper.createFoundryFeaturesPolicy(foundryFeatures)),
@@ -956,5 +957,40 @@ public final class AgentsClientBuilder
      */
     private BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
         return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
+    }
+
+    @Generated
+    private HttpPipeline createOpenAIHttpPipeline() {
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        HttpLogOptions localHttpLogOptions = resolveHttpLogOptions();
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
+        policies.add(new AddDatePolicy());
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(HttpClientHelper.createLoggingPolicy(localHttpLogOptions));
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
+        return httpPipeline;
     }
 }

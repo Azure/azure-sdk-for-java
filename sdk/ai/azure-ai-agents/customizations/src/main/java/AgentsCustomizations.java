@@ -9,11 +9,15 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -50,6 +54,46 @@ public class AgentsCustomizations extends Customization {
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("Generated buildInnerClient was not found."));
         buildInnerClient.setBody(StaticJavaParser.parseBlock("{ return buildInnerClient(null); }"));
+
+        MethodDeclaration generatedPipeline = builder.getMethodsByName("createHttpPipeline").stream()
+            .filter(method -> method.getParameters().isEmpty())
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Generated createHttpPipeline was not found."));
+        List<VariableDeclarator> loggingOptions = generatedPipeline.findAll(VariableDeclarator.class).stream()
+            .filter(variable -> "localHttpLogOptions".equals(variable.getNameAsString()))
+            .collect(java.util.stream.Collectors.toList());
+        if (loggingOptions.size() != 1) {
+            throw new IllegalStateException("Expected one generated localHttpLogOptions variable.");
+        }
+        loggingOptions.get(0).setInitializer("resolveHttpLogOptions()");
+        List<ObjectCreationExpr> loggingPolicies = generatedPipeline.findAll(ObjectCreationExpr.class).stream()
+            .filter(expression -> "HttpLoggingPolicy".equals(expression.getType().getNameAsString()))
+            .collect(java.util.stream.Collectors.toList());
+        if (loggingPolicies.size() != 1) {
+            throw new IllegalStateException("Expected one generated HttpLoggingPolicy construction.");
+        }
+        ObjectCreationExpr loggingPolicy = loggingPolicies.get(0);
+        MethodCallExpr customLoggingPolicy = new MethodCallExpr("HttpClientHelper.createLoggingPolicy");
+        loggingPolicy.getArguments().forEach(argument -> customLoggingPolicy.addArgument(argument.clone()));
+        loggingPolicy.replace(customLoggingPolicy);
+        builder.findCompilationUnit().ifPresent(unit -> unit.getImports().removeIf(declaration ->
+            "com.azure.core.http.policy.HttpLoggingPolicy".equals(declaration.getNameAsString())));
+
+        MethodDeclaration openAIPipeline = generatedPipeline.clone();
+        openAIPipeline.setName("createOpenAIHttpPipeline");
+        List<IfStmt> authenticationChecks = openAIPipeline.findAll(IfStmt.class).stream()
+            .filter(statement -> statement.getThenStmt().toString().contains("BearerTokenAuthenticationPolicy"))
+            .collect(java.util.stream.Collectors.toList());
+        if (authenticationChecks.size() != 1) {
+            throw new IllegalStateException("Expected one generated bearer-token authentication check.");
+        }
+        authenticationChecks.get(0).remove();
+
+        List<MethodDeclaration> existingOpenAIPipelines
+            = new ArrayList<>(builder.getMethodsByName("createOpenAIHttpPipeline"));
+        existingOpenAIPipelines.forEach(MethodDeclaration::remove);
+        builder.addMember(openAIPipeline);
+
     }
 
     private static final String MODELS_PACKAGE = "com.azure.ai.agents.models";
