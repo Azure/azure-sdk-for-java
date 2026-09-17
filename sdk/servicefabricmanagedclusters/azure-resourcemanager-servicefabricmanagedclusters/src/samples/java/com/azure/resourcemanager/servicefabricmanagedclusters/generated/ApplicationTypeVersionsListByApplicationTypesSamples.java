@@ -7,7 +7,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
 /**
  * Samples for ApplicationTypeVersions ListByApplicationTypes.
  */
-public final class ApplicationTypeVersionsListByApplicationTypeSamples {
+public final class ApplicationTypeVersionsListByApplicationTypesSamples {
     /*
      * x-ms-original-file: 2026-05-01-preview/ApplicationTypeVersionListOperation_example.json
      */

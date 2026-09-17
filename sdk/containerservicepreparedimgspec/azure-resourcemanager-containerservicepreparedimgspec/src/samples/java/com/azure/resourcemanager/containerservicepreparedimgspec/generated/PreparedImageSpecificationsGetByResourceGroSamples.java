@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.containerservicepreparedimgspec.generated;
 
 /**
- * Samples for PreparedImageSpecifications GetVersion.
+ * Samples for PreparedImageSpecifications GetByResourceGroup.
  */
-public final class PreparedImageSpecificationsGetVersiSamples {
+public final class PreparedImageSpecificationsGetByResourceGroSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_GetVersion.json
+     * x-ms-original-file: 2026-05-02-preview/PreparedImageSpecifications_Get.json
      */
     /**
-     * Sample code: PreparedImageSpecifications_GetVersion.
+     * Sample code: PreparedImageSpecifications_Get.
      * 
      * @param manager Entry point to ContainerServicePreparedImageSpecificationManager.
      */
-    public static void preparedImageSpecificationsGetVersion(
+    public static void preparedImageSpecificationsGet(
         com.azure.resourcemanager.containerservicepreparedimgspec.ContainerServicePreparedImageSpecificationManager manager) {
         manager.preparedImageSpecifications()
-            .getVersionWithResponse("rg1", "my-prepared-image-specification", "20250101-abcd1234",
-                com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "my-prepared-image-specification", com.azure.core.util.Context.NONE);
     }
 }

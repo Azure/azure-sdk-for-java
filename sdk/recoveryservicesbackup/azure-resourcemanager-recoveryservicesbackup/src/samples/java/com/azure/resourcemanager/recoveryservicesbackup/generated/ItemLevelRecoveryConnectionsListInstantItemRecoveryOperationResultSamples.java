@@ -9,7 +9,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecove
 /**
  * Samples for ItemLevelRecoveryConnections ListInstantItemRecoveryOperationResult.
  */
-public final class ItemLevelRecoveryConnectionsListInstantItemRecoveryOperationReSamples {
+public final class ItemLevelRecoveryConnectionsListInstantItemRecoveryOperationResultSamples {
     /*
      * x-ms-original-file: 2026-08-01/AzureIaasVm/ListInstantItemRecoveryOperationResult.json
      */

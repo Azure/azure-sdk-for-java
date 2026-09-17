@@ -4,6 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TilerAssetGeoJson;
 import java.util.List;
 import org.junit.jupiter.api.Disabled;
@@ -17,7 +18,8 @@ public final class MosaicCollectionsAssetsForTileMatrixSetsGetZxyAssetsTests
     public void testMosaicCollectionsAssetsForTileMatrixSetsGetZxyAssetsTests() {
         // method invocation
         List<TilerAssetGeoJson> response = dataClient.getCollectionAssetsForTileWithTms("naip-atl", "WebMercatorQuad",
-            13.0, 2174.0, 3282.0, null, null, null, null, null, "item-id-1,item-id-2", "-180,-90,180,90", "{}",
-            "-datetime", null, null, null, null, null, null);
+            13.0, 2174.0, 3282.0, (Integer) null, (Integer) null, (Integer) null, (Boolean) null, (Boolean) null,
+            "item-id-1,item-id-2", "-180,-90,180,90", "{}", "-datetime", (String) null, (String) null,
+            (List<Integer>) null, (String) null, (List<String>) null, (SelMethod) null);
     }
 }

@@ -6,10 +6,12 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TilerInfoMapResponse;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
+import java.util.List;
 
 public class MosaicItemsInfoGet {
     public static void main(String[] args) {
@@ -18,8 +20,9 @@ public class MosaicItemsInfoGet {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-item-info.mosaic-items-info-get
-        TilerInfoMapResponse response = dataClient.getItemInfo("naip-atl", "ga_m_3308421_se_16_060_20211114", null,
-            null, null, null, null, null, Arrays.asList("image"));
+        TilerInfoMapResponse response
+            = dataClient.getItemInfo("naip-atl", "ga_m_3308421_se_16_060_20211114", (String) null, (List<Integer>) null,
+                (String) null, (String) null, (List<String>) null, (SelMethod) null, Arrays.asList("image"));
         // END:com.azure.analytics.planetarycomputer.generated.data-get-item-info.mosaic-items-info-get
     }
 }
