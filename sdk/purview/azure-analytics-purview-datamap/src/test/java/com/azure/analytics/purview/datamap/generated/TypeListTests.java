@@ -28,7 +28,7 @@ public final class TypeListTests extends DataMapClientTestBase {
     @Disabled
     public void testTypeListTests() {
         // method invocation
-        AtlasTypesDef response = typeDefinitionClient.get(true, null);
+        AtlasTypesDef response = typeDefinitionClient.get(true, (TypeCategory) null);
 
         // response assertion
         Assertions.assertNotNull(response);

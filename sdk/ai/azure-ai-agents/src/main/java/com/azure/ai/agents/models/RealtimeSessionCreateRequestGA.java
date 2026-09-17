@@ -35,13 +35,13 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      * the model respond with text only. It is not possible to request both `text` and `audio` at the same time.
      */
     @Generated
-    private List<RealtimeClientEventSessionUpdateSessionOutputModality> outputModalities;
+    private List<RealtimeSessionCreateRequestGAOutputModality> outputModalities;
 
     /*
      * The Realtime model used for this session.
      */
     @Generated
-    private RealtimeClientEventSessionUpdateSessionModel model;
+    private RealtimeSessionCreateRequestGAModel model;
 
     /*
      * The default system instructions (i.e. system message) prepended to model calls. This field allows the client to
@@ -154,7 +154,7 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      * @return the outputModalities value.
      */
     @Generated
-    public List<RealtimeClientEventSessionUpdateSessionOutputModality> getOutputModalities() {
+    public List<RealtimeSessionCreateRequestGAOutputModality> getOutputModalities() {
         return this.outputModalities;
     }
 
@@ -169,7 +169,7 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      */
     @Generated
     public RealtimeSessionCreateRequestGA
-        setOutputModalities(List<RealtimeClientEventSessionUpdateSessionOutputModality> outputModalities) {
+        setOutputModalities(List<RealtimeSessionCreateRequestGAOutputModality> outputModalities) {
         this.outputModalities = outputModalities;
         return this;
     }
@@ -180,20 +180,8 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
      * @return the model value.
      */
     @Generated
-    public RealtimeClientEventSessionUpdateSessionModel getModel() {
+    public RealtimeSessionCreateRequestGAModel getModel() {
         return this.model;
-    }
-
-    /**
-     * Set the model property: The Realtime model used for this session.
-     *
-     * @param model the model value to set.
-     * @return the RealtimeSessionCreateRequestGA object itself.
-     */
-    @Generated
-    public RealtimeSessionCreateRequestGA setModel(RealtimeClientEventSessionUpdateSessionModel model) {
-        this.model = model;
-        return this;
     }
 
     /**
@@ -593,5 +581,17 @@ public final class RealtimeSessionCreateRequestGA extends RealtimeSessionCreateR
             }
             return deserializedRealtimeSessionCreateRequestGA;
         });
+    }
+
+    /**
+     * Set the model property: The Realtime model used for this session.
+     *
+     * @param model the model value to set.
+     * @return the RealtimeSessionCreateRequestGA object itself.
+     */
+    @Generated
+    public RealtimeSessionCreateRequestGA setModel(RealtimeSessionCreateRequestGAModel model) {
+        this.model = model;
+        return this;
     }
 }

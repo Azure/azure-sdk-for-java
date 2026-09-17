@@ -18,7 +18,8 @@ public final class EntityListByUniqueAttributesTests extends DataMapClientTestBa
     @Disabled
     public void testEntityListByUniqueAttributesTests() {
         // method invocation
-        AtlasEntitiesWithExtInfo response = entityClient.batchGetByUniqueAttributes("azure_storage_account", true, null,
+        AtlasEntitiesWithExtInfo response = entityClient.batchGetByUniqueAttributes("azure_storage_account", true,
+            (Boolean) null,
             "adl://exampleaccount.azuredatalakestore.net/123/1/DP_TFS/CBT/Extensions/DTTP.targets#:xml/Project/PropertyGroup/ExampleName1");
 
         // response assertion

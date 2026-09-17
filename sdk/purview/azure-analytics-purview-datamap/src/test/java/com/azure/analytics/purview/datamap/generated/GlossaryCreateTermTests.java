@@ -38,7 +38,7 @@ public final class GlossaryCreateTermTests extends DataMapClientTestBase {
                 "Steward",
                 Arrays.asList(
                     new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df").setInfo("Example Steward info")))),
-            null);
+            (Boolean) null);
 
         // response assertion
         Assertions.assertNotNull(response);
