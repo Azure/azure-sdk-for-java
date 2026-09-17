@@ -306,6 +306,64 @@ public class ReactorSessionTest {
     }
 
     /**
+     * Verifies that when a cached send link is disposed (e.g. after silent AMQP detach),
+     * calling createProducer again creates a fresh link instead of returning the stale one.
+     * This prevents the permanent stuck state described in issue #50503.
+     */
+    @Test
+    void createProducerRecreatesDisposedLink() {
+        // Arrange
+        final String linkName = "test-link-name";
+        final String entityPath = "test-entity-path";
+
+        final Duration timeout = Duration.ofSeconds(10);
+        final AmqpRetryOptions options
+            = new AmqpRetryOptions().setTryTimeout(timeout).setMaxRetries(1).setMode(AmqpRetryMode.FIXED);
+        final AmqpRetryPolicy amqpRetryPolicy = new FixedAmqpRetryPolicy(options);
+
+        final Map<Symbol, Object> linkProperties = new HashMap<>();
+        final TokenManager tokenManager = mock(TokenManager.class);
+        final SendLinkHandler sendLinkHandler
+            = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
+
+        // Use a second sender mock for the recreated link
+        final Sender sender2 = mock(Sender.class);
+        final Record record2 = mock(Record.class);
+        when(sender2.attachments()).thenReturn(record2);
+
+        when(session.sender(linkName)).thenReturn(sender).thenReturn(sender2);
+        when(session.getRemoteState()).thenReturn(EndpointState.ACTIVE);
+        when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManager);
+        when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
+        when(tokenManager.getAuthorizationResults())
+            .thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.ACCEPTED)));
+        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath)).thenReturn(sendLinkHandler);
+
+        handler.onSessionRemoteOpen(event);
+
+        // Act — create the first link
+        final AmqpLink firstLink
+            = reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties)
+                .block(TIMEOUT);
+        assertNotNull(firstLink);
+
+        // Simulate the link being silently detached — dispose it
+        firstLink.dispose();
+        assertTrue(firstLink.isDisposed());
+
+        // Act — request the same link again; should get a new one, not the disposed one
+        final AmqpLink secondLink
+            = reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties)
+                .block(TIMEOUT);
+
+        // Assert
+        assertNotNull(secondLink);
+        assertTrue(secondLink instanceof ReactorSender);
+        // The second link must be a different instance from the disposed first link
+        Assertions.assertNotSame(firstLink, secondLink);
+    }
+
+    /**
      * Verifies that an error is reported as metric if there is an error condition on close.
      */
     @Test
