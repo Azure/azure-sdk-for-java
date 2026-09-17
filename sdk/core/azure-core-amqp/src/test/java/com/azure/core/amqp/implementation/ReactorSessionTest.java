@@ -323,7 +323,12 @@ public class ReactorSessionTest {
 
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler
+
+        // Each link creation gets a distinct SendLinkHandler so disposing the first
+        // does not affect the second link's endpoint state stream.
+        final SendLinkHandler sendLinkHandler1
+            = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
+        final SendLinkHandler sendLinkHandler2
             = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
 
         // Use a second sender mock for the recreated link
@@ -337,7 +342,9 @@ public class ReactorSessionTest {
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults())
             .thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.ACCEPTED)));
-        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath)).thenReturn(sendLinkHandler);
+        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath))
+            .thenReturn(sendLinkHandler1)
+            .thenReturn(sendLinkHandler2);
 
         handler.onSessionRemoteOpen(event);
 
@@ -347,8 +354,10 @@ public class ReactorSessionTest {
                 .block(TIMEOUT);
         assertNotNull(firstLink);
 
-        // Simulate the link being silently detached — dispose it
-        firstLink.dispose();
+        // Simulate the link being silently detached by completing the handler's endpoint
+        // states (which sets isDisposed on the ReactorSender) without blocking.
+        sendLinkHandler1.close();
+
         assertTrue(firstLink.isDisposed());
 
         // Act — request the same link again; should get a new one, not the disposed one
@@ -359,8 +368,8 @@ public class ReactorSessionTest {
         // Assert
         assertNotNull(secondLink);
         assertTrue(secondLink instanceof ReactorSender);
-        // The second link must be a different instance from the disposed first link
         Assertions.assertNotSame(firstLink, secondLink);
+        Assertions.assertFalse(secondLink.isDisposed());
     }
 
     /**

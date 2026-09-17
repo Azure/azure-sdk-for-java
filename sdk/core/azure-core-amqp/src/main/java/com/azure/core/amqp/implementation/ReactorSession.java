@@ -417,19 +417,19 @@ public class ReactorSession implements AmqpSession {
                 return Mono.error(error);
             }
             final AmqpReceiveLink existingReceiveLink = existingLink.getLink();
-            if (existingReceiveLink != null && existingReceiveLink.isDisposed()) {
-                logger.atInfo()
-                    .addKeyValue(LINK_NAME_KEY, linkName)
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .log("Cached receive link is disposed. Removing to allow recreation.");
-                removeLink(openReceiveLinks, linkName);
-            } else {
+            if (existingReceiveLink != null && !existingReceiveLink.isDisposed()) {
                 logger.atInfo()
                     .addKeyValue(LINK_NAME_KEY, linkName)
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .log("Returning existing receive link.");
                 return Mono.just(existingReceiveLink);
             }
+            // Link is disposed (e.g. after silent AMQP detach). Fall through to recreate.
+            // The compute() lambda below will atomically handle cache replacement.
+            logger.atInfo()
+                .addKeyValue(LINK_NAME_KEY, linkName)
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .log("Cached receive link is disposed. Will recreate.");
         }
 
         final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
@@ -446,7 +446,8 @@ public class ReactorSession implements AmqpSession {
                                     if (link != null && link.isDisposed()) {
                                         logger.atInfo()
                                             .addKeyValue(LINK_NAME_KEY, linkName)
-                                            .log("Cached receive link is disposed. Creating a new receiver link.");
+                                            .log("Cached receive link is disposed. Closing old subscription and creating a new receiver link.");
+                                        existing.closeAsync(null).subscribe();
                                     } else {
                                         logger.atInfo()
                                             .addKeyValue(LINK_NAME_KEY, linkName)
@@ -529,15 +530,15 @@ public class ReactorSession implements AmqpSession {
                 return Mono.error(error);
             }
             final AmqpSendLink existingLink = existing.getLink();
-            if (existingLink != null && existingLink.isDisposed()) {
-                logger.atInfo()
-                    .addKeyValue(LINK_NAME_KEY, linkName)
-                    .log("Cached send link is disposed. Removing to allow recreation.");
-                removeLink(openSendLinks, linkName);
-            } else {
+            if (existingLink != null && !existingLink.isDisposed()) {
                 logger.atVerbose().addKeyValue(LINK_NAME_KEY, linkName).log("Returning existing send link.");
                 return Mono.just(existingLink);
             }
+            // Link is disposed (e.g. after silent AMQP detach). Fall through to recreate.
+            // The compute() lambda below will atomically handle cache replacement.
+            logger.atInfo()
+                .addKeyValue(LINK_NAME_KEY, linkName)
+                .log("Cached send link is disposed. Will recreate.");
         }
 
         final TokenManager tokenManager;
@@ -562,7 +563,8 @@ public class ReactorSession implements AmqpSession {
                                 if (link != null && link.isDisposed()) {
                                     logger.atInfo()
                                         .addKeyValue(LINK_NAME_KEY, linkName)
-                                        .log("Cached send link is disposed. Creating a new send link.");
+                                        .log("Cached send link is disposed. Closing old subscription and creating a new send link.");
+                                    existingLink.closeAsync(null).subscribe();
                                 } else {
                                     logger.atInfo()
                                         .addKeyValue(LINK_NAME_KEY, linkName)
