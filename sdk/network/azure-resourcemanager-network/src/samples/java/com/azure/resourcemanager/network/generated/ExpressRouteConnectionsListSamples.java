@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteConnectionsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ExpressRouteConnectionList.json
+     * x-ms-original-file: 2026-01-01/ExpressRouteConnectionList.json
      */
     /**
      * Sample code: ExpressRouteConnectionList.

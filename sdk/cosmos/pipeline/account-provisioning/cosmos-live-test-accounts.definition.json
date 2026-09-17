@@ -216,6 +216,9 @@
       "defaultConsistencyLevel": "Session",
       "enableMultipleWriteLocations": false,
       "enableMultipleRegions": false,
+      "regions": [
+        "East US 2"
+      ],
       "enablePartitionMerge": false,
       "thinClient": false,
       "includeSecondaryKey": true

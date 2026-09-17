@@ -12,6 +12,9 @@ import com.azure.resourcemanager.purestorageblock.fluent.models.StoragePoolInner
 import com.azure.resourcemanager.purestorageblock.models.AvsConnection;
 import com.azure.resourcemanager.purestorageblock.models.AvsStatus;
 import com.azure.resourcemanager.purestorageblock.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleActivationCode;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAuthConfig;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAuthResult;
 import com.azure.resourcemanager.purestorageblock.models.StoragePool;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolEnableAvsConnectionPost;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolFinalizeAvsConnectionPost;
@@ -212,6 +215,25 @@ public final class StoragePoolImpl implements StoragePool, StoragePool.Definitio
 
     public void repairAvsConnection(Context context) {
         serviceManager.storagePools().repairAvsConnection(resourceGroupName, storagePoolName, context);
+    }
+
+    public Response<PlatformConsoleActivationCode> listPlatformConsoleActivationCodeWithResponse(Context context) {
+        return serviceManager.storagePools()
+            .listPlatformConsoleActivationCodeWithResponse(resourceGroupName, storagePoolName, context);
+    }
+
+    public PlatformConsoleActivationCode listPlatformConsoleActivationCode() {
+        return serviceManager.storagePools().listPlatformConsoleActivationCode(resourceGroupName, storagePoolName);
+    }
+
+    public Response<PlatformConsoleAuthResult>
+        configurePlatformConsoleAuthWithResponse(PlatformConsoleAuthConfig config, Context context) {
+        return serviceManager.storagePools()
+            .configurePlatformConsoleAuthWithResponse(resourceGroupName, storagePoolName, config, context);
+    }
+
+    public PlatformConsoleAuthResult configurePlatformConsoleAuth(PlatformConsoleAuthConfig config) {
+        return serviceManager.storagePools().configurePlatformConsoleAuth(resourceGroupName, storagePoolName, config);
     }
 
     public StoragePoolImpl withRegion(Region location) {

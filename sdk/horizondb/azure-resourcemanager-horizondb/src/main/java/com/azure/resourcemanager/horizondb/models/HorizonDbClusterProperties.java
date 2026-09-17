@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Properties of a HorizonDb cluster.
+ * Properties of a HorizonDB cluster.
  */
 @Fluent
 public final class HorizonDbClusterProperties implements JsonSerializable<HorizonDbClusterProperties> {
@@ -30,12 +30,12 @@ public final class HorizonDbClusterProperties implements JsonSerializable<Horizo
     private String administratorLoginPassword;
 
     /*
-     * The version of the HorizonDb cluster.
+     * The version of the HorizonDB cluster.
      */
     private String version;
 
     /*
-     * The mode to create a new HorizonDb cluster.
+     * The mode to create a new HorizonDB cluster.
      */
     private CreateModeCluster createMode;
 
@@ -65,7 +65,7 @@ public final class HorizonDbClusterProperties implements JsonSerializable<Horizo
     private Integer vCores;
 
     /*
-     * The processor type for the HorizonDb cluster.
+     * The processor type for the HorizonDB cluster.
      */
     private String processorType;
 
@@ -103,6 +103,21 @@ public final class HorizonDbClusterProperties implements JsonSerializable<Horizo
      * Defines connection to a parameter group.
      */
     private HorizonDbClusterParameterGroupConnectionProperties parameterGroup;
+
+    /*
+     * Authentication configuration for the HorizonDB cluster.
+     */
+    private HorizonDbClusterAuthConfig authConfig;
+
+    /*
+     * The compute model for the cluster.
+     */
+    private HorizonDbComputeModel computeModel;
+
+    /*
+     * Mirroring configuration for the HorizonDB cluster.
+     */
+    private HorizonDbClusterMirroring mirroring;
 
     /**
      * Creates an instance of HorizonDbClusterProperties class.
@@ -151,7 +166,7 @@ public final class HorizonDbClusterProperties implements JsonSerializable<Horizo
     }
 
     /**
-     * Get the version property: The version of the HorizonDb cluster.
+     * Get the version property: The version of the HorizonDB cluster.
      * 
      * @return the version value.
      */
@@ -160,7 +175,7 @@ public final class HorizonDbClusterProperties implements JsonSerializable<Horizo
     }
 
     /**
-     * Set the version property: The version of the HorizonDb cluster.
+     * Set the version property: The version of the HorizonDB cluster.
      * 
      * @param version the version value to set.
      * @return the HorizonDbClusterProperties object itself.
@@ -171,7 +186,7 @@ public final class HorizonDbClusterProperties implements JsonSerializable<Horizo
     }
 
     /**
-     * Get the createMode property: The mode to create a new HorizonDb cluster.
+     * Get the createMode property: The mode to create a new HorizonDB cluster.
      * 
      * @return the createMode value.
      */
@@ -180,7 +195,7 @@ public final class HorizonDbClusterProperties implements JsonSerializable<Horizo
     }
 
     /**
-     * Set the createMode property: The mode to create a new HorizonDb cluster.
+     * Set the createMode property: The mode to create a new HorizonDB cluster.
      * 
      * @param createMode the createMode value to set.
      * @return the HorizonDbClusterProperties object itself.
@@ -291,7 +306,7 @@ public final class HorizonDbClusterProperties implements JsonSerializable<Horizo
     }
 
     /**
-     * Get the processorType property: The processor type for the HorizonDb cluster.
+     * Get the processorType property: The processor type for the HorizonDB cluster.
      * 
      * @return the processorType value.
      */
@@ -300,7 +315,7 @@ public final class HorizonDbClusterProperties implements JsonSerializable<Horizo
     }
 
     /**
-     * Set the processorType property: The processor type for the HorizonDb cluster.
+     * Set the processorType property: The processor type for the HorizonDB cluster.
      * 
      * @param processorType the processorType value to set.
      * @return the HorizonDbClusterProperties object itself.
@@ -408,6 +423,66 @@ public final class HorizonDbClusterProperties implements JsonSerializable<Horizo
     }
 
     /**
+     * Get the authConfig property: Authentication configuration for the HorizonDB cluster.
+     * 
+     * @return the authConfig value.
+     */
+    public HorizonDbClusterAuthConfig authConfig() {
+        return this.authConfig;
+    }
+
+    /**
+     * Set the authConfig property: Authentication configuration for the HorizonDB cluster.
+     * 
+     * @param authConfig the authConfig value to set.
+     * @return the HorizonDbClusterProperties object itself.
+     */
+    public HorizonDbClusterProperties withAuthConfig(HorizonDbClusterAuthConfig authConfig) {
+        this.authConfig = authConfig;
+        return this;
+    }
+
+    /**
+     * Get the computeModel property: The compute model for the cluster.
+     * 
+     * @return the computeModel value.
+     */
+    public HorizonDbComputeModel computeModel() {
+        return this.computeModel;
+    }
+
+    /**
+     * Set the computeModel property: The compute model for the cluster.
+     * 
+     * @param computeModel the computeModel value to set.
+     * @return the HorizonDbClusterProperties object itself.
+     */
+    public HorizonDbClusterProperties withComputeModel(HorizonDbComputeModel computeModel) {
+        this.computeModel = computeModel;
+        return this;
+    }
+
+    /**
+     * Get the mirroring property: Mirroring configuration for the HorizonDB cluster.
+     * 
+     * @return the mirroring value.
+     */
+    public HorizonDbClusterMirroring mirroring() {
+        return this.mirroring;
+    }
+
+    /**
+     * Set the mirroring property: Mirroring configuration for the HorizonDB cluster.
+     * 
+     * @param mirroring the mirroring value to set.
+     * @return the HorizonDbClusterProperties object itself.
+     */
+    public HorizonDbClusterProperties withMirroring(HorizonDbClusterMirroring mirroring) {
+        this.mirroring = mirroring;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -428,6 +503,9 @@ public final class HorizonDbClusterProperties implements JsonSerializable<Horizo
         jsonWriter.writeStringField("zonePlacementPolicy",
             this.zonePlacementPolicy == null ? null : this.zonePlacementPolicy.toString());
         jsonWriter.writeJsonField("parameterGroup", this.parameterGroup);
+        jsonWriter.writeJsonField("authConfig", this.authConfig);
+        jsonWriter.writeJsonField("computeModel", this.computeModel);
+        jsonWriter.writeJsonField("mirroring", this.mirroring);
         return jsonWriter.writeEndObject();
     }
 
@@ -486,6 +564,12 @@ public final class HorizonDbClusterProperties implements JsonSerializable<Horizo
                 } else if ("parameterGroup".equals(fieldName)) {
                     deserializedHorizonDbClusterProperties.parameterGroup
                         = HorizonDbClusterParameterGroupConnectionProperties.fromJson(reader);
+                } else if ("authConfig".equals(fieldName)) {
+                    deserializedHorizonDbClusterProperties.authConfig = HorizonDbClusterAuthConfig.fromJson(reader);
+                } else if ("computeModel".equals(fieldName)) {
+                    deserializedHorizonDbClusterProperties.computeModel = HorizonDbComputeModel.fromJson(reader);
+                } else if ("mirroring".equals(fieldName)) {
+                    deserializedHorizonDbClusterProperties.mirroring = HorizonDbClusterMirroring.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

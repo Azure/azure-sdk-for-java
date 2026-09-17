@@ -21,7 +21,7 @@ public final class SpotPlacementScoresGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"supportedResourceTypes\":[\"cgyncocpecf\",\"m\"]},\"id\":\"oo\",\"name\":\"sxlzevgbmqj\",\"type\":\"abcypmivk\"}";
+            = "{\"properties\":{\"supportedResourceTypes\":[\"nc\",\"cpecfvmmcoofs\",\"lzevgbmqjqab\",\"y\"]},\"id\":\"ivkwlzuvccfwnfnb\",\"name\":\"cfionl\",\"type\":\"bxetqgtzxdpn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class SpotPlacementScoresGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ComputeDiagnosticBase response
-            = manager.spotPlacementScores().getWithResponse("ndrvynhzg", com.azure.core.util.Context.NONE).getValue();
+            = manager.spotPlacementScores().getWithResponse("rvynhzgpph", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("cgyncocpecf", response.properties().supportedResourceTypes().get(0));
+        Assertions.assertEquals("nc", response.properties().supportedResourceTypes().get(0));
     }
 }

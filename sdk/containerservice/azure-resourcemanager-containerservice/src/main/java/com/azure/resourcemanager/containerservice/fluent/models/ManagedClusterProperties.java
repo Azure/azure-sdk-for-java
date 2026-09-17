@@ -189,6 +189,15 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private Boolean enableFips;
 
     /*
+     * Whether to enable node hardening at the cluster level. When enabled, AKS applies hardened defaults for soft
+     * eviction thresholds, kube-reserved, and system-reserved on all Linux node pools in the cluster. Per-node-pool
+     * kubeletConfig settings take precedence over hardening defaults. On agent pools running Kubernetes 1.37 or later,
+     * node hardening is enabled by default and cannot be disabled; setting this field to false has no effect on those
+     * pools.
+     */
+    private Boolean enableNodeHardening;
+
+    /*
      * Enable namespace as Azure resource. The default value is false. It can be enabled/disabled on creation and
      * updating of the managed cluster. See [https://aka.ms/NamespaceARMResource](https://aka.ms/NamespaceARMResource)
      * for more details on Namespace as a ARM Resource.
@@ -779,6 +788,34 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      */
     public ManagedClusterProperties withEnableFips(Boolean enableFips) {
         this.enableFips = enableFips;
+        return this;
+    }
+
+    /**
+     * Get the enableNodeHardening property: Whether to enable node hardening at the cluster level. When enabled, AKS
+     * applies hardened defaults for soft eviction thresholds, kube-reserved, and system-reserved on all Linux node
+     * pools in the cluster. Per-node-pool kubeletConfig settings take precedence over hardening defaults. On agent
+     * pools running Kubernetes 1.37 or later, node hardening is enabled by default and cannot be disabled; setting this
+     * field to false has no effect on those pools.
+     * 
+     * @return the enableNodeHardening value.
+     */
+    public Boolean enableNodeHardening() {
+        return this.enableNodeHardening;
+    }
+
+    /**
+     * Set the enableNodeHardening property: Whether to enable node hardening at the cluster level. When enabled, AKS
+     * applies hardened defaults for soft eviction thresholds, kube-reserved, and system-reserved on all Linux node
+     * pools in the cluster. Per-node-pool kubeletConfig settings take precedence over hardening defaults. On agent
+     * pools running Kubernetes 1.37 or later, node hardening is enabled by default and cannot be disabled; setting this
+     * field to false has no effect on those pools.
+     * 
+     * @param enableNodeHardening the enableNodeHardening value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withEnableNodeHardening(Boolean enableNodeHardening) {
+        this.enableNodeHardening = enableNodeHardening;
         return this;
     }
 
@@ -1553,6 +1590,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeBooleanField("enableRBAC", this.enableRbac);
         jsonWriter.writeStringField("supportPlan", this.supportPlan == null ? null : this.supportPlan.toString());
         jsonWriter.writeBooleanField("enableFIPS", this.enableFips);
+        jsonWriter.writeBooleanField("enableNodeHardening", this.enableNodeHardening);
         jsonWriter.writeBooleanField("enableNamespaceResources", this.enableNamespaceResources);
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("aadProfile", this.aadProfile);
@@ -1658,6 +1696,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                         = KubernetesSupportPlan.fromString(reader.getString());
                 } else if ("enableFIPS".equals(fieldName)) {
                     deserializedManagedClusterProperties.enableFips = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableNodeHardening".equals(fieldName)) {
+                    deserializedManagedClusterProperties.enableNodeHardening
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableNamespaceResources".equals(fieldName)) {
                     deserializedManagedClusterProperties.enableNamespaceResources
                         = reader.getNullable(JsonReader::getBoolean);

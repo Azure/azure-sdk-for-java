@@ -134,6 +134,77 @@ function New-LocationObjects([string[]] $regionList) {
     return ,$locations
 }
 
+# Adds any missing capabilities to an existing account via ARM PATCH.
+#
+# Capabilities are handled here, never via New-/Update-AzCosmosDBAccount:
+#   - Update-AzCosmosDBAccount cannot set them at all.
+#   - New-AzCosmosDBAccount -Capabilities is silently ignored by some Az.CosmosDB versions
+#     (observed on Az 12.2.0: accounts came up with no capabilities at all, which failed
+#     every vector-search test until the script was run a second time).
+# Reconciling after the account exists makes the outcome independent of module behaviour,
+# so a fresh tenant rotation is a single pass.
+#
+# Cosmos capabilities are additive and cannot be removed, so we only ever add, and always
+# send the full merged list.
+function Sync-AccountCapability {
+    # SupportsShouldProcess so -WhatIf propagates from the caller and this never PATCHes on a dry run.
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param(
+        [Parameter(Mandatory)] [string]   $AccountName,
+        [Parameter(Mandatory)] [AllowEmptyCollection()] [string[]] $DesiredCapabilities,
+        [Parameter(Mandatory)] [string]   $ResourceGroupName,
+        [Parameter(Mandatory)] [string]   $SubscriptionId,
+        [string] $Selector
+    )
+
+    if ($DesiredCapabilities.Count -eq 0) { return }
+
+    $account = Get-AzCosmosDBAccount -ResourceGroupName $ResourceGroupName -Name $AccountName -ErrorAction SilentlyContinue
+    if (-not $account) {
+        # Only reachable under -WhatIf, where the account was never actually created.
+        return
+    }
+
+    $existingCaps = @()
+    if ($account.Capabilities) { $existingCaps = @($account.Capabilities | ForEach-Object { $_.Name }) }
+
+    $missingCaps = @($DesiredCapabilities | Where-Object { $existingCaps -notcontains $_ })
+    if ($missingCaps.Count -eq 0) {
+        Write-Info "Cosmos account '$AccountName' (selector=$Selector); capabilities up to date"
+        return
+    }
+
+    $mergedCaps = @($existingCaps + $missingCaps | Select-Object -Unique)
+    if (-not $PSCmdlet.ShouldProcess($AccountName, "Add capabilities [$($missingCaps -join ', ')]")) { return }
+
+    Write-Info "Account '$AccountName' (selector=$Selector); adding missing capabilities: $($missingCaps -join ', ')"
+    $resourceId = "/subscriptions/$SubscriptionId/resourceGroups/$ResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/$AccountName"
+    $body = @{
+        properties = @{
+            capabilities = @($mergedCaps | ForEach-Object { @{ name = $_ } })
+        }
+    } | ConvertTo-Json -Depth 6
+
+    $resp = Invoke-AzRestMethod -Method PATCH -Path "$($resourceId)?api-version=2024-11-15" -Payload $body
+    if ($resp.StatusCode -ge 300) {
+        throw "Failed to add capabilities to '$AccountName' (HTTP $($resp.StatusCode)): $($resp.Content)"
+    }
+
+    # PATCH returns before the capability is durably applied; confirm it landed so a fresh
+    # provisioning run cannot silently produce accounts the tests then fail against.
+    $deadline = (Get-Date).AddMinutes(5)
+    while ((Get-Date) -lt $deadline) {
+        Start-Sleep -Seconds 10
+        $check = Get-AzCosmosDBAccount -ResourceGroupName $ResourceGroupName -Name $AccountName -ErrorAction SilentlyContinue
+        $nowCaps = @()
+        if ($check -and $check.Capabilities) { $nowCaps = @($check.Capabilities | ForEach-Object { $_.Name }) }
+        $stillMissing = @($DesiredCapabilities | Where-Object { $nowCaps -notcontains $_ })
+        if ($stillMissing.Count -eq 0) { return }
+    }
+
+    throw "Capabilities [$($missingCaps -join ', ')] did not apply to '$AccountName' within 5 minutes"
+}
+
 # --- Create / update each account, then collect endpoint + keys --------------
 $secret = [ordered]@{
     version  = 1
@@ -149,7 +220,17 @@ foreach ($acct in $definition.accounts) {
 
     $multiRegion = [bool]$acct.enableMultipleRegions
     $multiWrite  = [bool]$acct.enableMultipleWriteLocations
-    $regionList  = if ($multiRegion) { $multiRegionList } else { $singleRegionList }
+    # An account may pin its own regions when the defaults do not suit it - the GSI account, for
+    # example, must live in East US 2 because live-gsi-platform-matrix.json sets
+    # PREFERRED_LOCATIONS=["East US 2"] on a single-region account, and a preferred region the account
+    # does not have leaves the client with nothing to prefer.
+    $regionList = if ($acct.PSObject.Properties.Name -contains 'regions' -and $acct.regions) {
+        @($acct.regions)
+    } elseif ($multiRegion) {
+        $multiRegionList
+    } else {
+        $singleRegionList
+    }
     $locations   = New-LocationObjects $regionList
 
     $capabilities = @()
@@ -178,38 +259,21 @@ foreach ($acct in $definition.accounts) {
             if ($acct.PSObject.Properties.Name -contains 'enablePartitionMerge' -and $acct.enablePartitionMerge) {
                 $params['EnablePartitionMerge'] = $true
             }
-            if ($capabilities.Count -gt 0) { $params['Capabilities'] = $capabilities }
             $null = New-AzCosmosDBAccount @params
         }
     } else {
-        # Account already exists. Reconcile capabilities: Cosmos capabilities are additive
-        # and cannot be removed, so we only add any desired capability that is missing
-        # (e.g. EnableNoSQLVectorSearch). This makes the script idempotent for capability
-        # changes on already-provisioned accounts.
-        $existingCaps = @()
-        if ($existing.Capabilities) { $existingCaps = @($existing.Capabilities | ForEach-Object { $_.Name }) }
-        $missingCaps = @($capabilities | Where-Object { $existingCaps -notcontains $_ })
-        if ($missingCaps.Count -gt 0) {
-            $mergedCaps = @($existingCaps + $missingCaps | Select-Object -Unique)
-            if ($PSCmdlet.ShouldProcess($accountName, "Add capabilities [$($missingCaps -join ', ')]")) {
-                Write-Info "Account '$accountName' exists (selector=$selector); adding missing capabilities: $($missingCaps -join ', ')"
-                # Capabilities cannot be set via Update-AzCosmosDBAccount, so PATCH the account
-                # through ARM. Capabilities are additive; send the full merged list.
-                $resourceId = "/subscriptions/$SubscriptionId/resourceGroups/$ResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/$accountName"
-                $body = @{
-                    properties = @{
-                        capabilities = @($mergedCaps | ForEach-Object { @{ name = $_ } })
-                    }
-                } | ConvertTo-Json -Depth 6
-                $resp = Invoke-AzRestMethod -Method PATCH -Path "$($resourceId)?api-version=2024-11-15" -Payload $body
-                if ($resp.StatusCode -ge 300) {
-                    throw "Failed to add capabilities to '$accountName' (HTTP $($resp.StatusCode)): $($resp.Content)"
-                }
-            }
-        } else {
-            Write-Info "Cosmos account '$accountName' already exists (selector=$selector); capabilities up to date"
-        }
+        Write-Info "Cosmos account '$accountName' already exists (selector=$selector)"
     }
+
+    # Reconcile capabilities on both paths. Deliberately not passed to New-AzCosmosDBAccount:
+    # some Az.CosmosDB versions ignore -Capabilities silently, which produced accounts with no
+    # capabilities at all and needed a second run of this script to fix.
+    Sync-AccountCapability `
+        -AccountName $accountName `
+        -DesiredCapabilities $capabilities `
+        -ResourceGroupName $ResourceGroupName `
+        -SubscriptionId $SubscriptionId `
+        -Selector $selector
 
     # Read endpoint + keys. Under -WhatIf (dry run) never read real keys — stub them so a
     # preview never emits secrets, even for already-provisioned accounts.

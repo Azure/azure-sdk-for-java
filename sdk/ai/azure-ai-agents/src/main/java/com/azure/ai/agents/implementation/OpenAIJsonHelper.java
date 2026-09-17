@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 
 public final class OpenAIJsonHelper {
 
+    private static final ObjectMapper OPENAI_MODEL_MAPPER = ObjectMappers.jsonMapper();
+
     private static final ObjectMapper MAPPER = ObjectMappers.jsonMapper()
         .rebuild()
         .configure(MapperFeature.AUTO_DETECT_FIELDS, true)
@@ -110,7 +112,7 @@ public final class OpenAIJsonHelper {
             return null;
         }
         try {
-            String json = MAPPER.writeValueAsString(openAIObject);
+            String json = OPENAI_MODEL_MAPPER.writeValueAsString(openAIObject);
             try (JsonReader reader = JsonProviders.createReader(new StringReader(json))) {
                 reader.nextToken();
                 return BinaryData.fromObject(reader.readUntyped());
@@ -148,10 +150,25 @@ public final class OpenAIJsonHelper {
             return null;
         }
         try {
-            return MAPPER.readValue(data.toString(), type);
+            return OPENAI_MODEL_MAPPER.readValue(data.toString(), type);
         } catch (IOException e) {
             throw new RuntimeException("Failed to deserialize BinaryData to OpenAI type", e);
         }
+    }
+
+    /**
+     * Deserializes a list of {@link BinaryData} values to a list of openai-java types.
+     *
+     * @param dataList the list of BinaryData values containing JSON.
+     * @param type the target openai-java class.
+     * @param <T> the target type.
+     * @return the deserialized list, or null if the input is null.
+     */
+    public static <T> List<T> fromBinaryDataList(List<BinaryData> dataList, Class<T> type) {
+        if (dataList == null) {
+            return null;
+        }
+        return dataList.stream().map(data -> fromBinaryData(data, type)).collect(Collectors.toList());
     }
 
     /**

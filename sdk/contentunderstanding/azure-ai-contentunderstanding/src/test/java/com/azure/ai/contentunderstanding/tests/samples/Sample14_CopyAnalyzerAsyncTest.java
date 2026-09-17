@@ -11,6 +11,7 @@ import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -77,7 +78,7 @@ public class Sample14_CopyAnalyzerAsyncTest extends ContentUnderstandingClientTe
             sourceAnalyzer.setFieldSchema(sourceFieldSchema);
 
             Map<String, String> models = new HashMap<>();
-            models.put("completion", "gpt-4.1");
+            models.put("completion", getModelProfile().getCompletionModel());
             sourceAnalyzer.setModels(models);
 
             Map<String, String> tags = new HashMap<>();
@@ -88,16 +89,11 @@ public class Sample14_CopyAnalyzerAsyncTest extends ContentUnderstandingClientTe
             PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
                 = contentUnderstandingAsyncClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
 
-            // Use reactive pattern: chain operations using flatMap
-            // In a real application, you would use subscribe() instead of block()
-            ContentAnalyzer sourceResult = createPoller.last().flatMap(pollResponse -> {
-                if (pollResponse.getStatus().isComplete()) {
-                    return pollResponse.getFinalResult();
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                }
-            }).block(); // block() is used here for testing; in production, use subscribe()
+            ContentAnalyzer sourceResult = createPoller.last()
+                .flatMap(pollResponse -> requireSuccessfulResult(pollResponse.getStatus(),
+                    pollResponse.getFinalResult(), "Source analyzer creation"))
+                .block();
+            assertNotNull(sourceResult, "Source analyzer creation should return a result");
 
             System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
 
@@ -107,35 +103,17 @@ public class Sample14_CopyAnalyzerAsyncTest extends ContentUnderstandingClientTe
 
             // Step 2: Copy the source analyzer to target
             // Note: This copies within the same resource using the simplified 2-parameter method.
-            ContentAnalyzer copiedAnalyzer = null;
-            try {
-                PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
-                    = contentUnderstandingAsyncClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId);
+            PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
+                = contentUnderstandingAsyncClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId);
 
-                // Use reactive pattern for copy operation as well
-                copiedAnalyzer = copyPoller.last().flatMap(pollResponse -> {
-                    if (pollResponse.getStatus().isComplete()) {
-                        return pollResponse.getFinalResult();
-                    } else {
-                        return Mono.error(new RuntimeException(
-                            "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                    }
-                }).block(); // block() is used here for testing; in production, use subscribe()
+            ContentAnalyzer copiedAnalyzer = copyPoller.last()
+                .flatMap(pollResponse -> requireSuccessfulResult(pollResponse.getStatus(),
+                    pollResponse.getFinalResult(), "Analyzer copy"))
+                .block();
+            assertNotNull(copiedAnalyzer, "Analyzer copy should return a result");
 
-                System.out.println("Analyzer copied to '" + targetAnalyzerId + "' successfully!");
-                // END: com.azure.ai.contentunderstanding.copyAnalyzerAsync
-            } catch (com.azure.core.exception.ResourceNotFoundException e) {
-                // Some Content Understanding endpoints may not support same-resource copy operations
-                // This is a service-side configuration, not a SDK bug
-                System.out.println("⚠️ Copy operation not supported on this endpoint.");
-                System.out.println("   Error: " + e.getMessage());
-                System.out.println("   Note: For cross-resource copying, use Sample15_GrantCopyAuthAsync.");
-                System.out.println("\n📋 CopyAnalyzer API Pattern Demonstrated:");
-                System.out.println("   contentUnderstandingAsyncClient.beginCopyAnalyzer(targetId, sourceId);");
-                System.out.println(
-                    "   For cross-resource: beginCopyAnalyzer(targetId, sourceId, allowReplace, sourceResourceId, sourceRegion);");
-                return; // Skip the rest of the test
-            }
+            System.out.println("Analyzer copied to '" + targetAnalyzerId + "' successfully!");
+            // END: com.azure.ai.contentunderstanding.copyAnalyzerAsync
 
             // ========== VERIFICATION: Source Analyzer Creation ==========
             System.out.println("\n📋 Source Analyzer Creation Verification:");
@@ -189,7 +167,8 @@ public class Sample14_CopyAnalyzerAsyncTest extends ContentUnderstandingClientTe
             assertEquals("prebuilt-document", sourceAnalyzer.getBaseAnalyzerId(), "Base analyzer ID should match");
             assertEquals("Source analyzer for copying", sourceAnalyzer.getDescription(), "Description should match");
             assertTrue(sourceAnalyzer.getModels().containsKey("completion"), "Should have completion model");
-            assertEquals("gpt-4.1", sourceAnalyzer.getModels().get("completion"), "Completion model should be gpt-4.1");
+            assertEquals(getModelProfile().getCompletionModel(), sourceAnalyzer.getModels().get("completion"),
+                "Completion model should match the configured profile");
             assertTrue(sourceAnalyzer.getTags().containsKey("modelType"), "Should have modelType tag");
             assertEquals("in_development", sourceAnalyzer.getTags().get("modelType"),
                 "modelType tag should be in_development");
@@ -230,7 +209,8 @@ public class Sample14_CopyAnalyzerAsyncTest extends ContentUnderstandingClientTe
             // Verify models in result
             assertNotNull(sourceResult.getModels(), "Models should not be null in result");
             assertTrue(sourceResult.getModels().containsKey("completion"), "Should have completion model in result");
-            assertEquals("gpt-4.1", sourceResult.getModels().get("completion"), "Completion model should be preserved");
+            assertEquals(getModelProfile().getCompletionModel(), sourceResult.getModels().get("completion"),
+                "Completion model should be preserved");
             System.out.println("  ✓ Models preserved: " + sourceResult.getModels().size() + " model(s)");
 
             System.out.println("\n✅ Source analyzer creation completed:");
@@ -336,7 +316,8 @@ public class Sample14_CopyAnalyzerAsyncTest extends ContentUnderstandingClientTe
             assertEquals(sourceResult.getModels().size(), copiedAnalyzer.getModels().size(),
                 "Model count should match");
             if (copiedAnalyzer.getModels().containsKey("completion")) {
-                assertEquals("gpt-4.1", copiedAnalyzer.getModels().get("completion"), "Completion model should match");
+                assertEquals(getModelProfile().getCompletionModel(), copiedAnalyzer.getModels().get("completion"),
+                    "Completion model should match");
                 System.out.println("  ✓ Models preserved: " + copiedAnalyzer.getModels().size() + " model(s)");
                 System.out.println("    completion=" + copiedAnalyzer.getModels().get("completion"));
             }
@@ -350,9 +331,63 @@ public class Sample14_CopyAnalyzerAsyncTest extends ContentUnderstandingClientTe
                 "Retrieved analyzer should match copied analyzer");
             assertEquals(copiedAnalyzer.getDescription(), verifiedCopy.getDescription(),
                 "Retrieved description should match");
+            assertNotNull(verifiedCopy.getFieldSchema(), "Retrieved field schema should not be null");
+            assertNotNull(verifiedCopy.getConfig(), "Retrieved config should not be null");
+            assertNotNull(verifiedCopy.getModels(), "Retrieved models should not be null");
             assertEquals(copiedAnalyzer.getFieldSchema().getFields().size(),
                 verifiedCopy.getFieldSchema().getFields().size(), "Retrieved field count should match");
             System.out.println("  ✓ Copied analyzer verified via retrieval");
+
+            // BEGIN: com.azure.ai.contentunderstanding.updateAndVerifyCopiedAnalyzerAsync
+            // Step 3: Update the copied analyzer with a production tag
+            Map<String, String> updatedTags = new HashMap<>();
+            updatedTags.put("modelType", "model_in_production");
+            ContentAnalyzer analyzerUpdate
+                = new ContentAnalyzer().setBaseAnalyzerId(verifiedCopy.getBaseAnalyzerId()).setTags(updatedTags);
+            ContentAnalyzer updateResult
+                = contentUnderstandingAsyncClient.updateAnalyzer(targetAnalyzerId, analyzerUpdate).block();
+            assertNotNull(updateResult, "Analyzer update should return a result");
+
+            // Step 4: Retrieve the copied analyzer and verify preserved properties
+            ContentAnalyzer updatedTargetAnalyzer
+                = contentUnderstandingAsyncClient.getAnalyzer(targetAnalyzerId).block();
+            assertNotNull(updatedTargetAnalyzer, "Updated target analyzer should not be null");
+            assertEquals(verifiedCopy.getBaseAnalyzerId(), updatedTargetAnalyzer.getBaseAnalyzerId(),
+                "Base analyzer ID should be preserved");
+            assertEquals(verifiedCopy.getDescription(), updatedTargetAnalyzer.getDescription(),
+                "Description should be preserved");
+            assertNotNull(updatedTargetAnalyzer.getFieldSchema(), "Field schema should be preserved");
+            assertEquals(verifiedCopy.getFieldSchema().getName(), updatedTargetAnalyzer.getFieldSchema().getName(),
+                "Field schema name should be preserved");
+            assertEquals(verifiedCopy.getFieldSchema().getDescription(),
+                updatedTargetAnalyzer.getFieldSchema().getDescription(),
+                "Field schema description should be preserved");
+            assertEquals(verifiedCopy.getFieldSchema().getFields().size(),
+                updatedTargetAnalyzer.getFieldSchema().getFields().size(), "Field count should be preserved");
+            assertTrue(updatedTargetAnalyzer.getFieldSchema().getFields().containsKey("company_name"),
+                "company_name should be preserved");
+            assertTrue(updatedTargetAnalyzer.getFieldSchema().getFields().containsKey("total_amount"),
+                "total_amount should be preserved");
+            assertNotNull(updatedTargetAnalyzer.getConfig(), "Config should be preserved");
+            assertEquals(verifiedCopy.getConfig().isFormulaEnabled(),
+                updatedTargetAnalyzer.getConfig().isFormulaEnabled(), "EnableFormula should be preserved");
+            assertEquals(verifiedCopy.getConfig().isLayoutEnabled(),
+                updatedTargetAnalyzer.getConfig().isLayoutEnabled(), "EnableLayout should be preserved");
+            assertEquals(verifiedCopy.getConfig().isOcrEnabled(), updatedTargetAnalyzer.getConfig().isOcrEnabled(),
+                "EnableOcr should be preserved");
+            assertEquals(verifiedCopy.getConfig().isEstimateFieldSourceAndConfidence(),
+                updatedTargetAnalyzer.getConfig().isEstimateFieldSourceAndConfidence(),
+                "EstimateFieldSourceAndConfidence should be preserved");
+            assertEquals(verifiedCopy.getConfig().isReturnDetails(),
+                updatedTargetAnalyzer.getConfig().isReturnDetails(), "ReturnDetails should be preserved");
+            assertEquals(verifiedCopy.getModels(), updatedTargetAnalyzer.getModels(), "Models should be preserved");
+            assertNotNull(updatedTargetAnalyzer.getTags(), "Updated tags should not be null");
+            assertEquals("model_in_production", updatedTargetAnalyzer.getTags().get("modelType"),
+                "modelType should be updated");
+            assertNotEquals("in_development", updatedTargetAnalyzer.getTags().get("modelType"),
+                "modelType should no longer be in_development");
+            System.out.println("  ✓ Copied analyzer updated and preserved properties verified");
+            // END: com.azure.ai.contentunderstanding.updateAndVerifyCopiedAnalyzerAsync
 
             // Summary
             String separator = new String(new char[60]).replace("\0", "═");
@@ -368,12 +403,13 @@ public class Sample14_CopyAnalyzerAsyncTest extends ContentUnderstandingClientTe
             System.out.println("  Models:      " + sourceResult.getModels().size());
             System.out.println("\nTarget Analyzer (Copied):");
             System.out.println("  ID:          " + targetAnalyzerId);
-            System.out.println("  Base:        " + copiedAnalyzer.getBaseAnalyzerId());
-            System.out.println("  Description: " + copiedAnalyzer.getDescription());
-            System.out.println("  Fields:      " + copiedAnalyzer.getFieldSchema().getFields().size());
-            System.out.println("  Tags:        " + copiedAnalyzer.getTags().size());
-            System.out.println("  Models:      " + copiedAnalyzer.getModels().size());
-            System.out.println("\n✅ All properties successfully copied and verified!");
+            System.out.println("  Base:        " + updatedTargetAnalyzer.getBaseAnalyzerId());
+            System.out.println("  Description: " + updatedTargetAnalyzer.getDescription());
+            System.out.println("  Fields:      " + updatedTargetAnalyzer.getFieldSchema().getFields().size());
+            System.out.println("  Tags:        " + updatedTargetAnalyzer.getTags().size());
+            System.out.println("  Models:      " + updatedTargetAnalyzer.getModels().size());
+            System.out.println("  modelType:   " + updatedTargetAnalyzer.getTags().get("modelType"));
+            System.out.println("\n✅ All properties successfully copied, updated, and verified!");
             System.out.println(separator);
 
         } finally {
@@ -381,16 +417,26 @@ public class Sample14_CopyAnalyzerAsyncTest extends ContentUnderstandingClientTe
             try {
                 contentUnderstandingAsyncClient.deleteAnalyzer(sourceAnalyzerId).block();
                 System.out.println("\nSource analyzer deleted: " + sourceAnalyzerId);
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 System.out.println("Note: Failed to delete source analyzer (may not exist): " + e.getMessage());
             }
 
             try {
                 contentUnderstandingAsyncClient.deleteAnalyzer(targetAnalyzerId).block();
                 System.out.println("Target analyzer deleted: " + targetAnalyzerId);
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 System.out.println("Note: Failed to delete target analyzer (may not exist): " + e.getMessage());
             }
         }
+    }
+
+    private static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
     }
 }

@@ -6,17 +6,16 @@ package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
-import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
-import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,8 +27,8 @@ import java.util.Map;
  * This sample shows:
  * 1. Creating an analyzer
  * 2. Updating analyzer description
- * 3. Updating analyzer configuration
- * 4. Updating field schema
+ * 3. Updating analyzer tags
+ * 4. Preserving analyzer properties omitted from the merge update
  */
 public class Sample08_UpdateAnalyzerTest extends ContentUnderstandingClientTestBase {
 
@@ -53,14 +52,17 @@ public class Sample08_UpdateAnalyzerTest extends ContentUnderstandingClientTestB
         fieldSchema.setFields(fields);
 
         Map<String, String> models = new HashMap<>();
-        models.put("completion", "gpt-4.1");
-        models.put("embedding", "text-embedding-3-large");
+        models.put("completion", getModelProfile().getCompletionModel());
+
+        Map<String, String> tags = new HashMap<>();
+        tags.put("tag1", "tag1_initial_value");
 
         ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
             .setDescription("Original analyzer for update testing")
             .setConfig(new ContentAnalyzerConfig().setOcrEnabled(true).setLayoutEnabled(true))
             .setFieldSchema(fieldSchema)
-            .setModels(models);
+            .setModels(models)
+            .setTags(tags);
 
         contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer).getFinalResult();
         System.out.println("Test analyzer created: " + analyzerId);
@@ -85,41 +87,26 @@ public class Sample08_UpdateAnalyzerTest extends ContentUnderstandingClientTestB
         ContentAnalyzer currentAnalyzer = contentUnderstandingClient.getAnalyzer(analyzerId);
         System.out.println("Current description: " + currentAnalyzer.getDescription());
 
-        // Update the analyzer with new configuration
-        Map<String, ContentFieldDefinition> updatedFields = new HashMap<>();
+        assertEquals("Original analyzer for update testing", currentAnalyzer.getDescription());
+        assertEquals("prebuilt-document", currentAnalyzer.getBaseAnalyzerId());
+        assertNotNull(currentAnalyzer.getConfig());
+        assertEquals(Boolean.TRUE, currentAnalyzer.getConfig().isOcrEnabled());
+        assertEquals(Boolean.TRUE, currentAnalyzer.getConfig().isLayoutEnabled());
+        assertNotNull(currentAnalyzer.getModels());
+        assertEquals(getModelProfile().getCompletionModel(), currentAnalyzer.getModels().get("completion"));
+        assertNotNull(currentAnalyzer.getTags());
+        assertEquals(1, currentAnalyzer.getTags().size());
+        assertEquals("tag1_initial_value", currentAnalyzer.getTags().get("tag1"));
 
-        // Keep the original field
-        ContentFieldDefinition titleDef = new ContentFieldDefinition();
-        titleDef.setType(ContentFieldType.STRING);
-        titleDef.setMethod(GenerationMethod.EXTRACT);
-        titleDef.setDescription("Document title");
-        updatedFields.put("title", titleDef);
+        Map<String, String> updatedTags = new HashMap<>();
+        updatedTags.put("tag1", "tag1_updated_value");
+        updatedTags.put("tag3", "tag3_value");
+        ContentAnalyzer updatedAnalyzer = new ContentAnalyzer().setBaseAnalyzerId(currentAnalyzer.getBaseAnalyzerId())
+            .setDescription("Updated analyzer description")
+            .setTags(updatedTags);
 
-        // Add a new field
-        ContentFieldDefinition authorDef = new ContentFieldDefinition();
-        authorDef.setType(ContentFieldType.STRING);
-        authorDef.setMethod(GenerationMethod.EXTRACT);
-        authorDef.setDescription("Document author");
-        updatedFields.put("author", authorDef);
-
-        ContentFieldSchema updatedFieldSchema = new ContentFieldSchema();
-        updatedFieldSchema.setName("enhanced_schema");
-        updatedFieldSchema.setDescription("Enhanced document schema with author");
-        updatedFieldSchema.setFields(updatedFields);
-
-        Map<String, String> updatedModels = new HashMap<>();
-        updatedModels.put("completion", "gpt-4.1");
-        updatedModels.put("embedding", "text-embedding-3-large");
-
-        ContentAnalyzer updatedAnalyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
-            .setDescription("Updated analyzer with enhanced schema")
-            .setConfig(new ContentAnalyzerConfig().setOcrEnabled(true).setLayoutEnabled(true).setFormulaEnabled(true)) // Enable formula extraction
-            .setFieldSchema(updatedFieldSchema)
-            .setModels(updatedModels);
-
-        // Update the analyzer using the convenience method
-        // This method accepts a ContentAnalyzer object directly instead of BinaryData
-        ContentAnalyzer result = contentUnderstandingClient.updateAnalyzer(analyzerId, updatedAnalyzer);
+        contentUnderstandingClient.updateAnalyzer(analyzerId, updatedAnalyzer);
+        ContentAnalyzer result = contentUnderstandingClient.getAnalyzer(analyzerId);
 
         System.out.println("Analyzer updated successfully!");
         System.out.println("New description: " + result.getDescription());
@@ -128,21 +115,29 @@ public class Sample08_UpdateAnalyzerTest extends ContentUnderstandingClientTestB
         // BEGIN:Assertion_ContentUnderstandingUpdateAnalyzer
         assertNotNull(result, "Updated analyzer should not be null");
         assertEquals(analyzerId, result.getAnalyzerId(), "Analyzer ID should match");
-        assertEquals("Updated analyzer with enhanced schema", result.getDescription(), "Description should be updated");
+        assertEquals("Updated analyzer description", result.getDescription(), "Description should be updated");
+        assertNotEquals(currentAnalyzer.getDescription(), result.getDescription(),
+            "Description should differ from its initial value");
+        assertEquals(currentAnalyzer.getBaseAnalyzerId(), result.getBaseAnalyzerId(),
+            "Base analyzer ID should be preserved");
         System.out.println("Analyzer description verified");
 
-        // Verify field schema was updated
+        assertNotNull(result.getConfig(), "Analyzer config should be preserved");
+        assertEquals(currentAnalyzer.getConfig().isOcrEnabled(), result.getConfig().isOcrEnabled(),
+            "OCR configuration should be preserved");
+        assertEquals(currentAnalyzer.getConfig().isLayoutEnabled(), result.getConfig().isLayoutEnabled(),
+            "Layout configuration should be preserved");
+        assertNotNull(result.getModels(), "Models should be preserved");
+        assertEquals(currentAnalyzer.getModels().get("completion"), result.getModels().get("completion"),
+            "Completion model should be preserved");
         assertNotNull(result.getFieldSchema(), "Field schema should not be null");
-        assertEquals("enhanced_schema", result.getFieldSchema().getName(), "Field schema name should be updated");
-        assertEquals(2, result.getFieldSchema().getFields().size(), "Should have 2 fields after update");
-        assertTrue(result.getFieldSchema().getFields().containsKey("title"), "Should still contain title field");
-        assertTrue(result.getFieldSchema().getFields().containsKey("author"), "Should contain new author field");
-        System.out.println("Field schema update verified: " + result.getFieldSchema().getFields().size() + " fields");
-
-        // Verify config was updated
-        assertNotNull(result.getConfig(), "Config should not be null");
-        assertTrue(result.getConfig().isFormulaEnabled(), "EnableFormula should now be true");
-        System.out.println("Config update verified");
+        assertEquals(2, result.getTags().size(), "Should have 2 tags after update");
+        assertEquals("tag1_updated_value", result.getTags().get("tag1"), "tag1 should be updated");
+        assertEquals("tag3_value", result.getTags().get("tag3"), "tag3 should be added");
+        assertEquals("basic_schema", result.getFieldSchema().getName(), "Field schema should be preserved");
+        assertEquals(1, result.getFieldSchema().getFields().size(), "Field schema should retain its original field");
+        assertTrue(result.getFieldSchema().getFields().containsKey("title"), "Should retain title field");
+        System.out.println("Analyzer update contract verified");
 
         System.out.println("All analyzer update properties validated successfully");
         // END:Assertion_ContentUnderstandingUpdateAnalyzer

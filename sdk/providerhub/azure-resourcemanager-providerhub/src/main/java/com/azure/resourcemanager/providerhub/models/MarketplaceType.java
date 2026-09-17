@@ -26,7 +26,12 @@ public enum MarketplaceType {
     /**
      * Enum value Store.
      */
-    STORE("Store");
+    STORE("Store"),
+
+    /**
+     * Enum value ProviderHub.
+     */
+    PROVIDER_HUB("ProviderHub");
 
     /**
      * The actual serialized value for a MarketplaceType instance.

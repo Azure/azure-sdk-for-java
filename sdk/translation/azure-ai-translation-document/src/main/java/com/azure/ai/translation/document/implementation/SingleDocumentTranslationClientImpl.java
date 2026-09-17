@@ -211,6 +211,20 @@ public final class SingleDocumentTranslationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-metered-usage</td><td>int</td><td>Specifies consumption (the number of characters for which the user
+     * will be charged) for the translation job request</td></tr>
+     * <tr><td>total-image-scans-succeeded</td><td>int</td><td>Specifies the number of successful image translations
+     * within a document translation job</td></tr>
+     * <tr><td>total-image-scans-failed</td><td>int</td><td>Specifies the number of failed image translations within a
+     * document translation job</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
      * @param targetLanguage Specifies the language of the output document.
      * The target language must be one of the supported languages included in the translation scope.
      * For example if you want to translate the document in German language, then use targetLanguage=de.
@@ -223,7 +237,7 @@ public final class SingleDocumentTranslationClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> translateWithResponseAsync(String targetLanguage,
+    public Mono<Response<BinaryData>> translateWithResponseInternalAsync(String targetLanguage,
         BinaryData documentTranslateContent, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/octet-stream";
@@ -264,6 +278,20 @@ public final class SingleDocumentTranslationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-metered-usage</td><td>int</td><td>Specifies consumption (the number of characters for which the user
+     * will be charged) for the translation job request</td></tr>
+     * <tr><td>total-image-scans-succeeded</td><td>int</td><td>Specifies the number of successful image translations
+     * within a document translation job</td></tr>
+     * <tr><td>total-image-scans-failed</td><td>int</td><td>Specifies the number of failed image translations within a
+     * document translation job</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
      * @param targetLanguage Specifies the language of the output document.
      * The target language must be one of the supported languages included in the translation scope.
      * For example if you want to translate the document in German language, then use targetLanguage=de.
@@ -276,8 +304,8 @@ public final class SingleDocumentTranslationClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> translateWithResponse(String targetLanguage, BinaryData documentTranslateContent,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> translateWithResponseInternal(String targetLanguage,
+        BinaryData documentTranslateContent, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/octet-stream";
         return service.translateSync(this.getEndpoint(), this.getServiceVersion().getVersion(), targetLanguage,

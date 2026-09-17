@@ -12,14 +12,14 @@ import java.util.List;
  */
 public interface ResourceOperationResponse {
     /**
-     * Gets the totalResources property: The total number of resources operated on.
+     * Gets the totalResources property: The number of resources included in the operation.
      * 
      * @return the totalResources value.
      */
     int totalResources();
 
     /**
-     * Gets the resourcesStatuses property: The resource status of for each resource.
+     * Gets the resourcesStatuses property: The operation result for each resource.
      * 
      * @return the resourcesStatuses value.
      */

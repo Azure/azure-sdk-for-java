@@ -13,17 +13,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The summarized provisioning result of an occurrence.
+ * Summary of results for a scheduled action occurrence.
  */
 @Immutable
 public final class OccurrenceResultSummary implements JsonSerializable<OccurrenceResultSummary> {
     /*
-     * The total number of resources that the occurrence was supposed to act on.
+     * The number of resources targeted by the occurrence.
      */
     private int total;
 
     /*
-     * The summarized status of the resources.
+     * Resource counts grouped by result code.
      */
     private List<ResourceResultSummary> statuses;
 
@@ -34,7 +34,7 @@ public final class OccurrenceResultSummary implements JsonSerializable<Occurrenc
     }
 
     /**
-     * Get the total property: The total number of resources that the occurrence was supposed to act on.
+     * Get the total property: The number of resources targeted by the occurrence.
      * 
      * @return the total value.
      */
@@ -43,7 +43,7 @@ public final class OccurrenceResultSummary implements JsonSerializable<Occurrenc
     }
 
     /**
-     * Get the statuses property: The summarized status of the resources.
+     * Get the statuses property: Resource counts grouped by result code.
      * 
      * @return the statuses value.
      */

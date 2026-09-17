@@ -17,30 +17,30 @@ public final class AzureFileShareProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileShareProtectionPolicy model = BinaryData.fromString(
-            "{\"backupManagementType\":\"AzureStorage\",\"workLoadType\":\"SystemState\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"vaultRetentionPolicy\":{\"vaultRetention\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"snapshotRetentionInDays\":127275301},\"timeZone\":\"uuuybnchrsziz\",\"protectedItemsCount\":108034081,\"resourceGuardOperationRequests\":[\"yetnd\",\"bf\",\"yggagflnlgmt\",\"wahzjmucftbyr\"]}")
+            "{\"backupManagementType\":\"AzureStorage\",\"workLoadType\":\"SAPHanaDatabase\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"vaultRetentionPolicy\":{\"vaultRetention\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"snapshotRetentionInDays\":343346011},\"timeZone\":\"zlwvsgmwohqfz\",\"protectedItemsCount\":589529978,\"resourceGuardOperationRequests\":[\"mmkjsvthnwpztek\",\"vmribiat\"]}")
             .toObject(AzureFileShareProtectionPolicy.class);
-        Assertions.assertEquals(108034081, model.protectedItemsCount());
-        Assertions.assertEquals("yetnd", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.SYSTEM_STATE, model.workLoadType());
-        Assertions.assertEquals(127275301, model.vaultRetentionPolicy().snapshotRetentionInDays());
-        Assertions.assertEquals("uuuybnchrsziz", model.timeZone());
+        Assertions.assertEquals(589529978, model.protectedItemsCount());
+        Assertions.assertEquals("mmkjsvthnwpztek", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.SAPHANA_DATABASE, model.workLoadType());
+        Assertions.assertEquals(343346011, model.vaultRetentionPolicy().snapshotRetentionInDays());
+        Assertions.assertEquals("zlwvsgmwohqfz", model.timeZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFileShareProtectionPolicy model = new AzureFileShareProtectionPolicy().withProtectedItemsCount(108034081)
-            .withResourceGuardOperationRequests(Arrays.asList("yetnd", "bf", "yggagflnlgmt", "wahzjmucftbyr"))
-            .withWorkLoadType(WorkloadType.SYSTEM_STATE)
+        AzureFileShareProtectionPolicy model = new AzureFileShareProtectionPolicy().withProtectedItemsCount(589529978)
+            .withResourceGuardOperationRequests(Arrays.asList("mmkjsvthnwpztek", "vmribiat"))
+            .withWorkLoadType(WorkloadType.SAPHANA_DATABASE)
             .withSchedulePolicy(new SchedulePolicy())
             .withRetentionPolicy(new RetentionPolicy())
             .withVaultRetentionPolicy(new VaultRetentionPolicy().withVaultRetention(new RetentionPolicy())
-                .withSnapshotRetentionInDays(127275301))
-            .withTimeZone("uuuybnchrsziz");
+                .withSnapshotRetentionInDays(343346011))
+            .withTimeZone("zlwvsgmwohqfz");
         model = BinaryData.fromObject(model).toObject(AzureFileShareProtectionPolicy.class);
-        Assertions.assertEquals(108034081, model.protectedItemsCount());
-        Assertions.assertEquals("yetnd", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.SYSTEM_STATE, model.workLoadType());
-        Assertions.assertEquals(127275301, model.vaultRetentionPolicy().snapshotRetentionInDays());
-        Assertions.assertEquals("uuuybnchrsziz", model.timeZone());
+        Assertions.assertEquals(589529978, model.protectedItemsCount());
+        Assertions.assertEquals("mmkjsvthnwpztek", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.SAPHANA_DATABASE, model.workLoadType());
+        Assertions.assertEquals(343346011, model.vaultRetentionPolicy().snapshotRetentionInDays());
+        Assertions.assertEquals("zlwvsgmwohqfz", model.timeZone());
     }
 }

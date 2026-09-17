@@ -33,11 +33,10 @@ public final class DpsCertificatesVerifyCertificateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateResponse response = manager.dpsCertificates()
-            .verifyCertificateWithResponse("mqhgyxzkonocuk", "klyaxuconu", "szfkbe", "pewr",
-                new VerificationCodeRequest().withCertificate("mwvvjektcxsenhw"), "rsffrzpwvlqdqgbi",
-                "ylihkaetckt".getBytes(), true, CertificatePurpose.SERVER_AUTHENTICATION,
-                OffsetDateTime.parse("2021-11-30T18:53:22Z"), OffsetDateTime.parse("2020-12-30T14:20:48Z"), true,
-                "snkymuctq", com.azure.core.util.Context.NONE)
+            .verifyCertificateWithResponse("noc", "koklya", "uconuqszfkbey", "ewrmjmwvvjektc",
+                new VerificationCodeRequest().withCertificate("enhwlrs"), "frzpwvlqdqgb", "qylihkaetckt".getBytes(),
+                true, CertificatePurpose.SERVER_AUTHENTICATION, OffsetDateTime.parse("2021-11-30T18:53:22Z"),
+                OffsetDateTime.parse("2020-12-30T14:20:48Z"), true, "snkymuctq", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertFalse(response.properties().isVerified());

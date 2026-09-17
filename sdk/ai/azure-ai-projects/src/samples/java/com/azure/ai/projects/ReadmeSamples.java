@@ -28,6 +28,8 @@ public final class ReadmeSamples {
 
         ConnectionsClient connectionsClient = builder.buildConnectionsClient();
         // Beta* clients automatically opt in to their preview service area.
+        BetaAgentInsightMonitorsClient agentInsightMonitorsClient
+            = builder.beta().buildBetaAgentInsightMonitorsClient();
         BetaDatasetsClient dataGenerationJobsClient = builder.beta().buildBetaDatasetsClient();
         DatasetsClient datasetsClient = builder.buildDatasetsClient();
         DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();

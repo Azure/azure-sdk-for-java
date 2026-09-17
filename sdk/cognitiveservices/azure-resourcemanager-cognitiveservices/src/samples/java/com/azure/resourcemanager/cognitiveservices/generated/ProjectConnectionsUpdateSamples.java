@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.resourcemanager.cognitiveservices.models.AccessKeyAuthTypeConnectionProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionAccessKey;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionCategory;
-import com.azure.resourcemanager.cognitiveservices.models.ConnectionPropertiesV2BasicResource;
+import com.azure.resourcemanager.cognitiveservices.models.ConnectionUpdateContent;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class ProjectConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/ProjectConnection/update.json
+     * x-ms-original-file: 2026-07-15-preview/ProjectConnection/update.json
      */
     /**
      * Sample code: UpdateProjectConnection.
@@ -26,17 +26,16 @@ public final class ProjectConnectionsUpdateSamples {
      */
     public static void
         updateProjectConnection(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        ConnectionPropertiesV2BasicResource resource = manager.projectConnections()
-            .getWithResponse("test-rg", "account-1", "project-1", "connection-1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new AccessKeyAuthTypeConnectionProperties().withCategory(ConnectionCategory.ADLSGEN2)
-                .withExpiryTime(OffsetDateTime.parse("2020-01-01T00:00:00Z"))
-                .withMetadata(mapOf())
-                .withTarget("some_string")
-                .withCredentials(new ConnectionAccessKey().withAccessKeyId("fakeTokenPlaceholder")
-                    .withSecretAccessKey("fakeTokenPlaceholder")))
-            .apply();
+        manager.projectConnections()
+            .updateWithResponse("test-rg", "account-1", "project-1", "connection-1",
+                new ConnectionUpdateContent().withProperties(
+                    new AccessKeyAuthTypeConnectionProperties().withCategory(ConnectionCategory.ADLSGEN2)
+                        .withExpiryTime(OffsetDateTime.parse("2020-01-01T00:00:00Z"))
+                        .withMetadata(mapOf())
+                        .withTarget("some_string")
+                        .withCredentials(new ConnectionAccessKey().withAccessKeyId("fakeTokenPlaceholder")
+                            .withSecretAccessKey("fakeTokenPlaceholder"))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

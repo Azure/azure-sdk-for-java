@@ -71,13 +71,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.35.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.35.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.30.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.30.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -90,7 +90,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-testcontainers</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
+      <version>4.1.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
@@ -110,13 +110,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.17.19</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.17.20</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.21.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.21.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -128,7 +128,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>7.0.8</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
+      <version>7.0.9</version> <!-- {x-version-update;springboot4_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -198,7 +198,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-testcontainers:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-testcontainers:[4.1.1]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
                 <include>org.testcontainers:testcontainers-azure:[2.0.5]</include> <!-- {x-include-update;springboot4_org.testcontainers:testcontainers-azure;external_dependency} -->
                 <include>com.microsoft.sqlserver:mssql-jdbc:[13.4.0.jre11]</include> <!-- {x-include-update;springboot4_com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
               </includes>
@@ -218,7 +218,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.5.1</version> <!-- {x-version-update;springboot4_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>

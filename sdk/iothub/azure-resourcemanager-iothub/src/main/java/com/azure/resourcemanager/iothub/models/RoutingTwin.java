@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Twin reference input parameter. This is an optional parameter.
@@ -20,7 +19,7 @@ public final class RoutingTwin implements JsonSerializable<RoutingTwin> {
     /*
      * Twin Tags
      */
-    private Map<String, Object> tags;
+    private Object tags;
 
     /*
      * The properties property.
@@ -38,7 +37,7 @@ public final class RoutingTwin implements JsonSerializable<RoutingTwin> {
      * 
      * @return the tags value.
      */
-    public Map<String, Object> tags() {
+    public Object tags() {
         return this.tags;
     }
 
@@ -48,7 +47,7 @@ public final class RoutingTwin implements JsonSerializable<RoutingTwin> {
      * @param tags the tags value to set.
      * @return the RoutingTwin object itself.
      */
-    public RoutingTwin withTags(Map<String, Object> tags) {
+    public RoutingTwin withTags(Object tags) {
         this.tags = tags;
         return this;
     }
@@ -79,7 +78,9 @@ public final class RoutingTwin implements JsonSerializable<RoutingTwin> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeUntyped(element));
+        if (this.tags != null) {
+            jsonWriter.writeUntypedField("tags", this.tags);
+        }
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
@@ -100,8 +101,7 @@ public final class RoutingTwin implements JsonSerializable<RoutingTwin> {
                 reader.nextToken();
 
                 if ("tags".equals(fieldName)) {
-                    Map<String, Object> tags = reader.readMap(reader1 -> reader1.readUntyped());
-                    deserializedRoutingTwin.tags = tags;
+                    deserializedRoutingTwin.tags = reader.readUntyped();
                 } else if ("properties".equals(fieldName)) {
                     deserializedRoutingTwin.properties = RoutingTwinProperties.fromJson(reader);
                 } else {

@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Properties of a HorizonDb replica for update operations.
+ * Properties of a HorizonDB replica for update operations.
  */
 @Fluent
 public final class HorizonDbReplicaPropertiesForPatchUpdate

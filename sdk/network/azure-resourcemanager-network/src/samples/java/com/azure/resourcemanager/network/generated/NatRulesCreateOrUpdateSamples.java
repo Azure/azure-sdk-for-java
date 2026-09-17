@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class NatRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NatRulePut.json
+     * x-ms-original-file: 2026-01-01/NatRulePut.json
      */
     /**
      * Sample code: NatRulePut.

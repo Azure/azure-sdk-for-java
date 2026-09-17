@@ -12,16 +12,20 @@ public final class ZonePreferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ZonePreference model
-            = BinaryData.fromString("{\"zone\":\"kexxppof\",\"rank\":2119531336}").toObject(ZonePreference.class);
-        Assertions.assertEquals("kexxppof", model.zone());
-        Assertions.assertEquals(2119531336, model.rank());
+            = BinaryData.fromString("{\"zone\":\"euyowqkd\",\"rank\":2008248365,\"targetMaxCapacity\":227245186}")
+                .toObject(ZonePreference.class);
+        Assertions.assertEquals("euyowqkd", model.zone());
+        Assertions.assertEquals(2008248365, model.rank());
+        Assertions.assertEquals(227245186, model.targetMaxCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ZonePreference model = new ZonePreference().withZone("kexxppof").withRank(2119531336);
+        ZonePreference model
+            = new ZonePreference().withZone("euyowqkd").withRank(2008248365).withTargetMaxCapacity(227245186);
         model = BinaryData.fromObject(model).toObject(ZonePreference.class);
-        Assertions.assertEquals("kexxppof", model.zone());
-        Assertions.assertEquals(2119531336, model.rank());
+        Assertions.assertEquals("euyowqkd", model.zone());
+        Assertions.assertEquals(2008248365, model.rank());
+        Assertions.assertEquals(227245186, model.targetMaxCapacity());
     }
 }

@@ -63,9 +63,16 @@ Yes, this client library now has the management functionality built into it. Thi
 
 ### How do I run the unit tests?
 
-Tests are simple JUnit tests. They can be run from the command line or any IDE that supports running JUnit tests.
-Only prerequisite to running tests is setting an environment variable named 'AZURE_SERVICEBUS_CONNECTION_STRING' to the connection string
- of the namespace in which the tests will create entities. The tests create entities in the namespace and run tests and delete the created entities.
+Tests use JUnit 5 Jupiter. They can be run from the command line or any IDE that supports JUnit 5.
+To run the offline unit tests from the repository root without Azure credentials:
+
+```powershell
+mvn -f sdk\servicebus\microsoft-azure-servicebus\pom.xml test "-Dtest=MessageBodyTests,ConnectionStringBuilderTests,UtilsTests,AadTokenProviderTests"
+```
+
+Service-backed tests are skipped unless `AZURE_TEST_MODE` is set to `RECORD`; there are no recorded playback tests in this package.
+To run those tests, also set `AZURE_SERVICEBUS_CONNECTION_STRING` to the connection string
+of the namespace in which the tests will create entities. The tests create entities in the namespace and run tests and delete the created entities.
 And test classes also have methods to specify whether to create entities per test or once for all tests in a suite. Creating entities per test is better
 as it keeps test independent of each other.
 
@@ -79,10 +86,9 @@ To use a proxy for unit tests, set an environment variable `RUN_WITH_PROXY` to `
 4. Import the project.
 5. In the package explorer you should have two projects, navigate to java_azure-service bus and right click on it. Select Maven > Update Project...
 6. Select Run > Run Configurations. Under JUnit click on + New Configuration.
-7. Set the Test runner to Junit 4.
+7. Set the Test runner to JUnit 5.
 8. Select: Run all tests in the selected project, package or source folder. Click "Search..." and select: com.microsoft.azure.servicebus.
-8. Go to environment and add above mentioned environment variable and the regarding connection string.
+8. Go to environment and add `AZURE_TEST_MODE=RECORD` and `AZURE_SERVICEBUS_CONNECTION_STRING` with the namespace connection string.
 9. Click "Apply" and then "Run"
 10. You should have a new view next to the package explorer called JUnit showing the running tests and see Console outputs depending on which test currently runs. If you do not see the JUnit tab go to Window > Show view > Other... > Java > JUnit
-
 

@@ -163,6 +163,8 @@ public final class AzureIaaSClassicComputeVMContainer extends IaaSvmContainer {
                     deserializedAzureIaaSClassicComputeVMContainer.withHealthStatus(reader.getString());
                 } else if ("protectableObjectType".equals(fieldName)) {
                     deserializedAzureIaaSClassicComputeVMContainer.withProtectableObjectType(reader.getString());
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureIaaSClassicComputeVMContainer.withSourceLocation(reader.getString());
                 } else if ("virtualMachineId".equals(fieldName)) {
                     deserializedAzureIaaSClassicComputeVMContainer.withVirtualMachineId(reader.getString());
                 } else if ("virtualMachineVersion".equals(fieldName)) {

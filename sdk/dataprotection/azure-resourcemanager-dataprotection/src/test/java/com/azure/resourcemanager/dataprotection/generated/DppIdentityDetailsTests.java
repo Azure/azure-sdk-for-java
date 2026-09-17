@@ -15,17 +15,18 @@ public final class DppIdentityDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DppIdentityDetails model = BinaryData.fromString(
-            "{\"principalId\":\"sd\",\"tenantId\":\"ouwaboekqvkeln\",\"type\":\"vbxwyjsflhh\",\"userAssignedIdentities\":{\"jpkiidzyexznelix\":{\"principalId\":\"n\",\"clientId\":\"xisxyawjoyaqcsl\"}}}")
+            "{\"principalId\":\"shqjohxcrsbf\",\"tenantId\":\"asrru\",\"type\":\"bhsqfsubcgjbirxb\",\"userAssignedIdentities\":{\"sotftpvj\":{\"principalId\":\"rfbjf\",\"clientId\":\"w\"},\"jhwqytjrybnw\":{\"principalId\":\"exilzznfqqnvwpmq\",\"clientId\":\"ruoujmk\"}}}")
             .toObject(DppIdentityDetails.class);
-        Assertions.assertEquals("vbxwyjsflhh", model.type());
+        Assertions.assertEquals("bhsqfsubcgjbirxb", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DppIdentityDetails model = new DppIdentityDetails().withType("vbxwyjsflhh")
-            .withUserAssignedIdentities(mapOf("jpkiidzyexznelix", new UserAssignedIdentity()));
+        DppIdentityDetails model = new DppIdentityDetails().withType("bhsqfsubcgjbirxb")
+            .withUserAssignedIdentities(
+                mapOf("sotftpvj", new UserAssignedIdentity(), "jhwqytjrybnw", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(DppIdentityDetails.class);
-        Assertions.assertEquals("vbxwyjsflhh", model.type());
+        Assertions.assertEquals("bhsqfsubcgjbirxb", model.type());
     }
 
     // Use "Map.of" if available

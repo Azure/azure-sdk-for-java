@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class FirewallPolicyRuleCollectionGroupDraftsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/FirewallPolicyRuleCollectionGroupDraftPut.json
+     * x-ms-original-file: 2026-01-01/FirewallPolicyRuleCollectionGroupDraftPut.json
      */
     /**
      * Sample code: create or update rule collection group draft.
@@ -39,7 +39,9 @@ public final class FirewallPolicyRuleCollectionGroupDraftsCreateOrUpdateSamples 
                                 .withIpProtocols(Arrays.asList(FirewallPolicyRuleNetworkProtocol.TCP))
                                 .withSourceAddresses(Arrays.asList("10.1.25.0/24"))
                                 .withDestinationAddresses(Arrays.asList("*"))
-                                .withDestinationPorts(Arrays.asList("*")))))),
+                                .withDestinationPorts(Arrays.asList("*"))
+                                .withSourceGeoLocations(Arrays.asList("CA", "US"))
+                                .withDestinationGeoLocations(Arrays.asList("US")))))),
                 com.azure.core.util.Context.NONE);
     }
 }

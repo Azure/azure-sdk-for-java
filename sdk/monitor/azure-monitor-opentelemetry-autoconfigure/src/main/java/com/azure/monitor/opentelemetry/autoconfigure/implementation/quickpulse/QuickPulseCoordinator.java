@@ -10,7 +10,6 @@ import org.slf4j.MDC;
 import reactor.util.annotation.Nullable;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_PING_ERROR;
@@ -150,17 +149,16 @@ final class QuickPulseCoordinator implements Runnable {
         return 0;
     }
 
-    private QuickPulseStatus handleReceivedPingHeaders(IsSubscribedHeaders pingHeaders) {
+    QuickPulseStatus handleReceivedPingHeaders(IsSubscribedHeaders pingHeaders) {
         String redirectLink = pingHeaders.getXMsQpsServiceEndpointRedirectV2();
         if (!Strings.isNullOrEmpty(redirectLink)) {
             try {
-                URL redirectUrl = new URL(redirectLink);
-                // Taking the QuickPulseService.svc part out if present because the swagger will add that on.
-                qpsServiceRedirectedEndpoint = redirectUrl.getProtocol() + "://" + redirectUrl.getHost() + "/";
+                qpsServiceRedirectedEndpoint = QuickPulseRedirectValidator
+                    .validateAndGetEndpointPrefix(pingSender.getQuickPulseEndpoint(), redirectLink);
                 logger.verbose("Handling ping header to redirect to {}", qpsServiceRedirectedEndpoint);
                 dataSender.setRedirectEndpointPrefix(qpsServiceRedirectedEndpoint);
             } catch (MalformedURLException e) {
-                logger.error("The service returned a malformed URL in the redirect header: {}. Exception message: {}",
+                logger.error("The service returned an invalid URL in the redirect header: {}. Exception message: {}",
                     redirectLink, e.getMessage());
             }
         }

@@ -36,7 +36,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                 exceptionCountAfterHandling++;
                 int successCountAfterHandling = 0;
 
-                LocationSpecificHealthContext.Builder builder = new LocationSpecificHealthContext.Builder()
+                LocationSpecificHealthContext.Builder builder = new LocationSpecificHealthContext.Builder(locationSpecificHealthContext)
                     .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
                     .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
                     .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached());
@@ -97,7 +97,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
 
                 exceptionCountAfterHandling = 0;
 
-                LocationSpecificHealthContext.Builder builder = new LocationSpecificHealthContext.Builder()
+                LocationSpecificHealthContext.Builder builder = new LocationSpecificHealthContext.Builder(locationSpecificHealthContext)
                     .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
                     .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
                     .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached());
@@ -124,7 +124,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
 
                 successCountAfterHandling++;
 
-                builder = new LocationSpecificHealthContext.Builder()
+                builder = new LocationSpecificHealthContext.Builder(locationSpecificHealthContext)
                     .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
                     .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
                     .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached());
