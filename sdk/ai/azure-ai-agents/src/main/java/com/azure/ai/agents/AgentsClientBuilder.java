@@ -425,8 +425,18 @@ public final class AgentsClientBuilder
         return options;
     }
 
+    /**
+     * Configures the native OpenAI client to use the Azure HTTP pipeline, including any required Foundry preview
+     * features, and combines the Azure SDK and native OpenAI user-agent values for telemetry.
+     *
+     * @param options the native OpenAI client options to configure.
+     * @param foundryFeatures the comma-separated Foundry preview features to enable, or {@code null} for none.
+     */
     private void configureOpenAIOptions(com.openai.core.ClientOptions.Builder options, String foundryFeatures) {
+        // Route native OpenAI requests through the Azure pipeline and apply any required preview feature policy.
         options.httpClient(createOpenAIHttpClient(foundryFeatures));
+
+        // Preserve the native OpenAI identity while adding the Azure SDK identity used for telemetry.
         String openAIUserAgent = String.join(" ", options.build().headers().values("User-Agent"));
         Configuration buildConfiguration
             = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
@@ -454,10 +464,14 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesAsyncClient
      */
     public ResponsesAsyncClient buildResponsesAsyncClient() {
+        // Use a marker credential during native client construction so Azure tokens can be acquired asynchronously
+        // at the transport boundary instead of blocking the asynchronous request path with getTokenSync().
         TokenUtils.AsyncAuthentication authentication
             = new TokenUtils.AsyncAuthentication(tokenCredential, DEFAULT_SCOPES);
         return new ResponsesAsyncClient(
             getOpenAIAsyncClientBuilder(null, authentication.getCredential()).build().withOptions(options -> {
+                // Install the Azure-backed transport first, then wrap that final transport with asynchronous
+                // authentication so each request receives a current Azure bearer token before it is sent.
                 options.httpClient(createOpenAIHttpClient(null));
                 authentication.configure(options);
             }));
@@ -470,7 +484,11 @@ public final class AgentsClientBuilder
      * @return an instance of OpenAIClient
      */
     public OpenAIClient buildOpenAIClient() {
+        // A null agent name selects the project-scoped OpenAI endpoint rather than an agent-specific endpoint.
         return getOpenAIClientBuilder(null).build()
+            // The original implementation only replaced the HTTP transport. Because the native OpenAI user agent was
+            // already present, the Azure pipeline did not add the Azure SDK identity required for telemetry. Configure
+            // both the Azure transport and the combined user agent; null indicates that no preview features are needed.
             .withOptions(optionBuilder -> configureOpenAIOptions(optionBuilder, null));
     }
 
@@ -497,6 +515,9 @@ public final class AgentsClientBuilder
         if (CoreUtils.isNullOrEmpty(agentName)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
+        // Previously, this client only replaced the native HTTP transport. Because the native OpenAI user agent was
+        // already present, the Azure pipeline could not add the Azure SDK identity required for telemetry. Centralize
+        // the setup to install the Azure transport with agent preview features and explicitly combine both user agents.
         return getOpenAIClientBuilder(agentName).build()
             .withOptions(optionBuilder -> configureOpenAIOptions(optionBuilder, AGENT_PREVIEW_FEATURES));
     }
@@ -521,6 +542,10 @@ public final class AgentsClientBuilder
      * @return an instance of OpenAIAsyncClient
      */
     public OpenAIClientAsync buildOpenAIAsyncClient() {
+        // Previously, the async client used the native builder's synchronous token supplier, which could call
+        // getTokenSync() and block the asynchronous request path. Delegate to the shared async helper so Azure tokens
+        // are acquired asynchronously at the transport boundary. A null agent name selects the project endpoint, and
+        // the no-op callback keeps the standard Azure pipeline, telemetry, and authentication configuration unchanged.
         return createOpenAIAsyncClient(null, options -> {
         });
     }
@@ -550,6 +575,10 @@ public final class AgentsClientBuilder
         if (CoreUtils.isNullOrEmpty(agentName)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
+        // Use the shared async helper to fix the previous blocking authentication path. It performs three ordered
+        // steps: (1) installs the Azure transport, agent preview features, and combined user-agent telemetry;
+        // (2) applies caller-provided option overrides; and (3) wraps the final transport with asynchronous Azure
+        // authentication so token acquisition does not call getTokenSync() on the asynchronous request path.
         return createOpenAIAsyncClient(agentName, options -> {
         });
     }
@@ -593,7 +622,19 @@ public final class AgentsClientBuilder
         return base + "/agents/" + agentName + "/endpoint/protocols/openai";
     }
 
+    /**
+     * Creates the native synchronous OpenAI builder and configures synchronous Azure token authentication.
+     * <p>
+     * Unlike {@link #getOpenAIAsyncClientBuilder(String, com.openai.credential.Credential)}, this helper can use a
+     * bearer-token supplier directly because calls made by the resulting client are synchronous. The async helper uses
+     * a marker credential and resolves the real token at the transport boundary to avoid blocking its request path.
+     *
+     * @param agentName agent name, or {@code null} for the project-scoped endpoint.
+     * @return the configured native synchronous builder.
+     */
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder(String agentName) {
+        // The supplier obtains an Azure token when the synchronous OpenAI client needs authentication. This path may
+        // block while resolving the token, which is acceptable here but is intentionally avoided by the async helper.
         OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder()
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
@@ -603,6 +644,8 @@ public final class AgentsClientBuilder
         } else {
             builder.baseUrl(getAgentEndpointBaseUrl(agentName));
             builder.putHeader("Foundry-Features", AGENT_PREVIEW_FEATURES);
+            // Agent-scoped endpoints require an explicit API version. Without this query parameter, the service may
+            // reject the request or route it using an unintended version; honor the caller's version when configured.
             AgentsServiceVersion localVersion
                 = serviceVersion == null ? AgentsServiceVersion.getLatest() : serviceVersion;
             builder.putQueryParam("api-version", localVersion.getVersion());
@@ -612,8 +655,19 @@ public final class AgentsClientBuilder
         return builder;
     }
 
+    /**
+     * Creates the native asynchronous builder with its initial authentication credential.
+     *
+     * @param agentName agent name, or {@code null} for the project-scoped endpoint.
+     * @param credential native credential used during client construction. The default async path supplies a unique
+     * marker credential that {@link TokenUtils.AsyncAuthentication} recognizes and replaces with an asynchronously
+     * acquired Azure bearer token at the transport boundary.
+     * @return the configured native asynchronous builder.
+     */
     private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder(String agentName,
         com.openai.credential.Credential credential) {
+        // The OpenAI builder requires a credential up front. AsyncAuthentication passes a marker here, then wraps the
+        // final transport so the marker is never sent: each request receives a real Azure token asynchronously.
         OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder().credential(credential);
         builder.azureUrlPath(AzureUrlPathMode.UNIFIED);
         if (CoreUtils.isNullOrEmpty(agentName)) {
@@ -621,6 +675,8 @@ public final class AgentsClientBuilder
         } else {
             builder.baseUrl(getAgentEndpointBaseUrl(agentName));
             builder.putHeader("Foundry-Features", AGENT_PREVIEW_FEATURES);
+            // Agent-scoped endpoints require an explicit API version. Without this query parameter, the service may
+            // reject the request or route it using an unintended version; honor the caller's version when configured.
             AgentsServiceVersion localVersion
                 = serviceVersion == null ? AgentsServiceVersion.getLatest() : serviceVersion;
             builder.putQueryParam("api-version", localVersion.getVersion());
