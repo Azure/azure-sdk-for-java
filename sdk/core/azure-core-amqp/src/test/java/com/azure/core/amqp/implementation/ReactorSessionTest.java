@@ -357,12 +357,11 @@ public class ReactorSessionTest {
         // states (which sets isDisposed on the ReactorSender).
         sendLinkHandler1.close();
 
-        // Wait for the endpoint states completion to propagate through the ReactorSender's
-        // async doOnComplete callback, which sets isDisposed = true.
-        StepVerifier.create(firstLink.getEndpointStates())
-            .thenConsumeWhile(state -> true)
-            .expectComplete()
-            .verify(TIMEOUT);
+        // Wait for the async doOnComplete callback to propagate and set isDisposed = true.
+        Mono.fromSupplier(firstLink::isDisposed)
+            .filter(disposed -> disposed)
+            .repeatWhenEmpty(repeat -> repeat.delayElements(Duration.ofMillis(100)).take(50))
+            .block(TIMEOUT);
 
         assertTrue(firstLink.isDisposed());
 
