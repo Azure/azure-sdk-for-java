@@ -5,9 +5,7 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
@@ -18,6 +16,7 @@ import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
@@ -54,7 +53,6 @@ public class MemorySearchSync {
         AgentsClient agentsClient = builder.buildAgentsClient();
         BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
         ConversationService conversationService = builder.buildOpenAIClient().conversations();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         String memoryStoreName = "my_memory_store";
         String scope = "user_123";
@@ -88,19 +86,20 @@ public class MemorySearchSync {
             agent = agentsClient.createAgentVersion("memory-search-agent", agentDefinition);
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            SampleUtils.pinAgentVersion(agentsClient, agent);
+
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // First conversation: teach the agent a preference
             Conversation conversation = conversationService.create();
             firstConversationId = conversation.id();
             System.out.println("Created conversation (id: " + firstConversationId + ")");
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
+            Response response = openAIClient.responses().create(
                 ResponseCreateParams.builder()
                     .conversation(firstConversationId)
-                    .input("I prefer dark roast coffee"));
+                    .input("I prefer dark roast coffee")
+                    .build());
             System.out.println("Response: " + getResponseText(response));
 
             // Wait for memories to be extracted and stored
@@ -112,11 +111,11 @@ public class MemorySearchSync {
             followUpConversationId = newConversation.id();
             System.out.println("Created new conversation (id: " + followUpConversationId + ")");
 
-            Response followUpResponse = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
+            Response followUpResponse = openAIClient.responses().create(
                 ResponseCreateParams.builder()
                     .conversation(followUpConversationId)
-                    .input("Please order my usual coffee"));
+                    .input("Please order my usual coffee")
+                    .build());
             System.out.println("Response: " + getResponseText(followUpResponse));
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

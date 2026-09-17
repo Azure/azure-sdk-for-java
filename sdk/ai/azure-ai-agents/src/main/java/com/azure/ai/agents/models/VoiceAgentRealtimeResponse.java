@@ -137,9 +137,9 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
      *
      * @return the maxOutputTokens value.
      */
-    @Generated
     @Override
-    public BinaryData getMaxOutputTokens() {
+    BinaryData getMaxOutputTokens() {
+        // AI Tooling: union type
         return this.maxOutputTokens;
     }
 

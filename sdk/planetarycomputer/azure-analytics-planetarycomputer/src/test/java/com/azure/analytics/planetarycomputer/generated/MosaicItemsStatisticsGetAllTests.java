@@ -4,8 +4,12 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TilerStacItemStatistics;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -17,8 +21,11 @@ public final class MosaicItemsStatisticsGetAllTests extends PlanetaryComputerPro
     public void testMosaicItemsStatisticsGetAllTests() {
         // method invocation
         TilerStacItemStatistics response = dataClient.getItemStatistics("naip-atl", "ga_m_3308421_se_16_060_20211114",
-            null, Arrays.asList("image"), null, null, null, null, null, null, null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, null, null);
+            (List<Integer>) null, Arrays.asList("image"), (String) null, (List<String>) null, (Boolean) null,
+            (String) null, (Boolean) null, (WarpKernelResampling) null, (Resampling) null, (Integer) null,
+            (Boolean) null, (List<Integer>) null, (List<Integer>) null, (String) null, (String) null, (String) null,
+            (List<Integer>) null, (String) null, (String) null, (List<String>) null, (SelMethod) null, (String) null,
+            (String) null, (Integer) null, (Integer) null);
 
         // response assertion
         Assertions.assertNotNull(response);

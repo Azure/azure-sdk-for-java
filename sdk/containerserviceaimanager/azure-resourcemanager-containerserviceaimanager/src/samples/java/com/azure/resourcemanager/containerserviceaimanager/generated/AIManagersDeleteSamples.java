@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerserviceaimanager.generated;
  */
 public final class AIManagersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/AIManagers_Delete.json
+     * x-ms-original-file: 2026-09-02-preview/AIManagers_Delete.json
      */
     /**
      * Sample code: Deletes an AI Manager resource.

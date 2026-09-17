@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerserviceaimanager.generated;
  */
 public final class AIManagerNamespacesListCredentialSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/AIManagerNamespaces_ListCredential.json
+     * x-ms-original-file: 2026-09-02-preview/AIManagerNamespaces_ListCredential.json
      */
     /**
      * Sample code: Lists the credentials of an AI Manager namespace.
