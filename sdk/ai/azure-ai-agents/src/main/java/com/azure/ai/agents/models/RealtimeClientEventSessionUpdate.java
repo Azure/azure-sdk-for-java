@@ -50,9 +50,29 @@ public final class RealtimeClientEventSessionUpdate extends RealtimeClientEvent 
      *
      * @param session the session value to set.
      */
-    @Generated
-    public RealtimeClientEventSessionUpdate(BinaryData session) {
+    RealtimeClientEventSessionUpdate(BinaryData session) {
+        // AI Tooling: union type
         this.session = session;
+    }
+
+    /**
+     * Creates an instance of RealtimeClientEventSessionUpdate class.
+     *
+     * @param session the {@link RealtimeSessionCreateRequestGA} session to set.
+     */
+    public RealtimeClientEventSessionUpdate(RealtimeSessionCreateRequestGA session) {
+        // AI Tooling: union type
+        this.session = session == null ? null : BinaryData.fromObject(session);
+    }
+
+    /**
+     * Creates an instance of RealtimeClientEventSessionUpdate class.
+     *
+     * @param session the {@link RealtimeTranscriptionSessionCreateRequestGA} session to set.
+     */
+    public RealtimeClientEventSessionUpdate(RealtimeTranscriptionSessionCreateRequestGA session) {
+        // AI Tooling: union type
+        this.session = session == null ? null : BinaryData.fromObject(session);
     }
 
     /**
@@ -98,8 +118,8 @@ public final class RealtimeClientEventSessionUpdate extends RealtimeClientEvent 
      *
      * @return the session value.
      */
-    @Generated
-    public BinaryData getSession() {
+    BinaryData getSession() {
+        // AI Tooling: union type
         return this.session;
     }
 
@@ -151,5 +171,43 @@ public final class RealtimeClientEventSessionUpdate extends RealtimeClientEvent 
             deserializedRealtimeClientEventSessionUpdate.eventId = eventId;
             return deserializedRealtimeClientEventSessionUpdate;
         });
+    }
+
+    /**
+     * Get the session property: Update the Realtime session. Choose either a realtime session or a transcription
+     * session.
+     *
+     * @return the session value as a {@link RealtimeSessionCreateRequestGA}, or {@code null} when it is not set or
+     * holds another variant.
+     */
+    public RealtimeSessionCreateRequestGA getSessionAsRealtimeSessionCreateRequestGA() {
+        // AI Tooling: union type
+        if (this.session == null) {
+            return null;
+        }
+        RealtimeSessionCreateRequestUnion unionValue = this.session.toObject(RealtimeSessionCreateRequestUnion.class);
+        if (!(unionValue instanceof RealtimeSessionCreateRequestGA)) {
+            return null;
+        }
+        return (RealtimeSessionCreateRequestGA) unionValue;
+    }
+
+    /**
+     * Get the session property: Update the Realtime session. Choose either a realtime session or a transcription
+     * session.
+     *
+     * @return the session value as a {@link RealtimeTranscriptionSessionCreateRequestGA}, or {@code null} when it is
+     * not set or holds another variant.
+     */
+    public RealtimeTranscriptionSessionCreateRequestGA getSessionAsRealtimeTranscriptionSessionCreateRequestGA() {
+        // AI Tooling: union type
+        if (this.session == null) {
+            return null;
+        }
+        RealtimeSessionCreateRequestUnion unionValue = this.session.toObject(RealtimeSessionCreateRequestUnion.class);
+        if (!(unionValue instanceof RealtimeTranscriptionSessionCreateRequestGA)) {
+            return null;
+        }
+        return (RealtimeTranscriptionSessionCreateRequestGA) unionValue;
     }
 }

@@ -7,6 +7,7 @@ import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -208,8 +209,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
      *
      * @return the allowedTools value.
      */
-    @Generated
-    public BinaryData getAllowedTools() {
+    BinaryData getAllowedTools() {
+        // AI Tooling: union type
         return this.allowedTools;
     }
 
@@ -219,8 +220,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
      * @param allowedTools the allowedTools value to set.
      * @return the VoiceAgentMcpTool object itself.
      */
-    @Generated
-    public VoiceAgentMcpTool setAllowedTools(BinaryData allowedTools) {
+    VoiceAgentMcpTool setAllowedTools(BinaryData allowedTools) {
+        // AI Tooling: union type
         this.allowedTools = allowedTools;
         return this;
     }
@@ -252,8 +253,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
      *
      * @return the requireApproval value.
      */
-    @Generated
-    public BinaryData getRequireApproval() {
+    BinaryData getRequireApproval() {
+        // AI Tooling: union type
         return this.requireApproval;
     }
 
@@ -263,8 +264,8 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
      * @param requireApproval the requireApproval value to set.
      * @return the VoiceAgentMcpTool object itself.
      */
-    @Generated
-    public VoiceAgentMcpTool setRequireApproval(BinaryData requireApproval) {
+    VoiceAgentMcpTool setRequireApproval(BinaryData requireApproval) {
+        // AI Tooling: union type
         this.requireApproval = requireApproval;
         return this;
     }
@@ -490,5 +491,124 @@ public final class VoiceAgentMcpTool extends VoiceAgentTool {
             deserializedVoiceAgentMcpTool.responseScheduling = responseScheduling;
             return deserializedVoiceAgentMcpTool;
         });
+    }
+
+    /**
+     * Set the allowedTools property: The allowed_tools property.
+     *
+     * @param allowedTools the list of tool name strings to set.
+     * @return the VoiceAgentMcpTool object itself.
+     */
+    public VoiceAgentMcpTool setAllowedTools(List<String> allowedTools) {
+        // AI Tooling: union type
+        this.allowedTools = allowedTools == null ? null : BinaryData.fromObject(allowedTools);
+        return this;
+    }
+
+    /**
+     * Get the allowedTools property: The allowed_tools property.
+     *
+     * @return the allowedTools value as a list of Strings, or {@code null} when it is not set or holds another variant.
+     */
+    public List<String> getAllowedToolsAsStringList() {
+        // AI Tooling: union type
+        if (this.allowedTools == null) {
+            return null;
+        }
+        String json = this.allowedTools.toString().trim();
+        if (!(json.startsWith("["))) {
+            return null;
+        }
+        return this.allowedTools.toObject(new TypeReference<List<String>>() {
+        });
+    }
+
+    /**
+     * Set the allowedTools property: The allowed_tools property.
+     *
+     * @param allowedTools the {@link McpToolFilter} to set.
+     * @return the VoiceAgentMcpTool object itself.
+     */
+    public VoiceAgentMcpTool setAllowedTools(McpToolFilter allowedTools) {
+        // AI Tooling: union type
+        this.allowedTools = allowedTools == null ? null : BinaryData.fromObject(allowedTools);
+        return this;
+    }
+
+    /**
+     * Get the allowedTools property: The allowed_tools property.
+     *
+     * @return the allowedTools value as a {@link McpToolFilter}, or {@code null} when it is not set or holds another
+     * variant.
+     */
+    public McpToolFilter getAllowedToolsAsMcpToolFilter() {
+        // AI Tooling: union type
+        if (this.allowedTools == null) {
+            return null;
+        }
+        String json = this.allowedTools.toString().trim();
+        if (!(json.startsWith("{"))) {
+            return null;
+        }
+        return this.allowedTools.toObject(McpToolFilter.class);
+    }
+
+    /**
+     * Set the requireApproval property: The require_approval property.
+     *
+     * @param requireApproval the approval setting string to set (e.g., "always" or "never").
+     * @return the VoiceAgentMcpTool object itself.
+     */
+    public VoiceAgentMcpTool setRequireApproval(String requireApproval) {
+        // AI Tooling: union type
+        this.requireApproval = requireApproval == null ? null : BinaryData.fromObject(requireApproval);
+        return this;
+    }
+
+    /**
+     * Get the requireApproval property: The require_approval property.
+     *
+     * @return the requireApproval value as a String, or {@code null} when it is not set or holds another variant.
+     */
+    public String getRequireApprovalAsString() {
+        // AI Tooling: union type
+        if (this.requireApproval == null) {
+            return null;
+        }
+        String json = this.requireApproval.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return this.requireApproval.toObject(String.class);
+    }
+
+    /**
+     * Set the requireApproval property: The require_approval property.
+     *
+     * @param requireApproval the {@link McpToolRequireApproval} filter to set.
+     * @return the VoiceAgentMcpTool object itself.
+     */
+    public VoiceAgentMcpTool setRequireApproval(McpToolRequireApproval requireApproval) {
+        // AI Tooling: union type
+        this.requireApproval = requireApproval == null ? null : BinaryData.fromObject(requireApproval);
+        return this;
+    }
+
+    /**
+     * Get the requireApproval property: The require_approval property.
+     *
+     * @return the requireApproval value as a {@link McpToolRequireApproval}, or {@code null} when it is not set or
+     * holds another variant.
+     */
+    public McpToolRequireApproval getRequireApprovalAsMcpToolRequireApproval() {
+        // AI Tooling: union type
+        if (this.requireApproval == null) {
+            return null;
+        }
+        String json = this.requireApproval.toString().trim();
+        if (!(json.startsWith("{"))) {
+            return null;
+        }
+        return this.requireApproval.toObject(McpToolRequireApproval.class);
     }
 }

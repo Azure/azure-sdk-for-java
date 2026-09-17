@@ -157,6 +157,21 @@ public final class OpenAIJsonHelper {
     }
 
     /**
+     * Deserializes a list of {@link BinaryData} values to a list of openai-java types.
+     *
+     * @param dataList the list of BinaryData values containing JSON.
+     * @param type the target openai-java class.
+     * @param <T> the target type.
+     * @return the deserialized list, or null if the input is null.
+     */
+    public static <T> List<T> fromBinaryDataList(List<BinaryData> dataList, Class<T> type) {
+        if (dataList == null) {
+            return null;
+        }
+        return dataList.stream().map(data -> fromBinaryData(data, type)).collect(Collectors.toList());
+    }
+
+    /**
      * Flattens a {@link JsonSerializable} object into a map of top-level JSON property names to
      * {@link JsonValue} entries. This is useful for adding Azure-specific properties as additional
      * body properties in an OpenAI request, where each field must appear at the top level of the
