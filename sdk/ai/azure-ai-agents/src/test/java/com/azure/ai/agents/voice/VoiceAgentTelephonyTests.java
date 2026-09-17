@@ -230,7 +230,7 @@ public class VoiceAgentTelephonyTests {
         BetaVoiceAgentsTelephonyAsyncClient asyncClient = builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient();
         assertEquals(0L,
             async
-                ? asyncClient.listTelephonyBindings(AGENT).count().block(TIMEOUT)
+                ? asyncClient.listTelephonyBindings(AGENT).count().block(TIMEOUT).longValue()
                 : syncClient.listTelephonyBindings(AGENT).stream().count());
         assertTrue(call(async, () -> syncClient.getTelephonyTransferTargets(AGENT),
             () -> asyncClient.getTelephonyTransferTargets(AGENT)).getTransferTargets().isEmpty());
@@ -273,7 +273,7 @@ public class VoiceAgentTelephonyTests {
         BetaVoiceAgentsTelephonyAsyncClient asyncClient = builder.beta().buildBetaVoiceAgentsTelephonyAsyncClient();
         assertEquals(0L,
             async
-                ? asyncClient.listTelephonyCalls(AGENT).count().block(TIMEOUT)
+                ? asyncClient.listTelephonyCalls(AGENT).count().block(TIMEOUT).longValue()
                 : syncClient.listTelephonyCalls(AGENT).stream().count());
         assertNotFound(() -> call(async, () -> syncClient.getTelephonyCall(AGENT, MISSING),
             () -> asyncClient.getTelephonyCall(AGENT, MISSING)), true);

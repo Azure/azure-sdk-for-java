@@ -70,6 +70,7 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
     private final CountDownLatch handshakeCompleted = new CountDownLatch(1);
     private final CountDownLatch closeCompleted = new CountDownLatch(1);
     private final AtomicReference<Throwable> connectionError = new AtomicReference<>();
+    private final AtomicBoolean handshakeSucceeded = new AtomicBoolean();
     private final AtomicBoolean receiveClaimed = new AtomicBoolean();
     private final AtomicBoolean open = new AtomicBoolean();
     private final AtomicBoolean closed = new AtomicBoolean();
@@ -356,6 +357,9 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Interrupted while opening the voice-agent WebSocket session.", error));
         }
+        if (handshakeSucceeded.get()) {
+            return;
+        }
         Throwable error = connectionError.get();
         if (error instanceof RuntimeException) {
             throw LOGGER.logExceptionAsError((RuntimeException) error);
@@ -471,6 +475,7 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
     private final class Listener extends WebSocketListener {
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
+            handshakeSucceeded.set(true);
             open.set(true);
             handshakeCompleted.countDown();
         }
