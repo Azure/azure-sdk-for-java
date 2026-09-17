@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0-beta.2 (2026-09-16)
 
 - Azure Resource Manager Container Service AI Manager client library for Java. This package contains Microsoft Azure SDK for Container Service AI Manager Management SDK. Azure Kubernetes AI Manager api client. Package api-version 2026-09-02-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
