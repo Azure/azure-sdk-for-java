@@ -100,8 +100,12 @@ public class AgentsCustomizations extends Customization {
             stringUnionVariant("the approval setting string to set (e.g., \"always\" or \"never\")"),
             modelUnionVariant("McpToolRequireApproval", "the {@link McpToolRequireApproval} filter to set"));
         List<String[]> toolChoice = Arrays.asList(
-            stringEnumUnionVariant("ToolChoiceOptions",
-                "the {@link ToolChoiceOptions} mode to set ({@code NONE}, {@code AUTO} or {@code REQUIRED})"),
+            openAiDirectUnionVariant("com.openai.models.responses.ToolChoiceOptions", "ToolChoiceOptions",
+                "the openai-java {@link ToolChoiceOptions} mode to set ({@code NONE}, {@code AUTO} or"
+                    + " {@code REQUIRED})",
+                "an openai-java {@link ToolChoiceOptions}, or {@code null} when it is not set or holds another"
+                    + " variant",
+                "json.startsWith(\"\\\"\")"),
             openAiUnionVariant("com.openai.models.responses.ToolChoiceFunction",
                 "com.openai.models.responses.ResponseCreateParams", "ResponseCreateParams.ToolChoice", "isFunction",
                 "asFunction", "a specific function tool"),
@@ -116,76 +120,80 @@ public class AgentsCustomizations extends Customization {
             = Arrays.asList(stringListUnionVariant("the list of tool name strings to set"),
                 modelUnionVariant("McpToolFilter", "the {@link McpToolFilter} to set"));
         List<String[]> tracing = Arrays.asList(stringUnionVariant("the tracing mode string to set"),
-            modelUnionVariant("RealtimeSessionCreateRequestGATracing",
-                "the {@link RealtimeSessionCreateRequestGATracing} configuration to set"));
+            modelUnionVariant("RealtimeSessionTracingConfiguration",
+                "the {@link RealtimeSessionTracingConfiguration} configuration to set"));
         List<String[]> truncation = Arrays.asList(stringUnionVariant("the truncation mode string to set"),
-            modelUnionVariant("RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio",
-                "the {@link RealtimeClientEventSessionUpdateSessionTruncationRetentionRatio} configuration to set"));
+            openAiDirectUnionVariant("com.openai.models.realtime.RealtimeTruncationRetentionRatio",
+                "RealtimeTruncationRetentionRatio",
+                "the openai-java {@link RealtimeTruncationRetentionRatio} configuration to set",
+                "an openai-java {@link RealtimeTruncationRetentionRatio}, or {@code null} when it is not set or"
+                    + " holds another variant",
+                "json.startsWith(\"{\")"));
         List<String[]> voice = Arrays.asList(
-            stringEnumUnionVariant("VoiceIdsShared", "the {@link VoiceIdsShared} built-in voice to set"),
+            stringEnumUnionVariant("VoiceIds", "the {@link VoiceIds} built-in voice to set"),
             modelUnionVariant("RealtimeSessionCreateRequestGAAudioOutputVoice",
                 "the {@link RealtimeSessionCreateRequestGAAudioOutputVoice} custom voice to set"));
         List<String[]> sessionUpdate = Arrays.asList(
-            discriminatedModelUnionVariant("RealtimeSessionCreateRequestGA", "RealtimeSessionCreateRequestUnion",
-                "the {@link RealtimeSessionCreateRequestGA} session to set"),
-            discriminatedModelUnionVariant("RealtimeTranscriptionSessionCreateRequestGA",
-                "RealtimeSessionCreateRequestUnion",
-                "the {@link RealtimeTranscriptionSessionCreateRequestGA} session to set"));
+            discriminatedModelUnionVariant("RealtimeSessionConfiguration", "RealtimeSessionConfigurationBase",
+                "the {@link RealtimeSessionConfiguration} session to set"),
+            discriminatedModelUnionVariant("RealtimeTranscriptionSessionConfiguration",
+                "RealtimeSessionConfigurationBase",
+                "the {@link RealtimeTranscriptionSessionConfiguration} session to set"));
         List<String[]> transcriptionUsage = Arrays.asList(
-            discriminatedModelUnionVariant("TranscriptTextUsageTokens", "CreateTranscriptionResponseJsonUsage",
+            discriminatedModelUnionVariant("TranscriptTextUsageTokens", "TranscriptTextUsage",
                 "the {@link TranscriptTextUsageTokens} usage to set"),
-            discriminatedModelUnionVariant("TranscriptTextUsageDuration", "CreateTranscriptionResponseJsonUsage",
+            discriminatedModelUnionVariant("TranscriptTextUsageDuration", "TranscriptTextUsage",
                 "the {@link TranscriptTextUsageDuration} usage to set"));
         List<String[]> voiceAgentSessionResponse = Arrays.<String[]>asList(
-            modelUnionVariant("VoiceAgentSessionResponseConfig",
-                "the {@link VoiceAgentSessionResponseConfig} session to set"));
+            modelUnionVariant("VoiceAgentSessionResponseConfiguration",
+                "the {@link VoiceAgentSessionResponseConfiguration} session to set"));
 
-        customizeImmutableUnionProperty(customization, "RealtimeClientEventSessionUpdate", "session",
+        customizeImmutableUnionProperty(customization, "RealtimeSessionUpdateEvent", "session",
             "Update the Realtime session. Choose either a realtime session or a transcription session.", sessionUpdate,
             logger);
         customizeImmutableUnionProperty(customization,
-            "RealtimeServerEventConversationItemInputAudioTranscriptionCompleted", "usage",
+            "RealtimeConversationItemInputAudioTranscriptionCompletedEvent", "usage",
             "Usage statistics for the transcription.", transcriptionUsage, logger);
-        customizeImmutableUnionProperty(customization, "RealtimeServerEventSessionCreated", "session",
+        customizeImmutableUnionProperty(customization, "RealtimeSessionCreatedEvent", "session",
             "The session configuration.", voiceAgentSessionResponse, logger);
-        customizeImmutableUnionProperty(customization, "RealtimeServerEventSessionUpdated", "session",
+        customizeImmutableUnionProperty(customization, "RealtimeSessionUpdatedEvent", "session",
             "The session configuration.", voiceAgentSessionResponse, logger);
 
-        customizeUnionProperty(customization, "RealtimeSessionCreateRequestGA", "tracing", "Tracing configuration.",
+        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "tracing", "Tracing configuration.",
             tracing, true, false, logger);
-        customizeUnionProperty(customization, "RealtimeSessionCreateRequestGA", "toolChoice",
+        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "toolChoice",
             "How the model chooses tools.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "RealtimeSessionCreateRequestGA", "maxOutputTokens",
+        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response.", longMaxOutputTokens, true, false,
             logger);
-        customizeUnionProperty(customization, "RealtimeSessionCreateRequestGA", "truncation",
+        customizeUnionProperty(customization, "RealtimeSessionConfiguration", "truncation",
             "The truncation policy for the session.", truncation, true, false, logger);
-        customizeUnionProperty(customization, "RealtimeSessionCreateRequestGAAudioOutput", "voice",
+        customizeUnionProperty(customization, "RealtimeSessionAudioOutput", "voice",
             "The built-in or custom voice used for audio output.", voice, true, false, logger);
 
         customizeUnionProperty(customization, "VoiceAgentDefinition", "maxOutputTokens",
             "The maximum output-token count for one response.", longMaxOutputTokens, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentDefinition", "toolChoice",
             "How the model chooses tools for generated responses.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentLlmGeneratedGreetingConfig", "toolChoice",
+        customizeUnionProperty(customization, "VoiceAgentLlmGeneratedGreetingConfiguration", "toolChoice",
             "The tool-selection policy for the opening response. Defaults to `none`.", toolChoice, true, false,
             logger);
         customizeUnionProperty(customization, "VoiceAgentMcpTool", "allowedTools", "The allowed_tools property.",
             allowedTools, true, false, logger);
         customizeUnionProperty(customization, "VoiceAgentMcpTool", "requireApproval",
             "The require_approval property.", requireApproval, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentResponseCreateParams", "toolChoice",
+        customizeUnionProperty(customization, "VoiceAgentResponseCreateOptions", "toolChoice",
             "How the model chooses tools.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentResponseCreateParams", "maxOutputTokens",
+        customizeUnionProperty(customization, "VoiceAgentResponseCreateOptions", "maxOutputTokens",
             "Maximum number of output tokens for a single assistant response.", longMaxOutputTokens, true, false,
             logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionUpdateConfig", "maxOutputTokens",
+        customizeUnionProperty(customization, "VoiceAgentSessionUpdateConfiguration", "maxOutputTokens",
             "The maximum output-token count for one response.", longMaxOutputTokens, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionUpdateConfig", "toolChoice",
+        customizeUnionProperty(customization, "VoiceAgentSessionUpdateConfiguration", "toolChoice",
             "Tool-selection behavior for the session.", toolChoice, true, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionResponseConfig", "maxOutputTokens",
+        customizeUnionProperty(customization, "VoiceAgentSessionResponseConfiguration", "maxOutputTokens",
             "The maximum output-token count for one response.", longMaxOutputTokens, false, false, logger);
-        customizeUnionProperty(customization, "VoiceAgentSessionResponseConfig", "toolChoice",
+        customizeUnionProperty(customization, "VoiceAgentSessionResponseConfiguration", "toolChoice",
             "Tool-selection behavior for the session.", toolChoice, false, false, logger);
 
         // The response base models are immutable outputs. Their typed getters read through the overridable raw accessor
@@ -246,20 +254,20 @@ public class AgentsCustomizations extends Customization {
                 }
             }
 
-            // Partial-update generation preserves customization methods from the previous run. Remove the obsolete
-            // String wrapper when a property now uses a string-backed enum, then add the current typed API below.
-            boolean hasStringVariant
-                = variants.stream().anyMatch(variant -> "String".equals(variant[V_SETTER_TYPE]));
-            if (!hasStringVariant) {
-                new ArrayList<>(clazz.getMethodsByName(setterName)).stream()
-                    .filter(method -> method.getParameters().size() == 1)
-                    .filter(method -> "String".equals(method.getParameter(0).getType().asString()))
-                    .filter(AgentsCustomizations::hasUnionMarker)
-                    .forEach(MethodDeclaration::remove);
-                new ArrayList<>(clazz.getMethodsByName(getterName + "AsString")).stream()
-                    .filter(AgentsCustomizations::hasUnionMarker)
-                    .forEach(MethodDeclaration::remove);
-            }
+            // Partial-update generation preserves customization methods from the previous run. Remove all prior
+            // typed wrappers for this property before adding the current variants. Keep the raw BinaryData accessors:
+            // fromJson/toJson and package-local tests still use those.
+            new ArrayList<>(clazz.getMethods()).stream()
+                .filter(AgentsCustomizations::hasUnionMarker)
+                .filter(method -> {
+                    String name = method.getNameAsString();
+                    if (name.startsWith(getterName + "As") || name.equals("getOpenAI" + capitalized)) {
+                        return true;
+                    }
+                    return name.equals(setterName) && method.getParameters().size() == 1
+                        && !isBinaryData(method.getParameter(0).getType().asString());
+                })
+                .forEach(MethodDeclaration::remove);
 
             if (!hidAccessor) {
                 logger.error("Could not find a BinaryData {}() accessor on {}", getterName, className);
@@ -277,8 +285,10 @@ public class AgentsCustomizations extends Customization {
                         "Set the " + property + " property: " + description + "\n\n@param " + property + " "
                             + variant[V_PARAM_DOC] + ".\n@return the " + className + " object itself.",
                         "public " + className + " " + setterName + "(" + variant[V_SETTER_TYPE] + " " + property
-                            + ") {\n" + "    // " + UNION_MARKER + "\n" + "    this." + property + " = "
-                            + binaryDataExpression(property, variant) + ";\n" + "    return this;\n" + "}");
+                            + ") {\n" + "    // " + UNION_MARKER + "\n"
+                            + (variant[V_OPENAI_IMPORT] == null ? "" : "    // " + DEDUP_MARKER + "\n")
+                            + "    this." + property + " = " + binaryDataExpression(property, variant) + ";\n"
+                            + "    return this;\n" + "}");
                 }
 
                 String valueExpression = readThroughAccessor ? "value" : "this." + property;
@@ -297,6 +307,11 @@ public class AgentsCustomizations extends Customization {
                         + "    if (!(" + variant[V_TOKEN_GUARD] + ")) {\n" + "        return null;\n" + "    }\n"
                         + "    return " + variant[V_STRING_ENUM_TYPE] + ".fromString(" + valueExpression
                         + ".toObject(String.class));\n";
+                } else if (variant[V_OPENAI_IMPORT] != null) {
+                    body = nullGuard + "    String json = " + valueExpression + ".toString().trim();\n"
+                        + "    if (!(" + variant[V_TOKEN_GUARD] + ")) {\n" + "        return null;\n" + "    }\n"
+                        + "    return " + OPENAI_JSON_HELPER + ".fromBinaryData(" + valueExpression + ", "
+                        + variant[V_TO_OBJECT_ARG] + ");\n";
                 } else {
                     body = nullGuard + "    String json = " + valueExpression + ".toString().trim();\n"
                         + "    if (!(" + variant[V_TOKEN_GUARD] + ")) {\n" + "        return null;\n" + "    }\n"
@@ -305,11 +320,15 @@ public class AgentsCustomizations extends Customization {
                 if (variant[V_EXTRA_IMPORT] != null) {
                     ast.addImport(variant[V_EXTRA_IMPORT]);
                 }
+                if (variant[V_OPENAI_IMPORT] != null) {
+                    ast.addImport(variant[V_OPENAI_IMPORT]);
+                }
                 addMethod(clazz,
                     "Get the " + property + " property: " + description + "\n\n@return the " + property + " value as "
                         + variant[V_RETURN_DOC] + ".",
                     "public " + (readThroughAccessor ? "final " : "") + variant[V_GETTER_TYPE] + " " + getterName
-                        + "As" + variant[V_SUFFIX] + "() {\n" + "    // " + UNION_MARKER + "\n" + body + "}");
+                        + "As" + variant[V_SUFFIX] + "() {\n" + "    // " + UNION_MARKER + "\n"
+                        + (variant[V_OPENAI_IMPORT] == null ? "" : "    // " + DEDUP_MARKER + "\n") + body + "}");
             }
 
             String[] openAiVariant = null;
@@ -390,7 +409,7 @@ public class AgentsCustomizations extends Customization {
     }
 
     private static String binaryDataExpression(String property, String[] variant) {
-        if (variant[V_OPENAI_UNION_TYPE] != null) {
+        if (variant[V_OPENAI_IMPORT] != null) {
             return OPENAI_JSON_HELPER + ".toBinaryData(" + property + ")";
         }
         if (variant[V_STRING_ENUM_TYPE] != null) {
@@ -534,6 +553,26 @@ public class AgentsCustomizations extends Customization {
     }
 
     /**
+     * Declares a union variant represented directly by an openai-java type. Values are bridged through
+     * {@code OpenAIJsonHelper}; the token guard prevents a getter from interpreting a different union variant.
+     *
+     * @param openAiImport the fully qualified openai-java variant class.
+     * @param suffix the typed getter suffix.
+     * @param paramDoc the typed setter parameter documentation.
+     * @param returnDoc the typed getter return documentation.
+     * @param tokenGuard an expression that recognizes the variant's JSON token shape.
+     * @return the union variant.
+     */
+    private static String[] openAiDirectUnionVariant(String openAiImport, String suffix, String paramDoc,
+                                                     String returnDoc, String tokenGuard) {
+        String simpleName = openAiImport.substring(openAiImport.lastIndexOf('.') + 1);
+        String[] variant = unionVariant(simpleName, simpleName, simpleName + ".class", suffix, "fromObject", paramDoc,
+            returnDoc, tokenGuard, null, true);
+        variant[V_OPENAI_IMPORT] = openAiImport;
+        return variant;
+    }
+
+    /**
      * Declares a union variant that is represented by an openai-java model rather than a generated Azure model.
      * Values are bridged through {@code OpenAIJsonHelper} and read back by discriminating on the openai-java
      * union wrapper (for example {@code ResponseCreateParams.ToolChoice}).
@@ -564,9 +603,9 @@ public class AgentsCustomizations extends Customization {
     private void makeRealtimeMessageDiscriminatorsFinal(LibraryCustomization customization) {
         for (String className : new String[] {
             "RealtimeConversationItemMessage",
-            "RealtimeConversationItemMessageSystem",
-            "RealtimeConversationItemMessageUser",
-            "RealtimeConversationItemMessageAssistant" }) {
+            "RealtimeConversationItemSystemMessage",
+            "RealtimeConversationItemUserMessage",
+            "RealtimeConversationItemAssistantMessage" }) {
             customization.getClass("com.azure.ai.agents.models", className)
                 .customizeAst(ast -> ast.getClassByName(className)
                     .flatMap(clazz -> clazz.getFieldByName("type"))
@@ -574,9 +613,9 @@ public class AgentsCustomizations extends Customization {
         }
 
         for (String className : new String[] {
-            "RealtimeConversationItemMessageSystem",
-            "RealtimeConversationItemMessageUser",
-            "RealtimeConversationItemMessageAssistant" }) {
+            "RealtimeConversationItemSystemMessage",
+            "RealtimeConversationItemUserMessage",
+            "RealtimeConversationItemAssistantMessage" }) {
             customization.getClass("com.azure.ai.agents.models", className).customizeAst(ast -> ast
                 .getClassByName(className)
                 .ifPresent(clazz -> {
