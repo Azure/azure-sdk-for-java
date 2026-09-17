@@ -124,6 +124,16 @@ public class FaultInjectionServerErrorResultInternal {
                 cosmosException = new InternalServerErrorException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
+            case COMPUTE_INTERNAL_SERVER_ERROR:
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(102));
+                cosmosException = new InternalServerErrorException(null, lsn, partitionKeyRangeId, responseHeaders);
+                break;
+
+            case COMPUTE_SERVICE_UNAVAILABLE:
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(0));
+                cosmosException = new ServiceUnavailableException(null, lsn, null, responseHeaders, 0);
+                break;
+
             case READ_SESSION_NOT_AVAILABLE:
 
                 final String badSessionToken = partitionKeyRangeId + ":" + "1#1#1=1#1=1";
