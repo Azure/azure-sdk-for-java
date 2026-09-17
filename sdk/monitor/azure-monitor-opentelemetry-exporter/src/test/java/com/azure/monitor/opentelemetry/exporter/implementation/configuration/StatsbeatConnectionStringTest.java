@@ -160,11 +160,12 @@ public class StatsbeatConnectionStringTest {
         settings.put("EU_REGIONS", "[\"westeurope\",\"northeurope\"]");
         settings.put("EU_STATS_CONNECTION_STRING", "InstrumentationKey=00000000-0000-0000-0000-000000000001;"
             + "IngestionEndpoint=https://eu.stats.example.com/");
+        settings.put("EU_SDK_STATS_ENDPOINT", "https://eu.collector.example.com/");
 
         StatsbeatConnectionString result = OneSettingsStatsbeatConfiguration.resolve(customer, settings);
 
         assertThat(result.getInstrumentationKey()).isEqualTo("00000000-0000-0000-0000-000000000001");
-        assertThat(result.getIngestionEndpoint()).isEqualTo("https://eu.stats.example.com/");
+        assertThat(result.getIngestionEndpoint()).isEqualTo("https://eu.collector.example.com/");
     }
 
     @Test
