@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -18,8 +19,9 @@ public class MosaicSearchesAssetsForBboxGetBboxAssets {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-search-bbox-assets.mosaic-searches-assets-for-bbox-get-bbox-assets
-        List<BinaryData> response = dataClient.getSearchBboxAssets("abc123def456", -122.5, 37.7, -122.3, 37.8, null,
-            null, null, null, null, null, null, null, null, null, null, null);
+        List<BinaryData> response = dataClient.getSearchBboxAssets("abc123def456", -122.5, 37.7, -122.3, 37.8,
+            (Integer) null, (Integer) null, (Integer) null, (Boolean) null, (Boolean) null, (String) null,
+            (List<Integer>) null, (String) null, (String) null, (List<String>) null, (SelMethod) null, (String) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-search-bbox-assets.mosaic-searches-assets-for-bbox-get-bbox-assets
     }
 }

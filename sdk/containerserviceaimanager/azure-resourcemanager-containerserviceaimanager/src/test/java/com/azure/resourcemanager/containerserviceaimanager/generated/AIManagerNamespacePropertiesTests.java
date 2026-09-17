@@ -14,22 +14,20 @@ public final class AIManagerNamespacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AIManagerNamespaceProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Updating\",\"labels\":{\"zuvccfwnfnbacfio\":\"w\",\"bxetqgtzxdpn\":\"l\",\"eallnwsubisnj\":\"bqqwxrj\",\"hcbonqvpkvlr\":\"mpmngnzscxaqwoo\"},\"annotations\":{\"enjbdlwtgrhp\":\"ea\",\"umasxazjpq\":\"jp\"}}")
+            "{\"provisioningState\":\"Succeeded\",\"labels\":{\"xobnbdxkqpxok\":\"hhbcsglummajtjao\",\"odgmaajrmvdjwz\":\"jionpimexgstxgc\"},\"annotations\":{\"ijcoejctb\":\"vmclw\",\"ukdkexxppofmxa\":\"aqsqsycbkbfk\",\"jpgd\":\"c\",\"j\":\"toc\"}}")
             .toObject(AIManagerNamespaceProperties.class);
-        Assertions.assertEquals("w", model.labels().get("zuvccfwnfnbacfio"));
-        Assertions.assertEquals("ea", model.annotations().get("enjbdlwtgrhp"));
+        Assertions.assertEquals("hhbcsglummajtjao", model.labels().get("xobnbdxkqpxok"));
+        Assertions.assertEquals("vmclw", model.annotations().get("ijcoejctb"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AIManagerNamespaceProperties model
-            = new AIManagerNamespaceProperties()
-                .withLabels(mapOf("zuvccfwnfnbacfio", "w", "bxetqgtzxdpn", "l", "eallnwsubisnj", "bqqwxrj",
-                    "hcbonqvpkvlr", "mpmngnzscxaqwoo"))
-                .withAnnotations(mapOf("enjbdlwtgrhp", "ea", "umasxazjpq", "jp"));
+        AIManagerNamespaceProperties model = new AIManagerNamespaceProperties()
+            .withLabels(mapOf("xobnbdxkqpxok", "hhbcsglummajtjao", "odgmaajrmvdjwz", "jionpimexgstxgc"))
+            .withAnnotations(mapOf("ijcoejctb", "vmclw", "ukdkexxppofmxa", "aqsqsycbkbfk", "jpgd", "c", "j", "toc"));
         model = BinaryData.fromObject(model).toObject(AIManagerNamespaceProperties.class);
-        Assertions.assertEquals("w", model.labels().get("zuvccfwnfnbacfio"));
-        Assertions.assertEquals("ea", model.annotations().get("enjbdlwtgrhp"));
+        Assertions.assertEquals("hhbcsglummajtjao", model.labels().get("xobnbdxkqpxok"));
+        Assertions.assertEquals("vmclw", model.annotations().get("ijcoejctb"));
     }
 
     // Use "Map.of" if available
