@@ -26,6 +26,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * An {@link ScheduledExecutorService} that is shared by multiple consumers.
@@ -357,11 +358,27 @@ public final class SharedExecutorService implements ScheduledExecutorService {
     }
 
     private ScheduledExecutorService ensureNotShutdown() {
-        return EXECUTOR_UPDATER.updateAndGet(INSTANCE,
-            ex -> (ex == null || ex.isShutdown() || ex.isTerminated()) ? createSharedExecutor() : ex);
+        return ensureNotShutdown(SharedExecutorService::createSharedExecutor);
     }
 
-    private static ScheduledExecutorService createSharedExecutor() {
+    ScheduledExecutorService ensureNotShutdown(Supplier<InternalExecutorService> executorFactory) {
+        while (true) {
+            ScheduledExecutorService current = EXECUTOR_UPDATER.get(this);
+            if (current != null && !current.isShutdown() && !current.isTerminated()) {
+                return current;
+            }
+
+            InternalExecutorService candidate = executorFactory.get();
+            if (EXECUTOR_UPDATER.compareAndSet(this, current, candidate)) {
+                return candidate;
+            }
+
+            // Creation registers a shutdown hook, so a candidate that loses publication must be cleaned up.
+            candidate.shutdown();
+        }
+    }
+
+    private static InternalExecutorService createSharedExecutor() {
         ThreadFactory threadFactory;
         if (VIRTUAL_THREAD_SUPPORTED && THREAD_POOL_VIRTUAL) {
             try {
@@ -415,7 +432,7 @@ public final class SharedExecutorService implements ScheduledExecutorService {
         private final ScheduledExecutorService wrapped;
         private final Thread shutdownThread;
 
-        private InternalExecutorService(ScheduledExecutorService wrapped, Thread shutdownThread) {
+        InternalExecutorService(ScheduledExecutorService wrapped, Thread shutdownThread) {
             this.wrapped = wrapped;
             this.shutdownThread = shutdownThread;
         }
