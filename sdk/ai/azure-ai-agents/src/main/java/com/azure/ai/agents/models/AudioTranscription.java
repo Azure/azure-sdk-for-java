@@ -27,7 +27,7 @@ public final class AudioTranscription implements JsonSerializable<AudioTranscrip
     private AudioTranscriptionModel model;
 
     /*
-     *
+     * 
      * The language of the input audio. Supplying the input language in
      * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
      * will improve accuracy and latency.
@@ -50,7 +50,7 @@ public final class AudioTranscription implements JsonSerializable<AudioTranscrip
     private List<String> keywords;
 
     /*
-     *
+     * 
      * An optional text to guide the model's style or continue a previous audio
      * segment.
      * For `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).
