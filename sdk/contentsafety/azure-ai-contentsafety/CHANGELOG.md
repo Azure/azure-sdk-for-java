@@ -1,14 +1,168 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2026-09-14)
 
 ### Features Added
 
-### Breaking Changes
+* `models.AcsVerdict` was added
 
-### Bugs Fixed
+* `models.AcsTransform` was added
 
-### Other Changes
+* `models.ProvenanceOperationKind` was added
+
+* `models.DocumentInjectionAnalysisResult` was added
+
+* `models.DetectProvenanceResult` was added
+
+* `models.UnifiedModerateVerdict` was added
+
+* `models.ShieldPromptResult` was added
+
+* `ContentProvenanceAsyncClient` was added
+
+* `models.AcsHarmResult` was added
+
+* `models.DetectTextProtectedMaterialOptions` was added
+
+* `models.DetectedProvenanceType` was added
+
+* `models.UnifiedModerateResult` was added
+
+* `models.ProvenanceContent` was added
+
+* `models.UnifiedModerateOptions` was added
+
+* `models.ProvenanceDetectOperation` was added
+
+* `ContentProvenanceClientBuilder` was added
+
+* `models.DetectOutcome` was added
+
+* `models.AcsHarmDetail` was added
+
+* `models.AcsApproval` was added
+
+* `models.OperationState` was added
+
+* `models.AcsEvidence` was added
+
+* `models.TextProtectedMaterialAnalysisResult` was added
+
+* `models.DetectedProvenance` was added
+
+* `ContentProvenanceClient` was added
+
+* `models.UserPromptInjectionAnalysisResult` was added
+
+* `models.DetectTextProtectedMaterialResult` was added
+
+* `models.AcsDecision` was added
+
+* `models.ShieldPromptOptions` was added
+
+* `models.DetectProvenanceOptions` was added
+
+* `models.UnifiedModerateSource` was added
+
+* `models.UnifiedModerateContext` was added
+
+#### `models.AddOrUpdateTextBlocklistItemsResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `BlocklistAsyncClient` was modified
+
+* `createOrUpdateTextBlocklist(java.lang.String,models.TextBlocklist)` was added
+
+#### `models.AnalyzeTextResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TextBlocklistItem` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `setIsRegex(java.lang.Boolean)` was added
+* `isRegex()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.RemoveTextBlocklistItemsOptions` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AnalyzeTextOptions` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `ContentSafetyClient` was modified
+
+* `shieldPromptWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `detectTextProtectedMaterial(models.DetectTextProtectedMaterialOptions)` was added
+* `detectTextProtectedMaterialWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `unifiedModerateWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `unifiedModerate(models.UnifiedModerateOptions)` was added
+* `shieldPrompt(models.ShieldPromptOptions)` was added
+
+#### `models.ImageCategoriesAnalysis` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AddOrUpdateTextBlocklistItemsOptions` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TextCategoriesAnalysis` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TextBlocklistMatch` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AnalyzeImageOptions` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TextBlocklist` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `ContentSafetyAsyncClient` was modified
+
+* `detectTextProtectedMaterialWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `shieldPrompt(models.ShieldPromptOptions)` was added
+* `unifiedModerate(models.UnifiedModerateOptions)` was added
+* `detectTextProtectedMaterial(models.DetectTextProtectedMaterialOptions)` was added
+* `unifiedModerateWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+* `shieldPromptWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
+
+#### `models.AnalyzeImageResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `ContentSafetyServiceVersion` was modified
+
+* `V2026_09_01_PREVIEW` was added
+* `V2024_09_01` was added
+
+#### `models.ContentSafetyImageData` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `BlocklistClient` was modified
+
+* `createOrUpdateTextBlocklist(java.lang.String,models.TextBlocklist)` was added
 
 ## 1.0.20 (2026-08-18)
 
