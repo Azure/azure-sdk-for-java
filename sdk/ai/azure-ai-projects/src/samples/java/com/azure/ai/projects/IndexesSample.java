@@ -24,7 +24,7 @@ public class IndexesSample {
     }
 
     public static void createOrUpdateIndex() {
-        // BEGIN:com.azure.ai.projects.IndexesSample.createOrUpdateIndex
+        // BEGIN:com.azure.ai.projects.IndexesGetSample.createOrUpdateIndex
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "2.0");
         String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
@@ -39,22 +39,22 @@ public class IndexesSample {
         );
 
         System.out.println("Index created: " + index.getName());
-        // END:com.azure.ai.projects.IndexesSample.createOrUpdateIndex
+        // END:com.azure.ai.projects.IndexesGetSample.createOrUpdateIndex
     }
 
     public static void listIndexes() {
-        // BEGIN:com.azure.ai.projects.IndexesSample.listIndexes
+        // BEGIN:com.azure.ai.projects.IndexesListSample.listIndexes
         indexesClient.listLatestIndexVersions().forEach(index -> {
             System.out.println("Index name: " + index.getName());
             System.out.println("Index version: " + index.getVersion());
             System.out.println("Index description: " + index.getDescription());
             System.out.println("-------------------------------------------------");
         });
-        // END:com.azure.ai.projects.IndexesSample.listIndexes
+        // END:com.azure.ai.projects.IndexesListSample.listIndexes
     }
 
     public static void listIndexVersions() {
-        // BEGIN:com.azure.ai.projects.IndexesSample.listIndexVersions
+        // BEGIN:com.azure.ai.projects.IndexesListVersionsSample.listIndexVersions
 
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
 
@@ -64,11 +64,11 @@ public class IndexesSample {
             System.out.println("Index type: " + index.getType());
         });
 
-        // END:com.azure.ai.projects.IndexesSample.listIndexVersions
+        // END:com.azure.ai.projects.IndexesListVersionsSample.listIndexVersions
     }
 
     public static void getIndex() {
-        // BEGIN:com.azure.ai.projects.IndexesSample.getIndex
+        // BEGIN:com.azure.ai.projects.IndexesGetSample.getIndex
 
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
@@ -80,11 +80,11 @@ public class IndexesSample {
         System.out.println("Version: " + index.getVersion());
         System.out.println("Type: " + index.getType());
 
-        // END:com.azure.ai.projects.IndexesSample.getIndex
+        // END:com.azure.ai.projects.IndexesGetSample.getIndex
     }
 
     public static void deleteIndex() {
-        // BEGIN:com.azure.ai.projects.IndexesSample.deleteIndex
+        // BEGIN:com.azure.ai.projects.IndexesDeleteSample.deleteIndex
 
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
@@ -94,6 +94,6 @@ public class IndexesSample {
 
         System.out.println("Deleted index: " + indexName + ", version: " + indexVersion);
 
-        // END:com.azure.ai.projects.IndexesSample.deleteIndex
+        // END:com.azure.ai.projects.IndexesDeleteSample.deleteIndex
     }
 }

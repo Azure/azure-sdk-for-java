@@ -28,8 +28,8 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -43,6 +43,7 @@ import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.openai.azure.AzureOpenAIServiceVersion;
 import com.openai.azure.AzureUrlPathMode;
 import com.openai.client.OpenAIClient;
 import com.openai.client.OpenAIClientAsync;
@@ -55,7 +56,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -92,12 +92,10 @@ public final class AgentsClientBuilder
     @Generated
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-ai-agents.properties");
 
-    private static final String AGENT_PREVIEW_FEATURES
-        = Stream
-            .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString),
-                Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString(),
-                    FoundryFeaturesOptInKeys.MODEL_ROUTER_CONTROLS_V1_PREVIEW.toString()))
-            .collect(Collectors.joining(","));
+    private static final String AGENT_PREVIEW_FEATURES = Stream
+        .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString),
+            Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString()))
+        .collect(Collectors.joining(","));
 
     private static final String MEMORY_STORES_PREVIEW_FEATURES
         = FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString();
@@ -327,25 +325,11 @@ public final class AgentsClientBuilder
     }
 
     private AgentsClientImpl buildInnerClient(String previewFeatures) {
-        return createInnerClientWithPreviewFeatures(previewFeatures);
-    }
-
-    /**
-     * Builds an instance of AgentsClientImpl with the provided parameters.
-     *
-     * @return an instance of AgentsClientImpl.
-     */
-    @Generated
-    private AgentsClientImpl createInnerClientWithPreviewFeatures(String previewFeatures) {
         this.validateClient();
-        HttpPipeline localPipeline;
         if (CoreUtils.isNullOrEmpty(previewFeatures)) {
-            localPipeline = pipeline != null ? pipeline : createHttpPipeline();
-            localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline,
-                FoundryPolicyHelper.createPreviewErrorPolicy(allowPreview));
-        } else {
-            localPipeline = resolvePipeline(previewFeatures);
+            return buildInnerClient();
         }
+        HttpPipeline localPipeline = resolvePipeline(previewFeatures);
         AgentsServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AgentsServiceVersion.getLatest();
         AgentsClientImpl client = new AgentsClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
@@ -364,7 +348,7 @@ public final class AgentsClientBuilder
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        HttpLogOptions localHttpLogOptions = resolveHttpLogOptions();
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
@@ -390,7 +374,7 @@ public final class AgentsClientBuilder
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(HttpClientHelper.createLoggingPolicy(localHttpLogOptions));
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
@@ -405,46 +389,7 @@ public final class AgentsClientBuilder
     }
 
     private com.openai.core.http.HttpClient createOpenAIHttpClient(String foundryFeatures) {
-        HttpPipeline localPipeline = pipeline != null ? pipeline : createOpenAIHttpPipeline();
-        return HttpClientHelper.mapToOpenAIHttpClient(
-            FoundryPolicyHelper.prependPolicy(localPipeline,
-                FoundryPolicyHelper.createFoundryFeaturesPolicy(foundryFeatures)),
-            resolveHttpLogOptions().getLogLevel().shouldLogBody());
-    }
-
-    private HttpLogOptions resolveHttpLogOptions() {
-        if (httpLogOptions != null) {
-            return httpLogOptions;
-        }
-        Configuration buildConfiguration
-            = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
-        HttpLogOptions options = new HttpLogOptions();
-        if ("true".equalsIgnoreCase(buildConfiguration.get("AZURE_AI_PROJECTS_CONSOLE_LOGGING"))) {
-            options.setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS);
-        }
-        return options;
-    }
-
-    /**
-     * Configures the native OpenAI client to use the Azure HTTP pipeline, including any required Foundry preview
-     * features, and combines the Azure SDK and native OpenAI user-agent values for telemetry.
-     *
-     * @param options the native OpenAI client options to configure.
-     * @param foundryFeatures the comma-separated Foundry preview features to enable, or {@code null} for none.
-     */
-    private void configureOpenAIOptions(com.openai.core.ClientOptions.Builder options, String foundryFeatures) {
-        // Route native OpenAI requests through the Azure pipeline and apply any required preview feature policy.
-        options.httpClient(createOpenAIHttpClient(foundryFeatures));
-        // Preserve the native OpenAI identity while adding the Azure SDK identity used for telemetry.
-        String openAIUserAgent = String.join(" ", options.build().headers().values("User-Agent"));
-        Configuration buildConfiguration
-            = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
-        String applicationId = CoreUtils.getApplicationId(clientOptions == null ? new ClientOptions() : clientOptions,
-            httpLogOptions == null ? new HttpLogOptions() : httpLogOptions);
-        String userAgent
-            = UserAgentUtil.toUserAgentString(applicationId, PROPERTIES.getOrDefault(SDK_NAME, "azure-ai-agents"),
-                PROPERTIES.getOrDefault(SDK_VERSION, "unknown"), buildConfiguration);
-        options.replaceHeaders("User-Agent", openAIUserAgent.isEmpty() ? userAgent : userAgent + " " + openAIUserAgent);
+        return HttpClientHelper.mapToOpenAIHttpClient(resolvePipeline(foundryFeatures));
     }
 
     /**
@@ -463,17 +408,8 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesAsyncClient
      */
     public ResponsesAsyncClient buildResponsesAsyncClient() {
-        // Use a marker credential during native client construction so Azure tokens can be acquired asynchronously
-        // at the transport boundary instead of blocking the asynchronous request path with getTokenSync().
-        TokenUtils.AsyncAuthentication authentication
-            = new TokenUtils.AsyncAuthentication(tokenCredential, DEFAULT_SCOPES);
-        return new ResponsesAsyncClient(
-            getOpenAIAsyncClientBuilder(null, authentication.getCredential()).build().withOptions(options -> {
-                // Install the Azure-backed transport first, then wrap that final transport with asynchronous
-                // authentication so each request receives a current Azure bearer token before it is sent.
-                options.httpClient(createOpenAIHttpClient(null));
-                authentication.configure(options);
-            }));
+        return new ResponsesAsyncClient(getOpenAIAsyncClientBuilder(null).build()
+            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))));
     }
 
     /**
@@ -483,23 +419,8 @@ public final class AgentsClientBuilder
      * @return an instance of OpenAIClient
      */
     public OpenAIClient buildOpenAIClient() {
-        // A null agent name selects the project-scoped OpenAI endpoint rather than an agent-specific endpoint.
-        // The original implementation only replaced the HTTP transport. Because the native OpenAI user agent was
-        // already present, the Azure pipeline did not add the Azure SDK identity required for telemetry. Configure
-        // both the Azure transport and the combined user agent; null indicates that no preview features are needed.
         return getOpenAIClientBuilder(null).build()
-            .withOptions(optionBuilder -> configureOpenAIOptions(optionBuilder, null));
-    }
-
-    /**
-     * Builds a project-scoped OpenAI client with caller overrides applied after the defaults.
-     *
-     * @param configure callback for OpenAI options, including URL, credentials, headers, query, and transport.
-     * Custom pipelines retain their own authentication policies. Custom transports bypass the Azure pipeline.
-     * @return the configured OpenAI client.
-     */
-    public OpenAIClient buildOpenAIClient(Consumer<com.openai.core.ClientOptions.Builder> configure) {
-        return buildOpenAIClient().withOptions(Objects.requireNonNull(configure, "'configure' cannot be null."));
+            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null)));
     }
 
     /**
@@ -514,25 +435,9 @@ public final class AgentsClientBuilder
         if (CoreUtils.isNullOrEmpty(agentName)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
-        // Previously, this client only replaced the native HTTP transport. Because the native OpenAI user agent was
-        // already present, the Azure pipeline could not add the Azure SDK identity required for telemetry. Centralize
-        // the setup to install the Azure transport and explicitly combine both user agents.
         return getOpenAIClientBuilder(agentName).build()
-            .withOptions(
-                optionBuilder -> configureOpenAIOptions(optionBuilder, allowPreview ? AGENT_PREVIEW_FEATURES : null));
-    }
-
-    /**
-     * Builds an agent-scoped OpenAI client with caller overrides.
-     *
-     * @param agentName the name of the agent. Must not be null or empty.
-     * @param configure callback applied after the defaults; see {@link #buildOpenAIClient(Consumer)}.
-     * @return the configured OpenAI client.
-     */
-    public OpenAIClient buildAgentScopedOpenAIClient(String agentName,
-        Consumer<com.openai.core.ClientOptions.Builder> configure) {
-        return buildAgentScopedOpenAIClient(agentName)
-            .withOptions(Objects.requireNonNull(configure, "'configure' cannot be null."));
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(createOpenAIHttpClient(allowPreview ? AGENT_PREVIEW_FEATURES : null)));
     }
 
     /**
@@ -542,25 +447,8 @@ public final class AgentsClientBuilder
      * @return an instance of OpenAIAsyncClient
      */
     public OpenAIClientAsync buildOpenAIAsyncClient() {
-        // Previously, the async client used the native builder's synchronous token supplier, which could call
-        // getTokenSync() and block the asynchronous request path. Delegate to the shared async helper so Azure tokens
-        // are acquired asynchronously at the transport boundary. A null agent name selects the project endpoint, and
-        // the no-op callback keeps the standard Azure pipeline, telemetry, and authentication configuration unchanged.
-        return createOpenAIAsyncClient(null, options -> {
-        });
-    }
-
-    /**
-     * Builds an asynchronous project-scoped OpenAI client with caller overrides.
-     *
-     * Azure tokens are retrieved asynchronously before transport execution. Supply custom transports here;
-     * replacing the native transport later bypasses Azure authentication and requires an explicit native credential.
-     *
-     * @param configure callback applied after the defaults; see {@link #buildOpenAIClient(Consumer)}.
-     * @return the configured asynchronous OpenAI client.
-     */
-    public OpenAIClientAsync buildOpenAIAsyncClient(Consumer<com.openai.core.ClientOptions.Builder> configure) {
-        return createOpenAIAsyncClient(null, Objects.requireNonNull(configure, "'configure' cannot be null."));
+        return getOpenAIAsyncClientBuilder(null).build()
+            .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null)));
     }
 
     /**
@@ -575,41 +463,9 @@ public final class AgentsClientBuilder
         if (CoreUtils.isNullOrEmpty(agentName)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
-        // Use the shared async helper to fix the previous blocking authentication path. It performs three ordered
-        // steps: (1) installs the Azure transport, optional agent preview features, and combined user-agent telemetry;
-        // (2) applies caller-provided option overrides; and (3) wraps the final transport with asynchronous Azure
-        // authentication so token acquisition does not call getTokenSync() on the asynchronous request path.
-        return createOpenAIAsyncClient(agentName, options -> {
-        });
-    }
-
-    /**
-     * Builds an asynchronous agent-scoped OpenAI client with caller overrides.
-     *
-     * Supply custom transports through this callback so asynchronous Azure authentication remains installed.
-     *
-     * @param agentName the name of the agent. Must not be null or empty.
-     * @param configure callback applied after the defaults; see {@link #buildOpenAIClient(Consumer)}.
-     * @return the configured asynchronous OpenAI client.
-     * @throws IllegalArgumentException if agentName is null or empty.
-     */
-    public OpenAIClientAsync buildAgentScopedOpenAIAsyncClient(String agentName,
-        Consumer<com.openai.core.ClientOptions.Builder> configure) {
-        if (CoreUtils.isNullOrEmpty(agentName)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
-        }
-        return createOpenAIAsyncClient(agentName, Objects.requireNonNull(configure, "'configure' cannot be null."));
-    }
-
-    private OpenAIClientAsync createOpenAIAsyncClient(String agentName,
-        Consumer<com.openai.core.ClientOptions.Builder> configure) {
-        TokenUtils.AsyncAuthentication authentication
-            = new TokenUtils.AsyncAuthentication(tokenCredential, DEFAULT_SCOPES);
-        return getOpenAIAsyncClientBuilder(agentName, authentication.getCredential()).build().withOptions(options -> {
-            configureOpenAIOptions(options, agentName != null && allowPreview ? AGENT_PREVIEW_FEATURES : null);
-            configure.accept(options);
-            authentication.configure(options);
-        });
+        return getOpenAIAsyncClientBuilder(agentName).build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(createOpenAIHttpClient(allowPreview ? AGENT_PREVIEW_FEATURES : null)));
     }
 
     private String getDefaultBaseUrl() {
@@ -622,19 +478,7 @@ public final class AgentsClientBuilder
         return base + "/agents/" + agentName + "/endpoint/protocols/openai";
     }
 
-    /**
-     * Creates the native synchronous OpenAI builder and configures synchronous Azure token authentication.
-     * <p>
-     * Unlike {@link #getOpenAIAsyncClientBuilder(String, com.openai.credential.Credential)}, this helper can use a
-     * bearer-token supplier directly because calls made by the resulting client are synchronous. The async helper uses
-     * a marker credential and resolves the real token at the transport boundary to avoid blocking its request path.
-     *
-     * @param agentName agent name, or {@code null} for the project-scoped endpoint.
-     * @return the configured native synchronous builder.
-     */
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder(String agentName) {
-        // The supplier obtains an Azure token when the synchronous OpenAI client needs authentication. This path may
-        // block while resolving the token, which is acceptable here but is intentionally avoided by the async helper.
         OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder()
             .credential(
                 BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
@@ -643,47 +487,27 @@ public final class AgentsClientBuilder
             builder.baseUrl(getDefaultBaseUrl());
         } else {
             builder.baseUrl(getAgentEndpointBaseUrl(agentName));
-            if (allowPreview) {
-                builder.putHeader("Foundry-Features", AGENT_PREVIEW_FEATURES);
-            }
-            // Agent-scoped endpoints require an explicit API version. Without this query parameter, the service may
-            // reject the request or route it using an unintended version; honor the caller's version when configured.
-            AgentsServiceVersion localVersion
-                = serviceVersion == null ? AgentsServiceVersion.getLatest() : serviceVersion;
-            builder.putQueryParam("api-version", localVersion.getVersion());
+            // The agent endpoint exposes a single service version, addressed as 'v1'. It must be
+            // sent explicitly; UNIFIED mode alone omits api-version, which the endpoint rejects.
+            builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(AgentsServiceVersion.V1.getVersion()));
         }
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
         return builder;
     }
 
-    /**
-     * Creates the native asynchronous builder with its initial authentication credential.
-     *
-     * @param agentName agent name, or {@code null} for the project-scoped endpoint.
-     * @param credential native credential used during client construction. The default async path supplies a unique
-     * marker credential that {@link TokenUtils.AsyncAuthentication} recognizes and replaces with an asynchronously
-     * acquired Azure bearer token at the transport boundary.
-     * @return the configured native asynchronous builder.
-     */
-    private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder(String agentName,
-        com.openai.credential.Credential credential) {
-        // The OpenAI builder requires a credential up front. AsyncAuthentication passes a marker here, then wraps the
-        // final transport so the marker is never sent: each request receives a real Azure token asynchronously.
-        OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder().credential(credential);
+    private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder(String agentName) {
+        OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder()
+            .credential(
+                BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
         builder.azureUrlPath(AzureUrlPathMode.UNIFIED);
         if (CoreUtils.isNullOrEmpty(agentName)) {
             builder.baseUrl(getDefaultBaseUrl());
         } else {
             builder.baseUrl(getAgentEndpointBaseUrl(agentName));
-            if (allowPreview) {
-                builder.putHeader("Foundry-Features", AGENT_PREVIEW_FEATURES);
-            }
-            // Agent-scoped endpoints require an explicit API version. Without this query parameter, the service may
-            // reject the request or route it using an unintended version; honor the caller's version when configured.
-            AgentsServiceVersion localVersion
-                = serviceVersion == null ? AgentsServiceVersion.getLatest() : serviceVersion;
-            builder.putQueryParam("api-version", localVersion.getVersion());
+            // The agent endpoint exposes a single service version, addressed as 'v1'. It must be
+            // sent explicitly; UNIFIED mode alone omits api-version, which the endpoint rejects.
+            builder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(AgentsServiceVersion.V1.getVersion()));
         }
         // We set the builder retries to 0 to avoid conflicts with the retry policy added through the HttpPipeline.
         builder.maxRetries(0);
@@ -1034,40 +858,5 @@ public final class AgentsClientBuilder
      */
     private BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
         return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
-    }
-
-    @Generated
-    private HttpPipeline createOpenAIHttpPipeline() {
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        HttpLogOptions localHttpLogOptions = resolveHttpLogOptions();
-        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
-        if (headers != null) {
-            policies.add(new AddHeadersPolicy(headers));
-        }
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-            .forEach(p -> policies.add(p));
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
-        policies.add(new AddDatePolicy());
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-            .forEach(p -> policies.add(p));
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(HttpClientHelper.createLoggingPolicy(localHttpLogOptions));
-        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .clientOptions(localClientOptions)
-            .build();
-        return httpPipeline;
     }
 }

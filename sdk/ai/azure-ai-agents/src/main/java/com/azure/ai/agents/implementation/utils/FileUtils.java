@@ -10,7 +10,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -18,7 +17,6 @@ import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
-import java.security.DigestOutputStream;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -116,29 +114,14 @@ public final class FileUtils {
     /**
      * Computes the lowercase hex-encoded SHA-256 digest of the given binary content.
      *
-    * <p>Replayable content is streamed into the digest without materializing a byte array. Non-replayable
-    * content is buffered using {@link BinaryData#toBytes()}.</p>
+     * <p>The content is fully read in order to compute the digest.</p>
      *
      * @param content the binary content to hash.
      * @return the lowercase hex-encoded SHA-256 digest of {@code content}.
      */
     public static String computeSha256(BinaryData content) {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            if (content.isReplayable()) {
-                content.writeTo(new DigestOutputStream(new OutputStream() {
-                    @Override
-                    public void write(int value) {
-                    }
-
-                    @Override
-                    public void write(byte[] bytes, int offset, int length) {
-                    }
-                }, digest));
-            } else {
-                digest.update(content.toBytes());
-            }
-            byte[] hash = digest.digest();
+            byte[] hash = MessageDigest.getInstance("SHA-256").digest(content.toBytes());
             StringBuilder builder = new StringBuilder(hash.length * 2);
             for (byte value : hash) {
                 builder.append(Character.forDigit((value >> 4) & 0xF, 16));
@@ -147,8 +130,6 @@ public final class FileUtils {
             return builder.toString();
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("SHA-256 is not available.", e);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Unable to read content for SHA-256 hashing.", e);
         }
     }
 }

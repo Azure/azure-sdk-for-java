@@ -81,14 +81,9 @@ public class ConversationsTests extends ClientTestBase {
         assertNotNull(conversationItem);
         assertNotNull(conversationItem.data());
         assertFalse(conversationItem.data().isEmpty());
+        assertTrue(conversationItem.data().get(0).isMessage());
 
-        Message createdConversationItem = conversationItem.data()
-            .stream()
-            .filter(ConversationItem::isMessage)
-            .map(ConversationItem::asMessage)
-            .findFirst()
-            .orElseThrow(() -> new AssertionError(
-                "Created conversation item did not contain a message: " + conversationItem.data()));
+        Message createdConversationItem = conversationItem.data().get(0).asMessage();
         assertTrue(createdConversationItem.content().get(0).isInputText());
         assertEquals("Hello, agent!", createdConversationItem.content().get(0).asInputText().text());
 

@@ -48,19 +48,6 @@ import reactor.core.publisher.Mono;
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaAgentInsightMonitorsAsyncClient {
 
-    /**
-     * Resumes an existing agent insight run without starting another run.
-     *
-     * @param monitorId monitor ID.
-     * @param runId saved run ID.
-     * @return the resumed poller. Use the run cancellation API to cancel.
-     */
-    public PollerFlux<AgentInsightRun, AgentInsightRunResult> resumeAgentInsightRun(String monitorId, String runId) {
-        return com.azure.ai.projects.implementation.ProjectsServicePollUtils.resumeAsync(
-            () -> getAgentInsightRunWithResponse(monitorId, runId, new RequestOptions()), AgentInsightRun.class,
-            AgentInsightRunResult.class);
-    }
-
     @Generated
     private final BetaAgentInsightMonitorsImpl serviceClient;
 

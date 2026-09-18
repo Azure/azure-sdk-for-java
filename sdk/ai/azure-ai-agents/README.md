@@ -117,40 +117,10 @@ ResponseService responseService = responsesClient.getResponseService();
 ConversationService conversationService = openAIClient.conversations();
 ```
 
-Agent-scoped OpenAI clients opt in to agent preview features when `allowPreview(true)` is configured,
-and use the configured service version. Override the defaults with native OpenAI options:
-
-```java
-OpenAIClient agentClient = builder.buildAgentScopedOpenAIClient("agent-name", options -> options
-    .replaceHeaders("User-Agent", "my-application/1.0")
-    .replaceQueryParams("api-version", "v1"));
-```
-
-The callback is also available on the project-scoped and asynchronous OpenAI factory methods.
-It supports URL, credential, headers, query parameters, and transport options. Explicit `Foundry-Features`
-headers, including empty values and case-insensitive names, are preserved. Custom OpenAI transports bypass
-the Azure pipeline. Custom Azure pipelines retain their authentication policies, which may replace
-OpenAI credential overrides. The default bridge delegates authentication to OpenAI using the builder's
-Entra credential unless overridden.
-
-Set `AZURE_AI_PROJECTS_CONSOLE_LOGGING=true` to default the builder's HTTP logging to `BODY_AND_HEADERS`.
-Native asynchronous OpenAI clients and `ResponsesAsyncClient` retrieve Azure tokens without blocking. Supply custom
-native OpenAI transports through the factory options callback to retain this authentication. Replacing the transport
-later through native `withOptions(...)` bypasses the authentication adapter and requires an explicit native credential.
-Cancelling a native OpenAI operation's future does not guarantee cancellation of pending Azure token retrieval;
-the native client's future decorators control cancellation propagation.
-Explicit `HttpLogOptions` take precedence, including `HttpLogDetailLevel.NONE` to disable HTTP logging.
-Enable INFO output in your Java logging backend (or set `AZURE_LOG_LEVEL=information` for Azure Core's
-default logger). This option does not install console handlers or change other libraries' logging levels.
-The default OpenAI bridge logs `text/event-stream` response chunks only as the caller reads them;
-it does not pre-consume the stream. Other HTTP messages use Azure Core's logging and redaction rules.
-Custom transports and custom pipelines retain their own logging configuration. Body logs are not redacted
-and can contain prompts, responses, and other sensitive data; enable them only in a trusted environment.
-
 ### Realtime connection options
 
 Use `VoiceAgentWebSocketConnectionOptions` with the synchronous or asynchronous beta voice-agent client's
-`connect` method to set session IDs, agent version overrides, structured inputs, API versions, credential
+`openWebSocketSession` method to set session IDs, agent version overrides, structured inputs, API versions, credential
 scopes, preview features, and extra handshake headers or query parameters.
 
 ```java
@@ -264,9 +234,9 @@ and [AgentOptimizationAsyncSample.java](https://github.com/Azure/azure-sdk-for-j
 
 ### Memory item management
 
-`BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`. See [MemoryStoreItemsSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemoryStoreItemsSample.java) and [MemoryStoreItemsAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemoryStoreItemsAsyncSample.java) for complete examples.
+`BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`. See `MemoryStoreItemsSample` and `MemoryStoreItemsAsyncSample` for complete examples.
 
-For conversational memory workflows, use `beginUpdateMemories` to extract memories from conversation items, `searchMemories` to retrieve relevant memories, and `deleteScope` to remove all memories for a scope. See [MemoryStoreAdvancedSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemoryStoreAdvancedSample.java) and [MemoryStoreAdvancedAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemoryStoreAdvancedAsyncSample.java) for complete synchronous and asynchronous examples.
+For conversational memory workflows, use `beginUpdateMemories` to extract memories from conversation items, `searchMemories` to retrieve relevant memories, and `deleteScope` to remove all memories for a scope. See `MemoryStoreAdvancedSample` and `MemoryStoreAdvancedAsyncSample` for complete synchronous and asynchronous examples.
 
 ### Using OpenAI's official library
 
@@ -548,7 +518,7 @@ MemorySearchPreviewTool tool = new MemorySearchPreviewTool(memoryStore.getName()
     .setUpdateDelaySeconds(1);
 ```
 
-See the full samples in [MemorySearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/MemorySearchSync.java) and [MemorySearchAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/MemorySearchAsync.java), which show how to create an agent with a memory store and use it across multiple conversations.
+See the full sample in [MemorySearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/MemorySearchSync.java) showing how to create an agent with a memory store and use it across multiple conversations.
 
 ---
 
@@ -1125,16 +1095,6 @@ Use `appendInputAudio` to send PCM16 chunks, `commitInputAudio` to commit buffer
 All realtime examples require `FOUNDRY_PROJECT_ENDPOINT` and optionally use `FOUNDRY_VOICE_AGENT_NAME`. The function-tool example also optionally uses `FOUNDRY_VOICE_MODEL` and `FOUNDRY_VOICE_MODEL_TYPE`. The asynchronous text and audio examples delete their generated agents by default; set `FOUNDRY_KEEP_VOICE_AGENT=true` to retain them.
 
 The live audio example requires a Java Sound-compatible microphone and speaker. It streams signed, little-endian, mono PCM16 audio at 24 kHz. These examples use WebSocket transport. Although the generated protocol models include WebRTC signaling events, the Java client does not provide a WebRTC peer connection or media implementation.
-
-### Additional end-to-end samples
-
-All agent samples use `FOUNDRY_PROJECT_ENDPOINT`. Prompt-agent samples also use `FOUNDRY_MODEL_NAME`.
-
-- **Agent lifecycle and structured inputs:** [CreateAgent.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/CreateAgent.java), [GetAgent.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/GetAgent.java), and [CreateResponseWithStructuredInput.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/CreateResponseWithStructuredInput.java).
-- **Optimization jobs:** the [optimization samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/optimization) cover SDK polling, application-managed polling, cancellation, listing, retrieval, and deletion.
-- **Advanced tools:** additional samples cover structured inputs, generated-file download, File Search streaming, non-preview Web Search, custom search, and end-to-end toolbox search.
-
----
 
 ### Service API versions
 

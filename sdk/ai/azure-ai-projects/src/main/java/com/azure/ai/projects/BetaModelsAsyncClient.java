@@ -4,7 +4,6 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.BetaModelsImpl;
-import com.azure.ai.projects.implementation.FileUploadHelper;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
 import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.ai.projects.models.CreateAsyncResponse;
@@ -12,7 +11,6 @@ import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.ModelCredentialInput;
 import com.azure.ai.projects.models.ModelPendingUploadInput;
 import com.azure.ai.projects.models.ModelPendingUploadResult;
-import com.azure.ai.projects.models.ModelUploadOptions;
 import com.azure.ai.projects.models.ModelVersion;
 import com.azure.ai.projects.models.UpdateModelVersionInput;
 import com.azure.core.annotation.Generated;
@@ -30,16 +28,9 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.storage.blob.BlobContainerAsyncClient;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 /**
  * Initializes a new instance of the asynchronous AIProjectClient type.
@@ -47,68 +38,6 @@ import reactor.core.scheduler.Schedulers;
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaModelsAsyncClient {
-
-    /**
-     * Uploads a local file or folder and registers a model using native asynchronous storage and service calls.
-     * Only HTTP 404 is retried while waiting. Upload failures prevent registration.
-     *
-     * @param name model name.
-     * @param version model version.
-     * @param source local file or folder.
-     * @param options metadata, upload settings and wait settings; null uses defaults.
-     * @return the registered model, or the submitted model when waiting is disabled.
-     */
-    public Mono<ModelVersion> createModel(String name, String version, Path source, ModelUploadOptions options) {
-        return Mono.defer(() -> {
-            ModelUploadOptions settings = options == null ? new ModelUploadOptions() : options;
-            return Mono.fromCallable(() -> FileUploadHelper.getModelFiles(name, version, source, settings))
-                .subscribeOn(Schedulers.boundedElastic())
-                .flatMap(files -> startModelPendingUploadWithResponse(name, version,
-                    BinaryData
-                        .fromObject(new ModelPendingUploadInput().setConnectionName(settings.getConnectionName())),
-                    new RequestOptions()).flatMap(pendingResponse -> {
-                        com.azure.ai.projects.models.BlobReference reference
-                            = FileUploadHelper.getModelBlobReference(pendingResponse.getValue());
-                        BlobContainerAsyncClient container
-                            = FileUploadHelper.createContainerBuilder(reference, settings.getFileUploadOptions())
-                                .buildAsyncClient();
-                        boolean directory = Files.isDirectory(source);
-                        ModelVersion submitted = FileUploadHelper.createModelVersion(reference.getBlobUrl(), settings);
-                        return Flux.fromIterable(files).concatMap(file -> {
-                            String blobName = directory
-                                ? source.relativize(file).toString().replace('\\', '/')
-                                : file.getFileName().toString();
-                            return container.getBlobAsyncClient(blobName)
-                                .uploadWithResponse(
-                                    FileUploadHelper.createUploadOptions(file, settings.getFileUploadOptions()));
-                        })
-                            .then(Mono.defer(() -> createModelVersionAsync(name, version, submitted)))
-                            .then(Mono.defer(() -> {
-                                if (!settings.isWaitForCompletion()) {
-                                    return Mono.just(submitted);
-                                }
-                                PollerFlux<ModelVersion, ModelVersion> poller
-                                    = new PollerFlux<>(settings.getPollInterval(), context -> Mono.just(submitted),
-                                        context -> getModelVersion(name, version)
-                                            .map(model -> new PollResponse<>(
-                                                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, model))
-                                            .onErrorResume(HttpResponseException.class,
-                                                exception -> exception.getResponse() != null
-                                                    && exception.getResponse().getStatusCode() == 404
-                                                        ? Mono.just(new PollResponse<>(
-                                                            LongRunningOperationStatus.IN_PROGRESS, submitted))
-                                                        : Mono.error(exception)),
-                                        (context,
-                                            response) -> Mono.error(new UnsupportedOperationException(
-                                                "Model registration cannot be cancelled.")),
-                                        context -> Mono.just(context.getLatestResponse().getValue()));
-                                return poller.last()
-                                    .flatMap(response -> response.getFinalResult())
-                                    .timeout(settings.getTimeout());
-                            }));
-                    }));
-        });
-    }
 
     @Generated
     private final BetaModelsImpl serviceClient;

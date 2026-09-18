@@ -121,108 +121,6 @@ OpenAIClient openAIClient = builder.buildOpenAIClient();
 OpenAIClientAsync openAIClientAsync = builder.buildOpenAIAsyncClient();
 ```
 
-Agent-scoped OpenAI clients automatically opt in to agent preview features, independently of `allowPreview`.
-They use the project's configured API version. Customize OpenAI defaults with the options callback:
-
-```java
-OpenAIClient agentClient = builder.buildAgentScopedOpenAIClient("agent-name", options -> options
-    .replaceHeaders("User-Agent", "my-application/1.0")
-    .replaceQueryParams("api-version", "v1"));
-```
-
-The same callback is available on `buildOpenAIClient`, `buildOpenAIAsyncClient`, and
-`buildAgentScopedOpenAIAsyncClient`. Use `baseUrl`, `apiKey` or `credential`, and `httpClient` on the native
-OpenAI options to override those defaults. Use `replaceHeaders` and `replaceQueryParams` to replace existing
-values. Explicit `Foundry-Features` headers, including empty values and case-insensitive names, are preserved.
-Custom OpenAI transports bypass the Azure pipeline; custom Azure pipelines retain their own policies,
-including authentication policies that may replace an OpenAI credential override.
-
-### Asynchronous OpenAI authentication
-
-Native asynchronous OpenAI clients retrieve Azure tokens using `TokenCredential.getToken(...)` without blocking.
-Provide custom native transports through `buildOpenAIAsyncClient(options -> options.httpClient(transport))` or the
-agent-scoped factory callback. These callbacks retain asynchronous Azure authentication and honor explicit credential
-overrides. Replacing the transport afterward through the native client's `withOptions(...)` bypasses the authentication
-adapter; supply an explicit native credential as well, or rebuild through the factory callback instead.
-Cancelling a native OpenAI operation's future does not guarantee cancellation of pending Azure token retrieval;
-the native client's future decorators control cancellation propagation.
-
-### Application Insights configuration
-
-```java
-BetaTelemetryClient telemetry = builder.beta().buildBetaTelemetryClient();
-String connectionString = telemetry.getApplicationInsightsConnectionString();
-
-BetaTelemetryAsyncClient telemetryAsync = builder.beta().buildBetaTelemetryAsyncClient();
-Mono<String> connectionStringAsync = telemetryAsync.getApplicationInsightsConnectionString();
-```
-
-Each telemetry client caches successful lookups for its lifetime. Create a new client to refresh a rotated
-connection string. Missing connections raise `ResourceNotFoundException`; missing or invalid credentials
-raise `IllegalStateException`. Failed lookups are not cached. Treat the returned connection string as a secret.
-
-### HTTP logging
-
-Set `AZURE_AI_PROJECTS_CONSOLE_LOGGING=true` to default the builder's HTTP logging to `BODY_AND_HEADERS`.
-Explicit `HttpLogOptions` take precedence, including `HttpLogDetailLevel.NONE` to disable HTTP logging.
-Enable INFO output in your Java logging backend (or set `AZURE_LOG_LEVEL=information` for Azure Core's
-default logger). This option does not install console handlers or change other libraries' logging levels.
-The default OpenAI bridge logs `text/event-stream` response chunks only as the caller reads them;
-it does not pre-consume the stream. Other HTTP messages use Azure Core's logging and redaction rules.
-Custom transports and custom pipelines retain their own logging configuration. Body logs are not redacted
-and can contain prompts, responses, and other sensitive data; enable them only in a trusted environment.
-
-SDK-created pipelines omit request and response bodies for multipart uploads, even with body logging enabled.
-This protection does not change logging policies in user-supplied pipelines or Blob clients configured through upload options.
-
-### Uploads and saved jobs
-
-`FileUploadOptions` supports filename regular-expression filtering for folders, Blob client configuration, and per-file
-upload configuration. Empty folders and filters matching no files fail before requesting storage. Single-file uploads
-ignore the filename filter. Uploads overwrite existing blobs by default; set Blob request conditions through the upload
-callback to change that behavior.
-
-`BetaModelsClient.createModel` and its asynchronous counterpart upload a file or folder using Azure Blob Storage,
-register the container, and optionally wait for the model to become available. They do not require AzCopy.
-
-```java readme-sample-local-model-upload
-FileUploadOptions files = new FileUploadOptions()
-    .setFilePattern(Pattern.compile("\\.(bin|json|safetensors)$"));
-ModelUploadOptions options = new ModelUploadOptions()
-    .setFileUploadOptions(files)
-    .setDescription("Local model weights")
-    .setTimeout(Duration.ofMinutes(5));
-ModelVersion model = builder.beta().buildBetaModelsClient()
-    .createModel("my-model", "1", Paths.get("model"), options);
-```
-
-Only HTTP 404 is treated as pending during registration polling. The wait timeout starts after registration is accepted;
-it does not cover file uploads. With `setWaitForCompletion(false)`, the returned model is the submitted metadata, not a
-confirmation that registration has completed.
-
-Save service job IDs to resume polling after restarting your application. Resumption uses GET requests and does not
-create another job. Configure the same project endpoint and credentials when rebuilding the client.
-
-```java readme-sample-resume-generation-job
-DataGenerationJobResult result = builder.beta().buildBetaDatasetsClient()
-    .resumeGenerationJob(savedJobId)
-    .getFinalResult(Duration.ofMinutes(5));
-```
-
-Evaluator generation and agent-insight runs also expose resume methods, with native asynchronous counterparts.
-Use the corresponding job cancellation API to cancel service work; stopping polling alone does not cancel a job.
-
-### Azure evaluation sources
-
-`AzureAIEvaluationDataSource` provides factories for CSV, target completions, response retrieval, benchmarks, red teams,
-and traces. Convert these sources to native OpenAI request types with `EvaluationsHelper.toDataSource`.
-
-```java readme-sample-azure-evaluation-source
-EvalCreateParams.DataSourceConfig schema = EvaluationsHelper.createDataSourceConfig("traces_preview");
-RunCreateParams.DataSource source = EvaluationsHelper.toDataSource(
-    AzureAIEvaluationDataSource.traces().setAgentName("my-agent").setLookbackHours(24).setMaxTraces(100));
-```
-
 ### Preview operation groups and beta clients
 
 Several operation groups in the AI Projects client library expose **preview** service features. These features require the `Foundry-Features` HTTP header. The SDK populates that header for you; you do not need to set the header value manually.
@@ -257,7 +155,7 @@ The async `Beta*AsyncClient` counterparts follow the same behavior.
 
 ## Examples
 
-The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples]. Additional preview samples are available for data generation jobs (`DataGenerationJobsSample`, `DataGenerationJobsAsyncSample`, and `DataGenerationJobWithEvaluationSample`), model management (`ModelsSample`, `ModelsAsyncSample`, and `ModelsCreateAndPollSample`), routines (`RoutinesSample`, `RoutinesAsyncSample`, `RoutinesManualDispatchSample`, `RoutinesManualDispatchAsyncSample`, and related trigger samples), and packaged skills (`SkillsPackageSample` and `SkillsPackageAsyncSample`).
+The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples]. Additional preview samples are available for data generation jobs (`DataGenerationJobsSample`, `DataGenerationJobsAsyncSample`, and `DataGenerationJobWithEvaluationSample`), model management (`ModelsSample` and `ModelsAsyncSample`), routines (`RoutinesSample`, `RoutinesAsyncSample`, `RoutinesManualDispatchSample`, `RoutinesManualDispatchAsyncSample`, and related trigger samples), and packaged skills (`SkillsPackageSample` and `SkillsPackageAsyncSample`).
 
 ### Connections operations
 
@@ -638,7 +536,7 @@ Index operations allow you to create and enumerate search indexes used by your A
 
 #### Create or update an index version
 
-```java com.azure.ai.projects.IndexesSample.createOrUpdateIndex
+```java com.azure.ai.projects.IndexesGetSample.createOrUpdateIndex
 String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
 String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "2.0");
 String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
@@ -657,7 +555,7 @@ System.out.println("Index created: " + index.getName());
 
 #### List indexes
 
-```java com.azure.ai.projects.IndexesSample.listIndexes
+```java com.azure.ai.projects.IndexesListSample.listIndexes
 indexesClient.listLatestIndexVersions().forEach(index -> {
     System.out.println("Index name: " + index.getName());
     System.out.println("Index version: " + index.getVersion());
@@ -668,7 +566,7 @@ indexesClient.listLatestIndexVersions().forEach(index -> {
 
 #### List index versions
 
-```java com.azure.ai.projects.IndexesSample.listIndexVersions
+```java com.azure.ai.projects.IndexesListVersionsSample.listIndexVersions
 
 String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
 
@@ -682,7 +580,7 @@ indexesClient.listIndexVersions(indexName).forEach(index -> {
 
 #### Get an index version
 
-```java com.azure.ai.projects.IndexesSample.getIndex
+```java com.azure.ai.projects.IndexesGetSample.getIndex
 
 String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
 String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
@@ -698,7 +596,7 @@ System.out.println("Type: " + index.getType());
 
 #### Delete an index version
 
-```java com.azure.ai.projects.IndexesSample.deleteIndex
+```java com.azure.ai.projects.IndexesDeleteSample.deleteIndex
 
 String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
 String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
