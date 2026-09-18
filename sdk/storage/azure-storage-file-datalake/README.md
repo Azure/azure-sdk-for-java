@@ -220,6 +220,17 @@ DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
     .buildClient();
 ```
 
+Some environments expose the Data Lake and Blob services through separate custom or proxy URLs. In that case, set
+the Data Lake endpoint with `endpoint` and the Blob endpoint with `blobEndpoint`:
+
+```java readme-sample-getDataLakeServiceClientWithCustomEndpoints
+DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
+    .endpoint("https://dfs-proxy.example.com")
+    .blobEndpoint("https://blob-proxy.example.com")
+    .sasToken("<your-sasToken>")
+    .buildClient();
+```
+
 or
 
 ```java readme-sample-getDataLakeServiceClient2
@@ -446,5 +457,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
-
-

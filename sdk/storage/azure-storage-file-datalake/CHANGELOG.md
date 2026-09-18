@@ -3,6 +3,8 @@
 ## 12.29.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added `DataLakeServiceClientBuilder.blobEndpoint(String)` to configure the Blob service endpoint separately from
+  the Data Lake service endpoint for custom endpoint and proxy scenarios.
 
 ### Breaking Changes
 
@@ -897,4 +899,3 @@ This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/README.md)
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
-
