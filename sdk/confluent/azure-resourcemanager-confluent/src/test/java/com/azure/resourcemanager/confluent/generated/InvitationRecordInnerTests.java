@@ -12,19 +12,19 @@ public final class InvitationRecordInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InvitationRecordInner model = BinaryData.fromString(
-            "{\"kind\":\"bpaxhexiilivpdt\",\"id\":\"r\",\"metadata\":{\"self\":\"qoaxoruzfgs\",\"resource_name\":\"yfxrx\",\"created_at\":\"eptra\",\"updated_at\":\"jezwlwnw\",\"deleted_at\":\"qlcvydy\"},\"email\":\"tdooaoj\",\"auth_type\":\"iodkooebwnujhem\",\"status\":\"bvdkcrodtjin\",\"accepted_at\":\"jlfltkacjvefkdlf\",\"expires_at\":\"kggkfpa\"}")
+            "{\"kind\":\"gwol\",\"id\":\"czbwemhairsbr\",\"metadata\":{\"self\":\"wmsweypqwd\",\"resource_name\":\"gicccnxqhuex\",\"created_at\":\"ttlstvlzywemhz\",\"updated_at\":\"csdtclusiypbs\",\"deleted_at\":\"ytguslf\"},\"email\":\"dcygqukyhejhz\",\"auth_type\":\"xgfpelolppv\",\"status\":\"r\",\"accepted_at\":\"vu\",\"expires_at\":\"raehtwdwrft\"}")
             .toObject(InvitationRecordInner.class);
-        Assertions.assertEquals("bpaxhexiilivpdt", model.kind());
-        Assertions.assertEquals("r", model.id());
-        Assertions.assertEquals("qoaxoruzfgs", model.metadata().self());
-        Assertions.assertEquals("yfxrx", model.metadata().resourceName());
-        Assertions.assertEquals("eptra", model.metadata().createdAt());
-        Assertions.assertEquals("jezwlwnw", model.metadata().updatedAt());
-        Assertions.assertEquals("qlcvydy", model.metadata().deletedAt());
-        Assertions.assertEquals("tdooaoj", model.email());
-        Assertions.assertEquals("iodkooebwnujhem", model.authType());
-        Assertions.assertEquals("bvdkcrodtjin", model.status());
-        Assertions.assertEquals("jlfltkacjvefkdlf", model.acceptedAt());
-        Assertions.assertEquals("kggkfpa", model.expiresAt());
+        Assertions.assertEquals("gwol", model.kind());
+        Assertions.assertEquals("czbwemhairsbr", model.id());
+        Assertions.assertEquals("wmsweypqwd", model.metadata().self());
+        Assertions.assertEquals("gicccnxqhuex", model.metadata().resourceName());
+        Assertions.assertEquals("ttlstvlzywemhz", model.metadata().createdAt());
+        Assertions.assertEquals("csdtclusiypbs", model.metadata().updatedAt());
+        Assertions.assertEquals("ytguslf", model.metadata().deletedAt());
+        Assertions.assertEquals("dcygqukyhejhz", model.email());
+        Assertions.assertEquals("xgfpelolppv", model.authType());
+        Assertions.assertEquals("r", model.status());
+        Assertions.assertEquals("vu", model.acceptedAt());
+        Assertions.assertEquals("raehtwdwrft", model.expiresAt());
     }
 }

@@ -12,16 +12,16 @@ public final class RegionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionProperties model = BinaryData.fromString(
-            "{\"metadata\":{\"self\":\"b\",\"resourceName\":\"hejjz\",\"createdTimestamp\":\"dudgwdslfhot\",\"updatedTimestamp\":\"cynpwlbjnp\",\"deletedTimestamp\":\"cftadeh\"},\"spec\":{\"name\":\"tyfsoppusuesn\",\"cloud\":\"dejbavo\",\"regionName\":\"zdmohctbqvu\",\"packages\":[\"dndnvow\"]}}")
+            "{\"metadata\":{\"self\":\"oaeupfhyhltrpmo\",\"resourceName\":\"mcmatuokthfuiu\",\"createdTimestamp\":\"dsfcpkvxodpuoz\",\"updatedTimestamp\":\"zydagfuaxbezyiuo\",\"deletedTimestamp\":\"twhrdxwzywqsm\"},\"spec\":{\"name\":\"reximoryocfs\",\"cloud\":\"s\",\"regionName\":\"ddystkiiuxhqy\",\"packages\":[\"o\",\"rq\"]}}")
             .toObject(RegionProperties.class);
-        Assertions.assertEquals("b", model.metadata().self());
-        Assertions.assertEquals("hejjz", model.metadata().resourceName());
-        Assertions.assertEquals("dudgwdslfhot", model.metadata().createdTimestamp());
-        Assertions.assertEquals("cynpwlbjnp", model.metadata().updatedTimestamp());
-        Assertions.assertEquals("cftadeh", model.metadata().deletedTimestamp());
-        Assertions.assertEquals("tyfsoppusuesn", model.spec().name());
-        Assertions.assertEquals("dejbavo", model.spec().cloud());
-        Assertions.assertEquals("zdmohctbqvu", model.spec().regionName());
-        Assertions.assertEquals("dndnvow", model.spec().packages().get(0));
+        Assertions.assertEquals("oaeupfhyhltrpmo", model.metadata().self());
+        Assertions.assertEquals("mcmatuokthfuiu", model.metadata().resourceName());
+        Assertions.assertEquals("dsfcpkvxodpuoz", model.metadata().createdTimestamp());
+        Assertions.assertEquals("zydagfuaxbezyiuo", model.metadata().updatedTimestamp());
+        Assertions.assertEquals("twhrdxwzywqsm", model.metadata().deletedTimestamp());
+        Assertions.assertEquals("reximoryocfs", model.spec().name());
+        Assertions.assertEquals("s", model.spec().cloud());
+        Assertions.assertEquals("ddystkiiuxhqy", model.spec().regionName());
+        Assertions.assertEquals("o", model.spec().packages().get(0));
     }
 }

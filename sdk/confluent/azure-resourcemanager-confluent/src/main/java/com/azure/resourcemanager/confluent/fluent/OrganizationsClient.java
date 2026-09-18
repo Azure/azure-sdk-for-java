@@ -12,14 +12,18 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.confluent.fluent.models.ApiKeyRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.LatestLinkedSaaSResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.ListRegionsSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.confluent.fluent.models.SCClusterRecordInner;
 import com.azure.resourcemanager.confluent.fluent.models.SCEnvironmentRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.SaaSResourceDetailsResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.SchemaRegistryClusterRecordInner;
+import com.azure.resourcemanager.confluent.models.ActivateSaaSParameterRequest;
 import com.azure.resourcemanager.confluent.models.CreateApiKeyModel;
 import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
 import com.azure.resourcemanager.confluent.models.OrganizationResourceUpdate;
+import com.azure.resourcemanager.confluent.models.SaaSData;
 
 /**
  * An instance of this class provides access to all the operations defined in OrganizationsClient.
@@ -329,6 +333,147 @@ public interface OrganizationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ListRegionsSuccessResponseInner listRegions(String resourceGroupName, String organizationName,
         ListAccessRequestModel body);
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginLinkSaaS(String resourceGroupName,
+        String organizationName, SaaSData body);
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OrganizationResourceInner>, OrganizationResourceInner> beginLinkSaaS(String resourceGroupName,
+        String organizationName, SaaSData body, Context context);
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OrganizationResourceInner linkSaaS(String resourceGroupName, String organizationName, SaaSData body);
+
+    /**
+     * Links a new SaaS to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body SaaS data for linking.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OrganizationResourceInner linkSaaS(String resourceGroupName, String organizationName, SaaSData body,
+        Context context);
+
+    /**
+     * Returns the latest SaaS linked to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<LatestLinkedSaaSResponseInner> latestLinkedSaaSWithResponse(String resourceGroupName,
+        String organizationName, Context context);
+
+    /**
+     * Returns the latest SaaS linked to the Confluent organization of the underlying resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LatestLinkedSaaSResponseInner latestLinkedSaaS(String resourceGroupName, String organizationName);
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of proxy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SaaSResourceDetailsResponseInner>, SaaSResourceDetailsResponseInner>
+        beginActivateResource(ActivateSaaSParameterRequest body);
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of proxy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SaaSResourceDetailsResponseInner>, SaaSResourceDetailsResponseInner>
+        beginActivateResource(ActivateSaaSParameterRequest body, Context context);
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return proxy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SaaSResourceDetailsResponseInner activateResource(ActivateSaaSParameterRequest body);
+
+    /**
+     * Resolve the token to get the SaaS resource ID and activate the SaaS resource.
+     * 
+     * @param body The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return proxy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SaaSResourceDetailsResponseInner activateResource(ActivateSaaSParameterRequest body, Context context);
 
     /**
      * Get Environment details by environment Id.

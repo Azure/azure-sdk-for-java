@@ -13,36 +13,36 @@ public final class ConfluentAgreementPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfluentAgreementProperties model = BinaryData.fromString(
-            "{\"publisher\":\"lcplc\",\"product\":\"hihihlhzdsqtzbsr\",\"plan\":\"o\",\"licenseTextLink\":\"jhf\",\"privacyPolicyLink\":\"vecactx\",\"retrieveDatetime\":\"2021-09-10T10:36:28Z\",\"signature\":\"e\",\"accepted\":true}")
+            "{\"publisher\":\"cwkhihi\",\"product\":\"hzdsqtzbsrgnow\",\"plan\":\"hfgmvecactxm\",\"licenseTextLink\":\"teyowclu\",\"privacyPolicyLink\":\"vekqvgqo\",\"retrieveDatetime\":\"2021-10-12T22:41:28Z\",\"signature\":\"zmpjwyiv\",\"accepted\":true}")
             .toObject(ConfluentAgreementProperties.class);
-        Assertions.assertEquals("lcplc", model.publisher());
-        Assertions.assertEquals("hihihlhzdsqtzbsr", model.product());
-        Assertions.assertEquals("o", model.plan());
-        Assertions.assertEquals("jhf", model.licenseTextLink());
-        Assertions.assertEquals("vecactx", model.privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T10:36:28Z"), model.retrieveDatetime());
-        Assertions.assertEquals("e", model.signature());
+        Assertions.assertEquals("cwkhihi", model.publisher());
+        Assertions.assertEquals("hzdsqtzbsrgnow", model.product());
+        Assertions.assertEquals("hfgmvecactxm", model.plan());
+        Assertions.assertEquals("teyowclu", model.licenseTextLink());
+        Assertions.assertEquals("vekqvgqo", model.privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T22:41:28Z"), model.retrieveDatetime());
+        Assertions.assertEquals("zmpjwyiv", model.signature());
         Assertions.assertTrue(model.accepted());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfluentAgreementProperties model = new ConfluentAgreementProperties().withPublisher("lcplc")
-            .withProduct("hihihlhzdsqtzbsr")
-            .withPlan("o")
-            .withLicenseTextLink("jhf")
-            .withPrivacyPolicyLink("vecactx")
-            .withRetrieveDatetime(OffsetDateTime.parse("2021-09-10T10:36:28Z"))
-            .withSignature("e")
+        ConfluentAgreementProperties model = new ConfluentAgreementProperties().withPublisher("cwkhihi")
+            .withProduct("hzdsqtzbsrgnow")
+            .withPlan("hfgmvecactxm")
+            .withLicenseTextLink("teyowclu")
+            .withPrivacyPolicyLink("vekqvgqo")
+            .withRetrieveDatetime(OffsetDateTime.parse("2021-10-12T22:41:28Z"))
+            .withSignature("zmpjwyiv")
             .withAccepted(true);
         model = BinaryData.fromObject(model).toObject(ConfluentAgreementProperties.class);
-        Assertions.assertEquals("lcplc", model.publisher());
-        Assertions.assertEquals("hihihlhzdsqtzbsr", model.product());
-        Assertions.assertEquals("o", model.plan());
-        Assertions.assertEquals("jhf", model.licenseTextLink());
-        Assertions.assertEquals("vecactx", model.privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T10:36:28Z"), model.retrieveDatetime());
-        Assertions.assertEquals("e", model.signature());
+        Assertions.assertEquals("cwkhihi", model.publisher());
+        Assertions.assertEquals("hzdsqtzbsrgnow", model.product());
+        Assertions.assertEquals("hfgmvecactxm", model.plan());
+        Assertions.assertEquals("teyowclu", model.licenseTextLink());
+        Assertions.assertEquals("vekqvgqo", model.privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T22:41:28Z"), model.retrieveDatetime());
+        Assertions.assertEquals("zmpjwyiv", model.signature());
         Assertions.assertTrue(model.accepted());
     }
 }

@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterByokEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterByokEntity model = BinaryData
-            .fromString("{\"id\":\"hftwesgog\",\"related\":\"honnxkrlgnyhmos\",\"resource_name\":\"kkgthr\"}")
-            .toObject(ClusterByokEntity.class);
-        Assertions.assertEquals("hftwesgog", model.id());
-        Assertions.assertEquals("honnxkrlgnyhmos", model.related());
-        Assertions.assertEquals("kkgthr", model.resourceName());
+        ClusterByokEntity model
+            = BinaryData.fromString("{\"id\":\"gaojf\",\"related\":\"nc\",\"resource_name\":\"mrfhirctymox\"}")
+                .toObject(ClusterByokEntity.class);
+        Assertions.assertEquals("gaojf", model.id());
+        Assertions.assertEquals("nc", model.related());
+        Assertions.assertEquals("mrfhirctymox", model.resourceName());
     }
 }

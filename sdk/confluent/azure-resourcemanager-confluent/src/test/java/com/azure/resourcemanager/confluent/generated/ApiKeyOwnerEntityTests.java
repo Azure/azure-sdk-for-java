@@ -12,12 +12,11 @@ public final class ApiKeyOwnerEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiKeyOwnerEntity model = BinaryData
-            .fromString(
-                "{\"id\":\"cr\",\"related\":\"fdfdosygexpa\",\"resourceName\":\"akhmsbzjhcrz\",\"kind\":\"dphlxaolt\"}")
+            .fromString("{\"id\":\"wbxgjvt\",\"related\":\"p\",\"resourceName\":\"szdnr\",\"kind\":\"qguhmuo\"}")
             .toObject(ApiKeyOwnerEntity.class);
-        Assertions.assertEquals("cr", model.id());
-        Assertions.assertEquals("fdfdosygexpa", model.related());
-        Assertions.assertEquals("akhmsbzjhcrz", model.resourceName());
-        Assertions.assertEquals("dphlxaolt", model.kind());
+        Assertions.assertEquals("wbxgjvt", model.id());
+        Assertions.assertEquals("p", model.related());
+        Assertions.assertEquals("szdnr", model.resourceName());
+        Assertions.assertEquals("qguhmuo", model.kind());
     }
 }

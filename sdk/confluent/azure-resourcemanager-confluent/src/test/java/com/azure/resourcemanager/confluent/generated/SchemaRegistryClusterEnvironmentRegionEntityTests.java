@@ -12,10 +12,11 @@ public final class SchemaRegistryClusterEnvironmentRegionEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryClusterEnvironmentRegionEntity model = BinaryData
-            .fromString("{\"id\":\"pabgyeps\",\"related\":\"tazqugxywpmueefj\",\"resourceName\":\"fqkquj\"}")
+            .fromString(
+                "{\"id\":\"bxwyjsflhhcaa\",\"related\":\"jixisxyawjoyaqcs\",\"resourceName\":\"jpkiidzyexznelix\"}")
             .toObject(SchemaRegistryClusterEnvironmentRegionEntity.class);
-        Assertions.assertEquals("pabgyeps", model.id());
-        Assertions.assertEquals("tazqugxywpmueefj", model.related());
-        Assertions.assertEquals("fqkquj", model.resourceName());
+        Assertions.assertEquals("bxwyjsflhhcaa", model.id());
+        Assertions.assertEquals("jixisxyawjoyaqcs", model.related());
+        Assertions.assertEquals("jpkiidzyexznelix", model.resourceName());
     }
 }
