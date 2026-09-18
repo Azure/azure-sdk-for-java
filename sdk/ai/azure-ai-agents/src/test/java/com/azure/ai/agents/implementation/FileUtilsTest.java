@@ -4,6 +4,7 @@
 package com.azure.ai.agents.implementation;
 
 import com.azure.ai.agents.implementation.utils.FileUtils;
+import com.azure.ai.agents.models.CodeFileDetails;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,14 +12,30 @@ import org.junit.jupiter.api.io.TempDir;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 public class FileUtilsTest {
     @TempDir
     Path temporaryDirectory;
+
+    @Test
+    public void codeFileDetailsRejectsRootPath() {
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new CodeFileDetails(temporaryDirectory.toAbsolutePath().getRoot().toString()));
+    }
+
+    @Test
+    public void codeFileDetailsPreservesFileNameAndContent() throws IOException {
+        Path file = Files.write(temporaryDirectory.resolve("agent.zip"), new byte[] { 1, 2, 3 });
+        CodeFileDetails details = new CodeFileDetails(file.toString());
+        Assertions.assertEquals("agent.zip", details.getFilename());
+        Assertions.assertArrayEquals(new byte[] { 1, 2, 3 }, details.getContent().toBytes());
+    }
 
     @Test
     public void writeToFileAsyncCreatesNewFile() throws IOException {
@@ -136,6 +153,27 @@ public class FileUtilsTest {
         BinaryData content = BinaryData.fromFile(Files.write(temporaryDirectory.resolve("repeat.zip"), bytes));
 
         Assertions.assertEquals(FileUtils.computeSha256(content), FileUtils.computeSha256(content));
+    }
+
+    @Test
+    public void computeSha256StreamsLargeFileAndPreservesUploadContent() throws IOException {
+        byte[] bytes = new byte[1_000_000];
+        Arrays.fill(bytes, (byte) 'a');
+        BinaryData content = BinaryData.fromFile(Files.write(temporaryDirectory.resolve("large.zip"), bytes));
+
+        Assertions.assertEquals("cdc76e5c9914fb9281a1c7e284d73e67f1809a48a497200e046d39ccc7112cd0",
+            FileUtils.computeSha256(content));
+        Assertions.assertArrayEquals(bytes, content.toBytes());
+    }
+
+    @Test
+    public void computeSha256PreservesReplayableStreamForUpload() {
+        byte[] bytes = "abc".getBytes(StandardCharsets.UTF_8);
+        BinaryData content = BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length);
+
+        Assertions.assertEquals("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+            FileUtils.computeSha256(content));
+        Assertions.assertArrayEquals(bytes, content.toBytes());
     }
 
     @Test

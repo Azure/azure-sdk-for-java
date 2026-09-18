@@ -4,11 +4,12 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.DatasetsImpl;
+import com.azure.ai.projects.implementation.FileUploadHelper;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.models.BlobReferenceSasCredential;
 import com.azure.ai.projects.models.DatasetCredential;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.FileDatasetVersion;
+import com.azure.ai.projects.models.FileUploadOptions;
 import com.azure.ai.projects.models.FolderDatasetVersion;
 import com.azure.ai.projects.models.PendingUploadRequest;
 import com.azure.ai.projects.models.PendingUploadResponse;
@@ -24,16 +25,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
-import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.stream.Stream;
+import java.util.List;
 
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
@@ -191,7 +190,43 @@ public final class DatasetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createDatasetWithFileWithResponse(String name, String version, Path filePath,
         String connectionName, RequestOptions requestOptions) {
-        if (!Files.isRegularFile(filePath)) {
+        return createDatasetWithFileWithResponse(name, version, filePath, connectionName, null, requestOptions);
+    }
+
+    /**
+     * Uploads a file and registers a dataset using custom blob upload settings.
+     *
+     * @param name the dataset name.
+     * @param version the dataset version.
+     * @param filePath the local file.
+     * @param connectionName the storage connection, or null for the default.
+     * @param uploadOptions the upload options, or null for defaults.
+     * @return the created dataset.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FileDatasetVersion createDatasetWithFile(String name, String version, Path filePath, String connectionName,
+        FileUploadOptions uploadOptions) {
+        return createDatasetWithFileWithResponse(name, version, filePath, connectionName, uploadOptions,
+            new RequestOptions()).getValue().toObject(FileDatasetVersion.class);
+    }
+
+    /**
+     * Uploads a file and registers a dataset using custom blob upload settings.
+     *
+     * @param name the dataset name.
+     * @param version the dataset version.
+     * @param filePath the local file.
+     * @param connectionName the storage connection, or null for the default.
+     * @param uploadOptions the upload options, or null for defaults.
+     * @param requestOptions project request options; blob options are configured separately.
+     * @return the dataset response.
+     * @throws IllegalArgumentException if the path is not a regular file or upload credentials are missing.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createDatasetWithFileWithResponse(String name, String version, Path filePath,
+        String connectionName, FileUploadOptions uploadOptions, RequestOptions requestOptions) {
+        Path fileName = filePath == null ? null : filePath.getFileName();
+        if (fileName == null || !Files.isRegularFile(filePath)) {
             throw LOGGER
                 .logThrowableAsError(new IllegalArgumentException("The provided path is not a file: " + filePath));
         }
@@ -203,11 +238,12 @@ public final class DatasetsClient {
             = this.pendingUploadWithResponse(name, version, BinaryData.fromObject(body), requestOptions)
                 .getValue()
                 .toObject(PendingUploadResponse.class);
-        BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
-        BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUrl())
-            .blobName(filePath.getFileName().toString())
-            .buildClient();
-        blobClient.upload(BinaryData.fromFile(filePath), true);
+        BlobClient blobClient
+            = FileUploadHelper.createContainerBuilder(pendingUploadResponse.getBlobReference(), uploadOptions)
+                .buildClient()
+                .getBlobClient(fileName.toString());
+        blobClient.uploadWithResponse(FileUploadHelper.createUploadOptions(filePath, uploadOptions), null,
+            requestOptions == null ? Context.NONE : requestOptions.getContext());
         return this.createOrUpdateDatasetVersionWithResponse(name, version,
             BinaryData.fromObject(new FileDatasetVersion().setDataUrl(blobClient.getBlobUrl())), requestOptions);
     }
@@ -288,10 +324,43 @@ public final class DatasetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createDatasetWithFolderWithResponse(String name, String version, Path folderPath,
         String connectionName, RequestOptions requestOptions) {
-        if (!Files.isDirectory(folderPath)) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
-        }
+        return createDatasetWithFolderWithResponse(name, version, folderPath, connectionName, null, requestOptions);
+    }
+
+    /**
+     * Uploads matching files recursively and registers a folder dataset.
+     *
+     * @param name the dataset name.
+     * @param version the dataset version.
+     * @param folderPath the local directory.
+     * @param connectionName the storage connection, or null for the default.
+     * @param uploadOptions the filename filter and blob settings, or null for defaults.
+     * @return the created dataset.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FolderDatasetVersion createDatasetWithFolder(String name, String version, Path folderPath,
+        String connectionName, FileUploadOptions uploadOptions) {
+        return createDatasetWithFolderWithResponse(name, version, folderPath, connectionName, uploadOptions,
+            new RequestOptions()).getValue().toObject(FolderDatasetVersion.class);
+    }
+
+    /**
+     * Uploads matching files recursively and registers a folder dataset. Relative paths are preserved.
+     *
+     * @param name the dataset name.
+     * @param version the dataset version.
+     * @param folderPath the local directory.
+     * @param connectionName the storage connection, or null for the default.
+     * @param uploadOptions the filename filter and blob settings, or null for defaults.
+     * @param requestOptions project request options; blob options are configured separately.
+     * @return the dataset response.
+     * @throws IllegalArgumentException if the folder contains no matching files or upload credentials are missing.
+     * @throws java.io.UncheckedIOException if the folder cannot be traversed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createDatasetWithFolderWithResponse(String name, String version, Path folderPath,
+        String connectionName, FileUploadOptions uploadOptions, RequestOptions requestOptions) {
+        List<Path> files = FileUploadHelper.getFiles(folderPath, uploadOptions);
         PendingUploadRequest request = new PendingUploadRequest();
         if (connectionName != null) {
             request.setConnectionName(connectionName);
@@ -300,21 +369,18 @@ public final class DatasetsClient {
             = this.pendingUploadWithResponse(name, version, BinaryData.fromObject(request), requestOptions)
                 .getValue()
                 .toObject(PendingUploadResponse.class);
-        String containerUrl = pendingUploadResponse.getBlobReference().getBlobUrl();
-        BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
         BlobContainerClient containerClient
-            = new BlobContainerClientBuilder().endpoint(credential.getSasUrl()).buildClient();
-        // Upload all files in the directory
-        try (Stream<Path> fileStream = Files.walk(folderPath)) {
-            fileStream.filter(Files::isRegularFile).forEach(filePath -> {
-                String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
-                containerClient.getBlobClient(relativePath).upload(BinaryData.fromFile(filePath), true);
-            });
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException("Failed to walk folder path: " + folderPath, e));
+            = FileUploadHelper.createContainerBuilder(pendingUploadResponse.getBlobReference(), uploadOptions)
+                .buildClient();
+        for (Path filePath : files) {
+            String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
+            containerClient.getBlobClient(relativePath)
+                .uploadWithResponse(FileUploadHelper.createUploadOptions(filePath, uploadOptions), null,
+                    requestOptions == null ? Context.NONE : requestOptions.getContext());
         }
         return this.createOrUpdateDatasetVersionWithResponse(name, version,
-            BinaryData.fromObject(new FolderDatasetVersion().setDataUrl(containerUrl)), requestOptions);
+            BinaryData.fromObject(new FolderDatasetVersion().setDataUrl(containerClient.getBlobContainerUrl())),
+            requestOptions);
     }
 
     /**

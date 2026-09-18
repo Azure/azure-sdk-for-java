@@ -68,6 +68,9 @@ The Agents client library has the following sub-clients which group the differen
 - `ResponsesClient` / `ResponsesAsyncClient`: Create responses that require Azure-specific request fields, such as an explicit `AgentReference` or structured inputs. For standard OpenAI Responses API calls through a configured agent endpoint, use an agent-scoped OpenAI client. See the [OpenAI Responses API documentation][openai_responses_api_docs] for more information.
 - `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
 - `ToolboxesClient` / `ToolboxesAsyncClient`: Manage toolboxes and toolbox versions.
+- `BetaVoiceAgentWebSocketClient` / `BetaVoiceAgentWebSocketAsyncClient` **(preview)**: Open typed realtime WebSocket sessions with voice agents.
+- `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` **(preview)**: Manage voice-agent outbound calls and telephony campaigns.
+- `BetaVoiceAgentsConversationsClient` / `BetaVoiceAgentsConversationsAsyncClient` **(preview)**: Read persisted voice-agent conversations, transcripts, and audio metadata.
 
 Conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s `ConversationService`. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
 
@@ -113,6 +116,56 @@ ResponseService responseService = responsesClient.getResponseService();
 // OpenAI SDK ConversationService accessed from OpenAIClient
 ConversationService conversationService = openAIClient.conversations();
 ```
+
+Agent-scoped OpenAI clients opt in to agent preview features when `allowPreview(true)` is configured,
+and use the configured service version. Override the defaults with native OpenAI options:
+
+```java
+OpenAIClient agentClient = builder.buildAgentScopedOpenAIClient("agent-name", options -> options
+    .replaceHeaders("User-Agent", "my-application/1.0")
+    .replaceQueryParams("api-version", "v1"));
+```
+
+The callback is also available on the project-scoped and asynchronous OpenAI factory methods.
+It supports URL, credential, headers, query parameters, and transport options. Explicit `Foundry-Features`
+headers, including empty values and case-insensitive names, are preserved. Custom OpenAI transports bypass
+the Azure pipeline. Custom Azure pipelines retain their authentication policies, which may replace
+OpenAI credential overrides. The default bridge delegates authentication to OpenAI using the builder's
+Entra credential unless overridden.
+
+Set `AZURE_AI_PROJECTS_CONSOLE_LOGGING=true` to default the builder's HTTP logging to `BODY_AND_HEADERS`.
+Native asynchronous OpenAI clients and `ResponsesAsyncClient` retrieve Azure tokens without blocking. Supply custom
+native OpenAI transports through the factory options callback to retain this authentication. Replacing the transport
+later through native `withOptions(...)` bypasses the authentication adapter and requires an explicit native credential.
+Cancelling a native OpenAI operation's future does not guarantee cancellation of pending Azure token retrieval;
+the native client's future decorators control cancellation propagation.
+Explicit `HttpLogOptions` take precedence, including `HttpLogDetailLevel.NONE` to disable HTTP logging.
+Enable INFO output in your Java logging backend (or set `AZURE_LOG_LEVEL=information` for Azure Core's
+default logger). This option does not install console handlers or change other libraries' logging levels.
+The default OpenAI bridge logs `text/event-stream` response chunks only as the caller reads them;
+it does not pre-consume the stream. Other HTTP messages use Azure Core's logging and redaction rules.
+Custom transports and custom pipelines retain their own logging configuration. Body logs are not redacted
+and can contain prompts, responses, and other sensitive data; enable them only in a trusted environment.
+
+### Realtime connection options
+
+Use `VoiceAgentWebSocketConnectionOptions` with the synchronous or asynchronous beta voice-agent client's
+`connect` method to set session IDs, agent version overrides, structured inputs, API versions, credential
+scopes, preview features, and extra handshake headers or query parameters.
+
+```java
+VoiceAgentWebSocketConnectionOptions options = new VoiceAgentWebSocketConnectionOptions()
+    .setAgentSessionId("session-id")
+    .setAgentVersionOverride("2")
+    .setStructuredInputs("{\"language\":\"en\"}")
+    .setExtraHeaders(Collections.singletonMap("User-Agent", "my-application/1.0"));
+```
+
+Extra query parameters and non-protected headers override defaults. Authentication and WebSocket protocol
+headers remain transport-controlled. An explicitly empty `Foundry-Features` value is preserved.
+`setConnectionUrl` accepts a full `wss://` URI on the project endpoint's host and port, with no user information
+or fragment. Existing query parameters are preserved unless overridden. URL validation happens before token
+acquisition; cross-host overrides are rejected to prevent credentials from being sent to another host.
 
 ### Agent version drafts
 
@@ -188,8 +241,17 @@ Build clients whose names start with `Beta` from `AgentsClientBuilder.beta()`. T
 |---|---|
 | `BetaAgentsClient` | `WorkflowAgents=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,AgentsOptimization=V2Preview` |
 | `BetaMemoryStoresClient` | `MemoryStores=V1Preview` |
+| `BetaVoiceAgentWebSocketClient` | `VoiceAgents=V1Preview` |
+| `BetaVoiceAgentsTelephonyClient` | `VoiceAgents=V1Preview` |
+| `BetaVoiceAgentsConversationsClient` | `VoiceAgents=V1Preview` |
 
 The async `Beta*AsyncClient` counterparts follow the same behavior.
+
+### Realtime voice-agent sessions
+
+Use `BetaVoiceAgentWebSocketClient` or `BetaVoiceAgentWebSocketAsyncClient` to open a typed, bidirectional session with an existing voice agent. The client acquires a token for `https://ai.azure.com/.default`, negotiates the `realtime` WebSocket subprotocol, and sends the required `VoiceAgents=V1Preview` feature header automatically.
+
+The session API supports text and PCM16 audio input, typed streaming server events, response cancellation, client-executed function tools, and persisted conversations. See [Realtime voice-agent WebSocket examples](#realtime-voice-agent-websocket-examples-preview) for a walkthrough and complete samples.
 
 ### Agent optimization
 
@@ -202,9 +264,9 @@ and [AgentOptimizationAsyncSample.java](https://github.com/Azure/azure-sdk-for-j
 
 ### Memory item management
 
-`BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`. See `MemoryStoreItemsSample` and `MemoryStoreItemsAsyncSample` for complete examples.
+`BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`. See [MemoryStoreItemsSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemoryStoreItemsSample.java) and [MemoryStoreItemsAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemoryStoreItemsAsyncSample.java) for complete examples.
 
-For conversational memory workflows, use `beginUpdateMemories` to extract memories from conversation items, `searchMemories` to retrieve relevant memories, and `deleteScope` to remove all memories for a scope. See `MemoryStoreAdvancedSample` and `MemoryStoreAdvancedAsyncSample` for complete synchronous and asynchronous examples.
+For conversational memory workflows, use `beginUpdateMemories` to extract memories from conversation items, `searchMemories` to retrieve relevant memories, and `deleteScope` to remove all memories for a scope. See [MemoryStoreAdvancedSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemoryStoreAdvancedSample.java) and [MemoryStoreAdvancedAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/memory/MemoryStoreAdvancedAsyncSample.java) for complete synchronous and asynchronous examples.
 
 ### Using OpenAI's official library
 
@@ -486,7 +548,7 @@ MemorySearchPreviewTool tool = new MemorySearchPreviewTool(memoryStore.getName()
     .setUpdateDelaySeconds(1);
 ```
 
-See the full sample in [MemorySearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/MemorySearchSync.java) showing how to create an agent with a memory store and use it across multiple conversations.
+See the full samples in [MemorySearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/MemorySearchSync.java) and [MemorySearchAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/MemorySearchAsync.java), which show how to create an agent with a memory store and use it across multiple conversations.
 
 ---
 
@@ -925,6 +987,152 @@ Response response = responsesClient.createAzureResponse(
 Streaming is also supported via `createStreamingAzureResponse`, which returns an `IterableStream<ResponseStreamEvent>` (sync) or `Flux<ResponseStreamEvent>` (async).
 
 See the full sample in [CreateResponseWithStructuredInput.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/CreateResponseWithStructuredInput.java).
+
+---
+
+### Voice agent samples (preview)
+
+The [voice-agent samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice) cover agent management and persisted conversations.
+
+| Scenario | Samples |
+|---|---|
+| Lifecycle | [VoiceAgentBasicSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentBasicSample.java) and [VoiceAgentBasicAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentBasicAsyncSample.java) create, retrieve, update, list, enable, disable, and delete voice agents. |
+| Versions and drafts | [VoiceAgentVersionsSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentVersionsSample.java) creates and lists released and draft versions. |
+| Guided generation | [VoiceAgentGenerateSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentGenerateSample.java) generates a voice-agent definition. |
+| Audio and tools | [VoiceAgentWithToolsSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentWithToolsSample.java) configures PCM audio, transcription, voice activity detection, function tools, and system tools. |
+| Persisted conversations | [VoiceAgentReadConversationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentReadConversationSample.java) reads responses and transcripts, while [VoiceAgentReadConversationAudioSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentReadConversationAudioSample.java) downloads call and item audio. |
+
+Authenticate with `DefaultAzureCredential`. Every voice sample requires `FOUNDRY_PROJECT_ENDPOINT`. Samples that create explicit definitions optionally use `FOUNDRY_VOICE_MODEL`, `FOUNDRY_VOICE_MODEL_TYPE`, and `FOUNDRY_VOICE_AGENT_NAME`. The persisted-conversation samples require `FOUNDRY_VOICE_AGENT_NAME` and `FOUNDRY_VOICE_CONVERSATION_ID`.
+
+### Realtime voice-agent WebSocket examples (preview)
+
+Realtime WebSocket sessions provide bidirectional text and audio communication with a voice agent. Create the voice agent before opening a session; the lifecycle samples above demonstrate how to create one.
+
+#### Create a realtime WebSocket client
+
+Build a synchronous or asynchronous preview client from the same `AgentsClientBuilder`. Beta clients automatically send the required preview feature header.
+
+```java
+AgentsClientBuilder builder = new AgentsClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(endpoint);
+
+BetaVoiceAgentWebSocketClient realtimeClient
+    = builder.beta().buildBetaVoiceAgentWebSocketClient();
+BetaVoiceAgentWebSocketAsyncClient realtimeAsyncClient
+    = builder.beta().buildBetaVoiceAgentWebSocketAsyncClient();
+```
+
+#### Send a synchronous text turn
+
+Connections require an `https://` or `wss://` project endpoint. Insecure endpoints and untrusted connection URL overrides
+are rejected before acquiring a token. This also applies to localhost; use certificate-verified TLS for local servers.
+
+Unknown server event types are returned as `RawRealtimeServerEvent`; `getRawEvent()` preserves the complete JSON object.
+Use `sendEvent(BinaryData)` to send raw JSON objects, including event types or fields not modeled by this SDK. Both
+clients accept UTF-8 JSON in text or binary WebSocket messages.
+
+Configure `VoiceAgentWebSocketConnectionOptions` before connecting and do not modify it while the session is active:
+
+- `setReceiveBufferCapacity` sets a bounded event queue (default 256, range 1-65536).
+- `setOverflowStrategy` defaults to `ERROR`, which closes an overflowing connection. `DROP_OLDEST` and `DROP_LATEST`
+    explicitly permit data loss and should only be used when the application can tolerate missing events.
+- `setMaxMessageSize` limits accepted message bytes (default 32 MiB). Oversized messages terminate the connection.
+    The sync transport checks size after receiving a complete message; this does not bound the transport's allocation.
+- Malformed JSON or invalid UTF-8 terminates reception by default. Set `setMalformedEventHandler` to report and skip
+    malformed events while continuing reception. This callback must not block; throwing from it terminates the session.
+```java com.azure.ai.agents.realtime_forward_compatibility
+VoiceAgentWebSocketConnectionOptions options
+    = new VoiceAgentWebSocketConnectionOptions()
+        .setReceiveBufferCapacity(512)
+        .setMaxMessageSize(8 * 1024 * 1024)
+        .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR);
+try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
+    session.sendEvent(BinaryData.fromString(
+        "{\"type\":\"response.create\",\"event_id\":\"response-1\"}"));
+    for (RealtimeServerEvent event : session.receiveEvents()) {
+        if (event instanceof RawRealtimeServerEvent) {
+            BinaryData payload
+                = ((RawRealtimeServerEvent) event).getRawEvent();
+            System.out.println("Received an unrecognized event with " + payload.getLength() + " bytes.");
+        }
+    }
+}
+```
+
+Connect to the voice agent, add the user's text to the conversation, and request a response. Consume the typed server events until the response finishes. A session supports only one consumer of `receiveEvents()`.
+
+For bounded synchronous waits, use `receiveEvents(Duration)` with a positive per-event timeout. A timeout raises
+`IllegalStateException` with a `TimeoutException` cause, leaves the session open, and allows the same iterator to retry.
+Use `close(code, reason)` or asynchronous `closeAsync(code, reason)` to send a custom close frame. Close reasons must
+fit in 123 UTF-8 bytes and close codes must be valid WebSocket codes. The first asynchronous close request wins.
+
+```java
+try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName)) {
+    session.sendText("Hello! Tell me about the services you provide.");
+    session.createResponse();
+
+    for (RealtimeServerEvent event : session.receiveEvents()) {
+        if (event instanceof RealtimeServerEventResponseTextDelta) {
+            System.out.print(((RealtimeServerEventResponseTextDelta) event).getDelta());
+        } else if (event instanceof RealtimeServerEventRealtimeServerEventError) {
+            RealtimeServerEventRealtimeServerEventError error
+                = (RealtimeServerEventRealtimeServerEventError) event;
+            System.out.println("Session error: " + error.getError().getMessage());
+        } else if (event instanceof RealtimeServerEventResponseDone) {
+            break;
+        }
+    }
+}
+```
+
+Use `sendText` and `createResponse` again for subsequent turns while the session remains open. Call `cancelResponse` to interrupt an active response.
+
+#### Send an asynchronous text turn
+
+The asynchronous client returns a `Mono` when connecting and a `Flux<RealtimeServerEvent>` when receiving events. `Mono.usingWhen` closes the session on completion, error, or cancellation.
+
+```java
+Mono.usingWhen(
+    realtimeAsyncClient.openWebSocketSession(agentName),
+    session -> session.sendText("Hello! Tell me about the services you provide.")
+        .then(session.createResponse())
+        .thenMany(session.receiveEvents())
+        .doOnNext(event -> {
+            if (event instanceof RealtimeServerEventResponseTextDelta) {
+                System.out.print(((RealtimeServerEventResponseTextDelta) event).getDelta());
+            }
+        })
+        .takeUntil(event -> event instanceof RealtimeServerEventResponseDone)
+        .then(),
+    BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync,
+    (session, error) -> session.closeAsync(),
+    BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync)
+    .block();
+```
+
+#### Stream audio and handle function tools
+
+Use `appendInputAudio` to send PCM16 chunks, `commitInputAudio` to commit buffered audio when server-side voice activity detection is not configured, and `clearInputAudio` to discard pending input. Audio output arrives through `RealtimeServerEventResponseAudioDelta` events. When a `RealtimeServerEventResponseFunctionCallArgumentsDone` event requests a client-side tool, execute the function and call `sendFunctionCallOutput` with its call ID and serialized result.
+
+| Scenario | Complete sample |
+|---|---|
+| Synchronous live text | [VoiceAgentLiveTextConversationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentLiveTextConversationSample.java) |
+| Asynchronous live text | [VoiceAgentLiveTextConversationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentLiveTextConversationAsyncSample.java) |
+| Asynchronous live audio | [VoiceAgentLiveAudioConversationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentLiveAudioConversationAsyncSample.java) |
+| Live function tool | [VoiceAgentLiveFunctionToolSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentLiveFunctionToolSample.java) |
+
+All realtime examples require `FOUNDRY_PROJECT_ENDPOINT` and optionally use `FOUNDRY_VOICE_AGENT_NAME`. The function-tool example also optionally uses `FOUNDRY_VOICE_MODEL` and `FOUNDRY_VOICE_MODEL_TYPE`. The asynchronous text and audio examples delete their generated agents by default; set `FOUNDRY_KEEP_VOICE_AGENT=true` to retain them.
+
+The live audio example requires a Java Sound-compatible microphone and speaker. It streams signed, little-endian, mono PCM16 audio at 24 kHz. These examples use WebSocket transport. Although the generated protocol models include WebRTC signaling events, the Java client does not provide a WebRTC peer connection or media implementation.
+
+### Additional end-to-end samples
+
+All agent samples use `FOUNDRY_PROJECT_ENDPOINT`. Prompt-agent samples also use `FOUNDRY_MODEL_NAME`.
+
+- **Agent lifecycle and structured inputs:** [CreateAgent.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/CreateAgent.java), [GetAgent.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/GetAgent.java), and [CreateResponseWithStructuredInput.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/CreateResponseWithStructuredInput.java).
+- **Optimization jobs:** the [optimization samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/optimization) cover SDK polling, application-managed polling, cancellation, listing, retrieval, and deletion.
+- **Advanced tools:** additional samples cover structured inputs, generated-file download, File Search streaming, non-preview Web Search, custom search, and end-to-end toolbox search.
 
 ---
 
