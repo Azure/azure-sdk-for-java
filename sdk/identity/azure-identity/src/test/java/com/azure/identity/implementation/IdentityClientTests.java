@@ -16,6 +16,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.implementation.util.CertificateUtil;
@@ -50,6 +51,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.time.Duration;
@@ -57,12 +59,14 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
@@ -1037,8 +1041,7 @@ public class IdentityClientTests {
 
     @Test
     public void testStructuredErrorOnSameLineAsConsoleMessage() {
-        // azd v1 path concatenates lines (redirectErrorStream + append without newline),
-        // so the two JSON objects can end up on the same physical line.
+        // The command read loop strips line terminators and does not reinsert them.
         String aadError = "AADSTS90002: Tenant 'test' not found";
         String output = "{\"type\":\"consoleMessage\",\"data\":{\"message\":\"\\n\"}}" + "{\"error\":\"" + aadError
             + "\",\"message\":\"Authentication with Azure failed.\"}";
@@ -1108,37 +1111,51 @@ public class IdentityClientTests {
         assertEquals(firstError, result);
     }
 
-    // --- Dispatch invariant tests ---
-    // getTokenFromAzureDeveloperCLIAuthentication keys exception type off the parsed message
-    // containing "azd auth login" / "not logged in". These pin the parser contract that those
-    // substrings only survive parsing for genuine not-logged-in output.
-
     @Test
-    public void testParsedStructuredAadErrorDoesNotContainAzdAuthLogin() {
-        // The "azd auth login" text lives in "suggestion" which the parser drops, so structured
-        // AAD errors surface as auth failures rather than credential-unavailable.
+    public void testStructuredAadErrorThrowsClientAuthenticationException() throws Exception {
         String output = "{\"error\":\"AADSTS50076: Multi-factor authentication required\""
             + ",\"message\":\"Authentication with Azure failed.\""
             + ",\"suggestion\":\"Run 'azd auth login' to sign in again.\"}";
 
-        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
-        String parsed = client.getAzdErrorMessage(output);
-        assertEquals("AADSTS50076: Multi-factor authentication required", parsed);
-        assertFalse(parsed.contains("azd auth login"));
-        assertFalse(parsed.contains("not logged in"));
+        Process process = mock(Process.class);
+        when(process.getInputStream()).thenReturn(new ByteArrayInputStream(output.getBytes(StandardCharsets.UTF_8)));
+        when(process.waitFor(Mockito.anyLong(), eq(TimeUnit.SECONDS))).thenReturn(true);
+        when(process.exitValue()).thenReturn(1);
+
+        try (MockedConstruction<ProcessBuilder> processBuilderMock
+            = mockConstruction(ProcessBuilder.class, (builder, context) -> when(builder.start()).thenReturn(process))) {
+            IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+
+            ClientAuthenticationException exception = assertThrowsExactly(ClientAuthenticationException.class,
+                () -> client.getTokenFromAzureDeveloperCLIAuthentication(
+                    new StringBuilder("azd auth token --output json --no-prompt")));
+
+            assertEquals("AADSTS50076: Multi-factor authentication required", exception.getMessage());
+            assertEquals(1, processBuilderMock.constructed().size());
+        }
     }
 
     @Test
-    public void testParsedLegacyNotLoggedInRetainsAzdAuthLogin() {
-        // Pre-v1.23.7 "not logged in" output: substring is in data.message and must survive parsing
-        // so dispatch still routes it to CredentialUnavailableException.
+    public void testLegacyNotLoggedInErrorThrowsCredentialUnavailableException() throws Exception {
         String output = "{\"type\":\"consoleMessage\",\"data\":{\"message\":"
             + "\"ERROR: not logged in, run `azd auth login` to login\"}}";
 
-        IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
-        String parsed = client.getAzdErrorMessage(output);
-        assertTrue(parsed.contains("azd auth login"));
-        assertTrue(parsed.contains("not logged in"));
+        Process process = mock(Process.class);
+        when(process.getInputStream()).thenReturn(new ByteArrayInputStream(output.getBytes(StandardCharsets.UTF_8)));
+        when(process.waitFor(Mockito.anyLong(), eq(TimeUnit.SECONDS))).thenReturn(true);
+        when(process.exitValue()).thenReturn(1);
+
+        try (MockedConstruction<ProcessBuilder> processBuilderMock
+            = mockConstruction(ProcessBuilder.class, (builder, context) -> when(builder.start()).thenReturn(process))) {
+            IdentityClient client = new IdentityClientBuilder().clientId("dummy").build();
+
+            CredentialUnavailableException exception = assertThrowsExactly(CredentialUnavailableException.class,
+                () -> client.getTokenFromAzureDeveloperCLIAuthentication(
+                    new StringBuilder("azd auth token --output json --no-prompt")));
+
+            assertEquals("ERROR: not logged in, run `azd auth login` to login", exception.getMessage());
+            assertEquals(1, processBuilderMock.constructed().size());
+        }
     }
 
     @Test
