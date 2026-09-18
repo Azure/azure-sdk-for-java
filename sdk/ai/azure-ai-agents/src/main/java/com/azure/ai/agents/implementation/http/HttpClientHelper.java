@@ -54,7 +54,9 @@ public final class HttpClientHelper {
     }
 
     /**
-     * Creates a logging policy that never logs multipart upload bodies.
+     * Creates a logging policy that never logs multipart upload bodies. Multipart bodies may contain credentials and
+     * user file contents, and logging them may buffer large streaming uploads. Requests retain their configured
+     * metadata logging level while body logging is reduced to headers.
      * @param options caller logging settings, which are not modified.
      * @return multipart-aware logging policy.
      */

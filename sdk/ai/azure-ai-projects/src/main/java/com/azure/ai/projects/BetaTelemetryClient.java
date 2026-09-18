@@ -6,6 +6,7 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.models.ApiKeyCredential;
 import com.azure.ai.projects.models.Connection;
 import com.azure.ai.projects.models.ConnectionType;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.ReturnType;
@@ -18,15 +19,16 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Synchronous access to the project's telemetry configuration.
- * Instances are created through {@link AIProjectClientBuilder#buildTelemetryClient()}.
+ * Instances are created through {@link AIProjectClientBuilder#buildBetaTelemetryClient()}.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class)
-public final class TelemetryClient {
-    private static final ClientLogger LOGGER = new ClientLogger(TelemetryClient.class);
+@Beta(warningText = "This class is in preview and may change in future releases.")
+public final class BetaTelemetryClient {
+    private static final ClientLogger LOGGER = new ClientLogger(BetaTelemetryClient.class);
     private final ConnectionsClient connections;
     private final AtomicReference<String> connectionString = new AtomicReference<>();
 
-    TelemetryClient(ConnectionsClient connections) {
+    BetaTelemetryClient(ConnectionsClient connections) {
         this.connections = connections;
     }
 

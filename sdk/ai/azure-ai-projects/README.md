@@ -150,10 +150,10 @@ the native client's future decorators control cancellation propagation.
 ### Application Insights configuration
 
 ```java
-TelemetryClient telemetry = builder.buildTelemetryClient();
+BetaTelemetryClient telemetry = builder.buildBetaTelemetryClient();
 String connectionString = telemetry.getApplicationInsightsConnectionString();
 
-TelemetryAsyncClient telemetryAsync = builder.buildTelemetryAsyncClient();
+BetaTelemetryAsyncClient telemetryAsync = builder.buildBetaTelemetryAsyncClient();
 Mono<String> connectionStringAsync = telemetryAsync.getApplicationInsightsConnectionString();
 ```
 

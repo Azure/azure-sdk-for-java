@@ -6,7 +6,7 @@ package com.azure.ai.agents.voice;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
-import com.azure.ai.agents.VoiceAgentWebSocketSessionClient;
+import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.RealtimeResponseDoneEvent;
@@ -107,7 +107,7 @@ public class VoiceAgentConversationsTests {
         try {
             agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition));
             created = true;
-            try (VoiceAgentWebSocketSessionClient session
+            try (BetaVoiceAgentWebSocketSessionClient session
                 = builder.beta().buildBetaVoiceAgentWebSocketClient().connect(agentName)) {
                 Iterator<RealtimeServerEvent> events = session.receiveEvents(TIMEOUT).iterator();
                 assertTrue(events.hasNext(), "Expected session.created.");

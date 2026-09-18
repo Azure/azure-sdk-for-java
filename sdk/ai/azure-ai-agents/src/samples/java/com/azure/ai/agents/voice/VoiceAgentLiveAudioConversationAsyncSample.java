@@ -8,7 +8,7 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentsConversationsAsyncClient;
 import com.azure.ai.agents.BetaAgentsAsyncClient;
 import com.azure.ai.agents.BetaVoiceAgentWebSocketAsyncClient;
-import com.azure.ai.agents.VoiceAgentWebSocketSessionAsyncClient;
+import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionAsyncClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeConversationItemInputAudioTranscriptionCompletedEvent;
 import com.azure.ai.agents.models.RealtimeInputAudioBufferSpeechStartedEvent;
@@ -99,9 +99,9 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
             })
             .then(Mono.usingWhen(realtime.connect(agentName),
                 session -> runConversation(session, conversationId),
-                VoiceAgentWebSocketSessionAsyncClient::closeAsync,
+                BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync,
                 (session, error) -> session.closeAsync(),
-                VoiceAgentWebSocketSessionAsyncClient::closeAsync))
+                BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync))
             .then(Mono.defer(() -> conversationId.get() == null
                 ? Mono.fromRunnable(() -> System.out.println("No persisted conversation ID was returned."))
                 : VoiceAgentRealtimeSampleUtils.readConversation(conversations, agentName, conversationId.get())))
@@ -120,7 +120,7 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
             .doOnSuccess(ignored -> System.out.println("Deleted voice agent: " + agentName));
     }
 
-    private static Mono<Void> runConversation(VoiceAgentWebSocketSessionAsyncClient session,
+    private static Mono<Void> runConversation(BetaVoiceAgentWebSocketSessionAsyncClient session,
         AtomicReference<String> conversationId) {
         AudioProcessor processor = new AudioProcessor(session);
         AtomicBoolean responseActive = new AtomicBoolean();
@@ -195,7 +195,7 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
         private static final int CHUNK_BYTES = 2400;
         static final int MAX_PLAYBACK_BYTES = VoiceAgentRealtimeSampleUtils.SAMPLE_RATE * 2 * 60;
         private static final byte[] STOP = new byte[0];
-        private final VoiceAgentWebSocketSessionAsyncClient session;
+        private final BetaVoiceAgentWebSocketSessionAsyncClient session;
         private final AudioFormat format = new AudioFormat(VoiceAgentRealtimeSampleUtils.SAMPLE_RATE, 16, 1, true, false);
         private final BlockingQueue<byte[]> playback = new LinkedBlockingQueue<>(MAX_PLAYBACK_BYTES / 2);
         private int queuedPlaybackBytes;
@@ -207,11 +207,11 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
         private Thread captureThread;
         private Thread playbackThread;
 
-        AudioProcessor(VoiceAgentWebSocketSessionAsyncClient session) {
+        AudioProcessor(BetaVoiceAgentWebSocketSessionAsyncClient session) {
             this(session, null, null);
         }
 
-        AudioProcessor(VoiceAgentWebSocketSessionAsyncClient session, TargetDataLine microphone, SourceDataLine speaker) {
+        AudioProcessor(BetaVoiceAgentWebSocketSessionAsyncClient session, TargetDataLine microphone, SourceDataLine speaker) {
             this.session = session;
             this.microphone = microphone;
             this.speaker = speaker;

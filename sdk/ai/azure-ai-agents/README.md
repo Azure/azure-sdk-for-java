@@ -1051,7 +1051,7 @@ VoiceAgentWebSocketConnectionOptions options
         .setReceiveBufferCapacity(512)
         .setMaxMessageSize(8 * 1024 * 1024)
         .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR);
-try (VoiceAgentWebSocketSessionClient session = realtimeClient.connect(agentName, options)) {
+try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.connect(agentName, options)) {
     session.sendEvent(BinaryData.fromString(
         "{\"type\":\"response.create\",\"event_id\":\"response-1\"}"));
     for (RealtimeServerEvent event : session.receiveEvents()) {
@@ -1072,7 +1072,7 @@ Use `close(code, reason)` or asynchronous `closeAsync(code, reason)` to send a c
 fit in 123 UTF-8 bytes and close codes must be valid WebSocket codes. The first asynchronous close request wins.
 
 ```java
-try (VoiceAgentWebSocketSessionClient session = realtimeClient.connect(agentName)) {
+try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.connect(agentName)) {
     session.sendText("Hello! Tell me about the services you provide.");
     session.createResponse();
 
@@ -1109,9 +1109,9 @@ Mono.usingWhen(
         })
         .takeUntil(event -> event instanceof RealtimeServerEventResponseDone)
         .then(),
-    VoiceAgentWebSocketSessionAsyncClient::closeAsync,
+    BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync,
     (session, error) -> session.closeAsync(),
-    VoiceAgentWebSocketSessionAsyncClient::closeAsync)
+    BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync)
     .block();
 ```
 

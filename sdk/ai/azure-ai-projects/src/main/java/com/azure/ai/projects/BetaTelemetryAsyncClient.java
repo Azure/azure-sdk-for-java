@@ -6,6 +6,7 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.models.ApiKeyCredential;
 import com.azure.ai.projects.models.Connection;
 import com.azure.ai.projects.models.ConnectionType;
+import com.azure.ai.projects.implementation.utils.Beta;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.ReturnType;
@@ -16,14 +17,15 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Asynchronous access to the project's telemetry configuration.
- * Instances are created through {@link AIProjectClientBuilder#buildTelemetryAsyncClient()}.
+ * Instances are created through {@link AIProjectClientBuilder#buildBetaTelemetryAsyncClient()}.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
-public final class TelemetryAsyncClient {
+@Beta(warningText = "This class is in preview and may change in future releases.")
+public final class BetaTelemetryAsyncClient {
     private final ConnectionsAsyncClient connections;
     private final AtomicReference<String> connectionString = new AtomicReference<>();
 
-    TelemetryAsyncClient(ConnectionsAsyncClient connections) {
+    BetaTelemetryAsyncClient(ConnectionsAsyncClient connections) {
         this.connections = connections;
     }
 
@@ -47,7 +49,7 @@ public final class TelemetryAsyncClient {
                 .switchIfEmpty(
                     Mono.error(new ResourceNotFoundException("No Application Insights connection found.", null)))
                 .flatMap(connection -> connections.getConnection(connection.getName(), true))
-                .map(TelemetryAsyncClient::getConnectionString)
+                .map(BetaTelemetryAsyncClient::getConnectionString)
                 .doOnNext(connectionString::set);
         });
     }

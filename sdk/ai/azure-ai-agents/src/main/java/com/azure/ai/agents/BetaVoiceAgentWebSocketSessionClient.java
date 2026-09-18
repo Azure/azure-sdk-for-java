@@ -59,8 +59,8 @@ import okio.ByteString;
  * A synchronous bidirectional realtime session connected to a Foundry voice agent.
  */
 @Beta(warningText = "This class is in preview and may change in future releases.")
-public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
-    private static final ClientLogger LOGGER = new ClientLogger(VoiceAgentWebSocketSessionClient.class);
+public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable {
+    private static final ClientLogger LOGGER = new ClientLogger(BetaVoiceAgentWebSocketSessionClient.class);
     private final URI websocketUri;
     private final VoiceAgentWebSocketConnectionOptions options;
     private final OkHttpClient httpClient;
@@ -79,7 +79,7 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
     private volatile Integer closeCode;
     private volatile String closeReason;
 
-    private VoiceAgentWebSocketSessionClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
+    private BetaVoiceAgentWebSocketSessionClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
         VoiceAgentWebSocketConnectionOptions options) {
         this.options = options;
         this.receiveBufferCapacity = options.getReceiveBufferCapacity();
@@ -97,10 +97,10 @@ public final class VoiceAgentWebSocketSessionClient implements AutoCloseable {
         this.webSocket = httpClient.newWebSocket(request.build(), new Listener());
     }
 
-    static VoiceAgentWebSocketSessionClient connect(VoiceAgentWebSocketClientConfiguration configuration,
+    static BetaVoiceAgentWebSocketSessionClient connect(VoiceAgentWebSocketClientConfiguration configuration,
         String agentName, VoiceAgentWebSocketConnectionOptions options) {
-        VoiceAgentWebSocketSessionClient session
-            = new VoiceAgentWebSocketSessionClient(configuration, agentName, options);
+        BetaVoiceAgentWebSocketSessionClient session
+            = new BetaVoiceAgentWebSocketSessionClient(configuration, agentName, options);
         try {
             session.awaitHandshake();
             return session;

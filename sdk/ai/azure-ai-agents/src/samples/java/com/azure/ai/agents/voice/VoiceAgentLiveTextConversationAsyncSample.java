@@ -8,7 +8,7 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentsConversationsAsyncClient;
 import com.azure.ai.agents.BetaAgentsAsyncClient;
 import com.azure.ai.agents.BetaVoiceAgentWebSocketAsyncClient;
-import com.azure.ai.agents.VoiceAgentWebSocketSessionAsyncClient;
+import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionAsyncClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.core.util.BinaryData;
@@ -80,9 +80,9 @@ public class VoiceAgentLiveTextConversationAsyncSample {
             })
             .then(Mono.usingWhen(realtime.connect(agentName),
                 session -> runConversation(session, scanner, conversationId, player),
-                VoiceAgentWebSocketSessionAsyncClient::closeAsync,
+                BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync,
                 (session, error) -> session.closeAsync(),
-                VoiceAgentWebSocketSessionAsyncClient::closeAsync))
+                BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync))
             .then(Mono.defer(() -> conversationId.get() == null
                 ? Mono.fromRunnable(() -> System.out.println("No persisted conversation ID was returned."))
                 : VoiceAgentRealtimeSampleUtils.readConversation(conversations, agentName, conversationId.get())))
@@ -105,7 +105,7 @@ public class VoiceAgentLiveTextConversationAsyncSample {
             .doOnSuccess(ignored -> System.out.println("Deleted voice agent: " + agentName));
     }
 
-    private static Mono<Void> runConversation(VoiceAgentWebSocketSessionAsyncClient session, Scanner scanner,
+    private static Mono<Void> runConversation(BetaVoiceAgentWebSocketSessionAsyncClient session, Scanner scanner,
         AtomicReference<String> conversationId, VoiceAgentRealtimeSampleUtils.SpeakerPlayer player) {
         AtomicReference<Sinks.One<Void>> responseCompleted = new AtomicReference<>();
         Disposable receiver = session.receiveEvents().subscribe(event -> {
@@ -131,7 +131,7 @@ public class VoiceAgentLiveTextConversationAsyncSample {
             });
     }
 
-    private static Mono<Void> prompt(VoiceAgentWebSocketSessionAsyncClient session, Scanner scanner,
+    private static Mono<Void> prompt(BetaVoiceAgentWebSocketSessionAsyncClient session, Scanner scanner,
         AtomicReference<Sinks.One<Void>> responseCompleted) {
         return Mono.fromCallable(() -> {
             System.out.print("You:  ");

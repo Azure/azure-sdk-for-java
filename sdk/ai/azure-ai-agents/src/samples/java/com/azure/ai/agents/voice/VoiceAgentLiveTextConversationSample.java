@@ -8,7 +8,7 @@ import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentsConversationsClient;
 import com.azure.ai.agents.BetaAgentsClient;
 import com.azure.ai.agents.BetaVoiceAgentWebSocketClient;
-import com.azure.ai.agents.VoiceAgentWebSocketSessionClient;
+import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionClient;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
@@ -72,7 +72,7 @@ public class VoiceAgentLiveTextConversationSample {
             AtomicReference<String> conversationId = new AtomicReference<>();
             try (VoiceAgentRealtimeSampleUtils.SpeakerPlayer player
                     = new VoiceAgentRealtimeSampleUtils.SpeakerPlayer();
-                VoiceAgentWebSocketSessionClient session = realtime.connect(agentName);
+                BetaVoiceAgentWebSocketSessionClient session = realtime.connect(agentName);
                 Scanner scanner = new Scanner(System.in)) {
                 AtomicReference<CompletableFuture<Void>> responseCompleted = new AtomicReference<>();
                 ExecutorService receiver = Executors.newSingleThreadExecutor();
@@ -130,7 +130,7 @@ public class VoiceAgentLiveTextConversationSample {
         }
     }
 
-    private static boolean awaitResponse(VoiceAgentWebSocketSessionClient session,
+    private static boolean awaitResponse(BetaVoiceAgentWebSocketSessionClient session,
         CompletableFuture<Void> completion) {
         try {
             completion.get(RESPONSE_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);

@@ -8,7 +8,7 @@
 - Added saved-job polling resumption for data generation, evaluator generation, and agent-insight runs.
 - Added Azure evaluation data-source factories and native OpenAI conversion helpers.
 - Added synchronous and asynchronous OpenAI factory overloads accepting a native OpenAI options callback for URL, credential, headers, query parameters, and transport overrides.
-- Added `TelemetryClient` and `TelemetryAsyncClient` for retrieving and caching the project's Application Insights connection string.
+- Added `BetaTelemetryClient` and `BetaTelemetryAsyncClient` for retrieving and caching the project's Application Insights connection string.
 - Added opt-in HTTP logging defaults through `AZURE_AI_PROJECTS_CONSOLE_LOGGING` and chunk-as-consumed SSE body logging in the OpenAI bridge, using the configured Java logging backend.
 
 ### Breaking Changes

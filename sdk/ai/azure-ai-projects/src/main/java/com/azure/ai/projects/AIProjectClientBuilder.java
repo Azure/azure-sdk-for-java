@@ -87,8 +87,8 @@ import java.util.function.Consumer;
         IndexesAsyncClient.class,
         DeploymentsAsyncClient.class,
         EvaluationRulesAsyncClient.class,
-        TelemetryClient.class,
-        TelemetryAsyncClient.class })
+        BetaTelemetryClient.class,
+        BetaTelemetryAsyncClient.class })
 public final class AIProjectClientBuilder
     implements HttpTrait<AIProjectClientBuilder>, ConfigurationTrait<AIProjectClientBuilder>,
     TokenCredentialTrait<AIProjectClientBuilder>, EndpointTrait<AIProjectClientBuilder> {
@@ -468,8 +468,8 @@ public final class AIProjectClientBuilder
      *
      * @return an asynchronous telemetry client.
      */
-    public TelemetryAsyncClient buildTelemetryAsyncClient() {
-        return new TelemetryAsyncClient(buildConnectionsAsyncClient());
+    public BetaTelemetryAsyncClient buildBetaTelemetryAsyncClient() {
+        return new BetaTelemetryAsyncClient(buildConnectionsAsyncClient());
     }
 
     /**
@@ -477,8 +477,8 @@ public final class AIProjectClientBuilder
      *
      * @return a synchronous telemetry client.
      */
-    public TelemetryClient buildTelemetryClient() {
-        return new TelemetryClient(buildConnectionsClient());
+    public BetaTelemetryClient buildBetaTelemetryClient() {
+        return new BetaTelemetryClient(buildConnectionsClient());
     }
 
     /**

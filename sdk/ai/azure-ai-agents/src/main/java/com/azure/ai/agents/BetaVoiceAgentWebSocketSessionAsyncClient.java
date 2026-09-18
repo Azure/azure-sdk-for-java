@@ -68,8 +68,8 @@ import reactor.netty.transport.ProxyProvider;
  * subscriber to {@link #receiveEvents()}. Close the session when it is no longer needed.</p>
  */
 @Beta(warningText = "This class is in preview and may change in future releases.")
-public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
-    private static final ClientLogger LOGGER = new ClientLogger(VoiceAgentWebSocketSessionAsyncClient.class);
+public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncCloseable, AutoCloseable {
+    private static final ClientLogger LOGGER = new ClientLogger(BetaVoiceAgentWebSocketSessionAsyncClient.class);
     private static final int MAX_OUTSTANDING_SENDS = 256;
 
     private final VoiceAgentWebSocketClientConfiguration configuration;
@@ -92,12 +92,12 @@ public final class VoiceAgentWebSocketSessionAsyncClient implements AsyncCloseab
     private volatile Integer closeCode;
     private volatile String closeReason;
 
-    VoiceAgentWebSocketSessionAsyncClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
+    BetaVoiceAgentWebSocketSessionAsyncClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
         VoiceAgentWebSocketConnectionOptions options) {
         this(configuration, agentName, options, HttpClient.create());
     }
 
-    VoiceAgentWebSocketSessionAsyncClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
+    BetaVoiceAgentWebSocketSessionAsyncClient(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
         VoiceAgentWebSocketConnectionOptions options, HttpClient httpClient) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         Objects.requireNonNull(agentName, "'agentName' cannot be null.");

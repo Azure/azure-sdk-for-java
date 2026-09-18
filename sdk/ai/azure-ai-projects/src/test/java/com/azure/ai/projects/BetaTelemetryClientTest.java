@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TelemetryClientTest {
+public class BetaTelemetryClientTest {
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
     public void cachesSuccessfulConnectionString(boolean async) {
@@ -92,10 +92,10 @@ public class TelemetryClientTest {
         AIProjectClientBuilder builder
             = new AIProjectClientBuilder().endpoint("https://localhost/api/projects/project").httpClient(httpClient);
         if (async) {
-            TelemetryAsyncClient client = builder.buildTelemetryAsyncClient();
+            BetaTelemetryAsyncClient client = builder.buildBetaTelemetryAsyncClient();
             return () -> client.getApplicationInsightsConnectionString().block();
         }
-        TelemetryClient client = builder.buildTelemetryClient();
+        BetaTelemetryClient client = builder.buildBetaTelemetryClient();
         return client::getApplicationInsightsConnectionString;
     }
 }

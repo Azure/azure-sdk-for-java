@@ -29,7 +29,7 @@ public final class BetaVoiceAgentWebSocketAsyncClient {
      * @param agentName the voice agent name.
      * @return a connected session.
      */
-    public Mono<VoiceAgentWebSocketSessionAsyncClient> connect(String agentName) {
+    public Mono<BetaVoiceAgentWebSocketSessionAsyncClient> connect(String agentName) {
         return connect(agentName, new VoiceAgentWebSocketConnectionOptions());
     }
 
@@ -40,13 +40,13 @@ public final class BetaVoiceAgentWebSocketAsyncClient {
      * @param options connection options.
      * @return a connected session.
      */
-    public Mono<VoiceAgentWebSocketSessionAsyncClient> connect(String agentName,
+    public Mono<BetaVoiceAgentWebSocketSessionAsyncClient> connect(String agentName,
         VoiceAgentWebSocketConnectionOptions options) {
         Objects.requireNonNull(agentName, "'agentName' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
         return Mono.defer(() -> {
-            VoiceAgentWebSocketSessionAsyncClient session
-                = new VoiceAgentWebSocketSessionAsyncClient(configuration, agentName, options);
+            BetaVoiceAgentWebSocketSessionAsyncClient session
+                = new BetaVoiceAgentWebSocketSessionAsyncClient(configuration, agentName, options);
             return session.connect().thenReturn(session);
         });
     }

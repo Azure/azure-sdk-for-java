@@ -7,7 +7,7 @@ import com.azure.ai.agents.models.VoiceConversation;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaVoiceAgentsConversationsAsyncClient;
-import com.azure.ai.agents.VoiceAgentWebSocketSessionAsyncClient;
+import com.azure.ai.agents.BetaVoiceAgentWebSocketSessionAsyncClient;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.RealtimeResponseDoneEvent;
 import com.azure.ai.agents.models.RealtimeSessionCreatedEvent;
@@ -123,8 +123,8 @@ public class VoiceAgentConversationsAsyncTests {
                     .switchIfEmpty(Mono.error(new AssertionError("Session ended without response.done.")))
                     .timeout(Duration.ofSeconds(45))
                     .then(),
-                VoiceAgentWebSocketSessionAsyncClient::closeAsync, (session, error) -> session.closeAsync(),
-                VoiceAgentWebSocketSessionAsyncClient::closeAsync).block(Duration.ofSeconds(90));
+                BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync, (session, error) -> session.closeAsync(),
+                BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync).block(Duration.ofSeconds(90));
             Mono.delay(Duration.ofSeconds(30)).block(Duration.ofSeconds(35));
             reading = true;
             assertPersistedConversation(conversations, agentName, conversationId.get());

@@ -42,13 +42,13 @@ public class ProjectsCustomizations extends Customization {
             pipelineMethod.setBody(StaticJavaParser.parseBlock("{ return createHttpPipeline(true); }"));
         });
         libraryCustomization.getClass("com.azure.ai.projects", "AIProjectClientBuilder").customizeAst(ast ->
-            addTelemetryClients(ast.getClassByName("AIProjectClientBuilder")
+            addBetaTelemetryClients(ast.getClassByName("AIProjectClientBuilder")
                 .orElseThrow(() -> new IllegalStateException("Generated AIProjectClientBuilder was not found."))));
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
 
-    private static void addTelemetryClients(ClassOrInterfaceDeclaration builder) {
+    private static void addBetaTelemetryClients(ClassOrInterfaceDeclaration builder) {
         NormalAnnotationExpr annotation = builder.getAnnotationByName("ServiceClientBuilder")
             .filter(AnnotationExpr::isNormalAnnotationExpr)
             .map(AnnotationExpr::asNormalAnnotationExpr)
@@ -62,7 +62,7 @@ public class ProjectsCustomizations extends Customization {
         ArrayInitializerExpr clients = value.isArrayInitializerExpr()
             ? value.asArrayInitializerExpr()
             : new ArrayInitializerExpr(new NodeList<>(value));
-        for (String serviceClient : new String[] { "TelemetryClient.class", "TelemetryAsyncClient.class" }) {
+        for (String serviceClient : new String[] { "BetaTelemetryClient.class", "BetaTelemetryAsyncClient.class" }) {
             if (clients.getValues().stream().noneMatch(existing -> serviceClient.equals(existing.toString()))) {
                 clients.getValues().add(StaticJavaParser.parseExpression(serviceClient));
             }
