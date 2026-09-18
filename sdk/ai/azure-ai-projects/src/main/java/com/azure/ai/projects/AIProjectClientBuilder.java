@@ -352,6 +352,9 @@ public final class AIProjectClientBuilder
 
     private AIProjectClientImpl buildInnerClient(String previewFeatures) {
         this.validateClient();
+        if (CoreUtils.isNullOrEmpty(previewFeatures)) {
+            return buildInnerClient();
+        }
         HttpPipeline localPipeline = resolvePipeline(previewFeatures);
         AIProjectsServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AIProjectsServiceVersion.getLatest();
