@@ -36,11 +36,11 @@ steps:
     $scanPaths = $paths -join ","
     Write-Host "##vso[task.setvariable variable=ScanPathArgument;]$scanPaths"
   displayName: Populate Scan Paths
-  condition: ${{ parameters.Condition }}
+  condition: and(succeededOrFailed(), ${{ parameters.Condition }})
 
 - task: PowerShell@2
   displayName: "Verify Readmes"
-  condition: ${{ parameters.Condition }}
+  condition: and(succeededOrFailed(), ${{ parameters.Condition }})
   inputs:
     filePath: "eng/common/scripts/Verify-Readme.ps1"
     arguments: >
