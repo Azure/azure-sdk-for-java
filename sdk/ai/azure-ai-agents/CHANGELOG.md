@@ -7,17 +7,33 @@
 - Added `VersionSelector.setVersionSelectionRule` as a convenience for configuring a single version selection rule.
 - Added public `StreamingResponseUtils` in the `com.azure.ai.agents.util` package for converting OpenAI streaming
   responses to Azure SDK `IterableStream` and Reactor `Flux` types.
-- Added `BetaVoiceAgentsTelephonyClient` and `BetaVoiceAgentsTelephonyAsyncClient`, built through
-  `AgentsClientBuilder.beta()`, for managing voice-agent outbound call jobs and telephony campaigns.
-- Added `BetaVoiceAgentsConversationsClient` and `BetaVoiceAgentsConversationsAsyncClient`, built through
-  `AgentsClientBuilder.beta()`, for managing persisted voice-agent conversations and their responses, items, and
-  audio content.
+- Added raw JSON WebSocket sends, complete unknown-event payloads, UTF-8 binary JSON reception, configurable receive
+  limits and overflow policies, and opt-in recovery from malformed events.
+- Added custom WebSocket close codes and reasons, and per-event synchronous receive timeouts.
+- Added realtime handshake options for session IDs, structured inputs, API versions, credential scopes, preview features, extra headers and query parameters, and same-host secure connection URL overrides.
+
+- Added preview `BetaVoiceAgentsTelephonyClient` and `BetaVoiceAgentsTelephonyAsyncClient` for outbound call jobs and campaign management, including recipient import, validation, publishing, pausing, resuming, and cancellation.
+- Added preview `BetaVoiceAgentsConversationsClient` and `BetaVoiceAgentsConversationsAsyncClient` for managing
+  persisted voice-agent conversations and their responses, items, and audio content.
+- Added preview `BetaVoiceAgentWebSocketClient`, `BetaVoiceAgentWebSocketAsyncClient`,
+  `BetaVoiceAgentWebSocketSessionClient`, and `BetaVoiceAgentWebSocketSessionAsyncClient` with typed realtime events,
+  text and PCM16 audio input, response cancellation, function-call output, persisted-conversation options, and
+  authenticated `wss://` transport.
+- Added synchronous and asynchronous live text conversation samples, an asynchronous Java Sound microphone/speaker sample with barge-in, and a live client-executed function-tool sample.
 
 ### Breaking Changes
 
+- Voice-agent WebSocket connections now require secure endpoints, including localhost. Synchronous sessions now
+  enforce a 32 MiB default message limit.
+- Replaced `generateAgent` and `generateAgentWithResponse` on `AgentsClient` and `AgentsAsyncClient` with
+  `createAgentFromPrompt` and `createAgentFromPromptWithResponse` on `BetaAgentsClient` and `BetaAgentsAsyncClient`.
+- Moved `getId()` and `getConversationId()` from `VoiceResponseBase` to `VoiceResponse`.
+
 ### Bugs Fixed
 
-- Fixed polling for optimization jobs and telephony operations that return the `cancelled` status spelling.
+- Reject insecure voice-agent WebSocket URLs before token acquisition to prevent sending credentials over plaintext.
+- Made synchronous voice-agent receive-buffer overflow signaling atomic across concurrent callbacks.
+- Fixed polling for telephony operations that return the `cancelled` status spelling.
 
 ### Other Changes
 
