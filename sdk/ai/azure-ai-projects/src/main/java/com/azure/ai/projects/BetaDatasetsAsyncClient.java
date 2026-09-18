@@ -36,6 +36,18 @@ import reactor.core.publisher.Mono;
 @Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaDatasetsAsyncClient {
 
+    /**
+     * Resumes an existing data generation job without creating a new job.
+     *
+     * @param jobId saved job ID.
+     * @return the resumed poller. Use the job cancellation API to cancel.
+     */
+    public PollerFlux<DataGenerationJob, DataGenerationJobResult> resumeGenerationJob(String jobId) {
+        return com.azure.ai.projects.implementation.ProjectsServicePollUtils.resumeAsync(
+            () -> getGenerationJobWithResponse(jobId, new RequestOptions()), DataGenerationJob.class,
+            DataGenerationJobResult.class);
+    }
+
     @Generated
     private final BetaDatasetsImpl serviceClient;
 
