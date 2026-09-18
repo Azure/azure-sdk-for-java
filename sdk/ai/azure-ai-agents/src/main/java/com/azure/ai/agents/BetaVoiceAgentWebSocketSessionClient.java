@@ -448,9 +448,6 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
     private static OkHttpClient createHttpClient(VoiceAgentWebSocketClientConfiguration configuration,
         VoiceAgentWebSocketConnectionOptions options) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        if (options.getHttpClientConfiguration() != null) {
-            options.getHttpClientConfiguration().accept(builder);
-        }
         builder.connectTimeout(options.getHandshakeTimeout().toMillis(), TimeUnit.MILLISECONDS)
             .readTimeout(0, TimeUnit.MILLISECONDS)
             .followRedirects(false);

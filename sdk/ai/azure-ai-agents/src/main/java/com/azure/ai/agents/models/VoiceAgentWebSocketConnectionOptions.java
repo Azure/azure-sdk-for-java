@@ -15,9 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.UnaryOperator;
-import okhttp3.OkHttpClient;
-import reactor.netty.http.client.HttpClient;
 
 /**
  * Options used when opening a realtime voice-agent WebSocket session.
@@ -114,48 +111,6 @@ public final class VoiceAgentWebSocketConnectionOptions {
         return this;
     }
 
-    private Consumer<OkHttpClient.Builder> httpClientConfiguration;
-    private UnaryOperator<HttpClient> asyncHttpClientConfiguration;
-
-    /**
-     * Sets synchronous transport customization, for example certificate trust or ping interval.
-     * Redirects and handshake timeouts remain SDK-controlled. Do not disable TLS hostname verification.
-     * @param configure callback applied to the per-session transport, or null for defaults.
-     * @return this options instance.
-     */
-    public VoiceAgentWebSocketConnectionOptions setHttpClientConfiguration(Consumer<OkHttpClient.Builder> configure) {
-        this.httpClientConfiguration = configure;
-        return this;
-    }
-
-    /**
-     * Gets synchronous transport customization.
-     * @return the callback, or null.
-     */
-    public Consumer<OkHttpClient.Builder> getHttpClientConfiguration() {
-        return httpClientConfiguration;
-    }
-
-    /**
-     * Sets asynchronous transport customization, for example certificate trust or channel handlers.
-     * Redirects, authentication, subprotocol and handshake timeouts remain SDK-controlled.
-     * Do not disable TLS hostname verification.
-     * @param configure callback returning a configured transport, or null for defaults.
-     * @return this options instance.
-     */
-    public VoiceAgentWebSocketConnectionOptions setAsyncHttpClientConfiguration(UnaryOperator<HttpClient> configure) {
-        this.asyncHttpClientConfiguration = configure;
-        return this;
-    }
-
-    /**
-     * Gets asynchronous transport customization.
-     * @return the callback, or null.
-     */
-    public UnaryOperator<HttpClient> getAsyncHttpClientConfiguration() {
-        return asyncHttpClientConfiguration;
-    }
-
     private VoiceAgentTransport transport = VoiceAgentTransport.WEBSOCKET;
     private Boolean store;
     private String agentVersionOverride;
@@ -188,8 +143,6 @@ public final class VoiceAgentWebSocketConnectionOptions {
         this.maxMessageSize = source.maxMessageSize;
         this.overflowStrategy = source.overflowStrategy;
         this.malformedEventHandler = source.malformedEventHandler;
-        this.httpClientConfiguration = source.httpClientConfiguration;
-        this.asyncHttpClientConfiguration = source.asyncHttpClientConfiguration;
         this.transport = source.transport;
         this.store = source.store;
         this.agentVersionOverride = source.agentVersionOverride;

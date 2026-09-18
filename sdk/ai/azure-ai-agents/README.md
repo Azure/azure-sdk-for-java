@@ -1041,10 +1041,6 @@ Configure `VoiceAgentWebSocketConnectionOptions` before connecting and do not mo
     The sync transport checks size after receiving a complete message; this does not bound the transport's allocation.
 - Malformed JSON or invalid UTF-8 terminates reception by default. Set `setMalformedEventHandler` to report and skip
     malformed events while continuing reception. This callback must not block; throwing from it terminates the session.
-- `setHttpClientConfiguration` customizes the sync OkHttp builder, including TLS trust and keepalive. Use
-    `setAsyncHttpClientConfiguration` for the async Reactor Netty transport. Authentication headers, subprotocol, redirects,
-    and handshake timeout remain SDK-controlled. Keep TLS certificate and hostname verification enabled.
-
 ```java com.azure.ai.agents.realtime_forward_compatibility
 VoiceAgentWebSocketConnectionOptions options
     = new VoiceAgentWebSocketConnectionOptions()

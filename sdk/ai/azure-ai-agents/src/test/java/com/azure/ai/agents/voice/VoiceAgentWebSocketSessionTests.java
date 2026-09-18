@@ -43,7 +43,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.KeyStore;
-import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -60,9 +59,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -85,7 +82,18 @@ import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VoiceAgentWebSocketSessionTests {
+    private static final String TRUST_STORE_PROPERTY = "javax.net.ssl.trustStore";
+    private static final String TRUST_STORE_PASSWORD_PROPERTY = "javax.net.ssl.trustStorePassword";
+    private static final String TRUST_STORE_TYPE_PROPERTY = "javax.net.ssl.trustStoreType";
+    private static final String ORIGINAL_TRUST_STORE = System.getProperty(TRUST_STORE_PROPERTY);
+    private static final String ORIGINAL_TRUST_STORE_PASSWORD = System.getProperty(TRUST_STORE_PASSWORD_PROPERTY);
+    private static final String ORIGINAL_TRUST_STORE_TYPE = System.getProperty(TRUST_STORE_TYPE_PROPERTY);
+    private static final SSLContext ORIGINAL_SSL_CONTEXT = getDefaultSslContext();
     private static final TestCertificate TLS_CERTIFICATE = TestCertificate.create();
+
+    static {
+        TLS_CERTIFICATE.installTrustStore();
+    }
 
     private DisposableServer server;
 
@@ -441,26 +449,7 @@ public class VoiceAgentWebSocketSessionTests {
     }
 
     private static VoiceAgentWebSocketConnectionOptions tlsOptions() {
-        return new VoiceAgentWebSocketConnectionOptions()
-            .setAsyncHttpClientConfiguration(
-                client -> client.secure(ssl -> ssl.sslContext(Http11SslContextSpec.forClient()
-                    .configure(builder -> builder.trustManager(TLS_CERTIFICATE.certificate)))))
-            .setHttpClientConfiguration(builder -> {
-                try {
-                    KeyStore store = KeyStore.getInstance(KeyStore.getDefaultType());
-                    store.load(null, null);
-                    store.setCertificateEntry("localhost", TLS_CERTIFICATE.certificate);
-                    TrustManagerFactory factory
-                        = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-                    factory.init(store);
-                    X509TrustManager trust = (X509TrustManager) factory.getTrustManagers()[0];
-                    SSLContext context = SSLContext.getInstance("TLS");
-                    context.init(null, new TrustManager[] { trust }, null);
-                    builder.sslSocketFactory(context.getSocketFactory(), trust);
-                } catch (Exception error) {
-                    throw new IllegalStateException(error);
-                }
-            });
+        return new VoiceAgentWebSocketConnectionOptions();
     }
 
     @Test
@@ -538,6 +527,10 @@ public class VoiceAgentWebSocketSessionTests {
 
     @AfterAll
     public static void deleteTlsCertificate() {
+        SSLContext.setDefault(ORIGINAL_SSL_CONTEXT);
+        restoreProperty(TRUST_STORE_PROPERTY, ORIGINAL_TRUST_STORE);
+        restoreProperty(TRUST_STORE_PASSWORD_PROPERTY, ORIGINAL_TRUST_STORE_PASSWORD);
+        restoreProperty(TRUST_STORE_TYPE_PROPERTY, ORIGINAL_TRUST_STORE_TYPE);
         TLS_CERTIFICATE.delete();
     }
 
@@ -1026,13 +1019,15 @@ public class VoiceAgentWebSocketSessionTests {
 
     private static final class TestCertificate {
         private final Path path;
+        private final String password;
+        private final KeyStore keyStore;
         private final KeyManagerFactory keyManagerFactory;
-        private final X509Certificate certificate;
 
-        private TestCertificate(Path path, KeyManagerFactory keyManagerFactory, X509Certificate certificate) {
+        private TestCertificate(Path path, String password, KeyStore keyStore, KeyManagerFactory keyManagerFactory) {
             this.path = path;
+            this.password = password;
+            this.keyStore = keyStore;
             this.keyManagerFactory = keyManagerFactory;
-            this.certificate = certificate;
         }
 
         private static TestCertificate create() {
@@ -1059,8 +1054,23 @@ public class VoiceAgentWebSocketSessionTests {
                 KeyManagerFactory keyManagerFactory
                     = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
                 keyManagerFactory.init(store, password.toCharArray());
-                return new TestCertificate(path, keyManagerFactory,
-                    (X509Certificate) store.getCertificate("localhost"));
+                return new TestCertificate(path, password, store, keyManagerFactory);
+            } catch (Exception error) {
+                throw new IllegalStateException(error);
+            }
+        }
+
+        private void installTrustStore() {
+            try {
+                System.setProperty(TRUST_STORE_PROPERTY, path.toString());
+                System.setProperty(TRUST_STORE_PASSWORD_PROPERTY, password);
+                System.setProperty(TRUST_STORE_TYPE_PROPERTY, "PKCS12");
+                TrustManagerFactory trustManagerFactory
+                    = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+                trustManagerFactory.init(keyStore);
+                SSLContext sslContext = SSLContext.getInstance("TLS");
+                sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+                SSLContext.setDefault(sslContext);
             } catch (Exception error) {
                 throw new IllegalStateException(error);
             }
@@ -1072,6 +1082,22 @@ public class VoiceAgentWebSocketSessionTests {
             } catch (Exception error) {
                 throw new IllegalStateException(error);
             }
+        }
+    }
+
+    private static SSLContext getDefaultSslContext() {
+        try {
+            return SSLContext.getDefault();
+        } catch (Exception error) {
+            throw new IllegalStateException(error);
+        }
+    }
+
+    private static void restoreProperty(String name, String value) {
+        if (value == null) {
+            System.clearProperty(name);
+        } else {
+            System.setProperty(name, value);
         }
     }
 

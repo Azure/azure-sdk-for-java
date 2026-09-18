@@ -416,11 +416,7 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
     }
 
     private Mono<Void> openWebSocket(String token) {
-        HttpClient configured = options.getAsyncHttpClientConfiguration() == null
-            ? httpClient
-            : Objects.requireNonNull(options.getAsyncHttpClientConfiguration().apply(httpClient),
-                "Configured transport cannot be null.");
-        HttpClient client = configureProxy(configured).followRedirect(false)
+        HttpClient client = configureProxy(httpClient).followRedirect(false)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, toConnectTimeoutMillis(options.getHandshakeTimeout()))
             .doOnConnected(connection -> connection.addHandlerLast("voiceAgentHandshakeResponseObserver",
                 new VoiceAgentWebSocketHandshakeHandler(this::terminateWithError)))
