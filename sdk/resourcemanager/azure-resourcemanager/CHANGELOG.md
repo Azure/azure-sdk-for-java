@@ -31,10 +31,6 @@
 
 - Added support for configuring `IsolationScope` on user-assigned identities.
 
-#### Breaking Changes
-
-- Removed generated list-result models superseded by pageable client APIs and made `OperationDisplay` immutable.
-
 #### Other Changes
 
 - Updated the API version to `2024-11-30`.
