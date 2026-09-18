@@ -4,22 +4,12 @@
 
 ### azure-resourcemanager-compute
 
-#### Features Added
-
-- Added support for disk immutability policies, confidential VM versions, capacity reservation state and type,
-  additional disk properties, processor modes, and Spot Plus virtual machines.
-
 #### Other Changes
 
 - Updated API versions to Compute `2026-04-01`, ComputeDisk `2026-03-02`, ComputeGallery `2025-12-03`, and
   ComputeSku `2021-07-01`.
 
 ### azure-resourcemanager-network
-
-#### Features Added
-
-- Added support for ExpressRoute LAG, network virtual appliance migration, connection analysis, Bastion session
-  recording, and Application Gateway advanced routing.
 
 #### Other Changes
 
@@ -59,11 +49,6 @@
   slots.
 
 ### azure-resourcemanager-containerservice
-
-#### Features Added
-
-- Added scheduler autoscale profiles, Defender security gating, DRA network profiles, NAT Gateway outbound IP and
-  prefix configuration, Azure Monitor OpenTelemetry settings, and Microsoft Entra ID SSH access.
 
 #### Other Changes
 
