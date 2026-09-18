@@ -42,6 +42,11 @@ public final class NamespaceAssetStatus implements JsonSerializable<NamespaceAss
      */
     private List<NamespaceAssetStatusManagementGroup> managementGroups;
 
+    /*
+     * The details about the runtime health state of the asset.
+     */
+    private HealthState healthState;
+
     /**
      * Creates an instance of NamespaceAssetStatus class.
      */
@@ -95,6 +100,15 @@ public final class NamespaceAssetStatus implements JsonSerializable<NamespaceAss
     }
 
     /**
+     * Get the healthState property: The details about the runtime health state of the asset.
+     * 
+     * @return the healthState value.
+     */
+    public HealthState healthState() {
+        return this.healthState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -136,6 +150,8 @@ public final class NamespaceAssetStatus implements JsonSerializable<NamespaceAss
                     List<NamespaceAssetStatusManagementGroup> managementGroups
                         = reader.readArray(reader1 -> NamespaceAssetStatusManagementGroup.fromJson(reader1));
                     deserializedNamespaceAssetStatus.managementGroups = managementGroups;
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedNamespaceAssetStatus.healthState = HealthState.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

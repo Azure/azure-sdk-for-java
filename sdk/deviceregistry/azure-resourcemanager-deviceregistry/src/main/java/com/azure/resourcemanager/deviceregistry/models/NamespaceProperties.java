@@ -27,6 +27,22 @@ public final class NamespaceProperties implements JsonSerializable<NamespaceProp
     private Messaging messaging;
 
     /*
+     * Assigned and unassigned management endpoints.
+     */
+    private Management management;
+
+    /*
+     * The provisioning endpoints associated with this namespace.
+     */
+    private NamespaceProvisioning provisioning;
+
+    /*
+     * The identity used for outbound calls from the ADR namespace. If not specified and the namespace has a
+     * system-assigned identity enabled, the system-assigned identity is used by default.
+     */
+    private OutboundIdentity outboundIdentity;
+
+    /*
      * Provisioning state of the resource.
      */
     private ProvisioningState provisioningState;
@@ -67,6 +83,68 @@ public final class NamespaceProperties implements JsonSerializable<NamespaceProp
     }
 
     /**
+     * Get the management property: Assigned and unassigned management endpoints.
+     * 
+     * @return the management value.
+     */
+    public Management management() {
+        return this.management;
+    }
+
+    /**
+     * Set the management property: Assigned and unassigned management endpoints.
+     * 
+     * @param management the management value to set.
+     * @return the NamespaceProperties object itself.
+     */
+    public NamespaceProperties withManagement(Management management) {
+        this.management = management;
+        return this;
+    }
+
+    /**
+     * Get the provisioning property: The provisioning endpoints associated with this namespace.
+     * 
+     * @return the provisioning value.
+     */
+    public NamespaceProvisioning provisioning() {
+        return this.provisioning;
+    }
+
+    /**
+     * Set the provisioning property: The provisioning endpoints associated with this namespace.
+     * 
+     * @param provisioning the provisioning value to set.
+     * @return the NamespaceProperties object itself.
+     */
+    public NamespaceProperties withProvisioning(NamespaceProvisioning provisioning) {
+        this.provisioning = provisioning;
+        return this;
+    }
+
+    /**
+     * Get the outboundIdentity property: The identity used for outbound calls from the ADR namespace. If not specified
+     * and the namespace has a system-assigned identity enabled, the system-assigned identity is used by default.
+     * 
+     * @return the outboundIdentity value.
+     */
+    public OutboundIdentity outboundIdentity() {
+        return this.outboundIdentity;
+    }
+
+    /**
+     * Set the outboundIdentity property: The identity used for outbound calls from the ADR namespace. If not specified
+     * and the namespace has a system-assigned identity enabled, the system-assigned identity is used by default.
+     * 
+     * @param outboundIdentity the outboundIdentity value to set.
+     * @return the NamespaceProperties object itself.
+     */
+    public NamespaceProperties withOutboundIdentity(OutboundIdentity outboundIdentity) {
+        this.outboundIdentity = outboundIdentity;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the resource.
      * 
      * @return the provisioningState value.
@@ -82,6 +160,9 @@ public final class NamespaceProperties implements JsonSerializable<NamespaceProp
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("messaging", this.messaging);
+        jsonWriter.writeJsonField("management", this.management);
+        jsonWriter.writeJsonField("provisioning", this.provisioning);
+        jsonWriter.writeJsonField("outboundIdentity", this.outboundIdentity);
         return jsonWriter.writeEndObject();
     }
 
@@ -104,6 +185,12 @@ public final class NamespaceProperties implements JsonSerializable<NamespaceProp
                     deserializedNamespaceProperties.uuid = reader.getString();
                 } else if ("messaging".equals(fieldName)) {
                     deserializedNamespaceProperties.messaging = Messaging.fromJson(reader);
+                } else if ("management".equals(fieldName)) {
+                    deserializedNamespaceProperties.management = Management.fromJson(reader);
+                } else if ("provisioning".equals(fieldName)) {
+                    deserializedNamespaceProperties.provisioning = NamespaceProvisioning.fromJson(reader);
+                } else if ("outboundIdentity".equals(fieldName)) {
+                    deserializedNamespaceProperties.outboundIdentity = OutboundIdentity.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedNamespaceProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

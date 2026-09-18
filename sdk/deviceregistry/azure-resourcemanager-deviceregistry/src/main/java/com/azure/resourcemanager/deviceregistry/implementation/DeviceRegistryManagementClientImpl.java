@@ -28,8 +28,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetEndpointProfilesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetsClient;
+import com.azure.resourcemanager.deviceregistry.fluent.AsyncOperationStatusClient;
 import com.azure.resourcemanager.deviceregistry.fluent.BillingContainersClient;
-import com.azure.resourcemanager.deviceregistry.fluent.CredentialsClient;
+import com.azure.resourcemanager.deviceregistry.fluent.CertificateAuthoritiesClient;
+import com.azure.resourcemanager.deviceregistry.fluent.CertificatePoliciesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryManagementClient;
 import com.azure.resourcemanager.deviceregistry.fluent.NamespaceAssetsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.NamespaceDevicesClient;
@@ -38,7 +40,7 @@ import com.azure.resourcemanager.deviceregistry.fluent.NamespaceDiscoveredDevice
 import com.azure.resourcemanager.deviceregistry.fluent.NamespacesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationStatusClient;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationsClient;
-import com.azure.resourcemanager.deviceregistry.fluent.PoliciesClient;
+import com.azure.resourcemanager.deviceregistry.fluent.RegistryDevicesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.SchemaRegistriesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.SchemaVersionsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.SchemasClient;
@@ -169,6 +171,20 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
     }
 
     /**
+     * The AsyncOperationStatusClient object to access its operations.
+     */
+    private final AsyncOperationStatusClient asyncOperationStatus;
+
+    /**
+     * Gets the AsyncOperationStatusClient object to access its operations.
+     * 
+     * @return the AsyncOperationStatusClient object.
+     */
+    public AsyncOperationStatusClient getAsyncOperationStatus() {
+        return this.asyncOperationStatus;
+    }
+
+    /**
      * The AssetsClient object to access its operations.
      */
     private final AssetsClient assets;
@@ -222,34 +238,6 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
      */
     public NamespacesClient getNamespaces() {
         return this.namespaces;
-    }
-
-    /**
-     * The CredentialsClient object to access its operations.
-     */
-    private final CredentialsClient credentials;
-
-    /**
-     * Gets the CredentialsClient object to access its operations.
-     * 
-     * @return the CredentialsClient object.
-     */
-    public CredentialsClient getCredentials() {
-        return this.credentials;
-    }
-
-    /**
-     * The PoliciesClient object to access its operations.
-     */
-    private final PoliciesClient policies;
-
-    /**
-     * Gets the PoliciesClient object to access its operations.
-     * 
-     * @return the PoliciesClient object.
-     */
-    public PoliciesClient getPolicies() {
-        return this.policies;
     }
 
     /**
@@ -351,6 +339,48 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
     }
 
     /**
+     * The CertificateAuthoritiesClient object to access its operations.
+     */
+    private final CertificateAuthoritiesClient certificateAuthorities;
+
+    /**
+     * Gets the CertificateAuthoritiesClient object to access its operations.
+     * 
+     * @return the CertificateAuthoritiesClient object.
+     */
+    public CertificateAuthoritiesClient getCertificateAuthorities() {
+        return this.certificateAuthorities;
+    }
+
+    /**
+     * The CertificatePoliciesClient object to access its operations.
+     */
+    private final CertificatePoliciesClient certificatePolicies;
+
+    /**
+     * Gets the CertificatePoliciesClient object to access its operations.
+     * 
+     * @return the CertificatePoliciesClient object.
+     */
+    public CertificatePoliciesClient getCertificatePolicies() {
+        return this.certificatePolicies;
+    }
+
+    /**
+     * The RegistryDevicesClient object to access its operations.
+     */
+    private final RegistryDevicesClient registryDevices;
+
+    /**
+     * Gets the RegistryDevicesClient object to access its operations.
+     * 
+     * @return the RegistryDevicesClient object.
+     */
+    public RegistryDevicesClient getRegistryDevices() {
+        return this.registryDevices;
+    }
+
+    /**
      * Initializes an instance of DeviceRegistryManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -367,15 +397,14 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-03-01-preview";
+        this.apiVersion = "2026-11-01";
         this.operations = new OperationsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
+        this.asyncOperationStatus = new AsyncOperationStatusClientImpl(this);
         this.assets = new AssetsClientImpl(this);
         this.assetEndpointProfiles = new AssetEndpointProfilesClientImpl(this);
         this.billingContainers = new BillingContainersClientImpl(this);
         this.namespaces = new NamespacesClientImpl(this);
-        this.credentials = new CredentialsClientImpl(this);
-        this.policies = new PoliciesClientImpl(this);
         this.namespaceAssets = new NamespaceAssetsClientImpl(this);
         this.namespaceDevices = new NamespaceDevicesClientImpl(this);
         this.namespaceDiscoveredAssets = new NamespaceDiscoveredAssetsClientImpl(this);
@@ -383,6 +412,9 @@ public final class DeviceRegistryManagementClientImpl implements DeviceRegistryM
         this.schemaRegistries = new SchemaRegistriesClientImpl(this);
         this.schemas = new SchemasClientImpl(this);
         this.schemaVersions = new SchemaVersionsClientImpl(this);
+        this.certificateAuthorities = new CertificateAuthoritiesClientImpl(this);
+        this.certificatePolicies = new CertificatePoliciesClientImpl(this);
+        this.registryDevices = new RegistryDevicesClientImpl(this);
     }
 
     /**

@@ -10,8 +10,8 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistryProperties;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentity;
 import java.io.IOException;
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public final class SchemaRegistryInner extends Resource {
     /*
      * The managed service identities assigned to this resource.
      */
-    private SystemAssignedServiceIdentity identity;
+    private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -81,7 +81,7 @@ public final class SchemaRegistryInner extends Resource {
      * 
      * @return the identity value.
      */
-    public SystemAssignedServiceIdentity identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
@@ -91,7 +91,7 @@ public final class SchemaRegistryInner extends Resource {
      * @param identity the identity value to set.
      * @return the SchemaRegistryInner object itself.
      */
-    public SchemaRegistryInner withIdentity(SystemAssignedServiceIdentity identity) {
+    public SchemaRegistryInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -196,7 +196,7 @@ public final class SchemaRegistryInner extends Resource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedSchemaRegistryInner.properties = SchemaRegistryProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
-                    deserializedSchemaRegistryInner.identity = SystemAssignedServiceIdentity.fromJson(reader);
+                    deserializedSchemaRegistryInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedSchemaRegistryInner.systemData = SystemData.fromJson(reader);
                 } else {
