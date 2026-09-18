@@ -3,6 +3,8 @@
 
 package com.azure.ai.agents;
 
+import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
+
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
@@ -518,13 +520,13 @@ public class FoundryFeaturesHeaderVerificationTest {
     }
 
     @Test
-    public void agentScopedOpenAIClientUsesCustomPipelineAndPreviewHeaderByDefault() {
+    public void agentScopedOpenAIClientUsesCustomPipelineAndConditionalPreviewHeader() {
         RecordingHttpClient httpClient = newOpenAIRecordingHttpClient();
         HttpPipeline customPipeline = createCustomPipeline(httpClient);
 
         createBuilder(customPipeline).buildAgentScopedOpenAIClient("agent").models().list();
         assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
-        assertEquals(AGENT_PREVIEW_FEATURES, foundryFeatures(httpClient));
+        assertNull(foundryFeatures(httpClient));
         assertEquals("/api/projects/project/agents/agent/endpoint/protocols/openai/models",
             httpClient.getLastRequest().getUrl().getPath());
         assertEquals("api-version=v1", httpClient.getLastRequest().getUrl().getQuery());
@@ -648,6 +650,7 @@ public class FoundryFeaturesHeaderVerificationTest {
         RecordingHttpClient customTransport = newOpenAIRecordingHttpClient();
         AtomicInteger tokenRequests = new AtomicInteger();
         AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://localhost/api/projects/project")
+            .allowPreview(true)
             .clientOptions(new com.azure.core.util.ClientOptions().setApplicationId("review-app"))
             .httpClient(request -> Mono.error(new AssertionError("Default transport must not be used")))
             .credential(context -> {

@@ -42,7 +42,8 @@
 - Preserved UTF-8 characters split across reads when logging OpenAI SSE response bodies.
 - Made synchronous voice-agent receive-buffer overflow signaling atomic across concurrent callbacks.
 - Rejected code-upload paths without a file name with an explicit argument error.
-- Agent-scoped OpenAI clients now automatically send agent preview features, including model router controls, and use an overridable API-version query parameter.
+- Agent-scoped OpenAI clients now send agent preview features, including model router controls, when
+  `AgentsClientBuilder.allowPreview(true)` is configured, and use an overridable API-version query parameter.
 - Preserved OpenAI credential and user-agent overrides through the default Azure HTTP bridge. User-supplied pipelines retain their authentication policies.
 
 - Added Java opt-in guidance to `403 preview_feature_required` errors when preview is disabled, preserving the service response and error details.

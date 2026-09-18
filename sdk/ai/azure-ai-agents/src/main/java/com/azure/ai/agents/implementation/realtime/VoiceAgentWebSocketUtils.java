@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.agents;
+package com.azure.ai.agents.implementation.realtime;
 
-import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.models.RawRealtimeServerEvent;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.VoiceAgentTransport;
@@ -28,8 +27,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Objects;
 
-final class VoiceAgentWebSocketUtils {
-    static String decodeEvent(byte[] bytes) throws CharacterCodingException {
+public final class VoiceAgentWebSocketUtils {
+    public static String decodeEvent(byte[] bytes) throws CharacterCodingException {
         return StandardCharsets.UTF_8.newDecoder()
             .onMalformedInput(CodingErrorAction.REPORT)
             .onUnmappableCharacter(CodingErrorAction.REPORT)
@@ -37,7 +36,7 @@ final class VoiceAgentWebSocketUtils {
             .toString();
     }
 
-    static String validateEvent(BinaryData event) {
+    public static String validateEvent(BinaryData event) {
         String json = Objects.requireNonNull(event, "'event' cannot be null.").toString();
         try (JsonReader reader = JsonProviders.createReader(json)) {
             if (reader.nextToken() != JsonToken.START_OBJECT) {
@@ -53,7 +52,7 @@ final class VoiceAgentWebSocketUtils {
         }
     }
 
-    static RealtimeServerEvent deserializeEvent(String json) throws IOException {
+    public static RealtimeServerEvent deserializeEvent(String json) throws IOException {
         validateEvent(BinaryData.fromString(json));
         RawRealtimeServerEvent raw = new RawRealtimeServerEvent(BinaryData.fromString(json));
         if (raw.getType() == null) {
@@ -65,15 +64,13 @@ final class VoiceAgentWebSocketUtils {
         }
     }
 
-    static final String TOKEN_SCOPE = "https://ai.azure.com/.default";
-    static final String PREVIEW_FEATURE = "VoiceAgents=V1Preview";
-    static final String SUBPROTOCOL = "realtime";
-    static final int INBOUND_CAPACITY = 256;
+    private static final String TOKEN_SCOPE = "https://ai.azure.com/.default";
+    public static final String SUBPROTOCOL = "realtime";
 
     private VoiceAgentWebSocketUtils() {
     }
 
-    static void validateClose(int code, String reason) {
+    public static void validateClose(int code, String reason) {
         if (code < 1000
             || code >= 5000
             || code == 1004
@@ -87,7 +84,7 @@ final class VoiceAgentWebSocketUtils {
         }
     }
 
-    static boolean isProtectedHeader(String name) {
+    private static boolean isProtectedHeader(String name) {
         String lower = name.toLowerCase(Locale.ROOT);
         return "authorization".equals(lower)
             || "host".equals(lower)
@@ -97,7 +94,7 @@ final class VoiceAgentWebSocketUtils {
             || lower.startsWith("sec-websocket-");
     }
 
-    static URI buildWebSocketUri(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
+    public static URI buildWebSocketUri(VoiceAgentWebSocketClientConfiguration configuration, String agentName,
         VoiceAgentWebSocketConnectionOptions options) {
         URI endpoint = configuration.getEndpoint();
         String scheme;
@@ -150,13 +147,13 @@ final class VoiceAgentWebSocketUtils {
         return URI.create(url.toString());
     }
 
-    static TokenRequestContext createTokenRequestContext(VoiceAgentWebSocketConnectionOptions options) {
+    public static TokenRequestContext createTokenRequestContext(VoiceAgentWebSocketConnectionOptions options) {
         return options.getCredentialScopes() == null || options.getCredentialScopes().isEmpty()
             ? new TokenRequestContext().addScopes(TOKEN_SCOPE)
             : new TokenRequestContext().setScopes(options.getCredentialScopes());
     }
 
-    static HttpHeaders buildHeaders(VoiceAgentWebSocketClientConfiguration configuration,
+    public static HttpHeaders buildHeaders(VoiceAgentWebSocketClientConfiguration configuration,
         VoiceAgentWebSocketConnectionOptions options, String token) {
         HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.USER_AGENT, configuration.getUserAgent());
         if (configuration.getHeaders() != null) {

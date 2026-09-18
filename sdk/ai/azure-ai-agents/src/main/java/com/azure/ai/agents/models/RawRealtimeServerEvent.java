@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /** A server event whose complete JSON payload is retained for forward compatibility. */
-@Beta(warningText = "This class is in preview and may change in future releases.")
+@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class RawRealtimeServerEvent extends RealtimeServerEvent {
     private final BinaryData rawEvent;
     private final RealtimeServerEventType type;

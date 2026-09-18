@@ -40,7 +40,7 @@ public final class ReadmeSamples {
                 .setReceiveBufferCapacity(512)
                 .setMaxMessageSize(8 * 1024 * 1024)
                 .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR);
-        try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.connect(agentName, options)) {
+        try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
             session.sendEvent(BinaryData.fromString(
                 "{\"type\":\"response.create\",\"event_id\":\"response-1\"}"));
             for (RealtimeServerEvent event : session.receiveEvents()) {

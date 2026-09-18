@@ -6,7 +6,7 @@ package com.azure.ai.agents.models;
 import com.azure.ai.agents.implementation.utils.Beta;
 
 /** Action taken when a voice-agent session's bounded receive queue fills. */
-@Beta(warningText = "This enum is in preview and may change in future releases.")
+@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public enum VoiceAgentWebSocketOverflowStrategy {
     /** Terminate the connection with an error. No overflow is silently ignored. */
     ERROR,

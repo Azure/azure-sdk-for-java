@@ -516,13 +516,14 @@ public final class AgentsClientBuilder
         }
         // Previously, this client only replaced the native HTTP transport. Because the native OpenAI user agent was
         // already present, the Azure pipeline could not add the Azure SDK identity required for telemetry. Centralize
-        // the setup to install the Azure transport with agent preview features and explicitly combine both user agents.
+        // the setup to install the Azure transport and explicitly combine both user agents.
         return getOpenAIClientBuilder(agentName).build()
-            .withOptions(optionBuilder -> configureOpenAIOptions(optionBuilder, AGENT_PREVIEW_FEATURES));
+            .withOptions(
+                optionBuilder -> configureOpenAIOptions(optionBuilder, allowPreview ? AGENT_PREVIEW_FEATURES : null));
     }
 
     /**
-     * Builds an agent-scoped OpenAI client with preview headers and caller overrides.
+     * Builds an agent-scoped OpenAI client with caller overrides.
      *
      * @param agentName the name of the agent. Must not be null or empty.
      * @param configure callback applied after the defaults; see {@link #buildOpenAIClient(Consumer)}.
@@ -575,7 +576,7 @@ public final class AgentsClientBuilder
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
         // Use the shared async helper to fix the previous blocking authentication path. It performs three ordered
-        // steps: (1) installs the Azure transport, agent preview features, and combined user-agent telemetry;
+        // steps: (1) installs the Azure transport, optional agent preview features, and combined user-agent telemetry;
         // (2) applies caller-provided option overrides; and (3) wraps the final transport with asynchronous Azure
         // authentication so token acquisition does not call getTokenSync() on the asynchronous request path.
         return createOpenAIAsyncClient(agentName, options -> {
@@ -583,7 +584,7 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * Builds an asynchronous agent-scoped OpenAI client with preview headers and caller overrides.
+     * Builds an asynchronous agent-scoped OpenAI client with caller overrides.
      *
      * Supply custom transports through this callback so asynchronous Azure authentication remains installed.
      *
@@ -605,7 +606,7 @@ public final class AgentsClientBuilder
         TokenUtils.AsyncAuthentication authentication
             = new TokenUtils.AsyncAuthentication(tokenCredential, DEFAULT_SCOPES);
         return getOpenAIAsyncClientBuilder(agentName, authentication.getCredential()).build().withOptions(options -> {
-            configureOpenAIOptions(options, agentName == null ? null : AGENT_PREVIEW_FEATURES);
+            configureOpenAIOptions(options, agentName != null && allowPreview ? AGENT_PREVIEW_FEATURES : null);
             configure.accept(options);
             authentication.configure(options);
         });
@@ -642,7 +643,9 @@ public final class AgentsClientBuilder
             builder.baseUrl(getDefaultBaseUrl());
         } else {
             builder.baseUrl(getAgentEndpointBaseUrl(agentName));
-            builder.putHeader("Foundry-Features", AGENT_PREVIEW_FEATURES);
+            if (allowPreview) {
+                builder.putHeader("Foundry-Features", AGENT_PREVIEW_FEATURES);
+            }
             // Agent-scoped endpoints require an explicit API version. Without this query parameter, the service may
             // reject the request or route it using an unintended version; honor the caller's version when configured.
             AgentsServiceVersion localVersion
@@ -673,7 +676,9 @@ public final class AgentsClientBuilder
             builder.baseUrl(getDefaultBaseUrl());
         } else {
             builder.baseUrl(getAgentEndpointBaseUrl(agentName));
-            builder.putHeader("Foundry-Features", AGENT_PREVIEW_FEATURES);
+            if (allowPreview) {
+                builder.putHeader("Foundry-Features", AGENT_PREVIEW_FEATURES);
+            }
             // Agent-scoped endpoints require an explicit API version. Without this query parameter, the service may
             // reject the request or route it using an unintended version; honor the caller's version when configured.
             AgentsServiceVersion localVersion

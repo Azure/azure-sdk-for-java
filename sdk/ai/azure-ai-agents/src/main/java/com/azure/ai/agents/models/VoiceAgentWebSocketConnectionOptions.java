@@ -22,7 +22,7 @@ import reactor.netty.http.client.HttpClient;
 /**
  * Options used when opening a realtime voice-agent WebSocket session.
  */
-@Beta(warningText = "This class is in preview and may change in future releases.")
+@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 @Fluent
 public final class VoiceAgentWebSocketConnectionOptions {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceAgentWebSocketConnectionOptions.class);
@@ -174,6 +174,37 @@ public final class VoiceAgentWebSocketConnectionOptions {
      * Creates options for opening a realtime voice-agent WebSocket session.
      */
     public VoiceAgentWebSocketConnectionOptions() {
+    }
+
+    /**
+     * Creates a copy of the supplied connection options.
+     *
+     * @param source the options to copy.
+     * @throws NullPointerException if {@code source} is null.
+     */
+    public VoiceAgentWebSocketConnectionOptions(VoiceAgentWebSocketConnectionOptions source) {
+        Objects.requireNonNull(source, "'source' cannot be null.");
+        this.receiveBufferCapacity = source.receiveBufferCapacity;
+        this.maxMessageSize = source.maxMessageSize;
+        this.overflowStrategy = source.overflowStrategy;
+        this.malformedEventHandler = source.malformedEventHandler;
+        this.httpClientConfiguration = source.httpClientConfiguration;
+        this.asyncHttpClientConfiguration = source.asyncHttpClientConfiguration;
+        this.transport = source.transport;
+        this.store = source.store;
+        this.agentVersionOverride = source.agentVersionOverride;
+        this.handshakeTimeout = source.handshakeTimeout;
+        this.closeTimeout = source.closeTimeout;
+        this.agentSessionId = source.agentSessionId;
+        this.structuredInputs = source.structuredInputs;
+        this.connectionUrl = source.connectionUrl;
+        this.apiVersion = source.apiVersion;
+        this.foundryFeatures = source.foundryFeatures;
+        this.credentialScopes = source.credentialScopes == null
+            ? null
+            : Collections.unmodifiableList(new ArrayList<>(source.credentialScopes));
+        this.extraQuery = Collections.unmodifiableMap(new LinkedHashMap<>(source.extraQuery));
+        this.extraHeaders = Collections.unmodifiableMap(new LinkedHashMap<>(source.extraHeaders));
     }
 
     /**

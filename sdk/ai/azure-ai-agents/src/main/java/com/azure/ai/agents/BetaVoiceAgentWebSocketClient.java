@@ -30,8 +30,8 @@ public final class BetaVoiceAgentWebSocketClient {
      * @param agentName the voice agent name.
      * @return a connected session.
      */
-    public BetaVoiceAgentWebSocketSessionClient connect(String agentName) {
-        return connect(agentName, new VoiceAgentWebSocketConnectionOptions());
+    public BetaVoiceAgentWebSocketSessionClient openWebSocketSession(String agentName) {
+        return openWebSocketSession(agentName, new VoiceAgentWebSocketConnectionOptions());
     }
 
     /**
@@ -42,13 +42,14 @@ public final class BetaVoiceAgentWebSocketClient {
     * @throws IllegalArgumentException if {@code agentName} is empty.
      * @return a connected session.
      */
-    public BetaVoiceAgentWebSocketSessionClient connect(String agentName,
+    public BetaVoiceAgentWebSocketSessionClient openWebSocketSession(String agentName,
         VoiceAgentWebSocketConnectionOptions options) {
         Objects.requireNonNull(agentName, "'agentName' cannot be null.");
         if (agentName.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'agentName' cannot be empty."));
         }
         Objects.requireNonNull(options, "'options' cannot be null.");
-        return BetaVoiceAgentWebSocketSessionClient.connect(configuration, agentName, options);
+        return BetaVoiceAgentWebSocketSessionClient.connect(configuration, agentName,
+            new VoiceAgentWebSocketConnectionOptions(options));
     }
 }

@@ -105,7 +105,7 @@ public class VoiceAgentConversationsAsyncTests {
         try {
             agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition)).block(TIMEOUT);
             created = true;
-            Mono.usingWhen(builder.beta().buildBetaVoiceAgentWebSocketAsyncClient().connect(agentName),
+            Mono.usingWhen(builder.beta().buildBetaVoiceAgentWebSocketAsyncClient().openWebSocketSession(agentName),
                 session -> session.receiveEvents().index().concatMap(indexed -> {
                     if (indexed.getT1() == 0) {
                         assertTrue(indexed.getT2() instanceof RealtimeSessionCreatedEvent,

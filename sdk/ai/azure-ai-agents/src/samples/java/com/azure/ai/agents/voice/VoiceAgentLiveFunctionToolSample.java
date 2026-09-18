@@ -89,7 +89,7 @@ public class VoiceAgentLiveFunctionToolSample {
         try {
             agents.createAgentVersion(agentName, new CreateAgentVersionInput(definition));
             System.out.println("Created voice agent: " + agentName);
-            try (BetaVoiceAgentWebSocketSessionClient session = realtime.connect(agentName)) {
+            try (BetaVoiceAgentWebSocketSessionClient session = realtime.openWebSocketSession(agentName)) {
                 ExecutorService receiver = Executors.newSingleThreadExecutor();
                 Future<?> response = receiver.submit(() -> receiveResponse(session));
                 try {

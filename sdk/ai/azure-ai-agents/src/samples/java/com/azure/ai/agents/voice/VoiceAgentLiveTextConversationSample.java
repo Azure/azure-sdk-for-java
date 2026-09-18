@@ -72,7 +72,7 @@ public class VoiceAgentLiveTextConversationSample {
             AtomicReference<String> conversationId = new AtomicReference<>();
             try (VoiceAgentRealtimeSampleUtils.SpeakerPlayer player
                     = new VoiceAgentRealtimeSampleUtils.SpeakerPlayer();
-                BetaVoiceAgentWebSocketSessionClient session = realtime.connect(agentName);
+                BetaVoiceAgentWebSocketSessionClient session = realtime.openWebSocketSession(agentName);
                 Scanner scanner = new Scanner(System.in)) {
                 AtomicReference<CompletableFuture<Void>> responseCompleted = new AtomicReference<>();
                 ExecutorService receiver = Executors.newSingleThreadExecutor();

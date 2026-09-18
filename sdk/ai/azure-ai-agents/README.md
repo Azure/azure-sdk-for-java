@@ -117,7 +117,7 @@ ResponseService responseService = responsesClient.getResponseService();
 ConversationService conversationService = openAIClient.conversations();
 ```
 
-Agent-scoped OpenAI clients automatically opt in to agent preview features, independently of `allowPreview`,
+Agent-scoped OpenAI clients opt in to agent preview features when `allowPreview(true)` is configured,
 and use the configured service version. Override the defaults with native OpenAI options:
 
 ```java
@@ -1051,7 +1051,7 @@ VoiceAgentWebSocketConnectionOptions options
         .setReceiveBufferCapacity(512)
         .setMaxMessageSize(8 * 1024 * 1024)
         .setOverflowStrategy(VoiceAgentWebSocketOverflowStrategy.ERROR);
-try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.connect(agentName, options)) {
+try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName, options)) {
     session.sendEvent(BinaryData.fromString(
         "{\"type\":\"response.create\",\"event_id\":\"response-1\"}"));
     for (RealtimeServerEvent event : session.receiveEvents()) {
@@ -1072,7 +1072,7 @@ Use `close(code, reason)` or asynchronous `closeAsync(code, reason)` to send a c
 fit in 123 UTF-8 bytes and close codes must be valid WebSocket codes. The first asynchronous close request wins.
 
 ```java
-try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.connect(agentName)) {
+try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.openWebSocketSession(agentName)) {
     session.sendText("Hello! Tell me about the services you provide.");
     session.createResponse();
 
@@ -1098,7 +1098,7 @@ The asynchronous client returns a `Mono` when connecting and a `Flux<RealtimeSer
 
 ```java
 Mono.usingWhen(
-    realtimeAsyncClient.connect(agentName),
+    realtimeAsyncClient.openWebSocketSession(agentName),
     session -> session.sendText("Hello! Tell me about the services you provide.")
         .then(session.createResponse())
         .thenMany(session.receiveEvents())

@@ -97,7 +97,7 @@ public class VoiceAgentLiveAudioConversationAsyncSample {
                 return agents.createAgentVersion(agentName,
                     new CreateAgentVersionInput(definition.setStore(true)));
             })
-            .then(Mono.usingWhen(realtime.connect(agentName),
+            .then(Mono.usingWhen(realtime.openWebSocketSession(agentName),
                 session -> runConversation(session, conversationId),
                 BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync,
                 (session, error) -> session.closeAsync(),

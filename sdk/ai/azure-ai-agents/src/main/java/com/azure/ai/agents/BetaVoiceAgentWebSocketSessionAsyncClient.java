@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketHandshakeHandler;
 import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketHttpResponse;
+import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketUtils;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.RealtimeClientEvent;
 import com.azure.ai.agents.models.RealtimeConversationItemCreateEvent;
@@ -64,7 +65,7 @@ import reactor.netty.transport.ProxyProvider;
 /**
  * An asynchronous bidirectional realtime session connected to a Foundry voice agent.
  *
- * <p>Instances are created by {@link BetaVoiceAgentWebSocketAsyncClient#connect(String)}. A session supports one
+ * <p>Instances are created by {@link BetaVoiceAgentWebSocketAsyncClient#openWebSocketSession(String)}. A session supports one
  * subscriber to {@link #receiveEvents()}. Close the session when it is no longer needed.</p>
  */
 @Beta(warningText = "This class is in preview and may change in future releases.")
