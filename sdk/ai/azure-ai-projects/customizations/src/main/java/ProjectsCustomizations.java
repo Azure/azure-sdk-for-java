@@ -2,17 +2,17 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
-import com.github.javaparser.ast.expr.ArrayInitializerExpr;
-import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.expr.MemberValuePair;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.stmt.IfStmt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -31,43 +31,56 @@ public class ProjectsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        libraryCustomization.getClass("com.azure.ai.projects", "AIProjectClientBuilder").customizeAst(ast -> {
-            MethodDeclaration pipelineMethod = ast.getClassByName("AIProjectClientBuilder")
-                .orElseThrow(() -> new IllegalStateException("Generated AIProjectClientBuilder was not found."))
-                .getMethodsByName("createHttpPipeline")
-                .stream()
-                .filter(method -> method.getParameters().isEmpty())
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Generated createHttpPipeline was not found."));
-            pipelineMethod.setBody(StaticJavaParser.parseBlock("{ return createHttpPipeline(true); }"));
-        });
-        libraryCustomization.getClass("com.azure.ai.projects", "AIProjectClientBuilder").customizeAst(ast ->
-            addBetaTelemetryClients(ast.getClassByName("AIProjectClientBuilder")
-                .orElseThrow(() -> new IllegalStateException("Generated AIProjectClientBuilder was not found."))));
+        customizeBuilder(libraryCustomization);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
 
-    private static void addBetaTelemetryClients(ClassOrInterfaceDeclaration builder) {
-        NormalAnnotationExpr annotation = builder.getAnnotationByName("ServiceClientBuilder")
-            .filter(AnnotationExpr::isNormalAnnotationExpr)
-            .map(AnnotationExpr::asNormalAnnotationExpr)
-            .orElseThrow(() -> new IllegalStateException(
-                builder.getNameAsString() + " has no normal @ServiceClientBuilder annotation."));
-        MemberValuePair pair = annotation.getPairs().stream()
-            .filter(candidate -> "serviceClients".equals(candidate.getNameAsString()))
-            .findFirst()
-            .orElseThrow(() -> new IllegalStateException("@ServiceClientBuilder has no serviceClients value."));
-        Expression value = pair.getValue();
-        ArrayInitializerExpr clients = value.isArrayInitializerExpr()
-            ? value.asArrayInitializerExpr()
-            : new ArrayInitializerExpr(new NodeList<>(value));
-        for (String serviceClient : new String[] { "BetaTelemetryClient.class", "BetaTelemetryAsyncClient.class" }) {
-            if (clients.getValues().stream().noneMatch(existing -> serviceClient.equals(existing.toString()))) {
-                clients.getValues().add(StaticJavaParser.parseExpression(serviceClient));
+    private static void customizeBuilder(LibraryCustomization customization) {
+        customization.getClass("com.azure.ai.projects", "AIProjectClientBuilder").customizeAst(ast -> {
+            ClassOrInterfaceDeclaration builder = ast.getClassByName("AIProjectClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("Generated AIProjectClientBuilder was not found."));
+            MethodDeclaration generatedPipeline = builder.getMethodsByName("createHttpPipeline").stream()
+                .filter(method -> method.getParameters().isEmpty())
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Generated createHttpPipeline was not found."));
+
+            List<VariableDeclarator> loggingOptions = generatedPipeline.findAll(VariableDeclarator.class).stream()
+                .filter(variable -> "localHttpLogOptions".equals(variable.getNameAsString()))
+                .collect(java.util.stream.Collectors.toList());
+            if (loggingOptions.size() != 1) {
+                throw new IllegalStateException("Expected one generated localHttpLogOptions variable.");
             }
-        }
-        pair.setValue(clients);
+            loggingOptions.get(0).setInitializer("resolveHttpLogOptions()");
+
+            List<ObjectCreationExpr> loggingPolicies = generatedPipeline.findAll(ObjectCreationExpr.class).stream()
+                .filter(expression -> "HttpLoggingPolicy".equals(expression.getType().getNameAsString()))
+                .collect(java.util.stream.Collectors.toList());
+            if (loggingPolicies.size() != 1) {
+                throw new IllegalStateException("Expected one generated HttpLoggingPolicy construction.");
+            }
+            ObjectCreationExpr loggingPolicy = loggingPolicies.get(0);
+            MethodCallExpr customLoggingPolicy = new MethodCallExpr("HttpClientHelper.createLoggingPolicy");
+            loggingPolicy.getArguments().forEach(argument -> customLoggingPolicy.addArgument(argument.clone()));
+            loggingPolicy.replace(customLoggingPolicy);
+            builder.findCompilationUnit().ifPresent(unit -> unit.getImports().removeIf(declaration ->
+                "com.azure.core.http.policy.HttpLoggingPolicy".equals(declaration.getNameAsString())));
+
+            MethodDeclaration openAIPipeline = generatedPipeline.clone();
+            openAIPipeline.setName("createOpenAIHttpPipeline");
+            List<IfStmt> authenticationChecks = openAIPipeline.findAll(IfStmt.class).stream()
+                .filter(statement -> statement.getThenStmt().toString().contains("BearerTokenAuthenticationPolicy"))
+                .collect(java.util.stream.Collectors.toList());
+            if (authenticationChecks.size() != 1) {
+                throw new IllegalStateException("Expected one generated bearer-token authentication check.");
+            }
+            authenticationChecks.get(0).remove();
+
+            List<MethodDeclaration> existingOpenAIPipelines
+                = new ArrayList<>(builder.getMethodsByName("createOpenAIHttpPipeline"));
+            existingOpenAIPipelines.forEach(MethodDeclaration::remove);
+            builder.addMember(openAIPipeline);
+        });
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {

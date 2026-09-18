@@ -92,10 +92,10 @@ public class BetaTelemetryClientTest {
         AIProjectClientBuilder builder
             = new AIProjectClientBuilder().endpoint("https://localhost/api/projects/project").httpClient(httpClient);
         if (async) {
-            BetaTelemetryAsyncClient client = builder.buildBetaTelemetryAsyncClient();
+            BetaTelemetryAsyncClient client = builder.beta().buildBetaTelemetryAsyncClient();
             return () -> client.getApplicationInsightsConnectionString().block();
         }
-        BetaTelemetryClient client = builder.buildBetaTelemetryClient();
+        BetaTelemetryClient client = builder.beta().buildBetaTelemetryClient();
         return client::getApplicationInsightsConnectionString;
     }
 }

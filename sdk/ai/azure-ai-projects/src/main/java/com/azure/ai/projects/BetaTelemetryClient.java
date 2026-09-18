@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Synchronous access to the project's telemetry configuration.
- * Instances are created through {@link AIProjectClientBuilder#buildBetaTelemetryClient()}.
+ * Instances are created through {@link AIProjectClientBuilder.BetaAIProjectClientBuilder#buildBetaTelemetryClient()}.
  */
 @ServiceClient(builder = AIProjectClientBuilder.class)
 @Beta(warningText = "This class is in preview and may change in future releases.")
