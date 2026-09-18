@@ -1043,13 +1043,12 @@ try (BetaVoiceAgentWebSocketSessionClient session = realtimeClient.openWebSocket
     session.createResponse();
 
     for (RealtimeServerEvent event : session.receiveEvents()) {
-        if (event instanceof RealtimeServerEventResponseTextDelta) {
-            System.out.print(((RealtimeServerEventResponseTextDelta) event).getDelta());
-        } else if (event instanceof RealtimeServerEventRealtimeServerEventError) {
-            RealtimeServerEventRealtimeServerEventError error
-                = (RealtimeServerEventRealtimeServerEventError) event;
-            System.out.println("Session error: " + error.getError().getMessage());
-        } else if (event instanceof RealtimeServerEventResponseDone) {
+        if (event instanceof RealtimeResponseTextDeltaEvent) {
+            System.out.print(((RealtimeResponseTextDeltaEvent) event).getDelta());
+        } else if (event instanceof RealtimeErrorEvent) {
+            RealtimeErrorEvent error = (RealtimeErrorEvent) event;
+            System.out.println("Session error: " + error.getError().message());
+        } else if (event instanceof RealtimeResponseDoneEvent) {
             break;
         }
     }
@@ -1069,11 +1068,11 @@ Mono.usingWhen(
         .then(session.createResponse())
         .thenMany(session.receiveEvents())
         .doOnNext(event -> {
-            if (event instanceof RealtimeServerEventResponseTextDelta) {
-                System.out.print(((RealtimeServerEventResponseTextDelta) event).getDelta());
+            if (event instanceof RealtimeResponseTextDeltaEvent) {
+                System.out.print(((RealtimeResponseTextDeltaEvent) event).getDelta());
             }
         })
-        .takeUntil(event -> event instanceof RealtimeServerEventResponseDone)
+        .takeUntil(event -> event instanceof RealtimeResponseDoneEvent)
         .then(),
     BetaVoiceAgentWebSocketSessionAsyncClient::closeAsync,
     (session, error) -> session.closeAsync(),
@@ -1083,7 +1082,7 @@ Mono.usingWhen(
 
 #### Stream audio and handle function tools
 
-Use `appendInputAudio` to send PCM16 chunks, `commitInputAudio` to commit buffered audio when server-side voice activity detection is not configured, and `clearInputAudio` to discard pending input. Audio output arrives through `RealtimeServerEventResponseAudioDelta` events. When a `RealtimeServerEventResponseFunctionCallArgumentsDone` event requests a client-side tool, execute the function and call `sendFunctionCallOutput` with its call ID and serialized result.
+Use `appendInputAudio` to send PCM16 chunks, `commitInputAudio` to commit buffered audio when server-side voice activity detection is not configured, and `clearInputAudio` to discard pending input. Audio output arrives through `RealtimeResponseAudioDeltaEvent` events. When a `RealtimeResponseFunctionCallArgumentsDoneEvent` event requests a client-side tool, execute the function and call `sendFunctionCallOutput` with its call ID and serialized result.
 
 | Scenario | Complete sample |
 |---|---|

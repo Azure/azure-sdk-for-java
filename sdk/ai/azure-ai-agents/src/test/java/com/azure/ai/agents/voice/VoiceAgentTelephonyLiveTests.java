@@ -187,8 +187,7 @@ public class VoiceAgentTelephonyLiveTests {
             assertEquals(inboundCallId, transferredCall.getId());
             inboundCallId = null;
 
-            TelephonyCallJob dispatchedJob = telephony.getTelephonyCallJob(outboundAgent, callJobId);
-            assertTrue(dispatchedJob.getAttemptCount() > 0, "The outbound call job did not create an attempt.");
+            waitForDispatchedCallJob(telephony, outboundAgent, callJobId);
 
             OffsetDateTime notBefore = OffsetDateTime.now().plusMinutes(10);
             CreateTelephonyCallJobInput scheduledRequest = new CreateTelephonyCallJobInput(
@@ -249,6 +248,19 @@ public class VoiceAgentTelephonyLiveTests {
             Thread.sleep(POLL_INTERVAL.toMillis());
         }
         throw new AssertionError("No inbound Twilio call arrived within " + CALL_TIMEOUT + ".");
+    }
+
+    private static void waitForDispatchedCallJob(BetaVoiceAgentsTelephonyClient telephony, String agentName,
+        String callJobId) throws InterruptedException {
+        long deadline = System.nanoTime() + CALL_TIMEOUT.toNanos();
+        while (System.nanoTime() < deadline) {
+            TelephonyCallJob callJob = telephony.getTelephonyCallJob(agentName, callJobId);
+            if (callJob.getAttemptCount() > 0) {
+                return;
+            }
+            Thread.sleep(POLL_INTERVAL.toMillis());
+        }
+        throw new AssertionError("The outbound call job did not create an attempt within " + CALL_TIMEOUT + ".");
     }
 
     private static VoiceAgentDefinition definition(String model, String instructions) {

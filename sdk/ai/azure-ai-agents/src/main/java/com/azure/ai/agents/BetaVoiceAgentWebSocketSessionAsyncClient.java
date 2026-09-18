@@ -428,7 +428,6 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
         WebsocketClientSpec spec = WebsocketClientSpec.builder()
             .protocols(VoiceAgentWebSocketUtils.SUBPROTOCOL)
             .maxFramePayloadLength(options.getMaxMessageSize())
-            .handlePing(false)
             .build();
 
         return client.websocket(spec).uri(websocketUri.toString()).connect().flatMap(connection -> {
