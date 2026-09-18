@@ -351,11 +351,25 @@ public final class AIProjectClientBuilder
     }
 
     private AIProjectClientImpl buildInnerClient(String previewFeatures) {
+        return createInnerClientWithPreviewFeatures(previewFeatures);
+    }
+
+    /**
+     * Builds an instance of AIProjectClientImpl with the provided parameters.
+     *
+     * @return an instance of AIProjectClientImpl.
+     */
+    @Generated
+    private AIProjectClientImpl createInnerClientWithPreviewFeatures(String previewFeatures) {
         this.validateClient();
+        HttpPipeline localPipeline;
         if (CoreUtils.isNullOrEmpty(previewFeatures)) {
-            return buildInnerClient();
+            localPipeline = pipeline != null ? pipeline : createHttpPipeline();
+            localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline,
+                FoundryPolicyHelper.createPreviewErrorPolicy(allowPreview));
+        } else {
+            localPipeline = resolvePipeline(previewFeatures);
         }
-        HttpPipeline localPipeline = resolvePipeline(previewFeatures);
         AIProjectsServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AIProjectsServiceVersion.getLatest();
         AIProjectClientImpl client = new AIProjectClientImpl(localPipeline,

@@ -2,6 +2,7 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -12,6 +13,8 @@ import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -40,6 +43,47 @@ public class ProjectsCustomizations extends Customization {
         customization.getClass("com.azure.ai.projects", "AIProjectClientBuilder").customizeAst(ast -> {
             ClassOrInterfaceDeclaration builder = ast.getClassByName("AIProjectClientBuilder")
                 .orElseThrow(() -> new IllegalStateException("Generated AIProjectClientBuilder was not found."));
+            MethodDeclaration buildInnerClient = builder.getMethodsByName("buildInnerClient").stream()
+                .filter(method -> method.getParameters().isEmpty())
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Generated buildInnerClient was not found."));
+            MethodDeclaration previewBuildInnerClient = buildInnerClient.clone();
+            previewBuildInnerClient.setName("createInnerClientWithPreviewFeatures");
+            previewBuildInnerClient.addParameter("String", "previewFeatures");
+            List<VariableDeclarator> localPipelines = previewBuildInnerClient.findAll(VariableDeclarator.class).stream()
+                .filter(variable -> "localPipeline".equals(variable.getNameAsString()))
+                .collect(java.util.stream.Collectors.toList());
+            if (localPipelines.size() != 1) {
+                throw new IllegalStateException("Expected one generated localPipeline variable.");
+            }
+            Node localPipelineParent = localPipelines.get(0)
+                .getParentNode()
+                .flatMap(Node::getParentNode)
+                .orElseThrow(() -> new IllegalStateException("Generated localPipeline statement was not found."));
+            if (!(localPipelineParent instanceof ExpressionStmt)) {
+                throw new IllegalStateException("Generated localPipeline parent was not an expression statement.");
+            }
+            ExpressionStmt localPipelineStatement = (ExpressionStmt) localPipelineParent;
+            BlockStmt previewBody = previewBuildInnerClient.getBody()
+                .orElseThrow(() -> new IllegalStateException("Generated buildInnerClient body was not found."));
+            int localPipelineIndex = previewBody.getStatements().indexOf(localPipelineStatement);
+            if (localPipelineIndex < 0) {
+                throw new IllegalStateException("Generated localPipeline statement was not in buildInnerClient.");
+            }
+            previewBody.getStatements().remove(localPipelineIndex);
+            previewBody.getStatements().add(localPipelineIndex,
+                StaticJavaParser.parseStatement("HttpPipeline localPipeline;"));
+            previewBody.getStatements().add(localPipelineIndex + 1, StaticJavaParser.parseStatement(
+                "if (CoreUtils.isNullOrEmpty(previewFeatures)) {"
+                    + " localPipeline = pipeline != null ? pipeline : createHttpPipeline();"
+                    + " localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline,"
+                    + " FoundryPolicyHelper.createPreviewErrorPolicy(allowPreview));"
+                    + " } else { localPipeline = resolvePipeline(previewFeatures); }"));
+            List<MethodDeclaration> existingPreviewBuilds
+                = new ArrayList<>(builder.getMethodsByName("createInnerClientWithPreviewFeatures"));
+            existingPreviewBuilds.forEach(MethodDeclaration::remove);
+            builder.addMember(previewBuildInnerClient);
+
             MethodDeclaration generatedPipeline = builder.getMethodsByName("createHttpPipeline").stream()
                 .filter(method -> method.getParameters().isEmpty())
                 .findFirst()
