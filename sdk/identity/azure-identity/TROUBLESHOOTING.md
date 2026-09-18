@@ -82,6 +82,12 @@ The underlying MSAL library, MSAL4J, also has detailed logging. It is highly ver
 
 ## Troubleshoot `DefaultAzureCredential` authentication issues
 
+During local development, `DefaultAzureCredential` probes the IMDS endpoint before attempting managed identity authentication. The probe uses separate one-second connection and read timeouts. If the endpoint cannot be reached or does not return an HTTP response, managed identity is unavailable and the chain continues to the next credential. A successful TCP connection alone does not establish that IMDS is available.
+
+These timeouts apply to discovery, not to the entire authentication operation. When the endpoint responds, managed identity token acquisition retains its normal retry behavior. Standalone `ManagedIdentityCredential` and `DefaultAzureCredential` configured with `AZURE_TOKEN_CREDENTIALS=ManagedIdentityCredential` skip the probe.
+
+To intentionally use only developer-tool credentials locally, set `AZURE_TOKEN_CREDENTIALS=dev`. This excludes deployed-service credentials, including managed identity, rather than changing their timeout or retry settings.
+
 | Error | Description | Mitigation |
 |---|---|---|
 | `CredentialUnavailableException` raised with message. "DefaultAzureCredential failed to retrieve a token from the included credentials." |All credentials in the `DefaultAzureCredential` chain failed to retrieve a token, each throwing a `CredentialUnavailableException`| <ul><li>[Enable logging](#enable-and-configure-logging) to verify the credentials being tried, and get further diagnostic information.</li><li>Consult the troubleshooting guide for underlying credential types for more information.</li><ul><li>[EnvironmentCredential](#troubleshoot-environmentcredential-authentication-issues)</li><li>[ManagedIdentityCredential](#troubleshoot-managedidentitycredential-authentication-issues)</li><li>[AzureCLICredential](#troubleshoot-azureclicredential-authentication-issues)</li><li>[AzurePowerShellCredential](#troubleshoot-azurepowershellcredential-authentication-issues)</li></ul> |
@@ -386,4 +392,3 @@ You may also log in another MSA account by selecting "Microsoft account":
 ## Get additional help
 
 Additional information on ways to reach out for support can be found in the [SUPPORT.md](https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md) at the root of the repo.
-

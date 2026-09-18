@@ -71,6 +71,7 @@ import java.util.function.Supplier;
  * from various configurations.
  */
 public class IdentityClient extends IdentityClientBase {
+    private static final int IMDS_PROBE_TIMEOUT_MILLIS = 1000;
     private final SynchronizedAccessor<PublicClientApplication> publicClientApplicationAccessor;
 
     private final SynchronizedAccessor<PublicClientApplication> publicClientApplicationAccessorWithCae;
@@ -961,17 +962,23 @@ public class IdentityClient extends IdentityClientBase {
     private Mono<Boolean> checkIMDSAvailable(String endpoint) {
         return Mono.fromCallable(() -> {
             HttpURLConnection connection = null;
-            URL url = getUrl(endpoint + "?api-version=2018-02-01");
 
             try {
+                URL url = getUrl(endpoint + "?api-version=2018-02-01");
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
-                connection.setConnectTimeout(1000);
-                connection.connect();
-            } catch (Exception e) {
+                connection.setConnectTimeout(IMDS_PROBE_TIMEOUT_MILLIS);
+                connection.setReadTimeout(IMDS_PROBE_TIMEOUT_MILLIS);
+                connection.setInstanceFollowRedirects(false);
+                // A TCP connection alone does not establish that IMDS can respond to HTTP requests.
+                // getResponseCode() connects to the endpoint and waits for HTTP response headers.
+                if (connection.getResponseCode() == -1) {
+                    throw new IOException("The IMDS endpoint did not return a valid HTTP response.");
+                }
+            } catch (IOException e) {
                 throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                     new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
-                        + "Connection to IMDS endpoint cannot be established, " + e.getMessage() + ".", e));
+                        + "No response received from the IMDS endpoint, " + e.getMessage() + ".", e));
             } finally {
                 if (connection != null) {
                     connection.disconnect();
