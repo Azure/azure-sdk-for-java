@@ -9,7 +9,6 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.javadoc.Javadoc;
 import org.slf4j.Logger;
 
-import static com.github.javaparser.StaticJavaParser.parseBlock;
 import static com.github.javaparser.javadoc.description.JavadocDescription.parseText;
 
 /**
@@ -21,7 +20,6 @@ public class ContentSafetyCustomization extends Customization {
         PackageCustomization models = customization.getPackage("com.azure.ai.contentsafety.models");
 
         customizeDetectProvenanceOptions(models);
-        customizeProvenanceDetectOperation(models);
         customizeAnalyzeImageExamples(customization.getRawEditor());
     }
 
@@ -37,27 +35,6 @@ public class ContentSafetyCustomization extends Customization {
                         constructor.getAnnotationByName("Generated").ifPresent(Node::remove);
                     }
                 })));
-    }
-
-    private static void customizeProvenanceDetectOperation(PackageCustomization models) {
-        models.getClass("ProvenanceDetectOperation").customizeAst(ast -> {
-            ast.addImport("java.time.format.DateTimeFormatter");
-            ast.getClassByName("ProvenanceDetectOperation")
-                .ifPresent(clazz -> clazz.getMethodsByName("toJson").forEach(method -> {
-                    method.setBody(parseBlock("{" + " jsonWriter.writeStartObject();"
-                        + " jsonWriter.writeStringField(\"id\", this.id);"
-                        + " jsonWriter.writeStringField(\"status\", this.status == null ? null : this.status.toString());"
-                        + " jsonWriter.writeStringField(\"kind\", this.kind == null ? null : this.kind.toString());"
-                        + " jsonWriter.writeJsonField(\"error\", this.error);"
-                        + " jsonWriter.writeJsonField(\"result\", this.result);"
-                        + " jsonWriter.writeStringField(\"createdAt\", this.createdAt == null ? null"
-                        + " : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdAt));"
-                        + " jsonWriter.writeStringField(\"lastUpdatedAt\", this.lastUpdatedAt == null ? null"
-                        + " : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedAt));"
-                        + " return jsonWriter.writeEndObject();" + " }"));
-                    method.getAnnotationByName("Generated").ifPresent(Node::remove);
-                }));
-        });
     }
 
     private static void customizeAnalyzeImageExamples(Editor editor) {
