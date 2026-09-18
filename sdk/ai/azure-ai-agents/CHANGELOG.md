@@ -19,7 +19,10 @@
 - Added preview `BetaVoiceAgentsConversationsClient` and `BetaVoiceAgentsConversationsAsyncClient` for managing
   persisted voice-agent conversations and their responses, items, and audio content.
 - Added session-affinity routing configuration through `AzureCreateResponseOptions.setRoutingConfig(...)`, `RoutingConfiguration`, and `SessionAffinityConfiguration`, with response details exposed by `ModelRouterDetails.getSessionAffinity()`.
-- Added preview synchronous and asynchronous voice-agent WebSocket clients and session APIs with typed realtime events, text and PCM16 audio input, response cancellation, function-call output, persisted-conversation options, and authenticated `wss://` transport.
+- Added preview `BetaVoiceAgentWebSocketClient`, `BetaVoiceAgentWebSocketAsyncClient`,
+  `BetaVoiceAgentWebSocketSessionClient`, and `BetaVoiceAgentWebSocketSessionAsyncClient` with typed realtime events,
+  text and PCM16 audio input, response cancellation, function-call output, persisted-conversation options, and
+  authenticated `wss://` transport.
 - Added synchronous and asynchronous live text conversation samples, an asynchronous Java Sound microphone/speaker sample with barge-in, and a live client-executed function-tool sample.
 
 ### Breaking Changes
