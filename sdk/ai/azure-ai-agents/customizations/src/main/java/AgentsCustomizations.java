@@ -9,11 +9,16 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -33,12 +38,98 @@ public class AgentsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        libraryCustomization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast ->
+            customizeBuilder(ast.getClassByName("AgentsClientBuilder")
+                .orElseThrow(() -> new IllegalStateException("Generated AgentsClientBuilder was not found."))));
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
         // makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
+    }
+
+    private static void customizeBuilder(ClassOrInterfaceDeclaration builder) {
+        MethodDeclaration buildInnerClient = builder.getMethodsByName("buildInnerClient").stream()
+            .filter(method -> method.getParameters().isEmpty())
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Generated buildInnerClient was not found."));
+        MethodDeclaration previewBuildInnerClient = buildInnerClient.clone();
+        previewBuildInnerClient.setName("createInnerClientWithPreviewFeatures");
+        previewBuildInnerClient.addParameter("String", "previewFeatures");
+        List<VariableDeclarator> localPipelines = previewBuildInnerClient.findAll(VariableDeclarator.class).stream()
+            .filter(variable -> "localPipeline".equals(variable.getNameAsString()))
+            .collect(java.util.stream.Collectors.toList());
+        if (localPipelines.size() != 1) {
+            throw new IllegalStateException("Expected one generated localPipeline variable.");
+        }
+        Node localPipelineParent = localPipelines.get(0)
+            .getParentNode()
+            .flatMap(Node::getParentNode)
+            .orElseThrow(() -> new IllegalStateException("Generated localPipeline statement was not found."));
+        if (!(localPipelineParent instanceof ExpressionStmt)) {
+            throw new IllegalStateException("Generated localPipeline parent was not an expression statement.");
+        }
+        ExpressionStmt localPipelineStatement = (ExpressionStmt) localPipelineParent;
+        BlockStmt previewBody = previewBuildInnerClient.getBody()
+            .orElseThrow(() -> new IllegalStateException("Generated buildInnerClient body was not found."));
+        int localPipelineIndex = previewBody.getStatements().indexOf(localPipelineStatement);
+        if (localPipelineIndex < 0) {
+            throw new IllegalStateException("Generated localPipeline statement was not in buildInnerClient.");
+        }
+        previewBody.getStatements().remove(localPipelineIndex);
+        previewBody.getStatements().add(localPipelineIndex,
+            StaticJavaParser.parseStatement("HttpPipeline localPipeline;"));
+        previewBody.getStatements().add(localPipelineIndex + 1, StaticJavaParser.parseStatement(
+            "if (CoreUtils.isNullOrEmpty(previewFeatures)) {"
+                + " localPipeline = pipeline != null ? pipeline : createHttpPipeline();"
+                + " localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline,"
+                + " FoundryPolicyHelper.createPreviewErrorPolicy(allowPreview));"
+                + " } else { localPipeline = resolvePipeline(previewFeatures); }"));
+        List<MethodDeclaration> existingPreviewBuilds
+            = new ArrayList<>(builder.getMethodsByName("createInnerClientWithPreviewFeatures"));
+        existingPreviewBuilds.forEach(MethodDeclaration::remove);
+        builder.addMember(previewBuildInnerClient);
+
+        MethodDeclaration generatedPipeline = builder.getMethodsByName("createHttpPipeline").stream()
+            .filter(method -> method.getParameters().isEmpty())
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Generated createHttpPipeline was not found."));
+        List<VariableDeclarator> loggingOptions = generatedPipeline.findAll(VariableDeclarator.class).stream()
+            .filter(variable -> "localHttpLogOptions".equals(variable.getNameAsString()))
+            .collect(java.util.stream.Collectors.toList());
+        if (loggingOptions.size() != 1) {
+            throw new IllegalStateException("Expected one generated localHttpLogOptions variable.");
+        }
+        loggingOptions.get(0).setInitializer("resolveHttpLogOptions()");
+        List<ObjectCreationExpr> loggingPolicies = generatedPipeline.findAll(ObjectCreationExpr.class).stream()
+            .filter(expression -> "HttpLoggingPolicy".equals(expression.getType().getNameAsString()))
+            .collect(java.util.stream.Collectors.toList());
+        if (loggingPolicies.size() != 1) {
+            throw new IllegalStateException("Expected one generated HttpLoggingPolicy construction.");
+        }
+        ObjectCreationExpr loggingPolicy = loggingPolicies.get(0);
+        MethodCallExpr customLoggingPolicy = new MethodCallExpr("HttpClientHelper.createLoggingPolicy");
+        loggingPolicy.getArguments().forEach(argument -> customLoggingPolicy.addArgument(argument.clone()));
+        loggingPolicy.replace(customLoggingPolicy);
+        builder.findCompilationUnit().ifPresent(unit -> unit.getImports().removeIf(declaration ->
+            "com.azure.core.http.policy.HttpLoggingPolicy".equals(declaration.getNameAsString())));
+
+        MethodDeclaration openAIPipeline = generatedPipeline.clone();
+        openAIPipeline.setName("createOpenAIHttpPipeline");
+        List<IfStmt> authenticationChecks = openAIPipeline.findAll(IfStmt.class).stream()
+            .filter(statement -> statement.getThenStmt().toString().contains("BearerTokenAuthenticationPolicy"))
+            .collect(java.util.stream.Collectors.toList());
+        if (authenticationChecks.size() != 1) {
+            throw new IllegalStateException("Expected one generated bearer-token authentication check.");
+        }
+        authenticationChecks.get(0).remove();
+
+        List<MethodDeclaration> existingOpenAIPipelines
+            = new ArrayList<>(builder.getMethodsByName("createOpenAIHttpPipeline"));
+        existingOpenAIPipelines.forEach(MethodDeclaration::remove);
+        builder.addMember(openAIPipeline);
+
     }
 
     private static final String MODELS_PACKAGE = "com.azure.ai.agents.models";
@@ -657,6 +748,38 @@ public class AgentsCustomizations extends Customization {
         customization.getClass("com.azure.ai.agents.implementation", "SyncOperationLocationPollingStrategy")
             .customizeAst(ast -> ast.getClassByName("SyncOperationLocationPollingStrategy")
                 .ifPresent(clazz -> clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"))));
+
+        customizePollingResult(customization, "OperationLocationPollingStrategy");
+        customizePollingResult(customization, "SyncOperationLocationPollingStrategy");
+    }
+
+    private static void customizePollingResult(LibraryCustomization customization, String className) {
+        customization.getClass("com.azure.ai.agents.implementation", className).customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(className)
+                .orElseThrow(() -> new IllegalStateException("Generated " + className + " was not found."));
+            MethodDeclaration getResult = clazz.getMethodsByName("getResult").get(0);
+            String statusChecks = className.startsWith("Sync")
+                ? "if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {"
+                    + " throw LOGGER.logExceptionAsError(new AzureException(\"Long running operation failed.\")); }"
+                    + "if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {"
+                    + " throw LOGGER.logExceptionAsError(new AzureException(\"Long running operation cancelled.\")); }"
+                : "if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {"
+                    + " return Mono.error(new AzureException(\"Long running operation failed.\")); }"
+                    + "if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {"
+                    + " return Mono.error(new AzureException(\"Long running operation cancelled.\")); }";
+            String deserialize = className.startsWith("Sync")
+                ? "Map<String, Object> pollResult = PollingUtils.deserializeResponseSync(latestResponseBody, serializer,"
+                    + " PollingUtils.POST_POLL_RESULT_TYPE_REFERENCE);"
+                    + "return PollingUtils.deserializeResponseSync(AgentsServicePollUtils.getFinalResultBody("
+                    + "pollResult, propertyName, resultType), serializer, resultType);"
+                : "return PollingUtils.deserializeResponse(latestResponseBody, serializer,"
+                    + " PollingUtils.POST_POLL_RESULT_TYPE_REFERENCE).flatMap(value -> PollingUtils.deserializeResponse("
+                    + "AgentsServicePollUtils.getFinalResultBody(value, propertyName, resultType), serializer, resultType))"
+                    + ".switchIfEmpty(Mono.error(new AzureException(\"Cannot get final result\")));";
+            getResult.setBody(StaticJavaParser.parseBlock("{" + statusChecks + "if (propertyName != null) {"
+                + "BinaryData latestResponseBody = BinaryData.fromString(pollingContext.getData(PollingUtils.POLL_RESPONSE_BODY));"
+                + deserialize + "} else { return super.getResult(pollingContext, resultType); }}"));
+        });
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {

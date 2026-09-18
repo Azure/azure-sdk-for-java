@@ -4,14 +4,39 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.OpenAIJsonHelper;
+import com.azure.ai.projects.models.AzureAIEvaluationDataSource;
 import com.azure.ai.projects.models.TestingCriterionAzureAIEvaluator;
+import com.azure.core.util.BinaryData;
 import com.openai.models.evals.EvalCreateParams;
+import com.openai.models.evals.runs.RunCreateParams;
 
 /**
  * Helper methods for Azure AI evaluations.
  */
 public final class EvaluationsHelper {
     private EvaluationsHelper() {
+    }
+
+    /**
+     * Converts an Azure evaluation run data source to the native OpenAI parameter union.
+     * @param source Azure data source.
+     * @return a native run data source preserving Azure-specific fields.
+     */
+    public static RunCreateParams.DataSource toDataSource(AzureAIEvaluationDataSource source) {
+        return OpenAIJsonHelper.toOpenAIType(source, RunCreateParams.DataSource.class);
+    }
+
+    /**
+     * Creates an Azure evaluation schema configuration.
+     * @param scenario scenario such as responses, red_team, traces_preview, or benchmark_preview.
+     * @return native evaluation data-source configuration.
+     */
+    public static EvalCreateParams.DataSourceConfig createDataSourceConfig(String scenario) {
+        java.util.Map<String, String> configuration = new java.util.LinkedHashMap<>();
+        configuration.put("type", "azure_ai_source");
+        configuration.put("scenario", java.util.Objects.requireNonNull(scenario, "scenario"));
+        return OpenAIJsonHelper.fromBinaryData(BinaryData.fromObject(configuration),
+            EvalCreateParams.DataSourceConfig.class);
     }
 
     /**
