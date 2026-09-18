@@ -1,5 +1,15 @@
 # Release History
 
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0 (2026-09-16)
 
 - Azure Resource Manager Policy client library for Java. This package contains Microsoft Azure SDK for Policy Management SDK. To manage and control access to your resources, you can define customized policies and assign them at a scope. Package api-version 2026-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
