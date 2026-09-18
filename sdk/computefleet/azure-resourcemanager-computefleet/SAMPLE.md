@@ -142,7 +142,7 @@ import java.util.Map;
  */
 public final class FleetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Fleets_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01-preview/Fleets_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_CreateOrUpdate_MaximumSet_Gen.
@@ -675,7 +675,7 @@ public final class FleetsCreateOrUpdateSamples {
  */
 public final class FleetsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Fleets_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01-preview/Fleets_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_Delete_MaximumSet_Gen.
@@ -696,7 +696,7 @@ public final class FleetsDeleteSamples {
  */
 public final class FleetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Fleets_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01-preview/Fleets_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_Get_MaximumSet_Gen.
@@ -717,7 +717,7 @@ public final class FleetsGetByResourceGroupSamples {
  */
 public final class FleetsListSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Fleets_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01-preview/Fleets_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_ListBySubscription_MaximumSet_Gen.
@@ -739,7 +739,7 @@ public final class FleetsListSamples {
  */
 public final class FleetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_ListByResourceGroup_MaximumSet_Gen.
@@ -761,7 +761,7 @@ public final class FleetsListByResourceGroupSamples {
  */
 public final class FleetsListVirtualMachineScaleSetsSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01-preview/Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.
@@ -783,7 +783,7 @@ public final class FleetsListVirtualMachineScaleSetsSamples {
  */
 public final class FleetsListVirtualMachinesSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Fleets_ListVirtualMachines_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01-preview/Fleets_ListVirtualMachines_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_ListVirtualMachines_MaximumSet_Gen.
@@ -926,7 +926,7 @@ import java.util.Map;
  */
 public final class FleetsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Fleets_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01-preview/Fleets_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_Update_MaximumSet_Gen.
@@ -1456,7 +1456,7 @@ public final class FleetsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-06-01-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
@@ -1468,7 +1468,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.

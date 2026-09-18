@@ -70,7 +70,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private VolumePropertiesExportPolicy exportPolicy;
 
     /*
-     * Set of protocol types, default NFSv3, CIFS for SMB protocol
+     * Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1, and CIFS. For SMB volumes,
+     * specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3
      */
     private List<String> protocolTypes;
 
@@ -342,6 +344,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
 
     /*
      * Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      */
     private EnableSubvolumes enableSubvolumes;
 
@@ -491,7 +494,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Get the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @return the protocolTypes value.
      */
@@ -500,7 +505,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Set the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @param protocolTypes the protocolTypes value to set.
      * @return the VolumeProperties object itself.
@@ -1390,7 +1397,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      * 
      * @return the enableSubvolumes value.
      */
@@ -1399,7 +1407,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      * 
      * @param enableSubvolumes the enableSubvolumes value to set.
      * @return the VolumeProperties object itself.

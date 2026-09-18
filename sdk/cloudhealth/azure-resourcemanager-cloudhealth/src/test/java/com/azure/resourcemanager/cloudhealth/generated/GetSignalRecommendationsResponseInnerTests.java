@@ -7,7 +7,6 @@ package com.azure.resourcemanager.cloudhealth.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.fluent.models.GetSignalRecommendationsResponseInner;
 import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
-import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import org.junit.jupiter.api.Assertions;
@@ -16,53 +15,46 @@ public final class GetSignalRecommendationsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetSignalRecommendationsResponseInner model = BinaryData.fromString(
-            "{\"recommendedSignals\":[{\"signalId\":\"mmrqz\",\"metricNamespace\":\"rjvpglydzgkrvqee\",\"metricName\":\"oepry\",\"aggregationType\":\"Average\",\"unit\":\"ytp\",\"timeGrain\":\"mov\",\"dimensionFilter\":\"fvaawzqa\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":7.41119746224509,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT30M\"},\"unhealthyRule\":{\"operator\":\"Dynamic\",\"threshold\":95.88043135076997,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT15M\"}}},{\"signalId\":\"okpvzm\",\"metricNamespace\":\"t\",\"metricName\":\"dgxobfircl\",\"aggregationType\":\"Minimum\",\"unit\":\"iayz\",\"timeGrain\":\"ykhyawfvjlboxqvk\",\"dimensionFilter\":\"mxho\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Dynamic\",\"threshold\":48.65698040013442,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT30M\"},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":42.60607577558919,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT5M\"}}}],\"recommendedConfigurations\":[{\"signalId\":\"p\",\"metricNamespace\":\"a\",\"metricName\":\"sdzhezww\",\"aggregationType\":\"None\",\"unit\":\"yuvvfonkp\",\"timeGrain\":\"qyikvy\",\"dimensionFilter\":\"uyav\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":89.05603672748985,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT1H\"},\"unhealthyRule\":{\"operator\":\"LessThan\",\"threshold\":93.5287746137057,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT15M\"}}},{\"signalId\":\"rsg\",\"metricNamespace\":\"b\",\"metricName\":\"uzqgnjdgkynsc\",\"aggregationType\":\"None\",\"unit\":\"zvhxnk\",\"timeGrain\":\"tkubotppn\",\"dimensionFilter\":\"xz\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":43.69918280258318,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT30M\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":44.57062893078121,\"sensitivity\":\"High\",\"lookBackWindow\":\"PT30M\"}}},{\"signalId\":\"lfkqojpy\",\"metricNamespace\":\"gtrd\",\"metricName\":\"ifmzzsd\",\"aggregationType\":\"Maximum\",\"unit\":\"nysuxmprafwgckh\",\"timeGrain\":\"xvd\",\"dimensionFilter\":\"fwafqrouda\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":1.8671842874156686,\"sensitivity\":\"High\",\"lookBackWindow\":\"PT30M\"},\"unhealthyRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":18.57995999456683,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT30M\"}}}]}")
+            "{\"recommendedSignals\":[{\"signalId\":\"zivj\",\"metricNamespace\":\"rqttbajlkatnw\",\"metricName\":\"iopid\",\"aggregationType\":\"Maximum\",\"unit\":\"kuvscxkdm\",\"timeGrain\":\"govibrxkpmloazu\",\"dimensionFilter\":\"ocbgoorbteoyb\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":94.24029215995002,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":94.29850569183385,\"sensitivity\":\"Low\"}}},{\"signalId\":\"il\",\"metricNamespace\":\"wwtkg\",\"metricName\":\"nye\",\"aggregationType\":\"Count\",\"unit\":\"yvudtjuewbci\",\"timeGrain\":\"uuwhcjyxcc\",\"dimensionFilter\":\"vpayakkudzpx\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":16.411699648967215,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":98.8252906927025,\"sensitivity\":\"Medium\"}}},{\"signalId\":\"fkyrk\",\"metricNamespace\":\"dg\",\"metricName\":\"gsj\",\"aggregationType\":\"Count\",\"unit\":\"qjnobaiyhddviac\",\"timeGrain\":\"fnmntfpmvmemfn\",\"dimensionFilter\":\"dwvvba\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThan\",\"threshold\":15.777579665359697,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":77.99745293298962,\"sensitivity\":\"Low\"}}},{\"signalId\":\"rdnhfuku\",\"metricNamespace\":\"jcswsmys\",\"metricName\":\"luqypfcvlerch\",\"aggregationType\":\"Maximum\",\"unit\":\"f\",\"timeGrain\":\"babwidfcxss\",\"dimensionFilter\":\"unnoxyhk\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":48.13591398474999,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"NotEqual\",\"threshold\":80.76145919049176,\"sensitivity\":\"Medium\"}}}],\"recommendedConfigurations\":[{\"signalId\":\"ewda\",\"metricNamespace\":\"djvlpj\",\"metricName\":\"kzbrmsgeivsiy\",\"aggregationType\":\"Average\",\"unit\":\"ncj\",\"timeGrain\":\"onbzoggculapzwy\",\"dimensionFilter\":\"gogtqxepnylbf\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":87.99665917910454,\"sensitivity\":\"Low\"},\"unhealthyRule\":{\"operator\":\"LessThan\",\"threshold\":19.535648644305248,\"sensitivity\":\"Medium\"}}}]}")
             .toObject(GetSignalRecommendationsResponseInner.class);
-        Assertions.assertEquals("mmrqz", model.recommendedSignals().get(0).signalId());
-        Assertions.assertEquals("rjvpglydzgkrvqee", model.recommendedSignals().get(0).metricNamespace());
-        Assertions.assertEquals("oepry", model.recommendedSignals().get(0).metricName());
-        Assertions.assertEquals(MetricAggregationType.AVERAGE, model.recommendedSignals().get(0).aggregationType());
-        Assertions.assertEquals("ytp", model.recommendedSignals().get(0).unit());
-        Assertions.assertEquals("mov", model.recommendedSignals().get(0).timeGrain());
-        Assertions.assertEquals("fvaawzqa", model.recommendedSignals().get(0).dimensionFilter());
-        Assertions.assertEquals(SignalOperator.NOT_EQUAL,
+        Assertions.assertEquals("zivj", model.recommendedSignals().get(0).signalId());
+        Assertions.assertEquals("rqttbajlkatnw", model.recommendedSignals().get(0).metricNamespace());
+        Assertions.assertEquals("iopid", model.recommendedSignals().get(0).metricName());
+        Assertions.assertEquals(MetricAggregationType.MAXIMUM, model.recommendedSignals().get(0).aggregationType());
+        Assertions.assertEquals("kuvscxkdm", model.recommendedSignals().get(0).unit());
+        Assertions.assertEquals("govibrxkpmloazu", model.recommendedSignals().get(0).timeGrain());
+        Assertions.assertEquals("ocbgoorbteoyb", model.recommendedSignals().get(0).dimensionFilter());
+        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL,
             model.recommendedSignals().get(0).evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(7.41119746224509D,
+        Assertions.assertEquals(94.24029215995002D,
             model.recommendedSignals().get(0).evaluationRules().degradedRule().threshold());
         Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
             model.recommendedSignals().get(0).evaluationRules().degradedRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT30M,
-            model.recommendedSignals().get(0).evaluationRules().degradedRule().lookBackWindow());
-        Assertions.assertEquals(SignalOperator.DYNAMIC,
+        Assertions.assertEquals(SignalOperator.EQUAL,
             model.recommendedSignals().get(0).evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(95.88043135076997D,
+        Assertions.assertEquals(94.29850569183385D,
             model.recommendedSignals().get(0).evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
             model.recommendedSignals().get(0).evaluationRules().unhealthyRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT15M,
-            model.recommendedSignals().get(0).evaluationRules().unhealthyRule().lookBackWindow());
-        Assertions.assertEquals("p", model.recommendedConfigurations().get(0).signalId());
-        Assertions.assertEquals("a", model.recommendedConfigurations().get(0).metricNamespace());
-        Assertions.assertEquals("sdzhezww", model.recommendedConfigurations().get(0).metricName());
-        Assertions.assertEquals(MetricAggregationType.NONE, model.recommendedConfigurations().get(0).aggregationType());
-        Assertions.assertEquals("yuvvfonkp", model.recommendedConfigurations().get(0).unit());
-        Assertions.assertEquals("qyikvy", model.recommendedConfigurations().get(0).timeGrain());
-        Assertions.assertEquals("uyav", model.recommendedConfigurations().get(0).dimensionFilter());
-        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL,
+        Assertions.assertEquals("ewda", model.recommendedConfigurations().get(0).signalId());
+        Assertions.assertEquals("djvlpj", model.recommendedConfigurations().get(0).metricNamespace());
+        Assertions.assertEquals("kzbrmsgeivsiy", model.recommendedConfigurations().get(0).metricName());
+        Assertions.assertEquals(MetricAggregationType.AVERAGE,
+            model.recommendedConfigurations().get(0).aggregationType());
+        Assertions.assertEquals("ncj", model.recommendedConfigurations().get(0).unit());
+        Assertions.assertEquals("onbzoggculapzwy", model.recommendedConfigurations().get(0).timeGrain());
+        Assertions.assertEquals("gogtqxepnylbf", model.recommendedConfigurations().get(0).dimensionFilter());
+        Assertions.assertEquals(SignalOperator.NOT_EQUAL,
             model.recommendedConfigurations().get(0).evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(89.05603672748985D,
+        Assertions.assertEquals(87.99665917910454D,
             model.recommendedConfigurations().get(0).evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
             model.recommendedConfigurations().get(0).evaluationRules().degradedRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT1H,
-            model.recommendedConfigurations().get(0).evaluationRules().degradedRule().lookBackWindow());
         Assertions.assertEquals(SignalOperator.LESS_THAN,
             model.recommendedConfigurations().get(0).evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(93.5287746137057D,
+        Assertions.assertEquals(19.535648644305248D,
             model.recommendedConfigurations().get(0).evaluationRules().unhealthyRule().threshold());
         Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
             model.recommendedConfigurations().get(0).evaluationRules().unhealthyRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT15M,
-            model.recommendedConfigurations().get(0).evaluationRules().unhealthyRule().lookBackWindow());
     }
 }

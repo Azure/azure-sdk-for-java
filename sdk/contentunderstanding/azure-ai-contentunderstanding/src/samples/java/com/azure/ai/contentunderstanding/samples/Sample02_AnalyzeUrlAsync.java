@@ -16,6 +16,7 @@ import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -24,7 +25,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * Sample demonstrating how to analyze documents from URL using Content Understanding service.
@@ -33,6 +33,19 @@ import java.util.concurrent.CountDownLatch;
  * 2. Analyzing the document
  * 3. Extracting markdown content
  * 4. Accessing document properties (pages, tables, etc.)
+ *
+ * <p>Use {@code beginAnalyze} with {@link AnalysisInput} for publicly accessible URL inputs. Use
+ * {@code beginAnalyzeBinary} for local binary data. Use {@code prebuilt-imageSearch} for standalone image
+ * descriptions; for images containing printed or handwritten text, use {@code prebuilt-documentSearch}.</p>
+ *
+ * <p>This sample uses long-running operations, which support the RAG analyzers shown here, larger inputs, and
+ * persisted results. For inline analysis without polling or persisted results, see Sample19_AnalyzeInlineAsync. Inline
+ * analysis supports document analyzers without field schemas or figure analysis: {@code prebuilt-digitalParse},
+ * {@code prebuilt-read}, {@code prebuilt-layout}, or a custom document analyzer without fields.</p>
+ *
+ * <p>Document ranges use 1-based page numbers. Audio and video ranges use millisecond offsets; the top-level
+ * {@code AudioVisualContent} start and end times remain relative to the original media and are not rebased to the
+ * requested range.</p>
  */
 public class Sample02_AnalyzeUrlAsync {
 
@@ -96,22 +109,19 @@ public class Sample02_AnalyzeUrlAsync {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
 
-        CountDownLatch latch = new CountDownLatch(1);
-
         operation.last()
-            .flatMap(pollResponse -> {
-                if (pollResponse.getStatus().isComplete()) {
-                    System.out.println("Polling completed successfully");
-                    return pollResponse.getFinalResult();
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                }
-            })
-            .doOnNext(result -> {
+            .flatMap(pollResponse -> pollResponse.getFinalResult().thenReturn(pollResponse.getValue()))
+            .doOnNext(operationStatus -> {
+                AnalysisResult result = operationStatus.getResult();
+                UsageDetails usage = operationStatus.getUsage();
+                System.out.println("Polling completed successfully");
                 System.out.println("Analysis operation completed");
                 System.out.println("Analysis result contains "
                     + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
+                if (usage != null) {
+                    System.out.println("Document pages (standard): " + usage.getDocumentPagesStandard());
+                    System.out.println("Contextualization tokens: " + usage.getContextualizationTokens());
+                }
 
                 // A PDF file has only one content element even if it contains multiple pages
                 AnalysisContent content = null;
@@ -172,24 +182,7 @@ public class Sample02_AnalyzeUrlAsync {
                 System.err.println("Error occurred: " + error.getMessage());
                 error.printStackTrace();
             })
-            .subscribe(
-                result -> {
-                    // Success - operations completed
-                    latch.countDown();
-                },
-                error -> {
-                    // Error already handled in doOnError
-                    latch.countDown();
-                }
-            );
-
-        // Wait for the async operation to complete before returning
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for document analysis", e);
-        }
+            .block();
         // END:ContentUnderstandingAnalyzeUrlAsyncAsync
     }
 
@@ -211,8 +204,6 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
-
-        CountDownLatch latch = new CountDownLatch(1);
 
         operation.last()
             .flatMap(pollResponse -> {
@@ -255,24 +246,7 @@ public class Sample02_AnalyzeUrlAsync {
                 System.err.println("Error occurred: " + error.getMessage());
                 error.printStackTrace();
             })
-            .subscribe(
-                result -> {
-                    // Success - operations completed
-                    latch.countDown();
-                },
-                error -> {
-                    // Error already handled in doOnError
-                    latch.countDown();
-                }
-            );
-
-        // Wait for the async operation to complete before returning
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for video analysis", e);
-        }
+            .block();
         // END:ContentUnderstandingAnalyzeVideoUrlAsyncAsync
     }
 
@@ -293,8 +267,6 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input));
-
-        CountDownLatch latch = new CountDownLatch(1);
 
         operation.last()
             .flatMap(pollResponse -> {
@@ -340,24 +312,7 @@ public class Sample02_AnalyzeUrlAsync {
                 System.err.println("Error occurred: " + error.getMessage());
                 error.printStackTrace();
             })
-            .subscribe(
-                result -> {
-                    // Success - operations completed
-                    latch.countDown();
-                },
-                error -> {
-                    // Error already handled in doOnError
-                    latch.countDown();
-                }
-            );
-
-        // Wait for the async operation to complete before returning
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for audio analysis", e);
-        }
+            .block();
         // END:ContentUnderstandingAnalyzeAudioUrlAsyncAsync
     }
 
@@ -378,8 +333,6 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = client.beginAnalyze("prebuilt-imageSearch", Arrays.asList(input));
-
-        CountDownLatch latch = new CountDownLatch(1);
 
         operation.last()
             .flatMap(pollResponse -> {
@@ -407,24 +360,7 @@ public class Sample02_AnalyzeUrlAsync {
                 System.err.println("Error occurred: " + error.getMessage());
                 error.printStackTrace();
             })
-            .subscribe(
-                result -> {
-                    // Success - operations completed
-                    latch.countDown();
-                },
-                error -> {
-                    // Error already handled in doOnError
-                    latch.countDown();
-                }
-            );
-
-        // Wait for the async operation to complete before returning
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for image analysis", e);
-        }
+            .block();
         // END:ContentUnderstandingAnalyzeImageUrlAsyncAsync
     }
 
@@ -444,8 +380,6 @@ public class Sample02_AnalyzeUrlAsync {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
 
-        CountDownLatch latch = new CountDownLatch(1);
-
         operation.last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
@@ -464,18 +398,7 @@ public class Sample02_AnalyzeUrlAsync {
             .doOnError(error -> {
                 System.err.println("Error occurred: " + error.getMessage());
             })
-            .doFinally(signalType -> latch.countDown())
-            .subscribe(
-                result -> { },
-                error -> { }
-            );
-
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for document analysis", e);
-        }
+            .block();
 
         // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
         AnalysisInput combineInput = new AnalysisInput();
@@ -484,8 +407,6 @@ public class Sample02_AnalyzeUrlAsync {
             ContentRange.pages(1, 3),
             ContentRange.page(5),
             ContentRange.pagesFrom(9)));
-
-        CountDownLatch combineLatch = new CountDownLatch(1);
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
             = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(combineInput));
@@ -508,17 +429,7 @@ public class Sample02_AnalyzeUrlAsync {
             .doOnError(error -> {
                 System.err.println("Error occurred: " + error.getMessage());
             })
-            .subscribe(
-                result -> combineLatch.countDown(),
-                error -> combineLatch.countDown()
-            );
-
-        try {
-            combineLatch.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for combined range analysis", e);
-        }
+            .block();
         // END:ContentUnderstandingAnalyzeDocumentUrlWithContentRangeAsync
     }
 
@@ -537,8 +448,6 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation1
             = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input1));
-
-        CountDownLatch latch1 = new CountDownLatch(1);
 
         operation1.last()
             .flatMap(pollResponse -> {
@@ -559,17 +468,7 @@ public class Sample02_AnalyzeUrlAsync {
             .doOnError(error -> {
                 System.err.println("Error occurred: " + error.getMessage());
             })
-            .subscribe(
-                result -> latch1.countDown(),
-                error -> latch1.countDown()
-            );
-
-        try {
-            latch1.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for video analysis", e);
-        }
+            .block();
 
         // Analyze from 10 seconds onward using ContentRange.timeRangeFrom()
         AnalysisInput input2 = new AnalysisInput();
@@ -578,8 +477,6 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation2
             = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input2));
-
-        CountDownLatch latch2 = new CountDownLatch(1);
 
         operation2.last()
             .flatMap(pollResponse -> {
@@ -600,17 +497,7 @@ public class Sample02_AnalyzeUrlAsync {
             .doOnError(error -> {
                 System.err.println("Error occurred: " + error.getMessage());
             })
-            .subscribe(
-                result -> latch2.countDown(),
-                error -> latch2.countDown()
-            );
-
-        try {
-            latch2.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for video analysis", e);
-        }
+            .block();
 
         // Analyze with sub-second precision using milliseconds
         AnalysisInput input3 = new AnalysisInput();
@@ -620,8 +507,6 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation3
             = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input3));
-
-        CountDownLatch latch3 = new CountDownLatch(1);
 
         operation3.last()
             .flatMap(pollResponse -> {
@@ -642,17 +527,7 @@ public class Sample02_AnalyzeUrlAsync {
             .doOnError(error -> {
                 System.err.println("Error occurred: " + error.getMessage());
             })
-            .subscribe(
-                result -> latch3.countDown(),
-                error -> latch3.countDown()
-            );
-
-        try {
-            latch3.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for video analysis", e);
-        }
+            .block();
 
         // Analyze with combined time ranges
         AnalysisInput input4 = new AnalysisInput();
@@ -663,8 +538,6 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation4
             = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input4));
-
-        CountDownLatch latch4 = new CountDownLatch(1);
 
         operation4.last()
             .flatMap(pollResponse -> {
@@ -691,17 +564,7 @@ public class Sample02_AnalyzeUrlAsync {
             .doOnError(error -> {
                 System.err.println("Error occurred: " + error.getMessage());
             })
-            .subscribe(
-                result -> latch4.countDown(),
-                error -> latch4.countDown()
-            );
-
-        try {
-            latch4.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for video analysis", e);
-        }
+            .block();
         // END:ContentUnderstandingAnalyzeVideoUrlWithContentRangeAsync
     }
 
@@ -721,8 +584,6 @@ public class Sample02_AnalyzeUrlAsync {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation1
             = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input1));
 
-        CountDownLatch latch1 = new CountDownLatch(1);
-
         operation1.last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
@@ -740,17 +601,7 @@ public class Sample02_AnalyzeUrlAsync {
             .doOnError(error -> {
                 System.err.println("Error occurred: " + error.getMessage());
             })
-            .subscribe(
-                result -> latch1.countDown(),
-                error -> latch1.countDown()
-            );
-
-        try {
-            latch1.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for audio analysis", e);
-        }
+            .block();
 
         // Analyze a specific time range (2s to 8s)
         AnalysisInput input2 = new AnalysisInput();
@@ -759,8 +610,6 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation2
             = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input2));
-
-        CountDownLatch latch2 = new CountDownLatch(1);
 
         operation2.last()
             .flatMap(pollResponse -> {
@@ -779,17 +628,7 @@ public class Sample02_AnalyzeUrlAsync {
             .doOnError(error -> {
                 System.err.println("Error occurred: " + error.getMessage());
             })
-            .subscribe(
-                result -> latch2.countDown(),
-                error -> latch2.countDown()
-            );
-
-        try {
-            latch2.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for audio analysis", e);
-        }
+            .block();
 
         // Analyze with sub-second precision using milliseconds
         AnalysisInput input3 = new AnalysisInput();
@@ -799,8 +638,6 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation3
             = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input3));
-
-        CountDownLatch latch3 = new CountDownLatch(1);
 
         operation3.last()
             .flatMap(pollResponse -> {
@@ -819,17 +656,7 @@ public class Sample02_AnalyzeUrlAsync {
             .doOnError(error -> {
                 System.err.println("Error occurred: " + error.getMessage());
             })
-            .subscribe(
-                result -> latch3.countDown(),
-                error -> latch3.countDown()
-            );
-
-        try {
-            latch3.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for audio analysis", e);
-        }
+            .block();
 
         // Combine multiple time ranges
         AnalysisInput combineInput = new AnalysisInput();
@@ -840,8 +667,6 @@ public class Sample02_AnalyzeUrlAsync {
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
             = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(combineInput));
-
-        CountDownLatch latch4 = new CountDownLatch(1);
 
         combineOperation.last()
             .flatMap(pollResponse -> {
@@ -858,14 +683,7 @@ public class Sample02_AnalyzeUrlAsync {
                     + " ms, End=" + combineContent.getEndTime().toMillis() + " ms");
             })
             .doOnError(error -> System.err.println("Error occurred: " + error.getMessage()))
-            .subscribe(result -> latch4.countDown(), error -> latch4.countDown());
-
-        try {
-            latch4.await();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for audio analysis", e);
-        }
+            .block();
         // END:ContentUnderstandingAnalyzeAudioUrlWithContentRangeAsync
     }
 }

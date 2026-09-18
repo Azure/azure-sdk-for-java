@@ -175,7 +175,7 @@ public class CustomerWorkflowSingleMasterAvailabilityTest extends CustomerWorkfl
             this.container,
             FaultInjectionOperationType.READ_ITEM,
             errorType,
-            this.readableRegions.get(0),
+            null,
             currentFaultInjectionConnectionType(),
             1);
 

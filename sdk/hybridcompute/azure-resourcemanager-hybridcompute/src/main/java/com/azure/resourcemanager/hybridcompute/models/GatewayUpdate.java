@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Describes a License Update.
+ * Describes a Gateway Update.
  */
 @Fluent
 public final class GatewayUpdate extends ResourceUpdate {
@@ -67,6 +67,31 @@ public final class GatewayUpdate extends ResourceUpdate {
             this.innerProperties = new GatewayUpdateProperties();
         }
         this.innerProperties().withAllowedFeatures(allowedFeatures);
+        return this;
+    }
+
+    /**
+     * Get the gatewayBypass property: Specifies the list of domain names that should bypass the gateway. Each entry
+     * must be a valid DNS hostname.
+     * 
+     * @return the gatewayBypass value.
+     */
+    public List<String> gatewayBypass() {
+        return this.innerProperties() == null ? null : this.innerProperties().gatewayBypass();
+    }
+
+    /**
+     * Set the gatewayBypass property: Specifies the list of domain names that should bypass the gateway. Each entry
+     * must be a valid DNS hostname.
+     * 
+     * @param gatewayBypass the gatewayBypass value to set.
+     * @return the GatewayUpdate object itself.
+     */
+    public GatewayUpdate withGatewayBypass(List<String> gatewayBypass) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GatewayUpdateProperties();
+        }
+        this.innerProperties().withGatewayBypass(gatewayBypass);
         return this;
     }
 

@@ -81,6 +81,20 @@ public final class AIProjectClientImpl {
     }
 
     /**
+     * The BetaAgentInsightMonitorsImpl object to access its operations.
+     */
+    private final BetaAgentInsightMonitorsImpl betaAgentInsightMonitors;
+
+    /**
+     * Gets the BetaAgentInsightMonitorsImpl object to access its operations.
+     * 
+     * @return the BetaAgentInsightMonitorsImpl object.
+     */
+    public BetaAgentInsightMonitorsImpl getBetaAgentInsightMonitors() {
+        return this.betaAgentInsightMonitors;
+    }
+
+    /**
      * The BetaModelsImpl object to access its operations.
      */
     private final BetaModelsImpl betaModels;
@@ -324,6 +338,7 @@ public final class AIProjectClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
+        this.betaAgentInsightMonitors = new BetaAgentInsightMonitorsImpl(this);
         this.betaModels = new BetaModelsImpl(this);
         this.betaRedTeams = new BetaRedTeamsImpl(this);
         this.betaEvaluationTaxonomies = new BetaEvaluationTaxonomiesImpl(this);

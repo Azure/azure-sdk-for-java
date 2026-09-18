@@ -36,6 +36,11 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
      */
     private ResourceOperationDetails operation;
 
+    /*
+     * Information about the virtual machine
+     */
+    private VirtualMachineInfo virtualMachineInfo;
+
     /**
      * Creates an instance of ResourceOperation class.
      */
@@ -80,6 +85,15 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
     }
 
     /**
+     * Get the virtualMachineInfo property: Information about the virtual machine.
+     * 
+     * @return the virtualMachineInfo value.
+     */
+    public VirtualMachineInfo virtualMachineInfo() {
+        return this.virtualMachineInfo;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -89,6 +103,7 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
         jsonWriter.writeStringField("errorCode", this.errorCode);
         jsonWriter.writeStringField("errorDetails", this.errorDetails);
         jsonWriter.writeJsonField("operation", this.operation);
+        jsonWriter.writeJsonField("virtualMachineInfo", this.virtualMachineInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -115,6 +130,8 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
                     deserializedResourceOperation.errorDetails = reader.getString();
                 } else if ("operation".equals(fieldName)) {
                     deserializedResourceOperation.operation = ResourceOperationDetails.fromJson(reader);
+                } else if ("virtualMachineInfo".equals(fieldName)) {
+                    deserializedResourceOperation.virtualMachineInfo = VirtualMachineInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

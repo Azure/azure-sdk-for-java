@@ -31,6 +31,11 @@ public final class RecoveryPointProperties implements JsonSerializable<RecoveryP
      */
     private Boolean isSoftDeleted;
 
+    /*
+     * Immutability properties of the recovery point.
+     */
+    private RecoveryPointImmutabilityProperties immutabilityProperties;
+
     /**
      * Creates an instance of RecoveryPointProperties class.
      */
@@ -65,6 +70,15 @@ public final class RecoveryPointProperties implements JsonSerializable<RecoveryP
     }
 
     /**
+     * Get the immutabilityProperties property: Immutability properties of the recovery point.
+     * 
+     * @return the immutabilityProperties value.
+     */
+    public RecoveryPointImmutabilityProperties immutabilityProperties() {
+        return this.immutabilityProperties;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -73,6 +87,7 @@ public final class RecoveryPointProperties implements JsonSerializable<RecoveryP
         jsonWriter.writeStringField("expiryTime", this.expiryTime);
         jsonWriter.writeStringField("ruleName", this.ruleName);
         jsonWriter.writeBooleanField("isSoftDeleted", this.isSoftDeleted);
+        jsonWriter.writeJsonField("immutabilityProperties", this.immutabilityProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -97,6 +112,9 @@ public final class RecoveryPointProperties implements JsonSerializable<RecoveryP
                     deserializedRecoveryPointProperties.ruleName = reader.getString();
                 } else if ("isSoftDeleted".equals(fieldName)) {
                     deserializedRecoveryPointProperties.isSoftDeleted = reader.getNullable(JsonReader::getBoolean);
+                } else if ("immutabilityProperties".equals(fieldName)) {
+                    deserializedRecoveryPointProperties.immutabilityProperties
+                        = RecoveryPointImmutabilityProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

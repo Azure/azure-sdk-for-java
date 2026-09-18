@@ -212,8 +212,8 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the perSiteScaling property: If &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service plan can be
-     * scaled independently.
+     * Get the perSiteScaling property:
+     * If &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service plan can be scaled independently.
      * If &lt;code&gt;false&lt;/code&gt;, apps assigned to this App Service plan will scale to all instances of the
      * plan.
      * 
@@ -224,8 +224,8 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the perSiteScaling property: If &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service plan can be
-     * scaled independently.
+     * Set the perSiteScaling property:
+     * If &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service plan can be scaled independently.
      * If &lt;code&gt;false&lt;/code&gt;, apps assigned to this App Service plan will scale to all instances of the
      * plan.
      * 
@@ -535,8 +535,8 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
-     * zone balancing.
+     * Get the zoneRedundant property:
+     * If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability zone balancing.
      * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone balancing.
      * 
      * @return the zoneRedundant value.
@@ -546,8 +546,8 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
-     * zone balancing.
+     * Set the zoneRedundant property:
+     * If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability zone balancing.
      * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone balancing.
      * 
      * @param zoneRedundant the zoneRedundant value to set.

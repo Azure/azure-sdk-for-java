@@ -36,6 +36,7 @@ public final class PrometheusForwarderDataSource implements JsonSerializable<Pro
     private List<Object> customVMScrapeConfig;
 
     /*
+     * 
      * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
@@ -112,7 +113,8 @@ public final class PrometheusForwarderDataSource implements JsonSerializable<Pro
     }
 
     /**
-     * Get the name property: A friendly name for the data source.
+     * Get the name property:
+     * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
      * @return the name value.
@@ -122,7 +124,8 @@ public final class PrometheusForwarderDataSource implements JsonSerializable<Pro
     }
 
     /**
-     * Set the name property: A friendly name for the data source.
+     * Set the name property:
+     * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
      * @param name the name value to set.

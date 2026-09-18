@@ -23,7 +23,7 @@ public final class ExperimentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"identity\":{\"principalId\":\"ikjcjcazt\",\"tenantId\":\"snsqowxwcoml\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"fdv\":{\"principalId\":\"vc\",\"clientId\":\"swkacvej\"}}},\"properties\":{\"provisioningState\":\"Creating\",\"steps\":[{\"name\":\"wrnfxtgdd\",\"branches\":[{\"name\":\"th\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"n\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}],\"customerDataStorage\":{\"storageAccountResourceId\":\"yank\",\"blobContainerName\":\"eqswanklty\"}},\"location\":\"hdroznnh\",\"tags\":{\"sggux\":\"ktgj\",\"ywaeeczgf\":\"eml\"},\"id\":\"ukklelss\",\"name\":\"blycsxzujksr\",\"type\":\"smdesqplpvmjcd\"}]}";
+            = "{\"value\":[{\"identity\":{\"principalId\":\"gdhg\",\"tenantId\":\"i\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"pibkephuu\":{\"principalId\":\"wrq\",\"clientId\":\"ulopmjnlexwhcb\"},\"uczkgofxyfsruc\":{\"principalId\":\"rctat\",\"clientId\":\"intqpbrlcyr\"}}},\"properties\":{\"provisioningState\":\"Canceled\",\"steps\":[{\"name\":\"pcjttbstvjeaqn\",\"branches\":[{\"name\":\"vvf\",\"actions\":[]},{\"name\":\"oxmlghktuidv\",\"actions\":[]}]},{\"name\":\"ma\",\"branches\":[{\"name\":\"pdwwexymzvlazi\",\"actions\":[]},{\"name\":\"bhpwvqsgnyy\",\"actions\":[]},{\"name\":\"uzivensrpmeyyvp\",\"actions\":[]},{\"name\":\"patlbijp\",\"actions\":[]}]},{\"name\":\"gsksrfhf\",\"branches\":[{\"name\":\"lmknbnxwcdom\",\"actions\":[]}]},{\"name\":\"pvfqawz\",\"branches\":[{\"name\":\"brttuiacl\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"exhajlfn\",\"filter\":{\"type\":\"ChaosTargetFilter\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"iqfyuttdi\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}],\"customerDataStorage\":{\"storageAccountResourceId\":\"vnwsw\",\"blobContainerName\":\"xkyctwwgzwx\"}},\"location\":\"mecvogygzyvneeza\",\"tags\":{\"jjjavfqnvhnq\":\"htmoqqtlffhzbkr\"},\"id\":\"ewdogiyetesy\",\"name\":\"vidbztjhqtfb\",\"type\":\"vnynkb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class ExperimentsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Experiment> response
-            = manager.experiments().list(false, "vgkk", com.azure.core.util.Context.NONE);
+            = manager.experiments().list(true, "ksgbuxan", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hdroznnh", response.iterator().next().location());
-        Assertions.assertEquals("ktgj", response.iterator().next().tags().get("sggux"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals("mecvogygzyvneeza", response.iterator().next().location());
+        Assertions.assertEquals("htmoqqtlffhzbkr", response.iterator().next().tags().get("jjjavfqnvhnq"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             response.iterator().next().identity().type());
-        Assertions.assertEquals("wrnfxtgdd", response.iterator().next().steps().get(0).name());
-        Assertions.assertEquals("th", response.iterator().next().steps().get(0).branches().get(0).name());
-        Assertions.assertEquals("n", response.iterator().next().selectors().get(0).id());
-        Assertions.assertEquals("yank", response.iterator().next().customerDataStorage().storageAccountResourceId());
-        Assertions.assertEquals("eqswanklty", response.iterator().next().customerDataStorage().blobContainerName());
+        Assertions.assertEquals("pcjttbstvjeaqn", response.iterator().next().steps().get(0).name());
+        Assertions.assertEquals("vvf", response.iterator().next().steps().get(0).branches().get(0).name());
+        Assertions.assertEquals("exhajlfn", response.iterator().next().selectors().get(0).id());
+        Assertions.assertEquals("vnwsw", response.iterator().next().customerDataStorage().storageAccountResourceId());
+        Assertions.assertEquals("xkyctwwgzwx", response.iterator().next().customerDataStorage().blobContainerName());
     }
 }

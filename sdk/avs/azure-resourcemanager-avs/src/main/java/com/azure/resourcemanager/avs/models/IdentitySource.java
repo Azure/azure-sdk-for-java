@@ -57,12 +57,14 @@ public final class IdentitySource implements JsonSerializable<IdentitySource> {
     private SslEnum ssl;
 
     /*
+     * 
      * The ID of an Active Directory user with a minimum of read-only access to Base
      * DN for users and group
      */
     private String username;
 
     /*
+     * 
      * The password of the Active Directory user with a minimum of read-only access to
      * Base DN for users and groups.
      */
@@ -235,7 +237,8 @@ public final class IdentitySource implements JsonSerializable<IdentitySource> {
     }
 
     /**
-     * Get the username property: The ID of an Active Directory user with a minimum of read-only access to Base
+     * Get the username property:
+     * The ID of an Active Directory user with a minimum of read-only access to Base
      * DN for users and group.
      * 
      * @return the username value.
@@ -245,7 +248,8 @@ public final class IdentitySource implements JsonSerializable<IdentitySource> {
     }
 
     /**
-     * Set the username property: The ID of an Active Directory user with a minimum of read-only access to Base
+     * Set the username property:
+     * The ID of an Active Directory user with a minimum of read-only access to Base
      * DN for users and group.
      * 
      * @param username the username value to set.
@@ -257,7 +261,8 @@ public final class IdentitySource implements JsonSerializable<IdentitySource> {
     }
 
     /**
-     * Get the password property: The password of the Active Directory user with a minimum of read-only access to
+     * Get the password property:
+     * The password of the Active Directory user with a minimum of read-only access to
      * Base DN for users and groups.
      * 
      * @return the password value.
@@ -267,7 +272,8 @@ public final class IdentitySource implements JsonSerializable<IdentitySource> {
     }
 
     /**
-     * Set the password property: The password of the Active Directory user with a minimum of read-only access to
+     * Set the password property:
+     * The password of the Active Directory user with a minimum of read-only access to
      * Base DN for users and groups.
      * 
      * @param password the password value to set.

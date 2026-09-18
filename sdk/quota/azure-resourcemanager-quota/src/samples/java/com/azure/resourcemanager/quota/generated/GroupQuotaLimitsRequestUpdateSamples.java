@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class GroupQuotaLimitsRequestUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotaLimitsRequests/PatchGroupQuotaLimitsRequests-Compute.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotaLimitsRequests/PatchGroupQuotaLimitsRequests-Compute.json
      */
     /**
      * Sample code: GroupQuotaLimitsRequests_Update.

@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class GroupQuotaSubscriptionAllocationRequestUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2025-09-01/SubscriptionQuotaAllocationRequests/PatchSubscriptionQuotaAllocationRequest-Compute.json
+     * 2026-09-01-preview/SubscriptionQuotaAllocationRequests/PatchSubscriptionQuotaAllocationRequest-Compute.json
      */
     /**
      * Sample code: SubscriptionQuotaAllocation_Patch_Request_ForCompute.

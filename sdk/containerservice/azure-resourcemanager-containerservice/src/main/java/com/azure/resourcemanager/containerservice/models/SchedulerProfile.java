@@ -12,14 +12,16 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The pod scheduler profile for the cluster.
+ * Profile with scheduler-related settings, like the configuration mode for each scheduler managed by AKS. See
+ * https://aka.ms/aks/scheduler-profile.
  */
 @Fluent
 public final class SchedulerProfile implements JsonSerializable<SchedulerProfile> {
     /*
-     * Mapping of each scheduler instance to its profile.
+     * Profile with settings related to upstream variant of kube-scheduler
+     * (https://github.com/kubernetes/kubernetes/tree/master/pkg/scheduler).
      */
-    private SchedulerProfileSchedulerInstanceProfiles schedulerInstanceProfiles;
+    private SchedulerInstanceProfile upstream;
 
     /**
      * Creates an instance of SchedulerProfile class.
@@ -28,23 +30,24 @@ public final class SchedulerProfile implements JsonSerializable<SchedulerProfile
     }
 
     /**
-     * Get the schedulerInstanceProfiles property: Mapping of each scheduler instance to its profile.
+     * Get the upstream property: Profile with settings related to upstream variant of kube-scheduler
+     * (https://github.com/kubernetes/kubernetes/tree/master/pkg/scheduler).
      * 
-     * @return the schedulerInstanceProfiles value.
+     * @return the upstream value.
      */
-    public SchedulerProfileSchedulerInstanceProfiles schedulerInstanceProfiles() {
-        return this.schedulerInstanceProfiles;
+    public SchedulerInstanceProfile upstream() {
+        return this.upstream;
     }
 
     /**
-     * Set the schedulerInstanceProfiles property: Mapping of each scheduler instance to its profile.
+     * Set the upstream property: Profile with settings related to upstream variant of kube-scheduler
+     * (https://github.com/kubernetes/kubernetes/tree/master/pkg/scheduler).
      * 
-     * @param schedulerInstanceProfiles the schedulerInstanceProfiles value to set.
+     * @param upstream the upstream value to set.
      * @return the SchedulerProfile object itself.
      */
-    public SchedulerProfile
-        withSchedulerInstanceProfiles(SchedulerProfileSchedulerInstanceProfiles schedulerInstanceProfiles) {
-        this.schedulerInstanceProfiles = schedulerInstanceProfiles;
+    public SchedulerProfile withUpstream(SchedulerInstanceProfile upstream) {
+        this.upstream = upstream;
         return this;
     }
 
@@ -54,8 +57,8 @@ public final class SchedulerProfile implements JsonSerializable<SchedulerProfile
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (schedulerInstanceProfiles() != null) {
-            schedulerInstanceProfiles().validate();
+        if (upstream() != null) {
+            upstream().validate();
         }
     }
 
@@ -65,7 +68,7 @@ public final class SchedulerProfile implements JsonSerializable<SchedulerProfile
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("schedulerInstanceProfiles", this.schedulerInstanceProfiles);
+        jsonWriter.writeJsonField("upstream", this.upstream);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,9 +87,8 @@ public final class SchedulerProfile implements JsonSerializable<SchedulerProfile
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("schedulerInstanceProfiles".equals(fieldName)) {
-                    deserializedSchedulerProfile.schedulerInstanceProfiles
-                        = SchedulerProfileSchedulerInstanceProfiles.fromJson(reader);
+                if ("upstream".equals(fieldName)) {
+                    deserializedSchedulerProfile.upstream = SchedulerInstanceProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

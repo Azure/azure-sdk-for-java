@@ -1,0 +1,13 @@
+diff --git a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/Widgets.java b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/Widgets.java
+index 90e63de..427fd21 100644
+--- a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/Widgets.java
++++ b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/Widgets.java
+@@ -32,6 +32,10 @@ public interface Widgets {
++    PagedIterable<Widget> list();
++
++    PagedIterable<Widget> listByResourceGroup(String resourceGroupName);
++
++    CommunicationServiceKeys listKeys();
++
++    FleetCredentialResults listCredentials();
+ }

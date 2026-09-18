@@ -239,9 +239,9 @@ public interface HorizonDbParameterGroup {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: The properties that can be updated for a HorizonDb parameter group..
+             * Specifies the properties property: The properties that can be updated for a HorizonDB parameter group..
              * 
-             * @param properties The properties that can be updated for a HorizonDb parameter group.
+             * @param properties The properties that can be updated for a HorizonDB parameter group.
              * @return the next definition stage.
              */
             Update withProperties(HorizonDbParameterGroupPropertiesForPatchUpdate properties);

@@ -17,6 +17,11 @@ public final class GateType extends ExpandableStringEnum<GateType> {
     public static final GateType APPROVAL = fromString("Approval");
 
     /**
+     * A scheduled start gate is automatically completed when the scheduled time is reached.
+     */
+    public static final GateType SCHEDULED_START = fromString("ScheduledStart");
+
+    /**
      * Creates a new instance of GateType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

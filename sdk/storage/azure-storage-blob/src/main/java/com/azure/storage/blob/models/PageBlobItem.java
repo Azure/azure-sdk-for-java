@@ -5,6 +5,7 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
+import com.azure.storage.blob.implementation.accesshelpers.PageBlobItemConstructorProxy;
 
 import java.time.OffsetDateTime;
 
@@ -16,11 +17,16 @@ public class PageBlobItem {
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final byte[] contentMd5;
+    private final byte[] contentCrc64;
     private final Boolean isServerEncrypted;
     private final String encryptionKeySha256;
     private final String encryptionScope;
     private final Long blobSequenceNumber;
     private final String versionId;
+
+    static {
+        PageBlobItemConstructorProxy.setAccessor(PageBlobItem::new);
+    }
 
     /**
      * Constructs a {@link PageBlobItem}.
@@ -70,9 +76,17 @@ public class PageBlobItem {
     public PageBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
         final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
         final Long blobSequenceNumber, final String versionId) {
+        this(eTag, lastModified, contentMd5, isServerEncrypted, encryptionKeySha256, encryptionScope,
+            blobSequenceNumber, versionId, null);
+    }
+
+    private PageBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
+        final Boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
+        final Long blobSequenceNumber, final String versionId, final byte[] contentCrc64) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMd5 = CoreUtils.clone(contentMd5);
+        this.contentCrc64 = CoreUtils.clone(contentCrc64);
         this.isServerEncrypted = isServerEncrypted;
         this.encryptionKeySha256 = encryptionKeySha256;
         this.encryptionScope = encryptionScope;
@@ -132,6 +146,15 @@ public class PageBlobItem {
      */
     public byte[] getContentMd5() {
         return CoreUtils.clone(contentMd5);
+    }
+
+    /**
+     * Gets the calculated CRC64 of the page blob.
+     *
+     * @return the calculated CRC64 of the page blob
+     */
+    public byte[] getContentCrc64() {
+        return CoreUtils.clone(contentCrc64);
     }
 
     /**

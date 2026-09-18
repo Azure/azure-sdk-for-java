@@ -212,6 +212,8 @@ public final class AzureBackupServerContainer extends DpmContainer {
                     deserializedAzureBackupServerContainer.withHealthStatus(reader.getString());
                 } else if ("protectableObjectType".equals(fieldName)) {
                     deserializedAzureBackupServerContainer.withProtectableObjectType(reader.getString());
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureBackupServerContainer.withSourceLocation(reader.getString());
                 } else if ("canReRegister".equals(fieldName)) {
                     deserializedAzureBackupServerContainer
                         .withCanReRegister(reader.getNullable(JsonReader::getBoolean));

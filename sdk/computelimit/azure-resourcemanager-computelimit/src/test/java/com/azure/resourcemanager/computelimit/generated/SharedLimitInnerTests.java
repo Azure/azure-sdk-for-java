@@ -12,7 +12,7 @@ public final class SharedLimitInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SharedLimitInner model = BinaryData.fromString(
-            "{\"properties\":{\"resourceName\":{\"value\":\"kvnipjoxz\",\"localizedValue\":\"chgejspodm\"},\"limit\":1543997460,\"unit\":\"ydehoj\",\"provisioningState\":\"Canceled\"},\"id\":\"uxinpmqnjaq\",\"name\":\"ixjsprozvcputeg\",\"type\":\"vwmf\"}")
+            "{\"properties\":{\"resourceName\":{\"value\":\"ryffdfdosy\",\"localizedValue\":\"xpaojakhmsbz\"},\"limit\":510394239,\"unit\":\"zevdphlx\",\"provisioningState\":\"Canceled\"},\"id\":\"hqtrgqjbpf\",\"name\":\"fsinzgvfcjrwzoxx\",\"type\":\"tfell\"}")
             .toObject(SharedLimitInner.class);
     }
 

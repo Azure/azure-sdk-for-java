@@ -26,6 +26,12 @@ public final class ExecuteStartContent implements JsonSerializable<ExecuteStartC
      */
     private Resources resources;
 
+    /*
+     * The resources for the request with resource context information. Cannot be provided together with `resources` -
+     * exactly one must be specified.
+     */
+    private ResourcesWithContext resourcesWithContext;
+
     /**
      * Creates an instance of ExecuteStartContent class.
      */
@@ -73,6 +79,28 @@ public final class ExecuteStartContent implements JsonSerializable<ExecuteStartC
     }
 
     /**
+     * Get the resourcesWithContext property: The resources for the request with resource context information. Cannot be
+     * provided together with `resources` - exactly one must be specified.
+     * 
+     * @return the resourcesWithContext value.
+     */
+    public ResourcesWithContext resourcesWithContext() {
+        return this.resourcesWithContext;
+    }
+
+    /**
+     * Set the resourcesWithContext property: The resources for the request with resource context information. Cannot be
+     * provided together with `resources` - exactly one must be specified.
+     * 
+     * @param resourcesWithContext the resourcesWithContext value to set.
+     * @return the ExecuteStartContent object itself.
+     */
+    public ExecuteStartContent withResourcesWithContext(ResourcesWithContext resourcesWithContext) {
+        this.resourcesWithContext = resourcesWithContext;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -80,6 +108,7 @@ public final class ExecuteStartContent implements JsonSerializable<ExecuteStartC
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("executionParameters", this.executionParameters);
         jsonWriter.writeJsonField("resources", this.resources);
+        jsonWriter.writeJsonField("resourcesWithContext", this.resourcesWithContext);
         return jsonWriter.writeEndObject();
     }
 
@@ -103,6 +132,8 @@ public final class ExecuteStartContent implements JsonSerializable<ExecuteStartC
                     deserializedExecuteStartContent.executionParameters = ExecutionParameters.fromJson(reader);
                 } else if ("resources".equals(fieldName)) {
                     deserializedExecuteStartContent.resources = Resources.fromJson(reader);
+                } else if ("resourcesWithContext".equals(fieldName)) {
+                    deserializedExecuteStartContent.resourcesWithContext = ResourcesWithContext.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

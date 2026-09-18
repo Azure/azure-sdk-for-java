@@ -27,11 +27,13 @@ import com.azure.resourcemanager.compute.bulkactions.fluent.models.DeallocateRes
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.DeleteResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.GetOperationStatusResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.HibernateResourceOperationResponseInner;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.ReimageResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.StartResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.models.CancelOperationsContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeallocateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeleteContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteHibernateContent;
+import com.azure.resourcemanager.compute.bulkactions.models.ExecuteReimageRequest;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteStartContent;
 import com.azure.resourcemanager.compute.bulkactions.models.GetOperationStatusContent;
 import reactor.core.publisher.Mono;
@@ -179,6 +181,25 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") CancelOperationsContent requestBody, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkReimage")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ReimageResourceOperationResponseInner>> bulkReimageOperation(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ExecuteReimageRequest requestBody, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/virtualMachinesBulkReimage")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ReimageResourceOperationResponseInner> bulkReimageOperationSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ExecuteReimageRequest requestBody, Context context);
     }
 
     /**
@@ -673,5 +694,88 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
     public CancelOperationsResponseInner bulkCancelOperations(String resourceGroupName, String location,
         CancelOperationsContent requestBody) {
         return bulkCancelOperationsWithResponse(resourceGroupName, location, requestBody, Context.NONE).getValue();
+    }
+
+    /**
+     * BulkReimage: Execute reimage operation for a batch of virtual machines, this operation is triggered as soon as
+     * Computeschedule receives it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a reimage request along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ReimageResourceOperationResponseInner>> bulkReimageOperationWithResponseAsync(
+        String resourceGroupName, String location, ExecuteReimageRequest requestBody) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.bulkReimageOperation(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, requestBody,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * BulkReimage: Execute reimage operation for a batch of virtual machines, this operation is triggered as soon as
+     * Computeschedule receives it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a reimage request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ReimageResourceOperationResponseInner> bulkReimageOperationAsync(String resourceGroupName,
+        String location, ExecuteReimageRequest requestBody) {
+        return bulkReimageOperationWithResponseAsync(resourceGroupName, location, requestBody)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * BulkReimage: Execute reimage operation for a batch of virtual machines, this operation is triggered as soon as
+     * Computeschedule receives it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a reimage request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReimageResourceOperationResponseInner> bulkReimageOperationWithResponse(String resourceGroupName,
+        String location, ExecuteReimageRequest requestBody, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.bulkReimageOperationSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, requestBody, context);
+    }
+
+    /**
+     * BulkReimage: Execute reimage operation for a batch of virtual machines, this operation is triggered as soon as
+     * Computeschedule receives it.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param requestBody The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a reimage request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReimageResourceOperationResponseInner bulkReimageOperation(String resourceGroupName, String location,
+        ExecuteReimageRequest requestBody) {
+        return bulkReimageOperationWithResponse(resourceGroupName, location, requestBody, Context.NONE).getValue();
     }
 }

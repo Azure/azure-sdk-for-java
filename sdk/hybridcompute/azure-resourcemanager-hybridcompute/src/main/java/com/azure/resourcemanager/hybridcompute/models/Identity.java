@@ -10,26 +10,34 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
- * Identity for the resource.
+ * Managed service identity (system assigned and/or user assigned identities).
  */
 @Fluent
 public final class Identity implements JsonSerializable<Identity> {
     /*
-     * The principal ID of resource identity. The value must be an UUID.
+     * The service principal ID of the system assigned identity. This property will only be provided for a system
+     * assigned identity.
      */
     private String principalId;
 
     /*
-     * The tenant ID of resource. The value must be an UUID.
+     * The tenant ID of the system assigned identity. This property will only be provided for a system assigned
+     * identity.
      */
     private String tenantId;
 
     /*
-     * The identity type.
+     * The type of managed identity assigned to this resource.
      */
     private ResourceIdentityType type;
+
+    /*
+     * The identities assigned to this resource by the user.
+     */
+    private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /**
      * Creates an instance of Identity class.
@@ -38,7 +46,8 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Get the principalId property: The principal ID of resource identity. The value must be an UUID.
+     * Get the principalId property: The service principal ID of the system assigned identity. This property will only
+     * be provided for a system assigned identity.
      * 
      * @return the principalId value.
      */
@@ -47,7 +56,8 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Get the tenantId property: The tenant ID of resource. The value must be an UUID.
+     * Get the tenantId property: The tenant ID of the system assigned identity. This property will only be provided for
+     * a system assigned identity.
      * 
      * @return the tenantId value.
      */
@@ -56,7 +66,7 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Get the type property: The identity type.
+     * Get the type property: The type of managed identity assigned to this resource.
      * 
      * @return the type value.
      */
@@ -65,7 +75,7 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Set the type property: The identity type.
+     * Set the type property: The type of managed identity assigned to this resource.
      * 
      * @param type the type value to set.
      * @return the Identity object itself.
@@ -76,12 +86,34 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
+     * Get the userAssignedIdentities property: The identities assigned to this resource by the user.
+     * 
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, UserAssignedIdentity> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: The identities assigned to this resource by the user.
+     * 
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the Identity object itself.
+     */
+    public Identity withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -91,6 +123,7 @@ public final class Identity implements JsonSerializable<Identity> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of Identity if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Identity.
      */
     public static Identity fromJson(JsonReader jsonReader) throws IOException {
@@ -100,12 +133,16 @@ public final class Identity implements JsonSerializable<Identity> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("principalId".equals(fieldName)) {
+                if ("type".equals(fieldName)) {
+                    deserializedIdentity.type = ResourceIdentityType.fromString(reader.getString());
+                } else if ("principalId".equals(fieldName)) {
                     deserializedIdentity.principalId = reader.getString();
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedIdentity.tenantId = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedIdentity.type = ResourceIdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, UserAssignedIdentity> userAssignedIdentities
+                        = reader.readMap(reader1 -> UserAssignedIdentity.fromJson(reader1));
+                    deserializedIdentity.userAssignedIdentities = userAssignedIdentities;
                 } else {
                     reader.skipChildren();
                 }

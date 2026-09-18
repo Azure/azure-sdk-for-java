@@ -189,8 +189,8 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Get the ignoreConflictingHostNames property: If true, custom hostname conflicts will be ignored when recovering
-     * to a target web app.
+     * Get the ignoreConflictingHostNames property:
+     * If true, custom hostname conflicts will be ignored when recovering to a target web app.
      * This setting is only necessary when RecoverConfiguration is enabled.
      * 
      * @return the ignoreConflictingHostNames value.
@@ -200,8 +200,8 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Set the ignoreConflictingHostNames property: If true, custom hostname conflicts will be ignored when recovering
-     * to a target web app.
+     * Set the ignoreConflictingHostNames property:
+     * If true, custom hostname conflicts will be ignored when recovering to a target web app.
      * This setting is only necessary when RecoverConfiguration is enabled.
      * 
      * @param ignoreConflictingHostNames the ignoreConflictingHostNames value to set.

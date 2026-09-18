@@ -22,7 +22,7 @@ public final class HorizonDbPrivateLinkResourcesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"vimjwos\",\"requiredMembers\":[\"itc\"],\"requiredZoneNames\":[\"cktqumiekkezzi\",\"hlyfjhdgqgg\",\"bdunygaeqid\"]},\"id\":\"fatpxllrxcyjmoa\",\"name\":\"su\",\"type\":\"arm\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"lxqtvcofudfl\",\"requiredMembers\":[\"jub\"],\"requiredZoneNames\":[\"nnqvsa\",\"nqntorudsgsahm\",\"yc\"]},\"id\":\"auwjuetaebu\",\"name\":\"u\",\"type\":\"dmovsm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class HorizonDbPrivateLinkResourcesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<HorizonDbPrivateLinkResource> response = manager.horizonDbPrivateLinkResources()
-            .list("dxbjhwuaanozj", "sphyoulpjrvxa", com.azure.core.util.Context.NONE);
+        PagedIterable<HorizonDbPrivateLinkResource> response
+            = manager.horizonDbPrivateLinkResources().list("nvxbvt", "udutnco", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cktqumiekkezzi", response.iterator().next().properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("nnqvsa", response.iterator().next().properties().requiredZoneNames().get(0));
     }
 }

@@ -35,3 +35,6 @@ extends:
       - name: azure-resourcemanager-billing
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerbilling
+      - name: azure-resourcemanager-billing-trust
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerbillingtrust

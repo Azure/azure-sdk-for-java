@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class GetOperationStatusContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GetOperationStatusContent model = BinaryData.fromString("{\"operationIds\":[\"jaeq\",\"hqjbasvmsmj\"]}")
+        GetOperationStatusContent model = BinaryData.fromString("{\"operationIds\":[\"evgbmqjq\",\"bcypmi\"]}")
             .toObject(GetOperationStatusContent.class);
-        Assertions.assertEquals("jaeq", model.operationIds().get(0));
+        Assertions.assertEquals("evgbmqjq", model.operationIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GetOperationStatusContent model
-            = new GetOperationStatusContent().withOperationIds(Arrays.asList("jaeq", "hqjbasvmsmj"));
+            = new GetOperationStatusContent().withOperationIds(Arrays.asList("evgbmqjq", "bcypmi"));
         model = BinaryData.fromObject(model).toObject(GetOperationStatusContent.class);
-        Assertions.assertEquals("jaeq", model.operationIds().get(0));
+        Assertions.assertEquals("evgbmqjq", model.operationIds().get(0));
     }
 }

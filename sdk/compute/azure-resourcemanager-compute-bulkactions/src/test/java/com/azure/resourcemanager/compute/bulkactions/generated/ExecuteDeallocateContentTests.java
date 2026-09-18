@@ -5,10 +5,13 @@
 package com.azure.resourcemanager.compute.bulkactions.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.compute.bulkactions.models.CapacityRecommendationParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeallocateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourceWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.Resources;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourcesWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -17,28 +20,53 @@ public final class ExecuteDeallocateContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteDeallocateContent model = BinaryData.fromString(
-            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":1273684509,\"retryWindowInMinutes\":2000849582,\"onFailureAction\":\"Delete\"}},\"resources\":{\"ids\":[\"nwzsymg\",\"zufcyzkohdbi\",\"anufhfcbjysag\",\"th\"]}}")
+            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":1273684509,\"retryWindowInMinutes\":2000849582,\"onFailureAction\":\"Start\"},\"verifyVmAgentHealth\":false,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"ymglzufcyz\",\"ohdbihanufh\",\"cbjy\"],\"desiredSizes\":[\"ithxqhabifpi\"],\"availabilityZones\":false}},\"resources\":{\"ids\":[\"byscnp\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"hiv\",\"resourceContext\":\"qniwbybrkxvdumj\"},{\"resourceId\":\"rtfw\",\"resourceContext\":\"ukxgaud\"},{\"resourceId\":\"cs\",\"resourceContext\":\"h\"}]}}")
             .toObject(ExecuteDeallocateContent.class);
         Assertions.assertEquals(1273684509, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(2000849582, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DELETE,
+        Assertions.assertEquals(ResourceOperationType.START,
             model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals("nwzsymg", model.resources().ids().get(0));
+        Assertions.assertFalse(model.executionParameters().verifyVmAgentHealth());
+        Assertions.assertEquals("ymglzufcyz",
+            model.executionParameters().capacityRecommendationParameters().desiredLocations().get(0));
+        Assertions.assertEquals("ithxqhabifpi",
+            model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
+        Assertions.assertFalse(model.executionParameters().capacityRecommendationParameters().availabilityZones());
+        Assertions.assertEquals("byscnp", model.resources().ids().get(0));
+        Assertions.assertEquals("hiv", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("qniwbybrkxvdumj", model.resourcesWithContext().resources().get(0).resourceContext());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecuteDeallocateContent model = new ExecuteDeallocateContent()
-            .withExecutionParameters(
-                new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryCount(1273684509)
+            .withExecutionParameters(new ExecutionParameters()
+                .withRetryPolicy(new RetryPolicy().withRetryCount(1273684509)
                     .withRetryWindowInMinutes(2000849582)
-                    .withOnFailureAction(ResourceOperationType.DELETE)))
-            .withResources(new Resources().withIds(Arrays.asList("nwzsymg", "zufcyzkohdbi", "anufhfcbjysag", "th")));
+                    .withOnFailureAction(ResourceOperationType.START))
+                .withVerifyVmAgentHealth(false)
+                .withCapacityRecommendationParameters(new CapacityRecommendationParameters()
+                    .withDesiredLocations(Arrays.asList("ymglzufcyz", "ohdbihanufh", "cbjy"))
+                    .withDesiredSizes(Arrays.asList("ithxqhabifpi"))
+                    .withAvailabilityZones(false)))
+            .withResources(new Resources().withIds(Arrays.asList("byscnp")))
+            .withResourcesWithContext(new ResourcesWithContext().withResources(
+                Arrays.asList(new ResourceWithContext().withResourceId("hiv").withResourceContext("qniwbybrkxvdumj"),
+                    new ResourceWithContext().withResourceId("rtfw").withResourceContext("ukxgaud"),
+                    new ResourceWithContext().withResourceId("cs").withResourceContext("h"))));
         model = BinaryData.fromObject(model).toObject(ExecuteDeallocateContent.class);
         Assertions.assertEquals(1273684509, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(2000849582, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DELETE,
+        Assertions.assertEquals(ResourceOperationType.START,
             model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals("nwzsymg", model.resources().ids().get(0));
+        Assertions.assertFalse(model.executionParameters().verifyVmAgentHealth());
+        Assertions.assertEquals("ymglzufcyz",
+            model.executionParameters().capacityRecommendationParameters().desiredLocations().get(0));
+        Assertions.assertEquals("ithxqhabifpi",
+            model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
+        Assertions.assertFalse(model.executionParameters().capacityRecommendationParameters().availabilityZones());
+        Assertions.assertEquals("byscnp", model.resources().ids().get(0));
+        Assertions.assertEquals("hiv", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("qniwbybrkxvdumj", model.resourcesWithContext().resources().get(0).resourceContext());
     }
 }

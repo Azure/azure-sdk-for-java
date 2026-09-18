@@ -214,7 +214,7 @@ public interface PublicCloudConnectorsClient {
     PagedIterable<PublicCloudConnectorInner> list(Context context);
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
@@ -228,7 +228,7 @@ public interface PublicCloudConnectorsClient {
         beginTestPermissions(String resourceGroupName, String publicCloudConnector);
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
@@ -243,7 +243,7 @@ public interface PublicCloudConnectorsClient {
         beginTestPermissions(String resourceGroupName, String publicCloudConnector, Context context);
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
@@ -256,7 +256,7 @@ public interface PublicCloudConnectorsClient {
     OperationStatusResultInner testPermissions(String resourceGroupName, String publicCloudConnector);
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.

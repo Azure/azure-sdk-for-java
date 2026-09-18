@@ -30,13 +30,6 @@ public final class McpServerTool implements JsonSerializable<McpServerTool> {
     private McpServerOutputParsing outputParsing;
 
     /*
-     * Controls how the parsed results from this tool are integrated into the final result set. Defaults to 'reranked'
-     * when not specified.
-     */
-    @Generated
-    private McpServerToolInclusionMode inclusionMode;
-
-    /*
      * Optional post-parsing token cap for this tool's output. Must be greater than 0 when specified.
      */
     @Generated
@@ -94,30 +87,6 @@ public final class McpServerTool implements JsonSerializable<McpServerTool> {
     }
 
     /**
-     * Get the inclusionMode property: Controls how the parsed results from this tool are integrated into the final
-     * result set. Defaults to 'reranked' when not specified.
-     *
-     * @return the inclusionMode value.
-     */
-    @Generated
-    public McpServerToolInclusionMode getInclusionMode() {
-        return this.inclusionMode;
-    }
-
-    /**
-     * Set the inclusionMode property: Controls how the parsed results from this tool are integrated into the final
-     * result set. Defaults to 'reranked' when not specified.
-     *
-     * @param inclusionMode the inclusionMode value to set.
-     * @return the McpServerTool object itself.
-     */
-    @Generated
-    public McpServerTool setInclusionMode(McpServerToolInclusionMode inclusionMode) {
-        this.inclusionMode = inclusionMode;
-        return this;
-    }
-
-    /**
      * Get the maxOutputTokens property: Optional post-parsing token cap for this tool's output. Must be greater than 0
      * when specified.
      *
@@ -150,7 +119,8 @@ public final class McpServerTool implements JsonSerializable<McpServerTool> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("outputParsing", this.outputParsing);
-        jsonWriter.writeStringField("inclusionMode", this.inclusionMode == null ? null : this.inclusionMode.toString());
+        jsonWriter.writeStringField("resultsProcessing",
+            this.resultsProcessing == null ? null : this.resultsProcessing.toString());
         jsonWriter.writeNumberField("maxOutputTokens", this.maxOutputTokens);
         return jsonWriter.writeEndObject();
     }
@@ -174,8 +144,9 @@ public final class McpServerTool implements JsonSerializable<McpServerTool> {
                     deserializedMcpServerTool.name = reader.getString();
                 } else if ("outputParsing".equals(fieldName)) {
                     deserializedMcpServerTool.outputParsing = McpServerOutputParsing.fromJson(reader);
-                } else if ("inclusionMode".equals(fieldName)) {
-                    deserializedMcpServerTool.inclusionMode = McpServerToolInclusionMode.fromString(reader.getString());
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    deserializedMcpServerTool.resultsProcessing
+                        = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("maxOutputTokens".equals(fieldName)) {
                     deserializedMcpServerTool.maxOutputTokens = reader.getNullable(JsonReader::getInt);
                 } else {
@@ -184,5 +155,35 @@ public final class McpServerTool implements JsonSerializable<McpServerTool> {
             }
             return deserializedMcpServerTool;
         });
+    }
+
+    /*
+     * Controls whether the parsed results from this tool are reranked. Defaults to 'rerank' when not specified.
+     */
+    @Generated
+    private KnowledgeSourceResultsProcessing resultsProcessing;
+
+    /**
+     * Get the resultsProcessing property: Controls whether the parsed results from this tool are reranked. Defaults to
+     * 'rerank' when not specified.
+     *
+     * @return the resultsProcessing value.
+     */
+    @Generated
+    public KnowledgeSourceResultsProcessing getResultsProcessing() {
+        return this.resultsProcessing;
+    }
+
+    /**
+     * Set the resultsProcessing property: Controls whether the parsed results from this tool are reranked. Defaults to
+     * 'rerank' when not specified.
+     *
+     * @param resultsProcessing the resultsProcessing value to set.
+     * @return the McpServerTool object itself.
+     */
+    @Generated
+    public McpServerTool setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        this.resultsProcessing = resultsProcessing;
+        return this;
     }
 }

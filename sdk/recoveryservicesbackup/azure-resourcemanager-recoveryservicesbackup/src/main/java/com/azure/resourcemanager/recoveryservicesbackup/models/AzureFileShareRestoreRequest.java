@@ -52,6 +52,11 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
      */
     private TargetAfsRestoreInfo targetDetails;
 
+    /*
+     * Managed identity information required to access the storage account.
+     */
+    private IdentityInfo identityInfo;
+
     /**
      * Creates an instance of AzureFileShareRestoreRequest class.
      */
@@ -192,6 +197,26 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
     }
 
     /**
+     * Get the identityInfo property: Managed identity information required to access the storage account.
+     * 
+     * @return the identityInfo value.
+     */
+    public IdentityInfo identityInfo() {
+        return this.identityInfo;
+    }
+
+    /**
+     * Set the identityInfo property: Managed identity information required to access the storage account.
+     * 
+     * @param identityInfo the identityInfo value to set.
+     * @return the AzureFileShareRestoreRequest object itself.
+     */
+    public AzureFileShareRestoreRequest withIdentityInfo(IdentityInfo identityInfo) {
+        this.identityInfo = identityInfo;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -218,6 +243,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
         jsonWriter.writeArrayField("restoreFileSpecs", this.restoreFileSpecs,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("targetDetails", this.targetDetails);
+        jsonWriter.writeJsonField("identityInfo", this.identityInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -257,6 +283,8 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
                     deserializedAzureFileShareRestoreRequest.restoreFileSpecs = restoreFileSpecs;
                 } else if ("targetDetails".equals(fieldName)) {
                     deserializedAzureFileShareRestoreRequest.targetDetails = TargetAfsRestoreInfo.fromJson(reader);
+                } else if ("identityInfo".equals(fieldName)) {
+                    deserializedAzureFileShareRestoreRequest.identityInfo = IdentityInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

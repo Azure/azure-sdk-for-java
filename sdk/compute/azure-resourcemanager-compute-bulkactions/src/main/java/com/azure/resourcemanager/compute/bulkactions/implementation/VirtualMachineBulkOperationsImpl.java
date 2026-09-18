@@ -14,6 +14,7 @@ import com.azure.resourcemanager.compute.bulkactions.fluent.models.DeallocateRes
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.DeleteResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.GetOperationStatusResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.HibernateResourceOperationResponseInner;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.ReimageResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.StartResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.models.CancelOperationsContent;
 import com.azure.resourcemanager.compute.bulkactions.models.CancelOperationsResponse;
@@ -22,10 +23,12 @@ import com.azure.resourcemanager.compute.bulkactions.models.DeleteResourceOperat
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeallocateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeleteContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteHibernateContent;
+import com.azure.resourcemanager.compute.bulkactions.models.ExecuteReimageRequest;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteStartContent;
 import com.azure.resourcemanager.compute.bulkactions.models.GetOperationStatusContent;
 import com.azure.resourcemanager.compute.bulkactions.models.GetOperationStatusResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.HibernateResourceOperationResponse;
+import com.azure.resourcemanager.compute.bulkactions.models.ReimageResourceOperationResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.StartResourceOperationResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineBulkOperations;
 
@@ -151,6 +154,25 @@ public final class VirtualMachineBulkOperationsImpl implements VirtualMachineBul
             = this.serviceClient().bulkCancelOperations(resourceGroupName, location, requestBody);
         if (inner != null) {
             return new CancelOperationsResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<ReimageResourceOperationResponse> bulkReimageOperationWithResponse(String resourceGroupName,
+        String location, ExecuteReimageRequest requestBody, Context context) {
+        Response<ReimageResourceOperationResponseInner> inner
+            = this.serviceClient().bulkReimageOperationWithResponse(resourceGroupName, location, requestBody, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ReimageResourceOperationResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public ReimageResourceOperationResponse bulkReimageOperation(String resourceGroupName, String location,
+        ExecuteReimageRequest requestBody) {
+        ReimageResourceOperationResponseInner inner
+            = this.serviceClient().bulkReimageOperation(resourceGroupName, location, requestBody);
+        if (inner != null) {
+            return new ReimageResourceOperationResponseImpl(inner, this.manager());
         } else {
             return null;
         }

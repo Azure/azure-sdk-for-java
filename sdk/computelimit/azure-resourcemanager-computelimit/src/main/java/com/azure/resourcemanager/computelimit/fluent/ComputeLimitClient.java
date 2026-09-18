@@ -61,6 +61,13 @@ public interface ComputeLimitClient {
     GuestSubscriptionsClient getGuestSubscriptions();
 
     /**
+     * Gets the TrustedHostSubscriptionsClient object to access its operations.
+     * 
+     * @return the TrustedHostSubscriptionsClient object.
+     */
+    TrustedHostSubscriptionsClient getTrustedHostSubscriptions();
+
+    /**
      * Gets the SharedLimitsClient object to access its operations.
      * 
      * @return the SharedLimitsClient object.

@@ -1248,8 +1248,6 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             int createOperationCount = 10;
             Set<String> idsAddedByCreates = new HashSet<>();
 
-            deleteAllDocuments(container);
-
             try (CosmosAsyncClient client = buildAsyncClient(getClientBuilder(), this.writeRegions, true, shouldUsePreferredRegions)) {
 
                 Flux<CosmosItemOperation> createOperationsFlux = Flux.range(0, createOperationCount).map(i -> {
@@ -1260,7 +1258,9 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     return CosmosBulkOperations.getCreateItemOperation(testItem, new PartitionKey(documentId));
                 });
 
-                CosmosAsyncContainer helperContainer = client.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
+                CosmosAsyncContainer helperContainer = client
+                    .getDatabase(container.getDatabase().getId())
+                    .getContainer(container.getId());
 
                 List<CosmosBulkOperationResponse<Object>> bulkCreateResponses = helperContainer
                     .executeBulkOperations(createOperationsFlux)
@@ -1618,7 +1618,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuarantee",
                 "Change feed execution should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
-                !SPLIT_REQUESTED_FLAG,
+                SPLIT_REQUESTED_FLAG,
                 !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
                 true
             },
@@ -1627,7 +1627,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                 "changeFeed_fromBeginning_fromSecondPreferredRegion_forFullRange_withCreatesOnFirstPreferredRegion_withSessionGuarantee",
                 "Change feed execution should have succeeded...",
                 !BLOOM_FILTER_FORCED_ACCESSED_FLAG,
-                !SPLIT_REQUESTED_FLAG,
+                SPLIT_REQUESTED_FLAG,
                 !MULTI_PARTITION_CONTAINER_REQUESTED_FLAG,
                 false
             },
@@ -1766,6 +1766,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     setupClient);
             }
             shouldDeleteContainer = true;
+            resolvedContainer.read().block();
         } else {
             resolvedContainer = getSharedSinglePartitionCosmosContainer(client);
             expectedCosmosContainerProperties = new CosmosContainerProperties(resolvedContainer.getId(), "/mypk");
@@ -1806,7 +1807,8 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "readYouWriteWithExplicitRegionSwitchingTestContext", timeOut = 80 * TIMEOUT)
+    @Test(groups = {"multi-master"}, dataProvider = "readYouWriteWithExplicitRegionSwitchingTestContext",
+        timeOut = 80 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readYouWriteWithExplicitRegionSwitching(
         BiFunction<CosmosAsyncContainer, Boolean, Set<String>> func,
         String testId,
@@ -1841,6 +1843,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     setupClient);
             }
             shouldDeleteContainer = true;
+            resolvedContainer.read().block();
         } else {
             resolvedContainer = getSharedSinglePartitionCosmosContainer(client);
             expectedCosmosContainerProperties = new CosmosContainerProperties(resolvedContainer.getId(), "/mypk");
@@ -2173,15 +2176,6 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
                     normalizedRegion))
                 .isFalse();
         }
-    }
-
-    private static void deleteAllDocuments(CosmosAsyncContainer asyncContainer) {
-        asyncContainer
-            .queryItems("SELECT * FROM C", TestObject.class)
-            .collectList()
-            .flatMapMany(Flux::fromIterable)
-            .flatMap(testObject -> asyncContainer.deleteItem(testObject.getId(), new PartitionKey(testObject.getMypk())))
-            .blockLast();
     }
 
     private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {

@@ -26,6 +26,11 @@ public final class IpTag implements JsonSerializable<IpTag> {
      */
     private String tag;
 
+    /*
+     * The resource ID of the first party service tag associated with the IP tag.
+     */
+    private String firstPartyServiceTagId;
+
     /**
      * Creates an instance of IpTag class.
      */
@@ -73,6 +78,28 @@ public final class IpTag implements JsonSerializable<IpTag> {
     }
 
     /**
+     * Get the firstPartyServiceTagId property: The resource ID of the first party service tag associated with the IP
+     * tag.
+     * 
+     * @return the firstPartyServiceTagId value.
+     */
+    public String firstPartyServiceTagId() {
+        return this.firstPartyServiceTagId;
+    }
+
+    /**
+     * Set the firstPartyServiceTagId property: The resource ID of the first party service tag associated with the IP
+     * tag.
+     * 
+     * @param firstPartyServiceTagId the firstPartyServiceTagId value to set.
+     * @return the IpTag object itself.
+     */
+    public IpTag withFirstPartyServiceTagId(String firstPartyServiceTagId) {
+        this.firstPartyServiceTagId = firstPartyServiceTagId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -88,6 +115,7 @@ public final class IpTag implements JsonSerializable<IpTag> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("ipTagType", this.ipTagType);
         jsonWriter.writeStringField("tag", this.tag);
+        jsonWriter.writeStringField("firstPartyServiceTagId", this.firstPartyServiceTagId);
         return jsonWriter.writeEndObject();
     }
 
@@ -110,6 +138,8 @@ public final class IpTag implements JsonSerializable<IpTag> {
                     deserializedIpTag.ipTagType = reader.getString();
                 } else if ("tag".equals(fieldName)) {
                     deserializedIpTag.tag = reader.getString();
+                } else if ("firstPartyServiceTagId".equals(fieldName)) {
+                    deserializedIpTag.firstPartyServiceTagId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

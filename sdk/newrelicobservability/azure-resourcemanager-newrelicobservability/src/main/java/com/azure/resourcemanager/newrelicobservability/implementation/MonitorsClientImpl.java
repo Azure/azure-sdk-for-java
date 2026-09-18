@@ -2461,7 +2461,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 
@@ -2484,7 +2484,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 
@@ -2505,7 +2505,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 
@@ -2527,7 +2527,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 
@@ -2549,7 +2549,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 
@@ -2571,7 +2571,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 
@@ -2592,7 +2592,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 
@@ -2613,7 +2613,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 
@@ -2635,7 +2635,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 
@@ -2655,7 +2655,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 
@@ -2674,7 +2674,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 
@@ -2692,7 +2692,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     }
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
      * 
      * A long-running resource action.
      * 

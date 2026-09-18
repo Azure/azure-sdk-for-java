@@ -15,11 +15,11 @@ import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,12 +34,12 @@ public class ProxyIntegrationTest extends ApiTestBase {
     private EventHubClient client;
     private PartitionSender sender;
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException, EventHubException {
         final ProxyConfiguration proxyConfiguration = getProxyConfiguration();
 
-        Assume.assumeTrue("Cannot run proxy integration tests without setting proxy configuration.",
-            proxyConfiguration != null);
+        Assumptions.assumeTrue(proxyConfiguration != null,
+            "Cannot run proxy integration tests without setting proxy configuration.");
 
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString()
             .setTransportType(TransportType.AMQP_WEB_SOCKETS);
@@ -50,7 +50,7 @@ public class ProxyIntegrationTest extends ApiTestBase {
         sender = client.createPartitionSenderSync(PARTITION_ID);
     }
 
-    @After
+    @AfterEach
     public void teardown() throws ExecutionException, InterruptedException {
         CompletableFuture.allOf(sender.close(), client.close()).get();
     }
@@ -78,11 +78,11 @@ public class ProxyIntegrationTest extends ApiTestBase {
         final Iterable<EventData> received = receiver.receiveSync(15);
 
         // Assert
-        Assert.assertNotNull(received);
+        Assertions.assertNotNull(received);
 
         final ArrayList<EventData> list = new ArrayList<>();
         received.forEach(list::add);
 
-        Assert.assertEquals(numberOfEvents, list.size());
+        Assertions.assertEquals(numberOfEvents, list.size());
     }
 }

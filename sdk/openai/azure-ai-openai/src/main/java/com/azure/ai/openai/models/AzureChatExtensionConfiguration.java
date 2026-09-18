@@ -12,7 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * A representation of configuration data for a single Azure OpenAI chat extension. This will be used by a chat
+ * A representation of configuration data for a single Azure
+ * OpenAI chat extension. This will be used by a chat
  * completions request that should use Azure OpenAI chat extensions to augment the response behavior.
  * The use of this configuration is compatible only with Azure OpenAI.
  */
@@ -27,15 +28,16 @@ public class AzureChatExtensionConfiguration implements JsonSerializable<AzureCh
     }
 
     /*
-     * The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
+     * The label for the type of an Azure chat extension.
+     * This typically corresponds to a matching Azure resource.
      * Azure chat extensions are only compatible with Azure OpenAI.
      */
     @Generated
     private AzureChatExtensionType type = AzureChatExtensionType.fromString("AzureChatExtensionConfiguration");
 
     /**
-     * Get the type property: The label for the type of an Azure chat extension. This typically corresponds to a
-     * matching Azure resource.
+     * Get the type property: The label for the type of an Azure chat extension.
+     * This typically corresponds to a matching Azure resource.
      * Azure chat extensions are only compatible with Azure OpenAI.
      *
      * @return the type value.

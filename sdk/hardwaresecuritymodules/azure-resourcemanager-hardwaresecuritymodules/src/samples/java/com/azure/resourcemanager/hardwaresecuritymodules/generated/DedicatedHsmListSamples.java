@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hardwaresecuritymodules.generated;
  */
 public final class DedicatedHsmListSamples {
     /*
-     * x-ms-original-file: 2025-03-31/PaymentHsm_ListBySubscription.json
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsm_ListBySubscription.json
      */
     /**
      * Sample code: List dedicated HSM devices in a subscription including payment HSM.
@@ -22,7 +22,7 @@ public final class DedicatedHsmListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-31/DedicatedHsm_ListBySubscription.json
+     * x-ms-original-file: 2025-12-01-preview/DedicatedHsm_ListBySubscription.json
      */
     /**
      * Sample code: List dedicated HSM devices in a subscription.

@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class ClustersInspectSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Inspect.json
+     * x-ms-original-file: 2026-07-01/Clusters_Inspect.json
      */
     /**
      * Sample code: Inspect cluster.

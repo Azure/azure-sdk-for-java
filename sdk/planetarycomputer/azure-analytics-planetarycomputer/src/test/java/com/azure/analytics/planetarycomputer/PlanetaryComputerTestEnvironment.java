@@ -21,21 +21,21 @@ public class PlanetaryComputerTestEnvironment {
      */
     public String getEndpoint() {
         return configuration.get("PLANETARYCOMPUTER_ENDPOINT",
-            "https://test-accessibility.h5d5a9crhnc8deaz.uksouth.geocatalog.spatio.azure.com");
+            "https://emiliod-test.dqfjg4bffwadc9fq.uksouth.geocatalog.spatio.azure.com");
     }
 
     /**
      * Get the test collection ID.
      */
     public String getCollectionId() {
-        return configuration.get("PLANETARYCOMPUTER_COLLECTION_ID", "naip-sample-dataset-1.0.0");
+        return configuration.get("PLANETARYCOMPUTER_COLLECTION_ID", "naip");
     }
 
     /**
      * Get the test item ID.
      */
     public String getItemId() {
-        return configuration.get("PLANETARYCOMPUTER_ITEM_ID", "va_m_3807708_sw_18_060_20231113_20240103");
+        return configuration.get("PLANETARYCOMPUTER_ITEM_ID", "ga_m_3308421_se_16_060_20211114");
     }
 
     /**

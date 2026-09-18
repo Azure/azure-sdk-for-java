@@ -12,8 +12,8 @@ public final class ExtensionValueListResultV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionValueListResultV2 model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"extensionUris\":[\"jwsawddjibab\",\"vit\",\"tvtzeexavoxtfg\",\"ecdmdqbwpy\"],\"extensionSignatureUri\":\"tgsfja\",\"operatingSystem\":\"slhhxudbxv\",\"architecture\":[\"tnsi\",\"ud\"],\"version\":\"m\",\"extensionType\":\"sckdlp\",\"publisher\":\"zrcxfailcfxwmdbo\"},\"id\":\"fgsftufqob\",\"name\":\"jln\",\"type\":\"cgcckknhxkizvyt\"},{\"properties\":{\"extensionUris\":[\"uljraae\",\"anokqgu\",\"kjq\",\"vbroylaxxu\"],\"extensionSignatureUri\":\"disdosfjbjsvgj\",\"operatingSystem\":\"hryvy\",\"architecture\":[\"dclxgc\"],\"version\":\"nfnw\",\"extensionType\":\"tmvpdvjdhtt\",\"publisher\":\"efedxihchrphkm\"},\"id\":\"jdqnsdfzpbgt\",\"name\":\"kylkdghrj\",\"type\":\"uutlwxezwzhok\"},{\"properties\":{\"extensionUris\":[\"hh\",\"qlgehg\"],\"extensionSignatureUri\":\"ipifhpfeoajvg\",\"operatingSystem\":\"txjcsheafidlt\",\"architecture\":[\"resmkssjhoiftxfk\"],\"version\":\"egprhptil\",\"extensionType\":\"cbiqtgdqoh\",\"publisher\":\"wsldrizetpwbr\"},\"id\":\"llibphbqzmizak\",\"name\":\"kan\",\"type\":\"jpdn\"}],\"nextLink\":\"ha\"}")
+            "{\"value\":[{\"properties\":{\"extensionUris\":[\"mzznrtffyaqitmhh\",\"ioqaqhvs\",\"ufuqyrx\"],\"extensionSignatureUri\":\"lcgqlsismj\",\"operatingSystem\":\"rddga\",\"architecture\":[\"hiosrsjuiv\",\"cdisyir\",\"xzhczexrxz\"],\"version\":\"jrtrhqvwrevk\",\"extensionType\":\"nlnzonzlrpi\",\"publisher\":\"wncvjtszcofiz\"},\"id\":\"tdhgbjkvrelj\",\"name\":\"amurvzmlovuan\",\"type\":\"shcxlpmjerbdk\"}],\"nextLink\":\"vidizozsdb\"}")
             .toObject(ExtensionValueListResultV2.class);
-        Assertions.assertEquals("ha", model.nextLink());
+        Assertions.assertEquals("vidizozsdb", model.nextLink());
     }
 }

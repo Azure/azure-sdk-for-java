@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca.implementation.signature;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaPropertyNames;
 import com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +35,7 @@ public class KeyVaultKeylessRsaSsaPssSignatureTest {
 
     @BeforeEach
     public void before() {
-        System.setProperty("azure.keyvault.uri", KEY_VAULT_TEST_URI_GLOBAL);
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, KEY_VAULT_TEST_URI_GLOBAL);
         keyVaultKeylessRsaSsaPssSignature = new KeyVaultKeylessRsaSsaPssSignature();
     }
 

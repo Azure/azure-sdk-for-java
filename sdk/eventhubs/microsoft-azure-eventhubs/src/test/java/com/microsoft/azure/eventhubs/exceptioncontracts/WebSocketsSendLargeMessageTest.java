@@ -9,14 +9,15 @@ import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
 import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class WebSocketsSendLargeMessageTest extends ApiTestBase {
     private static SendLargeMessageTest sendLargeMessageTest;
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws Exception {
         final ConnectionStringBuilder connectionStringBuilder = TestContext.getConnectionString();
         connectionStringBuilder.setTransportType(TransportType.AMQP_WEB_SOCKETS);
@@ -24,22 +25,24 @@ public class WebSocketsSendLargeMessageTest extends ApiTestBase {
         SendLargeMessageTest.initializeEventHubClients(connectionStringBuilder);
     }
 
-    @AfterClass()
+    @AfterAll
     public static void cleanup() throws EventHubException {
         SendLargeMessageTest.cleanup();
     }
 
-    @Test()
+    @Test
     public void sendMsgLargerThan64k() throws EventHubException {
         sendLargeMessageTest.sendMsgLargerThan64k();
     }
 
-    @Test(expected = PayloadSizeExceededException.class)
-    public void sendMsgLargerThan1024K() throws EventHubException {
-        sendLargeMessageTest.sendMsgLargerThan1024K();
+    @Test
+    public void sendMsgLargerThan1024K() {
+        Assertions.assertThrows(
+            PayloadSizeExceededException.class,
+            () -> sendLargeMessageTest.sendMsgLargerThan1024K());
     }
 
-    @Test()
+    @Test
     public void sendMsgLargerThan128k() throws EventHubException {
         sendLargeMessageTest.sendMsgLargerThan128k();
     }

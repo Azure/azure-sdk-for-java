@@ -19,10 +19,10 @@ public final class LicenseDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LicenseDetails model = BinaryData.fromString(
-            "{\"state\":\"Deactivated\",\"target\":\"Windows Server 2012\",\"edition\":\"Datacenter\",\"type\":\"vCore\",\"processors\":1249241365,\"assignedLicenses\":967174365,\"immutableId\":\"ypnddhsgcb\",\"volumeLicenseDetails\":[{\"programYear\":\"Year 3\",\"invoiceId\":\"koty\"},{\"programYear\":\"Year 2\",\"invoiceId\":\"ulzndlikwyqk\"},{\"programYear\":\"Year 1\",\"invoiceId\":\"bmadgak\"},{\"programYear\":\"Year 3\",\"invoiceId\":\"xybz\"}]}")
+            "{\"state\":\"Deactivated\",\"target\":\"Windows Server 2012 R2\",\"edition\":\"Datacenter\",\"type\":\"vCore\",\"processors\":1249241365,\"assignedLicenses\":967174365,\"immutableId\":\"ypnddhsgcb\",\"volumeLicenseDetails\":[{\"programYear\":\"Year 3\",\"invoiceId\":\"koty\"},{\"programYear\":\"Year 2\",\"invoiceId\":\"ulzndlikwyqk\"},{\"programYear\":\"Year 1\",\"invoiceId\":\"bmadgak\"},{\"programYear\":\"Year 3\",\"invoiceId\":\"xybz\"}]}")
             .toObject(LicenseDetails.class);
         Assertions.assertEquals(LicenseState.DEACTIVATED, model.state());
-        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.target());
+        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2, model.target());
         Assertions.assertEquals(LicenseEdition.DATACENTER, model.edition());
         Assertions.assertEquals(LicenseCoreType.V_CORE, model.type());
         Assertions.assertEquals(1249241365, model.processors());
@@ -33,7 +33,7 @@ public final class LicenseDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LicenseDetails model = new LicenseDetails().withState(LicenseState.DEACTIVATED)
-            .withTarget(LicenseTarget.WINDOWS_SERVER_2012)
+            .withTarget(LicenseTarget.WINDOWS_SERVER_2012_R2)
             .withEdition(LicenseEdition.DATACENTER)
             .withType(LicenseCoreType.V_CORE)
             .withProcessors(1249241365)
@@ -44,7 +44,7 @@ public final class LicenseDetailsTests {
                     new VolumeLicenseDetails().withProgramYear(ProgramYear.YEAR_3).withInvoiceId("xybz")));
         model = BinaryData.fromObject(model).toObject(LicenseDetails.class);
         Assertions.assertEquals(LicenseState.DEACTIVATED, model.state());
-        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.target());
+        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2, model.target());
         Assertions.assertEquals(LicenseEdition.DATACENTER, model.edition());
         Assertions.assertEquals(LicenseCoreType.V_CORE, model.type());
         Assertions.assertEquals(1249241365, model.processors());

@@ -221,6 +221,15 @@ public class RequestResponseChannel implements AsyncCloseable {
         });
         this.subscriptions.add(sendEndpointDisposable);
 
+        // Drain the send link's credit flux. Unlike ReactorSender, RequestResponseChannel does not use AMQP
+        // link-credit based flow control (it correlates responses via 'unconfirmedSends'), so it never subscribed
+        // to the credits. However, SendLinkHandler.getLinkCredits() is backed by a unicast onBackpressureBuffer sink
+        // that emits a value on every AMQP flow frame (onLinkFlow); with no subscriber those values buffer forever,
+        // leaking memory for long-lived, cached management channels. Subscribe and discard to keep the buffer drained.
+        // https://github.com/Azure/azure-sdk-for-java/issues/47261
+        final Disposable sendCreditsDisposable = sendLinkHandler.getLinkCredits().subscribe();
+        this.subscriptions.add(sendCreditsDisposable);
+
         // To ensure graceful closure of request-response-channel instance that won the race between
         // its creation and its parent connection close.
         final Disposable shutdownDisposable = amqpConnection.getShutdownSignals().next().flatMap(signal -> {

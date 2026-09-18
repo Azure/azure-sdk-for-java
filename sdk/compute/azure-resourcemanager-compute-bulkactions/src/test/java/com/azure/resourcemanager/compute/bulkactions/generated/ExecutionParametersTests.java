@@ -5,31 +5,46 @@
 package com.azure.resourcemanager.compute.bulkactions.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.compute.bulkactions.models.CapacityRecommendationParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ExecutionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutionParameters model = BinaryData.fromString(
-            "{\"retryPolicy\":{\"retryCount\":1575612003,\"retryWindowInMinutes\":761383043,\"onFailureAction\":\"Delete\"}}")
+            "{\"retryPolicy\":{\"retryCount\":1290060857,\"retryWindowInMinutes\":1518133549,\"onFailureAction\":\"Deallocate\"},\"verifyVmAgentHealth\":true,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"napczwlokjy\",\"mkkvnip\",\"oxzjnchgejspod\",\"ailzydehojwyahu\"],\"desiredSizes\":[\"pmqnja\",\"wixjsprozvcp\",\"tegjvwmf\",\"atscmd\"],\"availabilityZones\":true}}")
             .toObject(ExecutionParameters.class);
-        Assertions.assertEquals(1575612003, model.retryPolicy().retryCount());
-        Assertions.assertEquals(761383043, model.retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DELETE, model.retryPolicy().onFailureAction());
+        Assertions.assertEquals(1290060857, model.retryPolicy().retryCount());
+        Assertions.assertEquals(1518133549, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DEALLOCATE, model.retryPolicy().onFailureAction());
+        Assertions.assertTrue(model.verifyVmAgentHealth());
+        Assertions.assertEquals("napczwlokjy", model.capacityRecommendationParameters().desiredLocations().get(0));
+        Assertions.assertEquals("pmqnja", model.capacityRecommendationParameters().desiredSizes().get(0));
+        Assertions.assertTrue(model.capacityRecommendationParameters().availabilityZones());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecutionParameters model
-            = new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryCount(1575612003)
-                .withRetryWindowInMinutes(761383043)
-                .withOnFailureAction(ResourceOperationType.DELETE));
+        ExecutionParameters model = new ExecutionParameters()
+            .withRetryPolicy(new RetryPolicy().withRetryCount(1290060857)
+                .withRetryWindowInMinutes(1518133549)
+                .withOnFailureAction(ResourceOperationType.DEALLOCATE))
+            .withVerifyVmAgentHealth(true)
+            .withCapacityRecommendationParameters(new CapacityRecommendationParameters()
+                .withDesiredLocations(Arrays.asList("napczwlokjy", "mkkvnip", "oxzjnchgejspod", "ailzydehojwyahu"))
+                .withDesiredSizes(Arrays.asList("pmqnja", "wixjsprozvcp", "tegjvwmf", "atscmd"))
+                .withAvailabilityZones(true));
         model = BinaryData.fromObject(model).toObject(ExecutionParameters.class);
-        Assertions.assertEquals(1575612003, model.retryPolicy().retryCount());
-        Assertions.assertEquals(761383043, model.retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DELETE, model.retryPolicy().onFailureAction());
+        Assertions.assertEquals(1290060857, model.retryPolicy().retryCount());
+        Assertions.assertEquals(1518133549, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DEALLOCATE, model.retryPolicy().onFailureAction());
+        Assertions.assertTrue(model.verifyVmAgentHealth());
+        Assertions.assertEquals("napczwlokjy", model.capacityRecommendationParameters().desiredLocations().get(0));
+        Assertions.assertEquals("pmqnja", model.capacityRecommendationParameters().desiredSizes().get(0));
+        Assertions.assertTrue(model.capacityRecommendationParameters().availabilityZones());
     }
 }

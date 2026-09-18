@@ -47,6 +47,19 @@ public final class DocumentContentSegment implements JsonSerializable<DocumentCo
     @Generated
     private final int endPageNumber;
 
+    /*
+     * Confidence of the segmentation and category classification.
+     */
+    @Generated
+    private Double confidence;
+
+    /*
+     * Encoded source that identifies the position of the segment in the content. Can be used as the 'range' input to
+     * route this segment to a sub-analyzer.
+     */
+    @Generated
+    private String source;
+
     /**
      * Creates an instance of DocumentContentSegment class.
      * 
@@ -117,6 +130,27 @@ public final class DocumentContentSegment implements JsonSerializable<DocumentCo
     }
 
     /**
+     * Get the confidence property: Confidence of the segmentation and category classification.
+     * 
+     * @return the confidence value.
+     */
+    @Generated
+    public Double getConfidence() {
+        return this.confidence;
+    }
+
+    /**
+     * Get the source property: Encoded source that identifies the position of the segment in the content. Can be used
+     * as the 'range' input to route this segment to a sub-analyzer.
+     * 
+     * @return the source value.
+     */
+    @Generated
+    public String getSource() {
+        return this.source;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -128,6 +162,8 @@ public final class DocumentContentSegment implements JsonSerializable<DocumentCo
         jsonWriter.writeJsonField("span", this.span);
         jsonWriter.writeIntField("startPageNumber", this.startPageNumber);
         jsonWriter.writeIntField("endPageNumber", this.endPageNumber);
+        jsonWriter.writeNumberField("confidence", this.confidence);
+        jsonWriter.writeStringField("source", this.source);
         return jsonWriter.writeEndObject();
     }
 
@@ -148,6 +184,8 @@ public final class DocumentContentSegment implements JsonSerializable<DocumentCo
             ContentSpan span = null;
             int startPageNumber = 0;
             int endPageNumber = 0;
+            Double confidence = null;
+            String source = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -162,11 +200,20 @@ public final class DocumentContentSegment implements JsonSerializable<DocumentCo
                     startPageNumber = reader.getInt();
                 } else if ("endPageNumber".equals(fieldName)) {
                     endPageNumber = reader.getInt();
+                } else if ("confidence".equals(fieldName)) {
+                    confidence = reader.getNullable(JsonReader::getDouble);
+                } else if ("source".equals(fieldName)) {
+                    source = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new DocumentContentSegment(segmentId, category, span, startPageNumber, endPageNumber);
+            DocumentContentSegment deserializedDocumentContentSegment
+                = new DocumentContentSegment(segmentId, category, span, startPageNumber, endPageNumber);
+            deserializedDocumentContentSegment.confidence = confidence;
+            deserializedDocumentContentSegment.source = source;
+
+            return deserializedDocumentContentSegment;
         });
     }
 }

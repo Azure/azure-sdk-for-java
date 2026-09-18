@@ -10,7 +10,7 @@ import com.azure.resourcemanager.connectedcache.models.BgpCidrsConfiguration;
 public final class BgpCidrsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BgpCidrsConfiguration model
-            = BinaryData.fromString("{\"bgpCidrs\":[\"baiuebbaumny\"]}").toObject(BgpCidrsConfiguration.class);
+        BgpCidrsConfiguration model = BinaryData.fromString("{\"bgpCidrs\":[\"g\",\"wrupqsxvnmicykvc\",\"o\",\"eil\"]}")
+            .toObject(BgpCidrsConfiguration.class);
     }
 }

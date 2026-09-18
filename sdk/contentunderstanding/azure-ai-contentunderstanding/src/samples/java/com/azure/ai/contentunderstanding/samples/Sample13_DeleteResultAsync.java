@@ -12,21 +12,28 @@ import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationS
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
+import java.util.AbstractMap;
 import java.util.Arrays;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
 
 /**
  * Sample demonstrates how to delete analysis results after they are no longer needed
  * using the async client.
+ *
+ * <p>Analysis results are automatically deleted after 24 hours. Delete a result earlier when it contains sensitive
+ * data or a shorter retention period is required. Deletion cannot be undone, so save any required data first.</p>
+ *
+ * <p>Before running this sample, configure the model deployment defaults as shown in
+ * {@link Sample00_UpdateDefaults}.</p>
  */
 public class Sample13_DeleteResultAsync {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample13Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -60,32 +67,22 @@ public class Sample13_DeleteResultAsync {
         // Wait for operation to complete
         System.out.println("Started analysis operation");
 
-        CountDownLatch latch = new CountDownLatch(1);
-
-        poller.last()
-            .flatMap(pollResponse -> {
-                if (pollResponse.getStatus().isComplete()) {
-                    System.out.println("Polling completed successfully");
-                    
-                    // Get the operation ID using the getId() convenience method
-                    // This ID is extracted from the Operation-Location header and is needed for deleteResult()
-                    String operationId = pollResponse.getValue().getId();
-                    System.out.println("Operation ID: " + operationId);
-                    
-                    return pollResponse.getFinalResult()
-                        .map(result -> {
-                            // Store operationId and result together for use in doOnNext
-                            return new java.util.AbstractMap.SimpleEntry<>(operationId, result);
-                        });
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                }
-            })
-            .doOnNext(entry -> {
+        Map.Entry<String, AnalysisResult> analysis = poller.last()
+            .flatMap(pollResponse -> requireSuccessfulResult(pollResponse.getStatus(),
+                pollResponse.getFinalResult(), "Invoice analysis").map(result -> {
+                    String operationId
+                        = pollResponse.getValue() == null ? null : pollResponse.getValue().getId();
+                    if (operationId == null || operationId.trim().isEmpty()) {
+                        throw new IllegalStateException("Invoice analysis completed without an operation ID.");
+                    }
+                    return new AbstractMap.SimpleImmutableEntry<>(operationId, result);
+                }))
+            .flatMap(entry -> {
                 String operationId = entry.getKey();
                 AnalysisResult result = entry.getValue();
-                
+
+                System.out.println("Polling completed successfully");
+                System.out.println("Operation ID: " + operationId);
                 System.out.println("Analysis completed successfully!");
 
                 // Display some sample results using getValue() convenience method
@@ -93,7 +90,7 @@ public class Sample13_DeleteResultAsync {
                     Object firstContent = result.getContents().get(0);
                     if (firstContent instanceof DocumentContent) {
                         DocumentContent docContent = (DocumentContent) firstContent;
-                        java.util.Map<String, ContentField> fields = docContent.getFields();
+                        Map<String, ContentField> fields = docContent.getFields();
                         if (fields != null) {
                             System.out.println("Total fields extracted: " + fields.size());
                             ContentField customerNameField = fields.get("CustomerName");
@@ -108,30 +105,31 @@ public class Sample13_DeleteResultAsync {
 
                 // Step 2: Delete the analysis result using the operation ID
                 // This cleans up the server-side resources (including keyframe images for video analysis)
-                client.deleteResult(operationId)
-                    .doOnSuccess(v -> System.out.println("Analysis result deleted successfully!"))
-                    .subscribe();
+                System.out.println("Deleting analysis result (Operation ID: " + operationId + ")...");
+                Mono<Void> deletion = client.deleteResult(operationId)
+                    .doOnSuccess(ignored -> System.out.println("Analysis result deleted successfully!"));
+                return completeAfterDeletion(deletion, entry);
             })
-            .doOnError(error -> {
-                System.err.println("Error occurred: " + error.getMessage());
-                error.printStackTrace();
-            })
-            .subscribe(
-                result -> {
-                    System.out.println("\nSample completed successfully!");
-                    latch.countDown();
-                },
-                error -> {
-                    // Error already handled in doOnError
-                    latch.countDown();
-                }
-            );
-        // END: com.azure.ai.contentunderstanding.deleteResultAsync
-
-        // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we use a CountDownLatch so the program does not end before the async operations complete.
-        if (!latch.await(2, TimeUnit.MINUTES)) {
-            System.err.println("Timed out waiting for async operations to complete.");
+            .block();
+        if (analysis == null) {
+            throw new IllegalStateException("Invoice analysis completed without an operation result.");
         }
+
+        System.out.println("\nSample completed successfully!");
+        // END: com.azure.ai.contentunderstanding.deleteResultAsync
+    }
+
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+
+    static <T> Mono<T> completeAfterDeletion(Mono<Void> deletion, T result) {
+        return deletion.thenReturn(result);
     }
 }
