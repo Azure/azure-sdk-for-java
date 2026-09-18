@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -15,6 +16,7 @@ import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
@@ -49,6 +51,40 @@ import static org.mockito.ArgumentMatchers.any;
 
 public class RxGatewayStoreModelTest {
     private final static int TIMEOUT = 10000;
+
+    @DataProvider(name = "hedgingDiagnosticContexts")
+    public Object[][] hedgingDiagnosticContexts() {
+        return new Object[][] {{null}, {false}, {true}};
+    }
+
+    @Test(groups = "unit", dataProvider = "hedgingDiagnosticContexts")
+    public void requestDiagnosticsIdentifyHedgedAttempts(Boolean hedged) throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        GlobalEndpointManager endpoints = Mockito.mock(GlobalEndpointManager.class);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(clientContext,
+            OperationType.Read, "/dbs/db/colls/coll/docs/item", ResourceType.Document);
+        if (hedged != null) {
+            request.requestContext.setCrossRegionAvailabilityContext(new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
+                null, null, new AvailabilityStrategyContext(true, hedged), new AtomicBoolean(),
+                new PerPartitionCircuitBreakerInfoHolder(), new PerPartitionAutomaticFailoverInfoHolder()));
+        }
+
+        ClientSideRequestStatistics statistics = new ClientSideRequestStatistics(clientContext);
+        StoreResponseDiagnostics response = Mockito.mock(StoreResponseDiagnostics.class);
+        Mockito.when(response.getStatusCode()).thenReturn(200);
+        statistics.recordResponse(request, null, endpoints);
+        statistics.recordGatewayResponse(request, response, endpoints);
+        request.requestContext.setCrossRegionAvailabilityContext(null);
+
+        // The diagnostic entry must snapshot the attempt, not retain the request's mutable context.
+        JsonNode json = Utils.getSimpleObjectMapper().readTree(Utils.getSimpleObjectMapper().writeValueAsString(statistics));
+        for (String listName : new String[] {"responseStatisticsList", "gatewayStatisticsList"}) {
+            JsonNode attempts = json.get(listName);
+            assertThat(attempts.size()).isEqualTo(1);
+            assertThat(attempts.get(0).get("isHedgedRequest").isBoolean()).isTrue();
+            assertThat(attempts.get(0).get("isHedgedRequest").asBoolean()).isEqualTo(Boolean.TRUE.equals(hedged));
+        }
+    }
 
     @DataProvider(name = "cancelledAvailabilityContexts")
     public Object[][] cancelledAvailabilityContexts() {

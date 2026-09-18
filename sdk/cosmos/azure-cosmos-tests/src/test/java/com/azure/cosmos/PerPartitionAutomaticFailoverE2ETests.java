@@ -92,6 +92,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 import java.net.SocketTimeoutException;
 import java.net.URI;
@@ -2133,6 +2134,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
     @DataProvider(name = "accountControlledHedgingScenarios")
     public Object[][] accountControlledHedgingScenarios() {
         List<Object[]> scenarios = new ArrayList<>();
+        // Each client-factory instance runs all four APIs, including both readMany execution paths.
+        // The wire flag is negative: false means hedging ON, true means OFF.
         for (QueryFlavor flavor : QueryFlavor.values()) {
             for (boolean disabled : new boolean[] {false, true}) {
                 scenarios.add(new Object[] {flavor, true, disabled});
@@ -2142,6 +2145,16 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         return scenarios.toArray(new Object[0][]);
     }
 
+    /**
+     * Keeps one client and the same primary-region delay throughout each scenario. With PPAF on,
+     * the account flag is observed at bootstrap, inverted by account refresh, then restored by
+     * another refresh. Starting with disableCrossRegionalHedging=false proves ON -> OFF -> ON;
+     * starting with true also proves OFF -> ON -> OFF. PPAF itself never changes.
+     *
+        * These phases must finish before PPCB failover: hedging ON has a successful attempt marked as
+        * hedged; hedging OFF reaches the E2E deadline and contacts only the delayed primary.
+     * Only after those assertions do we accumulate failures and separately verify PPCB recovery.
+     */
     @Test(groups = {"multi-region", "fi-thinclient-multi-region"},
         dataProvider = "accountControlledHedgingScenarios", timeOut = 240_000)
     public void testAccountControlledHedgingFromBootstrap(QueryFlavor queryFlavor, boolean ppafEnabled, boolean disabled) throws Exception {
@@ -2155,13 +2168,17 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         String healthyRegion = preferredRegions.get(1);
         OperationType operationType = queryFlavor == QueryFlavor.NONE ? OperationType.Read : OperationType.Query;
         boolean effectivelyDisabled = ppafEnabled && disabled;
+        AtomicBoolean accountDisablesHedging = new AtomicBoolean(disabled);
         CosmosAsyncClient client = null;
         CosmosAsyncContainer container = null;
         TestObject item = TestObject.create();
+        TestObject secondReadManyItem = queryFlavor == QueryFlavor.READ_MANY_QUERY ? TestObject.create() : null;
         List<FaultInjectionRule> rules = new ArrayList<>();
+        CosmosClientBuilder builder = getClientBuilder();
+        CosmosEndToEndOperationLatencyPolicyConfig originalLatencyPolicy = builder.getEndToEndOperationConfig();
 
         try {
-            CosmosClientBuilder builder = getClientBuilder().preferredRegions(preferredRegions);
+            builder.preferredRegions(preferredRegions);
             if (!ppafEnabled) {
                 builder.endToEndOperationLatencyPolicyConfig(
                     new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(6))
@@ -2170,7 +2187,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             }
             try (MockedStatic<HttpClient> httpClientFactory = Mockito.mockStatic(HttpClient.class, Mockito.CALLS_REAL_METHODS)) {
                 httpClientFactory.when(() -> HttpClient.createFixed(Mockito.any(HttpClientConfig.class)))
-                    .thenAnswer(invocation -> overrideHedgingAccountResponses((HttpClient) invocation.callRealMethod(), ppafEnabled, disabled));
+                    .thenAnswer(invocation -> overrideHedgingAccountResponses((HttpClient) invocation.callRealMethod(), ppafEnabled, accountDisablesHedging));
                 client = builder.buildAsyncClient();
             }
 
@@ -2183,18 +2200,25 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
             container = client.getDatabase(this.sharedDatabase.getId()).getContainer(this.sharedSinglePartitionContainer.getId());
             container.createItem(item).block();
-            container.readItem(item.getId(), new PartitionKey(item.getMypk()),
-                new CosmosItemRequestOptions().setExcludedRegions(Collections.singletonList(failingRegion)), TestObject.class).block();
+            warmUpHealthyRegion(container, item, failingRegion, healthyRegion).block();
 
             OperationInvocationParamsWrapper params = new OperationInvocationParamsWrapper();
             params.asyncContainer = container;
             params.createdTestItem = item;
             applyQueryFlavor(params, queryFlavor, item);
+            if (secondReadManyItem != null) {
+                // Two identities in the same physical partition select queryForReadMany, not pointReadsForReadMany.
+                container.createItem(secondReadManyItem).block();
+                warmUpHealthyRegion(container, secondReadManyItem, failingRegion, healthyRegion).block();
+                params.readManyIdentities.add(new CosmosItemIdentity(
+                    new PartitionKey(secondReadManyItem.getMypk()), secondReadManyItem.getId()));
+            }
             if (queryFlavor == QueryFlavor.QUERY_ITEMS) {
                 params.querySql = "SELECT * FROM c WHERE c.id = '" + item.getId() + "'";
                 params.queryRequestOptions = new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(item.getMypk()));
             }
             Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> operation = resolveDataPlaneOperation(operationType);
+            // Warm up before injecting data-plane delays, so query-plan retrieval is not the fault under test.
             ResponseWrapper<?> warmup = operation.apply(params);
             assertThat(warmup.cosmosException).isNull();
             assertAccountHedgingDiagnostics(extractDiagnostics(warmup), ppafEnabled, effectivelyDisabled);
@@ -2232,7 +2256,35 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             }
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, rules).block();
 
-            int maxAttempts = ppafEnabled ? circuitBreaker.getCircuitBreakerConfig().getConsecutiveExceptionCountToleratedForReads() + 3 : 1;
+            // Refresh only the account payload. Do not rebuild the client or reset its PPCB state.
+            boolean[] accountFlagPhases = ppafEnabled
+                ? new boolean[] {disabled, !disabled, disabled} : new boolean[] {disabled};
+            String[] phaseNames = {"bootstrap", "inverted after refresh", "restored after refresh"};
+            Object originalCircuitBreakerConfig = circuitBreaker.getCircuitBreakerConfig();
+            for (int phase = 0; phase < accountFlagPhases.length; phase++) {
+                boolean phaseDisablesHedging = accountFlagPhases[phase];
+                if (phase > 0) {
+                    accountDisablesHedging.set(phaseDisablesHedging);
+                    documentClient.getGlobalEndpointManager().refreshLocationAsync(null, true).block();
+                }
+                DatabaseAccount phaseAccount = documentClient.getGlobalEndpointManager().getLatestDatabaseAccount();
+                assertThat(phaseAccount.isPerPartitionFailoverBehaviorEnabled()).isEqualTo(ppafEnabled);
+                assertThat(phaseAccount.isCrossRegionalHedgingDisabled()).isEqualTo(phaseDisablesHedging);
+                assertThat(circuitBreaker.getCircuitBreakerConfig()).isSameAs(originalCircuitBreakerConfig);
+
+                assertHedgingBeforePpcbFailover(
+                    mode + "/" + queryFlavor + "/" + phaseNames[phase],
+                    operation, params, ppafEnabled, phaseDisablesHedging, primaryUnavailable,
+                    failingRegion, healthyRegion, rules,
+                    queryFlavor == QueryFlavor.NONE || queryFlavor == QueryFlavor.READ_MANY
+                        ? OperationType.Read : OperationType.Query);
+            }
+            if (!ppafEnabled) {
+                return;
+            }
+
+            // The original account flag is restored. Now isolate the separate PPCB recovery contract.
+            int maxAttempts = circuitBreaker.getCircuitBreakerConfig().getConsecutiveExceptionCountToleratedForReads() + 3;
             for (int attempt = 0; attempt < maxAttempts && !primaryUnavailable.get(); attempt++) {
                 ResponseWrapper<?> response = operation.apply(params);
                 CosmosDiagnostics diagnostics = extractDiagnostics(response);
@@ -2253,16 +2305,6 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                         assertThat(primaryUnavailable.get()).as("Success without hedging requires PPCB failover").isTrue();
                     }
                 }
-                if (attempt == 0) {
-                    assertThat(primaryUnavailable.get()).as("First request must precede PPCB failover").isFalse();
-                    assertThat(response.cosmosException != null).isEqualTo(effectivelyDisabled);
-                    if (!effectivelyDisabled) {
-                        assertThat(contactedRegions).hasSize(2);
-                    }
-                }
-            }
-            if (!ppafEnabled) {
-                return;
             }
             assertThat(primaryUnavailable.get()).as("PPCB must eventually mark the delayed primary unavailable").isTrue();
 
@@ -2277,12 +2319,165 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             rules.forEach(FaultInjectionRule::disable);
             try {
                 if (container != null) {
+                    if (secondReadManyItem != null) {
+                        container.deleteItem(secondReadManyItem.getId(), new PartitionKey(secondReadManyItem.getMypk()))
+                            .onErrorResume(CosmosException.class,
+                                error -> error.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND ? Mono.empty() : Mono.error(error)).block();
+                    }
                     container.deleteItem(item.getId(), new PartitionKey(item.getMypk())).onErrorResume(CosmosException.class,
                         error -> error.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND ? Mono.empty() : Mono.error(error)).block();
                 }
             } finally {
+                builder.endToEndOperationLatencyPolicyConfig(originalLatencyPolicy);
                 safeClose(client);
             }
+        }
+    }
+
+    private Mono<CosmosItemResponse<TestObject>> warmUpHealthyRegion(
+        CosmosAsyncContainer container, TestObject item, String failingRegion, String healthyRegion) {
+
+        return Mono.defer(() -> {
+            AtomicReference<CosmosDiagnostics> lastDiagnostics = new AtomicReference<>();
+            return Mono.defer(() -> container.readItem(item.getId(), new PartitionKey(item.getMypk()),
+                    new CosmosItemRequestOptions().setExcludedRegions(Collections.singletonList(failingRegion)), TestObject.class))
+                .doOnNext(response -> lastDiagnostics.set(response.getDiagnostics()))
+                .repeatWhen(completed -> completed.delayElements(Duration.ofSeconds(1)))
+                .filter(response -> {
+                    Set<String> contactedRegions = response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames();
+                    return contactedRegions.size() == 1
+                        && contactedRegions.iterator().next().equalsIgnoreCase(healthyRegion);
+                })
+                .next()
+                .timeout(Duration.ofSeconds(30), Mono.defer(() -> Mono.error(new AssertionError(
+                    "Secondary-region warm-up did not succeed exclusively in " + healthyRegion
+                        + " before fault injection. Last diagnostics: " + lastDiagnostics.get()))));
+        });
+    }
+
+    @Test(groups = "unit")
+    @SuppressWarnings("unchecked")
+    public void testHealthyRegionWarmupRejectsFallback() {
+        CosmosAsyncContainer container = Mockito.mock(CosmosAsyncContainer.class);
+        CosmosItemResponse<TestObject> fallback = Mockito.mock(CosmosItemResponse.class, Mockito.RETURNS_DEEP_STUBS);
+        CosmosItemResponse<TestObject> healthy = Mockito.mock(CosmosItemResponse.class, Mockito.RETURNS_DEEP_STUBS);
+        Mockito.when(fallback.getDiagnostics().getDiagnosticsContext().getContactedRegionNames())
+            .thenReturn(new HashSet<>(Arrays.asList("central us", "west us")));
+        Mockito.when(healthy.getDiagnostics().getDiagnosticsContext().getContactedRegionNames())
+            .thenReturn(Collections.singleton("west us"));
+        Mockito.when(container.readItem(Mockito.anyString(), Mockito.any(PartitionKey.class),
+            Mockito.any(CosmosItemRequestOptions.class), Mockito.eq(TestObject.class)))
+            .thenReturn(Mono.just(fallback), Mono.just(healthy));
+
+        StepVerifier.withVirtualTime(() -> warmUpHealthyRegion(container, TestObject.create(), "Central US", "West US"))
+            .thenAwait(Duration.ofSeconds(1))
+            .expectNext(healthy)
+            .verifyComplete();
+        Mockito.verify(container, Mockito.times(2)).readItem(Mockito.anyString(), Mockito.any(PartitionKey.class),
+            Mockito.any(CosmosItemRequestOptions.class), Mockito.eq(TestObject.class));
+    }
+
+    @Test(groups = "unit")
+    @SuppressWarnings("unchecked")
+    public void testHealthyRegionWarmupIsBounded() {
+        CosmosAsyncContainer container = Mockito.mock(CosmosAsyncContainer.class);
+        CosmosItemResponse<TestObject> fallback = Mockito.mock(CosmosItemResponse.class, Mockito.RETURNS_DEEP_STUBS);
+        Mockito.when(fallback.getDiagnostics().getDiagnosticsContext().getContactedRegionNames())
+            .thenReturn(Collections.singleton("central us"));
+        Mockito.when(container.readItem(Mockito.anyString(), Mockito.any(PartitionKey.class),
+            Mockito.any(CosmosItemRequestOptions.class), Mockito.eq(TestObject.class))).thenReturn(Mono.just(fallback));
+
+        StepVerifier.withVirtualTime(() -> warmUpHealthyRegion(container, TestObject.create(), "Central US", "West US"))
+            .thenAwait(Duration.ofSeconds(30))
+            .expectErrorMatches(error -> error instanceof AssertionError
+                && error.getMessage().contains("before fault injection"))
+            .verify();
+    }
+
+    private void assertHedgingBeforePpcbFailover(
+        String phase,
+        Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> operation,
+        OperationInvocationParamsWrapper params,
+        boolean ppafEnabled,
+        boolean accountDisablesHedging,
+        Supplier<Boolean> primaryUnavailable,
+        String failingRegion,
+        String healthyRegion,
+        List<FaultInjectionRule> rules,
+        OperationType expectedRequestOperation) throws JsonProcessingException {
+
+        boolean expectHedging = !ppafEnabled || !accountDisablesHedging;
+        assertThat(primaryUnavailable.get()).as("%s: primary must be available before the operation", phase).isFalse();
+        long hitsBefore = rules.stream().mapToLong(FaultInjectionRule::getHitCount).sum();
+        long started = System.nanoTime();
+        ResponseWrapper<?> response = operation.apply(params);
+        Duration elapsed = Duration.ofNanos(System.nanoTime() - started);
+        CosmosDiagnostics diagnostics = extractDiagnostics(response);
+        assertAccountHedgingDiagnostics(diagnostics, ppafEnabled, !expectHedging);
+        Set<String> contactedRegions = diagnostics.getDiagnosticsContext().getContactedRegionNames();
+        long injectedHits = rules.stream().mapToLong(FaultInjectionRule::getHitCount).sum() - hitsBefore;
+        logger.info("Account hedging phase {}: disableCrossRegionalHedging={}, expectHedging={}, status={}:{}, "
+                + "regions={}, retries={}, injectedHits={}, elapsed={}",
+            phase, accountDisablesHedging, expectHedging, diagnostics.getDiagnosticsContext().getStatusCode(),
+            diagnostics.getDiagnosticsContext().getSubStatusCode(), contactedRegions,
+            diagnostics.getDiagnosticsContext().getRetryCount(), injectedHits, elapsed);
+        if (expectHedging && response.cosmosException != null) {
+            logger.error("Account hedging failure {}: {}", phase, diagnostics);
+        }
+
+        assertThat(injectedHits).as("%s: the primary-region delay must actually be injected", phase).isPositive();
+        assertThat(primaryUnavailable.get()).as("%s: result must not be explained by PPCB failover", phase).isFalse();
+        assertThat(elapsed).as("%s: must finish before the primary's 30-second response delay", phase)
+            .isLessThan(Duration.ofSeconds(30));
+
+        // Read the per-attempt marker propagated from RxDocumentClientImpl, not the account enablement flag.
+        JsonNode diagnosticContext = OBJECT_MAPPER.readTree(diagnostics.toString());
+        List<JsonNode> documentAttempts = new ArrayList<>();
+        for (String listName : new String[] {"responseStatisticsList", "gatewayStatisticsList"}) {
+            boolean direct = "responseStatisticsList".equals(listName);
+            for (JsonNode attemptList : diagnosticContext.findValues(listName)) {
+                for (JsonNode recordedAttempt : attemptList) {
+                    String resource = recordedAttempt.path(direct ? "requestResourceType" : "resourceType").asText();
+                    String operationName = recordedAttempt.path(direct ? "requestOperationType" : "operationType").asText();
+                    if (ResourceType.Document.toString().equals(resource)
+                        && expectedRequestOperation.toString().equals(operationName)) {
+                        documentAttempts.add(recordedAttempt);
+                    }
+                }
+            }
+        }
+        assertThat(documentAttempts).as("%s: diagnostics must record %s data-plane attempts", phase, expectedRequestOperation)
+            .isNotEmpty();
+        for (JsonNode recordedAttempt : documentAttempts) {
+            assertThat(recordedAttempt.has("isHedgedRequest")).as("%s: hedging marker must be present", phase).isTrue();
+            assertThat(recordedAttempt.get("isHedgedRequest").isBoolean()).isTrue();
+        }
+        long hedgedAttempts = documentAttempts.stream().filter(recordedAttempt -> recordedAttempt.get("isHedgedRequest").asBoolean()).count();
+        logger.info("Account hedging evidence {}: operation={}, attempts={}, hedgedAttempts={}",
+            phase, expectedRequestOperation, documentAttempts.size(), hedgedAttempts);
+        if (expectHedging) {
+            assertThat(hedgedAttempts).as("%s: at least one recorded attempt must be a hedge; attempts=%s", phase, documentAttempts).isPositive();
+            assertThat(documentAttempts.stream().anyMatch(recordedAttempt -> {
+                JsonNode result = recordedAttempt.has("storeResult") ? recordedAttempt.path("storeResult") : recordedAttempt;
+                int statusCode = result.path("statusCode").asInt();
+                return recordedAttempt.get("isHedgedRequest").asBoolean() && statusCode >= 200 && statusCode < 300;
+            })).as("%s: the hedge must produce a successful response", phase).isTrue();
+        } else {
+            assertThat(hedgedAttempts).as("%s: no recorded data-plane attempt may be a hedge", phase).isZero();
+        }
+
+        if (expectHedging) {
+            assertThat(response.cosmosException).as("%s: hedging must succeed", phase).isNull();
+            assertThat(diagnostics.getDiagnosticsContext().getStatusCode()).isBetween(200, 299);
+            assertThat(contactedRegions).as("%s: both primary and hedge must be contacted", phase).hasSize(2);
+            assertThat(contactedRegions.stream().anyMatch(failingRegion::equalsIgnoreCase)).isTrue();
+            assertThat(contactedRegions.stream().anyMatch(healthyRegion::equalsIgnoreCase)).isTrue();
+        } else {
+            assertThat(response.cosmosException).as("%s: no hedge can rescue the blocked primary", phase).isNotNull();
+            assertThat(response.cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+            assertThat(response.cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
+            assertThat(contactedRegions).as("%s: no secondary request may be sent", phase).hasSize(1);
+            assertThat(contactedRegions.iterator().next()).isEqualToIgnoringCase(failingRegion);
         }
     }
 
@@ -2316,7 +2511,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         Mockito.when(original.bodyAsString()).thenReturn(Mono.just("{\"id\":\"account\",\"readableLocations\":[]}\n"));
         Mockito.when(delegate.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class))).thenReturn(Mono.just(original));
         Mockito.when(delegate.send(Mockito.any(HttpRequest.class))).thenReturn(Mono.just(original));
-        HttpClient wrappedClient = overrideHedgingAccountResponses(delegate, ppafEnabled, disabled);
+        AtomicBoolean accountDisablesHedging = new AtomicBoolean(disabled);
+        HttpClient wrappedClient = overrideHedgingAccountResponses(delegate, ppafEnabled, accountDisablesHedging);
         HttpRequest accountRequest = new HttpRequest(HttpMethod.GET, "https://account.documents.azure.com/", 443);
         HttpResponse wrappedResponse = wrappedClient.send(accountRequest, Duration.ofSeconds(5)).block();
 
@@ -2335,6 +2531,14 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         assertThat(account.isPerPartitionFailoverBehaviorEnabled()).isEqualTo(ppafEnabled);
         assertThat(account.isCrossRegionalHedgingDisabled()).isEqualTo(disabled);
         assertThat(emittedBuffer.get().refCnt()).isZero();
+
+        for (boolean refreshedValue : new boolean[] {!disabled, disabled}) {
+            accountDisablesHedging.set(refreshedValue);
+            DatabaseAccount refreshedAccount = new DatabaseAccount(
+                wrappedClient.send(accountRequest).flatMap(HttpResponse::bodyAsString).block());
+            assertThat(refreshedAccount.isPerPartitionFailoverBehaviorEnabled()).isEqualTo(ppafEnabled);
+            assertThat(refreshedAccount.isCrossRegionalHedgingDisabled()).isEqualTo(refreshedValue);
+        }
 
         HttpRequest documentRequest = new HttpRequest(HttpMethod.GET,
             "https://account.documents.azure.com/dbs/db/colls/coll/docs/item", 443);
@@ -2367,7 +2571,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         assertThat(clientConfig.path("partitionLevelCircuitBreakerCfg").asText()).isNotEmpty();
     }
 
-    private HttpClient overrideHedgingAccountResponses(HttpClient delegate, boolean ppafEnabled, boolean disabled) {
+    private HttpClient overrideHedgingAccountResponses(HttpClient delegate, boolean ppafEnabled, AtomicBoolean accountDisablesHedging) {
         return new HttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
@@ -2414,7 +2618,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                             }
                             DatabaseAccount account = new DatabaseAccount(json);
                             account.setIsPerPartitionFailoverBehaviorEnabled(ppafEnabled);
-                            account.set(Constants.Properties.DISABLE_CROSS_REGIONAL_HEDGING, disabled);
+                            account.set(Constants.Properties.DISABLE_CROSS_REGIONAL_HEDGING, accountDisablesHedging.get());
                             return account.toJson();
                         });
                     }
@@ -3148,7 +3352,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
     private enum QueryFlavor {
         NONE,        // Not a query
         READ_ALL,    // SELECT * FROM c
-        READ_MANY,   // Simulate with IN clause
+        READ_MANY,   // One identity per physical partition selects point reads
+        READ_MANY_QUERY, // Multiple identities per physical partition select queryForReadMany
         QUERY_ITEMS  // Arbitrary filter
     }
 
@@ -3172,6 +3377,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 params.readManyIdentities = null;
                 break;
             case READ_MANY:
+            case READ_MANY_QUERY:
                 // Map to readMany with one or more identities using the seed
                 String id = seed != null ? seed.getId() : UUID.randomUUID().toString();
                 String pkReadMany = seed != null ? seed.getMypk() : UUID.randomUUID().toString();
