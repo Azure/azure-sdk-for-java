@@ -7,28 +7,39 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.FixedDelay;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.EmptyEnvironmentConfigurationSource;
+import com.azure.identity.util.ImdsProbeTestServer;
 import com.azure.identity.util.TestUtils;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedConstruction;
+import org.mockito.MockedStatic;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -36,7 +47,10 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mockConstruction;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class DefaultAzureCredentialTest {
@@ -110,6 +124,61 @@ public class DefaultAzureCredentialTest {
                 .verifyComplete();
             Assertions.assertNotNull(mocked);
             Assertions.assertNotNull(ijcredential);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    @Timeout(10)
+    public void testUnresponsiveImdsFallsBackToDeveloperCredential(boolean synchronous) {
+        try (ImdsProbeTestServer server = new ImdsProbeTestServer((request, response) -> Mono.never())) {
+            assertUnavailableImdsFallsBackToDeveloperCredential(server.getEndpoint(), synchronous);
+            assertEquals(1, server.getRequestCount());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void testNonHttpImdsEndpointFallsBackToDeveloperCredential(boolean synchronous) {
+        assertUnavailableImdsFallsBackToDeveloperCredential("file:///imds", synchronous);
+    }
+
+    private static void assertUnavailableImdsFallsBackToDeveloperCredential(String endpoint, boolean synchronous) {
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+        AccessToken expectedToken = new AccessToken("developer-token", OffsetDateTime.now().plusHours(1));
+        AtomicInteger tokenRequests = new AtomicInteger();
+        HttpClient transport = httpRequest -> {
+            tokenRequests.incrementAndGet();
+            return Mono.just(new MockHttpResponse(httpRequest, 500));
+        };
+        try (
+            MockedStatic<ManagedIdentityApplication> application
+                = mockStatic(ManagedIdentityApplication.class, CALLS_REAL_METHODS);
+            MockedConstruction<IntelliJCredential> developerCredentials
+                = mockConstruction(IntelliJCredential.class, (credential, context) -> {
+                    when(credential.getToken(request)).thenReturn(Mono.just(expectedToken));
+                    when(credential.getTokenSync(request)).thenReturn(expectedToken);
+                })) {
+            application.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.DEFAULT_TO_IMDS);
+            Configuration configuration = TestUtils.createTestConfiguration(
+                new TestConfigurationSource().put("AZURE_POD_IDENTITY_AUTHORITY_HOST", endpoint));
+            DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration)
+                .httpClient(transport)
+                .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
+                .build();
+
+            if (synchronous) {
+                assertEquals(expectedToken, credential.getTokenSync(request));
+                verify(developerCredentials.constructed().get(0)).getTokenSync(request);
+            } else {
+                StepVerifier.create(credential.getToken(request))
+                    .expectNext(expectedToken)
+                    .expectComplete()
+                    .verify(Duration.ofSeconds(5));
+                verify(developerCredentials.constructed().get(0)).getToken(request);
+            }
+            assertEquals(0, tokenRequests.get(), "Unavailable IMDS must not enter token acquisition or retries.");
         }
     }
 
