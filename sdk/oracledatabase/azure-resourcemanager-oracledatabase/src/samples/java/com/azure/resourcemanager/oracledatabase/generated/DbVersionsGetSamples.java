@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class DbVersionsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/DbVersions_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/DbVersions_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DbVersions_Get_MaximumSet.

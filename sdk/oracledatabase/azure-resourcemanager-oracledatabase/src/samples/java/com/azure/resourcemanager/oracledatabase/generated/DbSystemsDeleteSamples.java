@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class DbSystemsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/DbSystems_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/DbSystems_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: DbSystems_Delete_MinimumSet.
@@ -22,7 +22,7 @@ public final class DbSystemsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/DbSystems_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/DbSystems_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DbSystems_Delete_MaximumSet.
