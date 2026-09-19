@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class QueuesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Queues/SBQueueDelete.json
+     * x-ms-original-file: 2026-07-01-preview/Queues/SBQueueDelete.json
      */
     /**
      * Sample code: QueueDelete.
