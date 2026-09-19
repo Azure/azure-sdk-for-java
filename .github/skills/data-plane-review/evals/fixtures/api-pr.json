@@ -1,0 +1,13 @@
+{
+  "number": 61002,
+  "title": "[AutoPR azure-contoso-widgets]-generated-from-SDK Generation",
+  "user": {"login": "app/azure-sdk-automation"},
+  "base": {"ref": "main", "repo": {"full_name": "Azure/azure-sdk-for-java"}},
+  "head": {
+    "sha": "6100261002610026100261002610026100261002",
+    "repo": {"full_name": "Azure/azure-sdk-for-java"}
+  },
+  "draft": false,
+  "body": "Updates the Contoso Widgets data-plane client.",
+  "changed_files": 1
+}

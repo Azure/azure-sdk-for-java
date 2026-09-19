@@ -1,0 +1,13 @@
+diff --git a/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetServiceVersion.java b/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetServiceVersion.java
+index 1111111..2222222 100644
+--- a/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetServiceVersion.java
++++ b/sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetServiceVersion.java
+@@ -8,7 +8,7 @@ public enum WidgetServiceVersion implements ServiceVersion {
+-    V2025_01_01("2025-01-01");
++    V2026_06_01_PREVIEW("2026-06-01-preview");
+ 
+     public static WidgetServiceVersion getLatest() {
+-        return V2025_01_01;
++        return V2026_06_01_PREVIEW;
+     }
+ }
