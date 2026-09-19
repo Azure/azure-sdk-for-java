@@ -131,6 +131,19 @@ public class DefaultAzureCredentialTest {
     @ValueSource(booleans = { true, false })
     @Timeout(10)
     public void testUnresponsiveImdsFallsBackToDeveloperCredential(boolean synchronous) {
+        try (ImdsProbeTestServer server = new ImdsProbeTestServer((request, response) -> Mono.never())) {
+            assertUnavailableImdsFallsBackToDeveloperCredential(server.getEndpoint(), synchronous);
+            assertEquals(1, server.getRequestCount());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void testNonHttpImdsEndpointFallsBackToDeveloperCredential(boolean synchronous) {
+        assertUnavailableImdsFallsBackToDeveloperCredential("file:///imds", synchronous);
+    }
+
+    private static void assertUnavailableImdsFallsBackToDeveloperCredential(String endpoint, boolean synchronous) {
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
         AccessToken expectedToken = new AccessToken("developer-token", OffsetDateTime.now().plusHours(1));
         AtomicInteger tokenRequests = new AtomicInteger();
@@ -138,7 +151,7 @@ public class DefaultAzureCredentialTest {
             tokenRequests.incrementAndGet();
             return Mono.just(new MockHttpResponse(httpRequest, 500));
         };
-        try (ImdsProbeTestServer server = new ImdsProbeTestServer((httpRequest, response) -> Mono.never());
+        try (
             MockedStatic<ManagedIdentityApplication> application
                 = mockStatic(ManagedIdentityApplication.class, CALLS_REAL_METHODS);
             MockedConstruction<IntelliJCredential> developerCredentials
@@ -149,7 +162,7 @@ public class DefaultAzureCredentialTest {
             application.when(ManagedIdentityApplication::getManagedIdentitySource)
                 .thenReturn(ManagedIdentitySourceType.DEFAULT_TO_IMDS);
             Configuration configuration = TestUtils.createTestConfiguration(
-                new TestConfigurationSource().put("AZURE_POD_IDENTITY_AUTHORITY_HOST", server.getEndpoint()));
+                new TestConfigurationSource().put("AZURE_POD_IDENTITY_AUTHORITY_HOST", endpoint));
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration)
                 .httpClient(transport)
                 .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
@@ -165,7 +178,6 @@ public class DefaultAzureCredentialTest {
                     .verify(Duration.ofSeconds(5));
                 verify(developerCredentials.constructed().get(0)).getToken(request);
             }
-            assertEquals(1, server.getRequestCount());
             assertEquals(0, tokenRequests.get(), "Unavailable IMDS must not enter token acquisition or retries.");
         }
     }

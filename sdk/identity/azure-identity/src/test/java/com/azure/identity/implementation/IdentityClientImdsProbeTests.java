@@ -17,6 +17,7 @@ import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import reactor.core.publisher.Mono;
@@ -27,22 +28,78 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class IdentityClientImdsProbeTests {
     private static final TokenRequestContext REQUEST
         = new TokenRequestContext().addScopes("https://management.azure.com/.default");
     private static final Duration TEST_TIMEOUT = Duration.ofSeconds(5);
+
+    @Test
+    public void testNonHttpEndpointIsUnavailable() {
+        AtomicInteger tokenRequests = new AtomicInteger();
+        try (MockedStatic<ManagedIdentityApplication> application
+            = mockStatic(ManagedIdentityApplication.class, CALLS_REAL_METHODS)) {
+            application.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.DEFAULT_TO_IMDS);
+
+            StepVerifier
+                .create(createClient("file:///imds", tokenRequests).authenticateWithManagedIdentityMsalClient(REQUEST))
+                .expectErrorMatches(error -> error instanceof CredentialUnavailableException
+                    && error.getCause() instanceof ClassCastException)
+                .verify(TEST_TIMEOUT);
+            assertEquals(0, tokenRequests.get());
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("probeShutdownSignals")
+    public void testProbeShutdownIsNotCredentialUnavailable(RuntimeException signal) throws IOException {
+        AtomicInteger tokenRequests = new AtomicInteger();
+        try (
+            MockedStatic<ManagedIdentityApplication> application
+                = mockStatic(ManagedIdentityApplication.class, CALLS_REAL_METHODS);
+            MockedStatic<IdentityClientBase> identityClientBase
+                = mockStatic(IdentityClientBase.class, CALLS_REAL_METHODS)) {
+            application.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.DEFAULT_TO_IMDS);
+            URL url = mock(URL.class);
+            HttpURLConnection connection = mock(HttpURLConnection.class);
+            identityClientBase.when(() -> IdentityClientBase.getUrl(anyString())).thenReturn(url);
+            when(url.openConnection()).thenReturn(connection);
+            when(connection.getResponseCode()).thenThrow(signal);
+
+            StepVerifier
+                .create(
+                    createClient("http://localhost", tokenRequests).authenticateWithManagedIdentityMsalClient(REQUEST))
+                .expectErrorMatches(error -> error == signal)
+                .verify(TEST_TIMEOUT);
+            verify(connection).disconnect();
+            assertEquals(0, tokenRequests.get());
+        }
+    }
+
+    private static Stream<RuntimeException> probeShutdownSignals() {
+        return Stream.of(new RuntimeException(new InterruptedException("Thread interrupted")),
+            new IllegalStateException("Shutdown in progress"));
+    }
 
     @Test
     public void testAcceptedConnectionWithoutResponseIsUnavailable() {

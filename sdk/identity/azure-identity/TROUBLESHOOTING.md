@@ -82,9 +82,11 @@ The underlying MSAL library, MSAL4J, also has detailed logging. It is highly ver
 
 ## Troubleshoot `DefaultAzureCredential` authentication issues
 
-During local development, `DefaultAzureCredential` probes the IMDS endpoint before attempting managed identity authentication. The probe uses separate one-second connection and read timeouts. If the endpoint cannot be reached or does not return an HTTP response, managed identity is unavailable and the chain continues to the next credential. A successful TCP connection alone does not establish that IMDS is available.
+During local development, `DefaultAzureCredential` probes the IMDS endpoint before attempting managed identity authentication. The probe uses separate one-second connection and read timeouts. If the probe fails during setup, the endpoint cannot be reached, or a read times out while waiting for HTTP response headers, managed identity is unavailable and the chain continues to the next credential. A successful TCP connection alone does not establish that IMDS is available.
 
-These timeouts apply to discovery, not to the entire authentication operation. When the endpoint responds, managed identity token acquisition retains its normal retry behavior. Standalone `ManagedIdentityCredential` and `DefaultAzureCredential` configured with `AZURE_TOKEN_CREDENTIALS=ManagedIdentityCredential` skip the probe.
+The read timeout limits how long a blocking read waits for data, not the total time to receive all response headers. An endpoint that keeps sending partial headers can prolong the probe. These timeouts do not guarantee a two-second total discovery limit or impose a deadline on the entire authentication operation.
+
+When the endpoint responds, managed identity token acquisition retains its normal retry behavior. Standalone `ManagedIdentityCredential` and `DefaultAzureCredential` configured with `AZURE_TOKEN_CREDENTIALS=ManagedIdentityCredential` skip the probe.
 
 To intentionally use only developer-tool credentials locally, set `AZURE_TOKEN_CREDENTIALS=dev`. This excludes deployed-service credentials, including managed identity, rather than changing their timeout or retry settings.
 

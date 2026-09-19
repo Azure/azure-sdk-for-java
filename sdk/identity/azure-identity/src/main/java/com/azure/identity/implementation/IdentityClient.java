@@ -975,7 +975,8 @@ public class IdentityClient extends IdentityClientBase {
                 if (connection.getResponseCode() == -1) {
                     throw new IOException("The IMDS endpoint did not return a valid HTTP response.");
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
+                IdentityUtil.rethrowIfShutdownSignal(e);
                 throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                     new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
                         + "No response received from the IMDS endpoint, " + e.getMessage() + ".", e));
