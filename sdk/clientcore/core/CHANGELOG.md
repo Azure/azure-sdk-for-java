@@ -11,7 +11,7 @@
 
 ### Bugs Fixed
 
-- Fixed retention of unused shared executors and their shutdown hooks when concurrent callers create replacements.
+- Fixed retention of unused shared executors and shutdown hooks by serializing executor initialization.
 - Registering or removing the shutdown hook that closes the shared executor service no longer fails when the JVM is
   already shutting down. `Runtime.addShutdownHook` throws `IllegalStateException` once shutdown has begun, which
   surfaced to callers of `SharedExecutorService` as `IllegalStateException: Shutdown in progress` when work, such as

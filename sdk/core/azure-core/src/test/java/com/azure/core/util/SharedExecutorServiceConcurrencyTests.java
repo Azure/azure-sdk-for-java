@@ -17,14 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -70,52 +70,50 @@ public class SharedExecutorServiceConcurrencyTests {
 
     @ParameterizedTest
     @EnumSource(InitialState.class)
-    public void concurrentCreationCleansUpLosingCandidates(InitialState initialState) throws Exception {
+    public void concurrentInitializationCreatesOneExecutor(InitialState initialState) throws Exception {
         for (int round = 0; round < 5; round++) {
             prepareInitialState(initialState);
             int firstCandidate = candidates.size();
-            CountDownLatch created = new CountDownLatch(2);
+            CountDownLatch created = new CountDownLatch(1);
             CountDownLatch publish = new CountDownLatch(1);
-            Supplier<SharedExecutorService.InternalExecutorService> factory = () -> {
+            Future<ScheduledExecutorService> first = callers.submit(() -> shared.ensureNotShutdown(() -> {
                 Candidate candidate = createCandidate(true);
                 created.countDown();
                 await(publish);
                 return candidate.service;
-            };
-            Future<ScheduledExecutorService> first = callers.submit(() -> shared.ensureNotShutdown(factory));
-            Future<ScheduledExecutorService> second = callers.submit(() -> shared.ensureNotShutdown(factory));
+            }));
+            Future<ScheduledExecutorService> second;
 
             try {
                 await(created);
+                AtomicReference<Thread> secondThread = new AtomicReference<>();
+                second = callers.submit(() -> {
+                    secondThread.set(Thread.currentThread());
+                    return shared.ensureNotShutdown(() -> createCandidate(true).service);
+                });
+                awaitThreadWaiting(secondThread);
+                assertFalse(second.isDone(), "The contending caller must wait for initialization.");
+                assertEquals(firstCandidate + 1, candidates.size());
             } finally {
                 publish.countDown();
             }
-            ScheduledExecutorService winner = first.get(10, TimeUnit.SECONDS);
-            assertSame(winner, second.get(10, TimeUnit.SECONDS));
-            assertSame(winner, shared.getExecutorService());
-            assertEquals(firstCandidate + 2, candidates.size());
-
-            for (int i = firstCandidate; i < candidates.size(); i++) {
-                Candidate candidate = candidates.get(i);
-                if (candidate.service == winner) {
-                    assertFalse(candidate.pool.isShutdown());
-                    assertThrows(IllegalArgumentException.class,
-                        () -> Runtime.getRuntime().addShutdownHook(candidate.hook));
-                } else {
-                    assertCleanedUp(candidate);
-                }
-            }
+            ScheduledExecutorService executor = first.get(10, TimeUnit.SECONDS);
+            assertSame(executor, second.get(10, TimeUnit.SECONDS));
+            assertSame(executor, shared.getExecutorService());
+            assertEquals(firstCandidate + 1, candidates.size());
+            Candidate candidate = candidates.get(firstCandidate);
+            assertSame(candidate.service, executor);
+            assertFalse(candidate.pool.isShutdown());
+            assertThrows(IllegalArgumentException.class, () -> Runtime.getRuntime().addShutdownHook(candidate.hook));
 
             shared.reset();
-            for (int i = firstCandidate; i < candidates.size(); i++) {
-                assertCleanedUp(candidates.get(i));
-            }
+            assertCleanedUp(candidate);
         }
     }
 
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
-    public void customExecutorWinsDuringCreation(boolean registerHook) throws Exception {
+    public void customExecutorWaitsForInitialization(boolean registerHook) throws Exception {
         CountDownLatch created = new CountDownLatch(1);
         CountDownLatch publish = new CountDownLatch(1);
         Future<ScheduledExecutorService> result = callers.submit(() -> shared.ensureNotShutdown(() -> {
@@ -125,15 +123,23 @@ public class SharedExecutorServiceConcurrencyTests {
             return candidate.service;
         }));
         ScheduledExecutorService custom = createCustomExecutor();
+        Future<?> replacement;
 
         try {
             await(created);
-            shared.setExecutorService(custom);
+            AtomicReference<Thread> replacementThread = new AtomicReference<>();
+            replacement = callers.submit(() -> {
+                replacementThread.set(Thread.currentThread());
+                shared.setExecutorService(custom);
+            });
+            awaitThreadWaiting(replacementThread);
+            assertFalse(replacement.isDone(), "Replacement must wait for initialization.");
         } finally {
             publish.countDown();
         }
 
-        assertSame(custom, result.get(10, TimeUnit.SECONDS));
+        assertSame(candidates.get(0).service, result.get(10, TimeUnit.SECONDS));
+        replacement.get(10, TimeUnit.SECONDS);
         assertSame(custom, shared.getExecutorService());
         assertFalse(custom.isShutdown());
         assertEquals(1, candidates.size());
@@ -141,33 +147,72 @@ public class SharedExecutorServiceConcurrencyTests {
     }
 
     @Test
-    public void resetDuringCreationCleansUpStaleCandidate() throws Exception {
+    public void resetWaitsForInitialization() throws Exception {
         prepareInitialState(InitialState.SHUTDOWN);
         CountDownLatch created = new CountDownLatch(1);
         CountDownLatch publish = new CountDownLatch(1);
-        AtomicInteger attempts = new AtomicInteger();
         Future<ScheduledExecutorService> result = callers.submit(() -> shared.ensureNotShutdown(() -> {
             Candidate candidate = createCandidate(true);
-            if (attempts.incrementAndGet() == 1) {
-                created.countDown();
-                await(publish);
-            }
+            created.countDown();
+            await(publish);
             return candidate.service;
         }));
+        Future<?> reset;
 
         try {
             await(created);
-            shared.reset();
+            AtomicReference<Thread> resetThread = new AtomicReference<>();
+            reset = callers.submit(() -> {
+                resetThread.set(Thread.currentThread());
+                shared.reset();
+            });
+            awaitThreadWaiting(resetThread);
+            assertFalse(reset.isDone(), "Reset must wait for initialization.");
         } finally {
             publish.countDown();
         }
 
-        ScheduledExecutorService winner = result.get(10, TimeUnit.SECONDS);
-        assertEquals(2, candidates.size());
+        assertSame(candidates.get(0).service, result.get(10, TimeUnit.SECONDS));
+        reset.get(10, TimeUnit.SECONDS);
+        assertEquals(1, candidates.size());
         assertCleanedUp(candidates.get(0));
-        assertSame(candidates.get(1).service, winner);
-        assertSame(winner, shared.getExecutorService());
-        assertFalse(winner.isShutdown());
+        assertNull(shared.getExecutorService());
+        assertEquals("reinitialized", shared.submit(() -> "reinitialized").get(10, TimeUnit.SECONDS));
+    }
+
+    @Test
+    public void customExecutorShutDownWhileWaitingIsRejected() throws Exception {
+        CountDownLatch created = new CountDownLatch(1);
+        CountDownLatch publish = new CountDownLatch(1);
+        Future<ScheduledExecutorService> result = callers.submit(() -> shared.ensureNotShutdown(() -> {
+            Candidate candidate = createCandidate(true);
+            created.countDown();
+            await(publish);
+            return candidate.service;
+        }));
+        ScheduledExecutorService custom = createCustomExecutor();
+        Future<?> replacement;
+
+        try {
+            await(created);
+            AtomicReference<Thread> replacementThread = new AtomicReference<>();
+            replacement = callers.submit(() -> {
+                replacementThread.set(Thread.currentThread());
+                shared.setExecutorService(custom);
+            });
+            awaitThreadWaiting(replacementThread);
+            assertFalse(replacement.isDone(), "Replacement must wait for initialization.");
+            custom.shutdown();
+        } finally {
+            publish.countDown();
+        }
+
+        ScheduledExecutorService executor = result.get(10, TimeUnit.SECONDS);
+        ExecutionException failure
+            = assertThrows(ExecutionException.class, () -> replacement.get(10, TimeUnit.SECONDS));
+        assertInstanceOf(IllegalStateException.class, failure.getCause());
+        assertSame(executor, shared.getExecutorService());
+        assertFalse(executor.isShutdown());
     }
 
     @Test
@@ -222,7 +267,7 @@ public class SharedExecutorServiceConcurrencyTests {
     }
 
     @Test
-    public void factoryFailureDoesNotPreventInitialization() {
+    public void factoryFailureReleasesLock() throws Exception {
         IllegalStateException failure = new IllegalStateException("Executor creation failed.");
         assertSame(failure, assertThrows(IllegalStateException.class, () -> shared.ensureNotShutdown(() -> {
             throw failure;
@@ -230,7 +275,9 @@ public class SharedExecutorServiceConcurrencyTests {
         assertNull(shared.getExecutorService());
 
         Candidate candidate = createCandidate(true);
-        assertSame(candidate.service, shared.ensureNotShutdown(() -> candidate.service));
+        Future<ScheduledExecutorService> result
+            = callers.submit(() -> shared.ensureNotShutdown(() -> candidate.service));
+        assertSame(candidate.service, result.get(10, TimeUnit.SECONDS));
         assertFalse(candidate.pool.isShutdown());
     }
 
@@ -266,12 +313,24 @@ public class SharedExecutorServiceConcurrencyTests {
     }
 
     private static void assertCleanedUp(Candidate candidate) {
-        assertAll(() -> assertTrue(candidate.pool.isShutdown(), "Unused executor must be shut down."), () -> {
+        assertAll(() -> assertTrue(candidate.pool.isShutdown(), "Replaced executor must be shut down."), () -> {
             if (candidate.hook != null) {
                 assertFalse(Runtime.getRuntime().removeShutdownHook(candidate.hook),
-                    "Unused executor's hook must already be removed.");
+                    "Replaced executor's hook must already be removed.");
             }
         });
+    }
+
+    private static void awaitThreadWaiting(AtomicReference<Thread> threadReference) {
+        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(5);
+        while (System.nanoTime() < deadline) {
+            Thread thread = threadReference.get();
+            if (thread != null && thread.getState() == Thread.State.WAITING) {
+                return;
+            }
+            Thread.yield();
+        }
+        throw new AssertionError("Thread did not wait for the executor lifecycle lock.");
     }
 
     private static void await(CountDownLatch latch) {
