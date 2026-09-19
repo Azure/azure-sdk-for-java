@@ -82,7 +82,8 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
 
     @Override
     public Stream<T> stream() {
-        return StreamSupport.stream(iterableByItemInternal().spliterator(), false);
+        // Return a stream that supports proper parallel processing
+        return new ParallelCapablePagedStream<>(iterableByItemInternal());
     }
 
     /**
