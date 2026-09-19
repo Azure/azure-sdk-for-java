@@ -12,20 +12,21 @@ public final class RulestackDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RulestackDetails model = BinaryData
-            .fromString("{\"resourceId\":\"slbi\",\"rulestackId\":\"ojgcyzt\",\"location\":\"mznbaeqphch\"}")
+            .fromString("{\"resourceId\":\"rgnepttwqmsniffc\",\"rulestackId\":\"qnrojlpijnkrxfrd\",\"location\":\"c\"}")
             .toObject(RulestackDetails.class);
-        Assertions.assertEquals("slbi", model.resourceId());
-        Assertions.assertEquals("ojgcyzt", model.rulestackId());
-        Assertions.assertEquals("mznbaeqphch", model.location());
+        Assertions.assertEquals("rgnepttwqmsniffc", model.resourceId());
+        Assertions.assertEquals("qnrojlpijnkrxfrd", model.rulestackId());
+        Assertions.assertEquals("c", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RulestackDetails model
-            = new RulestackDetails().withResourceId("slbi").withRulestackId("ojgcyzt").withLocation("mznbaeqphch");
+        RulestackDetails model = new RulestackDetails().withResourceId("rgnepttwqmsniffc")
+            .withRulestackId("qnrojlpijnkrxfrd")
+            .withLocation("c");
         model = BinaryData.fromObject(model).toObject(RulestackDetails.class);
-        Assertions.assertEquals("slbi", model.resourceId());
-        Assertions.assertEquals("ojgcyzt", model.rulestackId());
-        Assertions.assertEquals("mznbaeqphch", model.location());
+        Assertions.assertEquals("rgnepttwqmsniffc", model.resourceId());
+        Assertions.assertEquals("qnrojlpijnkrxfrd", model.rulestackId());
+        Assertions.assertEquals("c", model.location());
     }
 }

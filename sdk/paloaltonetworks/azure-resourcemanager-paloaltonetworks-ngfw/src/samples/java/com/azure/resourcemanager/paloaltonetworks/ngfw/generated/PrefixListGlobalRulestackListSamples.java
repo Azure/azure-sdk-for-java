@@ -9,7 +9,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
  */
 public final class PrefixListGlobalRulestackListSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListGlobalRulestack_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListGlobalRulestack_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_List_MaximumSet_Gen.
@@ -22,7 +22,7 @@ public final class PrefixListGlobalRulestackListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PrefixListGlobalRulestack_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PrefixListGlobalRulestack_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_List_MinimumSet_Gen.

@@ -12,11 +12,11 @@ public final class AdvSecurityObjectListResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdvSecurityObjectListResponseInner model = BinaryData.fromString(
-            "{\"value\":{\"type\":\"npc\",\"entry\":[{\"name\":\"ocohslkevleg\",\"description\":\"fbuhfmvfaxkffe\"},{\"name\":\"ithlvmezyvshxm\",\"description\":\"bbzoggig\"},{\"name\":\"xwburvjxxjns\",\"description\":\"dptkoenkouk\"}]},\"nextLink\":\"udwtiukbl\"}")
+            "{\"value\":{\"type\":\"idokgjlj\",\"entry\":[{\"name\":\"xgvcl\",\"description\":\"gsncghkjeszz\"},{\"name\":\"bijhtxfvgxbf\",\"description\":\"xnehmpvec\"}]},\"nextLink\":\"odebfqkkrbmpu\"}")
             .toObject(AdvSecurityObjectListResponseInner.class);
-        Assertions.assertEquals("npc", model.value().type());
-        Assertions.assertEquals("ocohslkevleg", model.value().entry().get(0).name());
-        Assertions.assertEquals("fbuhfmvfaxkffe", model.value().entry().get(0).description());
-        Assertions.assertEquals("udwtiukbl", model.nextLink());
+        Assertions.assertEquals("idokgjlj", model.value().type());
+        Assertions.assertEquals("xgvcl", model.value().entry().get(0).name());
+        Assertions.assertEquals("gsncghkjeszz", model.value().entry().get(0).description());
+        Assertions.assertEquals("odebfqkkrbmpu", model.nextLink());
     }
 }

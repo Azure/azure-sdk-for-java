@@ -12,11 +12,11 @@ public final class RuleCounterResetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuleCounterResetInner model = BinaryData.fromString(
-            "{\"priority\":\"ky\",\"ruleStackName\":\"beddgssofw\",\"ruleListName\":\"zqalkrmnjijpx\",\"firewallName\":\"q\",\"ruleName\":\"dfnbyxbaaabjyv\"}")
+            "{\"priority\":\"wiipfpub\",\"ruleStackName\":\"bwwift\",\"ruleListName\":\"qkvpuvksgplsakn\",\"firewallName\":\"fsynljphuop\",\"ruleName\":\"dlqiyntorzih\"}")
             .toObject(RuleCounterResetInner.class);
-        Assertions.assertEquals("beddgssofw", model.ruleStackName());
-        Assertions.assertEquals("zqalkrmnjijpx", model.ruleListName());
-        Assertions.assertEquals("q", model.firewallName());
-        Assertions.assertEquals("dfnbyxbaaabjyv", model.ruleName());
+        Assertions.assertEquals("bwwift", model.ruleStackName());
+        Assertions.assertEquals("qkvpuvksgplsakn", model.ruleListName());
+        Assertions.assertEquals("fsynljphuop", model.firewallName());
+        Assertions.assertEquals("dlqiyntorzih", model.ruleName());
     }
 }

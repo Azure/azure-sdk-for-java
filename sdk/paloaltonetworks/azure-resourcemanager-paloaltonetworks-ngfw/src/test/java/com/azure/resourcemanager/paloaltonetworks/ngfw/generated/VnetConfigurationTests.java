@@ -14,34 +14,33 @@ public final class VnetConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VnetConfiguration model = BinaryData.fromString(
-            "{\"vnet\":{\"resourceId\":\"jbibg\",\"addressSpace\":\"fxumv\"},\"trustSubnet\":{\"resourceId\":\"luyovwxnbkfezzx\",\"addressSpace\":\"yhwzdgiruj\"},\"unTrustSubnet\":{\"resourceId\":\"bomvzzbtdcqv\",\"addressSpace\":\"iyujviylwdshfs\"},\"ipOfTrustSubnetForUdr\":{\"resourceId\":\"bgye\",\"address\":\"ymsgaojfmwnc\"}}")
+            "{\"vnet\":{\"resourceId\":\"jwmwkpnbs\",\"addressSpace\":\"ejjoqkagfhsxtta\"},\"trustSubnet\":{\"resourceId\":\"zxnfaaz\",\"addressSpace\":\"dtnkdmkq\"},\"unTrustSubnet\":{\"resourceId\":\"lwuenvrkp\",\"addressSpace\":\"uaibrebqaaysj\"},\"ipOfTrustSubnetForUdr\":{\"resourceId\":\"qtnqtt\",\"address\":\"lwfffi\"}}")
             .toObject(VnetConfiguration.class);
-        Assertions.assertEquals("jbibg", model.vnet().resourceId());
-        Assertions.assertEquals("fxumv", model.vnet().addressSpace());
-        Assertions.assertEquals("luyovwxnbkfezzx", model.trustSubnet().resourceId());
-        Assertions.assertEquals("yhwzdgiruj", model.trustSubnet().addressSpace());
-        Assertions.assertEquals("bomvzzbtdcqv", model.unTrustSubnet().resourceId());
-        Assertions.assertEquals("iyujviylwdshfs", model.unTrustSubnet().addressSpace());
-        Assertions.assertEquals("bgye", model.ipOfTrustSubnetForUdr().resourceId());
-        Assertions.assertEquals("ymsgaojfmwnc", model.ipOfTrustSubnetForUdr().address());
+        Assertions.assertEquals("jwmwkpnbs", model.vnet().resourceId());
+        Assertions.assertEquals("ejjoqkagfhsxtta", model.vnet().addressSpace());
+        Assertions.assertEquals("zxnfaaz", model.trustSubnet().resourceId());
+        Assertions.assertEquals("dtnkdmkq", model.trustSubnet().addressSpace());
+        Assertions.assertEquals("lwuenvrkp", model.unTrustSubnet().resourceId());
+        Assertions.assertEquals("uaibrebqaaysj", model.unTrustSubnet().addressSpace());
+        Assertions.assertEquals("qtnqtt", model.ipOfTrustSubnetForUdr().resourceId());
+        Assertions.assertEquals("lwfffi", model.ipOfTrustSubnetForUdr().address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VnetConfiguration model
-            = new VnetConfiguration().withVnet(new IpAddressSpace().withResourceId("jbibg").withAddressSpace("fxumv"))
-                .withTrustSubnet(new IpAddressSpace().withResourceId("luyovwxnbkfezzx").withAddressSpace("yhwzdgiruj"))
-                .withUnTrustSubnet(
-                    new IpAddressSpace().withResourceId("bomvzzbtdcqv").withAddressSpace("iyujviylwdshfs"))
-                .withIpOfTrustSubnetForUdr(new IpAddress().withResourceId("bgye").withAddress("ymsgaojfmwnc"));
+        VnetConfiguration model = new VnetConfiguration()
+            .withVnet(new IpAddressSpace().withResourceId("jwmwkpnbs").withAddressSpace("ejjoqkagfhsxtta"))
+            .withTrustSubnet(new IpAddressSpace().withResourceId("zxnfaaz").withAddressSpace("dtnkdmkq"))
+            .withUnTrustSubnet(new IpAddressSpace().withResourceId("lwuenvrkp").withAddressSpace("uaibrebqaaysj"))
+            .withIpOfTrustSubnetForUdr(new IpAddress().withResourceId("qtnqtt").withAddress("lwfffi"));
         model = BinaryData.fromObject(model).toObject(VnetConfiguration.class);
-        Assertions.assertEquals("jbibg", model.vnet().resourceId());
-        Assertions.assertEquals("fxumv", model.vnet().addressSpace());
-        Assertions.assertEquals("luyovwxnbkfezzx", model.trustSubnet().resourceId());
-        Assertions.assertEquals("yhwzdgiruj", model.trustSubnet().addressSpace());
-        Assertions.assertEquals("bomvzzbtdcqv", model.unTrustSubnet().resourceId());
-        Assertions.assertEquals("iyujviylwdshfs", model.unTrustSubnet().addressSpace());
-        Assertions.assertEquals("bgye", model.ipOfTrustSubnetForUdr().resourceId());
-        Assertions.assertEquals("ymsgaojfmwnc", model.ipOfTrustSubnetForUdr().address());
+        Assertions.assertEquals("jwmwkpnbs", model.vnet().resourceId());
+        Assertions.assertEquals("ejjoqkagfhsxtta", model.vnet().addressSpace());
+        Assertions.assertEquals("zxnfaaz", model.trustSubnet().resourceId());
+        Assertions.assertEquals("dtnkdmkq", model.trustSubnet().addressSpace());
+        Assertions.assertEquals("lwuenvrkp", model.unTrustSubnet().resourceId());
+        Assertions.assertEquals("uaibrebqaaysj", model.unTrustSubnet().addressSpace());
+        Assertions.assertEquals("qtnqtt", model.ipOfTrustSubnetForUdr().resourceId());
+        Assertions.assertEquals("lwfffi", model.ipOfTrustSubnetForUdr().address());
     }
 }

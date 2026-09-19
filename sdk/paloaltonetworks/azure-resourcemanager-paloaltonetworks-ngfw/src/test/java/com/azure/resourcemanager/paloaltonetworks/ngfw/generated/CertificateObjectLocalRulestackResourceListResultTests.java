@@ -13,13 +13,13 @@ public final class CertificateObjectLocalRulestackResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateObjectLocalRulestackResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"certificateSignerResourceId\":\"llu\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"qtgdqohmcwsl\",\"description\":\"izetpw\",\"etag\":\"a\",\"provisioningState\":\"NotSpecified\"},\"id\":\"bphbqzmizakakank\",\"name\":\"p\",\"type\":\"n\"},{\"properties\":{\"certificateSignerResourceId\":\"ha\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"lhjlmuoyxprimr\",\"description\":\"pteecjme\",\"etag\":\"ls\",\"provisioningState\":\"Updating\"},\"id\":\"ylw\",\"name\":\"dzaumweooh\",\"type\":\"uufuz\"},{\"properties\":{\"certificateSignerResourceId\":\"yjathwtzo\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"emwmdxmebwjs\",\"description\":\"p\",\"etag\":\"lxveabfqx\",\"provisioningState\":\"NotSpecified\"},\"id\":\"qtibxyijddtv\",\"name\":\"cttadi\",\"type\":\"aeukm\"}],\"nextLink\":\"ieekpndzaa\"}")
+            "{\"value\":[{\"properties\":{\"certificateSignerResourceId\":\"dlyjdf\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"kyoqufdv\",\"description\":\"zslzojhp\",\"etag\":\"fnmdxotn\",\"provisioningState\":\"Succeeded\"},\"id\":\"ugeyzihgrkyuiza\",\"name\":\"snmfpphojeevy\",\"type\":\"yhsgz\"},{\"properties\":{\"certificateSignerResourceId\":\"zbgomfgbeg\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"leohibetnluankr\",\"description\":\"xeeebtijvacvbmqz\",\"etag\":\"q\",\"provisioningState\":\"Canceled\"},\"id\":\"rnwxacevehjkuyxo\",\"name\":\"fgaoq\",\"type\":\"tfaeyl\"},{\"properties\":{\"certificateSignerResourceId\":\"mfgvxirpghriypo\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"hlqhykprlpy\",\"description\":\"uciqdsme\",\"etag\":\"itdfuxtyasiib\",\"provisioningState\":\"Updating\"},\"id\":\"nnust\",\"name\":\"nlj\",\"type\":\"nmgixh\"},{\"properties\":{\"certificateSignerResourceId\":\"avmqfoudor\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"yyprotwyp\",\"description\":\"d\",\"etag\":\"xhugcm\",\"provisioningState\":\"Failed\"},\"id\":\"lgorb\",\"name\":\"ftpmdtzfjltfv\",\"type\":\"zcyjtot\"}],\"nextLink\":\"opv\"}")
             .toObject(CertificateObjectLocalRulestackResourceListResult.class);
-        Assertions.assertEquals("llu", model.value().get(0).certificateSignerResourceId());
-        Assertions.assertEquals(BooleanEnum.TRUE, model.value().get(0).certificateSelfSigned());
-        Assertions.assertEquals("qtgdqohmcwsl", model.value().get(0).auditComment());
-        Assertions.assertEquals("izetpw", model.value().get(0).description());
-        Assertions.assertEquals("a", model.value().get(0).etag());
-        Assertions.assertEquals("ieekpndzaa", model.nextLink());
+        Assertions.assertEquals("dlyjdf", model.value().get(0).certificateSignerResourceId());
+        Assertions.assertEquals(BooleanEnum.FALSE, model.value().get(0).certificateSelfSigned());
+        Assertions.assertEquals("kyoqufdv", model.value().get(0).auditComment());
+        Assertions.assertEquals("zslzojhp", model.value().get(0).description());
+        Assertions.assertEquals("fnmdxotn", model.value().get(0).etag());
+        Assertions.assertEquals("opv", model.nextLink());
     }
 }
