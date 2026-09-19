@@ -3,7 +3,9 @@
 
 package com.azure.identity;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
@@ -15,7 +17,10 @@ import reactor.test.StepVerifier;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class AzureDeveloperCliCredentialTest {
@@ -103,6 +108,33 @@ public class AzureDeveloperCliCredentialTest {
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(e -> e instanceof Exception && e.getMessage().contains("other error"))
                 .verify();
+            Assertions.assertNotNull(identityClientMock);
+        }
+    }
+
+    @Test
+    public void manualChainStopsAfterAzureDeveloperCliAuthenticationFailure() {
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+        TokenCredential fallbackCredential = mock(TokenCredential.class);
+
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(Mono.error(
+                    new ClientAuthenticationException("AADSTS50076: Multi-factor authentication required", null)));
+                when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+            })) {
+            AzureDeveloperCliCredential azureDeveloperCliCredential = new AzureDeveloperCliCredentialBuilder().build();
+            ChainedTokenCredential credential
+                = new ChainedTokenCredentialBuilder().addFirst(azureDeveloperCliCredential)
+                    .addLast(fallbackCredential)
+                    .build();
+
+            StepVerifier.create(credential.getToken(request)).expectErrorSatisfies(error -> {
+                Assertions.assertEquals(ClientAuthenticationException.class, error.getClass());
+                Assertions.assertTrue(error.getMessage().contains("AADSTS50076"));
+            }).verify();
+
+            verify(fallbackCredential, never()).getToken(request);
             Assertions.assertNotNull(identityClientMock);
         }
     }
