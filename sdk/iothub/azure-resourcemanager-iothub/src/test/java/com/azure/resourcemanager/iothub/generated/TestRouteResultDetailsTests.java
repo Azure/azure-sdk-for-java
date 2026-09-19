@@ -13,13 +13,13 @@ public final class TestRouteResultDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TestRouteResultDetails model = BinaryData.fromString(
-            "{\"compilationErrors\":[{\"message\":\"qig\",\"severity\":\"warning\",\"location\":{\"start\":{\"line\":924939472,\"column\":1204451627},\"end\":{\"line\":1323029416,\"column\":918393543}}},{\"message\":\"aqolbgycduiertg\",\"severity\":\"error\",\"location\":{\"start\":{\"line\":50940581,\"column\":76010479},\"end\":{\"line\":1282949861,\"column\":1696619816}}},{\"message\":\"mmdnbbglzps\",\"severity\":\"warning\",\"location\":{\"start\":{\"line\":1596263349,\"column\":695462376},\"end\":{\"line\":900770190,\"column\":1311226680}}}]}")
+            "{\"compilationErrors\":[{\"message\":\"sbpfvmwyhr\",\"severity\":\"error\",\"location\":{\"start\":{\"line\":892669790,\"column\":1378791233},\"end\":{\"line\":1662588727,\"column\":1209208693}}}]}")
             .toObject(TestRouteResultDetails.class);
-        Assertions.assertEquals("qig", model.compilationErrors().get(0).message());
-        Assertions.assertEquals(RouteErrorSeverity.WARNING, model.compilationErrors().get(0).severity());
-        Assertions.assertEquals(924939472, model.compilationErrors().get(0).location().start().line());
-        Assertions.assertEquals(1204451627, model.compilationErrors().get(0).location().start().column());
-        Assertions.assertEquals(1323029416, model.compilationErrors().get(0).location().end().line());
-        Assertions.assertEquals(918393543, model.compilationErrors().get(0).location().end().column());
+        Assertions.assertEquals("sbpfvmwyhr", model.compilationErrors().get(0).message());
+        Assertions.assertEquals(RouteErrorSeverity.ERROR, model.compilationErrors().get(0).severity());
+        Assertions.assertEquals(892669790, model.compilationErrors().get(0).location().start().line());
+        Assertions.assertEquals(1378791233, model.compilationErrors().get(0).location().start().column());
+        Assertions.assertEquals(1662588727, model.compilationErrors().get(0).location().end().line());
+        Assertions.assertEquals(1209208693, model.compilationErrors().get(0).location().end().column());
     }
 }

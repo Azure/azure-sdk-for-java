@@ -7,6 +7,7 @@ package com.azure.resourcemanager.iothub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iothub.models.EventStreamAuthenticationType;
 import com.azure.resourcemanager.iothub.models.ManagedIdentity;
+import com.azure.resourcemanager.iothub.models.MessagePayloadFormat;
 import com.azure.resourcemanager.iothub.models.RoutingEventStreamProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,36 +15,39 @@ public final class RoutingEventStreamPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutingEventStreamProperties model = BinaryData.fromString(
-            "{\"name\":\"frzpwvlqdqgb\",\"id\":\"ylihkaetckt\",\"endpointUri\":\"fcivfsnkym\",\"entityPath\":\"ctq\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"brjcxe\"},\"workspaceId\":\"uwutttxfvjrbi\",\"eventStreamId\":\"hxepcyvahfnlj\",\"sourceId\":\"qxj\"}")
+            "{\"name\":\"tsdbpgn\",\"id\":\"txhp\",\"endpointUri\":\"xbzpfzab\",\"entityPath\":\"lcuhxwtctyqiklb\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"wzbhvgyugu\"},\"workspaceId\":\"vmkfssxqu\",\"eventStreamId\":\"fpl\",\"sourceId\":\"gsxnkjzkdeslpv\",\"messagePayloadFormat\":\"DOObservationV1\"}")
             .toObject(RoutingEventStreamProperties.class);
-        Assertions.assertEquals("frzpwvlqdqgb", model.name());
-        Assertions.assertEquals("fcivfsnkym", model.endpointUri());
-        Assertions.assertEquals("ctq", model.entityPath());
+        Assertions.assertEquals("tsdbpgn", model.name());
+        Assertions.assertEquals("xbzpfzab", model.endpointUri());
+        Assertions.assertEquals("lcuhxwtctyqiklb", model.entityPath());
         Assertions.assertEquals(EventStreamAuthenticationType.IDENTITY_BASED, model.authenticationType());
-        Assertions.assertEquals("brjcxe", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("uwutttxfvjrbi", model.workspaceId());
-        Assertions.assertEquals("hxepcyvahfnlj", model.eventStreamId());
-        Assertions.assertEquals("qxj", model.sourceId());
+        Assertions.assertEquals("wzbhvgyugu", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("vmkfssxqu", model.workspaceId());
+        Assertions.assertEquals("fpl", model.eventStreamId());
+        Assertions.assertEquals("gsxnkjzkdeslpv", model.sourceId());
+        Assertions.assertEquals(MessagePayloadFormat.DOOBSERVATION_V1, model.messagePayloadFormat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingEventStreamProperties model = new RoutingEventStreamProperties().withName("frzpwvlqdqgb")
-            .withEndpointUri("fcivfsnkym")
-            .withEntityPath("ctq")
+        RoutingEventStreamProperties model = new RoutingEventStreamProperties().withName("tsdbpgn")
+            .withEndpointUri("xbzpfzab")
+            .withEntityPath("lcuhxwtctyqiklb")
             .withAuthenticationType(EventStreamAuthenticationType.IDENTITY_BASED)
-            .withIdentity(new ManagedIdentity().withUserAssignedIdentity("brjcxe"))
-            .withWorkspaceId("uwutttxfvjrbi")
-            .withEventStreamId("hxepcyvahfnlj")
-            .withSourceId("qxj");
+            .withIdentity(new ManagedIdentity().withUserAssignedIdentity("wzbhvgyugu"))
+            .withWorkspaceId("vmkfssxqu")
+            .withEventStreamId("fpl")
+            .withSourceId("gsxnkjzkdeslpv")
+            .withMessagePayloadFormat(MessagePayloadFormat.DOOBSERVATION_V1);
         model = BinaryData.fromObject(model).toObject(RoutingEventStreamProperties.class);
-        Assertions.assertEquals("frzpwvlqdqgb", model.name());
-        Assertions.assertEquals("fcivfsnkym", model.endpointUri());
-        Assertions.assertEquals("ctq", model.entityPath());
+        Assertions.assertEquals("tsdbpgn", model.name());
+        Assertions.assertEquals("xbzpfzab", model.endpointUri());
+        Assertions.assertEquals("lcuhxwtctyqiklb", model.entityPath());
         Assertions.assertEquals(EventStreamAuthenticationType.IDENTITY_BASED, model.authenticationType());
-        Assertions.assertEquals("brjcxe", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("uwutttxfvjrbi", model.workspaceId());
-        Assertions.assertEquals("hxepcyvahfnlj", model.eventStreamId());
-        Assertions.assertEquals("qxj", model.sourceId());
+        Assertions.assertEquals("wzbhvgyugu", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("vmkfssxqu", model.workspaceId());
+        Assertions.assertEquals("fpl", model.eventStreamId());
+        Assertions.assertEquals("gsxnkjzkdeslpv", model.sourceId());
+        Assertions.assertEquals(MessagePayloadFormat.DOOBSERVATION_V1, model.messagePayloadFormat());
     }
 }

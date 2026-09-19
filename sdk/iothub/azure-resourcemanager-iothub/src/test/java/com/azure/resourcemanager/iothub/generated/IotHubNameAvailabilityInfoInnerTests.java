@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IotHubNameAvailabilityInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IotHubNameAvailabilityInfoInner model
-            = BinaryData.fromString("{\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"uflrwd\"}")
-                .toObject(IotHubNameAvailabilityInfoInner.class);
-        Assertions.assertEquals("uflrwd", model.message());
+        IotHubNameAvailabilityInfoInner model = BinaryData
+            .fromString("{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"fudxepxgyqagvrv\"}")
+            .toObject(IotHubNameAvailabilityInfoInner.class);
+        Assertions.assertEquals("fudxepxgyqagvrv", model.message());
     }
 }
