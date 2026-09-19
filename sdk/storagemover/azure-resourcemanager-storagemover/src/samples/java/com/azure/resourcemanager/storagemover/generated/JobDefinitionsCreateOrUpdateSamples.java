@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class JobDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-01/JobDefinitions_CreateOrUpdate_With_Schedule.json
+     * x-ms-original-file: 2026-05-01/JobDefinitions_CreateOrUpdate_With_Schedule.json
      */
     /**
      * Sample code: JobDefinitions_CreateOrUpdate_With_Schedule.
@@ -43,14 +43,14 @@ public final class JobDefinitionsCreateOrUpdateSamples {
             .withSchedule(new ScheduleInfo().withFrequency(Frequency.WEEKLY)
                 .withIsActive(true)
                 .withExecutionTime(new SchedulerTime().withHour(9).withMinute(Minute.ZERO))
-                .withStartDate(OffsetDateTime.parse("2025-12-01T00:00:00Z"))
+                .withStartDate(OffsetDateTime.parse("2026-05-01T00:00:00Z"))
                 .withDaysOfWeek(Arrays.asList("Monday", "Wednesday", "Friday"))
                 .withEndDate(OffsetDateTime.parse("2025-12-31T12:00:00Z")))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-12-01/JobDefinitions_CreateOrUpdate_CloudToCloud.json
+     * x-ms-original-file: 2026-05-01/JobDefinitions_CreateOrUpdate_CloudToCloud.json
      */
     /**
      * Sample code: JobDefinitions_CreateOrUpdate_CloudToCloud.
@@ -72,11 +72,13 @@ public final class JobDefinitionsCreateOrUpdateSamples {
             .withAgentName("dummy-agent")
             .withConnections(Arrays.asList(
                 "/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"))
+            .withSyncMode("SnapshotBased")
+            .withMoverSyncedUntil(OffsetDateTime.parse("2026-05-01T00:00:00Z"))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-12-01/JobDefinitions_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01/JobDefinitions_CreateOrUpdate.json
      */
     /**
      * Sample code: JobDefinitions_CreateOrUpdate.
@@ -98,6 +100,38 @@ public final class JobDefinitionsCreateOrUpdateSamples {
             .withAgentName("migration-agent")
             .withConnections(Arrays.asList(
                 "/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"))
+            .withPreservePermissions(false)
+            .withSyncMode("FullScan")
+            .withMoverSyncedUntil(OffsetDateTime.parse("2026-05-01T00:00:00Z"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01/JobDefinitions_CreateOrUpdate_CrossTenant.json
+     */
+    /**
+     * Sample code: JobDefinitions_CreateOrUpdate_CrossTenant.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void
+        jobDefinitionsCreateOrUpdateCrossTenant(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.jobDefinitions()
+            .define("examples-jobDefinitionName")
+            .withExistingProject("examples-rg", "examples-storageMoverName", "examples-projectName")
+            .withCopyMode(CopyMode.ADDITIVE)
+            .withSourceName("examples-sourceEndpointName")
+            .withTargetName("partner-targetEndpoint")
+            .withDescription(
+                "Cross-tenant Blob-to-Blob copy job. JobDefinition lives in the source (host) tenant alongside the local source endpoint; the target endpoint lives in a partner (guest) tenant.")
+            .withJobType(JobType.CLOUD_TO_CLOUD)
+            .withSourceSubpath("/")
+            .withTargetSubpath("/")
+            .withAgentName("migration-agent")
+            .withIsCrossTenantJob(true)
+            .withCrossTenantEndpointTenantId("11111111-2222-3333-4444-555555555555")
+            .withCrossTenantEndpointResourceId(
+                "/subscriptions/0a2b3c4d-5e6f-7081-92a3-b4c5d6e7f809/resourceGroups/partner-rg/providers/Microsoft.StorageMover/storageMovers/partner-storageMover/endpoints/partner-targetEndpoint")
             .create();
     }
 }
