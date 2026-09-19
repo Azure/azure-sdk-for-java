@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class LogAnalyticsGetLogAnalyticsResourcesSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/LogAnalytics_GetLogAnalyticsResources.json
+     * x-ms-original-file: 2026-07-01/LogAnalytics_GetLogAnalyticsResources.json
      */
     /**
      * Sample code: LogAnalytics_GetLogAnalyticsResources.

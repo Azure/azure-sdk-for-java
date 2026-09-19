@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class AfdEndpointsListByProfileSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDEndpoints_ListByProfile.json
+     * x-ms-original-file: 2026-07-01/AFDEndpoints_ListByProfile.json
      */
     /**
      * Sample code: AFDEndpoints_ListByProfile.

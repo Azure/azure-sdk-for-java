@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class RoutesListByEndpointSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Routes_ListByEndpoint.json
+     * x-ms-original-file: 2026-07-01/Routes_ListByEndpoint.json
      */
     /**
      * Sample code: Routes_ListByEndpoint.

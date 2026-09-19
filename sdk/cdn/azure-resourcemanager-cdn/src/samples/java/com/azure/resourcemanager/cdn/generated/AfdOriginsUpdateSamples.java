@@ -5,15 +5,16 @@
 package com.azure.resourcemanager.cdn.generated;
 
 import com.azure.resourcemanager.cdn.models.AfdOriginUpdateParameters;
+import com.azure.resourcemanager.cdn.models.CertificateNameCheckValidationMode;
 import com.azure.resourcemanager.cdn.models.EnabledState;
-import com.azure.resourcemanager.cdn.models.OriginCapacityResourceProperties;
+import java.util.Arrays;
 
 /**
  * Samples for AfdOrigins Update.
  */
 public final class AfdOriginsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDOrigins_Update.json
+     * x-ms-original-file: 2026-07-01/AFDOrigins_Update.json
      */
     /**
      * Sample code: AFDOrigins_Update.
@@ -27,11 +28,53 @@ public final class AfdOriginsUpdateSamples {
                 new AfdOriginUpdateParameters().withHostname("host1.blob.core.windows.net")
                     .withHttpPort(80)
                     .withHttpsPort(443)
-                    .withOriginCapacityResource(new OriginCapacityResourceProperties().withEnabled(EnabledState.ENABLED)
-                        .withRegion("EastUs")
-                        .withOriginRequestRateThreshold(1000L)
-                        .withOriginIngressRateThreshold(10L))
                     .withEnabledState(EnabledState.ENABLED),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/AFDOrigins_Update_CustomCertificateSubject.json
+     */
+    /**
+     * Sample code: AFDOrigins_Update_CustomCertificateSubject.
+     * 
+     * @param manager Entry point to CdnManager.
+     */
+    public static void aFDOriginsUpdateCustomCertificateSubject(com.azure.resourcemanager.cdn.CdnManager manager) {
+        manager.serviceClient()
+            .getAfdOrigins()
+            .update("RG", "profile1", "origingroup1", "origin1",
+                new AfdOriginUpdateParameters().withHostname("host1.blob.core.windows.net")
+                    .withHttpPort(80)
+                    .withHttpsPort(443)
+                    .withOriginHostHeader("host1.foo.com")
+                    .withEnabledState(EnabledState.ENABLED)
+                    .withEnforceCertificateNameCheck(true)
+                    .withCertificateNameCheckValidationMode(
+                        CertificateNameCheckValidationMode.CUSTOM_CERTIFICATE_SUBJECT)
+                    .withCustomCertificateSubjects(Arrays.asList("host1.foo.com", "*.foo.com")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/AFDOrigins_Update_OriginHostname.json
+     */
+    /**
+     * Sample code: AFDOrigins_Update_OriginHostname.
+     * 
+     * @param manager Entry point to CdnManager.
+     */
+    public static void aFDOriginsUpdateOriginHostname(com.azure.resourcemanager.cdn.CdnManager manager) {
+        manager.serviceClient()
+            .getAfdOrigins()
+            .update("RG", "profile1", "origingroup1", "origin1",
+                new AfdOriginUpdateParameters().withHostname("host1.blob.core.windows.net")
+                    .withHttpPort(80)
+                    .withHttpsPort(443)
+                    .withOriginHostHeader("host1.foo.com")
+                    .withEnabledState(EnabledState.ENABLED)
+                    .withEnforceCertificateNameCheck(true)
+                    .withCertificateNameCheckValidationMode(CertificateNameCheckValidationMode.ORIGIN_HOSTNAME),
                 com.azure.core.util.Context.NONE);
     }
 }

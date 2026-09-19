@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class ProfilesListSupportedOptimizationTypesSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Profiles_ListSupportedOptimizationTypes.json
+     * x-ms-original-file: 2026-07-01/Profiles_ListSupportedOptimizationTypes.json
      */
     /**
      * Sample code: Profiles_ListSupportedOptimizationTypes.

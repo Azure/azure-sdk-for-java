@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class OriginGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/OriginGroups_Delete.json
+     * x-ms-original-file: 2026-07-01/OriginGroups_Delete.json
      */
     /**
      * Sample code: OriginGroups_Delete.

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class EndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Endpoints_Update.json
+     * x-ms-original-file: 2026-07-01/Endpoints_Update.json
      */
     /**
      * Sample code: Endpoints_Update.
