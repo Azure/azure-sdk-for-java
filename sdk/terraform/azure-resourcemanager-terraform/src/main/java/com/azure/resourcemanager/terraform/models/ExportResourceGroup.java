@@ -127,6 +127,15 @@ public final class ExportResourceGroup extends BaseExportModel {
      * {@inheritDoc}
      */
     @Override
+    public ExportResourceGroup withIncludeExtensions(List<AzureExtensionResourceType> includeExtensions) {
+        super.withIncludeExtensions(includeExtensions);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ExportResourceGroup withIncludeManagedResource(Boolean includeManagedResource) {
         super.withIncludeManagedResource(includeManagedResource);
         return this;
@@ -160,6 +169,8 @@ public final class ExportResourceGroup extends BaseExportModel {
         jsonWriter.writeBooleanField("fullProperties", fullProperties());
         jsonWriter.writeBooleanField("maskSensitive", maskSensitive());
         jsonWriter.writeBooleanField("includeRoleAssignment", includeRoleAssignment());
+        jsonWriter.writeArrayField("includeExtensions", includeExtensions(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeBooleanField("includeManagedResource", includeManagedResource());
         jsonWriter.writeArrayField("excludeAzureResource", excludeAzureResource(),
             (writer, element) -> writer.writeString(element));
@@ -196,6 +207,10 @@ public final class ExportResourceGroup extends BaseExportModel {
                 } else if ("includeRoleAssignment".equals(fieldName)) {
                     deserializedExportResourceGroup
                         .withIncludeRoleAssignment(reader.getNullable(JsonReader::getBoolean));
+                } else if ("includeExtensions".equals(fieldName)) {
+                    List<AzureExtensionResourceType> includeExtensions
+                        = reader.readArray(reader1 -> AzureExtensionResourceType.fromString(reader1.getString()));
+                    deserializedExportResourceGroup.withIncludeExtensions(includeExtensions);
                 } else if ("includeManagedResource".equals(fieldName)) {
                     deserializedExportResourceGroup
                         .withIncludeManagedResource(reader.getNullable(JsonReader::getBoolean));

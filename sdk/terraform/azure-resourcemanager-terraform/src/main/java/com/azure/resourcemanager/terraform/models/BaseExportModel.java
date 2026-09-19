@@ -39,10 +39,15 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
     private Boolean maskSensitive;
 
     /*
-     * Whether to include RBAC role assignments assigned to the resources exported. Only resource-scoped role
-     * assignments are supported. Defaults to `false`.
+     * Whether to include role assignments assigned to the resources exported. Defaults to `false`. This is deprecated
+     * in favor of `includeExtensions` (with `role-assignments` specified).
      */
     private Boolean includeRoleAssignment;
+
+    /*
+     * Include extension resource types directly associated to the resources exported
+     */
+    private List<AzureExtensionResourceType> includeExtensions;
 
     /*
      * Whether to include internal resources managed by Azure in the exported configuration. Defaults to `false`.
@@ -140,8 +145,8 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
     }
 
     /**
-     * Get the includeRoleAssignment property: Whether to include RBAC role assignments assigned to the resources
-     * exported. Only resource-scoped role assignments are supported. Defaults to `false`.
+     * Get the includeRoleAssignment property: Whether to include role assignments assigned to the resources exported.
+     * Defaults to `false`. This is deprecated in favor of `includeExtensions` (with `role-assignments` specified).
      * 
      * @return the includeRoleAssignment value.
      */
@@ -150,14 +155,36 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
     }
 
     /**
-     * Set the includeRoleAssignment property: Whether to include RBAC role assignments assigned to the resources
-     * exported. Only resource-scoped role assignments are supported. Defaults to `false`.
+     * Set the includeRoleAssignment property: Whether to include role assignments assigned to the resources exported.
+     * Defaults to `false`. This is deprecated in favor of `includeExtensions` (with `role-assignments` specified).
      * 
      * @param includeRoleAssignment the includeRoleAssignment value to set.
      * @return the BaseExportModel object itself.
      */
     public BaseExportModel withIncludeRoleAssignment(Boolean includeRoleAssignment) {
         this.includeRoleAssignment = includeRoleAssignment;
+        return this;
+    }
+
+    /**
+     * Get the includeExtensions property: Include extension resource types directly associated to the resources
+     * exported.
+     * 
+     * @return the includeExtensions value.
+     */
+    public List<AzureExtensionResourceType> includeExtensions() {
+        return this.includeExtensions;
+    }
+
+    /**
+     * Set the includeExtensions property: Include extension resource types directly associated to the resources
+     * exported.
+     * 
+     * @param includeExtensions the includeExtensions value to set.
+     * @return the BaseExportModel object itself.
+     */
+    public BaseExportModel withIncludeExtensions(List<AzureExtensionResourceType> includeExtensions) {
+        this.includeExtensions = includeExtensions;
         return this;
     }
 
@@ -239,6 +266,8 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
         jsonWriter.writeBooleanField("fullProperties", this.fullProperties);
         jsonWriter.writeBooleanField("maskSensitive", this.maskSensitive);
         jsonWriter.writeBooleanField("includeRoleAssignment", this.includeRoleAssignment);
+        jsonWriter.writeArrayField("includeExtensions", this.includeExtensions,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeBooleanField("includeManagedResource", this.includeManagedResource);
         jsonWriter.writeArrayField("excludeAzureResource", this.excludeAzureResource,
             (writer, element) -> writer.writeString(element));
@@ -301,6 +330,10 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
                     deserializedBaseExportModel.maskSensitive = reader.getNullable(JsonReader::getBoolean);
                 } else if ("includeRoleAssignment".equals(fieldName)) {
                     deserializedBaseExportModel.includeRoleAssignment = reader.getNullable(JsonReader::getBoolean);
+                } else if ("includeExtensions".equals(fieldName)) {
+                    List<AzureExtensionResourceType> includeExtensions
+                        = reader.readArray(reader1 -> AzureExtensionResourceType.fromString(reader1.getString()));
+                    deserializedBaseExportModel.includeExtensions = includeExtensions;
                 } else if ("includeManagedResource".equals(fieldName)) {
                     deserializedBaseExportModel.includeManagedResource = reader.getNullable(JsonReader::getBoolean);
                 } else if ("excludeAzureResource".equals(fieldName)) {
