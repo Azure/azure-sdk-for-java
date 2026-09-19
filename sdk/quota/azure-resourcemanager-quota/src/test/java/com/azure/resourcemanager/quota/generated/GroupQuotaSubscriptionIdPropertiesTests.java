@@ -12,8 +12,8 @@ public final class GroupQuotaSubscriptionIdPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaSubscriptionIdProperties model
-            = BinaryData.fromString("{\"subscriptionId\":\"dgwdslfhot\",\"provisioningState\":\"Escalated\"}")
+            = BinaryData.fromString("{\"subscriptionId\":\"lnjixisxya\",\"provisioningState\":\"InProgress\"}")
                 .toObject(GroupQuotaSubscriptionIdProperties.class);
-        Assertions.assertEquals("dgwdslfhot", model.subscriptionId());
+        Assertions.assertEquals("lnjixisxya", model.subscriptionId());
     }
 }

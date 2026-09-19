@@ -26,7 +26,7 @@ public final class GroupQuotaLimitsRequestsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"value\":[{\"properties\":{\"resourceName\":\"xunkbebxmubyynt\",\"limit\":8620058010530474402,\"comment\":\"tkoievseotgq\",\"unit\":\"ltmuwlauwzizx\",\"name\":{},\"availableLimit\":2676034725139393325,\"allocatedToSubscriptions\":{}}},{\"properties\":{\"resourceName\":\"u\",\"limit\":4123846884146341556,\"comment\":\"bttdumorppxe\",\"unit\":\"nzbtbhj\",\"name\":{},\"availableLimit\":2177073592568993957,\"allocatedToSubscriptions\":{}}}],\"nextLink\":\"hdneuelfph\"},\"id\":\"yhtozfikdowwqu\",\"name\":\"v\",\"type\":\"zx\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"value\":[{\"properties\":{\"resourceName\":\"grvk\",\"limit\":7671760974051521916,\"comment\":\"zh\",\"unit\":\"bibgjmfxumv\",\"name\":{},\"availableLimit\":5212517454826993693,\"allocatedToSubscriptions\":{}}},{\"properties\":{\"resourceName\":\"xnbkfezzxscyhwzd\",\"limit\":7045288362398368122,\"comment\":\"bzbomvzzbtdcqvpn\",\"unit\":\"ujviylwdshfs\",\"name\":{},\"availableLimit\":4495541268478193562,\"allocatedToSubscriptions\":{}}}],\"nextLink\":\"frymsgaojfmwnc\"},\"id\":\"mrfhirctymox\",\"name\":\"ftpipiwyczu\",\"type\":\"xacpqjli\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,19 +37,22 @@ public final class GroupQuotaLimitsRequestsUpdateMockTests {
 
         GroupQuotaLimitList response
             = manager.groupQuotaLimitsRequests()
-                .update("mcwyhzdxssadb", "mnvdfzn", "daodvxzbncblyl", "stdbhhxsrzdzu", new GroupQuotaLimitListInner()
+                .update("iufxqknpir", "nepttwqmsni", "fcdmqnrojlpijn", "rxfrddhc", new GroupQuotaLimitListInner()
                     .withProperties(new GroupQuotaLimitListProperties().withValue(Arrays.asList(
-                        new GroupQuotaLimit().withProperties(new GroupQuotaLimitProperties().withResourceName("nevf")
-                            .withLimit(8847902145663699815L)
-                            .withComment("gtdsslswt")),
+                        new GroupQuotaLimit().withProperties(new GroupQuotaLimitProperties().withResourceName("nasx")
+                            .withLimit(6179205416301149482L)
+                            .withComment("qyzhf")),
+                        new GroupQuotaLimit().withProperties(new GroupQuotaLimitProperties().withResourceName("lgnyhmo")
+                            .withLimit(3260661609689361022L)
+                            .withComment("gthrrghxjbdhq")),
                         new GroupQuotaLimit()
-                            .withProperties(new GroupQuotaLimitProperties().withResourceName("shhszhedplvwiw")
-                                .withLimit(5954256470924053465L)
-                                .withComment("besldnkwwtppjflc"))))),
+                            .withProperties(new GroupQuotaLimitProperties().withResourceName("bshrnsvbuswd")
+                                .withLimit(5540633699584166565L)
+                                .withComment("ycnunvjsrtk"))))),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xunkbebxmubyynt", response.properties().value().get(0).properties().resourceName());
-        Assertions.assertEquals(8620058010530474402L, response.properties().value().get(0).properties().limit());
-        Assertions.assertEquals("tkoievseotgq", response.properties().value().get(0).properties().comment());
+        Assertions.assertEquals("grvk", response.properties().value().get(0).properties().resourceName());
+        Assertions.assertEquals(7671760974051521916L, response.properties().value().get(0).properties().limit());
+        Assertions.assertEquals("zh", response.properties().value().get(0).properties().comment());
     }
 }

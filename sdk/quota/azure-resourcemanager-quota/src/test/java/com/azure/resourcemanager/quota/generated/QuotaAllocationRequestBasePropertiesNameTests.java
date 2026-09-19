@@ -11,7 +11,7 @@ public final class QuotaAllocationRequestBasePropertiesNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaAllocationRequestBasePropertiesName model
-            = BinaryData.fromString("{\"value\":\"vtq\",\"localizedValue\":\"n\"}")
+            = BinaryData.fromString("{\"value\":\"hsd\",\"localizedValue\":\"t\"}")
                 .toObject(QuotaAllocationRequestBasePropertiesName.class);
     }
 }
