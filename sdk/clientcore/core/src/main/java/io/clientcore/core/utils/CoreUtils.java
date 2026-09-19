@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.time.DateTimeException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -291,6 +292,85 @@ public final class CoreUtils {
     }
 
     /**
+     * Converts a duration to ISO-8601 while retaining a day component for complete 24-hour periods.
+     *
+     * @param duration The duration to convert.
+     * @return The ISO-8601 duration, or null if the duration is null.
+     */
+    public static String durationToStringWithDays(Duration duration) {
+        if (duration == null) {
+            return null;
+        }
+        if (duration.isZero()) {
+            return "PT0S";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        if (duration.isNegative()) {
+            builder.append("-P");
+            duration = duration.negated();
+        } else {
+            builder.append('P');
+        }
+
+        long days = duration.toDays();
+        if (days > 0) {
+            builder.append(days).append('D');
+            duration = duration.minusDays(days);
+        }
+
+        long hours = duration.toHours();
+        if (hours > 0) {
+            builder.append('T').append(hours).append('H');
+            duration = duration.minusHours(hours);
+        }
+
+        long minutes = duration.toMinutes();
+        if (minutes > 0) {
+            if (hours == 0) {
+                builder.append('T');
+            }
+            builder.append(minutes).append('M');
+            duration = duration.minusMinutes(minutes);
+        }
+
+        long seconds = duration.getSeconds();
+        if (seconds > 0) {
+            if (hours == 0 && minutes == 0) {
+                builder.append('T');
+            }
+            builder.append(seconds);
+            duration = duration.minusSeconds(seconds);
+        }
+
+        long milliseconds = duration.toMillis();
+        if (milliseconds > 0) {
+            if (hours == 0 && minutes == 0 && seconds == 0) {
+                builder.append('T');
+            }
+            if (seconds == 0) {
+                builder.append('0');
+            }
+            builder.append('.');
+            if (milliseconds <= 99) {
+                builder.append('0');
+                if (milliseconds <= 9) {
+                    builder.append('0');
+                }
+            }
+            while (milliseconds % 10 == 0) {
+                milliseconds /= 10;
+            }
+            builder.append(milliseconds);
+        }
+
+        if (seconds > 0 || milliseconds > 0) {
+            builder.append('S');
+        }
+        return builder.toString();
+    }
+
+    /**
      * Helper method to create an instance of {@link ParameterizedType}.
      * @param rawType The raw type.
      * @param typeArguments The type arguments.
@@ -485,11 +565,9 @@ public final class CoreUtils {
             return null;
         }
         try {
-            if (List.class.isAssignableFrom((Class<?>) returnType.getRawType())) {
-                return serializer.deserializeFromBytes(data.toBytes(), returnType);
-            }
-            Type token = returnType.getRawType();
-            if (Response.class.isAssignableFrom((Class<?>) token)) {
+            Type token = returnType.getActualTypeArguments().length == 0 ? returnType.getRawType() : returnType;
+            Type rawToken = token instanceof ParameterizedType ? ((ParameterizedType) token).getRawType() : token;
+            if (Response.class.isAssignableFrom((Class<?>) rawToken)) {
                 token = returnType.getActualTypeArguments()[0];
             }
             return serializer.deserializeFromBytes(data.toBytes(), token);

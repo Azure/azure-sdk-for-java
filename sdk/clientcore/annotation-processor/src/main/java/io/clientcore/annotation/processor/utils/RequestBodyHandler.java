@@ -8,14 +8,22 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.implementation.http.ContentType;
+import io.clientcore.core.implementation.utils.ImplUtils;
+import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
@@ -37,6 +45,11 @@ public final class RequestBodyHandler {
      */
     public static boolean configureRequestBody(BlockStmt body, HttpRequestContext requestContext,
         ProcessingEnvironment processingEnv) {
+        if (!requestContext.getFormParameters().isEmpty()) {
+            configureFormRequestBody(body, requestContext);
+            return false;
+        }
+
         HttpRequestContext.Body requestBody = requestContext.getBody();
         if (requestBody == null) {
             return false;
@@ -48,18 +61,103 @@ public final class RequestBodyHandler {
             setEmptyBody(body);
             return false;
         }
-        Optional<HttpRequestContext.MethodParameter> contentTypeParamParamOpt
-            = requestContext.getParameters().stream().filter(p -> p.getName().equals("contentType")).findFirst();
+        ContentTypeInfo contentType = resolveContentType(requestContext, requestBody);
 
         if (parameterType.getKind().isPrimitive()) {
             return addRequestBodyStatements(body, parameterType, requestBody, processingEnv.getElementUtils(),
-                processingEnv.getTypeUtils(), contentTypeParamParamOpt);
+                processingEnv.getTypeUtils(), contentType);
         } else {
             addRequestBodyWithNullCheck(body, parameterType, requestBody, processingEnv.getElementUtils(),
-                processingEnv.getTypeUtils(), contentTypeParamParamOpt);
+                processingEnv.getTypeUtils(), contentType);
             // serializationFormat could be set but not in scope to use for response body handling
             return false;
         }
+    }
+
+    private static ContentTypeInfo resolveContentType(HttpRequestContext requestContext,
+        HttpRequestContext.Body requestBody) {
+        Optional<java.util.Map.Entry<String, List<String>>> contentTypeHeader = requestContext.getHeaders()
+            .entrySet()
+            .stream()
+            .filter(header -> "Content-Type".equalsIgnoreCase(header.getKey()))
+            .findFirst();
+        if (contentTypeHeader.isPresent()) {
+            for (String value : contentTypeHeader.get().getValue()) {
+                Optional<HttpRequestContext.MethodParameter> parameter = requestContext.getParameters()
+                    .stream()
+                    .filter(methodParameter -> methodParameter.getName().equals(value))
+                    .findFirst();
+                if (parameter.isPresent()) {
+                    return new ContentTypeInfo(parameter.get(), requestBody.getContentType());
+                }
+            }
+
+            if (!contentTypeHeader.get().getValue().isEmpty()) {
+                return new ContentTypeInfo(null, contentTypeHeader.get().getValue().get(0));
+            }
+        }
+
+        return new ContentTypeInfo(null,
+            requestBody.getContentType() == null ? ContentType.APPLICATION_JSON : requestBody.getContentType());
+    }
+
+    static void configureFormRequestBody(BlockStmt body, HttpRequestContext requestContext) {
+        body.tryAddImportToParentCompilationUnit(ArrayList.class);
+        body.tryAddImportToParentCompilationUnit(List.class);
+        String formValuesName = getAvailableVariableName(requestContext, "formDataValues");
+        body.addStatement("List<String> " + formValuesName + " = new ArrayList<>();");
+
+        for (HttpRequestContext.FormParameter formParameter : requestContext.getFormParameters()) {
+            String parameterName = formParameter.getParameterName();
+            String formName = UriEscapers.FORM_ESCAPER.escape(formParameter.getName());
+            if (isCollectionType(formParameter.getParameterType())) {
+                String itemName = getAvailableVariableName(requestContext, parameterName + "Item");
+                String valueExpression = createFormValueExpression(itemName, formParameter.shouldEncode());
+                String statement = "if (" + parameterName + " != null) { for (Object " + itemName + " : "
+                    + parameterName + ") { if (" + itemName + " != null) { " + formValuesName + ".add(\"" + formName
+                    + "=\" + " + valueExpression + "); } } }";
+                body.addStatement(StaticJavaParser.parseStatement(statement));
+            } else {
+                String condition
+                    = formParameter.getParameterType().getKind().isPrimitive() ? "true" : parameterName + " != null";
+                String valueExpression = createFormValueExpression(parameterName, formParameter.shouldEncode());
+                String statement = "if (" + condition + ") { " + formValuesName + ".add(\"" + formName + "=\" + "
+                    + valueExpression + "); }";
+                body.addStatement(StaticJavaParser.parseStatement(statement));
+            }
+        }
+
+        setContentTypeHeader(body, ContentType.APPLICATION_X_WWW_FORM_URLENCODED);
+        body.addStatement(StaticJavaParser
+            .parseStatement("httpRequest.setBody(BinaryData.fromString(String.join(\"&\", " + formValuesName + ")));"));
+    }
+
+    private static String createFormValueExpression(String valueName, boolean shouldEncode) {
+        String stringValue = "String.valueOf(" + valueName + ")";
+        return shouldEncode ? "UriEscapers.FORM_ESCAPER.escape(" + stringValue + ")" : stringValue;
+    }
+
+    private static boolean isCollectionType(TypeMirror type) {
+        if (!(type instanceof DeclaredType)) {
+            return false;
+        }
+
+        String typeName = ((TypeElement) ((DeclaredType) type).asElement()).getQualifiedName().toString();
+        return Collection.class.getCanonicalName().equals(typeName)
+            || List.class.getCanonicalName().equals(typeName)
+            || Set.class.getCanonicalName().equals(typeName)
+            || Iterable.class.getCanonicalName().equals(typeName);
+    }
+
+    private static String getAvailableVariableName(HttpRequestContext requestContext, String preferredName) {
+        Set<String> parameterNames = new HashSet<>();
+        requestContext.getParameters().forEach(parameter -> parameterNames.add(parameter.getName()));
+        String name = preferredName;
+        int suffix = 2;
+        while (parameterNames.contains(name)) {
+            name = preferredName + suffix++;
+        }
+        return name;
     }
 
     /**
@@ -84,9 +182,11 @@ public final class RequestBodyHandler {
     public static void addBinaryDataRequestBody(BlockStmt body, String parameterName) {
         body.tryAddImportToParentCompilationUnit(BinaryData.class);
         body.addStatement(StaticJavaParser.parseStatement(String.format("BinaryData binaryData = %s;", parameterName)));
-        body.addStatement(StaticJavaParser.parseStatement("if (binaryData.getLength() != null) { "
+        body.addStatement(StaticJavaParser.parseStatement("if (binaryData.getLength() != null "
+            + "&& httpRequest.getHeaders().get(HttpHeaderName.CONTENT_LENGTH) == null) { "
             + "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(binaryData.getLength())); "
-            + "httpRequest.setBody(binaryData); }"));
+            + "}"));
+        body.addStatement(StaticJavaParser.parseStatement("httpRequest.setBody(binaryData);"));
     }
 
     /**
@@ -167,8 +267,9 @@ public final class RequestBodyHandler {
      */
     public static void addByteBufferRequestBody(BlockStmt body, String parameterName) {
         body.tryAddImportToParentCompilationUnit(ByteBuffer.class);
-        body.addStatement(StaticJavaParser
-            .parseStatement(String.format("httpRequest.setBody(BinaryData.fromBytes(%s.array()));", parameterName)));
+        body.addStatement(StaticJavaParser.parseStatement(
+            String.format("httpRequest.setBody(BinaryData.fromBytes(%s.byteBufferToArray(%s.duplicate())));",
+                ImplUtils.class.getCanonicalName(), parameterName)));
     }
 
     /**
@@ -203,17 +304,16 @@ public final class RequestBodyHandler {
     public static void handleRequestBodySerialization(BlockStmt body, String parameterName) {
         body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
         body.addStatement(StaticJavaParser.parseStatement(
-            "SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());"));
+            "SerializationFormat requestSerializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());"));
         body.addStatement(StaticJavaParser.parseStatement(String.format(
-            "if (xmlSerializer.supportsFormat(serializationFormat)) {"
+            "if (xmlSerializer.supportsFormat(requestSerializationFormat)) {"
                 + "httpRequest.setBody(BinaryData.fromObject(%s, xmlSerializer));" + "} else {"
                 + "httpRequest.setBody(BinaryData.fromObject(%s, jsonSerializer));" + "}",
             parameterName, parameterName)));
     }
 
     private static void addRequestBodyWithNullCheck(BlockStmt body, TypeMirror parameterType,
-        HttpRequestContext.Body requestBody, Elements elementUtils, Types typeUtils,
-        Optional<HttpRequestContext.MethodParameter> contentTypeParam) {
+        HttpRequestContext.Body requestBody, Elements elementUtils, Types typeUtils, ContentTypeInfo contentType) {
         body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
         body.tryAddImportToParentCompilationUnit(CoreUtils.class);
         String parameterName = requestBody.getParameterName();
@@ -221,59 +321,77 @@ public final class RequestBodyHandler {
         BlockStmt ifBlock = new BlockStmt();
         IfStmt ifStatement = new IfStmt(StaticJavaParser.parseExpression(parameterName + " != null"), ifBlock, null);
 
-        addRequestBodyStatements(ifBlock, parameterType, requestBody, elementUtils, typeUtils, contentTypeParam);
+        addRequestBodyStatements(ifBlock, parameterType, requestBody, elementUtils, typeUtils, contentType);
         body.addStatement(ifStatement);
     }
 
     private static boolean addRequestBodyStatements(BlockStmt body, TypeMirror parameterType,
-        HttpRequestContext.Body requestBody, Elements elementUtils, Types typeUtils,
-        Optional<HttpRequestContext.MethodParameter> contentTypeParam) {
-        String bodyContentType = requestBody.getContentType();
+        HttpRequestContext.Body requestBody, Elements elementUtils, Types typeUtils, ContentTypeInfo contentType) {
         String parameterName = requestBody.getParameterName();
-        if (contentTypeParam.isPresent()) {
-            String paramType = contentTypeParam.get().getShortTypeName();
+        if (contentType.parameter != null) {
+            String contentTypeParameterName = contentType.parameter.getName();
+            String paramType = contentType.parameter.getShortTypeName();
+            String valueExpression;
             if ("String".equals(paramType)) {
-                body.addStatement(StaticJavaParser
-                    .parseStatement("httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType);"));
+                valueExpression = contentTypeParameterName;
             } else {
-                // use String.valueOf to convert the content type to a string
+                valueExpression = "String.valueOf(" + contentTypeParameterName + ")";
+            }
+            if (contentType.parameter.getTypeMirror().getKind().isPrimitive()) {
                 body.addStatement(StaticJavaParser.parseStatement(
-                    "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, String" + ".valueOf(contentType));"));
+                    "httpRequest.getHeaders().set(" + "HttpHeaderName.CONTENT_TYPE, " + valueExpression + ");"));
+            } else {
+                body.addStatement(StaticJavaParser.parseStatement("if (" + contentTypeParameterName + " != null) { "
+                    + "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, " + valueExpression + "); }"));
             }
         } else {
-            setContentTypeHeader(body, bodyContentType == null ? ContentType.APPLICATION_JSON : bodyContentType);
-        }
-        // Use content type to decide serialization
-        if (bodyContentType != null && bodyContentType.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON)) {
-            handleRequestBodySerialization(body, parameterName);
-            return true;
+            setContentTypeHeader(body, contentType.fallback);
         }
 
-        if (handleTypeBasedRequestBody(body, parameterType, parameterName, elementUtils, typeUtils)) {
+        if (isBinaryDataType(parameterType, elementUtils, typeUtils)) {
+            addBinaryDataRequestBody(body, parameterName);
             return false;
         }
 
-        // If no specific type handling was done, default to serialization
+        if (isStringType(parameterType, elementUtils, typeUtils) || isByteArray(parameterType)) {
+            addTextOrBinaryRequestBody(body, parameterType, parameterName, elementUtils, typeUtils);
+            return false;
+        }
+
+        if (isByteBufferType(parameterType, elementUtils, typeUtils)) {
+            addByteBufferRequestBody(body, parameterName);
+            return false;
+        }
+
         handleRequestBodySerialization(body, parameterName);
         return true;
     }
 
-    private static boolean handleTypeBasedRequestBody(BlockStmt body, TypeMirror parameterType, String parameterName,
+    private static void addTextOrBinaryRequestBody(BlockStmt body, TypeMirror parameterType, String parameterName,
         Elements elementUtils, Types typeUtils) {
-        if (isBinaryDataType(parameterType, elementUtils, typeUtils)) {
-            addBinaryDataRequestBody(body, parameterName);
-            return true;
-        } else if (isByteArray(parameterType)) {
-            addByteArrayRequestBody(body, parameterName);
-            return true;
+        body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
+        BlockStmt jsonBody = new BlockStmt().addStatement(StaticJavaParser
+            .parseStatement("httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", jsonSerializer));"));
+        BlockStmt rawBody = new BlockStmt();
+        if (isByteArray(parameterType)) {
+            addByteArrayRequestBody(rawBody, parameterName);
         } else if (isStringType(parameterType, elementUtils, typeUtils)) {
-            addStringRequestBody(body, parameterName);
-            return true;
-        } else if (isByteBufferType(parameterType, elementUtils, typeUtils)) {
-            addByteBufferRequestBody(body, parameterName);
-            return true;
+            addStringRequestBody(rawBody, parameterName);
         }
-        return false;
+        body.addStatement(new IfStmt(
+            StaticJavaParser.parseExpression(
+                "io.clientcore.core.utils.GeneratedCodeUtils.isJsonContentType(httpRequest.getHeaders())"),
+            jsonBody, rawBody));
+    }
+
+    private static final class ContentTypeInfo {
+        private final HttpRequestContext.MethodParameter parameter;
+        private final String fallback;
+
+        private ContentTypeInfo(HttpRequestContext.MethodParameter parameter, String fallback) {
+            this.parameter = parameter;
+            this.fallback = fallback == null ? ContentType.APPLICATION_JSON : fallback;
+        }
     }
 
     private RequestBodyHandler() {

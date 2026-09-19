@@ -4,6 +4,7 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.utils.UriEscapers;
@@ -18,6 +19,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.HTTP_RESPONSE_BODY_CONTENT_KEY;
@@ -76,6 +78,28 @@ public final class GeneratedCodeUtils {
 
             uriBuilder.addQueryParameter(nameToAdd, valueToAdd);
         }
+    }
+
+    /**
+     * Determines whether the headers declare a JSON media type.
+     *
+     * @param headers The headers to inspect.
+     * @return Whether the Content-Type is application/json or uses the +json structured syntax suffix.
+     */
+    public static boolean isJsonContentType(HttpHeaders headers) {
+        if (headers == null) {
+            return false;
+        }
+
+        String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
+        if (CoreUtils.isNullOrEmpty(contentType)) {
+            return false;
+        }
+
+        int parameterSeparator = contentType.indexOf(';');
+        String mediaType = (parameterSeparator < 0 ? contentType : contentType.substring(0, parameterSeparator)).trim()
+            .toLowerCase(Locale.ROOT);
+        return "application/json".equals(mediaType) || mediaType.endsWith("+json");
     }
 
     /**

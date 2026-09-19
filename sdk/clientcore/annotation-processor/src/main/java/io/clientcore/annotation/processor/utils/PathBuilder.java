@@ -6,15 +6,6 @@ package io.clientcore.annotation.processor.utils;
 import io.clientcore.annotation.processor.exceptions.MissingSubstitutionException;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.Substitution;
-import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
-import io.clientcore.core.serialization.json.JsonSerializer;
-import io.clientcore.core.utils.DateTimeRfc1123;
-import io.clientcore.core.utils.ExpandableEnum;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,8 +49,7 @@ public final class PathBuilder {
             Substitution substitution = method.getSubstitution(paramName);
 
             if (substitution != null) {
-                String substitutionValue
-                    = serialize(JsonSerializer.getInstance(), substitution.getParameterVariableName());
+                String substitutionValue = substitution.getParameterVariableName();
                 // Special case: if the path is for "{nextLink}", use the variable
                 if (rawPath.contains("{nextLink}")) {
                     Substitution nextLinkSubstitution = method.getSubstitution("nextLink");
@@ -77,11 +67,19 @@ public final class PathBuilder {
                     .stream()
                     .filter(parameter -> parameter.getName().equals(substitution.getParameterVariableName()))
                     .findFirst();
-                boolean isValueTypeString = paramOpt.isPresent() && "String".equals(paramOpt.get().getShortTypeName());
-                if (isValueTypeString && substitution.shouldEncode()) {
-                    replacementValue = "UriEscapers.PATH_ESCAPER.escape(" + substitutionValue + ")";
+                if (paramOpt.isPresent()) {
+                    HttpRequestContext.MethodParameter parameter = paramOpt.get();
+                    String stringValue = "String".equals(parameter.getShortTypeName())
+                        ? substitutionValue
+                        : "String.valueOf(" + substitutionValue + ")";
+                    if (substitution.shouldEncode()) {
+                        stringValue = "UriEscapers.PATH_ESCAPER.escape(" + stringValue + ")";
+                    }
+                    replacementValue = parameter.getTypeMirror().getKind().isPrimitive()
+                        ? stringValue
+                        : "(" + substitutionValue + " == null ? \"\" : " + stringValue + ")";
                 } else {
-                    replacementValue = substitutionValue != null ? Objects.toString(substitutionValue, "null") : "";
+                    replacementValue = substitutionValue;
                 }
 
                 matcher.appendReplacement(buffer, "");
@@ -127,38 +125,6 @@ public final class PathBuilder {
             throw new MissingSubstitutionException("Mismatched braces in raw host: " + rawPath);
         }
         return result;
-    }
-
-    private static String serialize(JsonSerializer serializer, Object value) {
-        if (value == null) {
-            return null;
-        }
-
-        if (value instanceof ExpandableEnum) {
-            value = serialize(serializer, ((ExpandableEnum<?>) value).getValue());
-        }
-
-        if (value instanceof String) {
-            return (String) value;
-        } else if (value.getClass().isPrimitive()
-            || value.getClass().isEnum()
-            || value instanceof Number
-            || value instanceof Boolean
-            || value instanceof Character
-            || value instanceof DateTimeRfc1123) {
-
-            return String.valueOf(value);
-        } else if (value instanceof OffsetDateTime) {
-            return ((OffsetDateTime) value).format(DateTimeFormatter.ISO_INSTANT);
-        } else {
-            try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream()) {
-                serializer.serializeToStream(outputStream, value);
-
-                return outputStream.toString(StandardCharsets.UTF_8);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 
     private PathBuilder() {

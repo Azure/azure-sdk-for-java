@@ -118,6 +118,9 @@ public final class TypeConverter {
                 // Convert JavaParser's PrimitiveType to Java Reflection Type
                 return getPrimitiveClass(returnType);
 
+            case VOID:
+                return void.class;
+
             case DECLARED:
                 return handleDeclaredType(returnType);
 

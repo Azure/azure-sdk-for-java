@@ -33,6 +33,8 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -96,6 +98,36 @@ public class TestInterfaceGenerationTests {
 
         assertEquals(200, response.getStatusCode());
         assertSame(data, client.getLastHttpRequest().getBody());
+    }
+
+    @Test
+    public void unknownLengthBinaryDataIsPassThrough() {
+        BinaryData data = BinaryData.fromStream(new ByteArrayInputStream(new byte[] { 1, 2, 3 }));
+        LocalHttpClient client = new LocalHttpClient();
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(
+                new HttpPipelineBuilder().httpClient(client).build());
+
+        service.testMethod("https://somecloud.com", data, ContentType.APPLICATION_JSON, null);
+
+        assertSame(data, client.getLastHttpRequest().getBody());
+    }
+
+    @Test
+    public void directByteBufferUsesRemainingView() {
+        ByteBuffer buffer = ByteBuffer.allocateDirect(4);
+        buffer.put(new byte[] { 0, 1, 2, 3 }).flip();
+        buffer.get();
+        LocalHttpClient client = new LocalHttpClient();
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(
+                new HttpPipelineBuilder().httpClient(client).build());
+
+        service.testMethod("https://somecloud.com", buffer, ContentType.APPLICATION_JSON, 3L);
+
+        assertEquals(1, buffer.position());
+        org.junit.jupiter.api.Assertions.assertArrayEquals(new byte[] { 1, 2, 3 },
+            client.getLastHttpRequest().getBody().toBytes());
     }
 
     private static Stream<Arguments> knownLengthBinaryDataIsPassThroughArgumentProvider() throws Exception {
@@ -175,6 +207,48 @@ public class TestInterfaceGenerationTests {
         testInterface.testMethodReturnsVoid(uri);
 
         assertTrue(client.closeCalledOnResponse);
+    }
+
+    @Test
+    public void decodedResponseClosesNetworkResponse() {
+        AtomicBoolean closed = new AtomicBoolean();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> new Response<BinaryData>(request, 200,
+            new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_JSON),
+            BinaryData.fromString("{\"bar\":\"value\"}")) {
+            @Override
+            public void close() {
+                closed.set(true);
+                super.close();
+            }
+        }).build();
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        Response<Foo> response = service.getFoo("key", null, null);
+
+        assertEquals("value", response.getValue().bar());
+        assertTrue(closed.get());
+    }
+
+    @Test
+    public void errorResponseIsClosedExactlyOnce() {
+        AtomicInteger closeCount = new AtomicInteger();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> new Response<BinaryData>(request, 500,
+            new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_JSON),
+            BinaryData.fromString("{\"message\":\"error\"}")) {
+            @Override
+            public void close() {
+                closeCount.incrementAndGet();
+                super.close();
+            }
+        }).build();
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class,
+            () -> service.getFoo("key", null, null));
+
+        assertEquals(1, closeCount.get());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
@@ -335,6 +409,19 @@ public class TestInterfaceGenerationTests {
         assertNotNull(pagedIterable);
         Set<Foo> allItems = pagedIterable.stream().collect(Collectors.toSet());
         assertEquals(1, allItems.size());
+    }
+
+    @Test
+    public void deserializesTypedDictionaryResponse() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> new Response<>(request, 200,
+            new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_JSON),
+            BinaryData.fromString("{\"first\":{\"bar\":\"value\"}}"))).build();
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        Response<java.util.Map<String, Foo>> response = service.getFooMap("https://example.test");
+
+        assertEquals("value", response.getValue().get("first").bar());
     }
 
     /**
