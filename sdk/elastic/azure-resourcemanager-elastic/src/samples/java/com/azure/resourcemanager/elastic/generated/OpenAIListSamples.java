@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class OpenAIListSamples {
     /*
-     * x-ms-original-file: 2025-06-01/OpenAI_List.json
+     * x-ms-original-file: 2026-03-15-preview/OpenAI_List.json
      */
     /**
      * Sample code: OpenAI_List.
