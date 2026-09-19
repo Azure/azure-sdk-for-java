@@ -14,19 +14,19 @@ public final class ManagedOpUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedOpUpdateProperties model = BinaryData
-            .fromString("{\"desiredConfiguration\":{\"defenderForServers\":\"Enable\",\"defenderCspm\":\"Enable\"}}")
+            .fromString("{\"desiredConfiguration\":{\"defenderForServers\":\"Disable\",\"defenderCspm\":\"Disable\"}}")
             .toObject(ManagedOpUpdateProperties.class);
-        Assertions.assertEquals(DesiredEnablementState.ENABLE, model.desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredEnablementState.ENABLE, model.desiredConfiguration().defenderCspm());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.desiredConfiguration().defenderForServers());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.desiredConfiguration().defenderCspm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedOpUpdateProperties model = new ManagedOpUpdateProperties().withDesiredConfiguration(
-            new DesiredConfigurationUpdate().withDefenderForServers(DesiredEnablementState.ENABLE)
-                .withDefenderCspm(DesiredEnablementState.ENABLE));
+            new DesiredConfigurationUpdate().withDefenderForServers(DesiredEnablementState.DISABLE)
+                .withDefenderCspm(DesiredEnablementState.DISABLE));
         model = BinaryData.fromObject(model).toObject(ManagedOpUpdateProperties.class);
-        Assertions.assertEquals(DesiredEnablementState.ENABLE, model.desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredEnablementState.ENABLE, model.desiredConfiguration().defenderCspm());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.desiredConfiguration().defenderForServers());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.desiredConfiguration().defenderCspm());
     }
 }
