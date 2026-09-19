@@ -16,47 +16,42 @@ public final class SchemaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Schema model = BinaryData.fromString(
-            "{\"name\":\"hya\",\"displayName\":\"vjlboxqvk\",\"description\":\"mxho\",\"columns\":[{\"name\":\"hdwdi\",\"type\":\"boolean\",\"dataTypeHint\":\"guid\",\"displayName\":\"aauzzptjazysd\",\"description\":\"ezwwv\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"vfonkphhqyikvyl\",\"type\":\"dateTime\",\"dataTypeHint\":\"armPath\",\"displayName\":\"uwmncs\",\"description\":\"ijf\",\"isDefaultDisplay\":false,\"isHidden\":false},{\"name\":\"krsgsgb\",\"type\":\"guid\",\"dataTypeHint\":\"ip\",\"displayName\":\"njdgkynscliq\",\"description\":\"vhxnk\",\"isDefaultDisplay\":true,\"isHidden\":false}],\"standardColumns\":[{\"name\":\"ppnvdxz\",\"type\":\"dateTime\",\"dataTypeHint\":\"guid\",\"displayName\":\"bbc\",\"description\":\"qagt\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"kqo\",\"type\":\"guid\",\"dataTypeHint\":\"ip\",\"displayName\":\"trdcnifmzzs\",\"description\":\"m\",\"isDefaultDisplay\":true,\"isHidden\":false}],\"categories\":[\"m\",\"rafwgckhocxvdf\"],\"labels\":[\"afqr\",\"udaspavehh\"],\"source\":\"microsoft\",\"tableType\":\"Microsoft\",\"tableSubType\":\"Any\",\"solutions\":[\"ud\",\"cxgkmoyxcdyui\"]}")
+            "{\"name\":\"sj\",\"displayName\":\"xqtnq\",\"description\":\"ezl\",\"columns\":[{\"name\":\"iakp\",\"type\":\"dateTime\",\"dataTypeHint\":\"armPath\",\"displayName\":\"edltmmjihyeozp\",\"description\":\"wau\",\"isDefaultDisplay\":false,\"isHidden\":false},{\"name\":\"upkvipmdsc\",\"type\":\"real\",\"dataTypeHint\":\"guid\",\"displayName\":\"vzhfstotxhoj\",\"description\":\"bypel\",\"isDefaultDisplay\":true,\"isHidden\":true}],\"standardColumns\":[{\"name\":\"jxyfwnylrcoolstt\",\"type\":\"long\",\"dataTypeHint\":\"armPath\",\"displayName\":\"bnujrywvtylbf\",\"description\":\"curdoiwiitht\",\"isDefaultDisplay\":false,\"isHidden\":false},{\"name\":\"bihwqknfdnt\",\"type\":\"dynamic\",\"dataTypeHint\":\"vector16\",\"displayName\":\"goihx\",\"description\":\"wct\",\"isDefaultDisplay\":false,\"isHidden\":false},{\"name\":\"uu\",\"type\":\"guid\",\"dataTypeHint\":\"guid\",\"displayName\":\"gytsbwtovv\",\"description\":\"seinqfiuf\",\"isDefaultDisplay\":true,\"isHidden\":true},{\"name\":\"rgnepttwqmsniffc\",\"type\":\"dynamic\",\"dataTypeHint\":\"guid\",\"displayName\":\"jlpijnkrx\",\"description\":\"ddhcratizzr\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"categories\":[\"tozqyzhftwesgo\"],\"labels\":[\"honnxkrlgnyhmos\",\"xkk\",\"thrrgh\",\"jbdhqxvc\"],\"source\":\"customer\",\"tableType\":\"Microsoft\",\"tableSubType\":\"Classic\",\"solutions\":[\"bshrnsvbuswd\",\"z\",\"ybycnunvj\",\"rtkfawnopq\"]}")
             .toObject(Schema.class);
-        Assertions.assertEquals("hya", model.name());
-        Assertions.assertEquals("vjlboxqvk", model.displayName());
-        Assertions.assertEquals("mxho", model.description());
-        Assertions.assertEquals("hdwdi", model.columns().get(0).name());
-        Assertions.assertEquals(ColumnTypeEnum.BOOLEAN, model.columns().get(0).type());
-        Assertions.assertEquals(ColumnDataTypeHintEnum.GUID, model.columns().get(0).dataTypeHint());
-        Assertions.assertEquals("aauzzptjazysd", model.columns().get(0).displayName());
-        Assertions.assertEquals("ezwwv", model.columns().get(0).description());
+        Assertions.assertEquals("sj", model.name());
+        Assertions.assertEquals("xqtnq", model.displayName());
+        Assertions.assertEquals("ezl", model.description());
+        Assertions.assertEquals("iakp", model.columns().get(0).name());
+        Assertions.assertEquals(ColumnTypeEnum.DATE_TIME, model.columns().get(0).type());
+        Assertions.assertEquals(ColumnDataTypeHintEnum.ARM_PATH, model.columns().get(0).dataTypeHint());
+        Assertions.assertEquals("edltmmjihyeozp", model.columns().get(0).displayName());
+        Assertions.assertEquals("wau", model.columns().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Schema model = new Schema().withName("hya")
-            .withDisplayName("vjlboxqvk")
-            .withDescription("mxho")
+        Schema model = new Schema().withName("sj")
+            .withDisplayName("xqtnq")
+            .withDescription("ezl")
             .withColumns(Arrays.asList(
-                new Column().withName("hdwdi")
-                    .withType(ColumnTypeEnum.BOOLEAN)
-                    .withDataTypeHint(ColumnDataTypeHintEnum.GUID)
-                    .withDisplayName("aauzzptjazysd")
-                    .withDescription("ezwwv"),
-                new Column().withName("vfonkphhqyikvyl")
+                new Column().withName("iakp")
                     .withType(ColumnTypeEnum.DATE_TIME)
                     .withDataTypeHint(ColumnDataTypeHintEnum.ARM_PATH)
-                    .withDisplayName("uwmncs")
-                    .withDescription("ijf"),
-                new Column().withName("krsgsgb")
-                    .withType(ColumnTypeEnum.GUID)
-                    .withDataTypeHint(ColumnDataTypeHintEnum.IP)
-                    .withDisplayName("njdgkynscliq")
-                    .withDescription("vhxnk")));
+                    .withDisplayName("edltmmjihyeozp")
+                    .withDescription("wau"),
+                new Column().withName("upkvipmdsc")
+                    .withType(ColumnTypeEnum.REAL)
+                    .withDataTypeHint(ColumnDataTypeHintEnum.GUID)
+                    .withDisplayName("vzhfstotxhoj")
+                    .withDescription("bypel")));
         model = BinaryData.fromObject(model).toObject(Schema.class);
-        Assertions.assertEquals("hya", model.name());
-        Assertions.assertEquals("vjlboxqvk", model.displayName());
-        Assertions.assertEquals("mxho", model.description());
-        Assertions.assertEquals("hdwdi", model.columns().get(0).name());
-        Assertions.assertEquals(ColumnTypeEnum.BOOLEAN, model.columns().get(0).type());
-        Assertions.assertEquals(ColumnDataTypeHintEnum.GUID, model.columns().get(0).dataTypeHint());
-        Assertions.assertEquals("aauzzptjazysd", model.columns().get(0).displayName());
-        Assertions.assertEquals("ezwwv", model.columns().get(0).description());
+        Assertions.assertEquals("sj", model.name());
+        Assertions.assertEquals("xqtnq", model.displayName());
+        Assertions.assertEquals("ezl", model.description());
+        Assertions.assertEquals("iakp", model.columns().get(0).name());
+        Assertions.assertEquals(ColumnTypeEnum.DATE_TIME, model.columns().get(0).type());
+        Assertions.assertEquals(ColumnDataTypeHintEnum.ARM_PATH, model.columns().get(0).dataTypeHint());
+        Assertions.assertEquals("edltmmjihyeozp", model.columns().get(0).displayName());
+        Assertions.assertEquals("wau", model.columns().get(0).description());
     }
 }

@@ -27,7 +27,7 @@ public final class LinkedServicesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.linkedServices().delete("ujvaannggi", "cwkdtaaw", "wfekaumrrqmb", com.azure.core.util.Context.NONE);
+        manager.linkedServices().delete("svkhgbv", "ta", "arfdlpukhpyrnei", com.azure.core.util.Context.NONE);
 
     }
 }

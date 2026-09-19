@@ -22,7 +22,7 @@ public final class UsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":{\"value\":\"zknxkv\",\"localizedValue\":\"xetyvku\"},\"unit\":\"ignohi\",\"currentValue\":82.9851494663549,\"limit\":1.3136952069757624,\"nextResetTime\":\"2021-07-10T13:10:44Z\",\"quotaPeriod\":\"nd\"}]}";
+            = "{\"value\":[{\"name\":{\"value\":\"giycwkdtaawxwfek\",\"localizedValue\":\"mrrqmbzmqkratb\"},\"unit\":\"wbjsidbirkf\",\"currentValue\":46.15213338320097,\"limit\":12.647044167361676,\"nextResetTime\":\"2021-04-18T08:00:04Z\",\"quotaPeriod\":\"wijymr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class UsagesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<UsageMetric> response
-            = manager.usages().list("iucijjcea", "lijjjrtvam", com.azure.core.util.Context.NONE);
+            = manager.usages().list("bkezn", "aujvaa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zknxkv", response.iterator().next().name().value());
-        Assertions.assertEquals("xetyvku", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals("ignohi", response.iterator().next().unit());
-        Assertions.assertEquals(82.9851494663549D, response.iterator().next().currentValue());
-        Assertions.assertEquals(1.3136952069757624D, response.iterator().next().limit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-10T13:10:44Z"),
+        Assertions.assertEquals("giycwkdtaawxwfek", response.iterator().next().name().value());
+        Assertions.assertEquals("mrrqmbzmqkratb", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals("wbjsidbirkf", response.iterator().next().unit());
+        Assertions.assertEquals(46.15213338320097D, response.iterator().next().currentValue());
+        Assertions.assertEquals(12.647044167361676D, response.iterator().next().limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-18T08:00:04Z"),
             response.iterator().next().nextResetTime());
-        Assertions.assertEquals("nd", response.iterator().next().quotaPeriod());
+        Assertions.assertEquals("wijymr", response.iterator().next().quotaPeriod());
     }
 }
