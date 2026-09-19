@@ -6,6 +6,8 @@ package com.azure.resourcemanager.hybridconnectivity.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridconnectivity.models.AwsCloudProfileUpdate;
+import com.azure.resourcemanager.hybridconnectivity.models.GcpCloudProfileUpdate;
+import com.azure.resourcemanager.hybridconnectivity.models.GcpOrganizationPropertiesUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorPropertiesUpdate;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorUpdate;
 import java.util.Arrays;
@@ -17,21 +19,33 @@ public final class PublicCloudConnectorUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublicCloudConnectorUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"awsCloudProfile\":{\"excludedAccounts\":[\"jxvsnbyxqabn\",\"ocpcy\",\"hurzafblj\"]}},\"tags\":{\"qajzyulpkudjkr\":\"btoqcjmkljavbqid\",\"e\":\"khbzhfepgzg\",\"scpai\":\"zloc\"},\"id\":\"hhbcsglummajtjao\",\"name\":\"xobnbdxkqpxok\",\"type\":\"jionpimexgstxgc\"}")
+            "{\"properties\":{\"awsCloudProfile\":{\"excludedAccounts\":[\"wtgrhpdjpj\",\"masxazjpqyegu\",\"lhbxxhejjzzvdud\"]},\"gcpCloudProfile\":{\"organizationProperties\":{\"excludedProjectNumbers\":[\"fhotw\"],\"excludedFolderIds\":[\"npwlbjnpg\",\"cftadeh\"]}}},\"tags\":{\"wd\":\"tyfsoppusuesn\",\"hctbqvudwxdn\":\"jbavorxzdm\"},\"id\":\"vo\",\"name\":\"gujjugwdkcglh\",\"type\":\"lazjdyggdtjixhbk\"}")
             .toObject(PublicCloudConnectorUpdate.class);
-        Assertions.assertEquals("btoqcjmkljavbqid", model.tags().get("qajzyulpkudjkr"));
-        Assertions.assertEquals("jxvsnbyxqabn", model.properties().awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertEquals("tyfsoppusuesn", model.tags().get("wd"));
+        Assertions.assertEquals("wtgrhpdjpj", model.properties().awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertEquals("fhotw",
+            model.properties().gcpCloudProfile().organizationProperties().excludedProjectNumbers().get(0));
+        Assertions.assertEquals("npwlbjnpg",
+            model.properties().gcpCloudProfile().organizationProperties().excludedFolderIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PublicCloudConnectorUpdate model = new PublicCloudConnectorUpdate()
-            .withTags(mapOf("qajzyulpkudjkr", "btoqcjmkljavbqid", "e", "khbzhfepgzg", "scpai", "zloc"))
-            .withProperties(new PublicCloudConnectorPropertiesUpdate().withAwsCloudProfile(
-                new AwsCloudProfileUpdate().withExcludedAccounts(Arrays.asList("jxvsnbyxqabn", "ocpcy", "hurzafblj"))));
+        PublicCloudConnectorUpdate model
+            = new PublicCloudConnectorUpdate().withTags(mapOf("wd", "tyfsoppusuesn", "hctbqvudwxdn", "jbavorxzdm"))
+                .withProperties(new PublicCloudConnectorPropertiesUpdate()
+                    .withAwsCloudProfile(new AwsCloudProfileUpdate()
+                        .withExcludedAccounts(Arrays.asList("wtgrhpdjpj", "masxazjpqyegu", "lhbxxhejjzzvdud")))
+                    .withGcpCloudProfile(new GcpCloudProfileUpdate().withOrganizationProperties(
+                        new GcpOrganizationPropertiesUpdate().withExcludedProjectNumbers(Arrays.asList("fhotw"))
+                            .withExcludedFolderIds(Arrays.asList("npwlbjnpg", "cftadeh")))));
         model = BinaryData.fromObject(model).toObject(PublicCloudConnectorUpdate.class);
-        Assertions.assertEquals("btoqcjmkljavbqid", model.tags().get("qajzyulpkudjkr"));
-        Assertions.assertEquals("jxvsnbyxqabn", model.properties().awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertEquals("tyfsoppusuesn", model.tags().get("wd"));
+        Assertions.assertEquals("wtgrhpdjpj", model.properties().awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertEquals("fhotw",
+            model.properties().gcpCloudProfile().organizationProperties().excludedProjectNumbers().get(0));
+        Assertions.assertEquals("npwlbjnpg",
+            model.properties().gcpCloudProfile().organizationProperties().excludedFolderIds().get(0));
     }
 
     // Use "Map.of" if available

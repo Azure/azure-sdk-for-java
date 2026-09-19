@@ -75,6 +75,13 @@ public interface HybridConnectivityMgmtClient {
     GenerateAwsTemplatesClient getGenerateAwsTemplates();
 
     /**
+     * Gets the GenerateGcpTemplatesClient object to access its operations.
+     * 
+     * @return the GenerateGcpTemplatesClient object.
+     */
+    GenerateGcpTemplatesClient getGenerateGcpTemplates();
+
+    /**
      * Gets the PublicCloudConnectorsClient object to access its operations.
      * 
      * @return the PublicCloudConnectorsClient object.
