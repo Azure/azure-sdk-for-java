@@ -10,6 +10,10 @@ import com.azure.resourcemanager.iotfirmwaredefense.models.CveComponent;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CveLink;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CveResource;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CvssScore;
+import com.azure.resourcemanager.iotfirmwaredefense.models.CweProperties;
+import com.azure.resourcemanager.iotfirmwaredefense.models.EpssProperties;
+import com.azure.resourcemanager.iotfirmwaredefense.models.ExploitMaturityLevel;
+import com.azure.resourcemanager.iotfirmwaredefense.models.KevProperties;
 import com.azure.resourcemanager.iotfirmwaredefense.models.ProvisioningState;
 import java.util.Collections;
 import java.util.List;
@@ -93,6 +97,14 @@ public final class CveResourceImpl implements CveResource {
         return this.innerModel().effectiveCvssVersion();
     }
 
+    public String effectiveVectorString() {
+        return this.innerModel().effectiveVectorString();
+    }
+
+    public ExploitMaturityLevel effectiveExploitMaturity() {
+        return this.innerModel().effectiveExploitMaturity();
+    }
+
     public List<CvssScore> cvssScores() {
         List<CvssScore> inner = this.innerModel().cvssScores();
         if (inner != null) {
@@ -113,6 +125,32 @@ public final class CveResourceImpl implements CveResource {
 
     public String description() {
         return this.innerModel().description();
+    }
+
+    public EpssProperties epss() {
+        return this.innerModel().epss();
+    }
+
+    public List<CweProperties> cwes() {
+        List<CweProperties> inner = this.innerModel().cwes();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public KevProperties kev() {
+        return this.innerModel().kev();
+    }
+
+    public List<String> fixedInVersions() {
+        List<String> inner = this.innerModel().fixedInVersions();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public ProvisioningState provisioningState() {
