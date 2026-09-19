@@ -11,7 +11,7 @@ public final class LocationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LocationProperties model = BinaryData.fromString(
-            "{\"supportsAvailabilityZone\":false,\"isResidencyRestricted\":false,\"backupStorageRedundancies\":[\"Zone\",\"Zone\",\"Geo\"],\"isSubscriptionRegionAccessAllowedForRegular\":false,\"isSubscriptionRegionAccessAllowedForAz\":true,\"status\":\"Succeeded\"}")
+            "{\"supportsAvailabilityZone\":false,\"isResidencyRestricted\":true,\"backupStorageRedundancies\":[\"Zone\"],\"isSubscriptionRegionAccessAllowedForRegular\":false,\"isSubscriptionRegionAccessAllowedForAz\":false,\"status\":\"Canceled\"}")
             .toObject(LocationProperties.class);
     }
 }

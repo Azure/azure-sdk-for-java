@@ -11,7 +11,7 @@ public final class LocationGetResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LocationGetResultInner model = BinaryData.fromString(
-            "{\"properties\":{\"supportsAvailabilityZone\":false,\"isResidencyRestricted\":true,\"backupStorageRedundancies\":[\"Zone\"],\"isSubscriptionRegionAccessAllowedForRegular\":true,\"isSubscriptionRegionAccessAllowedForAz\":false,\"status\":\"Creating\"},\"id\":\"ejdaahuqimld\",\"name\":\"hlf\",\"type\":\"lmuifmua\"}")
+            "{\"properties\":{\"supportsAvailabilityZone\":true,\"isResidencyRestricted\":false,\"backupStorageRedundancies\":[\"Zone\",\"Zone\"],\"isSubscriptionRegionAccessAllowedForRegular\":false,\"isSubscriptionRegionAccessAllowedForAz\":true,\"status\":\"InternallyReady\"},\"id\":\"nejzltkaszfjsxs\",\"name\":\"bduxapgrcq\",\"type\":\"bmvrdjomlnwsbv\"}")
             .toObject(LocationGetResultInner.class);
     }
 }

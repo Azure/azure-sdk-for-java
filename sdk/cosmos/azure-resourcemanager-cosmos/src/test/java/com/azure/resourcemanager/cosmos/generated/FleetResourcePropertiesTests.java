@@ -11,7 +11,7 @@ public final class FleetResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetResourceProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Succeeded\"}").toObject(FleetResourceProperties.class);
+            = BinaryData.fromString("{\"provisioningState\":\"Updating\"}").toObject(FleetResourceProperties.class);
     }
 
     @org.junit.jupiter.api.Test

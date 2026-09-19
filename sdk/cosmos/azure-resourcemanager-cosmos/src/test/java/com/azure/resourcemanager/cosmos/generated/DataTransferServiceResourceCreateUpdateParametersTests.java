@@ -14,19 +14,19 @@ public final class DataTransferServiceResourceCreateUpdateParametersTests {
     public void testDeserialize() throws Exception {
         DataTransferServiceResourceCreateUpdateParameters model = BinaryData
             .fromString(
-                "{\"serviceType\":\"DataTransfer\",\"instanceSize\":\"Cosmos.D4s\",\"instanceCount\":2011444801}")
+                "{\"serviceType\":\"DataTransfer\",\"instanceSize\":\"Cosmos.D8s\",\"instanceCount\":1477705179}")
             .toObject(DataTransferServiceResourceCreateUpdateParameters.class);
-        Assertions.assertEquals(ServiceSize.COSMOS_D4S, model.instanceSize());
-        Assertions.assertEquals(2011444801, model.instanceCount());
+        Assertions.assertEquals(ServiceSize.COSMOS_D8S, model.instanceSize());
+        Assertions.assertEquals(1477705179, model.instanceCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataTransferServiceResourceCreateUpdateParameters model
-            = new DataTransferServiceResourceCreateUpdateParameters().withInstanceSize(ServiceSize.COSMOS_D4S)
-                .withInstanceCount(2011444801);
+            = new DataTransferServiceResourceCreateUpdateParameters().withInstanceSize(ServiceSize.COSMOS_D8S)
+                .withInstanceCount(1477705179);
         model = BinaryData.fromObject(model).toObject(DataTransferServiceResourceCreateUpdateParameters.class);
-        Assertions.assertEquals(ServiceSize.COSMOS_D4S, model.instanceSize());
-        Assertions.assertEquals(2011444801, model.instanceCount());
+        Assertions.assertEquals(ServiceSize.COSMOS_D8S, model.instanceSize());
+        Assertions.assertEquals(1477705179, model.instanceCount());
     }
 }

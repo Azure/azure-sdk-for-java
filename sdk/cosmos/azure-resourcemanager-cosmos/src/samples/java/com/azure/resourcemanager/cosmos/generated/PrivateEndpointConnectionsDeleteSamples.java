@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBPrivateEndpointConnectionDelete.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBPrivateEndpointConnectionDelete.json
      */
     /**
      * Sample code: Deletes a private endpoint connection with a given name.

@@ -11,7 +11,7 @@ public final class RestorableMongodbCollectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableMongodbCollectionProperties model = BinaryData.fromString(
-            "{\"resource\":{\"_rid\":\"jvlirk\",\"operationType\":\"SystemOperation\",\"canUndelete\":\"sawrdtn\",\"canUndeleteReason\":\"zl\",\"eventTimestamp\":\"yaixihzqj\",\"ownerId\":\"smuydqfttk\",\"ownerResourceId\":\"ybd\"}}")
+            "{\"resource\":{\"_rid\":\"fytdxmly\",\"operationType\":\"Create\",\"canUndelete\":\"vapbkrbuoggtdltl\",\"canUndeleteReason\":\"haizijv\",\"eventTimestamp\":\"lz\",\"ownerId\":\"hlpsftqkrvmhv\",\"ownerResourceId\":\"vcpwtqsuspnh\"}}")
             .toObject(RestorableMongodbCollectionProperties.class);
     }
 }

@@ -14,19 +14,19 @@ public final class GraphApiComputeServiceResourceCreateUpdateParametersTests {
     public void testDeserialize() throws Exception {
         GraphApiComputeServiceResourceCreateUpdateParameters model = BinaryData
             .fromString(
-                "{\"serviceType\":\"GraphAPICompute\",\"instanceSize\":\"Cosmos.D16s\",\"instanceCount\":1370089624}")
+                "{\"serviceType\":\"GraphAPICompute\",\"instanceSize\":\"Cosmos.D16s\",\"instanceCount\":1185975038}")
             .toObject(GraphApiComputeServiceResourceCreateUpdateParameters.class);
         Assertions.assertEquals(ServiceSize.COSMOS_D16S, model.instanceSize());
-        Assertions.assertEquals(1370089624, model.instanceCount());
+        Assertions.assertEquals(1185975038, model.instanceCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GraphApiComputeServiceResourceCreateUpdateParameters model
             = new GraphApiComputeServiceResourceCreateUpdateParameters().withInstanceSize(ServiceSize.COSMOS_D16S)
-                .withInstanceCount(1370089624);
+                .withInstanceCount(1185975038);
         model = BinaryData.fromObject(model).toObject(GraphApiComputeServiceResourceCreateUpdateParameters.class);
         Assertions.assertEquals(ServiceSize.COSMOS_D16S, model.instanceSize());
-        Assertions.assertEquals(1370089624, model.instanceCount());
+        Assertions.assertEquals(1185975038, model.instanceCount());
     }
 }

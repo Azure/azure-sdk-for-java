@@ -12,8 +12,8 @@ public final class RestorableSqlDatabasesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableSqlDatabasesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resource\":{\"_rid\":\"qplwg\",\"operationType\":\"SystemOperation\",\"canUndelete\":\"xwr\",\"canUndeleteReason\":\"vzklkvbgikyjtka\",\"eventTimestamp\":\"lbis\",\"ownerId\":\"vpz\",\"ownerResourceId\":\"tuoska\",\"database\":{\"_rid\":\"jixwfgc\",\"_ts\":1.391536,\"_etag\":\"kcxwnujvqynvavi\",\"_colls\":\"dmuqohhi\",\"_users\":\"a\",\"_self\":\"uddrwjc\",\"id\":\"jbrhlhpvzadbw\",\"restoreParameters\":{},\"createMode\":\"Restore\"}}},\"id\":\"afhxrzfrmvztiuc\",\"name\":\"iql\",\"type\":\"khkrc\"}],\"nextLink\":\"gcbv\"}")
+            "{\"value\":[{\"properties\":{\"resource\":{\"_rid\":\"sirxxhyr\",\"operationType\":\"Delete\",\"canUndelete\":\"ofajfreprfvmkin\",\"canUndeleteReason\":\"eyrqshixbcejop\",\"eventTimestamp\":\"blfs\",\"ownerId\":\"r\",\"ownerResourceId\":\"spimtcvvf\",\"database\":{\"_rid\":\"ytzfsl\",\"_ts\":34.902138,\"_etag\":\"qikm\",\"_colls\":\"bliqemcdiiiskl\",\"_users\":\"nxx\",\"_self\":\"jxvtrkfkgenjqnnp\",\"id\":\"wkosnyxigf\",\"restoreParameters\":{},\"createMode\":\"Restore\"}}},\"id\":\"xgdqmrlhnzkwops\",\"name\":\"yinxu\",\"type\":\"rxyxwjezbfqp\"},{\"properties\":{\"resource\":{\"_rid\":\"ekd\",\"operationType\":\"Delete\",\"canUndelete\":\"ftrsv\",\"canUndeleteReason\":\"nsvujnjkt\",\"eventTimestamp\":\"lefcjis\",\"ownerId\":\"kdb\",\"ownerResourceId\":\"tfbjampq\",\"database\":{\"_rid\":\"a\",\"_ts\":4.3906155,\"_etag\":\"ynlsuqbwzstrk\",\"_colls\":\"vpatrgjjk\",\"_users\":\"i\",\"_self\":\"hoksmmculwk\",\"id\":\"icruo\",\"restoreParameters\":{},\"createMode\":\"Restore\"}}},\"id\":\"lsgaojbtqpq\",\"name\":\"oc\",\"type\":\"zpujzflmcdsg\"}],\"nextLink\":\"elujiswl\"}")
             .toObject(RestorableSqlDatabasesListResult.class);
-        Assertions.assertEquals("gcbv", model.nextLink());
+        Assertions.assertEquals("elujiswl", model.nextLink());
     }
 }

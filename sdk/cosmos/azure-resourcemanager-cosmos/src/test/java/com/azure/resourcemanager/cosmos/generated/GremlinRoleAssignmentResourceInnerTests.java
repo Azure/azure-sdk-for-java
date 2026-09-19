@@ -12,21 +12,21 @@ public final class GremlinRoleAssignmentResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GremlinRoleAssignmentResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"roleDefinitionId\":\"xb\",\"scope\":\"xjxjoe\",\"principalId\":\"qxrkdknko\",\"provisioningState\":\"ktmbozomtzami\"},\"id\":\"igwcdgzsezn\",\"name\":\"xke\",\"type\":\"ai\"}")
+            "{\"properties\":{\"roleDefinitionId\":\"hzbh\",\"scope\":\"oolkolirhhm\",\"principalId\":\"usuzgfjzcvaaxo\",\"provisioningState\":\"lahfxwccokdxk\"},\"id\":\"mkczynuhhoqe\",\"name\":\"shavljqkx\",\"type\":\"rqolnthbb\"}")
             .toObject(GremlinRoleAssignmentResourceInner.class);
-        Assertions.assertEquals("xb", model.roleDefinitionId());
-        Assertions.assertEquals("xjxjoe", model.scope());
-        Assertions.assertEquals("qxrkdknko", model.principalId());
+        Assertions.assertEquals("hzbh", model.roleDefinitionId());
+        Assertions.assertEquals("oolkolirhhm", model.scope());
+        Assertions.assertEquals("usuzgfjzcvaaxo", model.principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GremlinRoleAssignmentResourceInner model = new GremlinRoleAssignmentResourceInner().withRoleDefinitionId("xb")
-            .withScope("xjxjoe")
-            .withPrincipalId("qxrkdknko");
+        GremlinRoleAssignmentResourceInner model = new GremlinRoleAssignmentResourceInner().withRoleDefinitionId("hzbh")
+            .withScope("oolkolirhhm")
+            .withPrincipalId("usuzgfjzcvaaxo");
         model = BinaryData.fromObject(model).toObject(GremlinRoleAssignmentResourceInner.class);
-        Assertions.assertEquals("xb", model.roleDefinitionId());
-        Assertions.assertEquals("xjxjoe", model.scope());
-        Assertions.assertEquals("qxrkdknko", model.principalId());
+        Assertions.assertEquals("hzbh", model.roleDefinitionId());
+        Assertions.assertEquals("oolkolirhhm", model.scope());
+        Assertions.assertEquals("usuzgfjzcvaaxo", model.principalId());
     }
 }

@@ -12,8 +12,8 @@ public final class RestorableMongodbResourcesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableMongodbResourcesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"xkbylhyyxgffklv\",\"name\":\"rwtrdgscnvqeonsg\",\"type\":\"xlw\",\"databaseName\":\"zyohxpthc\",\"collectionNames\":[\"vk\",\"twfvesobpbokh\"]},{\"id\":\"lc\",\"name\":\"arnggcjfwblqh\",\"type\":\"asmcolmugpyvaos\",\"databaseName\":\"l\",\"collectionNames\":[\"x\",\"ygz\",\"tyevjhu\"]},{\"id\":\"obguqisqsqk\",\"name\":\"mioyjpn\",\"type\":\"viqcpszp\",\"databaseName\":\"vqdvrdmvxyrxdhg\",\"collectionNames\":[\"jbxaotcgbz\"]},{\"id\":\"btplefoi\",\"name\":\"idoxznvgvdtmuuv\",\"type\":\"wsxmrszb\",\"databaseName\":\"imxlpnerxrzuty\",\"collectionNames\":[\"rzaqmnbx\",\"aehtd\"]}],\"nextLink\":\"mbnvynfaooeacted\"}")
+            "{\"value\":[{\"id\":\"ksadzi\",\"name\":\"mmtbt\",\"type\":\"u\",\"databaseName\":\"vvraabeurdeewlsu\",\"collectionNames\":[\"bwkdwjyjiznioroo\",\"m\",\"taspmcrei\"]},{\"id\":\"ftrnighminuwqxu\",\"name\":\"robgwfmsxj\",\"type\":\"ylwx\",\"databaseName\":\"zjow\",\"collectionNames\":[\"eerclbltbhpw\",\"chy\"]},{\"id\":\"rjwmvwryvdifkiik\",\"name\":\"ruccwmecbtxsytr\",\"type\":\"xe\",\"databaseName\":\"mrqjywi\",\"collectionNames\":[\"ycfjnc\",\"ndiloqkajwjuria\",\"sb\"]},{\"id\":\"lanhzcknjxizba\",\"name\":\"ygzkztxfexwacyy\",\"type\":\"lxppd\",\"databaseName\":\"zkf\",\"collectionNames\":[\"iiuiibf\"]}],\"nextLink\":\"jytqdcizeqqfo\"}")
             .toObject(RestorableMongodbResourcesListResult.class);
-        Assertions.assertEquals("mbnvynfaooeacted", model.nextLink());
+        Assertions.assertEquals("jytqdcizeqqfo", model.nextLink());
     }
 }
