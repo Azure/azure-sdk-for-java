@@ -6,6 +6,7 @@ package com.azure.messaging.webpubsub.client.implementation;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
+import com.azure.messaging.webpubsub.client.implementation.models.InvokeMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.SendEventMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.SendToGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
@@ -23,6 +24,8 @@ public final class MessageEncoder {
             updateDataForType((SendToGroupMessage) object);
         } else if (object instanceof SendEventMessage) {
             updateDataForType((SendEventMessage) object);
+        } else if (object instanceof InvokeMessage) {
+            updateDataForType((InvokeMessage) object);
         }
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -39,6 +42,10 @@ public final class MessageEncoder {
     }
 
     private static void updateDataForType(SendEventMessage message) {
+        updateDataForType(message.getDataType(), message.getData(), message::setData);
+    }
+
+    private static void updateDataForType(InvokeMessage message) {
         updateDataForType(message.getDataType(), message.getData(), message::setData);
     }
 
