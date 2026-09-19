@@ -264,6 +264,12 @@
 # ServiceLabel: %Confidential Ledger
 # ServiceOwners:                                                   @amruthashree18 @musabbir
 
+# PRLabel: %Cognitive - Content Safety
+/sdk/contentsafety/                                                @Azure/azure-sdk-write-contentsafety @Azure/azure-java-sdk
+
+# ServiceLabel: %Cognitive - Content Safety
+# ServiceOwners:                                                   @Azure/azure-sdk-write-contentsafety
+
 # PRLabel: %Cognitive - Content Understanding
 /sdk/contentunderstanding/                                         @bojunehsu @changjian-wang @chienyuanchang @yungshinlintw @Azure/azure-java-sdk
 
