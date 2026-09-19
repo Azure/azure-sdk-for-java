@@ -19,9 +19,50 @@ these repository-root documents: `AGENTS.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTIN
 SDK-package documents, CHANGELOGs, source/resources, and unknown paths gain no trigger exclusions.
 Build/Analyze orchestration and the existing test-matrix classifier are unchanged.
 
-The required **Check Spelling** job still checks all supported PR branches without path filters, using the existing
-CSpell configuration and ignore rules. **Verify Links** remains a separate, unchanged workflow.
+The existing required **Check Spelling** workflow remains unchanged and checks spelling only.
+The new [Validate documentation workflow](../.github/workflows/validate-documentation.yml) runs combined spelling,
+changelog, and reporting steps in one `validate-documentation` job on one `ubuntu-slim` runner. Its distinct
+**Validate documentation** check starts alongside the existing required check; this change does not update rulesets.
+Both workflows cover the same supported PR branches without path filters.
+
+Within the combined workflow, one checkout and Node 24 setup serve all validation steps.
+[Save-PRValidationInputs.ps1](scripts/Save-PRValidationInputs.ps1) saves the entire synthetic merge commit's diff
+against its first parent. It includes deletions and both sides of renames, not just the last source commit.
+Spelling uses the existing CSpell configuration and ignore rules, with one `npm ci` from the shared spelling
+lockfile and the installed binary (never global CSpell).
+
+[Invoke-PRValidation.ps1](scripts/Invoke-PRValidation.ps1) also verifies changelogs for the unified Java PR Build
+selection: `SDKType=client`, current `ExcludePaths`, and the shared `Get-PrPkgProperties`/Java metadata helpers.
+This includes indirect and template fallback packages and changes to POM versions, Java, or other package inputs,
+even when `CHANGELOG.md` was not edited. Explicit `ArtifactDetails.skipVerifyChangeLog` opt-outs remain effective.
+Missing or malformed required metadata fails validation instead of silently dropping a package. The real
+`Confirm-ChangeLogEntry` runs with `ForRelease=false`; a dated entry still receives its automatic release checks,
+including section content and release-date validation. Only already-excluded root/docs-only diffs (or proven empty
+diffs) avoid package discovery. A successful check is **not** a certificate that arbitrary `CHANGELOG.md` paths,
+unknown layouts, source/resources, or code-generation inputs can skip Build/Analyze.
+
+The YAML module is restored only when metadata is needed. The Java-owned
+[requirements file](scripts/pr-validation-requirements.psd1) pins `powershell-yaml` 0.4.7, matching the shared
+helper's requirement. `Save-Module` restores it from public PSGallery into the run-owned module directory, without
+registering feeds or changing persistent module settings. Cold runners need PowerShell 7 (included in
+`ubuntu-slim`), Git, the workflow's Node 24 setup, and access to PSGallery and the public npm registry. No Maven
+build, authenticated Azure feed, or Azure resources are needed.
+
+Spelling failures do not skip changelog validation. The final reporting step includes each
+step outcome, package/version/path, and validation errors in the job summary; failed, missing, or unexpectedly
+skipped required steps fail the combined check. Setup failures stay failures, and cancellation is not converted to
+success. File content is printed with runner-command processing suspended and escaped when added to annotations
+or the summary. Azure Build's existing PR changelog verification remains temporarily enabled for parity burn-in;
+non-PR and release validation are unchanged.
+
+**Verify Links** remains a separate, unchanged workflow.
 Package selection retains the existing `ExcludePaths` prefix-matching behavior.
+
+During migration, both workflows run, temporarily duplicating spelling work and using two runners.
+After **Validate documentation** has successful runs and its failure behavior is verified, make that check required
+while **Check Spelling** is still required. Then remove the old requirement before deleting `check-spelling.yml`
+in a separate cleanup. Existing PRs may need an update/new run to report the new check. Until that ruleset transition,
+the combined check is not a replacement for existing required validation.
 
 Run the trigger and classifier regression tests with PowerShell 7, Git, and the CI-declared Pester 5.7.1
 (no YAML module required):
@@ -33,6 +74,33 @@ Invoke-Pester -Path @(
     'eng/scripts/tests/Classify-PRChanges.tests.ps1'
 ) -Tag UnitTest -Output Detailed
 ```
+
+The combined validation tests use synthetic repositories outside `sdk/` and the existing `UnitTest` discovery
+under `eng/scripts/`. Their YAML bootstrap uses the same public pinned requirement. On Windows, the loaded YAML
+assembly must stay outside Pester's disposable `TestDrive`; set `PR_VALIDATION_TEST_MODULES` to a task-owned cache,
+or use the default `azure-java-pr-validation-test-modules` directory below the system temporary directory.
+
+```powershell
+Import-Module Pester -RequiredVersion 5.7.1
+Invoke-Pester -Path eng/scripts/tests/PRValidation.tests.ps1 -Tag UnitTest -Output Detailed
+# Also exercise real Java metadata parity and the exact CI-locked CSpell binary:
+Invoke-Pester -Path eng/scripts/tests/PRValidation.tests.ps1 -Tag IntegrationTest -Output Detailed
+# Optional network probe with an empty npm download cache (public npm access required):
+$env:PR_VALIDATION_TEST_COLD_NPM = 'true'
+Invoke-Pester -Path eng/scripts/tests/PRValidation.tests.ps1 -FullNameFilter 'Locked CSpell behavior*' -Output Detailed
+Remove-Item Env:PR_VALIDATION_TEST_COLD_NPM
+
+# Local diagnostics (use a new task-owned output directory):
+./eng/scripts/Save-PRValidationInputs.ps1 -OutputDirectory "$env:TEMP/pr-validation-local" `
+    -SourceCommittish HEAD -TargetCommittish main
+./eng/scripts/Invoke-PRValidation.ps1 -Check Spelling -OutputDirectory "$env:TEMP/pr-validation-local"
+./eng/scripts/Invoke-PRValidation.ps1 -Check Changelogs -OutputDirectory "$env:TEMP/pr-validation-local"
+```
+
+The snapshot, package-selection diff, exported `PackageInfo` JSON, and per-check results stay in that output
+directory. On a failure, inspect the named step log and summary, then correct the reported file, POM version,
+artifact metadata, or dependency download. Changelog format guidance is in the
+[release policy's Change Logs section](https://azure.github.io/azure-sdk/policies_releases.html#change-logs).
 
 ## Sparse Checkouts
 
@@ -85,4 +153,3 @@ Windows and Linux. Compare source revisions, checked-out files, preserved POM ed
 
 For developer guides (building, testing, code quality, versioning), see the consolidated documentation hub:
 **[`docs/`](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/README.md)**
-
