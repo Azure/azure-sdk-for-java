@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RecoveryKind;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
@@ -71,6 +72,9 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
     private final Deque<Scheduler> availableSchedulers = new ConcurrentLinkedDeque<>();
     private final Duration maxSessionLockRenewDuration;
     private final Duration sessionIdleTimeout;
+    // Backoff between retries for link/connection-level failures, which can fail fast and would otherwise
+    // spin in a tight, CPU-burning loop. Honors the configured AmqpRetryOptions delay.
+    private final Duration retryBackoff;
 
     /**
      * SessionId to receiver mapping.
@@ -116,6 +120,13 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
         this.sessionIdleTimeout = receiverOptions.getSessionIdleTimeout() != null
             ? receiverOptions.getSessionIdleTimeout()
             : connectionCacheWrapper.getRetryOptions().getTryTimeout();
+        // Link/connection-level acquire failures can fail fast (e.g. the broker repeatedly detaches the
+        // link quickly), so space those retries by the configured retry delay rather than retrying with a
+        // zero delay, which spins the retry loop. Falls back to 100ms when no usable delay is configured.
+        final Duration configuredDelay = connectionCacheWrapper.getRetryOptions().getDelay();
+        this.retryBackoff = (configuredDelay == null || configuredDelay.isZero() || configuredDelay.isNegative())
+            ? Duration.ofMillis(100)
+            : configuredDelay;
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
@@ -282,25 +293,39 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
             .timeout(operationTimeout)
             .then(Mono.just(link)))).retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
                 final Throwable failure = signal.failure();
+                final RecoveryKind kind = RecoveryKind.classify(failure);
                 LOGGER.atInfo()
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .addKeyValue("attempt", signal.totalRetriesInARow())
+                    .addKeyValue("recoveryKind", kind)
                     .log("Error occurred while getting unnamed session.", failure);
 
                 if (isDisposed.get()) {
                     return Mono.<Long>error(
                         new AmqpException(false, "SessionManager is already disposed.", failure, getErrorContext()));
-                } else if (failure instanceof TimeoutException) {
+                }
+
+                if (kind == RecoveryKind.CONNECTION) {
+                    LOGGER.atWarning()
+                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                        .log("Connection-level error in session manager, forcing connection recovery.", failure);
+                    connectionCacheWrapper.invalidateConnection();
+                }
+
+                // Mono.delay(Duration.ZERO) instead of Mono.empty() — the delay schedules the retry on the
+                // 'parallel' Scheduler, freeing the QPid (proton) thread for other IO. Using Mono.empty() would
+                // block the QPid thread and slow down / block message pumping in other sessions.
+                if (failure instanceof TimeoutException) {
                     return Mono.delay(Duration.ZERO);
                 } else if (failure instanceof AmqpException
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
                     // The link closed remotely with 'Detach {errorCondition:com.microsoft:timeout}' frame because
                     // the broker waited for N seconds (60 sec hard limit today) but there was no free or new session.
-                    //
-                    // Given N seconds elapsed since the last session acquire attempt, request for a session on
-                    // the 'parallel' Scheduler and free the 'QPid' thread for other IO.
-                    //
                     return Mono.delay(Duration.ZERO);
+                } else if (kind == RecoveryKind.LINK || kind == RecoveryKind.CONNECTION) {
+                    // Link or connection-level error — retry to acquire a fresh link (or connection) after a
+                    // bounded backoff, so a link that repeatedly detaches quickly does not spin the retry loop.
+                    return Mono.delay(retryBackoff);
                 } else {
                     final long id = System.nanoTime();
                     LOGGER.atInfo().addKeyValue(TRACKING_ID_KEY, id).log("Unable to acquire new session.", failure);

@@ -11,6 +11,7 @@ import com.azure.core.amqp.implementation.CreditFlowMode;
 import com.azure.core.amqp.implementation.MessageFlux;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
+import com.azure.core.amqp.implementation.RecoveryKind;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.handler.DeliveryNotOnLinkException;
@@ -1736,14 +1737,45 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         //
         final Mono<ServiceBusReceiveLink> retryableReceiveLinkMono
             = RetryUtil.withRetry(receiveLinkMono.onErrorMap(RequestResponseChannelClosedException.class, e -> {
-                // When the current connection is being disposed, the V1 ConnectionProcessor or V2 ReactorConnectionCache
-                // can produce a new connection if downstream request. In this context, treat
-                // RequestResponseChannelClosedException error from the following two sources as retry-able so that
-                // retry can obtain a new connection -
-                // 1. error from the RequestResponseChannel scoped to the current connection being disposed,
-                // 2. error from the V2 RequestResponseChannelCache scoped to the current connection being disposed.
-                //
                 return new AmqpException(true, e.getMessage(), e, null);
+            }).onErrorResume(e -> {
+                final RecoveryKind recoveryKind = RecoveryKind.classify(e);
+                if (recoveryKind == RecoveryKind.LINK || recoveryKind == RecoveryKind.CONNECTION) {
+                    LOGGER.atWarning()
+                        .addKeyValue(LINK_NAME_KEY, linkName)
+                        .addKeyValue("recoveryKind", recoveryKind)
+                        .log("Receive link creation failed, performing {} recovery.", recoveryKind, e);
+
+                    // For both LINK and CONNECTION recovery, the session hosting the failed link may
+                    // be stale. Ask the connection to remove it so the next retry creates a fresh
+                    // session + link. CONNECTION recovery additionally invalidates the cached
+                    // connection below so the next retry rebuilds connection, session, and link.
+                    Mono<Void> recovery = connectionProcessor.flatMap(connection -> {
+                        final boolean removed = connection.removeSession(entityPath);
+                        LOGGER.atVerbose()
+                            .addKeyValue(LINK_NAME_KEY, linkName)
+                            .addKeyValue("sessionRemoved", removed)
+                            .log("Stale session removal during {} recovery.", recoveryKind);
+                        return Mono.<Void>empty();
+                    }).onErrorResume(error -> {
+                        LOGGER.atWarning()
+                            .addKeyValue(LINK_NAME_KEY, linkName)
+                            .log("Error obtaining connection during {} recovery.", recoveryKind, error);
+                        return Mono.empty();
+                    });
+
+                    if (recoveryKind == RecoveryKind.CONNECTION) {
+                        recovery
+                            = recovery.then(Mono.fromRunnable(() -> connectionCacheWrapper.invalidateConnection()));
+                    }
+                    // Use the shared retry-filter wrapper so non-AMQP errors classified as
+                    // LINK/CONNECTION (e.g., IllegalStateException) are wrapped as transient
+                    // AmqpException and accepted by RetryUtil.createRetry. Centralising this
+                    // logic in RecoveryUtils keeps the sender and receiver paths consistent.
+                    final Throwable retriable = RecoveryUtils.asRetriable(e);
+                    return recovery.then(Mono.error(retriable));
+                }
+                return Mono.error(e);
             }), connectionCacheWrapper.getRetryOptions(), "Failed to create receive link " + linkName, true);
 
         // A Flux that produces a new AmqpReceiveLink each time it receives a request from the below

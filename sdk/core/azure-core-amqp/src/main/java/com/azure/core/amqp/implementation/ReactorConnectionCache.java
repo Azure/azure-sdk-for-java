@@ -48,6 +48,10 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
     // any dependent type; instead, the dependent type must acquire Connection only through the cache route,
     // i.e., by subscribing to 'createOrGetCachedConnection' via 'get()' getter.
     private volatile T currentConnection;
+    // Holds the ID of the connection that invalidateConnection() asked to force-invalidate.
+    // Only the connection whose getId() matches this value will be invalidated by cacheInvalidateIf;
+    // a freshly created connection with a different ID is never accidentally invalidated.
+    private final AtomicReference<String> forceInvalidateConnectionId = new AtomicReference<>(null);
     private final State state = new State();
 
     /**
@@ -113,12 +117,25 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             }
         }).cacheInvalidateIf(c -> {
             if (c.isDisposed()) {
+                // Connection disposed for any reason. Clean up the force-invalidate marker if it
+                // was targeting this connection so it is not accidentally consumed by a future
+                // connection that happens to have the same ID.
+                forceInvalidateConnectionId.compareAndSet(c.getId(), null);
                 withConnectionId(logger, c.getId()).log("The connection is closed, requesting a new connection.");
                 return true;
-            } else {
-                // Emit cached connection.
-                return false;
             }
+            final String targetId = forceInvalidateConnectionId.get();
+            if (targetId != null
+                && targetId.equals(c.getId())
+                && forceInvalidateConnectionId.compareAndSet(targetId, null)) {
+                // invalidateConnection() marked this connection dirty.
+                // Close it here — the cache owns the connection lifecycle.
+                withConnectionId(logger, c.getId()).log("Force-invalidating and closing connection for recovery.");
+                closeConnection(c, logger, "Force-invalidated for recovery.");
+                return true;
+            }
+            // No forced invalidation targeted this connection — emit it from cache.
+            return false;
         });
     }
 
@@ -170,6 +187,32 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
      */
     public boolean isCurrentConnectionClosed() {
         return (currentConnection != null && currentConnection.isDisposed()) || terminated;
+    }
+
+    /**
+     * Marks the current cached connection for invalidation so that the next {@link #get()} call
+     * closes it and creates a fresh connection. This is used for connection-level recovery when
+     * the current connection is in a stale state that the cache's normal error detection (via
+     * endpoint state signals) has not detected — for example, when intermediate infrastructure
+     * (load balancers, NAT gateways) is echoing AMQP heartbeats on behalf of a dead connection.
+     *
+     * <p>The actual close is deferred to the cache chain's {@code cacheInvalidateIf} predicate
+     * inside {@link #get()}, keeping the connection lifecycle local to the cache. This avoids
+     * the concurrency concern of two threads touching the cached connection simultaneously.</p>
+     *
+     * <p>This is modeled after the Go SDK's {@code Namespace.Recover()} which explicitly closes
+     * the old connection and increments the connection revision.</p>
+     *
+     * <p>This method is safe to call concurrently. If the connection is already closed or being
+     * closed, this is a no-op.</p>
+     */
+    public void invalidateConnection() {
+        final T connection = currentConnection;
+        if (connection != null && !connection.isDisposed()) {
+            withConnectionId(logger, connection.getId())
+                .log("Marking connection for force-invalidation. Next get() will close and replace it.");
+            forceInvalidateConnectionId.set(connection.getId());
+        }
     }
 
     /**
