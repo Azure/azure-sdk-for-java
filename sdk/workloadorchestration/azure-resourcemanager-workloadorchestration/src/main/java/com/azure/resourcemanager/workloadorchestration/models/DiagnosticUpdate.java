@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * The type used for update operations of the Diagnostic.
+ * The updatable properties of the Diagnostic.
  */
 @Fluent
 public final class DiagnosticUpdate implements JsonSerializable<DiagnosticUpdate> {

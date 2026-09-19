@@ -14,19 +14,18 @@ import org.junit.jupiter.api.Assertions;
 public final class SchemaUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SchemaUpdate model = BinaryData
-            .fromString(
-                "{\"properties\":{},\"tags\":{\"kuksjtxukcdm\":\"rkdtmlxh\",\"yrlhmwhfpmrqobm\":\"arcryuanzwuxzdxt\"}}")
+        SchemaUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"currentVersion\":\"xvd\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"snhsjcnyejhkryh\":\"tfwvukxgaudc\"}}")
             .toObject(SchemaUpdate.class);
-        Assertions.assertEquals("rkdtmlxh", model.tags().get("kuksjtxukcdm"));
+        Assertions.assertEquals("tfwvukxgaudc", model.tags().get("snhsjcnyejhkryh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchemaUpdate model = new SchemaUpdate().withProperties(new SchemaUpdateProperties())
-            .withTags(mapOf("kuksjtxukcdm", "rkdtmlxh", "yrlhmwhfpmrqobm", "arcryuanzwuxzdxt"));
+            .withTags(mapOf("snhsjcnyejhkryh", "tfwvukxgaudc"));
         model = BinaryData.fromObject(model).toObject(SchemaUpdate.class);
-        Assertions.assertEquals("rkdtmlxh", model.tags().get("kuksjtxukcdm"));
+        Assertions.assertEquals("tfwvukxgaudc", model.tags().get("snhsjcnyejhkryh"));
     }
 
     // Use "Map.of" if available

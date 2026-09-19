@@ -12,14 +12,14 @@ public final class SolutionVersionParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionVersionParameter model
-            = BinaryData.fromString("{\"solutionVersionId\":\"hhyxxrw\"}").toObject(SolutionVersionParameter.class);
-        Assertions.assertEquals("hhyxxrw", model.solutionVersionId());
+            = BinaryData.fromString("{\"solutionVersionId\":\"m\"}").toObject(SolutionVersionParameter.class);
+        Assertions.assertEquals("m", model.solutionVersionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionVersionParameter model = new SolutionVersionParameter().withSolutionVersionId("hhyxxrw");
+        SolutionVersionParameter model = new SolutionVersionParameter().withSolutionVersionId("m");
         model = BinaryData.fromObject(model).toObject(SolutionVersionParameter.class);
-        Assertions.assertEquals("hhyxxrw", model.solutionVersionId());
+        Assertions.assertEquals("m", model.solutionVersionId());
     }
 }

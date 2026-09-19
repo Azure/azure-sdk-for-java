@@ -22,7 +22,7 @@ public final class ExecutionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"workflowVersionId\":\"clctzey\",\"specification\":{},\"status\":{\"updateTime\":\"2021-04-17T02:25:11Z\",\"status\":221950277,\"statusMessage\":\"wzqauxzanhmkvf\",\"stageHistory\":[{\"status\":1650089892,\"statusMessage\":\"rbcp\",\"stage\":\"xudqyemebunaucmc\",\"nextstage\":\"tneemmjauwcgxef\",\"errorMessage\":\"haitranize\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}},{\"status\":1177263124,\"statusMessage\":\"bvfbngfcocefhpri\",\"stage\":\"fmpztraudsvh\",\"nextstage\":\"dculregp\",\"errorMessage\":\"moj\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}},{\"status\":776813116,\"statusMessage\":\"hqrdgrtwmewjzlpy\",\"stage\":\"fa\",\"nextstage\":\"wjcayerzrr\",\"errorMessage\":\"syb\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"srleinkfscjfn\",\"type\":\"EdgeZone\"},\"eTag\":\"vuagfqwtl\",\"id\":\"gvmreuptrklzmi\",\"name\":\"ajwolxfs\",\"type\":\"aghm\"}";
+            = "{\"properties\":{\"workflowVersionId\":\"nrzpghlrdtbg\",\"specification\":{\"aflv\":\"\\\"databuibrvjz\\\"\"},\"status\":{\"updateTime\":\"2021-09-09T13:19:33Z\",\"status\":984371248,\"statusMessage\":\"fjcqrtt\",\"stageHistory\":[{\"status\":1498678201,\"statusMessage\":\"fjewfeqbavdo\",\"stage\":\"wy\",\"nextstage\":\"fm\",\"errorMessage\":\"lvxgwzz\",\"isActive\":\"inactive\",\"inputs\":{\"gw\":\"\\\"datacjgpvcqzvzrb\\\"\",\"mxvmdrwynbgovazo\":\"\\\"datahlx\\\"\",\"qmgkcswzeyxryea\":\"\\\"datamdvhhplkhwwdkatv\\\"\",\"smfasgtlv\":\"\\\"datamhpwbukl\\\"\"},\"outputs\":{\"hllpokjyghzt\":\"\\\"dataoilosjaemcezevft\\\"\"}},{\"status\":570111945,\"statusMessage\":\"wtpcflcezswwvw\",\"stage\":\"tdjtvbfpfhru\",\"nextstage\":\"syqcjnqswxdowum\",\"errorMessage\":\"ukrcdiohcl\",\"isActive\":\"inactive\",\"inputs\":{\"nyzcwyjsmk\":\"\\\"datafknebwedd\\\"\",\"vpaqbqxfb\":\"\\\"dataqldqabn\\\"\"},\"outputs\":{\"jyyrqaedw\":\"\\\"datacfddofxnfb\\\"\",\"mihwpadhedb\":\"\\\"datavocytjgoeayokrw\\\"\",\"dczvothmkh\":\"\\\"datao\\\"\"}},{\"status\":1669880005,\"statusMessage\":\"vbwfcnjhbpoe\",\"stage\":\"scmyhrhjvszf\",\"nextstage\":\"okndwpppqwojoevz\",\"errorMessage\":\"fytdxmly\",\"isActive\":\"inactive\",\"inputs\":{\"lcuhaizi\":\"\\\"dataapbkrbuoggtdl\\\"\",\"ohlpsftqkr\":\"\\\"datavaylz\\\"\",\"vbvvcpwtqsu\":\"\\\"datam\\\"\",\"ffetevrnt\":\"\\\"datapnhmzy\\\"\"},\"outputs\":{\"fsatvcsx\":\"\\\"datawacycsyotctkhf\\\"\",\"ublehhkplobz\":\"\\\"datamhnmizhvprhqqw\\\"\"}},{\"status\":876973425,\"statusMessage\":\"aksadzighmmtbt\",\"stage\":\"u\",\"nextstage\":\"vvraabeurdeewlsu\",\"errorMessage\":\"cbwkdwjyj\",\"isActive\":\"inactive\",\"inputs\":{\"m\":\"\\\"dataroo\\\"\"},\"outputs\":{\"inuwqxungrob\":\"\\\"dataspmcreihuftrnigh\\\"\"}}]},\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"sxjwdy\",\"type\":\"EdgeZone\"},\"eTag\":\"m\",\"id\":\"jowz\",\"name\":\"geerclbl\",\"type\":\"bhpwachyeur\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,12 @@ public final class ExecutionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Execution response = manager.executions()
-            .getWithResponse("ewfopazdazg", "sqgpewqcfu", "mdpv", "zgl", "jbkn", com.azure.core.util.Context.NONE)
+            .getWithResponse("tnylqu", "vqmvyumgmmu", "bsnznwgsqufm", "xcyoseqcazisvb", "qgcyjpgawepk",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("clctzey", response.properties().workflowVersionId());
-        Assertions.assertEquals("srleinkfscjfn", response.extendedLocation().name());
+        Assertions.assertEquals("nrzpghlrdtbg", response.properties().workflowVersionId());
+        Assertions.assertEquals("sxjwdy", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
     }
 }

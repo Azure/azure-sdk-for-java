@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadorchestration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,7 +20,7 @@ public final class SchemaVersionProperties implements JsonSerializable<SchemaVer
     /*
      * Value of schema version
      */
-    private String value;
+    private BinaryData value;
 
     /*
      * Provisioning state of resource
@@ -37,7 +38,7 @@ public final class SchemaVersionProperties implements JsonSerializable<SchemaVer
      * 
      * @return the value value.
      */
-    public String value() {
+    public BinaryData value() {
         return this.value;
     }
 
@@ -47,7 +48,7 @@ public final class SchemaVersionProperties implements JsonSerializable<SchemaVer
      * @param value the value value to set.
      * @return the SchemaVersionProperties object itself.
      */
-    public SchemaVersionProperties withValue(String value) {
+    public SchemaVersionProperties withValue(BinaryData value) {
         this.value = value;
         return this;
     }
@@ -67,7 +68,8 @@ public final class SchemaVersionProperties implements JsonSerializable<SchemaVer
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeFieldName("value");
+        this.value.writeTo(jsonWriter);
         return jsonWriter.writeEndObject();
     }
 
@@ -88,7 +90,8 @@ public final class SchemaVersionProperties implements JsonSerializable<SchemaVer
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    deserializedSchemaVersionProperties.value = reader.getString();
+                    deserializedSchemaVersionProperties.value
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSchemaVersionProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

@@ -24,7 +24,7 @@ public final class SchemasCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"currentVersion\":\"saoafcluqvox\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"im\",\"location\":\"vwg\",\"tags\":{\"w\":\"pbmz\",\"bvopwndyqle\":\"sydsxwefohe\",\"lowkxxpvb\":\"llklmtk\",\"k\":\"dfjmzsyzfhotlh\"},\"id\":\"yych\",\"name\":\"nsjlpjrtws\",\"type\":\"hv\"}";
+            = "{\"properties\":{\"currentVersion\":\"wmlmh\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"qe\",\"location\":\"j\",\"tags\":{\"gpokddxejhhkvgu\":\"r\",\"wkqyns\":\"vtptbk\",\"vdxaexqokmyrljia\":\"gbvoffbkk\"},\"id\":\"zbnobr\",\"name\":\"lpbcjtrpz\",\"type\":\"yudivbxnhsqeaeo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,15 @@ public final class SchemasCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Schema response = manager.schemas()
-            .define("phaimmoi")
-            .withRegion("ahxku")
-            .withExistingResourceGroup("ccrrvweyoxoyyu")
-            .withTags(mapOf("hqepvufhbzehewh", "jcaacfdmmcpugm", "eaclgschorimk", "qhnlbqnbld", "ucsofldpuviyf", "srrm",
-                "bsxtkcudfbsfarfs", "aabeolhbhlvbmxuq"))
+            .define("vwerfwxbsmtb")
+            .withRegion("tfpwpqbyejuw")
+            .withExistingResourceGroup("gq")
+            .withTags(mapOf("ginz", "dqigmg"))
             .withProperties(new SchemaProperties())
             .create();
 
-        Assertions.assertEquals("vwg", response.location());
-        Assertions.assertEquals("pbmz", response.tags().get("w"));
+        Assertions.assertEquals("j", response.location());
+        Assertions.assertEquals("r", response.tags().get("gpokddxejhhkvgu"));
     }
 
     // Use "Map.of" if available
