@@ -21,7 +21,7 @@
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Operation_List.json
+     * x-ms-original-file: 2026-10-01-preview/Operation_List.json
      */
     /**
      * Sample code: List all provider operations.
@@ -38,6 +38,11 @@ public final class OperationsListSamples {
 ### StorageDiscoveryWorkspaces_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.storagediscovery.models.AzureBlobStorageCapability;
+import com.azure.resourcemanager.storagediscovery.models.CapabilityStatus;
+import com.azure.resourcemanager.storagediscovery.models.CapacityDetails;
+import com.azure.resourcemanager.storagediscovery.models.PrefixDefinition;
+import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryCapabilities;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryResourceType;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryScope;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryWorkspaceProperties;
@@ -50,7 +55,7 @@ import java.util.Map;
  */
 public final class StorageDiscoveryWorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/StorageDiscoveryWorkspaces_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/StorageDiscoveryWorkspaces_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a StorageDiscoveryWorkspace.
@@ -64,19 +69,35 @@ public final class StorageDiscoveryWorkspacesCreateOrUpdateSamples {
             .withRegion("westeurope")
             .withExistingResourceGroup("sample-rg")
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withProperties(new StorageDiscoveryWorkspaceProperties()
-                .withDescription("Sample Storage Discovery Workspace")
-                .withWorkspaceRoots(Arrays.asList("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"))
-                .withScopes(Arrays.asList(new StorageDiscoveryScope().withDisplayName("Sample-Collection")
-                    .withResourceTypes(Arrays.asList(StorageDiscoveryResourceType.fromString(
-                        "/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09/resourceGroups/sample-rg/providers/Microsoft.Storage/storageAccounts/sample-storageAccount")))
-                    .withTagKeysOnly(Arrays.asList("filterTag1", "filterTag2"))
-                    .withTags(mapOf("filterTag3", "value3", "filterTag4", "value4")),
-                    new StorageDiscoveryScope().withDisplayName("Sample-Collection-2")
+            .withProperties(
+                new StorageDiscoveryWorkspaceProperties().withDescription("Sample Storage Discovery Workspace")
+                    .withCapabilities(
+                        new StorageDiscoveryCapabilities().withAzureBlobStorage(new AzureBlobStorageCapability()
+                            .withCapacityDetails(new CapacityDetails().withStatus(CapabilityStatus.ENABLED))
+                            .withPrefixDefinitions(
+                                Arrays.asList(
+                                    new PrefixDefinition().withStorageAccountName("firstsa")
+                                        .withContainerName("samplecontainer")
+                                        .withPrefix("sampleDir"),
+                                    new PrefixDefinition().withStorageAccountName("secondsa")
+                                        .withContainerName("samplecontainer")
+                                        .withPrefix("sampleDir/sampleSubDir"),
+                                    new PrefixDefinition()
+                                        .withStorageAccountName("thirdsa")
+                                        .withContainerName("anothersamplecontainer")
+                                        .withPrefix("anotherSampleDir")))))
+                    .withWorkspaceRoots(Arrays.asList("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"))
+                    .withScopes(Arrays.asList(new StorageDiscoveryScope()
+                        .withDisplayName("Sample-Collection")
                         .withResourceTypes(Arrays.asList(StorageDiscoveryResourceType.fromString(
                             "/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09/resourceGroups/sample-rg/providers/Microsoft.Storage/storageAccounts/sample-storageAccount")))
-                        .withTagKeysOnly(Arrays.asList("filterTag5"))
-                        .withTags(mapOf("filterTag6", "value6")))))
+                        .withTagKeysOnly(Arrays.asList("filterTag1", "filterTag2"))
+                        .withTags(mapOf("filterTag3", "value3", "filterTag4", "value4")),
+                        new StorageDiscoveryScope().withDisplayName("Sample-Collection-2")
+                            .withResourceTypes(Arrays.asList(StorageDiscoveryResourceType.fromString(
+                                "/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09/resourceGroups/sample-rg/providers/Microsoft.Storage/storageAccounts/sample-storageAccount")))
+                            .withTagKeysOnly(Arrays.asList("filterTag5"))
+                            .withTags(mapOf("filterTag6", "value6")))))
             .create();
     }
 
@@ -102,7 +123,7 @@ public final class StorageDiscoveryWorkspacesCreateOrUpdateSamples {
  */
 public final class StorageDiscoveryWorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/StorageDiscoveryWorkspaces_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/StorageDiscoveryWorkspaces_Delete.json
      */
     /**
      * Sample code: Delete a StorageDiscoveryWorkspace.
@@ -125,7 +146,7 @@ public final class StorageDiscoveryWorkspacesDeleteSamples {
  */
 public final class StorageDiscoveryWorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/StorageDiscoveryWorkspaces_Get.json
+     * x-ms-original-file: 2026-10-01-preview/StorageDiscoveryWorkspaces_Get.json
      */
     /**
      * Sample code: Get a StorageDiscoveryWorkspace.
@@ -148,7 +169,7 @@ public final class StorageDiscoveryWorkspacesGetByResourceGroupSamples {
  */
 public final class StorageDiscoveryWorkspacesListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/StorageDiscoveryWorkspaces_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01-preview/StorageDiscoveryWorkspaces_ListBySubscription.json
      */
     /**
      * Sample code: List StorageDiscoveryWorkspaces by Subscription.
@@ -170,7 +191,7 @@ public final class StorageDiscoveryWorkspacesListSamples {
  */
 public final class StorageDiscoveryWorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/StorageDiscoveryWorkspaces_ListByResourceGroup.json
+     * x-ms-original-file: 2026-10-01-preview/StorageDiscoveryWorkspaces_ListByResourceGroup.json
      */
     /**
      * Sample code: List StorageDiscoveryWorkspaces by Resource Group.
@@ -187,6 +208,11 @@ public final class StorageDiscoveryWorkspacesListByResourceGroupSamples {
 ### StorageDiscoveryWorkspaces_Update
 
 ```java
+import com.azure.resourcemanager.storagediscovery.models.AzureBlobStorageCapabilityUpdate;
+import com.azure.resourcemanager.storagediscovery.models.CapabilityStatus;
+import com.azure.resourcemanager.storagediscovery.models.CapacityDetailsUpdate;
+import com.azure.resourcemanager.storagediscovery.models.PrefixDefinitionUpdate;
+import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryCapabilitiesUpdate;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryResourceType;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryScope;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoverySku;
@@ -201,7 +227,7 @@ import java.util.Map;
  */
 public final class StorageDiscoveryWorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/StorageDiscoveryWorkspaces_Update.json
+     * x-ms-original-file: 2026-10-01-preview/StorageDiscoveryWorkspaces_Update.json
      */
     /**
      * Sample code: Update a StorageDiscoveryWorkspace.
@@ -221,7 +247,20 @@ public final class StorageDiscoveryWorkspacesUpdateSamples {
                     .withResourceTypes(Arrays.asList(StorageDiscoveryResourceType.fromString(
                         "/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09/resourceGroups/sample-rg/providers/Microsoft.Storage/storageAccounts/updated-sample-storageAccount")))
                     .withTagKeysOnly(Arrays.asList("updated-filtertag1", "updated-filtertag2"))
-                    .withTags(mapOf("updated-filtertag3", "updated-value3", "updated-filtertag4", "updated-value4")))))
+                    .withTags(mapOf("updated-filtertag3", "updated-value3", "updated-filtertag4", "updated-value4"))))
+                .withCapabilities(
+                    new StorageDiscoveryCapabilitiesUpdate().withAzureBlobStorage(new AzureBlobStorageCapabilityUpdate()
+                        .withCapacityDetails(new CapacityDetailsUpdate().withStatus(CapabilityStatus.ENABLED))
+                        .withPrefixDefinitions(Arrays.asList(
+                            new PrefixDefinitionUpdate().withStorageAccountName("firstsa")
+                                .withContainerName("samplecontainer")
+                                .withPrefix("sampleDir"),
+                            new PrefixDefinitionUpdate().withStorageAccountName("secondsa")
+                                .withContainerName("samplecontainer")
+                                .withPrefix("sampleDir/sampleSubDir"),
+                            new PrefixDefinitionUpdate().withStorageAccountName("thirdsa")
+                                .withContainerName("anothersamplecontainer")
+                                .withPrefix("anotherSampleDir"))))))
             .apply();
     }
 

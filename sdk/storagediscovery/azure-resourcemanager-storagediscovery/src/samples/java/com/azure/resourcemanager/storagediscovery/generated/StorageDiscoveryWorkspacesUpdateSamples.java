@@ -4,6 +4,11 @@
 
 package com.azure.resourcemanager.storagediscovery.generated;
 
+import com.azure.resourcemanager.storagediscovery.models.AzureBlobStorageCapabilityUpdate;
+import com.azure.resourcemanager.storagediscovery.models.CapabilityStatus;
+import com.azure.resourcemanager.storagediscovery.models.CapacityDetailsUpdate;
+import com.azure.resourcemanager.storagediscovery.models.PrefixDefinitionUpdate;
+import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryCapabilitiesUpdate;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryResourceType;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryScope;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoverySku;
@@ -18,7 +23,7 @@ import java.util.Map;
  */
 public final class StorageDiscoveryWorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/StorageDiscoveryWorkspaces_Update.json
+     * x-ms-original-file: 2026-10-01-preview/StorageDiscoveryWorkspaces_Update.json
      */
     /**
      * Sample code: Update a StorageDiscoveryWorkspace.
@@ -38,7 +43,20 @@ public final class StorageDiscoveryWorkspacesUpdateSamples {
                     .withResourceTypes(Arrays.asList(StorageDiscoveryResourceType.fromString(
                         "/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09/resourceGroups/sample-rg/providers/Microsoft.Storage/storageAccounts/updated-sample-storageAccount")))
                     .withTagKeysOnly(Arrays.asList("updated-filtertag1", "updated-filtertag2"))
-                    .withTags(mapOf("updated-filtertag3", "updated-value3", "updated-filtertag4", "updated-value4")))))
+                    .withTags(mapOf("updated-filtertag3", "updated-value3", "updated-filtertag4", "updated-value4"))))
+                .withCapabilities(
+                    new StorageDiscoveryCapabilitiesUpdate().withAzureBlobStorage(new AzureBlobStorageCapabilityUpdate()
+                        .withCapacityDetails(new CapacityDetailsUpdate().withStatus(CapabilityStatus.ENABLED))
+                        .withPrefixDefinitions(Arrays.asList(
+                            new PrefixDefinitionUpdate().withStorageAccountName("firstsa")
+                                .withContainerName("samplecontainer")
+                                .withPrefix("sampleDir"),
+                            new PrefixDefinitionUpdate().withStorageAccountName("secondsa")
+                                .withContainerName("samplecontainer")
+                                .withPrefix("sampleDir/sampleSubDir"),
+                            new PrefixDefinitionUpdate().withStorageAccountName("thirdsa")
+                                .withContainerName("anothersamplecontainer")
+                                .withPrefix("anotherSampleDir"))))))
             .apply();
     }
 
