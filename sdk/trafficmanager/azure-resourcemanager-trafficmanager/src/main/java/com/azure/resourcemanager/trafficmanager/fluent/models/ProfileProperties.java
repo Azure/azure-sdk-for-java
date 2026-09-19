@@ -66,7 +66,9 @@ public final class ProfileProperties implements JsonSerializable<ProfileProperti
     private Long maxReturn;
 
     /*
-     * When record type is set, a traffic manager profile will allow only endpoints that match this type.
+     * When record type is set, a traffic manager profile will allow only endpoints that match this type. If it is not
+     * set, traffic manager profile will allow adding all types of endpoints. It is returned as null when this is not
+     * set.
      */
     private RecordType recordType;
 
@@ -243,7 +245,8 @@ public final class ProfileProperties implements JsonSerializable<ProfileProperti
 
     /**
      * Get the recordType property: When record type is set, a traffic manager profile will allow only endpoints that
-     * match this type.
+     * match this type. If it is not set, traffic manager profile will allow adding all types of endpoints. It is
+     * returned as null when this is not set.
      * 
      * @return the recordType value.
      */
@@ -253,7 +256,8 @@ public final class ProfileProperties implements JsonSerializable<ProfileProperti
 
     /**
      * Set the recordType property: When record type is set, a traffic manager profile will allow only endpoints that
-     * match this type.
+     * match this type. If it is not set, traffic manager profile will allow adding all types of endpoints. It is
+     * returned as null when this is not set.
      * 
      * @param recordType the recordType value to set.
      * @return the ProfileProperties object itself.

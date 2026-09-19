@@ -25,7 +25,7 @@ import java.util.Arrays;
  */
 public final class ProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-MultiValue.json
+     * x-ms-original-file: 2026-09-01/Profile-PUT-MultiValue.json
      */
     /**
      * Sample code: Profile-PUT-MultiValue.
@@ -48,7 +48,7 @@ public final class ProfilesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-WithEndpointsAndRecordType.json
+     * x-ms-original-file: 2026-09-01/Profile-PUT-WithEndpointsAndRecordType.json
      */
     /**
      * Sample code: Profile-PUT-WithEndpointsAndRecordType.
@@ -82,7 +82,7 @@ public final class ProfilesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-WithCustomHeaders.json
+     * x-ms-original-file: 2026-09-01/Profile-PUT-WithCustomHeaders.json
      */
     /**
      * Sample code: Profile-PUT-WithCustomHeaders.
@@ -123,7 +123,7 @@ public final class ProfilesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-NoEndpoints.json
+     * x-ms-original-file: 2026-09-01/Profile-PUT-NoEndpoints.json
      */
     /**
      * Sample code: Profile-PUT-NoEndpoints.
@@ -145,7 +145,7 @@ public final class ProfilesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-WithAliasing.json
+     * x-ms-original-file: 2026-09-01/Profile-PUT-WithAliasing.json
      */
     /**
      * Sample code: Profile-PUT-WithAliasing.
@@ -178,7 +178,7 @@ public final class ProfilesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-WithEndpoints.json
+     * x-ms-original-file: 2026-09-01/Profile-PUT-WithEndpoints.json
      */
     /**
      * Sample code: Profile-PUT-WithEndpoints.
@@ -210,7 +210,7 @@ public final class ProfilesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-PUT-WithNestedEndpoints.json
+     * x-ms-original-file: 2026-09-01/Profile-PUT-WithNestedEndpoints.json
      */
     /**
      * Sample code: Profile-PUT-WithNestedEndpoints.
