@@ -199,7 +199,7 @@ public final class RoleDefinitionsImpl {
      * @return all role definitions that are applicable at scope and above.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RoleDefinition> listSinglePage(String scope, String filter) {
+    public PagedResponse<RoleDefinition, String> listSinglePage(String scope, String filter) {
         final String accept = "application/json";
         Response<RoleDefinitionListResult> res = service.list(this.client.getVaultBaseUrl(),
             this.client.getServiceVersion().getVersion(), scope, filter, accept, RequestContext.none());
@@ -220,7 +220,8 @@ public final class RoleDefinitionsImpl {
      * @return all role definitions that are applicable at scope and above.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RoleDefinition> listSinglePage(String scope, String filter, RequestContext requestContext) {
+    public PagedResponse<RoleDefinition, String> listSinglePage(String scope, String filter,
+        RequestContext requestContext) {
         final String accept = "application/json";
         Response<RoleDefinitionListResult> res = service.list(this.client.getVaultBaseUrl(),
             this.client.getServiceVersion().getVersion(), scope, filter, accept, requestContext);
@@ -240,7 +241,7 @@ public final class RoleDefinitionsImpl {
      * @return all role definitions that are applicable at scope and above.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleDefinition> list(String scope, String filter) {
+    public PagedIterable<RoleDefinition, String> list(String scope, String filter) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
                 throw LOGGER.throwableAtError()
@@ -280,7 +281,7 @@ public final class RoleDefinitionsImpl {
      * @return all role definitions that are applicable at scope and above.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleDefinition> list(String scope) {
+    public PagedIterable<RoleDefinition, String> list(String scope) {
         final String filter = null;
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -324,7 +325,7 @@ public final class RoleDefinitionsImpl {
      * @return all role definitions that are applicable at scope and above.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleDefinition> list(String scope, String filter, RequestContext requestContext) {
+    public PagedIterable<RoleDefinition, String> list(String scope, String filter, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -365,7 +366,7 @@ public final class RoleDefinitionsImpl {
      * @return role definition list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RoleDefinition> listNextSinglePage(String nextLink) {
+    public PagedResponse<RoleDefinition, String> listNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<RoleDefinitionListResult> res
             = service.listNext(nextLink, this.client.getVaultBaseUrl(), accept, RequestContext.none());
@@ -384,7 +385,7 @@ public final class RoleDefinitionsImpl {
      * @return role definition list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RoleDefinition> listNextSinglePage(String nextLink, RequestContext requestContext) {
+    public PagedResponse<RoleDefinition, String> listNextSinglePage(String nextLink, RequestContext requestContext) {
         final String accept = "application/json";
         Response<RoleDefinitionListResult> res
             = service.listNext(nextLink, this.client.getVaultBaseUrl(), accept, requestContext);

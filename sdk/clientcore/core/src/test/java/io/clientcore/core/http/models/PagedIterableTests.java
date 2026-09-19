@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -31,13 +32,13 @@ public class PagedIterableTests {
     private final HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost");
 
     // tests with mocked PagedResponse
-    private List<PagedResponse<Integer>> pagedResponses;
+    private List<PagedResponse<Integer, String>> pagedResponses;
 
     @ParameterizedTest
     @ValueSource(ints = { 0, 5 })
     public void streamByPage(int numberOfPages) {
-        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(numberOfPages);
-        List<PagedResponse<Integer>> pages = pagedIterable.streamByPage().collect(Collectors.toList());
+        PagedIterable<Integer, String> pagedIterable = getIntegerPagedIterable(numberOfPages);
+        List<PagedResponse<Integer, String>> pages = pagedIterable.streamByPage().collect(Collectors.toList());
 
         assertEquals(numberOfPages, pages.size());
         assertEquals(pagedResponses, pages);
@@ -46,8 +47,8 @@ public class PagedIterableTests {
     @ParameterizedTest
     @ValueSource(ints = { 0, 5 })
     public void iterateByPage(int numberOfPages) {
-        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(numberOfPages);
-        List<PagedResponse<Integer>> pages = new ArrayList<>();
+        PagedIterable<Integer, String> pagedIterable = getIntegerPagedIterable(numberOfPages);
+        List<PagedResponse<Integer, String>> pages = new ArrayList<>();
         pagedIterable.iterableByPage().iterator().forEachRemaining(pages::add);
 
         assertEquals(numberOfPages, pages.size());
@@ -57,7 +58,7 @@ public class PagedIterableTests {
     @ParameterizedTest
     @ValueSource(ints = { 0, 5 })
     public void streamByT(int numberOfPages) {
-        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(numberOfPages);
+        PagedIterable<Integer, String> pagedIterable = getIntegerPagedIterable(numberOfPages);
         List<Integer> values = pagedIterable.stream().collect(Collectors.toList());
 
         assertEquals(numberOfPages * 3, values.size());
@@ -67,7 +68,7 @@ public class PagedIterableTests {
     @ParameterizedTest
     @ValueSource(ints = { 0, 5 })
     public void iterateByT(int numberOfPages) {
-        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(numberOfPages);
+        PagedIterable<Integer, String> pagedIterable = getIntegerPagedIterable(numberOfPages);
         List<Integer> values = new ArrayList<>();
         pagedIterable.iterator().forEachRemaining(values::add);
 
@@ -86,7 +87,7 @@ public class PagedIterableTests {
         pagedResponses
             .add(new PagedResponse<>(httpRequest, 200, httpHeaders, Arrays.asList(3, 4), null, null, null, null, null));
 
-        PagedIterable<Integer> pagedIterable
+        PagedIterable<Integer, String> pagedIterable
             = new PagedIterable<>(pagingOptions -> pagedResponses.isEmpty() ? null : pagedResponses.get(0),
                 (pagingOptions, nextLink) -> getNextPageSync(nextLink, pagedResponses));
 
@@ -94,7 +95,7 @@ public class PagedIterableTests {
         verifyIteratorSize(pagedIterable.iterator(), 5);
     }
 
-    private PagedIterable<Integer> getIntegerPagedIterable(int numberOfPages) {
+    private PagedIterable<Integer, String> getIntegerPagedIterable(int numberOfPages) {
         createPagedResponse(numberOfPages);
 
         return new PagedIterable<>(pagingOptions -> pagedResponses.isEmpty() ? null : pagedResponses.get(0),
@@ -108,13 +109,14 @@ public class PagedIterableTests {
             .collect(Collectors.toList());
     }
 
-    private <T> PagedResponse<T> createPagedResponse(HttpRequest httpRequest, HttpHeaders headers, int numberOfPages,
-        Function<Integer, List<T>> valueSupplier, int i) {
+    private <T> PagedResponse<T, String> createPagedResponse(HttpRequest httpRequest, HttpHeaders headers,
+        int numberOfPages, Function<Integer, List<T>> valueSupplier, int i) {
         return new PagedResponse<>(httpRequest, 200, headers, valueSupplier.apply(i), null,
             (i < numberOfPages - 1) ? String.valueOf(i + 1) : null, null, null, null);
     }
 
-    private PagedResponse<Integer> getNextPageSync(String nextLink, List<PagedResponse<Integer>> pagedResponses) {
+    private PagedResponse<Integer, String> getNextPageSync(String nextLink,
+        List<PagedResponse<Integer, String>> pagedResponses) {
 
         if (nextLink == null || nextLink.isEmpty()) {
             return null;
@@ -148,7 +150,7 @@ public class PagedIterableTests {
         pagingStatistics.resetAll();
         pagingStatistics.totalPages = numberOfPages;
 
-        PagedIterable<TodoItem> pagedIterable = list();
+        PagedIterable<TodoItem, String> pagedIterable = list();
 
         long count = pagedIterable.stream().parallel().count();
         assertEquals((long) numberOfPages * pagingStatistics.pageSize, count);
@@ -161,7 +163,7 @@ public class PagedIterableTests {
         this.nextPageMode = nextPageMode;
         pagingStatistics.resetAll();
 
-        PagedIterable<TodoItem> pagedIterable = this.list();
+        PagedIterable<TodoItem, String> pagedIterable = this.list();
 
         verifyIteratorSize(pagedIterable.iterableByPage().iterator(), pagingStatistics.totalPages);
         verifyIteratorSize(pagedIterable.iterator(), (long) pagingStatistics.totalPages * pagingStatistics.pageSize);
@@ -179,15 +181,96 @@ public class PagedIterableTests {
 
         int startPage = 2;
 
-        PagedIterable<TodoItem> pagedIterable = this.list();
+        PagedIterable<TodoItem, String> pagedIterable = this.list();
 
         // continuationToken provided, start from startPage
-        PagingOptions pagingOptions = new PagingOptions().setContinuationToken(String.valueOf(startPage));
+        PagingOptions<String> pagingOptions
+            = new PagingOptions<String>().setContinuationToken(String.valueOf(startPage));
 
         verifyIteratorSize(pagedIterable.iterableByPage(pagingOptions).iterator(),
             pagingStatistics.totalPages - startPage);
         verifyIteratorSize(pagedIterable.streamByPage(pagingOptions).iterator(),
             pagingStatistics.totalPages - startPage);
+    }
+
+    @Test
+    public void supportsNonStringContinuationToken() {
+        PagedIterable<Integer, ContinuationToken> pagedIterable = new PagedIterable<>(pagingOptions -> {
+            ContinuationToken token = pagingOptions.getContinuationToken();
+            int offset = token == null ? 0 : token.offset;
+            ContinuationToken next = new ContinuationToken(offset + 2, offset >= 4);
+            return new PagedResponse<>(httpRequest, 200, httpHeaders, Arrays.asList(offset, offset + 1), next, null,
+                null, null, null);
+        }, token -> token != null && !token.terminal);
+
+        PagingOptions<ContinuationToken> options
+            = new PagingOptions<ContinuationToken>().setContinuationToken(new ContinuationToken(2, false));
+        List<Integer> values = pagedIterable.streamByPage(options)
+            .flatMap(page -> page.getValue().stream())
+            .collect(Collectors.toList());
+
+        assertEquals(Arrays.asList(2, 3, 4, 5), values);
+    }
+
+    @Test
+    public void tokenBasedConstructorStopsOnEmptyStringByDefault() {
+        AtomicInteger retrievals = new AtomicInteger();
+        PagedIterable<Integer, String> pagedIterable = new PagedIterable<>(pagingOptions -> {
+            retrievals.incrementAndGet();
+            return new PagedResponse<>(httpRequest, 200, httpHeaders, Collections.singletonList(1), "", null, null,
+                null, null);
+        });
+
+        assertEquals(Collections.singletonList(1), pagedIterable.stream().collect(Collectors.toList()));
+        assertEquals(1, retrievals.get());
+    }
+
+    @Test
+    public void tokenBasedConstructorSupportsSinglePage() {
+        AtomicInteger retrievals = new AtomicInteger();
+        PagedIterable<Integer, String> pagedIterable = new PagedIterable<>(pagingOptions -> {
+            retrievals.incrementAndGet();
+            return new PagedResponse<>(httpRequest, 200, httpHeaders, Collections.singletonList(1));
+        });
+
+        assertEquals(Collections.singletonList(1), pagedIterable.stream().collect(Collectors.toList()));
+        assertEquals(1, retrievals.get());
+    }
+
+    @Test
+    public void nextLinkTakesPrecedenceOverContinuationPredicate() {
+        AtomicInteger retrievals = new AtomicInteger();
+        PagedIterable<Integer, String> pagedIterable = new PagedIterable<>(pagingOptions -> {
+            retrievals.incrementAndGet();
+            return new PagedResponse<>(httpRequest, 200, httpHeaders, Collections.singletonList(1), "terminal", "next",
+                null, null, null);
+        }, (pagingOptions, nextLink) -> {
+            retrievals.incrementAndGet();
+            return new PagedResponse<>(httpRequest, 200, httpHeaders, Collections.singletonList(2));
+        }, token -> false);
+
+        assertEquals(Arrays.asList(1, 2), pagedIterable.stream().collect(Collectors.toList()));
+        assertEquals(2, retrievals.get());
+    }
+
+    @Test
+    public void emptyNextLinkFallsBackToContinuationToken() {
+        AtomicInteger tokenRetrievals = new AtomicInteger();
+        AtomicInteger nextLinkRetrievals = new AtomicInteger();
+        PagedIterable<Integer, String> pagedIterable = new PagedIterable<>(pagingOptions -> {
+            int retrieval = tokenRetrievals.incrementAndGet();
+            return retrieval == 1
+                ? new PagedResponse<>(httpRequest, 200, httpHeaders, Collections.singletonList(1), "next-token", "",
+                    null, null, null)
+                : new PagedResponse<>(httpRequest, 200, httpHeaders, Collections.singletonList(2));
+        }, (pagingOptions, nextLink) -> {
+            nextLinkRetrievals.incrementAndGet();
+            return null;
+        });
+
+        assertEquals(Arrays.asList(1, 2), pagedIterable.stream().collect(Collectors.toList()));
+        assertEquals(2, tokenRetrievals.get());
+        assertEquals(0, nextLinkRetrievals.get());
     }
 
     private static <T> void verifyIteratorSize(Iterator<T> iterator, long size) {
@@ -236,6 +319,16 @@ public class PagedIterableTests {
         }
     }
 
+    private static final class ContinuationToken {
+        private final int offset;
+        private final boolean terminal;
+
+        private ContinuationToken(int offset, boolean terminal) {
+            this.offset = offset;
+            this.terminal = terminal;
+        }
+    }
+
     private static final class TodoPage {
         private final List<TodoItem> items;
         private final String continuationToken;
@@ -260,25 +353,25 @@ public class PagedIterableTests {
         }
     }
 
-    private PagedIterable<TodoItem> list() {
+    private PagedIterable<TodoItem, String> list() {
         pagingStatistics.resetStatistics();
         return new PagedIterable<>((pagingOptions) -> listSinglePage(pagingOptions),
             (pagingOptions, nextLink) -> listNextSinglePage(pagingOptions, nextLink));
     }
 
-    private PagedResponse<TodoItem> listSinglePage(PagingOptions pagingOptions) {
+    private PagedResponse<TodoItem, String> listSinglePage(PagingOptions<String> pagingOptions) {
         Response<TodoPage> res = listSync(pagingOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             res.getValue().getContinuationToken(), res.getValue().getNextLink(), null, null, null);
     }
 
-    private PagedResponse<TodoItem> listNextSinglePage(PagingOptions pagingOptions, String nextLink) {
+    private PagedResponse<TodoItem, String> listNextSinglePage(PagingOptions<String> pagingOptions, String nextLink) {
         Response<TodoPage> res = (nextLink == null) ? listSync(pagingOptions) : listNextSync(nextLink);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             res.getValue().getContinuationToken(), res.getValue().getNextLink(), null, null, null);
     }
 
-    private Response<TodoPage> listSync(PagingOptions pagingOptions) {
+    private Response<TodoPage> listSync(PagingOptions<String> pagingOptions) {
         ++pagingStatistics.numberOfPageRetrievals;
         // mock request on first page
         if (pagingStatistics.totalPages == 0) {

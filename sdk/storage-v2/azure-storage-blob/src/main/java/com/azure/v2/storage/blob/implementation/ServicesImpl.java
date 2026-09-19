@@ -282,7 +282,7 @@ public final class ServicesImpl {
      * @return an enumeration of containers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<BlobContainerItem> listBlobContainersSegmentSinglePage(String prefix, String marker,
+    public PagedResponse<BlobContainerItem, String> listBlobContainersSegmentSinglePage(String prefix, String marker,
         Integer maxresults, List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout,
         String requestId) {
         return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobContainersSegment",
@@ -331,7 +331,7 @@ public final class ServicesImpl {
      * @return an enumeration of containers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<BlobContainerItem> listBlobContainersSegmentSinglePage(String prefix, String marker,
+    public PagedResponse<BlobContainerItem, String> listBlobContainersSegmentSinglePage(String prefix, String marker,
         Integer maxresults, List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout,
         String requestId, RequestContext requestContext) {
         return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobContainersSegment", requestContext,
@@ -379,8 +379,9 @@ public final class ServicesImpl {
      * @return an enumeration of containers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BlobContainerItem> listBlobContainersSegment(String prefix, String marker, Integer maxresults,
-        List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout, String requestId) {
+    public PagedIterable<BlobContainerItem, String> listBlobContainersSegment(String prefix, String marker,
+        Integer maxresults, List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout,
+        String requestId) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
                 throw LOGGER.throwableAtError()
@@ -439,9 +440,9 @@ public final class ServicesImpl {
      * @return an enumeration of containers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BlobContainerItem> listBlobContainersSegment(String prefix, String marker, Integer maxresults,
-        List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout, String requestId,
-        RequestContext requestContext) {
+    public PagedIterable<BlobContainerItem, String> listBlobContainersSegment(String prefix, String marker,
+        Integer maxresults, List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout,
+        String requestId, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -616,7 +617,8 @@ public final class ServicesImpl {
      * @return an enumeration of containers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<BlobContainerItem> listBlobContainersSegmentNextSinglePage(String nextLink, String requestId) {
+    public PagedResponse<BlobContainerItem, String> listBlobContainersSegmentNextSinglePage(String nextLink,
+        String requestId) {
         return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobContainersSegment",
             RequestContext.none(), updatedContext -> {
                 final String accept = "application/xml";
@@ -641,8 +643,8 @@ public final class ServicesImpl {
      * @return an enumeration of containers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<BlobContainerItem> listBlobContainersSegmentNextSinglePage(String nextLink, String requestId,
-        RequestContext requestContext) {
+    public PagedResponse<BlobContainerItem, String> listBlobContainersSegmentNextSinglePage(String nextLink,
+        String requestId, RequestContext requestContext) {
         return this.instrumentation.instrumentWithResponse("AzureBlobStorage.ListBlobContainersSegment", requestContext,
             updatedContext -> {
                 final String accept = "application/xml";

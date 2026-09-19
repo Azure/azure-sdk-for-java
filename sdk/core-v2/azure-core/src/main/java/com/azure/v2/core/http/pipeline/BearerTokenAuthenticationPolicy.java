@@ -3,10 +3,12 @@
 
 package com.azure.v2.core.http.pipeline;
 
+import com.azure.v2.core.credentials.AccessTokenCache;
+import com.azure.v2.core.credentials.ProofOfPossessionOptions;
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
-import com.azure.v2.core.implementation.AccessTokenCache;
 import io.clientcore.core.credentials.oauth.AccessToken;
+import io.clientcore.core.credentials.oauth.AccessTokenType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -55,6 +57,7 @@ import java.util.Objects;
 public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
     private static final String BEARER = "Bearer";
+    private static final String POP = "PoP";
 
     private final String[] scopes;
     private final AccessTokenCache cache;
@@ -78,7 +81,7 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      */
     public void authorizeRequest(HttpRequest httpRequest) {
         setAuthorizationHeaderHelper(httpRequest, new TokenRequestContext().addScopes(scopes).setCaeEnabled(true),
-            false);
+            true);
     }
 
     /**
@@ -102,6 +105,17 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
             }
         }
 
+        String nonce = getChallengeParameterFromResponse(response, POP, "nonce");
+        if (!CoreUtils.isNullOrEmpty(nonce)) {
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes)
+                .setCaeEnabled(true)
+                .setProofOfPossessionOptions(new ProofOfPossessionOptions().setProofOfPossessionNonce(nonce)
+                    .setRequestUrl(httpRequest.getUri())
+                    .setRequestMethod(httpRequest.getHttpMethod()));
+            setAuthorizationHeader(httpRequest, tokenRequestContext);
+            return true;
+        }
+
         return false;
     }
 
@@ -111,14 +125,28 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * @param request the HTTP request.
      * @param tokenRequestContext the token request context to be used for token acquisition.
      */
-    protected void setAuthorizationHeader(HttpRequest request, TokenRequestContext tokenRequestContext) {
+    public void setAuthorizationHeader(HttpRequest request, TokenRequestContext tokenRequestContext) {
         setAuthorizationHeaderHelper(request, tokenRequestContext, true);
     }
 
     private void setAuthorizationHeaderHelper(HttpRequest httpRequest, TokenRequestContext tokenRequestContext,
         boolean checkToForceFetchToken) {
+        populateRequestDetails(httpRequest, tokenRequestContext.getProofOfPossessionOptions());
         AccessToken token = cache.getToken(tokenRequestContext, checkToForceFetchToken);
-        httpRequest.getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token.getToken());
+        String scheme = AccessTokenType.POP.equals(token.getTokenType()) ? POP : BEARER;
+        httpRequest.getHeaders().set(HttpHeaderName.AUTHORIZATION, scheme + " " + token.getToken());
+    }
+
+    private static void populateRequestDetails(HttpRequest request, ProofOfPossessionOptions options) {
+        if (options == null) {
+            return;
+        }
+        if (options.getRequestUrl() == null) {
+            options.setRequestUrl(request.getUri());
+        }
+        if (options.getRequestMethod() == null) {
+            options.setRequestMethod(request.getHttpMethod());
+        }
     }
 
     @Override

@@ -24,10 +24,14 @@ public final class OTelInitializer {
 
     public static final Class<?> DOUBLE_HISTOGRAM_CLASS;
     public static final Class<?> DOUBLE_HISTOGRAM_BUILDER_CLASS;
+    public static final Class<?> DOUBLE_GAUGE_BUILDER_CLASS;
     public static final Class<?> LONG_COUNTER_CLASS;
     public static final Class<?> LONG_COUNTER_BUILDER_CLASS;
+    public static final Class<?> LONG_GAUGE_BUILDER_CLASS;
     public static final Class<?> LONG_UP_DOWN_COUNTER_CLASS;
     public static final Class<?> LONG_UP_DOWN_COUNTER_BUILDER_CLASS;
+    public static final Class<?> OBSERVABLE_LONG_GAUGE_CLASS;
+    public static final Class<?> OBSERVABLE_LONG_MEASUREMENT_CLASS;
 
     public static final Class<?> METER_CLASS;
     public static final Class<?> METER_BUILDER_CLASS;
@@ -69,11 +73,15 @@ public final class OTelInitializer {
 
         Class<?> doubleHistogramClass = null;
         Class<?> doubleHistogramBuilderClass = null;
+        Class<?> doubleGaugeBuilderClass = null;
 
         Class<?> longCounterClass = null;
         Class<?> longCounterBuilderClass = null;
+        Class<?> longGaugeBuilderClass = null;
         Class<?> longUpDownCounterClass = null;
         Class<?> longUpDownCounterBuilderClass = null;
+        Class<?> observableLongGaugeClass = null;
+        Class<?> observableLongMeasurementClass = null;
         Class<?> meterClass = null;
         Class<?> meterBuilderClass = null;
         Class<?> meterProviderClass = null;
@@ -115,14 +123,23 @@ public final class OTelInitializer {
             doubleHistogramClass = Class.forName("io.opentelemetry.api.metrics.DoubleHistogram", true, classLoader);
             doubleHistogramBuilderClass
                 = Class.forName("io.opentelemetry.api.metrics.DoubleHistogramBuilder", true, classLoader);
+            doubleGaugeBuilderClass
+                = Class.forName("io.opentelemetry.api.metrics.DoubleGaugeBuilder", true, classLoader);
 
             longCounterClass = Class.forName("io.opentelemetry.api.metrics.LongCounter", true, classLoader);
             longCounterBuilderClass
                 = Class.forName("io.opentelemetry.api.metrics.LongCounterBuilder", true, classLoader);
 
+            longGaugeBuilderClass = Class.forName("io.opentelemetry.api.metrics.LongGaugeBuilder", true, classLoader);
+
             longUpDownCounterClass = Class.forName("io.opentelemetry.api.metrics.LongUpDownCounter", true, classLoader);
             longUpDownCounterBuilderClass
                 = Class.forName("io.opentelemetry.api.metrics.LongUpDownCounterBuilder", true, classLoader);
+
+            observableLongGaugeClass
+                = Class.forName("io.opentelemetry.api.metrics.ObservableLongGauge", true, classLoader);
+            observableLongMeasurementClass
+                = Class.forName("io.opentelemetry.api.metrics.ObservableLongMeasurement", true, classLoader);
 
             meterClass = Class.forName("io.opentelemetry.api.metrics.Meter", true, classLoader);
             meterBuilderClass = Class.forName("io.opentelemetry.api.metrics.MeterBuilder", true, classLoader);
@@ -168,12 +185,16 @@ public final class OTelInitializer {
 
         DOUBLE_HISTOGRAM_CLASS = doubleHistogramClass;
         DOUBLE_HISTOGRAM_BUILDER_CLASS = doubleHistogramBuilderClass;
+        DOUBLE_GAUGE_BUILDER_CLASS = doubleGaugeBuilderClass;
 
         LONG_COUNTER_CLASS = longCounterClass;
         LONG_COUNTER_BUILDER_CLASS = longCounterBuilderClass;
+        LONG_GAUGE_BUILDER_CLASS = longGaugeBuilderClass;
 
         LONG_UP_DOWN_COUNTER_CLASS = longUpDownCounterClass;
         LONG_UP_DOWN_COUNTER_BUILDER_CLASS = longUpDownCounterBuilderClass;
+        OBSERVABLE_LONG_GAUGE_CLASS = observableLongGaugeClass;
+        OBSERVABLE_LONG_MEASUREMENT_CLASS = observableLongMeasurementClass;
 
         METER_CLASS = meterClass;
         METER_BUILDER_CLASS = meterBuilderClass;

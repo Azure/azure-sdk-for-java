@@ -5,6 +5,7 @@ package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.LongCounter;
+import io.clientcore.core.instrumentation.metrics.LongGauge;
 import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -248,5 +250,39 @@ public class MeterTests {
                         .hasEpochNanos(testClock.now())
                         .hasAttributes(otelAttributes)
                         .hasValue(-1))));
+    }
+
+    @Test
+    public void longGaugeReportsCurrentValueUntilClosed() throws Exception {
+        LongGauge gauge = meter.createLongGauge("core.test-gauge", "important metric", "1");
+        assertTrue(gauge.isEnabled());
+        AtomicLong value = new AtomicLong(42);
+
+        AutoCloseable registration = gauge.registerCallback(value::get, emptyAttributes);
+        testClock.advance(Duration.ofNanos(SECOND_NANOS));
+        assertThat(sdkMeterReader.collectAllMetrics())
+            .satisfiesExactly(metric -> assertThat(metric).hasResource(RESOURCE)
+                .hasInstrumentationScope(INSTRUMENTATION_SCOPE)
+                .hasName("core.test-gauge")
+                .hasDescription("important metric")
+                .hasUnit("1")
+                .hasLongGaugeSatisfying(gaugeData -> gaugeData
+                    .hasPointsSatisfying(point -> point.hasAttributes(Attributes.empty()).hasValue(42))));
+
+        registration.close();
+        value.set(100);
+        testClock.advance(Duration.ofNanos(SECOND_NANOS));
+        assertThat(sdkMeterReader.collectAllMetrics()).isEmpty();
+    }
+
+    @Test
+    public void longGaugeContainsCallbackFailures() throws Exception {
+        LongGauge gauge = meter.createLongGauge("core.test-failing-gauge", "failing metric", "1");
+        AutoCloseable registration = gauge.registerCallback(() -> {
+            throw new IllegalStateException("callback failed");
+        }, emptyAttributes);
+
+        assertThat(sdkMeterReader.collectAllMetrics()).isEmpty();
+        registration.close();
     }
 }

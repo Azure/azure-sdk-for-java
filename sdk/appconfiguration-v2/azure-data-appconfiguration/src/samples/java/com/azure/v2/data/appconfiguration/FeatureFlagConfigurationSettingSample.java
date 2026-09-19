@@ -56,7 +56,7 @@ public class FeatureFlagConfigurationSettingSample {
         printFeatureFlagSetting(setting);
 
         System.out.println("[List-FeatureFlagConfigurationSetting]");
-        PagedIterable<ConfigurationSetting> configurationSettings =
+        PagedIterable<ConfigurationSetting, String> configurationSettings =
             client.listConfigurationSettings(new SettingSelector());
         for (ConfigurationSetting configurationSetting : configurationSettings) {
             if (configurationSetting instanceof FeatureFlagConfigurationSetting) {

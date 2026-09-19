@@ -63,10 +63,10 @@ public class PagingOperationTests {
         assertNotNull(fooFirstPageResponse);
         assertNotNull(fooFirstPageResponse.get(0).bar());
 
-        // Convert List<Foo> response to PagedResponse<Foo>
-        PagedResponse<Foo> firstPage = toPagedResponse(initialResponse, null);
+        // Convert List<Foo> response to PagedResponse<Foo, String>
+        PagedResponse<Foo, String> firstPage = toPagedResponse(initialResponse, null);
 
-        PagedIterable<Foo> pagedIterable = new PagedIterable<>(
+        PagedIterable<Foo, String> pagedIterable = new PagedIterable<>(
             pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
                 Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, RequestContext.none());
@@ -106,7 +106,7 @@ public class PagingOperationTests {
         TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline);
 
         // Fetch the first page
-        PagedIterable<Foo> pagedIterable = new PagedIterable<>(
+        PagedIterable<Foo, String> pagedIterable = new PagedIterable<>(
             pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, RequestContext.none()), nextLinkUri),
             (pagingOptions, nextLink) -> toPagedResponse(testInterface.listNextFooListResult(nextLink, RequestContext.none()), null)
         );
@@ -129,11 +129,11 @@ public class PagingOperationTests {
     }
 
     /**
-     * Converts a Response<T> to a PagedResponse<Foo>.
+    * Converts a Response<T> to a PagedResponse<Foo, String>.
      * Supports both Response<FooListResult> and Response<List<Foo>>.
      */
     @SuppressWarnings({ "unchecked", "cast" })
-    private <T> PagedResponse<Foo> toPagedResponse(Response<T> response, String nextLink) {
+    private <T> PagedResponse<Foo, String> toPagedResponse(Response<T> response, String nextLink) {
         if (response == null || response.getValue() == null) {
             return new PagedResponse<>(
                 response != null ? response.getRequest() : new HttpRequest().setMethod(HttpMethod.GET).setUri("https://example.com"),
