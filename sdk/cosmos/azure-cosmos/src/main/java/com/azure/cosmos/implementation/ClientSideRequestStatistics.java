@@ -183,6 +183,11 @@ public class ClientSideRequestStatistics {
                 CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
                     = request.requestContext.getCrossRegionAvailabilityContext();
 
+                AvailabilityStrategyContext availabilityStrategyContext =
+                    crossRegionAvailabilityContextForRequest.getAvailabilityStrategyContext();
+                storeResponseStatistics.isHedgedRequest = availabilityStrategyContext != null
+                    && availabilityStrategyContext.isHedgedRequest();
+
                 if (crossRegionAvailabilityContextForRequest.shouldAddHubRegionProcessingOnlyHeader()) {
                     storeResponseStatistics.isHubRegionProcessingOnly = "true";
                 } else {
@@ -279,6 +284,10 @@ public class ClientSideRequestStatistics {
                         = rxDocumentServiceRequest.requestContext.getCrossRegionAvailabilityContext();
 
                     if (crossRegionAvailabilityContextForRequest != null) {
+                        AvailabilityStrategyContext availabilityStrategyContext =
+                            crossRegionAvailabilityContextForRequest.getAvailabilityStrategyContext();
+                        gatewayStatistics.isHedgedRequest = availabilityStrategyContext != null
+                            && availabilityStrategyContext.isHedgedRequest();
                         if (crossRegionAvailabilityContextForRequest.shouldAddHubRegionProcessingOnlyHeader()) {
                             gatewayStatistics.isHubRegionProcessingOnly = "true";
                         }
@@ -732,6 +741,9 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private String requestSessionToken;
 
+        @JsonProperty("isHedgedRequest")
+        private boolean isHedgedRequest;
+
         @JsonSerialize
         private String e2ePolicyCfg;
 
@@ -979,6 +991,7 @@ public class ClientSideRequestStatistics {
         private String parentChannelId;
         private boolean http2;
         private String e2ePolicyCfg;
+        private boolean isHedgedRequest;
 
         public String getSessionToken() {
             return sessionToken;
@@ -1096,6 +1109,7 @@ public class ClientSideRequestStatistics {
                 jsonGenerator.writeStringField("sessionToken", gatewayStatistics.getSessionToken());
                 jsonGenerator.writeStringField("operationType", gatewayStatistics.getOperationType().toString());
                 jsonGenerator.writeStringField("resourceType", gatewayStatistics.getResourceType().toString());
+                jsonGenerator.writeBooleanField("isHedgedRequest", gatewayStatistics.isHedgedRequest);
                 jsonGenerator.writeNumberField("statusCode", gatewayStatistics.getStatusCode());
                 jsonGenerator.writeNumberField("subStatusCode", gatewayStatistics.getSubStatusCode());
                 jsonGenerator.writeNumberField("requestCharge", gatewayStatistics.getRequestCharge());
