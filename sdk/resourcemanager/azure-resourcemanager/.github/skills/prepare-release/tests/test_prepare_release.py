@@ -187,7 +187,7 @@ class PrepareReleaseTests(unittest.TestCase):
         self.assertIn("- Updated `api-version` to `2026-04-01`.", rendered)
         self.assertEqual(("2026-04-01",), selection.api_versions)
 
-    def test_multiple_minors_keep_all_breaking_only_latest_feature_and_api(self):
+    def test_multiple_minors_keep_all_features_breaking_and_latest_api(self):
         library = self.library(
             "azure-resourcemanager-beta", "3.3.0", "package-multiple-minors.md"
         )
@@ -205,7 +205,7 @@ class PrepareReleaseTests(unittest.TestCase):
             [release.version_text for release in selection.qualifying_releases],
         )
         self.assertIn("Latest feature prose.", rendered)
-        self.assertNotIn("Intermediate feature prose.", rendered)
+        self.assertIn("Intermediate feature prose.", rendered)
         self.assertIn("Earlier breaking prose.", rendered)
         self.assertIn("Latest breaking prose.", rendered)
         self.assertNotIn("Before-cutoff breaking prose.", rendered)
