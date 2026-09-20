@@ -1,14 +1,57 @@
 # Release History
 
-## 2.64.0-beta.1 (Unreleased)
+## 2.64.0 (2026-09-20)
 
-### Features Added
+### azure-resourcemanager-compute
 
-### Breaking Changes
+#### Other Changes
 
-### Bugs Fixed
+- Updated API versions to Compute `2026-04-01`, ComputeDisk `2026-03-02`, ComputeGallery `2025-12-03`, and
+  ComputeSku `2021-07-01`.
+
+### azure-resourcemanager-network
+
+#### Other Changes
+
+- Updated the Microsoft.Network API version to `2026-01-01`.
+
+### azure-resourcemanager-msi
+
+#### Features Added
+
+- Added support for configuring `IsolationScope` on user-assigned identities.
+
+#### Other Changes
+
+- Updated the API version to `2024-11-30`.
+
+### azure-resourcemanager-sql
+
+#### Features Added
+
+- Added Microsoft Entra-only authentication and external Microsoft Entra administrator configuration for SQL servers.
+- Added managed identity support for SQL database import and export.
+
+#### Other Changes
+
+- Updated the API version to `2025-01-01`.
+
+### azure-resourcemanager-appservice
+
+#### Features Added
+
+- Added managed identity credentials for pulling private container images in web apps, function apps, and deployment
+  slots.
+
+### azure-resourcemanager-containerservice
+
+#### Other Changes
+
+- Updated the API version to `2026-06-01`.
 
 ### Other Changes
+
+- Updated dependencies.
 
 ## 2.63.0 (2026-07-07)
 
