@@ -8,19 +8,56 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.BetaMemoryStoresClient;
 import com.azure.ai.agents.ResponsesClient;
+import com.azure.ai.projects.models.AzureAIEvaluationDataSource;
+import com.azure.ai.projects.models.DataGenerationJobResult;
+import com.azure.ai.projects.models.FileUploadOptions;
+import com.azure.ai.projects.models.ModelUploadOptions;
+import com.azure.ai.projects.models.ModelVersion;
 import com.azure.ai.projects.models.TestingCriterionAzureAIEvaluator;
 import com.azure.core.util.BinaryData;
 import com.openai.client.OpenAIClient;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.models.evals.EvalCreateParams;
+import com.openai.models.evals.runs.RunCreateParams;
 import com.openai.services.async.EvalServiceAsync;
 import com.openai.services.blocking.EvalService;
-
+import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public final class ReadmeSamples {
+    public void localModelUpload(AIProjectClientBuilder builder) {
+        // BEGIN: readme-sample-local-model-upload
+        FileUploadOptions files = new FileUploadOptions()
+            .setFilePattern(Pattern.compile("\\.(bin|json|safetensors)$"));
+        ModelUploadOptions options = new ModelUploadOptions()
+            .setFileUploadOptions(files)
+            .setDescription("Local model weights")
+            .setTimeout(Duration.ofMinutes(5));
+        ModelVersion model = builder.beta().buildBetaModelsClient()
+            .createModel("my-model", "1", Paths.get("model"), options);
+        // END: readme-sample-local-model-upload
+    }
+
+    public void resumeGenerationJob(AIProjectClientBuilder builder, String savedJobId) {
+        // BEGIN: readme-sample-resume-generation-job
+        DataGenerationJobResult result = builder.beta().buildBetaDatasetsClient()
+            .resumeGenerationJob(savedJobId)
+            .getFinalResult(Duration.ofMinutes(5));
+        // END: readme-sample-resume-generation-job
+    }
+
+    public void evaluationDataSources() {
+        // BEGIN: readme-sample-azure-evaluation-source
+        EvalCreateParams.DataSourceConfig schema = EvaluationsHelper.createDataSourceConfig("traces_preview");
+        RunCreateParams.DataSource source = EvaluationsHelper.toDataSource(
+            AzureAIEvaluationDataSource.traces().setAgentName("my-agent").setLookbackHours(24).setMaxTraces(100));
+        // END: readme-sample-azure-evaluation-source
+    }
+
     public void readmeSamples() {
         // BEGIN: com.azure.ai.projects.clientInitialization
         AIProjectClientBuilder builder = new AIProjectClientBuilder()

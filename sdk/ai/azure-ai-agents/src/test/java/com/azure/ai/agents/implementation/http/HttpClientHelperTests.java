@@ -4,6 +4,7 @@
 package com.azure.ai.agents.implementation.http;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
@@ -11,10 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.openai.core.http.HttpRequestBody;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
-
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +22,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,6 +37,137 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class HttpClientHelperTests {
+
+    @ParameterizedTest
+    @MethodSource("responseContentTypes")
+    void responseBodyLoggingOnlyWrapsEventStreams(String contentType, boolean eventStream) throws IOException {
+        for (boolean logBody : new boolean[] { false, true }) {
+            HttpHeaders headers = new HttpHeaders();
+            if (contentType != null) {
+                headers.set(HttpHeaderName.CONTENT_TYPE, contentType);
+            }
+            InputStream original = new ByteArrayInputStream("data: hello\n\n".getBytes(StandardCharsets.UTF_8));
+            MockHttpResponse response = new MockHttpResponse(
+                new HttpRequest(com.azure.core.http.HttpMethod.GET, "https://localhost/stream"), 200, headers) {
+                @Override
+                public InputStream getBodyAsInputStreamSync() {
+                    return original;
+                }
+            };
+            try (AzureHttpResponseAdapter adapter = new AzureHttpResponseAdapter(response, logBody);
+                InputStream body = adapter.body()) {
+                assertEquals(logBody && eventStream, body != original);
+                assertEquals("data: hello\n\n", new String(readAllBytes(body), StandardCharsets.UTF_8));
+            }
+        }
+    }
+
+    private static Stream<Arguments> responseContentTypes() {
+        return Stream.of(Arguments.of("text/event-stream", true),
+            Arguments.of("Text/Event-Stream; Charset=UTF-8", true),
+            Arguments.of(" \ttext/event-stream \t; charset=\"utf-8\"", true),
+            Arguments.of("text/event-stream; extension=\"value;with;semicolons\"", true),
+            Arguments.of("application/json", false), Arguments.of("text/event-stream-extra", false),
+            Arguments.of("application/json; extension=\"text/event-stream\"", false),
+            Arguments.of("text/event-stream, application/json", false), Arguments.of("", false),
+            Arguments.of((String) null, false));
+    }
+
+    @Test
+    void multipartUploadsSkipBodyLoggerAndPreservePayload() {
+        com.azure.core.http.policy.HttpLogOptions options = new com.azure.core.http.policy.HttpLogOptions()
+            .setLogLevel(com.azure.core.http.policy.HttpLogDetailLevel.BODY_AND_HEADERS)
+            .setRequestLogger((logger, context) -> Mono.error(new AssertionError("Body logger invoked")));
+        byte[] payload = "private upload contents".getBytes(StandardCharsets.UTF_8);
+        HttpClient transport = request -> {
+            org.junit.jupiter.api.Assertions.assertArrayEquals(payload, request.getBodyAsBinaryData().toBytes());
+            assertEquals(" \tMultipart/Form-Data; boundary=test",
+                request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+            return Mono.just(new MockHttpResponse(request, 200, new byte[0]));
+        };
+        com.azure.core.http.HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(transport)
+            .policies(HttpClientHelper.createLoggingPolicy(options))
+            .build();
+        for (boolean async : new boolean[] { false, true }) {
+            HttpRequest request = new HttpRequest(com.azure.core.http.HttpMethod.POST, "https://localhost/upload")
+                .setHeader(HttpHeaderName.CONTENT_TYPE, " \tMultipart/Form-Data; boundary=test")
+                .setBody(payload);
+            try (HttpResponse response
+                = async ? pipeline.send(request).block() : pipeline.sendSync(request, Context.NONE)) {
+                assertNotNull(response);
+                assertEquals(200, response.getStatusCode());
+            }
+        }
+        assertEquals(com.azure.core.http.policy.HttpLogDetailLevel.BODY_AND_HEADERS, options.getLogLevel());
+    }
+
+    @Test
+    void responseBodyLoggingPreservesSplitUtf8() throws IOException {
+        String text
+            = "\u00e9\u4e2d\ud83d\ude00" + String.join("", java.util.Collections.nCopies(600, "data: \u00e9\n"));
+        byte[] expected = text.getBytes(StandardCharsets.UTF_8);
+        for (int readSize : new int[] { 1, 2, 3, 5, 2048 }) {
+            java.util.List<String> chunks = new java.util.ArrayList<>();
+            MockHttpResponse response
+                = createMockResponse(new HttpRequest(com.azure.core.http.HttpMethod.GET, "https://localhost/stream"),
+                    200, new HttpHeaders(), text);
+            try (AzureHttpResponseAdapter adapter = new AzureHttpResponseAdapter(response, chunks::add);
+                InputStream body = adapter.body()) {
+                ByteArrayOutputStream actual = new ByteArrayOutputStream();
+                actual.write(body.read());
+                assertTrue(chunks.isEmpty());
+                byte[] buffer = new byte[readSize + 2];
+                int count;
+                while ((count = body.read(buffer, 2, readSize)) != -1) {
+                    actual.write(buffer, 2, count);
+                }
+                org.junit.jupiter.api.Assertions.assertArrayEquals(expected, actual.toByteArray());
+                assertEquals(text, String.join("", chunks));
+                int logged = chunks.size();
+                assertEquals(-1, body.read());
+                assertEquals(logged, chunks.size());
+            }
+        }
+    }
+
+    @Test
+    void responseBodyLoggingReplacesTruncatedUtf8AtEof() throws IOException {
+        java.util.List<String> chunks = new java.util.ArrayList<>();
+        MockHttpResponse response
+            = new MockHttpResponse(new HttpRequest(com.azure.core.http.HttpMethod.GET, "https://localhost/stream"), 200,
+                new HttpHeaders(), new byte[] { (byte) 0xe2, (byte) 0x82 });
+        try (AzureHttpResponseAdapter adapter = new AzureHttpResponseAdapter(response, chunks::add);
+            InputStream body = adapter.body()) {
+            assertEquals(0xe2, body.read());
+            assertEquals(0x82, body.read());
+            assertTrue(chunks.isEmpty());
+            assertEquals(-1, body.read());
+            assertEquals("\ufffd", String.join("", chunks));
+            assertEquals(-1, body.read());
+            assertEquals(1, chunks.size());
+        }
+    }
+
+    @Test
+    void responseBodyLoggingIsLazyAndPreservesBytes() throws IOException {
+        java.util.List<String> chunks = new java.util.ArrayList<>();
+        MockHttpResponse response
+            = createMockResponse(new HttpRequest(com.azure.core.http.HttpMethod.GET, "https://localhost/stream"), 200,
+                new HttpHeaders(), "data: hello\n\n");
+        AzureHttpResponseAdapter adapter = new AzureHttpResponseAdapter(response, chunks::add);
+        assertTrue(chunks.isEmpty());
+        try (InputStream body = adapter.body()) {
+            assertTrue(chunks.isEmpty());
+            assertEquals('d', body.read());
+            assertEquals("d", chunks.get(0));
+            assertEquals("ata: hello\n\n", new String(readAllBytes(body), StandardCharsets.UTF_8));
+            assertEquals("data: hello\n\n", String.join("", chunks));
+            int chunkCount = chunks.size();
+            assertEquals(-1, body.read());
+            assertEquals(chunkCount, chunks.size());
+        }
+        adapter.close();
+    }
 
     @Test
     void executeAsyncCompletesSuccessfully() {
