@@ -39,10 +39,9 @@ rewrite, or supplement its changelog choices.
 4. Ignore patch-only release prose. For a patch dependency, use the nearest
    stable minor release at or below the consumed version as the changelog
    source.
-5. For one qualifying minor release, retain its Features Added, Breaking
-   Changes, and API-version update. For multiple qualifying minor releases,
-   retain the latest Features Added and API-version update plus Breaking Changes
-   from the full interval.
+5. Retain Features Added and Breaking Changes from every qualifying minor
+   release, subject only to the per-run Breaking Changes exclusion. Retain only
+   the latest qualifying minor release's API-version update.
 6. Update the canonical aggregate current version, then invoke
    `eng/versioning/update_versions.py` for the allowlisted POM and README files.
 7. Reject any changed file outside the embedded allowlist.

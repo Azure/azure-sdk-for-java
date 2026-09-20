@@ -93,7 +93,7 @@ class PackageSelection:
     source_version: Optional[str]
     qualifying_releases: Tuple[Release, ...]
     latest_release: Optional[Release]
-    features_section: Optional[str]
+    features_sections: Tuple[str, ...]
     breaking_sections: Tuple[str, ...]
     api_updates: Tuple[str, ...]
     api_versions: Tuple[str, ...]
@@ -102,7 +102,7 @@ class PackageSelection:
     @property
     def has_content(self) -> bool:
         return bool(
-            self.features_section
+            self.features_sections
             or (self.breaking_sections and not self.exclude_breaking_changes)
             or self.api_updates
         )
@@ -408,7 +408,7 @@ def select_package_changelog(
     source_release = max(stable_minor_releases, key=lambda item: item.version, default=None)
     if source_release is None:
         return PackageSelection(
-            library, None, (), None, None, (), (), (), exclude_breaking_changes
+            library, None, (), None, (), (), (), (), exclude_breaking_changes
         )
 
     qualifying = tuple(
@@ -423,7 +423,11 @@ def select_package_changelog(
         )
     )
     latest = qualifying[-1] if qualifying else None
-    features = extract_section(latest.content, "Features Added") if latest else None
+    features = tuple(
+        section
+        for release in qualifying
+        if (section := extract_section(release.content, "Features Added"))
+    )
     breaking = tuple(
         section
         for release in qualifying
@@ -435,7 +439,7 @@ def select_package_changelog(
         source_version=source_release.version_text,
         qualifying_releases=qualifying,
         latest_release=latest,
-        features_section=features,
+        features_sections=features,
         breaking_sections=breaking,
         api_updates=api_updates,
         api_versions=extract_api_versions(api_updates),
@@ -448,8 +452,15 @@ def render_package_selection(selection: PackageSelection) -> Optional[str]:
         return None
 
     blocks = [f"### {selection.library.artifact_id}"]
-    if selection.features_section:
-        blocks.append(shift_headings(selection.features_section))
+    if selection.features_sections:
+        if len(selection.qualifying_releases) == 1:
+            blocks.append(shift_headings(selection.features_sections[0]))
+        else:
+            feature_bodies = [
+                shift_headings(_section_body(section))
+                for section in selection.features_sections
+            ]
+            blocks.append("#### Features Added\n\n" + "\n\n".join(feature_bodies))
 
     if selection.breaking_sections and not selection.exclude_breaking_changes:
         if len(selection.qualifying_releases) == 1:
