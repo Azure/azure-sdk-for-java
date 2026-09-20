@@ -541,8 +541,7 @@ final class WebPubSubAsyncClient implements Closeable {
                 return Mono.error(throwable);
             }
             // Attempt to send cancelInvocation on failure
-            return sendCancelInvocationBestEffort(invocationId).then(
-                Mono.error(logSendMessageFailedException("Failed to invoke event.", throwable, true, (Long) null)));
+            return sendCancelInvocationBestEffort(invocationId).then(Mono.error(throwable));
         });
     }
 
