@@ -39,6 +39,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.parallel.Execution;
@@ -80,7 +81,7 @@ public class VoiceAgentTelephonyLiveTests {
             .allowPreview(true);
         AgentsClient agents = builder.buildAgentsClient();
         BetaVoiceAgentsTelephonyClient telephony = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        String agentName = "test-telephony-binding-" + shortId();
+        String agentName = "tel-bind-" + randomNumber();
         boolean agentCreated = false;
         String bindingId = null;
         try {
@@ -92,16 +93,17 @@ public class VoiceAgentTelephonyLiveTests {
             bindingId = binding.getId();
             TelephonyBindingListItem listedBinding = findBinding(telephony, agentName, binding.getId());
             assertNotNull(listedBinding.getETag());
+            String encodedBindingId = encodeBindingId(binding.getId());
 
-            TelephonyBinding retrieved = telephony.getTelephonyBinding(agentName, binding.getId());
+            TelephonyBinding retrieved = telephony.getTelephonyBinding(agentName, encodedBindingId);
             assertEquals(binding.getId(), retrieved.getId());
-            TelephonyBinding updated = telephony.updateTelephonyBinding(agentName, binding.getId(),
+            TelephonyBinding updated = telephony.updateTelephonyBinding(agentName, encodedBindingId,
                 listedBinding.getETag(), new UpdateTelephonyBindingInput().setLabel("Updated Java SDK live test"));
             assertEquals("Updated Java SDK live test", updated.getLabel());
 
             String updatedEtag = findBinding(telephony, agentName, binding.getId()).getETag();
             assertNotNull(updatedEtag);
-            telephony.deleteTelephonyBinding(agentName, binding.getId(), updatedEtag);
+            telephony.deleteTelephonyBinding(agentName, encodedBindingId, updatedEtag);
             bindingId = null;
             assertTrue(telephony.listTelephonyBindings(agentName)
                 .stream()
@@ -134,9 +136,9 @@ public class VoiceAgentTelephonyLiveTests {
             .allowPreview(true);
         AgentsClient agents = builder.buildAgentsClient();
         BetaVoiceAgentsTelephonyClient telephony = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        String suffix = UUID.randomUUID().toString();
-        String inboundAgent = "test-telephony-inbound-" + suffix;
-        String outboundAgent = "test-telephony-outbound-" + suffix;
+        String suffix = Integer.toString(randomNumber());
+        String inboundAgent = "tel-in-" + suffix;
+        String outboundAgent = "tel-out-" + suffix;
         String callJobId = null;
         String scheduledCallJobId = null;
         String inboundCallId = null;
@@ -295,8 +297,8 @@ public class VoiceAgentTelephonyLiveTests {
         return value;
     }
 
-    private static String shortId() {
-        return UUID.randomUUID().toString().replace("-", "").substring(0, 12);
+    private static int randomNumber() {
+        return ThreadLocalRandom.current().nextInt(100);
     }
 
     private static TelephonyBindingListItem findBinding(BetaVoiceAgentsTelephonyClient telephony, String agentName,
@@ -313,7 +315,12 @@ public class VoiceAgentTelephonyLiveTests {
             .stream()
             .filter(item -> bindingId.equals(item.getId()))
             .findFirst()
-            .ifPresent(binding -> telephony.deleteTelephonyBinding(agentName, bindingId, binding.getETag()));
+            .ifPresent(
+                binding -> telephony.deleteTelephonyBinding(agentName, encodeBindingId(bindingId), binding.getETag()));
+    }
+
+    private static String encodeBindingId(String bindingId) {
+        return bindingId.replace("+", "%2B");
     }
 
     private static String getTransferTargetsEtag(BetaVoiceAgentsTelephonyClient telephony, String agentName) {
