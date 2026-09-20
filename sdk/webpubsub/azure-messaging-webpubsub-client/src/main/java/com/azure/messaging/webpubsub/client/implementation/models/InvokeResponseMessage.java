@@ -160,9 +160,8 @@ public final class InvokeResponseMessage extends WebPubSubMessage {
                 binaryData = BinaryData.fromBytes(Base64.getDecoder().decode(rawData));
             } else {
                 // WebPubSubDataFormat.JSON or default
-                binaryData = dataToken == JsonToken.STRING
-                    ? BinaryData.fromObject(rawData)
-                    : BinaryData.fromString(rawData);
+                binaryData
+                    = dataToken == JsonToken.STRING ? BinaryData.fromObject(rawData) : BinaryData.fromString(rawData);
             }
 
             return new InvokeResponseMessage(invocationId, success, dataType, binaryData, error);
