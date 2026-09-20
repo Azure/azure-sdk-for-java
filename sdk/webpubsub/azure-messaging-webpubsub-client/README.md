@@ -182,7 +182,9 @@ InvokeEventResult result = client.invokeEvent("processOrder",
 System.out.println("Invocation result: " + result.getData().toString());
 ```
 
-You can set a timeout and a custom invocation ID via `InvokeEventOptions` so the invocation fails with an `InvocationException` if no response is received within the specified duration. By default, there is no timeout and the invocation waits indefinitely.
+You can set a timeout and a custom invocation ID via `InvokeEventOptions` so the invocation fails with an `InvocationException` if no response is received within the specified duration. By default, there is no timeout. Stopping the client or losing its connection fails pending invocations with an `InvocationException`, even if the connection subsequently recovers or reconnects.
+
+Invocation IDs must be unique among pending invocations on the same client, including automatically generated IDs. A duplicate ID fails with an `InvocationException` before sending a second request. Responses that do not match a pending invocation are discarded.
 
 ```java readme-sample-invokeEventWithTimeout
 InvokeEventOptions options = new InvokeEventOptions().setTimeout(Duration.ofSeconds(10)).setInvocationId("my-invocation-1");

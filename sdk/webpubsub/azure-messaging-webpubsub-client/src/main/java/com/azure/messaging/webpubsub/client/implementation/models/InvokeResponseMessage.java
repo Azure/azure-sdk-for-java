@@ -5,7 +5,6 @@ package com.azure.messaging.webpubsub.client.implementation.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
-import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -127,7 +126,7 @@ public final class InvokeResponseMessage extends WebPubSubMessage {
             String invocationId = null;
             Boolean success = null;
             WebPubSubDataFormat dataType = null;
-            String rawData = null;
+            Object rawData = null;
             AckResponseError error = null;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -140,11 +139,8 @@ public final class InvokeResponseMessage extends WebPubSubMessage {
                 } else if ("dataType".equals(fieldName)) {
                     dataType = WebPubSubDataFormat.fromString(reader.getString());
                 } else if ("data".equals(fieldName)) {
-                    if (reader.isStartArrayOrObject()) {
-                        rawData = reader.readChildren();
-                    } else if (reader.currentToken() != JsonToken.NULL) {
-                        rawData = reader.getText();
-                    }
+                    // Preserve the token's value and type.
+                    rawData = reader.readUntyped();
                 } else if ("error".equals(fieldName)) {
                     error = AckResponseError.fromJson(reader);
                 } else {
@@ -156,14 +152,12 @@ public final class InvokeResponseMessage extends WebPubSubMessage {
             if (rawData == null) {
                 binaryData = null;
             } else if (dataType == WebPubSubDataFormat.TEXT) {
-                binaryData = BinaryData.fromString(rawData);
+                binaryData = BinaryData.fromString((String) rawData);
             } else if (dataType == WebPubSubDataFormat.BINARY || dataType == WebPubSubDataFormat.PROTOBUF) {
-                binaryData = BinaryData.fromBytes(Base64.getDecoder().decode(rawData));
+                binaryData = BinaryData.fromBytes(Base64.getDecoder().decode((String) rawData));
             } else {
                 // WebPubSubDataFormat.JSON or default
-                try (JsonReader jsonReaderData = JsonProviders.createReader(rawData)) {
-                    binaryData = BinaryData.fromObject(jsonReaderData.readUntyped());
-                }
+                binaryData = BinaryData.fromObject(rawData);
             }
 
             return new InvokeResponseMessage(invocationId, success, dataType, binaryData, error);

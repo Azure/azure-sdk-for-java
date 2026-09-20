@@ -48,6 +48,7 @@ import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
@@ -112,8 +113,8 @@ final class WebPubSubAsyncClient implements Closeable {
 
     private Sinks.Many<RejoinGroupFailedEvent> rejoinGroupFailedEventSink
         = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
-    private Sinks.Many<InvokeResponseMessage> invokeResponseSink
-        = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+    private final ConcurrentMap<String, Sinks.One<InvokeResponseMessage>> pendingInvocations
+        = new ConcurrentHashMap<>();
 
     // incremental ackId
     private final AtomicLong ackId = new AtomicLong(0);
@@ -507,17 +508,33 @@ final class WebPubSubAsyncClient implements Closeable {
             .setDataType(dataFormat.toString())
             .setData(content);
 
-        return invokeEventAttempt(invocationId, invokeMessage, timeout).retryWhen(sendMessageRetrySpec);
+        return Mono.defer(() -> {
+            Sinks.One<InvokeResponseMessage> response = Sinks.one();
+            // Reserve the ID atomically before sending.
+            if (pendingInvocations.putIfAbsent(invocationId, response) != null) {
+                return Mono.error(logger.logExceptionAsWarning(new InvocationException(
+                    "An invocation with ID '" + invocationId + "' is already pending.", invocationId, null)));
+            }
+            return invokeEventAttempt(invocationId, invokeMessage, timeout, response.asMono())
+                .retryWhen(sendMessageRetrySpec)
+                .doOnTerminate(() -> pendingInvocations.remove(invocationId, response))
+                .doOnCancel(() -> pendingInvocations.remove(invocationId, response));
+        });
     }
 
     private Mono<InvokeEventResult> invokeEventAttempt(String invocationId, InvokeMessage invokeMessage,
-        Duration timeout) {
+        Duration timeout, Mono<InvokeResponseMessage> response) {
         return Mono.<InvokeResponseMessage>create(sink -> {
-            Disposable responseDisposable
-                = waitForInvokeResponse(invocationId, timeout).subscribe(sink::success, sink::error);
-            sink.onDispose(responseDisposable);
+            // Tie both subscriptions to this attempt so termination or cancellation releases them together.
+            Disposable.Composite subscriptions = Disposables.composite();
+            sink.onDispose(subscriptions);
+            // Listen before sending because the transport may deliver a response immediately.
+            subscriptions
+                .add(waitForInvokeResponse(invocationId, timeout, response).subscribe(sink::success, sink::error));
 
-            sendMessage(invokeMessage).subscribe(null, error -> sink.error(error));
+            if (!subscriptions.isDisposed()) {
+                subscriptions.add(sendMessage(invokeMessage).subscribe(null, sink::error));
+            }
         }).map(this::mapInvokeResponse).onErrorResume(throwable -> {
             // If InvocationException, do not retry
             if (throwable instanceof InvocationException) {
@@ -529,9 +546,8 @@ final class WebPubSubAsyncClient implements Closeable {
         });
     }
 
-    private Mono<InvokeResponseMessage> waitForInvokeResponse(String invocationId, Duration timeout) {
-        Mono<InvokeResponseMessage> responseMono
-            = receiveInvokeResponses().filter(m -> invocationId.equals(m.getInvocationId())).next();
+    private Mono<InvokeResponseMessage> waitForInvokeResponse(String invocationId, Duration timeout,
+        Mono<InvokeResponseMessage> responseMono) {
         if (timeout != null) {
             responseMono
                 = responseMono
@@ -579,8 +595,10 @@ final class WebPubSubAsyncClient implements Closeable {
         });
     }
 
-    private Flux<InvokeResponseMessage> receiveInvokeResponses() {
-        return invokeResponseSink.asFlux();
+    private void failPendingInvocations() {
+        pendingInvocations.forEach(
+            (invocationId, response) -> response.tryEmitError(logger.logExceptionAsWarning(new InvocationException(
+                "The connection closed before an invoke response was received.", invocationId, null))));
     }
 
     /**
@@ -910,7 +928,13 @@ final class WebPubSubAsyncClient implements Closeable {
         } else if (webPubSubMessage instanceof AckMessage) {
             tryEmitNext(ackMessageSink, (AckMessage) webPubSubMessage);
         } else if (webPubSubMessage instanceof InvokeResponseMessage) {
-            tryEmitNext(invokeResponseSink, (InvokeResponseMessage) webPubSubMessage);
+            InvokeResponseMessage message = (InvokeResponseMessage) webPubSubMessage;
+            // Do not buffer unmatched responses, a later invocation may reuse the same ID
+            Sinks.One<InvokeResponseMessage> response
+                = message.getInvocationId() == null ? null : pendingInvocations.get(message.getInvocationId());
+            if (response != null) {
+                response.tryEmitValue(message);
+            }
         } else if (webPubSubMessage instanceof ConnectedMessage) {
             final ConnectedMessage connectedMessage = (ConnectedMessage) webPubSubMessage;
             final String connectionId = connectedMessage.getConnectionId();
@@ -1005,6 +1029,9 @@ final class WebPubSubAsyncClient implements Closeable {
                         new StopReconnectException("Failed to recover. Client is not CONNECTED.")));
                 }
 
+                // Recovering the connection does not resume invocations from the closed transport.
+                failPendingInvocations();
+
                 return Mono.defer(() -> {
                     if (isStoppedByUser.compareAndSet(true, false)) {
                         return Mono.error(
@@ -1034,6 +1061,7 @@ final class WebPubSubAsyncClient implements Closeable {
 
     private void handleClientStop(boolean sendStoppedEvent) {
         clientState.changeState(WebPubSubClientState.STOPPED);
+        failPendingInvocations();
 
         // session
         this.webSocketSession = null;
@@ -1075,9 +1103,6 @@ final class WebPubSubAsyncClient implements Closeable {
         ackMessageSink.emitComplete(emitFailureHandler("Unable to emit Complete to ackMessageSink"));
         ackMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-        invokeResponseSink.emitComplete(emitFailureHandler("Unable to emit Complete to invokeResponseSink"));
-        invokeResponseSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
-
         updateLogger(applicationId, null);
     }
 
@@ -1086,6 +1111,8 @@ final class WebPubSubAsyncClient implements Closeable {
     }
 
     private void handleConnectionClose(DisconnectedEvent disconnectedEvent) {
+        failPendingInvocations();
+
         final DisconnectedEvent event
             = disconnectedEvent == null ? new DisconnectedEvent(this.getConnectionId(), null) : disconnectedEvent;
 
