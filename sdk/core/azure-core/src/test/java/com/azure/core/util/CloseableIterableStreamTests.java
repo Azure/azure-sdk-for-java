@@ -6,6 +6,7 @@ package com.azure.core.util;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -59,7 +61,7 @@ public class CloseableIterableStreamTests {
     }
 
     @Test
-    public void closesResourceOnce() {
+    public void closesResourceOnce() throws IOException {
         AtomicInteger closeCount = new AtomicInteger();
         CloseableIterableStream<String> stream
             = new CloseableIterableStream<>(Arrays.asList("one"), closeCount::incrementAndGet);
@@ -100,7 +102,7 @@ public class CloseableIterableStreamTests {
     }
 
     @Test
-    public void tryWithResourcesClosesAfterEarlyExit() {
+    public void tryWithResourcesClosesAfterEarlyExit() throws IOException {
         AtomicInteger closeCount = new AtomicInteger();
 
         try (CloseableIterableStream<String> stream
@@ -143,15 +145,60 @@ public class CloseableIterableStreamTests {
     }
 
     @Test
-    public void wrapsCloseFailure() {
+    public void directClosePropagatesIOException() {
         IOException closeFailure = new IOException("close failed");
         CloseableIterableStream<String> stream = new CloseableIterableStream<>(Arrays.asList("one"), () -> {
             throw closeFailure;
         });
 
-        IllegalStateException exception = assertThrows(IllegalStateException.class, stream::close);
+        IOException exception = assertThrows(IOException.class, stream::close);
 
-        assertEquals("Failed to close the iterable stream.", exception.getMessage());
+        assertSame(closeFailure, exception);
+    }
+
+    @Test
+    public void closingJavaStreamWrapsIOException() {
+        IOException closeFailure = new IOException("close failed");
+        CloseableIterableStream<String> iterableStream = new CloseableIterableStream<>(Arrays.asList("one"), () -> {
+            throw closeFailure;
+        });
+
+        UncheckedIOException exception = assertThrows(UncheckedIOException.class, iterableStream.stream()::close);
+
         assertSame(closeFailure, exception.getCause());
+    }
+
+    @Test
+    public void closeFailureIsNotRetried() {
+        AtomicInteger closeCount = new AtomicInteger();
+        IOException closeFailure = new IOException("close failed");
+        CloseableIterableStream<String> stream = new CloseableIterableStream<>(Arrays.asList("one"), () -> {
+            closeCount.incrementAndGet();
+            throw closeFailure;
+        });
+
+        assertSame(closeFailure, assertThrows(IOException.class, stream::close));
+        assertDoesNotThrow(stream::close);
+        assertEquals(1, closeCount.get());
+    }
+
+    @Test
+    public void directClosePropagatesRuntimeException() {
+        IllegalStateException closeFailure = new IllegalStateException("close failed");
+        CloseableIterableStream<String> stream = new CloseableIterableStream<>(Arrays.asList("one"), () -> {
+            throw closeFailure;
+        });
+
+        assertSame(closeFailure, assertThrows(IllegalStateException.class, stream::close));
+    }
+
+    @Test
+    public void closingJavaStreamPropagatesRuntimeException() {
+        IllegalStateException closeFailure = new IllegalStateException("close failed");
+        CloseableIterableStream<String> iterableStream = new CloseableIterableStream<>(Arrays.asList("one"), () -> {
+            throw closeFailure;
+        });
+
+        assertSame(closeFailure, assertThrows(IllegalStateException.class, iterableStream.stream()::close));
     }
 }

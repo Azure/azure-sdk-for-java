@@ -4,7 +4,9 @@
 package com.azure.core.util;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.StringReader;
+import java.io.UncheckedIOException;
 
 /**
  * Code snippets for {@link CloseableIterableStream}.
@@ -22,6 +24,8 @@ public class CloseableIterableStreamJavaDocCodeSnippets {
             for (String line : stream) {
                 System.out.println(line);
             }
+        } catch (IOException exception) {
+            throw new UncheckedIOException("Failed to close the reader.", exception);
         }
         // END: com.azure.core.util.closeableIterableStream.iterate
     }

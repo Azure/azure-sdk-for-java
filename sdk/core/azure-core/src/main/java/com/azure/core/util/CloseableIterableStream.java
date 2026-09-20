@@ -6,6 +6,8 @@ package com.azure.core.util;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.Closeable;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
@@ -31,6 +33,8 @@ import java.util.stream.Stream;
  *     for &#40;String line : stream&#41; &#123;
  *         System.out.println&#40;line&#41;;
  *     &#125;
+ * &#125; catch &#40;IOException exception&#41; &#123;
+ *     throw new UncheckedIOException&#40;&quot;Failed to close the reader.&quot;, exception&#41;;
  * &#125;
  * </pre>
  * <!-- end com.azure.core.util.closeableIterableStream.iterate -->
@@ -64,28 +68,33 @@ public final class CloseableIterableStream<T> extends IterableStream<T> implemen
      * operations don't automatically close it.</p>
      *
      * @return A Java stream of values.
+     * @throws UncheckedIOException If closing the returned Java stream fails to close the owned resource.
      */
     @Override
     public Stream<T> stream() {
-        return super.stream().onClose(this::close);
+        return super.stream().onClose(() -> {
+            try {
+                close();
+            } catch (IOException exception) {
+                throw LOGGER
+                    .logExceptionAsError(new UncheckedIOException("Failed to close the iterable stream.", exception));
+            }
+        });
     }
 
     /**
      * Releases the resource owned by this stream.
      *
      * <p>This method is idempotent.</p>
+     *
+     * @throws IOException If the owned resource fails to close.
      */
     @Override
-    public void close() {
+    public void close() throws IOException {
         if (!closed.compareAndSet(false, true)) {
             return;
         }
 
-        try {
-            ownedResource.close();
-        } catch (Exception exception) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalStateException("Failed to close the iterable stream.", exception));
-        }
+        ownedResource.close();
     }
 }
