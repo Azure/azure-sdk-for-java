@@ -75,7 +75,7 @@ public final class HttpClientHelper {
                 String contentType = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
                 return options.getLogLevel().shouldLogBody()
                     && contentType != null
-                    && contentType.toLowerCase(java.util.Locale.ROOT).startsWith("multipart/") ? headers : normal;
+                    && contentType.trim().toLowerCase(java.util.Locale.ROOT).startsWith("multipart/") ? headers : normal;
             }
 
             @Override

@@ -81,7 +81,7 @@ class HttpClientHelperTests {
         byte[] payload = "private upload contents".getBytes(StandardCharsets.UTF_8);
         HttpClient transport = request -> {
             org.junit.jupiter.api.Assertions.assertArrayEquals(payload, request.getBodyAsBinaryData().toBytes());
-            assertEquals("Multipart/Form-Data; boundary=test",
+            assertEquals(" \tMultipart/Form-Data; boundary=test",
                 request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
             return Mono.just(new MockHttpResponse(request, 200, new byte[0]));
         };
@@ -90,7 +90,7 @@ class HttpClientHelperTests {
             .build();
         for (boolean async : new boolean[] { false, true }) {
             HttpRequest request = new HttpRequest(com.azure.core.http.HttpMethod.POST, "https://localhost/upload")
-                .setHeader(HttpHeaderName.CONTENT_TYPE, "Multipart/Form-Data; boundary=test")
+                .setHeader(HttpHeaderName.CONTENT_TYPE, " \tMultipart/Form-Data; boundary=test")
                 .setBody(payload);
             try (HttpResponse response
                 = async ? pipeline.send(request).block() : pipeline.sendSync(request, Context.NONE)) {

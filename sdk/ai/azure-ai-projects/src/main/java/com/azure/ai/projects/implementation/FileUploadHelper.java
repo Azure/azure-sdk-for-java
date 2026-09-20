@@ -97,7 +97,7 @@ public final class FileUploadHelper {
      * @return the selected files.
      */
     public static List<Path> getFiles(Path folder, FileUploadOptions options) {
-        if (folder == null || !Files.isDirectory(folder)) {
+        if (folder == null || folder.getFileName() == null || !Files.isDirectory(folder)) {
             throw new IllegalArgumentException("The provided path is not a folder: " + folder);
         }
         try (Stream<Path> paths = Files.walk(folder)) {
