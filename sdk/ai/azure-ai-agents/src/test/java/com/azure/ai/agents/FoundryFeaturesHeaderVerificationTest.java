@@ -362,6 +362,21 @@ public class FoundryFeaturesHeaderVerificationTest {
         return httpClient.getLastRequest().getHeaders().getValue(CUSTOM_PIPELINE_HEADER);
     }
 
+    @Test
+    public void webSocketClientsRejectUnsupportedHttpConfiguration() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        AgentsClientBuilder builder = createBuilder(createCustomPipeline(httpClient)).httpClient(httpClient)
+            .addPolicy(new CustomPipelinePolicy());
+
+        IllegalStateException syncError
+            = assertThrows(IllegalStateException.class, () -> builder.beta().buildBetaVoiceAgentWebSocketClient());
+        assertTrue(syncError.getMessage().contains("httpClient, pipeline, addPolicy"));
+
+        IllegalStateException asyncError
+            = assertThrows(IllegalStateException.class, () -> builder.beta().buildBetaVoiceAgentWebSocketAsyncClient());
+        assertEquals(syncError.getMessage(), asyncError.getMessage());
+    }
+
     private static HttpResponse openAIResponse(HttpRequest request) {
         String path = request.getUrl().getPath();
         String responseBody = path.endsWith("/models") ? "{\"data\":[],\"object\":\"list\"}" : "{}";

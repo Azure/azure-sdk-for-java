@@ -10,7 +10,7 @@
 - Added raw JSON WebSocket sends, complete unknown-event payloads, UTF-8 binary JSON reception, configurable receive
   limits and overflow policies, and opt-in recovery from malformed events.
 - Added custom WebSocket close codes and reasons, and per-event synchronous receive timeouts.
-- Added realtime handshake options for session IDs, structured inputs, API versions, credential scopes, preview features, extra headers and query parameters, and same-host secure connection URL overrides.
+- Added realtime session options for session IDs, structured inputs, persistence, and agent version selection.
 
 - Added preview `BetaVoiceAgentsTelephonyClient` and `BetaVoiceAgentsTelephonyAsyncClient` for outbound call jobs and campaign management, including recipient import, validation, publishing, pausing, resuming, and cancellation.
 - Added preview `BetaVoiceAgentsConversationsClient` and `BetaVoiceAgentsConversationsAsyncClient` for managing
@@ -32,6 +32,8 @@
 ### Bugs Fixed
 
 - Reject insecure voice-agent WebSocket URLs before token acquisition to prevent sending credentials over plaintext.
+- Reject HTTP client, pipeline, policy, and retry builder settings that native WebSocket transports cannot honor.
+- Enforce the single-iterator contract of synchronous voice-agent event streams.
 - Made synchronous voice-agent receive-buffer overflow signaling atomic across concurrent callbacks.
 - Fixed polling for telephony operations that return the `cancelled` status spelling.
 

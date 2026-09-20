@@ -14,7 +14,6 @@ import com.azure.ai.agents.models.RealtimeResponseCreateEvent;
 import com.azure.ai.agents.models.RealtimeSessionCreatedEvent;
 import com.azure.ai.agents.models.RealtimeServerEvent;
 import com.azure.ai.agents.models.VoiceAgentWarningEvent;
-import com.azure.ai.agents.models.VoiceAgentTransport;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.ai.agents.models.VoiceAgentWebSocketOverflowStrategy;
 import com.azure.core.credential.AccessToken;
@@ -48,7 +47,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -99,7 +97,7 @@ public class VoiceAgentWebSocketSessionTests {
 
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
-    public void handshakeOverridesPreserveQueryAndSingleUserAgent(boolean async) {
+    public void handshakeUsesSdkManagedProtocolValues(boolean async) {
         AtomicReference<String> requestUri = new AtomicReference<>();
         AtomicReference<io.netty.handler.codec.http.HttpHeaders> headers = new AtomicReference<>();
         server = tlsServer().host("localhost").port(0).handle((request, response) -> {
@@ -111,53 +109,34 @@ public class VoiceAgentWebSocketSessionTests {
         AgentsClientBuilder builder
             = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project/")
                 .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
-                .configuration(Configuration.NONE);
-        for (String userAgentHeader : new String[] { "", "User-Agent", "user-agent" }) {
-            Map<String, String> extra = new LinkedHashMap<>();
-            extra.put("X-Custom", "custom-value");
-            extra.put("Authorization", "must-not-override-token");
-            extra.put("Sec-WebSocket-Protocol", "other");
-            VoiceAgentWebSocketConnectionOptions options
-                = tlsOptions().setExtraQuery(Collections.singletonMap("foo", "bar value"));
-            if (!userAgentHeader.isEmpty()) {
-                extra.put(userAgentHeader, "custom-user-agent");
-                options.setConnectionUrl(URI.create("wss://localhost:" + server.port() + "/custom?sig=abc"));
-            }
-            options.setExtraHeaders(extra);
-            if (async) {
-                BetaVoiceAgentWebSocketSessionAsyncClient session = builder.beta()
-                    .buildBetaVoiceAgentWebSocketAsyncClient()
-                    .openWebSocketSession("agent name", options)
-                    .block(Duration.ofSeconds(5));
-                session.closeAsync().block(Duration.ofSeconds(5));
-                assertFalse(session.isOpen());
-            } else {
-                BetaVoiceAgentWebSocketSessionClient session
-                    = builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession("agent name", options);
-                session.close();
-                assertFalse(session.isOpen());
-            }
-            assertEquals("Bearer test-token", headers.get().get(HttpHeaderNames.AUTHORIZATION));
-            assertEquals("realtime", headers.get().get(HttpHeaderNames.SEC_WEBSOCKET_PROTOCOL));
-            assertEquals("VoiceAgents=V1Preview", headers.get().get("Foundry-Features"));
-            assertEquals("custom-value", headers.get().get("X-Custom"));
-            assertEquals(1, headers.get().getAll(HttpHeaderNames.USER_AGENT).size());
-            String userAgent = headers.get().get(HttpHeaderNames.USER_AGENT);
-            String uri = decode(requestUri.get());
-            assertTrue(uri.contains("api-version=v1"));
-            assertTrue(uri.contains("foo=bar value"));
-            assertEquals(1, requestUri.get().chars().filter(character -> character == '?').count());
-            if (userAgentHeader.isEmpty()) {
-                assertTrue(userAgent.startsWith("azsdk-java-azure-ai-agents/"), userAgent);
-                assertTrue(uri.contains("x-ms-client-sdk=" + userAgent));
-                assertTrue(uri.startsWith("/api/projects/project/agents/agent name/endpoint/protocols/voice?"));
-            } else {
-                assertEquals("custom-user-agent", userAgent);
-                assertTrue(uri.startsWith("/custom?"));
-                assertTrue(uri.contains("sig=abc"));
-                assertTrue(uri.contains("x-ms-client-sdk=azsdk-java-azure-ai-agents/"), uri);
-            }
+                .configuration(Configuration.NONE)
+                .clientOptions(
+                    new ClientOptions().setHeaders(Collections.singletonList(new Header("X-Custom", "custom-value"))));
+        if (async) {
+            BetaVoiceAgentWebSocketSessionAsyncClient session = builder.beta()
+                .buildBetaVoiceAgentWebSocketAsyncClient()
+                .openWebSocketSession("agent name")
+                .block(Duration.ofSeconds(5));
+            session.closeAsync().block(Duration.ofSeconds(5));
+            assertFalse(session.isOpen());
+        } else {
+            BetaVoiceAgentWebSocketSessionClient session
+                = builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession("agent name");
+            session.close();
+            assertFalse(session.isOpen());
         }
+        assertEquals("Bearer test-token", headers.get().get(HttpHeaderNames.AUTHORIZATION));
+        assertEquals("realtime", headers.get().get(HttpHeaderNames.SEC_WEBSOCKET_PROTOCOL));
+        assertEquals("VoiceAgents=V1Preview", headers.get().get("Foundry-Features"));
+        assertEquals("custom-value", headers.get().get("X-Custom"));
+        assertEquals(1, headers.get().getAll(HttpHeaderNames.USER_AGENT).size());
+        String userAgent = headers.get().get(HttpHeaderNames.USER_AGENT);
+        assertTrue(userAgent.startsWith("azsdk-java-azure-ai-agents/"), userAgent);
+        String uri = decode(requestUri.get());
+        assertTrue(uri.contains("api-version=v1"));
+        assertTrue(uri.contains("transport=websocket"));
+        assertTrue(uri.contains("x-ms-client-sdk=" + userAgent));
+        assertTrue(uri.startsWith("/api/projects/project/agents/agent name/endpoint/protocols/voice?"));
     }
 
     @ParameterizedTest
@@ -244,26 +223,6 @@ public class VoiceAgentWebSocketSessionTests {
         assertInstanceOf(RealtimeSessionCreatedEvent.class, events.get(0));
         RawRealtimeServerEvent unknown = assertInstanceOf(RawRealtimeServerEvent.class, events.get(1));
         assertEquals("bar", unknown.getRawEvent().toObject(Map.class).get("foo"));
-    }
-
-    @Test
-    public void explicitDefaultPortOverrideIsTrustedBeforeAuthentication() {
-        AtomicInteger tokens = new AtomicInteger();
-        IllegalStateException tokenError = new IllegalStateException("Stop before network access.");
-        AgentsClientBuilder builder
-            = new AgentsClientBuilder().endpoint("https://example.com/api/projects/project").credential(request -> {
-                tokens.incrementAndGet();
-                return Mono.error(tokenError);
-            });
-        VoiceAgentWebSocketConnectionOptions options
-            = new VoiceAgentWebSocketConnectionOptions().setConnectionUrl(URI.create("wss://example.com:443/custom"));
-        assertEquals(tokenError, assertThrows(IllegalStateException.class,
-            () -> builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession("agent", options)));
-        StepVerifier
-            .create(builder.beta().buildBetaVoiceAgentWebSocketAsyncClient().openWebSocketSession("agent", options))
-            .expectErrorSatisfies(error -> assertEquals(tokenError, error))
-            .verify(Duration.ofSeconds(5));
-        assertEquals(2, tokens.get());
     }
 
     @ParameterizedTest
@@ -426,20 +385,6 @@ public class VoiceAgentWebSocketSessionTests {
                 .expectError(IllegalArgumentException.class)
                 .verify();
         }
-        AgentsClientBuilder builder = new AgentsClientBuilder().endpoint("https://example.com").credential(credential);
-        for (String override : new String[] {
-            "ws://example.com",
-            "wss://other.example.com",
-            "wss://example.com:8443" }) {
-            VoiceAgentWebSocketConnectionOptions options
-                = new VoiceAgentWebSocketConnectionOptions().setConnectionUrl(URI.create(override));
-            assertThrows(IllegalArgumentException.class,
-                () -> builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession("agent", options));
-            StepVerifier
-                .create(builder.beta().buildBetaVoiceAgentWebSocketAsyncClient().openWebSocketSession("agent", options))
-                .expectError(IllegalArgumentException.class)
-                .verify();
-        }
         assertFalse(requested.get());
     }
 
@@ -450,6 +395,24 @@ public class VoiceAgentWebSocketSessionTests {
 
     private static VoiceAgentWebSocketConnectionOptions tlsOptions() {
         return new VoiceAgentWebSocketConnectionOptions();
+    }
+
+    @Test
+    public void syncReceiveStreamRejectsSecondIterator() {
+        server = startServer(new CopyOnWriteArrayList<>(), new AtomicReference<>(), new AtomicReference<>(),
+            new AtomicReference<>(), new AtomicReference<>(), new AtomicReference<>(), false);
+        BetaVoiceAgentWebSocketClient client
+            = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
+                .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
+                .beta()
+                .buildBetaVoiceAgentWebSocketClient();
+
+        try (BetaVoiceAgentWebSocketSessionClient session = client.openWebSocketSession("agent", tlsOptions())) {
+            Iterable<RealtimeServerEvent> events = session.receiveEvents(Duration.ofSeconds(5));
+            events.iterator();
+            IllegalStateException exception = assertThrows(IllegalStateException.class, events::iterator);
+            assertEquals("The receiveEvents stream may only be iterated once.", exception.getMessage());
+        }
     }
 
     @Test
@@ -549,9 +512,8 @@ public class VoiceAgentWebSocketSessionTests {
             requestedScopes.set(request.getScopes());
             return Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1)));
         };
-        VoiceAgentWebSocketConnectionOptions options = tlsOptions().setTransport(VoiceAgentTransport.WEBSOCKET)
-            .setStoreEnabled(true)
-            .setAgentVersionOverride("version 2");
+        VoiceAgentWebSocketConnectionOptions options
+            = tlsOptions().setStoreEnabled(true).setAgentVersionOverride("version 2");
         BetaVoiceAgentWebSocketAsyncClient client
             = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
                 .credential(credential)
