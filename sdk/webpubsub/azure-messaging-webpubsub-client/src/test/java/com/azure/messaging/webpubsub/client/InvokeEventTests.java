@@ -328,6 +328,11 @@ public class InvokeEventTests {
             "{\"status\":\"done\"}",
             "[1,true]",
             "42",
+            "0.12345678901234567890123456789",
+            "9223372036854775808123456789",
+            "1e400",
+            "{\"amount\":0.12345678901234567890123456789}",
+            "[0.12345678901234567890123456789,9223372036854775808123456789]",
             "true",
             "null" })
     public void testInvokeJsonResponseType(String json) throws IOException {
@@ -337,15 +342,11 @@ public class InvokeEventTests {
             InvokeResponseMessage response = (InvokeResponseMessage) new MessageDecoder()
                 .decode("{\"type\":\"invokeResponse\",\"invocationId\":\"json\",\"success\":true," + fields + "}");
             Assertions.assertEquals(WebPubSubDataFormat.JSON, response.getDataType());
-            try (JsonReader expected = JsonProviders.createReader(json)) {
-                if ("null".equals(json)) {
-                    Assertions.assertNull(response.getData());
-                } else {
-                    Assertions.assertNotNull(response.getData());
-                    try (JsonReader actual = JsonProviders.createReader(response.getData().toString())) {
-                        Assertions.assertEquals(expected.readUntyped(), actual.readUntyped());
-                    }
-                }
+            if ("null".equals(json)) {
+                Assertions.assertNull(response.getData());
+            } else {
+                Assertions.assertNotNull(response.getData());
+                Assertions.assertEquals(json, response.getData().toString());
             }
         }
     }
