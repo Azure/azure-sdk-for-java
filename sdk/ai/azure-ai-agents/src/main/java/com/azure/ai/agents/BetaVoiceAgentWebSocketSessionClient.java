@@ -51,6 +51,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -469,12 +470,14 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
             if (proxyOptions.getNonProxyHosts() == null) {
                 builder.proxy(proxy);
             } else {
-                String nonProxyHosts = proxyOptions.getNonProxyHosts();
+                Pattern nonProxyHosts = Pattern.compile(proxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
                 builder.proxySelector(new ProxySelector() {
                     @Override
                     public List<Proxy> select(URI uri) {
-                        return Collections.singletonList(
-                            uri.getHost() != null && uri.getHost().matches(nonProxyHosts) ? Proxy.NO_PROXY : proxy);
+                        return Collections
+                            .singletonList(uri.getHost() != null && nonProxyHosts.matcher(uri.getHost()).matches()
+                                ? Proxy.NO_PROXY
+                                : proxy);
                     }
 
                     @Override

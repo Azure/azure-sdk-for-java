@@ -30,7 +30,7 @@ public class BetaVoiceAgentWebSocketSessionClientTests {
         OkHttpClient client = BetaVoiceAgentWebSocketSessionClient.createHttpClient(configuration,
             new VoiceAgentWebSocketConnectionOptions());
 
-        List<Proxy> bypassed = client.proxySelector().select(URI.create("https://localhost/session"));
+        List<Proxy> bypassed = client.proxySelector().select(URI.create("https://LOCALHOST/session"));
         List<Proxy> proxied = client.proxySelector().select(URI.create("https://example.com/session"));
 
         assertEquals(Proxy.NO_PROXY, bypassed.get(0));

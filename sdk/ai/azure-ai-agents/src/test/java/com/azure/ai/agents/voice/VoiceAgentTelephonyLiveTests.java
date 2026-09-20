@@ -309,8 +309,11 @@ public class VoiceAgentTelephonyLiveTests {
     }
 
     private static void deleteBinding(BetaVoiceAgentsTelephonyClient telephony, String agentName, String bindingId) {
-        TelephonyBindingListItem binding = findBinding(telephony, agentName, bindingId);
-        telephony.deleteTelephonyBinding(agentName, bindingId, binding.getETag());
+        telephony.listTelephonyBindings(agentName)
+            .stream()
+            .filter(item -> bindingId.equals(item.getId()))
+            .findFirst()
+            .ifPresent(binding -> telephony.deleteTelephonyBinding(agentName, bindingId, binding.getETag()));
     }
 
     private static String getTransferTargetsEtag(BetaVoiceAgentsTelephonyClient telephony, String agentName) {
