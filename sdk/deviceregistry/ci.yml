@@ -42,6 +42,10 @@ parameters:
     displayName: azure-iot-deviceregistry-softwareupdate
     type: boolean
     default: true
+  - name: release_azureresourcemanagerdeviceregistrysoftwareupdate
+    displayName: azure-resourcemanager-deviceregistry-softwareupdate
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -56,3 +60,7 @@ extends:
         groupId: com.azure
         safeName: azureiotdeviceregistrysoftwareupdate
         releaseInBatch: ${{ parameters.release_azureiotdeviceregistrysoftwareupdate }}
+      - name: azure-resourcemanager-deviceregistry-softwareupdate
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdeviceregistrysoftwareupdate
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerdeviceregistrysoftwareupdate }}
