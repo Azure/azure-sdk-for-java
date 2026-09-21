@@ -44,7 +44,7 @@ public class VoiceAgentInterimResponseConfiguration
      * Creates an instance of VoiceAgentInterimResponseConfiguration class.
      */
     @Generated
-    public VoiceAgentInterimResponseConfiguration() {
+    protected VoiceAgentInterimResponseConfiguration() {
     }
 
     /**

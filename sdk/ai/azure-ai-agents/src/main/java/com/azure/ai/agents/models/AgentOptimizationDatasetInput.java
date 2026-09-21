@@ -30,7 +30,7 @@ public class AgentOptimizationDatasetInput implements JsonSerializable<AgentOpti
      * Creates an instance of AgentOptimizationDatasetInput class.
      */
     @Generated
-    public AgentOptimizationDatasetInput() {
+    protected AgentOptimizationDatasetInput() {
     }
 
     /**
