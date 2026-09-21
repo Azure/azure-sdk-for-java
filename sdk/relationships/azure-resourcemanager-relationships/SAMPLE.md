@@ -1,11 +1,24 @@
 # Code snippets and samples
 
 
+## ContainsRelationships
+
+- [List](#containsrelationships_list)
+- [ListByResourceGroup](#containsrelationships_listbyresourcegroup)
+
 ## DependencyOfRelationships
 
 - [CreateOrUpdate](#dependencyofrelationships_createorupdate)
 - [Delete](#dependencyofrelationships_delete)
 - [Get](#dependencyofrelationships_get)
+- [ListByParent](#dependencyofrelationships_listbyparent)
+
+## DependencyOfRelationshipsByServiceGroup
+
+- [CreateOrUpdate](#dependencyofrelationshipsbyservicegroup_createorupdate)
+- [Delete](#dependencyofrelationshipsbyservicegroup_delete)
+- [Get](#dependencyofrelationshipsbyservicegroup_get)
+- [List](#dependencyofrelationshipsbyservicegroup_list)
 
 ## Operations
 
@@ -16,6 +29,51 @@
 - [CreateOrUpdate](#servicegroupmemberrelationships_createorupdate)
 - [Delete](#servicegroupmemberrelationships_delete)
 - [Get](#servicegroupmemberrelationships_get)
+- [ListByParent](#servicegroupmemberrelationships_listbyparent)
+### ContainsRelationships_List
+
+```java
+/**
+ * Samples for ContainsRelationships List.
+ */
+public final class ContainsRelationshipsListSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/ContainsRelationships_ListBySubscription.json
+     */
+    /**
+     * Sample code: ContainsRelationships_ListBySubscription.
+     * 
+     * @param manager Entry point to RelationshipsManager.
+     */
+    public static void
+        containsRelationshipsListBySubscription(com.azure.resourcemanager.relationships.RelationshipsManager manager) {
+        manager.containsRelationships().list(null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ContainsRelationships_ListByResourceGroup
+
+```java
+/**
+ * Samples for ContainsRelationships ListByResourceGroup.
+ */
+public final class ContainsRelationshipsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/ContainsRelationships_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: ContainsRelationships_ListByResourceGroup.
+     * 
+     * @param manager Entry point to RelationshipsManager.
+     */
+    public static void
+        containsRelationshipsListByResourceGroup(com.azure.resourcemanager.relationships.RelationshipsManager manager) {
+        manager.containsRelationships().listByResourceGroup("testrg", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### DependencyOfRelationships_CreateOrUpdate
 
 ```java
@@ -26,7 +84,7 @@ import com.azure.resourcemanager.relationships.models.DependencyOfRelationshipPr
  */
 public final class DependencyOfRelationshipsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-09-01-preview/DependencyOfRelationships_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/DependencyOfRelationships_CreateOrUpdate.json
      */
     /**
      * Sample code: DependencyOfRelationships_CreateOrUpdate.
@@ -55,7 +113,7 @@ public final class DependencyOfRelationshipsCreateOrUpdateSamples {
  */
 public final class DependencyOfRelationshipsDeleteSamples {
     /*
-     * x-ms-original-file: 2023-09-01-preview/DependencyOfRelationships_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/DependencyOfRelationships_Delete.json
      */
     /**
      * Sample code: DependencyOfRelationships_Delete.
@@ -80,7 +138,7 @@ public final class DependencyOfRelationshipsDeleteSamples {
  */
 public final class DependencyOfRelationshipsGetSamples {
     /*
-     * x-ms-original-file: 2023-09-01-preview/DependencyOfRelationships_Get.json
+     * x-ms-original-file: 2026-03-01-preview/DependencyOfRelationships_Get.json
      */
     /**
      * Sample code: DependencyOfRelationships_Get.
@@ -97,6 +155,129 @@ public final class DependencyOfRelationshipsGetSamples {
 }
 ```
 
+### DependencyOfRelationships_ListByParent
+
+```java
+/**
+ * Samples for DependencyOfRelationships ListByParent.
+ */
+public final class DependencyOfRelationshipsListByParentSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/DependencyOfRelationships_ListByParent.json
+     */
+    /**
+     * Sample code: DependencyOfRelationships_ListByParent.
+     * 
+     * @param manager Entry point to RelationshipsManager.
+     */
+    public static void
+        dependencyOfRelationshipsListByParent(com.azure.resourcemanager.relationships.RelationshipsManager manager) {
+        manager.dependencyOfRelationships()
+            .listByParent(
+                "subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DependencyOfRelationshipsByServiceGroup_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.relationships.fluent.models.DependencyOfRelationshipInner;
+import com.azure.resourcemanager.relationships.models.DependencyOfRelationshipProperties;
+
+/**
+ * Samples for DependencyOfRelationshipsByServiceGroup CreateOrUpdate.
+ */
+public final class DependencyOfRelationshipsByServiceGroupCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/DependencyOfRelationshipsByServiceGroup_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: DependencyOfRelationshipsByServiceGroup_CreateOrUpdate.
+     * 
+     * @param manager Entry point to RelationshipsManager.
+     */
+    public static void dependencyOfRelationshipsByServiceGroupCreateOrUpdate(
+        com.azure.resourcemanager.relationships.RelationshipsManager manager) {
+        manager.dependencyOfRelationshipsByServiceGroups()
+            .createOrUpdate("myServiceGroup", "relationshipOne", new DependencyOfRelationshipInner()
+                .withProperties(new DependencyOfRelationshipProperties().withTargetId(
+                    "/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg123/providers/Microsoft.Web/staticSites/test-site")
+                    .withTargetTenant("72f988bf-86f1-41af-91ab-2d7cd011db47")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DependencyOfRelationshipsByServiceGroup_Delete
+
+```java
+/**
+ * Samples for DependencyOfRelationshipsByServiceGroup Delete.
+ */
+public final class DependencyOfRelationshipsByServiceGroupDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/DependencyOfRelationshipsByServiceGroup_Delete.json
+     */
+    /**
+     * Sample code: DependencyOfRelationshipsByServiceGroup_Delete.
+     * 
+     * @param manager Entry point to RelationshipsManager.
+     */
+    public static void dependencyOfRelationshipsByServiceGroupDelete(
+        com.azure.resourcemanager.relationships.RelationshipsManager manager) {
+        manager.dependencyOfRelationshipsByServiceGroups()
+            .delete("myServiceGroup", "relationshipOne", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DependencyOfRelationshipsByServiceGroup_Get
+
+```java
+/**
+ * Samples for DependencyOfRelationshipsByServiceGroup Get.
+ */
+public final class DependencyOfRelationshipsByServiceGroupGetSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/DependencyOfRelationshipsByServiceGroup_Get.json
+     */
+    /**
+     * Sample code: DependencyOfRelationshipsByServiceGroup_Get.
+     * 
+     * @param manager Entry point to RelationshipsManager.
+     */
+    public static void dependencyOfRelationshipsByServiceGroupGet(
+        com.azure.resourcemanager.relationships.RelationshipsManager manager) {
+        manager.dependencyOfRelationshipsByServiceGroups()
+            .getWithResponse("myServiceGroup", "relationshipOne", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DependencyOfRelationshipsByServiceGroup_List
+
+```java
+/**
+ * Samples for DependencyOfRelationshipsByServiceGroup List.
+ */
+public final class DependencyOfRelationshipsByServiceGroupListSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/DependencyOfRelationshipsByServiceGroup_List.json
+     */
+    /**
+     * Sample code: DependencyOfRelationshipsByServiceGroup_List.
+     * 
+     * @param manager Entry point to RelationshipsManager.
+     */
+    public static void dependencyOfRelationshipsByServiceGroupList(
+        com.azure.resourcemanager.relationships.RelationshipsManager manager) {
+        manager.dependencyOfRelationshipsByServiceGroups().list("myServiceGroup", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Operations_List
 
 ```java
@@ -105,7 +286,7 @@ public final class DependencyOfRelationshipsGetSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2023-09-01-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List.
@@ -121,14 +302,14 @@ public final class OperationsListSamples {
 ### ServiceGroupMemberRelationships_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationshipProperties;
+import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationshipPropertiesV2;
 
 /**
  * Samples for ServiceGroupMemberRelationships CreateOrUpdate.
  */
 public final class ServiceGroupMemberRelationshipsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-09-01-preview/ServiceGroupMemberRelationships_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/ServiceGroupMemberRelationships_CreateOrUpdate.json
      */
     /**
      * Sample code: ServiceGroupMemberRelationships_CreateOrUpdate.
@@ -141,9 +322,9 @@ public final class ServiceGroupMemberRelationshipsCreateOrUpdateSamples {
             .define("sg1")
             .withExistingResourceUri(
                 "subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account")
-            .withProperties(new ServiceGroupMemberRelationshipProperties()
-                .withTargetId("/providers/Microsoft.Management/serviceGroups/sg1")
-                .withTargetTenant("72f988bf-86f1-41af-91ab-2d7cd011db47"))
+            .withProperties(new ServiceGroupMemberRelationshipPropertiesV2()
+                .withSourceId("/providers/Microsoft.Management/serviceGroups/sg1")
+                .withSourceTenant("72f988bf-86f1-41af-91ab-2d7cd011db47"))
             .create();
     }
 }
@@ -157,7 +338,7 @@ public final class ServiceGroupMemberRelationshipsCreateOrUpdateSamples {
  */
 public final class ServiceGroupMemberRelationshipsDeleteSamples {
     /*
-     * x-ms-original-file: 2023-09-01-preview/ServiceGroupMemberRelationships_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/ServiceGroupMemberRelationships_Delete.json
      */
     /**
      * Sample code: ServiceGroupMemberRelationships_Delete.
@@ -182,7 +363,7 @@ public final class ServiceGroupMemberRelationshipsDeleteSamples {
  */
 public final class ServiceGroupMemberRelationshipsGetSamples {
     /*
-     * x-ms-original-file: 2023-09-01-preview/ServiceGroupMemberRelationships_Get.json
+     * x-ms-original-file: 2026-03-01-preview/ServiceGroupMemberRelationships_Get.json
      */
     /**
      * Sample code: ServiceGroupMemberRelationships_Get.
@@ -195,6 +376,31 @@ public final class ServiceGroupMemberRelationshipsGetSamples {
             .getWithResponse(
                 "subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account",
                 "sg1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ServiceGroupMemberRelationships_ListByParent
+
+```java
+/**
+ * Samples for ServiceGroupMemberRelationships ListByParent.
+ */
+public final class ServiceGroupMemberRelationshipsListByParentSamples {
+    /*
+     * x-ms-original-file: 2026-03-01-preview/ServiceGroupMemberRelationships_ListByParent.json
+     */
+    /**
+     * Sample code: ServiceGroupMemberRelationships_ListByParent.
+     * 
+     * @param manager Entry point to RelationshipsManager.
+     */
+    public static void serviceGroupMemberRelationshipsListByParent(
+        com.azure.resourcemanager.relationships.RelationshipsManager manager) {
+        manager.serviceGroupMemberRelationships()
+            .listByParent(
+                "subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
