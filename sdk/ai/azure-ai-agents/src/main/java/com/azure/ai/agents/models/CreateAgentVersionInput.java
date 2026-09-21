@@ -41,7 +41,7 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
      */
     @Generated
     @Beta(
-        warningText = "Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, ExternalAgents=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview")
+        warningText = "Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, ExternalAgents=V1Preview, GitHubCopilot=V1Preview, Skills=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview")
     private final AgentDefinition definition;
 
     /*
@@ -122,7 +122,7 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
      */
     @Generated
     @Beta(
-        warningText = "Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, ExternalAgents=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview")
+        warningText = "Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, ExternalAgents=V1Preview, GitHubCopilot=V1Preview, Skills=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview")
     public AgentDefinition getDefinition() {
         return this.definition;
     }

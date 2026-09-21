@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class NetworkWatchersGetNetworkConfigurationDiagnosticSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkWatcherNetworkConfigurationDiagnostic.json
+     * x-ms-original-file: 2026-01-01/NetworkWatcherNetworkConfigurationDiagnostic.json
      */
     /**
      * Sample code: Network configuration diagnostic.

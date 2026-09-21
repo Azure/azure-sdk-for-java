@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class AgentPoolsListByKubernetesClusterSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AgentPools_ListByKubernetesCluster.json
+     * x-ms-original-file: 2026-07-01/AgentPools_ListByKubernetesCluster.json
      */
     /**
      * Sample code: List agent pools of the Kubernetes cluster.

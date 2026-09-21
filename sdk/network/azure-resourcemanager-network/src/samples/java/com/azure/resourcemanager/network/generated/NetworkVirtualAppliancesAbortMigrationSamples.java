@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkVirtualAppliancesAbortMigrationSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceAbortMigration.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceAbortMigration.json
      */
     /**
      * Sample code: Abort migration of a NetworkVirtualAppliance to the new ILB architecture.

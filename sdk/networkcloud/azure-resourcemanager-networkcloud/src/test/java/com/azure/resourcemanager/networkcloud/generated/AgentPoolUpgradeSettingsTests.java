@@ -11,22 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentPoolUpgradeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentPoolUpgradeSettings model = BinaryData.fromString(
-            "{\"drainTimeout\":1456935603967599138,\"maxSurge\":\"gumhjglikkxws\",\"maxUnavailable\":\"lbqpvuzlmvfelf\"}")
+        AgentPoolUpgradeSettings model = BinaryData
+            .fromString(
+                "{\"drainTimeout\":4361894023478136574,\"maxSurge\":\"ool\",\"maxUnavailable\":\"tpkiwkkbnujry\"}")
             .toObject(AgentPoolUpgradeSettings.class);
-        Assertions.assertEquals(1456935603967599138L, model.drainTimeout());
-        Assertions.assertEquals("gumhjglikkxws", model.maxSurge());
-        Assertions.assertEquals("lbqpvuzlmvfelf", model.maxUnavailable());
+        Assertions.assertEquals(4361894023478136574L, model.drainTimeout());
+        Assertions.assertEquals("ool", model.maxSurge());
+        Assertions.assertEquals("tpkiwkkbnujry", model.maxUnavailable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolUpgradeSettings model = new AgentPoolUpgradeSettings().withDrainTimeout(1456935603967599138L)
-            .withMaxSurge("gumhjglikkxws")
-            .withMaxUnavailable("lbqpvuzlmvfelf");
+        AgentPoolUpgradeSettings model = new AgentPoolUpgradeSettings().withDrainTimeout(4361894023478136574L)
+            .withMaxSurge("ool")
+            .withMaxUnavailable("tpkiwkkbnujry");
         model = BinaryData.fromObject(model).toObject(AgentPoolUpgradeSettings.class);
-        Assertions.assertEquals(1456935603967599138L, model.drainTimeout());
-        Assertions.assertEquals("gumhjglikkxws", model.maxSurge());
-        Assertions.assertEquals("lbqpvuzlmvfelf", model.maxUnavailable());
+        Assertions.assertEquals(4361894023478136574L, model.drainTimeout());
+        Assertions.assertEquals("ool", model.maxSurge());
+        Assertions.assertEquals("tpkiwkkbnujry", model.maxUnavailable());
     }
 }
