@@ -1082,23 +1082,44 @@ public class BlobStorageCustomizations extends Customization {
         "BlobsAbortCopyFromUrlHeaders", "BlobsCopyFromUrlHeaders", "BlobsStartCopyFromUrlHeaders",
         "BlockBlobsStageBlockFromUrlHeaders", "PageBlobsUploadPagesFromUrlHeaders");
 
+    // The emitter spells these models FromUrlHeaders; the shipped public API spells the acronym FromURLHeaders.
+    // Both the declaration and the file holding it have to move: a case-insensitive filesystem will quietly accept
+    // the class under the old file name, but a clean checkout on a case-sensitive one ends up with the renamed
+    // class in a file whose name no longer matches it, which javac rejects.
     private static void fixUrlAcronymHeaderNames(Editor editor, Logger logger) {
         int renamed = 0;
+        int moved = 0;
         for (String path : new ArrayList<>(editor.getContents().keySet())) {
             String content = editor.getContents().get(path);
             if (content == null) {
                 continue;
             }
             String updated = content;
+            String updatedPath = path;
             for (String wrongName : URL_ACRONYM_HEADER_MODELS) {
-                updated = updated.replace(wrongName, wrongName.replace("FromUrlHeaders", "FromURLHeaders"));
+                String rightName = wrongName.replace("FromUrlHeaders", "FromURLHeaders");
+                updated = updated.replace(wrongName, rightName);
+                if (path.endsWith("/" + wrongName + ".java")) {
+                    updatedPath = path.substring(0, path.length() - (wrongName.length() + 5)) + rightName + ".java";
+                }
             }
-            if (!updated.equals(content)) {
+            if (updated.equals(content) && updatedPath.equals(path)) {
+                continue;
+            }
+            if (updatedPath.equals(path)) {
                 editor.replaceFile(path, updated);
-                renamed++;
+            } else {
+                editor.removeFile(path);
+                editor.addFile(updatedPath, updated);
+                moved++;
             }
+            renamed++;
         }
-        logger.info("Aligned FromUrlHeaders class names with their FromURLHeaders file names in {} file(s).", renamed);
+        if (moved != URL_ACRONYM_HEADER_MODELS.size()) {
+            throw new IllegalStateException("Expected to move " + URL_ACRONYM_HEADER_MODELS.size()
+                + " FromUrlHeaders files but moved " + moved + "; the emitter output changed.");
+        }
+        logger.info("Renamed {} FromUrlHeaders declarations to FromURLHeaders across {} file(s).", moved, renamed);
     }
 
     // Per-resource convenience clients emitted by typespec-java under max-overload: model. They carry the typed

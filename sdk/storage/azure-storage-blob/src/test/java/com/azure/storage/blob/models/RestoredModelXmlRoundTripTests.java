@@ -9,12 +9,16 @@ import com.azure.xml.XmlWriter;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -206,5 +210,86 @@ public class RestoredModelXmlRoundTripTests {
         assertEquals(0L, actual.getPageRange().get(0).getStart());
         assertEquals(511L, actual.getPageRange().get(0).getEnd());
         assertEquals(512L, actual.getClearRange().get(0).getStart());
+    }
+
+    /**
+     * BlobPrefix is no longer generated -- the spec now emits an internal model carrying the BlobName so the
+     * Encoded attribute survives, and this public one is maintained by hand. Nothing regenerates it, so its
+     * deserialization is only covered here.
+     * <p>
+     * The shipped model is deliberately asymmetric: {@code fromXml} reads a {@code Name} child element, which is
+     * what the service sends, while {@code toXml} writes the name as the element's own text. Nothing in the SDK
+     * serializes a BlobPrefix, so that asymmetry is preserved rather than corrected, and the direction that is
+     * actually exercised is the one asserted here.
+     */
+    @Test
+    public void blobPrefixIsHandOwnedAndStillReadsTheServiceShape() throws Exception {
+        String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><BlobPrefix><Name>dir1/dir2/</Name></BlobPrefix>";
+
+        BlobPrefix actual;
+        try (XmlReader reader = XmlReader.fromBytes(xml.getBytes(StandardCharsets.UTF_8))) {
+            actual = BlobPrefix.fromXml(reader);
+        }
+
+        assertEquals("dir1/dir2/", actual.getName());
+    }
+
+    @Test
+    public void blobContainerItemWithPropertiesAndMetadata() {
+        Map<String, String> metadata = new LinkedHashMap<>();
+        metadata.put("owner", "storage");
+
+        BlobContainerItem original = new BlobContainerItem().setName("container-1")
+            .setDeleted(false)
+            .setVersion("01D2C2A0")
+            .setMetadata(metadata)
+            .setProperties(new BlobContainerItemProperties().setETag("0x8D8")
+                .setLastModified(OffsetDateTime.of(2020, 10, 21, 7, 28, 0, 0, ZoneOffset.UTC))
+                .setLeaseStatus(LeaseStatusType.UNLOCKED)
+                .setLeaseState(LeaseStateType.AVAILABLE)
+                .setPublicAccess(PublicAccessType.CONTAINER)
+                .setHasImmutabilityPolicy(false)
+                .setHasLegalHold(false)
+                .setDefaultEncryptionScope("$account-encryption-key")
+                .setEncryptionScopeOverridePrevented(true));
+
+        BlobContainerItem actual = roundTripChecked(original, BlobContainerItem::fromXml);
+
+        assertEquals("container-1", actual.getName());
+        assertEquals("01D2C2A0", actual.getVersion());
+        assertEquals("storage", actual.getMetadata().get("owner"));
+        assertEquals("0x8D8", actual.getProperties().getETag());
+        assertEquals(LeaseStatusType.UNLOCKED, actual.getProperties().getLeaseStatus());
+        assertEquals(PublicAccessType.CONTAINER, actual.getProperties().getPublicAccess());
+        assertEquals(original.getProperties().getLastModified(), actual.getProperties().getLastModified());
+    }
+
+    /**
+     * The shipped accessor is a primitive boolean rather than a Boolean, so an absent element has to read back as
+     * false rather than throwing or widening the public API.
+     */
+    @Test
+    public void containerPropertiesEncryptionScopeFlagStaysPrimitive() {
+        BlobContainerItemProperties prevented = roundTripChecked(
+            new BlobContainerItemProperties().setETag("0x8D8").setEncryptionScopeOverridePrevented(true),
+            BlobContainerItemProperties::fromXml);
+        assertTrue(prevented.isEncryptionScopeOverridePrevented());
+
+        BlobContainerItemProperties absent = roundTripChecked(new BlobContainerItemProperties().setETag("0x8D8"),
+            BlobContainerItemProperties::fromXml);
+        assertFalse(absent.isEncryptionScopeOverridePrevented());
+    }
+
+    @Test
+    public void keyInfo() {
+        KeyInfo original = new KeyInfo().setStart("2020-01-01T00:00:00Z")
+            .setExpiry("2020-01-02T00:00:00Z")
+            .setDelegatedUserTenantId("tenant-1");
+
+        KeyInfo actual = roundTripChecked(original, KeyInfo::fromXml);
+
+        assertEquals("2020-01-01T00:00:00Z", actual.getStart());
+        assertEquals("2020-01-02T00:00:00Z", actual.getExpiry());
+        assertEquals("tenant-1", actual.getDelegatedUserTenantId());
     }
 }
