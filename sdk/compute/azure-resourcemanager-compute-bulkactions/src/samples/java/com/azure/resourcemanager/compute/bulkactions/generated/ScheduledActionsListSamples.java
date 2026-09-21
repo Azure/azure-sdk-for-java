@@ -9,14 +9,14 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_ListBySubscription_PagedSuccess.json
      */
     /**
-     * Sample code: List scheduled actions in a subscription.
+     * Sample code: List a page of recurring scheduled actions in a subscription.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void listScheduledActionsInASubscription(
+    public static void listAPageOfRecurringScheduledActionsInASubscription(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions().list(com.azure.core.util.Context.NONE);
     }

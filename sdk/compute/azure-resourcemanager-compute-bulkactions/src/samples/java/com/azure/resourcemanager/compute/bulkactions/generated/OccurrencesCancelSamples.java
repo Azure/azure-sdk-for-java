@@ -12,20 +12,57 @@ import java.util.Arrays;
  */
 public final class OccurrencesCancelSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/Occurrences_Cancel_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/Occurrences_Cancel_BasicSuccess.json
      */
     /**
-     * Sample code: Cancel resources in a scheduled action occurrence.
+     * Sample code: 01 - Cancel operations in a recurring scheduled action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void cancelResourcesInAScheduledActionOccurrence(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void
+        zeroOneSpaceHyphenMinusSpaceCancelSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
-            .cancel("rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45",
+            .cancel("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
                 new CancelOccurrenceRequest().withResourceIds(Arrays.asList(
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm",
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2")),
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-06-preview/Occurrences_Cancel_EntireOccurrenceSuccess.json
+     */
+    /**
+     * Sample code: 02 - Cancel all operations in a recurring scheduled action occurrence.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceCancelSpaceallSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.occurrences()
+            .cancel("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
+                new CancelOccurrenceRequest().withResourceIds(Arrays.asList()), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-06-preview/Occurrences_Cancel_PartialSuccess.json
+     */
+    /**
+     * Sample code: 03 - Response with partial results when canceling resources in a recurring scheduled action
+     * occurrence.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpacecancelingSpaceresourcesSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.occurrences()
+            .cancel("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
+                new CancelOccurrenceRequest().withResourceIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
                 com.azure.core.util.Context.NONE);
     }
 }

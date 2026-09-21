@@ -12,27 +12,27 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The priority profile for flex VM creation.
+ * The priority and allocation preferences for virtual machines.
  */
 @Fluent
 public final class PriorityProfile implements JsonSerializable<PriorityProfile> {
     /*
-     * The priority type for VM allocation
+     * The priority type for virtual machine allocation.
      */
     private PriorityType type;
 
     /*
-     * Price per hour of each Spot VM will never exceed this. Available from 2026-04-06-preview.
+     * The maximum hourly price, in US dollars, for each Spot virtual machine.
      */
     private Double maxPricePerVM;
 
     /*
-     * Eviction Policy to follow when evicting Spot VMs. Available from 2026-04-06-preview.
+     * The action applied to a Spot virtual machine when Azure evicts it.
      */
     private EvictionPolicy evictionPolicy;
 
     /*
-     * The allocation strategy for VM size selection
+     * The strategy used to select a virtual machine size.
      */
     private AllocationStrategy allocationStrategy;
 
@@ -43,7 +43,7 @@ public final class PriorityProfile implements JsonSerializable<PriorityProfile> 
     }
 
     /**
-     * Get the type property: The priority type for VM allocation.
+     * Get the type property: The priority type for virtual machine allocation.
      * 
      * @return the type value.
      */
@@ -52,7 +52,7 @@ public final class PriorityProfile implements JsonSerializable<PriorityProfile> 
     }
 
     /**
-     * Set the type property: The priority type for VM allocation.
+     * Set the type property: The priority type for virtual machine allocation.
      * 
      * @param type the type value to set.
      * @return the PriorityProfile object itself.
@@ -63,8 +63,7 @@ public final class PriorityProfile implements JsonSerializable<PriorityProfile> 
     }
 
     /**
-     * Get the maxPricePerVM property: Price per hour of each Spot VM will never exceed this. Available from
-     * 2026-04-06-preview.
+     * Get the maxPricePerVM property: The maximum hourly price, in US dollars, for each Spot virtual machine.
      * 
      * @return the maxPricePerVM value.
      */
@@ -73,8 +72,7 @@ public final class PriorityProfile implements JsonSerializable<PriorityProfile> 
     }
 
     /**
-     * Set the maxPricePerVM property: Price per hour of each Spot VM will never exceed this. Available from
-     * 2026-04-06-preview.
+     * Set the maxPricePerVM property: The maximum hourly price, in US dollars, for each Spot virtual machine.
      * 
      * @param maxPricePerVM the maxPricePerVM value to set.
      * @return the PriorityProfile object itself.
@@ -85,8 +83,7 @@ public final class PriorityProfile implements JsonSerializable<PriorityProfile> 
     }
 
     /**
-     * Get the evictionPolicy property: Eviction Policy to follow when evicting Spot VMs. Available from
-     * 2026-04-06-preview.
+     * Get the evictionPolicy property: The action applied to a Spot virtual machine when Azure evicts it.
      * 
      * @return the evictionPolicy value.
      */
@@ -95,8 +92,7 @@ public final class PriorityProfile implements JsonSerializable<PriorityProfile> 
     }
 
     /**
-     * Set the evictionPolicy property: Eviction Policy to follow when evicting Spot VMs. Available from
-     * 2026-04-06-preview.
+     * Set the evictionPolicy property: The action applied to a Spot virtual machine when Azure evicts it.
      * 
      * @param evictionPolicy the evictionPolicy value to set.
      * @return the PriorityProfile object itself.
@@ -107,7 +103,7 @@ public final class PriorityProfile implements JsonSerializable<PriorityProfile> 
     }
 
     /**
-     * Get the allocationStrategy property: The allocation strategy for VM size selection.
+     * Get the allocationStrategy property: The strategy used to select a virtual machine size.
      * 
      * @return the allocationStrategy value.
      */
@@ -116,7 +112,7 @@ public final class PriorityProfile implements JsonSerializable<PriorityProfile> 
     }
 
     /**
-     * Set the allocationStrategy property: The allocation strategy for VM size selection.
+     * Set the allocationStrategy property: The strategy used to select a virtual machine size.
      * 
      * @param allocationStrategy the allocationStrategy value to set.
      * @return the PriorityProfile object itself.

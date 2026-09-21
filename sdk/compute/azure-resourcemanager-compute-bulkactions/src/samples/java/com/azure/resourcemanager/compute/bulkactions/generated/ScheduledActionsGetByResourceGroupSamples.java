@@ -9,16 +9,31 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_Get_BasicSuccess.json
      */
     /**
-     * Sample code: Get a scheduled action.
+     * Sample code: 01 - Get a recurring scheduled action.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void zeroOneSpaceHyphenMinusSpaceGetSpaceaSpacerecurringSpacescheduledSpaceaction(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .getByResourceGroupWithResponse("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_Get_ComprehensiveSuccess.json
+     */
+    /**
+     * Sample code: 02 - Get a recurring scheduled action with complete configuration.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        getAScheduledAction(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        zeroTwoSpaceHyphenMinusSpaceGetSpaceaSpacerecurringSpacescheduledSpaceactionSpacewithSpacecompleteSpaceconfiguration(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
-            .getByResourceGroupWithResponse("rgcompute", "myScheduledAction", com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,16 +9,16 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionsTriggerManualOccurrenceSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_TriggerManualOccurrence_BasicSuccess.json
      */
     /**
-     * Sample code: Run a scheduled action immediately.
+     * Sample code: Run a recurring scheduled action immediately.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void runAScheduledActionImmediately(
+    public static void runARecurringScheduledActionImmediately(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
-            .triggerManualOccurrence("rgcompute", "myScheduledAction", com.azure.core.util.Context.NONE);
+            .triggerManualOccurrence("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }
 }

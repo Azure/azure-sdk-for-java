@@ -12,18 +12,18 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Extra details needed to run the user's request.
+ * The execution settings for a bulk action.
  */
 @Fluent
 public final class ExecutionParameters implements JsonSerializable<ExecutionParameters> {
     /*
-     * Retry policy the user can pass
+     * The retry settings for the bulk action.
      */
     private RetryPolicy retryPolicy;
 
     /*
-     * When true on an executeStart request, run a post-Start VM agent health check and engage the fallback chain if the
-     * guest agent does not report Ready. Ignored for non-Start operations.
+     * If true, Bulk Actions verifies the virtual machine guest agent health after a start operation. Setting this
+     * property to true for any other operation causes the request to fail.
      */
     private Boolean verifyVmAgentHealth;
 
@@ -42,7 +42,7 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     }
 
     /**
-     * Get the retryPolicy property: Retry policy the user can pass.
+     * Get the retryPolicy property: The retry settings for the bulk action.
      * 
      * @return the retryPolicy value.
      */
@@ -51,7 +51,7 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     }
 
     /**
-     * Set the retryPolicy property: Retry policy the user can pass.
+     * Set the retryPolicy property: The retry settings for the bulk action.
      * 
      * @param retryPolicy the retryPolicy value to set.
      * @return the ExecutionParameters object itself.
@@ -62,8 +62,8 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     }
 
     /**
-     * Get the verifyVmAgentHealth property: When true on an executeStart request, run a post-Start VM agent health
-     * check and engage the fallback chain if the guest agent does not report Ready. Ignored for non-Start operations.
+     * Get the verifyVmAgentHealth property: If true, Bulk Actions verifies the virtual machine guest agent health after
+     * a start operation. Setting this property to true for any other operation causes the request to fail.
      * 
      * @return the verifyVmAgentHealth value.
      */
@@ -72,8 +72,8 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     }
 
     /**
-     * Set the verifyVmAgentHealth property: When true on an executeStart request, run a post-Start VM agent health
-     * check and engage the fallback chain if the guest agent does not report Ready. Ignored for non-Start operations.
+     * Set the verifyVmAgentHealth property: If true, Bulk Actions verifies the virtual machine guest agent health after
+     * a start operation. Setting this property to true for any other operation causes the request to fail.
      * 
      * @param verifyVmAgentHealth the verifyVmAgentHealth value to set.
      * @return the ExecutionParameters object itself.

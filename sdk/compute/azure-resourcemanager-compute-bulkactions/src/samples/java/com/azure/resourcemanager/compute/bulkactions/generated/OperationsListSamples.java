@@ -9,27 +9,27 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Operations_List_Minimum_Gen_Example.
+     * Sample code: 02 - Operations_List_MaximumSet_Gen_Example.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void operationsListMinimumGenExample(
+    public static void zeroTwoSpaceHyphenMinusSpaceOperationsListMaximumSetGenExample(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-09-06-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
-     * Sample code: Operations_List_MaximumSet_Gen_Example.
+     * Sample code: 01 - Operations_List_Minimum_Gen_Example.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void operationsListMaximumSetGenExample(
+    public static void zeroOneSpaceHyphenMinusSpaceOperationsListMinimumGenExample(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }

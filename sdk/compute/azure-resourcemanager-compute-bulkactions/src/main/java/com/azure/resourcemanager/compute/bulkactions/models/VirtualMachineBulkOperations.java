@@ -12,214 +12,229 @@ import com.azure.core.util.Context;
  */
 public interface VirtualMachineBulkOperations {
     /**
-     * BulkDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is triggered as soon
-     * as Computeschedule receives it.
+     * Deallocate one or more virtual machines. Bulk Actions begins processing the request immediately and returns a
+     * Bulk Action Operation Id for each virtual machine. Use the returned IDs to get operation status updates.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The virtual machines to deallocate and the execution settings for the bulk action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a deallocate request along with {@link Response}.
+     * @return the result of a bulk deallocate action along with {@link Response}.
      */
     Response<DeallocateResourceOperationResponse> bulkDeallocateOperationWithResponse(String resourceGroupName,
         String location, ExecuteDeallocateContent requestBody, Context context);
 
     /**
-     * BulkDeallocate: Execute deallocate operation for a batch of virtual machines, this operation is triggered as soon
-     * as Computeschedule receives it.
+     * Deallocate one or more virtual machines. Bulk Actions begins processing the request immediately and returns a
+     * Bulk Action Operation Id for each virtual machine. Use the returned IDs to get operation status updates.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The virtual machines to deallocate and the execution settings for the bulk action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a deallocate request.
+     * @return the result of a bulk deallocate action.
      */
     DeallocateResourceOperationResponse bulkDeallocateOperation(String resourceGroupName, String location,
         ExecuteDeallocateContent requestBody);
 
     /**
-     * BulkHibernate: Execute hibernate operation for a batch of virtual machines, this operation is triggered as soon
-     * as Computeschedule receives it.
+     * Hibernate one or more virtual machines that support hibernation. Bulk Actions begins processing the request
+     * immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get
+     * operation status updates.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The virtual machines to hibernate and the execution settings for the bulk action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a Hibernate request along with {@link Response}.
+     * @return the result of a bulk hibernate action along with {@link Response}.
      */
     Response<HibernateResourceOperationResponse> bulkHibernateOperationWithResponse(String resourceGroupName,
         String location, ExecuteHibernateContent requestBody, Context context);
 
     /**
-     * BulkHibernate: Execute hibernate operation for a batch of virtual machines, this operation is triggered as soon
-     * as Computeschedule receives it.
+     * Hibernate one or more virtual machines that support hibernation. Bulk Actions begins processing the request
+     * immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get
+     * operation status updates.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The virtual machines to hibernate and the execution settings for the bulk action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a Hibernate request.
+     * @return the result of a bulk hibernate action.
      */
     HibernateResourceOperationResponse bulkHibernateOperation(String resourceGroupName, String location,
         ExecuteHibernateContent requestBody);
 
     /**
-     * BulkStart: Execute start operation for a batch of virtual machines, this operation is triggered as soon as
-     * Computeschedule receives it.
+     * Start one or more virtual machines. Bulk Actions begins processing the request immediately and returns a Bulk
+     * Action Operation Id for each virtual machine. Use the returned IDs to get operation status updates.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The virtual machines to start and the execution settings for the bulk action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a start request along with {@link Response}.
+     * @return the result of a bulk start action along with {@link Response}.
      */
     Response<StartResourceOperationResponse> bulkStartOperationWithResponse(String resourceGroupName, String location,
         ExecuteStartContent requestBody, Context context);
 
     /**
-     * BulkStart: Execute start operation for a batch of virtual machines, this operation is triggered as soon as
-     * Computeschedule receives it.
+     * Start one or more virtual machines. Bulk Actions begins processing the request immediately and returns a Bulk
+     * Action Operation Id for each virtual machine. Use the returned IDs to get operation status updates.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The virtual machines to start and the execution settings for the bulk action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a start request.
+     * @return the result of a bulk start action.
      */
     StartResourceOperationResponse bulkStartOperation(String resourceGroupName, String location,
         ExecuteStartContent requestBody);
 
     /**
-     * BulkDelete: Execute delete operation for a batch of virtual machines, this operation is triggered as soon as
-     * Computeschedule receives it.
+     * Delete one or more virtual machines. This operation is destructive. Bulk Actions begins processing the request
+     * immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get
+     * operation status updates.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The virtual machines to delete and the execution settings for the bulk action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a delete request along with {@link Response}.
+     * @return the result of a bulk delete action along with {@link Response}.
      */
     Response<DeleteResourceOperationResponse> bulkDeleteOperationWithResponse(String resourceGroupName, String location,
         ExecuteDeleteContent requestBody, Context context);
 
     /**
-     * BulkDelete: Execute delete operation for a batch of virtual machines, this operation is triggered as soon as
-     * Computeschedule receives it.
+     * Delete one or more virtual machines. This operation is destructive. Bulk Actions begins processing the request
+     * immediately and returns a Bulk Action Operation Id for each virtual machine. Use the returned IDs to get
+     * operation status updates.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The virtual machines to delete and the execution settings for the bulk action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a delete request.
+     * @return the result of a bulk delete action.
      */
     DeleteResourceOperationResponse bulkDeleteOperation(String resourceGroupName, String location,
         ExecuteDeleteContent requestBody);
 
     /**
-     * BulkGetOperationsStatus: Polling endpoint to read status of operations performed on virtual machines.
+     * Get the current status of one or more operations identified by their Bulk Action Operation Ids.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The Bulk Action Operation Ids that identify the operations for which current status should be
+     * returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a get operations status request along with {@link Response}.
+     * @return the current status of one or more operations identified by their Bulk Action Operation Ids along with
+     * {@link Response}.
      */
     Response<GetOperationStatusResponse> bulkGetOperationsStatusWithResponse(String resourceGroupName, String location,
         GetOperationStatusContent requestBody, Context context);
 
     /**
-     * BulkGetOperationsStatus: Polling endpoint to read status of operations performed on virtual machines.
+     * Get the current status of one or more operations identified by their Bulk Action Operation Ids.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The Bulk Action Operation Ids that identify the operations for which current status should be
+     * returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a get operations status request.
+     * @return the current status of one or more operations identified by their Bulk Action Operation Ids.
      */
     GetOperationStatusResponse bulkGetOperationsStatus(String resourceGroupName, String location,
         GetOperationStatusContent requestBody);
 
     /**
-     * BulkCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
+     * Cancel one or more Bulk Actions operations by Bulk Action Operation Ids. Cancellation is best effort and work
+     * that has already completed is not reversed.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The Bulk Action Operation Ids that identify the operations to cancel.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a cancel operations request along with {@link Response}.
+     * @return the results of the cancellation requests along with {@link Response}.
      */
     Response<CancelOperationsResponse> bulkCancelOperationsWithResponse(String resourceGroupName, String location,
         CancelOperationsContent requestBody, Context context);
 
     /**
-     * BulkCancelOperations: Cancel a previously submitted (start/deallocate/hibernate) request.
+     * Cancel one or more Bulk Actions operations by Bulk Action Operation Ids. Cancellation is best effort and work
+     * that has already completed is not reversed.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The Bulk Action Operation Ids that identify the operations to cancel.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return this is the response from a cancel operations request.
+     * @return the results of the cancellation requests.
      */
     CancelOperationsResponse bulkCancelOperations(String resourceGroupName, String location,
         CancelOperationsContent requestBody);
 
     /**
-     * BulkReimage: Execute reimage operation for a batch of virtual machines, this operation is triggered as soon as
-     * Computeschedule receives it.
+     * This feature is currently in preview.
+     * 
+     * Reimage one or more virtual machines. Reimaging is destructive and can replace operating system disk contents.
+     * Bulk Actions begins processing the request immediately and returns a Bulk Action Operation Id for each virtual
+     * machine. Use the returned IDs to get operation status updates.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The virtual machines to reimage and the execution settings for the bulk action.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a reimage request along with {@link Response}.
+     * @return the result of a bulk reimage action along with {@link Response}.
      */
     Response<ReimageResourceOperationResponse> bulkReimageOperationWithResponse(String resourceGroupName,
         String location, ExecuteReimageRequest requestBody, Context context);
 
     /**
-     * BulkReimage: Execute reimage operation for a batch of virtual machines, this operation is triggered as soon as
-     * Computeschedule receives it.
+     * This feature is currently in preview.
+     * 
+     * Reimage one or more virtual machines. Reimaging is destructive and can replace operating system disk contents.
+     * Bulk Actions begins processing the request immediately and returns a Bulk Action Operation Id for each virtual
+     * machine. Use the returned IDs to get operation status updates.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
-     * @param requestBody The request body.
+     * @param requestBody The virtual machines to reimage and the execution settings for the bulk action.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a reimage request.
+     * @return the result of a bulk reimage action.
      */
     ReimageResourceOperationResponse bulkReimageOperation(String resourceGroupName, String location,
         ExecuteReimageRequest requestBody);

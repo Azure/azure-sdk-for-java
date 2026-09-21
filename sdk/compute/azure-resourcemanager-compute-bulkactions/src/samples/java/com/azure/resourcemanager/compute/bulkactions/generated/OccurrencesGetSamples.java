@@ -9,17 +9,33 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class OccurrencesGetSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/Occurrences_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/Occurrences_Get_ComprehensiveSuccess.json
      */
     /**
-     * Sample code: Get a scheduled action occurrence.
+     * Sample code: 02 - Read a recurring scheduled action occurrence with mixed results.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        getAScheduledActionOccurrence(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        zeroTwoSpaceHyphenMinusSpaceReadSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrenceSpacewithSpacemixedSpaceresults(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
-            .getWithResponse("rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45",
+            .getWithResponse("example-rg", "weekday-start", "88888888-8888-8888-8888-888888888888",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-06-preview/Occurrences_Get_BasicSuccess.json
+     */
+    /**
+     * Sample code: 01 - Read a recurring scheduled action occurrence.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void zeroOneSpaceHyphenMinusSpaceReadSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.occurrences()
+            .getWithResponse("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
                 com.azure.core.util.Context.NONE);
     }
 }

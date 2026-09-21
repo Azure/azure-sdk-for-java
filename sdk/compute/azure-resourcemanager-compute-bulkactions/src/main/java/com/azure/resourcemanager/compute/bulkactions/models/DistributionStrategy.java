@@ -8,26 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The distribution strategy for zone allocation.
+ * The strategy Bulk Actions uses to distribute virtual machines across availability zones.
  */
 public final class DistributionStrategy extends ExpandableStringEnum<DistributionStrategy> {
     /**
-     * Platform attempts to place as many VMs as possible in a single zone, falls back to multiple zones if needed.
+     * Bulk Actions attempts to place as many virtual machines as possible in one availability zone and uses additional
+     * zones when needed.
      */
     public static final DistributionStrategy BEST_EFFORT_SINGLE_ZONE = fromString("BestEffortSingleZone");
 
     /**
-     * Platform uses customer-provided zone rankings to allocate VMs.
+     * Bulk Actions considers availability zones in the customer-specified rank order.
      */
     public static final DistributionStrategy PRIORITIZED = fromString("Prioritized");
 
     /**
-     * Platform attempts to evenly distribute VMs across all available zones with best effort.
+     * Bulk Actions attempts to distribute virtual machines evenly across the available zones.
      */
     public static final DistributionStrategy BEST_EFFORT_BALANCED = fromString("BestEffortBalanced");
 
     /**
-     * Platform must evenly distribute VMs across zones, request is rejected if exact balance cannot be achieved.
+     * Bulk Actions distributes virtual machines evenly across zones and rejects the request when an even distribution
+     * cannot be achieved.
      */
     public static final DistributionStrategy STRICT_BALANCED = fromString("StrictBalanced");
 
