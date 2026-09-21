@@ -36,6 +36,7 @@ import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
@@ -481,7 +482,7 @@ public final class PageBlobAsyncClientInternal {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
+     * <tr><td>x-ms-range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a blob
@@ -574,7 +575,7 @@ public final class PageBlobAsyncClientInternal {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>x-ms-previous-snapshot-url</td><td>String</td><td>No</td><td>Specifies the previous snapshot URL to be
      * compared in the diff.</td></tr>
-     * <tr><td>Range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
+     * <tr><td>x-ms-range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a blob
@@ -925,7 +926,7 @@ public final class PageBlobAsyncClientInternal {
         }
         if (blobContentMd5 != null) {
             requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-blob-content-md5"),
-                String.valueOf(blobContentMd5));
+                Base64.getEncoder().encodeToString(blobContentMd5));
         }
         if (blobCacheControl != null) {
             requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-blob-cache-control"), blobCacheControl);
@@ -1074,7 +1075,7 @@ public final class PageBlobAsyncClientInternal {
         }
         if (blobContentMd5 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-blob-content-md5"),
-                String.valueOf(blobContentMd5));
+                Base64.getEncoder().encodeToString(blobContentMd5));
         }
         if (blobCacheControl != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-blob-cache-control"), blobCacheControl);
@@ -1211,11 +1212,12 @@ public final class PageBlobAsyncClientInternal {
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         if (transactionalContentMd5 != null) {
-            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5, String.valueOf(transactionalContentMd5));
+            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5,
+                Base64.getEncoder().encodeToString(transactionalContentMd5));
         }
         if (transactionalContentCrc64 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-content-crc64"),
-                String.valueOf(transactionalContentCrc64));
+                Base64.getEncoder().encodeToString(transactionalContentCrc64));
         }
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
@@ -1330,11 +1332,12 @@ public final class PageBlobAsyncClientInternal {
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         if (transactionalContentMd5 != null) {
-            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5, String.valueOf(transactionalContentMd5));
+            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5,
+                Base64.getEncoder().encodeToString(transactionalContentMd5));
         }
         if (transactionalContentCrc64 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-content-crc64"),
-                String.valueOf(transactionalContentCrc64));
+                Base64.getEncoder().encodeToString(transactionalContentCrc64));
         }
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
@@ -1699,11 +1702,11 @@ public final class PageBlobAsyncClientInternal {
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         if (sourceContentMd5 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-content-md5"),
-                String.valueOf(sourceContentMd5));
+                Base64.getEncoder().encodeToString(sourceContentMd5));
         }
         if (sourceContentCrc64 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-content-crc64"),
-                String.valueOf(sourceContentCrc64));
+                Base64.getEncoder().encodeToString(sourceContentCrc64));
         }
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
@@ -1862,11 +1865,11 @@ public final class PageBlobAsyncClientInternal {
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         if (sourceContentMd5 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-content-md5"),
-                String.valueOf(sourceContentMd5));
+                Base64.getEncoder().encodeToString(sourceContentMd5));
         }
         if (sourceContentCrc64 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-content-crc64"),
-                String.valueOf(sourceContentCrc64));
+                Base64.getEncoder().encodeToString(sourceContentCrc64));
         }
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
@@ -2018,7 +2021,7 @@ public final class PageBlobAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (range != null) {
-            requestOptions.setHeader(HttpHeaderName.RANGE, range);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-range"), range);
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
@@ -2092,7 +2095,7 @@ public final class PageBlobAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (range != null) {
-            requestOptions.setHeader(HttpHeaderName.RANGE, range);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-range"), range);
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
@@ -2193,7 +2196,7 @@ public final class PageBlobAsyncClientInternal {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-previous-snapshot-url"), prevSnapshotUrl);
         }
         if (range != null) {
-            requestOptions.setHeader(HttpHeaderName.RANGE, range);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-range"), range);
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
@@ -2276,7 +2279,7 @@ public final class PageBlobAsyncClientInternal {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-previous-snapshot-url"), prevSnapshotUrl);
         }
         if (range != null) {
-            requestOptions.setHeader(HttpHeaderName.RANGE, range);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-range"), range);
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);

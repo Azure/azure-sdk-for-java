@@ -27,6 +27,7 @@ import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.FileShareTokenIntent;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
@@ -505,7 +506,7 @@ public final class AppendBlobAsyncClientInternal {
         }
         if (blobContentMd5 != null) {
             requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-blob-content-md5"),
-                String.valueOf(blobContentMd5));
+                Base64.getEncoder().encodeToString(blobContentMd5));
         }
         if (blobCacheControl != null) {
             requestOptionsLocal.setHeader(HttpHeaderName.fromString("x-ms-blob-cache-control"), blobCacheControl);
@@ -643,7 +644,7 @@ public final class AppendBlobAsyncClientInternal {
         }
         if (blobContentMd5 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-blob-content-md5"),
-                String.valueOf(blobContentMd5));
+                Base64.getEncoder().encodeToString(blobContentMd5));
         }
         if (blobCacheControl != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-blob-cache-control"), blobCacheControl);
@@ -773,11 +774,12 @@ public final class AppendBlobAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (transactionalContentMd5 != null) {
-            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5, String.valueOf(transactionalContentMd5));
+            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5,
+                Base64.getEncoder().encodeToString(transactionalContentMd5));
         }
         if (transactionalContentCrc64 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-content-crc64"),
-                String.valueOf(transactionalContentCrc64));
+                Base64.getEncoder().encodeToString(transactionalContentCrc64));
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
@@ -883,11 +885,12 @@ public final class AppendBlobAsyncClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (transactionalContentMd5 != null) {
-            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5, String.valueOf(transactionalContentMd5));
+            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5,
+                Base64.getEncoder().encodeToString(transactionalContentMd5));
         }
         if (transactionalContentCrc64 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-content-crc64"),
-                String.valueOf(transactionalContentCrc64));
+                Base64.getEncoder().encodeToString(transactionalContentCrc64));
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
@@ -1033,17 +1036,18 @@ public final class AppendBlobAsyncClientInternal {
         }
         if (sourceContentMd5 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-content-md5"),
-                String.valueOf(sourceContentMd5));
+                Base64.getEncoder().encodeToString(sourceContentMd5));
         }
         if (sourceContentCrc64 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-content-crc64"),
-                String.valueOf(sourceContentCrc64));
+                Base64.getEncoder().encodeToString(sourceContentCrc64));
         }
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (transactionalContentMd5 != null) {
-            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5, String.valueOf(transactionalContentMd5));
+            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5,
+                Base64.getEncoder().encodeToString(transactionalContentMd5));
         }
         if (encryptionKey != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-key"), encryptionKey);
@@ -1195,17 +1199,18 @@ public final class AppendBlobAsyncClientInternal {
         }
         if (sourceContentMd5 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-content-md5"),
-                String.valueOf(sourceContentMd5));
+                Base64.getEncoder().encodeToString(sourceContentMd5));
         }
         if (sourceContentCrc64 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-source-content-crc64"),
-                String.valueOf(sourceContentCrc64));
+                Base64.getEncoder().encodeToString(sourceContentCrc64));
         }
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (transactionalContentMd5 != null) {
-            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5, String.valueOf(transactionalContentMd5));
+            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5,
+                Base64.getEncoder().encodeToString(transactionalContentMd5));
         }
         if (encryptionKey != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-encryption-key"), encryptionKey);

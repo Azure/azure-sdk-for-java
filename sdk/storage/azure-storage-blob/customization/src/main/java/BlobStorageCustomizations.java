@@ -89,6 +89,7 @@ public class BlobStorageCustomizations extends Customization {
         restoreObjectReplicationHeaderCollection(editor, logger);
         removeMultipartBatchConvenience(customization, editor, logger);
         mapInternalStorageException(editor, logger);
+        base64EncodeBinaryHeaders(editor, logger);
     }
 
     private static void removeGeneratedFiles(Editor editor, Logger logger) {
@@ -458,6 +459,44 @@ public class BlobStorageCustomizations extends Customization {
             editor.replaceFile(path, updated);
             logger.info("Mapped the internal storage exception to BlobStorageException in {}.", className);
         }
+    }
+
+    // MD5 and CRC64 headers are byte[] on the wire-facing signatures, and the emitter writes them with
+    // String.valueOf, which yields the array's identity ("[B@3514ee58") rather than its base64 form. Declaring the
+    // spec scalar as base64Bytes does not change this -- typespec-java ignores @encode for header parameters -- so
+    // the encoding is applied here instead. Keyed on the parameter names rather than the header names so both the
+    // request-building and the convenience overloads are covered.
+    private static final List<String> BASE64_HEADER_PARAMETERS = Arrays.asList("blobContentMd5", "contentMd5",
+        "contentCrc64", "transactionalContentMd5", "transactionalContentCrc64", "sourceContentMd5",
+        "sourceContentCrc64");
+
+    private static void base64EncodeBinaryHeaders(Editor editor, Logger logger) {
+        int encoded = 0;
+        for (String path : new ArrayList<>(editor.getContents().keySet())) {
+            if (!path.startsWith(PKG_ROOT + "implementation/")) {
+                continue;
+            }
+            String content = editor.getContents().get(path);
+            if (content == null) {
+                continue;
+            }
+            String updated = content;
+            for (String parameter : BASE64_HEADER_PARAMETERS) {
+                updated = updated.replaceAll("String\\.valueOf\\(" + parameter + "\\)",
+                    "Base64.getEncoder().encodeToString(" + parameter + ")");
+            }
+            if (updated.equals(content)) {
+                continue;
+            }
+            updated = addImport(updated, "import java.util.Base64;");
+            editor.replaceFile(path, updated);
+            encoded++;
+        }
+        if (encoded == 0) {
+            throw new IllegalStateException(
+                "No binary header parameters found to base64 encode; the emitter output changed.");
+        }
+        logger.info("Base64 encoded the binary headers in {} file(s).", encoded);
     }
 
     private static void restoreHeaderSetters(PackageCustomization implModels, Logger logger) {

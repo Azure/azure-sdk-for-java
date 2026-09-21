@@ -92,7 +92,7 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> uploadPages(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Range") String range,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-page-write") String pageWrite, @BodyParam("application/octet-stream") BinaryData body,
             RequestOptions requestOptions, Context context);
 
@@ -101,7 +101,7 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> uploadPagesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Range") String range,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-page-write") String pageWrite, @BodyParam("application/octet-stream") BinaryData body,
             RequestOptions requestOptions, Context context);
 
@@ -110,7 +110,7 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> clearPages(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("Content-Length") int contentLength,
-            @HeaderParam("Range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
             RequestOptions requestOptions, Context context);
 
         @Put("?comp=page")
@@ -118,7 +118,7 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> clearPagesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @HeaderParam("Content-Length") int contentLength,
-            @HeaderParam("Range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
             RequestOptions requestOptions, Context context);
 
         @Put("?comp=page")
@@ -127,7 +127,7 @@ public final class PageBlobsImpl {
         Mono<Response<Void>> uploadPagesFromUrl(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @HeaderParam("x-ms-copy-source") String sourceUrl, @HeaderParam("x-ms-source-range") String sourceRange,
-            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Range") String range,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-page-write") String pageWrite, RequestOptions requestOptions, Context context);
 
         @Put("?comp=page")
@@ -136,7 +136,7 @@ public final class PageBlobsImpl {
         Response<Void> uploadPagesFromUrlSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
             @HeaderParam("x-ms-copy-source") String sourceUrl, @HeaderParam("x-ms-source-range") String sourceRange,
-            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Range") String range,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-page-write") String pageWrite, RequestOptions requestOptions, Context context);
 
         @Get("?comp=pagelist")
@@ -1081,7 +1081,7 @@ public final class PageBlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
+     * <tr><td>x-ms-range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a blob
@@ -1173,7 +1173,7 @@ public final class PageBlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
+     * <tr><td>x-ms-range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a blob
@@ -1271,7 +1271,7 @@ public final class PageBlobsImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>x-ms-previous-snapshot-url</td><td>String</td><td>No</td><td>Specifies the previous snapshot URL to be
      * compared in the diff.</td></tr>
-     * <tr><td>Range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
+     * <tr><td>x-ms-range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a blob
@@ -1367,7 +1367,7 @@ public final class PageBlobsImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>x-ms-previous-snapshot-url</td><td>String</td><td>No</td><td>Specifies the previous snapshot URL to be
      * compared in the diff.</td></tr>
-     * <tr><td>Range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
+     * <tr><td>x-ms-range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>If-Modified-Since</td><td>OffsetDateTime</td><td>No</td><td>Specify this value to operate only on a blob

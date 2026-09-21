@@ -423,7 +423,7 @@ public final class BlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
+     * <tr><td>x-ms-range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>x-ms-range-get-content-md5</td><td>Boolean</td><td>No</td><td>When set to true and specified together
@@ -573,7 +573,7 @@ public final class BlobsImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
+     * <tr><td>x-ms-range</td><td>String</td><td>No</td><td>Specifies the range of the blob to operate on.</td></tr>
      * <tr><td>x-ms-lease-id</td><td>String</td><td>No</td><td>If specified, the operation only succeeds if the
      * resource's lease is active and matches this ID.</td></tr>
      * <tr><td>x-ms-range-get-content-md5</td><td>Boolean</td><td>No</td><td>When set to true and specified together
