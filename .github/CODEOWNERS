@@ -953,7 +953,7 @@
 
 # ######## Eng Sys ########
 
-/eng/                                                              @raych1
+/eng/                                                              @raych1 @praveenkuttappan
 /eng/automation/                                                   @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @raych1
 /eng/bomgenerator/                                                 @vcolin7 @alzimmermsft @jonathangiles @Azure/azure-java-sdk
 /eng/code-quality-reports/                                         @JonathanGiles @alzimmermsft @domainname @dingmeng-xue @moarychan @Azure/azure-java-sdk
