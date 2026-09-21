@@ -87,6 +87,7 @@ public final class VoiceAgentWebSocketUtils {
     private static boolean isProtectedHeader(String name) {
         String lower = name.toLowerCase(Locale.ROOT);
         return "authorization".equals(lower)
+            || "user-agent".equals(lower)
             || "host".equals(lower)
             || "upgrade".equals(lower)
             || "connection".equals(lower)

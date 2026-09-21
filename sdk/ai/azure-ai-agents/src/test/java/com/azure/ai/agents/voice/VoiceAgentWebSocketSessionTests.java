@@ -60,7 +60,9 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
@@ -79,6 +81,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ResourceLock("voice-agent-websocket-tls")
 public class VoiceAgentWebSocketSessionTests {
     private static final String TRUST_STORE_PROPERTY = "javax.net.ssl.trustStore";
     private static final String TRUST_STORE_PASSWORD_PROPERTY = "javax.net.ssl.trustStorePassword";
@@ -89,55 +92,12 @@ public class VoiceAgentWebSocketSessionTests {
     private static final SSLContext ORIGINAL_SSL_CONTEXT = getDefaultSslContext();
     private static final TestCertificate TLS_CERTIFICATE = TestCertificate.create();
 
-    static {
+    @BeforeAll
+    static void installTlsCertificate() {
         TLS_CERTIFICATE.installTrustStore();
     }
 
     private DisposableServer server;
-
-    @ParameterizedTest
-    @ValueSource(booleans = { false, true })
-    public void handshakeUsesSdkManagedProtocolValues(boolean async) {
-        AtomicReference<String> requestUri = new AtomicReference<>();
-        AtomicReference<io.netty.handler.codec.http.HttpHeaders> headers = new AtomicReference<>();
-        server = tlsServer().host("localhost").port(0).handle((request, response) -> {
-            requestUri.set(request.uri());
-            headers.set(request.requestHeaders().copy());
-            return response.sendWebsocket((inbound, outbound) -> inbound.receive().then(),
-                WebsocketServerSpec.builder().protocols("realtime").build());
-        }).bindNow();
-        AgentsClientBuilder builder
-            = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project/")
-                .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
-                .configuration(Configuration.NONE)
-                .clientOptions(
-                    new ClientOptions().setHeaders(Collections.singletonList(new Header("X-Custom", "custom-value"))));
-        if (async) {
-            BetaVoiceAgentWebSocketSessionAsyncClient session = builder.beta()
-                .buildBetaVoiceAgentWebSocketAsyncClient()
-                .openWebSocketSession("agent name")
-                .block(Duration.ofSeconds(5));
-            session.closeAsync().block(Duration.ofSeconds(5));
-            assertFalse(session.isOpen());
-        } else {
-            BetaVoiceAgentWebSocketSessionClient session
-                = builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession("agent name");
-            session.close();
-            assertFalse(session.isOpen());
-        }
-        assertEquals("Bearer test-token", headers.get().get(HttpHeaderNames.AUTHORIZATION));
-        assertEquals("realtime", headers.get().get(HttpHeaderNames.SEC_WEBSOCKET_PROTOCOL));
-        assertEquals("VoiceAgents=V1Preview", headers.get().get("Foundry-Features"));
-        assertEquals("custom-value", headers.get().get("X-Custom"));
-        assertEquals(1, headers.get().getAll(HttpHeaderNames.USER_AGENT).size());
-        String userAgent = headers.get().get(HttpHeaderNames.USER_AGENT);
-        assertTrue(userAgent.startsWith("azsdk-java-azure-ai-agents/"), userAgent);
-        String uri = decode(requestUri.get());
-        assertTrue(uri.contains("api-version=v1"));
-        assertTrue(uri.contains("transport=websocket"));
-        assertTrue(uri.contains("x-ms-client-sdk=" + userAgent));
-        assertTrue(uri.startsWith("/api/projects/project/agents/agent name/endpoint/protocols/voice?"));
-    }
 
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
@@ -388,7 +348,7 @@ public class VoiceAgentWebSocketSessionTests {
         assertFalse(requested.get());
     }
 
-    private static HttpServer tlsServer() {
+    static HttpServer tlsServer() {
         return HttpServer.create()
             .secure(ssl -> ssl.sslContext(Http11SslContextSpec.forServer(TLS_CERTIFICATE.keyManagerFactory)));
     }
@@ -489,12 +449,11 @@ public class VoiceAgentWebSocketSessionTests {
     }
 
     @AfterAll
-    public static void deleteTlsCertificate() {
+    static void restoreTlsConfiguration() {
         SSLContext.setDefault(ORIGINAL_SSL_CONTEXT);
         restoreProperty(TRUST_STORE_PROPERTY, ORIGINAL_TRUST_STORE);
         restoreProperty(TRUST_STORE_PASSWORD_PROPERTY, ORIGINAL_TRUST_STORE_PASSWORD);
         restoreProperty(TRUST_STORE_TYPE_PROPERTY, ORIGINAL_TRUST_STORE_TYPE);
-        TLS_CERTIFICATE.delete();
     }
 
     @Test
@@ -996,6 +955,7 @@ public class VoiceAgentWebSocketSessionTests {
             try {
                 Path path = Files.createTempFile("voice-agent-websocket-", ".p12");
                 Files.delete(path);
+                path.toFile().deleteOnExit();
                 String password = UUID.randomUUID().toString();
                 String executable
                     = Paths
@@ -1038,13 +998,6 @@ public class VoiceAgentWebSocketSessionTests {
             }
         }
 
-        private void delete() {
-            try {
-                Files.deleteIfExists(path);
-            } catch (Exception error) {
-                throw new IllegalStateException(error);
-            }
-        }
     }
 
     private static SSLContext getDefaultSslContext() {

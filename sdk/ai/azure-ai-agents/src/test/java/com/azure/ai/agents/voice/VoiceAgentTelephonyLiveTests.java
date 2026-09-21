@@ -39,7 +39,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.parallel.Execution;
@@ -67,6 +66,10 @@ public class VoiceAgentTelephonyLiveTests {
     private static final Duration CALL_TIMEOUT = Duration.ofMinutes(2);
     private static final Duration POLL_INTERVAL = Duration.ofSeconds(2);
 
+    /**
+     * Validates the service lifecycle against an actual Twilio connection and phone number. The corresponding HTTP
+     * request and response contracts are covered without provider resources in {@link VoiceAgentTelephonyTests}.
+     */
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
     public void bindingLifecycleLive() {
@@ -81,7 +84,7 @@ public class VoiceAgentTelephonyLiveTests {
             .allowPreview(true);
         AgentsClient agents = builder.buildAgentsClient();
         BetaVoiceAgentsTelephonyClient telephony = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        String agentName = "tel-bind-" + randomNumber();
+        String agentName = "tel-bind-" + shortId();
         boolean agentCreated = false;
         String bindingId = null;
         try {
@@ -136,7 +139,7 @@ public class VoiceAgentTelephonyLiveTests {
             .allowPreview(true);
         AgentsClient agents = builder.buildAgentsClient();
         BetaVoiceAgentsTelephonyClient telephony = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        String suffix = Integer.toString(randomNumber());
+        String suffix = shortId();
         String inboundAgent = "tel-in-" + suffix;
         String outboundAgent = "tel-out-" + suffix;
         String callJobId = null;
@@ -297,8 +300,8 @@ public class VoiceAgentTelephonyLiveTests {
         return value;
     }
 
-    private static int randomNumber() {
-        return ThreadLocalRandom.current().nextInt(100);
+    private static String shortId() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 12);
     }
 
     private static TelephonyBindingListItem findBinding(BetaVoiceAgentsTelephonyClient telephony, String agentName,
