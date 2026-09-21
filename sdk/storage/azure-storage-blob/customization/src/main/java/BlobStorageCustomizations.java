@@ -90,6 +90,7 @@ public class BlobStorageCustomizations extends Customization {
         removeMultipartBatchConvenience(customization, editor, logger);
         mapInternalStorageException(editor, logger);
         base64EncodeBinaryHeaders(editor, logger);
+        initializeEmptyListSegments(editor, logger);
     }
 
     private static void removeGeneratedFiles(Editor editor, Logger logger) {
@@ -392,17 +393,38 @@ public class BlobStorageCustomizations extends Customization {
     }
 
     // PageList reaches its continuation token through PageListHelper, not through public accessors: the shipped
-    // getNextMarker/setNextMarker are package-private, and widening them would add public API.
+    // getNextMarker/setNextMarker are package-private, and widening them would add public API. The helper's accessor
+    // is installed by a static initialiser on the model itself, so it has to be restored alongside the visibility --
+    // without it PageListHelper.accessor stays null and every paged getPageRanges call throws.
     private static void restorePageListMarkerVisibility(PackageCustomization models, Logger logger) {
         if (models.getClass("PageList") == null) {
             logger.info("PageList not present; skipping the marker visibility restoration.");
             return;
         }
-        models.getClass("PageList").customizeAst(ast -> ast.getClassByName("PageList").ifPresent(clazz -> {
-            clazz.getMethodsByName("getNextMarker").forEach(m -> m.removeModifier(Modifier.Keyword.PUBLIC));
-            clazz.getMethodsByName("setNextMarker").forEach(m -> m.removeModifier(Modifier.Keyword.PUBLIC));
-        }));
-        logger.info("Restored the package-private next marker accessors on PageList.");
+        models.getClass("PageList").customizeAst(ast -> {
+            ast.addImport("com.azure.storage.blob.implementation.models.PageListHelper");
+            ast.getClassByName("PageList").ifPresent(clazz -> {
+                clazz.getMethodsByName("getNextMarker").forEach(m -> m.removeModifier(Modifier.Keyword.PUBLIC));
+                clazz.getMethodsByName("setNextMarker").forEach(m -> m.removeModifier(Modifier.Keyword.PUBLIC));
+
+                if (clazz.getMembers().stream().noneMatch(m -> m.isInitializerDeclaration())) {
+                    clazz.getMembers()
+                        .add(0, StaticJavaParser.parseBodyDeclaration("static {\n"
+                            + "        PageListHelper.setAccessor(new PageListHelper.PageListAccessor() {\n"
+                            + "            @Override\n"
+                            + "            public String getNextMarker(PageList pageList) {\n"
+                            + "                return pageList.getNextMarker();\n"
+                            + "            }\n\n"
+                            + "            @Override\n"
+                            + "            public PageList setNextMarker(PageList pageList, String marker) {\n"
+                            + "                return pageList.setNextMarker(marker);\n"
+                            + "            }\n"
+                            + "        });\n"
+                            + "    }"));
+                }
+            });
+        });
+        logger.info("Restored the package-private next marker accessors and the helper hook on PageList.");
     }
 
     // Every error response from Blob Storage is an XML StorageError. The emitter maps status codes onto generic
@@ -497,6 +519,38 @@ public class BlobStorageCustomizations extends Customization {
                 "No binary header parameters found to base64 encode; the emitter output changed.");
         }
         logger.info("Base64 encoded the binary headers in {} file(s).", encoded);
+    }
+
+    // A hierarchical listing page can contain only blobs or only prefixes, and fromXml assigns whichever collection
+    // the document did not carry as null -- overwriting the field initialiser. The shipped model never handed back a
+    // null collection and the hand-written container clients walk both without a null check, so the getters default.
+    private static void initializeEmptyListSegments(Editor editor, Logger logger) {
+        String path = PKG_ROOT + "implementation/models/BlobHierarchyListSegment.java";
+        String content = editor.getContents().get(path);
+        if (content == null) {
+            logger.info("BlobHierarchyListSegment not present; skipping the empty-segment defaulting.");
+            return;
+        }
+        String updated = content
+            .replaceAll("(public List<BlobItemInternal> getBlobItems\\(\\) \\{\\s*)return this\\.blobItems;",
+                "$1if (this.blobItems == null) {\n            this.blobItems = new ArrayList<>();\n        }\n"
+                    + "        return this.blobItems;")
+            .replaceAll("(public List<BlobPrefix> getBlobPrefixes\\(\\) \\{\\s*)return this\\.blobPrefixes;",
+                "$1if (this.blobPrefixes == null) {\n            this.blobPrefixes = new ArrayList<>();\n        }\n"
+                    + "        return this.blobPrefixes;");
+        if (updated.equals(content)) {
+            throw new IllegalStateException(
+                "BlobHierarchyListSegment getters not found; the emitter output changed.");
+        }
+        // fromXml declares both locals as null but only guards the one whose field has no initialiser, so a page
+        // of pure prefixes dereferences a null list. Add the guard the emitter left out.
+        String prefixAdd = "blobPrefixes.add(BlobPrefix.fromXml(reader, \"BlobPrefix\"));";
+        updated = updated.replace(prefixAdd,
+            "if (blobPrefixes == null) {\n                            blobPrefixes = new ArrayList<>();\n"
+                + "                        }\n                        " + prefixAdd);
+
+        editor.replaceFile(path, addImport(updated, "import java.util.ArrayList;"));
+        logger.info("Defaulted the BlobHierarchyListSegment collections to empty lists.");
     }
 
     private static void restoreHeaderSetters(PackageCustomization implModels, Logger logger) {

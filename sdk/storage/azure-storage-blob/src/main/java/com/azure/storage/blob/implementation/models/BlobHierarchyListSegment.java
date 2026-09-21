@@ -40,6 +40,9 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      */
     @Generated
     public List<BlobItemInternal> getBlobItems() {
+        if (this.blobItems == null) {
+            this.blobItems = new ArrayList<>();
+        }
         return this.blobItems;
     }
 
@@ -50,6 +53,9 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      */
     @Generated
     public List<BlobPrefix> getBlobPrefixes() {
+        if (this.blobPrefixes == null) {
+            this.blobPrefixes = new ArrayList<>();
+        }
         return this.blobPrefixes;
     }
 
@@ -118,6 +124,9 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
                     }
                     blobItems.add(BlobItemInternal.fromXml(reader, "Blob"));
                 } else if ("BlobPrefix".equals(elementName.getLocalPart())) {
+                    if (blobPrefixes == null) {
+                        blobPrefixes = new ArrayList<>();
+                    }
                     blobPrefixes.add(BlobPrefix.fromXml(reader, "BlobPrefix"));
                 } else {
                     reader.skipElement();

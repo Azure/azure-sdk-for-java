@@ -8,6 +8,7 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.storage.common.Utility;
 
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.net.URL;
 
 import java.util.List;
@@ -91,7 +92,7 @@ public final class RequestOptionsHelper {
      */
     public static RequestOptions containerRequestOptions(Context context, String baseUrl, String containerName) {
         RequestOptions requestOptions = requestOptions(context);
-        scopeRequestToResourcePath(requestOptions, resourcePath(baseUrl, Utility.urlEncode(containerName)));
+        scopeRequestToResourcePath(requestOptions, resourcePath(baseUrl, encodePathSegment(containerName)));
         return requestOptions;
     }
 
@@ -108,8 +109,44 @@ public final class RequestOptionsHelper {
         String blobName) {
         RequestOptions requestOptions = requestOptions(context);
         scopeRequestToResourcePath(requestOptions,
-            resourcePath(baseUrl, Utility.urlEncode(containerName) + "/" + Utility.urlEncode(blobName)));
+            resourcePath(baseUrl, encodePathSegment(containerName) + "/" + encodePathSegment(blobName)));
         return requestOptions;
+    }
+
+    /**
+    /**
+     * Percent-encodes a single path segment the way {@code RestProxy} encodes an unencoded {@code @PathParam}, which
+     * is what the generated layer did before the resource path moved onto the request options.
+     * <p>
+     * {@link Utility#urlEncode(String)} is not equivalent: it escapes the sub-delimiters that RFC 3986 allows
+     * unescaped in a path segment, so the well-known container names {@code $root}, {@code $logs} and {@code $web}
+     * would go out as {@code %24root} and friends, which is not the URL the service or the recordings expect.
+     *
+     * @param segment The single path segment to encode; must not contain a separator.
+     * @return The encoded segment.
+     */
+    private static String encodePathSegment(String segment) {
+        if (segment == null || segment.isEmpty()) {
+            return segment;
+        }
+        StringBuilder encoded = new StringBuilder(segment.length());
+        for (byte b : segment.getBytes(StandardCharsets.UTF_8)) {
+            int c = b & 0xFF;
+            if (isPathSegmentSafe(c)) {
+                encoded.append((char) c);
+            } else {
+                encoded.append('%').append(String.format("%02X", c));
+            }
+        }
+        return encoded.toString();
+    }
+
+    /** RFC 3986 pchar minus the percent sign: unreserved / sub-delims / ":" / "@". */
+    private static boolean isPathSegmentSafe(int c) {
+        return (c >= 'A' && c <= 'Z')
+            || (c >= 'a' && c <= 'z')
+            || (c >= '0' && c <= '9')
+            || "-._~!$&'()*+,;=:@".indexOf(c) >= 0;
     }
 
     /**

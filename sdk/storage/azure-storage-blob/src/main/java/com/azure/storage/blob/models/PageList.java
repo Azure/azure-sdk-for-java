@@ -5,6 +5,7 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.storage.blob.implementation.models.PageListHelper;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -19,6 +20,21 @@ import javax.xml.stream.XMLStreamException;
  */
 @Fluent
 public final class PageList implements XmlSerializable<PageList> {
+
+    static {
+        PageListHelper.setAccessor(new PageListHelper.PageListAccessor() {
+
+            @Override
+            public String getNextMarker(PageList pageList) {
+                return pageList.getNextMarker();
+            }
+
+            @Override
+            public PageList setNextMarker(PageList pageList, String marker) {
+                return pageList.setNextMarker(marker);
+            }
+        });
+    }
 
     /*
      * The page ranges.
