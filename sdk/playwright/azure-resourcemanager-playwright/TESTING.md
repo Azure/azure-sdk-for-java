@@ -10,7 +10,7 @@ required.
 ## Run offline tests
 
 Install a JDK and Maven as described in the repository's
-[contributing guide](../../../CONTRIBUTING.md). JDK 21 is recommended for local
+[contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md). JDK 21 is recommended for local
 development.
 
 If you use unpacked JDK and Maven distributions, first configure the current
@@ -105,6 +105,6 @@ $env:AZURE_TEST_MODE = "PLAYBACK"
 ```
 
 For Maven feed authentication and dependency resolution errors, see the
-[contributing guide](../../../CONTRIBUTING.md#azure-artifacts-feed-setup).
+[contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#azure-artifacts-feed-setup).
 For general test conventions, see the
-[live testing guide](../../../docs/contributor/live-testing.md).
+[live testing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/live-testing.md).

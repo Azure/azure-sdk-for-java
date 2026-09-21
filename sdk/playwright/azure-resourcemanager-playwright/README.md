@@ -82,7 +82,7 @@ See [API design][design] for general introduction on design and key concepts on 
 For details on contributing to this repository, see the [contributing guide][cg].
 
 For local tests and the live workspace create, update, get, and cleanup scenario,
-see [Testing the Playwright management SDK](TESTING.md).
+see [Testing the Playwright management SDK](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/playwright/azure-resourcemanager-playwright/TESTING.md).
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <https://cla.microsoft.com>.
 
