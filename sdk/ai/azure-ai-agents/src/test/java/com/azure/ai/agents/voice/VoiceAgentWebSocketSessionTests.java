@@ -16,8 +16,11 @@ import com.azure.ai.agents.models.VoiceAgentWebSocketOverflowStrategy;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Header;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -27,6 +30,7 @@ import io.netty.handler.codec.http.websocketx.PongWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import java.io.InputStream;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,6 +39,7 @@ import java.security.KeyStore;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -84,6 +89,73 @@ public class VoiceAgentWebSocketSessionTests {
     }
 
     private DisposableServer server;
+
+    @Test
+    public void handshakeUsesSdkManagedProtocolValues() {
+        AtomicReference<String> requestUri = new AtomicReference<>();
+        AtomicReference<io.netty.handler.codec.http.HttpHeaders> headers = new AtomicReference<>();
+        server = tlsServer().host("localhost").port(0).handle((request, response) -> {
+            requestUri.set(request.uri());
+            headers.set(request.requestHeaders().copy());
+            return response.sendWebsocket((inbound, outbound) -> inbound.receive().then(),
+                WebsocketServerSpec.builder().protocols("realtime").build());
+        }).bindNow();
+        AgentsClientBuilder builder
+            = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project/")
+                .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
+                .configuration(Configuration.NONE)
+                .httpLogOptions(new HttpLogOptions().setApplicationId("log-app"))
+                .clientOptions(new ClientOptions().setApplicationId("client-app")
+                    .setHeaders(Arrays.asList(new Header("X-Custom", "custom-value"),
+                        new Header("Authorization", "Basic override"), new Header("User-Agent", "override-agent"),
+                        new Header("Foundry-Features", "override-feature"),
+                        new Header("Sec-WebSocket-Protocol", "override-protocol"))));
+
+        BetaVoiceAgentWebSocketSessionClient session
+            = builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession("agent name");
+        session.close();
+        assertFalse(session.isOpen());
+
+        assertEquals("Bearer test-token", headers.get().get(HttpHeaderNames.AUTHORIZATION));
+        assertEquals("realtime", headers.get().get(HttpHeaderNames.SEC_WEBSOCKET_PROTOCOL));
+        assertEquals("VoiceAgents=V1Preview", headers.get().get("Foundry-Features"));
+        assertEquals("custom-value", headers.get().get("X-Custom"));
+        assertEquals(1, headers.get().getAll(HttpHeaderNames.USER_AGENT).size());
+        String userAgent = headers.get().get(HttpHeaderNames.USER_AGENT);
+        assertTrue(userAgent.startsWith("client-app azsdk-java-azure-ai-agents/"), userAgent);
+        assertFalse(userAgent.contains("log-app"), userAgent);
+        assertFalse(userAgent.contains("override-agent"), userAgent);
+        String uri = decode(requestUri.get());
+        assertTrue(uri.contains("api-version=v1"));
+        assertTrue(uri.contains("transport=websocket"));
+        assertTrue(uri.contains("x-ms-client-sdk=" + userAgent));
+        assertTrue(uri.startsWith("/api/projects/project/agents/agent name/endpoint/protocols/voice?"));
+    }
+
+    @Test
+    public void handshakeUsesHttpLogApplicationIdFallback() {
+        AtomicReference<String> requestUri = new AtomicReference<>();
+        AtomicReference<String> userAgent = new AtomicReference<>();
+        server = tlsServer().host("localhost").port(0).handle((request, response) -> {
+            requestUri.set(request.uri());
+            userAgent.set(request.requestHeaders().get(HttpHeaderNames.USER_AGENT));
+            return response.sendWebsocket((inbound, outbound) -> inbound.receive().then(),
+                WebsocketServerSpec.builder().protocols("realtime").build());
+        }).bindNow();
+        AgentsClientBuilder builder
+            = new AgentsClientBuilder().endpoint("https://localhost:" + server.port() + "/api/projects/project")
+                .credential(request -> Mono.just(new AccessToken("test-token", OffsetDateTime.now().plusHours(1))))
+                .configuration(Configuration.NONE)
+                .httpLogOptions(new HttpLogOptions().setApplicationId("log-app"))
+                .clientOptions(new ClientOptions());
+
+        BetaVoiceAgentWebSocketSessionClient session
+            = builder.beta().buildBetaVoiceAgentWebSocketClient().openWebSocketSession("agent");
+        session.close();
+
+        assertTrue(userAgent.get().startsWith("log-app azsdk-java-azure-ai-agents/"), userAgent.get());
+        assertTrue(decode(requestUri.get()).contains("x-ms-client-sdk=" + userAgent.get()));
+    }
 
     @Test
     public void typedStringAndMappingSendsRejectInvalidJson() {
@@ -613,6 +685,14 @@ public class VoiceAgentWebSocketSessionTests {
             System.clearProperty(name);
         } else {
             System.setProperty(name, value);
+        }
+    }
+
+    private static String decode(String value) {
+        try {
+            return URLDecoder.decode(value, StandardCharsets.UTF_8.name());
+        } catch (Exception error) {
+            throw new IllegalStateException(error);
         }
     }
 
