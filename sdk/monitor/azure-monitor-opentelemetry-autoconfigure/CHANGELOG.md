@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Upgraded OpenTelemetry SDK dependencies to 1.65.0 and OpenTelemetry Instrumentation dependencies to 2.31.1.
+
 ## 1.7.0 (2026-09-17)
 
 ### Bugs Fixed
