@@ -30,7 +30,7 @@ public final class AudioTranscription implements JsonSerializable<AudioTranscrip
     private AudioTranscriptionModel model;
 
     /*
-     * 
+     *
      * The language of the input audio. Supplying the input language in
      * [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g. `en`) format
      * will improve accuracy and latency.
@@ -53,7 +53,7 @@ public final class AudioTranscription implements JsonSerializable<AudioTranscrip
     private List<String> keywords;
 
     /*
-     * 
+     *
      * An optional text to guide the model's style or continue a previous audio
      * segment.
      * For `whisper-1`, the [prompt is a list of keywords](/docs/guides/speech-to-text#prompting).
@@ -64,7 +64,12 @@ public final class AudioTranscription implements JsonSerializable<AudioTranscrip
     @Generated
     private String prompt;
 
-    // AI Tooling: openai-java de-dup
+    /*
+     * Controls how long the model waits before emitting transcription text.
+     * Higher values can improve transcription accuracy at the cost of latency.
+     * Only supported with `gpt-realtime-whisper` in GA Realtime sessions.
+     */
+    @Generated
     private Delay delay;
 
     /**
@@ -221,8 +226,8 @@ public final class AudioTranscription implements JsonSerializable<AudioTranscrip
      *
      * @return the delay value.
      */
+    @Generated
     public Delay getDelay() {
-        // AI Tooling: openai-java de-dup
         return this.delay;
     }
 
@@ -287,8 +292,8 @@ public final class AudioTranscription implements JsonSerializable<AudioTranscrip
      * @param delay the delay value to set.
      * @return the AudioTranscription object itself.
      */
+    @Generated
     public AudioTranscription setDelay(Delay delay) {
-        // AI Tooling: openai-java de-dup
         this.delay = delay;
         return this;
     }

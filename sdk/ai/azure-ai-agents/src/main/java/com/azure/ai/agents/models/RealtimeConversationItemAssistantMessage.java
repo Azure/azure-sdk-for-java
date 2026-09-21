@@ -49,10 +49,16 @@ public final class RealtimeConversationItemAssistantMessage extends RealtimeConv
     @Generated
     private RealtimeConversationItemObjectType object;
 
-    // AI Tooling: openai-java de-dup
+    /*
+     * The status of the item. Has no effect on the conversation.
+     */
+    @Generated
     private Status status;
 
-    // AI Tooling: openai-java de-dup
+    /*
+     * The content of the message.
+     */
+    @Generated
     private final List<Content> content;
 
     /*
@@ -150,8 +156,8 @@ public final class RealtimeConversationItemAssistantMessage extends RealtimeConv
      *
      * @return the status value.
      */
+    @Generated
     public Status getStatus() {
-        // AI Tooling: openai-java de-dup
         return this.status;
     }
 
@@ -160,8 +166,8 @@ public final class RealtimeConversationItemAssistantMessage extends RealtimeConv
      *
      * @return the content value.
      */
+    @Generated
     public List<Content> getContent() {
-        // AI Tooling: openai-java de-dup
         return this.content;
     }
 
@@ -268,8 +274,8 @@ public final class RealtimeConversationItemAssistantMessage extends RealtimeConv
      * @param status the status value to set.
      * @return the RealtimeConversationItemAssistantMessage object itself.
      */
+    @Generated
     public RealtimeConversationItemAssistantMessage setStatus(Status status) {
-        // AI Tooling: openai-java de-dup
         this.status = status;
         return this;
     }
