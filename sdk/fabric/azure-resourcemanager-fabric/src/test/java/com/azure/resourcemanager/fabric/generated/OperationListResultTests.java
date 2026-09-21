@@ -12,8 +12,8 @@ public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"fizuckyf\",\"isDataAction\":true,\"display\":{\"provider\":\"dfvzwdzuhty\",\"resource\":\"isdkfthwxmnteiw\",\"operation\":\"pvkmijcmmxdcuf\",\"description\":\"srp\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"sezcxtb\"}")
+            "{\"value\":[{\"name\":\"rkujy\",\"isDataAction\":false,\"display\":{\"provider\":\"uvfqawrlyxwj\",\"resource\":\"prbnwbxgjvtbv\",\"operation\":\"sszdnru\",\"description\":\"guhmuouqfpr\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"uitnwuiz\"}")
             .toObject(OperationListResult.class);
-        Assertions.assertEquals("sezcxtb", model.nextLink());
+        Assertions.assertEquals("uitnwuiz", model.nextLink());
     }
 }

@@ -97,11 +97,11 @@ public class RealtimeConversationItemMessage extends RealtimeConversationItem {
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("system".equals(discriminatorValue)) {
-                    return RealtimeConversationItemMessageSystem.fromJson(readerToUse.reset());
+                    return RealtimeConversationItemSystemMessage.fromJson(readerToUse.reset());
                 } else if ("user".equals(discriminatorValue)) {
-                    return RealtimeConversationItemMessageUser.fromJson(readerToUse.reset());
+                    return RealtimeConversationItemUserMessage.fromJson(readerToUse.reset());
                 } else if ("assistant".equals(discriminatorValue)) {
-                    return RealtimeConversationItemMessageAssistant.fromJson(readerToUse.reset());
+                    return RealtimeConversationItemAssistantMessage.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
