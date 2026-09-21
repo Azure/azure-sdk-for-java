@@ -833,6 +833,16 @@ public final class AgentsClientBuilder
         return new BetaVoiceAgentsTelephonyClient(buildInnerClient().getBetaVoiceAgentsTelephonies());
     }
 
+    /**
+     * Creates the parallel configuration path required by the native WebSocket transports. Azure Core's
+     * {@link HttpClient} and {@link HttpPipeline} abstractions don't expose WebSocket session operations, so these
+     * clients can't reuse the generated HTTP pipeline directly. Compatible builder settings are adapted for the
+     * WebSocket handshake and must remain aligned with {@code createHttpPipeline()} when the TypeSpec emitter changes.
+     * HTTP transport, pipeline, policy, and retry settings are rejected rather than silently ignored.
+     *
+     * @return the voice-agent WebSocket client configuration.
+     * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+     */
     private VoiceAgentWebSocketClientConfiguration createVoiceAgentWebSocketConfiguration() {
         validateClient();
         Objects.requireNonNull(tokenCredential,
