@@ -14,6 +14,9 @@ import com.azure.json.JsonWriter;
 import com.openai.models.realtime.RealtimeConversationItemAssistantMessage.Content;
 import com.openai.models.realtime.RealtimeConversationItemAssistantMessage.Status;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 /**
@@ -177,8 +180,11 @@ public final class RealtimeConversationItemAssistantMessage extends RealtimeConv
      * @return the createdAt value.
      */
     @Generated
-    public Long getCreatedAt() {
-        return this.createdAt;
+    public OffsetDateTime getCreatedAt() {
+        if (this.createdAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.createdAt), ZoneOffset.UTC);
     }
 
     /**
@@ -210,6 +216,8 @@ public final class RealtimeConversationItemAssistantMessage extends RealtimeConv
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.asString());
+        jsonWriter.writeNumberField("created_at", this.createdAt);
+        jsonWriter.writeStringField("response_id", this.responseId);
         return jsonWriter.writeEndObject();
     }
 

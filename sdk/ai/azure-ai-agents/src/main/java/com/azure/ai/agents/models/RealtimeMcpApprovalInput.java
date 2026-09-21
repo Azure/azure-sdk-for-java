@@ -10,6 +10,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 /**
  * Realtime MCP approval request
@@ -135,8 +138,11 @@ public final class RealtimeMcpApprovalInput extends RealtimeConversationItem {
      * @return the createdAt value.
      */
     @Generated
-    public Long getCreatedAt() {
-        return this.createdAt;
+    public OffsetDateTime getCreatedAt() {
+        if (this.createdAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.createdAt), ZoneOffset.UTC);
     }
 
     /**
