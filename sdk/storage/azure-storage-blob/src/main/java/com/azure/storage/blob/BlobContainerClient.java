@@ -1309,8 +1309,9 @@ public final class BlobContainerClient {
                         if (segment != null) {
                             segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
                             segment.getBlobPrefixes()
-                                .forEach(
-                                    prefix -> value.add(new BlobItem().setName(prefix.getName()).setIsPrefix(true)));
+                                .forEach(prefix -> value
+                                    .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName()))
+                                        .setIsPrefix(true)));
                         }
 
                         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
@@ -1338,7 +1339,8 @@ public final class BlobContainerClient {
             if (segment != null) {
                 segment.getBlobItems().forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
                 segment.getBlobPrefixes()
-                    .forEach(prefix -> value.add(new BlobItem().setName(prefix.getName()).setIsPrefix(true)));
+                    .forEach(prefix -> value
+                        .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName())).setIsPrefix(true)));
             }
 
             return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),

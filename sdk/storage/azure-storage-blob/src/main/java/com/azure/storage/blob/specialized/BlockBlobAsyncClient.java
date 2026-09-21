@@ -1045,7 +1045,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         StorageImplUtils.assertNotNull("options", options);
 
         return this.blockBlobClientInternal
-            .getBlockListWithResponse(options.getType(), getSnapshotId(), null, options.getLeaseId(),
+            .getBlockListWithResponse(getSnapshotId(), options.getType(), null, options.getLeaseId(),
                 options.getIfTagsMatch(), blockBlobRequestOptions(context))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }

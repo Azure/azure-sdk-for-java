@@ -5,7 +5,6 @@ package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.storage.blob.models.BlobPrefix;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -31,7 +30,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      * The blob prefixes.
      */
     @Generated
-    private List<BlobPrefix> blobPrefixes = new ArrayList<>();
+    private List<BlobPrefixInternal> blobPrefixes = new ArrayList<>();
 
     /**
      * Get the blobItems property: The blob items.
@@ -52,7 +51,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      * @return the blobPrefixes value.
      */
     @Generated
-    public List<BlobPrefix> getBlobPrefixes() {
+    public List<BlobPrefixInternal> getBlobPrefixes() {
         if (this.blobPrefixes == null) {
             this.blobPrefixes = new ArrayList<>();
         }
@@ -76,7 +75,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
             }
         }
         if (this.blobPrefixes != null) {
-            for (BlobPrefix element : this.blobPrefixes) {
+            for (BlobPrefixInternal element : this.blobPrefixes) {
                 xmlWriter.writeXml(element, "BlobPrefix");
             }
         }
@@ -115,7 +114,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
             = rootElementName == null || rootElementName.isEmpty() ? "BlobHierarchyList" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             List<BlobItemInternal> blobItems = null;
-            List<BlobPrefix> blobPrefixes = null;
+            List<BlobPrefixInternal> blobPrefixes = null;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
                 if ("Blob".equals(elementName.getLocalPart())) {
@@ -127,7 +126,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
                     if (blobPrefixes == null) {
                         blobPrefixes = new ArrayList<>();
                     }
-                    blobPrefixes.add(BlobPrefix.fromXml(reader, "BlobPrefix"));
+                    blobPrefixes.add(BlobPrefixInternal.fromXml(reader, "BlobPrefix"));
                 } else {
                     reader.skipElement();
                 }
@@ -165,7 +164,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
      * @return the BlobHierarchyListSegment object itself.
      */
     @Generated
-    public BlobHierarchyListSegment setBlobPrefixes(List<BlobPrefix> blobPrefixes) {
+    public BlobHierarchyListSegment setBlobPrefixes(List<BlobPrefixInternal> blobPrefixes) {
         this.blobPrefixes = blobPrefixes;
         return this;
     }

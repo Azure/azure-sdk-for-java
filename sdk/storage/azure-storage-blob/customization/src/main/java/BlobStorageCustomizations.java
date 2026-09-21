@@ -121,7 +121,7 @@ public class BlobStorageCustomizations extends Customization {
         "UserDelegationKey", "BlobCorsRule", "BlobAnalyticsLogging", "BlobRetentionPolicy", "BlobAccessPolicy",
         "BlobSignedIdentifier", "BlobMetrics", "BlobServiceStatistics", "KeyInfo", "Block", "BlockList",
         "BlobContainerItemProperties", "BlobContainerItem", "PageList",
-        "BlockLookupList", "PageRange", "ClearRange", "GeoReplication", "StaticWebsite", "BlobPrefix");
+        "BlockLookupList", "PageRange", "ClearRange", "GeoReplication", "StaticWebsite");
 
     private static final List<String> IMPL_FLUENT_MODELS_TO_RESTORE = Arrays.asList(
         "BlobItemPropertiesInternal", "BlobItemInternal", "FilterBlobItem", "QueryFormat", "QueryRequest",
@@ -524,6 +524,8 @@ public class BlobStorageCustomizations extends Customization {
     // A hierarchical listing page can contain only blobs or only prefixes, and fromXml assigns whichever collection
     // the document did not carry as null -- overwriting the field initialiser. The shipped model never handed back a
     // null collection and the hand-written container clients walk both without a null check, so the getters default.
+    // Matched on the shape of the accessor rather than on the element type, because the prefix model is renamed per
+    // language scope and a type-name match silently stops applying when that name changes.
     private static void initializeEmptyListSegments(Editor editor, Logger logger) {
         String path = PKG_ROOT + "implementation/models/BlobHierarchyListSegment.java";
         String content = editor.getContents().get(path);
@@ -531,26 +533,36 @@ public class BlobStorageCustomizations extends Customization {
             logger.info("BlobHierarchyListSegment not present; skipping the empty-segment defaulting.");
             return;
         }
-        String updated = content
-            .replaceAll("(public List<BlobItemInternal> getBlobItems\\(\\) \\{\\s*)return this\\.blobItems;",
-                "$1if (this.blobItems == null) {\n            this.blobItems = new ArrayList<>();\n        }\n"
-                    + "        return this.blobItems;")
-            .replaceAll("(public List<BlobPrefix> getBlobPrefixes\\(\\) \\{\\s*)return this\\.blobPrefixes;",
-                "$1if (this.blobPrefixes == null) {\n            this.blobPrefixes = new ArrayList<>();\n        }\n"
-                    + "        return this.blobPrefixes;");
-        if (updated.equals(content)) {
+        String updated = content.replaceAll("(public List<\\w+> get\\w+\\(\\) \\{\\s*)return this\\.(\\w+);",
+            "$1if (this.$2 == null) {\n            this.$2 = new ArrayList<>();\n        }\n"
+                + "        return this.$2;");
+        if (countOccurrences(updated, "= new ArrayList<>();\n        }\n        return this.") != 2) {
             throw new IllegalStateException(
-                "BlobHierarchyListSegment getters not found; the emitter output changed.");
+                "Expected two BlobHierarchyListSegment getters to default; the emitter output changed.");
         }
-        // fromXml declares both locals as null but only guards the one whose field has no initialiser, so a page
-        // of pure prefixes dereferences a null list. Add the guard the emitter left out.
-        String prefixAdd = "blobPrefixes.add(BlobPrefix.fromXml(reader, \"BlobPrefix\"));";
-        updated = updated.replace(prefixAdd,
-            "if (blobPrefixes == null) {\n                            blobPrefixes = new ArrayList<>();\n"
-                + "                        }\n                        " + prefixAdd);
 
-        editor.replaceFile(path, addImport(updated, "import java.util.ArrayList;"));
+        // fromXml declares both locals as null but only guards the one whose field has no initialiser, so a page of
+        // pure prefixes dereferences a null list. Add the guard the emitter left out. Only the collection that is
+        // added to directly after the element test is unguarded, which is what the leading brace anchors.
+        String guarded = updated.replaceAll("\\{(\\s*)(\\w+)\\.add\\((\\w+)\\.fromXml\\(reader,",
+            "{$1if ($2 == null) {$1    $2 = new ArrayList<>();$1}$1$2.add($3.fromXml(reader,");
+        if (guarded.equals(updated)) {
+            throw new IllegalStateException(
+                "BlobHierarchyListSegment fromXml has no unguarded collection; the emitter output changed.");
+        }
+
+        editor.replaceFile(path, addImport(guarded, "import java.util.ArrayList;"));
         logger.info("Defaulted the BlobHierarchyListSegment collections to empty lists.");
+    }
+
+    private static int countOccurrences(String haystack, String needle) {
+        int count = 0;
+        int from = haystack.indexOf(needle);
+        while (from >= 0) {
+            count++;
+            from = haystack.indexOf(needle, from + needle.length());
+        }
+        return count;
     }
 
     private static void restoreHeaderSetters(PackageCustomization implModels, Logger logger) {

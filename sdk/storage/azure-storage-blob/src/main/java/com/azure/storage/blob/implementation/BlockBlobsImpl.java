@@ -155,15 +155,15 @@ public final class BlockBlobsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<BinaryData>> getBlockList(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @QueryParam("blocklisttype") String listType,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("?comp=blocklist")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<BinaryData> getBlockListSync(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @QueryParam("blocklisttype") String listType,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -1336,6 +1336,9 @@ public final class BlockBlobsImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>snapshot</td><td>String</td><td>No</td><td>Specifies the snapshot of the blob.</td></tr>
+     * <tr><td>blocklisttype</td><td>String</td><td>No</td><td>Specifies whether to return the list of committed blocks,
+     * the list of uncommitted blocks, or both lists together. Allowed values: "committed", "uncommitted",
+     * "all".</td></tr>
      * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds. For more
      * information, see &lt;a
      * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
@@ -1387,8 +1390,6 @@ public final class BlockBlobsImpl {
      * identifier for the request.</td></tr>
      * </table>
      * 
-     * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both
-     * lists together. Allowed values: "committed", "uncommitted", "all".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1398,12 +1399,11 @@ public final class BlockBlobsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBlockListWithResponseInternalAsync(String listType,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getBlockListWithResponseInternalAsync(RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.getBlockList(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), listType, accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1414,6 +1414,9 @@ public final class BlockBlobsImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>snapshot</td><td>String</td><td>No</td><td>Specifies the snapshot of the blob.</td></tr>
+     * <tr><td>blocklisttype</td><td>String</td><td>No</td><td>Specifies whether to return the list of committed blocks,
+     * the list of uncommitted blocks, or both lists together. Allowed values: "committed", "uncommitted",
+     * "all".</td></tr>
      * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds. For more
      * information, see &lt;a
      * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
@@ -1465,8 +1468,6 @@ public final class BlockBlobsImpl {
      * identifier for the request.</td></tr>
      * </table>
      * 
-     * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both
-     * lists together. Allowed values: "committed", "uncommitted", "all".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1475,11 +1476,11 @@ public final class BlockBlobsImpl {
      * @return contains the committed and uncommitted blocks in a block blob along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBlockListWithResponseInternal(String listType, RequestOptions requestOptions) {
+    public Response<BinaryData> getBlockListWithResponseInternal(RequestOptions requestOptions) {
         final String accept = "application/xml";
         try {
-            return service.getBlockListSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                listType, accept, requestOptions, Context.NONE);
+            return service.getBlockListSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+                requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
