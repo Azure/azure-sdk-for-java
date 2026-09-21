@@ -29,7 +29,7 @@ public class MemoryStoreDefinition implements JsonSerializable<MemoryStoreDefini
      * Creates an instance of MemoryStoreDefinition class.
      */
     @Generated
-    protected MemoryStoreDefinition() {
+    public MemoryStoreDefinition() {
     }
 
     /**
