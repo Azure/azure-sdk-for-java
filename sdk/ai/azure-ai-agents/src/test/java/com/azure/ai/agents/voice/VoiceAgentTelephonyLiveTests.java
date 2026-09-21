@@ -66,6 +66,10 @@ public class VoiceAgentTelephonyLiveTests {
     private static final Duration CALL_TIMEOUT = Duration.ofMinutes(2);
     private static final Duration POLL_INTERVAL = Duration.ofSeconds(2);
 
+    /**
+     * Validates the service lifecycle against an actual Twilio connection and phone number. The corresponding HTTP
+     * request and response contracts are covered without provider resources in {@link VoiceAgentTelephonyTests}.
+     */
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
     public void bindingLifecycleLive() {
@@ -80,30 +84,38 @@ public class VoiceAgentTelephonyLiveTests {
             .allowPreview(true);
         AgentsClient agents = builder.buildAgentsClient();
         BetaVoiceAgentsTelephonyClient telephony = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        String agentName = "test-telephony-binding-" + shortId();
+        String agentName = "tel-bind-" + shortId();
         boolean agentCreated = false;
+        String bindingId = null;
         try {
             agents.createAgentVersion(agentName,
                 new CreateAgentVersionInput(definition(model, "Greet the caller briefly, then say goodbye.")));
             agentCreated = true;
             TelephonyBinding binding = telephony.createTelephonyBinding(agentName,
                 new CreateTwilioTelephonyBindingInput(connection, number).setLabel("Java SDK live test"));
+            bindingId = binding.getId();
             TelephonyBindingListItem listedBinding = findBinding(telephony, agentName, binding.getId());
             assertNotNull(listedBinding.getETag());
+            String encodedBindingId = encodeBindingId(binding.getId());
 
-            TelephonyBinding retrieved = telephony.getTelephonyBinding(agentName, binding.getId());
+            TelephonyBinding retrieved = telephony.getTelephonyBinding(agentName, encodedBindingId);
             assertEquals(binding.getId(), retrieved.getId());
-            TelephonyBinding updated = telephony.updateTelephonyBinding(agentName, binding.getId(),
+            TelephonyBinding updated = telephony.updateTelephonyBinding(agentName, encodedBindingId,
                 listedBinding.getETag(), new UpdateTelephonyBindingInput().setLabel("Updated Java SDK live test"));
             assertEquals("Updated Java SDK live test", updated.getLabel());
 
             String updatedEtag = findBinding(telephony, agentName, binding.getId()).getETag();
             assertNotNull(updatedEtag);
-            telephony.deleteTelephonyBinding(agentName, binding.getId(), updatedEtag);
+            telephony.deleteTelephonyBinding(agentName, encodedBindingId, updatedEtag);
+            bindingId = null;
             assertTrue(telephony.listTelephonyBindings(agentName)
                 .stream()
                 .noneMatch(item -> binding.getId().equals(item.getId())));
         } finally {
+            if (bindingId != null) {
+                String createdBindingId = bindingId;
+                safeCleanup("delete telephony binding", () -> deleteBinding(telephony, agentName, createdBindingId));
+            }
             if (agentCreated) {
                 safeCleanup("delete binding test agent", () -> agents.deleteAgent(agentName));
             }
@@ -127,12 +139,13 @@ public class VoiceAgentTelephonyLiveTests {
             .allowPreview(true);
         AgentsClient agents = builder.buildAgentsClient();
         BetaVoiceAgentsTelephonyClient telephony = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        String suffix = UUID.randomUUID().toString();
-        String inboundAgent = "test-telephony-inbound-" + suffix;
-        String outboundAgent = "test-telephony-outbound-" + suffix;
+        String suffix = shortId();
+        String inboundAgent = "tel-in-" + suffix;
+        String outboundAgent = "tel-out-" + suffix;
         String callJobId = null;
         String scheduledCallJobId = null;
         String inboundCallId = null;
+        String inboundBindingId = null;
         boolean inboundAgentCreated = false;
         boolean outboundAgentCreated = false;
         try {
@@ -145,6 +158,7 @@ public class VoiceAgentTelephonyLiveTests {
 
             TelephonyBinding binding = telephony.createTelephonyBinding(inboundAgent,
                 new CreateTwilioTelephonyBindingInput(connection1, number1).setLabel("Java SDK live test"));
+            inboundBindingId = binding.getId();
             assertNotNull(binding.getId());
             assertEquals(TelephonyProvider.TWILIO, binding.getProvider());
             assertEquals(TelephonyBindingStatus.ACTIVE, binding.getStatus());
@@ -229,6 +243,11 @@ public class VoiceAgentTelephonyLiveTests {
                     () -> telephony.replaceTelephonyTransferTargets(inboundAgent,
                         getTransferTargetsEtag(telephony, inboundAgent), Collections.emptyList()));
             }
+            if (inboundBindingId != null) {
+                String bindingId = inboundBindingId;
+                safeCleanup("delete inbound telephony binding",
+                    () -> deleteBinding(telephony, inboundAgent, bindingId));
+            }
             if (outboundAgentCreated) {
                 safeCleanup("delete outbound agent", () -> agents.deleteAgent(outboundAgent));
             }
@@ -292,6 +311,19 @@ public class VoiceAgentTelephonyLiveTests {
             .filter(item -> bindingId.equals(item.getId()))
             .findFirst()
             .orElseThrow(() -> new AssertionError("Created binding was not listed."));
+    }
+
+    private static void deleteBinding(BetaVoiceAgentsTelephonyClient telephony, String agentName, String bindingId) {
+        telephony.listTelephonyBindings(agentName)
+            .stream()
+            .filter(item -> bindingId.equals(item.getId()))
+            .findFirst()
+            .ifPresent(
+                binding -> telephony.deleteTelephonyBinding(agentName, encodeBindingId(bindingId), binding.getETag()));
+    }
+
+    private static String encodeBindingId(String bindingId) {
+        return bindingId.replace("+", "%2B");
     }
 
     private static String getTransferTargetsEtag(BetaVoiceAgentsTelephonyClient telephony, String agentName) {
