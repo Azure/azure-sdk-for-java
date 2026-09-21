@@ -1,6 +1,6 @@
 # Release History
 
-## 2.6.0 (Unreleased)
+## 2.6.0 (2026-09-21)
 
 ### Features Added
 
@@ -10,8 +10,6 @@
 ### Breaking Changes
 
 - Data generation sample limits are now scenario-specific instead of being defined on `DataGenerationJobOptions`. `DataGenerationJobOptions(int)` was replaced by `DataGenerationJobOptions()` and its `getMaxSamples()` method was removed. `TracesDataGenerationJobOptions(int)` was replaced by a no-argument constructor and optional `Integer`-based `getMaxSamples()` / `setMaxSamples(Integer)` methods. `SimulationSeedDataGenerationJobOptions(int)` was replaced by a no-argument constructor and no longer accepts a sample limit. `SimpleQnADataGenerationJobOptions` and `ToolUseFineTuningDataGenerationJobOptions` continue to require `maxSamples` in their constructors.
-
-### Bugs Fixed
 
 ### Other Changes
 

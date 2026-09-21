@@ -1,6 +1,6 @@
 # Release History
 
-## 2.6.0 (Unreleased)
+## 2.6.0 (2026-09-21)
 
 ### Features Added
 
@@ -52,16 +52,11 @@
   persisted conversations and audio, synchronous and asynchronous live text, asynchronous Java Sound audio with
   barge-in, and client-executed function tools.
 
-### Breaking Changes
-
 ### Bugs Fixed
 
-- Fixed polling for agent-optimization jobs and telephony operations that return the `cancelled` status spelling.
-- Hardened voice-agent WebSocket authentication by rejecting insecure endpoints before acquiring or sending credentials.
-- Fixed WebSocket configuration handling to reject unsupported custom HTTP clients, pipelines, policies, and retries
-  instead of silently ignoring them.
-- Fixed synchronous voice-agent event streams to enforce a single iterator and signal receive-buffer overflow atomically
-  across concurrent callbacks.
+- Fixed serialization of openai-java `Reasoning` values in `PromptAgentDefinition` so retrieved definitions can be
+  reused to create new agent versions without emitting unsupported request properties.
+- Fixed polling for agent-optimization jobs that return the `cancelled` status spelling.
 
 ### Other Changes
 
