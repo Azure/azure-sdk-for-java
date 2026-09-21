@@ -35,9 +35,9 @@ public final class StorageAppliancesCreateOrUpdateSamples {
                 new AdministrativeCredentials().withPassword("fakeTokenPlaceholder").withUsername("adminUser"))
             .withRackId(
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName")
-            .withStorageApplianceSkuId("684E-3B16-399E")
             .withRackSlot(1L)
             .withSerialNumber("BM1219XXX")
+            .withStorageApplianceSkuId("684E-3B16-399E")
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .create();
     }

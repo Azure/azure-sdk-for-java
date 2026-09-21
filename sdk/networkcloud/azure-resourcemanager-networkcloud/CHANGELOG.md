@@ -1,14 +1,16 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.3.0 (2026-09-21)
 
-### Features Added
+- Azure Resource Manager NetworkCloud client library for Java. This package contains Microsoft Azure SDK for NetworkCloud Management SDK. The Network Cloud APIs provide management of the Azure Operator Nexus compute resources such as on-premises clusters, hardware resources, and workload infrastructure resources. Package api-version 2026-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.StorageAppliance$DefinitionStages` was modified
 
-### Other Changes
+* `withStorageApplianceSkuId(java.lang.String)` was removed in stage 6
+* `withRackSlot(long)` was removed in stage 7
+* `withSerialNumber(java.lang.String)` was removed in stage 8
 
 ## 2.2.0 (2026-09-14)
 
