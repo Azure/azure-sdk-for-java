@@ -5,253 +5,273 @@ package com.azure.storage.common.implementation.util;
 
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
 
 import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
- * Cache for values that expire and must be refreshed transparently, such as container-scoped storage session
- * credentials and blob data locality layouts.
+ * Cache for expiring values, such as storage session credentials and blob layouts. Values need not implement an
+ * interface; an expiration extractor supplies their immutable expiration metadata.
  * <p>
- * {@code T} is not required to implement any particular interface; the caller supplies a {@link Function} that
- * extracts the expiration instant from a value, decoupling this cache from any specific value shape.
+ * Refresh is opportunistic rather than scheduled. Access to a usable value starts an asynchronous refresh when due,
+ * while returning the current value. Failed background refreshes are retried after thirty seconds; acquisition of a
+ * missing or expired value is not delayed by that backoff. There is no periodic timer or executor owned by this cache.
  * <p>
- * Refresh is opportunistic rather than scheduled: a caller that observes a value past its jittered refresh point
- * receives the still-valid cached value immediately and triggers the refresh in the background. There is no timer
- * to cancel, so instances need no cleanup.
+ * Async suppliers must be nonblocking and emit exactly one non-null value. Sync suppliers must return a non-null value.
+ * Null expiration metadata and empty async results are acquisition errors. A newly acquired value that is already
+ * expired is returned once to its acquisition's callers, but is not reused on subsequent calls.
+ * <p>
+ * Cancellation of a subscriber does not cancel a shared acquisition. Subscribing does not itself move work to a
+ * different thread; async suppliers are responsible for using an appropriate scheduler when required.
+ * <p>
+ * Foreground async loading uses the initiating subscriber's Reactor context. Detached background refresh starts with
+ * an empty subscriber context; capture any stable, cache-scoped request context in the supplier.
  * <p>
  * RESERVED FOR INTERNAL USE.
+ *
+ * @param <T> The cached value type.
  */
 public final class AutoRefreshingCache<T> {
-    /**
-     * Supplies the values held by the cache.
-     *
-     * @param <T> The type of value produced.
-     */
-    @FunctionalInterface
-    public interface ValueProvider<T> {
-        /**
-         * Creates the value asynchronously.
-         *
-         * @return A {@link Mono} that emits the created value.
-         */
-        Mono<T> createAsync();
-
-        /**
-         * Creates the value synchronously. Defaults to blocking on {@link #createAsync()}; override when a
-         * non-blocking synchronous path is available.
-         *
-         * @return The created value.
-         */
-        default T createSync() {
-            return createAsync().block();
-        }
-    }
-
     private static final ClientLogger LOGGER = new ClientLogger(AutoRefreshingCache.class);
     private static final Duration SAFETY_BUFFER = Duration.ofSeconds(5);
     private static final Duration REFRESH_RETRY_DELAY = Duration.ofSeconds(30);
     private static final double JITTER_WINDOW_START_RATIO = 0.8d;
 
-    private final ValueProvider<T> valueProvider;
+    private final Supplier<Mono<T>> asyncSupplier;
+    private final Supplier<T> syncSupplier;
     private final Function<T, OffsetDateTime> expirationExtractor;
     private final Clock clock;
-    // Doubles as the "a creation is in flight" flag and the latch that wakes callers waiting on that
-    // creation. The thread that wins the compare-and-set owns the creation and must terminate the sink
-    // and clear this reference. Clearing happens before the value is delivered downstream, so a caller
-    // that reacts inside onNext sees no creation in flight and can start a fresh one.
-    private final AtomicReference<Sinks.One<T>> wip = new AtomicReference<>();
-    private final AtomicReference<T> value = new AtomicReference<>();
-    private volatile OffsetDateTime nextRefreshTime;
-    // Throttles background refresh retries after creation failures so a failing provider is not retried
-    // once per caller request. Foreground creation remains intentionally unthrottled.
-    private volatile OffsetDateTime retryNotBefore;
+    private Entry<T> entry;
+    private CompletableFuture<T> inFlight;
+    private OffsetDateTime retryNotBefore;
 
-    public AutoRefreshingCache(ValueProvider<T> valueProvider, Function<T, OffsetDateTime> expirationExtractor) {
-        this(valueProvider, expirationExtractor, Clock.systemUTC());
-    }
-
-    public AutoRefreshingCache(ValueProvider<T> valueProvider, Function<T, OffsetDateTime> expirationExtractor,
-        Clock clock) {
-        this.valueProvider = Objects.requireNonNull(valueProvider, "'valueProvider' cannot be null.");
+    /**
+     * Creates a cache with independent async and sync loaders and an explicit clock.
+     * Callers without a dedicated sync loader can supply {@code () -> asyncSupplier.get().block()} for sync access.
+     *
+     * @param asyncSupplier The nonblocking async loader, also used for background refresh.
+     * @param syncSupplier The sync loader.
+     * @param expirationExtractor Extracts each value's expiration.
+     * @param clock The clock used for cache decisions.
+     */
+    public AutoRefreshingCache(Supplier<Mono<T>> asyncSupplier, Supplier<T> syncSupplier,
+        Function<T, OffsetDateTime> expirationExtractor, Clock clock) {
+        this.asyncSupplier = Objects.requireNonNull(asyncSupplier, "'asyncSupplier' cannot be null.");
+        this.syncSupplier = Objects.requireNonNull(syncSupplier, "'syncSupplier' cannot be null.");
         this.expirationExtractor = Objects.requireNonNull(expirationExtractor, "'expirationExtractor' cannot be null.");
         this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
     }
 
+    /**
+     * Gets a cached value or shares an acquisition. A usable value can trigger background refresh.
+     *
+     * @return A publisher emitting the cached or acquired value.
+     */
     public Mono<T> getValidValueAsync() {
         return Mono.defer(() -> {
-            OffsetDateTime now = OffsetDateTime.now(clock);
-            T current = value.get();
-            if (isUsable(current, now)) {
-                if (isRefreshDue(now)) {
-                    refreshValueInBackground();
-                }
+            T current = getUsableValue();
+            if (current != null) {
+                refreshValueInBackground();
                 return Mono.just(current);
             }
-
-            return createOrJoinAsync();
+            return loadAsync(acquireForegroundLoad());
         });
     }
 
+    /**
+     * Gets a cached value, invokes the sync loader, or waits for an existing acquisition.
+     *
+     * @return The cached or acquired value.
+     */
     public T getValidValueSync() {
-        while (true) {
-            OffsetDateTime now = OffsetDateTime.now(clock);
-            T current = value.get();
-            if (isUsable(current, now)) {
-                if (isRefreshDue(now)) {
-                    refreshValueInBackground();
-                }
-                return current;
+        T current = getUsableValue();
+        if (current != null) {
+            refreshValueInBackground();
+            return current;
+        }
+        Load<T> load = acquireForegroundLoad();
+        if (load.owner) {
+            try {
+                complete(load, syncSupplier.get());
+            } catch (RuntimeException | Error error) {
+                fail(load, error);
             }
-
-            Sinks.One<T> latch = Sinks.one();
-            if (wip.compareAndSet(null, latch)) {
-                T created;
-                try {
-                    // Re-check under ownership: another caller may have published a value between the
-                    // check at the top of this loop and the compare-and-set above.
-                    created = value.get();
-                    if (!isUsable(created, OffsetDateTime.now(clock))) {
-                        created = valueProvider.createSync();
-                        setActiveValue(created);
-                    }
-                } catch (RuntimeException e) {
-                    armRetryBackoff();
-                    wip.compareAndSet(latch, null);
-                    latch.tryEmitError(e);
-                    throw LOGGER.logExceptionAsError(e);
-                }
-                // Clear ownership before waking waiters and before returning, so a caller reacting to
-                // this value sees no creation in flight.
-                wip.compareAndSet(latch, null);
-                latch.tryEmitValue(created);
-                return created;
+        }
+        try {
+            return load.result.get();
+        } catch (InterruptedException error) {
+            Thread.currentThread().interrupt();
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("Interrupted while waiting for a cached value.", error));
+        } catch (ExecutionException error) {
+            Throwable cause = error.getCause();
+            if (cause instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) cause);
             }
-
-            Sinks.One<T> inFlight = wip.get();
-            if (inFlight != null) {
-                // Join the in-flight creation rather than minting a duplicate. Blocking here is the
-                // same exposure the previous implementation had. Return what the owner published
-                // rather than re-testing it, so a value that is already expired on arrival is
-                // surfaced once instead of sending this loop back for another attempt.
-                T joined = inFlight.asMono().block();
-                if (joined != null) {
-                    return joined;
-                }
+            if (cause instanceof Error) {
+                throw LOGGER.logThrowableAsError((Error) cause);
             }
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Failed to acquire a cached value.", cause));
         }
     }
 
     /**
-     * Clears the cached value, but only if it is still the value the caller is rejecting.
+     * Removes the value only if it is the exact instance supplied by the caller. A stale rejection is a no-op.
+     * An independent replacement already being acquired remains in flight and can be joined by subsequent callers.
      *
-     * @param target The value the caller believes is cached.
-     * @return true if {@code target} was still the cached value and has been cleared; false if it had
-     * already been replaced or removed, in which case the cache is left untouched.
+     * @param target The rejected value.
+     * @return Whether the matching cached value was removed.
      */
     public boolean invalidateValue(T target) {
-        boolean invalidated = target != null && value.compareAndSet(target, null);
-        if (invalidated) {
-            nextRefreshTime = null;
+        synchronized (this) {
+            if (entry == null || target == null || entry.value != target) {
+                return false;
+            }
+            entry = null;
+            return true;
         }
-        wip.set(null);
-        return invalidated;
     }
 
+    /**
+     * Starts refresh if a usable value is due for refresh and failure backoff has elapsed.
+     */
     public void refreshValueInBackground() {
-        OffsetDateTime now = OffsetDateTime.now(clock);
-        if (!isUsable(value.get(), now) || !isRefreshDue(now) || wip.get() != null || isRetryBackoffActive(now)) {
-            return;
-        }
-
-        createOrJoinAsync().subscribe(ignored -> {
-        }, error -> LOGGER.warning("Background value refresh failed.", error));
+        refreshValueInBackground(false);
     }
 
+    /**
+     * Marks a usable value due for refresh, respecting failure backoff and sharing any existing acquisition.
+     */
     public void forceRefreshValueInBackground() {
-        OffsetDateTime now = OffsetDateTime.now(clock);
-        if (isUsable(value.get(), now)) {
-            nextRefreshTime = now;
-        }
-
-        refreshValueInBackground();
+        refreshValueInBackground(true);
     }
 
-    private Mono<T> createOrJoinAsync() {
-        return Mono.defer(() -> {
+    private void refreshValueInBackground(boolean force) {
+        Load<T> load;
+        synchronized (this) {
             OffsetDateTime now = OffsetDateTime.now(clock);
-            T current = value.get();
-            if (isUsable(current, now) && !isRefreshDue(now)) {
-                return Mono.just(current);
+            if (!isUsable(now)) {
+                return;
             }
-
-            Sinks.One<T> latch = Sinks.one();
-            if (wip.compareAndSet(null, latch)) {
-                return Mono.using(() -> latch, ignored -> valueProvider.createAsync().doOnNext(created -> {
-                    setActiveValue(created);
-                    // Clear ownership before waking waiters so a caller reacting to this value
-                    // sees no creation in flight.
-                    wip.compareAndSet(latch, null);
-                    latch.tryEmitValue(created);
-                }).doOnError(error -> {
-                    armRetryBackoff();
-                    wip.compareAndSet(latch, null);
-                    latch.tryEmitError(error);
-                }), owned -> {
-                    wip.compareAndSet(owned, null);
-                    // No-op when the creation already emitted. On cancellation it releases anyone
-                    // waiting on the latch so they retry instead of hanging.
-                    owned.tryEmitEmpty();
-                }).cache();
+            if (force) {
+                entry = new Entry<>(entry.value, entry.expiration, now);
             }
-
-            Sinks.One<T> inFlight = wip.get();
-            if (inFlight == null) {
-                return createOrJoinAsync();
+            if (now.isBefore(entry.refreshAt) || isRetryBackoffActive(now)) {
+                return;
             }
-
-            return inFlight.asMono().switchIfEmpty(Mono.defer(this::createOrJoinAsync));
-        });
+            load = acquireLoad();
+        }
+        if (load.owner) {
+            loadAsync(load).subscribe(ignored -> {
+            }, error -> LOGGER.warning("Background value refresh failed.", error));
+        }
     }
 
-    private void setActiveValue(T newValue) {
-        value.set(newValue);
-        nextRefreshTime = computeRefreshTime(OffsetDateTime.now(clock), expirationExtractor.apply(newValue));
-        retryNotBefore = null;
+    private synchronized T getUsableValue() {
+        return isUsable(OffsetDateTime.now(clock)) ? entry.value : null;
     }
 
-    private void armRetryBackoff() {
-        retryNotBefore = OffsetDateTime.now(clock).plus(REFRESH_RETRY_DELAY);
+    private synchronized Load<T> acquireForegroundLoad() {
+        // Another caller may have published a usable value since the initial lookup.
+        if (isUsable(OffsetDateTime.now(clock))) {
+            return new Load<>(CompletableFuture.completedFuture(entry.value), false);
+        }
+        return acquireLoad();
     }
 
-    private boolean isUsable(T value, OffsetDateTime now) {
-        return value != null && !now.isAfter(expirationExtractor.apply(value));
+    private Load<T> acquireLoad() {
+        if (inFlight != null) {
+            return new Load<>(inFlight, false);
+        }
+        inFlight = new CompletableFuture<>();
+        return new Load<>(inFlight, true);
     }
 
-    private boolean isRefreshDue(OffsetDateTime now) {
-        OffsetDateTime refresh = nextRefreshTime;
-        return refresh != null && !now.isBefore(refresh);
+    private Mono<T> loadAsync(Load<T> load) {
+        if (!load.owner) {
+            return Mono.fromFuture(load.result, true);
+        }
+        return Mono.defer(asyncSupplier)
+            .switchIfEmpty(Mono.error(new IllegalStateException("The value supplier completed without a value.")))
+            .doOnNext(value -> complete(load, value))
+            .doOnError(error -> fail(load, error))
+            .cache();
+    }
+
+    private void complete(Load<T> load, T value) {
+        Objects.requireNonNull(value, "The value supplier returned null.");
+        OffsetDateTime expiration
+            = Objects.requireNonNull(expirationExtractor.apply(value), "The value expiration cannot be null.");
+        OffsetDateTime refreshAt = computeRefreshTime(OffsetDateTime.now(clock), expiration);
+        synchronized (this) {
+            if (inFlight == load.result) {
+                entry = new Entry<>(value, expiration, refreshAt);
+                retryNotBefore = null;
+                inFlight = null;
+            }
+        }
+        // Release ownership before invoking callbacks, which may invalidate or refresh the published value.
+        load.result.complete(value);
+    }
+
+    private void fail(Load<T> load, Throwable error) {
+        synchronized (this) {
+            if (inFlight == load.result) {
+                retryNotBefore = OffsetDateTime.now(clock).plus(REFRESH_RETRY_DELAY);
+                inFlight = null;
+            }
+        }
+        load.result.completeExceptionally(error);
+    }
+
+    private boolean isUsable(OffsetDateTime now) {
+        return entry != null && !now.isAfter(entry.expiration);
     }
 
     private boolean isRetryBackoffActive(OffsetDateTime now) {
-        OffsetDateTime notBefore = retryNotBefore;
-        return notBefore != null && now.isBefore(notBefore);
+        return retryNotBefore != null && now.isBefore(retryNotBefore);
     }
 
-    private static OffsetDateTime computeRefreshTime(OffsetDateTime now, OffsetDateTime expiration) {
-        long availableMillis = Duration.between(now, expiration.minus(SAFETY_BUFFER)).toMillis();
-        if (availableMillis <= 0) {
+    static OffsetDateTime computeRefreshTime(OffsetDateTime now, OffsetDateTime expiration) {
+        // Duration arithmetic avoids subtracting from MIN or overflowing milliseconds for MAX expiration.
+        Duration available = Duration.between(now.toInstant(), expiration.toInstant()).minus(SAFETY_BUFFER);
+        if (available.isNegative() || available.isZero()) {
             return now;
         }
-
-        double refreshPoint
+        double ratio
             = JITTER_WINDOW_START_RATIO + (1.0 - JITTER_WINDOW_START_RATIO) * ThreadLocalRandom.current().nextDouble();
-        return now.plus(Duration.ofMillis((long) (availableMillis * refreshPoint)));
+        double scaledSeconds = available.getSeconds() * ratio;
+        long seconds = (long) scaledSeconds;
+        long nanos = (long) ((scaledSeconds - seconds) * 1_000_000_000 + available.getNano() * ratio);
+        return now.plusSeconds(seconds).plusNanos(nanos);
+    }
+
+    private static final class Load<T> {
+        private final CompletableFuture<T> result;
+        private final boolean owner;
+
+        private Load(CompletableFuture<T> result, boolean owner) {
+            this.result = result;
+            this.owner = owner;
+        }
+    }
+
+    private static final class Entry<T> {
+        private final T value;
+        private final OffsetDateTime expiration;
+        private final OffsetDateTime refreshAt;
+
+        private Entry(T value, OffsetDateTime expiration, OffsetDateTime refreshAt) {
+            this.value = value;
+            this.expiration = expiration;
+            this.refreshAt = refreshAt;
+        }
     }
 }
