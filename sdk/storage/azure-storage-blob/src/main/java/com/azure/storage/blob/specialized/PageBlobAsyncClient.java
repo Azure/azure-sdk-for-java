@@ -340,10 +340,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         BlobHttpHeaders headers = options.getHeaders() == null ? new BlobHttpHeaders() : options.getHeaders();
         CpkInfo cpk = getCustomerProvidedKey();
         RequestOptions requestOptions = pageBlobRequestOptions(context);
-        ModelHelper.addMetadataHeaders(requestOptions, options.getMetadata());
 
         return this.pageBlobClientInternal
-            .createWithResponse(options.getSize(), null, null, null, headers.getContentType(),
+            .createWithResponse(options.getSize(), options.getMetadata(), null, null, headers.getContentType(),
                 headers.getContentEncoding(), headers.getContentLanguage(), headers.getContentMd5(),
                 headers.getCacheControl(), requestConditions.getLeaseId(), headers.getContentDisposition(),
                 cpk == null ? null : cpk.getEncryptionKey(), cpk == null ? null : cpk.getEncryptionKeySha256(),

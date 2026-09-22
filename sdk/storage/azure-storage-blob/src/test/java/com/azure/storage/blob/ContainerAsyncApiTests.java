@@ -19,6 +19,7 @@ import com.azure.storage.blob.implementation.BlobContainerAsyncClientInternal;
 import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
 import java.io.ByteArrayInputStream;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
+import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.*;
@@ -2342,7 +2343,11 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                     containerName)))
             .flatMap(response -> {
                 // Verify Content-Type is Arrow
-                String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+                // The typed header model is still generated for this operation, so the Content-Type is read through it
+                // rather than off the raw headers; the retype to StreamResponse is about the body, not the headers.
+                String contentType
+                    = new ContainersListBlobFlatSegmentApacheArrowHeaders(response.getHeaders()).getContentType()
+                        .toString();
                 assertTrue(
                     StorageImplUtils.hasMatchingHeaderValue(contentType,
                         Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),

@@ -370,13 +370,12 @@ public final class AppendBlobClient extends BlobClientBase {
             = finalOptions.getHeaders() == null ? new BlobHttpHeaders() : finalOptions.getHeaders();
         CpkInfo createCpk = getCustomerProvidedKey();
         RequestOptions createOptions = appendBlobRequestOptions(finalContext);
-        ModelHelper.addMetadataHeaders(createOptions, finalOptions.getMetadata());
 
         Callable<ResponseBase<AppendBlobsCreateHeaders, Void>> operation
-            = () -> this.appendBlobClientInternal.createWithResponse(null, null, createHeaders.getContentType(),
-                createHeaders.getContentEncoding(), createHeaders.getContentLanguage(), createHeaders.getContentMd5(),
-                createHeaders.getCacheControl(), requestConditions.getLeaseId(), createHeaders.getContentDisposition(),
-                createCpk == null ? null : createCpk.getEncryptionKey(),
+            = () -> this.appendBlobClientInternal.createWithResponse(finalOptions.getMetadata(), null,
+                createHeaders.getContentType(), createHeaders.getContentEncoding(), createHeaders.getContentLanguage(),
+                createHeaders.getContentMd5(), createHeaders.getCacheControl(), requestConditions.getLeaseId(),
+                createHeaders.getContentDisposition(), createCpk == null ? null : createCpk.getEncryptionKey(),
                 createCpk == null ? null : createCpk.getEncryptionKeySha256(),
                 createCpk == null ? null : createCpk.getEncryptionAlgorithm(),
                 encryptionScope == null ? null : encryptionScope.getEncryptionScope(),

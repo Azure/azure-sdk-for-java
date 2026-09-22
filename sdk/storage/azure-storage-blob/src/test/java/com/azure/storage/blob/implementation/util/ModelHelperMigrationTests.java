@@ -7,6 +7,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.implementation.models.BlobCopySourceTags;
@@ -66,6 +68,38 @@ public class ModelHelperMigrationTests {
         assertEquals("bar", request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-meta-foo")));
         assertEquals("", request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-meta-empty")));
         // The single-header form the emitter would otherwise produce must not be on the wire.
+        assertNull(request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-meta")));
+    }
+
+    /**
+     * The blob-level operations reach the metadata headers through the generated {@code metadata} parameter rather
+     * than through the container client, so this covers that path on the wire as well. Both paths must produce the
+     * same {@code x-ms-meta-<key>} headers.
+     */
+    @Test
+    public void blobOperationsAlsoSendMetadataAsThePrefixedHeaderCollection() {
+        AtomicReference<HttpRequest> captured = new AtomicReference<>();
+        HttpClient capturingClient = request -> {
+            captured.set(request);
+            return Mono.just(new MockHttpResponse(request, 200));
+        };
+
+        BlobClient blobClient = new BlobClientBuilder().endpoint("https://account.blob.core.windows.net")
+            .containerName("container")
+            .blobName("blob")
+            .credential(new StorageSharedKeyCredential("accountName", "YWNjb3VudEtleQ=="))
+            .httpClient(capturingClient)
+            .buildClient();
+
+        Map<String, String> metadata = new LinkedHashMap<>();
+        metadata.put("foo", "bar");
+        metadata.put("empty", "");
+        blobClient.setMetadata(metadata);
+
+        HttpRequest request = captured.get();
+        assertNotNull(request);
+        assertEquals("bar", request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-meta-foo")));
+        assertEquals("", request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-meta-empty")));
         assertNull(request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-meta")));
     }
 

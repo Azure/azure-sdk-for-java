@@ -456,10 +456,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobHttpHeaders uploadHeaders = options.getHeaders() == null ? new BlobHttpHeaders() : options.getHeaders();
         CpkInfo cpk = getCustomerProvidedKey();
         RequestOptions requestOptions = blockBlobRequestOptions(finalContext);
-        ModelHelper.addMetadataHeaders(requestOptions, options.getMetadata());
 
         return dataMono.flatMap(data -> this.blockBlobClientInternal
-            .uploadWithResponse(options.getLength(), data, null, null, options.getContentMd5(),
+            .uploadWithResponse(options.getLength(), data, options.getMetadata(), null, options.getContentMd5(),
                 uploadHeaders.getContentType(), uploadHeaders.getContentEncoding(), uploadHeaders.getContentLanguage(),
                 uploadHeaders.getContentMd5(), uploadHeaders.getCacheControl(), requestConditions.getLeaseId(),
                 uploadHeaders.getContentDisposition(), cpk == null ? null : cpk.getEncryptionKey(),
@@ -1210,12 +1209,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobHttpHeaders commitHeaders = options.getHeaders() == null ? new BlobHttpHeaders() : options.getHeaders();
         CpkInfo commitCpk = getCustomerProvidedKey();
         RequestOptions commitRequestOptions = blockBlobRequestOptions(context);
-        ModelHelper.addMetadataHeaders(commitRequestOptions, options.getMetadata());
 
         return this.blockBlobClientInternal
             .commitBlockListWithResponse(new BlockLookupList().setLatest(options.getBase64BlockIds()), null,
                 commitHeaders.getCacheControl(), commitHeaders.getContentType(), commitHeaders.getContentEncoding(),
-                commitHeaders.getContentLanguage(), commitHeaders.getContentMd5(), null, null, null,
+                commitHeaders.getContentLanguage(), commitHeaders.getContentMd5(), null, null, options.getMetadata(),
                 requestConditions.getLeaseId(), commitHeaders.getContentDisposition(),
                 commitCpk == null ? null : commitCpk.getEncryptionKey(),
                 commitCpk == null ? null : commitCpk.getEncryptionKeySha256(),

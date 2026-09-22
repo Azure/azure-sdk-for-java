@@ -391,10 +391,9 @@ public final class PageBlobClient extends BlobClientBase {
         BlobHttpHeaders headers = options.getHeaders() == null ? new BlobHttpHeaders() : options.getHeaders();
         CpkInfo cpk = getCustomerProvidedKey();
         RequestOptions createOptions = pageBlobRequestOptions(finalContext);
-        ModelHelper.addMetadataHeaders(createOptions, options.getMetadata());
 
         Callable<ResponseBase<PageBlobsCreateHeaders, Void>> operation
-            = () -> this.pageBlobClientInternal.createWithResponse(options.getSize(), null, null, null,
+            = () -> this.pageBlobClientInternal.createWithResponse(options.getSize(), options.getMetadata(), null, null,
                 headers.getContentType(), headers.getContentEncoding(), headers.getContentLanguage(),
                 headers.getContentMd5(), headers.getCacheControl(), requestConditions.getLeaseId(),
                 headers.getContentDisposition(), cpk == null ? null : cpk.getEncryptionKey(),

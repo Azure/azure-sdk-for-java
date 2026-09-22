@@ -311,10 +311,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         BlobHttpHeaders headers = options.getHeaders() == null ? new BlobHttpHeaders() : options.getHeaders();
         CpkInfo cpk = getCustomerProvidedKey();
         RequestOptions requestOptions = appendBlobRequestOptions(context);
-        ModelHelper.addMetadataHeaders(requestOptions, options.getMetadata());
 
         return this.appendBlobClientInternal
-            .createWithResponse(null, null, headers.getContentType(), headers.getContentEncoding(),
+            .createWithResponse(options.getMetadata(), null, headers.getContentType(), headers.getContentEncoding(),
                 headers.getContentLanguage(), headers.getContentMd5(), headers.getCacheControl(),
                 requestConditions.getLeaseId(), headers.getContentDisposition(),
                 cpk == null ? null : cpk.getEncryptionKey(), cpk == null ? null : cpk.getEncryptionKeySha256(),

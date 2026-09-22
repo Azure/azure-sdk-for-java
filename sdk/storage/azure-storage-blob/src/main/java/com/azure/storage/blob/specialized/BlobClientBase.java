@@ -864,16 +864,16 @@ public class BlobClientBase {
                         .logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
                 }
                 RequestOptions startCopyOptions = blobRequestOptions(Context.NONE);
-                ModelHelper.addMetadataHeaders(startCopyOptions, options.getMetadata());
-                ResponseBase<BlobsStartCopyFromURLHeaders, Void> response = this.blobClientInternal
-                    .startCopyFromUrlWithResponse(options.getSourceUrl(), null, null, options.getTier(),
-                        options.getRehydratePriority(), sourceModifiedConditions.getIfModifiedSince(),
-                        sourceModifiedConditions.getIfUnmodifiedSince(), sourceModifiedConditions.getIfMatch(),
-                        sourceModifiedConditions.getIfNoneMatch(), sourceModifiedConditions.getTagsConditions(),
-                        destinationRequestConditions.getTagsConditions(), destinationRequestConditions.getLeaseId(),
-                        ModelHelper.tagsToString(options.getTags()), options.isSealDestination(),
-                        immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(),
-                        destinationRequestConditions, startCopyOptions);
+                ResponseBase<BlobsStartCopyFromURLHeaders, Void> response
+                    = this.blobClientInternal.startCopyFromUrlWithResponse(options.getSourceUrl(), null,
+                        options.getMetadata(), options.getTier(), options.getRehydratePriority(),
+                        sourceModifiedConditions.getIfModifiedSince(), sourceModifiedConditions.getIfUnmodifiedSince(),
+                        sourceModifiedConditions.getIfMatch(), sourceModifiedConditions.getIfNoneMatch(),
+                        sourceModifiedConditions.getTagsConditions(), destinationRequestConditions.getTagsConditions(),
+                        destinationRequestConditions.getLeaseId(), ModelHelper.tagsToString(options.getTags()),
+                        options.isSealDestination(), immutabilityPolicy.getExpiryTime(),
+                        immutabilityPolicy.getPolicyMode(), options.isLegalHold(), destinationRequestConditions,
+                        startCopyOptions);
 
                 BlobsStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
                 copyId.set(headers.getCopyId());
@@ -1117,11 +1117,10 @@ public class BlobClientBase {
         Context finalContext = context == null ? Context.NONE : context;
 
         RequestOptions copyFromUrlOptions = blobRequestOptions(finalContext);
-        ModelHelper.addMetadataHeaders(copyFromUrlOptions, options.getMetadata());
 
         Callable<ResponseBase<BlobsCopyFromURLHeaders, Void>> operation
-            = () -> this.blobClientInternal.copyFromUrlWithResponse(options.getCopySource(), null, null,
-                options.getTier(), sourceModifiedRequestConditions.getIfModifiedSince(),
+            = () -> this.blobClientInternal.copyFromUrlWithResponse(options.getCopySource(), null,
+                options.getMetadata(), options.getTier(), sourceModifiedRequestConditions.getIfModifiedSince(),
                 sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
                 sourceModifiedRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
                 destRequestConditions.getLeaseId(), null, ModelHelper.tagsToString(options.getTags()),
@@ -1957,10 +1956,9 @@ public class BlobClientBase {
         Context finalContext = context == null ? Context.NONE : context;
 
         RequestOptions setMetadataOptions = blobRequestOptions(finalContext);
-        ModelHelper.addMetadataHeaders(setMetadataOptions, metadata);
 
         Callable<Response<Void>> operation
-            = () -> this.blobClientInternal.setMetadataWithResponse(null, null, finalRequestConditions.getLeaseId(),
+            = () -> this.blobClientInternal.setMetadataWithResponse(null, metadata, finalRequestConditions.getLeaseId(),
                 customerProvidedKey == null ? null : customerProvidedKey.getEncryptionKey(),
                 customerProvidedKey == null ? null : customerProvidedKey.getEncryptionKeySha256(),
                 customerProvidedKey == null ? null : customerProvidedKey.getEncryptionAlgorithm(),
@@ -2161,10 +2159,9 @@ public class BlobClientBase {
             = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         RequestOptions snapshotOptions = blobRequestOptions(finalContext);
-        ModelHelper.addMetadataHeaders(snapshotOptions, metadata);
 
         Callable<ResponseBase<BlobsCreateSnapshotHeaders, Void>> operation
-            = () -> this.blobClientInternal.createSnapshotWithResponse(null, null,
+            = () -> this.blobClientInternal.createSnapshotWithResponse(null, metadata,
                 customerProvidedKey == null ? null : customerProvidedKey.getEncryptionKey(),
                 customerProvidedKey == null ? null : customerProvidedKey.getEncryptionKeySha256(),
                 customerProvidedKey == null ? null : customerProvidedKey.getEncryptionAlgorithm(),

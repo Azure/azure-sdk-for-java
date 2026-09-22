@@ -765,9 +765,8 @@ public class BlobAsyncClientBase {
 
         return withContext(context -> {
             RequestOptions startCopyOptions = blobRequestOptions(context);
-            ModelHelper.addMetadataHeaders(startCopyOptions, metadata);
 
-            return this.blobClientInternal.startCopyFromUrlWithResponse(sourceUrl, null, null, tier, priority,
+            return this.blobClientInternal.startCopyFromUrlWithResponse(sourceUrl, null, metadata, tier, priority,
                 sourceModifiedRequestConditions.getIfModifiedSince(),
                 sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
                 sourceModifiedRequestConditions.getIfNoneMatch(), sourceModifiedRequestConditions.getTagsConditions(),
@@ -998,10 +997,9 @@ public class BlobAsyncClientBase {
             = options.getSourceAuthorization() == null ? null : options.getSourceAuthorization().toString();
 
         RequestOptions copyFromUrlOptions = blobRequestOptions(context);
-        ModelHelper.addMetadataHeaders(copyFromUrlOptions, options.getMetadata());
 
         return this.blobClientInternal
-            .copyFromUrlWithResponse(options.getCopySource(), null, null, options.getTier(),
+            .copyFromUrlWithResponse(options.getCopySource(), null, options.getMetadata(), options.getTier(),
                 sourceModifiedRequestConditions.getIfModifiedSince(),
                 sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
                 sourceModifiedRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
@@ -2011,10 +2009,9 @@ public class BlobAsyncClientBase {
         context = context == null ? Context.NONE : context;
 
         RequestOptions setMetadataOptions = blobRequestOptions(context);
-        ModelHelper.addMetadataHeaders(setMetadataOptions, metadata);
 
         return this.blobClientInternal
-            .setMetadataWithResponse(null, null, requestConditions.getLeaseId(),
+            .setMetadataWithResponse(null, metadata, requestConditions.getLeaseId(),
                 customerProvidedKey == null ? null : customerProvidedKey.getEncryptionKey(),
                 customerProvidedKey == null ? null : customerProvidedKey.getEncryptionKeySha256(),
                 customerProvidedKey == null ? null : customerProvidedKey.getEncryptionAlgorithm(),
@@ -2228,9 +2225,8 @@ public class BlobAsyncClientBase {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         RequestOptions snapshotOptions = blobRequestOptions(context);
-        ModelHelper.addMetadataHeaders(snapshotOptions, metadata);
 
-        return this.blobClientInternal.createSnapshotWithResponse(null, null,
+        return this.blobClientInternal.createSnapshotWithResponse(null, metadata,
             customerProvidedKey == null ? null : customerProvidedKey.getEncryptionKey(),
             customerProvidedKey == null ? null : customerProvidedKey.getEncryptionKeySha256(),
             customerProvidedKey == null ? null : customerProvidedKey.getEncryptionAlgorithm(),
