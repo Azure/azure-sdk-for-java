@@ -26,7 +26,7 @@ public final class MetricsConfigurationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"enabledMetrics\":[\"nhrkmjqncfvdsc\",\"hemvwfnqqwypvnd\",\"wbgodtggrssg\"],\"collectionInterval\":8028256275846920878,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"njm\",\"disabledMetrics\":[\"vecvzts\",\"bgmusaictd\",\"cnk\",\"zohnrddclzeqozre\"],\"provisioningState\":\"Succeeded\"},\"etag\":\"qixbnjrqvzyuexo\",\"extendedLocation\":{\"name\":\"onynpa\",\"type\":\"EdgeZone\"},\"location\":\"dpabcreuwzosg\",\"tags\":{\"ormrexzv\":\"vcva\",\"uvecovsd\":\"ubewgzygba\",\"akrlimzfvppkeqsi\":\"hzrtd\",\"gygnhrkombc\":\"jmcl\"},\"id\":\"tajdopggorwjoqtr\",\"name\":\"tpvclpofyrlmwk\",\"type\":\"tskwxjgvhxccbm\"}";
+            = "{\"properties\":{\"enabledMetrics\":[\"hwkibmgjymn\",\"jca\"],\"collectionInterval\":3087534237889560421,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"qzoof\",\"disabledMetrics\":[\"jsvepfbhtleberp\",\"ljekn\"],\"provisioningState\":\"Succeeded\"},\"etag\":\"jjqxowkdnjr\",\"extendedLocation\":{\"name\":\"gkr\",\"type\":\"EdgeZone\"},\"location\":\"ehycpn\",\"tags\":{\"uqlhfwaf\":\"wonoehr\",\"guyfazbkocbygvt\":\"jzmpy\",\"aw\":\"rmxkbcjwwdxom\",\"gaedaoiq\":\"pkeboozflyac\"},\"id\":\"lm\",\"name\":\"dtwgabdxfkuzbwj\",\"type\":\"cooyvhtuqb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,24 +36,24 @@ public final class MetricsConfigurationsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterMetricsConfiguration response = manager.metricsConfigurations()
-            .define("dajjvywe")
-            .withRegion("yslb")
-            .withExistingCluster("fkkauigvmua", "mczfedyuepsvplt")
+            .define("zwuge")
+            .withRegion("k")
+            .withExistingCluster("atpf", "saebwfwhxorpwal")
             .withExtendedLocation(
-                new ExtendedLocation().withName("oonsvobchkxfp").withType(ExtendedLocationType.CUSTOM_LOCATION))
-            .withCollectionInterval(8821955780576555831L)
-            .withTags(mapOf("wayqshwyqxrid", "lmnnk", "aqjmkgxqwque", "tb"))
-            .withEnabledMetrics(Arrays.asList("kumcfjxokyelsy", "svfnkwm", "gjjekrkn"))
-            .withIfMatch("zcntogffjwajnrtw")
-            .withIfNoneMatch("vaqkifmxawost")
+                new ExtendedLocation().withName("bafeb").withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .withCollectionInterval(7970507256018490333L)
+            .withTags(mapOf("vrkpsa", "tibhlennt", "xvzmlghny", "d"))
+            .withEnabledMetrics(Arrays.asList("fccylhtrh", "hvazjpwexcdr", "probzzxezmnrkjgp"))
+            .withIfMatch("xvhhyqq")
+            .withIfNoneMatch("gatxgrznmginmtsd")
             .create();
 
-        Assertions.assertEquals("dpabcreuwzosg", response.location());
-        Assertions.assertEquals("vcva", response.tags().get("ormrexzv"));
-        Assertions.assertEquals("onynpa", response.extendedLocation().name());
+        Assertions.assertEquals("ehycpn", response.location());
+        Assertions.assertEquals("wonoehr", response.tags().get("uqlhfwaf"));
+        Assertions.assertEquals("gkr", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
-        Assertions.assertEquals("nhrkmjqncfvdsc", response.enabledMetrics().get(0));
-        Assertions.assertEquals(8028256275846920878L, response.collectionInterval());
+        Assertions.assertEquals("hwkibmgjymn", response.enabledMetrics().get(0));
+        Assertions.assertEquals(3087534237889560421L, response.collectionInterval());
     }
 
     // Use "Map.of" if available

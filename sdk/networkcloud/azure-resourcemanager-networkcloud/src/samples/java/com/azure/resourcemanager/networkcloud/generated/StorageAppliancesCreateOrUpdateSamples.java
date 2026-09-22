@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class StorageAppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/StorageAppliances_Create.json
+     * x-ms-original-file: 2026-08-01-preview/StorageAppliances_Create.json
      */
     /**
      * Sample code: Create or update storage appliance.
