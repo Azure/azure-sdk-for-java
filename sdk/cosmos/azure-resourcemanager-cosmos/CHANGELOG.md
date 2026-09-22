@@ -216,16 +216,16 @@
 
 #### `models.DatabaseAccountUpdateParameters` was modified
 
-* `enableAllVersionsAndDeletesChangeFeed()` was added
 * `capacityMode()` was added
-* `withCapacityMode(models.CapacityMode)` was added
-* `enableMaterializedViews()` was added
 * `softDeleteConfiguration()` was added
+* `withEnableAllVersionsAndDeletesChangeFeed(java.lang.Boolean)` was added
+* `withCapacityMode(models.CapacityMode)` was added
+* `enableAllVersionsAndDeletesChangeFeed()` was added
 * `withEnableMaterializedViews(java.lang.Boolean)` was added
 * `withSoftDeleteConfiguration(models.SoftDeleteConfiguration)` was added
-* `withDiagnosticLogSettings(models.DiagnosticLogSettings)` was added
-* `withEnableAllVersionsAndDeletesChangeFeed(java.lang.Boolean)` was added
+* `enableMaterializedViews()` was added
 * `diagnosticLogSettings()` was added
+* `withDiagnosticLogSettings(models.DiagnosticLogSettings)` was added
 
 #### `models.AccountKeyMetadata` was modified
 
@@ -233,16 +233,16 @@
 
 #### `models.DatabaseAccountCreateUpdateParameters` was modified
 
-* `withSoftDeleteConfiguration(models.SoftDeleteConfiguration)` was added
-* `withCapacityMode(models.CapacityMode)` was added
-* `enableAllVersionsAndDeletesChangeFeed()` was added
-* `withDiagnosticLogSettings(models.DiagnosticLogSettings)` was added
-* `softDeleteConfiguration()` was added
 * `diagnosticLogSettings()` was added
-* `withEnableAllVersionsAndDeletesChangeFeed(java.lang.Boolean)` was added
-* `withEnableMaterializedViews(java.lang.Boolean)` was added
-* `enableMaterializedViews()` was added
+* `softDeleteConfiguration()` was added
+* `withSoftDeleteConfiguration(models.SoftDeleteConfiguration)` was added
 * `capacityMode()` was added
+* `enableMaterializedViews()` was added
+* `withEnableMaterializedViews(java.lang.Boolean)` was added
+* `enableAllVersionsAndDeletesChangeFeed()` was added
+* `withCapacityMode(models.CapacityMode)` was added
+* `withDiagnosticLogSettings(models.DiagnosticLogSettings)` was added
+* `withEnableAllVersionsAndDeletesChangeFeed(java.lang.Boolean)` was added
 
 #### `models.ClusterResourceProperties` was modified
 
@@ -251,24 +251,24 @@
 
 #### `models.DatabaseAccountRegenerateKeyParameters` was modified
 
-* `withSkipAccountKeysLastUsageCheck(java.lang.Boolean)` was added
 * `skipAccountKeysLastUsageCheck()` was added
+* `withSkipAccountKeysLastUsageCheck(java.lang.Boolean)` was added
 
 #### `models.SqlContainerResource` was modified
 
-* `materializedViewsProperties()` was added
+* `withMaterializedViewsProperties(models.MaterializedViewsProperties)` was added
 * `materializedViews()` was added
+* `dataMaskingPolicy()` was added
+* `withMaterializedViews(java.util.List)` was added
+* `materializedViewsProperties()` was added
 * `withMaterializedViewDefinition(models.MaterializedViewDefinition)` was added
 * `withDataMaskingPolicy(models.DataMaskingPolicy)` was added
-* `withMaterializedViews(java.util.List)` was added
-* `withMaterializedViewsProperties(models.MaterializedViewsProperties)` was added
-* `dataMaskingPolicy()` was added
 * `materializedViewDefinition()` was added
 
 #### `models.ThroughputSettingsResource` was modified
 
-* `withThroughputBuckets(java.util.List)` was added
 * `throughputBuckets()` was added
+* `withThroughputBuckets(java.util.List)` was added
 
 #### `models.ContinuousTier` was modified
 
