@@ -11,7 +11,8 @@ import java.util.Map;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.truncateTelemetry;
 
-public final class AvailabilityTelemetryBuilder extends AbstractTelemetryBuilder {
+public final class AvailabilityTelemetryBuilder extends AbstractTelemetryBuilder
+    implements MeasurementTelemetryBuilder {
 
     private static final int MAX_RUN_LOCATION_LENGTH = 1024;
     private static final int MAX_MESSAGE_LENGTH = 8192;
