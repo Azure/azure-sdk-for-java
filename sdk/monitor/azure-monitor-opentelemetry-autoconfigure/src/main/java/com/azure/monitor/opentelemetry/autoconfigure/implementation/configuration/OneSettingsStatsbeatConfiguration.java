@@ -51,7 +51,6 @@ public final class OneSettingsStatsbeatConfiguration {
 
     static StatsbeatConnectionString resolve(ConnectionString customerConnectionString, Map<String, String> settings) {
         String defaultConnectionString = settings.get("DEFAULT_STATS_CONNECTION_STRING");
-        String defaultEndpoint = settings.get("DEFAULT_SDK_STATS_ENDPOINT");
         String region
             = StatsbeatConnectionString.getGeoWithoutStampSpecific(customerConnectionString.getIngestionEndpoint());
         for (String boundary : parseStringArray(settings.get("SUPPORTED_DATA_BOUNDARIES"))) {
@@ -61,38 +60,24 @@ public final class OneSettingsStatsbeatConfiguration {
             for (String candidate : parseStringArray(settings.get(boundary + "_REGIONS"))) {
                 if (candidate.equalsIgnoreCase(region)) {
                     StatsbeatConnectionString resolved
-                        = parseConnectionString(settings.get(boundary + "_STATS_CONNECTION_STRING"),
-                            settings.getOrDefault(boundary + "_SDK_STATS_ENDPOINT", defaultEndpoint));
-                    return resolved != null
-                        ? resolved
-                        : parseConnectionString(defaultConnectionString, defaultEndpoint);
+                        = parseConnectionString(settings.get(boundary + "_STATS_CONNECTION_STRING"));
+                    return resolved != null ? resolved : parseConnectionString(defaultConnectionString);
                 }
             }
         }
-        return parseConnectionString(defaultConnectionString, defaultEndpoint);
+        return parseConnectionString(defaultConnectionString);
     }
 
-    private static StatsbeatConnectionString parseConnectionString(String value, String endpoint) {
+    private static StatsbeatConnectionString parseConnectionString(String value) {
         if (value == null || value.isEmpty()) {
             return null;
         }
         try {
             ConnectionString connectionString = ConnectionString.parse(value);
             return StatsbeatConnectionString.create(connectionString, connectionString.getInstrumentationKey(),
-                resolveEndpoint(endpoint, connectionString.getIngestionEndpoint()));
+                connectionString.getIngestionEndpoint());
         } catch (RuntimeException ex) {
             return null;
-        }
-    }
-
-    private static String resolveEndpoint(String endpoint, String fallback) {
-        try {
-            URL endpointUrl = endpoint == null ? null : new URL(endpoint);
-            return endpointUrl != null && "https".equalsIgnoreCase(endpointUrl.getProtocol())
-                ? endpointUrl.toString()
-                : fallback;
-        } catch (IOException ex) {
-            return fallback;
         }
     }
 
