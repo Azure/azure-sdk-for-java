@@ -202,6 +202,15 @@ class TestUpdateCiPathFilters(unittest.TestCase):
                         ci_yml[trigger_type]["paths"][filter_type], [expected_path]
                     )
 
+    def test_initializes_absent_paths_mapping(self):
+        del self.ci_yml["trigger"]["paths"]
+
+        self.assertTrue(update_ci_path_filters(self.ci_yml, self.SERVICE, self.MODULE))
+        self.assertEqual(
+            self.ci_yml["trigger"]["paths"],
+            {"include": [self.INCLUDE_PATH], "exclude": [self.EXCLUDE_PATH]},
+        )
+
     def test_preserves_each_disabled_trigger_and_updates_the_other(self):
         for disabled_trigger in ("trigger", "pr"):
             with self.subTest(disabled_trigger=disabled_trigger):
@@ -237,17 +246,23 @@ class TestUpdateCiPathFilters(unittest.TestCase):
         self.assertEqual(ci_yml["pr"]["paths"]["include"], [self.INCLUDE_PATH])
         self.assertEqual(ci_yml["pr"]["paths"]["exclude"], [self.EXCLUDE_PATH])
 
-    def test_rejects_present_non_list_path_filters(self):
+    def test_skips_present_non_list_filter_and_updates_sibling(self):
         for malformed_value in (None, "sdk/network/pom.xml", {}):
             with self.subTest(malformed_value=malformed_value):
                 ci_yml = copy.deepcopy(self.ci_yml)
                 ci_yml["pr"]["paths"]["exclude"] = malformed_value
 
-                with self.assertRaisesRegex(ValueError, r"pr\.paths\.exclude.*not a list"):
+                with self.assertLogs(level="WARNING") as logs:
                     update_ci_path_filters(ci_yml, self.SERVICE, self.MODULE)
+                self.assertIs(ci_yml["pr"]["paths"]["exclude"], malformed_value)
+                self.assertIn(self.INCLUDE_PATH, ci_yml["pr"]["paths"]["include"])
+                self.assertIn(self.INCLUDE_PATH, ci_yml["trigger"]["paths"]["include"])
+                self.assertTrue(
+                    any("pr.paths.exclude" in message for message in logs.output)
+                )
 
-    def test_rejects_missing_or_non_none_scalar_trigger(self):
-        for malformed_value in (None, "None", "disabled"):
+    def test_skips_omitted_and_non_mapping_triggers(self):
+        for malformed_value in (None, "None", "disabled", ["main"]):
             with self.subTest(malformed_value=malformed_value):
                 ci_yml = copy.deepcopy(self.ci_yml)
                 if malformed_value is None:
@@ -255,8 +270,28 @@ class TestUpdateCiPathFilters(unittest.TestCase):
                 else:
                     ci_yml["trigger"] = malformed_value
 
-                with self.assertRaisesRegex(ValueError, r"'trigger' is not a mapping"):
-                    update_ci_path_filters(ci_yml, self.SERVICE, self.MODULE)
+                self.assertTrue(update_ci_path_filters(ci_yml, self.SERVICE, self.MODULE))
+                if malformed_value is None:
+                    self.assertNotIn("trigger", ci_yml)
+                else:
+                    self.assertIs(ci_yml["trigger"], malformed_value)
+                self.assertIn(self.INCLUDE_PATH, ci_yml["pr"]["paths"]["include"])
+
+    def test_skips_present_non_mapping_paths_and_updates_other_trigger(self):
+        for malformed_value in (None, "sdk/network/", []):
+            with self.subTest(malformed_value=malformed_value):
+                ci_yml = copy.deepcopy(self.ci_yml)
+                ci_yml["trigger"]["paths"] = malformed_value
+
+                with self.assertLogs(level="WARNING") as logs:
+                    self.assertTrue(
+                        update_ci_path_filters(ci_yml, self.SERVICE, self.MODULE)
+                    )
+                self.assertIs(ci_yml["trigger"]["paths"], malformed_value)
+                self.assertIn(self.INCLUDE_PATH, ci_yml["pr"]["paths"]["include"])
+                self.assertTrue(
+                    any("trigger.paths" in message for message in logs.output)
+                )
 
 
 class TestUpdateServiceFilesForNewLib(unittest.TestCase):
@@ -320,6 +355,31 @@ class TestUpdateServiceFilesForNewLib(unittest.TestCase):
             self.assertIn(
                 "sdk/network/azure-resourcemanager-network-extra/pom.xml", paths["exclude"]
             )
+
+    def test_malformed_filters_do_not_block_artifact_update(self):
+        with open(self.ci_file, "r") as f:
+            ci_yml = yaml.safe_load(f)
+        ci_yml["trigger"]["paths"] = None
+        ci_yml["pr"]["paths"]["exclude"] = None
+        ci_yml["extends"]["parameters"]["Artifacts"] = []
+        with open(self.ci_file, "w") as f:
+            yaml.safe_dump(ci_yml, f, sort_keys=False)
+
+        update_service_files_for_new_lib(
+            self.sdk_root, self.service, "com.azure.resourcemanager", self.module
+        )
+
+        with open(self.ci_file, "r") as f:
+            updated_ci_yml = yaml.safe_load(f)
+        self.assertIsNone(updated_ci_yml["trigger"]["paths"])
+        self.assertIsNone(updated_ci_yml["pr"]["paths"]["exclude"])
+        self.assertIn(
+            "sdk/network/azure-resourcemanager-network-extra/",
+            updated_ci_yml["pr"]["paths"]["include"],
+        )
+        self.assertEqual(
+            updated_ci_yml["extends"]["parameters"]["Artifacts"][0]["name"], self.module
+        )
 
 
 if __name__ == "__main__":

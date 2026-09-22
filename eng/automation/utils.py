@@ -107,26 +107,31 @@ def update_ci_path_filters(ci_yml: dict, service: str, module: str) -> bool:
     updated = False
 
     for trigger_type in ("trigger", "pr"):
+        if trigger_type not in ci_yml:
+            continue
         trigger = ci_yml.get(trigger_type)
         if type(trigger) == str and trigger == "none":
             continue
         if type(trigger) != dict:
-            raise ValueError("[CI] Unexpected ci.yml format: '{0}' is not a mapping".format(trigger_type))
+            logging.warning("[CI][Skip] '{0}' is not a mapping".format(trigger_type))
+            continue
 
-        paths = trigger.get("paths")
+        if "paths" not in trigger:
+            trigger["paths"] = {}
+        paths = trigger["paths"]
         if type(paths) != dict:
-            raise ValueError("[CI] Unexpected ci.yml format: '{0}.paths' is not a mapping".format(trigger_type))
+            logging.warning("[CI][Skip] '{0}.paths' is not a mapping".format(trigger_type))
+            continue
 
         for filter_type, package_path in (("include", include_path), ("exclude", exclude_path)):
             if filter_type not in paths:
                 paths[filter_type] = []
             filters = paths[filter_type]
             if type(filters) != list:
-                raise ValueError(
-                    "[CI] Unexpected ci.yml format: '{0}.paths.{1}' is not a list".format(
-                        trigger_type, filter_type
-                    )
+                logging.warning(
+                    "[CI][Skip] '{0}.paths.{1}' is not a list".format(trigger_type, filter_type)
                 )
+                continue
             if package_path not in filters:
                 filters.append(package_path)
                 updated = True

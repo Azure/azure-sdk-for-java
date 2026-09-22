@@ -595,17 +595,25 @@ function Update-CiPathFilters {
     $updated = $false
 
     foreach ($triggerType in @("trigger", "pr")) {
+        if (-not $CiYml.Contains($triggerType)) {
+            continue
+        }
         $trigger = $CiYml[$triggerType]
         if ($trigger -is [string] -and $trigger -ceq "none") {
             continue
         }
         if (-not ($trigger -is [System.Collections.IDictionary])) {
-            throw "[CI] Unexpected ci.yml format: '$triggerType' is not a mapping"
+            Write-Warning "[CI][Skip] '$triggerType' is not a mapping"
+            continue
         }
 
+        if (-not $trigger.Contains("paths")) {
+            $trigger["paths"] = [ordered]@{}
+        }
         $paths = $trigger["paths"]
         if (-not ($paths -is [System.Collections.IDictionary])) {
-            throw "[CI] Unexpected ci.yml format: '$triggerType.paths' is not a mapping"
+            Write-Warning "[CI][Skip] '$triggerType.paths' is not a mapping"
+            continue
         }
 
         foreach ($filter in @(
@@ -617,7 +625,8 @@ function Update-CiPathFilters {
             }
             $entries = $paths[$filter.Type]
             if (-not ($entries -is [System.Collections.IList])) {
-                throw "[CI] Unexpected ci.yml format: '$triggerType.paths.$($filter.Type)' is not a list"
+                Write-Warning "[CI][Skip] '$triggerType.paths.$($filter.Type)' is not a list"
+                continue
             }
             if (-not $entries.Contains($filter.Path)) {
                 $null = $entries.Add($filter.Path)
