@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.truncateTelemetry;
 
-public final class PageViewTelemetryBuilder extends AbstractTelemetryBuilder implements MeasurementTelemetryBuilder {
+public final class PageViewTelemetryBuilder extends AbstractTelemetryBuilder {
 
     private static final int MAX_URL_LENGTH = 2048;
 

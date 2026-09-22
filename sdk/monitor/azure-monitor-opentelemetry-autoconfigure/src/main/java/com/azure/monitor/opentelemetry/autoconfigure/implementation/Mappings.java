@@ -5,14 +5,10 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.AbstractTelemetryBuilder;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MeasurementTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Trie;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.AttributeType;
 import io.opentelemetry.api.common.Attributes;
-import io.opentelemetry.api.common.KeyValue;
-import io.opentelemetry.api.common.Value;
-import io.opentelemetry.api.common.ValueType;
 import reactor.util.annotation.Nullable;
 
 import java.util.List;
@@ -22,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 class Mappings {
 
-    private static final String CUSTOM_MEASUREMENTS_ATTRIBUTE = "microsoft.custom_measurements";
     private static final ClientLogger logger = new ClientLogger(Mappings.class);
     private static final Set<AttributeType> unexpectedTypesLogged = ConcurrentHashMap.newKeySet();
 
@@ -41,10 +36,6 @@ class Mappings {
 
     private void map(AbstractTelemetryBuilder telemetryBuilder, AttributeKey<?> attributeKey, Object value) {
         String key = attributeKey.getKey();
-        if (CUSTOM_MEASUREMENTS_ATTRIBUTE.equals(key)) {
-            mapCustomMeasurements(telemetryBuilder, value);
-            return;
-        }
         MappingsBuilder.ExactMapping exactMapping = exactMappings.get(key);
         if (exactMapping != null) {
             exactMapping.map(telemetryBuilder, value);
@@ -58,30 +49,6 @@ class Mappings {
         String val = convertToString(value, attributeKey.getType());
         if (val != null) {
             telemetryBuilder.addProperty(attributeKey.getKey(), val);
-        }
-    }
-
-    private static void mapCustomMeasurements(AbstractTelemetryBuilder telemetryBuilder, Object value) {
-        if (!(telemetryBuilder instanceof MeasurementTelemetryBuilder) || !(value instanceof Value)) {
-            return;
-        }
-        Value<?> customMeasurements = (Value<?>) value;
-        if (customMeasurements.getType() != ValueType.KEY_VALUE_LIST) {
-            return;
-        }
-        MeasurementTelemetryBuilder measurementBuilder = (MeasurementTelemetryBuilder) telemetryBuilder;
-        for (Object item : (List<?>) customMeasurements.getValue()) {
-            if (!(item instanceof KeyValue)) {
-                continue;
-            }
-            KeyValue entry = (KeyValue) item;
-            Value<?> measurement = entry.getValue();
-            if (measurement.getType() == ValueType.DOUBLE) {
-                double doubleValue = (Double) measurement.getValue();
-                if (Double.isFinite(doubleValue)) {
-                    measurementBuilder.addMeasurement(entry.getKey(), doubleValue);
-                }
-            }
         }
     }
 
@@ -101,7 +68,7 @@ class Mappings {
                 return join((List<?>) value);
 
             case VALUE:
-                return ((Value<?>) value).asString();
+                break;
         }
         if (unexpectedTypesLogged.add(type)) {
             logger.warning("unexpected attribute type: {}", type);

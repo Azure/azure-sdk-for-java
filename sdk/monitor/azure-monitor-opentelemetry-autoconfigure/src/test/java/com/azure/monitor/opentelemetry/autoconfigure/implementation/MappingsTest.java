@@ -26,11 +26,13 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.MappingsBuilder.MappingType.SPAN;
 
 class MappingsTest {
 
     private static final AttributeKey<Value<?>> CUSTOM_MEASUREMENTS
         = AttributeKey.valueKey("microsoft.custom_measurements");
+    private static final Mappings MAPPINGS = createMappings();
 
     @Test
     void mapsValidCustomMeasurementsAndDropsInvalidEntries() {
@@ -49,7 +51,7 @@ class MappingsTest {
         for (AbstractTelemetryBuilder builder : Arrays.asList(RequestTelemetryBuilder.create(),
             RemoteDependencyTelemetryBuilder.create(), MessageTelemetryBuilder.create(),
             ExceptionTelemetryBuilder.create(), EventTelemetryBuilder.create())) {
-            MappingsBuilder.EMPTY_MAPPINGS.map(attributes, builder);
+            MAPPINGS.map(attributes, builder);
 
             MonitorDomain data = builder.build().getData().getBaseData();
             assertThat(getMeasurements(data)).containsOnly(entry("itemsProcessed", 42.0), entry("queueDepth", 7.0));
@@ -63,11 +65,17 @@ class MappingsTest {
         Attributes attributes = Attributes.of(CUSTOM_MEASUREMENTS, Value.of("not a map"));
         EventTelemetryBuilder builder = EventTelemetryBuilder.create();
 
-        MappingsBuilder.EMPTY_MAPPINGS.map(attributes, builder);
+        MAPPINGS.map(attributes, builder);
 
         TelemetryEventData data = (TelemetryEventData) builder.build().getData().getBaseData();
         assertThat(data.getMeasurements()).isNull();
         assertThat(data.getProperties()).isNull();
+    }
+
+    private static Mappings createMappings() {
+        MappingsBuilder mappingsBuilder = new MappingsBuilder(SPAN);
+        CustomMeasurementsMapper.register(mappingsBuilder);
+        return mappingsBuilder.build();
     }
 
     private static Map<String, Double> getMeasurements(MonitorDomain data) {

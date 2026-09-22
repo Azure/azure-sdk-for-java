@@ -11,7 +11,8 @@ import java.util.Map;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.truncateTelemetry;
 
-public final class EventTelemetryBuilder extends AbstractTelemetryBuilder implements MeasurementTelemetryBuilder {
+public final class EventTelemetryBuilder extends AbstractTelemetryBuilder
+    implements CustomMeasurementsTelemetryBuilder {
 
     private static final int MAX_EVENT_NAME_LENGTH = 512;
 

@@ -11,7 +11,8 @@ import java.util.Map;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.truncateTelemetry;
 
-public final class RequestTelemetryBuilder extends AbstractTelemetryBuilder implements MeasurementTelemetryBuilder {
+public final class RequestTelemetryBuilder extends AbstractTelemetryBuilder
+    implements CustomMeasurementsTelemetryBuilder {
 
     private static final int MAX_SOURCE_LENGTH = 1024;
     private static final int MAX_RESPONSE_CODE_LENGTH = 1024;

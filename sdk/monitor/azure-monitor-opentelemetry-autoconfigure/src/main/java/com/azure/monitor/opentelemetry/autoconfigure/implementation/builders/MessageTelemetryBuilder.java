@@ -12,7 +12,8 @@ import java.util.Map;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.truncateTelemetry;
 
-public final class MessageTelemetryBuilder extends AbstractTelemetryBuilder implements MeasurementTelemetryBuilder {
+public final class MessageTelemetryBuilder extends AbstractTelemetryBuilder
+    implements CustomMeasurementsTelemetryBuilder {
 
     private static final int MAX_MESSAGE_LENGTH = 32768;
 

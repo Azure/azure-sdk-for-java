@@ -12,7 +12,7 @@ import java.util.Map;
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.TelemetryTruncation.truncateTelemetry;
 
 public final class RemoteDependencyTelemetryBuilder extends AbstractTelemetryBuilder
-    implements MeasurementTelemetryBuilder {
+    implements CustomMeasurementsTelemetryBuilder {
 
     private static final int MAX_DATA_LENGTH = 8192;
     private static final int MAX_RESULT_CODE_LENGTH = 1024;
