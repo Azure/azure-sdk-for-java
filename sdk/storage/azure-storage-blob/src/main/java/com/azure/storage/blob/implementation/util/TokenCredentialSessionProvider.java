@@ -215,26 +215,11 @@ final class TokenCredentialSessionProvider implements SessionProvider {
 
         private ContainerSessionCache(TokenCredentialSessionProvider provider, Clock clock, String containerName,
             String resolvedAccountName, OffsetDateTime lastAccess) {
-            this.cache = createCache(provider, clock, containerName, resolvedAccountName);
+            this.cache
+                = new AutoRefreshingCache<>(() -> provider.createSessionAsync(containerName, resolvedAccountName),
+                    () -> provider.createSessionSync(containerName, resolvedAccountName),
+                    SessionCredential::getExpiresAt, clock);
             this.lastAccess = lastAccess;
         }
-
-        private static AutoRefreshingCache<SessionCredential> createCache(TokenCredentialSessionProvider provider,
-            Clock clock, String containerName, String resolvedAccountName) {
-            AutoRefreshingCache.ValueProvider<SessionCredential> valueProvider
-                = new AutoRefreshingCache.ValueProvider<SessionCredential>() {
-                    @Override
-                    public Mono<SessionCredential> createAsync() {
-                        return provider.createSessionAsync(containerName, resolvedAccountName);
-                    }
-
-                    @Override
-                    public SessionCredential createSync() {
-                        return provider.createSessionSync(containerName, resolvedAccountName);
-                    }
-                };
-            return new AutoRefreshingCache<>(valueProvider, SessionCredential::getExpiresAt, clock);
-        }
-
     }
 }
