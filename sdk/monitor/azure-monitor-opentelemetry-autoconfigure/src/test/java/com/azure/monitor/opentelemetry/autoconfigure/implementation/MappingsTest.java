@@ -26,16 +26,39 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.MappingsBuilder.MappingType.LOG;
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.MappingsBuilder.MappingType.SPAN;
 
 class MappingsTest {
 
     private static final AttributeKey<Value<?>> CUSTOM_MEASUREMENTS
         = AttributeKey.valueKey("microsoft.custom_measurements");
-    private static final Mappings MAPPINGS = createMappings();
 
     @Test
-    void mapsValidCustomMeasurementsAndDropsInvalidEntries() {
+    void mapsSpanCustomMeasurementsAndDropsInvalidEntries() {
+        assertMapsValidCustomMeasurements(createMappings(SPAN),
+            Arrays.asList(RequestTelemetryBuilder.create(), RemoteDependencyTelemetryBuilder.create(),
+                MessageTelemetryBuilder.create(), ExceptionTelemetryBuilder.create()));
+    }
+
+    @Test
+    void mapsLogCustomMeasurementsAndDropsInvalidEntries() {
+        assertMapsValidCustomMeasurements(createMappings(LOG), Arrays.asList(MessageTelemetryBuilder.create(),
+            EventTelemetryBuilder.create(), ExceptionTelemetryBuilder.create()));
+    }
+
+    @Test
+    void doesNotMapMalformedSpanCustomMeasurementsToProperties() {
+        assertDoesNotMapMalformedCustomMeasurements(createMappings(SPAN), RequestTelemetryBuilder.create());
+    }
+
+    @Test
+    void doesNotMapMalformedLogCustomMeasurementsToProperties() {
+        assertDoesNotMapMalformedCustomMeasurements(createMappings(LOG), EventTelemetryBuilder.create());
+    }
+
+    private static void assertMapsValidCustomMeasurements(Mappings mappings,
+        Iterable<AbstractTelemetryBuilder> builders) {
         Map<String, Value<?>> values = new LinkedHashMap<>();
         values.put("itemsProcessed", Value.of(42.0));
         values.put("queueDepth", Value.of(7.0));
@@ -48,10 +71,8 @@ class MappingsTest {
 
         Attributes attributes
             = Attributes.builder().put(CUSTOM_MEASUREMENTS, Value.of(values)).put("color", "red").build();
-        for (AbstractTelemetryBuilder builder : Arrays.asList(RequestTelemetryBuilder.create(),
-            RemoteDependencyTelemetryBuilder.create(), MessageTelemetryBuilder.create(),
-            ExceptionTelemetryBuilder.create(), EventTelemetryBuilder.create())) {
-            MAPPINGS.map(attributes, builder);
+        for (AbstractTelemetryBuilder builder : builders) {
+            mappings.map(attributes, builder);
 
             MonitorDomain data = builder.build().getData().getBaseData();
             assertThat(getMeasurements(data)).containsOnly(entry("itemsProcessed", 42.0), entry("queueDepth", 7.0));
@@ -60,20 +81,18 @@ class MappingsTest {
         }
     }
 
-    @Test
-    void doesNotMapMalformedCustomMeasurementsToProperties() {
+    private static void assertDoesNotMapMalformedCustomMeasurements(Mappings mappings,
+        AbstractTelemetryBuilder builder) {
         Attributes attributes = Attributes.of(CUSTOM_MEASUREMENTS, Value.of("not a map"));
-        EventTelemetryBuilder builder = EventTelemetryBuilder.create();
+        mappings.map(attributes, builder);
 
-        MAPPINGS.map(attributes, builder);
-
-        TelemetryEventData data = (TelemetryEventData) builder.build().getData().getBaseData();
-        assertThat(data.getMeasurements()).isNull();
-        assertThat(data.getProperties()).isNull();
+        MonitorDomain data = builder.build().getData().getBaseData();
+        assertThat(getMeasurements(data)).isNull();
+        assertThat(getProperties(data)).isNull();
     }
 
-    private static Mappings createMappings() {
-        MappingsBuilder mappingsBuilder = new MappingsBuilder(SPAN);
+    private static Mappings createMappings(MappingsBuilder.MappingType mappingType) {
+        MappingsBuilder mappingsBuilder = new MappingsBuilder(mappingType);
         CustomMeasurementsMapper.register(mappingsBuilder);
         return mappingsBuilder.build();
     }
@@ -91,7 +110,10 @@ class MappingsTest {
         if (data instanceof TelemetryExceptionData) {
             return ((TelemetryExceptionData) data).getMeasurements();
         }
-        return ((TelemetryEventData) data).getMeasurements();
+        if (data instanceof TelemetryEventData) {
+            return ((TelemetryEventData) data).getMeasurements();
+        }
+        throw new AssertionError("Unexpected telemetry data type: " + data.getClass().getName());
     }
 
     private static Map<String, String> getProperties(MonitorDomain data) {
@@ -107,7 +129,10 @@ class MappingsTest {
         if (data instanceof TelemetryExceptionData) {
             return ((TelemetryExceptionData) data).getProperties();
         }
-        return ((TelemetryEventData) data).getProperties();
+        if (data instanceof TelemetryEventData) {
+            return ((TelemetryEventData) data).getProperties();
+        }
+        throw new AssertionError("Unexpected telemetry data type: " + data.getClass().getName());
     }
 
     private static String repeat(char value, int count) {
