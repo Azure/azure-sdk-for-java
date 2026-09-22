@@ -45,6 +45,27 @@ public class BufferedSourceTaskTest {
     }
 
     @Test(timeOut = 30_000)
+    public void sourceReaderStartsLazilyOnFirstPoll() {
+        TestTask task = new TestTask();
+        AtomicInteger pollCount = new AtomicInteger();
+        task.pollAction = () -> {
+            pollCount.incrementAndGet();
+            return Collections.emptyList();
+        };
+
+        try {
+            task.start(Collections.emptyMap());
+            assertThat(pollCount.get()).isZero();
+
+            task.poll();
+
+            assertThat(pollCount.get()).isGreaterThanOrEqualTo(1);
+        } finally {
+            task.stop();
+        }
+    }
+
+    @Test(timeOut = 30_000)
     public void stopClosesTaskAndUnblocksBackgroundRequest() throws InterruptedException {
         TestTask task = new TestTask();
         CountDownLatch requestStarted = new CountDownLatch(1);
