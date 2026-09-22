@@ -6,11 +6,19 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.ColorMapNames;
+import com.azure.analytics.planetarycomputer.models.PixelSelection;
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
+import com.azure.analytics.planetarycomputer.models.TerrainAlgorithm;
+import com.azure.analytics.planetarycomputer.models.TileMatrixSetId;
 import com.azure.analytics.planetarycomputer.models.TilerImageFormat;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
+import java.util.List;
 
 public class MosaicSearchesTilesScaleGetZxyByScale {
     public static void main(String[] args) {
@@ -20,9 +28,13 @@ public class MosaicSearchesTilesScaleGetZxyByScale {
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-search-tile-no-tms-by-scale.mosaic-searches-tiles-scale-get-zxy-by-scale
         BinaryData response = dataClient.getSearchTileNoTmsByScale("ba13fc7947b9b585690d84ee61aaa653", 13.0, 2174.0,
-            3282.0, 1.0, null, Arrays.asList("image"), null, null, null, null, null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, null, TilerImageFormat.PNG, null, null, null, null, null,
-            null, null, null, null, null);
+            3282.0, 1.0, (List<Integer>) null, Arrays.asList("image"), (String) null, (List<String>) null,
+            (Boolean) null, (String) null, (Boolean) null, (WarpKernelResampling) null, (Integer) null, (Integer) null,
+            (Integer) null, (Boolean) null, (Boolean) null, (String) null, (List<Integer>) null, (String) null,
+            (String) null, (List<String>) null, (SelMethod) null, (TerrainAlgorithm) null, (String) null,
+            (TileMatrixSetId) null, TilerImageFormat.PNG, (Double) null, (String) null, (String) null,
+            (Resampling) null, (PixelSelection) null, (List<String>) null, (ColorMapNames) null, (String) null,
+            (Boolean) null, (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-search-tile-no-tms-by-scale.mosaic-searches-tiles-scale-get-zxy-by-scale
     }
 }

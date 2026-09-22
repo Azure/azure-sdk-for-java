@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class PolicyDefinitionsCreateOrUpdateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/createOrUpdatePolicyDefinitionAtManagementGroup.json
+     * x-ms-original-file: 2026-06-01/createOrUpdatePolicyDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy definition at management group level.

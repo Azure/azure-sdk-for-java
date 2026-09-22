@@ -4,6 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.core.util.BinaryData;
 import java.util.List;
 import org.junit.jupiter.api.Disabled;
@@ -15,8 +16,9 @@ public final class MosaicCollectionsAssetsForBboxGetBboxAssetsTests extends Plan
     @Disabled
     public void testMosaicCollectionsAssetsForBboxGetBboxAssetsTests() {
         // method invocation
-        List<BinaryData> response = dataClient.getCollectionAssetsForBbox("naip-atl", -122.5, 37.7, -122.3, 37.8, null,
-            null, null, null, null, "item-id-1,item-id-2", "-180,-90,180,90", "{}", "-datetime", null, null, null, null,
-            null, null, null);
+        List<BinaryData> response = dataClient.getCollectionAssetsForBbox("naip-atl", -122.5, 37.7, -122.3, 37.8,
+            (Integer) null, (Integer) null, (Integer) null, (Boolean) null, (Boolean) null, "item-id-1,item-id-2",
+            "-180,-90,180,90", "{}", "-datetime", (String) null, (String) null, (List<Integer>) null, (String) null,
+            (List<String>) null, (SelMethod) null, (String) null);
     }
 }

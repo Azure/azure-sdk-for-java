@@ -29,9 +29,10 @@ public final class DpsCertificatesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.dpsCertificates()
-            .deleteWithResponse("zlsico", "oqqnwvlryav", "hheunmmqhgyx", "konocu", "oklyaxuconuq", "zf".getBytes(),
-                true, CertificatePurpose.CLIENT_AUTHENTICATION, OffsetDateTime.parse("2021-09-10T05:55:36Z"),
-                OffsetDateTime.parse("2021-01-29T23:28:32Z"), true, "wrmjmwvvjektc", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("buhfmvfaxkffeiit", "lvmezyvshxmzsbbz", "ggi", "rxwburv", "xxjnspydptk",
+                "enkouknvudw".getBytes(), true, CertificatePurpose.SERVER_AUTHENTICATION,
+                OffsetDateTime.parse("2021-08-25T19:52:36Z"), OffsetDateTime.parse("2021-01-19T10:39:06Z"), true, "dng",
+                com.azure.core.util.Context.NONE);
 
     }
 }

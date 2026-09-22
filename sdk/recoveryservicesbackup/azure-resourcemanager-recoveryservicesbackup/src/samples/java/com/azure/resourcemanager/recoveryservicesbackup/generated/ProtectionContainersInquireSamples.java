@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectionContainersInquireSamples {
     /*
-     * x-ms-original-file: 2026-07-01/AzureStorage/ProtectionContainers_Inquire.json
+     * x-ms-original-file: 2026-08-01/AzureStorage/ProtectionContainers_Inquire.json
      */
     /**
      * Sample code: Inquire Azure Storage Protection Containers.

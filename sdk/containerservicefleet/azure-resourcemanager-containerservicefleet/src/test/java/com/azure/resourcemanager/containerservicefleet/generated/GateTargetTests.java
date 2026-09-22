@@ -13,9 +13,9 @@ public final class GateTargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GateTarget model = BinaryData.fromString(
-            "{\"id\":\"gmgsxnkjzkde\",\"updateRunProperties\":{\"name\":\"pvlopwiyighxpkd\",\"stage\":\"baiuebbaumny\",\"group\":\"ped\",\"timing\":\"After\"}}")
+            "{\"id\":\"zzewkfvhqcrai\",\"updateRunProperties\":{\"name\":\"pnppfuf\",\"stage\":\"wdmhdlxyjrxs\",\"group\":\"afcnih\",\"timing\":\"After\"}}")
             .toObject(GateTarget.class);
-        Assertions.assertEquals("gmgsxnkjzkde", model.id());
+        Assertions.assertEquals("zzewkfvhqcrai", model.id());
         Assertions.assertEquals(Timing.AFTER, model.updateRunProperties().timing());
     }
 }

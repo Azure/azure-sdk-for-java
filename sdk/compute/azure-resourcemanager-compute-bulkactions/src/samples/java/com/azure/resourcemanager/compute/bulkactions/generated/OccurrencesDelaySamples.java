@@ -13,20 +13,21 @@ import java.util.Arrays;
  */
 public final class OccurrencesDelaySamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/Occurrences_Delay_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/Occurrences_Delay_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Occurrences_Delay_MaximumSet.
+     * Sample code: Delay resources in a scheduled action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void
-        occurrencesDelayMaximumSet(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void delayResourcesInAScheduledActionOccurrence(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
-            .delay("rgcompute", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245", new DelayRequest()
-                .withDelay(OffsetDateTime.parse("2025-05-22T17:00:00.000-07:00"))
+            .delay("rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45", new DelayRequest()
+                .withDelay(OffsetDateTime.parse("2026-08-05T17:00:00.000-07:00"))
                 .withResourceIds(Arrays.asList(
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")),
+                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm",
+                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2")),
                 com.azure.core.util.Context.NONE);
     }
 }

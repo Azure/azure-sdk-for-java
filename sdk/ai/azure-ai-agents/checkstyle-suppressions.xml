@@ -5,11 +5,43 @@
 <suppressions>
   <suppress files="com.azure.ai.agents.ResponsesAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.agents.ResponsesClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.util.StreamingResponseUtils.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.agents.AgentsClientBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.agents.AgentsAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.agents.AgentsClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.agents.models.FileSearchTool.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.agents.models.PromptAgentDefinition.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.AudioTranscription.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimePcmAudioFormat.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeConversationItemFunctionCall.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeConversationItemFunctionCallOutput.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeConversationItemAssistantMessage.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeConversationItemSystemMessage.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeConversationItemUserMessage.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeConversationCreatedEvent.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeConversationItemInputAudioTranscriptionCompletedEvent.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeConversationItemInputAudioTranscriptionDeltaEvent.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeConversationItemInputAudioTranscriptionFailedEvent.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeErrorEvent.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeRateLimitsUpdatedEvent.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeResponseContentPartAddedEvent.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeResponseContentPart.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeSessionConfiguration.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeSessionAudioInput.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeTranscriptionSessionAudioInput.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.RealtimeSemanticVadTurnDetection.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.VoiceAgentInputTranscription.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.VoiceAgentSemanticVadTurnDetection.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.VoiceAgentRealtimeResponse.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.VoiceAgentRealtimeResponseBase.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.VoiceAgentResponseCreateOptions.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.VoiceAgentSessionResponseConfiguration.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.VoiceAgentSessionUpdateConfiguration.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.VoiceConversation.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.VoiceResponse.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.VoiceResponseBase.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.VoiceAgentDefinition.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.ai.agents.models.VoiceAgentLlmGeneratedGreetingConfiguration.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="com.azure.ai.agents.ResponsesClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.agents.ResponsesAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.ai.agents.implementation.MultipartFormDataHelper.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />

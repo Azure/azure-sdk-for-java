@@ -41,7 +41,7 @@ import java.util.Arrays;
  */
 public final class ProtectionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2026-08-01/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: Create or Update Simple Azure Vm Protection Policy.
@@ -65,7 +65,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-08-01/AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Create or Update Full Azure Workload Protection Policy.
@@ -128,7 +128,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
+     * x-ms-original-file: 2026-08-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
      */
     /**
      * Sample code: Create or Update Daily Azure Storage Protection Policy.
@@ -178,7 +178,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hardened.json
+     * x-ms-original-file: 2026-08-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hardened.json
      */
     /**
      * Sample code: Create or Update Azure Storage Vault Standard Protection Policy.
@@ -233,7 +233,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
+     * x-ms-original-file: 2026-08-01/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
      */
     /**
      * Sample code: Create or Update Hourly Azure Storage Protection Policy.
@@ -278,7 +278,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-08-01/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Create or Update Full Azure Vm Protection Policy.
@@ -328,7 +328,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureIaasVm/V2Policy/IaaS_v2_hourly.json
+     * x-ms-original-file: 2026-08-01/AzureIaasVm/V2Policy/IaaS_v2_hourly.json
      */
     /**
      * Sample code: Create or Update Enhanced Azure Vm Protection Policy with Hourly backup.
@@ -382,7 +382,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/AzureIaasVm/V2Policy/IaaS_v2_daily.json
+     * x-ms-original-file: 2026-08-01/AzureIaasVm/V2Policy/IaaS_v2_daily.json
      */
     /**
      * Sample code: Create or Update Enhanced Azure Vm Protection Policy with daily backup.

@@ -657,10 +657,14 @@ public final class CoreUtils {
      * the shutdown hook with privileged permissions.
      * <p>
      * If {@code shutdownThread} is null, no shutdown hook will be added and this method will return null.
+     * <p>
+     * If the JVM is already shutting down a shutdown hook can no longer be registered, and one registered now could
+     * never run. Rather than failing the caller's work, which may be an in-flight request draining during shutdown,
+     * this method returns null to indicate that no hook was registered.
      *
      * @param shutdownThread The {@link Thread} that will be added as a
      * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
-     * @return The {@link Thread} that was passed in.
+     * @return The {@link Thread} that was passed in, or null if it was null or the JVM is already shutting down.
      */
     public static Thread addShutdownHookSafely(Thread shutdownThread) {
         return ImplUtils.addShutdownHookSafely(shutdownThread);

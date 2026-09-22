@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class P2SVpnGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-09-01/P2SVpnGatewayUpdateTags.json
+     * x-ms-original-file: 2026-01-01/P2SVpnGatewayUpdateTags.json
      */
     /**
      * Sample code: P2SVpnGatewayUpdate.

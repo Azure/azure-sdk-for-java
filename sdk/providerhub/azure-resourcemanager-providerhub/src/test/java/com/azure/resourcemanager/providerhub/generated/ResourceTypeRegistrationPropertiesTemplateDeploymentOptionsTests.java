@@ -14,22 +14,22 @@ public final class ResourceTypeRegistrationPropertiesTemplateDeploymentOptionsTe
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesTemplateDeploymentOptions model = BinaryData.fromString(
-            "{\"preflightSupported\":false,\"preflightOptions\":[\"DefaultValidationOnly\",\"ContinueDeploymentOnFailure\",\"DefaultValidationOnly\",\"None\"]}")
+            "{\"preflightSupported\":true,\"preflightOptions\":[\"DefaultValidationOnly\",\"ContinueDeploymentOnFailure\",\"DefaultValidationOnly\",\"DefaultValidationOnly\"]}")
             .toObject(ResourceTypeRegistrationPropertiesTemplateDeploymentOptions.class);
-        Assertions.assertFalse(model.preflightSupported());
+        Assertions.assertTrue(model.preflightSupported());
         Assertions.assertEquals(PreflightOption.DEFAULT_VALIDATION_ONLY, model.preflightOptions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesTemplateDeploymentOptions model
-            = new ResourceTypeRegistrationPropertiesTemplateDeploymentOptions().withPreflightSupported(false)
+            = new ResourceTypeRegistrationPropertiesTemplateDeploymentOptions().withPreflightSupported(true)
                 .withPreflightOptions(Arrays.asList(PreflightOption.DEFAULT_VALIDATION_ONLY,
                     PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE, PreflightOption.DEFAULT_VALIDATION_ONLY,
-                    PreflightOption.NONE));
+                    PreflightOption.DEFAULT_VALIDATION_ONLY));
         model
             = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesTemplateDeploymentOptions.class);
-        Assertions.assertFalse(model.preflightSupported());
+        Assertions.assertTrue(model.preflightSupported());
         Assertions.assertEquals(PreflightOption.DEFAULT_VALIDATION_ONLY, model.preflightOptions().get(0));
     }
 }

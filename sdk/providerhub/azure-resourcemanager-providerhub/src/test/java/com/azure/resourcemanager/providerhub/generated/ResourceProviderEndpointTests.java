@@ -17,39 +17,39 @@ public final class ResourceProviderEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProviderEndpoint model = BinaryData.fromString(
-            "{\"enabled\":true,\"apiVersions\":[\"fziton\",\"eqfpj\",\"jlxofpdvhpfxxyp\",\"ninmayhuyb\"],\"endpointUri\":\"podepoo\",\"locations\":[\"uvamiheognarxzxt\",\"eotusivyevc\",\"iqihn\"],\"requiredFeatures\":[\"gbwjzrnf\",\"gxg\"],\"featuresRule\":{\"requiredFeaturesPolicy\":\"All\"},\"timeout\":\"PT88H56M42S\",\"endpointType\":\"Production\",\"skuLink\":\"fkufublj\"}")
+            "{\"enabled\":false,\"apiVersions\":[\"asvm\"],\"endpointUri\":\"jqul\",\"locations\":[\"ntnbybkzg\",\"wrwclxxwrljd\",\"uskcqvkocrcj\"],\"requiredFeatures\":[\"tnhxbn\",\"biksq\",\"gls\",\"ainqpjwnzlljfm\"],\"featuresRule\":{\"requiredFeaturesPolicy\":\"All\"},\"timeout\":\"PT46H48M36S\",\"endpointType\":\"Canary\",\"skuLink\":\"xsabkyqdu\"}")
             .toObject(ResourceProviderEndpoint.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("fziton", model.apiVersions().get(0));
-        Assertions.assertEquals("podepoo", model.endpointUri());
-        Assertions.assertEquals("uvamiheognarxzxt", model.locations().get(0));
-        Assertions.assertEquals("gbwjzrnf", model.requiredFeatures().get(0));
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("asvm", model.apiVersions().get(0));
+        Assertions.assertEquals("jqul", model.endpointUri());
+        Assertions.assertEquals("ntnbybkzg", model.locations().get(0));
+        Assertions.assertEquals("tnhxbn", model.requiredFeatures().get(0));
         Assertions.assertEquals(FeaturesPolicy.ALL, model.featuresRule().requiredFeaturesPolicy());
-        Assertions.assertEquals(Duration.parse("PT88H56M42S"), model.timeout());
-        Assertions.assertEquals(EndpointType.PRODUCTION, model.endpointType());
-        Assertions.assertEquals("fkufublj", model.skuLink());
+        Assertions.assertEquals(Duration.parse("PT46H48M36S"), model.timeout());
+        Assertions.assertEquals(EndpointType.CANARY, model.endpointType());
+        Assertions.assertEquals("xsabkyqdu", model.skuLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceProviderEndpoint model = new ResourceProviderEndpoint().withEnabled(true)
-            .withApiVersions(Arrays.asList("fziton", "eqfpj", "jlxofpdvhpfxxyp", "ninmayhuyb"))
-            .withEndpointUri("podepoo")
-            .withLocations(Arrays.asList("uvamiheognarxzxt", "eotusivyevc", "iqihn"))
-            .withRequiredFeatures(Arrays.asList("gbwjzrnf", "gxg"))
+        ResourceProviderEndpoint model = new ResourceProviderEndpoint().withEnabled(false)
+            .withApiVersions(Arrays.asList("asvm"))
+            .withEndpointUri("jqul")
+            .withLocations(Arrays.asList("ntnbybkzg", "wrwclxxwrljd", "uskcqvkocrcj"))
+            .withRequiredFeatures(Arrays.asList("tnhxbn", "biksq", "gls", "ainqpjwnzlljfm"))
             .withFeaturesRule(new ResourceProviderEndpointFeaturesRule().withRequiredFeaturesPolicy(FeaturesPolicy.ALL))
-            .withTimeout(Duration.parse("PT88H56M42S"))
-            .withEndpointType(EndpointType.PRODUCTION)
-            .withSkuLink("fkufublj");
+            .withTimeout(Duration.parse("PT46H48M36S"))
+            .withEndpointType(EndpointType.CANARY)
+            .withSkuLink("xsabkyqdu");
         model = BinaryData.fromObject(model).toObject(ResourceProviderEndpoint.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("fziton", model.apiVersions().get(0));
-        Assertions.assertEquals("podepoo", model.endpointUri());
-        Assertions.assertEquals("uvamiheognarxzxt", model.locations().get(0));
-        Assertions.assertEquals("gbwjzrnf", model.requiredFeatures().get(0));
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("asvm", model.apiVersions().get(0));
+        Assertions.assertEquals("jqul", model.endpointUri());
+        Assertions.assertEquals("ntnbybkzg", model.locations().get(0));
+        Assertions.assertEquals("tnhxbn", model.requiredFeatures().get(0));
         Assertions.assertEquals(FeaturesPolicy.ALL, model.featuresRule().requiredFeaturesPolicy());
-        Assertions.assertEquals(Duration.parse("PT88H56M42S"), model.timeout());
-        Assertions.assertEquals(EndpointType.PRODUCTION, model.endpointType());
-        Assertions.assertEquals("fkufublj", model.skuLink());
+        Assertions.assertEquals(Duration.parse("PT46H48M36S"), model.timeout());
+        Assertions.assertEquals(EndpointType.CANARY, model.endpointType());
+        Assertions.assertEquals("xsabkyqdu", model.skuLink());
     }
 }

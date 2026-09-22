@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.providerhub.generated;
 
+import com.azure.resourcemanager.providerhub.models.ActionConfiguration;
 import com.azure.resourcemanager.providerhub.models.AdditionalOptionsResourceTypeRegistration;
 import com.azure.resourcemanager.providerhub.models.AllowedResourceName;
 import com.azure.resourcemanager.providerhub.models.ApiProfile;
@@ -14,11 +15,13 @@ import com.azure.resourcemanager.providerhub.models.CommonApiVersionsMergeMode;
 import com.azure.resourcemanager.providerhub.models.CrossTenantTokenValidation;
 import com.azure.resourcemanager.providerhub.models.DeleteDependency;
 import com.azure.resourcemanager.providerhub.models.FilterOption;
+import com.azure.resourcemanager.providerhub.models.GroupConnectivityInformation;
 import com.azure.resourcemanager.providerhub.models.LegacyDisallowedCondition;
 import com.azure.resourcemanager.providerhub.models.LegacyOperation;
 import com.azure.resourcemanager.providerhub.models.LinkedAction;
 import com.azure.resourcemanager.providerhub.models.LinkedOperation;
 import com.azure.resourcemanager.providerhub.models.LinkedOperationRule;
+import com.azure.resourcemanager.providerhub.models.MarketplaceType;
 import com.azure.resourcemanager.providerhub.models.Notification;
 import com.azure.resourcemanager.providerhub.models.NotificationType;
 import com.azure.resourcemanager.providerhub.models.OpenApiConfiguration;
@@ -26,7 +29,7 @@ import com.azure.resourcemanager.providerhub.models.OpenApiValidation;
 import com.azure.resourcemanager.providerhub.models.OptOutHeaderType;
 import com.azure.resourcemanager.providerhub.models.Policy;
 import com.azure.resourcemanager.providerhub.models.PolicyExecutionType;
-import com.azure.resourcemanager.providerhub.models.Readiness;
+import com.azure.resourcemanager.providerhub.models.PrivateEndpointConfiguration;
 import com.azure.resourcemanager.providerhub.models.Regionality;
 import com.azure.resourcemanager.providerhub.models.ResourceAccessPolicy;
 import com.azure.resourcemanager.providerhub.models.ResourceConcurrencyControlOption;
@@ -34,7 +37,6 @@ import com.azure.resourcemanager.providerhub.models.ResourceTypeEndpoint;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationProperties;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesAvailabilityZoneRule;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesCapacityRule;
-import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesDstsConfiguration;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesLegacyPolicy;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesManagement;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesMarketplaceOptions;
@@ -48,13 +50,17 @@ import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationProp
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesRoutingRule;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesTemplateDeploymentPolicy;
 import com.azure.resourcemanager.providerhub.models.RoutingType;
-import com.azure.resourcemanager.providerhub.models.ServiceTreeInfo;
 import com.azure.resourcemanager.providerhub.models.SkipNotifications;
 import com.azure.resourcemanager.providerhub.models.SupportedOperations;
 import com.azure.resourcemanager.providerhub.models.SwaggerSpecification;
 import com.azure.resourcemanager.providerhub.models.TemplateDeploymentCapabilities;
 import com.azure.resourcemanager.providerhub.models.TemplateDeploymentPreflightNotifications;
 import com.azure.resourcemanager.providerhub.models.TemplateDeploymentPreflightOptions;
+import com.azure.resourcemanager.providerhub.models.ThrottlingMetric;
+import com.azure.resourcemanager.providerhub.models.ThrottlingMetricType;
+import com.azure.resourcemanager.providerhub.models.ThrottlingRule;
+import com.azure.resourcemanager.providerhub.models.WriteLockConfiguration;
+import com.azure.resourcemanager.providerhub.models.WriteLockState;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,7 +70,7 @@ import java.util.Map;
  */
 public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ResourceTypeRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/ResourceTypeRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: ResourceTypeRegistrations_CreateOrUpdate.
@@ -83,41 +89,62 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
                     Arrays.asList(new ResourceTypeEndpoint().withApiVersions(Arrays.asList("2020-06-01-preview"))
                         .withLocations(Arrays.asList("West US", "East US", "North Europe"))
                         .withRequiredFeatures(Arrays.asList("<feature flag>"))))
+                .withMarketplaceType(MarketplaceType.PROVIDER_HUB)
                 .withSwaggerSpecifications(Arrays.asList(new SwaggerSpecification()
                     .withApiVersions(Arrays.asList("2020-06-01-preview"))
                     .withSwaggerSpecFolderUri(
                         "https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/")))
+                .withThrottlingRules(Arrays.asList(new ThrottlingRule()
+                    .withAction("Microsoft.Foo/checkNameAvailability/write")
+                    .withMetrics(Arrays.asList(new ThrottlingMetric().withType(ThrottlingMetricType.NUMBER_OF_REQUESTS)
+                        .withLimit(1L)
+                        .withBucketSize("XLarge")))))
                 .withRequestHeaderOptions(new ResourceTypeRegistrationPropertiesRequestHeaderOptions()
                     .withOptOutHeaders(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY))
-                .withResourceConcurrencyControlOptions(mapOf("patch",
-                    new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION), "post",
-                    new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION), "put",
-                    new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION)))
+                .withPrivateEndpointConfiguration(new PrivateEndpointConfiguration().withMinApiVersion("2022-10-01")
+                    .withGroupConnectivityInformation(
+                        Arrays.asList(new GroupConnectivityInformation().withGroupId("Sql")
+                            .withRequiredMembers(Arrays.asList("Sql_Member"))
+                            .withRequiredZoneNames(Arrays.asList("Zone"))
+                            .withRedirectMapId("test"))))
+                .withWriteLock(new WriteLockConfiguration().withState(WriteLockState.ENABLED))
+                .withResourceConcurrencyControlOptions(
+                    mapOf("put", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
+                        "patch", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
+                        "post", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION)))
                 .withResourceGraphConfiguration(
                     new ResourceTypeRegistrationPropertiesResourceGraphConfiguration().withEnabled(true)
                         .withApiVersion("2019-01-01"))
                 .withManagement(new ResourceTypeRegistrationPropertiesManagement()
-                    .withManifestOwners(Arrays.asList("SPARTA-PlatformServiceAdministrator"))
+                    .withManifestOwners(Arrays.asList("Contoso-PlatformServiceAdministrator"))
                     .withAuthorizationOwners(Arrays.asList("RPAAS-PlatformServiceAdministrator"))
                     .withIncidentRoutingService("")
                     .withIncidentRoutingTeam("")
                     .withIncidentContactEmail("helpme@contoso.com")
-                    .withServiceTreeInfos(
-                        Arrays.asList(new ServiceTreeInfo().withServiceId("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69")
-                            .withComponentId("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69")
-                            .withReadiness(Readiness.IN_DEVELOPMENT)))
                     .withResourceAccessPolicy(ResourceAccessPolicy.NOT_SPECIFIED))
                 .withOpenApiConfiguration(new OpenApiConfiguration()
                     .withValidation(new OpenApiValidation().withAllowNoncompliantCollectionResponse(true)))
                 .withMetadata(mapOf())
                 .withNotifications(
                     Arrays.asList(new Notification().withNotificationType(NotificationType.SUBSCRIPTION_NOTIFICATION)
-                        .withSkipNotifications(SkipNotifications.DISABLED))))
+                        .withSkipNotifications(SkipNotifications.DISABLED)))
+                .withResourceManagementOptions(
+                    new ResourceTypeRegistrationPropertiesResourceManagementOptions()
+                        .withBatchProvisioningSupport(
+                            new ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport()
+                                .withSupportedOperations(SupportedOperations.GET)
+                                .withMaxBatchSize(10L)
+                                .withBatchContractVersion("2020-06-01-preview")
+                                .withMaxNestedBatchSize(5L)
+                                .withRequiredFeatures(Arrays.asList("Microsoft.Contoso/feature1"))
+                                .withActionConfigurations(Arrays
+                                    .asList(new ActionConfiguration().withAuthorizationAction("fakeTokenPlaceholder")
+                                        .withMaxBatchSize(5L))))))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/DirectResourceTypeRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/DirectResourceTypeRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: DirectResourceTypeRegistrations_CreateOrUpdate.json.
@@ -142,23 +169,25 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
                         "https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/")))
                 .withRequestHeaderOptions(new ResourceTypeRegistrationPropertiesRequestHeaderOptions()
                     .withOptOutHeaders(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY))
-                .withResourceConcurrencyControlOptions(mapOf("patch",
-                    new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION), "post",
-                    new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION), "put",
-                    new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION)))
+                .withPrivateEndpointConfiguration(new PrivateEndpointConfiguration().withMinApiVersion("2022-10-01")
+                    .withGroupConnectivityInformation(
+                        Arrays.asList(new GroupConnectivityInformation().withGroupId("Sql")
+                            .withRequiredMembers(Arrays.asList("Sql_Member"))
+                            .withRequiredZoneNames(Arrays.asList("Zone"))
+                            .withRedirectMapId("test"))))
+                .withResourceConcurrencyControlOptions(
+                    mapOf("put", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
+                        "patch", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
+                        "post", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION)))
                 .withResourceGraphConfiguration(
                     new ResourceTypeRegistrationPropertiesResourceGraphConfiguration().withEnabled(true)
                         .withApiVersion("2019-01-01"))
                 .withManagement(new ResourceTypeRegistrationPropertiesManagement()
-                    .withManifestOwners(Arrays.asList("SPARTA-PlatformServiceAdministrator"))
+                    .withManifestOwners(Arrays.asList("Contoso-PlatformServiceAdministrator"))
                     .withAuthorizationOwners(Arrays.asList("RPAAS-PlatformServiceAdministrator"))
                     .withIncidentRoutingService("")
                     .withIncidentRoutingTeam("")
                     .withIncidentContactEmail("helpme@contoso.com")
-                    .withServiceTreeInfos(
-                        Arrays.asList(new ServiceTreeInfo().withServiceId("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69")
-                            .withComponentId("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69")
-                            .withReadiness(Readiness.IN_DEVELOPMENT)))
                     .withResourceAccessPolicy(ResourceAccessPolicy.NOT_SPECIFIED))
                 .withOpenApiConfiguration(new OpenApiConfiguration()
                     .withValidation(new OpenApiValidation().withAllowNoncompliantCollectionResponse(true)))
@@ -175,9 +204,6 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
                 .withPolicyExecutionType(PolicyExecutionType.BYPASS_POLICIES)
                 .withAvailabilityZoneRule(new ResourceTypeRegistrationPropertiesAvailabilityZoneRule()
                     .withAvailabilityZonePolicy(AvailabilityZonePolicy.MULTI_ZONED))
-                .withDstsConfiguration(
-                    new ResourceTypeRegistrationPropertiesDstsConfiguration().withServiceName("prds-shim")
-                        .withServiceDnsName("prds.sparta.azure.com"))
                 .withAsyncTimeoutRules(
                     Arrays.asList(new AsyncTimeoutRule().withActionName("Microsoft.ClassicCompute/domainNames/write")
                         .withTimeout("PT12H")))

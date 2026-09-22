@@ -3,12 +3,11 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.conversations.items.ItemCreateParams;
 import com.openai.models.conversations.items.ItemListPage;
@@ -35,7 +34,6 @@ public class MultipleAgentsConversation {
             .serviceVersion(AgentsServiceVersion.getLatest())
             .endpoint(endpoint);
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
         ConversationService conversationsClient = builder.buildOpenAIClient().conversations();
 
         // Setting up the conversation with initial messages
@@ -50,13 +48,15 @@ public class MultipleAgentsConversation {
         AgentVersionDetails agent1 = createPromptAgent(agentsClient, model, "weather-agent-1");
         AgentVersionDetails agent2 = createPromptAgent(agentsClient, model, "weather-agent-2");
 
-        AgentReference agent1Reference = new AgentReference(agent1.getName()).setVersion(agent1.getVersion());
-        AgentReference agent2Reference = new AgentReference(agent2.getName()).setVersion(agent2.getVersion());
+        SampleUtils.pinAgentVersion(agentsClient, agent1);
+        SampleUtils.pinAgentVersion(agentsClient, agent2);
+        OpenAIClient agent1Client = builder.buildAgentScopedOpenAIClient(agent1.getName());
+        OpenAIClient agent2Client = builder.buildAgentScopedOpenAIClient(agent2.getName());
 
         // Get response from agent1
-        Response response = responsesClient.createAzureResponse(
-            new AzureCreateResponseOptions().setAgentReference(agent1Reference),
-            ResponseCreateParams.builder().conversation(conversation.id()));
+        Response response = agent1Client.responses().create(ResponseCreateParams.builder()
+            .conversation(conversation.id())
+            .build());
         System.out.println("Agent response from: " + agent1.getName());
         System.out.println("\tResponse: " + response.output().get(0).asMessage().content().get(0).asOutputText().text());
 
@@ -66,9 +66,9 @@ public class MultipleAgentsConversation {
         printConversationItems(conversationsClient, conversation.id(), 3);
 
         // Get follow-up response from agent1
-        Response followUpResponse = responsesClient.createAzureResponse(
-            new AzureCreateResponseOptions().setAgentReference(agent1Reference),
-            ResponseCreateParams.builder().conversation(conversation.id()));
+        Response followUpResponse = agent1Client.responses().create(ResponseCreateParams.builder()
+            .conversation(conversation.id())
+            .build());
         System.out.println("Agent response from: " + agent1.getName());
         System.out.println("\tResponse: " + followUpResponse.output().get(0).asMessage().content().get(0).asOutputText().text());
 
@@ -77,9 +77,9 @@ public class MultipleAgentsConversation {
                 "Provide suggestions opposite of what historical data indicates.", EasyInputMessage.Role.SYSTEM);
         printConversationItems(conversationsClient, conversation.id(), 4);
 
-        Response newMessageThread = responsesClient.createAzureResponse(
-            new AzureCreateResponseOptions().setAgentReference(agent2Reference),
-            ResponseCreateParams.builder().conversation(conversation.id()));
+        Response newMessageThread = agent2Client.responses().create(ResponseCreateParams.builder()
+            .conversation(conversation.id())
+            .build());
         System.out.println("Agent response from: " + agent2.getName());
         System.out.println("\tResponse: " + newMessageThread.output().get(0).asMessage().content().get(0).asOutputText().text());
     }

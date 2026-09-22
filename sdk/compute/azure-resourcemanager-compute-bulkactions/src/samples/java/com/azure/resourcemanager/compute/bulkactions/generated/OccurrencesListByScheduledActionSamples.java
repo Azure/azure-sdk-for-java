@@ -9,14 +9,14 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class OccurrencesListByScheduledActionSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Occurrences_ListByScheduledAction_MaximumSet.
+     * Sample code: List occurrences for a scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void occurrencesListByScheduledActionMaximumSet(
+    public static void listOccurrencesForAScheduledAction(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences().listByScheduledAction("rgcompute", "myScheduledAction", com.azure.core.util.Context.NONE);
     }

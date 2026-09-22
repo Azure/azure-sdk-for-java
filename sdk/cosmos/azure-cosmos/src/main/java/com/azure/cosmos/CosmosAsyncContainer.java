@@ -72,7 +72,6 @@ import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
-import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import org.slf4j.Logger;
@@ -3117,7 +3116,6 @@ public class CosmosAsyncContainer {
      *
      * @param groupConfig the throughput control group config, see {@link ThroughputControlGroupConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_74_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableServerThroughputControlGroup(ThroughputControlGroupConfig groupConfig) {
         if (groupConfig.getPriorityLevel() == null && groupConfig.getThroughputBucket() == null) {
             throw new IllegalArgumentException("Config 'priorityLevel' and 'throughputBucket' can not be null for both.");
