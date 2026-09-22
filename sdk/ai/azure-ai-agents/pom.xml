@@ -68,12 +68,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.17.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty-http</artifactId>
       <version>1.3.7</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-codec-base</artifactId>
+      <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-codec-base;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
@@ -146,6 +151,7 @@
               <includes>
                 <include>com.openai:openai-java:[4.45.0]</include> <!-- {x-include-update;com.openai:openai-java;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty-http:[1.3.7]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+                <include>io.netty:netty-codec-base:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-codec-base;external_dependency} -->
                 <include>io.netty:netty-codec-http:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
                 <include>io.netty:netty-transport:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-transport;external_dependency} -->
                 <include>io.netty:netty-common:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
