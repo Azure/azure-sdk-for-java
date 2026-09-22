@@ -171,17 +171,6 @@
             "match": "method void com\\.azure\\.resourcemanager\\..*\\.models.*::validate\\(\\)"
           },
           "justification": "Do not include client-side validation for SDK generated from TypeSpec."
-        },
-        {
-          "code": "java.class.removed",
-          "old": "class com.azure.resourcemanager.network.models.EnableOnlyIpv6PeeringState",
-          "justification": "The Network RP wire contract uses a boolean for enableOnlyIPv6Peering; the string enum was removed as an approved spec bug fix."
-        },
-        {
-          "code": "java.method.returnTypeTypeParametersChanged",
-          "old": "method java.util.List<java.lang.String> com.azure.resourcemanager.network.models.ManagedRuleSetRuleGroup::rules()",
-          "new": "method java.util.List<java.lang.Integer> com.azure.resourcemanager.network.models.ManagedRuleSetRuleGroup::rules()",
-          "justification": "The Network RP has always serialized these read-only WAF rule IDs as integers; the string type was corrected as an approved spec bug fix."
         }
       ]
     }
