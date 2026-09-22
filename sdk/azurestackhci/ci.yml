@@ -10,9 +10,11 @@ trigger:
     include:
       - sdk/azurestackhci/ci.yml
       - sdk/azurestackhci/azure-resourcemanager-azurestackhci/
+      - sdk/azurestackhci/azure-resourcemanager-azurestackhci-vm/
     exclude:
       - sdk/azurestackhci/pom.xml
       - sdk/azurestackhci/azure-resourcemanager-azurestackhci/pom.xml
+      - sdk/azurestackhci/azure-resourcemanager-azurestackhci-vm/pom.xml
 
 pr:
   branches:
@@ -25,9 +27,11 @@ pr:
     include:
       - sdk/azurestackhci/ci.yml
       - sdk/azurestackhci/azure-resourcemanager-azurestackhci/
+      - sdk/azurestackhci/azure-resourcemanager-azurestackhci-vm/
     exclude:
       - sdk/azurestackhci/pom.xml
       - sdk/azurestackhci/azure-resourcemanager-azurestackhci/pom.xml
+      - sdk/azurestackhci/azure-resourcemanager-azurestackhci-vm/pom.xml
 
 parameters:
   - name: release_azureresourcemanagerazurestackhci
