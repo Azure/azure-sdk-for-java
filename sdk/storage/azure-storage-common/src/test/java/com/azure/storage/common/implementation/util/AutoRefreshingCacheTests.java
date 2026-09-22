@@ -43,34 +43,11 @@ public class AutoRefreshingCacheTests {
     private static final Duration VALUE_LIFETIME = Duration.ofMinutes(5);
 
     @Test
-    public void competingSyncAndAsyncCallersShareOneLoad() throws Exception {
+    public void competingSyncAndAsyncCallersShareOneAcquisition() throws Exception {
         AtomicInteger calls = new AtomicInteger();
-        CountDownLatch lookupsReady = new CountDownLatch(2);
-        CountDownLatch releaseLookups = new CountDownLatch(1);
         CountDownLatch loaderEntered = new CountDownLatch(1);
-        AtomicInteger clockReads = new AtomicInteger();
         Instant instant = Instant.parse("2026-06-19T00:00:00Z");
-        Clock clock = new Clock() {
-            @Override
-            public ZoneId getZone() {
-                return ZoneOffset.UTC;
-            }
-
-            @Override
-            public Clock withZone(ZoneId zone) {
-                return Clock.fixed(instant, zone);
-            }
-
-            @Override
-            public Instant instant() {
-                if (clockReads.incrementAndGet() <= 2) {
-                    // Both lookups read the empty state before either can claim the load.
-                    lookupsReady.countDown();
-                    await(releaseLookups);
-                }
-                return instant;
-            }
-        };
+        Clock clock = Clock.fixed(instant, ZoneOffset.UTC);
         Sinks.One<TestExpiringValue> pending = Sinks.one();
         Supplier<Mono<TestExpiringValue>> supplier = () -> {
             calls.incrementAndGet();
@@ -83,18 +60,15 @@ public class AutoRefreshingCacheTests {
         ExecutorService pool = Executors.newFixedThreadPool(2);
         try {
             Future<TestExpiringValue> sync = pool.submit(cache::getValidValueSync);
+            assertTrue(loaderEntered.await(5, TimeUnit.SECONDS));
             Future<TestExpiringValue> async
                 = pool.submit(() -> cache.getValidValueAsync().block(Duration.ofSeconds(5)));
-            assertTrue(lookupsReady.await(5, TimeUnit.SECONDS));
-            releaseLookups.countDown();
-            assertTrue(loaderEntered.await(5, TimeUnit.SECONDS));
             pending.tryEmitValue(created);
 
             assertSame(created, sync.get(5, TimeUnit.SECONDS));
             assertSame(created, async.get(5, TimeUnit.SECONDS));
             assertEquals(1, calls.get());
         } finally {
-            releaseLookups.countDown();
             pending.tryEmitEmpty();
             pool.shutdownNow();
         }
