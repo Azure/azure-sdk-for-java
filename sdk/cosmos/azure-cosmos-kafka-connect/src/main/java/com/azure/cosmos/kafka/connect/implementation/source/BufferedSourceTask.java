@@ -40,6 +40,7 @@ public abstract class BufferedSourceTask extends SourceTask {
     private final Duration pollingThreadShutdownWait;
     private final AtomicBoolean taskStarted = new AtomicBoolean();
     private final AtomicReference<PollingGeneration> generation = new AtomicReference<>();
+    private volatile Map<String, String> taskProperties;
 
     protected BufferedSourceTask() {
         this(DEFAULT_KAFKA_POLL_WAIT, DEFAULT_POLLING_THREAD_SHUTDOWN_WAIT);
@@ -60,19 +61,8 @@ public abstract class BufferedSourceTask extends SourceTask {
 
         try {
             this.startTask(props);
-            PollingGeneration newGeneration =
-                new PollingGeneration(this.getPollingThreadName(props));
-            if (!this.generation.compareAndSet(null, newGeneration)) {
-                newGeneration.executor.shutdownNow();
-                throw new ConnectException("Source task polling executor is already running");
-            }
-
-            newGeneration.executor.execute(
-                preserveMdc(() -> {
-                    this.pollContinuously(newGeneration);
-                    newGeneration.readerFinished.set(true);
-                }));
-        } catch (RuntimeException error) {
+            this.taskProperties = props;
+        } catch (RuntimeException | Error error) {
             PollingGeneration failedGeneration = this.generation.getAndSet(null);
             if (failedGeneration != null) {
                 failedGeneration.stopping.set(true);
@@ -85,7 +75,7 @@ public abstract class BufferedSourceTask extends SourceTask {
 
     @Override
     public final List<SourceRecord> poll() {
-        PollingGeneration currentGeneration = this.generation.get();
+        PollingGeneration currentGeneration = this.ensurePollingGeneration();
         if (currentGeneration == null) {
             return Collections.emptyList();
         }
@@ -131,6 +121,7 @@ public abstract class BufferedSourceTask extends SourceTask {
         try {
             this.stopTaskOnce();
         } finally {
+            this.taskProperties = null;
             if (currentGeneration != null) {
                 currentGeneration.executor.shutdownNow();
                 this.awaitPollingThreadShutdown(currentGeneration.executor);
@@ -148,6 +139,38 @@ public abstract class BufferedSourceTask extends SourceTask {
         return this.getClass().getSimpleName() + "-poll";
     }
 
+    private PollingGeneration ensurePollingGeneration() {
+        PollingGeneration currentGeneration = this.generation.get();
+        if (currentGeneration != null || !this.taskStarted.get()) {
+            return currentGeneration;
+        }
+
+        Map<String, String> properties = this.taskProperties;
+        if (properties == null) {
+            return null;
+        }
+
+        PollingGeneration newGeneration =
+            new PollingGeneration(this.getPollingThreadName(properties));
+        if (!this.generation.compareAndSet(null, newGeneration)) {
+            newGeneration.executor.shutdownNow();
+            return this.generation.get();
+        }
+        try {
+            newGeneration.executor.execute(
+                preserveMdc(() -> {
+                    this.pollContinuously(newGeneration);
+                    newGeneration.readerFinished.set(true);
+                }));
+            return newGeneration;
+        } catch (RuntimeException error) {
+            this.generation.compareAndSet(newGeneration, null);
+            newGeneration.stopping.set(true);
+            newGeneration.executor.shutdownNow();
+            throw error;
+        }
+    }
+
     private void pollContinuously(PollingGeneration currentGeneration) {
         while (!currentGeneration.stopping.get()) {
             try {
@@ -157,10 +180,12 @@ public abstract class BufferedSourceTask extends SourceTask {
                 }
             } catch (Exception error) {
                 if (!currentGeneration.stopping.get()) {
+                    currentGeneration.terminalError.set(error);
                     if (!publishResult(currentGeneration, PollResult.error(error))) {
                         return;
                     }
                     if (isRetriable(error) && waitBeforeRetry(currentGeneration)) {
+                        currentGeneration.terminalError.compareAndSet(error, null);
                         continue;
                     }
                 }
