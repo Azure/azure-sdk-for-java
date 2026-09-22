@@ -14,20 +14,20 @@ public final class QuotaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaProperties model = BinaryData.fromString(
-            "{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"lla\",\"name\":{\"value\":\"lwuip\",\"localizedValue\":\"cjzkzivgvvcna\"},\"resourceType\":\"hyrnxxmu\",\"quotaPeriod\":\"dndrdvstkwqqtche\",\"isQuotaApplicable\":true,\"properties\":\"\\\"datamtdaa\\\"\"}")
+            "{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"rfouyftaakcpw\",\"name\":{\"value\":\"vqtmnub\",\"localizedValue\":\"kpzksmondjmq\"},\"resourceType\":\"vypomgkopkwho\",\"quotaPeriod\":\"pajqgxysm\",\"isQuotaApplicable\":false,\"properties\":\"\\\"dataqfqvmkc\\\"\"}")
             .toObject(QuotaProperties.class);
-        Assertions.assertEquals("lwuip", model.name().value());
-        Assertions.assertEquals("hyrnxxmu", model.resourceType());
+        Assertions.assertEquals("vqtmnub", model.name().value());
+        Assertions.assertEquals("vypomgkopkwho", model.resourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         QuotaProperties model = new QuotaProperties().withLimit(new LimitJsonObject())
-            .withName(new ResourceName().withValue("lwuip"))
-            .withResourceType("hyrnxxmu")
-            .withProperties("\"datamtdaa\"");
+            .withName(new ResourceName().withValue("vqtmnub"))
+            .withResourceType("vypomgkopkwho")
+            .withProperties("\"dataqfqvmkc\"");
         model = BinaryData.fromObject(model).toObject(QuotaProperties.class);
-        Assertions.assertEquals("lwuip", model.name().value());
-        Assertions.assertEquals("hyrnxxmu", model.resourceType());
+        Assertions.assertEquals("vqtmnub", model.name().value());
+        Assertions.assertEquals("vypomgkopkwho", model.resourceType());
     }
 }

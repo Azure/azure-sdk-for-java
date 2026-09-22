@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class AllocatedQuotaToSubscriptionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AllocatedQuotaToSubscriptionList model = BinaryData.fromString(
-            "{\"value\":[{\"subscriptionId\":\"maofmxagkv\",\"quotaAllocated\":5342331061504753909},{\"subscriptionId\":\"qkrhahvljua\",\"quotaAllocated\":3590980706976847100},{\"subscriptionId\":\"c\",\"quotaAllocated\":4535829174726898901},{\"subscriptionId\":\"alaexqpvfadmwsrc\",\"quotaAllocated\":8220008823832302214}]}")
-            .toObject(AllocatedQuotaToSubscriptionList.class);
-        Assertions.assertEquals("maofmxagkv", model.value().get(0).subscriptionId());
-        Assertions.assertEquals(5342331061504753909L, model.value().get(0).quotaAllocated());
+        AllocatedQuotaToSubscriptionList model
+            = BinaryData.fromString("{\"value\":[{\"subscriptionId\":\"tyq\",\"quotaAllocated\":9201853601959691706}]}")
+                .toObject(AllocatedQuotaToSubscriptionList.class);
+        Assertions.assertEquals("tyq", model.value().get(0).subscriptionId());
+        Assertions.assertEquals(9201853601959691706L, model.value().get(0).quotaAllocated());
     }
 }

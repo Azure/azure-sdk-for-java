@@ -12,9 +12,9 @@ public final class QuotaAllocationRequestBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaAllocationRequestBaseProperties model = BinaryData.fromString(
-            "{\"limit\":563560195773726535,\"name\":{\"value\":\"rp\",\"localizedValue\":\"ebmnzbtbhjpglk\"},\"region\":\"ohdneuel\"}")
+            "{\"limit\":1205860539886844150,\"name\":{\"value\":\"xcto\",\"localizedValue\":\"bkdmo\"},\"region\":\"postmgrcfbunrm\"}")
             .toObject(QuotaAllocationRequestBaseProperties.class);
-        Assertions.assertEquals(563560195773726535L, model.limit());
-        Assertions.assertEquals("ohdneuel", model.region());
+        Assertions.assertEquals(1205860539886844150L, model.limit());
+        Assertions.assertEquals("postmgrcfbunrm", model.region());
     }
 }

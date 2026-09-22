@@ -12,18 +12,18 @@ public final class SubscriptionQuotaDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionQuotaDetails model = BinaryData.fromString(
-            "{\"resourceName\":\"hhszh\",\"limit\":6111204244847646570,\"shareableQuota\":6033840789921327792,\"name\":{\"value\":\"bmwmbesldnkw\",\"localizedValue\":\"pp\"}}")
+            "{\"resourceName\":\"uusdttouwa\",\"limit\":8365704524222172400,\"shareableQuota\":108645290116886503,\"name\":{\"value\":\"nsmvbxwyj\",\"localizedValue\":\"lh\"}}")
             .toObject(SubscriptionQuotaDetails.class);
-        Assertions.assertEquals("hhszh", model.resourceName());
-        Assertions.assertEquals(6111204244847646570L, model.limit());
+        Assertions.assertEquals("uusdttouwa", model.resourceName());
+        Assertions.assertEquals(8365704524222172400L, model.limit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubscriptionQuotaDetails model
-            = new SubscriptionQuotaDetails().withResourceName("hhszh").withLimit(6111204244847646570L);
+            = new SubscriptionQuotaDetails().withResourceName("uusdttouwa").withLimit(8365704524222172400L);
         model = BinaryData.fromObject(model).toObject(SubscriptionQuotaDetails.class);
-        Assertions.assertEquals("hhszh", model.resourceName());
-        Assertions.assertEquals(6111204244847646570L, model.limit());
+        Assertions.assertEquals("uusdttouwa", model.resourceName());
+        Assertions.assertEquals(8365704524222172400L, model.limit());
     }
 }

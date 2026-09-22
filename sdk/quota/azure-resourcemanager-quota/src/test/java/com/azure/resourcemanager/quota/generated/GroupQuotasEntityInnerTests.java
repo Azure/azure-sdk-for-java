@@ -13,16 +13,16 @@ public final class GroupQuotasEntityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotasEntityInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"qzbqjvsov\",\"groupType\":\"AllocationGroup\",\"provisioningState\":\"Succeeded\"},\"id\":\"spkwlhzdobpxjm\",\"name\":\"lb\",\"type\":\"vnchrkcci\"}")
+            "{\"properties\":{\"displayName\":\"xhejjzzvdud\",\"groupType\":\"EnforcedGroup\",\"provisioningState\":\"Created\"},\"id\":\"hotwmcynpwlbjnp\",\"name\":\"acfta\",\"type\":\"ehxnltyfsop\"}")
             .toObject(GroupQuotasEntityInner.class);
-        Assertions.assertEquals("qzbqjvsov", model.properties().displayName());
+        Assertions.assertEquals("xhejjzzvdud", model.properties().displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GroupQuotasEntityInner model = new GroupQuotasEntityInner()
-            .withProperties(new GroupQuotasEntityProperties().withDisplayName("qzbqjvsov"));
+            .withProperties(new GroupQuotasEntityProperties().withDisplayName("xhejjzzvdud"));
         model = BinaryData.fromObject(model).toObject(GroupQuotasEntityInner.class);
-        Assertions.assertEquals("qzbqjvsov", model.properties().displayName());
+        Assertions.assertEquals("xhejjzzvdud", model.properties().displayName());
     }
 }

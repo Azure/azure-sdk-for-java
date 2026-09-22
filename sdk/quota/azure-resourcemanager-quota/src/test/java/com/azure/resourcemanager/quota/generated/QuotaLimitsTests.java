@@ -12,10 +12,10 @@ public final class QuotaLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaLimits model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"vgpiohgwxrt\",\"name\":{\"value\":\"xepxgyqagvrvmn\",\"localizedValue\":\"ukghimdblxgw\"},\"resourceType\":\"fnjhfjxwmszkkfo\",\"quotaPeriod\":\"eyfkzikfja\",\"isQuotaApplicable\":true,\"properties\":\"\\\"dataivx\\\"\"},\"id\":\"zel\",\"name\":\"c\",\"type\":\"r\"}],\"nextLink\":\"sfeaenwabfat\"}")
+            "{\"value\":[{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"vhelxprglyatdd\",\"name\":{\"value\":\"bcuejrjxgci\",\"localizedValue\":\"brh\"},\"resourceType\":\"xsdqrhzoymibmrqy\",\"quotaPeriod\":\"ahwfluszdtmhrk\",\"isQuotaApplicable\":false,\"properties\":\"\\\"datayvoqa\\\"\"},\"id\":\"iexpbtgiwbwo\",\"name\":\"nwashrtd\",\"type\":\"kcnqxwbpo\"}],\"nextLink\":\"lpiujwaa\"}")
             .toObject(QuotaLimits.class);
-        Assertions.assertEquals("xepxgyqagvrvmn", model.value().get(0).properties().name().value());
-        Assertions.assertEquals("fnjhfjxwmszkkfo", model.value().get(0).properties().resourceType());
-        Assertions.assertEquals("sfeaenwabfat", model.nextLink());
+        Assertions.assertEquals("bcuejrjxgci", model.value().get(0).properties().name().value());
+        Assertions.assertEquals("xsdqrhzoymibmrqy", model.value().get(0).properties().resourceType());
+        Assertions.assertEquals("lpiujwaa", model.nextLink());
     }
 }

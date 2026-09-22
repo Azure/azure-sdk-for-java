@@ -12,9 +12,9 @@ public final class GroupQuotaSubscriptionIdListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaSubscriptionIdList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"subscriptionId\":\"cslyjpk\",\"provisioningState\":\"Failed\"},\"id\":\"yexz\",\"name\":\"eli\",\"type\":\"hnrztfol\"},{\"properties\":{\"subscriptionId\":\"xknalaulppg\",\"provisioningState\":\"Canceled\"},\"id\":\"napnyiropuhpigv\",\"name\":\"gylgqgitxmedjvcs\",\"type\":\"ynqwwncwzzhxgk\"},{\"properties\":{\"subscriptionId\":\"gucnapkte\",\"provisioningState\":\"Succeeded\"},\"id\":\"wptfdy\",\"name\":\"pfqbuaceopzf\",\"type\":\"rhhuaopppcqeqx\"},{\"properties\":{\"subscriptionId\":\"dahzxctobg\",\"provisioningState\":\"Failed\"},\"id\":\"oizpostmgrcfbun\",\"name\":\"mfqjhhkxbp\",\"type\":\"jy\"}],\"nextLink\":\"hx\"}")
+            "{\"value\":[{\"properties\":{\"subscriptionId\":\"lmoyrx\",\"provisioningState\":\"Succeeded\"},\"id\":\"dw\",\"name\":\"zntxhdz\",\"type\":\"lrqjbhckfr\"}],\"nextLink\":\"rxsbkyvp\"}")
             .toObject(GroupQuotaSubscriptionIdList.class);
-        Assertions.assertEquals("cslyjpk", model.value().get(0).properties().subscriptionId());
-        Assertions.assertEquals("hx", model.nextLink());
+        Assertions.assertEquals("lmoyrx", model.value().get(0).properties().subscriptionId());
+        Assertions.assertEquals("rxsbkyvp", model.nextLink());
     }
 }

@@ -22,7 +22,7 @@ public final class QuotaTransfersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"transferStatus\":\"Cancelled\",\"transferId\":\"tkacj\",\"displayName\":\"efkdlf\",\"comment\":\"kggkfpa\",\"destinationSubscriptionId\":\"ao\",\"destinationTenantId\":\"ulpqblylsyxkqjn\",\"billingAccountId\":\"jervtia\",\"resourceName\":\"xsdszuempsb\",\"amount\":6849457451153472340,\"autoApprove\":true,\"createdAt\":\"2021-08-25T17:09:36Z\",\"expiresAt\":\"2021-05-04T06:37:39Z\",\"createdBy\":\"qi\",\"approval\":{\"comment\":\"nvkjjxdxrbuukzcl\",\"actor\":\"wyhmlw\",\"occurredAt\":\"2021-08-10T23:19:11Z\"},\"cancellation\":{\"reason\":\"zpof\",\"actor\":\"cckwyfzqwhxxbu\",\"occurredAt\":\"2021-06-02T21:30:28Z\"}},\"etag\":\"xzfe\",\"id\":\"tpp\",\"name\":\"iolxor\",\"type\":\"altol\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"transferStatus\":\"Pending\",\"transferId\":\"piohgwxrtfu\",\"displayName\":\"xepxgyqagvrvmn\",\"comment\":\"ukghimdblxgw\",\"destinationSubscriptionId\":\"mfnjh\",\"destinationTenantId\":\"xw\",\"billingAccountId\":\"zk\",\"resourceName\":\"foqreyfkzik\",\"amount\":8730500535564914627,\"autoApprove\":false,\"createdAt\":\"2021-10-17T14:02:40Z\",\"expiresAt\":\"2021-08-17T09:35:24Z\",\"createdBy\":\"wczelpci\",\"approval\":{\"comment\":\"sfeaenwabfat\",\"actor\":\"lddxbjhwua\",\"occurredAt\":\"2021-04-25T01:33:08Z\"},\"cancellation\":{\"reason\":\"jos\",\"actor\":\"hyoulpjr\",\"occurredAt\":\"2021-05-09T00:38:15Z\"}},\"etag\":\"glrvimjwosytxi\",\"id\":\"skfc\",\"name\":\"tq\",\"type\":\"miekkezzikhlyfjh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,13 @@ public final class QuotaTransfersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<QuotaTransfer> response
-            = manager.quotaTransfers().list("emmsbvdkc", "odtji", com.azure.core.util.Context.NONE);
+            = manager.quotaTransfers().list("alm", "mtdaa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("efkdlf", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("kggkfpa", response.iterator().next().properties().comment());
-        Assertions.assertEquals("ao", response.iterator().next().properties().destinationSubscriptionId());
-        Assertions.assertEquals("jervtia", response.iterator().next().properties().billingAccountId());
-        Assertions.assertEquals("xsdszuempsb", response.iterator().next().properties().resourceName());
-        Assertions.assertEquals(6849457451153472340L, response.iterator().next().properties().amount());
-        Assertions.assertTrue(response.iterator().next().properties().autoApprove());
+        Assertions.assertEquals("xepxgyqagvrvmn", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("ukghimdblxgw", response.iterator().next().properties().comment());
+        Assertions.assertEquals("mfnjh", response.iterator().next().properties().destinationSubscriptionId());
+        Assertions.assertEquals("foqreyfkzik", response.iterator().next().properties().resourceName());
+        Assertions.assertEquals(8730500535564914627L, response.iterator().next().properties().amount());
+        Assertions.assertFalse(response.iterator().next().properties().autoApprove());
     }
 }

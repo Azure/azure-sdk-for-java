@@ -12,11 +12,11 @@ public final class ResourceUsageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceUsageList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"name\":{\"value\":\"nbbelda\",\"localizedValue\":\"zbaliourqha\"},\"limit\":131133871653701525,\"usages\":5909550063004998256,\"unit\":\"fwxosowzxcu\"},\"id\":\"cjooxdjebwpucwwf\",\"name\":\"ovbvmeueciv\",\"type\":\"hzceuojgjrwjue\"},{\"properties\":{\"name\":{\"value\":\"mcdytdxwitxnrj\",\"localizedValue\":\"gqwgxhniskxfbkp\"},\"limit\":4717872847934328056,\"usages\":6732175570490023476,\"unit\":\"nhjdauw\"},\"id\":\"ylwz\",\"name\":\"tdhxujznbmpowuwp\",\"type\":\"zqlveualupjmkhf\"},{\"properties\":{\"name\":{\"value\":\"cswsrtjri\",\"localizedValue\":\"rbpbewtghfgblcg\"},\"limit\":5418002986537845043,\"usages\":692631569824073211,\"unit\":\"jkbegibtnmxiebww\"},\"id\":\"oayqc\",\"name\":\"wrtz\",\"type\":\"uzgwyzmhtx\"}],\"nextLink\":\"gmtsavjcbpwxqpsr\"}")
+            "{\"value\":[{\"properties\":{\"name\":{\"value\":\"uosvmkfssxqukk\",\"localizedValue\":\"l\"},\"limit\":5850785611921356044,\"usages\":6280051526633281163,\"unit\":\"zkd\"},\"id\":\"lpvlopw\",\"name\":\"yighxpk\",\"type\":\"wzbaiue\"}],\"nextLink\":\"a\"}")
             .toObject(ResourceUsageList.class);
-        Assertions.assertEquals(131133871653701525L, model.value().get(0).properties().limit());
-        Assertions.assertEquals(5909550063004998256L, model.value().get(0).properties().usages());
-        Assertions.assertEquals("nbbelda", model.value().get(0).properties().value());
-        Assertions.assertEquals("gmtsavjcbpwxqpsr", model.nextLink());
+        Assertions.assertEquals(5850785611921356044L, model.value().get(0).properties().limit());
+        Assertions.assertEquals(6280051526633281163L, model.value().get(0).properties().usages());
+        Assertions.assertEquals("uosvmkfssxqukk", model.value().get(0).properties().value());
+        Assertions.assertEquals("a", model.nextLink());
     }
 }

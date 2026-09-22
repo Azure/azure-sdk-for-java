@@ -12,14 +12,14 @@ public final class QuotaTransferCancelRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaTransferCancelRequest model
-            = BinaryData.fromString("{\"reason\":\"csglum\"}").toObject(QuotaTransferCancelRequest.class);
-        Assertions.assertEquals("csglum", model.reason());
+            = BinaryData.fromString("{\"reason\":\"sszdnru\"}").toObject(QuotaTransferCancelRequest.class);
+        Assertions.assertEquals("sszdnru", model.reason());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaTransferCancelRequest model = new QuotaTransferCancelRequest().withReason("csglum");
+        QuotaTransferCancelRequest model = new QuotaTransferCancelRequest().withReason("sszdnru");
         model = BinaryData.fromObject(model).toObject(QuotaTransferCancelRequest.class);
-        Assertions.assertEquals("csglum", model.reason());
+        Assertions.assertEquals("sszdnru", model.reason());
     }
 }

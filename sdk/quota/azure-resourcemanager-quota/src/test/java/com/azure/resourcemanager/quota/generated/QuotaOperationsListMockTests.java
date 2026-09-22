@@ -22,7 +22,7 @@ public final class QuotaOperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"ddxbjhwuaanoz\",\"display\":{\"provider\":\"ph\",\"resource\":\"ulpjr\",\"operation\":\"ag\",\"description\":\"vimjwos\"},\"origin\":\"xitc\"}]}";
+            = "{\"value\":[{\"name\":\"pqiiobyuqe\",\"display\":{\"provider\":\"lp\",\"resource\":\"cciuqgbdbutau\",\"operation\":\"btkuwhh\",\"description\":\"ykojoxafnndlpic\"},\"origin\":\"o\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class QuotaOperationsListMockTests {
 
         PagedIterable<OperationResponse> response = manager.quotaOperations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ddxbjhwuaanoz", response.iterator().next().name());
-        Assertions.assertEquals("ph", response.iterator().next().display().provider());
-        Assertions.assertEquals("ulpjr", response.iterator().next().display().resource());
-        Assertions.assertEquals("ag", response.iterator().next().display().operation());
-        Assertions.assertEquals("vimjwos", response.iterator().next().display().description());
-        Assertions.assertEquals("xitc", response.iterator().next().origin());
+        Assertions.assertEquals("pqiiobyuqe", response.iterator().next().name());
+        Assertions.assertEquals("lp", response.iterator().next().display().provider());
+        Assertions.assertEquals("cciuqgbdbutau", response.iterator().next().display().resource());
+        Assertions.assertEquals("btkuwhh", response.iterator().next().display().operation());
+        Assertions.assertEquals("ykojoxafnndlpic", response.iterator().next().display().description());
+        Assertions.assertEquals("o", response.iterator().next().origin());
     }
 }

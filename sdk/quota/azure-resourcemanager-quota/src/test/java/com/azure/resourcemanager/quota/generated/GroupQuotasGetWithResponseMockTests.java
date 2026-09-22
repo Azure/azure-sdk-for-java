@@ -21,7 +21,7 @@ public final class GroupQuotasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"ipn\",\"groupType\":\"EnforcedGroup\",\"provisioningState\":\"Escalated\"},\"id\":\"a\",\"name\":\"krrjrea\",\"type\":\"xt\"}";
+            = "{\"properties\":{\"displayName\":\"bvkayh\",\"groupType\":\"AllocationGroup\",\"provisioningState\":\"Escalated\"},\"id\":\"iatkzwpcnp\",\"name\":\"zcjaesgvvsccy\",\"type\":\"jguq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class GroupQuotasGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GroupQuotasEntity response
-            = manager.groupQuotas().getWithResponse("t", "jqppyostronzmy", com.azure.core.util.Context.NONE).getValue();
+            = manager.groupQuotas().getWithResponse("dphqamv", "kfwynw", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("ipn", response.properties().displayName());
+        Assertions.assertEquals("bvkayh", response.properties().displayName());
     }
 }

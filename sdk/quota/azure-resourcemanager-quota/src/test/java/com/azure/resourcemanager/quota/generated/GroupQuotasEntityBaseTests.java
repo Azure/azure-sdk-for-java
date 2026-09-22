@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class GroupQuotasEntityBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GroupQuotasEntityBase model = BinaryData
-            .fromString(
-                "{\"displayName\":\"oskg\",\"groupType\":\"AllocationGroup\",\"provisioningState\":\"Succeeded\"}")
+        GroupQuotasEntityBase model = BinaryData.fromString(
+            "{\"displayName\":\"orxzdmohctbqvud\",\"groupType\":\"AllocationGroup\",\"provisioningState\":\"Invalid\"}")
             .toObject(GroupQuotasEntityBase.class);
-        Assertions.assertEquals("oskg", model.displayName());
+        Assertions.assertEquals("orxzdmohctbqvud", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotasEntityBase model = new GroupQuotasEntityBase().withDisplayName("oskg");
+        GroupQuotasEntityBase model = new GroupQuotasEntityBase().withDisplayName("orxzdmohctbqvud");
         model = BinaryData.fromObject(model).toObject(GroupQuotasEntityBase.class);
-        Assertions.assertEquals("oskg", model.displayName());
+        Assertions.assertEquals("orxzdmohctbqvud", model.displayName());
     }
 }

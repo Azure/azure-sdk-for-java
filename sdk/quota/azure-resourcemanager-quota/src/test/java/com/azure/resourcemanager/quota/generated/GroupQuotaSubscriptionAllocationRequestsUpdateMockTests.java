@@ -26,7 +26,7 @@ public final class GroupQuotaSubscriptionAllocationRequestsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"value\":[{\"properties\":{\"resourceName\":\"vokqdzfv\",\"limit\":7036583010545466260,\"shareableQuota\":970275008823237835,\"name\":{}}},{\"properties\":{\"resourceName\":\"tbajlkatn\",\"limit\":5021220265156889425,\"shareableQuota\":8960034655868417955,\"name\":{}}}],\"nextLink\":\"qqfkuv\"},\"id\":\"xkdmligo\",\"name\":\"ibrxkp\",\"type\":\"loazuruocbgoo\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"value\":[{\"properties\":{\"resourceName\":\"jcbhern\",\"limit\":2790385305557935717,\"shareableQuota\":2309752602993772179,\"name\":{}}},{\"properties\":{\"resourceName\":\"quwrbehwag\",\"limit\":6061341546772641943,\"shareableQuota\":4128252170970600631,\"name\":{}}}],\"nextLink\":\"qem\"},\"id\":\"hmxtdr\",\"name\":\"futacoebjvewzc\",\"type\":\"znmwcp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,22 +35,18 @@ public final class GroupQuotaSubscriptionAllocationRequestsUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        SubscriptionQuotaAllocationsList response
-            = manager.groupQuotaSubscriptionAllocationRequests()
-                .update("byowbblgyavutp", "hjoxo", "smsks", "pi", new SubscriptionQuotaAllocationsListInner()
-                    .withProperties(new SubscriptionQuotaAllocationsListProperties().withValue(Arrays.asList(
-                        new SubscriptionQuotaAllocations()
-                            .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("cgxxlxs")
-                                .withLimit(8403705796490340876L)),
-                        new SubscriptionQuotaAllocations()
-                            .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("wlvwlyoupf")
-                                .withLimit(7840356601497751767L)),
-                        new SubscriptionQuotaAllocations()
-                            .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("gkfmins")
-                                .withLimit(3264236544937493152L))))),
-                    com.azure.core.util.Context.NONE);
+        SubscriptionQuotaAllocationsList response = manager.groupQuotaSubscriptionAllocationRequests()
+            .update("tvdxeclzedqb", "vh", "lhpl", "dqkdlwwqfbu", new SubscriptionQuotaAllocationsListInner()
+                .withProperties(new SubscriptionQuotaAllocationsListProperties().withValue(Arrays.asList(
+                    new SubscriptionQuotaAllocations()
+                        .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("fsmlmbtxhwgfw")
+                            .withLimit(3592890497042259247L)),
+                    new SubscriptionQuotaAllocations()
+                        .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("rhubskhud")
+                            .withLimit(8993500148171815828L))))),
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vokqdzfv", response.properties().value().get(0).properties().resourceName());
-        Assertions.assertEquals(7036583010545466260L, response.properties().value().get(0).properties().limit());
+        Assertions.assertEquals("jcbhern", response.properties().value().get(0).properties().resourceName());
+        Assertions.assertEquals(2790385305557935717L, response.properties().value().get(0).properties().limit());
     }
 }

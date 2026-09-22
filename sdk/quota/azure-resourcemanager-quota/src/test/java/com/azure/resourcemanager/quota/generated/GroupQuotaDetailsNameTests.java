@@ -10,7 +10,7 @@ import com.azure.resourcemanager.quota.fluent.models.GroupQuotaDetailsName;
 public final class GroupQuotaDetailsNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GroupQuotaDetailsName model = BinaryData.fromString("{\"value\":\"bmehh\",\"localizedValue\":\"yvjusrtslhsp\"}")
+        GroupQuotaDetailsName model = BinaryData.fromString("{\"value\":\"hpzxbzpfzab\",\"localizedValue\":\"cuh\"}")
             .toObject(GroupQuotaDetailsName.class);
     }
 }

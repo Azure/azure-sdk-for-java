@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UsagesObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsagesObject model = BinaryData.fromString("{\"value\":1007666972,\"usagesType\":\"Individual\"}")
-            .toObject(UsagesObject.class);
-        Assertions.assertEquals(1007666972, model.value());
-        Assertions.assertEquals(UsagesTypes.INDIVIDUAL, model.usagesType());
+        UsagesObject model
+            = BinaryData.fromString("{\"value\":722282959,\"usagesType\":\"Combined\"}").toObject(UsagesObject.class);
+        Assertions.assertEquals(722282959, model.value());
+        Assertions.assertEquals(UsagesTypes.COMBINED, model.usagesType());
     }
 }

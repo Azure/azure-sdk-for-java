@@ -21,7 +21,7 @@ public final class GroupQuotaSubscriptionAllocationsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"value\":[{\"properties\":{\"resourceName\":\"macjekn\",\"limit\":1517216245064921581,\"shareableQuota\":7133413366116679058,\"name\":{}}},{\"properties\":{\"resourceName\":\"ev\",\"limit\":3076005966292859512,\"shareableQuota\":4996552348937874126,\"name\":{}}}],\"nextLink\":\"bywdxsmicc\"},\"id\":\"wfscjfn\",\"name\":\"nszqujiz\",\"type\":\"voqyt\"}";
+            = "{\"properties\":{\"provisioningState\":\"Escalated\",\"value\":[{\"properties\":{\"resourceName\":\"eydbsd\",\"limit\":156216941630787820,\"shareableQuota\":3603938096040345117,\"name\":{}}},{\"properties\":{\"resourceName\":\"bbxuripl\",\"limit\":438474543509360007,\"shareableQuota\":3847446368031437190,\"name\":{}}}],\"nextLink\":\"gx\"},\"id\":\"rc\",\"name\":\"pyklyhpluodpvru\",\"type\":\"dlgzibthostgkt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class GroupQuotaSubscriptionAllocationsListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SubscriptionQuotaAllocationsList response = manager.groupQuotaSubscriptionAllocations()
-            .listWithResponse("iqndieuzaofj", "hvcyyysfg", "otcubi", "p", com.azure.core.util.Context.NONE)
+            .listWithResponse("qioknssxmojm", "vpkjpr", "kwcf", "ql", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("macjekn", response.properties().value().get(0).properties().resourceName());
-        Assertions.assertEquals(1517216245064921581L, response.properties().value().get(0).properties().limit());
+        Assertions.assertEquals("eydbsd", response.properties().value().get(0).properties().resourceName());
+        Assertions.assertEquals(156216941630787820L, response.properties().value().get(0).properties().limit());
     }
 }

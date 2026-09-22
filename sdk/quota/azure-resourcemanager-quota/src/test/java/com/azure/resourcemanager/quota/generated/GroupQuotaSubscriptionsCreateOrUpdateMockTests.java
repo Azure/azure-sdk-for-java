@@ -21,7 +21,7 @@ public final class GroupQuotaSubscriptionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subscriptionId\":\"cfzq\",\"provisioningState\":\"Succeeded\"},\"id\":\"gtczheydb\",\"name\":\"dshmkxmaehvbbx\",\"type\":\"ripltf\"}";
+            = "{\"properties\":{\"subscriptionId\":\"hrnsvbu\",\"provisioningState\":\"Succeeded\"},\"id\":\"z\",\"name\":\"ybycnunvj\",\"type\":\"rtkfawnopq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class GroupQuotaSubscriptionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GroupQuotaSubscriptionId response
-            = manager.groupQuotaSubscriptions().createOrUpdate("knssxmojm", "vpkjpr", com.azure.core.util.Context.NONE);
+            = manager.groupQuotaSubscriptions().createOrUpdate("gf", "pdso", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cfzq", response.properties().subscriptionId());
+        Assertions.assertEquals("hrnsvbu", response.properties().subscriptionId());
     }
 }

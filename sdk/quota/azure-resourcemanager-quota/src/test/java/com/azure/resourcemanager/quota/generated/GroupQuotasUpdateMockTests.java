@@ -23,7 +23,7 @@ public final class GroupQuotasUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"c\",\"groupType\":\"EnforcedGroup\",\"provisioningState\":\"Succeeded\"},\"id\":\"ipmdscwx\",\"name\":\"upev\",\"type\":\"hfstotxhojujbyp\"}";
+            = "{\"properties\":{\"displayName\":\"jinrvgoupmfiibfg\",\"groupType\":\"EnforcedGroup\",\"provisioningState\":\"Succeeded\"},\"id\":\"vrwxkv\",\"name\":\"kkgll\",\"type\":\"wjygvjayvblmhvk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class GroupQuotasUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GroupQuotasEntity response = manager.groupQuotas()
-            .update("ou", "ibreb",
+            .update("y", "ngwfqatm",
                 new GroupQuotasEntityPatch()
-                    .withProperties(new GroupQuotasEntityPatchProperties().withDisplayName("ysjkixqtnqttez")),
+                    .withProperties(new GroupQuotasEntityPatchProperties().withDisplayName("tmdvypgikdgs")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("c", response.properties().displayName());
+        Assertions.assertEquals("jinrvgoupmfiibfg", response.properties().displayName());
     }
 }

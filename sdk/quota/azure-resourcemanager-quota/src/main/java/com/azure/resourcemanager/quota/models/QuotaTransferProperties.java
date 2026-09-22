@@ -222,17 +222,6 @@ public final class QuotaTransferProperties implements JsonSerializable<QuotaTran
     }
 
     /**
-     * Set the billingAccountId property: Billing account id both donor and recipient subscriptions must roll up to.
-     * 
-     * @param billingAccountId the billingAccountId value to set.
-     * @return the QuotaTransferProperties object itself.
-     */
-    public QuotaTransferProperties withBillingAccountId(String billingAccountId) {
-        this.billingAccountId = billingAccountId;
-        return this;
-    }
-
-    /**
      * Get the resourceName property: The quota dimension being moved, scoped by the URI's target provider
      * (for example, `standardDv5Family` under Microsoft.Compute).
      * 
@@ -360,7 +349,6 @@ public final class QuotaTransferProperties implements JsonSerializable<QuotaTran
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("destinationSubscriptionId", this.destinationSubscriptionId);
-        jsonWriter.writeStringField("billingAccountId", this.billingAccountId);
         jsonWriter.writeStringField("resourceName", this.resourceName);
         jsonWriter.writeLongField("amount", this.amount);
         jsonWriter.writeStringField("comment", this.comment);
@@ -388,8 +376,6 @@ public final class QuotaTransferProperties implements JsonSerializable<QuotaTran
                     deserializedQuotaTransferProperties.displayName = reader.getString();
                 } else if ("destinationSubscriptionId".equals(fieldName)) {
                     deserializedQuotaTransferProperties.destinationSubscriptionId = reader.getString();
-                } else if ("billingAccountId".equals(fieldName)) {
-                    deserializedQuotaTransferProperties.billingAccountId = reader.getString();
                 } else if ("resourceName".equals(fieldName)) {
                     deserializedQuotaTransferProperties.resourceName = reader.getString();
                 } else if ("amount".equals(fieldName)) {
@@ -405,6 +391,8 @@ public final class QuotaTransferProperties implements JsonSerializable<QuotaTran
                     deserializedQuotaTransferProperties.comment = reader.getString();
                 } else if ("destinationTenantId".equals(fieldName)) {
                     deserializedQuotaTransferProperties.destinationTenantId = reader.getString();
+                } else if ("billingAccountId".equals(fieldName)) {
+                    deserializedQuotaTransferProperties.billingAccountId = reader.getString();
                 } else if ("autoApprove".equals(fieldName)) {
                     deserializedQuotaTransferProperties.autoApprove = reader.getNullable(JsonReader::getBoolean);
                 } else if ("createdAt".equals(fieldName)) {

@@ -11,7 +11,7 @@ public final class GroupQuotaRequestBasePropertiesNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaRequestBasePropertiesName model
-            = BinaryData.fromString("{\"value\":\"esz\",\"localizedValue\":\"bijhtxfvgxbf\"}")
+            = BinaryData.fromString("{\"value\":\"ev\",\"localizedValue\":\"ggzfbu\"}")
                 .toObject(GroupQuotaRequestBasePropertiesName.class);
     }
 }

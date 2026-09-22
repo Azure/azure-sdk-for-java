@@ -12,9 +12,9 @@ public final class GroupQuotaListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"zy\",\"groupType\":\"EnforcedGroup\",\"provisioningState\":\"Created\"},\"id\":\"sbbzo\",\"name\":\"gigr\",\"type\":\"wburvjxxjnspydpt\"},{\"properties\":{\"displayName\":\"nkoukn\",\"groupType\":\"EnforcedGroup\",\"provisioningState\":\"InProgress\"},\"id\":\"ukbldngkpo\",\"name\":\"ipazyxoegukgjnpi\",\"type\":\"cgygev\"}],\"nextLink\":\"ntypmrbpizcdrqj\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"mdectehfiqscjey\",\"groupType\":\"AllocationGroup\",\"provisioningState\":\"InProgress\"},\"id\":\"kgqhcjrefovg\",\"name\":\"kqsleyyvxy\",\"type\":\"jpkcattpng\"},{\"properties\":{\"displayName\":\"cczsq\",\"groupType\":\"EnforcedGroup\",\"provisioningState\":\"Invalid\"},\"id\":\"ajvnysounqe\",\"name\":\"a\",\"type\":\"oaeupfhyhltrpmo\"}],\"nextLink\":\"mcmatuokthfuiu\"}")
             .toObject(GroupQuotaList.class);
-        Assertions.assertEquals("zy", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("ntypmrbpizcdrqj", model.nextLink());
+        Assertions.assertEquals("mdectehfiqscjey", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("mcmatuokthfuiu", model.nextLink());
     }
 }
