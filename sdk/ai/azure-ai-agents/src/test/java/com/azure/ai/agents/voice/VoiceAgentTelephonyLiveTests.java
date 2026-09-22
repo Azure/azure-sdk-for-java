@@ -4,8 +4,9 @@
 package com.azure.ai.agents.voice;
 
 import com.azure.ai.agents.AgentsClient;
-import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.AgentsServiceVersion;
 import com.azure.ai.agents.BetaVoiceAgentsTelephonyClient;
+import com.azure.ai.agents.ClientTestBase;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.CreateTelephonyCallJobInput;
 import com.azure.ai.agents.models.CreateTwilioTelephonyBindingInput;
@@ -29,110 +30,151 @@ import com.azure.ai.agents.models.VoiceAgentDefinition;
 import com.azure.ai.agents.models.VoiceModelType;
 import com.azure.ai.agents.models.VoiceOutputModality;
 import com.azure.ai.agents.models.VoiceType;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.test.TestMode;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.UUID;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Live Twilio validation for voice-agent telephony. This test places a real PSTN call and may incur provider charges.
- * It runs only when AZURE_TEST_MODE=LIVE, requires FOUNDRY_VOICE_MODEL_NAME, and uses
- * DefaultAzureCredential authentication. FOUNDRY_PROJECT_ENDPOINT, FOUNDRY_TELEPHONY_CONNECTION_1,
+ * Record/playback Twilio validation for voice-agent telephony. Recording this test places a real PSTN call and may
+ * incur provider charges. Record and live modes require FOUNDRY_VOICE_MODEL_NAME. FOUNDRY_TELEPHONY_CONNECTION_1,
  * FOUNDRY_TELEPHONY_CONNECTION_2, FOUNDRY_TELEPHONY_NUMBER_1, and FOUNDRY_TELEPHONY_NUMBER_2 can override the test
- * project defaults.
+ * project defaults. Playback does not contact Twilio.
  */
 @Execution(ExecutionMode.SAME_THREAD)
-public class VoiceAgentTelephonyLiveTests {
-    private static final String DEFAULT_ENDPOINT
-        = "https://voice-first-agents-df-tip.services.ai.azure.com/api/projects/voice-first-agents-df-tip";
+public class VoiceAgentTelephonyLiveTests extends ClientTestBase {
+    private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String DEFAULT_CONNECTION_1 = "twilio-sdk-testing-1";
     private static final String DEFAULT_CONNECTION_2 = "twilio-sdk-testing-2";
     private static final String DEFAULT_NUMBER_1 = "+13853864628";
     private static final String DEFAULT_NUMBER_2 = "+18509702029";
+    private static final String SANITIZED_CONNECTION_1 = "sanitized-connection-1";
+    private static final String SANITIZED_CONNECTION_2 = "sanitized-connection-2";
+    private static final String SANITIZED_NUMBER_1 = "+15555550101";
+    private static final String SANITIZED_NUMBER_2 = SANITIZED_NUMBER_1;
     private static final Duration CALL_TIMEOUT = Duration.ofMinutes(2);
     private static final Duration POLL_INTERVAL = Duration.ofSeconds(2);
 
-    @Test
-    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
-    public void bindingLifecycleLive() {
+    public static Stream<Arguments> getTestParameters() {
+        List<Arguments> argumentsList = new ArrayList<>();
+        getHttpClients().forEach(httpClient -> argumentsList.add(Arguments.of(httpClient, AgentsServiceVersion.V1)));
+        return argumentsList.stream();
+    }
+
+    /**
+     * Excludes conditional ETag headers because playback sanitizes response ETags before the client reuses them as
+     * {@code If-Match} values, while the recording contains the original service-generated values.
+     */
+    @Override
+    protected List<String> getAdditionalTestProxyExcludedHeaders() {
+        return Collections.singletonList("If-Match");
+    }
+
+    /**
+     * Removes the common {@code $..source} sanitizer so the telephony-specific sanitizer can preserve a valid E.164
+     * placeholder for request matching and response assertions during playback.
+     */
+    @Override
+    protected List<String> getAdditionalTestProxySanitizersToRemove() {
+        return Collections.singletonList("AZSDK3423");
+    }
+
+    /**
+     * Validates the service lifecycle against an actual Twilio connection and phone number. The corresponding HTTP
+     * request and response contracts are covered without provider resources in {@link VoiceAgentTelephonyTests}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void bindingLifecycleLive(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT", DEFAULT_ENDPOINT);
-        String model = configuration.get("FOUNDRY_VOICE_MODEL_NAME");
+        String model = getRecordedModel(configuration);
         assertNotNull(model, "FOUNDRY_VOICE_MODEL_NAME is required for live telephony testing.");
-        String connection = configuration.get("FOUNDRY_TELEPHONY_CONNECTION_1", DEFAULT_CONNECTION_1);
-        String number = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", DEFAULT_NUMBER_1);
-        AgentsClientBuilder builder = new AgentsClientBuilder().endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .allowPreview(true);
-        AgentsClient agents = builder.buildAgentsClient();
-        BetaVoiceAgentsTelephonyClient telephony = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        String agentName = "test-telephony-binding-" + shortId();
+        String connection = getTelephonyConfig(configuration, "FOUNDRY_TELEPHONY_CONNECTION_1", DEFAULT_CONNECTION_1,
+            SANITIZED_CONNECTION_1);
+        String number = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", DEFAULT_NUMBER_1, SANITIZED_NUMBER_1);
+        AgentsClient agents = getPreviewAgentsSyncClient(httpClient, serviceVersion);
+        BetaVoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
+        String agentName = testResourceNamer.randomName("tel-bind-", 21);
         boolean agentCreated = false;
+        String bindingId = null;
         try {
             agents.createAgentVersion(agentName,
                 new CreateAgentVersionInput(definition(model, "Greet the caller briefly, then say goodbye.")));
             agentCreated = true;
             TelephonyBinding binding = telephony.createTelephonyBinding(agentName,
                 new CreateTwilioTelephonyBindingInput(connection, number).setLabel("Java SDK live test"));
+            bindingId = binding.getId();
             TelephonyBindingListItem listedBinding = findBinding(telephony, agentName, binding.getId());
             assertNotNull(listedBinding.getETag());
+            String encodedBindingId = encodeBindingId(binding.getId());
 
-            TelephonyBinding retrieved = telephony.getTelephonyBinding(agentName, binding.getId());
+            TelephonyBinding retrieved = telephony.getTelephonyBinding(agentName, encodedBindingId);
             assertEquals(binding.getId(), retrieved.getId());
-            TelephonyBinding updated = telephony.updateTelephonyBinding(agentName, binding.getId(),
+            TelephonyBinding updated = telephony.updateTelephonyBinding(agentName, encodedBindingId,
                 listedBinding.getETag(), new UpdateTelephonyBindingInput().setLabel("Updated Java SDK live test"));
             assertEquals("Updated Java SDK live test", updated.getLabel());
 
             String updatedEtag = findBinding(telephony, agentName, binding.getId()).getETag();
             assertNotNull(updatedEtag);
-            telephony.deleteTelephonyBinding(agentName, binding.getId(), updatedEtag);
+            telephony.deleteTelephonyBinding(agentName, encodedBindingId, updatedEtag);
+            bindingId = null;
             assertTrue(telephony.listTelephonyBindings(agentName)
                 .stream()
                 .noneMatch(item -> binding.getId().equals(item.getId())));
         } finally {
+            if (bindingId != null) {
+                String createdBindingId = bindingId;
+                safeCleanup("delete telephony binding", () -> deleteBinding(telephony, agentName, createdBindingId));
+            }
             if (agentCreated) {
                 safeCleanup("delete binding test agent", () -> agents.deleteAgent(agentName));
             }
         }
     }
 
-    @Test
-    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
-    public void twilioBindingAndOutboundCallLive() throws InterruptedException {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void twilioBindingAndOutboundCallLive(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT", DEFAULT_ENDPOINT);
-        String model = configuration.get("FOUNDRY_VOICE_MODEL_NAME");
+        String model = getRecordedModel(configuration);
         assertNotNull(model, "FOUNDRY_VOICE_MODEL_NAME is required for live telephony testing.");
-        String connection1 = configuration.get("FOUNDRY_TELEPHONY_CONNECTION_1", DEFAULT_CONNECTION_1);
-        String connection2 = configuration.get("FOUNDRY_TELEPHONY_CONNECTION_2", DEFAULT_CONNECTION_2);
-        String number1 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", DEFAULT_NUMBER_1);
-        String number2 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_2", DEFAULT_NUMBER_2);
+        String connection1 = getTelephonyConfig(configuration, "FOUNDRY_TELEPHONY_CONNECTION_1", DEFAULT_CONNECTION_1,
+            SANITIZED_CONNECTION_1);
+        String connection2 = getTelephonyConfig(configuration, "FOUNDRY_TELEPHONY_CONNECTION_2", DEFAULT_CONNECTION_2,
+            SANITIZED_CONNECTION_2);
+        String number1 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_1", DEFAULT_NUMBER_1, SANITIZED_NUMBER_1);
+        String number2 = e164(configuration, "FOUNDRY_TELEPHONY_NUMBER_2", DEFAULT_NUMBER_2, SANITIZED_NUMBER_2);
 
-        AgentsClientBuilder builder = new AgentsClientBuilder().endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .allowPreview(true);
-        AgentsClient agents = builder.buildAgentsClient();
-        BetaVoiceAgentsTelephonyClient telephony = builder.beta().buildBetaVoiceAgentsTelephonyClient();
-        String suffix = UUID.randomUUID().toString();
-        String inboundAgent = "test-telephony-inbound-" + suffix;
-        String outboundAgent = "test-telephony-outbound-" + suffix;
+        AgentsClient agents = getPreviewAgentsSyncClient(httpClient, serviceVersion);
+        BetaVoiceAgentsTelephonyClient telephony = getVoiceAgentsTelephonySyncClient(httpClient, serviceVersion);
+        String suffix = testResourceNamer.randomName("", 12);
+        String inboundAgent = "tel-in-" + suffix;
+        String outboundAgent = "tel-out-" + suffix;
         String callJobId = null;
         String scheduledCallJobId = null;
         String inboundCallId = null;
+        String inboundBindingId = null;
         boolean inboundAgentCreated = false;
         boolean outboundAgentCreated = false;
         try {
@@ -145,6 +187,7 @@ public class VoiceAgentTelephonyLiveTests {
 
             TelephonyBinding binding = telephony.createTelephonyBinding(inboundAgent,
                 new CreateTwilioTelephonyBindingInput(connection1, number1).setLabel("Java SDK live test"));
+            inboundBindingId = binding.getId();
             assertNotNull(binding.getId());
             assertEquals(TelephonyProvider.TWILIO, binding.getProvider());
             assertEquals(TelephonyBindingStatus.ACTIVE, binding.getStatus());
@@ -166,7 +209,7 @@ public class VoiceAgentTelephonyLiveTests {
                 new TelephonyOutboundDestination(TelephonyOutboundDestinationType.PHONE_NUMBER, number1), connection2,
                 number2).setPurpose("Java SDK live telephony validation");
             TelephonyCallJob job
-                = telephony.createTelephonyCallJob(outboundAgent, UUID.randomUUID().toString(), request);
+                = telephony.createTelephonyCallJob(outboundAgent, testResourceNamer.randomUuid(), request);
             callJobId = job.getId();
             assertNotNull(callJobId);
             assertEquals(outboundAgent, job.getAgentName());
@@ -189,14 +232,14 @@ public class VoiceAgentTelephonyLiveTests {
 
             waitForDispatchedCallJob(telephony, outboundAgent, callJobId);
 
-            OffsetDateTime notBefore = OffsetDateTime.now().plusMinutes(10);
+            OffsetDateTime notBefore = testResourceNamer.now().plusMinutes(10);
             CreateTelephonyCallJobInput scheduledRequest = new CreateTelephonyCallJobInput(
                 new TelephonyOutboundDestination(TelephonyOutboundDestinationType.PHONE_NUMBER, number1), connection2,
                 number2).setPurpose("Java SDK live cancellation validation")
                     .setSchedule(
                         new TelephonyCallJobSchedule().setNotBefore(notBefore).setExpiresAt(notBefore.plusMinutes(10)));
             TelephonyCallJob scheduledJob
-                = telephony.createTelephonyCallJob(outboundAgent, UUID.randomUUID().toString(), scheduledRequest);
+                = telephony.createTelephonyCallJob(outboundAgent, testResourceNamer.randomUuid(), scheduledRequest);
             scheduledCallJobId = scheduledJob.getId();
             TelephonyCallJob cancelledJob = telephony.cancelTelephonyCallJob(outboundAgent, scheduledCallJobId,
                 Long.toString(scheduledJob.getRevision()));
@@ -229,6 +272,11 @@ public class VoiceAgentTelephonyLiveTests {
                     () -> telephony.replaceTelephonyTransferTargets(inboundAgent,
                         getTransferTargetsEtag(telephony, inboundAgent), Collections.emptyList()));
             }
+            if (inboundBindingId != null) {
+                String bindingId = inboundBindingId;
+                safeCleanup("delete inbound telephony binding",
+                    () -> deleteBinding(telephony, inboundAgent, bindingId));
+            }
             if (outboundAgentCreated) {
                 safeCleanup("delete outbound agent", () -> agents.deleteAgent(outboundAgent));
             }
@@ -238,27 +286,26 @@ public class VoiceAgentTelephonyLiveTests {
         }
     }
 
-    private static TelephonyCallSummary waitForInboundCall(BetaVoiceAgentsTelephonyClient telephony, String agentName)
-        throws InterruptedException {
+    private TelephonyCallSummary waitForInboundCall(BetaVoiceAgentsTelephonyClient telephony, String agentName) {
         long deadline = System.nanoTime() + CALL_TIMEOUT.toNanos();
         while (System.nanoTime() < deadline) {
             for (TelephonyCallSummary call : telephony.listTelephonyCalls(agentName)) {
                 return call;
             }
-            Thread.sleep(POLL_INTERVAL.toMillis());
+            sleep(POLL_INTERVAL.toMillis());
         }
         throw new AssertionError("No inbound Twilio call arrived within " + CALL_TIMEOUT + ".");
     }
 
-    private static void waitForDispatchedCallJob(BetaVoiceAgentsTelephonyClient telephony, String agentName,
-        String callJobId) throws InterruptedException {
+    private void waitForDispatchedCallJob(BetaVoiceAgentsTelephonyClient telephony, String agentName,
+        String callJobId) {
         long deadline = System.nanoTime() + CALL_TIMEOUT.toNanos();
         while (System.nanoTime() < deadline) {
             TelephonyCallJob callJob = telephony.getTelephonyCallJob(agentName, callJobId);
             if (callJob.getAttemptCount() > 0) {
                 return;
             }
-            Thread.sleep(POLL_INTERVAL.toMillis());
+            sleep(POLL_INTERVAL.toMillis());
         }
         throw new AssertionError("The outbound call job did not create an attempt within " + CALL_TIMEOUT + ".");
     }
@@ -273,16 +320,74 @@ public class VoiceAgentTelephonyLiveTests {
                     .setVoiceType(VoiceType.AZURE_STANDARD)));
     }
 
-    private static String e164(Configuration configuration, String name, String defaultValue) {
-        String value = configuration.get(name, defaultValue);
+    private String e164(Configuration configuration, String name, String defaultValue, String sanitizedValue) {
+        String value = getTelephonyConfig(configuration, name, defaultValue, sanitizedValue);
         assertNotNull(value, name + " is required for live telephony testing.");
         value = value.trim();
         assertTrue(value.matches("^\\+[1-9]\\d{7,14}$"), name + " must be an E.164 number such as +14255550123.");
+        if (getTestMode() == TestMode.RECORD) {
+            addPhoneSanitizers(value, sanitizedValue);
+        }
         return value;
     }
 
-    private static String shortId() {
-        return UUID.randomUUID().toString().replace("-", "").substring(0, 12);
+    private void addPhoneSanitizers(String value, String sanitizedValue) {
+        String digits = value.substring(1);
+        String sanitizedDigits = sanitizedValue.substring(1);
+        interceptorManager.addSanitizers(Arrays.asList(
+            new TestProxySanitizer("$..phone_number", null, sanitizedValue, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..identifier", null, sanitizedValue, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..source", null, sanitizedValue, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..caller_number", null, sanitizedValue, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..provider_number", null, sanitizedValue, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..value", null, sanitizedValue, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..id", digits, sanitizedDigits, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..first_id", digits, sanitizedDigits, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..last_id", digits, sanitizedDigits, TestProxySanitizerType.BODY_KEY)));
+    }
+
+    private String getRecordedModel(Configuration configuration) {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            return testResourceNamer.recordValueFromConfig("FOUNDRY_VOICE_MODEL_NAME");
+        }
+        String model = configuration.get("FOUNDRY_VOICE_MODEL_NAME");
+        return getTestMode() == TestMode.RECORD && model != null
+            ? testResourceNamer.recordValueFromConfig(model)
+            : model;
+    }
+
+    private String getTelephonyConfig(Configuration configuration, String name, String defaultValue,
+        String sanitizedValue) {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            return sanitizedValue;
+        }
+        String value = configuration.get(name, defaultValue);
+        if (getTestMode() == TestMode.RECORD) {
+            String escapedValue = escapeRegex(value);
+            interceptorManager.addSanitizers(
+                Arrays.asList(new TestProxySanitizer(escapedValue, sanitizedValue, TestProxySanitizerType.BODY_REGEX),
+                    new TestProxySanitizer(escapedValue, sanitizedValue, TestProxySanitizerType.URL),
+                    new TestProxySanitizer(escapeRegex(encodeBindingId(value)), encodeBindingId(sanitizedValue),
+                        TestProxySanitizerType.URL)));
+        }
+        return value;
+    }
+
+    private static String escapeRegex(String value) {
+        return value.replace("\\", "\\\\")
+            .replace(".", "\\.")
+            .replace("+", "\\+")
+            .replace("*", "\\*")
+            .replace("?", "\\?")
+            .replace("^", "\\^")
+            .replace("$", "\\$")
+            .replace("(", "\\(")
+            .replace(")", "\\)")
+            .replace("[", "\\[")
+            .replace("]", "\\]")
+            .replace("{", "\\{")
+            .replace("}", "\\}")
+            .replace("|", "\\|");
     }
 
     private static TelephonyBindingListItem findBinding(BetaVoiceAgentsTelephonyClient telephony, String agentName,
@@ -292,6 +397,19 @@ public class VoiceAgentTelephonyLiveTests {
             .filter(item -> bindingId.equals(item.getId()))
             .findFirst()
             .orElseThrow(() -> new AssertionError("Created binding was not listed."));
+    }
+
+    private static void deleteBinding(BetaVoiceAgentsTelephonyClient telephony, String agentName, String bindingId) {
+        telephony.listTelephonyBindings(agentName)
+            .stream()
+            .filter(item -> bindingId.equals(item.getId()))
+            .findFirst()
+            .ifPresent(
+                binding -> telephony.deleteTelephonyBinding(agentName, encodeBindingId(bindingId), binding.getETag()));
+    }
+
+    private static String encodeBindingId(String bindingId) {
+        return bindingId.replace("+", "%2B");
     }
 
     private static String getTransferTargetsEtag(BetaVoiceAgentsTelephonyClient telephony, String agentName) {
@@ -308,7 +426,7 @@ public class VoiceAgentTelephonyLiveTests {
     private static void safeCleanup(String action, Runnable cleanup) {
         try {
             cleanup.run();
-        } catch (RuntimeException exception) {
+        } catch (RuntimeException | AssertionError exception) {
             System.err.printf("Failed to %s: %s%n", action, exception.getMessage());
         }
     }

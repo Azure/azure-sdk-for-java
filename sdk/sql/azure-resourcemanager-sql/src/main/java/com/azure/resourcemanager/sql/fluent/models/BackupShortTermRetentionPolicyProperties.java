@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.DiffBackupIntervalInHours;
+import com.azure.resourcemanager.sql.models.ImmutabilityStatus;
 import java.io.IOException;
 
 /**
@@ -28,6 +29,16 @@ public final class BackupShortTermRetentionPolicyProperties
      * be supported. This is only applicable to live databases but not dropped databases.
      */
     private DiffBackupIntervalInHours diffBackupIntervalInHours;
+
+    /*
+     * Whether to lock the immutability of the backups governed by this short term retention policy.
+     */
+    private Boolean lockImmutability;
+
+    /*
+     * The immutability status of the backups governed by this short term retention policy.
+     */
+    private ImmutabilityStatus immutabilityStatus;
 
     /**
      * Creates an instance of BackupShortTermRetentionPolicyProperties class.
@@ -83,6 +94,38 @@ public final class BackupShortTermRetentionPolicyProperties
     }
 
     /**
+     * Get the lockImmutability property: Whether to lock the immutability of the backups governed by this short term
+     * retention policy.
+     * 
+     * @return the lockImmutability value.
+     */
+    public Boolean lockImmutability() {
+        return this.lockImmutability;
+    }
+
+    /**
+     * Set the lockImmutability property: Whether to lock the immutability of the backups governed by this short term
+     * retention policy.
+     * 
+     * @param lockImmutability the lockImmutability value to set.
+     * @return the BackupShortTermRetentionPolicyProperties object itself.
+     */
+    public BackupShortTermRetentionPolicyProperties withLockImmutability(Boolean lockImmutability) {
+        this.lockImmutability = lockImmutability;
+        return this;
+    }
+
+    /**
+     * Get the immutabilityStatus property: The immutability status of the backups governed by this short term retention
+     * policy.
+     * 
+     * @return the immutabilityStatus value.
+     */
+    public ImmutabilityStatus immutabilityStatus() {
+        return this.immutabilityStatus;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -99,6 +142,7 @@ public final class BackupShortTermRetentionPolicyProperties
         jsonWriter.writeNumberField("retentionDays", this.retentionDays);
         jsonWriter.writeNumberField("diffBackupIntervalInHours",
             this.diffBackupIntervalInHours == null ? null : this.diffBackupIntervalInHours.getValue());
+        jsonWriter.writeBooleanField("lockImmutability", this.lockImmutability);
         return jsonWriter.writeEndObject();
     }
 
@@ -124,6 +168,12 @@ public final class BackupShortTermRetentionPolicyProperties
                 } else if ("diffBackupIntervalInHours".equals(fieldName)) {
                     deserializedBackupShortTermRetentionPolicyProperties.diffBackupIntervalInHours
                         = DiffBackupIntervalInHours.fromValue(reader.getInt());
+                } else if ("lockImmutability".equals(fieldName)) {
+                    deserializedBackupShortTermRetentionPolicyProperties.lockImmutability
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("immutabilityStatus".equals(fieldName)) {
+                    deserializedBackupShortTermRetentionPolicyProperties.immutabilityStatus
+                        = ImmutabilityStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

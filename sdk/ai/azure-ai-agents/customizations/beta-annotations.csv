@@ -4,7 +4,9 @@ class;com.azure.ai.agents.models.A2APreviewToolboxTool;Preview API. preview_tool
 class;com.azure.ai.agents.models.A2AToolCall;Preview API. preview_tool;
 class;com.azure.ai.agents.models.A2AToolCallOutput;Preview API. preview_tool;
 field;com.azure.ai.agents.models.AgentDetails;Preview API. DigitalWorker=V1Preview;digital_worker_type
+field;com.azure.ai.agents.models.AgentEndpointProtocol;Preview API.;VOICE
 class;com.azure.ai.agents.models.AgentHarness;Preview API. GitHubCopilot=V1Preview;
+field;com.azure.ai.agents.models.AgentKind;Preview API.;VOICE
 class;com.azure.ai.agents.models.AgentOptimizationCandidate;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.AgentOptimizationDatasetCriterion;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.AgentOptimizationDatasetInput;Preview API. AgentsOptimization=V2Preview;

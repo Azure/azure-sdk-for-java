@@ -1,14 +1,9 @@
 ## Release History
 
-### 2.12.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 2.12.0 (2026-09-22)
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.83.0`.
 
 ### 2.11.0 (2026-06-08)
 

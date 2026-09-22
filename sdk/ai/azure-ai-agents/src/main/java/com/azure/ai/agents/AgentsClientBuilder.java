@@ -678,8 +678,14 @@ public final class AgentsClientBuilder
 
         /**
          * Builds an asynchronous client for realtime voice-agent WebSocket sessions.
+         * <p>
+         * Endpoint, credential, service version, configuration-based proxy settings, and client options are applied to
+         * WebSocket handshakes. Custom HTTP clients, pipelines, policies, and retry configuration are not compatible
+         * with the native WebSocket transport and cause this method to fail rather than being silently ignored.
+         * HTTP log options contribute to the user agent but do not configure WebSocket frame logging.
          *
          * @return an asynchronous voice-agent WebSocket client.
+         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
          */
         @Beta
         public BetaVoiceAgentWebSocketAsyncClient buildBetaVoiceAgentWebSocketAsyncClient() {
@@ -688,8 +694,14 @@ public final class AgentsClientBuilder
 
         /**
          * Builds a synchronous client for realtime voice-agent WebSocket sessions.
+         * <p>
+         * Endpoint, credential, service version, configuration-based proxy settings, and client options are applied to
+         * WebSocket handshakes. Custom HTTP clients, pipelines, policies, and retry configuration are not compatible
+         * with the native WebSocket transport and cause this method to fail rather than being silently ignored.
+         * HTTP log options contribute to the user agent but do not configure WebSocket frame logging.
          *
          * @return a synchronous voice-agent WebSocket client.
+         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
          */
         @Beta
         public BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
@@ -821,10 +833,41 @@ public final class AgentsClientBuilder
         return new BetaVoiceAgentsTelephonyClient(buildInnerClient().getBetaVoiceAgentsTelephonies());
     }
 
+    /**
+     * Creates the parallel configuration path required by the native WebSocket transports. Azure Core's
+     * {@link HttpClient} and {@link HttpPipeline} abstractions don't expose WebSocket session operations, so these
+     * clients can't reuse the generated HTTP pipeline directly. Compatible builder settings are adapted for the
+     * WebSocket handshake and must remain aligned with {@code createHttpPipeline()} when the TypeSpec emitter changes.
+     * HTTP transport, pipeline, policy, and retry settings are rejected rather than silently ignored.
+     *
+     * @return the voice-agent WebSocket client configuration.
+     * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+     */
     private VoiceAgentWebSocketClientConfiguration createVoiceAgentWebSocketConfiguration() {
         validateClient();
         Objects.requireNonNull(tokenCredential,
             "'credential' must be configured to build a voice-agent WebSocket client.");
+        List<String> unsupportedSettings = new ArrayList<>();
+        if (httpClient != null) {
+            unsupportedSettings.add("httpClient");
+        }
+        if (pipeline != null) {
+            unsupportedSettings.add("pipeline");
+        }
+        if (!pipelinePolicies.isEmpty()) {
+            unsupportedSettings.add("addPolicy");
+        }
+        if (retryOptions != null) {
+            unsupportedSettings.add("retryOptions");
+        }
+        if (retryPolicy != null) {
+            unsupportedSettings.add("retryPolicy");
+        }
+        if (!unsupportedSettings.isEmpty()) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Voice-agent WebSocket clients do not support these HTTP builder settings: "
+                    + String.join(", ", unsupportedSettings) + "."));
+        }
         Configuration buildConfiguration
             = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
         ClientOptions localClientOptions = clientOptions == null ? new ClientOptions() : clientOptions;
