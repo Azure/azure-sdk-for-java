@@ -30,7 +30,7 @@ public class TelephonyTransferDestination implements JsonSerializable<TelephonyT
      * Creates an instance of TelephonyTransferDestination class.
      */
     @Generated
-    public TelephonyTransferDestination() {
+    protected TelephonyTransferDestination() {
     }
 
     /**

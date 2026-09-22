@@ -29,7 +29,7 @@ public class AgentHarness implements JsonSerializable<AgentHarness> {
      * Creates an instance of AgentHarness class.
      */
     @Generated
-    public AgentHarness() {
+    protected AgentHarness() {
     }
 
     /**

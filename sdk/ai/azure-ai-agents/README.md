@@ -7,7 +7,7 @@ The client library uses a single service version `v1` of the AI Foundry [data pl
 > [!IMPORTANT]
 > **Preview and beta features**
 > - Build `Beta*Client` and `Beta*AsyncClient` instances through `AgentsClientBuilder.beta()`. These clients automatically opt in to their preview service area; you do not need `allowPreview(true)` for them.
-> - Use `AgentsClientBuilder.allowPreview(true)` when calling preview APIs on non-Beta clients, such as draft agent versions, hosted-agent sessions, session files, and code package operations on `AgentsClient` / `AgentsAsyncClient`.
+> - Use `AgentsClientBuilder.allowPreview(true)` when calling preview APIs on non-Beta clients, such as preview agent definitions, draft agent versions, hosted-agent sessions, session files, and code package operations on `AgentsClient` / `AgentsAsyncClient`.
 > - Classes and methods annotated with `@Beta` are preview API surface and may change in future releases. See [Preview operation groups and beta clients](#preview-operation-groups-and-beta-clients) for details.
 
 ## Documentation
@@ -31,7 +31,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-agents</artifactId>
-    <version>2.5.0</version>
+    <version>2.6.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -63,16 +63,18 @@ AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
 ``` 
 
 The Agents client library has the following sub-clients which group the different operations that can be performed: 
-- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents. When `allowPreview(true)` is configured, these clients can also use preview draft versions, hosted-agent sessions, session files, and code package operations.
+- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents. When `allowPreview(true)` is configured, these clients can also use preview definitions, hosted-agent sessions, session files, and code package operations.
 - `BetaAgentsClient` / `BetaAgentsAsyncClient` **(preview)**: Perform preview agent optimization operations.
 - `ResponsesClient` / `ResponsesAsyncClient`: Create responses that require Azure-specific request fields, such as an explicit `AgentReference` or structured inputs. For standard OpenAI Responses API calls through a configured agent endpoint, use an agent-scoped OpenAI client. See the [OpenAI Responses API documentation][openai_responses_api_docs] for more information.
 - `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
 - `ToolboxesClient` / `ToolboxesAsyncClient`: Manage toolboxes and toolbox versions.
 - `BetaVoiceAgentWebSocketClient` / `BetaVoiceAgentWebSocketAsyncClient` **(preview)**: Open typed realtime WebSocket sessions with voice agents.
-- `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` **(preview)**: Manage voice-agent outbound calls and telephony campaigns.
-- `BetaVoiceAgentsConversationsClient` / `BetaVoiceAgentsConversationsAsyncClient` **(preview)**: Read persisted voice-agent conversations, transcripts, and audio metadata.
+- `BetaVoiceAgentsTelephonyClient` / `BetaVoiceAgentsTelephonyAsyncClient` **(preview)**: Manage telephony bindings, calls, transfer targets, and outbound call jobs.
+- `BetaVoiceAgentsConversationsClient` / `BetaVoiceAgentsConversationsAsyncClient` **(preview)**: Read and delete persisted voice-agent conversations and retrieve their responses, items, and audio.
 
-Conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s `ConversationService`. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
+OpenAI conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s
+`ConversationService`. Persisted voice-agent conversation records use the beta voice conversation clients listed above.
+See the [OpenAI Conversation API documentation][openai_conversations_api_docs] for more information.
 
 To access each sub-client you need to use your `AgentsClientBuilder()`. The Agents client library takes the [Official OpenAI SDK][openai_java_sdk] as a dependency, which is used for all operations, except the ones corresponding to direct Agent management.
 
@@ -117,25 +119,6 @@ ResponseService responseService = responsesClient.getResponseService();
 ConversationService conversationService = openAIClient.conversations();
 ```
 
-### Realtime connection options
-
-Use `VoiceAgentWebSocketConnectionOptions` with the synchronous or asynchronous beta voice-agent client's
-`openWebSocketSession` method to configure session behavior such as session IDs, agent version selection, structured
-inputs, persistence, buffering, and timeouts.
-
-```java
-VoiceAgentWebSocketConnectionOptions options = new VoiceAgentWebSocketConnectionOptions()
-    .setAgentSessionId("session-id")
-    .setAgentVersionOverride("2")
-    .setStructuredInputs("{\"language\":\"en\"}")
-    .setStoreEnabled(true);
-```
-
-The SDK owns the WebSocket route, API version, authentication scope, transport, and preview feature headers. Endpoint,
-credential, service version, configuration-based proxy settings, and `ClientOptions` are reused from
-`AgentsClientBuilder`. Custom HTTP clients, pipelines, policies, and retry settings are rejected when building a
-WebSocket client because the native WebSocket transports cannot apply them.
-
 ### Agent version drafts
 
 Draft agent versions are preview candidates that are not promoted to the agent's latest released version. Create one with
@@ -177,6 +160,7 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 | `BrowserAutomationPreviewTool` | Browser automation |
 | `ComputerUsePreviewTool` | Computer use |
 | `FabricIqPreviewTool` | Fabric IQ |
+| `GitHubCopilotToolsetPreview` | GitHub Copilot built-in tools |
 | `MemorySearchPreviewTool` | Memory search |
 | `MicrosoftFabricPreviewTool` | Microsoft Fabric |
 | `ReminderPreviewTool` | Reminder scheduling |
@@ -208,7 +192,7 @@ Build clients whose names start with `Beta` from `AgentsClientBuilder.beta()`. T
 
 | Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
-| `BetaAgentsClient` | `WorkflowAgents=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,AgentsOptimization=V2Preview` |
+| `BetaAgentsClient` | `WorkflowAgents=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,VoiceAgents=V1Preview,DigitalWorker=V1Preview,GitHubCopilot=V1Preview,Skills=V1Preview,AgentsOptimization=V2Preview` |
 | `BetaMemoryStoresClient` | `MemoryStores=V1Preview` |
 | `BetaVoiceAgentWebSocketClient` | `VoiceAgents=V1Preview` |
 | `BetaVoiceAgentsTelephonyClient` | `VoiceAgents=V1Preview` |
@@ -218,9 +202,32 @@ The async `Beta*AsyncClient` counterparts follow the same behavior.
 
 ### Realtime voice-agent sessions
 
-Use `BetaVoiceAgentWebSocketClient` or `BetaVoiceAgentWebSocketAsyncClient` to open a typed, bidirectional session with an existing voice agent. The client acquires a token for `https://ai.azure.com/.default`, negotiates the `realtime` WebSocket subprotocol, and sends the required `VoiceAgents=V1Preview` feature header automatically.
+Create and manage preview voice agents with `VoiceAgentDefinition` and an `AgentsClient` or `AgentsAsyncClient` built
+using `allowPreview(true)`. Use `BetaVoiceAgentWebSocketClient` or `BetaVoiceAgentWebSocketAsyncClient` to open a typed,
+bidirectional session with an existing voice agent. The client acquires a token for `https://ai.azure.com/.default`,
+negotiates the `realtime` WebSocket subprotocol, and sends the required `VoiceAgents=V1Preview` feature header
+automatically.
 
-The session API supports text and PCM16 audio input, typed streaming server events, response cancellation, client-executed function tools, and persisted conversations. See [Realtime voice-agent WebSocket examples](#realtime-voice-agent-websocket-examples-preview) for a walkthrough and complete samples.
+The session API supports text and audio in the format configured on the voice agent, typed streaming server events,
+response cancellation, client-executed function tools, and optional persisted conversations. See
+[Realtime voice-agent WebSocket examples](#realtime-voice-agent-websocket-examples-preview) for complete samples.
+
+Use `VoiceAgentWebSocketConnectionOptions` with `openWebSocketSession` to configure session IDs, agent version
+selection, structured inputs, persistence, buffering, and timeouts. Options are copied when the session is opened, so
+later changes do not affect the active session.
+
+```java
+VoiceAgentWebSocketConnectionOptions options = new VoiceAgentWebSocketConnectionOptions()
+    .setAgentSessionId("session-id")
+    .setAgentVersionOverride("2")
+    .setStructuredInputs("{\"language\":\"en\"}")
+    .setStoreEnabled(true);
+```
+
+The SDK owns the WebSocket route, API version, authentication scope, transport, and preview feature headers. Endpoint,
+credential, service version, configuration-based proxy settings, and `ClientOptions` are reused from
+`AgentsClientBuilder`. Custom HTTP clients, pipelines, policies, and retry settings are rejected when building a
+WebSocket client because the native WebSocket transports cannot apply them.
 
 ### Agent optimization
 
@@ -726,7 +733,7 @@ See the full sample in [OpenApiWithConnectionSync.java](https://github.com/Azure
 
 #### Toolbox Tools
 
-Toolbox tools are defined in toolbox versions and managed through `ToolboxesClient` / `ToolboxesAsyncClient`. Toolbox versions use `ToolboxTool` subclasses rather than agent `Tool` subclasses.
+Toolbox tools are defined in toolbox versions and managed through `ToolboxesClient` / `ToolboxesAsyncClient`. Toolbox versions use `ToolboxTool` subclasses rather than agent `Tool` subclasses. Use `invokeLatestToolboxMcp` to invoke the latest toolbox version through its MCP endpoint.
 
 ##### **Toolbox Search**
 
@@ -961,13 +968,13 @@ See the full sample in [CreateResponseWithStructuredInput.java](https://github.c
 
 ### Voice agent samples (preview)
 
-The [voice-agent samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice) cover agent management and persisted conversations.
+The following [voice-agent samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice) cover agent management and persisted conversations.
 
 | Scenario | Samples |
 |---|---|
 | Lifecycle | [VoiceAgentBasicSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentBasicSample.java) and [VoiceAgentBasicAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentBasicAsyncSample.java) create, retrieve, update, list, enable, disable, and delete voice agents. |
 | Versions and drafts | [VoiceAgentVersionsSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentVersionsSample.java) creates and lists released and draft versions. |
-| Guided generation | [VoiceAgentGenerateSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentGenerateSample.java) generates a voice-agent definition. |
+| Guided generation | [VoiceAgentGenerateSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentGenerateSample.java) generates and creates a voice agent from high-level input. |
 | Audio and tools | [VoiceAgentWithToolsSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentWithToolsSample.java) configures PCM audio, transcription, voice activity detection, function tools, and system tools. |
 | Persisted conversations | [VoiceAgentReadConversationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentReadConversationSample.java) reads responses and transcripts, while [VoiceAgentReadConversationAudioSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/voice/VoiceAgentReadConversationAudioSample.java) downloads call and item audio. |
 
@@ -998,10 +1005,11 @@ Connections require an `https://` or `wss://` project endpoint. Insecure endpoin
 token. This also applies to localhost; use certificate-verified TLS for local servers.
 
 Unknown server event types are returned as `RawRealtimeServerEvent`; `getRawEvent()` preserves the complete JSON object.
-Use `sendEvent(BinaryData)` to send raw JSON objects, including event types or fields not modeled by this SDK. Both
-clients accept UTF-8 JSON in text or binary WebSocket messages.
+Use `sendEvent(BinaryData)` to send raw JSON objects, including event types or fields not modeled by this SDK. Sessions
+receive UTF-8 JSON in text or binary WebSocket messages.
 
-Configure `VoiceAgentWebSocketConnectionOptions` before connecting and do not modify it while the session is active:
+`VoiceAgentWebSocketConnectionOptions` is copied when a connection is opened. Configure it before connecting; later
+changes do not affect the active session:
 
 - `setReceiveBufferCapacity` sets a bounded event queue (default 256, range 1-65536).
 - `setOverflowStrategy` defaults to `ERROR`, which closes an overflowing connection. `DROP_OLDEST` and `DROP_LATEST`
@@ -1010,6 +1018,7 @@ Configure `VoiceAgentWebSocketConnectionOptions` before connecting and do not mo
     The sync transport checks size after receiving a complete message; this does not bound the transport's allocation.
 - Malformed JSON or invalid UTF-8 terminates reception by default. Set `setMalformedEventHandler` to report and skip
     malformed events while continuing reception. This callback must not block; throwing from it terminates the session.
+
 ```java com.azure.ai.agents.realtime_forward_compatibility
 VoiceAgentWebSocketConnectionOptions options
     = new VoiceAgentWebSocketConnectionOptions()
@@ -1081,7 +1090,11 @@ Mono.usingWhen(
 
 #### Stream audio and handle function tools
 
-Use `appendInputAudio` to send PCM16 chunks, `commitInputAudio` to commit buffered audio when server-side voice activity detection is not configured, and `clearInputAudio` to discard pending input. Audio output arrives through `RealtimeResponseAudioDeltaEvent` events. When a `RealtimeResponseFunctionCallArgumentsDoneEvent` event requests a client-side tool, execute the function and call `sendFunctionCallOutput` with its call ID and serialized result.
+Use `appendInputAudio` to send bytes in the input format configured on the voice agent (the included live audio sample
+uses PCM16). Use `commitInputAudio` to commit buffered audio when server-side voice activity detection is not configured,
+and `clearInputAudio` to discard pending input. Audio output arrives through `RealtimeResponseAudioDeltaEvent` events.
+When a `RealtimeResponseFunctionCallArgumentsDoneEvent` requests a client-side tool, execute the function and call
+`sendFunctionCallOutput` with its call ID and serialized result; the helper also requests the next response.
 
 | Scenario | Complete sample |
 |---|---|

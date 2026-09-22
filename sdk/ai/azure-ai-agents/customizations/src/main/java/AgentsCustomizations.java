@@ -35,7 +35,8 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
-        // makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
+        protectPolymorphicBaseConstructors(libraryCustomization);
+        makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
@@ -88,6 +89,31 @@ public class AgentsCustomizations extends Customization {
     private static final int V_STRING_ENUM_TYPE = 17;
 
     private static final int V_SIZE = 18;
+
+    /**
+     * Prevents customers from directly constructing polymorphic base models that do not represent valid wire shapes.
+     * The classes remain concrete so their generated {@code fromJson} methods can deserialize unknown future
+     * discriminator values.
+     *
+     * @param customization the library customization
+     */
+    private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
+        List<String> classNames = Arrays.asList("AgentHarness", "CreateTelephonyBindingInput", "RealtimeAudioFormat",
+            "RealtimeClientEvent", "RealtimeConversationItem", "RealtimeConversationItemMessage", "RealtimeMcpError",
+            "RealtimeSessionConfigurationBase", "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy",
+            "TelephonyTransferDestination", "VoiceAgentGreetingConfiguration", "VoiceAgentInterimResponseConfiguration",
+            "VoiceAgentSystemTool", "VoiceAgentTool", "VoiceAgentTurnDetectionConfiguration",
+            "VoiceConversationEngine");
+
+        for (String className : classNames) {
+            ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);
+            classCustomization.customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> clazz
+                .getConstructors()
+                .stream()
+                .filter(constructor -> constructor.isPublic())
+                .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED))));
+        }
+    }
 
     /**
      * Re-applies the typed union accessors on the generated models whose TypeSpec union properties are emitted as

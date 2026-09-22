@@ -31,19 +31,19 @@ public final class TranscriptTextUsageDuration extends TranscriptTextUsage {
      * Duration of the input audio in seconds.
      */
     @Generated
-    private final long seconds;
+    private final long duration;
 
     /**
      * Creates an instance of TranscriptTextUsageDuration class.
      *
-     * @param seconds the seconds value to set.
+     * @param duration the duration value to set.
      */
     @Generated
-    private TranscriptTextUsageDuration(Duration seconds) {
-        if (seconds == null) {
-            this.seconds = 0L;
+    private TranscriptTextUsageDuration(Duration duration) {
+        if (duration == null) {
+            this.duration = 0L;
         } else {
-            this.seconds = seconds.getSeconds();
+            this.duration = duration.getSeconds();
         }
     }
 
@@ -59,13 +59,13 @@ public final class TranscriptTextUsageDuration extends TranscriptTextUsage {
     }
 
     /**
-     * Get the seconds property: Duration of the input audio in seconds.
+     * Get the duration property: Duration of the input audio in seconds.
      *
-     * @return the seconds value.
+     * @return the duration value.
      */
     @Generated
-    public Duration getSeconds() {
-        return Duration.ofSeconds(this.seconds);
+    public Duration getDuration() {
+        return Duration.ofSeconds(this.duration);
     }
 
     /**
@@ -75,7 +75,7 @@ public final class TranscriptTextUsageDuration extends TranscriptTextUsage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeLongField("seconds", this.seconds);
+        jsonWriter.writeLongField("seconds", this.duration);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -92,13 +92,13 @@ public final class TranscriptTextUsageDuration extends TranscriptTextUsage {
     @Generated
     public static TranscriptTextUsageDuration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Duration seconds = null;
+            Duration duration = null;
             TranscriptTextUsageType type = TranscriptTextUsageType.DURATION;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("seconds".equals(fieldName)) {
-                    seconds = Duration.ofSeconds(reader.getLong());
+                    duration = Duration.ofSeconds(reader.getLong());
                 } else if ("type".equals(fieldName)) {
                     type = TranscriptTextUsageType.fromString(reader.getString());
                 } else {
@@ -106,7 +106,7 @@ public final class TranscriptTextUsageDuration extends TranscriptTextUsage {
                 }
             }
             TranscriptTextUsageDuration deserializedTranscriptTextUsageDuration
-                = new TranscriptTextUsageDuration(seconds);
+                = new TranscriptTextUsageDuration(duration);
             deserializedTranscriptTextUsageDuration.type = type;
             return deserializedTranscriptTextUsageDuration;
         });
