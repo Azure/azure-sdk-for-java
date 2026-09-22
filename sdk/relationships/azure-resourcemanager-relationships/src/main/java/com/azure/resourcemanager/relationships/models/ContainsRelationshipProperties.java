@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.relationships.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -12,13 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * ServiceGroupMember relationship properties.
+ * contains relationship properties.
  */
-@Fluent
-public final class ServiceGroupMemberRelationshipProperties
-    implements JsonSerializable<ServiceGroupMemberRelationshipProperties> {
+@Immutable
+public final class ContainsRelationshipProperties implements JsonSerializable<ContainsRelationshipProperties> {
     /*
-     * The relationship source resource id.
+     * The relationship source resource id. Must be a subscription or resource group.
      */
     private String sourceId;
 
@@ -48,13 +47,13 @@ public final class ServiceGroupMemberRelationshipProperties
     private ProvisioningState provisioningState;
 
     /**
-     * Creates an instance of ServiceGroupMemberRelationshipProperties class.
+     * Creates an instance of ContainsRelationshipProperties class.
      */
-    public ServiceGroupMemberRelationshipProperties() {
+    private ContainsRelationshipProperties() {
     }
 
     /**
-     * Get the sourceId property: The relationship source resource id.
+     * Get the sourceId property: The relationship source resource id. Must be a subscription or resource group.
      * 
      * @return the sourceId value.
      */
@@ -72,34 +71,12 @@ public final class ServiceGroupMemberRelationshipProperties
     }
 
     /**
-     * Set the targetId property: The relationship target resource id.
-     * 
-     * @param targetId the targetId value to set.
-     * @return the ServiceGroupMemberRelationshipProperties object itself.
-     */
-    public ServiceGroupMemberRelationshipProperties withTargetId(String targetId) {
-        this.targetId = targetId;
-        return this;
-    }
-
-    /**
      * Get the targetTenant property: The relationship target tenant id.
      * 
      * @return the targetTenant value.
      */
     public String targetTenant() {
         return this.targetTenant;
-    }
-
-    /**
-     * Set the targetTenant property: The relationship target tenant id.
-     * 
-     * @param targetTenant the targetTenant value to set.
-     * @return the ServiceGroupMemberRelationshipProperties object itself.
-     */
-    public ServiceGroupMemberRelationshipProperties withTargetTenant(String targetTenant) {
-        this.targetTenant = targetTenant;
-        return this;
     }
 
     /**
@@ -135,49 +112,46 @@ public final class ServiceGroupMemberRelationshipProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("targetId", this.targetId);
-        jsonWriter.writeStringField("targetTenant", this.targetTenant);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ServiceGroupMemberRelationshipProperties from the JsonReader.
+     * Reads an instance of ContainsRelationshipProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ServiceGroupMemberRelationshipProperties if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of ContainsRelationshipProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ServiceGroupMemberRelationshipProperties.
+     * @throws IOException If an error occurs while reading the ContainsRelationshipProperties.
      */
-    public static ServiceGroupMemberRelationshipProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static ContainsRelationshipProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ServiceGroupMemberRelationshipProperties deserializedServiceGroupMemberRelationshipProperties
-                = new ServiceGroupMemberRelationshipProperties();
+            ContainsRelationshipProperties deserializedContainsRelationshipProperties
+                = new ContainsRelationshipProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("sourceId".equals(fieldName)) {
-                    deserializedServiceGroupMemberRelationshipProperties.sourceId = reader.getString();
-                } else if ("targetId".equals(fieldName)) {
-                    deserializedServiceGroupMemberRelationshipProperties.targetId = reader.getString();
+                if ("targetId".equals(fieldName)) {
+                    deserializedContainsRelationshipProperties.targetId = reader.getString();
+                } else if ("sourceId".equals(fieldName)) {
+                    deserializedContainsRelationshipProperties.sourceId = reader.getString();
+                } else if ("targetTenant".equals(fieldName)) {
+                    deserializedContainsRelationshipProperties.targetTenant = reader.getString();
                 } else if ("originInformation".equals(fieldName)) {
-                    deserializedServiceGroupMemberRelationshipProperties.originInformation
+                    deserializedContainsRelationshipProperties.originInformation
                         = RelationshipOriginInformation.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
-                    deserializedServiceGroupMemberRelationshipProperties.metadata
-                        = RelationshipMetadata.fromJson(reader);
-                } else if ("targetTenant".equals(fieldName)) {
-                    deserializedServiceGroupMemberRelationshipProperties.targetTenant = reader.getString();
+                    deserializedContainsRelationshipProperties.metadata = RelationshipMetadata.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedServiceGroupMemberRelationshipProperties.provisioningState
+                    deserializedContainsRelationshipProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedServiceGroupMemberRelationshipProperties;
+            return deserializedContainsRelationshipProperties;
         });
     }
 }
