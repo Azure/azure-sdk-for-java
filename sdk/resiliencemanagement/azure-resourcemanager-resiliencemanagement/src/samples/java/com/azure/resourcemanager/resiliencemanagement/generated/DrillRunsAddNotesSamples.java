@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.DrillRunAddNotesReq
  */
 public final class DrillRunsAddNotesSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/DrillRuns_AddNotes_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/DrillRuns_AddNotes_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRuns_AddNotes_MaximumSet.

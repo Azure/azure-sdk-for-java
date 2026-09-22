@@ -14,7 +14,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.RequirementSelected
  */
 public final class GoalTemplatesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalTemplates_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/GoalTemplates_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalTemplates_Update_MaximumSet.
