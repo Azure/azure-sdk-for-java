@@ -13,14 +13,10 @@ import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategyType;
 import com.azure.resourcemanager.networkcloud.models.CommandOutputOverride;
 import com.azure.resourcemanager.networkcloud.models.CommandOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.CommandOutputType;
-import com.azure.resourcemanager.networkcloud.models.CyberArkSecretArchiveProviderConfiguration;
-import com.azure.resourcemanager.networkcloud.models.HashiCorpVaultSecretArchiveProviderConfiguration;
 import com.azure.resourcemanager.networkcloud.models.IdentitySelector;
-import com.azure.resourcemanager.networkcloud.models.KeyValueVersion;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentitySelectorType;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.networkcloud.models.OpenBaoSecretArchiveProviderConfiguration;
 import com.azure.resourcemanager.networkcloud.models.RackDefinitionPatch;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfigurationPatch;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionDefinitionUpdateMode;
@@ -31,7 +27,6 @@ import com.azure.resourcemanager.networkcloud.models.UserAssignedIdentity;
 import com.azure.resourcemanager.networkcloud.models.ValidationThresholdGrouping;
 import com.azure.resourcemanager.networkcloud.models.ValidationThresholdPatch;
 import com.azure.resourcemanager.networkcloud.models.ValidationThresholdType;
-import com.azure.resourcemanager.networkcloud.models.VaultAuthenticationMethod;
 import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsContainerScan;
 import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsPatch;
 import java.util.Arrays;
@@ -43,60 +38,7 @@ import java.util.Map;
  */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/Clusters_Patch_SecretArchive.json
-     */
-    /**
-     * Sample code: Patch cluster secret archive with CyberArk provider.
-     * 
-     * @param manager Entry point to NetworkCloudManager.
-     */
-    public static void patchClusterSecretArchiveWithCyberArkProvider(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("resourceGroupName", "clusterName", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withSecretArchiveSettings(new SecretArchiveSettings().withEncryptionPublicKey("fakeTokenPlaceholder")
-                .withProviderConfiguration(
-                    new CyberArkSecretArchiveProviderConfiguration().withApplicationId("EdgeCredentials")
-                        .withSafeName("Azure-Local-Credentials")
-                        .withFolderName("Root")
-                        .withObjectNameTemplate("{namespace}-{name}"))
-                .withVaultUri("https://cyberark.customer.com/PasswordVault/api"))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2026-08-01-preview/Clusters_Patch_SecretArchive_HashiCorpVault.json
-     */
-    /**
-     * Sample code: Patch cluster secret archive with HashiCorp Vault provider.
-     * 
-     * @param manager Entry point to NetworkCloudManager.
-     */
-    public static void patchClusterSecretArchiveWithHashiCorpVaultProvider(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("resourceGroupName", "clusterName", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withSecretArchiveSettings(new SecretArchiveSettings().withEncryptionPublicKey("fakeTokenPlaceholder")
-                .withProviderConfiguration(
-                    new HashiCorpVaultSecretArchiveProviderConfiguration().withMountPath("secret")
-                        .withKeyValueVersion(KeyValueVersion.V2)
-                        .withNamespace("edge-credentials")
-                        .withPathTemplate("azure-local/{namespace}/{name}")
-                        .withAuthenticationMethod(VaultAuthenticationMethod.APP_ROLE)
-                        .withApplicationRoleId("edge-credentials-role")
-                        .withAuthenticationMountPath("approle"))
-                .withVaultUri("https://vault.customer.com:8200"))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2026-08-01-preview/Clusters_Patch_UpdateStrategy.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_UpdateStrategy.json
      */
     /**
      * Sample code: Patch update strategy.
@@ -118,7 +60,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-01-preview/Clusters_Patch_VulnerabilityScanning.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_VulnerabilityScanning.json
      */
     /**
      * Sample code: Patch vulnerability scanning.
@@ -137,7 +79,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-01-preview/Clusters_Patch_Location.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_Location.json
      */
     /**
      * Sample code: Patch cluster location.
@@ -155,7 +97,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-01-preview/Clusters_Patch_AggregatorOrSingleRackDefinition.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_AggregatorOrSingleRackDefinition.json
      */
     /**
      * Sample code: Patch cluster AggregatorOrSingleRackDefinition.
@@ -209,31 +151,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-01-preview/Clusters_Patch_SecretArchive_AzureKeyVault.json
-     */
-    /**
-     * Sample code: Patch cluster secret archive to use Azure Key Vault (implicit default provider).
-     * 
-     * @param manager Entry point to NetworkCloudManager.
-     */
-    public static void patchClusterSecretArchiveToUseAzureKeyVaultImplicitDefaultProvider(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("resourceGroupName", "clusterName", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withSecretArchiveSettings(new SecretArchiveSettings().withAssociatedIdentity(new IdentitySelector()
-                .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
-                .withUserAssignedIdentityResourceId(
-                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"))
-                .withEncryptionPublicKey("fakeTokenPlaceholder")
-                .withVaultUri("https://keyvaultname.vault.azure.net/"))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2026-08-01-preview/Clusters_Patch_CommandOutput.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_CommandOutput.json
      */
     /**
      * Sample code: Patch cluster command output.
@@ -267,7 +185,7 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-01-preview/Clusters_Patch_RuntimeProtectionConfiguration.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_RuntimeProtectionConfiguration.json
      */
     /**
      * Sample code: Patch runtime protection configuration.
@@ -288,34 +206,29 @@ public final class ClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-08-01-preview/Clusters_Patch_SecretArchive_OpenBao.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_SecretArchive.json
      */
     /**
-     * Sample code: Patch cluster secret archive with OpenBao provider.
+     * Sample code: Patch secret archive.
      * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void patchClusterSecretArchiveWithOpenBaoProvider(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+    public static void patchSecretArchive(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
         Cluster resource = manager.clusters()
             .getByResourceGroupWithResponse("resourceGroupName", "clusterName", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withSecretArchiveSettings(new SecretArchiveSettings().withEncryptionPublicKey("fakeTokenPlaceholder")
-                .withProviderConfiguration(new OpenBaoSecretArchiveProviderConfiguration().withMountPath("kv")
-                    .withKeyValueVersion(KeyValueVersion.V2)
-                    .withNamespace("edge-credentials")
-                    .withPathTemplate("azure-local/{namespace}/{name}")
-                    .withAuthenticationMethod(VaultAuthenticationMethod.APP_ROLE)
-                    .withApplicationRoleId("edge-credentials-openbao-role")
-                    .withAuthenticationMountPath("approle"))
-                .withVaultUri("https://openbao.customer.com:8200"))
+            .withSecretArchiveSettings(new SecretArchiveSettings().withAssociatedIdentity(new IdentitySelector()
+                .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                .withUserAssignedIdentityResourceId(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"))
+                .withVaultUri("https://keyvaultname.vault.azure.net/"))
             .apply();
     }
 
     /*
-     * x-ms-original-file: 2026-08-01-preview/Clusters_Patch_AnalyticsOutput.json
+     * x-ms-original-file: 2026-07-01/Clusters_Patch_AnalyticsOutput.json
      */
     /**
      * Sample code: Patch cluster analytics output.

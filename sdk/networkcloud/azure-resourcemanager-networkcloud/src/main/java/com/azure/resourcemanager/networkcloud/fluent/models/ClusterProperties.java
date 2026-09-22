@@ -12,7 +12,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.ActionState;
 import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
-import com.azure.resourcemanager.networkcloud.models.CertificateInfo;
 import com.azure.resourcemanager.networkcloud.models.ClusterAvailableUpgradeVersion;
 import com.azure.resourcemanager.networkcloud.models.ClusterCapacity;
 import com.azure.resourcemanager.networkcloud.models.ClusterConnectionStatus;
@@ -177,11 +176,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * The descriptive message about the detailed status.
      */
     private String detailedStatusMessage;
-
-    /*
-     * The CA certificate of the edge management service.
-     */
-    private CertificateInfo edgeManagementServiceCaCertificate;
 
     /*
      * Field Deprecated. This field will not be populated in an upcoming version. The extended location (custom
@@ -682,15 +676,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
-     * Get the edgeManagementServiceCaCertificate property: The CA certificate of the edge management service.
-     * 
-     * @return the edgeManagementServiceCaCertificate value.
-     */
-    public CertificateInfo edgeManagementServiceCaCertificate() {
-        return this.edgeManagementServiceCaCertificate;
-    }
-
-    /**
      * Get the hybridAksExtendedLocation property: Field Deprecated. This field will not be populated in an upcoming
      * version. The extended location (custom location) that represents the Hybrid AKS control plane location. This
      * extended location is used when creating provisioned clusters (Hybrid AKS clusters).
@@ -863,8 +848,6 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                     deserializedClusterProperties.detailedStatus = ClusterDetailedStatus.fromString(reader.getString());
                 } else if ("detailedStatusMessage".equals(fieldName)) {
                     deserializedClusterProperties.detailedStatusMessage = reader.getString();
-                } else if ("edgeManagementServiceCaCertificate".equals(fieldName)) {
-                    deserializedClusterProperties.edgeManagementServiceCaCertificate = CertificateInfo.fromJson(reader);
                 } else if ("hybridAksExtendedLocation".equals(fieldName)) {
                     deserializedClusterProperties.hybridAksExtendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("lastSuccessfulVersionUpdateTime".equals(fieldName)) {

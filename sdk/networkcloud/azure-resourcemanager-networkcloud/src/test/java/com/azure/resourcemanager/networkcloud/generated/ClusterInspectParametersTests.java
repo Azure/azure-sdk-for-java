@@ -15,24 +15,25 @@ public final class ClusterInspectParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterInspectParameters model = BinaryData.fromString(
-            "{\"additionalActions\":[\"ResetHardware\",\"ResetHardware\"],\"filterDevices\":{\"bareMetalMachineNames\":[\"htwdwrftswibyrcd\",\"bhshfwpracstwity\",\"hevxcced\"],\"rackNames\":[\"md\",\"odn\",\"zxltjcvn\"]}}")
+            "{\"additionalActions\":[\"ResetHardware\",\"ResetHardware\",\"ResetHardware\",\"ResetHardware\"],\"filterDevices\":{\"bareMetalMachineNames\":[\"ob\",\"pg\",\"edkowepbqpcrfk\"],\"rackNames\":[\"csnjvcdwxlpqekft\",\"khtj\",\"y\",\"ngwfqatm\"]}}")
             .toObject(ClusterInspectParameters.class);
         Assertions.assertEquals(ClusterInspectAdditionalAction.RESET_HARDWARE, model.additionalActions().get(0));
-        Assertions.assertEquals("htwdwrftswibyrcd", model.filterDevices().bareMetalMachineNames().get(0));
-        Assertions.assertEquals("md", model.filterDevices().rackNames().get(0));
+        Assertions.assertEquals("ob", model.filterDevices().bareMetalMachineNames().get(0));
+        Assertions.assertEquals("csnjvcdwxlpqekft", model.filterDevices().rackNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterInspectParameters model = new ClusterInspectParameters()
             .withAdditionalActions(Arrays.asList(ClusterInspectAdditionalAction.RESET_HARDWARE,
+                ClusterInspectAdditionalAction.RESET_HARDWARE, ClusterInspectAdditionalAction.RESET_HARDWARE,
                 ClusterInspectAdditionalAction.RESET_HARDWARE))
-            .withFilterDevices(new FilterDevices()
-                .withBareMetalMachineNames(Arrays.asList("htwdwrftswibyrcd", "bhshfwpracstwity", "hevxcced"))
-                .withRackNames(Arrays.asList("md", "odn", "zxltjcvn")));
+            .withFilterDevices(
+                new FilterDevices().withBareMetalMachineNames(Arrays.asList("ob", "pg", "edkowepbqpcrfk"))
+                    .withRackNames(Arrays.asList("csnjvcdwxlpqekft", "khtj", "y", "ngwfqatm")));
         model = BinaryData.fromObject(model).toObject(ClusterInspectParameters.class);
         Assertions.assertEquals(ClusterInspectAdditionalAction.RESET_HARDWARE, model.additionalActions().get(0));
-        Assertions.assertEquals("htwdwrftswibyrcd", model.filterDevices().bareMetalMachineNames().get(0));
-        Assertions.assertEquals("md", model.filterDevices().rackNames().get(0));
+        Assertions.assertEquals("ob", model.filterDevices().bareMetalMachineNames().get(0));
+        Assertions.assertEquals("csnjvcdwxlpqekft", model.filterDevices().rackNames().get(0));
     }
 }

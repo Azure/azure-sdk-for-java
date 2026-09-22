@@ -13,19 +13,19 @@ public final class ClusterUpdateVersionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterUpdateVersionParameters model
-            = BinaryData.fromString("{\"safeguardMode\":\"None\",\"targetClusterVersion\":\"fsdjpvkvp\"}")
+            = BinaryData.fromString("{\"safeguardMode\":\"None\",\"targetClusterVersion\":\"byrqufeg\"}")
                 .toObject(ClusterUpdateVersionParameters.class);
         Assertions.assertEquals(ClusterUpdateVersionSafeguardMode.NONE, model.safeguardMode());
-        Assertions.assertEquals("fsdjpvkvp", model.targetClusterVersion());
+        Assertions.assertEquals("byrqufeg", model.targetClusterVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterUpdateVersionParameters model
             = new ClusterUpdateVersionParameters().withSafeguardMode(ClusterUpdateVersionSafeguardMode.NONE)
-                .withTargetClusterVersion("fsdjpvkvp");
+                .withTargetClusterVersion("byrqufeg");
         model = BinaryData.fromObject(model).toObject(ClusterUpdateVersionParameters.class);
         Assertions.assertEquals(ClusterUpdateVersionSafeguardMode.NONE, model.safeguardMode());
-        Assertions.assertEquals("fsdjpvkvp", model.targetClusterVersion());
+        Assertions.assertEquals("byrqufeg", model.targetClusterVersion());
     }
 }

@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class ConsolesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/Consoles_Patch.json
+     * x-ms-original-file: 2026-07-01/Consoles_Patch.json
      */
     /**
      * Sample code: Patch virtual machine console.

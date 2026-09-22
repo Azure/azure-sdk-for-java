@@ -13,23 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class L3NetworkAttachmentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L3NetworkAttachmentConfiguration model = BinaryData
-            .fromString("{\"ipamEnabled\":\"False\",\"networkId\":\"hbotzingamvppho\",\"pluginType\":\"DPDK\"}")
-            .toObject(L3NetworkAttachmentConfiguration.class);
+        L3NetworkAttachmentConfiguration model
+            = BinaryData.fromString("{\"ipamEnabled\":\"False\",\"networkId\":\"zhfstot\",\"pluginType\":\"OSDevice\"}")
+                .toObject(L3NetworkAttachmentConfiguration.class);
         Assertions.assertEquals(L3NetworkConfigurationIpamEnabled.FALSE, model.ipamEnabled());
-        Assertions.assertEquals("hbotzingamvppho", model.networkId());
-        Assertions.assertEquals(KubernetesPluginType.DPDK, model.pluginType());
+        Assertions.assertEquals("zhfstot", model.networkId());
+        Assertions.assertEquals(KubernetesPluginType.OSDEVICE, model.pluginType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L3NetworkAttachmentConfiguration model
             = new L3NetworkAttachmentConfiguration().withIpamEnabled(L3NetworkConfigurationIpamEnabled.FALSE)
-                .withNetworkId("hbotzingamvppho")
-                .withPluginType(KubernetesPluginType.DPDK);
+                .withNetworkId("zhfstot")
+                .withPluginType(KubernetesPluginType.OSDEVICE);
         model = BinaryData.fromObject(model).toObject(L3NetworkAttachmentConfiguration.class);
         Assertions.assertEquals(L3NetworkConfigurationIpamEnabled.FALSE, model.ipamEnabled());
-        Assertions.assertEquals("hbotzingamvppho", model.networkId());
-        Assertions.assertEquals(KubernetesPluginType.DPDK, model.pluginType());
+        Assertions.assertEquals("zhfstot", model.networkId());
+        Assertions.assertEquals(KubernetesPluginType.OSDEVICE, model.pluginType());
     }
 }

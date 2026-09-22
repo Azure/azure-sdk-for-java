@@ -14,10 +14,9 @@ public final class StorageApplianceMonitoringConfigurationStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageApplianceMonitoringConfigurationStatus model
-            = BinaryData.fromString("{\"logLevel\":\"Nexus\",\"metricsLevel\":\"Default\"}")
+            = BinaryData.fromString("{\"logLevel\":\"Default\",\"metricsLevel\":\"Nexus\"}")
                 .toObject(StorageApplianceMonitoringConfigurationStatus.class);
-        Assertions.assertEquals(StorageApplianceMonitoringConfigurationStatusLogLevel.NEXUS, model.logLevel());
-        Assertions.assertEquals(StorageApplianceMonitoringConfigurationStatusMetricsLevel.DEFAULT,
-            model.metricsLevel());
+        Assertions.assertEquals(StorageApplianceMonitoringConfigurationStatusLogLevel.DEFAULT, model.logLevel());
+        Assertions.assertEquals(StorageApplianceMonitoringConfigurationStatusMetricsLevel.NEXUS, model.metricsLevel());
     }
 }

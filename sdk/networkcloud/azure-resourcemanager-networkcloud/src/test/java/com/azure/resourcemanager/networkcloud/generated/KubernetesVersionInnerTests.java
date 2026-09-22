@@ -16,24 +16,24 @@ public final class KubernetesVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KubernetesVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"values\":[{\"description\":\"cesutrgjupauut\",\"version\":\"oqh\"}],\"provisioningState\":\"Canceled\"},\"etag\":\"qg\",\"extendedLocation\":{\"name\":\"zpnfqntcypsxj\",\"type\":\"CustomLocation\"},\"location\":\"imwkslircizj\",\"tags\":{\"vlhv\":\"dfcea\",\"jslb\":\"gdyftumrtwna\"},\"id\":\"wkojgcyztsfmzn\",\"name\":\"aeqphchqnr\",\"type\":\"rpxeh\"}")
+            "{\"properties\":{\"values\":[{\"description\":\"vizqzdwl\",\"version\":\"lyoupfgfbkju\"},{\"description\":\"yhgk\",\"version\":\"in\"},{\"description\":\"owzfttsttkt\",\"version\":\"hbq\"},{\"description\":\"tx\",\"version\":\"zukxitmmqtgqq\"}],\"provisioningState\":\"Canceled\"},\"etag\":\"n\",\"extendedLocation\":{\"name\":\"rxcpjuisavo\",\"type\":\"CustomLocation\"},\"location\":\"zfvazi\",\"tags\":{\"yiopi\":\"frqttbajlkatnw\"},\"id\":\"kqqfk\",\"name\":\"vscx\",\"type\":\"dmligovibrxk\"}")
             .toObject(KubernetesVersionInner.class);
-        Assertions.assertEquals("imwkslircizj", model.location());
-        Assertions.assertEquals("dfcea", model.tags().get("vlhv"));
-        Assertions.assertEquals("zpnfqntcypsxj", model.extendedLocation().name());
+        Assertions.assertEquals("zfvazi", model.location());
+        Assertions.assertEquals("frqttbajlkatnw", model.tags().get("yiopi"));
+        Assertions.assertEquals("rxcpjuisavo", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KubernetesVersionInner model = new KubernetesVersionInner().withLocation("imwkslircizj")
-            .withTags(mapOf("vlhv", "dfcea", "jslb", "gdyftumrtwna"))
+        KubernetesVersionInner model = new KubernetesVersionInner().withLocation("zfvazi")
+            .withTags(mapOf("yiopi", "frqttbajlkatnw"))
             .withExtendedLocation(
-                new ExtendedLocation().withName("zpnfqntcypsxj").withType(ExtendedLocationType.CUSTOM_LOCATION));
+                new ExtendedLocation().withName("rxcpjuisavo").withType(ExtendedLocationType.CUSTOM_LOCATION));
         model = BinaryData.fromObject(model).toObject(KubernetesVersionInner.class);
-        Assertions.assertEquals("imwkslircizj", model.location());
-        Assertions.assertEquals("dfcea", model.tags().get("vlhv"));
-        Assertions.assertEquals("zpnfqntcypsxj", model.extendedLocation().name());
+        Assertions.assertEquals("zfvazi", model.location());
+        Assertions.assertEquals("frqttbajlkatnw", model.tags().get("yiopi"));
+        Assertions.assertEquals("rxcpjuisavo", model.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 

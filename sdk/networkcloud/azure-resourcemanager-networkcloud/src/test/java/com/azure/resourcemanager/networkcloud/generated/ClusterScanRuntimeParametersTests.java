@@ -13,15 +13,15 @@ public final class ClusterScanRuntimeParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterScanRuntimeParameters model
-            = BinaryData.fromString("{\"scanActivity\":\"Skip\"}").toObject(ClusterScanRuntimeParameters.class);
-        Assertions.assertEquals(ClusterScanRuntimeParametersScanActivity.SKIP, model.scanActivity());
+            = BinaryData.fromString("{\"scanActivity\":\"Scan\"}").toObject(ClusterScanRuntimeParameters.class);
+        Assertions.assertEquals(ClusterScanRuntimeParametersScanActivity.SCAN, model.scanActivity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterScanRuntimeParameters model
-            = new ClusterScanRuntimeParameters().withScanActivity(ClusterScanRuntimeParametersScanActivity.SKIP);
+            = new ClusterScanRuntimeParameters().withScanActivity(ClusterScanRuntimeParametersScanActivity.SCAN);
         model = BinaryData.fromObject(model).toObject(ClusterScanRuntimeParameters.class);
-        Assertions.assertEquals(ClusterScanRuntimeParametersScanActivity.SKIP, model.scanActivity());
+        Assertions.assertEquals(ClusterScanRuntimeParametersScanActivity.SCAN, model.scanActivity());
     }
 }

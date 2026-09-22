@@ -12,7 +12,6 @@ import com.azure.resourcemanager.networkcloud.models.ClusterAvailableVersion;
 import com.azure.resourcemanager.networkcloud.models.ClusterManager;
 import com.azure.resourcemanager.networkcloud.models.ClusterManagerDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.ClusterManagerPatchParameters;
-import com.azure.resourcemanager.networkcloud.models.ClusterManagerPatchProperties;
 import com.azure.resourcemanager.networkcloud.models.ClusterManagerProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.ClusterManagerRelayConfiguration;
 import com.azure.resourcemanager.networkcloud.models.ClusterManagerUpdateRelayPrivateEndpointConnectionParameters;
@@ -119,10 +118,6 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
 
     public ClusterManagerRelayConfiguration relayConfiguration() {
         return this.innerModel().relayConfiguration();
-    }
-
-    public Integer rolloutRing() {
-        return this.innerModel().rolloutRing();
     }
 
     public String vmSize() {
@@ -310,11 +305,6 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
         return this;
     }
 
-    public ClusterManagerImpl withRolloutRing(Integer rolloutRing) {
-        this.innerModel().withRolloutRing(rolloutRing);
-        return this;
-    }
-
     public ClusterManagerImpl withVmSize(String vmSize) {
         this.innerModel().withVmSize(vmSize);
         return this;
@@ -338,11 +328,6 @@ public final class ClusterManagerImpl implements ClusterManager, ClusterManager.
             this.updateIfNoneMatch = ifNoneMatch;
             return this;
         }
-    }
-
-    public ClusterManagerImpl withProperties(ClusterManagerPatchProperties properties) {
-        this.updateClusterManagerUpdateParameters.withProperties(properties);
-        return this;
     }
 
     private boolean isInCreateMode() {

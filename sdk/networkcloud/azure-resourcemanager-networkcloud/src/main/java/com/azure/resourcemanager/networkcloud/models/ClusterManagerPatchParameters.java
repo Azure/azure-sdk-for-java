@@ -27,11 +27,6 @@ public final class ClusterManagerPatchParameters implements JsonSerializable<Clu
      */
     private Map<String, String> tags;
 
-    /*
-     * The list of cluster manager properties to patch.
-     */
-    private ClusterManagerPatchProperties properties;
-
     /**
      * Creates an instance of ClusterManagerPatchParameters class.
      */
@@ -79,26 +74,6 @@ public final class ClusterManagerPatchParameters implements JsonSerializable<Clu
     }
 
     /**
-     * Get the properties property: The list of cluster manager properties to patch.
-     * 
-     * @return the properties value.
-     */
-    public ClusterManagerPatchProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: The list of cluster manager properties to patch.
-     * 
-     * @param properties the properties value to set.
-     * @return the ClusterManagerPatchParameters object itself.
-     */
-    public ClusterManagerPatchParameters withProperties(ClusterManagerPatchProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -106,7 +81,6 @@ public final class ClusterManagerPatchParameters implements JsonSerializable<Clu
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -131,9 +105,6 @@ public final class ClusterManagerPatchParameters implements JsonSerializable<Clu
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedClusterManagerPatchParameters.tags = tags;
-                } else if ("properties".equals(fieldName)) {
-                    deserializedClusterManagerPatchParameters.properties
-                        = ClusterManagerPatchProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -27,11 +27,6 @@ public final class AccessBridgeAllowedName extends ExpandableStringEnum<AccessBr
     public static final AccessBridgeAllowedName STORAGE_DASHBOARD = fromString("StorageDashboard");
 
     /**
-     * The access bridge for edge management.
-     */
-    public static final AccessBridgeAllowedName EDGE_MANAGEMENT = fromString("EdgeManagement");
-
-    /**
      * Creates a new instance of AccessBridgeAllowedName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

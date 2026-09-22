@@ -13,12 +13,12 @@ public final class KubernetesVersionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KubernetesVersionList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"values\":[{\"description\":\"ljyxgtczhe\",\"version\":\"bsdshmkxmaehvbbx\"},{\"description\":\"iplt\",\"version\":\"htba\"},{\"description\":\"gx\",\"version\":\"rc\"}],\"provisioningState\":\"Succeeded\"},\"etag\":\"lyhpluodpvruud\",\"extendedLocation\":{\"name\":\"gzibthostgktstv\",\"type\":\"CustomLocation\"},\"location\":\"clzedqbcvh\",\"tags\":{\"lkxt\":\"plodqkdlwwqfbu\"},\"id\":\"qjfsmlmbtxhw\",\"name\":\"fwsrtawcoezbrhu\",\"type\":\"skh\"}],\"nextLink\":\"ygo\"}")
+            "{\"value\":[{\"properties\":{\"values\":[{\"description\":\"smystuluqypfc\",\"version\":\"er\"},{\"description\":\"pqbmfpjbab\",\"version\":\"dfc\"}],\"provisioningState\":\"Succeeded\"},\"etag\":\"uunnoxyhkxgqdd\",\"extendedLocation\":{\"name\":\"i\",\"type\":\"CustomLocation\"},\"location\":\"hoqca\",\"tags\":{\"djvlpj\":\"dao\",\"msgeivsiykzk\":\"xkzb\",\"xonbzoggculapz\":\"ncj\",\"pgogtqxepny\":\"y\"},\"id\":\"b\",\"name\":\"uajlyj\",\"type\":\"lvofqzhvfcibyfmo\"},{\"properties\":{\"values\":[{\"description\":\"kjpvdwxf\",\"version\":\"iivwzjbhyzsxjrka\"},{\"description\":\"trnegvmnvuqeqvld\",\"version\":\"astjbkkdmflvestm\"}],\"provisioningState\":\"Failed\"},\"etag\":\"ril\",\"extendedLocation\":{\"name\":\"zapeewchpx\",\"type\":\"CustomLocation\"},\"location\":\"wk\",\"tags\":{\"tqedcgzulwm\":\"ycslevufuztcktyh\",\"rjvpglydzgkrvqee\":\"rqzz\",\"nwy\":\"toepryu\"},\"id\":\"pzdm\",\"name\":\"vzvfvaawzqadfl\",\"type\":\"z\"}],\"nextLink\":\"iglaecx\"}")
             .toObject(KubernetesVersionList.class);
-        Assertions.assertEquals("clzedqbcvh", model.value().get(0).location());
-        Assertions.assertEquals("plodqkdlwwqfbu", model.value().get(0).tags().get("lkxt"));
-        Assertions.assertEquals("gzibthostgktstv", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("hoqca", model.value().get(0).location());
+        Assertions.assertEquals("dao", model.value().get(0).tags().get("djvlpj"));
+        Assertions.assertEquals("i", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("ygo", model.nextLink());
+        Assertions.assertEquals("iglaecx", model.nextLink());
     }
 }

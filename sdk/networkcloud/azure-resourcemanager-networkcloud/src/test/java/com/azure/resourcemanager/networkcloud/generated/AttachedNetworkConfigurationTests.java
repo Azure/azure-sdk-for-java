@@ -18,46 +18,45 @@ public final class AttachedNetworkConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AttachedNetworkConfiguration model = BinaryData.fromString(
-            "{\"l2Networks\":[{\"networkId\":\"pwp\",\"pluginType\":\"IPVLAN\"},{\"networkId\":\"wbtlhflsjcdh\",\"pluginType\":\"OSDevice\"},{\"networkId\":\"jvfbgofelja\",\"pluginType\":\"MACVLAN\"}],\"l3Networks\":[{\"ipamEnabled\":\"False\",\"networkId\":\"dvriiiojnal\",\"pluginType\":\"MACVLAN\"}],\"trunkedNetworks\":[{\"networkId\":\"tvsexsowuel\",\"pluginType\":\"IPVLAN\"},{\"networkId\":\"hahhxvrhmzkwpj\",\"pluginType\":\"OSDevice\"},{\"networkId\":\"spughftqsxhq\",\"pluginType\":\"MACVLAN\"},{\"networkId\":\"xukndxdigr\",\"pluginType\":\"DPDK\"}]}")
+            "{\"l2Networks\":[{\"networkId\":\"azpxdtnkdmkqjjl\",\"pluginType\":\"DPDK\"}],\"l3Networks\":[{\"ipamEnabled\":\"False\",\"networkId\":\"pyouaibrebqaays\",\"pluginType\":\"MACVLAN\"},{\"ipamEnabled\":\"True\",\"networkId\":\"tnqttezlwfffiak\",\"pluginType\":\"IPVLAN\"},{\"ipamEnabled\":\"True\",\"networkId\":\"m\",\"pluginType\":\"OSDevice\"},{\"ipamEnabled\":\"False\",\"networkId\":\"mmji\",\"pluginType\":\"DPDK\"}],\"trunkedNetworks\":[{\"networkId\":\"phvwauyqncygu\",\"pluginType\":\"IPVLAN\"}]}")
             .toObject(AttachedNetworkConfiguration.class);
-        Assertions.assertEquals("pwp", model.l2Networks().get(0).networkId());
-        Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.l2Networks().get(0).pluginType());
+        Assertions.assertEquals("azpxdtnkdmkqjjl", model.l2Networks().get(0).networkId());
+        Assertions.assertEquals(KubernetesPluginType.DPDK, model.l2Networks().get(0).pluginType());
         Assertions.assertEquals(L3NetworkConfigurationIpamEnabled.FALSE, model.l3Networks().get(0).ipamEnabled());
-        Assertions.assertEquals("dvriiiojnal", model.l3Networks().get(0).networkId());
+        Assertions.assertEquals("pyouaibrebqaays", model.l3Networks().get(0).networkId());
         Assertions.assertEquals(KubernetesPluginType.MACVLAN, model.l3Networks().get(0).pluginType());
-        Assertions.assertEquals("tvsexsowuel", model.trunkedNetworks().get(0).networkId());
+        Assertions.assertEquals("phvwauyqncygu", model.trunkedNetworks().get(0).networkId());
         Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.trunkedNetworks().get(0).pluginType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AttachedNetworkConfiguration model = new AttachedNetworkConfiguration()
-            .withL2Networks(Arrays.asList(
-                new L2NetworkAttachmentConfiguration().withNetworkId("pwp").withPluginType(KubernetesPluginType.IPVLAN),
-                new L2NetworkAttachmentConfiguration().withNetworkId("wbtlhflsjcdh")
-                    .withPluginType(KubernetesPluginType.OSDEVICE),
-                new L2NetworkAttachmentConfiguration().withNetworkId("jvfbgofelja")
-                    .withPluginType(KubernetesPluginType.MACVLAN)))
-            .withL3Networks(Arrays
-                .asList(new L3NetworkAttachmentConfiguration().withIpamEnabled(L3NetworkConfigurationIpamEnabled.FALSE)
-                    .withNetworkId("dvriiiojnal")
-                    .withPluginType(KubernetesPluginType.MACVLAN)))
-            .withTrunkedNetworks(Arrays.asList(
-                new TrunkedNetworkAttachmentConfiguration().withNetworkId("tvsexsowuel")
-                    .withPluginType(KubernetesPluginType.IPVLAN),
-                new TrunkedNetworkAttachmentConfiguration().withNetworkId("hahhxvrhmzkwpj")
-                    .withPluginType(KubernetesPluginType.OSDEVICE),
-                new TrunkedNetworkAttachmentConfiguration().withNetworkId("spughftqsxhq")
+            .withL2Networks(Arrays.asList(new L2NetworkAttachmentConfiguration().withNetworkId("azpxdtnkdmkqjjl")
+                .withPluginType(KubernetesPluginType.DPDK)))
+            .withL3Networks(Arrays.asList(
+                new L3NetworkAttachmentConfiguration().withIpamEnabled(L3NetworkConfigurationIpamEnabled.FALSE)
+                    .withNetworkId("pyouaibrebqaays")
                     .withPluginType(KubernetesPluginType.MACVLAN),
-                new TrunkedNetworkAttachmentConfiguration().withNetworkId("xukndxdigr")
-                    .withPluginType(KubernetesPluginType.DPDK)));
+                new L3NetworkAttachmentConfiguration().withIpamEnabled(L3NetworkConfigurationIpamEnabled.TRUE)
+                    .withNetworkId("tnqttezlwfffiak")
+                    .withPluginType(KubernetesPluginType.IPVLAN),
+                new L3NetworkAttachmentConfiguration().withIpamEnabled(L3NetworkConfigurationIpamEnabled.TRUE)
+                    .withNetworkId("m")
+                    .withPluginType(KubernetesPluginType.OSDEVICE),
+                new L3NetworkAttachmentConfiguration().withIpamEnabled(L3NetworkConfigurationIpamEnabled.FALSE)
+                    .withNetworkId("mmji")
+                    .withPluginType(KubernetesPluginType.DPDK)))
+            .withTrunkedNetworks(
+                Arrays.asList(new TrunkedNetworkAttachmentConfiguration().withNetworkId("phvwauyqncygu")
+                    .withPluginType(KubernetesPluginType.IPVLAN)));
         model = BinaryData.fromObject(model).toObject(AttachedNetworkConfiguration.class);
-        Assertions.assertEquals("pwp", model.l2Networks().get(0).networkId());
-        Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.l2Networks().get(0).pluginType());
+        Assertions.assertEquals("azpxdtnkdmkqjjl", model.l2Networks().get(0).networkId());
+        Assertions.assertEquals(KubernetesPluginType.DPDK, model.l2Networks().get(0).pluginType());
         Assertions.assertEquals(L3NetworkConfigurationIpamEnabled.FALSE, model.l3Networks().get(0).ipamEnabled());
-        Assertions.assertEquals("dvriiiojnal", model.l3Networks().get(0).networkId());
+        Assertions.assertEquals("pyouaibrebqaays", model.l3Networks().get(0).networkId());
         Assertions.assertEquals(KubernetesPluginType.MACVLAN, model.l3Networks().get(0).pluginType());
-        Assertions.assertEquals("tvsexsowuel", model.trunkedNetworks().get(0).networkId());
+        Assertions.assertEquals("phvwauyqncygu", model.trunkedNetworks().get(0).networkId());
         Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.trunkedNetworks().get(0).pluginType());
     }
 }

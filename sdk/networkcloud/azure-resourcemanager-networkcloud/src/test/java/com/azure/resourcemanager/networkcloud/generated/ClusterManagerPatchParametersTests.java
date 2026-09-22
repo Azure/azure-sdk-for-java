@@ -6,7 +6,6 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.networkcloud.models.ClusterManagerPatchParameters;
-import com.azure.resourcemanager.networkcloud.models.ClusterManagerPatchProperties;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.networkcloud.models.UserAssignedIdentity;
@@ -18,25 +17,24 @@ public final class ClusterManagerPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterManagerPatchParameters model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"pkukghi\",\"tenantId\":\"blxgwimf\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"foqreyfkzik\":{\"principalId\":\"xw\",\"clientId\":\"zk\"},\"vxwc\":{\"principalId\":\"aw\",\"clientId\":\"a\"}}},\"tags\":{\"abfatkl\":\"pcirelsfeaen\",\"sphyoulpjrvxa\":\"dxbjhwuaanozj\",\"vimjwos\":\"l\"},\"properties\":{\"rolloutRing\":559166654}}")
+            "{\"identity\":{\"principalId\":\"oz\",\"tenantId\":\"sphyoulpjrvxa\",\"type\":\"None\",\"userAssignedIdentities\":{\"zzikhlyfjhdg\":{\"principalId\":\"mjwosytx\",\"clientId\":\"cskfcktqumiekk\"},\"dsuvarmywdmjsjqb\":{\"principalId\":\"gebdunygaeq\",\"clientId\":\"bqfatpxllrxcyjmo\"}}},\"tags\":{\"kxkgymareqna\":\"yxxrwlycoduh\",\"ssofwqmzqa\":\"xqugjhkycubedd\",\"nbyxbaaabjyv\":\"krmnjijpxacqqud\",\"xnevfdnwn\":\"yffimrzrtuzqogs\"}}")
             .toObject(ClusterManagerPatchParameters.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("pcirelsfeaen", model.tags().get("abfatkl"));
-        Assertions.assertEquals(559166654, model.properties().rolloutRing());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("yxxrwlycoduh", model.tags().get("kxkgymareqna"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterManagerPatchParameters model = new ClusterManagerPatchParameters()
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("foqreyfkzik", new UserAssignedIdentity(), "vxwc", new UserAssignedIdentity())))
-            .withTags(mapOf("abfatkl", "pcirelsfeaen", "sphyoulpjrvxa", "dxbjhwuaanozj", "vimjwos", "l"))
-            .withProperties(new ClusterManagerPatchProperties().withRolloutRing(559166654));
+        ClusterManagerPatchParameters model
+            = new ClusterManagerPatchParameters()
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf("zzikhlyfjhdg", new UserAssignedIdentity(), "dsuvarmywdmjsjqb",
+                        new UserAssignedIdentity())))
+                .withTags(mapOf("kxkgymareqna", "yxxrwlycoduh", "ssofwqmzqa", "xqugjhkycubedd", "nbyxbaaabjyv",
+                    "krmnjijpxacqqud", "xnevfdnwn", "yffimrzrtuzqogs"));
         model = BinaryData.fromObject(model).toObject(ClusterManagerPatchParameters.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("pcirelsfeaen", model.tags().get("abfatkl"));
-        Assertions.assertEquals(559166654, model.properties().rolloutRing());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("yxxrwlycoduh", model.tags().get("kxkgymareqna"));
     }
 
     // Use "Map.of" if available

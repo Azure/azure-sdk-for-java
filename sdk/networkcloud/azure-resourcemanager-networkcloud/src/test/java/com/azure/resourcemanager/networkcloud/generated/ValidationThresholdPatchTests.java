@@ -14,22 +14,22 @@ public final class ValidationThresholdPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationThresholdPatch model = BinaryData
-            .fromString("{\"grouping\":\"PerRack\",\"type\":\"CountSuccess\",\"value\":1910924176223083649}")
+            .fromString("{\"grouping\":\"PerCluster\",\"type\":\"PercentSuccess\",\"value\":5181960327839918003}")
             .toObject(ValidationThresholdPatch.class);
-        Assertions.assertEquals(ValidationThresholdGrouping.PER_RACK, model.grouping());
-        Assertions.assertEquals(ValidationThresholdType.COUNT_SUCCESS, model.type());
-        Assertions.assertEquals(1910924176223083649L, model.value());
+        Assertions.assertEquals(ValidationThresholdGrouping.PER_CLUSTER, model.grouping());
+        Assertions.assertEquals(ValidationThresholdType.PERCENT_SUCCESS, model.type());
+        Assertions.assertEquals(5181960327839918003L, model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ValidationThresholdPatch model
-            = new ValidationThresholdPatch().withGrouping(ValidationThresholdGrouping.PER_RACK)
-                .withType(ValidationThresholdType.COUNT_SUCCESS)
-                .withValue(1910924176223083649L);
+            = new ValidationThresholdPatch().withGrouping(ValidationThresholdGrouping.PER_CLUSTER)
+                .withType(ValidationThresholdType.PERCENT_SUCCESS)
+                .withValue(5181960327839918003L);
         model = BinaryData.fromObject(model).toObject(ValidationThresholdPatch.class);
-        Assertions.assertEquals(ValidationThresholdGrouping.PER_RACK, model.grouping());
-        Assertions.assertEquals(ValidationThresholdType.COUNT_SUCCESS, model.type());
-        Assertions.assertEquals(1910924176223083649L, model.value());
+        Assertions.assertEquals(ValidationThresholdGrouping.PER_CLUSTER, model.grouping());
+        Assertions.assertEquals(ValidationThresholdType.PERCENT_SUCCESS, model.type());
+        Assertions.assertEquals(5181960327839918003L, model.value());
     }
 }

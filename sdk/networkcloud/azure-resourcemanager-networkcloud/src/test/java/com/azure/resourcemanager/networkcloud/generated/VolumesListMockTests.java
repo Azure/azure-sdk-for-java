@@ -23,7 +23,7 @@ public final class VolumesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sizeMiB\":5613991856048596573,\"storageApplianceId\":\"dtmvecdhdyswcrp\",\"allocatedSizeMiB\":6401660103754530461,\"assignedStorageApplianceId\":\"c\",\"attachedTo\":[\"lgsrgkrfizrpywlp\",\"yuqh\",\"lmcskyk\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"fixcnpcfykkpy\",\"serialNumber\":\"pawmpjprdp\",\"provisioningState\":\"Canceled\"},\"etag\":\"fpcfjf\",\"extendedLocation\":{\"name\":\"zlgzawkgyepey\",\"type\":\"CustomLocation\"},\"location\":\"nidmdiaw\",\"tags\":{\"mkctdhuo\":\"kzrn\",\"odvqgcnbhcbmj\":\"gwqpsqazih\"},\"id\":\"ztibniyntsxjmfm\",\"name\":\"ftvhkmoogj\",\"type\":\"hskb\"}]}";
+            = "{\"value\":[{\"properties\":{\"sizeMiB\":2652660898093983743,\"storageApplianceId\":\"jnglpwsad\",\"allocatedSizeMiB\":4039935328242326223,\"assignedStorageApplianceId\":\"mxpezco\",\"attachedTo\":[\"jrmfqzwqd\",\"xkeedcnwmy\",\"xfqzkvemyzd\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"qpqifdbmptrwtxz\",\"serialNumber\":\"samonat\",\"provisioningState\":\"Accepted\"},\"etag\":\"xroqsqjghrmthspl\",\"extendedLocation\":{\"name\":\"sttxs\",\"type\":\"EdgeZone\"},\"location\":\"fq\",\"tags\":{\"sxyr\":\"iceovxgzw\",\"ik\":\"jmtikes\",\"dseipnquwzxhrp\":\"ohzixyqhfnkvycqq\"},\"id\":\"yodlhkfktltddsob\",\"name\":\"opnouhbqezkq\",\"type\":\"saluzyi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,13 @@ public final class VolumesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Volume> response
-            = manager.volumes().list(2095450370, "hwkxjjmztnl", com.azure.core.util.Context.NONE);
+        PagedIterable<Volume> response = manager.volumes().list(346934936, "snaajph", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nidmdiaw", response.iterator().next().location());
-        Assertions.assertEquals("kzrn", response.iterator().next().tags().get("mkctdhuo"));
-        Assertions.assertEquals("zlgzawkgyepey", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
-            response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(5613991856048596573L, response.iterator().next().sizeMiB());
-        Assertions.assertEquals("dtmvecdhdyswcrp", response.iterator().next().storageApplianceId());
+        Assertions.assertEquals("fq", response.iterator().next().location());
+        Assertions.assertEquals("iceovxgzw", response.iterator().next().tags().get("sxyr"));
+        Assertions.assertEquals("sttxs", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals(2652660898093983743L, response.iterator().next().sizeMiB());
+        Assertions.assertEquals("jnglpwsad", response.iterator().next().storageApplianceId());
     }
 }

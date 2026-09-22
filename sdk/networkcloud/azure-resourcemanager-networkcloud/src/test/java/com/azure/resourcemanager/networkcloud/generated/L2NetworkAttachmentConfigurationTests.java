@@ -13,18 +13,18 @@ public final class L2NetworkAttachmentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L2NetworkAttachmentConfiguration model
-            = BinaryData.fromString("{\"networkId\":\"ufzdmsyq\",\"pluginType\":\"SRIOV\"}")
+            = BinaryData.fromString("{\"networkId\":\"ipmdscwx\",\"pluginType\":\"SRIOV\"}")
                 .toObject(L2NetworkAttachmentConfiguration.class);
-        Assertions.assertEquals("ufzdmsyq", model.networkId());
+        Assertions.assertEquals("ipmdscwx", model.networkId());
         Assertions.assertEquals(KubernetesPluginType.SRIOV, model.pluginType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2NetworkAttachmentConfiguration model = new L2NetworkAttachmentConfiguration().withNetworkId("ufzdmsyq")
+        L2NetworkAttachmentConfiguration model = new L2NetworkAttachmentConfiguration().withNetworkId("ipmdscwx")
             .withPluginType(KubernetesPluginType.SRIOV);
         model = BinaryData.fromObject(model).toObject(L2NetworkAttachmentConfiguration.class);
-        Assertions.assertEquals("ufzdmsyq", model.networkId());
+        Assertions.assertEquals("ipmdscwx", model.networkId());
         Assertions.assertEquals(KubernetesPluginType.SRIOV, model.pluginType());
     }
 }

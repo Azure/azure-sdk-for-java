@@ -15,39 +15,26 @@ public final class L2ServiceLoadBalancerConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L2ServiceLoadBalancerConfiguration model = BinaryData.fromString(
-            "{\"ipAddressPools\":[{\"addresses\":[\"xum\",\"ctondz\",\"luudfdlwggytsb\"],\"autoAssign\":\"False\",\"name\":\"vvt\",\"onlyUseHostIps\":\"True\"},{\"addresses\":[\"nqfiufxqknpi\",\"gnepttwqmsni\",\"fcdmqnrojlpijn\",\"rxfrddhc\"],\"autoAssign\":\"False\",\"name\":\"izzronasxiftozqy\",\"onlyUseHostIps\":\"True\"},{\"addresses\":[\"wesgogczh\"],\"autoAssign\":\"False\",\"name\":\"xkr\",\"onlyUseHostIps\":\"False\"},{\"addresses\":[\"hmossxkkgth\",\"rghxjb\",\"hqxvcxgfrpdsofbs\"],\"autoAssign\":\"False\",\"name\":\"svbuswdvzyy\",\"onlyUseHostIps\":\"True\"}]}")
+            "{\"ipAddressPools\":[{\"addresses\":[\"vewzcj\",\"nmwcpmgu\",\"adraufactkahzo\",\"ajjziuxxpshne\"],\"autoAssign\":\"True\",\"name\":\"lfg\",\"onlyUseHostIps\":\"True\"}]}")
             .toObject(L2ServiceLoadBalancerConfiguration.class);
-        Assertions.assertEquals("xum", model.ipAddressPools().get(0).addresses().get(0));
-        Assertions.assertEquals(BfdEnabled.FALSE, model.ipAddressPools().get(0).autoAssign());
-        Assertions.assertEquals("vvt", model.ipAddressPools().get(0).name());
+        Assertions.assertEquals("vewzcj", model.ipAddressPools().get(0).addresses().get(0));
+        Assertions.assertEquals(BfdEnabled.TRUE, model.ipAddressPools().get(0).autoAssign());
+        Assertions.assertEquals("lfg", model.ipAddressPools().get(0).name());
         Assertions.assertEquals(BfdEnabled.TRUE, model.ipAddressPools().get(0).onlyUseHostIps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L2ServiceLoadBalancerConfiguration model
-            = new L2ServiceLoadBalancerConfiguration().withIpAddressPools(Arrays.asList(
-                new IpAddressPool().withAddresses(Arrays.asList("xum", "ctondz", "luudfdlwggytsb"))
-                    .withAutoAssign(BfdEnabled.FALSE)
-                    .withName("vvt")
-                    .withOnlyUseHostIps(BfdEnabled.TRUE),
-                new IpAddressPool()
-                    .withAddresses(Arrays.asList("nqfiufxqknpi", "gnepttwqmsni", "fcdmqnrojlpijn", "rxfrddhc"))
-                    .withAutoAssign(BfdEnabled.FALSE)
-                    .withName("izzronasxiftozqy")
-                    .withOnlyUseHostIps(BfdEnabled.TRUE),
-                new IpAddressPool().withAddresses(Arrays.asList("wesgogczh"))
-                    .withAutoAssign(BfdEnabled.FALSE)
-                    .withName("xkr")
-                    .withOnlyUseHostIps(BfdEnabled.FALSE),
-                new IpAddressPool().withAddresses(Arrays.asList("hmossxkkgth", "rghxjb", "hqxvcxgfrpdsofbs"))
-                    .withAutoAssign(BfdEnabled.FALSE)
-                    .withName("svbuswdvzyy")
-                    .withOnlyUseHostIps(BfdEnabled.TRUE)));
+            = new L2ServiceLoadBalancerConfiguration().withIpAddressPools(Arrays.asList(new IpAddressPool()
+                .withAddresses(Arrays.asList("vewzcj", "nmwcpmgu", "adraufactkahzo", "ajjziuxxpshne"))
+                .withAutoAssign(BfdEnabled.TRUE)
+                .withName("lfg")
+                .withOnlyUseHostIps(BfdEnabled.TRUE)));
         model = BinaryData.fromObject(model).toObject(L2ServiceLoadBalancerConfiguration.class);
-        Assertions.assertEquals("xum", model.ipAddressPools().get(0).addresses().get(0));
-        Assertions.assertEquals(BfdEnabled.FALSE, model.ipAddressPools().get(0).autoAssign());
-        Assertions.assertEquals("vvt", model.ipAddressPools().get(0).name());
+        Assertions.assertEquals("vewzcj", model.ipAddressPools().get(0).addresses().get(0));
+        Assertions.assertEquals(BfdEnabled.TRUE, model.ipAddressPools().get(0).autoAssign());
+        Assertions.assertEquals("lfg", model.ipAddressPools().get(0).name());
         Assertions.assertEquals(BfdEnabled.TRUE, model.ipAddressPools().get(0).onlyUseHostIps());
     }
 }

@@ -294,13 +294,6 @@ public interface Cluster {
     String detailedStatusMessage();
 
     /**
-     * Gets the edgeManagementServiceCaCertificate property: The CA certificate of the edge management service.
-     * 
-     * @return the edgeManagementServiceCaCertificate value.
-     */
-    CertificateInfo edgeManagementServiceCaCertificate();
-
-    /**
      * Gets the hybridAksExtendedLocation property: Field Deprecated. This field will not be populated in an upcoming
      * version. The extended location (custom location) that represents the Hybrid AKS control plane location. This
      * extended location is used when creating provisioned clusters (Hybrid AKS clusters).

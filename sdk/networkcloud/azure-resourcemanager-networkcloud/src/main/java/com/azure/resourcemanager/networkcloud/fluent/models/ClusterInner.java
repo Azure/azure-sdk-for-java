@@ -12,7 +12,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.ActionState;
 import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
-import com.azure.resourcemanager.networkcloud.models.CertificateInfo;
 import com.azure.resourcemanager.networkcloud.models.ClusterAvailableUpgradeVersion;
 import com.azure.resourcemanager.networkcloud.models.ClusterCapacity;
 import com.azure.resourcemanager.networkcloud.models.ClusterConnectionStatus;
@@ -744,15 +743,6 @@ public final class ClusterInner extends Resource {
      */
     public String detailedStatusMessage() {
         return this.innerProperties() == null ? null : this.innerProperties().detailedStatusMessage();
-    }
-
-    /**
-     * Get the edgeManagementServiceCaCertificate property: The CA certificate of the edge management service.
-     * 
-     * @return the edgeManagementServiceCaCertificate value.
-     */
-    public CertificateInfo edgeManagementServiceCaCertificate() {
-        return this.innerProperties() == null ? null : this.innerProperties().edgeManagementServiceCaCertificate();
     }
 
     /**

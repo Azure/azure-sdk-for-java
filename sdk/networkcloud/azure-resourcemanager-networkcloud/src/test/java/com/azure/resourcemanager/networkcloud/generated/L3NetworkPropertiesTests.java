@@ -15,36 +15,36 @@ public final class L3NetworkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L3NetworkProperties model = BinaryData.fromString(
-            "{\"hybridAksIpamEnabled\":\"False\",\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"okpvzm\",\"ipAllocationType\":\"IPV4\",\"ipv4ConnectedPrefix\":\"ld\",\"ipv6ConnectedPrefix\":\"obfirclnpk\",\"l3IsolationDomainId\":\"iayz\",\"vlan\":4767053638441284929,\"associatedResourceIds\":[\"yawfvjlboxq\"],\"clusterId\":\"jlmxhomdynhd\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"umbnraauzzp\",\"hybridAksClustersAssociatedIds\":[\"zysdzh\"],\"virtualMachinesAssociatedIds\":[\"wva\",\"qyuvvfonkp\",\"hqyikvy\",\"auy\"],\"provisioningState\":\"Canceled\"}")
+            "{\"hybridAksIpamEnabled\":\"False\",\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"nkppxynen\",\"ipAllocationType\":\"DualStack\",\"ipv4ConnectedPrefix\":\"eizzgwk\",\"ipv6ConnectedPrefix\":\"srmffeycxcktpiym\",\"l3IsolationDomainId\":\"rteeamm\",\"vlan\":3435972286264882985,\"associatedResourceIds\":[\"kkzddrtkgdojbmx\"],\"clusterId\":\"vrefdeesv\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"jpxtxsuwprtuj\",\"hybridAksClustersAssociatedIds\":[\"wddji\",\"abxvi\",\"itvtzeexavo\"],\"virtualMachinesAssociatedIds\":[\"glecdmdqbwpypq\",\"gsfjac\",\"slhhxudbxv\"],\"provisioningState\":\"Succeeded\"}")
             .toObject(L3NetworkProperties.class);
         Assertions.assertEquals(HybridAksIpamEnabled.FALSE, model.hybridAksIpamEnabled());
         Assertions.assertEquals(HybridAksPluginType.OSDEVICE, model.hybridAksPluginType());
-        Assertions.assertEquals("okpvzm", model.interfaceName());
-        Assertions.assertEquals(IpAllocationType.IPV4, model.ipAllocationType());
-        Assertions.assertEquals("ld", model.ipv4ConnectedPrefix());
-        Assertions.assertEquals("obfirclnpk", model.ipv6ConnectedPrefix());
-        Assertions.assertEquals("iayz", model.l3IsolationDomainId());
-        Assertions.assertEquals(4767053638441284929L, model.vlan());
+        Assertions.assertEquals("nkppxynen", model.interfaceName());
+        Assertions.assertEquals(IpAllocationType.DUAL_STACK, model.ipAllocationType());
+        Assertions.assertEquals("eizzgwk", model.ipv4ConnectedPrefix());
+        Assertions.assertEquals("srmffeycxcktpiym", model.ipv6ConnectedPrefix());
+        Assertions.assertEquals("rteeamm", model.l3IsolationDomainId());
+        Assertions.assertEquals(3435972286264882985L, model.vlan());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L3NetworkProperties model = new L3NetworkProperties().withHybridAksIpamEnabled(HybridAksIpamEnabled.FALSE)
             .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
-            .withInterfaceName("okpvzm")
-            .withIpAllocationType(IpAllocationType.IPV4)
-            .withIpv4ConnectedPrefix("ld")
-            .withIpv6ConnectedPrefix("obfirclnpk")
-            .withL3IsolationDomainId("iayz")
-            .withVlan(4767053638441284929L);
+            .withInterfaceName("nkppxynen")
+            .withIpAllocationType(IpAllocationType.DUAL_STACK)
+            .withIpv4ConnectedPrefix("eizzgwk")
+            .withIpv6ConnectedPrefix("srmffeycxcktpiym")
+            .withL3IsolationDomainId("rteeamm")
+            .withVlan(3435972286264882985L);
         model = BinaryData.fromObject(model).toObject(L3NetworkProperties.class);
         Assertions.assertEquals(HybridAksIpamEnabled.FALSE, model.hybridAksIpamEnabled());
         Assertions.assertEquals(HybridAksPluginType.OSDEVICE, model.hybridAksPluginType());
-        Assertions.assertEquals("okpvzm", model.interfaceName());
-        Assertions.assertEquals(IpAllocationType.IPV4, model.ipAllocationType());
-        Assertions.assertEquals("ld", model.ipv4ConnectedPrefix());
-        Assertions.assertEquals("obfirclnpk", model.ipv6ConnectedPrefix());
-        Assertions.assertEquals("iayz", model.l3IsolationDomainId());
-        Assertions.assertEquals(4767053638441284929L, model.vlan());
+        Assertions.assertEquals("nkppxynen", model.interfaceName());
+        Assertions.assertEquals(IpAllocationType.DUAL_STACK, model.ipAllocationType());
+        Assertions.assertEquals("eizzgwk", model.ipv4ConnectedPrefix());
+        Assertions.assertEquals("srmffeycxcktpiym", model.ipv6ConnectedPrefix());
+        Assertions.assertEquals("rteeamm", model.l3IsolationDomainId());
+        Assertions.assertEquals(3435972286264882985L, model.vlan());
     }
 }

@@ -160,15 +160,6 @@ public interface ClusterManager {
     ClusterManagerRelayConfiguration relayConfiguration();
 
     /**
-     * Gets the rolloutRing property: The relative ordering group used to apply software updates to associated clusters.
-     * The minimum accepted value is 1; the service enforces the upper bound currently in effect, which may change over
-     * time.
-     * 
-     * @return the rolloutRing value.
-     */
-    Integer rolloutRing();
-
-    /**
      * Gets the vmSize property: The size of the Azure virtual machines to use for hosting the cluster manager resource.
      * 
      * @return the vmSize value.
@@ -273,10 +264,9 @@ public interface ClusterManager {
          * The stage of the ClusterManager definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithKind,
-            DefinitionStages.WithAnalyticsWorkspaceId, DefinitionStages.WithAvailabilityZones,
-            DefinitionStages.WithManagedResourceGroupConfiguration, DefinitionStages.WithRolloutRing,
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithKind, DefinitionStages.WithAnalyticsWorkspaceId,
+            DefinitionStages.WithAvailabilityZones, DefinitionStages.WithManagedResourceGroupConfiguration,
             DefinitionStages.WithVmSize, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
@@ -380,23 +370,6 @@ public interface ClusterManager {
         }
 
         /**
-         * The stage of the ClusterManager definition allowing to specify rolloutRing.
-         */
-        interface WithRolloutRing {
-            /**
-             * Specifies the rolloutRing property: The relative ordering group used to apply software updates to
-             * associated clusters. The minimum accepted value is 1; the service enforces the upper bound currently in
-             * effect, which may change over time..
-             * 
-             * @param rolloutRing The relative ordering group used to apply software updates to associated clusters. The
-             * minimum accepted value is 1; the service enforces the upper bound currently in effect, which may change
-             * over time.
-             * @return the next definition stage.
-             */
-            WithCreate withRolloutRing(Integer rolloutRing);
-        }
-
-        /**
          * The stage of the ClusterManager definition allowing to specify vmSize.
          */
         interface WithVmSize {
@@ -452,8 +425,8 @@ public interface ClusterManager {
     /**
      * The template for ClusterManager update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties,
-        UpdateStages.WithIfMatch, UpdateStages.WithIfNoneMatch {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithIfMatch,
+        UpdateStages.WithIfNoneMatch {
         /**
          * Executes the update request.
          * 
@@ -498,19 +471,6 @@ public interface ClusterManager {
              * @return the next definition stage.
              */
             Update withIdentity(ManagedServiceIdentity identity);
-        }
-
-        /**
-         * The stage of the ClusterManager update allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The list of cluster manager properties to patch..
-             * 
-             * @param properties The list of cluster manager properties to patch.
-             * @return the next definition stage.
-             */
-            Update withProperties(ClusterManagerPatchProperties properties);
         }
 
         /**

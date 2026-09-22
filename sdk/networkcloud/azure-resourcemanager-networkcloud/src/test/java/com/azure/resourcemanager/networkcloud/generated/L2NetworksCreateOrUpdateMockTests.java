@@ -26,7 +26,7 @@ public final class L2NetworksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"imreoag\",\"l2IsolationDomainId\":\"qtaadusrexxfavsq\",\"associatedResourceIds\":[\"ohzilfmnli\"],\"clusterId\":\"simsfeypofqpmb\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"sdrmmttjxophgerh\",\"hybridAksClustersAssociatedIds\":[\"gohtwz\",\"qilrixysfn\"],\"virtualMachinesAssociatedIds\":[\"qywwwmhk\",\"uwaedrympmlqoi\",\"hzdue\"],\"provisioningState\":\"Succeeded\"},\"etag\":\"pfjiiknjdiqfli\",\"extendedLocation\":{\"name\":\"jh\",\"type\":\"EdgeZone\"},\"location\":\"bi\",\"tags\":{\"eivbvz\":\"sbw\"},\"id\":\"pbwxgoooxz\",\"name\":\"rad\",\"type\":\"s\"}";
+            = "{\"properties\":{\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"qjros\",\"l2IsolationDomainId\":\"vrjeqmtzzbeqrztr\",\"associatedResourceIds\":[\"xrd\",\"absr\",\"rsnrhp\",\"a\"],\"clusterId\":\"wk\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"nxkvvcsemsv\",\"hybridAksClustersAssociatedIds\":[\"jkqxetqmmli\",\"rj\",\"xnwxdch\"],\"virtualMachinesAssociatedIds\":[\"xlehzlxpgfquwzp\",\"iibelwcerw\"],\"provisioningState\":\"Succeeded\"},\"etag\":\"jxljtxbusq\",\"extendedLocation\":{\"name\":\"bxxn\",\"type\":\"CustomLocation\"},\"location\":\"sdzhgbdgzpagsec\",\"tags\":{\"gxfllmqiynezoel\":\"buwq\"},\"id\":\"nkkiiwvmtumxpy\",\"name\":\"djf\",\"type\":\"axroqvqpilrgunc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,27 +36,27 @@ public final class L2NetworksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         L2Network response = manager.l2Networks()
-            .define("pqrtvaoznqni")
-            .withRegion("qovchiqbp")
-            .withExistingResourceGroup("zrthqet")
+            .define("qhnmhk")
+            .withRegion("rllccnaovjowazhp")
+            .withExistingResourceGroup("djpxpqht")
             .withExtendedLocation(
-                new ExtendedLocation().withName("btmkekxpkzwaq").withType(ExtendedLocationType.CUSTOM_LOCATION))
-            .withL2IsolationDomainId("dhfpjstlzmbl")
-            .withTags(mapOf("ztekxbyjgmsfep", "idu", "dicxdw", "yihpqadagrh", "vcxjsgbipcukdvek", "jfowxwy", "scrdp",
-                "buhoduchv"))
-            .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
-            .withInterfaceName("eagmceituug")
-            .withIfMatch("n")
-            .withIfNoneMatch("ybff")
+                new ExtendedLocation().withName("mkkhtgfredml").withType(ExtendedLocationType.EDGE_ZONE))
+            .withL2IsolationDomainId("pinymmqgwokmikp")
+            .withTags(
+                mapOf("srqorcgenmvceb", "comlyotgkwsx", "dcqjkedwqurc", "eetqujxcxxq", "qqrsil", "ojmrvvxwjongzse"))
+            .withHybridAksPluginType(HybridAksPluginType.SRIOV)
+            .withInterfaceName("dsuxheqdgcrux")
+            .withIfMatch("rulfuct")
+            .withIfNoneMatch("jrthcfjzhx")
             .create();
 
-        Assertions.assertEquals("bi", response.location());
-        Assertions.assertEquals("sbw", response.tags().get("eivbvz"));
-        Assertions.assertEquals("jh", response.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.DPDK, response.hybridAksPluginType());
-        Assertions.assertEquals("imreoag", response.interfaceName());
-        Assertions.assertEquals("qtaadusrexxfavsq", response.l2IsolationDomainId());
+        Assertions.assertEquals("sdzhgbdgzpagsec", response.location());
+        Assertions.assertEquals("buwq", response.tags().get("gxfllmqiynezoel"));
+        Assertions.assertEquals("bxxn", response.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.hybridAksPluginType());
+        Assertions.assertEquals("qjros", response.interfaceName());
+        Assertions.assertEquals("vrjeqmtzzbeqrztr", response.l2IsolationDomainId());
     }
 
     // Use "Map.of" if available

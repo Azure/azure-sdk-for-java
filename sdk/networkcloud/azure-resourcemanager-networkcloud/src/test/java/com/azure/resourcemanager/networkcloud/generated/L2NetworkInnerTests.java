@@ -17,34 +17,33 @@ public final class L2NetworkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L2NetworkInner model = BinaryData.fromString(
-            "{\"properties\":{\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"qfqjbvleorfm\",\"l2IsolationDomainId\":\"uiqtqzfavy\",\"associatedResourceIds\":[\"qybaryeua\",\"jkqa\"],\"clusterId\":\"gzslesjcbhernnti\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"cv\",\"hybridAksClustersAssociatedIds\":[\"wr\",\"ehwagoh\",\"uffkmrqemvvh\"],\"virtualMachinesAssociatedIds\":[\"drjf\",\"tac\",\"ebjvewzcjzn\",\"wcpmguaadraufac\"],\"provisioningState\":\"Provisioning\"},\"etag\":\"zov\",\"extendedLocation\":{\"name\":\"jjziuxxpsh\",\"type\":\"CustomLocation\"},\"location\":\"kulfg\",\"tags\":{\"rds\":\"ubkwdle\",\"hminyflnorwmduv\":\"tujbazpju\"},\"id\":\"pklvxw\",\"name\":\"ygdxpgpqchis\",\"type\":\"epn\"}")
+            "{\"properties\":{\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"cokpv\",\"l2IsolationDomainId\":\"mlqtmldgxob\",\"associatedResourceIds\":[\"clnpkci\",\"yzriykhy\"],\"clusterId\":\"fvjlboxqvkjlmx\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"ynhdwdigum\",\"hybridAksClustersAssociatedIds\":[\"aauzzptjazysd\",\"hezwwvaiq\"],\"virtualMachinesAssociatedIds\":[\"vfonkphhqyikvyl\"],\"provisioningState\":\"Accepted\"},\"etag\":\"vluwmncsttij\",\"extendedLocation\":{\"name\":\"y\",\"type\":\"EdgeZone\"},\"location\":\"o\",\"tags\":{\"qgnjdgkynscli\":\"sgsgbdhu\"},\"id\":\"hzvhxnkomtkubo\",\"name\":\"ppnvdxz\",\"type\":\"hihfrbbcevqagtlt\"}")
             .toObject(L2NetworkInner.class);
-        Assertions.assertEquals("kulfg", model.location());
-        Assertions.assertEquals("ubkwdle", model.tags().get("rds"));
-        Assertions.assertEquals("jjziuxxpsh", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, model.hybridAksPluginType());
-        Assertions.assertEquals("qfqjbvleorfm", model.interfaceName());
-        Assertions.assertEquals("uiqtqzfavy", model.l2IsolationDomainId());
+        Assertions.assertEquals("o", model.location());
+        Assertions.assertEquals("sgsgbdhu", model.tags().get("qgnjdgkynscli"));
+        Assertions.assertEquals("y", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.SRIOV, model.hybridAksPluginType());
+        Assertions.assertEquals("cokpv", model.interfaceName());
+        Assertions.assertEquals("mlqtmldgxob", model.l2IsolationDomainId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2NetworkInner model = new L2NetworkInner().withLocation("kulfg")
-            .withTags(mapOf("rds", "ubkwdle", "hminyflnorwmduv", "tujbazpju"))
-            .withExtendedLocation(
-                new ExtendedLocation().withName("jjziuxxpsh").withType(ExtendedLocationType.CUSTOM_LOCATION))
-            .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
-            .withInterfaceName("qfqjbvleorfm")
-            .withL2IsolationDomainId("uiqtqzfavy");
+        L2NetworkInner model = new L2NetworkInner().withLocation("o")
+            .withTags(mapOf("qgnjdgkynscli", "sgsgbdhu"))
+            .withExtendedLocation(new ExtendedLocation().withName("y").withType(ExtendedLocationType.EDGE_ZONE))
+            .withHybridAksPluginType(HybridAksPluginType.SRIOV)
+            .withInterfaceName("cokpv")
+            .withL2IsolationDomainId("mlqtmldgxob");
         model = BinaryData.fromObject(model).toObject(L2NetworkInner.class);
-        Assertions.assertEquals("kulfg", model.location());
-        Assertions.assertEquals("ubkwdle", model.tags().get("rds"));
-        Assertions.assertEquals("jjziuxxpsh", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, model.hybridAksPluginType());
-        Assertions.assertEquals("qfqjbvleorfm", model.interfaceName());
-        Assertions.assertEquals("uiqtqzfavy", model.l2IsolationDomainId());
+        Assertions.assertEquals("o", model.location());
+        Assertions.assertEquals("sgsgbdhu", model.tags().get("qgnjdgkynscli"));
+        Assertions.assertEquals("y", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.SRIOV, model.hybridAksPluginType());
+        Assertions.assertEquals("cokpv", model.interfaceName());
+        Assertions.assertEquals("mlqtmldgxob", model.l2IsolationDomainId());
     }
 
     // Use "Map.of" if available

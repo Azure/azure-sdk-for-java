@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterDeployParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterDeployParameters model = BinaryData
-            .fromString("{\"skipValidationsForMachines\":[\"adcy\",\"qukyhejhzi\",\"xgfpelolppv\",\"srp\"]}")
-            .toObject(ClusterDeployParameters.class);
-        Assertions.assertEquals("adcy", model.skipValidationsForMachines().get(0));
+        ClusterDeployParameters model
+            = BinaryData.fromString("{\"skipValidationsForMachines\":[\"psvuoymgc\",\"elvezrypq\",\"mfe\"]}")
+                .toObject(ClusterDeployParameters.class);
+        Assertions.assertEquals("psvuoymgc", model.skipValidationsForMachines().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterDeployParameters model = new ClusterDeployParameters()
-            .withSkipValidationsForMachines(Arrays.asList("adcy", "qukyhejhzi", "xgfpelolppv", "srp"));
+            .withSkipValidationsForMachines(Arrays.asList("psvuoymgc", "elvezrypq", "mfe"));
         model = BinaryData.fromObject(model).toObject(ClusterDeployParameters.class);
-        Assertions.assertEquals("adcy", model.skipValidationsForMachines().get(0));
+        Assertions.assertEquals("psvuoymgc", model.skipValidationsForMachines().get(0));
     }
 }

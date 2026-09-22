@@ -14,27 +14,27 @@ public final class ClusterUpdateStrategyPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterUpdateStrategyPatch model = BinaryData.fromString(
-            "{\"maxUnavailable\":7552029040266764346,\"strategyType\":\"PauseAfterRack\",\"thresholdType\":\"CountSuccess\",\"thresholdValue\":3098366746302145481,\"waitTimeMinutes\":735131476497505223}")
+            "{\"maxUnavailable\":1280218096280763965,\"strategyType\":\"PauseAfterRack\",\"thresholdType\":\"CountSuccess\",\"thresholdValue\":1317617850914655100,\"waitTimeMinutes\":3965428052908481774}")
             .toObject(ClusterUpdateStrategyPatch.class);
-        Assertions.assertEquals(7552029040266764346L, model.maxUnavailable());
+        Assertions.assertEquals(1280218096280763965L, model.maxUnavailable());
         Assertions.assertEquals(ClusterUpdateStrategyType.PAUSE_AFTER_RACK, model.strategyType());
         Assertions.assertEquals(ValidationThresholdType.COUNT_SUCCESS, model.thresholdType());
-        Assertions.assertEquals(3098366746302145481L, model.thresholdValue());
-        Assertions.assertEquals(735131476497505223L, model.waitTimeMinutes());
+        Assertions.assertEquals(1317617850914655100L, model.thresholdValue());
+        Assertions.assertEquals(3965428052908481774L, model.waitTimeMinutes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterUpdateStrategyPatch model = new ClusterUpdateStrategyPatch().withMaxUnavailable(7552029040266764346L)
+        ClusterUpdateStrategyPatch model = new ClusterUpdateStrategyPatch().withMaxUnavailable(1280218096280763965L)
             .withStrategyType(ClusterUpdateStrategyType.PAUSE_AFTER_RACK)
             .withThresholdType(ValidationThresholdType.COUNT_SUCCESS)
-            .withThresholdValue(3098366746302145481L)
-            .withWaitTimeMinutes(735131476497505223L);
+            .withThresholdValue(1317617850914655100L)
+            .withWaitTimeMinutes(3965428052908481774L);
         model = BinaryData.fromObject(model).toObject(ClusterUpdateStrategyPatch.class);
-        Assertions.assertEquals(7552029040266764346L, model.maxUnavailable());
+        Assertions.assertEquals(1280218096280763965L, model.maxUnavailable());
         Assertions.assertEquals(ClusterUpdateStrategyType.PAUSE_AFTER_RACK, model.strategyType());
         Assertions.assertEquals(ValidationThresholdType.COUNT_SUCCESS, model.thresholdType());
-        Assertions.assertEquals(3098366746302145481L, model.thresholdValue());
-        Assertions.assertEquals(735131476497505223L, model.waitTimeMinutes());
+        Assertions.assertEquals(1317617850914655100L, model.thresholdValue());
+        Assertions.assertEquals(3965428052908481774L, model.waitTimeMinutes());
     }
 }

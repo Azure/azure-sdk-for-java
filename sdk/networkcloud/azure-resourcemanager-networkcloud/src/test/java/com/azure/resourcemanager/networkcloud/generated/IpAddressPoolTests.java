@@ -14,24 +14,24 @@ public final class IpAddressPoolTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IpAddressPool model = BinaryData.fromString(
-            "{\"addresses\":[\"oiwiithtywub\",\"cbihwqk\"],\"autoAssign\":\"False\",\"name\":\"ntwjch\",\"onlyUseHostIps\":\"True\"}")
+            "{\"addresses\":[\"f\",\"kmr\",\"emvvhm\"],\"autoAssign\":\"True\",\"name\":\"rjfut\",\"onlyUseHostIps\":\"True\"}")
             .toObject(IpAddressPool.class);
-        Assertions.assertEquals("oiwiithtywub", model.addresses().get(0));
-        Assertions.assertEquals(BfdEnabled.FALSE, model.autoAssign());
-        Assertions.assertEquals("ntwjch", model.name());
+        Assertions.assertEquals("f", model.addresses().get(0));
+        Assertions.assertEquals(BfdEnabled.TRUE, model.autoAssign());
+        Assertions.assertEquals("rjfut", model.name());
         Assertions.assertEquals(BfdEnabled.TRUE, model.onlyUseHostIps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpAddressPool model = new IpAddressPool().withAddresses(Arrays.asList("oiwiithtywub", "cbihwqk"))
-            .withAutoAssign(BfdEnabled.FALSE)
-            .withName("ntwjch")
+        IpAddressPool model = new IpAddressPool().withAddresses(Arrays.asList("f", "kmr", "emvvhm"))
+            .withAutoAssign(BfdEnabled.TRUE)
+            .withName("rjfut")
             .withOnlyUseHostIps(BfdEnabled.TRUE);
         model = BinaryData.fromObject(model).toObject(IpAddressPool.class);
-        Assertions.assertEquals("oiwiithtywub", model.addresses().get(0));
-        Assertions.assertEquals(BfdEnabled.FALSE, model.autoAssign());
-        Assertions.assertEquals("ntwjch", model.name());
+        Assertions.assertEquals("f", model.addresses().get(0));
+        Assertions.assertEquals(BfdEnabled.TRUE, model.autoAssign());
+        Assertions.assertEquals("rjfut", model.name());
         Assertions.assertEquals(BfdEnabled.TRUE, model.onlyUseHostIps());
     }
 }

@@ -1,70 +1,14 @@
 # Release History
 
-## 2.3.0 (2026-09-22)
-
-- Azure Resource Manager NetworkCloud client library for Java. This package contains Microsoft Azure SDK for NetworkCloud Management SDK. The Network Cloud APIs provide management of the Azure Operator Nexus compute resources such as on-premises clusters, hardware resources, and workload infrastructure resources. Package api-version 2026-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
-
-### Breaking Changes
-
-#### `models.StorageAppliance$DefinitionStages` was modified
-
-* `withStorageApplianceSkuId(java.lang.String)` was removed in stage 6
-* `withRackSlot(long)` was removed in stage 7
-* `withSerialNumber(java.lang.String)` was removed in stage 8
+## 2.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
-* `models.OpenBaoSecretArchiveProviderConfiguration` was added
+### Breaking Changes
 
-* `models.ClusterManagerPatchProperties` was added
+### Bugs Fixed
 
-* `models.SecretArchiveProviderType` was added
-
-* `models.VaultAuthenticationMethod` was added
-
-* `models.SecretArchiveProviderConfiguration` was added
-
-* `models.KeyValueVersion` was added
-
-* `models.HashiCorpVaultSecretArchiveProviderConfiguration` was added
-
-* `models.CyberArkSecretArchiveProviderConfiguration` was added
-
-#### `models.ClusterManager$Definition` was modified
-
-* `withRolloutRing(java.lang.Integer)` was added
-
-#### `models.SecretArchiveReference` was modified
-
-* `encryptionPublicKey()` was added
-
-#### `models.SecretArchiveSettings` was modified
-
-* `encryptionPublicKey()` was added
-* `withEncryptionPublicKey(java.lang.String)` was added
-* `providerConfiguration()` was added
-* `withProviderConfiguration(models.SecretArchiveProviderConfiguration)` was added
-
-#### `models.ClusterManager` was modified
-
-* `rolloutRing()` was added
-
-#### `models.ClusterManagerPatchParameters` was modified
-
-* `properties()` was added
-* `withProperties(models.ClusterManagerPatchProperties)` was added
-
-#### `models.Cluster` was modified
-
-* `edgeManagementServiceCaCertificate()` was added
-
-#### `models.ClusterManager$Update` was modified
-
-* `withProperties(models.ClusterManagerPatchProperties)` was added
-
-#### `models.AccessBridgeAllowedName` was modified
-
-* `EDGE_MANAGEMENT` was added
+### Other Changes
 
 ## 2.2.0 (2026-09-14)
 

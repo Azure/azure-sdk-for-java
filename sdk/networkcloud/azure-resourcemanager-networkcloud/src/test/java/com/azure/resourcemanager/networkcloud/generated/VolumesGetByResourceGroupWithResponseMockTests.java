@@ -22,7 +22,7 @@ public final class VolumesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sizeMiB\":7962655555398941339,\"storageApplianceId\":\"zaptuosk\",\"allocatedSizeMiB\":1829149398247781953,\"assignedStorageApplianceId\":\"ixwfgcdi\",\"attachedTo\":[\"c\",\"wnujvqynvav\",\"tmdmuqohhihr\",\"xquddrw\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"brhlhpvzadb\",\"serialNumber\":\"nnin\",\"provisioningState\":\"Provisioning\"},\"etag\":\"rzfr\",\"extendedLocation\":{\"name\":\"vztiucwviqllukh\",\"type\":\"CustomLocation\"},\"location\":\"qxgcbvzarmqcbpo\",\"tags\":{\"agovjy\":\"sin\"},\"id\":\"d\",\"name\":\"xbrdvcehqwh\",\"type\":\"txnmxgnmguz\"}";
+            = "{\"properties\":{\"sizeMiB\":181851911706260962,\"storageApplianceId\":\"iwm\",\"allocatedSizeMiB\":375695126412184600,\"assignedStorageApplianceId\":\"dlhvdv\",\"attachedTo\":[\"hbeae\",\"jzmhkdclacroczfm\",\"ner\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"xzs\",\"serialNumber\":\"zezbzu\",\"provisioningState\":\"Accepted\"},\"etag\":\"evzske\",\"extendedLocation\":{\"name\":\"cgwfsgqkstyecu\",\"type\":\"EdgeZone\"},\"location\":\"ijpardavsjcf\",\"tags\":{\"zvcmcokxi\":\"pzdqw\",\"nzvajbvbnkrdem\":\"ekuvfrjwuca\",\"misvpztd\":\"idackzidgzwdyd\",\"tpjfojiunrlshxuk\":\"vykpxkqe\"},\"id\":\"sykdtoi\",\"name\":\"oancdrco\",\"type\":\"nvxuldxonckb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class VolumesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Volume response = manager.volumes()
-            .getByResourceGroupWithResponse("gikyjtkak", "lbis", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("exmnv", "vmuw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qxgcbvzarmqcbpo", response.location());
-        Assertions.assertEquals("sin", response.tags().get("agovjy"));
-        Assertions.assertEquals("vztiucwviqllukh", response.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
-        Assertions.assertEquals(7962655555398941339L, response.sizeMiB());
-        Assertions.assertEquals("zaptuosk", response.storageApplianceId());
+        Assertions.assertEquals("ijpardavsjcf", response.location());
+        Assertions.assertEquals("pzdqw", response.tags().get("zvcmcokxi"));
+        Assertions.assertEquals("cgwfsgqkstyecu", response.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
+        Assertions.assertEquals(181851911706260962L, response.sizeMiB());
+        Assertions.assertEquals("iwm", response.storageApplianceId());
     }
 }

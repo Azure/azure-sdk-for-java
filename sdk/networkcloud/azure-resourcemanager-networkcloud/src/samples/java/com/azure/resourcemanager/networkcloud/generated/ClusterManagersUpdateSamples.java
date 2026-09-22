@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.resourcemanager.networkcloud.models.ClusterManager;
-import com.azure.resourcemanager.networkcloud.models.ClusterManagerPatchProperties;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.networkcloud.models.UserAssignedIdentity;
@@ -17,7 +16,7 @@ import java.util.Map;
  */
 public final class ClusterManagersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/ClusterManagers_Patch.json
+     * x-ms-original-file: 2026-07-01/ClusterManagers_Patch.json
      */
     /**
      * Sample code: Patch cluster manager.
@@ -36,24 +35,7 @@ public final class ClusterManagersUpdateSamples {
                     null,
                     "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2",
                     new UserAssignedIdentity())))
-            .withProperties(new ClusterManagerPatchProperties().withRolloutRing(3))
             .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2026-08-01-preview/ClusterManagers_Patch_RolloutRing.json
-     */
-    /**
-     * Sample code: Patch cluster manager rolloutRing.
-     * 
-     * @param manager Entry point to NetworkCloudManager.
-     */
-    public static void
-        patchClusterManagerRolloutRing(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        ClusterManager resource = manager.clusterManagers()
-            .getByResourceGroupWithResponse("resourceGroupName", "clusterManagerName", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withProperties(new ClusterManagerPatchProperties().withRolloutRing(2)).apply();
     }
 
     // Use "Map.of" if available

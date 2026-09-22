@@ -14,24 +14,24 @@ public final class AnalyticsOutputSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AnalyticsOutputSettings model = BinaryData.fromString(
-            "{\"analyticsWorkspaceId\":\"ckw\",\"associatedIdentity\":{\"identityType\":\"UserAssignedIdentity\",\"userAssignedIdentityResourceId\":\"hxx\"}}")
+            "{\"analyticsWorkspaceId\":\"xgfpelolppv\",\"associatedIdentity\":{\"identityType\":\"UserAssignedIdentity\",\"userAssignedIdentityResourceId\":\"vu\"}}")
             .toObject(AnalyticsOutputSettings.class);
-        Assertions.assertEquals("ckw", model.analyticsWorkspaceId());
+        Assertions.assertEquals("xgfpelolppv", model.analyticsWorkspaceId());
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY,
             model.associatedIdentity().identityType());
-        Assertions.assertEquals("hxx", model.associatedIdentity().userAssignedIdentityResourceId());
+        Assertions.assertEquals("vu", model.associatedIdentity().userAssignedIdentityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AnalyticsOutputSettings model = new AnalyticsOutputSettings().withAnalyticsWorkspaceId("ckw")
+        AnalyticsOutputSettings model = new AnalyticsOutputSettings().withAnalyticsWorkspaceId("xgfpelolppv")
             .withAssociatedIdentity(
                 new IdentitySelector().withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
-                    .withUserAssignedIdentityResourceId("hxx"));
+                    .withUserAssignedIdentityResourceId("vu"));
         model = BinaryData.fromObject(model).toObject(AnalyticsOutputSettings.class);
-        Assertions.assertEquals("ckw", model.analyticsWorkspaceId());
+        Assertions.assertEquals("xgfpelolppv", model.analyticsWorkspaceId());
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY,
             model.associatedIdentity().identityType());
-        Assertions.assertEquals("hxx", model.associatedIdentity().userAssignedIdentityResourceId());
+        Assertions.assertEquals("vu", model.associatedIdentity().userAssignedIdentityResourceId());
     }
 }

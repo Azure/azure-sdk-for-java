@@ -36,12 +36,6 @@ public final class SecretArchiveReference implements JsonSerializable<SecretArch
      */
     private String secretVersion;
 
-    /*
-     * The public key used by the platform to encrypt the archived credential before it was written to the secret
-     * archive.
-     */
-    private String encryptionPublicKey;
-
     /**
      * Creates an instance of SecretArchiveReference class.
      */
@@ -85,16 +79,6 @@ public final class SecretArchiveReference implements JsonSerializable<SecretArch
     }
 
     /**
-     * Get the encryptionPublicKey property: The public key used by the platform to encrypt the archived credential
-     * before it was written to the secret archive.
-     * 
-     * @return the encryptionPublicKey value.
-     */
-    public String encryptionPublicKey() {
-        return this.encryptionPublicKey;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -126,8 +110,6 @@ public final class SecretArchiveReference implements JsonSerializable<SecretArch
                     deserializedSecretArchiveReference.secretName = reader.getString();
                 } else if ("secretVersion".equals(fieldName)) {
                     deserializedSecretArchiveReference.secretVersion = reader.getString();
-                } else if ("encryptionPublicKey".equals(fieldName)) {
-                    deserializedSecretArchiveReference.encryptionPublicKey = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

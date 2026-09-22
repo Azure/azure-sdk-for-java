@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class KubernetesVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-08-01-preview/KubernetesVersions_Delete.json
+     * x-ms-original-file: 2026-07-01/KubernetesVersions_Delete.json
      */
     /**
      * Sample code: Delete Kubernetes versions.
