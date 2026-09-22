@@ -21,7 +21,7 @@ import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceContainersConfig;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
+import com.azure.cosmos.kafka.connect.implementation.source.BufferedCosmosSourceTask;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuationTopicOffset;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeTaskUnit;
@@ -142,7 +142,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
 
     @Override
     public Class<? extends Task> taskClass() {
-        return CosmosSourceTask.class;
+        return BufferedCosmosSourceTask.class;
     }
 
     @Override
