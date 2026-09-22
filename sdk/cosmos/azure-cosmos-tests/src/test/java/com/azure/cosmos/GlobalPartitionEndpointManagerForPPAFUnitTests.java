@@ -262,6 +262,9 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
         Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.getRegionName(
             EAST_US_2_URI_CNST,
             OperationType.Read)).thenReturn(EAST_US_2_CNST);
+        Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.getRegionName(
+            EAST_US_URI_CNST,
+            OperationType.Read)).thenReturn(EAST_US_CNST);
 
         Mockito.clearInvocations(this.singleWriteAccountGlobalEndpointManagerMock);
         Instant beforeDesignation = Instant.now();
@@ -281,6 +284,8 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
         Instant designatedSince = Instant.parse(firstSnapshot.get("since").asText());
 
         Assertions.assertThat(firstSnapshot.get("currWriteRegion").asText()).isEqualTo(EAST_US_2_CNST);
+        Assertions.assertThat(firstSnapshot.get("failedRegions").size()).isEqualTo(1);
+        Assertions.assertThat(firstSnapshot.get("failedRegions").get(0).asText()).isEqualTo(EAST_US_CNST);
         Assertions.assertThat(designatedSince).isBetween(beforeDesignation, afterDesignation);
 
         RxDocumentServiceRequest reuseRequest = constructRxDocumentServiceRequestInstance(
@@ -585,6 +590,9 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
     private static void assertPopulatedPpaf(JsonNode ppaf) {
         Assertions.assertThat(ppaf.isObject()).isTrue();
         Assertions.assertThat(ppaf.get("currWriteRegion").asText()).isEqualTo(EAST_US_2_CNST);
+        Assertions.assertThat(ppaf.get("failedRegions").isArray()).isTrue();
+        Assertions.assertThat(ppaf.get("failedRegions").size()).isEqualTo(1);
+        Assertions.assertThat(ppaf.get("failedRegions").get(0).asText()).isEqualTo(EAST_US_CNST);
         Assertions.assertThat(Instant.parse(ppaf.get("since").asText())).isNotNull();
     }
 

@@ -53,8 +53,12 @@ public class PartitionLevelAutomaticFailoverInfo implements Serializable {
             String currentWriteRegion = this.globalEndpointManager.getRegionName(
                 regionalRoutingContext.getGatewayRegionalEndpoint(),
                 OperationType.Read);
-            this.diagnosticsSnapshot = new PerPartitionAutomaticFailoverDiagnostics(
+            String failedRegion = this.globalEndpointManager.getRegionName(
+                failedRegionalRoutingContext.getGatewayRegionalEndpoint(),
+                OperationType.Read);
+            this.diagnosticsSnapshot = this.diagnosticsSnapshot.withFailover(
                 currentWriteRegion,
+                failedRegion,
                 currentWriteRegionSince);
 
             return true;
