@@ -516,6 +516,13 @@ Describe 'Combined documentation workflow and final result contracts' -Tag 'Unit
             Should -Be @('checkout', 'node', 'inputs', 'spelling', 'changelogs')
     }
 
+    It 'cancels superseded runs only within the same workflow and PR' {
+        $script:Workflow.on.Keys | Should -Be @('pull_request')
+        $script:Workflow.concurrency.group |
+            Should -Be '${{ github.workflow }}-pr-${{ github.event.pull_request.number }}'
+        $script:Workflow.concurrency.'cancel-in-progress' | Should -BeTrue
+    }
+
     It 'keeps the existing required spelling workflow separate during migration' {
         $legacy = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot '.github/workflows/check-spelling.yml') -Raw)
         $legacy.name | Should -Be 'Check Spelling'

@@ -25,6 +25,9 @@ changelog, and reporting steps in one `validate-documentation` job on one `ubunt
 **Validate documentation** check starts alongside the existing required check; this change does not update rulesets.
 Both workflows cover the same supported PR branches without path filters.
 
+Newer **Validate documentation** runs cancel older runs for the same PR. The concurrency group includes the workflow
+name and PR number, so it does not cancel runs for other PRs or other workflows.
+
 Within the combined workflow, one checkout and Node 24 setup serve all validation steps.
 [Save-PRValidationInputs.ps1](scripts/Save-PRValidationInputs.ps1) saves the entire synthetic merge commit's diff
 against its first parent. It includes deletions and both sides of renames, not just the last source commit.
