@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
  */
 public final class ServerKeysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerKeyCreateOrUpdateWithVersionlessKey.json
+     * x-ms-original-file: 2025-01-01/ServerKeyCreateOrUpdateWithVersionlessKey.json
      */
     /**
      * Sample code: Creates or updates a server key with versionless key.
@@ -30,7 +30,7 @@ public final class ServerKeysCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerKeyCreateOrUpdate.json
+     * x-ms-original-file: 2025-01-01/ServerKeyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates a server key.

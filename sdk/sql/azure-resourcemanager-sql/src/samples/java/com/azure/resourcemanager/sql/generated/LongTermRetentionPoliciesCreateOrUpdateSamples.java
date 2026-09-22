@@ -14,7 +14,7 @@ import com.azure.resourcemanager.sql.models.TimeBasedImmutabilityMode;
  */
 public final class LongTermRetentionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/LongTermRetentionPolicyCreateOrUpdate.json
+     * x-ms-original-file: 2025-01-01/LongTermRetentionPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Create or update the long term retention policy for the database.

@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Drives the thin-client HTTP/2 connectivity probe lifecycle with a per-region, one-shot
@@ -69,6 +70,13 @@ public class EndpointProbeClient implements Closeable {
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final AtomicBoolean cycleInProgress = new AtomicBoolean(false);
 
+    // The most recently observed topology (published by every runProbeCycle trigger, winner or
+    // overlapping loser). applyCycleResult recomputes the gate against THIS rather than the winning
+    // cycle's captured snapshot, so a topology that advances mid-cycle can't be clobbered by a stale
+    // green verdict when the in-flight cycle completes.
+    private final AtomicReference<Collection<URI>> latestTopology =
+        new AtomicReference<>(Collections.emptySet());
+
     public EndpointProbeClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(
             httpClient,
@@ -99,9 +107,11 @@ public class EndpointProbeClient implements Closeable {
                 return Mono.just(this.thinClientRoutable);
             }
 
-            // Recompute the cached gate against the latest topology using the current proven set, so
-            // it reflects the newest endpoints even if this cycle probes nothing or is skipped as an
-            // overlapping trigger.
+            // Publish the newest topology so a cycle completing later recomputes the gate against
+            // this value (never a stale captured snapshot), then recompute the cached gate against it
+            // using the current proven set — so the gate reflects the newest endpoints even if this
+            // cycle probes nothing or is skipped as an overlapping trigger.
+            this.latestTopology.set(endpoints);
             this.thinClientRoutable = computeGate(endpoints);
 
             if (!this.cycleInProgress.compareAndSet(false, true)) {
@@ -115,7 +125,7 @@ public class EndpointProbeClient implements Closeable {
                 .filter(endpoint -> !this.provenHealthyEndpoints.contains(endpoint))
                 .flatMap(this::probeEndpointOnce)
                 .collectList()
-                .map(results -> applyCycleResult(endpoints, results))
+                .map(this::applyCycleResult)
                 .onErrorResume(t -> {
                     logger.warn(
                         "Thin-client probe cycle threw an unexpected error; leaving failed regions un-cached.", t);
@@ -189,7 +199,7 @@ public class EndpointProbeClient implements Closeable {
             });
     }
 
-    private Boolean applyCycleResult(Collection<URI> endpoints, List<EndpointProbeResult> results) {
+    private Boolean applyCycleResult(List<EndpointProbeResult> results) {
 
         // Dropped if the client closed mid-cycle so we don't mutate a dead client.
         if (this.closed.get()) {
@@ -204,7 +214,10 @@ public class EndpointProbeClient implements Closeable {
                 this.provenHealthyEndpoints.add(r.endpoint);
             }
         }
-        this.thinClientRoutable = computeGate(endpoints);
+        // Recompute against the LATEST observed topology, not this cycle's captured snapshot: a
+        // topology that advanced mid-cycle (e.g. a new region added via an overlapping trigger)
+        // must not be overwritten by a stale green verdict computed from the older snapshot.
+        this.thinClientRoutable = computeGate(this.latestTopology.get());
         return this.thinClientRoutable;
     }
 

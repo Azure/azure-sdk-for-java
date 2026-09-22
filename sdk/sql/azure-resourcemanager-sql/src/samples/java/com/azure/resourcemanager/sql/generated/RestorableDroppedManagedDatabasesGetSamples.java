@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class RestorableDroppedManagedDatabasesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetRestorableDroppedManagedDatabase.json
+     * x-ms-original-file: 2025-01-01/GetRestorableDroppedManagedDatabase.json
      */
     /**
      * Sample code: Gets a restorable dropped managed database.

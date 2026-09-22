@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hardwaresecuritymodules.generated;
  */
 public final class DedicatedHsmListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: 2025-03-31/GetOutboundNetworkDependenciesEndpointsList.json
+     * x-ms-original-file: 2025-12-01-preview/GetOutboundNetworkDependenciesEndpointsList.json
      */
     /**
      * Sample code: List OutboundNetworkDependenciesEndpoints by Managed Cluster.

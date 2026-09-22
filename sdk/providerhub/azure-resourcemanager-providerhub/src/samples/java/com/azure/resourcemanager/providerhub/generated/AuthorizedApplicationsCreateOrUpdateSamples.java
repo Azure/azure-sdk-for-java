@@ -16,7 +16,7 @@ import java.util.UUID;
  */
 public final class AuthorizedApplicationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/AuthorizedApplications_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/AuthorizedApplications_CreateOrUpdate.json
      */
     /**
      * Sample code: AuthorizedApplications_CreateOrUpdate.

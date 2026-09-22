@@ -27,6 +27,11 @@ public final class DiskSecurityProfile implements JsonSerializable<DiskSecurityP
      */
     private String secureVMDiskEncryptionSetId;
 
+    /*
+     * Indicates the version of Confidential VM for the resource.
+     */
+    private ConfidentialVMVersion confidentialVMVersion;
+
     /**
      * Creates an instance of DiskSecurityProfile class.
      */
@@ -76,6 +81,15 @@ public final class DiskSecurityProfile implements JsonSerializable<DiskSecurityP
     }
 
     /**
+     * Get the confidentialVMVersion property: Indicates the version of Confidential VM for the resource.
+     * 
+     * @return the confidentialVMVersion value.
+     */
+    public ConfidentialVMVersion confidentialVMVersion() {
+        return this.confidentialVMVersion;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -113,6 +127,9 @@ public final class DiskSecurityProfile implements JsonSerializable<DiskSecurityP
                     deserializedDiskSecurityProfile.securityType = DiskSecurityTypes.fromString(reader.getString());
                 } else if ("secureVMDiskEncryptionSetId".equals(fieldName)) {
                     deserializedDiskSecurityProfile.secureVMDiskEncryptionSetId = reader.getString();
+                } else if ("confidentialVMVersion".equals(fieldName)) {
+                    deserializedDiskSecurityProfile.confidentialVMVersion
+                        = ConfidentialVMVersion.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

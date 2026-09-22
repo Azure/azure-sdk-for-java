@@ -19,6 +19,7 @@ import com.azure.resourcemanager.hybridcompute.models.HardwareProfile;
 import com.azure.resourcemanager.hybridcompute.models.IdentityKeyStore;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
+import com.azure.resourcemanager.hybridcompute.models.MachineStatusReason;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
 import com.azure.resourcemanager.hybridcompute.models.StatusTypes;
@@ -82,6 +83,12 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
      * Specifies the License related properties for a machine.
      */
     private LicenseProfileMachineInstanceViewInner licenseProfile;
+
+    /*
+     * Indicates whether the service has detected that this Arc machine is a clone of another onboarded machine.
+     * Service-computed; not settable by the user.
+     */
+    private MachineStatusReason statusReason;
 
     /*
      * The provisioning state, which only appears in the response.
@@ -380,6 +387,16 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
     public MachinePropertiesInner withLicenseProfile(LicenseProfileMachineInstanceViewInner licenseProfile) {
         this.licenseProfile = licenseProfile;
         return this;
+    }
+
+    /**
+     * Get the statusReason property: Indicates whether the service has detected that this Arc machine is a clone of
+     * another onboarded machine. Service-computed; not settable by the user.
+     * 
+     * @return the statusReason value.
+     */
+    public MachineStatusReason statusReason() {
+        return this.statusReason;
     }
 
     /**
@@ -807,6 +824,9 @@ public final class MachinePropertiesInner implements JsonSerializable<MachinePro
                 } else if ("licenseProfile".equals(fieldName)) {
                     deserializedMachinePropertiesInner.licenseProfile
                         = LicenseProfileMachineInstanceViewInner.fromJson(reader);
+                } else if ("statusReason".equals(fieldName)) {
+                    deserializedMachinePropertiesInner.statusReason
+                        = MachineStatusReason.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedMachinePropertiesInner.provisioningState = reader.getString();
                 } else if ("status".equals(fieldName)) {

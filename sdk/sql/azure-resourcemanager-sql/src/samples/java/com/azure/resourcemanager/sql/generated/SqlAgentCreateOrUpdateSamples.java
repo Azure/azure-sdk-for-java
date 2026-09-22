@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.SqlAgentConfigurationPropertiesState
  */
 public final class SqlAgentCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SqlAgentConfigurationPut.json
+     * x-ms-original-file: 2025-01-01/SqlAgentConfigurationPut.json
      */
     /**
      * Sample code: Puts new sql agent configuration to instance.

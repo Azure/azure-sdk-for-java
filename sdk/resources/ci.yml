@@ -10,11 +10,17 @@ trigger:
     include:
       - sdk/resources/ci.yml
       - sdk/resources/azure-resourcemanager-resources/
+      - sdk/resources/azure-resourcemanager-resources-bicep/
+      - sdk/resources/azure-resourcemanager-resources-deployments/
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/
+      - sdk/resources/azure-resourcemanager-resources-policy/
     exclude:
       - sdk/resources/pom.xml
       - sdk/resources/azure-resourcemanager-resources/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-bicep/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-deployments/pom.xml
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-policy/pom.xml
 
 pr:
   branches:
@@ -27,11 +33,17 @@ pr:
     include:
       - sdk/resources/ci.yml
       - sdk/resources/azure-resourcemanager-resources/
+      - sdk/resources/azure-resourcemanager-resources-bicep/
+      - sdk/resources/azure-resourcemanager-resources-deployments/
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/
+      - sdk/resources/azure-resourcemanager-resources-policy/
     exclude:
       - sdk/resources/pom.xml
       - sdk/resources/azure-resourcemanager-resources/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-bicep/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-deployments/pom.xml
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-policy/pom.xml
 
 parameters:
   - name: release_azureresourcemanagerresources
@@ -44,6 +56,14 @@ parameters:
     default: false
   - name: release_azureresourcemanagerresourcesbicep
     displayName: azure-resourcemanager-resources-bicep
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagerresourcesdeployments
+    displayName: azure-resourcemanager-resources-deployments
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagerresourcespolicy
+    displayName: azure-resourcemanager-resources-policy
     type: boolean
     default: false
 
@@ -64,3 +84,11 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresourcesbicep
         releaseInBatch: ${{ parameters.release_azureresourcemanagerresourcesbicep }}
+      - name: azure-resourcemanager-resources-deployments
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresourcesdeployments
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerresourcesdeployments }}
+      - name: azure-resourcemanager-resources-policy
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresourcespolicy
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerresourcespolicy }}

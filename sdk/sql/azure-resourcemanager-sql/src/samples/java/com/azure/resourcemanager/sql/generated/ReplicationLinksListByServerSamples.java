@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ReplicationLinksListByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ReplicationLinkListByServer.json
+     * x-ms-original-file: 2025-01-01/ReplicationLinkListByServer.json
      */
     /**
      * Sample code: List replication links on server.

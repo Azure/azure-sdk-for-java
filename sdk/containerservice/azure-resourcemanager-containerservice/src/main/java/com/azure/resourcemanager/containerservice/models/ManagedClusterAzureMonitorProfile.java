@@ -24,8 +24,8 @@ public final class ManagedClusterAzureMonitorProfile implements JsonSerializable
     private ManagedClusterAzureMonitorProfileMetrics metrics;
 
     /*
-     * Azure Monitor Container Insights Profile for Kubernetes Events, Inventory and Container stdout & stderr logs etc.
-     * See aka.ms/AzureMonitorContainerInsights for an overview.
+     * Set this to enable and configure Azure Monitor Container Insights for the cluster, which collects Kubernetes
+     * events, inventory, and container stdout & stderr logs. See aka.ms/AzureMonitorContainerInsights for an overview.
      */
     private ManagedClusterAzureMonitorProfileContainerInsights containerInsights;
 
@@ -67,8 +67,9 @@ public final class ManagedClusterAzureMonitorProfile implements JsonSerializable
     }
 
     /**
-     * Get the containerInsights property: Azure Monitor Container Insights Profile for Kubernetes Events, Inventory and
-     * Container stdout &amp; stderr logs etc. See aka.ms/AzureMonitorContainerInsights for an overview.
+     * Get the containerInsights property: Set this to enable and configure Azure Monitor Container Insights for the
+     * cluster, which collects Kubernetes events, inventory, and container stdout &amp; stderr logs. See
+     * aka.ms/AzureMonitorContainerInsights for an overview.
      * 
      * @return the containerInsights value.
      */
@@ -77,8 +78,9 @@ public final class ManagedClusterAzureMonitorProfile implements JsonSerializable
     }
 
     /**
-     * Set the containerInsights property: Azure Monitor Container Insights Profile for Kubernetes Events, Inventory and
-     * Container stdout &amp; stderr logs etc. See aka.ms/AzureMonitorContainerInsights for an overview.
+     * Set the containerInsights property: Set this to enable and configure Azure Monitor Container Insights for the
+     * cluster, which collects Kubernetes events, inventory, and container stdout &amp; stderr logs. See
+     * aka.ms/AzureMonitorContainerInsights for an overview.
      * 
      * @param containerInsights the containerInsights value to set.
      * @return the ManagedClusterAzureMonitorProfile object itself.

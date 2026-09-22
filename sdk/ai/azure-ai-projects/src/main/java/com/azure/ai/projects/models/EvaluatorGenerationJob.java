@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 /**
  * Evaluator Generation Job resource — a long-running job that generates rubric-based evaluator definitions from source
@@ -218,11 +219,35 @@ public final class EvaluatorGenerationJob implements JsonSerializable<EvaluatorG
                     deserializedEvaluatorGenerationJob.finishedAt = reader.getNullable(JsonReader::getLong);
                 } else if ("usage".equals(fieldName)) {
                     deserializedEvaluatorGenerationJob.usage = EvaluatorGenerationTokenUsage.fromJson(reader);
+                } else if ("input_quality_warnings".equals(fieldName)) {
+                    List<RubricGenerationInputQualityWarning> inputQualityWarnings
+                        = reader.readArray(reader1 -> RubricGenerationInputQualityWarning.fromJson(reader1));
+                    deserializedEvaluatorGenerationJob.inputQualityWarnings = inputQualityWarnings;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedEvaluatorGenerationJob;
         });
+    }
+
+    /*
+     * Non-fatal input-quality advisories produced by the generation pipeline. Read-only; service-generated; populated
+     * only on terminal jobs when advisories fired. Omitted when generation was clean. Cleared when a subsequent `PATCH`
+     * to the paired `EvaluatorVersion.definition` invalidates the advisories.
+     */
+    @Generated
+    private List<RubricGenerationInputQualityWarning> inputQualityWarnings;
+
+    /**
+     * Get the inputQualityWarnings property: Non-fatal input-quality advisories produced by the generation pipeline.
+     * Read-only; service-generated; populated only on terminal jobs when advisories fired. Omitted when generation was
+     * clean. Cleared when a subsequent `PATCH` to the paired `EvaluatorVersion.definition` invalidates the advisories.
+     *
+     * @return the inputQualityWarnings value.
+     */
+    @Generated
+    public List<RubricGenerationInputQualityWarning> getInputQualityWarnings() {
+        return this.inputQualityWarnings;
     }
 }

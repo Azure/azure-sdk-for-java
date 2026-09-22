@@ -88,6 +88,13 @@ public final class FrontendIpConfigurationPropertiesFormatInner
      */
     private DdosFrontendIpConfigurationSettings ddosSettings;
 
+    /*
+     * Enables UDP flow tracking for traffic associated with the frontend IP configuration. When enabled, packets
+     * belonging to the same UDP flow are consistently directed to the same backend instance. This setting applies to
+     * all associated load balancing rules and takes precedence over rule-level enableConnectionTracking settings.
+     */
+    private Boolean enableConnectionTracking;
+
     /**
      * Creates an instance of FrontendIpConfigurationPropertiesFormatInner class.
      */
@@ -304,6 +311,32 @@ public final class FrontendIpConfigurationPropertiesFormatInner
     }
 
     /**
+     * Get the enableConnectionTracking property: Enables UDP flow tracking for traffic associated with the frontend IP
+     * configuration. When enabled, packets belonging to the same UDP flow are consistently directed to the same backend
+     * instance. This setting applies to all associated load balancing rules and takes precedence over rule-level
+     * enableConnectionTracking settings.
+     * 
+     * @return the enableConnectionTracking value.
+     */
+    public Boolean enableConnectionTracking() {
+        return this.enableConnectionTracking;
+    }
+
+    /**
+     * Set the enableConnectionTracking property: Enables UDP flow tracking for traffic associated with the frontend IP
+     * configuration. When enabled, packets belonging to the same UDP flow are consistently directed to the same backend
+     * instance. This setting applies to all associated load balancing rules and takes precedence over rule-level
+     * enableConnectionTracking settings.
+     * 
+     * @param enableConnectionTracking the enableConnectionTracking value to set.
+     * @return the FrontendIpConfigurationPropertiesFormatInner object itself.
+     */
+    public FrontendIpConfigurationPropertiesFormatInner withEnableConnectionTracking(Boolean enableConnectionTracking) {
+        this.enableConnectionTracking = enableConnectionTracking;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -336,6 +369,7 @@ public final class FrontendIpConfigurationPropertiesFormatInner
         jsonWriter.writeJsonField("publicIPPrefix", this.publicIPPrefix);
         jsonWriter.writeJsonField("gatewayLoadBalancer", this.gatewayLoadBalancer);
         jsonWriter.writeJsonField("ddosSettings", this.ddosSettings);
+        jsonWriter.writeBooleanField("enableConnectionTracking", this.enableConnectionTracking);
         return jsonWriter.writeEndObject();
     }
 
@@ -392,6 +426,9 @@ public final class FrontendIpConfigurationPropertiesFormatInner
                 } else if ("ddosSettings".equals(fieldName)) {
                     deserializedFrontendIpConfigurationPropertiesFormatInner.ddosSettings
                         = DdosFrontendIpConfigurationSettings.fromJson(reader);
+                } else if ("enableConnectionTracking".equals(fieldName)) {
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.enableConnectionTracking
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

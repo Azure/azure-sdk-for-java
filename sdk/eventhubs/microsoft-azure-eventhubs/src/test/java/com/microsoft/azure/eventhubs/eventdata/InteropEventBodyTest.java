@@ -20,10 +20,10 @@ import org.apache.qpid.proton.amqp.messaging.AmqpSequence;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.message.Message;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -43,7 +43,7 @@ public class InteropEventBodyTest extends ApiTestBase {
     private static EventData receivedEvent;
     private static EventData reSentAndReceivedEvent;
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws EventHubException, IOException, InterruptedException, ExecutionException {
         final ConnectionStringBuilder connStrBuilder = TestContext.getConnectionString();
         final String connectionString = connStrBuilder.toString();
@@ -62,7 +62,7 @@ public class InteropEventBodyTest extends ApiTestBase {
         } while (clockSkewEvents != null && clockSkewEvents.iterator().hasNext());
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanup() throws EventHubException {
         if (partitionMsgSender != null) {
             partitionMsgSender.closeSync();
@@ -93,13 +93,13 @@ public class InteropEventBodyTest extends ApiTestBase {
         partitionMsgSender.send(originalMessage).get();
         receivedEvent = receiver.receiveSync(10).iterator().next();
 
-        Assert.assertEquals(payload, receivedEvent.getObject());
-        Assert.assertEquals(receivedEvent.getBytes(), null);
+        Assertions.assertEquals(payload, receivedEvent.getObject());
+        Assertions.assertEquals(receivedEvent.getBytes(), null);
 
         partitionSender.sendSync(receivedEvent);
         reSentAndReceivedEvent = receiver.receiveSync(10).iterator().next();
-        Assert.assertEquals(payload, reSentAndReceivedEvent.getObject());
-        Assert.assertNull(reSentAndReceivedEvent.getBytes());
+        Assertions.assertEquals(payload, reSentAndReceivedEvent.getObject());
+        Assertions.assertNull(reSentAndReceivedEvent.getBytes());
     }
 
     @SuppressWarnings("unchecked")
@@ -114,12 +114,12 @@ public class InteropEventBodyTest extends ApiTestBase {
         partitionMsgSender.send(originalMessage).get();
         receivedEvent = receiver.receiveSync(10).iterator().next();
 
-        Assert.assertEquals(payload, new String(((List<Data>) receivedEvent.getObject()).get(0).getValue().getArray()));
-        Assert.assertEquals(receivedEvent.getBytes(), null);
+        Assertions.assertEquals(payload, new String(((List<Data>) receivedEvent.getObject()).get(0).getValue().getArray()));
+        Assertions.assertEquals(receivedEvent.getBytes(), null);
 
         partitionSender.sendSync(receivedEvent);
         reSentAndReceivedEvent = receiver.receiveSync(10).iterator().next();
-        Assert.assertEquals(payload, new String(((List<Data>) reSentAndReceivedEvent.getObject()).get(0).getValue().getArray()));
-        Assert.assertArrayEquals(reSentAndReceivedEvent.getBytes(), null);
+        Assertions.assertEquals(payload, new String(((List<Data>) reSentAndReceivedEvent.getObject()).get(0).getValue().getArray()));
+        Assertions.assertArrayEquals(reSentAndReceivedEvent.getBytes(), null);
     }
 }

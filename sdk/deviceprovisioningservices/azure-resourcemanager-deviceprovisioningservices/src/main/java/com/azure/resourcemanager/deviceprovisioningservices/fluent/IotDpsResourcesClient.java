@@ -67,8 +67,8 @@ public interface IotDpsResourcesClient {
     /**
      * Get the metadata of the provisioning service without SAS keys.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
@@ -77,14 +77,14 @@ public interface IotDpsResourcesClient {
      * @return the metadata of the provisioning service without SAS keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProvisioningServiceDescriptionInner> getByResourceGroupWithResponse(String provisioningServiceName,
-        String resourceGroupName, Context context);
+    Response<ProvisioningServiceDescriptionInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String provisioningServiceName, Context context);
 
     /**
      * Get the metadata of the provisioning service without SAS keys.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
@@ -92,7 +92,7 @@ public interface IotDpsResourcesClient {
      * @return the metadata of the provisioning service without SAS keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProvisioningServiceDescriptionInner getByResourceGroup(String provisioningServiceName, String resourceGroupName);
+    ProvisioningServiceDescriptionInner getByResourceGroup(String resourceGroupName, String provisioningServiceName);
 
     /**
      * Create or update the metadata of the provisioning service. The usual pattern to modify a property is to retrieve
@@ -236,8 +236,8 @@ public interface IotDpsResourcesClient {
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
@@ -245,13 +245,13 @@ public interface IotDpsResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String provisioningServiceName, String resourceGroupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String provisioningServiceName);
 
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
@@ -260,27 +260,27 @@ public interface IotDpsResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String provisioningServiceName, String resourceGroupName,
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String provisioningServiceName,
         Context context);
 
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String provisioningServiceName, String resourceGroupName);
+    void delete(String resourceGroupName, String provisioningServiceName);
 
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
@@ -288,7 +288,7 @@ public interface IotDpsResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String provisioningServiceName, String resourceGroupName, Context context);
+    void delete(String resourceGroupName, String provisioningServiceName, Context context);
 
     /**
      * Get a list of all provisioning services in the given resource group.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class FailoverGroupsFailoverSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/FailoverGroupFailover.json
+     * x-ms-original-file: 2025-01-01/FailoverGroupFailover.json
      */
     /**
      * Sample code: Planned failover of a failover group.

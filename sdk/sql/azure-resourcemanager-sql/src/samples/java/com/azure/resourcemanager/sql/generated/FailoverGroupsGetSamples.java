@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class FailoverGroupsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/FailoverGroupGet.json
+     * x-ms-original-file: 2025-01-01/FailoverGroupGet.json
      */
     /**
      * Sample code: Get failover group.

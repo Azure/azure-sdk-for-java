@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class GalleryApplicationsListByGallerySamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryApplication_ListByGallery.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryApplication_ListByGallery.json
      */
     /**
      * Sample code: List gallery Applications in a gallery.

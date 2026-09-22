@@ -35,9 +35,11 @@ import com.azure.resourcemanager.quota.fluent.GroupQuotaSubscriptionRequestsClie
 import com.azure.resourcemanager.quota.fluent.GroupQuotaSubscriptionsClient;
 import com.azure.resourcemanager.quota.fluent.GroupQuotaUsagesClient;
 import com.azure.resourcemanager.quota.fluent.GroupQuotasClient;
+import com.azure.resourcemanager.quota.fluent.IncomingQuotaTransfersClient;
 import com.azure.resourcemanager.quota.fluent.QuotaManagementClient;
 import com.azure.resourcemanager.quota.fluent.QuotaOperationsClient;
 import com.azure.resourcemanager.quota.fluent.QuotaRequestStatusClient;
+import com.azure.resourcemanager.quota.fluent.QuotaTransfersClient;
 import com.azure.resourcemanager.quota.fluent.QuotasClient;
 import com.azure.resourcemanager.quota.fluent.UsagesClient;
 import java.io.IOException;
@@ -164,6 +166,34 @@ public final class QuotaManagementClientImpl implements QuotaManagementClient {
      */
     public QuotaRequestStatusClient getQuotaRequestStatus() {
         return this.quotaRequestStatus;
+    }
+
+    /**
+     * The QuotaTransfersClient object to access its operations.
+     */
+    private final QuotaTransfersClient quotaTransfers;
+
+    /**
+     * Gets the QuotaTransfersClient object to access its operations.
+     * 
+     * @return the QuotaTransfersClient object.
+     */
+    public QuotaTransfersClient getQuotaTransfers() {
+        return this.quotaTransfers;
+    }
+
+    /**
+     * The IncomingQuotaTransfersClient object to access its operations.
+     */
+    private final IncomingQuotaTransfersClient incomingQuotaTransfers;
+
+    /**
+     * Gets the IncomingQuotaTransfersClient object to access its operations.
+     * 
+     * @return the IncomingQuotaTransfersClient object.
+     */
+    public IncomingQuotaTransfersClient getIncomingQuotaTransfers() {
+        return this.incomingQuotaTransfers;
     }
 
     /**
@@ -337,9 +367,11 @@ public final class QuotaManagementClientImpl implements QuotaManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-09-01";
+        this.apiVersion = "2026-09-01-preview";
         this.quotaOperations = new QuotaOperationsClientImpl(this);
         this.quotaRequestStatus = new QuotaRequestStatusClientImpl(this);
+        this.quotaTransfers = new QuotaTransfersClientImpl(this);
+        this.incomingQuotaTransfers = new IncomingQuotaTransfersClientImpl(this);
         this.groupQuotas = new GroupQuotasClientImpl(this);
         this.groupQuotaLimitsRequests = new GroupQuotaLimitsRequestsClientImpl(this);
         this.groupQuotaUsages = new GroupQuotaUsagesClientImpl(this);

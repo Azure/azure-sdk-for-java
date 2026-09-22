@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ReplicaType;
  */
 public final class ManagedInstancesFailoverSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/FailoverManagedInstance.json
+     * x-ms-original-file: 2025-01-01/FailoverManagedInstance.json
      */
     /**
      * Sample code: Failover a managed instance.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.quota.generated;
  */
 public final class UsagesGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/getNetworkOneSkuUsages.json
+     * x-ms-original-file: 2026-09-01-preview/getNetworkOneSkuUsages.json
      */
     /**
      * Sample code: Quotas_UsagesRequest_ForNetwork.
@@ -24,7 +24,7 @@ public final class UsagesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/getComputeOneSkuUsages.json
+     * x-ms-original-file: 2026-09-01-preview/getComputeOneSkuUsages.json
      */
     /**
      * Sample code: Quotas_UsagesRequest_ForCompute.

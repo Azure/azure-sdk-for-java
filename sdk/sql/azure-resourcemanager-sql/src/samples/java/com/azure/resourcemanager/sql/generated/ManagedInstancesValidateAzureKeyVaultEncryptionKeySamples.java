@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ManagedInstanceValidateAzureKeyVault
  */
 public final class ManagedInstancesValidateAzureKeyVaultEncryptionKeySamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstancValidateAzureKeyVaultEncryptionKey.json
+     * x-ms-original-file: 2025-01-01/ManagedInstancValidateAzureKeyVaultEncryptionKey.json
      */
     /**
      * Sample code: Validate the customer managed key.

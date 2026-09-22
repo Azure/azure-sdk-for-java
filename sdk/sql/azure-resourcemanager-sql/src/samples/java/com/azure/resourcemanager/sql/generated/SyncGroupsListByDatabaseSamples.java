@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SyncGroupsListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SyncGroupListByDatabase.json
+     * x-ms-original-file: 2025-01-01/SyncGroupListByDatabase.json
      */
     /**
      * Sample code: List sync groups under a given database.

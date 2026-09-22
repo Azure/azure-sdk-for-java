@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ChangeLongTermRetentionBackupAccessT
  */
 public final class LongTermRetentionBackupsChangeAccessTierSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ChangeLongTermRetentionBackupAccessTier.json
+     * x-ms-original-file: 2025-01-01/ChangeLongTermRetentionBackupAccessTier.json
      */
     /**
      * Sample code: Change the long term retention backup storage access tier.

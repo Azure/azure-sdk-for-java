@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public final class DatabasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseConfiguredBackupStorageRedundancy.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseConfiguredBackupStorageRedundancy.json
      */
     /**
      * Sample code: Creates a database with specified backup storage redundancy.
@@ -42,7 +42,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseWithEncryptionProtectorAutoRotation.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseWithEncryptionProtectorAutoRotation.json
      */
     /**
      * Sample code: Creates a database with encryption protector auto rotation.
@@ -68,7 +68,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseVBSEnclave.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseVBSEnclave.json
      */
     /**
      * Sample code: Creates a database with VBS enclave type.
@@ -85,7 +85,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseDefaultMode.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseDefaultMode.json
      */
     /**
      * Sample code: Creates a database with default mode.
@@ -105,7 +105,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseMin.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseMin.json
      */
     /**
      * Sample code: Creates a database with minimum number of parameters.
@@ -121,7 +121,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateVCoreDatabaseByServiceObjective.json
+     * x-ms-original-file: 2025-01-01/CreateVCoreDatabaseByServiceObjective.json
      */
     /**
      * Sample code: Creates a VCore database by specifying service objective name.
@@ -139,7 +139,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseStandbyMode.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseStandbyMode.json
      */
     /**
      * Sample code: Creates a database as a standby secondary.
@@ -159,7 +159,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDwDatabaseCrossSubscriptionRecovery.json
+     * x-ms-original-file: 2025-01-01/CreateDwDatabaseCrossSubscriptionRecovery.json
      */
     /**
      * Sample code: Creates a data warehouse database as a cross-subscription restore from a geo-backup.
@@ -178,8 +178,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * 2025-02-01-preview/CreateDatabaseDefaultModeWithVersionlessKeysAndVersionlessEncryptionProtector.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseDefaultModeWithVersionlessKeysAndVersionlessEncryptionProtector.json
      */
     /**
      * Sample code: Creates a database with database-level versionless customer managed keys.
@@ -207,7 +206,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/UpdateDatabaseHyperscaleMigrationPerformCutover.json
+     * x-ms-original-file: 2025-01-01/UpdateDatabaseHyperscaleMigrationPerformCutover.json
      */
     /**
      * Sample code: Updates a database to Hyperscale tier by triggering manual cutover during Migration workflow.
@@ -230,7 +229,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseMaintenanceConfiguration.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseMaintenanceConfiguration.json
      */
     /**
      * Sample code: Creates a database with preferred maintenance window.
@@ -253,7 +252,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseCopyMode.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseCopyMode.json
      */
     /**
      * Sample code: Creates a database as a copy.
@@ -273,7 +272,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseLedger.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseLedger.json
      */
     /**
      * Sample code: Creates a database with ledger on.
@@ -289,7 +288,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabasePITRMode.json
+     * x-ms-original-file: 2025-01-01/CreateDatabasePITRMode.json
      */
     /**
      * Sample code: Creates a database from PointInTimeRestore.
@@ -309,7 +308,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseWithAvailabilityZone.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseWithAvailabilityZone.json
      */
     /**
      * Sample code: Creates a database with availability zone specified.
@@ -331,7 +330,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseDefaultEnclave.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseDefaultEnclave.json
      */
     /**
      * Sample code: Creates a database with Default enclave type.
@@ -348,7 +347,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/UpdateDatabaseHyperscaleMigrationWithManualCutover.json
+     * x-ms-original-file: 2025-01-01/UpdateDatabaseHyperscaleMigrationWithManualCutover.json
      */
     /**
      * Sample code: Updates a database to Hyperscale SLO with manual cutover.
@@ -372,7 +371,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDwDatabaseCrossSubscriptionPITR.json
+     * x-ms-original-file: 2025-01-01/CreateDwDatabaseCrossSubscriptionPITR.json
      */
     /**
      * Sample code: Creates a data warehouse database as a cross-subscription restore from a restore point of an
@@ -394,7 +393,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseDefaultModeWithKeysAndEncryptionProtector.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseDefaultModeWithKeysAndEncryptionProtector.json
      */
     /**
      * Sample code: Creates a database with database-level customer managed keys.
@@ -422,7 +421,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseNamedReplica.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseNamedReplica.json
      */
     /**
      * Sample code: Creates a database as named replica secondary.
@@ -442,7 +441,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDwDatabaseCrossSubscriptionRestore.json
+     * x-ms-original-file: 2025-01-01/CreateDwDatabaseCrossSubscriptionRestore.json
      */
     /**
      * Sample code: Creates a data warehouse database as a cross-subscription restore from a backup of a dropped
@@ -463,7 +462,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateVCoreDatabaseBySkuNameCapacity.json
+     * x-ms-original-file: 2025-01-01/CreateVCoreDatabaseBySkuNameCapacity.json
      */
     /**
      * Sample code: Creates a VCore database by specifying sku name and capacity.
@@ -481,7 +480,7 @@ public final class DatabasesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateDatabaseSecondaryMode.json
+     * x-ms-original-file: 2025-01-01/CreateDatabaseSecondaryMode.json
      */
     /**
      * Sample code: Creates a database as an on-line secondary.

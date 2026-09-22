@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class RestorePointsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DataWarehouseRestorePointsGet.json
+     * x-ms-original-file: 2025-01-01/DataWarehouseRestorePointsGet.json
      */
     /**
      * Sample code: Gets a datawarehouse database restore point.
@@ -24,7 +24,7 @@ public final class RestorePointsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/DatabaseRestorePointsGet.json
+     * x-ms-original-file: 2025-01-01/DatabaseRestorePointsGet.json
      */
     /**
      * Sample code: Gets a database restore point.

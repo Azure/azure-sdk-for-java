@@ -15,6 +15,6 @@ public final class GlossaryListTests extends DataMapClientTestBase {
     @Disabled
     public void testGlossaryListTests() {
         // method invocation
-        List<AtlasGlossary> response = glossaryClient.batchGet(1, 0, "ASC", null);
+        List<AtlasGlossary> response = glossaryClient.batchGet(1, 0, "ASC", (Boolean) null);
     }
 }

@@ -13,22 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ThrottlingMetricTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ThrottlingMetric model = BinaryData
-            .fromString("{\"type\":\"NotSpecified\",\"limit\":482662408665248434,\"interval\":\"PT148H50M33S\"}")
+        ThrottlingMetric model = BinaryData.fromString(
+            "{\"type\":\"NotSpecified\",\"limit\":6391011597727383907,\"interval\":\"PT35H4M48S\",\"bucketSize\":\"fjaeq\"}")
             .toObject(ThrottlingMetric.class);
         Assertions.assertEquals(ThrottlingMetricType.NOT_SPECIFIED, model.type());
-        Assertions.assertEquals(482662408665248434L, model.limit());
-        Assertions.assertEquals(Duration.parse("PT148H50M33S"), model.interval());
+        Assertions.assertEquals(6391011597727383907L, model.limit());
+        Assertions.assertEquals(Duration.parse("PT35H4M48S"), model.interval());
+        Assertions.assertEquals("fjaeq", model.bucketSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ThrottlingMetric model = new ThrottlingMetric().withType(ThrottlingMetricType.NOT_SPECIFIED)
-            .withLimit(482662408665248434L)
-            .withInterval(Duration.parse("PT148H50M33S"));
+            .withLimit(6391011597727383907L)
+            .withInterval(Duration.parse("PT35H4M48S"))
+            .withBucketSize("fjaeq");
         model = BinaryData.fromObject(model).toObject(ThrottlingMetric.class);
         Assertions.assertEquals(ThrottlingMetricType.NOT_SPECIFIED, model.type());
-        Assertions.assertEquals(482662408665248434L, model.limit());
-        Assertions.assertEquals(Duration.parse("PT148H50M33S"), model.interval());
+        Assertions.assertEquals(6391011597727383907L, model.limit());
+        Assertions.assertEquals(Duration.parse("PT35H4M48S"), model.interval());
+        Assertions.assertEquals("fjaeq", model.bucketSize());
     }
 }

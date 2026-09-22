@@ -12,10 +12,12 @@ import java.util.Objects;
 
 /**
  * Helper class to control the lifecycle of a {@link ServiceBusProcessorClient}.
- * This class implements {@code SmartLifecycle} to auto start {@link ServiceBusProcessorClient} when the Spring Application Context starts,
- * And stop the {@link ServiceBusProcessorClient} when the Spring Application Context stops.
- * NOTE, there is not need to call {@link #start()} or {@link #stop()} explicitly, as the {@link ServiceBusProcessorClient} will be started and stopped automatically.
- * And since the {@link ServiceBusProcessorClient} is a {@link AutoCloseable}, there is no need to call {@link ServiceBusProcessorClient#close()} explicitly.
+ * This class implements {@code SmartLifecycle} to automatically start {@link ServiceBusProcessorClient} when the
+ * Spring Application Context starts and stops it when the Spring Application Context stops.
+ * NOTE: There is no need to call {@link #start()} or {@link #stop()} explicitly, as the
+ * {@link ServiceBusProcessorClient} will be started and stopped automatically.
+ * Since {@link ServiceBusProcessorClient} is {@link AutoCloseable}, there is no need to call
+ * {@link ServiceBusProcessorClient#close()} explicitly.
  */
 public class ServiceBusProcessorClientLifecycleManager implements SmartLifecycle {
     private final Logger logger = LoggerFactory.getLogger(ServiceBusProcessorClientLifecycleManager.class);

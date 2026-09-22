@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.RecommendedSensitivityLabelSource;
  */
 public final class SensitivityLabelsEnableRecommendationSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/RecommendedColumnSensitivityLabelEnable.json
+     * x-ms-original-file: 2025-01-01/RecommendedColumnSensitivityLabelEnable.json
      */
     /**
      * Sample code: Enables sensitivity recommendations on a given column.

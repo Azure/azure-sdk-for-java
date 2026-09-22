@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SynapseLinkWorkspacesListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SynapseLinkWorkspaceListByDatabase.json
+     * x-ms-original-file: 2025-01-01/SynapseLinkWorkspaceListByDatabase.json
      */
     /**
      * Sample code: List all synapselink workspaces for the given database.

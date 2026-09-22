@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ExtendedDatabaseBlobAuditingPoliciesListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DatabaseExtendedAuditingSettingsList.json
+     * x-ms-original-file: 2025-01-01/DatabaseExtendedAuditingSettingsList.json
      */
     /**
      * Sample code: List extended auditing settings of a database.

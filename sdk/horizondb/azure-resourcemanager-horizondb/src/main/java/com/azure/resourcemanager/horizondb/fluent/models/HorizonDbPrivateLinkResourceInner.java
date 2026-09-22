@@ -14,7 +14,7 @@ import com.azure.resourcemanager.horizondb.models.PrivateLinkResourceProperties;
 import java.io.IOException;
 
 /**
- * Represents the HorizonDb private link resource.
+ * Represents the HorizonDB private link resource.
  */
 @Immutable
 public final class HorizonDbPrivateLinkResourceInner extends ProxyResource {

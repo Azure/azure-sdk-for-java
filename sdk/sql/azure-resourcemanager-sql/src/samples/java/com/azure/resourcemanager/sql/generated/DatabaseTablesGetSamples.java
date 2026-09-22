@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DatabaseTablesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DatabaseTableGet.json
+     * x-ms-original-file: 2025-01-01/DatabaseTableGet.json
      */
     /**
      * Sample code: Get database table.

@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 public final class JobStepExecutionsListByJobExecutionSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListJobExecutionSteps.json
+     * x-ms-original-file: 2025-01-01/ListJobExecutionSteps.json
      */
     /**
      * Sample code: List job step executions.

@@ -46,7 +46,7 @@ import java.util.stream.Stream;
 public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
 
     // ===== test_realtime_service_tool_call =====
-    // Python: models=[gpt-realtime, gpt-4o], api_versions=[2025-10-01, 2026-04-10]
+    // Python: models=[gpt-realtime, gpt-4o], api_versions=[2025-10-01, 2026-07-15]
     // Uses _get_speech_recognition_setting(model), audio=4-1.wav, tool=assess_pronunciation
     // Voice: AzureStandardVoice("en-US-AriaNeural")
 
@@ -162,7 +162,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     // ===== test_realtime_service_tool_choice =====
     // Python: models=[gpt-realtime, gpt-4o, gpt-5-chat], skip if "realtime" in model
     //   -> effective models: [gpt-4o, gpt-5-chat]
-    // api_versions=[2025-10-01, 2026-04-10]
+    // api_versions=[2025-10-01, 2026-07-15]
     // Uses azure-speech + ServerVad, audio=ask_weather.wav
     // Tools: get_weather, get_time. ToolChoice: get_time
     // Assert: function_done.name == "get_time", arguments contains Beijing
@@ -255,7 +255,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     // ===== test_realtime_service_tool_call_parameter =====
     // Python: models=[gpt-realtime, gpt-4.1, gpt-5, gpt-5.1, gpt-5.2, phi4-mm-realtime],
     //   skip if "realtime" in model -> effective models: [gpt-4.1, gpt-5]
-    // api_versions=[2025-10-01, 2026-04-10]
+    // api_versions=[2025-10-01, 2026-07-15]
     // Uses azure-speech + ServerVad, audio=ask_weather.wav
     // Tool: get_weather. Full tool call flow: get function call -> send tool output -> get transcript
     // Assert: transcript contains "sunny" or chinese equivalent, and "25"
@@ -393,7 +393,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     }
 
     // ===== test_realtime_service_live_session_update =====
-    // Python: model=[gpt-realtime], api_versions=[2025-10-01, 2026-04-10]
+    // Python: model=[gpt-realtime], api_versions=[2025-10-01, 2026-07-15]
     // Two-phase test:
     //   Phase 1: Session without tools -> send audio -> expect no function call in response
     //   Phase 2: New session with tools -> send audio -> expect function call

@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
  */
 public final class JobExecutionsListByAgentSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListJobExecutionsByAgent.json
+     * x-ms-original-file: 2025-01-01/ListJobExecutionsByAgent.json
      */
     /**
      * Sample code: List all job executions in a job agent.
@@ -26,7 +26,7 @@ public final class JobExecutionsListByAgentSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListJobExecutionsByAgentWithFilter.json
+     * x-ms-original-file: 2025-01-01/ListJobExecutionsByAgentWithFilter.json
      */
     /**
      * Sample code: List all job executions in a job agent with filtering.

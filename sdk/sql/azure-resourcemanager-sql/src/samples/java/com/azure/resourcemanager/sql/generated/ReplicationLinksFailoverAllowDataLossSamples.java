@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ReplicationLinksFailoverAllowDataLossSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ReplicationLinkFailoverAllowDataLoss.json
+     * x-ms-original-file: 2025-01-01/ReplicationLinkFailoverAllowDataLoss.json
      */
     /**
      * Sample code: Forced failover of a replication link.

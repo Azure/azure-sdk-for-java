@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ManagedDatabaseMoveDefinition;
  */
 public final class ManagedDatabasesCompleteMoveSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseCompleteMove.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseCompleteMove.json
      */
     /**
      * Sample code: Completes a managed database move.

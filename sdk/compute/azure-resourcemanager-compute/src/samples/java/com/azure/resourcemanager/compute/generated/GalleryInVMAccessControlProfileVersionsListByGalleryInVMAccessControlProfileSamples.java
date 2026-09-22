@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class GalleryInVMAccessControlProfileVersionsListByGalleryInVMAccessControlProfileSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryResourceProfileExamples/
+     * x-ms-original-file: 2025-12-03/galleryResourceProfileExamples/
      * GalleryInVMAccessControlProfileVersion_ListByGalleryInVMAccessControlProfile.json
      */
     /**

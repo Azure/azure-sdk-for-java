@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
  */
 public final class GalleryScriptsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryScriptExamples/GalleryScript_Update.json
+     * x-ms-original-file: 2025-12-03/galleryScriptExamples/GalleryScript_Update.json
      */
     /**
      * Sample code: Update a simple gallery Script.

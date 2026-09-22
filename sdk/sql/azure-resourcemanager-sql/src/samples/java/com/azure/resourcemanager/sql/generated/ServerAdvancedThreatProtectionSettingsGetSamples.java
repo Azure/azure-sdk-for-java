@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.AdvancedThreatProtectionName;
  */
 public final class ServerAdvancedThreatProtectionSettingsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerAdvancedThreatProtectionSettingsGet.json
+     * x-ms-original-file: 2025-01-01/ServerAdvancedThreatProtectionSettingsGet.json
      */
     /**
      * Sample code: Get a server's Advanced Threat Protection settings.

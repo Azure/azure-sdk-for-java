@@ -15,7 +15,7 @@ import java.util.UUID;
  */
 public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ExtendedDatabaseBlobAuditingCreateMin.json
+     * x-ms-original-file: 2025-01-01/ExtendedDatabaseBlobAuditingCreateMin.json
      */
     /**
      * Sample code: Create or update an extended database's blob auditing policy with minimal parameters.
@@ -35,7 +35,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ExtendedDatabaseBlobAuditingCreateMax.json
+     * x-ms-original-file: 2025-01-01/ExtendedDatabaseBlobAuditingCreateMax.json
      */
     /**
      * Sample code: Create or update an extended database's blob auditing policy with all parameters.
@@ -63,7 +63,7 @@ public final class ExtendedDatabaseBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ExtendedDatabaseAzureMonitorAuditingCreateMin.json
+     * x-ms-original-file: 2025-01-01/ExtendedDatabaseAzureMonitorAuditingCreateMin.json
      */
     /**
      * Sample code: Create or update an extended database's azure monitor auditing policy with minimal parameters.

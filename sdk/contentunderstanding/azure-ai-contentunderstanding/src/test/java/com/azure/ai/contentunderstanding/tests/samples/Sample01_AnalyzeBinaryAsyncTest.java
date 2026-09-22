@@ -5,6 +5,7 @@
 package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.AnalyzeBinaryOptions;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.LlmInputHelper;
@@ -13,6 +14,7 @@ import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.DocumentTableCell;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,7 @@ import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -63,14 +66,11 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
 
         // Use reactive pattern: chain operations using flatMap
         // In a real application, you would use subscribe() instead of block()
-        AnalysisResult result = operation.last().flatMap(pollResponse -> {
-            if (pollResponse.getStatus().isComplete()) {
-                return pollResponse.getFinalResult();
-            } else {
-                return Mono.error(
-                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-            }
-        }).block(); // block() is used here for testing; in production, use subscribe()
+        ContentAnalyzerAnalyzeOperationStatus operationStatus = operation.last()
+            .flatMap(pollResponse -> pollResponse.getFinalResult().thenReturn(pollResponse.getValue()))
+            .block(); // block() is used here for testing; in production, use subscribe()
+        AnalysisResult result = operationStatus.getResult();
+        UsageDetails usage = operationStatus.getUsage();
         // END:ContentUnderstandingAnalyzeBinaryAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryAsync
@@ -80,6 +80,7 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         assertTrue(fileBytes.length > 0, "File should not be empty");
         assertNotNull(binaryData, "Binary data should not be null");
         assertNotNull(operation, "Analysis operation should not be null");
+        assertNotNull(usage, "Terminal operation status should retain usage details");
         System.out.println("Analysis operation properties verified");
 
         assertNotNull(result, "Analysis result should not be null");
@@ -109,16 +110,11 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         assertEquals(1, result.getContents().size(), "PDF file should have exactly one content element");
         assertNotNull(content, "Content should not be null");
         assertTrue(content instanceof AnalysisContent, "Content should be of type AnalysisContent");
-
-        // Only validate markdown content if we have a real file
-        if (hasRealFile && content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
-            assertFalse(content.getMarkdown().trim().isEmpty(), "Markdown content should not be just whitespace");
-            System.out
-                .println("Markdown content extracted successfully (" + content.getMarkdown().length() + " characters)");
-        } else {
-            System.out
-                .println("⚠️ Skipping markdown content validation (using minimal test PDF or no markdown available)");
-        }
+        assertInstanceOf(DocumentContent.class, content, "PDF analysis should return DocumentContent");
+        assertNotNull(content.getMarkdown(), "Markdown content should not be null");
+        assertFalse(content.getMarkdown().trim().isEmpty(), "Markdown content should not be blank");
+        System.out
+            .println("Markdown content extracted successfully (" + content.getMarkdown().length() + " characters)");
         // END:Assertion_ContentUnderstandingExtractMarkdown
 
         // BEGIN:ContentUnderstandingAccessDocumentProperties
@@ -278,7 +274,7 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         // BEGIN:Assertion_ContentUnderstandingConvertToLlmInputAsync
         assertNotNull(llmText, "LLM input text should not be null");
         assertTrue(llmText.startsWith("---\n"));
-        assertTrue(llmText.contains("contentType: document"));
+        assertTrue(llmText.contains("mimeType: application/pdf"));
         System.out.println("LLM input text generated (" + llmText.length() + " characters)");
         // END:Assertion_ContentUnderstandingConvertToLlmInputAsync
     }
@@ -310,7 +306,7 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         // ---- Page(2) — single page ----
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> page2Operation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
-                ContentRange.page(2), "application/octet-stream", null);
+                new AnalyzeBinaryOptions().setContentRange(ContentRange.page(2)));
         AnalysisResult page2Result = page2Operation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
@@ -333,7 +329,7 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         // ---- Pages(1, 3) — page range ----
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> pages13Operation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
-                ContentRange.pages(1, 3), "application/octet-stream", null);
+                new AnalyzeBinaryOptions().setContentRange(ContentRange.pages(1, 3)));
         AnalysisResult pages13Result = pages13Operation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
@@ -356,7 +352,8 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         // ---- Combine(Page(1), Pages(3, 4)) — combined single page and page range ----
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
-                ContentRange.combine(ContentRange.page(1), ContentRange.pages(3, 4)), "application/octet-stream", null);
+                new AnalyzeBinaryOptions()
+                    .setContentRange(ContentRange.combine(ContentRange.page(1), ContentRange.pages(3, 4))));
         AnalysisResult combineResult = combineOperation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
@@ -386,7 +383,7 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         // ---- PagesFrom(3) — extract pages 3 to end ----
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeOperation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
-                ContentRange.pagesFrom(3), "application/octet-stream", null);
+                new AnalyzeBinaryOptions().setContentRange(ContentRange.pagesFrom(3)));
         AnalysisResult rangeResult = rangeOperation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
@@ -412,8 +409,8 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         // ---- Combine(Pages(1,3), Page(5), PagesFrom(9)) — combined page ranges ----
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> bigCombineOperation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
-                ContentRange.combine(ContentRange.pages(1, 3), ContentRange.page(5), ContentRange.pagesFrom(9)),
-                "application/octet-stream", null);
+                new AnalyzeBinaryOptions().setContentRange(
+                    ContentRange.combine(ContentRange.pages(1, 3), ContentRange.page(5), ContentRange.pagesFrom(9))));
         AnalysisResult bigCombineResult = bigCombineOperation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
@@ -439,5 +436,27 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
             "Combine(Pages(1,3), Page(5), PagesFrom(9)) should extract pages 1, 2, 3, 5, 9, 10");
         assertTrue(fullDoc.getMarkdown().length() >= bigCombineDoc.getMarkdown().length());
         // END:Assertion_ContentUnderstandingAnalyzeBinaryWithCombinedPagesAsync
+
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithRawContentRangeAsync
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
+            = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                new AnalyzeBinaryOptions().setContentRange(new ContentRange("1-3,5,9-")));
+        AnalysisResult rawRangeResult = rawRangeOperation.last().flatMap(response -> response.getFinalResult()).block();
+        // END:ContentUnderstandingAnalyzeBinaryWithRawContentRangeAsync
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithRawContentRangeAsync
+        assertNotNull(rawRangeResult);
+        assertNotNull(rawRangeResult.getContents());
+        DocumentContent rawRangeDoc = (DocumentContent) rawRangeResult.getContents().get(0);
+        java.util.List<Integer> rawRangePageNumbers = rawRangeDoc.getPages()
+            .stream()
+            .map(DocumentPage::getPageNumber)
+            .sorted()
+            .collect(java.util.stream.Collectors.toList());
+        assertEquals(combineRangePageNumbers, rawRangePageNumbers,
+            "Raw ContentRange(1-3,5,9-) should return the same pages as the typed combine");
+        assertEquals(bigCombineDoc.getMarkdown().length(), rawRangeDoc.getMarkdown().length(),
+            "Raw range should return the same markdown as the typed combine");
+        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithRawContentRangeAsync
     }
 }

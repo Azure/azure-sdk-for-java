@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerListByResourceGroup.json
+     * x-ms-original-file: 2025-01-01/ServerListByResourceGroup.json
      */
     /**
      * Sample code: List servers by resource group.
@@ -23,7 +23,7 @@ public final class ServersListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerListByResourceGroupWithExpandEqualsAdministrators.json
+     * x-ms-original-file: 2025-01-01/ServerListByResourceGroupWithExpandEqualsAdministrators.json
      */
     /**
      * Sample code: List servers by resource group with $expand=administrators/activedirectory.

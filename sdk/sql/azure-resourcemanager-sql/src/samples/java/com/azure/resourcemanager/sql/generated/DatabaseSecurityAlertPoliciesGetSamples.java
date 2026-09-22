@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
  */
 public final class DatabaseSecurityAlertPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DatabaseSecurityAlertGet.json
+     * x-ms-original-file: 2025-01-01/DatabaseSecurityAlertGet.json
      */
     /**
      * Sample code: Get a database's threat detection policy.

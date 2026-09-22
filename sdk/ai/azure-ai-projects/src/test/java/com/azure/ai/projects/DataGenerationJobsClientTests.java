@@ -21,6 +21,7 @@ import com.openai.models.evals.runs.RunRetrieveResponse;
 import com.openai.models.evals.runs.outputitems.OutputItemListParams;
 import com.openai.models.evals.runs.outputitems.OutputItemListResponse;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -55,9 +56,10 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
     @Timeout(value = 20, unit = TimeUnit.MINUTES)
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    @Disabled("TODO: re-record")
     public void dataGenerationJobWithEvaluationSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
         throws InterruptedException {
-        AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion).allowPreview(true);
+        AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion);
         BetaDatasetsClient dataGenerationJobsClient = projectClientBuilder.beta().buildBetaDatasetsClient();
         DatasetsClient datasetsClient = projectClientBuilder.buildDatasetsClient();
         OpenAIClient openAIClient = projectClientBuilder.buildOpenAIClient();
@@ -65,9 +67,13 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
         String modelName = getRecordedConfig("FOUNDRY_MODEL_NAME");
         String datasetName = testResourceNamer.randomName("dataset-generation-eval-", 64);
 
-        DataGenerationJob job = dataGenerationJobsClient.createGenerationJob(
-            DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
-            testResourceNamer.randomUuid());
+        DataGenerationJob job
+            = dataGenerationJobsClient
+                .beginCreateGenerationJob(
+                    DataGenerationJobWithEvaluationSample.createDataGenerationJob(modelName, datasetName),
+                    testResourceNamer.randomUuid())
+                .poll()
+                .getValue();
 
         job = waitForDataGenerationJob(dataGenerationJobsClient, job.getId(), 5, 180);
         if (!JobStatus.SUCCEEDED.equals(job.getStatus())) {

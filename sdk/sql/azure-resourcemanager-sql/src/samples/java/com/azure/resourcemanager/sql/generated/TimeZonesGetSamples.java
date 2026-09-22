@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class TimeZonesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceTimeZoneGet.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceTimeZoneGet.json
      */
     /**
      * Sample code: Get managed instance time zone.

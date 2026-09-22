@@ -12,7 +12,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.AccessTokenCache;
+import com.azure.core.credential.AccessTokenCache;
 import com.azure.core.implementation.http.policy.AuthorizationChallengeParser;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -208,16 +208,16 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     private Mono<Void> setAuthorizationHeaderHelper(HttpPipelineCallContext context,
-        TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
-        return cache.getToken(tokenRequestContext, checkToForceFetchToken).flatMap(token -> {
+        TokenRequestContext tokenRequestContext, boolean refreshOnContextChange) {
+        return cache.getToken(tokenRequestContext, refreshOnContextChange).flatMap(token -> {
             setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
             return Mono.empty();
         });
     }
 
     private void setAuthorizationHeaderHelperSync(HttpPipelineCallContext context,
-        TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
-        AccessToken token = cache.getTokenSync(tokenRequestContext, checkToForceFetchToken);
+        TokenRequestContext tokenRequestContext, boolean refreshOnContextChange) {
+        AccessToken token = cache.getTokenSync(tokenRequestContext, refreshOnContextChange);
         setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
     }
 

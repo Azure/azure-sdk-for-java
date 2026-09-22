@@ -8,6 +8,7 @@ import com.azure.ai.agents.models.AgentCard;
 import com.azure.ai.agents.models.AgentDefinition;
 import com.azure.ai.agents.models.AgentEndpointConfig;
 import com.azure.ai.agents.models.AgentState;
+import com.azure.ai.agents.models.DigitalWorkerType;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
@@ -50,7 +51,7 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
     private String description;
 
     /*
-     * The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * The agent definition. This can be a prompt, workflow, hosted, external, or voice agent definition.
      */
     @Generated
     private final AgentDefinition definition;
@@ -136,8 +137,8 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
     }
 
     /**
-     * Get the definition property: The agent definition. This can be a workflow, hosted agent, or a simple agent
-     * definition.
+     * Get the definition property: The agent definition. This can be a prompt, workflow, hosted, external, or voice
+     * agent definition.
      *
      * @return the definition value.
      */
@@ -159,6 +160,8 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeJsonField("blueprint_reference", this.blueprintReference);
+        jsonWriter.writeStringField("digital_worker_type",
+            this.digitalWorkerType == null ? null : this.digitalWorkerType.toString());
         jsonWriter.writeBooleanField("draft", this.draft);
         jsonWriter.writeJsonField("agent_endpoint", this.agentEndpoint);
         jsonWriter.writeJsonField("agent_card", this.agentCard);
@@ -183,6 +186,7 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
             Map<String, String> metadata = null;
             String description = null;
             AgentBlueprintReference blueprintReference = null;
+            DigitalWorkerType digitalWorkerType = null;
             Boolean draft = null;
             AgentEndpointConfig agentEndpoint = null;
             AgentCard agentCard = null;
@@ -201,6 +205,8 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
                     description = reader.getString();
                 } else if ("blueprint_reference".equals(fieldName)) {
                     blueprintReference = AgentBlueprintReference.fromJson(reader);
+                } else if ("digital_worker_type".equals(fieldName)) {
+                    digitalWorkerType = DigitalWorkerType.fromString(reader.getString());
                 } else if ("draft".equals(fieldName)) {
                     draft = reader.getNullable(JsonReader::getBoolean);
                 } else if ("agent_endpoint".equals(fieldName)) {
@@ -216,6 +222,7 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
             deserializedCreateAgentRequest.metadata = metadata;
             deserializedCreateAgentRequest.description = description;
             deserializedCreateAgentRequest.blueprintReference = blueprintReference;
+            deserializedCreateAgentRequest.digitalWorkerType = digitalWorkerType;
             deserializedCreateAgentRequest.draft = draft;
             deserializedCreateAgentRequest.agentEndpoint = agentEndpoint;
             deserializedCreateAgentRequest.agentCard = agentCard;
@@ -368,6 +375,36 @@ public final class CreateAgentRequest implements JsonSerializable<CreateAgentReq
     @Generated
     public CreateAgentRequest setDraft(Boolean draft) {
         this.draft = draft;
+        return this;
+    }
+
+    /*
+     * (Preview) The type of digital worker (previously known as `autopilot`). If omitted, it is not a digital worker.
+     */
+    @Generated
+    private DigitalWorkerType digitalWorkerType;
+
+    /**
+     * Get the digitalWorkerType property: (Preview) The type of digital worker (previously known as `autopilot`). If
+     * omitted, it is not a digital worker.
+     *
+     * @return the digitalWorkerType value.
+     */
+    @Generated
+    public DigitalWorkerType getDigitalWorkerType() {
+        return this.digitalWorkerType;
+    }
+
+    /**
+     * Set the digitalWorkerType property: (Preview) The type of digital worker (previously known as `autopilot`). If
+     * omitted, it is not a digital worker.
+     *
+     * @param digitalWorkerType the digitalWorkerType value to set.
+     * @return the CreateAgentRequest object itself.
+     */
+    @Generated
+    public CreateAgentRequest setDigitalWorkerType(DigitalWorkerType digitalWorkerType) {
+        this.digitalWorkerType = digitalWorkerType;
         return this;
     }
 }

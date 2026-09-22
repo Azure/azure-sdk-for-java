@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class ManagedInstancesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceUpdateMin.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceUpdateMin.json
      */
     /**
      * Sample code: Update managed instance with minimal properties.
@@ -38,7 +38,7 @@ public final class ManagedInstancesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceUpdateMax.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceUpdateMax.json
      */
     /**
      * Sample code: Update managed instance with all properties.
@@ -70,7 +70,7 @@ public final class ManagedInstancesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceRemoveMaintenanceConfiguration.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceRemoveMaintenanceConfiguration.json
      */
     /**
      * Sample code: Remove maintenance policy from managed instance (select default maintenance policy).

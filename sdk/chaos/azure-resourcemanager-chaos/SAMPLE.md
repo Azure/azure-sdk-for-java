@@ -23,6 +23,13 @@
 - [Get](#capabilitytypes_get)
 - [List](#capabilitytypes_list)
 
+## Connections
+
+- [CreateOrUpdate](#connections_createorupdate)
+- [Delete](#connections_delete)
+- [Get](#connections_get)
+- [ListAll](#connections_listall)
+
 ## DiscoveredResources
 
 - [Get](#discoveredresources_get)
@@ -45,6 +52,10 @@
 ## OperationStatuses
 
 - [Get](#operationstatuses_get)
+
+## Operations
+
+- [List](#operations_list)
 
 ## PrivateAccesses
 
@@ -98,10 +109,11 @@
 
 - [CreateOrUpdate](#workspaces_createorupdate)
 - [Delete](#workspaces_delete)
+- [Discover](#workspaces_discover)
+- [Evaluate](#workspaces_evaluate)
 - [GetByResourceGroup](#workspaces_getbyresourcegroup)
 - [List](#workspaces_list)
 - [ListByResourceGroup](#workspaces_listbyresourcegroup)
-- [RefreshRecommendations](#workspaces_refreshrecommendations)
 - [Update](#workspaces_update)
 ### ActionVersions_Get
 
@@ -111,7 +123,7 @@
  */
 public final class ActionVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ActionVersions_Get.json
+     * x-ms-original-file: 2026-08-01-preview/ActionVersions_Get.json
      */
     /**
      * Sample code: Get an Action Version for westus2 location.
@@ -133,7 +145,7 @@ public final class ActionVersionsGetSamples {
  */
 public final class ActionVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ActionVersions_List.json
+     * x-ms-original-file: 2026-08-01-preview/ActionVersions_List.json
      */
     /**
      * Sample code: List all Action Versions for a given action.
@@ -154,7 +166,7 @@ public final class ActionVersionsListSamples {
  */
 public final class ActionsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Actions_Get.json
+     * x-ms-original-file: 2026-08-01-preview/Actions_Get.json
      */
     /**
      * Sample code: Get an Action for westus2 location.
@@ -175,7 +187,7 @@ public final class ActionsGetSamples {
  */
 public final class ActionsListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Actions_List.json
+     * x-ms-original-file: 2026-08-01-preview/Actions_List.json
      */
     /**
      * Sample code: List all Actions for westus2 location.
@@ -198,7 +210,7 @@ import com.azure.resourcemanager.chaos.fluent.models.CapabilityInner;
  */
 public final class CapabilitiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Capabilities_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/Capabilities_CreateOrUpdate.json
      */
     /**
      * Sample code: Create/update a Capability that extends a virtual machine Target resource.
@@ -222,7 +234,7 @@ public final class CapabilitiesCreateOrUpdateSamples {
  */
 public final class CapabilitiesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Capabilities_Delete.json
+     * x-ms-original-file: 2026-08-01-preview/Capabilities_Delete.json
      */
     /**
      * Sample code: Delete a Capability that extends a virtual machine Target resource.
@@ -246,7 +258,7 @@ public final class CapabilitiesDeleteSamples {
  */
 public final class CapabilitiesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Capabilities_Get.json
+     * x-ms-original-file: 2026-08-01-preview/Capabilities_Get.json
      */
     /**
      * Sample code: Get a Capability that extends a virtual machine Target resource.
@@ -270,7 +282,7 @@ public final class CapabilitiesGetSamples {
  */
 public final class CapabilitiesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Capabilities_List.json
+     * x-ms-original-file: 2026-08-01-preview/Capabilities_List.json
      */
     /**
      * Sample code: List all Capabilities that extend a virtual machine Target resource.
@@ -294,7 +306,7 @@ public final class CapabilitiesListSamples {
  */
 public final class CapabilityTypesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CapabilityTypes_Get.json
+     * x-ms-original-file: 2026-08-01-preview/CapabilityTypes_Get.json
      */
     /**
      * Sample code: Get a Capability Type for a virtual machine Target resource on westus2 location.
@@ -317,7 +329,7 @@ public final class CapabilityTypesGetSamples {
  */
 public final class CapabilityTypesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/CapabilityTypes_List.json
+     * x-ms-original-file: 2026-08-01-preview/CapabilityTypes_List.json
      */
     /**
      * Sample code: List all Capability Types for a virtual machine Target resource on westus2 location.
@@ -331,6 +343,104 @@ public final class CapabilityTypesListSamples {
 }
 ```
 
+### Connections_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.chaos.models.ConnectionKind;
+import com.azure.resourcemanager.chaos.models.ConnectionProperties;
+
+/**
+ * Samples for Connections CreateOrUpdate.
+ */
+public final class ConnectionsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/Connections_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or update a connection.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void createOrUpdateAConnection(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.connections()
+            .define("aksClusterConnection")
+            .withExistingWorkspace("exampleRG", "exampleWorkspace")
+            .withProperties(new ConnectionProperties().withKind(ConnectionKind.AKS_EXTENSION)
+                .withTargetResourceId(
+                    "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.ContainerService/managedClusters/exampleCluster")
+                .withPrincipalId("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d")
+                .withTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47"))
+            .create();
+    }
+}
+```
+
+### Connections_Delete
+
+```java
+/**
+ * Samples for Connections Delete.
+ */
+public final class ConnectionsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/Connections_Delete.json
+     */
+    /**
+     * Sample code: Delete a connection in a workspace.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void deleteAConnectionInAWorkspace(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.connections()
+            .deleteWithResponse("exampleRG", "exampleWorkspace", "aksClusterConnection",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Connections_Get
+
+```java
+/**
+ * Samples for Connections Get.
+ */
+public final class ConnectionsGetSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/Connections_Get.json
+     */
+    /**
+     * Sample code: Get a connection.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void getAConnection(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.connections()
+            .getWithResponse("exampleRG", "exampleWorkspace", "aksClusterConnection", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Connections_ListAll
+
+```java
+/**
+ * Samples for Connections ListAll.
+ */
+public final class ConnectionsListAllSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/Connections_ListAll.json
+     */
+    /**
+     * Sample code: Get a list of connections.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void getAListOfConnections(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.connections().listAll("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### DiscoveredResources_Get
 
 ```java
@@ -339,7 +449,7 @@ public final class CapabilityTypesListSamples {
  */
 public final class DiscoveredResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/DiscoveredResources_Get.json
+     * x-ms-original-file: 2026-08-01-preview/DiscoveredResources_Get.json
      */
     /**
      * Sample code: Get a discovered resource.
@@ -362,7 +472,7 @@ public final class DiscoveredResourcesGetSamples {
  */
 public final class DiscoveredResourcesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/DiscoveredResources_ListByWorkspace.json
+     * x-ms-original-file: 2026-08-01-preview/DiscoveredResources_ListByWorkspace.json
      */
     /**
      * Sample code: Get a list of discovered resources for a workspace.
@@ -385,7 +495,7 @@ public final class DiscoveredResourcesListByWorkspaceSamples {
  */
 public final class ExperimentsCancelSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Experiments_Cancel.json
+     * x-ms-original-file: 2026-08-01-preview/Experiments_Cancel.json
      */
     /**
      * Sample code: Cancel a running Experiment.
@@ -421,7 +531,7 @@ import java.util.Map;
  */
 public final class ExperimentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Experiments_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/Experiments_CreateOrUpdate.json
      */
     /**
      * Sample code: Create/update a Experiment in a resource group.
@@ -476,7 +586,7 @@ public final class ExperimentsCreateOrUpdateSamples {
  */
 public final class ExperimentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Experiments_Delete.json
+     * x-ms-original-file: 2026-08-01-preview/Experiments_Delete.json
      */
     /**
      * Sample code: Delete a Experiment in a resource group.
@@ -497,7 +607,7 @@ public final class ExperimentsDeleteSamples {
  */
 public final class ExperimentsExecutionDetailsSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Experiments_ExecutionDetails.json
+     * x-ms-original-file: 2026-08-01-preview/Experiments_ExecutionDetails.json
      */
     /**
      * Sample code: Get experiment execution details.
@@ -520,7 +630,7 @@ public final class ExperimentsExecutionDetailsSamples {
  */
 public final class ExperimentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Experiments_Get.json
+     * x-ms-original-file: 2026-08-01-preview/Experiments_Get.json
      */
     /**
      * Sample code: Get a Experiment in a resource group.
@@ -542,7 +652,7 @@ public final class ExperimentsGetByResourceGroupSamples {
  */
 public final class ExperimentsGetExecutionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Experiments_GetExecution.json
+     * x-ms-original-file: 2026-08-01-preview/Experiments_GetExecution.json
      */
     /**
      * Sample code: Get the execution of a Experiment.
@@ -565,7 +675,7 @@ public final class ExperimentsGetExecutionSamples {
  */
 public final class ExperimentsListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Experiments_ListAll.json
+     * x-ms-original-file: 2026-08-01-preview/Experiments_ListAll.json
      */
     /**
      * Sample code: List all Experiments in a subscription.
@@ -586,7 +696,7 @@ public final class ExperimentsListSamples {
  */
 public final class ExperimentsListAllExecutionsSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Experiments_ListAllExecutions.json
+     * x-ms-original-file: 2026-08-01-preview/Experiments_ListAllExecutions.json
      */
     /**
      * Sample code: List all executions of an Experiment.
@@ -607,7 +717,7 @@ public final class ExperimentsListAllExecutionsSamples {
  */
 public final class ExperimentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Experiments_List.json
+     * x-ms-original-file: 2026-08-01-preview/Experiments_List.json
      */
     /**
      * Sample code: List all Experiments in a resource group.
@@ -628,7 +738,7 @@ public final class ExperimentsListByResourceGroupSamples {
  */
 public final class ExperimentsStartSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Experiments_Start.json
+     * x-ms-original-file: 2026-08-01-preview/Experiments_Start.json
      */
     /**
      * Sample code: Start a Experiment.
@@ -656,7 +766,7 @@ import java.util.Map;
  */
 public final class ExperimentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Experiments_Update.json
+     * x-ms-original-file: 2026-08-01-preview/Experiments_Update.json
      */
     /**
      * Sample code: Update an Experiment in a resource group.
@@ -698,7 +808,7 @@ public final class ExperimentsUpdateSamples {
  */
 public final class OperationStatusesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/OperationStatuses_Get.json
+     * x-ms-original-file: 2026-08-01-preview/OperationStatuses_Get.json
      */
     /**
      * Sample code: Gets Chaos Studio async operation status.
@@ -708,6 +818,27 @@ public final class OperationStatusesGetSamples {
     public static void getsChaosStudioAsyncOperationStatus(com.azure.resourcemanager.chaos.ChaosManager manager) {
         manager.operationStatuses()
             .getWithResponse("westus2", "4bdadd97-207c-4de8-9bba-08339ae099c7", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Operations_List
+
+```java
+/**
+ * Samples for Operations List.
+ */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/Operations_List.json
+     */
+    /**
+     * Sample code: Lists all Chaos Studio operations.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void listsAllChaosStudioOperations(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -724,7 +855,7 @@ import com.azure.resourcemanager.chaos.models.PublicNetworkAccessOption;
 public final class PrivateAccessesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2026-05-01-preview/PrivateAccesses_CreateOrUpdate_Create_Or_Update_A_Private_Access_Resource.json
+     * 2026-08-01-preview/PrivateAccesses_CreateOrUpdate_Create_Or_Update_A_Private_Access_Resource.json
      */
     /**
      * Sample code: Create or Update a private access resource.
@@ -741,7 +872,7 @@ public final class PrivateAccessesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/
+     * x-ms-original-file: 2026-08-01-preview/
      * PrivateAccesses_CreateOrUpdate_Create_Or_Update_A_Private_Access_Resource_With_Public_Network_Access.json
      */
     /**
@@ -769,7 +900,7 @@ public final class PrivateAccessesCreateOrUpdateSamples {
  */
 public final class PrivateAccessesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/PrivateAccesses_Delete.json
+     * x-ms-original-file: 2026-08-01-preview/PrivateAccesses_Delete.json
      */
     /**
      * Sample code: Delete a private access resource.
@@ -790,7 +921,7 @@ public final class PrivateAccessesDeleteSamples {
  */
 public final class PrivateAccessesDeleteAPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/PrivateAccesses_DeleteAPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-08-01-preview/PrivateAccesses_DeleteAPrivateEndpointConnection.json
      */
     /**
      * Sample code: Delete a private endpoint connection under a private access resource.
@@ -814,7 +945,7 @@ public final class PrivateAccessesDeleteAPrivateEndpointConnectionSamples {
  */
 public final class PrivateAccessesGetAPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/PrivateAccesses_GetAPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-08-01-preview/PrivateAccesses_GetAPrivateEndpointConnection.json
      */
     /**
      * Sample code: Get information about a private endpoint connection under a private access resource.
@@ -838,7 +969,7 @@ public final class PrivateAccessesGetAPrivateEndpointConnectionSamples {
  */
 public final class PrivateAccessesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/PrivateAccesses_Get_Get_A_Private_Access_Resource.json
+     * x-ms-original-file: 2026-08-01-preview/PrivateAccesses_Get_Get_A_Private_Access_Resource.json
      */
     /**
      * Sample code: Get a private access resource.
@@ -852,7 +983,7 @@ public final class PrivateAccessesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-05-01-preview/PrivateAccesses_Get_Get_A_Private_Access_Resource_With_Private_Endpoint.json
+     * 2026-08-01-preview/PrivateAccesses_Get_Get_A_Private_Access_Resource_With_Private_Endpoint.json
      */
     /**
      * Sample code: Get a private access resource with private endpoint.
@@ -875,7 +1006,7 @@ public final class PrivateAccessesGetByResourceGroupSamples {
  */
 public final class PrivateAccessesGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/PrivateAccesses_GetPrivateLinkResources.json
+     * x-ms-original-file: 2026-08-01-preview/PrivateAccesses_GetPrivateLinkResources.json
      */
     /**
      * Sample code: List all possible private link resources under private access resource.
@@ -899,7 +1030,7 @@ public final class PrivateAccessesGetPrivateLinkResourcesSamples {
  */
 public final class PrivateAccessesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/PrivateAccesses_ListAll.json
+     * x-ms-original-file: 2026-08-01-preview/PrivateAccesses_ListAll.json
      */
     /**
      * Sample code: List all private accesses in a subscription.
@@ -920,7 +1051,7 @@ public final class PrivateAccessesListSamples {
  */
 public final class PrivateAccessesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/PrivateAccesses_List.json
+     * x-ms-original-file: 2026-08-01-preview/PrivateAccesses_List.json
      */
     /**
      * Sample code: List all private access in a resource group.
@@ -941,7 +1072,7 @@ public final class PrivateAccessesListByResourceGroupSamples {
  */
 public final class PrivateAccessesListPrivateEndpointConnectionsSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/PrivateAccesses_ListPrivateEndpointConnections.json
+     * x-ms-original-file: 2026-08-01-preview/PrivateAccesses_ListPrivateEndpointConnections.json
      */
     /**
      * Sample code: List all private endpoint connections under a private access resource.
@@ -968,7 +1099,7 @@ import java.util.Map;
  */
 public final class PrivateAccessesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/PrivateAccesses_Update.json
+     * x-ms-original-file: 2026-08-01-preview/PrivateAccesses_Update.json
      */
     /**
      * Sample code: Update a private access resource's tags.
@@ -999,9 +1130,9 @@ public final class PrivateAccessesUpdateSamples {
 ### ScenarioConfigurations_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.chaos.models.ConfigurationExclusions;
-import com.azure.resourcemanager.chaos.models.ConfigurationFilters;
 import com.azure.resourcemanager.chaos.models.KeyValuePair;
+import com.azure.resourcemanager.chaos.models.ResourceTargeting;
+import com.azure.resourcemanager.chaos.models.ResourceTargetingCriteria;
 import com.azure.resourcemanager.chaos.models.ScenarioConfigurationProperties;
 import java.util.Arrays;
 
@@ -1010,7 +1141,7 @@ import java.util.Arrays;
  */
 public final class ScenarioConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioConfigurations_CreateOrUpdate_With_Physical_Zones.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_CreateOrUpdate_With_Physical_Zones.json
      */
     /**
      * Sample code: Create or update a scenario configuration with physical zone targeting.
@@ -1025,15 +1156,15 @@ public final class ScenarioConfigurationsCreateOrUpdateSamples {
             .withProperties(new ScenarioConfigurationProperties().withScenarioId(
                 "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/scenarios/12345678-1234-1234-1234-123456789012")
                 .withParameters(Arrays.asList(new KeyValuePair().withKey("fakeTokenPlaceholder").withValue("PT10M")))
-                .withExclusions(new ConfigurationExclusions().withResources(Arrays.asList(
-                    "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM")))
-                .withFilters(new ConfigurationFilters().withLocations(Arrays.asList("westus2"))
-                    .withPhysicalZones(Arrays.asList("westus2-az1"))))
+                .withResourceTargeting(new ResourceTargeting()
+                    .withInclude(new ResourceTargetingCriteria().withPhysicalZones(Arrays.asList("westus2-az1")))
+                    .withExclude(new ResourceTargetingCriteria().withResources(Arrays.asList(
+                        "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM")))))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioConfigurations_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a scenario configuration.
@@ -1050,12 +1181,15 @@ public final class ScenarioConfigurationsCreateOrUpdateSamples {
                     new KeyValuePair().withKey("fakeTokenPlaceholder")
                         .withValue(
                             "[\"/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/vm1\",\"/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/vm2\"]")))
-                .withExclusions(new ConfigurationExclusions().withResources(Arrays.asList(
-                    "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"))
-                    .withTags(Arrays.asList(new KeyValuePair().withKey("fakeTokenPlaceholder").withValue("production")))
-                    .withTypes(Arrays.asList("Microsoft.Compute/virtualMachineScaleSets")))
-                .withFilters(
-                    new ConfigurationFilters().withLocations(Arrays.asList("eastus")).withZones(Arrays.asList("1"))))
+                .withResourceTargeting(new ResourceTargeting()
+                    .withInclude(new ResourceTargetingCriteria().withLocations(Arrays.asList("eastus"))
+                        .withZones(Arrays.asList("1")))
+                    .withExclude(new ResourceTargetingCriteria()
+                        .withTypes(Arrays.asList("Microsoft.Compute/virtualMachineScaleSets"))
+                        .withTags(
+                            Arrays.asList(new KeyValuePair().withKey("fakeTokenPlaceholder").withValue("production")))
+                        .withResources(Arrays.asList(
+                            "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM")))))
             .create();
     }
 }
@@ -1069,7 +1203,7 @@ public final class ScenarioConfigurationsCreateOrUpdateSamples {
  */
 public final class ScenarioConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioConfigurations_Delete.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_Delete.json
      */
     /**
      * Sample code: Delete a scenario configuration.
@@ -1092,7 +1226,7 @@ public final class ScenarioConfigurationsDeleteSamples {
  */
 public final class ScenarioConfigurationsExecuteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioConfigurations_Execute.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_Execute.json
      */
     /**
      * Sample code: Execute the scenario execution with the given scenario configuration.
@@ -1117,7 +1251,7 @@ public final class ScenarioConfigurationsExecuteSamples {
  */
 public final class ScenarioConfigurationsFixResourcePermissionsSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioConfigurations_FixResourcePermissions.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_FixResourcePermissions.json
      */
     /**
      * Sample code: Fixes resource permissions for the given scenario configuration.
@@ -1141,7 +1275,7 @@ public final class ScenarioConfigurationsFixResourcePermissionsSamples {
  */
 public final class ScenarioConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioConfigurations_Get.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_Get.json
      */
     /**
      * Sample code: Get a scenario configuration.
@@ -1164,7 +1298,7 @@ public final class ScenarioConfigurationsGetSamples {
  */
 public final class ScenarioConfigurationsListAllSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioConfigurations_ListAll.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_ListAll.json
      */
     /**
      * Sample code: Get a list of scenario configurations.
@@ -1187,7 +1321,7 @@ public final class ScenarioConfigurationsListAllSamples {
  */
 public final class ScenarioConfigurationsValidateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioConfigurations_Validate.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioConfigurations_Validate.json
      */
     /**
      * Sample code: Validate the given scenario configuration.
@@ -1210,7 +1344,7 @@ public final class ScenarioConfigurationsValidateSamples {
  */
 public final class ScenarioRunsCancelSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioRuns_Cancel.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioRuns_Cancel.json
      */
     /**
      * Sample code: Cancel a running scenario run.
@@ -1233,7 +1367,7 @@ public final class ScenarioRunsCancelSamples {
  */
 public final class ScenarioRunsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioRuns_Get.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioRuns_Get.json
      */
     /**
      * Sample code: Get a scenario run.
@@ -1256,7 +1390,7 @@ public final class ScenarioRunsGetSamples {
  */
 public final class ScenarioRunsListAllSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ScenarioRuns_ListAll.json
+     * x-ms-original-file: 2026-08-01-preview/ScenarioRuns_ListAll.json
      */
     /**
      * Sample code: Get a list of scenario runs.
@@ -1287,7 +1421,7 @@ import java.util.Arrays;
  */
 public final class ScenariosCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Scenarios_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/Scenarios_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a scenario.
@@ -1361,7 +1495,7 @@ public final class ScenariosCreateOrUpdateSamples {
  */
 public final class ScenariosDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Scenarios_Delete.json
+     * x-ms-original-file: 2026-08-01-preview/Scenarios_Delete.json
      */
     /**
      * Sample code: Delete a Scenario in a workspace.
@@ -1384,7 +1518,7 @@ public final class ScenariosDeleteSamples {
  */
 public final class ScenariosGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Scenarios_Get.json
+     * x-ms-original-file: 2026-08-01-preview/Scenarios_Get.json
      */
     /**
      * Sample code: Get a scenario.
@@ -1406,7 +1540,7 @@ public final class ScenariosGetSamples {
  */
 public final class ScenariosListAllSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Scenarios_ListAll.json
+     * x-ms-original-file: 2026-08-01-preview/Scenarios_ListAll.json
      */
     /**
      * Sample code: Get a list of scenarios.
@@ -1427,7 +1561,7 @@ public final class ScenariosListAllSamples {
  */
 public final class TargetTypesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/TargetTypes_Get.json
+     * x-ms-original-file: 2026-08-01-preview/TargetTypes_Get.json
      */
     /**
      * Sample code: Get a Target Type for westus2 location.
@@ -1448,7 +1582,7 @@ public final class TargetTypesGetSamples {
  */
 public final class TargetTypesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/TargetTypes_List.json
+     * x-ms-original-file: 2026-08-01-preview/TargetTypes_List.json
      */
     /**
      * Sample code: List all Target Types for westus2 location.
@@ -1473,7 +1607,7 @@ import java.util.Map;
  */
 public final class TargetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Targets_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/Targets_CreateOrUpdate.json
      */
     /**
      * Sample code: Create/update a Target that extends a virtual machine resource.
@@ -1510,7 +1644,7 @@ public final class TargetsCreateOrUpdateSamples {
  */
 public final class TargetsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Targets_Delete.json
+     * x-ms-original-file: 2026-08-01-preview/Targets_Delete.json
      */
     /**
      * Sample code: Delete a Target that extends a virtual machine resource.
@@ -1534,7 +1668,7 @@ public final class TargetsDeleteSamples {
  */
 public final class TargetsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Targets_Get.json
+     * x-ms-original-file: 2026-08-01-preview/Targets_Get.json
      */
     /**
      * Sample code: Get a Target that extends a virtual machine resource.
@@ -1558,7 +1692,7 @@ public final class TargetsGetSamples {
  */
 public final class TargetsListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Targets_List.json
+     * x-ms-original-file: 2026-08-01-preview/Targets_List.json
      */
     /**
      * Sample code: List all Targets that extend a virtual machine resource.
@@ -1590,7 +1724,7 @@ import java.util.Map;
  */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Workspaces_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/Workspaces_CreateOrUpdate.json
      */
     /**
      * Sample code: Create/update a workspace in a resource group.
@@ -1634,7 +1768,7 @@ public final class WorkspacesCreateOrUpdateSamples {
  */
 public final class WorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Workspaces_Delete.json
+     * x-ms-original-file: 2026-08-01-preview/Workspaces_Delete.json
      */
     /**
      * Sample code: Delete a Workspace in a resource group.
@@ -1647,6 +1781,48 @@ public final class WorkspacesDeleteSamples {
 }
 ```
 
+### Workspaces_Discover
+
+```java
+/**
+ * Samples for Workspaces Discover.
+ */
+public final class WorkspacesDiscoverSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/Workspaces_Discover.json
+     */
+    /**
+     * Sample code: Trigger resource discovery for the workspace.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void triggerResourceDiscoveryForTheWorkspace(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.workspaces().discover("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Workspaces_Evaluate
+
+```java
+/**
+ * Samples for Workspaces Evaluate.
+ */
+public final class WorkspacesEvaluateSamples {
+    /*
+     * x-ms-original-file: 2026-08-01-preview/Workspaces_Evaluate.json
+     */
+    /**
+     * Sample code: Trigger scenario evaluation for the workspace.
+     * 
+     * @param manager Entry point to ChaosManager.
+     */
+    public static void triggerScenarioEvaluationForTheWorkspace(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.workspaces().evaluate("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Workspaces_GetByResourceGroup
 
 ```java
@@ -1655,7 +1831,7 @@ public final class WorkspacesDeleteSamples {
  */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Workspaces_Get.json
+     * x-ms-original-file: 2026-08-01-preview/Workspaces_Get.json
      */
     /**
      * Sample code: Get a Workspace in a resource group.
@@ -1677,7 +1853,7 @@ public final class WorkspacesGetByResourceGroupSamples {
  */
 public final class WorkspacesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Workspaces_ListAll.json
+     * x-ms-original-file: 2026-08-01-preview/Workspaces_ListAll.json
      */
     /**
      * Sample code: List all Workspaces in a subscription.
@@ -1698,7 +1874,7 @@ public final class WorkspacesListSamples {
  */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Workspaces_List.json
+     * x-ms-original-file: 2026-08-01-preview/Workspaces_List.json
      */
     /**
      * Sample code: List all Workspaces in a resource group.
@@ -1707,28 +1883,6 @@ public final class WorkspacesListByResourceGroupSamples {
      */
     public static void listAllWorkspacesInAResourceGroup(com.azure.resourcemanager.chaos.ChaosManager manager) {
         manager.workspaces().listByResourceGroup("exampleRG", null, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Workspaces_RefreshRecommendations
-
-```java
-/**
- * Samples for Workspaces RefreshRecommendations.
- */
-public final class WorkspacesRefreshRecommendationsSamples {
-    /*
-     * x-ms-original-file: 2026-05-01-preview/Workspaces_RefreshRecommendations.json
-     */
-    /**
-     * Sample code: Refresh recommendations for all scenarios in a workspace.
-     * 
-     * @param manager Entry point to ChaosManager.
-     */
-    public static void
-        refreshRecommendationsForAllScenariosInAWorkspace(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.workspaces().refreshRecommendations("exampleRG", "exampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1748,7 +1902,7 @@ import java.util.Map;
  */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Workspaces_Update.json
+     * x-ms-original-file: 2026-08-01-preview/Workspaces_Update.json
      */
     /**
      * Sample code: Update a Workspace in a resource group.

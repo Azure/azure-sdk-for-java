@@ -13,8 +13,8 @@ public final class PrivateLinkScopeValidationDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkScopeValidationDetailsInner model = BinaryData.fromString(
-            "{\"id\":\"onbzoggculapzwy\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"qxepnylbfuaj\",\"privateIpAddress\":\"jtlvofqzhvfciby\",\"linkIdentifier\":\"owuxrkjpvdwx\",\"groupId\":\"wiivwzjbhyzsx\",\"memberName\":\"kambtrnegvmnvuqe\"},{\"id\":\"lds\",\"privateIpAddress\":\"stjbkkdmfl\",\"linkIdentifier\":\"stmjlxrri\",\"groupId\":\"zapeewchpx\",\"memberName\":\"twkuziycs\"}]}")
+            "{\"id\":\"hocxvdfffwafqrou\",\"publicNetworkAccess\":\"Enabled\",\"connectionDetails\":[{\"id\":\"ehhr\",\"privateIpAddress\":\"bunzozudh\",\"linkIdentifier\":\"gkmoyxcdyuibhmfd\",\"groupId\":\"zydvfvf\",\"memberName\":\"naeo\"},{\"id\":\"rvhmgor\",\"privateIpAddress\":\"ukiscvwmzhw\",\"linkIdentifier\":\"efaxvxilc\",\"groupId\":\"gnhnzeyq\",\"memberName\":\"jjfzqlqhycavo\"},{\"id\":\"gxdbeesmie\",\"privateIpAddress\":\"lrariaawiu\",\"linkIdentifier\":\"ydwqfbylyrf\",\"groupId\":\"agt\",\"memberName\":\"jocqwogfnzjvusf\"},{\"id\":\"dmozu\",\"privateIpAddress\":\"lfsbtkadpysow\",\"linkIdentifier\":\"tgkbugrjqctojc\",\"groupId\":\"sofieypefojyqd\",\"memberName\":\"u\"}]}")
             .toObject(PrivateLinkScopeValidationDetailsInner.class);
-        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccess());
     }
 }

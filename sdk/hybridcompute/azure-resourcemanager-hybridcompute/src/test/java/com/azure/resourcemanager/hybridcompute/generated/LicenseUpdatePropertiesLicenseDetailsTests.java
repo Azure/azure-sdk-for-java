@@ -16,10 +16,10 @@ public final class LicenseUpdatePropertiesLicenseDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LicenseUpdatePropertiesLicenseDetails model = BinaryData.fromString(
-            "{\"state\":\"Activated\",\"target\":\"Windows Server 2012\",\"edition\":\"Datacenter\",\"type\":\"vCore\",\"processors\":931696713}")
+            "{\"state\":\"Activated\",\"target\":\"Windows Server 2012 R2\",\"edition\":\"Datacenter\",\"type\":\"vCore\",\"processors\":931696713}")
             .toObject(LicenseUpdatePropertiesLicenseDetails.class);
         Assertions.assertEquals(LicenseState.ACTIVATED, model.state());
-        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.target());
+        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2, model.target());
         Assertions.assertEquals(LicenseEdition.DATACENTER, model.edition());
         Assertions.assertEquals(LicenseCoreType.V_CORE, model.type());
         Assertions.assertEquals(931696713, model.processors());
@@ -29,13 +29,13 @@ public final class LicenseUpdatePropertiesLicenseDetailsTests {
     public void testSerialize() throws Exception {
         LicenseUpdatePropertiesLicenseDetails model
             = new LicenseUpdatePropertiesLicenseDetails().withState(LicenseState.ACTIVATED)
-                .withTarget(LicenseTarget.WINDOWS_SERVER_2012)
+                .withTarget(LicenseTarget.WINDOWS_SERVER_2012_R2)
                 .withEdition(LicenseEdition.DATACENTER)
                 .withType(LicenseCoreType.V_CORE)
                 .withProcessors(931696713);
         model = BinaryData.fromObject(model).toObject(LicenseUpdatePropertiesLicenseDetails.class);
         Assertions.assertEquals(LicenseState.ACTIVATED, model.state());
-        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.target());
+        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2, model.target());
         Assertions.assertEquals(LicenseEdition.DATACENTER, model.edition());
         Assertions.assertEquals(LicenseCoreType.V_CORE, model.type());
         Assertions.assertEquals(931696713, model.processors());

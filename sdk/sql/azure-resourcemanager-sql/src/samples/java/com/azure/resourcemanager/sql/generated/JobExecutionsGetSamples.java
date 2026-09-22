@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 public final class JobExecutionsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetJobExecution.json
+     * x-ms-original-file: 2025-01-01/GetJobExecution.json
      */
     /**
      * Sample code: Get a job execution.

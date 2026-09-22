@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Properties of a HorizonDb firewall rule.
+ * Properties of a HorizonDB firewall rule.
  */
 @Fluent
 public final class HorizonDbFirewallRuleProperties implements JsonSerializable<HorizonDbFirewallRuleProperties> {
@@ -27,7 +27,7 @@ public final class HorizonDbFirewallRuleProperties implements JsonSerializable<H
     private String endIpAddress;
 
     /*
-     * The description of the HorizonDb firewall rule.
+     * The description of the HorizonDB firewall rule.
      */
     private String description;
 
@@ -83,7 +83,7 @@ public final class HorizonDbFirewallRuleProperties implements JsonSerializable<H
     }
 
     /**
-     * Get the description property: The description of the HorizonDb firewall rule.
+     * Get the description property: The description of the HorizonDB firewall rule.
      * 
      * @return the description value.
      */
@@ -92,7 +92,7 @@ public final class HorizonDbFirewallRuleProperties implements JsonSerializable<H
     }
 
     /**
-     * Set the description property: The description of the HorizonDb firewall rule.
+     * Set the description property: The description of the HorizonDB firewall rule.
      * 
      * @param description the description value to set.
      * @return the HorizonDbFirewallRuleProperties object itself.

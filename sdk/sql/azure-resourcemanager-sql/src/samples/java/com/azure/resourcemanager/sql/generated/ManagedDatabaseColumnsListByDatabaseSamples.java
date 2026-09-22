@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public final class ManagedDatabaseColumnsListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedColumnsListByDatabaseMin.json
+     * x-ms-original-file: 2025-01-01/ManagedColumnsListByDatabaseMin.json
      */
     /**
      * Sample code: List managed database columns.
@@ -26,7 +26,7 @@ public final class ManagedDatabaseColumnsListByDatabaseSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedColumnsListByDatabaseMax.json
+     * x-ms-original-file: 2025-01-01/ManagedColumnsListByDatabaseMax.json
      */
     /**
      * Sample code: Filter managed database columns.

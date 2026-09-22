@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class GalleryImageVersionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Update.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Update.json
      */
     /**
      * Sample code: Update a simple Gallery Image Version (Managed Image as source).
@@ -41,7 +41,7 @@ public final class GalleryImageVersionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Update_RestoreSoftDeleted.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Update_RestoreSoftDeleted.json
      */
     /**
      * Sample code: Restore a Soft Deleted Gallery Image Version.
@@ -59,7 +59,7 @@ public final class GalleryImageVersionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Update_WithoutSourceId.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Update_WithoutSourceId.json
      */
     /**
      * Sample code: Update a simple Gallery Image Version without source id.

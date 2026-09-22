@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.DataMaskingState;
  */
 public final class DataMaskingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DataMaskingPolicyCreateOrUpdateMin.json
+     * x-ms-original-file: 2025-01-01/DataMaskingPolicyCreateOrUpdateMin.json
      */
     /**
      * Sample code: Create or update data masking policy min.
@@ -30,7 +30,7 @@ public final class DataMaskingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/DataMaskingPolicyCreateOrUpdateMax.json
+     * x-ms-original-file: 2025-01-01/DataMaskingPolicyCreateOrUpdateMax.json
      */
     /**
      * Sample code: Create or update data masking policy max.

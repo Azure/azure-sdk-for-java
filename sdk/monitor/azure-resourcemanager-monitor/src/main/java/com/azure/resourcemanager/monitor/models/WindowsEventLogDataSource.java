@@ -19,6 +19,7 @@ import java.util.List;
 @Fluent
 public final class WindowsEventLogDataSource implements JsonSerializable<WindowsEventLogDataSource> {
     /*
+     * 
      * List of streams that this data source will be sent to.
      * A stream indicates what schema will be used for this data and usually what table in Log Analytics the data will
      * be sent to.
@@ -36,6 +37,7 @@ public final class WindowsEventLogDataSource implements JsonSerializable<Windows
     private String transformKql;
 
     /*
+     * 
      * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
@@ -48,7 +50,8 @@ public final class WindowsEventLogDataSource implements JsonSerializable<Windows
     }
 
     /**
-     * Get the streams property: List of streams that this data source will be sent to.
+     * Get the streams property:
+     * List of streams that this data source will be sent to.
      * A stream indicates what schema will be used for this data and usually what table in Log Analytics the data will
      * be sent to.
      * 
@@ -59,7 +62,8 @@ public final class WindowsEventLogDataSource implements JsonSerializable<Windows
     }
 
     /**
-     * Set the streams property: List of streams that this data source will be sent to.
+     * Set the streams property:
+     * List of streams that this data source will be sent to.
      * A stream indicates what schema will be used for this data and usually what table in Log Analytics the data will
      * be sent to.
      * 
@@ -114,7 +118,8 @@ public final class WindowsEventLogDataSource implements JsonSerializable<Windows
     }
 
     /**
-     * Get the name property: A friendly name for the data source.
+     * Get the name property:
+     * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
      * @return the name value.
@@ -124,7 +129,8 @@ public final class WindowsEventLogDataSource implements JsonSerializable<Windows
     }
 
     /**
-     * Set the name property: A friendly name for the data source.
+     * Set the name property:
+     * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
      * @param name the name value to set.

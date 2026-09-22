@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class GallerySharingProfileUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/Gallery_EnableCommunityGallery.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/Gallery_EnableCommunityGallery.json
      */
     /**
      * Sample code: share a gallery to community.
@@ -31,7 +31,7 @@ public final class GallerySharingProfileUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/Gallery_ResetSharingProfile.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/Gallery_ResetSharingProfile.json
      */
     /**
      * Sample code: reset sharing profile of a gallery.
@@ -47,7 +47,7 @@ public final class GallerySharingProfileUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/Gallery_AddToSharingProfile.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/Gallery_AddToSharingProfile.json
      */
     /**
      * Sample code: Add sharing id to the sharing profile of a gallery.

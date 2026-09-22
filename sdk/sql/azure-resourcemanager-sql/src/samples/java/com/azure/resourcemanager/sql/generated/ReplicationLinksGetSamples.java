@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ReplicationLinksGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ReplicationLinkGet.json
+     * x-ms-original-file: 2025-01-01/ReplicationLinkGet.json
      */
     /**
      * Sample code: Gets the replication link.

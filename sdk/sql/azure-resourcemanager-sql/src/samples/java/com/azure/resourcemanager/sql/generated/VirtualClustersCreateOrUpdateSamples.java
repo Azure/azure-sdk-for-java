@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class VirtualClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/VirtualClusterCreate.json
+     * x-ms-original-file: 2025-01-01/VirtualClusterCreate.json
      */
     /**
      * Sample code: Create virtual cluster.

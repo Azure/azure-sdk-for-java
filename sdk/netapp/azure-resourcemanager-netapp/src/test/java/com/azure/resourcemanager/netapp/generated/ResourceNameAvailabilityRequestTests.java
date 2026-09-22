@@ -13,23 +13,23 @@ public final class ResourceNameAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceNameAvailabilityRequest model = BinaryData.fromString(
-            "{\"name\":\"pkpatlbijpzgsks\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups\",\"resourceGroup\":\"hfvolmknb\"}")
+            "{\"name\":\"eukdqkkyih\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups\",\"resourceGroup\":\"geqmgqzgwldoych\"}")
             .toObject(ResourceNameAvailabilityRequest.class);
-        Assertions.assertEquals("pkpatlbijpzgsks", model.name());
+        Assertions.assertEquals("eukdqkkyih", model.name());
         Assertions.assertEquals(
             CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS, model.type());
-        Assertions.assertEquals("hfvolmknb", model.resourceGroup());
+        Assertions.assertEquals("geqmgqzgwldoych", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceNameAvailabilityRequest model = new ResourceNameAvailabilityRequest().withName("pkpatlbijpzgsks")
+        ResourceNameAvailabilityRequest model = new ResourceNameAvailabilityRequest().withName("eukdqkkyih")
             .withType(CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS)
-            .withResourceGroup("hfvolmknb");
+            .withResourceGroup("geqmgqzgwldoych");
         model = BinaryData.fromObject(model).toObject(ResourceNameAvailabilityRequest.class);
-        Assertions.assertEquals("pkpatlbijpzgsks", model.name());
+        Assertions.assertEquals("eukdqkkyih", model.name());
         Assertions.assertEquals(
             CheckNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS, model.type());
-        Assertions.assertEquals("hfvolmknb", model.resourceGroup());
+        Assertions.assertEquals("geqmgqzgwldoych", model.resourceGroup());
     }
 }

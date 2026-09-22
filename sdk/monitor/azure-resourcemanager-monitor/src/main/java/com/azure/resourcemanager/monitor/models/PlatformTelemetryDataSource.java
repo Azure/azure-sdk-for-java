@@ -24,6 +24,7 @@ public final class PlatformTelemetryDataSource implements JsonSerializable<Platf
     private List<String> streams;
 
     /*
+     * 
      * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
@@ -56,7 +57,8 @@ public final class PlatformTelemetryDataSource implements JsonSerializable<Platf
     }
 
     /**
-     * Get the name property: A friendly name for the data source.
+     * Get the name property:
+     * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
      * @return the name value.
@@ -66,7 +68,8 @@ public final class PlatformTelemetryDataSource implements JsonSerializable<Platf
     }
 
     /**
-     * Set the name property: A friendly name for the data source.
+     * Set the name property:
+     * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
      * @param name the name value to set.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class WorkloadGroupsListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetWorkloadGroupList.json
+     * x-ms-original-file: 2025-01-01/GetWorkloadGroupList.json
      */
     /**
      * Sample code: Get the list of workload groups for a data warehouse.

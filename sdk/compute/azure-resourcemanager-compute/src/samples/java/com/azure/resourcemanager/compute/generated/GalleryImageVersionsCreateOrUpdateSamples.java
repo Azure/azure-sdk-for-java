@@ -34,7 +34,7 @@ import java.util.Arrays;
  */
 public final class GalleryImageVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithStorageAccountStrategy.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithStorageAccountStrategy.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version with StorageAccountStrategy and regional
@@ -62,7 +62,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithShallowReplicationMode.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithShallowReplicationMode.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using shallow replication mode.
@@ -90,7 +90,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithVHD.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithVHD.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using vhd as a source.
@@ -136,7 +136,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithVmAsSource.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithVmAsSource.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using VM as source.
@@ -185,7 +185,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithImageVersionAsSource.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithImageVersionAsSource.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using shared image as source.
@@ -234,7 +234,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithVHD_UefiSettings.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithVHD_UefiSettings.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using vhd as a source with custom UEFI keys.
@@ -291,7 +291,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithSnapshotsAsSource.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithSnapshotsAsSource.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using snapshots as a source.
@@ -339,7 +339,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithTargetExtendedLocations.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithTargetExtendedLocations.json
      */
     /**
      * Sample code: Create or update a simple gallery image version with target extended locations specified.
@@ -388,7 +388,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithCommunityImageVersionAsSource.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithCommunityImageVersionAsSource.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using community gallery image as source.
@@ -437,7 +437,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Create.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Create.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version using managed image as source.
@@ -486,7 +486,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithAdditionalReplicaSets.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithAdditionalReplicaSets.json
      */
     /**
      * Sample code: Create or update a simple Gallery Image Version with Direct Drive replicas.
@@ -512,9 +512,9 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
                                         "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
                                         .withLun(1))))
                             .withExcludeFromLatest(false)
-                            .withAdditionalReplicaSets(Arrays.asList(new AdditionalReplicaSet()
-                                .withStorageAccountType(StorageAccountType.fromString("PreviumV2_LRS"))
-                                .withRegionalReplicaCount(1))),
+                            .withAdditionalReplicaSets(Arrays.asList(
+                                new AdditionalReplicaSet().withStorageAccountType(StorageAccountType.PREMIUM_V2_LRS)
+                                    .withRegionalReplicaCount(1))),
                         new TargetRegion().withName("East US")
                             .withRegionalReplicaCount(2)
                             .withStorageAccountType(StorageAccountType.STANDARD_ZRS)

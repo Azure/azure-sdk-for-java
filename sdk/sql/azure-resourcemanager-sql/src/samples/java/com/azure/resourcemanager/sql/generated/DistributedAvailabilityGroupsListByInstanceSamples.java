@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DistributedAvailabilityGroupsListByInstanceSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DistributedAvailabilityGroupsListByInstance.json
+     * x-ms-original-file: 2025-01-01/DistributedAvailabilityGroupsListByInstance.json
      */
     /**
      * Sample code: Lists all distributed availability groups in instance.

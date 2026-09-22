@@ -12,19 +12,22 @@ import java.util.Collection;
  */
 public final class ZoneDistributionStrategy extends ExpandableStringEnum<ZoneDistributionStrategy> {
     /**
-     * Default. Launch instances in a single zone based on best effort.
+     * Default. Launch instances in a single zone
+     * based on best effort.
      * If capacity is not available, LaunchBulkInstancesOperation can allocate capacity in different zones.
      */
     public static final ZoneDistributionStrategy BEST_EFFORT_SINGLE_ZONE = fromString("BestEffortSingleZone");
 
     /**
-     * Launch instances based on zone preferences.
+     * Launch instances based on zone
+     * preferences.
      * Higher priority zones are filled first before allocating to lower priority zones.
      */
     public static final ZoneDistributionStrategy PRIORITIZED = fromString("Prioritized");
 
     /**
-     * Balance launching instances across zones specified based on best effort.
+     * Balance launching instances across zones
+     * specified based on best effort.
      * If capacity is not available, LaunchBulkInstancesOperation can deviate balancing across all zones.
      */
     public static final ZoneDistributionStrategy BEST_EFFORT_BALANCED = fromString("BestEffortBalanced");

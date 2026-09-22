@@ -17,6 +17,7 @@ import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
+import com.azure.resourcemanager.compute.models.SnapshotAccessState;
 import com.azure.resourcemanager.compute.models.SupportedCapabilities;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -271,6 +272,16 @@ public final class DiskRestorePointInner extends ProxyResource {
      */
     public Integer logicalSectorSize() {
         return this.innerProperties() == null ? null : this.innerProperties().logicalSectorSize();
+    }
+
+    /**
+     * Get the snapshotAccessState property: The state of snapshot which determines the access availability of the
+     * snapshot.
+     * 
+     * @return the snapshotAccessState value.
+     */
+    public SnapshotAccessState snapshotAccessState() {
+        return this.innerProperties() == null ? null : this.innerProperties().snapshotAccessState();
     }
 
     /**

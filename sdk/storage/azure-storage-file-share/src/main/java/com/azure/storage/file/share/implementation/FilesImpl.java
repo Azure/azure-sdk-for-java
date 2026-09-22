@@ -963,8 +963,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
@@ -977,8 +977,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
@@ -991,8 +991,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
@@ -1005,8 +1005,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
@@ -6557,6 +6557,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6565,10 +6571,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> getRangeListWithResponseAsync(
         String shareName, String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout,
-        String range, String leaseId, Boolean supportRename) {
+        String range, String leaseId, Boolean supportRename, String marker, Integer maxresults) {
         return FluxUtil
             .withContext(context -> getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot,
-                timeout, range, leaseId, supportRename, context))
+                timeout, range, leaseId, supportRename, marker, maxresults, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -6591,6 +6597,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -6600,13 +6612,13 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> getRangeListWithResponseAsync(
         String shareName, String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout,
-        String range, String leaseId, Boolean supportRename, Context context) {
+        String range, String leaseId, Boolean supportRename, String marker, Integer maxresults, Context context) {
         final String comp = "rangelist";
         final String accept = "application/xml";
         return service
             .getRangeList(this.client.getUrl(), shareName, fileName, comp, sharesnapshot, prevsharesnapshot, timeout,
                 this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), supportRename, accept, context)
+                this.client.getFileRequestIntent(), supportRename, marker, maxresults, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -6629,6 +6641,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6636,9 +6654,10 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileRangeList> getRangeListAsync(String shareName, String fileName, String sharesnapshot,
-        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename) {
+        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
+        Integer maxresults) {
         return getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
-            leaseId, supportRename)
+            leaseId, supportRename, marker, maxresults)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -6662,6 +6681,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -6670,10 +6695,10 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileRangeList> getRangeListAsync(String shareName, String fileName, String sharesnapshot,
-        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename,
-        Context context) {
+        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
+        Integer maxresults, Context context) {
         return getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
-            leaseId, supportRename, context)
+            leaseId, supportRename, marker, maxresults, context)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -6697,6 +6722,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6705,10 +6736,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileRangeList>> getRangeListNoCustomHeadersWithResponseAsync(String shareName,
         String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
-        Boolean supportRename) {
+        Boolean supportRename, String marker, Integer maxresults) {
         return FluxUtil
             .withContext(context -> getRangeListNoCustomHeadersWithResponseAsync(shareName, fileName, sharesnapshot,
-                prevsharesnapshot, timeout, range, leaseId, supportRename, context))
+                prevsharesnapshot, timeout, range, leaseId, supportRename, marker, maxresults, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -6731,6 +6762,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -6740,13 +6777,13 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileRangeList>> getRangeListNoCustomHeadersWithResponseAsync(String shareName,
         String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
-        Boolean supportRename, Context context) {
+        Boolean supportRename, String marker, Integer maxresults, Context context) {
         final String comp = "rangelist";
         final String accept = "application/xml";
         return service
             .getRangeListNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp, sharesnapshot,
                 prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), supportRename, accept, context)
+                this.client.getFileRequestIntent(), supportRename, marker, maxresults, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -6769,6 +6806,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -6778,13 +6821,13 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> getRangeListWithResponse(String shareName,
         String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
-        Boolean supportRename, Context context) {
+        Boolean supportRename, String marker, Integer maxresults, Context context) {
         try {
             final String comp = "rangelist";
             final String accept = "application/xml";
             return service.getRangeListSync(this.client.getUrl(), shareName, fileName, comp, sharesnapshot,
                 prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), supportRename, accept, context);
+                this.client.getFileRequestIntent(), supportRename, marker, maxresults, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -6809,6 +6852,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6816,10 +6865,11 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareFileRangeList getRangeList(String shareName, String fileName, String sharesnapshot,
-        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename) {
+        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
+        Integer maxresults) {
         try {
             return getRangeListWithResponse(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
-                leaseId, supportRename, Context.NONE).getValue();
+                leaseId, supportRename, marker, maxresults, Context.NONE).getValue();
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -6844,6 +6894,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -6853,13 +6909,14 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileRangeList> getRangeListNoCustomHeadersWithResponse(String shareName, String fileName,
         String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
-        Boolean supportRename, Context context) {
+        Boolean supportRename, String marker, Integer maxresults, Context context) {
         try {
             final String comp = "rangelist";
             final String accept = "application/xml";
             return service.getRangeListNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp,
                 sharesnapshot, prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), supportRename, accept, context);
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), supportRename, marker, maxresults,
+                accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }

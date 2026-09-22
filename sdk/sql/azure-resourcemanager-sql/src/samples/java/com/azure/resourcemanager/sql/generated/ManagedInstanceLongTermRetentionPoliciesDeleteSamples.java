@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ManagedInstanceLongTermRetentionPoli
  */
 public final class ManagedInstanceLongTermRetentionPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceLongTermRetentionPolicyDelete.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceLongTermRetentionPolicyDelete.json
      */
     /**
      * Sample code: Deletes the LTR policy for the managed database.

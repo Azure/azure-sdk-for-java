@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicLong
 
 private[spark] class TestOutputMetricsPublisher extends OutputMetricsPublisherTrait {
   private val recordsWritten = new AtomicLong(0)
+  private val recordsSkipped = new AtomicLong(0)
   private val bytesWritten = new AtomicLong(0)
   private val totalRequestCharge = new AtomicLong()
 
@@ -19,6 +20,18 @@ private[spark] class TestOutputMetricsPublisher extends OutputMetricsPublisherTr
       recordsWritten.addAndGet(recordCount)
     }
 
+    trackDiagnostics(diagnostics)
+  }
+
+  override def trackSkippedOperation(recordCount: Long, diagnostics: Option[CosmosDiagnosticsContext]): Unit = {
+    if (recordCount > 0) {
+      recordsSkipped.addAndGet(recordCount)
+    }
+
+    trackDiagnostics(diagnostics)
+  }
+
+  private[this] def trackDiagnostics(diagnostics: Option[CosmosDiagnosticsContext]): Unit = {
     diagnostics match {
       case Some(ctx) => {
         totalRequestCharge.addAndGet((ctx.getTotalRequestCharge * 100L).toLong)
@@ -40,6 +53,8 @@ private[spark] class TestOutputMetricsPublisher extends OutputMetricsPublisherTr
   }
 
   def getRecordsWrittenSnapshot(): Long = recordsWritten.get()
+
+  def getRecordsSkippedSnapshot(): Long = recordsSkipped.get()
 
   def getBytesWrittenSnapshot(): Long = bytesWritten.get()
 

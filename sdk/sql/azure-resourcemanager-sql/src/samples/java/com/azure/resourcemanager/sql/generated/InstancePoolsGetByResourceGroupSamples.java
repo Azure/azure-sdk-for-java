@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class InstancePoolsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetInstancePool.json
+     * x-ms-original-file: 2025-01-01/GetInstancePool.json
      */
     /**
      * Sample code: Get an instance pool.

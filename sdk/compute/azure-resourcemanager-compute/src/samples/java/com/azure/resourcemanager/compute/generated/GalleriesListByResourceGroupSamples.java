@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class GalleriesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/Gallery_ListByResourceGroup.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/Gallery_ListByResourceGroup.json
      */
     /**
      * Sample code: List galleries in a resource group.

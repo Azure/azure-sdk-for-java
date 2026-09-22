@@ -1,5 +1,14 @@
 # Release History
 
+## 1.3.8 (2026-07-22)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+- Added new library entries to the BOM:
+    - [`azure-ai-speech-transcription`](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/transcription/azure-ai-speech-transcription)
+    - [`azure-ai-voicelive`](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/voicelive/azure-ai-voicelive)
+
 ## 1.3.7 (2026-05-18)
 
 ### Dependency Updates
@@ -93,7 +102,7 @@
 
 ### Dependency Updates
 
-- Added a new libary entry to the BOM:
+- Added a new library entry to the BOM:
   - [azure-health-deidentification](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/README.md)
 
 - Updated Azure SDK dependency versions to the latest releases.

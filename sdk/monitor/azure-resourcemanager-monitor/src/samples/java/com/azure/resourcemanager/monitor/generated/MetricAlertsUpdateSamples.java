@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class MetricAlertsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-03-01-preview/UpdateMetricAlert.json
+     * x-ms-original-file: 2026-01-01/UpdateMetricAlert.json
      */
     /**
      * Sample code: Create or update an alert rule.

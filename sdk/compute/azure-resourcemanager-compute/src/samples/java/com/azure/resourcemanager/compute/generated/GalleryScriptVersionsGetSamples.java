@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class GalleryScriptVersionsGetSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryScriptExamples/GalleryScriptVersion_Get.json
+     * x-ms-original-file: 2025-12-03/galleryScriptExamples/GalleryScriptVersion_Get.json
      */
     /**
      * Sample code: Get a gallery Script Version.
@@ -24,7 +24,7 @@ public final class GalleryScriptVersionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryScriptExamples/GalleryScriptVersion_Get_WithReplicationStatus.json
+     * x-ms-original-file: 2025-12-03/galleryScriptExamples/GalleryScriptVersion_Get_WithReplicationStatus.json
      */
     /**
      * Sample code: Get a gallery Script Version with replication status.

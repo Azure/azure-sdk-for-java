@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.CopyLongTermRetentionBackupParameter
  */
 public final class LongTermRetentionBackupsCopyByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupCopy.json
+     * x-ms-original-file: 2025-01-01/ResourceGroupBasedLongTermRetentionBackupCopy.json
      */
     /**
      * Sample code: Copy the long term retention backup.

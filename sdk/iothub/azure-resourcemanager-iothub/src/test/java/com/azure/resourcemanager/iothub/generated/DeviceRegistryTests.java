@@ -12,18 +12,18 @@ public final class DeviceRegistryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeviceRegistry model
-            = BinaryData.fromString("{\"namespaceResourceId\":\"na\",\"identityResourceId\":\"mhjrunmpxttdbhr\"}")
+            = BinaryData.fromString("{\"namespaceResourceId\":\"thsu\",\"identityResourceId\":\"cmnyyazttb\"}")
                 .toObject(DeviceRegistry.class);
-        Assertions.assertEquals("na", model.namespaceResourceId());
-        Assertions.assertEquals("mhjrunmpxttdbhr", model.identityResourceId());
+        Assertions.assertEquals("thsu", model.namespaceResourceId());
+        Assertions.assertEquals("cmnyyazttb", model.identityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeviceRegistry model
-            = new DeviceRegistry().withNamespaceResourceId("na").withIdentityResourceId("mhjrunmpxttdbhr");
+            = new DeviceRegistry().withNamespaceResourceId("thsu").withIdentityResourceId("cmnyyazttb");
         model = BinaryData.fromObject(model).toObject(DeviceRegistry.class);
-        Assertions.assertEquals("na", model.namespaceResourceId());
-        Assertions.assertEquals("mhjrunmpxttdbhr", model.identityResourceId());
+        Assertions.assertEquals("thsu", model.namespaceResourceId());
+        Assertions.assertEquals("cmnyyazttb", model.identityResourceId());
     }
 }

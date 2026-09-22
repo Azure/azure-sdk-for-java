@@ -2342,7 +2342,7 @@ public final class SqlManagementClientImpl extends AzureServiceClient implements
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-02-01-preview";
+        this.apiVersion = "2025-01-01";
         this.operations = new OperationsClientImpl(this);
         this.backupShortTermRetentionPolicies = new BackupShortTermRetentionPoliciesClientImpl(this);
         this.databaseColumns = new DatabaseColumnsClientImpl(this);

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class JobAgentsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DeleteJobAgent.json
+     * x-ms-original-file: 2025-01-01/DeleteJobAgent.json
      */
     /**
      * Sample code: Delete a job agent.

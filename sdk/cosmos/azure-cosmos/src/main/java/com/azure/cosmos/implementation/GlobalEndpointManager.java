@@ -446,23 +446,40 @@ public class GlobalEndpointManager implements AutoCloseable {
     /**
      * Fires the delta-gated thin-client probe cycle fire-and-forget so the outer refresh/retry/init
      * never blocks on it. Routing stays on Gateway V1 until the probe proves the proxy endpoints
-     * (conservative-until-proven), then {@link #getProxyProbeDecision()} flips the gate. The latest
-     * subscription is tracked in {@link #thinClientProbeCycleDisposable} for {@link #close()} to
-     * cancel; the probe client's single-flight CAS dedups overlapping fires.
+     * (conservative-until-proven), then {@link #getProxyProbeDecision()} flips the gate. The live
+     * cycle's subscription is tracked in {@link #thinClientProbeCycleDisposable} for {@link #close()}
+     * to cancel; the probe client's single-flight CAS dedups overlapping fires to no-ops, and this
+     * method keeps the live predecessor rather than tracking those no-ops.
      */
     private void fireThinClientProbeCycle() {
         Disposable newDisposable = this.runThinClientProbeCycleMono()
             .subscribe(
                 ignored -> { },
                 t -> logger.warn("Thin-client probe cycle subscription errored unexpectedly; ignoring.", t));
-        Disposable oldDisposable = this.thinClientProbeCycleDisposable.getAndSet(newDisposable);
-        if (oldDisposable != null && !oldDisposable.isDisposed()) {
-            oldDisposable.dispose();
-        }
+        // close() cancels the tracked subscription to promptly stop the ACTIVE probe I/O (the probe
+        // client's own close() only flips a flag; in-flight probes otherwise self-terminate on the
+        // per-probe timeout). So the tracked handle must always be the real in-flight cycle, never a
+        // no-op trigger: while a cycle is running, EndpointProbeClient's single-flight CAS forces every
+        // concurrent fire onto the no-op path, so THIS subscription is the no-op and the already-tracked
+        // one is the real cycle. Keep the live predecessor and let this no-op self-complete; only
+        // install the new handle when nothing live is tracked (it won the single-flight and is the real
+        // cycle). Firing on every refresh still runs runThinClientProbeCycleMono -> runProbeCycle, which
+        // republishes the latest topology and recomputes the gate even on the no-op path, so a topology
+        // delta arriving mid-cycle is never lost. We never dispose the predecessor here (only close()
+        // does), so an active cycle is never aborted.
+        this.thinClientProbeCycleDisposable.getAndUpdate(
+            previous -> (previous != null && !previous.isDisposed()) ? previous : newDisposable);
     }
 
     private Mono<Void> runThinClientProbeCycleMono() {
         return Mono.defer(() -> {
+            // No-op when COSMOS.THINCLIENT_ENABLED is explicitly set (true or false): the flag is then
+            // a hard contract that decides routing directly, so the probe verdict is irrelevant and we
+            // skip the traffic. Read live here, so dropping the opt-out/opt-in back to unset resumes
+            // probing on the next refresh. Only an unset flag lets the probe gate routing.
+            if (Configs.isThinClientEnabled() != null) {
+                return Mono.empty();
+            }
             EndpointProbeClient probeClient = this.thinClientProbeClient.get();
             if (probeClient == null) {
                 return Mono.empty();

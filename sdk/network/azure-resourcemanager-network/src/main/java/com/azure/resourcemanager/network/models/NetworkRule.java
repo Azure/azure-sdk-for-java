@@ -56,6 +56,22 @@ public final class NetworkRule extends FirewallPolicyRule {
      */
     private List<String> destinationFqdns;
 
+    /*
+     * List of source Kubernetes Selector Groups for this rule.
+     */
+    private List<String> sourceKubeSelectorGroups;
+
+    /*
+     * List of source geographic location filters (ISO 3166-1 alpha-2 country codes, e.g. "US", "CA") for this rule.
+     */
+    private List<String> sourceGeoLocations;
+
+    /*
+     * List of destination geographic location filters (ISO 3166-1 alpha-2 country codes, e.g. "US", "CA") for this
+     * rule.
+     */
+    private List<String> destinationGeoLocations;
+
     /**
      * Creates an instance of NetworkRule class.
      */
@@ -213,6 +229,70 @@ public final class NetworkRule extends FirewallPolicyRule {
     }
 
     /**
+     * Get the sourceKubeSelectorGroups property: List of source Kubernetes Selector Groups for this rule.
+     * 
+     * @return the sourceKubeSelectorGroups value.
+     */
+    public List<String> sourceKubeSelectorGroups() {
+        return this.sourceKubeSelectorGroups;
+    }
+
+    /**
+     * Set the sourceKubeSelectorGroups property: List of source Kubernetes Selector Groups for this rule.
+     * 
+     * @param sourceKubeSelectorGroups the sourceKubeSelectorGroups value to set.
+     * @return the NetworkRule object itself.
+     */
+    public NetworkRule withSourceKubeSelectorGroups(List<String> sourceKubeSelectorGroups) {
+        this.sourceKubeSelectorGroups = sourceKubeSelectorGroups;
+        return this;
+    }
+
+    /**
+     * Get the sourceGeoLocations property: List of source geographic location filters (ISO 3166-1 alpha-2 country
+     * codes, e.g. "US", "CA") for this rule.
+     * 
+     * @return the sourceGeoLocations value.
+     */
+    public List<String> sourceGeoLocations() {
+        return this.sourceGeoLocations;
+    }
+
+    /**
+     * Set the sourceGeoLocations property: List of source geographic location filters (ISO 3166-1 alpha-2 country
+     * codes, e.g. "US", "CA") for this rule.
+     * 
+     * @param sourceGeoLocations the sourceGeoLocations value to set.
+     * @return the NetworkRule object itself.
+     */
+    public NetworkRule withSourceGeoLocations(List<String> sourceGeoLocations) {
+        this.sourceGeoLocations = sourceGeoLocations;
+        return this;
+    }
+
+    /**
+     * Get the destinationGeoLocations property: List of destination geographic location filters (ISO 3166-1 alpha-2
+     * country codes, e.g. "US", "CA") for this rule.
+     * 
+     * @return the destinationGeoLocations value.
+     */
+    public List<String> destinationGeoLocations() {
+        return this.destinationGeoLocations;
+    }
+
+    /**
+     * Set the destinationGeoLocations property: List of destination geographic location filters (ISO 3166-1 alpha-2
+     * country codes, e.g. "US", "CA") for this rule.
+     * 
+     * @param destinationGeoLocations the destinationGeoLocations value to set.
+     * @return the NetworkRule object itself.
+     */
+    public NetworkRule withDestinationGeoLocations(List<String> destinationGeoLocations) {
+        this.destinationGeoLocations = destinationGeoLocations;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -262,6 +342,12 @@ public final class NetworkRule extends FirewallPolicyRule {
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("destinationFqdns", this.destinationFqdns,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("sourceKubeSelectorGroups", this.sourceKubeSelectorGroups,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("sourceGeoLocations", this.sourceGeoLocations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationGeoLocations", this.destinationGeoLocations,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -308,6 +394,15 @@ public final class NetworkRule extends FirewallPolicyRule {
                 } else if ("destinationFqdns".equals(fieldName)) {
                     List<String> destinationFqdns = reader.readArray(reader1 -> reader1.getString());
                     deserializedNetworkRule.destinationFqdns = destinationFqdns;
+                } else if ("sourceKubeSelectorGroups".equals(fieldName)) {
+                    List<String> sourceKubeSelectorGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkRule.sourceKubeSelectorGroups = sourceKubeSelectorGroups;
+                } else if ("sourceGeoLocations".equals(fieldName)) {
+                    List<String> sourceGeoLocations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkRule.sourceGeoLocations = sourceGeoLocations;
+                } else if ("destinationGeoLocations".equals(fieldName)) {
+                    List<String> destinationGeoLocations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkRule.destinationGeoLocations = destinationGeoLocations;
                 } else {
                     reader.skipChildren();
                 }

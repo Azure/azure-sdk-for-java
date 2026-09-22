@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class StartStopManagedInstanceSchedulesListByInstanceSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/StartStopManagedInstanceScheduleList.json
+     * x-ms-original-file: 2025-01-01/StartStopManagedInstanceScheduleList.json
      */
     /**
      * Sample code: Lists the managed instance's Start/Stop schedules.

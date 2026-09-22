@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -84,7 +85,7 @@ public class GatewayReadConsistencyStrategyE2ETest {
     public void beforeClass() {
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
 
-        databaseId = "readConsistencyStrategy-e2e-" + UUID.randomUUID().toString().substring(0, 8);
+        databaseId = CosmosDatabaseForTest.generateId("readConsistencyStrategyE2E");
         containerId = "testcontainer";
 
         gatewayV1Client = createGatewayV1Builder().buildAsyncClient();

@@ -13,13 +13,13 @@ public final class AccountSkuListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccountSkuListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"qgtz\",\"sku\":{\"name\":\"pnqbqqwxrjfe\",\"tier\":\"Basic\",\"size\":\"wsubisnja\",\"family\":\"mngnzscxaqw\",\"capacity\":2024300309}},{\"resourceType\":\"cbonqvpk\",\"sku\":{\"name\":\"rxnjeaseipheofl\",\"tier\":\"Basic\",\"size\":\"y\",\"family\":\"nj\",\"capacity\":147839675}},{\"resourceType\":\"tgrhpdjpjumas\",\"sku\":{\"name\":\"zj\",\"tier\":\"Premium\",\"size\":\"gual\",\"family\":\"xxhejjzzvd\",\"capacity\":572482803}}]}")
+            "{\"value\":[{\"resourceType\":\"pheoflokeyy\",\"sku\":{\"name\":\"nj\",\"tier\":\"Basic\",\"size\":\"tgrhpdjpjumas\",\"family\":\"zj\",\"capacity\":1063088657}},{\"resourceType\":\"gual\",\"sku\":{\"name\":\"xxhejjzzvd\",\"tier\":\"Free\",\"size\":\"dslfhotwmcy\",\"family\":\"wlbjnpgacftade\",\"capacity\":2035779275}},{\"resourceType\":\"tyfsoppusuesn\",\"sku\":{\"name\":\"dejbavo\",\"tier\":\"Standard\",\"size\":\"mohctb\",\"family\":\"udwxdndnvowguj\",\"capacity\":408024361}},{\"resourceType\":\"dkcglhsl\",\"sku\":{\"name\":\"jdyggdtji\",\"tier\":\"Free\",\"size\":\"uofqwe\",\"family\":\"hmenevfyexfwhybc\",\"capacity\":1547255739}}]}")
             .toObject(AccountSkuListResultInner.class);
-        Assertions.assertEquals("qgtz", model.value().get(0).resourceType());
-        Assertions.assertEquals("pnqbqqwxrjfe", model.value().get(0).sku().name());
+        Assertions.assertEquals("pheoflokeyy", model.value().get(0).resourceType());
+        Assertions.assertEquals("nj", model.value().get(0).sku().name());
         Assertions.assertEquals(SkuTier.BASIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals("wsubisnja", model.value().get(0).sku().size());
-        Assertions.assertEquals("mngnzscxaqw", model.value().get(0).sku().family());
-        Assertions.assertEquals(2024300309, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("tgrhpdjpjumas", model.value().get(0).sku().size());
+        Assertions.assertEquals("zj", model.value().get(0).sku().family());
+        Assertions.assertEquals(1063088657, model.value().get(0).sku().capacity());
     }
 }

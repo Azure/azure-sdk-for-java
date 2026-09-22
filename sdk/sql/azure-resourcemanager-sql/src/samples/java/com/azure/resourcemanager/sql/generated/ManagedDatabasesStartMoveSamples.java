@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.MoveOperationMode;
  */
 public final class ManagedDatabasesStartMoveSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseStartMoveMax.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseStartMoveMax.json
      */
     /**
      * Sample code: Starts a managed database move with all optional parameters specified.
@@ -31,7 +31,7 @@ public final class ManagedDatabasesStartMoveSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseStartMoveMin.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseStartMoveMin.json
      */
     /**
      * Sample code: Starts a managed database move with no optional parameters specified.

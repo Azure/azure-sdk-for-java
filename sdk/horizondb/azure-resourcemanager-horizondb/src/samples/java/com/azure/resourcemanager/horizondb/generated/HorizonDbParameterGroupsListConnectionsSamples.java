@@ -9,15 +9,15 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbParameterGroupsListConnectionsSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/ParameterGroups_ListConnections.json
+     * x-ms-original-file: 2026-05-01-preview/ParameterGroups_ListConnections.json
      */
     /**
-     * Sample code: List connections for a HorizonDb parameter group.
+     * Sample code: List connections for a HorizonDB parameter group.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        listConnectionsForAHorizonDbParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        listConnectionsForAHorizonDBParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbParameterGroups()
             .listConnections("exampleresourcegroup", "exampleparametergroup", com.azure.core.util.Context.NONE);
     }

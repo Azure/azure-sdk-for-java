@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class PrivateLinkResourcesListByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/PrivateLinkResourcesList.json
+     * x-ms-original-file: 2025-01-01/PrivateLinkResourcesList.json
      */
     /**
      * Sample code: Gets private link resources for SQL.

@@ -97,6 +97,7 @@ import com.azure.resourcemanager.security.fluent.StandardsClient;
 import com.azure.resourcemanager.security.fluent.SubAssessmentsClient;
 import com.azure.resourcemanager.security.fluent.TasksClient;
 import com.azure.resourcemanager.security.fluent.TopologiesClient;
+import com.azure.resourcemanager.security.fluent.TopologyResourcesClient;
 import com.azure.resourcemanager.security.fluent.WorkspaceSettingsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -687,6 +688,20 @@ public final class SecurityCenterImpl implements SecurityCenter {
     }
 
     /**
+     * The TopologyResourcesClient object to access its operations.
+     */
+    private final TopologyResourcesClient topologyResources;
+
+    /**
+     * Gets the TopologyResourcesClient object to access its operations.
+     * 
+     * @return the TopologyResourcesClient object.
+     */
+    public TopologyResourcesClient getTopologyResources() {
+        return this.topologyResources;
+    }
+
+    /**
      * The SecurityStandardsClient object to access its operations.
      */
     private final SecurityStandardsClient securityStandards;
@@ -1135,20 +1150,6 @@ public final class SecurityCenterImpl implements SecurityCenter {
     }
 
     /**
-     * The TopologiesClient object to access its operations.
-     */
-    private final TopologiesClient topologies;
-
-    /**
-     * Gets the TopologiesClient object to access its operations.
-     * 
-     * @return the TopologiesClient object.
-     */
-    public TopologiesClient getTopologies() {
-        return this.topologies;
-    }
-
-    /**
      * The SecuritySolutionsReferenceDatasClient object to access its operations.
      */
     private final SecuritySolutionsReferenceDatasClient securitySolutionsReferenceDatas;
@@ -1160,6 +1161,20 @@ public final class SecurityCenterImpl implements SecurityCenter {
      */
     public SecuritySolutionsReferenceDatasClient getSecuritySolutionsReferenceDatas() {
         return this.securitySolutionsReferenceDatas;
+    }
+
+    /**
+     * The TopologiesClient object to access its operations.
+     */
+    private final TopologiesClient topologies;
+
+    /**
+     * Gets the TopologiesClient object to access its operations.
+     * 
+     * @return the TopologiesClient object.
+     */
+    public TopologiesClient getTopologies() {
+        return this.topologies;
     }
 
     /**
@@ -1271,6 +1286,7 @@ public final class SecurityCenterImpl implements SecurityCenter {
         this.externalSecuritySolutions = new ExternalSecuritySolutionsClientImpl(this);
         this.jitNetworkAccessPolicies = new JitNetworkAccessPoliciesClientImpl(this);
         this.securitySolutions = new SecuritySolutionsClientImpl(this);
+        this.topologyResources = new TopologyResourcesClientImpl(this);
         this.securityStandards = new SecurityStandardsClientImpl(this);
         this.standardAssignments = new StandardAssignmentsClientImpl(this);
         this.customRecommendations = new CustomRecommendationsClientImpl(this);
@@ -1305,8 +1321,8 @@ public final class SecurityCenterImpl implements SecurityCenter {
         this.gitHubIssues = new GitHubIssuesClientImpl(this);
         this.allowedConnections = new AllowedConnectionsClientImpl(this);
         this.serverVulnerabilityAssessments = new ServerVulnerabilityAssessmentsClientImpl(this);
-        this.topologies = new TopologiesClientImpl(this);
         this.securitySolutionsReferenceDatas = new SecuritySolutionsReferenceDatasClientImpl(this);
+        this.topologies = new TopologiesClientImpl(this);
         this.sensitivitySettings = new SensitivitySettingsClientImpl(this);
         this.sqlVulnerabilityAssessmentSettingsOperations
             = new SqlVulnerabilityAssessmentSettingsOperationsClientImpl(this);

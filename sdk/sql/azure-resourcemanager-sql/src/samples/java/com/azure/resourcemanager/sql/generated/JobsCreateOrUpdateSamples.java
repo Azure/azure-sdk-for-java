@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  */
 public final class JobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateJobMin.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateJobMin.json
      */
     /**
      * Sample code: Create a job with default properties.
@@ -29,7 +29,7 @@ public final class JobsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateJobMax.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateJobMax.json
      */
     /**
      * Sample code: Create a job with all properties specified.

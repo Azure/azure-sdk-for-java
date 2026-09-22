@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ResourceGroupBasedManagedInstanceLongTermRetentionBackupDelete.json
+     * x-ms-original-file: 2025-01-01/ResourceGroupBasedManagedInstanceLongTermRetentionBackupDelete.json
      */
     /**
      * Sample code: Delete the long term retention backup.

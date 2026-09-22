@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 public final class DatabaseOperationsCancelSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CancelDatabaseOperation.json
+     * x-ms-original-file: 2025-01-01/CancelDatabaseOperation.json
      */
     /**
      * Sample code: Cancel the database management operation.

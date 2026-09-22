@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class InstancePoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DeleteInstancePool.json
+     * x-ms-original-file: 2025-01-01/DeleteInstancePool.json
      */
     /**
      * Sample code: Delete an instance pool.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class JobTargetGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DeleteJobTargetGroup.json
+     * x-ms-original-file: 2025-01-01/DeleteJobTargetGroup.json
      */
     /**
      * Sample code: Delete a target group.

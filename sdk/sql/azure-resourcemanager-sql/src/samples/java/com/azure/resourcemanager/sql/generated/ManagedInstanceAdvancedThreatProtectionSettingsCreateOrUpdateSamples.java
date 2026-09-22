@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.AdvancedThreatProtectionState;
  */
 public final class ManagedInstanceAdvancedThreatProtectionSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsCreateMin.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceAdvancedThreatProtectionSettingsCreateMin.json
      */
     /**
      * Sample code: Update a managed instance's Advanced Threat Protection settings with minimal parameters.
@@ -30,7 +30,7 @@ public final class ManagedInstanceAdvancedThreatProtectionSettingsCreateOrUpdate
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceAdvancedThreatProtectionSettingsCreateMax.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceAdvancedThreatProtectionSettingsCreateMax.json
      */
     /**
      * Sample code: Update a managed instance's Advanced Threat Protection settings with all parameters.

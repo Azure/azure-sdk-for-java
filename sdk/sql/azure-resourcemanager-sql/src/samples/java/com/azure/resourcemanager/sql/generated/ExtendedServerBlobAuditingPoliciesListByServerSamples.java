@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ExtendedServerBlobAuditingPoliciesListByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerExtendedAuditingSettingsList.json
+     * x-ms-original-file: 2025-01-01/ServerExtendedAuditingSettingsList.json
      */
     /**
      * Sample code: List extended auditing settings of a server.

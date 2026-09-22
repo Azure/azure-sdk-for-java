@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.TransparentDataEncryptionName;
  */
 public final class TransparentDataEncryptionsResumeSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ResumeTransparentDataEncryptionUpdate.json
+     * x-ms-original-file: 2025-01-01/ResumeTransparentDataEncryptionUpdate.json
      */
     /**
      * Sample code: Resume database's Transparent Data Encryption scan state with minimal parameters.

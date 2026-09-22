@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DatabaseColumnsListByTableSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DatabaseColumnListByTable.json
+     * x-ms-original-file: 2025-01-01/DatabaseColumnListByTable.json
      */
     /**
      * Sample code: List database columns.

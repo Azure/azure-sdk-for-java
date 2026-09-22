@@ -16,6 +16,7 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.msi.models.IsolationScope;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
@@ -108,6 +109,43 @@ public class MSIIdentityManagementTests extends ResourceManagerTestProxyTestBase
         }
 
         Assertions.assertTrue(found);
+
+        msiManager.identities().deleteById(identity.id());
+    }
+
+    @Test
+    public void canCreateIdentityWithIsolationScope() throws Exception {
+        rgName = generateRandomResourceName("javaismrg", 15);
+        String identityName = generateRandomResourceName("msi-id", 15);
+
+        Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups().define(rgName).withRegion(region);
+
+        Identity identity = msiManager.identities()
+            .define(identityName)
+            .withRegion(region)
+            .withNewResourceGroup(creatableRG)
+            .withIsolationScope(IsolationScope.REGIONAL)
+            .create();
+
+        Assertions.assertNotNull(identity);
+        Assertions.assertNotNull(identity.innerModel());
+        Assertions.assertEquals(IsolationScope.REGIONAL, identity.isolationScope());
+
+        // Ensure the value round-trips from the service.
+        identity = msiManager.identities().getById(identity.id());
+
+        Assertions.assertNotNull(identity);
+        Assertions.assertEquals(IsolationScope.REGIONAL, identity.isolationScope());
+
+        // Update the isolation scope to None and ensure it round-trips.
+        identity = identity.update().withIsolationScope(IsolationScope.NONE).apply();
+
+        Assertions.assertEquals(IsolationScope.NONE, identity.isolationScope());
+
+        identity = msiManager.identities().getById(identity.id());
+
+        Assertions.assertNotNull(identity);
+        Assertions.assertEquals(IsolationScope.NONE, identity.isolationScope());
 
         msiManager.identities().deleteById(identity.id());
     }

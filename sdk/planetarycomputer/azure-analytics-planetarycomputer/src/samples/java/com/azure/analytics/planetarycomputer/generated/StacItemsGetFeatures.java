@@ -6,9 +6,11 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
+import com.azure.analytics.planetarycomputer.models.StacAssetUrlSigningMode;
 import com.azure.analytics.planetarycomputer.models.StacItemCollection;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.List;
 
 public class StacItemsGetFeatures {
     public static void main(String[] args) {
@@ -17,7 +19,8 @@ public class StacItemsGetFeatures {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-item-collection.stac-items-get-features
-        StacItemCollection response = stacClient.getItemCollection("naip-atl", 10, null, null);
+        StacItemCollection response = stacClient.getItemCollection("naip-atl", 10, (List<String>) null, (String) null,
+            (StacAssetUrlSigningMode) null, (Integer) null, (String) null);
         // END:com.azure.analytics.planetarycomputer.generated.stac-get-item-collection.stac-items-get-features
     }
 }

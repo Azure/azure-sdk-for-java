@@ -42,6 +42,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupUsa
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupWorkloadItemsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BmsPrepareDataMoveOperationResultsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ConfigureSourceScansImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.DeletedProtectionContainersImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ExportJobsOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.FeatureSupportsImpl;
@@ -95,6 +96,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupUsageSummar
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupWorkloadItems;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Backups;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BmsPrepareDataMoveOperationResults;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ConfigureSourceScans;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DeletedProtectionContainers;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ExportJobsOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.FeatureSupports;
@@ -158,6 +160,8 @@ public final class RecoveryServicesBackupManager {
     private ProtectedItems protectedItems;
 
     private Backups backups;
+
+    private ConfigureSourceScans configureSourceScans;
 
     private RecoveryPointsRecommendedForMoves recoveryPointsRecommendedForMoves;
 
@@ -562,6 +566,18 @@ public final class RecoveryServicesBackupManager {
             this.backups = new BackupsImpl(clientObject.getBackups(), this);
         }
         return backups;
+    }
+
+    /**
+     * Gets the resource collection API of ConfigureSourceScans.
+     * 
+     * @return Resource collection API of ConfigureSourceScans.
+     */
+    public ConfigureSourceScans configureSourceScans() {
+        if (this.configureSourceScans == null) {
+            this.configureSourceScans = new ConfigureSourceScansImpl(clientObject.getConfigureSourceScans(), this);
+        }
+        return configureSourceScans;
     }
 
     /**

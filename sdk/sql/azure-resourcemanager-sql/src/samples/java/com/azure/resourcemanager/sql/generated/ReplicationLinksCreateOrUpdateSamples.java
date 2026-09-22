@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ReplicationLinkType;
  */
 public final class ReplicationLinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ReplicationLinkCreateOrUpdate.json
+     * x-ms-original-file: 2025-01-01/ReplicationLinkCreateOrUpdate.json
      */
     /**
      * Sample code: Updates Replication Link.

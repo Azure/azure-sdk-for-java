@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionBackupsRemoveTimeBasedImmutabilitySamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/RemoveTimeBasedImmutabilityLongTermRetentionBackup.json
+     * x-ms-original-file: 2025-01-01/RemoveTimeBasedImmutabilityLongTermRetentionBackup.json
      */
     /**
      * Sample code: Remove time based immutability of the long term retention backup.

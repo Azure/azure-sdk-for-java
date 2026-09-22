@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionBackupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupGet.json
+     * x-ms-original-file: 2025-01-01/ResourceGroupBasedLongTermRetentionBackupGet.json
      */
     /**
      * Sample code: Get the long term retention backup.

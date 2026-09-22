@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class MaintenanceWindowsOperationGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetMaintenanceWindows.json
+     * x-ms-original-file: 2025-01-01/GetMaintenanceWindows.json
      */
     /**
      * Sample code: Gets maintenance window settings for a selected database.

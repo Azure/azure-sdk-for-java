@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.GalleryUpdate;
  */
 public final class GalleriesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/Gallery_Update.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/Gallery_Update.json
      */
     /**
      * Sample code: Update a simple gallery.

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.hardwaresecuritymodules.models.RestoreRequestPr
 public final class CloudHsmClustersValidateRestorePropertiesSamples {
     /*
      * x-ms-original-file:
-     * 2025-03-31/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen_ValidateRestoreProperties.json
+     * 2025-12-01-preview/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen_ValidateRestoreProperties.json
      */
     /**
      * Sample code: CloudHsmCluster_ValidateRestore_MaximumSet_Gen.

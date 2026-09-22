@@ -15,7 +15,7 @@ import com.azure.resourcemanager.compute.models.SupportedCapabilities;
  */
 public final class DisksUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-02/diskExamples/Disk_Update_ToAddArchitecture.json
+     * x-ms-original-file: 2026-03-02/diskExamples/Disk_Update_ToAddArchitecture.json
      */
     /**
      * Sample code: update a managed disk to add architecture.
@@ -32,7 +32,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/diskExamples/Disk_Update_AddPurchasePlan.json
+     * x-ms-original-file: 2026-03-02/diskExamples/Disk_Update_AddPurchasePlan.json
      */
     /**
      * Sample code: update a managed disk to add purchase plan.
@@ -51,7 +51,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/diskExamples/Disk_Update_DisableOptimizedForFrequentAttach.json
+     * x-ms-original-file: 2026-03-02/diskExamples/Disk_Update_DisableOptimizedForFrequentAttach.json
      */
     /**
      * Sample code: update a managed disk to disable optimizedForFrequentAttach.
@@ -67,7 +67,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/diskExamples/Disk_Update_AddDiskControllerTypes.json
+     * x-ms-original-file: 2026-03-02/diskExamples/Disk_Update_AddDiskControllerTypes.json
      */
     /**
      * Sample code: update a managed disk with diskControllerTypes.
@@ -84,7 +84,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/diskExamples/Disk_Update_AddSupportsHibernation.json
+     * x-ms-original-file: 2026-03-02/diskExamples/Disk_Update_AddSupportsHibernation.json
      */
     /**
      * Sample code: update a managed disk to add supportsHibernation.
@@ -100,7 +100,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/diskExamples/Disk_CreateOrUpdate_BurstingEnabled.json
+     * x-ms-original-file: 2026-03-02/diskExamples/Disk_CreateOrUpdate_BurstingEnabled.json
      */
     /**
      * Sample code: create or update a bursting enabled managed disk.
@@ -116,7 +116,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/diskExamples/Disk_Update_DisableBursting.json
+     * x-ms-original-file: 2026-03-02/diskExamples/Disk_Update_DisableBursting.json
      */
     /**
      * Sample code: update a managed disk to disable bursting.
@@ -131,7 +131,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/diskExamples/Disk_Update_RemoveDiskAccess.json
+     * x-ms-original-file: 2026-03-02/diskExamples/Disk_Update_RemoveDiskAccess.json
      */
     /**
      * Sample code: update managed disk to remove disk access resource association.
@@ -148,7 +148,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/diskExamples/Disk_Update_AddAcceleratedNetworking.json
+     * x-ms-original-file: 2026-03-02/diskExamples/Disk_Update_AddAcceleratedNetworking.json
      */
     /**
      * Sample code: update a managed disk to add accelerated networking.
@@ -165,7 +165,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/diskExamples/Disk_Update_ChangeTier.json
+     * x-ms-original-file: 2026-03-02/diskExamples/Disk_Update_ChangeTier.json
      */
     /**
      * Sample code: update a managed disk to change tier.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerDelete.json
+     * x-ms-original-file: 2025-01-01/ServerDelete.json
      */
     /**
      * Sample code: Delete server.

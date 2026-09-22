@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class InstanceFailoverGroupsForceFailoverAllowDataLossSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/InstanceFailoverGroupForceFailoverAllowDataLoss.json
+     * x-ms-original-file: 2025-01-01/InstanceFailoverGroupForceFailoverAllowDataLoss.json
      */
     /**
      * Sample code: Forced failover of a failover group allowing data loss.

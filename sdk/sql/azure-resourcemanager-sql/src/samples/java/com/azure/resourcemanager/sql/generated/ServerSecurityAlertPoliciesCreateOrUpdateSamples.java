@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class ServerSecurityAlertPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerSecurityAlertsCreateMin.json
+     * x-ms-original-file: 2025-01-01/ServerSecurityAlertsCreateMin.json
      */
     /**
      * Sample code: Update a server's threat detection policy with minimal parameters.
@@ -31,7 +31,7 @@ public final class ServerSecurityAlertPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerSecurityAlertsCreateMax.json
+     * x-ms-original-file: 2025-01-01/ServerSecurityAlertsCreateMax.json
      */
     /**
      * Sample code: Update a server's threat detection policy with all parameters.

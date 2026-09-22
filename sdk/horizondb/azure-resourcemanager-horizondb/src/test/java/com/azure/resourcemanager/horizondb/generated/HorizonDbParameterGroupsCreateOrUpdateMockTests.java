@@ -26,7 +26,7 @@ public final class HorizonDbParameterGroupsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"parameters\":[{\"name\":\"kyhkobopg\",\"description\":\"dkow\",\"value\":\"bqpc\",\"dataType\":\"kbwcc\",\"allowedValues\":\"jvcdwxlpqekf\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"syingwfqatmtdht\",\"unit\":\"vypgikdg\"},{\"name\":\"ywkbirryuzhlhkjo\",\"description\":\"vqqaatjinrvgo\",\"value\":\"mfiibfggj\",\"dataType\":\"olvrw\",\"allowedValues\":\"v\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"qwjygvja\",\"unit\":\"blmhvkzuhb\"},{\"name\":\"vyhgs\",\"description\":\"byrqufeg\",\"value\":\"vwz\",\"dataType\":\"nhlmctlpdng\",\"allowedValues\":\"vgbmhr\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"ijejvegrhbpn\",\"unit\":\"xexccbdreaxhcexd\"}],\"description\":\"vqahqkghtpwi\",\"pgVersion\":205565987,\"version\":1759061120,\"applyImmediately\":false,\"provisioningState\":\"Succeeded\"},\"location\":\"xzb\",\"tags\":{\"ronzmyhgfip\":\"owvrvmtgjqppyos\",\"waekrrjreafxtsgu\":\"sxkm\"},\"id\":\"hjglikk\",\"name\":\"wslolbqp\",\"type\":\"uzlm\"}";
+            = "{\"properties\":{\"parameters\":[{\"name\":\"ktgplcr\",\"description\":\"jxeznoigbrnjwmw\",\"value\":\"nbsazejjoqkag\",\"dataType\":\"sxtta\",\"allowedValues\":\"zxnfaaz\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"dm\",\"unit\":\"j\"},{\"name\":\"wuenvr\",\"description\":\"yo\",\"value\":\"ibreb\",\"dataType\":\"aysjkixqtnqttez\",\"allowedValues\":\"fffiak\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"tedltmmj\",\"unit\":\"yeozphvwauyqncy\"},{\"name\":\"p\",\"description\":\"ipmdscwx\",\"value\":\"pevzhfst\",\"dataType\":\"xhojuj\",\"allowedValues\":\"pelmcuvhixbjxyf\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"ool\",\"unit\":\"tpkiwkkbnujry\"},{\"name\":\"tylbfpncurdoiw\",\"description\":\"thtywub\",\"value\":\"bihwqknfdnt\",\"dataType\":\"chrdgoihxumwcto\",\"allowedValues\":\"zj\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"lwg\",\"unit\":\"tsbwtovvtgse\"}],\"description\":\"qfi\",\"pgVersion\":257068718,\"version\":1223110676,\"applyImmediately\":true,\"provisioningState\":\"Succeeded\"},\"location\":\"nepttwqmsni\",\"tags\":{\"k\":\"dmqnrojlpij\"},\"id\":\"xfrdd\",\"name\":\"c\",\"type\":\"atiz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,26 +36,25 @@ public final class HorizonDbParameterGroupsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HorizonDbParameterGroup response = manager.horizonDbParameterGroups()
-            .define("rgz")
-            .withRegion("sccyajguqf")
-            .withExistingResourceGroup("rjqc")
-            .withTags(mapOf("emdwzrmuhapfc", "gzlvdnkfxu"))
+            .define("tmtdhtmdvypgik")
+            .withRegion("xzb")
+            .withExistingResourceGroup("fq")
+            .withTags(mapOf("ronzmyhgfip", "owvrvmtgjqppyos", "waekrrjreafxtsgu", "sxkm"))
             .withProperties(new HorizonDbParameterGroupProperties()
-                .withParameters(
-                    Arrays.asList(new ParameterProperties().withName("zszrnwoiindfpw").withValue("vfbgofeljagrqmqh"),
-                        new ParameterProperties().withName("wspughftqsxhqx").withValue("uufzdmsyqtfihw")))
-                .withDescription("p")
-                .withPgVersion(219155482)
-                .withApplyImmediately(true))
+                .withParameters(Arrays.asList(new ParameterProperties().withName("w").withValue("oqrvqqaatjin"),
+                    new ParameterProperties().withName("s").withValue("vwz")))
+                .withDescription("vqahqkghtpwi")
+                .withPgVersion(205565987)
+                .withApplyImmediately(false))
             .create();
 
-        Assertions.assertEquals("xzb", response.location());
-        Assertions.assertEquals("owvrvmtgjqppyos", response.tags().get("ronzmyhgfip"));
-        Assertions.assertEquals("kyhkobopg", response.properties().parameters().get(0).name());
-        Assertions.assertEquals("bqpc", response.properties().parameters().get(0).value());
-        Assertions.assertEquals("vqahqkghtpwi", response.properties().description());
-        Assertions.assertEquals(205565987, response.properties().pgVersion());
-        Assertions.assertFalse(response.properties().applyImmediately());
+        Assertions.assertEquals("nepttwqmsni", response.location());
+        Assertions.assertEquals("dmqnrojlpij", response.tags().get("k"));
+        Assertions.assertEquals("ktgplcr", response.properties().parameters().get(0).name());
+        Assertions.assertEquals("nbsazejjoqkag", response.properties().parameters().get(0).value());
+        Assertions.assertEquals("qfi", response.properties().description());
+        Assertions.assertEquals(257068718, response.properties().pgVersion());
+        Assertions.assertTrue(response.properties().applyImmediately());
     }
 
     // Use "Map.of" if available

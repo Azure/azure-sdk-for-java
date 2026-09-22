@@ -9,14 +9,14 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbReplicasDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Replicas_Delete.json
+     * x-ms-original-file: 2026-05-01-preview/Replicas_Delete.json
      */
     /**
-     * Sample code: Delete a HorizonDb replica.
+     * Sample code: Delete a HorizonDB replica.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void deleteAHorizonDbReplica(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void deleteAHorizonDBReplica(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbReplicas()
             .delete("exampleresourcegroup", "examplecluster", "examplepool", "examplereplica",
                 com.azure.core.util.Context.NONE);

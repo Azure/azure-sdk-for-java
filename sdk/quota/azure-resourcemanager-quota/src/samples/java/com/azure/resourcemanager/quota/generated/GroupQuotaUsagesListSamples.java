@@ -9,7 +9,7 @@ package com.azure.resourcemanager.quota.generated;
  */
 public final class GroupQuotaUsagesListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotaUsages/GetGroupQuotaUsages.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotaUsages/GetGroupQuotaUsages.json
      */
     /**
      * Sample code: GroupQuotasUsages_List.

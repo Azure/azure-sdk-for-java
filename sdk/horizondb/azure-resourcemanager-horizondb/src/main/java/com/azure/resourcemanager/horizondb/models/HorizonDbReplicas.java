@@ -13,41 +13,41 @@ import com.azure.core.util.Context;
  */
 public interface HorizonDbReplicas {
     /**
-     * Gets information about a HorizonDb replica.
+     * Gets information about a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb replica along with {@link Response}.
+     * @return information about a HorizonDB replica along with {@link Response}.
      */
     Response<HorizonDbReplica> getWithResponse(String resourceGroupName, String clusterName, String poolName,
         String replicaName, Context context);
 
     /**
-     * Gets information about a HorizonDb replica.
+     * Gets information about a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb replica.
+     * @return information about a HorizonDB replica.
      */
     HorizonDbReplica get(String resourceGroupName, String clusterName, String poolName, String replicaName);
 
     /**
-     * Lists all HorizonDb replicas in a pool.
+     * Lists all HorizonDB replicas in a pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -56,11 +56,11 @@ public interface HorizonDbReplicas {
     PagedIterable<HorizonDbReplica> list(String resourceGroupName, String clusterName, String poolName);
 
     /**
-     * Lists all HorizonDb replicas in a pool.
+     * Lists all HorizonDB replicas in a pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,12 +71,12 @@ public interface HorizonDbReplicas {
         Context context);
 
     /**
-     * Deletes a HorizonDb replica.
+     * Deletes a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -84,12 +84,12 @@ public interface HorizonDbReplicas {
     void delete(String resourceGroupName, String clusterName, String poolName, String replicaName);
 
     /**
-     * Deletes a HorizonDb replica.
+     * Deletes a HorizonDB replica.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param replicaName The name of the HorizonDb replica.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param replicaName The name of the HorizonDB replica.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,30 +98,30 @@ public interface HorizonDbReplicas {
     void delete(String resourceGroupName, String clusterName, String poolName, String replicaName, Context context);
 
     /**
-     * Gets information about a HorizonDb replica.
+     * Gets information about a HorizonDB replica.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb replica along with {@link Response}.
+     * @return information about a HorizonDB replica along with {@link Response}.
      */
     HorizonDbReplica getById(String id);
 
     /**
-     * Gets information about a HorizonDb replica.
+     * Gets information about a HorizonDB replica.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb replica along with {@link Response}.
+     * @return information about a HorizonDB replica along with {@link Response}.
      */
     Response<HorizonDbReplica> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a HorizonDb replica.
+     * Deletes a HorizonDB replica.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,7 +131,7 @@ public interface HorizonDbReplicas {
     void deleteById(String id);
 
     /**
-     * Deletes a HorizonDb replica.
+     * Deletes a HorizonDB replica.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.StartStopScheduleName;
  */
 public final class StartStopManagedInstanceSchedulesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/StartStopManagedInstanceScheduleDelete.json
+     * x-ms-original-file: 2025-01-01/StartStopManagedInstanceScheduleDelete.json
      */
     /**
      * Sample code: Deletes the managed instance's Start/Stop schedule.

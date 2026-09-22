@@ -14,7 +14,7 @@ import com.azure.resourcemanager.sql.models.SensitivityLabelRank;
  */
 public final class ManagedDatabaseSensitivityLabelsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseColumnSensitivityLabelCreate.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseColumnSensitivityLabelCreate.json
      */
     /**
      * Sample code: Updates or creates a sensitivity label of a given column with all parameters in a managed database.

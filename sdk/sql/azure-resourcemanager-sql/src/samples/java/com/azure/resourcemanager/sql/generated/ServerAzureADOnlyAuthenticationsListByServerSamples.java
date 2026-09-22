@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerAzureADOnlyAuthenticationsListByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/AzureADOnlyAuthList.json
+     * x-ms-original-file: 2025-01-01/AzureADOnlyAuthList.json
      */
     /**
      * Sample code: Gets a list of Azure Active Directory only authentication object.

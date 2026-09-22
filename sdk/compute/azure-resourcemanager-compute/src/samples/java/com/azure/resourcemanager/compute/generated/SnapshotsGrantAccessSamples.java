@@ -13,7 +13,7 @@ import com.azure.resourcemanager.compute.models.GrantAccessData;
  */
 public final class SnapshotsGrantAccessSamples {
     /*
-     * x-ms-original-file: 2025-01-02/snapshotExamples/Snapshot_BeginGetAccess.json
+     * x-ms-original-file: 2026-03-02/snapshotExamples/Snapshot_BeginGetAccess.json
      */
     /**
      * Sample code: Get a sas on a snapshot.

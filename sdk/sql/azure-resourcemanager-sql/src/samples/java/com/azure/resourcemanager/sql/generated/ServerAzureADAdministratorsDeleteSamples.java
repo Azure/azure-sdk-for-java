@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.AdministratorName;
  */
 public final class ServerAzureADAdministratorsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/AdministratorDelete.json
+     * x-ms-original-file: 2025-01-01/AdministratorDelete.json
      */
     /**
      * Sample code: Delete Azure Active Directory administrator.

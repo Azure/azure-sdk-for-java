@@ -17,7 +17,12 @@ public enum VoiceLiveServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2026-04-10}.
      */
-    V2026_04_10("2026-04-10");
+    V2026_04_10("2026-04-10"),
+
+    /**
+     * Service version {@code 2026-07-15}.
+     */
+    V2026_07_15("2026-07-15");
 
     private final String version;
 
@@ -39,6 +44,6 @@ public enum VoiceLiveServiceVersion implements ServiceVersion {
      * @return The latest {@link VoiceLiveServiceVersion}.
      */
     public static VoiceLiveServiceVersion getLatest() {
-        return V2026_04_10;
+        return V2026_07_15;
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerKeysDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerKeyDelete.json
+     * x-ms-original-file: 2025-01-01/ServerKeyDelete.json
      */
     /**
      * Sample code: Delete the server key.

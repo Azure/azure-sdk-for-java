@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.BlobAuditingPolicyName;
  */
 public final class ServerBlobAuditingPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerBlobAuditingGet.json
+     * x-ms-original-file: 2025-01-01/ServerBlobAuditingGet.json
      */
     /**
      * Sample code: Get a server's blob auditing policy.

@@ -15,10 +15,13 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Server;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Sku;
+import com.azure.resourcemanager.mysqlflexibleserver.models.SkuTier;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import io.netty.util.internal.StringUtil;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -26,7 +29,7 @@ import java.util.UUID;
 
 public class MySqlManagerTest extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_EAST2;
+    private static final Region REGION = Region.US_WEST3;
     private String resourceGroupName = "rg" + randomPadding();
     private MySqlManager mysqlManager;
     private ResourceManager resourceManager;
@@ -66,6 +69,7 @@ public class MySqlManagerTest extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    @Disabled("The test subscription does not have regional access to provision MySQL Flexible Server.")
     public void testCreateServer() {
         Server server = null;
         String randomPadding = randomPadding();
@@ -81,6 +85,7 @@ public class MySqlManagerTest extends TestProxyTestBase {
                 .withExistingResourceGroup(resourceGroupName)
                 .withAdministratorLogin(adminName)
                 .withAdministratorLoginPassword(adminPwd)
+                .withSku(new Sku().withName("Standard_B1ms").withTier(SkuTier.BURSTABLE))
                 .create();
             // @embedmeEnd
             server.refresh();
@@ -92,6 +97,12 @@ public class MySqlManagerTest extends TestProxyTestBase {
                 mysqlManager.servers().deleteById(server.id());
             }
         }
+    }
+
+    @Test
+    @LiveOnly
+    public void testListServers() {
+        mysqlManager.servers().list().stream().findFirst();
     }
 
     private static String randomPadding() {

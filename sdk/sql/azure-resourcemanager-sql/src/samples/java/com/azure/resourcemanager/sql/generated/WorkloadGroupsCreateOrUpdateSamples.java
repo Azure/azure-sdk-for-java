@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.fluent.models.WorkloadGroupInner;
  */
 public final class WorkloadGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateWorkloadGroupMin.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateWorkloadGroupMin.json
      */
     /**
      * Sample code: Create a workload group with the required properties specified.
@@ -30,7 +30,7 @@ public final class WorkloadGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/CreateOrUpdateWorkloadGroupMax.json
+     * x-ms-original-file: 2025-01-01/CreateOrUpdateWorkloadGroupMax.json
      */
     /**
      * Sample code: Create a workload group with all properties specified.

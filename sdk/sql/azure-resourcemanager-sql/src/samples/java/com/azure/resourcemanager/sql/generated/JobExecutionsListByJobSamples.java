@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class JobExecutionsListByJobSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListJobExecutionsByJob.json
+     * x-ms-original-file: 2025-01-01/ListJobExecutionsByJob.json
      */
     /**
      * Sample code: List a job's executions.

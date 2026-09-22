@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class InstancePoolOperationsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetInstancePoolOperation.json
+     * x-ms-original-file: 2025-01-01/GetInstancePoolOperation.json
      */
     /**
      * Sample code: Gets the instance pool management operation.

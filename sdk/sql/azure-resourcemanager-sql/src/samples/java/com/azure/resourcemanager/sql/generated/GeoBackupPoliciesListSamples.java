@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class GeoBackupPoliciesListSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GeoBackupPoliciesList.json
+     * x-ms-original-file: 2025-01-01/GeoBackupPoliciesList.json
      */
     /**
      * Sample code: List Geo backup policies for the given database resource.

@@ -17,6 +17,7 @@ import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
+import com.azure.resourcemanager.compute.models.SnapshotAccessState;
 import com.azure.resourcemanager.compute.models.SupportedCapabilities;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -117,6 +118,11 @@ public final class DiskRestorePointProperties implements JsonSerializable<DiskRe
      * are 512 and 4096. 4096 is the default.
      */
     private Integer logicalSectorSize;
+
+    /*
+     * The state of snapshot which determines the access availability of the snapshot.
+     */
+    private SnapshotAccessState snapshotAccessState;
 
     /**
      * Creates an instance of DiskRestorePointProperties class.
@@ -293,6 +299,16 @@ public final class DiskRestorePointProperties implements JsonSerializable<DiskRe
     }
 
     /**
+     * Get the snapshotAccessState property: The state of snapshot which determines the access availability of the
+     * snapshot.
+     * 
+     * @return the snapshotAccessState value.
+     */
+    public SnapshotAccessState snapshotAccessState() {
+        return this.snapshotAccessState;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -390,6 +406,9 @@ public final class DiskRestorePointProperties implements JsonSerializable<DiskRe
                     deserializedDiskRestorePointProperties.securityProfile = DiskSecurityProfile.fromJson(reader);
                 } else if ("logicalSectorSize".equals(fieldName)) {
                     deserializedDiskRestorePointProperties.logicalSectorSize = reader.getNullable(JsonReader::getInt);
+                } else if ("snapshotAccessState".equals(fieldName)) {
+                    deserializedDiskRestorePointProperties.snapshotAccessState
+                        = SnapshotAccessState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

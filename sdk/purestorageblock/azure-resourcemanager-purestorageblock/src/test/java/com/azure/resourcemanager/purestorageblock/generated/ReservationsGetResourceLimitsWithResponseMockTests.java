@@ -21,7 +21,7 @@ public final class ReservationsGetResourceLimitsWithResponseMockTests {
     @Test
     public void testGetResourceLimitsWithResponse() throws Exception {
         String responseStr
-            = "{\"storagePool\":{\"provisionedBandwidthMbPerSec\":{\"min\":4427086989076318317,\"max\":6563841329201288310},\"provisionedIops\":{\"min\":8680246364842604153,\"max\":6851254807622539389},\"physicalAvailabilityZones\":[\"uzvx\",\"risjnhnytxifqjz\"]},\"volume\":{\"provisionedSize\":{\"min\":5028173088217913035,\"max\":6352328391564368443}},\"protectionPolicy\":{\"frequency\":{\"min\":4223928428315416005,\"max\":1575354894603985523},\"retention\":{\"min\":8129609655822520955,\"max\":7038720826135192724}},\"performancePolicy\":{\"iopsLimit\":{\"min\":3311635224555992257,\"max\":411296746406972015},\"bandwidthLimit\":{\"min\":7560632422312520218,\"max\":7666921470080196819}}}";
+            = "{\"storagePool\":{\"provisionedBandwidthMbPerSec\":{\"min\":2365586815203072426,\"max\":1948425303402168643},\"provisionedIops\":{\"min\":6619495551064675423,\"max\":430611531006551205},\"physicalAvailabilityZones\":[\"hcmavmqfo\",\"dorhcgyyp\",\"otwypundmb\",\"hu\"]},\"volume\":{\"provisionedSize\":{\"min\":8589702615494300352,\"max\":4750372007133576018}},\"protectionPolicy\":{\"frequency\":{\"min\":3926398393677310169,\"max\":4873893799855836819},\"retention\":{\"min\":2120941596738305720,\"max\":9008399369327070874}},\"performancePolicy\":{\"iopsLimit\":{\"min\":5240370773268035766,\"max\":4877945582792424779},\"bandwidthLimit\":{\"min\":4888727306375927406,\"max\":6456868865327358658}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,23 +31,23 @@ public final class ReservationsGetResourceLimitsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LimitDetails response = manager.reservations()
-            .getResourceLimitsWithResponse("qjlihhyuspska", "dvlmfwdgzxul", com.azure.core.util.Context.NONE)
+            .getResourceLimitsWithResponse("iitdfuxt", "asiibmiybnnust", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(4427086989076318317L, response.storagePool().provisionedBandwidthMbPerSec().min());
-        Assertions.assertEquals(6563841329201288310L, response.storagePool().provisionedBandwidthMbPerSec().max());
-        Assertions.assertEquals(8680246364842604153L, response.storagePool().provisionedIops().min());
-        Assertions.assertEquals(6851254807622539389L, response.storagePool().provisionedIops().max());
-        Assertions.assertEquals("uzvx", response.storagePool().physicalAvailabilityZones().get(0));
-        Assertions.assertEquals(5028173088217913035L, response.volume().provisionedSize().min());
-        Assertions.assertEquals(6352328391564368443L, response.volume().provisionedSize().max());
-        Assertions.assertEquals(4223928428315416005L, response.protectionPolicy().frequency().min());
-        Assertions.assertEquals(1575354894603985523L, response.protectionPolicy().frequency().max());
-        Assertions.assertEquals(8129609655822520955L, response.protectionPolicy().retention().min());
-        Assertions.assertEquals(7038720826135192724L, response.protectionPolicy().retention().max());
-        Assertions.assertEquals(3311635224555992257L, response.performancePolicy().iopsLimit().min());
-        Assertions.assertEquals(411296746406972015L, response.performancePolicy().iopsLimit().max());
-        Assertions.assertEquals(7560632422312520218L, response.performancePolicy().bandwidthLimit().min());
-        Assertions.assertEquals(7666921470080196819L, response.performancePolicy().bandwidthLimit().max());
+        Assertions.assertEquals(2365586815203072426L, response.storagePool().provisionedBandwidthMbPerSec().min());
+        Assertions.assertEquals(1948425303402168643L, response.storagePool().provisionedBandwidthMbPerSec().max());
+        Assertions.assertEquals(6619495551064675423L, response.storagePool().provisionedIops().min());
+        Assertions.assertEquals(430611531006551205L, response.storagePool().provisionedIops().max());
+        Assertions.assertEquals("hcmavmqfo", response.storagePool().physicalAvailabilityZones().get(0));
+        Assertions.assertEquals(8589702615494300352L, response.volume().provisionedSize().min());
+        Assertions.assertEquals(4750372007133576018L, response.volume().provisionedSize().max());
+        Assertions.assertEquals(3926398393677310169L, response.protectionPolicy().frequency().min());
+        Assertions.assertEquals(4873893799855836819L, response.protectionPolicy().frequency().max());
+        Assertions.assertEquals(2120941596738305720L, response.protectionPolicy().retention().min());
+        Assertions.assertEquals(9008399369327070874L, response.protectionPolicy().retention().max());
+        Assertions.assertEquals(5240370773268035766L, response.performancePolicy().iopsLimit().min());
+        Assertions.assertEquals(4877945582792424779L, response.performancePolicy().iopsLimit().max());
+        Assertions.assertEquals(4888727306375927406L, response.performancePolicy().bandwidthLimit().min());
+        Assertions.assertEquals(6456868865327358658L, response.performancePolicy().bandwidthLimit().max());
     }
 }
