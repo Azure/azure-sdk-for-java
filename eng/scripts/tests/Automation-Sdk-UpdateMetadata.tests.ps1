@@ -865,12 +865,89 @@ Describe "Update-CiPathFilters" {
         }
     }
 
-    It "Should throw for malformed path filters" {
-        $ciYml = ConvertFrom-Yaml $script:SampleCiYmlWithParams -Ordered
-        $ciYml["pr"]["paths"]["exclude"] = "sdk/network/pom.xml"
+    It "Should initialize missing include and exclude lists for both trigger types" {
+        foreach ($triggerType in @("trigger", "pr")) {
+            foreach ($filterType in @("include", "exclude")) {
+                $ciYml = ConvertFrom-Yaml $script:SampleCiYmlWithParams -Ordered
+                $ciYml[$triggerType]["paths"].Remove($filterType)
 
-        { Update-CiPathFilters -CiYml $ciYml -Service "network" -Module "azure-resourcemanager-network-extra" } |
-            Should -Throw "*pr.paths.exclude*not a list*"
+                $result = Update-CiPathFilters -CiYml $ciYml -Service "network" -Module "azure-resourcemanager-network-extra"
+
+                $result | Should -Be $true
+                ($ciYml[$triggerType]["paths"][$filterType] -is [System.Collections.IList]) | Should -Be $true
+                if ($filterType -eq "include") {
+                    $ciYml[$triggerType]["paths"][$filterType] | Should -Contain "sdk/network/azure-resourcemanager-network-extra/"
+                }
+                else {
+                    $ciYml[$triggerType]["paths"][$filterType] | Should -Contain "sdk/network/azure-resourcemanager-network-extra/pom.xml"
+                }
+            }
+        }
+    }
+
+    It "Should preserve either disabled trigger and update the other trigger" {
+        foreach ($disabledTrigger in @("trigger", "pr")) {
+            $ciYml = ConvertFrom-Yaml $script:SampleCiYmlWithParams -Ordered
+            $ciYml[$disabledTrigger] = "none"
+
+            $result = Update-CiPathFilters -CiYml $ciYml -Service "network" -Module "azure-resourcemanager-network-extra"
+
+            $result | Should -Be $true
+            $ciYml[$disabledTrigger] | Should -BeExactly "none"
+            $enabledTrigger = if ($disabledTrigger -eq "trigger") { "pr" } else { "trigger" }
+            $ciYml[$enabledTrigger]["paths"]["include"] | Should -Contain "sdk/network/azure-resourcemanager-network-extra/"
+            $ciYml[$enabledTrigger]["paths"]["exclude"] | Should -Contain "sdk/network/azure-resourcemanager-network-extra/pom.xml"
+        }
+    }
+
+    It "Should preserve both disabled triggers without reporting a path-filter change" {
+        $ciYml = [ordered]@{ trigger = "none"; pr = "none" }
+
+        $result = Update-CiPathFilters -CiYml $ciYml -Service "network" -Module "azure-resourcemanager-network-extra"
+
+        $result | Should -Be $false
+        $ciYml["trigger"] | Should -BeExactly "none"
+        $ciYml["pr"] | Should -BeExactly "none"
+    }
+
+    It "Should remain idempotent after initializing missing lists beside a disabled trigger" {
+        $ciYml = ConvertFrom-Yaml $script:SampleCiYmlWithParams -Ordered
+        $ciYml["trigger"] = "none"
+        $ciYml["pr"]["paths"].Remove("include")
+        $ciYml["pr"]["paths"].Remove("exclude")
+
+        Update-CiPathFilters -CiYml $ciYml -Service "network" -Module "azure-resourcemanager-network-extra"
+        $result = Update-CiPathFilters -CiYml $ciYml -Service "network" -Module "azure-resourcemanager-network-extra"
+
+        $result | Should -Be $false
+        $ciYml["trigger"] | Should -BeExactly "none"
+        @($ciYml["pr"]["paths"]["include"]).Count | Should -Be 1
+        @($ciYml["pr"]["paths"]["exclude"]).Count | Should -Be 1
+    }
+
+    It "Should throw for present null and scalar path filters" {
+        foreach ($malformedValue in @($null, "sdk/network/pom.xml")) {
+            $ciYml = ConvertFrom-Yaml $script:SampleCiYmlWithParams -Ordered
+            $ciYml["pr"]["paths"]["exclude"] = $malformedValue
+
+            { Update-CiPathFilters -CiYml $ciYml -Service "network" -Module "azure-resourcemanager-network-extra" } |
+                Should -Throw "*pr.paths.exclude*not a list*"
+        }
+    }
+
+    It "Should throw for missing or non-none scalar triggers" {
+        foreach ($malformedValue in @($null, "None", "disabled")) {
+            $ciYml = ConvertFrom-Yaml $script:SampleCiYmlWithParams -Ordered
+            if ($null -eq $malformedValue) {
+                $ciYml.Remove("trigger")
+            }
+            else {
+                $ciYml["trigger"] = $malformedValue
+            }
+
+            { Update-CiPathFilters -CiYml $ciYml -Service "network" -Module "azure-resourcemanager-network-extra" } |
+                Should -Throw "*'trigger' is not a mapping*"
+        }
     }
 }
 
@@ -949,6 +1026,58 @@ Describe "Update-CiYml" {
             $ciYml[$triggerType]["paths"]["include"] | Should -Contain "sdk/network/azure-resourcemanager-network/"
             @($ciYml[$triggerType]["paths"]["exclude"] | Where-Object { $_ -eq "sdk/network/azure-resourcemanager-network/pom.xml" }).Count | Should -Be 1
         }
+    }
+
+    It "Should preserve a disabled trigger and serialize initialized filter lists" {
+        $svcDir = Join-Path $script:CiTestRoot "sdk" "network"
+        New-Item -ItemType Directory -Path $svcDir -Force | Out-Null
+        $ciContent = @"
+trigger: none
+pr:
+  paths: {}
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: network
+    Artifacts:
+      - name: azure-resourcemanager-network
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagernetwork
+"@
+        Set-Content -Path (Join-Path $svcDir "ci.yml") -Value $ciContent
+
+        Update-CiYml -SdkRepoPath $script:CiTestRoot -Service "network" -Module "azure-resourcemanager-network" -GroupId "com.azure.resourcemanager"
+
+        $ciYml = Get-Content (Join-Path $svcDir "ci.yml") -Raw | ConvertFrom-Yaml -Ordered
+        $ciYml["trigger"] | Should -BeExactly "none"
+        @($ciYml["pr"]["paths"]["include"]) | Should -Be @("sdk/network/azure-resourcemanager-network/")
+        @($ciYml["pr"]["paths"]["exclude"]) | Should -Be @("sdk/network/azure-resourcemanager-network/pom.xml")
+    }
+
+    It "Should preserve both disabled triggers while serializing artifact updates" {
+        $svcDir = Join-Path $script:CiTestRoot "sdk" "network"
+        New-Item -ItemType Directory -Path $svcDir -Force | Out-Null
+        $ciContent = @"
+trigger: none
+pr: none
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: network
+    Artifacts:
+      - name: azure-resourcemanager-network
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagernetwork
+"@
+        Set-Content -Path (Join-Path $svcDir "ci.yml") -Value $ciContent
+
+        Update-CiYml -SdkRepoPath $script:CiTestRoot -Service "network" -Module "azure-resourcemanager-network-extra" -GroupId "com.azure.resourcemanager"
+
+        $ciYml = Get-Content (Join-Path $svcDir "ci.yml") -Raw | ConvertFrom-Yaml -Ordered
+        $ciYml["trigger"] | Should -BeExactly "none"
+        $ciYml["pr"] | Should -BeExactly "none"
+        @($ciYml["extends"]["parameters"]["Artifacts"] | ForEach-Object { $_["name"] }) |
+            Should -Contain "azure-resourcemanager-network-extra"
     }
 
     It "Should rename ci.yml to ci.data.yml when SDKType=data and create new ci.yml" {

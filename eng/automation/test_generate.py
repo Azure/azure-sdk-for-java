@@ -1,3 +1,4 @@
+import copy
 import os
 import shutil
 import tempfile
@@ -186,11 +187,76 @@ class TestUpdateCiPathFilters(unittest.TestCase):
             self.assertEqual(paths["include"].count(self.INCLUDE_PATH), 1)
             self.assertEqual(paths["exclude"].count(self.EXCLUDE_PATH), 1)
 
-    def test_rejects_malformed_path_filters(self):
-        self.ci_yml["pr"]["paths"]["exclude"] = "sdk/network/pom.xml"
+    def test_initializes_missing_filter_lists_for_each_trigger_type(self):
+        expected_paths = {"include": self.INCLUDE_PATH, "exclude": self.EXCLUDE_PATH}
+        for trigger_type in ("trigger", "pr"):
+            for filter_type, expected_path in expected_paths.items():
+                with self.subTest(trigger_type=trigger_type, filter_type=filter_type):
+                    ci_yml = copy.deepcopy(self.ci_yml)
+                    del ci_yml[trigger_type]["paths"][filter_type]
 
-        with self.assertRaisesRegex(ValueError, r"pr\.paths\.exclude.*not a list"):
-            update_ci_path_filters(self.ci_yml, self.SERVICE, self.MODULE)
+                    self.assertTrue(
+                        update_ci_path_filters(ci_yml, self.SERVICE, self.MODULE)
+                    )
+                    self.assertEqual(
+                        ci_yml[trigger_type]["paths"][filter_type], [expected_path]
+                    )
+
+    def test_preserves_each_disabled_trigger_and_updates_the_other(self):
+        for disabled_trigger in ("trigger", "pr"):
+            with self.subTest(disabled_trigger=disabled_trigger):
+                ci_yml = copy.deepcopy(self.ci_yml)
+                ci_yml[disabled_trigger] = "none"
+
+                self.assertTrue(update_ci_path_filters(ci_yml, self.SERVICE, self.MODULE))
+                self.assertEqual(ci_yml[disabled_trigger], "none")
+
+                enabled_trigger = "pr" if disabled_trigger == "trigger" else "trigger"
+                self.assertIn(
+                    self.INCLUDE_PATH, ci_yml[enabled_trigger]["paths"]["include"]
+                )
+                self.assertIn(
+                    self.EXCLUDE_PATH, ci_yml[enabled_trigger]["paths"]["exclude"]
+                )
+
+    def test_preserves_both_disabled_triggers(self):
+        ci_yml = {"trigger": "none", "pr": "none"}
+
+        self.assertFalse(update_ci_path_filters(ci_yml, self.SERVICE, self.MODULE))
+        self.assertEqual(ci_yml, {"trigger": "none", "pr": "none"})
+
+    def test_is_idempotent_with_initialized_filters_and_disabled_trigger(self):
+        ci_yml = copy.deepcopy(self.ci_yml)
+        ci_yml["trigger"] = "none"
+        del ci_yml["pr"]["paths"]["include"]
+        del ci_yml["pr"]["paths"]["exclude"]
+
+        self.assertTrue(update_ci_path_filters(ci_yml, self.SERVICE, self.MODULE))
+        self.assertFalse(update_ci_path_filters(ci_yml, self.SERVICE, self.MODULE))
+        self.assertEqual(ci_yml["trigger"], "none")
+        self.assertEqual(ci_yml["pr"]["paths"]["include"], [self.INCLUDE_PATH])
+        self.assertEqual(ci_yml["pr"]["paths"]["exclude"], [self.EXCLUDE_PATH])
+
+    def test_rejects_present_non_list_path_filters(self):
+        for malformed_value in (None, "sdk/network/pom.xml", {}):
+            with self.subTest(malformed_value=malformed_value):
+                ci_yml = copy.deepcopy(self.ci_yml)
+                ci_yml["pr"]["paths"]["exclude"] = malformed_value
+
+                with self.assertRaisesRegex(ValueError, r"pr\.paths\.exclude.*not a list"):
+                    update_ci_path_filters(ci_yml, self.SERVICE, self.MODULE)
+
+    def test_rejects_missing_or_non_none_scalar_trigger(self):
+        for malformed_value in (None, "None", "disabled"):
+            with self.subTest(malformed_value=malformed_value):
+                ci_yml = copy.deepcopy(self.ci_yml)
+                if malformed_value is None:
+                    del ci_yml["trigger"]
+                else:
+                    ci_yml["trigger"] = malformed_value
+
+                with self.assertRaisesRegex(ValueError, r"'trigger' is not a mapping"):
+                    update_ci_path_filters(ci_yml, self.SERVICE, self.MODULE)
 
 
 class TestUpdateServiceFilesForNewLib(unittest.TestCase):
