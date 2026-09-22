@@ -98,7 +98,7 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
     }
 
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @param kubernetesVersion Kubernetes version to filter profiles.
@@ -121,7 +121,7 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
     }
 
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @param kubernetesVersion Kubernetes version to filter profiles.
@@ -137,7 +137,7 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
     }
 
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +153,7 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
     }
 
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @param kubernetesVersion Kubernetes version to filter profiles.
@@ -173,7 +173,7 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
     }
 
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @param kubernetesVersion Kubernetes version to filter profiles.
@@ -194,7 +194,7 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
     }
 
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,7 +210,7 @@ public final class AvailableVersionsClientImpl implements AvailableVersionsClien
     }
 
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @param kubernetesVersion Kubernetes version to filter profiles.

@@ -6,16 +6,13 @@ package com.azure.resourcemanager.appnetwork.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appnetwork.models.AppLinkMemberUpdateProperties;
-import com.azure.resourcemanager.appnetwork.models.ConnectivityProfile;
-import com.azure.resourcemanager.appnetwork.models.EastWestGatewayProfile;
+import com.azure.resourcemanager.appnetwork.models.ConnectivityProfileUpdate;
+import com.azure.resourcemanager.appnetwork.models.EastWestGatewayProfileUpdate;
 import com.azure.resourcemanager.appnetwork.models.EastWestGatewayVisibility;
-import com.azure.resourcemanager.appnetwork.models.FullyManagedUpgradeProfile;
-import com.azure.resourcemanager.appnetwork.models.MetricsProfile;
-import com.azure.resourcemanager.appnetwork.models.ObservabilityProfile;
-import com.azure.resourcemanager.appnetwork.models.PrivateConnectProfile;
-import com.azure.resourcemanager.appnetwork.models.SelfManagedUpgradeProfile;
+import com.azure.resourcemanager.appnetwork.models.FullyManagedUpgradeProfileUpdate;
+import com.azure.resourcemanager.appnetwork.models.SelfManagedUpgradeProfileUpdate;
 import com.azure.resourcemanager.appnetwork.models.UpgradeMode;
-import com.azure.resourcemanager.appnetwork.models.UpgradeProfile;
+import com.azure.resourcemanager.appnetwork.models.UpgradeProfileUpdate;
 import com.azure.resourcemanager.appnetwork.models.UpgradeReleaseChannel;
 import org.junit.jupiter.api.Assertions;
 
@@ -23,35 +20,35 @@ public final class AppLinkMemberUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AppLinkMemberUpdateProperties model = BinaryData.fromString(
-            "{\"upgradeProfile\":{\"mode\":\"FullyManaged\",\"fullyManagedUpgradeProfile\":{\"releaseChannel\":\"Rapid\"},\"selfManagedUpgradeProfile\":{\"version\":\"iotkftutqxl\"}},\"observabilityProfile\":{\"metrics\":{\"metricsEndpoint\":\"efgugnxk\"}},\"connectivityProfile\":{\"eastWestGateway\":{\"visibility\":\"Internal\"},\"privateConnect\":{\"subnetResourceId\":\"i\"}}}")
+            "{\"upgradeProfile\":{\"mode\":\"SelfManaged\",\"fullyManagedUpgradeProfile\":{\"releaseChannel\":\"Stable\"},\"selfManagedUpgradeProfile\":{\"version\":\"w\"}},\"connectivityProfile\":{\"eastWestGateway\":{\"visibility\":\"Internal\"},\"network\":\"vuhrhcffcyddgl\"}}")
             .toObject(AppLinkMemberUpdateProperties.class);
-        Assertions.assertEquals(UpgradeMode.FULLY_MANAGED, model.upgradeProfile().mode());
-        Assertions.assertEquals(UpgradeReleaseChannel.RAPID,
+        Assertions.assertEquals(UpgradeMode.SELF_MANAGED, model.upgradeProfile().mode());
+        Assertions.assertEquals(UpgradeReleaseChannel.STABLE,
             model.upgradeProfile().fullyManagedUpgradeProfile().releaseChannel());
-        Assertions.assertEquals("iotkftutqxl", model.upgradeProfile().selfManagedUpgradeProfile().version());
+        Assertions.assertEquals("w", model.upgradeProfile().selfManagedUpgradeProfile().version());
         Assertions.assertEquals(EastWestGatewayVisibility.INTERNAL,
             model.connectivityProfile().eastWestGateway().visibility());
-        Assertions.assertEquals("i", model.connectivityProfile().privateConnect().subnetResourceId());
+        Assertions.assertEquals("vuhrhcffcyddgl", model.connectivityProfile().network());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AppLinkMemberUpdateProperties model = new AppLinkMemberUpdateProperties()
-            .withUpgradeProfile(new UpgradeProfile().withMode(UpgradeMode.FULLY_MANAGED)
+            .withUpgradeProfile(new UpgradeProfileUpdate().withMode(UpgradeMode.SELF_MANAGED)
                 .withFullyManagedUpgradeProfile(
-                    new FullyManagedUpgradeProfile().withReleaseChannel(UpgradeReleaseChannel.RAPID))
-                .withSelfManagedUpgradeProfile(new SelfManagedUpgradeProfile().withVersion("iotkftutqxl")))
-            .withObservabilityProfile(new ObservabilityProfile().withMetrics(new MetricsProfile()))
-            .withConnectivityProfile(new ConnectivityProfile()
-                .withEastWestGateway(new EastWestGatewayProfile().withVisibility(EastWestGatewayVisibility.INTERNAL))
-                .withPrivateConnect(new PrivateConnectProfile().withSubnetResourceId("i")));
+                    new FullyManagedUpgradeProfileUpdate().withReleaseChannel(UpgradeReleaseChannel.STABLE))
+                .withSelfManagedUpgradeProfile(new SelfManagedUpgradeProfileUpdate().withVersion("w")))
+            .withConnectivityProfile(new ConnectivityProfileUpdate()
+                .withEastWestGateway(
+                    new EastWestGatewayProfileUpdate().withVisibility(EastWestGatewayVisibility.INTERNAL))
+                .withNetwork("vuhrhcffcyddgl"));
         model = BinaryData.fromObject(model).toObject(AppLinkMemberUpdateProperties.class);
-        Assertions.assertEquals(UpgradeMode.FULLY_MANAGED, model.upgradeProfile().mode());
-        Assertions.assertEquals(UpgradeReleaseChannel.RAPID,
+        Assertions.assertEquals(UpgradeMode.SELF_MANAGED, model.upgradeProfile().mode());
+        Assertions.assertEquals(UpgradeReleaseChannel.STABLE,
             model.upgradeProfile().fullyManagedUpgradeProfile().releaseChannel());
-        Assertions.assertEquals("iotkftutqxl", model.upgradeProfile().selfManagedUpgradeProfile().version());
+        Assertions.assertEquals("w", model.upgradeProfile().selfManagedUpgradeProfile().version());
         Assertions.assertEquals(EastWestGatewayVisibility.INTERNAL,
             model.connectivityProfile().eastWestGateway().visibility());
-        Assertions.assertEquals("i", model.connectivityProfile().privateConnect().subnetResourceId());
+        Assertions.assertEquals("vuhrhcffcyddgl", model.connectivityProfile().network());
     }
 }

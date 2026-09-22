@@ -12,12 +12,13 @@ public final class AvailableVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvailableVersionProperties model = BinaryData.fromString(
-            "{\"kubernetesVersion\":\"ttdbhrbnl\",\"fullyManagedVersions\":{\"releaseChannels\":[{\"releaseChannel\":\"kx\",\"version\":\"yskpbhen\"},{\"releaseChannel\":\"tkcxywnytnrsy\",\"version\":\"lqidyby\"},{\"releaseChannel\":\"czfc\",\"version\":\"haaxdbabphl\"},{\"releaseChannel\":\"rqlfktsthsucocmn\",\"version\":\"yazttbtwwrqpue\"}]},\"selfManagedVersions\":{\"versions\":[{\"version\":\"kzywbiex\",\"upgrades\":[\"eyueaxibxujwb\"]},{\"version\":\"qwalmuzyoxaepd\",\"upgrades\":[\"jancu\",\"rhdwbavxbniw\"]},{\"version\":\"jswztsdbpg\",\"upgrades\":[\"ytxhp\",\"xbzpfzab\",\"lcuhxwtctyqiklb\"]},{\"version\":\"ovplw\",\"upgrades\":[\"hvgyuguosvmk\",\"ss\"]}]},\"provisioningState\":\"Failed\"}")
+            "{\"kubernetesVersion\":\"ptkoenkoukn\",\"fullyManagedVersions\":{\"releaseChannels\":[{\"releaseChannel\":\"dwtiukbldngkp\",\"version\":\"cipazyxoegukgjnp\"},{\"releaseChannel\":\"ucgygevqz\",\"version\":\"typmrbpizcdrqjsd\"},{\"releaseChannel\":\"ydnfyhxdeoejz\",\"version\":\"cwif\"}]},\"selfManagedVersions\":{\"versions\":[{\"version\":\"ttgzfbis\",\"upgrades\":[\"bkh\",\"jdeyeamdpha\",\"alpbuxwgipwhon\",\"wkgshwa\"]},{\"version\":\"kix\",\"upgrades\":[\"injep\"]}]},\"provisioningState\":\"Canceled\"}")
             .toObject(AvailableVersionProperties.class);
-        Assertions.assertEquals("ttdbhrbnl", model.kubernetesVersion());
-        Assertions.assertEquals("kx", model.fullyManagedVersions().releaseChannels().get(0).releaseChannel());
-        Assertions.assertEquals("yskpbhen", model.fullyManagedVersions().releaseChannels().get(0).version());
-        Assertions.assertEquals("kzywbiex", model.selfManagedVersions().versions().get(0).version());
-        Assertions.assertEquals("eyueaxibxujwb", model.selfManagedVersions().versions().get(0).upgrades().get(0));
+        Assertions.assertEquals("ptkoenkoukn", model.kubernetesVersion());
+        Assertions.assertEquals("dwtiukbldngkp",
+            model.fullyManagedVersions().releaseChannels().get(0).releaseChannel());
+        Assertions.assertEquals("cipazyxoegukgjnp", model.fullyManagedVersions().releaseChannels().get(0).version());
+        Assertions.assertEquals("ttgzfbis", model.selfManagedVersions().versions().get(0).version());
+        Assertions.assertEquals("bkh", model.selfManagedVersions().versions().get(0).upgrades().get(0));
     }
 }

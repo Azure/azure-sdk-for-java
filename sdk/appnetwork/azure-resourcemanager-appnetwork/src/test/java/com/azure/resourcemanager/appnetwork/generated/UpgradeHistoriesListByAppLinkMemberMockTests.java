@@ -22,7 +22,7 @@ public final class UpgradeHistoriesListByAppLinkMemberMockTests {
     @Test
     public void testListByAppLinkMember() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"startTimestamp\":\"2021-10-31T06:50:30Z\",\"endTimestamp\":\"2021-06-21T21:58:07Z\",\"initiatedBy\":\"ypomgkopkwho\",\"fromVersion\":\"v\",\"toVersion\":\"ajqgxy\",\"provisioningState\":\"Updating\"},\"id\":\"mbqfqvmk\",\"name\":\"xozap\",\"type\":\"helxprglya\"}]}";
+            = "{\"value\":[{\"properties\":{\"startTimestamp\":\"2021-01-07T21:40:15Z\",\"endTimestamp\":\"2021-07-30T17:00:54Z\",\"initiatedBy\":\"erscdntne\",\"fromVersion\":\"fiwjmygtdssls\",\"toVersion\":\"tmweriofzpyq\",\"provisioningState\":\"Canceled\"},\"id\":\"abnetshh\",\"name\":\"zhedplvwiw\",\"type\":\"bmwmbesldnkw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class UpgradeHistoriesListByAppLinkMemberMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<UpgradeHistory> response = manager.upgradeHistories()
-            .listByAppLinkMember("yzvqt", "nubexk", "zksmondj", com.azure.core.util.Context.NONE);
+            .listByAppLinkMember("od", "xzb", "cblylpstdbhhxsr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-31T06:50:30Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-07T21:40:15Z"),
             response.iterator().next().properties().startTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T21:58:07Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-30T17:00:54Z"),
             response.iterator().next().properties().endTimestamp());
-        Assertions.assertEquals("ypomgkopkwho", response.iterator().next().properties().initiatedBy());
-        Assertions.assertEquals("v", response.iterator().next().properties().fromVersion());
-        Assertions.assertEquals("ajqgxy", response.iterator().next().properties().toVersion());
+        Assertions.assertEquals("erscdntne", response.iterator().next().properties().initiatedBy());
+        Assertions.assertEquals("fiwjmygtdssls", response.iterator().next().properties().fromVersion());
+        Assertions.assertEquals("tmweriofzpyq", response.iterator().next().properties().toVersion());
     }
 }

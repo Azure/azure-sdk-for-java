@@ -22,7 +22,7 @@ public final class AppLinksGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"yvpycanuzbpzk\",\"tenantId\":\"kuwbcrnwb\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"mqkrhahvljuahaqu\":{\"principalId\":\"eyvjusrtslhspkde\",\"clientId\":\"aofmxagkvtme\"},\"vfadmws\":{\"principalId\":\"dhmdua\",\"clientId\":\"exq\"}}},\"location\":\"r\",\"tags\":{\"omzlfmi\":\"pv\",\"b\":\"gwb\"},\"id\":\"e\",\"name\":\"dawkzbali\",\"type\":\"urqhaka\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"xzpuzycisp\",\"tenantId\":\"zahmgkbrpyydhibn\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"buynhijggm\":{\"principalId\":\"ik\",\"clientId\":\"rgvtqag\"},\"jrunmpxtt\":{\"principalId\":\"fsiarbutr\",\"clientId\":\"pnazzm\"},\"qidybyx\":{\"principalId\":\"hrbnlankxmyskpbh\",\"clientId\":\"btkcxywnytnrsyn\"}}},\"location\":\"fclhaaxdbabphlwr\",\"tags\":{\"azt\":\"ktsthsucocmny\"},\"id\":\"bt\",\"name\":\"wrqpue\",\"type\":\"ckzywbiexzfeyue\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class AppLinksGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AppLink response = manager.appLinks()
-            .getByResourceGroupWithResponse("wpzntxhdzh", "rqjbhckfrl", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("bfqkkr", "mpukgriw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("r", response.location());
-        Assertions.assertEquals("pv", response.tags().get("omzlfmi"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("fclhaaxdbabphlwr", response.location());
+        Assertions.assertEquals("ktsthsucocmny", response.tags().get("azt"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 }

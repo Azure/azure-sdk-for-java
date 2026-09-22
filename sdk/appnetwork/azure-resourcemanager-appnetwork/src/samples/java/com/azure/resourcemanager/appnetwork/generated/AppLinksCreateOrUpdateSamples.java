@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class AppLinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinks_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinks_CreateOrUpdate.json
      */
     /**
      * Sample code: AppLinks_CreateOrUpdate.

@@ -51,7 +51,7 @@ import java.util.Map;
  */
 public final class AppLinkMembersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinkMembers_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinkMembers_CreateOrUpdate.json
      */
     /**
      * Sample code: AppLinkMembers_CreateOrUpdate.
@@ -66,7 +66,7 @@ public final class AppLinkMembersCreateOrUpdateSamples {
             .withTags(mapOf("key2913", "fakeTokenPlaceholder"))
             .withProperties(new AppLinkMemberProperties().withClusterType(ClusterType.AKS)
                 .withMetadata(new Metadata().withResourceId(
-                    "/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourcegroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"))
+                    "/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourceGroups/applink-rg/providers/Microsoft.ContainerService/managedClusters/applink-member1"))
                 .withUpgradeProfile(new UpgradeProfile().withMode(UpgradeMode.FULLY_MANAGED)
                     .withFullyManagedUpgradeProfile(
                         new FullyManagedUpgradeProfile().withReleaseChannel(UpgradeReleaseChannel.STABLE)))
@@ -74,7 +74,8 @@ public final class AppLinkMembersCreateOrUpdateSamples {
                     .withEastWestGateway(
                         new EastWestGatewayProfile().withVisibility(EastWestGatewayVisibility.INTERNAL))
                     .withPrivateConnect(new PrivateConnectProfile().withSubnetResourceId(
-                        "/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourceGroups/applink-vnet-rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"))))
+                        "/subscriptions/bc7e0da9-5e4c-4a91-9252-9658837006cf/resourceGroups/applink-vnet-rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"))
+                    .withNetwork("network1")))
             .create();
     }
 
@@ -100,7 +101,7 @@ public final class AppLinkMembersCreateOrUpdateSamples {
  */
 public final class AppLinkMembersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinkMembers_Delete.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinkMembers_Delete.json
      */
     /**
      * Sample code: AppLinkMembers_Delete.
@@ -121,7 +122,7 @@ public final class AppLinkMembersDeleteSamples {
  */
 public final class AppLinkMembersGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinkMembers_Get.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinkMembers_Get.json
      */
     /**
      * Sample code: AppLinkMembers_Get.
@@ -143,7 +144,7 @@ public final class AppLinkMembersGetSamples {
  */
 public final class AppLinkMembersListByAppLinkSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinkMembers_ListByAppLink.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinkMembers_ListByAppLink.json
      */
     /**
      * Sample code: AppLinkMembers_ListByAppLink.
@@ -161,12 +162,12 @@ public final class AppLinkMembersListByAppLinkSamples {
 ```java
 import com.azure.resourcemanager.appnetwork.models.AppLinkMember;
 import com.azure.resourcemanager.appnetwork.models.AppLinkMemberUpdateProperties;
-import com.azure.resourcemanager.appnetwork.models.ConnectivityProfile;
-import com.azure.resourcemanager.appnetwork.models.EastWestGatewayProfile;
+import com.azure.resourcemanager.appnetwork.models.ConnectivityProfileUpdate;
+import com.azure.resourcemanager.appnetwork.models.EastWestGatewayProfileUpdate;
 import com.azure.resourcemanager.appnetwork.models.EastWestGatewayVisibility;
-import com.azure.resourcemanager.appnetwork.models.SelfManagedUpgradeProfile;
+import com.azure.resourcemanager.appnetwork.models.SelfManagedUpgradeProfileUpdate;
 import com.azure.resourcemanager.appnetwork.models.UpgradeMode;
-import com.azure.resourcemanager.appnetwork.models.UpgradeProfile;
+import com.azure.resourcemanager.appnetwork.models.UpgradeProfileUpdate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -175,7 +176,7 @@ import java.util.Map;
  */
 public final class AppLinkMembersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinkMembers_Update.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinkMembers_Update.json
      */
     /**
      * Sample code: AppLinkMembers_Update.
@@ -189,10 +190,12 @@ public final class AppLinkMembersUpdateSamples {
         resource.update()
             .withTags(mapOf("key7952", "fakeTokenPlaceholder"))
             .withProperties(new AppLinkMemberUpdateProperties()
-                .withUpgradeProfile(new UpgradeProfile().withMode(UpgradeMode.SELF_MANAGED)
-                    .withSelfManagedUpgradeProfile(new SelfManagedUpgradeProfile().withVersion("1.26")))
-                .withConnectivityProfile(new ConnectivityProfile().withEastWestGateway(
-                    new EastWestGatewayProfile().withVisibility(EastWestGatewayVisibility.INTERNAL))))
+                .withUpgradeProfile(new UpgradeProfileUpdate().withMode(UpgradeMode.SELF_MANAGED)
+                    .withSelfManagedUpgradeProfile(new SelfManagedUpgradeProfileUpdate().withVersion("1.26")))
+                .withConnectivityProfile(new ConnectivityProfileUpdate()
+                    .withEastWestGateway(
+                        new EastWestGatewayProfileUpdate().withVisibility(EastWestGatewayVisibility.INTERNAL))
+                    .withNetwork("network1")))
             .apply();
     }
 
@@ -224,7 +227,7 @@ import java.util.Map;
  */
 public final class AppLinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinks_CreateOrUpdate.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinks_CreateOrUpdate.json
      */
     /**
      * Sample code: AppLinks_CreateOrUpdate.
@@ -264,7 +267,7 @@ public final class AppLinksCreateOrUpdateSamples {
  */
 public final class AppLinksDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinks_Delete.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinks_Delete.json
      */
     /**
      * Sample code: AppLinks_Delete.
@@ -285,7 +288,7 @@ public final class AppLinksDeleteSamples {
  */
 public final class AppLinksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinks_Get.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinks_Get.json
      */
     /**
      * Sample code: AppLinks_Get.
@@ -307,7 +310,7 @@ public final class AppLinksGetByResourceGroupSamples {
  */
 public final class AppLinksListSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinks_ListBySubscription.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinks_ListBySubscription.json
      */
     /**
      * Sample code: AppLinks_ListBySubscription.
@@ -328,7 +331,7 @@ public final class AppLinksListSamples {
  */
 public final class AppLinksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinks_ListByResourceGroup.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinks_ListByResourceGroup.json
      */
     /**
      * Sample code: AppLinks_ListByResourceGroup.
@@ -345,6 +348,9 @@ public final class AppLinksListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.appnetwork.models.AppLink;
+import com.azure.resourcemanager.appnetwork.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.appnetwork.models.ManagedServiceIdentityUpdate;
+import com.azure.resourcemanager.appnetwork.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -353,7 +359,7 @@ import java.util.Map;
  */
 public final class AppLinksUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinks_Update.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinks_Update.json
      */
     /**
      * Sample code: AppLinks_Update.
@@ -364,7 +370,13 @@ public final class AppLinksUpdateSamples {
         AppLink resource = manager.appLinks()
             .getByResourceGroupWithResponse("test_rg", "applink-test-01", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("environment", "production", "cost-center", "platform")).apply();
+        resource.update()
+            .withTags(mapOf("environment", "production", "cost-center", "platform"))
+            .withIdentity(new ManagedServiceIdentityUpdate().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/test_rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/applink-identity",
+                    new UserAssignedIdentity())))
+            .apply();
     }
 
     // Use "Map.of" if available
@@ -389,7 +401,7 @@ public final class AppLinksUpdateSamples {
  */
 public final class AvailableVersionsListByLocationSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AvailableVersions_ListByLocationWithFilter.json
+     * x-ms-original-file: 2026-08-01-preview/AvailableVersions_ListByLocationWithFilter.json
      */
     /**
      * Sample code: AvailableVersions_ListByLocationWithFilter.
@@ -402,7 +414,7 @@ public final class AvailableVersionsListByLocationSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/AvailableVersions_ListByLocation.json
+     * x-ms-original-file: 2026-08-01-preview/AvailableVersions_ListByLocation.json
      */
     /**
      * Sample code: AvailableVersions_ListByLocation.
@@ -423,7 +435,7 @@ public final class AvailableVersionsListByLocationSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-08-01-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -444,7 +456,7 @@ public final class OperationsListSamples {
  */
 public final class UpgradeHistoriesListByAppLinkMemberSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/UpgradeHistories_ListByAppLinkMember.json
+     * x-ms-original-file: 2026-08-01-preview/UpgradeHistories_ListByAppLinkMember.json
      */
     /**
      * Sample code: UpgradeHistories_ListByAppLinkMember.

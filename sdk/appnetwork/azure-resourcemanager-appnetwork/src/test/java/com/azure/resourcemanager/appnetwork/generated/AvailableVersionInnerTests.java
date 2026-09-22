@@ -12,15 +12,14 @@ public final class AvailableVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvailableVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"kubernetesVersion\":\"fbebrjcxer\",\"fullyManagedVersions\":{\"releaseChannels\":[{\"releaseChannel\":\"wutttxfvjrbi\",\"version\":\"phxepcyvahf\"},{\"releaseChannel\":\"ljkyqxjvuuj\",\"version\":\"gidokgjljyoxgvcl\"},{\"releaseChannel\":\"bgsncghkjeszzhb\",\"version\":\"jhtxfvgxbfsmxne\"},{\"releaseChannel\":\"mpvecxgodebfqk\",\"version\":\"rbmpukgri\"}]},\"selfManagedVersions\":{\"versions\":[{\"version\":\"lzlfbxzpuz\",\"upgrades\":[\"ispnqzahmgkbrp\",\"y\",\"hibnuqqkpika\",\"rgvtqag\"]}]},\"provisioningState\":\"Updating\"},\"id\":\"nhijggmebfsi\",\"name\":\"rbu\",\"type\":\"rcvpnazzmhjrunmp\"}")
+            "{\"properties\":{\"kubernetesVersion\":\"vvnchrkcc\",\"fullyManagedVersions\":{\"releaseChannels\":[{\"releaseChannel\":\"wzjuqk\",\"version\":\"rsa\"},{\"releaseChannel\":\"iwkuofos\",\"version\":\"ghsauuimjmvxied\"},{\"releaseChannel\":\"ugidyjrr\",\"version\":\"byao\"},{\"releaseChannel\":\"v\",\"version\":\"xc\"}]},\"selfManagedVersions\":{\"versions\":[{\"version\":\"npc\",\"upgrades\":[\"ocohslkevleg\",\"zfbuhf\",\"vfaxkffeiith\"]}]},\"provisioningState\":\"Provisioning\"},\"id\":\"zy\",\"name\":\"shxmzsbbzoggigrx\",\"type\":\"burvjxxjnspy\"}")
             .toObject(AvailableVersionInner.class);
-        Assertions.assertEquals("fbebrjcxer", model.properties().kubernetesVersion());
-        Assertions.assertEquals("wutttxfvjrbi",
+        Assertions.assertEquals("vvnchrkcc", model.properties().kubernetesVersion());
+        Assertions.assertEquals("wzjuqk",
             model.properties().fullyManagedVersions().releaseChannels().get(0).releaseChannel());
-        Assertions.assertEquals("phxepcyvahf",
-            model.properties().fullyManagedVersions().releaseChannels().get(0).version());
-        Assertions.assertEquals("lzlfbxzpuz", model.properties().selfManagedVersions().versions().get(0).version());
-        Assertions.assertEquals("ispnqzahmgkbrp",
+        Assertions.assertEquals("rsa", model.properties().fullyManagedVersions().releaseChannels().get(0).version());
+        Assertions.assertEquals("npc", model.properties().selfManagedVersions().versions().get(0).version());
+        Assertions.assertEquals("ocohslkevleg",
             model.properties().selfManagedVersions().versions().get(0).upgrades().get(0));
     }
 }

@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * AppLink Member resource.
+ * A member of an Azure Kubernetes Application Network resource.
  */
 @Fluent
 public final class AppLinkMemberInner extends Resource {

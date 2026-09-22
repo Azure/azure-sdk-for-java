@@ -11,8 +11,8 @@ import com.azure.resourcemanager.appnetwork.models.ObservabilityProfile;
 public final class ObservabilityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ObservabilityProfile model
-            = BinaryData.fromString("{\"metrics\":{\"metricsEndpoint\":\"c\"}}").toObject(ObservabilityProfile.class);
+        ObservabilityProfile model = BinaryData.fromString("{\"metrics\":{\"metricsEndpoint\":\"gmaajrm\"}}")
+            .toObject(ObservabilityProfile.class);
     }
 
     @org.junit.jupiter.api.Test

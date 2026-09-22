@@ -13,12 +13,12 @@ public final class UpgradeHistoryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpgradeHistoryInner model = BinaryData.fromString(
-            "{\"properties\":{\"startTimestamp\":\"2021-06-16T00:33:51Z\",\"endTimestamp\":\"2021-04-04T08:44:05Z\",\"initiatedBy\":\"gf\",\"fromVersion\":\"axbezyiuo\",\"toVersion\":\"ktwh\",\"provisioningState\":\"Accepted\"},\"id\":\"zywqsmbsu\",\"name\":\"exim\",\"type\":\"ryocfsfksymdd\"}")
+            "{\"properties\":{\"startTimestamp\":\"2021-10-02T20:03:50Z\",\"endTimestamp\":\"2021-09-06T08:59:32Z\",\"initiatedBy\":\"wxdndnvowgujjug\",\"fromVersion\":\"dkcglhsl\",\"toVersion\":\"zj\",\"provisioningState\":\"Deleting\"},\"id\":\"dtjixhb\",\"name\":\"uofqwe\",\"type\":\"kh\"}")
             .toObject(UpgradeHistoryInner.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-16T00:33:51Z"), model.properties().startTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-04T08:44:05Z"), model.properties().endTimestamp());
-        Assertions.assertEquals("gf", model.properties().initiatedBy());
-        Assertions.assertEquals("axbezyiuo", model.properties().fromVersion());
-        Assertions.assertEquals("ktwh", model.properties().toVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-02T20:03:50Z"), model.properties().startTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T08:59:32Z"), model.properties().endTimestamp());
+        Assertions.assertEquals("wxdndnvowgujjug", model.properties().initiatedBy());
+        Assertions.assertEquals("dkcglhsl", model.properties().fromVersion());
+        Assertions.assertEquals("zj", model.properties().toVersion());
     }
 }

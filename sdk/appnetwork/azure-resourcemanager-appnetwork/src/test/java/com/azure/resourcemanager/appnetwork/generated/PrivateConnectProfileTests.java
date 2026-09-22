@@ -12,14 +12,14 @@ public final class PrivateConnectProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateConnectProfile model
-            = BinaryData.fromString("{\"subnetResourceId\":\"xhvpmoue\"}").toObject(PrivateConnectProfile.class);
-        Assertions.assertEquals("xhvpmoue", model.subnetResourceId());
+            = BinaryData.fromString("{\"subnetResourceId\":\"kdkexxp\"}").toObject(PrivateConnectProfile.class);
+        Assertions.assertEquals("kdkexxp", model.subnetResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateConnectProfile model = new PrivateConnectProfile().withSubnetResourceId("xhvpmoue");
+        PrivateConnectProfile model = new PrivateConnectProfile().withSubnetResourceId("kdkexxp");
         model = BinaryData.fromObject(model).toObject(PrivateConnectProfile.class);
-        Assertions.assertEquals("xhvpmoue", model.subnetResourceId());
+        Assertions.assertEquals("kdkexxp", model.subnetResourceId());
     }
 }
