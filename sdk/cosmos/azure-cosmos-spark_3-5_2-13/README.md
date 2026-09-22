@@ -222,6 +222,7 @@ to use Scala 2.13 that Spark 4.0 was compiled for.
 #### azure-cosmos-spark_4-1_2-13
 | Connector | Supported Spark Versions | Minimum Java Version | Supported Scala Versions  | Supported Databricks Runtimes | Supported Fabric Runtimes |
 |-----------|--------------------------|----------------------|---------------------------|-------------------------------|---------------------------|
+| 4.50.0    | 4.1.0                    | [17, 21]             | 2.13                      | 18.\*                         | TBD                       |
 | 4.49.2    | 4.1.0                    | [17, 21]             | 2.13                      | 18.\*                         | TBD                       |
 | 4.49.1    | 4.1.0                    | [17, 21]             | 2.13                      | 18.\*                         | TBD                       |
 | 4.49.0    | 4.1.0                    | [17, 21]             | 2.13                      | 18.\*                         | TBD                       |

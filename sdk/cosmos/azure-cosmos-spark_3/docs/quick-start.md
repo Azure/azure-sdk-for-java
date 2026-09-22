@@ -46,7 +46,7 @@ For Spark 4.0:
 - Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_4-0_2-13:4.50.0](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_4-0_2-13/4.50.0/jar)
 
 For Spark 4.1:
-- Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_4-1_2-13:4.49.2](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_4-1_2-13/4.49.2/jar)
+- Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_4-1_2-13:4.50.0](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_4-1_2-13/4.50.0/jar)
 
 
 The getting started guide is based on PySpark however you can use the equivalent scala version as well, and you can run the following code snippet in an Azure Databricks PySpark notebook.
