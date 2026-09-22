@@ -120,22 +120,21 @@ ConversationService conversationService = openAIClient.conversations();
 ### Realtime connection options
 
 Use `VoiceAgentWebSocketConnectionOptions` with the synchronous or asynchronous beta voice-agent client's
-`openWebSocketSession` method to set session IDs, agent version overrides, structured inputs, API versions, credential
-scopes, preview features, and extra handshake headers or query parameters.
+`openWebSocketSession` method to configure session behavior such as session IDs, agent version selection, structured
+inputs, persistence, buffering, and timeouts.
 
 ```java
 VoiceAgentWebSocketConnectionOptions options = new VoiceAgentWebSocketConnectionOptions()
     .setAgentSessionId("session-id")
     .setAgentVersionOverride("2")
     .setStructuredInputs("{\"language\":\"en\"}")
-    .setExtraHeaders(Collections.singletonMap("User-Agent", "my-application/1.0"));
+    .setStoreEnabled(true);
 ```
 
-Extra query parameters and non-protected headers override defaults. Authentication and WebSocket protocol
-headers remain transport-controlled. An explicitly empty `Foundry-Features` value is preserved.
-`setConnectionUrl` accepts a full `wss://` URI on the project endpoint's host and port, with no user information
-or fragment. Existing query parameters are preserved unless overridden. URL validation happens before token
-acquisition; cross-host overrides are rejected to prevent credentials from being sent to another host.
+The SDK owns the WebSocket route, API version, authentication scope, transport, and preview feature headers. Endpoint,
+credential, service version, configuration-based proxy settings, and `ClientOptions` are reused from
+`AgentsClientBuilder`. Custom HTTP clients, pipelines, policies, and retry settings are rejected when building a
+WebSocket client because the native WebSocket transports cannot apply them.
 
 ### Agent version drafts
 
@@ -995,8 +994,8 @@ BetaVoiceAgentWebSocketAsyncClient realtimeAsyncClient
 
 #### Send a synchronous text turn
 
-Connections require an `https://` or `wss://` project endpoint. Insecure endpoints and untrusted connection URL overrides
-are rejected before acquiring a token. This also applies to localhost; use certificate-verified TLS for local servers.
+Connections require an `https://` or `wss://` project endpoint. Insecure endpoints are rejected before acquiring a
+token. This also applies to localhost; use certificate-verified TLS for local servers.
 
 Unknown server event types are returned as `RawRealtimeServerEvent`; `getRawEvent()` preserves the complete JSON object.
 Use `sendEvent(BinaryData)` to send raw JSON objects, including event types or fields not modeled by this SDK. Both
