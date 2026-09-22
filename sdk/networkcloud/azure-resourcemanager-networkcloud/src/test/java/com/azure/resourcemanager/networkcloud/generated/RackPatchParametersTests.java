@@ -14,23 +14,22 @@ public final class RackPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RackPatchParameters model = BinaryData.fromString(
-            "{\"properties\":{\"rackLocation\":\"ird\",\"rackSerialNumber\":\"isngwflqqmpizru\"},\"tags\":{\"iixtmkzj\":\"qxpxiwfcngjsaa\",\"irhgfgrwsdp\":\"kv\"}}")
+            "{\"properties\":{\"rackLocation\":\"ui\",\"rackSerialNumber\":\"bsnmfpph\"},\"tags\":{\"yhsgz\":\"evy\"}}")
             .toObject(RackPatchParameters.class);
-        Assertions.assertEquals("qxpxiwfcngjsaa", model.tags().get("iixtmkzj"));
-        Assertions.assertEquals("ird", model.rackLocation());
-        Assertions.assertEquals("isngwflqqmpizru", model.rackSerialNumber());
+        Assertions.assertEquals("evy", model.tags().get("yhsgz"));
+        Assertions.assertEquals("ui", model.rackLocation());
+        Assertions.assertEquals("bsnmfpph", model.rackSerialNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RackPatchParameters model
-            = new RackPatchParameters().withTags(mapOf("iixtmkzj", "qxpxiwfcngjsaa", "irhgfgrwsdp", "kv"))
-                .withRackLocation("ird")
-                .withRackSerialNumber("isngwflqqmpizru");
+        RackPatchParameters model = new RackPatchParameters().withTags(mapOf("yhsgz", "evy"))
+            .withRackLocation("ui")
+            .withRackSerialNumber("bsnmfpph");
         model = BinaryData.fromObject(model).toObject(RackPatchParameters.class);
-        Assertions.assertEquals("qxpxiwfcngjsaa", model.tags().get("iixtmkzj"));
-        Assertions.assertEquals("ird", model.rackLocation());
-        Assertions.assertEquals("isngwflqqmpizru", model.rackSerialNumber());
+        Assertions.assertEquals("evy", model.tags().get("yhsgz"));
+        Assertions.assertEquals("ui", model.rackLocation());
+        Assertions.assertEquals("bsnmfpph", model.rackSerialNumber());
     }
 
     // Use "Map.of" if available
