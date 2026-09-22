@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
 import org.apache.kafka.connect.source.SourceRecord;
-import org.apache.kafka.connect.source.SourceTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -38,7 +37,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class CosmosSourceTask extends SourceTask {
+public class CosmosSourceTask extends BufferedSourceTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceTask.class);
     private static final String LSN_ATTRIBUTE_NAME = "_lsn";
     private static final String METADATA_ATTRIBUTE_NAME = "metadata";
@@ -60,7 +59,7 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     @Override
-    public void start(Map<String, String> map) {
+    protected void startTask(Map<String, String> map) {
         LOGGER.info("Starting the kafka cosmos source task...");
         try {
             LOGGER.info("Resetting task queue");
@@ -95,7 +94,6 @@ public class CosmosSourceTask extends SourceTask {
             this.throughputControlCosmosClientItem = this.getThroughputControlCosmosClientItem();
         } catch (Throwable ex) {
             LOGGER.warn("Failed to start the cosmos source task", ex);
-            this.cleanup();
             throw ex;
         }
     }
@@ -166,7 +164,7 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     @Override
-    public List<SourceRecord> poll() {
+    protected List<SourceRecord> pollTask() {
         // do not poll it from the queue yet
         // we need to make sure not losing tasks for failure cases
         ITaskUnit taskUnit = this.taskUnitsQueue.poll();
@@ -539,10 +537,16 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     @Override
-    public void stop() {
+    protected void stopTask() {
         LOGGER.info("Stopping CosmosSourceTask");
         this.logFeedRangeCounts(true);
         this.cleanup();
+    }
+
+    @Override
+    protected String getPollingThreadName(Map<String, String> props) {
+        return "cosmos-change-feed-poll-"
+            + props.getOrDefault(CosmosSourceTaskConfig.SOURCE_TASK_ID, "unknown");
     }
 
     private static class FeedRangeLoggingContext {
