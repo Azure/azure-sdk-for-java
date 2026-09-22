@@ -38,10 +38,10 @@
 
 #### `models.SasPolicy` was modified
 
+* `requireUserBoundUserDelegationSas()` was added
+* `withRequireUserBoundUserDelegationSasAction(models.PolicyViolationAction)` was added
 * `requireUserBoundUserDelegationSasAction()` was added
 * `withRequireUserBoundUserDelegationSas(java.lang.Boolean)` was added
-* `withRequireUserBoundUserDelegationSasAction(models.PolicyViolationAction)` was added
-* `requireUserBoundUserDelegationSas()` was added
 
 #### `models.StorageAccountUpdateParameters` was modified
 
