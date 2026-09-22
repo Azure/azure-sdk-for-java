@@ -6,6 +6,7 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.errors.RetriableException;
 import org.apache.kafka.connect.source.SourceRecord;
+import org.apache.kafka.connect.source.SourceTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -23,29 +24,28 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Runs the blocking Cosmos change-feed request outside Kafka Connect's task thread.
+ * Base class for source tasks whose source read can block indefinitely.
  *
- * <p>Kafka Connect polls a capacity-one result queue and therefore regains control regularly
- * for pause and shutdown. The background reader is generation-scoped so an old reader can
- * never publish records into a replacement task generation.
+ * <p>The source read runs on one generation-scoped background thread. Kafka Connect polls a
+ * capacity-one result queue and therefore regains control regularly for pause and shutdown.
  */
-public class BufferedCosmosSourceTask extends CosmosSourceTask {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BufferedCosmosSourceTask.class);
+public abstract class BufferedSourceTask extends SourceTask {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BufferedSourceTask.class);
     private static final int POLL_RESULT_CAPACITY = 1;
-    private static final Duration KAFKA_POLL_WAIT = Duration.ofSeconds(1);
-    private static final Duration POLLING_THREAD_SHUTDOWN_WAIT = Duration.ofSeconds(1);
+    private static final Duration DEFAULT_KAFKA_POLL_WAIT = Duration.ofSeconds(1);
+    private static final Duration DEFAULT_POLLING_THREAD_SHUTDOWN_WAIT = Duration.ofSeconds(1);
     private static final Duration RETRIABLE_ERROR_BACKOFF = Duration.ofMillis(100);
 
     private final Duration kafkaPollWait;
     private final Duration pollingThreadShutdownWait;
-    private final AtomicBoolean delegateStarted = new AtomicBoolean();
+    private final AtomicBoolean taskStarted = new AtomicBoolean();
     private final AtomicReference<PollingGeneration> generation = new AtomicReference<>();
 
-    public BufferedCosmosSourceTask() {
-        this(KAFKA_POLL_WAIT, POLLING_THREAD_SHUTDOWN_WAIT);
+    protected BufferedSourceTask() {
+        this(DEFAULT_KAFKA_POLL_WAIT, DEFAULT_POLLING_THREAD_SHUTDOWN_WAIT);
     }
 
-    BufferedCosmosSourceTask(
+    BufferedSourceTask(
         Duration kafkaPollWait,
         Duration pollingThreadShutdownWait) {
         this.kafkaPollWait = kafkaPollWait;
@@ -53,18 +53,18 @@ public class BufferedCosmosSourceTask extends CosmosSourceTask {
     }
 
     @Override
-    public synchronized void start(Map<String, String> props) {
-        if (!this.delegateStarted.compareAndSet(false, true)) {
-            throw new ConnectException("Cosmos source task is already running");
+    public final synchronized void start(Map<String, String> props) {
+        if (!this.taskStarted.compareAndSet(false, true)) {
+            throw new ConnectException("Source task is already running");
         }
 
         try {
-            this.startDelegate(props);
-            String taskId = props.getOrDefault(CosmosSourceTaskConfig.SOURCE_TASK_ID, "unknown");
-            PollingGeneration newGeneration = new PollingGeneration(taskId);
+            this.startTask(props);
+            PollingGeneration newGeneration =
+                new PollingGeneration(this.getPollingThreadName(props));
             if (!this.generation.compareAndSet(null, newGeneration)) {
                 newGeneration.executor.shutdownNow();
-                throw new ConnectException("Cosmos polling executor is already running");
+                throw new ConnectException("Source task polling executor is already running");
             }
 
             newGeneration.executor.execute(
@@ -78,13 +78,13 @@ public class BufferedCosmosSourceTask extends CosmosSourceTask {
                 failedGeneration.stopping.set(true);
                 failedGeneration.executor.shutdownNow();
             }
-            this.stopDelegateOnce();
+            this.stopTaskOnce();
             throw error;
         }
     }
 
     @Override
-    public List<SourceRecord> poll() {
+    public final List<SourceRecord> poll() {
         PollingGeneration currentGeneration = this.generation.get();
         if (currentGeneration == null) {
             return Collections.emptyList();
@@ -100,7 +100,7 @@ public class BufferedCosmosSourceTask extends CosmosSourceTask {
                 return Collections.emptyList();
             }
             Thread.currentThread().interrupt();
-            throw new ConnectException("Interrupted while waiting for Cosmos poll result", exception);
+            throw new ConnectException("Interrupted while waiting for source poll result", exception);
         }
 
         if (result == null) {
@@ -110,7 +110,7 @@ public class BufferedCosmosSourceTask extends CosmosSourceTask {
                 if (terminalError != null) {
                     throwPollError(terminalError, false);
                 }
-                throw new ConnectException("Cosmos background polling thread stopped unexpectedly");
+                throw new ConnectException("Background source polling thread stopped unexpectedly");
             }
             return Collections.emptyList();
         }
@@ -122,41 +122,36 @@ public class BufferedCosmosSourceTask extends CosmosSourceTask {
     }
 
     @Override
-    public synchronized void stop() {
+    public final synchronized void stop() {
         PollingGeneration currentGeneration = this.generation.getAndSet(null);
         if (currentGeneration != null) {
             currentGeneration.stopping.set(true);
         }
 
         try {
-            // Release this task's client-cache ownership before interrupting the reader.
-            this.stopDelegateOnce();
+            this.stopTaskOnce();
         } finally {
             if (currentGeneration != null) {
-                // Reactor's blocking subscriber responds to interruption; cached client closure
-                // remains deferred until the cache refcount and idle-TTL conditions are met.
                 currentGeneration.executor.shutdownNow();
                 this.awaitPollingThreadShutdown(currentGeneration.executor);
             }
         }
     }
 
-    void startDelegate(Map<String, String> props) {
-        super.start(props);
-    }
+    protected abstract void startTask(Map<String, String> props);
 
-    List<SourceRecord> pollDelegate() {
-        return super.poll();
-    }
+    protected abstract List<SourceRecord> pollTask();
 
-    void stopDelegate() {
-        super.stop();
+    protected abstract void stopTask();
+
+    protected String getPollingThreadName(Map<String, String> props) {
+        return this.getClass().getSimpleName() + "-poll";
     }
 
     private void pollContinuously(PollingGeneration currentGeneration) {
         while (!currentGeneration.stopping.get()) {
             try {
-                List<SourceRecord> records = this.pollDelegate();
+                List<SourceRecord> records = this.pollTask();
                 if (!publishResult(currentGeneration, PollResult.records(records))) {
                     return;
                 }
@@ -196,12 +191,12 @@ public class BufferedCosmosSourceTask extends CosmosSourceTask {
                 this.pollingThreadShutdownWait.toMillis(),
                 TimeUnit.MILLISECONDS)) {
                 LOGGER.error(
-                    "Cosmos polling thread did not stop within {} ms after cancellation",
+                    "Source polling thread did not stop within {} ms after cancellation",
                     this.pollingThreadShutdownWait.toMillis());
             }
         } catch (InterruptedException exception) {
             Thread.currentThread().interrupt();
-            LOGGER.warn("Interrupted while waiting for Cosmos polling thread shutdown");
+            LOGGER.warn("Interrupted while waiting for source polling thread shutdown");
         }
     }
 
@@ -215,9 +210,9 @@ public class BufferedCosmosSourceTask extends CosmosSourceTask {
         }
     }
 
-    private void stopDelegateOnce() {
-        if (this.delegateStarted.compareAndSet(true, false)) {
-            this.stopDelegate();
+    private void stopTaskOnce() {
+        if (this.taskStarted.compareAndSet(true, false)) {
+            this.stopTask();
         }
     }
 
@@ -232,7 +227,7 @@ public class BufferedCosmosSourceTask extends CosmosSourceTask {
                 return;
             }
             Thread.currentThread().interrupt();
-            throw new ConnectException("Cosmos background poll was interrupted", error);
+            throw new ConnectException("Background source poll was interrupted", error);
         }
         if (error instanceof RuntimeException) {
             throw (RuntimeException) error;
@@ -240,7 +235,7 @@ public class BufferedCosmosSourceTask extends CosmosSourceTask {
         if (error instanceof Error) {
             throw (Error) error;
         }
-        throw new ConnectException("Cosmos change-feed poll failed", error);
+        throw new ConnectException("Background source poll failed", error);
     }
 
     private static Runnable preserveMdc(Runnable runnable) {
@@ -292,11 +287,9 @@ public class BufferedCosmosSourceTask extends CosmosSourceTask {
         private final AtomicReference<Throwable> terminalError = new AtomicReference<>();
         private final ExecutorService executor;
 
-        private PollingGeneration(String taskId) {
+        private PollingGeneration(String threadName) {
             this.executor = Executors.newSingleThreadExecutor(runnable -> {
-                Thread thread = new Thread(
-                    runnable,
-                    "cosmos-change-feed-poll-" + taskId);
+                Thread thread = new Thread(runnable, threadName);
                 thread.setDaemon(true);
                 thread.setUncaughtExceptionHandler((ignored, error) -> {
                     this.terminalError.compareAndSet(null, error);
