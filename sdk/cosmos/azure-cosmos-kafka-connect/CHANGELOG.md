@@ -8,6 +8,8 @@
 
 #### Bugs Fixed
 
+* Prevented blocked source change-feed polls from retaining task and Cosmos client generations during connector restarts.
+
 #### Other Changes
 
 ### 2.12.0 (2026-09-22)
@@ -137,4 +139,3 @@
 * Added `ServicePrincipal` support - See [PR 39490](https://github.com/Azure/azure-sdk-for-java/pull/39490)
 * Added `ItemPatch support` in sink connector - See [PR 39558](https://github.com/Azure/azure-sdk-for-java/pull/39558)
 * Added support to use CosmosDB container for tracking metadata - See [PR 39634](https://github.com/Azure/azure-sdk-for-java/pull/39634)
-

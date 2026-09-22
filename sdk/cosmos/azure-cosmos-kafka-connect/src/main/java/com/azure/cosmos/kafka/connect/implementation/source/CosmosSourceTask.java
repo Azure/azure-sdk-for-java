@@ -45,13 +45,13 @@ public class CosmosSourceTask extends SourceTask {
     private static final String METADATA_LSN_ATTRIBUTE_NAME = "lsn";
 
     private CosmosSourceTaskConfig taskConfig;
-    private CosmosClientCacheItem cosmosClientItem;
-    private CosmosClientCacheItem throughputControlCosmosClientItem;
+    private volatile CosmosClientCacheItem cosmosClientItem;
+    private volatile CosmosClientCacheItem throughputControlCosmosClientItem;
     private MetadataKafkaStorageManager kafkaOffsetStorageReader;
 
     private final Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
 
-    private long lastLogTimeMs = System.currentTimeMillis();
+    private volatile long lastLogTimeMs = System.currentTimeMillis();
     private final Map<String, FeedRangeLoggingContext> feedRangeCounts = new ConcurrentHashMap<>();
 
     @Override
