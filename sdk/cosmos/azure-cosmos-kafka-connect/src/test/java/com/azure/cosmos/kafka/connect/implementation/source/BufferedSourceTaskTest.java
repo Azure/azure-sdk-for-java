@@ -126,14 +126,33 @@ public class BufferedSourceTaskTest {
     }
 
     @Test(groups = "unit", timeOut = 30_000)
-    public void taskCannotBeRestartedAfterStop() {
+    public void taskCannotBeStartedTwice() {
         TestTask task = new TestTask();
-        task.start(Collections.emptyMap());
-        task.stop();
+        try {
+            task.start(Collections.emptyMap());
 
-        assertThatThrownBy(() -> task.start(Collections.emptyMap()))
-            .isInstanceOf(ConnectException.class)
-            .hasMessageContaining("already been started");
+            assertThatThrownBy(() -> task.start(Collections.emptyMap()))
+                .isInstanceOf(ConnectException.class)
+                .hasMessageContaining("already running");
+        } finally {
+            task.stop();
+        }
+    }
+
+    @Test(groups = "unit", timeOut = 30_000)
+    public void unexpectedReaderErrorIsPropagated() {
+        TestTask task = new TestTask();
+        AssertionError expected = new AssertionError("reader failed");
+        task.pollAction = () -> {
+            throw expected;
+        };
+
+        try {
+            task.start(Collections.emptyMap());
+            assertThatThrownBy(task::poll).isSameAs(expected);
+        } finally {
+            task.stop();
+        }
     }
 
     private static final class TestTask extends BufferedSourceTask {
