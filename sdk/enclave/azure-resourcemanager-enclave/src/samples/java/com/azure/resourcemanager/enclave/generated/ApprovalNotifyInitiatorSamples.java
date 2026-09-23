@@ -12,7 +12,7 @@ import com.azure.resourcemanager.enclave.models.ApprovalActionRequestApprovalSta
  */
 public final class ApprovalNotifyInitiatorSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Approvals_NotifyInitiator.json
+     * x-ms-original-file: 2026-04-01/Approvals_NotifyInitiator.json
      */
     /**
      * Sample code: Approval_NotifyInitiator.

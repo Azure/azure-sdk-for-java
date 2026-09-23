@@ -12,7 +12,7 @@ public final class AvsVmInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvsVmInner model = BinaryData.fromString(
-            "{\"properties\":{\"storagePoolInternalId\":\"wyt\",\"storagePoolResourceId\":\"ib\",\"displayName\":\"cgpik\",\"createdTimestamp\":\"imejzanl\",\"softDeletion\":{\"destroyed\":false,\"eradicationTimestamp\":\"av\"},\"volumeContainerType\":\"avs\",\"avs\":{\"vmId\":\"onok\",\"vmName\":\"xrjqcirgzpfrlazs\",\"vmType\":\"vvol\",\"avsVmInternalId\":\"nwoiind\"},\"space\":{\"totalUsed\":1586932653363724705,\"unique\":4045601352916026430,\"snapshots\":6976850827030545123,\"shared\":1464641146056052310},\"provisioningState\":\"Failed\"},\"id\":\"lsj\",\"name\":\"dhszfjv\",\"type\":\"bgofeljag\"}")
+            "{\"properties\":{\"storagePoolInternalId\":\"semdwzrmu\",\"storagePoolResourceId\":\"pfcqdp\",\"displayName\":\"xqv\",\"createdTimestamp\":\"vuoy\",\"softDeletion\":{\"destroyed\":false,\"eradicationTimestamp\":\"elvezrypq\"},\"volumeContainerType\":\"avs\",\"avs\":{\"vmId\":\"okerqwkyhkobop\",\"vmName\":\"xedk\",\"vmType\":\"vvol\",\"avsVmInternalId\":\"epbqpcrfkbw\"},\"space\":{\"totalUsed\":8172148400531908792,\"unique\":4047365707392656751,\"snapshots\":7634037595777671249,\"shared\":3963552217315921956},\"provisioningState\":\"Failed\"},\"id\":\"ekftnkhtj\",\"name\":\"y\",\"type\":\"ngwfqatm\"}")
             .toObject(AvsVmInner.class);
         Assertions.assertFalse(model.properties().softDeletion().destroyed());
     }

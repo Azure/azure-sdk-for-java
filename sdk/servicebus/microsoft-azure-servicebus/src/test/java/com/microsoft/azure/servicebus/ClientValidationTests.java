@@ -13,10 +13,10 @@ import com.microsoft.azure.servicebus.management.ManagementClientAsync;
 import com.microsoft.azure.servicebus.management.QueueDescription;
 import com.microsoft.azure.servicebus.management.SubscriptionDescription;
 import com.microsoft.azure.servicebus.management.TopicDescription;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.Assert;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
@@ -31,7 +31,7 @@ public class ClientValidationTests extends TestBase {
     private static String sessionfulSubscriptionPath;
     private static ManagementClientAsync managementClient;
 
-    @BeforeClass
+    @BeforeAll
     public static void createEntities() throws ExecutionException, InterruptedException {
         // Create a queue, a topic and a subscription
         queuePath = TestUtils.randomizeEntityName(ENTITY_NAME_PREFIX);
@@ -62,7 +62,7 @@ public class ClientValidationTests extends TestBase {
         managementClient.createSubscriptionAsync(subDescription2).get();
     }
 
-    @AfterClass
+    @AfterAll
     public static void deleteEntities() throws ExecutionException, InterruptedException, IOException {
         if (managementClient != null) {
             managementClient.deleteQueueAsync(queuePath).get();
@@ -79,7 +79,7 @@ public class ClientValidationTests extends TestBase {
             try {
                 Message msg = new Message("test message");
                 tc.send(msg);
-                Assert.fail("TopicClient created to a queue which shouldn't be allowed.");
+                Assertions.fail("TopicClient created to a queue which shouldn't be allowed.");
             } finally {
                 tc.close();
             }
@@ -95,7 +95,7 @@ public class ClientValidationTests extends TestBase {
             try {
                 Message msg = new Message("test message");
                 qc.send(msg);
-                Assert.fail("QueueClient created to a topic which shouldn't be allowed.");
+                Assertions.fail("QueueClient created to a topic which shouldn't be allowed.");
             } finally {
                 qc.close();
             }
@@ -119,7 +119,7 @@ public class ClientValidationTests extends TestBase {
                     public void notifyException(Throwable exception, ExceptionPhase phase) {
                     }
                 }, MessageAndSessionPumpTests.EXECUTOR_SERVICE);
-                Assert.fail("QueueClient created to a subscription which shouldn't be allowed.");
+                Assertions.fail("QueueClient created to a subscription which shouldn't be allowed.");
             } finally {
                 qc.close();
             }
@@ -143,7 +143,7 @@ public class ClientValidationTests extends TestBase {
                     public void notifyException(Throwable exception, ExceptionPhase phase) {
                     }
                 }, MessageAndSessionPumpTests.EXECUTOR_SERVICE);
-                Assert.fail("SubscriptionClient created to a queue which shouldn't be allowed.");
+                Assertions.fail("SubscriptionClient created to a queue which shouldn't be allowed.");
             } finally {
                 sc.close();
             }
@@ -179,7 +179,7 @@ public class ClientValidationTests extends TestBase {
                 }, MessageAndSessionPumpTests.EXECUTOR_SERVICE);
 
                 Thread.sleep(2000); // Sleep for two seconds for the exception
-                Assert.assertTrue("QueueClient created to a subscription which shouldn't be allowed.", unsupportedExceptionOccured.get());
+                Assertions.assertTrue(unsupportedExceptionOccured.get(), "QueueClient created to a subscription which shouldn't be allowed.");
             } finally {
                 qc.close();
             }
@@ -215,7 +215,7 @@ public class ClientValidationTests extends TestBase {
                 }, MessageAndSessionPumpTests.EXECUTOR_SERVICE);
 
                 Thread.sleep(2000); // Sleep for two seconds for the exception
-                Assert.assertTrue("SubscriptionClient created to a queue which shouldn't be allowed.", unsupportedExceptionOccured.get());
+                Assertions.assertTrue(unsupportedExceptionOccured.get(), "SubscriptionClient created to a queue which shouldn't be allowed.");
             } finally {
                 sc.close();
             }

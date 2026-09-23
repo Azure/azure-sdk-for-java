@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceInitializationHandleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceInitializationHandle model
-            = BinaryData.fromString("{\"sddcResourceId\":\"qlcvydy\",\"serviceAccountUsername\":\"tdooaoj\"}")
-                .toObject(ServiceInitializationHandle.class);
-        Assertions.assertEquals("qlcvydy", model.clusterResourceId());
-        Assertions.assertEquals("tdooaoj", model.serviceAccountUsername());
+        ServiceInitializationHandle model = BinaryData
+            .fromString("{\"sddcResourceId\":\"vfdnwnwmewzsyyce\",\"serviceAccountUsername\":\"soibjudpfrx\"}")
+            .toObject(ServiceInitializationHandle.class);
+        Assertions.assertEquals("vfdnwnwmewzsyyce", model.clusterResourceId());
+        Assertions.assertEquals("soibjudpfrx", model.serviceAccountUsername());
     }
 }

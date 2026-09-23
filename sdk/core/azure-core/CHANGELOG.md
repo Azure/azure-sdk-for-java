@@ -4,13 +4,25 @@
 
 ### Features Added
 
+- Added `CloseableIterableStream<T>` for resource-backed iteration with deterministic cleanup.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
-- Fixed synchronous streaming of non-replayable `BinaryData` response bodies.
+- Registering or removing the shutdown hook that closes the shared executor service no longer fails when the JVM is
+  already shutting down. `Runtime.addShutdownHook` throws `IllegalStateException` once shutdown has begun, which
+  surfaced to callers of `SharedExecutorService` as `IllegalStateException: Shutdown in progress` when work, such as
+  an in-flight request draining during shutdown, needed the executor after it had been closed. A hook registered at
+  that point could never run, so this case is now logged and the work continues.
 
 ### Other Changes
+
+## 1.59.1 (2026-08-27)
+
+### Bugs Fixed
+
+- Fixed synchronous streaming of non-replayable `BinaryData` response bodies.
 
 ## 1.59.0 (2026-08-12)
 

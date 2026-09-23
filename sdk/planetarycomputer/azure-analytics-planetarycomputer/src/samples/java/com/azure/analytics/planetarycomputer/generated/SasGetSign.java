@@ -19,7 +19,7 @@ public class SasGetSign {
         // BEGIN:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-url.sas-get-sign
         SharedAccessSignatureSignedLink response = sharedAccessSignatureClient.getUrl(
             "https://SANITIZED.blob.core.windows.net/naip-atl-00000000/collection-assets/thumbnail/thumbnail.png",
-            null);
+            (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.shared-access-signature-get-url.sas-get-sign
     }
 }

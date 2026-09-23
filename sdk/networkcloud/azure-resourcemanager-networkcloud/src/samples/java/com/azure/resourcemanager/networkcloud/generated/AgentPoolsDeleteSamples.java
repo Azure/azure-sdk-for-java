@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class AgentPoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AgentPools_Delete.json
+     * x-ms-original-file: 2026-07-01/AgentPools_Delete.json
      */
     /**
      * Sample code: Delete Kubernetes cluster agent pool.

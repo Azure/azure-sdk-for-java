@@ -15,7 +15,7 @@ import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
  */
 public final class EntitiesIngestHealthReportSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Entities_IngestHealthReport.json
+     * x-ms-original-file: 2026-09-01-preview/Entities_IngestHealthReport.json
      */
     /**
      * Sample code: Entities_IngestHealthReport.

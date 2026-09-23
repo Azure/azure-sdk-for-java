@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class FirewallPolicyKubeSelectorGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/FirewallPolicyKubeSelectorGroupPut.json
+     * x-ms-original-file: 2026-01-01/FirewallPolicyKubeSelectorGroupPut.json
      */
     /**
      * Sample code: Create FirewallPolicyKubeSelectorGroup.

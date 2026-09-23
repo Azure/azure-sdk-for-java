@@ -16,19 +16,19 @@ public final class WeeklyRetentionFormatTests {
     public void testDeserialize() throws Exception {
         WeeklyRetentionFormat model = BinaryData
             .fromString(
-                "{\"daysOfTheWeek\":[\"Tuesday\"],\"weeksOfTheMonth\":[\"Last\",\"Invalid\",\"Third\",\"First\"]}")
+                "{\"daysOfTheWeek\":[\"Monday\",\"Saturday\"],\"weeksOfTheMonth\":[\"First\",\"Second\",\"Last\"]}")
             .toObject(WeeklyRetentionFormat.class);
-        Assertions.assertEquals(DayOfWeek.TUESDAY, model.daysOfTheWeek().get(0));
-        Assertions.assertEquals(WeekOfMonth.LAST, model.weeksOfTheMonth().get(0));
+        Assertions.assertEquals(DayOfWeek.MONDAY, model.daysOfTheWeek().get(0));
+        Assertions.assertEquals(WeekOfMonth.FIRST, model.weeksOfTheMonth().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WeeklyRetentionFormat model = new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.TUESDAY))
-            .withWeeksOfTheMonth(
-                Arrays.asList(WeekOfMonth.LAST, WeekOfMonth.INVALID, WeekOfMonth.THIRD, WeekOfMonth.FIRST));
+        WeeklyRetentionFormat model
+            = new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.SATURDAY))
+                .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST, WeekOfMonth.SECOND, WeekOfMonth.LAST));
         model = BinaryData.fromObject(model).toObject(WeeklyRetentionFormat.class);
-        Assertions.assertEquals(DayOfWeek.TUESDAY, model.daysOfTheWeek().get(0));
-        Assertions.assertEquals(WeekOfMonth.LAST, model.weeksOfTheMonth().get(0));
+        Assertions.assertEquals(DayOfWeek.MONDAY, model.daysOfTheWeek().get(0));
+        Assertions.assertEquals(WeekOfMonth.FIRST, model.weeksOfTheMonth().get(0));
     }
 }

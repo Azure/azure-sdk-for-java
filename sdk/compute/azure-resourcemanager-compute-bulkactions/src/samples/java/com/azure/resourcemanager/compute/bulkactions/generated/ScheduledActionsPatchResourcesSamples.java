@@ -16,24 +16,31 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsPatchResourcesSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_PatchResources_MaximumSet.
+     * Sample code: Update resource settings for a scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void scheduledActionsPatchResourcesMaximumSet(
+    public static void updateResourceSettingsForAScheduledAction(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .patchResourcesWithResponse("rgcompute", "myScheduledAction", new ResourcePatchRequest()
                 .withResources(Arrays.asList(new ScheduledActionResourceInput().withResourceId(
-                    "/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")
+                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm")
                     .withNotificationSettings(
                         Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
                             .withType(NotificationType.EMAIL)
                             .withLanguage(Language.EN_US)
-                            .withDisabled(true))))),
+                            .withDisabled(true))),
+                    new ScheduledActionResourceInput().withResourceId(
+                        "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2")
+                        .withNotificationSettings(
+                            Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
+                                .withType(NotificationType.EMAIL)
+                                .withLanguage(Language.EN_US)
+                                .withDisabled(true))))),
                 com.azure.core.util.Context.NONE);
     }
 }

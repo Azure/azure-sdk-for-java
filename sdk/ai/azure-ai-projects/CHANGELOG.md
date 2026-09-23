@@ -1,6 +1,6 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,39 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.6.0 (2026-09-22)
+
+### Features Added
+
+- Added trace filtering and sampling controls for preview data generation jobs. `TracesDataGenerationJobSource.setTraceIds(List<String>)` selects explicit trace IDs, while `TracesDataGenerationJobOptions.setMaxSamples(Integer)` optionally limits the number of generated samples; omitting the limit disables sampling.
+- Added `DataGenerationJobOutputOptions.setWriteMode(DataGenerationJobOutputWriteMode)` to control how generated dataset outputs are written. `OVERWRITE` creates the next dataset version from newly generated rows, while `MERGE` combines new rows with the latest dataset version and de-duplicates trace rows for trace-based evaluation jobs.
+
+### Breaking Changes
+
+- Data generation sample limits are now scenario-specific instead of being defined on `DataGenerationJobOptions`. `DataGenerationJobOptions(int)` was replaced by `DataGenerationJobOptions()` and its `getMaxSamples()` method was removed. `TracesDataGenerationJobOptions(int)` was replaced by a no-argument constructor and optional `Integer`-based `getMaxSamples()` / `setMaxSamples(Integer)` methods. `SimulationSeedDataGenerationJobOptions(int)` was replaced by a no-argument constructor and no longer accepts a sample limit. `SimpleQnADataGenerationJobOptions` and `ToolUseFineTuningDataGenerationJobOptions` continue to require `maxSamples` in their constructors.
+
+### Other Changes
+
+- Regenerated client from the updated TypeSpec specification.
+- Updated the `azure-ai-agents` dependency to version `2.6.0`.
+
+## 2.5.0 (2026-09-09)
+
+### Features Added
+
+- Added preview `BetaAgentInsightMonitorsClient` and `BetaAgentInsightMonitorsAsyncClient`, available through `AIProjectClientBuilder.beta().buildBetaAgentInsightMonitorsClient()` and `buildBetaAgentInsightMonitorsAsyncClient()`. These clients automatically opt in to `Foundry-Features: AgentInsights=V1Preview` using the new `FoundryFeaturesOptInKeys.AGENT_INSIGHTS_V1_PREVIEW` value and support:
+  - Managing monitors with `createAgentInsightMonitor`, `getAgentInsightMonitor`, `listAgentInsightMonitors`, `updateAgentInsightMonitor`, `deleteAgentInsightMonitor`, and `resetAgentInsightMonitor`.
+  - Starting and tracking runs with `beginCreateAgentInsightRun`, `listAgentInsightRuns`, `getAgentInsightRun`, and `cancelAgentInsightRun`.
+  - Reading and updating insights with `listAgentInsights`, `getAgentInsight`, and `updateAgentInsight`, including optional expanded details through `getAgentInsight(monitorId, insightId, includeDetails)`.
+  - New models for monitors, runs, and insights, including `AgentInsightMonitor`, `AgentInsightMonitorCreate`, `AgentInsightMonitorUpdate`, `AgentInsightRun`, `AgentInsightRunCreate`, `AgentInsightRunResult`, `AgentInsight`, `AgentInsightDetails`, `AgentInsightUpdate`, `AgentInsightsOverview`, `AgentInsightProposedFix`, and related types.
+- Added optional routine dispatch authorization through `RoutineAuthorization.setIdentity(RoutineDispatchIdentity)`. Dispatch defaults to `RoutineDispatchIdentity.AGENT`; use `RoutineDispatchIdentity.CREATOR` to explicitly dispatch as the principal that created a new routine. Authorization is ignored when updating an existing routine.
+
+### Breaking Changes
+
+- `BetaRoutinesClient.createOrUpdateRoutine(String, String, Boolean, Map<String, RoutineTrigger>, RoutineAction)` and its `BetaRoutinesAsyncClient` counterpart now require an additional trailing `RoutineAuthorization authorization` parameter. Pass `null` to retain the previous agent-identity dispatch behavior.
+
+- Regenerated client from the updated TypeSpec specification.
 
 ## 2.4.0 (2026-08-19)
 

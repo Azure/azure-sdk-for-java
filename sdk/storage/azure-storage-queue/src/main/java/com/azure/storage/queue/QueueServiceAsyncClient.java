@@ -296,7 +296,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p>List all queues that begin with "azure"</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSergmentOptions -->
+     * <!-- src_embed com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSegmentOptions -->
      * <pre>
      * client.listQueues&#40;new QueuesSegmentOptions&#40;&#41;.setPrefix&#40;&quot;azure&quot;&#41;&#41;.subscribe&#40;
      *     queueItem -&gt; System.out.printf&#40;&quot;Queue %s exists in the account and has metadata %s&quot;,
@@ -305,7 +305,7 @@ public final class QueueServiceAsyncClient {
      *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete listing the queues!&quot;&#41;
      * &#41;;
      * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSergmentOptions -->
+     * <!-- end com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSegmentOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>

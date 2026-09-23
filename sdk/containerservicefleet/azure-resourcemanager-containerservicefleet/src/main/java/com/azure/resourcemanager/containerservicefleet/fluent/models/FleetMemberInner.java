@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberProvisioningState;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberStatus;
+import com.azure.resourcemanager.containerservicefleet.models.MeshProperties;
 import java.io.IOException;
 import java.util.Map;
 
@@ -208,6 +209,15 @@ public final class FleetMemberInner extends ProxyResource {
      */
     public FleetMemberStatus status() {
         return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the meshProperties property: The Mesh Member Properties associated with this Fleet Member.
+     * 
+     * @return the meshProperties value.
+     */
+    public MeshProperties meshProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().meshProperties();
     }
 
     /**

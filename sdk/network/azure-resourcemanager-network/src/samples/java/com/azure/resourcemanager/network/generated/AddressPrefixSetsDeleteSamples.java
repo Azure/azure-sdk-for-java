@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AddressPrefixSetsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/AddressPrefixSetDelete.json
+     * x-ms-original-file: 2026-01-01/AddressPrefixSetDelete.json
      */
     /**
      * Sample code: Delete address prefix set.

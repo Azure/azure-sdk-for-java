@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class VirtualNetworksMoveIpConfigurationsSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VirtualNetworkMoveIpConfigurations.json
+     * x-ms-original-file: 2026-01-01/VirtualNetworkMoveIpConfigurations.json
      */
     /**
      * Sample code: Move IP Configurations.

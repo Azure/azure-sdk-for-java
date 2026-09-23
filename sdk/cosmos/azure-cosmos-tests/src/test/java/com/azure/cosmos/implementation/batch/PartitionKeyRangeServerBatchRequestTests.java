@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosItemOperation;
@@ -11,7 +12,10 @@ import com.azure.cosmos.models.PartitionKey;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -97,6 +101,66 @@ public class PartitionKeyRangeServerBatchRequestTests {
         assertThat(serverOperationBatchRequest.getBatchRequest().getOperations().get(0).getId()).isEqualTo(operations.get(1).getId());
         assertThat(serverOperationBatchRequest.getBatchPendingOperations().size()).isEqualTo(1);
         assertThat(serverOperationBatchRequest.getBatchPendingOperations().get(0).getId()).isEqualTo(operations.get(2).getId());
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void bulkCreateSerializesItemOnceForRoutingAndPayload() {
+        AtomicInteger serializationCount = new AtomicInteger();
+        CosmosItemSerializer serializer = new CosmosItemSerializer() {
+            @Override
+            public <T> Map<String, Object> serialize(T item) {
+                return Collections.singletonMap("id", "id-" + serializationCount.incrementAndGet());
+            }
+
+            @Override
+            public <T> T deserialize(Map<String, Object> jsonNodeMap, Class<T> classType) {
+                return null;
+            }
+        };
+        ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
+            CosmosItemOperationType.CREATE,
+            null,
+            new PartitionKey("pk"),
+            null,
+            new Object(),
+            null);
+
+        String routingId = BulkExecutor.resolveItemId(operation, serializer);
+        JsonSerializable serializedOperation = operation.getSerializedOperation(serializer);
+
+        assertThat(routingId).isEqualTo("id-1");
+        assertThat(serializedOperation.getObject(BatchRequestResponseConstants.FIELD_RESOURCE_BODY)
+            .get("id").asText()).isEqualTo(routingId);
+        assertThat(serializationCount).hasValue(1);
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void bulkCreateWithFullPartitionKeyDoesNotCacheSerializedItem() {
+        AtomicInteger serializationCount = new AtomicInteger();
+        CosmosItemSerializer serializer = new CosmosItemSerializer() {
+            @Override
+            public <T> Map<String, Object> serialize(T item) {
+                serializationCount.incrementAndGet();
+                return Collections.singletonMap("id", "id");
+            }
+
+            @Override
+            public <T> T deserialize(Map<String, Object> jsonNodeMap, Class<T> classType) {
+                return null;
+            }
+        };
+        ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
+            CosmosItemOperationType.CREATE,
+            null,
+            new PartitionKey("full-key"),
+            null,
+            new Object(),
+            null);
+
+        operation.getSerializedOperation(serializer);
+
+        assertThat(operation.getCachedSerializedItem()).isNull();
+        assertThat(serializationCount).hasValue(1);
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT * 10)

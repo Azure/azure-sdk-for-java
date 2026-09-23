@@ -5,10 +5,13 @@ package com.azure.search.documents.knowledgebases.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Represents an LLM web summarization activity record.
@@ -51,13 +54,17 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("id", getId());
+        jsonWriter.writeStringField("startedAt",
+            getStartedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getStartedAt()));
+        jsonWriter.writeStringField("completedAt",
+            getCompletedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCompletedAt()));
         jsonWriter.writeNumberField("elapsedMs", getElapsedMs());
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("warning", getWarning());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("inputTokens", this.inputTokensCount);
         jsonWriter.writeNumberField("outputTokens", this.outputTokensCount);
-        jsonWriter.writeStringField("modelName", this.modelName);
+        jsonWriter.writeJsonField("model", this.model);
         return jsonWriter.writeEndObject();
     }
 
@@ -74,18 +81,26 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
     public static KnowledgeBaseModelWebSummarizationActivityRecord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int id = 0;
+            OffsetDateTime startedAt = null;
+            OffsetDateTime completedAt = null;
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
             String warning = null;
             KnowledgeBaseActivityRecordType type = KnowledgeBaseActivityRecordType.MODEL_WEB_SUMMARIZATION;
             Integer inputTokensCount = null;
             Integer outputTokensCount = null;
-            String modelName = null;
+            KnowledgeBaseActivityRecordModel model = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getInt();
+                } else if ("startedAt".equals(fieldName)) {
+                    startedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("completedAt".equals(fieldName)) {
+                    completedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("elapsedMs".equals(fieldName)) {
                     elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {
@@ -98,21 +113,23 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
                     inputTokensCount = reader.getNullable(JsonReader::getInt);
                 } else if ("outputTokens".equals(fieldName)) {
                     outputTokensCount = reader.getNullable(JsonReader::getInt);
-                } else if ("modelName".equals(fieldName)) {
-                    modelName = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    model = KnowledgeBaseActivityRecordModel.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             KnowledgeBaseModelWebSummarizationActivityRecord deserializedKnowledgeBaseModelWebSummarizationActivityRecord
                 = new KnowledgeBaseModelWebSummarizationActivityRecord(id);
+            deserializedKnowledgeBaseModelWebSummarizationActivityRecord.setStartedAt(startedAt);
+            deserializedKnowledgeBaseModelWebSummarizationActivityRecord.setCompletedAt(completedAt);
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.setElapsedMs(elapsedMs);
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.setError(error);
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.setWarning(warning);
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.type = type;
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.inputTokensCount = inputTokensCount;
             deserializedKnowledgeBaseModelWebSummarizationActivityRecord.outputTokensCount = outputTokensCount;
-            deserializedKnowledgeBaseModelWebSummarizationActivityRecord.modelName = modelName;
+            deserializedKnowledgeBaseModelWebSummarizationActivityRecord.model = model;
             return deserializedKnowledgeBaseModelWebSummarizationActivityRecord;
         });
     }
@@ -150,18 +167,18 @@ public final class KnowledgeBaseModelWebSummarizationActivityRecord extends Know
     }
 
     /*
-     * The name of the model used for the LLM web summarization activity.
+     * The model used for the LLM web summarization activity.
      */
     @Generated
-    private String modelName;
+    private KnowledgeBaseActivityRecordModel model;
 
     /**
-     * Get the modelName property: The name of the model used for the LLM web summarization activity.
+     * Get the model property: The model used for the LLM web summarization activity.
      *
-     * @return the modelName value.
+     * @return the model value.
      */
     @Generated
-    public String getModelName() {
-        return this.modelName;
+    public KnowledgeBaseActivityRecordModel getModel() {
+        return this.model;
     }
 }

@@ -11,7 +11,7 @@ public final class MaintenanceReadinessTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceReadiness model = BinaryData.fromString(
-            "{\"type\":\"Preflight\",\"status\":\"NotReady\",\"message\":\"waloayqcgwr\",\"failedChecks\":[{\"name\":\"zg\",\"impactedResources\":[{\"id\":\"htxongmtsavjc\",\"errors\":[{},{},{},{}]}]}],\"lastUpdated\":\"2021-05-06T06:11:53Z\"}")
+            "{\"type\":\"Preflight\",\"status\":\"Ready\",\"message\":\"hx\",\"failedChecks\":[{\"name\":\"gudivkrtswbxqz\",\"impactedResources\":[{\"id\":\"fauvjfdxx\",\"errors\":[{}]}]},{\"name\":\"vtcqaqtdo\",\"impactedResources\":[{\"id\":\"xv\",\"errors\":[{},{}]},{\"id\":\"slqb\",\"errors\":[{},{},{}]},{\"id\":\"obl\",\"errors\":[{}]},{\"id\":\"lmpewwwfbkr\",\"errors\":[{}]}]}],\"lastUpdated\":\"2021-11-17T21:39:38Z\"}")
             .toObject(MaintenanceReadiness.class);
     }
 }

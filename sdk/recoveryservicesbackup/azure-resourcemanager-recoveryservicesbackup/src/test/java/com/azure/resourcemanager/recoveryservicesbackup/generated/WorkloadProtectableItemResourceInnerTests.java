@@ -13,14 +13,14 @@ public final class WorkloadProtectableItemResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadProtectableItemResourceInner model = BinaryData.fromString(
-            "{\"location\":\"xqcsehch\",\"tags\":{\"dzulo\":\"fmpqumqyjg\",\"hpzfngqj\":\"saeuzanhsfnhsenw\",\"fwbeqrkuorh\":\"lidftujwjj\"},\"eTag\":\"sruqnmdvha\",\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"jy\",\"workloadType\":\"qswbqerzwx\",\"friendlyName\":\"txtd\",\"protectionState\":\"Invalid\"},\"id\":\"lbpktg\",\"name\":\"styoua\",\"type\":\"bewreswmowegmmut\"}")
+            "{\"location\":\"qsix\",\"tags\":{\"vyqlkjuvsmbmslzo\":\"puj\"},\"eTag\":\"vwzdbpqvyb\",\"properties\":{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"vmx\",\"workloadType\":\"kcvtl\",\"friendlyName\":\"seskvcuar\",\"protectionState\":\"Protecting\"},\"id\":\"nlp\",\"name\":\"rykycndzfqivjr\",\"type\":\"uykbbmn\"}")
             .toObject(WorkloadProtectableItemResourceInner.class);
-        Assertions.assertEquals("xqcsehch", model.location());
-        Assertions.assertEquals("fmpqumqyjg", model.tags().get("dzulo"));
-        Assertions.assertEquals("sruqnmdvha", model.eTag());
-        Assertions.assertEquals("jy", model.properties().backupManagementType());
-        Assertions.assertEquals("qswbqerzwx", model.properties().workloadType());
-        Assertions.assertEquals("txtd", model.properties().friendlyName());
-        Assertions.assertEquals(ProtectionStatus.INVALID, model.properties().protectionState());
+        Assertions.assertEquals("qsix", model.location());
+        Assertions.assertEquals("puj", model.tags().get("vyqlkjuvsmbmslzo"));
+        Assertions.assertEquals("vwzdbpqvyb", model.eTag());
+        Assertions.assertEquals("vmx", model.properties().backupManagementType());
+        Assertions.assertEquals("kcvtl", model.properties().workloadType());
+        Assertions.assertEquals("seskvcuar", model.properties().friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.properties().protectionState());
     }
 }

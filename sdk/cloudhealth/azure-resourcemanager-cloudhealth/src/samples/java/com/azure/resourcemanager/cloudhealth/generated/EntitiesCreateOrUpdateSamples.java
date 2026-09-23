@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.cloudhealth.generated;
 
+import com.azure.resourcemanager.cloudhealth.models.AggregationType;
+import com.azure.resourcemanager.cloudhealth.models.AggregationUnit;
 import com.azure.resourcemanager.cloudhealth.models.AlertConfiguration;
 import com.azure.resourcemanager.cloudhealth.models.AlertSeverity;
 import com.azure.resourcemanager.cloudhealth.models.AzureMonitorWorkspaceSignals;
 import com.azure.resourcemanager.cloudhealth.models.AzureResourceHealthSignal;
 import com.azure.resourcemanager.cloudhealth.models.AzureResourceSignal;
 import com.azure.resourcemanager.cloudhealth.models.AzureResourceSignals;
-import com.azure.resourcemanager.cloudhealth.models.DependenciesAggregationType;
-import com.azure.resourcemanager.cloudhealth.models.DependenciesAggregationUnit;
 import com.azure.resourcemanager.cloudhealth.models.DependenciesSignalGroupV2;
 import com.azure.resourcemanager.cloudhealth.models.EntityAlerts;
 import com.azure.resourcemanager.cloudhealth.models.EntityCoordinates;
@@ -25,6 +25,7 @@ import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
 import com.azure.resourcemanager.cloudhealth.models.PrometheusMetricsSignal;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilityStateSignalBehavior;
+import com.azure.resourcemanager.cloudhealth.models.SignalAggregationGroup;
 import com.azure.resourcemanager.cloudhealth.models.SignalGroups;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
@@ -37,7 +38,7 @@ import java.util.Map;
  */
 public final class EntitiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Entities_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01-preview/Entities_CreateOrUpdate.json
      */
     /**
      * Sample code: Entities_CreateOrUpdate.
@@ -131,12 +132,23 @@ public final class EntitiesCreateOrUpdateSamples {
                                         .withThreshold(70.0D))
                                     .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
                                         .withThreshold(90.0D))))))
-                    .withDependencies(
-                        new DependenciesSignalGroupV2().withAggregationType(DependenciesAggregationType.MIN_HEALTHY)
-                            .withDegradedThreshold(100.0D)
-                            .withUnhealthyThreshold(50.0D)
-                            .withUnit(DependenciesAggregationUnit.PERCENTAGE)
-                            .withIgnoreUnknown(true)))
+                    .withDependencies(new DependenciesSignalGroupV2().withAggregationType(AggregationType.MIN_HEALTHY)
+                        .withDegradedThreshold(100.0D)
+                        .withUnhealthyThreshold(50.0D)
+                        .withUnit(AggregationUnit.PERCENTAGE)
+                        .withIgnoreUnknown(true)))
+                .withSignalAggregationGroups(Arrays.asList(
+                    new SignalAggregationGroup().withName("latency-and-errors")
+                        .withDisplayName("Latency and errors")
+                        .withAggregationType(AggregationType.WORST_OF)
+                        .withMembers(Arrays.asList("error-rate", "p95-latency")),
+                    new SignalAggregationGroup().withName("compute-utilization")
+                        .withDisplayName("Compute utilization")
+                        .withAggregationType(AggregationType.MIN_HEALTHY)
+                        .withMembers(Arrays.asList("node-cpu", "pod-cpu"))
+                        .withUnhealthyThreshold(50.0D)
+                        .withUnit(AggregationUnit.PERCENTAGE)
+                        .withIgnoreUnknown(true)))
                 .withAlerts(new EntityAlerts().withUnhealthy(new AlertConfiguration().withSeverity(AlertSeverity.SEV1)
                     .withDescription("Orders API is unhealthy.")
                     .withActionGroupIds(Arrays.asList(

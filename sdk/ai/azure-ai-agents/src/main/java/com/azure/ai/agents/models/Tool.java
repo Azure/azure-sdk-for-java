@@ -77,7 +77,11 @@ public class Tool implements JsonSerializable<Tool> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("bing_grounding".equals(discriminatorValue)) {
+                if ("mcp".equals(discriminatorValue)) {
+                    return McpTool.fromJson(readerToUse.reset());
+                } else if ("github_copilot_toolset_preview".equals(discriminatorValue)) {
+                    return GitHubCopilotToolsetPreview.fromJson(readerToUse.reset());
+                } else if ("bing_grounding".equals(discriminatorValue)) {
                     return BingGroundingTool.fromJson(readerToUse.reset());
                 } else if ("fabric_dataagent_preview".equals(discriminatorValue)) {
                     return MicrosoftFabricPreviewTool.fromJson(readerToUse.reset());
@@ -103,20 +107,20 @@ public class Tool implements JsonSerializable<Tool> {
                     return WorkIqPreviewTool.fromJson(readerToUse.reset());
                 } else if ("fabric_iq_preview".equals(discriminatorValue)) {
                     return FabricIqPreviewTool.fromJson(readerToUse.reset());
+                } else if ("web_iq_preview".equals(discriminatorValue)) {
+                    return WebIqPreviewTool.fromJson(readerToUse.reset());
                 } else if ("memory_search_preview".equals(discriminatorValue)) {
                     return MemorySearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("code_interpreter".equals(discriminatorValue)) {
                     return CodeInterpreterTool.fromJson(readerToUse.reset());
-                } else if ("file_search".equals(discriminatorValue)) {
-                    return FileSearchTool.fromJson(readerToUse.reset());
-                } else if ("web_search".equals(discriminatorValue)) {
-                    return WebSearchTool.fromJson(readerToUse.reset());
-                } else if ("mcp".equals(discriminatorValue)) {
-                    return McpTool.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {
                     return FunctionTool.fromJson(readerToUse.reset());
+                } else if ("file_search".equals(discriminatorValue)) {
+                    return FileSearchTool.fromJson(readerToUse.reset());
                 } else if ("computer_use_preview".equals(discriminatorValue)) {
                     return ComputerUsePreviewTool.fromJson(readerToUse.reset());
+                } else if ("web_search".equals(discriminatorValue)) {
+                    return WebSearchTool.fromJson(readerToUse.reset());
                 } else if ("programmatic_tool_calling".equals(discriminatorValue)) {
                     return ProgrammaticToolCallingParameter.fromJson(readerToUse.reset());
                 } else if ("image_generation".equals(discriminatorValue)) {

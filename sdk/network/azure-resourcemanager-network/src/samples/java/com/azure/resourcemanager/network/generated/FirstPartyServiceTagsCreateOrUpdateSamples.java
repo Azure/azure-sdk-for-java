@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class FirstPartyServiceTagsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/FirstPartyServiceTagCreate.json
+     * x-ms-original-file: 2026-01-01/FirstPartyServiceTagCreate.json
      */
     /**
      * Sample code: Create first party service tag.

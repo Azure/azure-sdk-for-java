@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteCircuitsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExpressRouteCircuitGet.json
+     * x-ms-original-file: 2026-01-01/ExpressRouteCircuitGet.json
      */
     /**
      * Sample code: Get ExpressRouteCircuit.
@@ -23,7 +23,7 @@ public final class ExpressRouteCircuitsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/ExpressRouteMultiCloudCircuitGet.json
+     * x-ms-original-file: 2026-01-01/ExpressRouteMultiCloudCircuitGet.json
      */
     /**
      * Sample code: Get MultiCloud ExpressRouteCircuit.

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class SecurityPartnerProvidersUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-09-01/SecurityPartnerProviderUpdateTags.json
+     * x-ms-original-file: 2026-01-01/SecurityPartnerProviderUpdateTags.json
      */
     /**
      * Sample code: Update Security Partner Provider Tags.

@@ -15,7 +15,8 @@ public final class MapsLegendsGetTests extends PlanetaryComputerProClientTestBas
     @Disabled
     public void testMapsLegendsGetTests() {
         // method invocation
-        BinaryData response = dataClient.getLegend("rdylgn", null, null, null, null);
+        BinaryData response
+            = dataClient.getLegend("rdylgn", (Double) null, (Double) null, (Integer) null, (Integer) null);
 
         // response assertion
         Assertions.assertNotNull(response);
