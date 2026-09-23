@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteLinksListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExpressRouteLinkList.json
+     * x-ms-original-file: 2026-01-01/ExpressRouteLinkList.json
      */
     /**
      * Sample code: ExpressRouteLinkGet.

@@ -9,6 +9,7 @@ import com.azure.ai.agents.implementation.http.FoundryPolicyHelper;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
+import com.azure.ai.agents.implementation.realtime.VoiceAgentWebSocketClientConfiguration;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -22,6 +23,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
@@ -37,6 +39,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -47,6 +50,7 @@ import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -563,10 +567,12 @@ public final class AgentsClientBuilder
         serviceClients = {
             BetaAgentsClient.class,
             BetaMemoryStoresClient.class,
+            BetaVoiceAgentWebSocketClient.class,
             BetaVoiceAgentsTelephonyClient.class,
             BetaVoiceAgentsConversationsClient.class,
             BetaAgentsAsyncClient.class,
             BetaMemoryStoresAsyncClient.class,
+            BetaVoiceAgentWebSocketAsyncClient.class,
             BetaVoiceAgentsTelephonyAsyncClient.class,
             BetaVoiceAgentsConversationsAsyncClient.class })
     public final class BetaAgentsClientBuilder {
@@ -668,6 +674,38 @@ public final class AgentsClientBuilder
         @Beta
         public BetaMemoryStoresClient buildBetaMemoryStoresClient() {
             return new BetaMemoryStoresClient(buildInnerClient(MEMORY_STORES_PREVIEW_FEATURES).getBetaMemoryStores());
+        }
+
+        /**
+         * Builds an asynchronous client for realtime voice-agent WebSocket sessions.
+         * <p>
+         * Endpoint, credential, service version, configuration-based proxy settings, and client options are applied to
+         * WebSocket handshakes. Custom HTTP clients, pipelines, policies, and retry configuration are not compatible
+         * with the native WebSocket transport and cause this method to fail rather than being silently ignored.
+         * HTTP log options contribute to the user agent but do not configure WebSocket frame logging.
+         *
+         * @return an asynchronous voice-agent WebSocket client.
+         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+         */
+        @Beta
+        public BetaVoiceAgentWebSocketAsyncClient buildBetaVoiceAgentWebSocketAsyncClient() {
+            return new BetaVoiceAgentWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
+        }
+
+        /**
+         * Builds a synchronous client for realtime voice-agent WebSocket sessions.
+         * <p>
+         * Endpoint, credential, service version, configuration-based proxy settings, and client options are applied to
+         * WebSocket handshakes. Custom HTTP clients, pipelines, policies, and retry configuration are not compatible
+         * with the native WebSocket transport and cause this method to fail rather than being silently ignored.
+         * HTTP log options contribute to the user agent but do not configure WebSocket frame logging.
+         *
+         * @return a synchronous voice-agent WebSocket client.
+         * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+         */
+        @Beta
+        public BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
+            return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
         }
 
         /**
@@ -793,5 +831,75 @@ public final class AgentsClientBuilder
      */
     private BetaVoiceAgentsTelephonyClient buildBetaVoiceAgentsTelephonyClient() {
         return new BetaVoiceAgentsTelephonyClient(buildInnerClient().getBetaVoiceAgentsTelephonies());
+    }
+
+    /**
+     * Creates the parallel configuration path required by the native WebSocket transports. Azure Core's
+     * {@link HttpClient} and {@link HttpPipeline} abstractions don't expose WebSocket session operations, so these
+     * clients can't reuse the generated HTTP pipeline directly. Compatible builder settings are adapted for the
+     * WebSocket handshake and must remain aligned with {@code createHttpPipeline()} when the TypeSpec emitter changes.
+     * HTTP transport, pipeline, policy, and retry settings are rejected rather than silently ignored.
+     *
+     * @return the voice-agent WebSocket client configuration.
+     * @throws IllegalStateException if unsupported HTTP pipeline configuration is present.
+     */
+    private VoiceAgentWebSocketClientConfiguration createVoiceAgentWebSocketConfiguration() {
+        validateClient();
+        Objects.requireNonNull(tokenCredential,
+            "'credential' must be configured to build a voice-agent WebSocket client.");
+        List<String> unsupportedSettings = new ArrayList<>();
+        if (httpClient != null) {
+            unsupportedSettings.add("httpClient");
+        }
+        if (pipeline != null) {
+            unsupportedSettings.add("pipeline");
+        }
+        if (!pipelinePolicies.isEmpty()) {
+            unsupportedSettings.add("addPolicy");
+        }
+        if (retryOptions != null) {
+            unsupportedSettings.add("retryOptions");
+        }
+        if (retryPolicy != null) {
+            unsupportedSettings.add("retryPolicy");
+        }
+        if (!unsupportedSettings.isEmpty()) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Voice-agent WebSocket clients do not support these HTTP builder settings: "
+                    + String.join(", ", unsupportedSettings) + "."));
+        }
+        Configuration buildConfiguration
+            = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
+        ClientOptions localClientOptions = clientOptions == null ? new ClientOptions() : clientOptions;
+        HttpLogOptions localLogOptions = httpLogOptions == null ? new HttpLogOptions() : httpLogOptions;
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "azure-ai-agents");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "unknown");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localLogOptions);
+        String userAgent
+            = UserAgentUtil.toUserAgentString(applicationId, clientName, clientVersion, buildConfiguration);
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(buildConfiguration);
+        AgentsServiceVersion localServiceVersion
+            = serviceVersion == null ? AgentsServiceVersion.getLatest() : serviceVersion;
+        return new VoiceAgentWebSocketClientConfiguration(URI.create(endpoint), tokenCredential,
+            localServiceVersion.getVersion(), userAgent, headers, proxyOptions);
+    }
+
+    /**
+     * Builds an asynchronous client for realtime voice-agent WebSocket sessions.
+     *
+     * @return an asynchronous voice-agent WebSocket client.
+     */
+    private BetaVoiceAgentWebSocketAsyncClient buildBetaVoiceAgentWebSocketAsyncClient() {
+        return new BetaVoiceAgentWebSocketAsyncClient(createVoiceAgentWebSocketConfiguration());
+    }
+
+    /**
+     * Builds a synchronous client for realtime voice-agent WebSocket sessions.
+     *
+     * @return a synchronous voice-agent WebSocket client.
+     */
+    private BetaVoiceAgentWebSocketClient buildBetaVoiceAgentWebSocketClient() {
+        return new BetaVoiceAgentWebSocketClient(createVoiceAgentWebSocketConfiguration());
     }
 }

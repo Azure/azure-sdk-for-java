@@ -40,6 +40,11 @@ public final class ManagedInstanceDtcProperties implements JsonSerializable<Mana
     private String dtcHostNameDnsSuffix;
 
     /*
+     * Status of FQDN of managed instance DTC. Toggling this setting might trigger a restart of the managed instance.
+     */
+    private Boolean fqdnEnabled;
+
+    /*
      * Provisioning state of managed instance DTC.
      */
     private ProvisioningState provisioningState;
@@ -120,6 +125,28 @@ public final class ManagedInstanceDtcProperties implements JsonSerializable<Mana
     }
 
     /**
+     * Get the fqdnEnabled property: Status of FQDN of managed instance DTC. Toggling this setting might trigger a
+     * restart of the managed instance.
+     * 
+     * @return the fqdnEnabled value.
+     */
+    public Boolean fqdnEnabled() {
+        return this.fqdnEnabled;
+    }
+
+    /**
+     * Set the fqdnEnabled property: Status of FQDN of managed instance DTC. Toggling this setting might trigger a
+     * restart of the managed instance.
+     * 
+     * @param fqdnEnabled the fqdnEnabled value to set.
+     * @return the ManagedInstanceDtcProperties object itself.
+     */
+    public ManagedInstanceDtcProperties withFqdnEnabled(Boolean fqdnEnabled) {
+        this.fqdnEnabled = fqdnEnabled;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of managed instance DTC.
      * 
      * @return the provisioningState value.
@@ -149,6 +176,7 @@ public final class ManagedInstanceDtcProperties implements JsonSerializable<Mana
         jsonWriter.writeJsonField("securitySettings", this.securitySettings);
         jsonWriter.writeArrayField("externalDnsSuffixSearchList", this.externalDnsSuffixSearchList,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("fqdnEnabled", this.fqdnEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -177,6 +205,8 @@ public final class ManagedInstanceDtcProperties implements JsonSerializable<Mana
                     deserializedManagedInstanceDtcProperties.externalDnsSuffixSearchList = externalDnsSuffixSearchList;
                 } else if ("dtcHostNameDnsSuffix".equals(fieldName)) {
                     deserializedManagedInstanceDtcProperties.dtcHostNameDnsSuffix = reader.getString();
+                } else if ("fqdnEnabled".equals(fieldName)) {
+                    deserializedManagedInstanceDtcProperties.fqdnEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedManagedInstanceDtcProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

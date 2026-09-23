@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class ExpressRouteLagsGenerateLoaSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GenerateExpressRouteLagsLOA.json
+     * x-ms-original-file: 2026-01-01/GenerateExpressRouteLagsLOA.json
      */
     /**
      * Sample code: Generate express route lag LOA.

@@ -12,6 +12,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.RealtimeResponse.OutputModality;
+import com.openai.models.realtime.RealtimeResponse.Status;
 import com.openai.models.realtime.RealtimeResponseStatus;
 import com.openai.models.realtime.RealtimeResponseUsage;
 import java.io.IOException;
@@ -35,7 +37,7 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
      * `incomplete`, `in_progress`).
      */
     @Generated
-    private VoiceResponseBaseStatus status;
+    private Status status;
 
     /*
      * Additional details about the status.
@@ -58,7 +60,7 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
      * output to mode `text` will disable audio output from the model.
      */
     @Generated
-    private List<VoiceResponseBaseOutputModality> outputModalities;
+    private List<OutputModality> outputModalities;
 
     /*
      * Maximum number of output tokens for a single assistant response,
@@ -85,39 +87,14 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
     }
 
     /**
-     * Set the object property: The object type, must be `realtime.response`.
-     *
-     * @param object the object value to set.
-     * @return the VoiceResponseBase object itself.
-     */
-    @Generated
-    VoiceResponseBase setObject(VoiceResponseBaseObject object) {
-        this.object = object;
-        return this;
-    }
-
-    /**
      * Get the status property: The final status of the response (`completed`, `cancelled`, `failed`, or
      * `incomplete`, `in_progress`).
      *
      * @return the status value.
      */
     @Generated
-    public VoiceResponseBaseStatus getStatus() {
+    public Status getStatus() {
         return this.status;
-    }
-
-    /**
-     * Set the status property: The final status of the response (`completed`, `cancelled`, `failed`, or
-     * `incomplete`, `in_progress`).
-     *
-     * @param status the status value to set.
-     * @return the VoiceResponseBase object itself.
-     */
-    @Generated
-    VoiceResponseBase setStatus(VoiceResponseBaseStatus status) {
-        this.status = status;
-        return this;
     }
 
     /**
@@ -179,7 +156,7 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
      * @return the outputModalities value.
      */
     @Generated
-    public List<VoiceResponseBaseOutputModality> getOutputModalities() {
+    public List<OutputModality> getOutputModalities() {
         return this.outputModalities;
     }
 
@@ -193,7 +170,7 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
      * @return the VoiceResponseBase object itself.
      */
     @Generated
-    VoiceResponseBase setOutputModalities(List<VoiceResponseBaseOutputModality> outputModalities) {
+    VoiceResponseBase setOutputModalities(List<OutputModality> outputModalities) {
         this.outputModalities = outputModalities;
         return this;
     }
@@ -229,7 +206,7 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.asString());
         // AI Tooling: openai-java de-dup
         if (this.statusDetails != null) {
             jsonWriter.writeFieldName("status_details");
@@ -257,6 +234,7 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
      * @throws IOException If an error occurs while reading the VoiceResponseBase.
      */
     public static VoiceResponseBase fromJson(JsonReader jsonReader) throws IOException {
+        // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
             VoiceResponseBase deserializedVoiceResponseBase = new VoiceResponseBase();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -265,7 +243,7 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
                 if ("object".equals(fieldName)) {
                     deserializedVoiceResponseBase.object = VoiceResponseBaseObject.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
-                    deserializedVoiceResponseBase.status = VoiceResponseBaseStatus.fromString(reader.getString());
+                    deserializedVoiceResponseBase.status = reader.getNullable(r -> Status.of(r.getString()));
                 } else if ("status_details".equals(fieldName)) {
                     // AI Tooling: openai-java de-dup
                     BinaryData statusDetailsData
@@ -278,8 +256,8 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
                     deserializedVoiceResponseBase.usage
                         = OpenAIJsonHelper.fromBinaryData(usageData, RealtimeResponseUsage.class);
                 } else if ("output_modalities".equals(fieldName)) {
-                    List<VoiceResponseBaseOutputModality> outputModalities
-                        = reader.readArray(reader1 -> VoiceResponseBaseOutputModality.fromString(reader1.getString()));
+                    List<OutputModality> outputModalities
+                        = reader.readArray(reader1 -> reader1.getNullable(r -> OutputModality.of(r.getString())));
                     deserializedVoiceResponseBase.outputModalities = outputModalities;
                 } else if ("max_output_tokens".equals(fieldName)) {
                     deserializedVoiceResponseBase.maxOutputTokens
@@ -328,5 +306,30 @@ public class VoiceResponseBase implements JsonSerializable<VoiceResponseBase> {
             return null;
         }
         return value.toObject(String.class);
+    }
+
+    /**
+     * Set the status property: The final status of the response (`completed`, `cancelled`, `failed`, or
+     * `incomplete`, `in_progress`).
+     *
+     * @param status the status value to set.
+     * @return the VoiceResponseBase object itself.
+     */
+    @Generated
+    VoiceResponseBase setStatus(Status status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
+     * Set the object property: The object type, must be `realtime.response`.
+     *
+     * @param object the object value to set.
+     * @return the VoiceResponseBase object itself.
+     */
+    @Generated
+    VoiceResponseBase setObject(VoiceResponseBaseObject object) {
+        this.object = object;
+        return this;
     }
 }

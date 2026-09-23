@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-containerserviceaimanager</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerserviceaimanager;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerserviceaimanager;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Container Service AI Manager Management</name>
-  <description>This package contains Microsoft Azure SDK for Container Service AI Manager Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Kubernetes AI Manager api client. Package api-version 2026-05-02-preview.</description>
+  <description>This package contains Microsoft Azure SDK for Container Service AI Manager Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Kubernetes AI Manager api client. Package api-version 2026-09-02-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

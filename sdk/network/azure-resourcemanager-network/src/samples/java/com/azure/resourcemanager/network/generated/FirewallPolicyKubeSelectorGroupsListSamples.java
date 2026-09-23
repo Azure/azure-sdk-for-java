@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPolicyKubeSelectorGroupsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/FirewallPolicyKubeSelectorGroupList.json
+     * x-ms-original-file: 2026-01-01/FirewallPolicyKubeSelectorGroupList.json
      */
     /**
      * Sample code: List all FirewallPolicyKubeSelectorGroups for a given FirewallPolicy.

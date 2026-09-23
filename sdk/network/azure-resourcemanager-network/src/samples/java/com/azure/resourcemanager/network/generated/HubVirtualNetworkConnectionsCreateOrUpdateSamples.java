@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.HubVirtualNetworkConnectionInner;
-import com.azure.resourcemanager.network.models.EnableOnlyIpv6PeeringState;
 import com.azure.resourcemanager.network.models.PropagatedRouteTable;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.azure.resourcemanager.network.models.StaticRoute;
@@ -20,7 +19,7 @@ import java.util.Arrays;
  */
 public final class HubVirtualNetworkConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/HubVirtualNetworkConnectionPut.json
+     * x-ms-original-file: 2026-01-01/HubVirtualNetworkConnectionPut.json
      */
     /**
      * Sample code: HubVirtualNetworkConnectionPut.
@@ -53,6 +52,6 @@ public final class HubVirtualNetworkConnectionsCreateOrUpdateSamples {
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap1"))
                     .withOutboundRouteMap(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2")))
-                .withEnableOnlyIpv6Peering(EnableOnlyIpv6PeeringState.DISABLED), com.azure.core.util.Context.NONE);
+                .withEnableOnlyIPv6Peering(false), com.azure.core.util.Context.NONE);
     }
 }
