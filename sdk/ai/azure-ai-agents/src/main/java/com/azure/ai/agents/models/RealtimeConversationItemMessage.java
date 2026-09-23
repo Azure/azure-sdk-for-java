@@ -34,7 +34,7 @@ public class RealtimeConversationItemMessage extends RealtimeConversationItem {
      * Creates an instance of RealtimeConversationItemMessage class.
      */
     @Generated
-    public RealtimeConversationItemMessage() {
+    protected RealtimeConversationItemMessage() {
     }
 
     /**

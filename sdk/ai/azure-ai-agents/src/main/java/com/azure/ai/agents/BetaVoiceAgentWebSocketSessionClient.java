@@ -121,8 +121,8 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
      *
      * @return the WebSocket endpoint.
      */
-    public URI getEndpoint() {
-        return websocketUri;
+    public String getEndpoint() {
+        return websocketUri.toString();
     }
 
     /**

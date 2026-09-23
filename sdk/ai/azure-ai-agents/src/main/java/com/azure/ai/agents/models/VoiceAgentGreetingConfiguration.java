@@ -29,7 +29,7 @@ public class VoiceAgentGreetingConfiguration implements JsonSerializable<VoiceAg
      * Creates an instance of VoiceAgentGreetingConfiguration class.
      */
     @Generated
-    public VoiceAgentGreetingConfiguration() {
+    protected VoiceAgentGreetingConfiguration() {
     }
 
     /**
