@@ -19,7 +19,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreatesOrUpdatesACredentialInASandboxGroupIfTheCredentialAlreadyExistsItWillBeUpdatedOtherwiseANewCredentialWillBeCreated {
+public class CreateOrUpdateSandboxGroupCredential {
     public static void main(String[] args) {
         CredentialsOperationsClient credentialsOperationsClient
             = new ContainerAppsSandboxClientBuilder().credential(new DefaultAzureCredentialBuilder().build())

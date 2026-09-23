@@ -21,8 +21,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class CreatesOrUpdatesACredentialInASandboxGroupIfTheCredentialAlreadyExistsItWillBeUpdatedOtherwiseANewCredentialWillBeCreatedTests
-    extends ContainerAppsSandboxClientTestBase {
+public final class CreateOrUpdateSandboxGroupCredentialTests extends ContainerAppsSandboxClientTestBase {
     @Test
     @Disabled
     public void

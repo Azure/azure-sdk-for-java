@@ -9,7 +9,7 @@ import com.azure.containers.apps.sandbox.SandboxStreamsOperationsClient;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public class StreamsLogsFromARunningSandboxViaWebSocketTheLogsAreSentAsAContinuousStreamOfTextOrJSONObjectsDependingOnTheSpecifiedLogFormat {
+public class StreamSandboxLogs {
     public static void main(String[] args) {
         SandboxStreamsOperationsClient sandboxStreamsOperationsClient
             = new ContainerAppsSandboxClientBuilder().credential(new DefaultAzureCredentialBuilder().build())

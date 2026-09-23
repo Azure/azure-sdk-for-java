@@ -5,22 +5,20 @@
 package com.azure.containers.apps.sandbox.generated;
 
 import com.azure.containers.apps.sandbox.models.FileOpStatusResponse;
-import com.azure.containers.apps.sandbox.models.MkDirContent;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class CreatesADirectoryInARunningSandboxIfTheCreateParentsPropertyIsSetToTrueAnyMissingParentDirectoriesWillAlsoBeCreatedTests
-    extends ContainerAppsSandboxClientTestBase {
+public final class DeleteSandboxFileOrDirectoryTests extends ContainerAppsSandboxClientTestBase {
     @Test
     @Disabled
     public void
-        testCreatesADirectoryInARunningSandboxIfTheCreateParentsPropertyIsSetToTrueAnyMissingParentDirectoriesWillAlsoBeCreatedTests() {
+        testDeletesAFileOrDirectoryInARunningSandboxIfTheTargetIsADirectoryTheRecursiveQueryParameterMustBeSetToTrueToDeleteItAndItsContentsTests() {
         // method invocation
-        FileOpStatusResponse response = sandboxFilesOperationsClient.postSandboxFileMkdir(
-            "010A4274-77B5-43C1-A6BB-0984FECCBAE7", "rgcontainerappssandbox", "juxmwdodiuryv", "rdfdwf",
-            new MkDirContent("nfggchcpdtnavwx").setCreateParents(true).setMode(27), "sqhjruidppsmwzysjhxcnqxmphlvj");
+        FileOpStatusResponse response
+            = sandboxFilesOperationsClient.deleteSandboxFile("0D2FA3BC-BD17-4E02-A9EF-7AC1EE26E816",
+                "rgcontainerappssandbox", "lpuvcbxvgliuutdukpqulz", "pnbdgriujbubdavog", "ioxdm", true, "qvfjgssksoaz");
 
         // response assertion
         Assertions.assertNotNull(response);

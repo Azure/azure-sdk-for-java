@@ -10,7 +10,7 @@ import com.azure.containers.apps.sandbox.models.FileOpStatusResponse;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-public class DeletesAFileOrDirectoryInARunningSandboxIfTheTargetIsADirectoryTheRecursiveQueryParameterMustBeSetToTrueToDeleteItAndItsContents {
+public class DeleteSandboxFileOrDirectory {
     public static void main(String[] args) {
         SandboxFilesOperationsClient sandboxFilesOperationsClient
             = new ContainerAppsSandboxClientBuilder().credential(new DefaultAzureCredentialBuilder().build())

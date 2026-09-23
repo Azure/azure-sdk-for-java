@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public final class StreamsLogsFromARunningSandboxViaWebSocketTheLogsAreSentAsAContinuousStreamOfTextOrJSONObjectsDependingOnTheSpecifiedLogFormatTests
-    extends ContainerAppsSandboxClientTestBase {
+public final class StreamSandboxLogsTests extends ContainerAppsSandboxClientTestBase {
     @Test
     @Disabled
     public void
