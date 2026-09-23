@@ -667,9 +667,10 @@ public final class ShareServiceAsyncClient {
         }
         context = context == null ? Context.NONE : context;
         return new ShareAsyncClientInternal(
-            azureFileStorageClient.withUrl(azureFileStorageClient.getUrl() + "/" + shareName).getShares())
-                .deleteWithResponse(snapshot, null, deleteSnapshots, null, new RequestOptions().setContext(context))
-                .map(response -> (Response<Void>) response);
+            ModelHelper.getFileStorageForUrl(azureFileStorageClient, azureFileStorageClient.getUrl() + "/" + shareName)
+                .getShares())
+                    .deleteWithResponse(snapshot, null, deleteSnapshots, null, new RequestOptions().setContext(context))
+                    .map(response -> (Response<Void>) response);
     }
 
     /**
@@ -864,8 +865,9 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(String deletedShareName, String deletedShareVersion,
         Context context) {
-        return new ShareAsyncClientInternal(
-            azureFileStorageClient.withUrl(azureFileStorageClient.getUrl() + "/" + deletedShareName).getShares())
+        return new ShareAsyncClientInternal(ModelHelper
+            .getFileStorageForUrl(azureFileStorageClient, azureFileStorageClient.getUrl() + "/" + deletedShareName)
+            .getShares())
                 .restoreWithResponse(null, deletedShareName, deletedShareVersion,
                     new RequestOptions().setContext(context))
                 .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
@@ -947,6 +949,6 @@ public final class ShareServiceAsyncClient {
             .getUserDelegationKeyWithResponse(new KeyInfo(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
                 .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
                 .setDelegatedUserTenantId(delegatedUserTenantId), null, new RequestOptions().setContext(context))
-            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
+            .map(rb -> new SimpleResponse<>(rb, ModelHelper.mapUserDelegationKey(rb.getValue())));
     }
 }

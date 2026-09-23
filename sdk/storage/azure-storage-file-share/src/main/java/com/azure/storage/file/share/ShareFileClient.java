@@ -184,7 +184,9 @@ public class ShareFileClient {
         }
         this.fileUrlString = fileUrlstring.toString();
         this.fileClientInternal = new ShareFileClientInternal(
-            azureFileStorageClient.withUrl(azureFileStorageClient.getUrl() + "/" + shareName + "/" + filePath)
+            ModelHelper
+                .getFileStorageForUrl(azureFileStorageClient,
+                    azureFileStorageClient.getUrl() + "/" + shareName + "/" + filePath)
                 .getFiles());
     }
 

@@ -113,8 +113,8 @@ public class ShareAsyncClient {
         this.azureFileStorageClient = client;
         this.serviceVersion = serviceVersion;
         this.sasToken = sasToken;
-        this.shareClientInternal
-            = new ShareAsyncClientInternal(client.withUrl(client.getUrl() + "/" + shareName).getShares());
+        this.shareClientInternal = new ShareAsyncClientInternal(
+            ModelHelper.getFileStorageForUrl(client, client.getUrl() + "/" + shareName).getShares());
     }
 
     /**

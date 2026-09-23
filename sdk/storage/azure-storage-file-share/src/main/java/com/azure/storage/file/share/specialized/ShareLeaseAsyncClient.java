@@ -16,6 +16,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareServiceVersion;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.ShareAsyncClientInternal;
 import com.azure.storage.file.share.implementation.ShareFileAsyncClientInternal;
 import com.azure.storage.file.share.models.ShareTokenIntent;
@@ -77,13 +78,14 @@ public final class ShareLeaseAsyncClient {
         this.shareSnapshot = shareSnapshot;
         this.resourcePath = resourcePath;
         if (isShareFile) {
-            this.fileLeaseInternal = new ShareFileAsyncClientInternal(
-                this.client.withUrl(this.client.getUrl() + "/" + shareName + "/" + resourcePath).getFiles());
+            this.fileLeaseInternal = new ShareFileAsyncClientInternal(ModelHelper
+                .getFileStorageForUrl(this.client, this.client.getUrl() + "/" + shareName + "/" + resourcePath)
+                .getFiles());
             this.shareLeaseInternal = null;
         } else {
             this.fileLeaseInternal = null;
-            this.shareLeaseInternal
-                = new ShareAsyncClientInternal(this.client.withUrl(this.client.getUrl() + "/" + shareName).getShares());
+            this.shareLeaseInternal = new ShareAsyncClientInternal(
+                ModelHelper.getFileStorageForUrl(this.client, this.client.getUrl() + "/" + shareName).getShares());
         }
     }
 

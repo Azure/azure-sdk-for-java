@@ -43,7 +43,7 @@ public class ShareStorageCustomization extends Customization {
     // restores the shipped fluent shape per-model. Expand this list from the RevApi "method removed" report.
     private static final List<String> FLUENT_MODELS_TO_RESTORE = Arrays.asList(
         "FileRange", "ClearRange", "ShareCorsRule", "ShareFileRangeList", "ShareMetrics", "ShareRetentionPolicy",
-        "ShareSignedIdentifier", "UserDelegationKey", "ShareFileDownloadHeaders");
+        "ShareSignedIdentifier", "ShareFileDownloadHeaders");
 
     // Generated builders / main service-client surface emitted by typespec-java on top of the
     // implementation/*Impl operation layer. These are deleted; the shipped public surface is the
@@ -87,8 +87,6 @@ public class ShareStorageCustomization extends Customization {
         relocateConvenienceClientsToImplementation(customization, logger);
 
         retypeServiceVersionToShareServiceVersion(customization, logger);
-
-        addProxyReuseForResourceScoping(customization, logger);
 
         fixXmlSerializerRedundantCast(customization, logger);
 
@@ -280,80 +278,6 @@ public class ShareStorageCustomization extends Customization {
                 logger.info("Retyped FileServiceVersion -> ShareServiceVersion in {}", path);
             }
         }
-    }
-
-    /**
-     * Adds a URL-rebasing capability to the generated implementation so that resource-URL-scoped clients can reuse the
-     * account-scoped client's operation proxies instead of re-creating {@code RestProxy} for every sub-client. The
-     * service URL is a per-call {@code @HostParam}, so the operation proxies are URL-independent and safe to share.
-     * Each sub-impl ({@code DirectoriesImpl}/{@code FilesImpl}/{@code ServicesImpl}/{@code SharesImpl}) gains a
-     * package-private {@code (AzureFileStorageImpl, <Service>)} constructor plus a {@code getService()} accessor, and
-     * {@code AzureFileStorageImpl} gains a public {@code withUrl(String)} plus a private rebasing constructor.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void addProxyReuseForResourceScoping(LibraryCustomization customization, Logger logger) {
-        Editor editor = customization.getRawEditor();
-        String implRoot = PKG_ROOT + "implementation/";
-
-        String[][] subImpls = {
-            { "DirectoriesImpl", "DirectoriesService" },
-            { "FilesImpl", "FilesService" },
-            { "ServicesImpl", "ServicesService" },
-            { "SharesImpl", "SharesService" } };
-        String ctorEnd = "        this.client = client;\n    }";
-        for (String[] pair : subImpls) {
-            String implName = pair[0];
-            String svc = pair[1];
-            String path = implRoot + implName + ".java";
-            String content = editor.getFileContent(path);
-            String injected = ctorEnd + "\n\n"
-                + "    // Reuses an existing (URL-independent) proxy so URL-rebased clients avoid re-creating RestProxy.\n"
-                + "    " + implName + "(AzureFileStorageImpl client, " + svc + " service) {\n"
-                + "        this.service = service;\n"
-                + "        this.client = client;\n"
-                + "    }\n\n"
-                + "    " + svc + " getService() {\n"
-                + "        return this.service;\n"
-                + "    }";
-            content = content.replace(ctorEnd, injected);
-            editor.replaceFile(path, content);
-            logger.info("Added proxy-reuse constructor + getService() to {}", implName);
-        }
-
-        // AzureFileStorageImpl: add the private rebasing constructor + public withUrl(String).
-        String afsPath = implRoot + "AzureFileStorageImpl.java";
-        String afs = editor.getFileContent(afsPath);
-        String sharesInit = "        this.shares = new SharesImpl(this);\n    }";
-        String rebase = sharesInit + "\n\n"
-            + "    // Resource-URL-scoped view that reuses this client's operation proxies. The service URL is a per-call @HostParam,\n"
-            + "    // so proxies are URL-independent and safe to share; this avoids re-creating RestProxy for every sub-client.\n"
-            + "    private AzureFileStorageImpl(AzureFileStorageImpl parent, String url) {\n"
-            + "        this.httpPipeline = parent.httpPipeline;\n"
-            + "        this.serializerAdapter = parent.serializerAdapter;\n"
-            + "        this.url = url;\n"
-            + "        this.fileRequestIntent = parent.fileRequestIntent;\n"
-            + "        this.allowTrailingDot = parent.allowTrailingDot;\n"
-            + "        this.allowSourceTrailingDot = parent.allowSourceTrailingDot;\n"
-            + "        this.serviceVersion = parent.serviceVersion;\n"
-            + "        this.directories = new DirectoriesImpl(this, parent.directories.getService());\n"
-            + "        this.files = new FilesImpl(this, parent.files.getService());\n"
-            + "        this.services = new ServicesImpl(this, parent.services.getService());\n"
-            + "        this.shares = new SharesImpl(this, parent.shares.getService());\n"
-            + "    }\n\n"
-            + "    /**\n"
-            + "     * Creates a resource-URL-scoped view of this client that shares this client's operation proxies.\n"
-            + "     *\n"
-            + "     * @param url the resource URL to target.\n"
-            + "     * @return an AzureFileStorageImpl targeting {@code url} and reusing this client's proxies.\n"
-            + "     */\n"
-            + "    public AzureFileStorageImpl withUrl(String url) {\n"
-            + "        return new AzureFileStorageImpl(this, url);\n"
-            + "    }";
-        afs = afs.replace(sharesInit, rebase);
-        editor.replaceFile(afsPath, afs);
-        logger.info("Added withUrl(String) + rebasing constructor to AzureFileStorageImpl");
     }
 
     /**

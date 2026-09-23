@@ -175,7 +175,9 @@ public class ShareFileAsyncClient {
         this.serviceVersion = serviceVersion;
         this.sasToken = sasToken;
         this.fileClientInternal = new ShareFileAsyncClientInternal(
-            azureFileStorageClient.withUrl(azureFileStorageClient.getUrl() + "/" + shareName + "/" + filePath)
+            ModelHelper
+                .getFileStorageForUrl(azureFileStorageClient,
+                    azureFileStorageClient.getUrl() + "/" + shareName + "/" + filePath)
                 .getFiles());
     }
 

@@ -137,7 +137,9 @@ public class ShareDirectoryClient {
         }
         this.directoryUrl = directoryUrlString.toString();
         this.directoryClientInternal = new ShareDirectoryClientInternal(
-            azureFileStorageClient.withUrl(azureFileStorageClient.getUrl() + "/" + shareName + "/" + directoryPath)
+            ModelHelper
+                .getFileStorageForUrl(azureFileStorageClient,
+                    azureFileStorageClient.getUrl() + "/" + shareName + "/" + directoryPath)
                 .getDirectories());
     }
 

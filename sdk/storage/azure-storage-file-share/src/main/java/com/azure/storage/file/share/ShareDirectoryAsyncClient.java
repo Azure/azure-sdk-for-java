@@ -120,7 +120,9 @@ public class ShareDirectoryAsyncClient {
         this.serviceVersion = serviceVersion;
         this.sasToken = sasToken;
         this.directoryClientInternal = new ShareDirectoryAsyncClientInternal(
-            azureFileStorageClient.withUrl(azureFileStorageClient.getUrl() + "/" + shareName + "/" + directoryPath)
+            ModelHelper
+                .getFileStorageForUrl(azureFileStorageClient,
+                    azureFileStorageClient.getUrl() + "/" + shareName + "/" + directoryPath)
                 .getDirectories());
     }
 

@@ -16,6 +16,7 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.MessageConstants;
 import com.azure.storage.file.share.implementation.accesshelpers.FilePosixPropertiesHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.FileSmbPropertiesHelper;
@@ -49,6 +50,7 @@ import com.azure.storage.file.share.implementation.models.ShareStorageExceptionI
 import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.StringEncoded;
+import com.azure.storage.file.share.implementation.models.UserDelegationKeyInternal;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
@@ -84,6 +86,7 @@ import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 
 import java.io.UnsupportedEncodingException;
@@ -733,6 +736,41 @@ public class ModelHelper {
         String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
         return new ShareStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
             internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
+    }
+
+    /**
+     * Projects the generated {@link UserDelegationKeyInternal} wire model onto the public {@link UserDelegationKey}.
+     *
+     * @param internal The generated wire model.
+     * @return The public model, or {@code null} if {@code internal} is {@code null}.
+     */
+    public static UserDelegationKey mapUserDelegationKey(UserDelegationKeyInternal internal) {
+        if (internal == null) {
+            return null;
+        }
+        return new UserDelegationKey().setSignedObjectId(internal.getSignedObjectId())
+            .setSignedTenantId(internal.getSignedTenantId())
+            .setSignedStart(internal.getSignedStart())
+            .setSignedExpiry(internal.getSignedExpiry())
+            .setSignedService(internal.getSignedService())
+            .setSignedVersion(internal.getSignedVersion())
+            .setSignedDelegatedUserTenantId(internal.getSignedDelegatedUserTenantId())
+            .setValue(internal.getValue());
+    }
+
+    /**
+     * Builds a resource-URL-scoped {@link AzureFileStorageImpl} that reuses the account client's HTTP pipeline,
+     * serializer, and storage-wide client parameters. Re-creating the operation groups is cheap; the pipeline carries
+     * the connection/auth state that is worth sharing.
+     *
+     * @param accountClient The account-scoped client to reuse the pipeline and parameters from.
+     * @param resourceUrl The resource URL the returned client should target.
+     * @return A new {@link AzureFileStorageImpl} targeting {@code resourceUrl}.
+     */
+    public static AzureFileStorageImpl getFileStorageForUrl(AzureFileStorageImpl accountClient, String resourceUrl) {
+        return new AzureFileStorageImpl(accountClient.getHttpPipeline(), accountClient.getSerializerAdapter(),
+            resourceUrl, accountClient.getFileRequestIntent(), accountClient.isAllowTrailingDot(),
+            accountClient.isAllowSourceTrailingDot(), accountClient.getServiceVersion());
     }
 
     /**

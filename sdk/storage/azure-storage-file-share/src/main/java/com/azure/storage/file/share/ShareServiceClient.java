@@ -33,6 +33,7 @@ import com.azure.storage.file.share.implementation.models.KeyInfo;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListSharesResponse;
 import com.azure.storage.file.share.implementation.models.ServicesGetUserDelegationKeyHeaders;
+import com.azure.storage.file.share.implementation.models.UserDelegationKeyInternal;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -615,8 +616,8 @@ public final class ShareServiceClient {
         DeleteSnapshotsOptionType deleteSnapshots
             = CoreUtils.isNullOrEmpty(snapshot) ? DeleteSnapshotsOptionType.INCLUDE : null;
         Callable<Response<Void>> operation = () -> new ShareClientInternal(
-            azureFileStorageClient.withUrl(azureFileStorageClient.getUrl() + "/" + shareName).getShares())
-                .deleteWithResponse(snapshot, null, deleteSnapshots, null,
+            ModelHelper.getFileStorageForUrl(azureFileStorageClient, azureFileStorageClient.getUrl() + "/" + shareName)
+                .getShares()).deleteWithResponse(snapshot, null, deleteSnapshots, null,
                     new RequestOptions().setContext(finalContext));
 
         return sendRequest(operation, timeout, ShareStorageException.class);
@@ -808,10 +809,10 @@ public final class ShareServiceClient {
     public Response<ShareClient> undeleteShareWithResponse(String deletedShareName, String deletedShareVersion,
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<Response<Void>> operation = () -> new ShareClientInternal(
-            azureFileStorageClient.withUrl(azureFileStorageClient.getUrl() + "/" + deletedShareName).getShares())
-                .restoreWithResponse(null, deletedShareName, deletedShareVersion,
-                    new RequestOptions().setContext(finalContext));
+        Callable<Response<Void>> operation = () -> new ShareClientInternal(ModelHelper
+            .getFileStorageForUrl(azureFileStorageClient, azureFileStorageClient.getUrl() + "/" + deletedShareName)
+            .getShares()).restoreWithResponse(null, deletedShareName, deletedShareVersion,
+                new RequestOptions().setContext(finalContext));
 
         return new SimpleResponse<>(sendRequest(operation, timeout, ShareStorageException.class),
             getShareClient(deletedShareName));
@@ -867,7 +868,7 @@ public final class ShareServiceClient {
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
 
-        Callable<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> operation
+        Callable<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKeyInternal>> operation
             = () -> this.serviceClientInternal.getUserDelegationKeyWithResponse(
                 new KeyInfo(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
                     .setStart(options.getStartsOn() == null
@@ -876,8 +877,8 @@ public final class ShareServiceClient {
                     .setDelegatedUserTenantId(options.getDelegatedUserTenantId()),
                 null, new RequestOptions().setContext(finalContext));
 
-        ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> response
+        ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKeyInternal> response
             = sendRequest(operation, timeout, ShareStorageException.class);
-        return new SimpleResponse<>(response, response.getValue());
+        return new SimpleResponse<>(response, ModelHelper.mapUserDelegationKey(response.getValue()));
     }
 }

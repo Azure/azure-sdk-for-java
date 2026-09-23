@@ -128,7 +128,8 @@ public class ShareClient {
         }
         this.shareUrlString = shareUrlString.toString();
         this.shareClientInternal = new ShareClientInternal(
-            azureFileStorageClient.withUrl(azureFileStorageClient.getUrl() + "/" + shareName).getShares());
+            ModelHelper.getFileStorageForUrl(azureFileStorageClient, azureFileStorageClient.getUrl() + "/" + shareName)
+                .getShares());
     }
 
     /**

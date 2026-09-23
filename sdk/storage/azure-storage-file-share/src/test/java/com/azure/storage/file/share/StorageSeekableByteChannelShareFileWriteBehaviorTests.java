@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.test.utils.TestUtils;
@@ -46,8 +47,8 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
 
         AtomicInteger uploadRangeCallCount = new AtomicInteger(0);
         ShareFileClient client
-            = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false, false), "testshare",
-                "testpath", null, null, null, null) {
+            = new ShareFileClient(null, new AzureFileStorageImpl(new HttpPipelineBuilder().build(), null, "fakeurl",
+                null, false, false, ShareServiceVersion.getLatest()), "testshare", "testpath", null, null, null, null) {
                 @Override
                 public Response<ShareFileUploadInfo> uploadRangeWithResponse(ShareFileUploadRangeOptions options,
                     Duration timeout, Context context) {
@@ -96,8 +97,8 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
     public void writeBehaviorCanSeekAnywhereInFileRange(long fileSize, int position) {
         AtomicInteger getPropertiesCallCount = new AtomicInteger(0);
         ShareFileClient client
-            = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false, false), "testshare",
-                "testpath", null, null, null, null) {
+            = new ShareFileClient(null, new AzureFileStorageImpl(new HttpPipelineBuilder().build(), null, "fakeurl",
+                null, false, false, ShareServiceVersion.getLatest()), "testshare", "testpath", null, null, null, null) {
                 @Override
                 public ShareFileProperties getProperties() {
                     getPropertiesCallCount.incrementAndGet();
@@ -122,8 +123,8 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
     public void writeBehaviorThrowsWhenSeekingBeyondRange(long fileSize, int position) {
         AtomicInteger getPropertiesCallCount = new AtomicInteger(0);
         ShareFileClient client
-            = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false, false), "testshare",
-                "testpath", null, null, null, null) {
+            = new ShareFileClient(null, new AzureFileStorageImpl(new HttpPipelineBuilder().build(), null, "fakeurl",
+                null, false, false, ShareServiceVersion.getLatest()), "testshare", "testpath", null, null, null, null) {
                 @Override
                 public ShareFileProperties getProperties() {
                     getPropertiesCallCount.incrementAndGet();
@@ -146,8 +147,8 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
     @Test
     public void writeBehaviorTruncateUnsupported() {
         ShareFileClient client
-            = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false, false), "testshare",
-                "testpath", null, null, null, null);
+            = new ShareFileClient(null, new AzureFileStorageImpl(new HttpPipelineBuilder().build(), null, "fakeurl",
+                null, false, false, ShareServiceVersion.getLatest()), "testshare", "testpath", null, null, null, null);
         StorageSeekableByteChannelShareFileWriteBehavior behavior
             = new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null);
         assertThrows(UnsupportedOperationException.class, () -> behavior.resize(10));
