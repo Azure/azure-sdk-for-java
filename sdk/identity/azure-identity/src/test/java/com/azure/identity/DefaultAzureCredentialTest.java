@@ -18,6 +18,8 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.EmptyEnvironmentConfigurationSource;
 import com.azure.identity.util.ImdsProbeTestServer;
 import com.azure.identity.util.TestUtils;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,7 @@ import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedConstruction;
+import org.mockito.MockedStatic;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -54,6 +57,11 @@ public class DefaultAzureCredentialTest {
 
     private static final String TENANT_ID = "contoso.com";
     private static final String CLIENT_ID = UUID.randomUUID().toString();
+    private static final String RESOURCE_ID = "/subscriptions/" + UUID.randomUUID()
+        + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
+    private static final int IDENTITY_CLIENT_CLIENT_ID_ARGUMENT_INDEX = 1;
+    private static final int IDENTITY_CLIENT_RESOURCE_ID_ARGUMENT_INDEX = 5;
+    private static final int IDENTITY_CLIENT_OBJECT_ID_ARGUMENT_INDEX = 6;
 
     @Test
     public void testUseEnvironmentCredential() {
@@ -557,14 +565,10 @@ public class DefaultAzureCredentialTest {
 
     @Test
     public void testInvalidIdCombination() {
-        // setup
-        String resourceId = "/subscriptions/" + UUID.randomUUID()
-            + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
-
         // test
         Assertions.assertThrows(IllegalStateException.class,
             () -> new DefaultAzureCredentialBuilder().managedIdentityClientId(CLIENT_ID)
-                .managedIdentityResourceId(resourceId)
+                .managedIdentityResourceId(RESOURCE_ID)
                 .build());
     }
 

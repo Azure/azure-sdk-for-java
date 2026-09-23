@@ -2,6 +2,10 @@
 
 ## 1.18.7 (2026-10-01)
 
+### Features Added
+
+- Added support for user-assigned managed identities on Azure Arc in `ManagedIdentityCredential` and `DefaultAzureCredential`. ([#50371](https://github.com/Azure/azure-sdk-for-java/pull/50371))
+
 ### Bugs Fixed
 
 - Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications. ([#48472](https://github.com/Azure/azure-sdk-for-java/pull/48472))
@@ -16,6 +20,10 @@
 - Upgraded `azure-core` from `1.59.1` to version `1.60.0`.
 - Upgraded `azure-core-http-netty` from `1.16.7` to version `1.16.8`.
 - Upgraded `msal4j` from `1.23.1` to version `1.26.0`.
+
+#### Dependency Updates
+
+- Upgraded `msal4j` from `1.23.1` to `1.26.0`.
 
 ## 1.18.6 (2026-08-31)
 
