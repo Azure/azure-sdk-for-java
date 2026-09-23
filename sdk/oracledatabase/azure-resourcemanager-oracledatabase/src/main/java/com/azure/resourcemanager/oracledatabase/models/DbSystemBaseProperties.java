@@ -184,6 +184,16 @@ public class DbSystemBaseProperties implements JsonSerializable<DbSystemBaseProp
      */
     private DataCollectionOptions dataCollectionOptions;
 
+    /*
+     * The character set for the DB system. The default is AL32UTF8
+     */
+    private String characterSet;
+
+    /*
+     * The national character set for the DB system. The default is AL16UTF16
+     */
+    private String ncharacterSet;
+
     /**
      * Creates an instance of DbSystemBaseProperties class.
      */
@@ -846,6 +856,46 @@ public class DbSystemBaseProperties implements JsonSerializable<DbSystemBaseProp
     }
 
     /**
+     * Get the characterSet property: The character set for the DB system. The default is AL32UTF8.
+     * 
+     * @return the characterSet value.
+     */
+    public String characterSet() {
+        return this.characterSet;
+    }
+
+    /**
+     * Set the characterSet property: The character set for the DB system. The default is AL32UTF8.
+     * 
+     * @param characterSet the characterSet value to set.
+     * @return the DbSystemBaseProperties object itself.
+     */
+    public DbSystemBaseProperties withCharacterSet(String characterSet) {
+        this.characterSet = characterSet;
+        return this;
+    }
+
+    /**
+     * Get the ncharacterSet property: The national character set for the DB system. The default is AL16UTF16.
+     * 
+     * @return the ncharacterSet value.
+     */
+    public String ncharacterSet() {
+        return this.ncharacterSet;
+    }
+
+    /**
+     * Set the ncharacterSet property: The national character set for the DB system. The default is AL16UTF16.
+     * 
+     * @param ncharacterSet the ncharacterSet value to set.
+     * @return the DbSystemBaseProperties object itself.
+     */
+    public DbSystemBaseProperties withNcharacterSet(String ncharacterSet) {
+        this.ncharacterSet = ncharacterSet;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -874,6 +924,8 @@ public class DbSystemBaseProperties implements JsonSerializable<DbSystemBaseProp
         jsonWriter.writeStringField("computeModel", this.computeModel == null ? null : this.computeModel.toString());
         jsonWriter.writeNumberField("computeCount", this.computeCount);
         jsonWriter.writeJsonField("dataCollectionOptions", this.dataCollectionOptions);
+        jsonWriter.writeStringField("characterSet", this.characterSet);
+        jsonWriter.writeStringField("ncharacterSet", this.ncharacterSet);
         return jsonWriter.writeEndObject();
     }
 
@@ -987,6 +1039,10 @@ public class DbSystemBaseProperties implements JsonSerializable<DbSystemBaseProp
                     deserializedDbSystemBaseProperties.computeCount = reader.getNullable(JsonReader::getInt);
                 } else if ("dataCollectionOptions".equals(fieldName)) {
                     deserializedDbSystemBaseProperties.dataCollectionOptions = DataCollectionOptions.fromJson(reader);
+                } else if ("characterSet".equals(fieldName)) {
+                    deserializedDbSystemBaseProperties.characterSet = reader.getString();
+                } else if ("ncharacterSet".equals(fieldName)) {
+                    deserializedDbSystemBaseProperties.ncharacterSet = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -103,7 +103,7 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
     /*
      * The hostname for the Exadata VM cluster on Exascale Infrastructure.
      */
-    private String hostname;
+    private String hostnameV2;
 
     /*
      * The Oracle license model that applies to the Exadata VM cluster on Exascale Infrastructure. The default is
@@ -193,7 +193,7 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
      * The FQDN of the DNS record for the SCAN IP addresses that are associated with the Exadata VM cluster on Exascale
      * Infrastructure.
      */
-    private String scanDnsName;
+    private String scanDnsNameV2;
 
     /*
      * The Single Client Access Name (SCAN) IP addresses associated with the Exadata VM cluster on Exascale
@@ -524,22 +524,22 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
     }
 
     /**
-     * Get the hostname property: The hostname for the Exadata VM cluster on Exascale Infrastructure.
+     * Get the hostnameV2 property: The hostname for the Exadata VM cluster on Exascale Infrastructure.
      * 
-     * @return the hostname value.
+     * @return the hostnameV2 value.
      */
-    public String hostname() {
-        return this.hostname;
+    public String hostnameV2() {
+        return this.hostnameV2;
     }
 
     /**
-     * Set the hostname property: The hostname for the Exadata VM cluster on Exascale Infrastructure.
+     * Set the hostnameV2 property: The hostname for the Exadata VM cluster on Exascale Infrastructure.
      * 
-     * @param hostname the hostname value to set.
+     * @param hostnameV2 the hostnameV2 value to set.
      * @return the ExadbVmClusterProperties object itself.
      */
-    public ExadbVmClusterProperties withHostname(String hostname) {
-        this.hostname = hostname;
+    public ExadbVmClusterProperties withHostnameV2(String hostnameV2) {
+        this.hostnameV2 = hostnameV2;
         return this;
     }
 
@@ -835,13 +835,13 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
     }
 
     /**
-     * Get the scanDnsName property: The FQDN of the DNS record for the SCAN IP addresses that are associated with the
+     * Get the scanDnsNameV2 property: The FQDN of the DNS record for the SCAN IP addresses that are associated with the
      * Exadata VM cluster on Exascale Infrastructure.
      * 
-     * @return the scanDnsName value.
+     * @return the scanDnsNameV2 value.
      */
-    public String scanDnsName() {
-        return this.scanDnsName;
+    public String scanDnsNameV2() {
+        return this.scanDnsNameV2;
     }
 
     /**
@@ -963,7 +963,7 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeIntField("enabledEcpuCount", this.enabledEcpuCount);
         jsonWriter.writeStringField("exascaleDbStorageVaultId", this.exascaleDbStorageVaultId);
-        jsonWriter.writeStringField("hostname", this.hostname);
+        jsonWriter.writeStringField("hostname", this.hostnameV2);
         jsonWriter.writeIntField("nodeCount", this.nodeCount);
         jsonWriter.writeStringField("shape", this.shape);
         jsonWriter.writeArrayField("sshPublicKeys", this.sshPublicKeys,
@@ -1014,7 +1014,7 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
                 } else if ("exascaleDbStorageVaultId".equals(fieldName)) {
                     deserializedExadbVmClusterProperties.exascaleDbStorageVaultId = reader.getString();
                 } else if ("hostname".equals(fieldName)) {
-                    deserializedExadbVmClusterProperties.hostname = reader.getString();
+                    deserializedExadbVmClusterProperties.hostnameV2 = reader.getString();
                 } else if ("nodeCount".equals(fieldName)) {
                     deserializedExadbVmClusterProperties.nodeCount = reader.getInt();
                 } else if ("shape".equals(fieldName)) {
@@ -1076,7 +1076,7 @@ public final class ExadbVmClusterProperties implements JsonSerializable<ExadbVmC
                 } else if ("lifecycleDetails".equals(fieldName)) {
                     deserializedExadbVmClusterProperties.lifecycleDetails = reader.getString();
                 } else if ("scanDnsName".equals(fieldName)) {
-                    deserializedExadbVmClusterProperties.scanDnsName = reader.getString();
+                    deserializedExadbVmClusterProperties.scanDnsNameV2 = reader.getString();
                 } else if ("scanIpIds".equals(fieldName)) {
                     List<String> scanIpIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedExadbVmClusterProperties.scanIpIds = scanIpIds;

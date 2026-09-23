@@ -322,6 +322,24 @@ public final class DbSystemProperties extends DbSystemBaseProperties {
      * {@inheritDoc}
      */
     @Override
+    public DbSystemProperties withCharacterSet(String characterSet) {
+        super.withCharacterSet(characterSet);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DbSystemProperties withNcharacterSet(String ncharacterSet) {
+        super.withNcharacterSet(ncharacterSet);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("resourceAnchorId", resourceAnchorId());
@@ -343,6 +361,8 @@ public final class DbSystemProperties extends DbSystemBaseProperties {
         jsonWriter.writeStringField("computeModel", computeModel() == null ? null : computeModel().toString());
         jsonWriter.writeNumberField("computeCount", computeCount());
         jsonWriter.writeJsonField("dataCollectionOptions", dataCollectionOptions());
+        jsonWriter.writeStringField("characterSet", characterSet());
+        jsonWriter.writeStringField("ncharacterSet", ncharacterSet());
         jsonWriter.writeStringField("databaseEdition",
             this.databaseEdition == null ? null : this.databaseEdition.toString());
         jsonWriter.writeStringField("dbVersion", this.dbVersion);
@@ -435,6 +455,10 @@ public final class DbSystemProperties extends DbSystemBaseProperties {
                     deserializedDbSystemProperties.withComputeCount(reader.getNullable(JsonReader::getInt));
                 } else if ("dataCollectionOptions".equals(fieldName)) {
                     deserializedDbSystemProperties.withDataCollectionOptions(DataCollectionOptions.fromJson(reader));
+                } else if ("characterSet".equals(fieldName)) {
+                    deserializedDbSystemProperties.withCharacterSet(reader.getString());
+                } else if ("ncharacterSet".equals(fieldName)) {
+                    deserializedDbSystemProperties.withNcharacterSet(reader.getString());
                 } else if ("databaseEdition".equals(fieldName)) {
                     deserializedDbSystemProperties.databaseEdition
                         = DbSystemDatabaseEditionType.fromString(reader.getString());

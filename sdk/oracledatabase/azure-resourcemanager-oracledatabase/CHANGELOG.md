@@ -1,19 +1,282 @@
 # Release History
 
-## 1.3.0 (2026-08-27)
+## 1.3.0 (2026-09-23)
 
+- Azure Resource Manager Oracle Database client library for Java. This package contains Microsoft Azure SDK for Oracle Database Management SDK.  Package api-version 2026-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager Oracle Database client library for Java. This package contains Microsoft Azure SDK for Oracle Database Management SDK.  Package api-version 2025-11-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ExadbVmClusterProperties` was modified
+
+* `withHostname(java.lang.String)` was removed
+* `hostname()` was removed
+* `scanDnsName()` was removed
+
+#### `models.CloudVmClusterProperties` was modified
+
+* `hostname()` was removed
+* `scanDnsName()` was removed
+* `withHostname(java.lang.String)` was removed
+
+#### `models.GiMinorVersions` was modified
+
+* `listByParent(java.lang.String,java.lang.String,models.ShapeFamily,java.lang.String,com.azure.core.util.Context)` was removed
 
 ### Features Added
 
-#### `models.DbSystemBaseProperties` was modified
+* `models.CredentialType` was added
 
-* `dataCollectionOptions()` was added
-* `withDataCollectionOptions(models.DataCollectionOptions)` was added
+* `models.SetupType` was added
+
+* `models.ConnectionLifecycleState` was added
+
+* `models.GoldenGateConnection$UpdateStages` was added
+
+* `models.ProximityPlacementGroup` was added
+
+* `models.BackupScheduleType` was added
+
+* `models.GoldenGateConnection$Definition` was added
+
+* `models.ProximityPlacementGroupEntityType` was added
+
+* `models.GroupToRolesMappingDetails` was added
+
+* `models.OggDeploymentDetails` was added
+
+* `models.MaintenanceConfigurationType` was added
+
+* `models.CategoryType` was added
+
+* `models.AssignUnassignConnection` was added
+
+* `models.GoldenGateDeployments` was added
+
+* `models.DeploymentType` was added
+
+* `models.GoldenGateDeployment$Definition` was added
+
+* `models.OracleConnectionTechnologyType` was added
+
+* `models.DatabaseEditionProperties` was added
+
+* `models.GiMinorVersionSortOrder` was added
+
+* `models.GoldenGateConnection$Update` was added
+
+* `models.GoldenGateConnection` was added
+
+* `models.AssignedDeployment` was added
+
+* `models.GoldenGateConnection$DefinitionStages` was added
+
+* `models.SessionMode` was added
+
+* `models.DatabaseSystemShapeProperties` was added
+
+* `models.GoldenGateConnectionUpdateProperties` was added
+
+* `models.GoldenGateDeployment$Update` was added
+
+* `models.KafkaConnectionDetails` was added
+
+* `models.ConnectionBaseProperties` was added
+
+* `models.DeploymentLifecycleState` was added
+
+* `models.DatabaseEdition` was added
+
+* `models.DeploymentConnectionAssignmentProperties` was added
+
+* `models.GoldenGateDeployment$DefinitionStages` was added
+
+* `models.DatabaseSystemShape` was added
+
+* `models.AssignUnassignDeployment` was added
+
+* `models.GoldenGateDeploymentUpdate` was added
+
+* `models.GoldenGateDeploymentUpdateProperties` was added
+
+* `models.MaintenanceWindowType` was added
+
+* `models.DatabaseSystemShapeResources` was added
+
+* `models.KafkaConnectionTechnologyType` was added
+
+* `models.FrequencyType` was added
+
+* `models.BackupDestinationType` was added
+
+* `models.GoldenGateConnections` was added
+
+* `models.MicrosoftFabricConnectionTechnologyType` was added
+
+* `models.RoutingMethod` was added
+
+* `models.MicrosoftFabricConnectionDetails` was added
+
+* `models.GoldenGateConnectionUpdate` was added
+
+* `models.ConnectionType` was added
+
+* `models.GoldenGateConnectionAssignmentLifecycleState` was added
+
+* `models.DatabaseEditions` was added
+
+* `models.OracleConnectionDetails` was added
+
+* `models.GoldenGateDeployment` was added
+
+* `models.GoldenGateDeployment$UpdateStages` was added
+
+* `models.DeploymentProperties` was added
+
+* `models.AssignedConnection` was added
+
+* `models.KafkaBootstrapServer` was added
+
+#### `models.ExadbVmClusterProperties` was modified
+
+* `hostnameV2()` was added
+* `scanDnsNameV2()` was added
+* `withHostnameV2(java.lang.String)` was added
+
+#### `models.CloudVmClusterProperties` was modified
+
+* `withIsAcceleratedNetworkEnabled(java.lang.Boolean)` was added
+* `scanDnsNameV2()` was added
+* `hostnameV2()` was added
+* `networkAnchorId()` was added
+* `isAcceleratedNetworkEnabled()` was added
+* `resourceAnchorId()` was added
+* `withHostnameV2(java.lang.String)` was added
+* `recoStoragePercentage()` was added
+* `proximityPlacementGroup()` was added
+* `withResourceAnchorId(java.lang.String)` was added
+* `withNetworkAnchorId(java.lang.String)` was added
+* `withRecoStoragePercentage(java.lang.Integer)` was added
+* `sparseStoragePercentage()` was added
+* `withProximityPlacementGroup(models.ProximityPlacementGroup)` was added
+* `withSparseStoragePercentage(java.lang.Integer)` was added
+
+#### `models.NetworkAnchorProperties` was modified
+
+* `proximityPlacementGroup()` was added
+* `withProximityPlacementGroup(models.ProximityPlacementGroup)` was added
+
+#### `models.AutonomousDatabaseFromBackupTimestampProperties` was modified
+
+* `withTimeScheduledAzUpdate(java.lang.String)` was added
+* `withZone(java.lang.String)` was added
+* `withBackupDestination(models.BackupDestinationType)` was added
+* `withIsScheduleAzUpdateToEarliest(java.lang.Boolean)` was added
+* `withResourceAnchorId(java.lang.String)` was added
+* `withNetworkAnchorId(java.lang.String)` was added
+
+#### `models.WorkloadType` was modified
+
+* `LH` was added
 
 #### `models.DbSystemProperties` was modified
 
+* `withCharacterSet(java.lang.String)` was added
 * `withDataCollectionOptions(models.DataCollectionOptions)` was added
+* `withNcharacterSet(java.lang.String)` was added
+
+#### `models.GiMinorVersions` was modified
+
+* `listByParent(java.lang.String,java.lang.String,models.ShapeFamily,java.lang.String,java.lang.String,java.lang.Boolean,models.GiMinorVersionSortOrder,com.azure.core.util.Context)` was added
+
+#### `models.AutonomousDatabaseCloneProperties` was modified
+
+* `withIsScheduleAzUpdateToEarliest(java.lang.Boolean)` was added
+* `withTimeScheduledAzUpdate(java.lang.String)` was added
+* `withNetworkAnchorId(java.lang.String)` was added
+* `withResourceAnchorId(java.lang.String)` was added
+* `withZone(java.lang.String)` was added
+* `withBackupDestination(models.BackupDestinationType)` was added
+
+#### `models.ExascaleDbStorageVaultProperties` was modified
+
+* `autoscaleLimitInGbs()` was added
+* `withAutoscaleLimitInGbs(java.lang.Integer)` was added
+* `withIsAutoscaleEnabled(java.lang.Boolean)` was added
+* `isAutoscaleEnabled()` was added
+
+#### `models.AutonomousDatabaseProperties` was modified
+
+* `withZone(java.lang.String)` was added
+* `withTimeScheduledAzUpdate(java.lang.String)` was added
+* `withResourceAnchorId(java.lang.String)` was added
+* `withNetworkAnchorId(java.lang.String)` was added
+* `withIsScheduleAzUpdateToEarliest(java.lang.Boolean)` was added
+* `withBackupDestination(models.BackupDestinationType)` was added
+
+#### `models.CloudVmClusterUpdateProperties` was modified
+
+* `isAcceleratedNetworkEnabled()` was added
+* `withIsAcceleratedNetworkEnabled(java.lang.Boolean)` was added
+
+#### `models.AutonomousDatabaseCrossRegionDisasterRecoveryProperties` was modified
+
+* `withResourceAnchorId(java.lang.String)` was added
+* `withIsScheduleAzUpdateToEarliest(java.lang.Boolean)` was added
+* `withBackupDestination(models.BackupDestinationType)` was added
+* `withTimeScheduledAzUpdate(java.lang.String)` was added
+* `withZone(java.lang.String)` was added
+* `withNetworkAnchorId(java.lang.String)` was added
+
+#### `models.DbSystemBaseProperties` was modified
+
+* `ncharacterSet()` was added
+* `withNcharacterSet(java.lang.String)` was added
+* `withDataCollectionOptions(models.DataCollectionOptions)` was added
+* `dataCollectionOptions()` was added
+* `withCharacterSet(java.lang.String)` was added
+* `characterSet()` was added
+
+#### `models.SystemShapes` was modified
+
+* `EXADATA_X11MV` was added
+
+#### `OracleDatabaseManager` was modified
+
+* `goldenGateDeployments()` was added
+* `databaseEditions()` was added
+* `goldenGateConnections()` was added
+* `databaseSystemShapeResources()` was added
+
+#### `models.CloudExadataInfrastructureProperties` was modified
+
+* `resourceAnchorId()` was added
+* `withProximityPlacementGroup(models.ProximityPlacementGroup)` was added
+* `withResourceAnchorId(java.lang.String)` was added
+* `proximityPlacementGroup()` was added
+
+#### `models.BaseDbSystemShapes` was modified
+
+* `VMBASE_DBX86` was added
+
+#### `models.AutonomousDatabaseBaseProperties` was modified
+
+* `resourceAnchorId()` was added
+* `isScheduleAzUpdateToEarliest()` was added
+* `withNetworkAnchorId(java.lang.String)` was added
+* `timeScheduledAzUpdate()` was added
+* `withZone(java.lang.String)` was added
+* `backupDestination()` was added
+* `withBackupDestination(models.BackupDestinationType)` was added
+* `withTimeScheduledAzUpdate(java.lang.String)` was added
+* `withResourceAnchorId(java.lang.String)` was added
+* `zone()` was added
+* `networkAnchorId()` was added
+* `withIsScheduleAzUpdateToEarliest(java.lang.Boolean)` was added
+
+#### `models.AutonomousDatabaseBackupProperties` was modified
+
+* `backupDestination()` was added
 
 ## 1.2.0 (2025-09-24)
 

@@ -25,6 +25,16 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
     private String ocid;
 
     /*
+     * Azure Resource Anchor ID
+     */
+    private String resourceAnchorId;
+
+    /*
+     * Azure Network Anchor ID
+     */
+    private String networkAnchorId;
+
+    /*
      * The port number configured for the listener on the cloud VM cluster.
      */
     private Long listenerPort;
@@ -81,9 +91,9 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
     private String zoneId;
 
     /*
-     * The hostname for the cloud VM cluster. Hostname and domain combined length cannot exceed 112 characters.
+     * The hostname for the cloud VM cluster.
      */
-    private String hostname;
+    private String hostnameV2;
 
     /*
      * The domain name for the cloud VM cluster.
@@ -118,6 +128,20 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
     private Integer dataStoragePercentage;
 
     /*
+     * The percentage assigned to RECO storage (database redo logs, archive logs, and recovery manager backups). See
+     * [Storage Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata) in the Exadata documentation for
+     * details on the impact of the configuration settings on storage.
+     */
+    private Integer recoStoragePercentage;
+
+    /*
+     * The percentage assigned to SPARSE storage (Exadata snapshots). See [Storage
+     * Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata) in the Exadata documentation for details on
+     * the impact of the configuration settings on storage.
+     */
+    private Integer sparseStoragePercentage;
+
+    /*
      * If true, database backup on local Exadata storage is configured for the cloud VM cluster. If false, database
      * backup on local Exadata storage is not available in the cloud VM cluster.
      */
@@ -127,6 +151,11 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
      * Cloud Exadata Infrastructure ID
      */
     private String cloudExadataInfrastructureId;
+
+    /*
+     * Proximity placement group settings
+     */
+    private ProximityPlacementGroup proximityPlacementGroup;
 
     /*
      * If true, sparse disk group is configured for the cloud VM cluster. If false, sparse disk group is not created.
@@ -171,7 +200,7 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
     /*
      * The FQDN of the DNS record for the SCAN IP addresses that are associated with the cloud VM cluster.
      */
-    private String scanDnsName;
+    private String scanDnsNameV2;
 
     /*
      * The TCP Single Client Access Name (SCAN) port. The default port is 1521.
@@ -295,6 +324,12 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
      */
     private ExadataVmClusterStorageManagementType storageManagementType;
 
+    /*
+     * Indicates if the Accelerated Networking feature is enabled or disabled for provisioning an Exadata VM cluster.
+     * The default value is: false.
+     */
+    private Boolean isAcceleratedNetworkEnabled;
+
     /**
      * Creates an instance of CloudVmClusterProperties class.
      */
@@ -308,6 +343,46 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
      */
     public String ocid() {
         return this.ocid;
+    }
+
+    /**
+     * Get the resourceAnchorId property: Azure Resource Anchor ID.
+     * 
+     * @return the resourceAnchorId value.
+     */
+    public String resourceAnchorId() {
+        return this.resourceAnchorId;
+    }
+
+    /**
+     * Set the resourceAnchorId property: Azure Resource Anchor ID.
+     * 
+     * @param resourceAnchorId the resourceAnchorId value to set.
+     * @return the CloudVmClusterProperties object itself.
+     */
+    public CloudVmClusterProperties withResourceAnchorId(String resourceAnchorId) {
+        this.resourceAnchorId = resourceAnchorId;
+        return this;
+    }
+
+    /**
+     * Get the networkAnchorId property: Azure Network Anchor ID.
+     * 
+     * @return the networkAnchorId value.
+     */
+    public String networkAnchorId() {
+        return this.networkAnchorId;
+    }
+
+    /**
+     * Set the networkAnchorId property: Azure Network Anchor ID.
+     * 
+     * @param networkAnchorId the networkAnchorId value to set.
+     * @return the CloudVmClusterProperties object itself.
+     */
+    public CloudVmClusterProperties withNetworkAnchorId(String networkAnchorId) {
+        this.networkAnchorId = networkAnchorId;
+        return this;
     }
 
     /**
@@ -490,24 +565,22 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
     }
 
     /**
-     * Get the hostname property: The hostname for the cloud VM cluster. Hostname and domain combined length cannot
-     * exceed 112 characters.
+     * Get the hostnameV2 property: The hostname for the cloud VM cluster.
      * 
-     * @return the hostname value.
+     * @return the hostnameV2 value.
      */
-    public String hostname() {
-        return this.hostname;
+    public String hostnameV2() {
+        return this.hostnameV2;
     }
 
     /**
-     * Set the hostname property: The hostname for the cloud VM cluster. Hostname and domain combined length cannot
-     * exceed 112 characters.
+     * Set the hostnameV2 property: The hostname for the cloud VM cluster.
      * 
-     * @param hostname the hostname value to set.
+     * @param hostnameV2 the hostnameV2 value to set.
      * @return the CloudVmClusterProperties object itself.
      */
-    public CloudVmClusterProperties withHostname(String hostname) {
-        this.hostname = hostname;
+    public CloudVmClusterProperties withHostnameV2(String hostnameV2) {
+        this.hostnameV2 = hostnameV2;
         return this;
     }
 
@@ -626,6 +699,56 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
     }
 
     /**
+     * Get the recoStoragePercentage property: The percentage assigned to RECO storage (database redo logs, archive
+     * logs, and recovery manager backups). See [Storage
+     * Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata) in the Exadata documentation for details on
+     * the impact of the configuration settings on storage.
+     * 
+     * @return the recoStoragePercentage value.
+     */
+    public Integer recoStoragePercentage() {
+        return this.recoStoragePercentage;
+    }
+
+    /**
+     * Set the recoStoragePercentage property: The percentage assigned to RECO storage (database redo logs, archive
+     * logs, and recovery manager backups). See [Storage
+     * Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata) in the Exadata documentation for details on
+     * the impact of the configuration settings on storage.
+     * 
+     * @param recoStoragePercentage the recoStoragePercentage value to set.
+     * @return the CloudVmClusterProperties object itself.
+     */
+    public CloudVmClusterProperties withRecoStoragePercentage(Integer recoStoragePercentage) {
+        this.recoStoragePercentage = recoStoragePercentage;
+        return this;
+    }
+
+    /**
+     * Get the sparseStoragePercentage property: The percentage assigned to SPARSE storage (Exadata snapshots). See
+     * [Storage Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata) in the Exadata documentation for
+     * details on the impact of the configuration settings on storage.
+     * 
+     * @return the sparseStoragePercentage value.
+     */
+    public Integer sparseStoragePercentage() {
+        return this.sparseStoragePercentage;
+    }
+
+    /**
+     * Set the sparseStoragePercentage property: The percentage assigned to SPARSE storage (Exadata snapshots). See
+     * [Storage Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata) in the Exadata documentation for
+     * details on the impact of the configuration settings on storage.
+     * 
+     * @param sparseStoragePercentage the sparseStoragePercentage value to set.
+     * @return the CloudVmClusterProperties object itself.
+     */
+    public CloudVmClusterProperties withSparseStoragePercentage(Integer sparseStoragePercentage) {
+        this.sparseStoragePercentage = sparseStoragePercentage;
+        return this;
+    }
+
+    /**
      * Get the isLocalBackupEnabled property: If true, database backup on local Exadata storage is configured for the
      * cloud VM cluster. If false, database backup on local Exadata storage is not available in the cloud VM cluster.
      * 
@@ -664,6 +787,26 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
      */
     public CloudVmClusterProperties withCloudExadataInfrastructureId(String cloudExadataInfrastructureId) {
         this.cloudExadataInfrastructureId = cloudExadataInfrastructureId;
+        return this;
+    }
+
+    /**
+     * Get the proximityPlacementGroup property: Proximity placement group settings.
+     * 
+     * @return the proximityPlacementGroup value.
+     */
+    public ProximityPlacementGroup proximityPlacementGroup() {
+        return this.proximityPlacementGroup;
+    }
+
+    /**
+     * Set the proximityPlacementGroup property: Proximity placement group settings.
+     * 
+     * @param proximityPlacementGroup the proximityPlacementGroup value to set.
+     * @return the CloudVmClusterProperties object itself.
+     */
+    public CloudVmClusterProperties withProximityPlacementGroup(ProximityPlacementGroup proximityPlacementGroup) {
+        this.proximityPlacementGroup = proximityPlacementGroup;
         return this;
     }
 
@@ -788,13 +931,13 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
     }
 
     /**
-     * Get the scanDnsName property: The FQDN of the DNS record for the SCAN IP addresses that are associated with the
+     * Get the scanDnsNameV2 property: The FQDN of the DNS record for the SCAN IP addresses that are associated with the
      * cloud VM cluster.
      * 
-     * @return the scanDnsName value.
+     * @return the scanDnsNameV2 value.
      */
-    public String scanDnsName() {
-        return this.scanDnsName;
+    public String scanDnsNameV2() {
+        return this.scanDnsNameV2;
     }
 
     /**
@@ -1155,12 +1298,34 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
     }
 
     /**
+     * Get the isAcceleratedNetworkEnabled property: Indicates if the Accelerated Networking feature is enabled or
+     * disabled for provisioning an Exadata VM cluster. The default value is: false.
+     * 
+     * @return the isAcceleratedNetworkEnabled value.
+     */
+    public Boolean isAcceleratedNetworkEnabled() {
+        return this.isAcceleratedNetworkEnabled;
+    }
+
+    /**
+     * Set the isAcceleratedNetworkEnabled property: Indicates if the Accelerated Networking feature is enabled or
+     * disabled for provisioning an Exadata VM cluster. The default value is: false.
+     * 
+     * @param isAcceleratedNetworkEnabled the isAcceleratedNetworkEnabled value to set.
+     * @return the CloudVmClusterProperties object itself.
+     */
+    public CloudVmClusterProperties withIsAcceleratedNetworkEnabled(Boolean isAcceleratedNetworkEnabled) {
+        this.isAcceleratedNetworkEnabled = isAcceleratedNetworkEnabled;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("hostname", this.hostname);
+        jsonWriter.writeStringField("hostname", this.hostnameV2);
         jsonWriter.writeIntField("cpuCoreCount", this.cpuCoreCount);
         jsonWriter.writeStringField("cloudExadataInfrastructureId", this.cloudExadataInfrastructureId);
         jsonWriter.writeArrayField("sshPublicKeys", this.sshPublicKeys,
@@ -1169,6 +1334,8 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
         jsonWriter.writeStringField("giVersion", this.giVersion);
         jsonWriter.writeStringField("subnetId", this.subnetId);
         jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("resourceAnchorId", this.resourceAnchorId);
+        jsonWriter.writeStringField("networkAnchorId", this.networkAnchorId);
         jsonWriter.writeNumberField("storageSizeInGbs", this.storageSizeInGbs);
         jsonWriter.writeArrayField("fileSystemConfigurationDetails", this.fileSystemConfigurationDetails,
             (writer, element) -> writer.writeJson(element));
@@ -1181,7 +1348,10 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
         jsonWriter.writeNumberField("ocpuCount", this.ocpuCount);
         jsonWriter.writeStringField("clusterName", this.clusterName);
         jsonWriter.writeNumberField("dataStoragePercentage", this.dataStoragePercentage);
+        jsonWriter.writeNumberField("recoStoragePercentage", this.recoStoragePercentage);
+        jsonWriter.writeNumberField("sparseStoragePercentage", this.sparseStoragePercentage);
         jsonWriter.writeBooleanField("isLocalBackupEnabled", this.isLocalBackupEnabled);
+        jsonWriter.writeJsonField("proximityPlacementGroup", this.proximityPlacementGroup);
         jsonWriter.writeBooleanField("isSparseDiskgroupEnabled", this.isSparseDiskgroupEnabled);
         jsonWriter.writeStringField("systemVersion", this.systemVersion);
         jsonWriter.writeStringField("licenseModel", this.licenseModel == null ? null : this.licenseModel.toString());
@@ -1193,6 +1363,7 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
         jsonWriter.writeArrayField("computeNodes", this.computeNodes, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("dbServers", this.dbServers, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("exascaleDbStorageVaultId", this.exascaleDbStorageVaultId);
+        jsonWriter.writeBooleanField("isAcceleratedNetworkEnabled", this.isAcceleratedNetworkEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -1213,7 +1384,7 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
                 reader.nextToken();
 
                 if ("hostname".equals(fieldName)) {
-                    deserializedCloudVmClusterProperties.hostname = reader.getString();
+                    deserializedCloudVmClusterProperties.hostnameV2 = reader.getString();
                 } else if ("cpuCoreCount".equals(fieldName)) {
                     deserializedCloudVmClusterProperties.cpuCoreCount = reader.getInt();
                 } else if ("cloudExadataInfrastructureId".equals(fieldName)) {
@@ -1231,6 +1402,10 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
                     deserializedCloudVmClusterProperties.displayName = reader.getString();
                 } else if ("ocid".equals(fieldName)) {
                     deserializedCloudVmClusterProperties.ocid = reader.getString();
+                } else if ("resourceAnchorId".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.resourceAnchorId = reader.getString();
+                } else if ("networkAnchorId".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.networkAnchorId = reader.getString();
                 } else if ("listenerPort".equals(fieldName)) {
                     deserializedCloudVmClusterProperties.listenerPort = reader.getNullable(JsonReader::getLong);
                 } else if ("nodeCount".equals(fieldName)) {
@@ -1267,9 +1442,17 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
                     deserializedCloudVmClusterProperties.clusterName = reader.getString();
                 } else if ("dataStoragePercentage".equals(fieldName)) {
                     deserializedCloudVmClusterProperties.dataStoragePercentage = reader.getNullable(JsonReader::getInt);
+                } else if ("recoStoragePercentage".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.recoStoragePercentage = reader.getNullable(JsonReader::getInt);
+                } else if ("sparseStoragePercentage".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.sparseStoragePercentage
+                        = reader.getNullable(JsonReader::getInt);
                 } else if ("isLocalBackupEnabled".equals(fieldName)) {
                     deserializedCloudVmClusterProperties.isLocalBackupEnabled
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("proximityPlacementGroup".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.proximityPlacementGroup
+                        = ProximityPlacementGroup.fromJson(reader);
                 } else if ("isSparseDiskgroupEnabled".equals(fieldName)) {
                     deserializedCloudVmClusterProperties.isSparseDiskgroupEnabled
                         = reader.getNullable(JsonReader::getBoolean);
@@ -1286,7 +1469,7 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
                     List<String> vipIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedCloudVmClusterProperties.vipIds = vipIds;
                 } else if ("scanDnsName".equals(fieldName)) {
-                    deserializedCloudVmClusterProperties.scanDnsName = reader.getString();
+                    deserializedCloudVmClusterProperties.scanDnsNameV2 = reader.getString();
                 } else if ("scanListenerPortTcp".equals(fieldName)) {
                     deserializedCloudVmClusterProperties.scanListenerPortTcp = reader.getNullable(JsonReader::getInt);
                 } else if ("scanListenerPortTcpSsl".equals(fieldName)) {
@@ -1334,6 +1517,9 @@ public final class CloudVmClusterProperties implements JsonSerializable<CloudVmC
                 } else if ("storageManagementType".equals(fieldName)) {
                     deserializedCloudVmClusterProperties.storageManagementType
                         = ExadataVmClusterStorageManagementType.fromString(reader.getString());
+                } else if ("isAcceleratedNetworkEnabled".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.isAcceleratedNetworkEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

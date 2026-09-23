@@ -22,7 +22,7 @@ public final class ResourceAnchorsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"linkedCompartmentId\":\"rxsmyltrw\"},\"location\":\"fmtbgwjdxwn\",\"tags\":{\"wzzqseuzuukykcy\":\"urrdreyzjwhsetww\",\"ey\":\"hyqqzzdcy\",\"pew\":\"tewfopazdazgbsq\"},\"id\":\"c\",\"name\":\"utmdpvozg\",\"type\":\"qjbknl\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"linkedCompartmentId\":\"peti\"},\"location\":\"xqiubxdukecpx\",\"tags\":{\"hctmmkosz\":\"v\",\"aqkiofkb\":\"dblnsntrp\",\"vcb\":\"fmhklbnld\"},\"id\":\"hez\",\"name\":\"quwusq\",\"type\":\"utrpbr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class ResourceAnchorsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ResourceAnchor> response
-            = manager.resourceAnchors().listByResourceGroup("rf", com.azure.core.util.Context.NONE);
+            = manager.resourceAnchors().listByResourceGroup("y", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fmtbgwjdxwn", response.iterator().next().location());
-        Assertions.assertEquals("urrdreyzjwhsetww", response.iterator().next().tags().get("wzzqseuzuukykcy"));
+        Assertions.assertEquals("xqiubxdukecpx", response.iterator().next().location());
+        Assertions.assertEquals("v", response.iterator().next().tags().get("hctmmkosz"));
     }
 }

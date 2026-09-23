@@ -24,7 +24,7 @@ public final class ResourceAnchorsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"linkedCompartmentId\":\"culregpqt\"},\"location\":\"jhvrztnvgyshqrdg\",\"tags\":{\"fa\":\"mewjzlpyk\",\"zrransyb\":\"zwjcaye\",\"nkfscjfn\":\"lpolwzrghsrle\"},\"id\":\"jwvuag\",\"name\":\"qwtltngvmreupt\",\"type\":\"klzmijajw\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"linkedCompartmentId\":\"bagn\"},\"location\":\"jhgem\",\"tags\":{\"drclssoljome\":\"akywalhjymxcgqta\",\"nlbvgjcodkk\":\"tfy\",\"ytssikiz\":\"ji\",\"rhcekxgnly\":\"cufqbvntnrgmqs\"},\"id\":\"mxcpwzvmdoks\",\"name\":\"dt\",\"type\":\"wlwxlboncqbazqic\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class ResourceAnchorsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResourceAnchor response = manager.resourceAnchors()
-            .define("wmn")
-            .withRegion("wkudrbcpf")
-            .withExistingResourceGroup("clctzey")
-            .withTags(mapOf("irtneemmjau", "dqyemebunaucm", "rwgudasmxub", "cgxefnohaitraniz"))
+            .define("atvlmbjwcolbm")
+            .withRegion("hprzrvxhmtfho")
+            .withExistingResourceGroup("uyu")
+            .withTags(mapOf("isn", "zcmjhngxnoqrxt", "hepfwwtjfdoes", "evhdlmydid", "dbckyo", "xhmw"))
             .withProperties(new ResourceAnchorProperties())
             .create();
 
-        Assertions.assertEquals("jhvrztnvgyshqrdg", response.location());
-        Assertions.assertEquals("mewjzlpyk", response.tags().get("fa"));
+        Assertions.assertEquals("jhgem", response.location());
+        Assertions.assertEquals("akywalhjymxcgqta", response.tags().get("drclssoljome"));
     }
 
     // Use "Map.of" if available
