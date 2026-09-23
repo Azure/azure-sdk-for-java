@@ -397,7 +397,7 @@ public final class ResilienceManagementManagementClientImpl implements Resilienc
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-06-01-preview";
+        this.apiVersion = "2026-08-31-preview";
         this.operations = new OperationsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
         this.goalAssignments = new GoalAssignmentsClientImpl(this);
