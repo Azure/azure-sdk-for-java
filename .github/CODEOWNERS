@@ -89,17 +89,17 @@
 /sdk/agrifood/                                                     @Azure/azure-java-sdk
 
 # PRLabel: %AI
-/sdk/ai/                                                           @dargilco @glecaros @glharper @jpalvarezl @kaylieee @rhurey @Azure/azure-java-sdk @Azure/ai-foundry-devex
+/sdk/ai/                                                           @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %AI Agents
-/sdk/ai/azure-ai-agents/                                           @dargilco @glecaros @glharper @jpalvarezl @kaylieee @rhurey @Azure/azure-java-sdk @Azure/ai-foundry-devex
-/sdk/ai/azure-ai-agents-persistent/                                @dargilco @glecaros @jpalvarezl @kaylieee @Azure/azure-java-sdk @Azure/ai-foundry-devex
+/sdk/ai/azure-ai-agents/                                           @Azure/ai-foundry-devex @Azure/azure-java-sdk
+/sdk/ai/azure-ai-agents-persistent/                                @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %AI Projects
-/sdk/ai/azure-ai-projects/                                         @dargilco @glharper @glecaros @jpalvarezl @kaylieee @rhurey @Azure/azure-java-sdk @Azure/ai-foundry-devex
+/sdk/ai/azure-ai-projects/                                         @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %AI Model Inference
-/sdk/ai/azure-ai-inference/                                        @dargilco @glharper @Azure/azure-java-sdk @Azure/ai-foundry-devex
+/sdk/ai/azure-ai-inference/                                        @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                                             @alzimmermsft @avanigupta @mrm9084 @nroutray @yuanqu72 @Azure/azure-java-sdk
@@ -410,16 +410,16 @@
 /sdk/onlineexperimentation/                                        @Azure/azure-sdk-write-onlineexperimentation @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai-assistants/                            @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai-assistants/                            @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai-realtime/                              @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai-realtime/                              @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai-stainless/                             @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai-stainless/                             @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai/                                       @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai/                                       @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %Operator Nexus - Network Cloud
 /sdk/networkcloud/                                                 @Azure/azure-sdk-write-networkcloud @Azure/azure-java-sdk
