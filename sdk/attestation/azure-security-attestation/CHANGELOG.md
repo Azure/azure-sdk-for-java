@@ -4,12 +4,12 @@
 
 ### Bugs Fixed
 
-- Fixed a signature verification bypass (CWE-347) in attestation token validation. Previously, a signed token
-  whose signature could not be verified by any of the trusted signers was silently accepted. Such tokens are now
-  rejected with a validation error, matching the behavior of the other Azure Attestation SDKs.
-- Hardened attestation token validation so that a signed token can no longer vouch for its own signature via its
-  embedded certificate chain when no trusted signers are supplied. Validation now fails closed in that case,
-  matching the behavior of the other Azure Attestation SDKs.
+- Security: Fixed a signature verification bypass (CWE-347) in attestation token validation. Previously, a signed
+  token whose signature could not be verified by any of the trusted signers was silently accepted. Such tokens are
+  now rejected with a validation error, matching the behavior of the other Azure Attestation SDKs.
+- Security: Hardened attestation token validation so that a signed token can no longer vouch for its own signature
+  via its embedded certificate chain. Validating a signed token without supplying any trusted signers now fails with
+  a validation error instead of succeeding, matching the behavior of the other Azure Attestation SDKs.
 
 ## 1.1.41 (2026-08-18)
 
