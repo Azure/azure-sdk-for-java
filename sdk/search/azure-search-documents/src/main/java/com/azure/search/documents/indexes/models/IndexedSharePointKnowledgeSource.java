@@ -101,6 +101,8 @@ public final class IndexedSharePointKnowledgeSource extends KnowledgeSource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("resultsProcessing",
+            getResultsProcessing() == null ? null : getResultsProcessing().toString());
         jsonWriter.writeStringField("@odata.etag", getETag());
         jsonWriter.writeJsonField("encryptionKey", getEncryptionKey());
         jsonWriter.writeJsonField("indexedSharePointParameters", this.indexedSharePointParameters);
@@ -122,6 +124,7 @@ public final class IndexedSharePointKnowledgeSource extends KnowledgeSource {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
             IndexedSharePointKnowledgeSourceParameters indexedSharePointParameters = null;
@@ -133,6 +136,8 @@ public final class IndexedSharePointKnowledgeSource extends KnowledgeSource {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
@@ -148,10 +153,21 @@ public final class IndexedSharePointKnowledgeSource extends KnowledgeSource {
             IndexedSharePointKnowledgeSource deserializedIndexedSharePointKnowledgeSource
                 = new IndexedSharePointKnowledgeSource(name, indexedSharePointParameters);
             deserializedIndexedSharePointKnowledgeSource.setDescription(description);
+            deserializedIndexedSharePointKnowledgeSource.setResultsProcessing(resultsProcessing);
             deserializedIndexedSharePointKnowledgeSource.setETag(eTag);
             deserializedIndexedSharePointKnowledgeSource.setEncryptionKey(encryptionKey);
             deserializedIndexedSharePointKnowledgeSource.kind = kind;
             return deserializedIndexedSharePointKnowledgeSource;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public IndexedSharePointKnowledgeSource setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        super.setResultsProcessing(resultsProcessing);
+        return this;
     }
 }

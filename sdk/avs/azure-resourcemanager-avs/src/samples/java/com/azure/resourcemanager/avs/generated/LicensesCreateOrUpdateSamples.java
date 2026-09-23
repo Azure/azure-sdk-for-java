@@ -11,7 +11,7 @@ import com.azure.resourcemanager.avs.models.LicenseName;
  */
 public final class LicensesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Licenses_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/Licenses_CreateOrUpdate.json
      */
     /**
      * Sample code: Licenses_CreateOrUpdate.

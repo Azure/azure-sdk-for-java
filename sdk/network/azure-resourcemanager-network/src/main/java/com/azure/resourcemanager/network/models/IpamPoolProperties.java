@@ -48,6 +48,18 @@ public final class IpamPoolProperties implements JsonSerializable<IpamPoolProper
      */
     private ProvisioningState provisioningState;
 
+    /*
+     * Minimum number of IP addresses required for allocations from this IpamPool to be compliant. Must be less than or
+     * equal to the maximum allocation size. If not specified or empty, no minimum is enforced.
+     */
+    private String minAllocationSize;
+
+    /*
+     * Maximum number of IP addresses allowed for allocations from this IpamPool to be compliant. Must be greater than
+     * or equal to the minimum allocation size. If not specified or empty, no maximum is enforced.
+     */
+    private String maxAllocationSize;
+
     /**
      * Creates an instance of IpamPoolProperties class.
      */
@@ -155,6 +167,54 @@ public final class IpamPoolProperties implements JsonSerializable<IpamPoolProper
     }
 
     /**
+     * Get the minAllocationSize property: Minimum number of IP addresses required for allocations from this IpamPool to
+     * be compliant. Must be less than or equal to the maximum allocation size. If not specified or empty, no minimum is
+     * enforced.
+     * 
+     * @return the minAllocationSize value.
+     */
+    public String minAllocationSize() {
+        return this.minAllocationSize;
+    }
+
+    /**
+     * Set the minAllocationSize property: Minimum number of IP addresses required for allocations from this IpamPool to
+     * be compliant. Must be less than or equal to the maximum allocation size. If not specified or empty, no minimum is
+     * enforced.
+     * 
+     * @param minAllocationSize the minAllocationSize value to set.
+     * @return the IpamPoolProperties object itself.
+     */
+    public IpamPoolProperties withMinAllocationSize(String minAllocationSize) {
+        this.minAllocationSize = minAllocationSize;
+        return this;
+    }
+
+    /**
+     * Get the maxAllocationSize property: Maximum number of IP addresses allowed for allocations from this IpamPool to
+     * be compliant. Must be greater than or equal to the minimum allocation size. If not specified or empty, no maximum
+     * is enforced.
+     * 
+     * @return the maxAllocationSize value.
+     */
+    public String maxAllocationSize() {
+        return this.maxAllocationSize;
+    }
+
+    /**
+     * Set the maxAllocationSize property: Maximum number of IP addresses allowed for allocations from this IpamPool to
+     * be compliant. Must be greater than or equal to the minimum allocation size. If not specified or empty, no maximum
+     * is enforced.
+     * 
+     * @param maxAllocationSize the maxAllocationSize value to set.
+     * @return the IpamPoolProperties object itself.
+     */
+    public IpamPoolProperties withMaxAllocationSize(String maxAllocationSize) {
+        this.maxAllocationSize = maxAllocationSize;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -180,6 +240,8 @@ public final class IpamPoolProperties implements JsonSerializable<IpamPoolProper
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("parentPoolName", this.parentPoolName);
+        jsonWriter.writeStringField("minAllocationSize", this.minAllocationSize);
+        jsonWriter.writeStringField("maxAllocationSize", this.maxAllocationSize);
         return jsonWriter.writeEndObject();
     }
 
@@ -213,6 +275,10 @@ public final class IpamPoolProperties implements JsonSerializable<IpamPoolProper
                     deserializedIpamPoolProperties.parentPoolName = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedIpamPoolProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("minAllocationSize".equals(fieldName)) {
+                    deserializedIpamPoolProperties.minAllocationSize = reader.getString();
+                } else if ("maxAllocationSize".equals(fieldName)) {
+                    deserializedIpamPoolProperties.maxAllocationSize = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

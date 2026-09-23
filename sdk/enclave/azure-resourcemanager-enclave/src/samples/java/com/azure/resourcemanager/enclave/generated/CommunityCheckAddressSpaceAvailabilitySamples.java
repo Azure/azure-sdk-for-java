@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class CommunityCheckAddressSpaceAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Community_PostCheckAddressSpaceAvailability.json
+     * x-ms-original-file: 2026-04-01/Community_PostCheckAddressSpaceAvailability.json
      */
     /**
      * Sample code: Community_CheckAddressSpaceAvailability.

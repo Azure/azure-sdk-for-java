@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
-import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
 import org.junit.jupiter.api.Assertions;
@@ -14,25 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ThresholdRuleV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ThresholdRuleV2 model = BinaryData.fromString(
-            "{\"operator\":\"LessThan\",\"threshold\":57.931778810567735,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT5M\"}")
+        ThresholdRuleV2 model = BinaryData
+            .fromString("{\"operator\":\"Dynamic\",\"threshold\":25.902287895735654,\"sensitivity\":\"Low\"}")
             .toObject(ThresholdRuleV2.class);
-        Assertions.assertEquals(SignalOperator.LESS_THAN, model.operator());
-        Assertions.assertEquals(57.931778810567735D, model.threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM, model.sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT5M, model.lookBackWindow());
+        Assertions.assertEquals(SignalOperator.DYNAMIC, model.operator());
+        Assertions.assertEquals(25.902287895735654D, model.threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.sensitivity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThresholdRuleV2 model = new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN)
-            .withThreshold(57.931778810567735D)
-            .withSensitivity(DynamicThresholdSensitivity.MEDIUM)
-            .withLookBackWindow(LookBackWindow.PT5M);
+        ThresholdRuleV2 model = new ThresholdRuleV2().withOperator(SignalOperator.DYNAMIC)
+            .withThreshold(25.902287895735654D)
+            .withSensitivity(DynamicThresholdSensitivity.LOW);
         model = BinaryData.fromObject(model).toObject(ThresholdRuleV2.class);
-        Assertions.assertEquals(SignalOperator.LESS_THAN, model.operator());
-        Assertions.assertEquals(57.931778810567735D, model.threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM, model.sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT5M, model.lookBackWindow());
+        Assertions.assertEquals(SignalOperator.DYNAMIC, model.operator());
+        Assertions.assertEquals(25.902287895735654D, model.threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.sensitivity());
     }
 }

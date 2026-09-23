@@ -10,8 +10,7 @@ import com.azure.resourcemanager.relationships.models.RelationshipMetadata;
 public final class RelationshipMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RelationshipMetadata model
-            = BinaryData.fromString("{\"sourceType\":\"jnchgej\",\"targetType\":\"podmailzydehojwy\"}")
-                .toObject(RelationshipMetadata.class);
+        RelationshipMetadata model = BinaryData.fromString("{\"sourceType\":\"sprozvcput\",\"targetType\":\"gjvw\"}")
+            .toObject(RelationshipMetadata.class);
     }
 }

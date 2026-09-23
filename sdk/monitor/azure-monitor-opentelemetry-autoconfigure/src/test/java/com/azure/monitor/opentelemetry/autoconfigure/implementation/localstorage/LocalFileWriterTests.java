@@ -11,6 +11,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -20,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class LocalFileWriterTests {
 
@@ -64,6 +67,22 @@ public class LocalFileWriterTests {
         byte[] content = Resources.readBytes("write-transmission.txt");
         writer.writeToDisk(CONNECTION_STRING, singletonList(ByteBuffer.wrap(content)), "original error message");
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1);
+    }
+
+    @Test
+    public void testPersistedFileHasOwnerOnlyPermissions() throws IOException {
+        assumeTrue(Files.getFileStore(tempFolder.toPath()).supportsFileAttributeView("posix"));
+        LocalFileWriter writer = new LocalFileWriter(50, localFileCache, tempFolder, LocalStorageStats.noop(), false);
+
+        writer.writeToDisk(CONNECTION_STRING, singletonList(ByteBuffer.wrap("telemetry".getBytes(UTF_8))),
+            "original error message");
+
+        assertThat(localFileCache.getPersistedFilesCache()).hasSize(1);
+        File persistedFile = localFileCache.getPersistedFilesCache().peek();
+        assertThat(persistedFile).isFile();
+        assertThat(persistedFile.getName()).endsWith(".trn");
+        assertThat(PosixFilePermissions.toString(Files.getPosixFilePermissions(persistedFile.toPath())))
+            .isEqualTo("rw-------");
     }
 
     @Test

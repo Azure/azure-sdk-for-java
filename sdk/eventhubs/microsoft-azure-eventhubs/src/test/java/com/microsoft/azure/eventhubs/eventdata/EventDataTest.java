@@ -4,8 +4,8 @@
 package com.microsoft.azure.eventhubs.eventdata;
 
 import com.microsoft.azure.eventhubs.EventData;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -174,36 +174,36 @@ public class EventDataTest {
             + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"; // even number of chars
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void eventDataByteArrayNotNull() {
         byte[] byteArray = null;
-        EventData.create(byteArray);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> EventData.create(byteArray));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void eventDataByteArrayNotNullBuffer() {
         final ByteBuffer buffer = null;
-        EventData.create(buffer);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> EventData.create(buffer));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void eventDataByteArrayNotNullConstructor2() {
-        EventData.create(null, 0, 0);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> EventData.create(null, 0, 0));
     }
 
     @Test
     public void eventDataEmptyByteArray() throws IOException, ClassNotFoundException {
         byte[] byteArray = new byte[0];
         EventData deSerializedEvent = serializeAndDeserialize(EventData.create(byteArray));
-        Assert.assertEquals(deSerializedEvent.getBytes().length, 0);
-        Assert.assertTrue(deSerializedEvent.getBytes() != null);
+        Assertions.assertEquals(deSerializedEvent.getBytes().length, 0);
+        Assertions.assertTrue(deSerializedEvent.getBytes() != null);
     }
 
     @Test
     public void eventDataSerializationTest() throws IOException, ClassNotFoundException {
         final EventData withSimpleByteArray = EventData.create(payload.getBytes());
         EventData deSerializedEvent = serializeAndDeserialize(withSimpleByteArray);
-        Assert.assertTrue(payload.equals(new String(deSerializedEvent.getBytes())));
+        Assertions.assertTrue(payload.equals(new String(deSerializedEvent.getBytes())));
     }
 
     @Test
@@ -215,7 +215,7 @@ public class EventDataTest {
 
         final EventData withByteArrayAndOffset = EventData.create(payloadStream.toByteArray(), payloadStream.size() / 2, payloadStream.size() / 2);
         final EventData deSerializedEvent = serializeAndDeserialize(withByteArrayAndOffset);
-        Assert.assertTrue(payload.equals(new String(deSerializedEvent.getBytes())));
+        Assertions.assertTrue(payload.equals(new String(deSerializedEvent.getBytes())));
     }
 
     @Test
@@ -227,12 +227,12 @@ public class EventDataTest {
 
         final EventData withByteBuffer = EventData.create(ByteBuffer.wrap(payloadStream.toByteArray(), payloadStream.size() / 2, payloadStream.size() / 2));
         final EventData deSerializedEvent = serializeAndDeserialize(withByteBuffer);
-        Assert.assertTrue(payload.equals(new String(deSerializedEvent.getBytes())));
+        Assertions.assertTrue(payload.equals(new String(deSerializedEvent.getBytes())));
     }
 
     @Test
     public void sendingEventsSysPropsShouldBeNull() {
-        Assert.assertTrue(EventData.create("Test".getBytes()).getSystemProperties() == null);
+        Assertions.assertTrue(EventData.create("Test".getBytes()).getSystemProperties() == null);
     }
 
     private EventData serializeAndDeserialize(final EventData input) throws IOException, ClassNotFoundException {

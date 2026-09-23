@@ -26,12 +26,6 @@ public class DataGenerationJobOptions implements JsonSerializable<DataGeneration
     private DataGenerationJobType type = DataGenerationJobType.fromString("DataGenerationJobOptions");
 
     /*
-     * Maximum number of samples to generate.
-     */
-    @Generated
-    private final int maxSamples;
-
-    /*
      * The proportion of the generated data to be used for training when the data is used for fine-tuning. The rest will
      * be used for validation. Value should be between 0 and 1.
      */
@@ -45,16 +39,6 @@ public class DataGenerationJobOptions implements JsonSerializable<DataGeneration
     private DataGenerationModelOptions modelOptions;
 
     /**
-     * Creates an instance of DataGenerationJobOptions class.
-     *
-     * @param maxSamples the maxSamples value to set.
-     */
-    @Generated
-    public DataGenerationJobOptions(int maxSamples) {
-        this.maxSamples = maxSamples;
-    }
-
-    /**
      * Get the type property: The data generation job type.
      *
      * @return the type value.
@@ -62,16 +46,6 @@ public class DataGenerationJobOptions implements JsonSerializable<DataGeneration
     @Generated
     public DataGenerationJobType getType() {
         return this.type;
-    }
-
-    /**
-     * Get the maxSamples property: Maximum number of samples to generate.
-     *
-     * @return the maxSamples value.
-     */
-    @Generated
-    public int getMaxSamples() {
-        return this.maxSamples;
     }
 
     /**
@@ -127,7 +101,6 @@ public class DataGenerationJobOptions implements JsonSerializable<DataGeneration
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("max_samples", this.maxSamples);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("train_split", this.trainSplit);
         jsonWriter.writeJsonField("model_options", this.modelOptions);
@@ -140,7 +113,6 @@ public class DataGenerationJobOptions implements JsonSerializable<DataGeneration
      * @param jsonReader The JsonReader being read.
      * @return An instance of DataGenerationJobOptions if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataGenerationJobOptions.
      */
     @Generated
@@ -179,30 +151,28 @@ public class DataGenerationJobOptions implements JsonSerializable<DataGeneration
     @Generated
     static DataGenerationJobOptions fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int maxSamples = 0;
-            DataGenerationJobType type = null;
-            Double trainSplit = null;
-            DataGenerationModelOptions modelOptions = null;
+            DataGenerationJobOptions deserializedDataGenerationJobOptions = new DataGenerationJobOptions();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("max_samples".equals(fieldName)) {
-                    maxSamples = reader.getInt();
-                } else if ("type".equals(fieldName)) {
-                    type = DataGenerationJobType.fromString(reader.getString());
+                if ("type".equals(fieldName)) {
+                    deserializedDataGenerationJobOptions.type = DataGenerationJobType.fromString(reader.getString());
                 } else if ("train_split".equals(fieldName)) {
-                    trainSplit = reader.getNullable(JsonReader::getDouble);
+                    deserializedDataGenerationJobOptions.trainSplit = reader.getNullable(JsonReader::getDouble);
                 } else if ("model_options".equals(fieldName)) {
-                    modelOptions = DataGenerationModelOptions.fromJson(reader);
+                    deserializedDataGenerationJobOptions.modelOptions = DataGenerationModelOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            DataGenerationJobOptions deserializedDataGenerationJobOptions = new DataGenerationJobOptions(maxSamples);
-            deserializedDataGenerationJobOptions.type = type;
-            deserializedDataGenerationJobOptions.trainSplit = trainSplit;
-            deserializedDataGenerationJobOptions.modelOptions = modelOptions;
             return deserializedDataGenerationJobOptions;
         });
+    }
+
+    /**
+     * Creates an instance of DataGenerationJobOptions class.
+     */
+    @Generated
+    public DataGenerationJobOptions() {
     }
 }

@@ -108,7 +108,7 @@ public interface Services {
         String applicationName, Context context);
 
     /**
-     * The restartReplica operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -123,7 +123,7 @@ public interface Services {
         RestartReplicaRequest parameters);
 
     /**
-     * The restartReplica operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.

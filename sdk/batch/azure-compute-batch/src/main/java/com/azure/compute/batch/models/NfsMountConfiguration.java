@@ -10,6 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Objects;
 
 /**
  * Information used to connect to an NFS file system.
@@ -47,6 +49,16 @@ public final class NfsMountConfiguration implements JsonSerializable<NfsMountCon
     public NfsMountConfiguration(String source, String relativeMountPath) {
         this.source = source;
         this.relativeMountPath = relativeMountPath;
+    }
+
+    /**
+     * Creates an instance of NfsMountConfiguration class.
+     *
+     * @param source the source value to set.
+     * @param relativeMountPath the relativeMountPath value to set.
+     */
+    public NfsMountConfiguration(String source, Path relativeMountPath) {
+        this(source, Objects.toString(relativeMountPath, null));
     }
 
     /**

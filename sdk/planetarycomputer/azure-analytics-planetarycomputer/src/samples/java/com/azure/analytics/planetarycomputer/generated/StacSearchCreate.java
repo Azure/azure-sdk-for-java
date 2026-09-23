@@ -7,6 +7,7 @@ package com.azure.analytics.planetarycomputer.generated;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.FilterLanguage;
+import com.azure.analytics.planetarycomputer.models.StacAssetUrlSigningMode;
 import com.azure.analytics.planetarycomputer.models.StacItemCollection;
 import com.azure.analytics.planetarycomputer.models.StacSearchParameters;
 import com.azure.analytics.planetarycomputer.models.StacSearchSortingDirection;
@@ -35,7 +36,7 @@ public class StacSearchCreate {
                 BinaryData.fromBytes(
                     "[{property=geometry}, {type=Polygon, coordinates=[[[-84.46416308610219, 33.6033686729869], [-84.38815071170247, 33.6033686729869], [-84.38815071170247, 33.6713179813099], [-84.46416308610219, 33.6713179813099], [-84.46416308610219, 33.6033686729869]]]}]"
                         .getBytes(StandardCharsets.UTF_8))))
-            .setFilterLang(FilterLanguage.CQL2_JSON), null, null);
+            .setFilterLang(FilterLanguage.CQL2_JSON), (StacAssetUrlSigningMode) null, (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.stac-search.stac-search-create
     }
 

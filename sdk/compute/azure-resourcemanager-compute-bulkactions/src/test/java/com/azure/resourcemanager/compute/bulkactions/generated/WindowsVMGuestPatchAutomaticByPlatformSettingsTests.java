@@ -12,20 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class WindowsVMGuestPatchAutomaticByPlatformSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WindowsVMGuestPatchAutomaticByPlatformSettings model
-            = BinaryData.fromString("{\"rebootSetting\":\"Always\",\"bypassPlatformSafetyChecksOnUserSchedule\":true}")
-                .toObject(WindowsVMGuestPatchAutomaticByPlatformSettings.class);
-        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS, model.rebootSetting());
-        Assertions.assertTrue(model.bypassPlatformSafetyChecksOnUserSchedule());
+        WindowsVMGuestPatchAutomaticByPlatformSettings model = BinaryData
+            .fromString("{\"rebootSetting\":\"Unknown\",\"bypassPlatformSafetyChecksOnUserSchedule\":false}")
+            .toObject(WindowsVMGuestPatchAutomaticByPlatformSettings.class);
+        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN, model.rebootSetting());
+        Assertions.assertFalse(model.bypassPlatformSafetyChecksOnUserSchedule());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WindowsVMGuestPatchAutomaticByPlatformSettings model = new WindowsVMGuestPatchAutomaticByPlatformSettings()
-            .withRebootSetting(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS)
-            .withBypassPlatformSafetyChecksOnUserSchedule(true);
+            .withRebootSetting(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
+            .withBypassPlatformSafetyChecksOnUserSchedule(false);
         model = BinaryData.fromObject(model).toObject(WindowsVMGuestPatchAutomaticByPlatformSettings.class);
-        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS, model.rebootSetting());
-        Assertions.assertTrue(model.bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN, model.rebootSetting());
+        Assertions.assertFalse(model.bypassPlatformSafetyChecksOnUserSchedule());
     }
 }

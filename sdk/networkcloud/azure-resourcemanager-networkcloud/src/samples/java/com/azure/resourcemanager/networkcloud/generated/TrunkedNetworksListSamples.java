@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class TrunkedNetworksListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/TrunkedNetworks_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/TrunkedNetworks_ListBySubscription.json
      */
     /**
      * Sample code: List trunked networks for subscription.

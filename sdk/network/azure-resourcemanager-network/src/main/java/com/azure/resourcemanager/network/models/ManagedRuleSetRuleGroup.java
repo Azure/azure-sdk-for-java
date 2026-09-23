@@ -26,7 +26,7 @@ public final class ManagedRuleSetRuleGroup implements JsonSerializable<ManagedRu
     /*
      * List of rules within the rule group
      */
-    private List<String> rules;
+    private List<Integer> rules;
 
     /**
      * Creates an instance of ManagedRuleSetRuleGroup class.
@@ -48,7 +48,7 @@ public final class ManagedRuleSetRuleGroup implements JsonSerializable<ManagedRu
      * 
      * @return the rules value.
      */
-    public List<String> rules() {
+    public List<Integer> rules() {
         return this.rules;
     }
 
@@ -74,7 +74,7 @@ public final class ManagedRuleSetRuleGroup implements JsonSerializable<ManagedRu
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("ruleGroupName", this.ruleGroupName);
-        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeInt(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -97,7 +97,7 @@ public final class ManagedRuleSetRuleGroup implements JsonSerializable<ManagedRu
                 if ("ruleGroupName".equals(fieldName)) {
                     deserializedManagedRuleSetRuleGroup.ruleGroupName = reader.getString();
                 } else if ("rules".equals(fieldName)) {
-                    List<String> rules = reader.readArray(reader1 -> reader1.getString());
+                    List<Integer> rules = reader.readArray(reader1 -> reader1.getInt());
                     deserializedManagedRuleSetRuleGroup.rules = rules;
                 } else {
                     reader.skipChildren();

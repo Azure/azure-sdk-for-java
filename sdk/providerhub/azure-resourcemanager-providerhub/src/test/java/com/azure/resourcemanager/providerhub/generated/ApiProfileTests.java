@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiProfile model = BinaryData.fromString("{\"profileVersion\":\"ydcwboxjumv\",\"apiVersion\":\"olihrra\"}")
+        ApiProfile model = BinaryData.fromString("{\"profileVersion\":\"hvvmuvgpmun\",\"apiVersion\":\"sx\"}")
             .toObject(ApiProfile.class);
-        Assertions.assertEquals("ydcwboxjumv", model.profileVersion());
-        Assertions.assertEquals("olihrra", model.apiVersion());
+        Assertions.assertEquals("hvvmuvgpmun", model.profileVersion());
+        Assertions.assertEquals("sx", model.apiVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiProfile model = new ApiProfile().withProfileVersion("ydcwboxjumv").withApiVersion("olihrra");
+        ApiProfile model = new ApiProfile().withProfileVersion("hvvmuvgpmun").withApiVersion("sx");
         model = BinaryData.fromObject(model).toObject(ApiProfile.class);
-        Assertions.assertEquals("ydcwboxjumv", model.profileVersion());
-        Assertions.assertEquals("olihrra", model.apiVersion());
+        Assertions.assertEquals("hvvmuvgpmun", model.profileVersion());
+        Assertions.assertEquals("sx", model.apiVersion());
     }
 }

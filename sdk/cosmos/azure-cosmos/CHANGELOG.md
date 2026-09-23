@@ -1,5 +1,60 @@
 ## Release History
 
+### 4.84.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.83.0 (2026-09-22)
+
+#### Features Added
+* Promoted the Throughput Bucket from Beta to GA. - See [PR 50339](https://github.com/Azure/azure-sdk-for-java/pull/50339)
+* Added support for hierarchical (sub)partition keys whose last path is `/id`. When the last partition key path is `/id`, point operations, bulk operations and `readMany` now automatically append the item's `id` to the partition key. - See [PR 49709](https://github.com/Azure/azure-sdk-for-java/pull/49709)
+
+### 4.79.1-hotfix (2026-09-04)
+> [!IMPORTANT]
+> Customers upgrading from `4.79.1-hotfix` should upgrade directly to `4.82.0` to receive the latest fixes.
+
+#### Bugs Fixed
+* Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See [PR 49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
+* Fixed Per-Partition Circuit Breaker failback getting stuck when partition recovery encounters missing or stale replica addresses. - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
+
+#### Other Changes
+* Added per-region Per-Partition Circuit Breaker health and last failback outcome snapshots to `CosmosDiagnostics`, including structured failure reasons, and WARN logging for failback failures. - See [PR 50158](https://github.com/Azure/azure-sdk-for-java/pull/50158).
+
+### 4.76.1-hotfix (2026-09-04)
+> [!IMPORTANT]
+> Customers upgrading from `4.76.1-hotfix` should upgrade directly to `4.82.0` to receive the latest fixes.
+
+#### Bugs Fixed
+* Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See PR [49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
+* Fixed Per-Partition Circuit Breaker failback getting stuck when partition recovery encounters missing or stale replica addresses. - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
+
+#### Other Changes
+* Added per-region Per-Partition Circuit Breaker health and last failback outcome snapshots to `CosmosDiagnostics`, including structured failure reasons, and WARN logging for failback failures. - See [PR 50158](https://github.com/Azure/azure-sdk-for-java/pull/50158).
+
+### 4.71.3-hotfix (2026-09-04)
+> [!IMPORTANT]
+> Customers upgrading from `4.71.3-hotfix` should upgrade directly to `4.82.0` to receive the latest fixes.
+
+#### Bugs Fixed
+* Fixed Per-Partition Circuit Breaker failback getting stuck when partition recovery encounters missing or stale replica addresses. - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
+* Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See [PR 49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
+
+#### Other Changes
+* Added per-region Per-Partition Circuit Breaker health and last failback outcome snapshots to `CosmosDiagnostics`, including structured failure reasons, and WARN logging for failback failures. - See [PR 50158](https://github.com/Azure/azure-sdk-for-java/pull/50158).
+
+### 4.81.1 (2026-09-03)
+#### Bugs Fixed
+* Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See PR [49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
+* Fixed PPCB failback when gateway address refresh returns missing or stale addresses. - See PR [50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
+* Added PPCB diagnostics snapshots and improved failback observability. - See PR [50158](https://github.com/Azure/azure-sdk-for-java/pull/50158).
+
 ### 4.82.0 (2026-08-26)
 
 #### Features Added

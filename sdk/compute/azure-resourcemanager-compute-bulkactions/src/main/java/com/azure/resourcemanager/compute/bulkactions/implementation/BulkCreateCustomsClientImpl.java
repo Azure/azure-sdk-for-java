@@ -36,9 +36,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.bulkactions.fluent.BulkCreateCustomsClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateCustomInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.OperationStatusResultInner;
-import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 import com.azure.resourcemanager.compute.bulkactions.implementation.models.BulkCreateCustomListResult;
 import com.azure.resourcemanager.compute.bulkactions.implementation.models.BulkCreateCustomOperationStatusListResult;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1008,15 +1008,15 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceOperationInner>>
+    private Mono<PagedResponse<ResourceOperation>>
         virtualMachinesGetOperationStatusSinglePageAsync(String resourceGroupName, String location, String name) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.virtualMachinesGetOperationStatus(this.client.getEndpoint(),
                 this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, location, name, accept,
                 context))
-            .<PagedResponse<ResourceOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
+            .<PagedResponse<ResourceOperation>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1033,7 +1033,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceOperationInner> virtualMachinesGetOperationStatusAsync(String resourceGroupName,
+    private PagedFlux<ResourceOperation> virtualMachinesGetOperationStatusAsync(String resourceGroupName,
         String location, String name) {
         return new PagedFlux<>(
             () -> virtualMachinesGetOperationStatusSinglePageAsync(resourceGroupName, location, name),
@@ -1053,7 +1053,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
+    private PagedResponse<ResourceOperation> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
         String location, String name) {
         final String accept = "application/json";
         Response<BulkCreateCustomOperationStatusListResult> res
@@ -1077,7 +1077,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
+    private PagedResponse<ResourceOperation> virtualMachinesGetOperationStatusSinglePage(String resourceGroupName,
         String location, String name, Context context) {
         final String accept = "application/json";
         Response<BulkCreateCustomOperationStatusListResult> res
@@ -1100,8 +1100,8 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName,
-        String location, String name) {
+    public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+        String name) {
         return new PagedIterable<>(() -> virtualMachinesGetOperationStatusSinglePage(resourceGroupName, location, name),
             nextLink -> virtualMachinesGetOperationStatusNextSinglePage(nextLink));
     }
@@ -1120,8 +1120,8 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceOperationInner> virtualMachinesGetOperationStatus(String resourceGroupName,
-        String location, String name, Context context) {
+    public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+        String name, Context context) {
         return new PagedIterable<>(
             () -> virtualMachinesGetOperationStatusSinglePage(resourceGroupName, location, name, context),
             nextLink -> virtualMachinesGetOperationStatusNextSinglePage(nextLink, context));
@@ -1360,14 +1360,14 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceOperationInner>>
+    private Mono<PagedResponse<ResourceOperation>>
         virtualMachinesGetOperationStatusNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.virtualMachinesGetOperationStatusNext(nextLink, this.client.getEndpoint(),
                 accept, context))
-            .<PagedResponse<ResourceOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
+            .<PagedResponse<ResourceOperation>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().results(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1382,7 +1382,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusNextSinglePage(String nextLink) {
+    private PagedResponse<ResourceOperation> virtualMachinesGetOperationStatusNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<BulkCreateCustomOperationStatusListResult> res = service
             .virtualMachinesGetOperationStatusNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1402,7 +1402,7 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
      * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ResourceOperationInner> virtualMachinesGetOperationStatusNextSinglePage(String nextLink,
+    private PagedResponse<ResourceOperation> virtualMachinesGetOperationStatusNextSinglePage(String nextLink,
         Context context) {
         final String accept = "application/json";
         Response<BulkCreateCustomOperationStatusListResult> res
