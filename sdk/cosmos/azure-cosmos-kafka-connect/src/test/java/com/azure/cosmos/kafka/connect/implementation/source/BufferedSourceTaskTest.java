@@ -23,7 +23,7 @@ public class BufferedSourceTaskTest {
     private static final Duration TEST_POLL_WAIT = Duration.ofSeconds(2);
     private static final Duration TEST_SHUTDOWN_WAIT = Duration.ofSeconds(1);
 
-    @Test(timeOut = 30_000)
+    @Test(groups = "unit", timeOut = 30_000)
     public void kafkaPollReturnsWhileSourceRequestIsBlocked() throws InterruptedException {
         TestTask task = new TestTask();
         CountDownLatch requestStarted = new CountDownLatch(1);
@@ -36,15 +36,15 @@ public class BufferedSourceTaskTest {
 
         try {
             task.start(Collections.emptyMap());
-            assertThat(requestStarted.await(5, TimeUnit.SECONDS)).isTrue();
             assertThat(task.poll()).isEmpty();
+            assertThat(requestStarted.await(5, TimeUnit.SECONDS)).isTrue();
         } finally {
             releaseRequest.countDown();
             task.stop();
         }
     }
 
-    @Test(timeOut = 30_000)
+    @Test(groups = "unit", timeOut = 30_000)
     public void sourceReaderStartsLazilyOnFirstPoll() {
         TestTask task = new TestTask();
         AtomicInteger pollCount = new AtomicInteger();
@@ -65,7 +65,7 @@ public class BufferedSourceTaskTest {
         }
     }
 
-    @Test(timeOut = 30_000)
+    @Test(groups = "unit", timeOut = 30_000)
     public void stopClosesTaskAndUnblocksBackgroundRequest() throws InterruptedException {
         TestTask task = new TestTask();
         CountDownLatch requestStarted = new CountDownLatch(1);
@@ -82,6 +82,7 @@ public class BufferedSourceTaskTest {
         };
         task.stopAction = taskStopped::countDown;
         task.start(Collections.emptyMap());
+        assertThat(task.poll()).isEmpty();
         assertThat(requestStarted.await(5, TimeUnit.SECONDS)).isTrue();
 
         task.stop();
@@ -90,7 +91,7 @@ public class BufferedSourceTaskTest {
         assertThat(task.stopCount.get()).isEqualTo(1);
     }
 
-    @Test(timeOut = 30_000)
+    @Test(groups = "unit", timeOut = 30_000)
     public void readerRecoversAfterRetriableFailure() {
         TestTask task = new TestTask();
         RetriableException transientFailure =
@@ -114,7 +115,7 @@ public class BufferedSourceTaskTest {
         }
     }
 
-    @Test(timeOut = 30_000)
+    @Test(groups = "unit", timeOut = 30_000)
     public void startFailureStillStopsTask() {
         TestTask task = new TestTask();
         ConnectException expected = new ConnectException("start failed");
@@ -122,6 +123,17 @@ public class BufferedSourceTaskTest {
 
         assertThatThrownBy(() -> task.start(Collections.emptyMap())).isSameAs(expected);
         assertThat(task.stopCount.get()).isEqualTo(1);
+    }
+
+    @Test(groups = "unit", timeOut = 30_000)
+    public void taskCannotBeRestartedAfterStop() {
+        TestTask task = new TestTask();
+        task.start(Collections.emptyMap());
+        task.stop();
+
+        assertThatThrownBy(() -> task.start(Collections.emptyMap()))
+            .isInstanceOf(ConnectException.class)
+            .hasMessageContaining("already been started");
     }
 
     private static final class TestTask extends BufferedSourceTask {
