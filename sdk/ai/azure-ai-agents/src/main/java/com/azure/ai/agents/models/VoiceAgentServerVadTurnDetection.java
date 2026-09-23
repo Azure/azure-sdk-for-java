@@ -17,7 +17,7 @@ import java.time.Duration;
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentServerVadTurnDetection extends VoiceAgentTurnDetectionConfig {
+public final class VoiceAgentServerVadTurnDetection extends VoiceAgentTurnDetectionConfiguration {
 
     /*
      * The turn-detection strategy.
@@ -41,7 +41,7 @@ public final class VoiceAgentServerVadTurnDetection extends VoiceAgentTurnDetect
      * The silence_duration_ms property.
      */
     @Generated
-    private Long silenceDurationMs;
+    private Long silenceDuration;
 
     /*
      * The create_response property.
@@ -59,7 +59,7 @@ public final class VoiceAgentServerVadTurnDetection extends VoiceAgentTurnDetect
      * The idle_timeout_ms property.
      */
     @Generated
-    private Long idleTimeoutMs;
+    private Long idleTimeout;
 
     /*
      * Minimum speech duration required to trigger detection, in milliseconds.
@@ -136,24 +136,31 @@ public final class VoiceAgentServerVadTurnDetection extends VoiceAgentTurnDetect
     }
 
     /**
-     * Get the silenceDurationMs property: The silence_duration_ms property.
+     * Get the silenceDuration property: The silence_duration_ms property.
      *
-     * @return the silenceDurationMs value.
+     * @return the silenceDuration value.
      */
     @Generated
-    public Long getSilenceDurationMs() {
-        return this.silenceDurationMs;
+    public Duration getSilenceDuration() {
+        if (this.silenceDuration == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.silenceDuration);
     }
 
     /**
-     * Set the silenceDurationMs property: The silence_duration_ms property.
+     * Set the silenceDuration property: The silence_duration_ms property.
      *
-     * @param silenceDurationMs the silenceDurationMs value to set.
+     * @param silenceDuration the silenceDuration value to set.
      * @return the VoiceAgentServerVadTurnDetection object itself.
      */
     @Generated
-    public VoiceAgentServerVadTurnDetection setSilenceDurationMs(Long silenceDurationMs) {
-        this.silenceDurationMs = silenceDurationMs;
+    public VoiceAgentServerVadTurnDetection setSilenceDuration(Duration silenceDuration) {
+        if (silenceDuration == null) {
+            this.silenceDuration = null;
+        } else {
+            this.silenceDuration = silenceDuration.toMillis();
+        }
         return this;
     }
 
@@ -202,24 +209,31 @@ public final class VoiceAgentServerVadTurnDetection extends VoiceAgentTurnDetect
     }
 
     /**
-     * Get the idleTimeoutMs property: The idle_timeout_ms property.
+     * Get the idleTimeout property: The idle_timeout_ms property.
      *
-     * @return the idleTimeoutMs value.
+     * @return the idleTimeout value.
      */
     @Generated
-    public Long getIdleTimeoutMs() {
-        return this.idleTimeoutMs;
+    public Duration getIdleTimeout() {
+        if (this.idleTimeout == null) {
+            return null;
+        }
+        return Duration.ofMillis(this.idleTimeout);
     }
 
     /**
-     * Set the idleTimeoutMs property: The idle_timeout_ms property.
+     * Set the idleTimeout property: The idle_timeout_ms property.
      *
-     * @param idleTimeoutMs the idleTimeoutMs value to set.
+     * @param idleTimeout the idleTimeout value to set.
      * @return the VoiceAgentServerVadTurnDetection object itself.
      */
     @Generated
-    public VoiceAgentServerVadTurnDetection setIdleTimeoutMs(Long idleTimeoutMs) {
-        this.idleTimeoutMs = idleTimeoutMs;
+    public VoiceAgentServerVadTurnDetection setIdleTimeout(Duration idleTimeout) {
+        if (idleTimeout == null) {
+            this.idleTimeout = null;
+        } else {
+            this.idleTimeout = idleTimeout.toMillis();
+        }
         return this;
     }
 
@@ -298,10 +312,10 @@ public final class VoiceAgentServerVadTurnDetection extends VoiceAgentTurnDetect
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("threshold", this.threshold);
         jsonWriter.writeNumberField("prefix_padding_ms", this.prefixPaddingMs);
-        jsonWriter.writeNumberField("silence_duration_ms", this.silenceDurationMs);
+        jsonWriter.writeNumberField("silence_duration_ms", this.silenceDuration);
         jsonWriter.writeBooleanField("create_response", this.createResponse);
         jsonWriter.writeBooleanField("interrupt_response", this.interruptResponse);
-        jsonWriter.writeNumberField("idle_timeout_ms", this.idleTimeoutMs);
+        jsonWriter.writeNumberField("idle_timeout_ms", this.idleTimeout);
         jsonWriter.writeNumberField("speech_duration_ms", this.speechDurationMs);
         jsonWriter.writeJsonField("end_of_utterance_detection", this.endOfUtteranceDetection);
         return jsonWriter.writeEndObject();
@@ -335,7 +349,7 @@ public final class VoiceAgentServerVadTurnDetection extends VoiceAgentTurnDetect
                     deserializedVoiceAgentServerVadTurnDetection.prefixPaddingMs
                         = reader.getNullable(JsonReader::getLong);
                 } else if ("silence_duration_ms".equals(fieldName)) {
-                    deserializedVoiceAgentServerVadTurnDetection.silenceDurationMs
+                    deserializedVoiceAgentServerVadTurnDetection.silenceDuration
                         = reader.getNullable(JsonReader::getLong);
                 } else if ("create_response".equals(fieldName)) {
                     deserializedVoiceAgentServerVadTurnDetection.createResponse
@@ -344,8 +358,7 @@ public final class VoiceAgentServerVadTurnDetection extends VoiceAgentTurnDetect
                     deserializedVoiceAgentServerVadTurnDetection.interruptResponse
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("idle_timeout_ms".equals(fieldName)) {
-                    deserializedVoiceAgentServerVadTurnDetection.idleTimeoutMs
-                        = reader.getNullable(JsonReader::getLong);
+                    deserializedVoiceAgentServerVadTurnDetection.idleTimeout = reader.getNullable(JsonReader::getLong);
                 } else if ("speech_duration_ms".equals(fieldName)) {
                     deserializedVoiceAgentServerVadTurnDetection.speechDurationMs
                         = reader.getNullable(JsonReader::getLong);

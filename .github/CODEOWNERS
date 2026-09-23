@@ -37,7 +37,7 @@
 # AzureSdkOwners:                                                  @jairmyree @vcolin7 @alzimmermsft
 
 # PRLabel: %azure-spring
-/sdk/boms/spring-cloud-azure-dependencies/                         @saragluna @rujche @netyyyy @moarychan @Azure/azure-java-sdk
+/sdk/boms/spring-cloud-azure-dependencies/                         @domainname @dingmeng-xue @moarychan @Azure/azure-java-sdk
 
 # PRLabel: %common
 /.vscode/                                                          @Azure/azure-java-sdk
@@ -89,17 +89,17 @@
 /sdk/agrifood/                                                     @Azure/azure-java-sdk
 
 # PRLabel: %AI
-/sdk/ai/                                                           @dargilco @glecaros @glharper @jpalvarezl @kaylieee @rhurey @Azure/azure-java-sdk
+/sdk/ai/                                                           @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %AI Agents
-/sdk/ai/azure-ai-agents/                                           @dargilco @glecaros @glharper @jpalvarezl @kaylieee @rhurey @Azure/azure-java-sdk
-/sdk/ai/azure-ai-agents-persistent/                                @dargilco @glecaros @jpalvarezl @kaylieee @Azure/azure-java-sdk
+/sdk/ai/azure-ai-agents/                                           @Azure/ai-foundry-devex @Azure/azure-java-sdk
+/sdk/ai/azure-ai-agents-persistent/                                @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %AI Projects
-/sdk/ai/azure-ai-projects/                                         @dargilco @glharper @glecaros @jpalvarezl @kaylieee @rhurey @Azure/azure-java-sdk
+/sdk/ai/azure-ai-projects/                                         @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %AI Model Inference
-/sdk/ai/azure-ai-inference/                                        @dargilco @glharper @Azure/azure-java-sdk
+/sdk/ai/azure-ai-inference/                                        @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                                             @alzimmermsft @avanigupta @mrm9084 @nroutray @yuanqu72 @Azure/azure-java-sdk
@@ -136,33 +136,33 @@
 # ServiceLabel: %Azure SDK Tools
 
 # PRLabel: %azure-spring
-/sdk/identity/azure-identity-extensions/                           @moarychan @netyyyy @rujche @saragluna @Azure/azure-java-sdk
+/sdk/identity/azure-identity-extensions/                           @moarychan @dingmeng-xue @domainname @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/keyvault/azure-security-keyvault-jca/                         @moarychan @netyyyy @rujche @saragluna @Azure/azure-java-sdk
+/sdk/keyvault/azure-security-keyvault-jca/                         @moarychan @dingmeng-xue @domainname @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/spring-experimental/                                          @moarychan @netyyyy @rujche @saragluna @Azure/azure-java-sdk
+/sdk/spring-experimental/                                          @moarychan @dingmeng-xue @domainname @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/docs/spring/                                                      @moarychan @netyyyy @rujche @saragluna @Azure/azure-java-sdk
+/docs/spring/                                                      @moarychan @dingmeng-xue @domainname @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/spring/                                                       @moarychan @netyyyy @rujche @saragluna @Azure/azure-java-sdk
+/sdk/spring/                                                       @moarychan @dingmeng-xue @domainname @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/spring/azure-spring-data-cosmos/                              @Azure/azure-cosmos-java-sdk-connectors @moarychan @netyyyy @rujche @saragluna
+/sdk/spring/azure-spring-data-cosmos/                              @Azure/azure-cosmos-java-sdk-connectors @moarychan @dingmeng-xue @domainname
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @avanigupta @moarychan @mrm9084 @netyyyy @rujche @saragluna @nroutray @yuanqu72 @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @avanigupta @moarychan @mrm9084 @dingmeng-xue @domainname @nroutray @yuanqu72 @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-feature-management*/                @avanigupta @moarychan @mrm9084 @netyyyy @rujche @saragluna @nroutray @yuanqu72 @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-feature-management*/                @avanigupta @moarychan @mrm9084 @dingmeng-xue @domainname @nroutray @yuanqu72 @Azure/azure-java-sdk
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @avanigupta @moarychan @mrm9084 @netyyyy @rujche @saragluna @nroutray @yuanqu72 @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @avanigupta @moarychan @mrm9084 @dingmeng-xue @domainname @nroutray @yuanqu72 @Azure/azure-java-sdk
 
-# AzureSdkOwners:                                                  @moarychan @netyyyy @rujche @saragluna
+# AzureSdkOwners:                                                  @moarychan @dingmeng-xue @domainname
 # ServiceLabel: %azure-spring
 
 # PRLabel: %Azure.Identity
@@ -263,6 +263,12 @@
 
 # ServiceLabel: %Confidential Ledger
 # ServiceOwners:                                                   @amruthashree18 @musabbir
+
+# PRLabel: %Cognitive - Content Safety
+/sdk/contentsafety/                                                @Azure/azure-sdk-write-contentsafety @Azure/azure-java-sdk
+
+# ServiceLabel: %Cognitive - Content Safety
+# ServiceOwners:                                                   @Azure/azure-sdk-write-contentsafety
 
 # PRLabel: %Cognitive - Content Understanding
 /sdk/contentunderstanding/                                         @bojunehsu @changjian-wang @chienyuanchang @yungshinlintw @Azure/azure-java-sdk
@@ -392,10 +398,10 @@
 /sdk/monitor/azure-monitor-opentelemetry-exporter/                 @harsimar @jeanbisutti @ramthi @trask @Azure/azure-java-sdk
 
 # PRLabel: %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor-test                @harsimar @jeanbisutti @moarychan @netyyyy @rajkumar-rangaraj @ramthi @rujche @saragluna @trask @xiang17 @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-starter-monitor-test                @harsimar @jeanbisutti @moarychan @dingmeng-xue @rajkumar-rangaraj @ramthi @domainname @trask @xiang17 @Azure/azure-java-sdk
 
 # PRLabel: %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor                     @harsimar @jeanbisutti @moarychan @netyyyy @rajkumar-rangaraj @ramthi @rujche @saragluna @trask @xiang17 @Azure/azure-java-sdk
+/sdk/spring/spring-cloud-azure-starter-monitor                     @harsimar @jeanbisutti @moarychan @dingmeng-xue @rajkumar-rangaraj @ramthi @domainname @trask @xiang17 @Azure/azure-java-sdk
 
 # AzureSdkOwners:                                                  @harsimar @jeanbisutti @rajkumar-rangaraj @ramthi @trask @xiang17
 # ServiceLabel: %Monitor - Spring
@@ -404,16 +410,16 @@
 /sdk/onlineexperimentation/                                        @Azure/azure-sdk-write-onlineexperimentation @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai-assistants/                            @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai-assistants/                            @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai-realtime/                              @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai-realtime/                              @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai-stainless/                             @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai-stainless/                             @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %OpenAI
-/sdk/openai/azure-ai-openai/                                       @jpalvarezl @Azure/azure-java-sdk
+/sdk/openai/azure-ai-openai/                                       @Azure/ai-foundry-devex @Azure/azure-java-sdk
 
 # PRLabel: %Operator Nexus - Network Cloud
 /sdk/networkcloud/                                                 @Azure/azure-sdk-write-networkcloud @Azure/azure-java-sdk
@@ -953,20 +959,19 @@
 
 # ######## Eng Sys ########
 
-/eng/                                                              @raych1 @mikeharder
+/eng/                                                              @raych1 @praveenkuttappan
 /eng/automation/                                                   @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @raych1
 /eng/bomgenerator/                                                 @vcolin7 @alzimmermsft @jonathangiles @Azure/azure-java-sdk
-/eng/code-quality-reports/                                         @JonathanGiles @alzimmermsft @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
-/eng/lintingconfigs/                                               @JonathanGiles @alzimmermsft @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
+/eng/code-quality-reports/                                         @JonathanGiles @alzimmermsft @domainname @dingmeng-xue @moarychan @Azure/azure-java-sdk
+/eng/lintingconfigs/                                               @JonathanGiles @alzimmermsft @domainname @dingmeng-xue @moarychan @Azure/azure-java-sdk
 /eng/common/                                                       @Azure/azure-sdk-eng
 /eng/versioning/                                                   @alzimmermsft @g2vinay @Azure/azure-java-sdk
-/eng/versioning/external_dependencies.txt                          @alzimmermsft @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan @Azure/azure-java-sdk
+/eng/versioning/external_dependencies.txt                          @alzimmermsft @g2vinay @jonathangiles @domainname @dingmeng-xue @moarychan @Azure/azure-java-sdk
 /.github/                                                          @Azure/azure-java-sdk
 /.github/CODEOWNERS                                                @Azure/azure-sdk-eng @Azure/azure-java-sdk
 /.github/workflows/                                                @Azure/azure-sdk-eng
 /.github/copilot-instructions.md                                   @praveenkuttappan
 /.github/skills/                                                   @Azure/azsdk-cli
-/.config/1espt/                                                    @mikeharder
 /eng/tools/mcp/                                                    @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @praveenkuttappan @Azure/azure-sdk-eng
 
 # Removing owners for this file to not require codeowner approval for changes to them given they are shared with project

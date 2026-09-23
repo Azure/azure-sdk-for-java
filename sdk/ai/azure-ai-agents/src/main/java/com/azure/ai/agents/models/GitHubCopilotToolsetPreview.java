@@ -25,18 +25,6 @@ public final class GitHubCopilotToolsetPreview extends Tool {
     @Generated
     private ToolType type = ToolType.GITHUB_COPILOT_TOOLSET_PREVIEW;
 
-    /*
-     * The default configuration for built-in tools. If omitted, built-in tools are enabled by default.
-     */
-    @Generated
-    private GitHubCopilotToolsetDefaultConfig defaultConfig;
-
-    /*
-     * Per-tool configuration overrides. Duplicate built-in tool names are not allowed.
-     */
-    @Generated
-    private List<GitHubCopilotToolsetConfig> configs;
-
     /**
      * Creates an instance of GitHubCopilotToolsetPreview class.
      */
@@ -56,52 +44,6 @@ public final class GitHubCopilotToolsetPreview extends Tool {
     }
 
     /**
-     * Get the defaultConfig property: The default configuration for built-in tools. If omitted, built-in tools are
-     * enabled by default.
-     *
-     * @return the defaultConfig value.
-     */
-    @Generated
-    public GitHubCopilotToolsetDefaultConfig getDefaultConfig() {
-        return this.defaultConfig;
-    }
-
-    /**
-     * Set the defaultConfig property: The default configuration for built-in tools. If omitted, built-in tools are
-     * enabled by default.
-     *
-     * @param defaultConfig the defaultConfig value to set.
-     * @return the GitHubCopilotToolsetPreview object itself.
-     */
-    @Generated
-    public GitHubCopilotToolsetPreview setDefaultConfig(GitHubCopilotToolsetDefaultConfig defaultConfig) {
-        this.defaultConfig = defaultConfig;
-        return this;
-    }
-
-    /**
-     * Get the configs property: Per-tool configuration overrides. Duplicate built-in tool names are not allowed.
-     *
-     * @return the configs value.
-     */
-    @Generated
-    public List<GitHubCopilotToolsetConfig> getConfigs() {
-        return this.configs;
-    }
-
-    /**
-     * Set the configs property: Per-tool configuration overrides. Duplicate built-in tool names are not allowed.
-     *
-     * @param configs the configs value to set.
-     * @return the GitHubCopilotToolsetPreview object itself.
-     */
-    @Generated
-    public GitHubCopilotToolsetPreview setConfigs(List<GitHubCopilotToolsetConfig> configs) {
-        this.configs = configs;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -109,8 +51,8 @@ public final class GitHubCopilotToolsetPreview extends Tool {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeJsonField("default_config", this.defaultConfig);
-        jsonWriter.writeArrayField("configs", this.configs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("default_config", this.defaultConfiguration);
+        jsonWriter.writeArrayField("configs", this.toolConfigurations, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -132,17 +74,77 @@ public final class GitHubCopilotToolsetPreview extends Tool {
                 if ("type".equals(fieldName)) {
                     deserializedGitHubCopilotToolsetPreview.type = ToolType.fromString(reader.getString());
                 } else if ("default_config".equals(fieldName)) {
-                    deserializedGitHubCopilotToolsetPreview.defaultConfig
+                    deserializedGitHubCopilotToolsetPreview.defaultConfiguration
                         = GitHubCopilotToolsetDefaultConfig.fromJson(reader);
                 } else if ("configs".equals(fieldName)) {
-                    List<GitHubCopilotToolsetConfig> configs
+                    List<GitHubCopilotToolsetConfig> toolConfigurations
                         = reader.readArray(reader1 -> GitHubCopilotToolsetConfig.fromJson(reader1));
-                    deserializedGitHubCopilotToolsetPreview.configs = configs;
+                    deserializedGitHubCopilotToolsetPreview.toolConfigurations = toolConfigurations;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedGitHubCopilotToolsetPreview;
         });
+    }
+
+    /*
+     * The default configuration for built-in tools. If omitted, built-in tools are enabled by default.
+     */
+    @Generated
+    private GitHubCopilotToolsetDefaultConfig defaultConfiguration;
+
+    /*
+     * Per-tool configuration overrides. Duplicate built-in tool names are not allowed.
+     */
+    @Generated
+    private List<GitHubCopilotToolsetConfig> toolConfigurations;
+
+    /**
+     * Get the defaultConfiguration property: The default configuration for built-in tools. If omitted, built-in tools
+     * are enabled by default.
+     *
+     * @return the defaultConfiguration value.
+     */
+    @Generated
+    public GitHubCopilotToolsetDefaultConfig getDefaultConfiguration() {
+        return this.defaultConfiguration;
+    }
+
+    /**
+     * Set the defaultConfiguration property: The default configuration for built-in tools. If omitted, built-in tools
+     * are enabled by default.
+     *
+     * @param defaultConfiguration the defaultConfiguration value to set.
+     * @return the GitHubCopilotToolsetPreview object itself.
+     */
+    @Generated
+    public GitHubCopilotToolsetPreview setDefaultConfiguration(GitHubCopilotToolsetDefaultConfig defaultConfiguration) {
+        this.defaultConfiguration = defaultConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the toolConfigurations property: Per-tool configuration overrides. Duplicate built-in tool names are not
+     * allowed.
+     *
+     * @return the toolConfigurations value.
+     */
+    @Generated
+    public List<GitHubCopilotToolsetConfig> getToolConfigurations() {
+        return this.toolConfigurations;
+    }
+
+    /**
+     * Set the toolConfigurations property: Per-tool configuration overrides. Duplicate built-in tool names are not
+     * allowed.
+     *
+     * @param toolConfigurations the toolConfigurations value to set.
+     * @return the GitHubCopilotToolsetPreview object itself.
+     */
+    @Generated
+    public GitHubCopilotToolsetPreview setToolConfigurations(List<GitHubCopilotToolsetConfig> toolConfigurations) {
+        this.toolConfigurations = toolConfigurations;
+        return this;
     }
 }

@@ -11,6 +11,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.RealtimeResponse.OutputModality;
+import com.openai.models.realtime.RealtimeResponse.Status;
 import com.openai.models.realtime.RealtimeResponseStatus;
 import com.openai.models.realtime.RealtimeResponseUsage;
 import java.io.IOException;
@@ -50,7 +52,7 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
      * output to mode `text` will disable audio output from the model.
      */
     @Generated
-    private List<VoiceResponseBaseOutputModality> outputModalities;
+    private List<OutputModality> outputModalities;
 
     /*
      * Which conversation the response is added to, determined by the `conversation`
@@ -89,7 +91,7 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
      * `incomplete`, `in_progress`).
      */
     @Generated
-    private VoiceResponseBaseStatus status;
+    private Status status;
 
     /*
      * The object type, must be `realtime.response`.
@@ -153,7 +155,7 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
      */
     @Generated
     @Override
-    public List<VoiceResponseBaseOutputModality> getOutputModalities() {
+    public List<OutputModality> getOutputModalities() {
         return this.outputModalities;
     }
 
@@ -217,7 +219,7 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
      */
     @Generated
     @Override
-    public VoiceResponseBaseStatus getStatus() {
+    public Status getStatus() {
         return this.status;
     }
 
@@ -251,7 +253,7 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", getId());
         jsonWriter.writeStringField("object", getObject() == null ? null : getObject().toString());
-        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
+        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().asString());
         // AI Tooling: openai-java de-dup
         if (getStatusDetails() != null) {
             jsonWriter.writeFieldName("status_details");
@@ -283,6 +285,7 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
      * @throws IOException If an error occurs while reading the VoiceAgentRealtimeResponse.
      */
     public static VoiceAgentRealtimeResponse fromJson(JsonReader jsonReader) throws IOException {
+        // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
             VoiceAgentRealtimeResponse deserializedVoiceAgentRealtimeResponse = new VoiceAgentRealtimeResponse();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -294,8 +297,7 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
                     deserializedVoiceAgentRealtimeResponse.object
                         = VoiceResponseBaseObject.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
-                    deserializedVoiceAgentRealtimeResponse.status
-                        = VoiceResponseBaseStatus.fromString(reader.getString());
+                    deserializedVoiceAgentRealtimeResponse.status = reader.getNullable(r -> Status.of(r.getString()));
                 } else if ("status_details".equals(fieldName)) {
                     // AI Tooling: openai-java de-dup
                     BinaryData statusDetailsData
@@ -313,8 +315,8 @@ public final class VoiceAgentRealtimeResponse extends VoiceAgentRealtimeResponse
                 } else if ("conversation_id".equals(fieldName)) {
                     deserializedVoiceAgentRealtimeResponse.conversationId = reader.getString();
                 } else if ("output_modalities".equals(fieldName)) {
-                    List<VoiceResponseBaseOutputModality> outputModalities
-                        = reader.readArray(reader1 -> VoiceResponseBaseOutputModality.fromString(reader1.getString()));
+                    List<OutputModality> outputModalities
+                        = reader.readArray(reader1 -> reader1.getNullable(r -> OutputModality.of(r.getString())));
                     deserializedVoiceAgentRealtimeResponse.outputModalities = outputModalities;
                 } else if ("max_output_tokens".equals(fieldName)) {
                     deserializedVoiceAgentRealtimeResponse.maxOutputTokens
