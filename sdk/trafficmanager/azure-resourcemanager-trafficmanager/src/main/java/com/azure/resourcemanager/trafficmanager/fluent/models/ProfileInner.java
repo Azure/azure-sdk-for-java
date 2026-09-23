@@ -332,7 +332,8 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the recordType property: When record type is set, a traffic manager profile will allow only endpoints that
-     * match this type.
+     * match this type. If it is not set, traffic manager profile will allow adding all types of endpoints. It is
+     * returned as null when this is not set.
      * 
      * @return the recordType value.
      */
@@ -342,7 +343,8 @@ public final class ProfileInner extends Resource {
 
     /**
      * Set the recordType property: When record type is set, a traffic manager profile will allow only endpoints that
-     * match this type.
+     * match this type. If it is not set, traffic manager profile will allow adding all types of endpoints. It is
+     * returned as null when this is not set.
      * 
      * @param recordType the recordType value to set.
      * @return the ProfileInner object itself.
