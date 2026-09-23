@@ -16,12 +16,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Base class for source tasks whose source read can block indefinitely.
@@ -40,14 +41,9 @@ public abstract class BufferedSourceTask extends SourceTask {
     private final Duration pollingThreadShutdownWait;
     private final BlockingQueue<PollResult> pollResults =
         new LinkedBlockingQueue<>(POLL_RESULT_CAPACITY);
-    private final AtomicReference<Throwable> pollingError = new AtomicReference<>();
-    private final AtomicBoolean startInvoked = new AtomicBoolean();
-    private final AtomicBoolean started = new AtomicBoolean();
-    private final AtomicBoolean stopping = new AtomicBoolean();
-    private final AtomicBoolean readerStarted = new AtomicBoolean();
-    private final AtomicBoolean readerFinished = new AtomicBoolean();
+    private volatile boolean stopping;
+    private volatile Future<?> pollingFuture;
     private ExecutorService pollingExecutor;
-    private String pollingThreadName;
 
     protected BufferedSourceTask() {
         this(DEFAULT_KAFKA_POLL_WAIT, DEFAULT_POLLING_THREAD_SHUTDOWN_WAIT);
@@ -62,30 +58,24 @@ public abstract class BufferedSourceTask extends SourceTask {
 
     @Override
     public final synchronized void start(Map<String, String> props) {
-        if (!this.startInvoked.compareAndSet(false, true)) {
-            throw new ConnectException("Source task has already been started");
+        if (this.pollingExecutor != null) {
+            throw new ConnectException("Source task is already running");
         }
-        this.started.set(true);
-
-        this.stopping.set(false);
-        this.readerFinished.set(false);
+        this.stopping = false;
+        this.pollingFuture = null;
         this.pollResults.clear();
-        this.pollingError.set(null);
-        this.pollingThreadName = this.getPollingThreadName(props);
 
         try {
             this.startTask(props);
+            String pollingThreadName = this.getPollingThreadName(props);
             this.pollingExecutor = Executors.newSingleThreadExecutor(runnable -> {
-                Thread thread = new Thread(runnable, this.pollingThreadName);
+                Thread thread = new Thread(runnable, pollingThreadName);
                 thread.setDaemon(true);
-                thread.setUncaughtExceptionHandler((ignored, error) -> {
-                    this.pollingError.compareAndSet(null, error);
-                    this.readerFinished.set(true);
-                });
                 return thread;
             });
         } catch (RuntimeException | Error error) {
-            this.stopTaskOnce();
+            this.stopping = true;
+            this.stopTask();
             throw error;
         }
     }
@@ -100,7 +90,7 @@ public abstract class BufferedSourceTask extends SourceTask {
                 this.kafkaPollWait.toMillis(),
                 TimeUnit.MILLISECONDS);
         } catch (InterruptedException exception) {
-            if (this.stopping.get()) {
+            if (this.stopping) {
                 return Collections.emptyList();
             }
             Thread.currentThread().interrupt();
@@ -108,27 +98,25 @@ public abstract class BufferedSourceTask extends SourceTask {
         }
 
         if (result == null) {
-            this.checkPollingError();
-            if (this.readerFinished.get() && !this.stopping.get()) {
-                throw new ConnectException("Background source polling thread stopped unexpectedly");
-            }
+            this.throwIfReaderStopped();
             return Collections.emptyList();
         }
 
         if (result.error != null) {
-            throwPollError(result.error, this.stopping.get());
+            throwPollError(result.error, this.stopping);
         }
         return result.records;
     }
 
     @Override
     public final synchronized void stop() {
-        if (!this.stopping.compareAndSet(false, true)) {
+        if (this.stopping || this.pollingExecutor == null) {
             return;
         }
+        this.stopping = true;
 
         try {
-            this.stopTaskOnce();
+            this.stopTask();
         } finally {
             if (this.pollingExecutor != null) {
                 this.pollingExecutor.shutdownNow();
@@ -149,44 +137,36 @@ public abstract class BufferedSourceTask extends SourceTask {
     }
 
     private void startReaderIfNeeded() {
-        if (!this.started.get() || this.stopping.get() || this.readerStarted.get()) {
+        if (this.stopping || this.pollingFuture != null) {
             return;
         }
-        if (this.readerStarted.compareAndSet(false, true)) {
-            try {
-                this.pollingExecutor.execute(
-                    preserveMdc(() -> {
-                        try {
-                            this.pollContinuously();
-                        } finally {
-                            this.readerFinished.set(true);
-                        }
-                    }));
-            } catch (RuntimeException error) {
-                if (!this.stopping.get()) {
-                    throw error;
-                }
+        synchronized (this) {
+            if (this.stopping || this.pollingFuture != null) {
+                return;
             }
+            if (this.pollingExecutor == null) {
+                throw new ConnectException("Source task has not been started");
+            }
+            this.pollingFuture = this.pollingExecutor.submit(
+                preserveMdc(this::pollContinuously));
         }
     }
 
     private void pollContinuously() {
-        while (!this.stopping.get()) {
+        while (!this.stopping) {
             try {
                 List<SourceRecord> records = this.pollTask();
                 if (!this.publishResult(PollResult.records(records))) {
                     return;
                 }
             } catch (Exception error) {
-                if (this.stopping.get()) {
+                if (this.stopping) {
                     return;
                 }
 
-                this.pollingError.set(error);
                 if (!this.publishResult(PollResult.error(error))) {
                     return;
                 }
-                this.pollingError.compareAndSet(error, null);
 
                 if (!isRetriable(error) || !this.waitBeforeRetry()) {
                     return;
@@ -196,7 +176,7 @@ public abstract class BufferedSourceTask extends SourceTask {
     }
 
     private boolean publishResult(PollResult result) {
-        while (!this.stopping.get()) {
+        while (!this.stopping) {
             try {
                 if (this.pollResults.offer(result, 100, TimeUnit.MILLISECONDS)) {
                     return true;
@@ -209,11 +189,26 @@ public abstract class BufferedSourceTask extends SourceTask {
         return false;
     }
 
-    private void checkPollingError() {
-        Throwable error = this.pollingError.get();
-        if (error != null) {
-            throwPollError(error, this.stopping.get());
+    private void throwIfReaderStopped() {
+        Future<?> currentPollingFuture = this.pollingFuture;
+        if (currentPollingFuture == null
+            || !currentPollingFuture.isDone()
+            || this.stopping) {
+            return;
         }
+
+        try {
+            currentPollingFuture.get();
+        } catch (ExecutionException error) {
+            throwPollError(error.getCause(), false);
+        } catch (CancellationException error) {
+            throw new ConnectException("Background source polling thread was cancelled unexpectedly", error);
+        } catch (InterruptedException error) {
+            Thread.currentThread().interrupt();
+            throw new ConnectException("Interrupted while checking background source polling thread", error);
+        }
+
+        throw new ConnectException("Background source polling thread stopped unexpectedly");
     }
 
     private void awaitPollingThreadShutdown() {
@@ -234,16 +229,10 @@ public abstract class BufferedSourceTask extends SourceTask {
     private boolean waitBeforeRetry() {
         try {
             Thread.sleep(RETRIABLE_ERROR_BACKOFF.toMillis());
-            return !this.stopping.get();
+            return !this.stopping;
         } catch (InterruptedException exception) {
             Thread.currentThread().interrupt();
             return false;
-        }
-    }
-
-    private void stopTaskOnce() {
-        if (this.started.compareAndSet(true, false)) {
-            this.stopTask();
         }
     }
 
