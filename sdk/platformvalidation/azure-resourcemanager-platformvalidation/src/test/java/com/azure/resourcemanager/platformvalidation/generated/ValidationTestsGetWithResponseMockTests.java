@@ -10,13 +10,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.platformvalidation.PlatformValidationManager;
-import com.azure.resourcemanager.platformvalidation.models.CatalogAudience;
 import com.azure.resourcemanager.platformvalidation.models.ValidationTest;
-import com.azure.resourcemanager.platformvalidation.models.ValidationTestInputDataType;
-import com.azure.resourcemanager.platformvalidation.models.ValidationTestOverallState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -24,7 +20,7 @@ public final class ValidationTestsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"wyzmhtxon\",\"audience\":\"Public\",\"provisioningState\":\"Succeeded\",\"categoryIds\":[\"cbpwxqpsrknft\",\"uvriuhprwm\",\"yvxqtayriwwroy\",\"bexrmcq\"],\"overallState\":\"Disabled\",\"owners\":[\"ojvknmefqsgzvaha\",\"jyzhpvgq\",\"cjrvxdjzlmwlxkv\"],\"inputs\":[{\"name\":\"hzovawjvzunlut\",\"definition\":{\"description\":\"n\",\"type\":\"Boolean\",\"required\":false,\"defaultValue\":\"eilpjzuaejxdu\",\"allowedValues\":[\"kzbbtd\",\"umveekgpwozuhkf\"]}},{\"name\":\"bsjyofdx\",\"definition\":{\"description\":\"us\",\"type\":\"Boolean\",\"required\":true,\"defaultValue\":\"aboekqv\",\"allowedValues\":[\"nsmvbxwyj\"]}},{\"name\":\"flhhcaal\",\"definition\":{\"description\":\"ixisxyawjoy\",\"type\":\"Object\",\"required\":false,\"defaultValue\":\"jpkiidzyexznelix\",\"allowedValues\":[\"ztfolhbnxk\"]}},{\"name\":\"alaulppggdtpnapn\",\"definition\":{\"description\":\"ropuhpigv\",\"type\":\"Number\",\"required\":true,\"defaultValue\":\"git\",\"allowedValues\":[\"djvcsl\",\"n\",\"wwncwzzhxgk\"]}}],\"testStoreUri\":\"mgucna\",\"currentVersion\":\"t\",\"latestPublishedVersion\":\"ellwptfdy\",\"lastPublishedAt\":\"2020-12-31T02:22:45Z\"},\"id\":\"b\",\"name\":\"ac\",\"type\":\"op\"}";
+            = "{\"properties\":{\"displayName\":\"kdltfzxmhhvhg\",\"description\":\"eodkwobda\",\"audience\":\"Internal\",\"provisioningState\":\"Succeeded\",\"categoryIds\":[\"xbxwa\"],\"owners\":[\"gqxndlkzgxhuripl\",\"podxunkb\",\"bxmubyynt\",\"lrb\"],\"inputs\":[{\"name\":\"oievseotgqrlltm\",\"definition\":{\"description\":\"lauwzizxbmpgcjef\",\"type\":\"Boolean\",\"required\":false,\"defaultValue\":\"bttdumorppxe\",\"allowedValues\":[\"zbtbhj\",\"glkfg\"]}},{\"name\":\"hdneuelfph\",\"definition\":{\"description\":\"yhtozfikdowwqu\",\"type\":\"Integer\",\"required\":false,\"defaultValue\":\"lvithhqzonosgg\",\"allowedValues\":[\"ohfwds\"]}}],\"testStoreUri\":\"ka\",\"currentVersion\":\"utiiswacf\",\"latestPublishedVersion\":\"dkzzewkfvhqcrail\",\"lastPublishedAt\":\"2021-02-08T12:34:09Z\"},\"id\":\"pfuflrw\",\"name\":\"mh\",\"type\":\"lxyjr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,23 +30,7 @@ public final class ValidationTestsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ValidationTest response
-            = manager.validationTests().getWithResponse("j", com.azure.core.util.Context.NONE).getValue();
+            = manager.validationTests().getWithResponse("okonzmnsikvmkqz", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("wyzmhtxon", response.properties().description());
-        Assertions.assertEquals(CatalogAudience.PUBLIC, response.properties().audience());
-        Assertions.assertEquals("cbpwxqpsrknft", response.properties().categoryIds().get(0));
-        Assertions.assertEquals(ValidationTestOverallState.DISABLED, response.properties().overallState());
-        Assertions.assertEquals("ojvknmefqsgzvaha", response.properties().owners().get(0));
-        Assertions.assertEquals("hzovawjvzunlut", response.properties().inputs().get(0).name());
-        Assertions.assertEquals("n", response.properties().inputs().get(0).definition().description());
-        Assertions.assertEquals(ValidationTestInputDataType.BOOLEAN,
-            response.properties().inputs().get(0).definition().type());
-        Assertions.assertFalse(response.properties().inputs().get(0).definition().required());
-        Assertions.assertEquals("eilpjzuaejxdu", response.properties().inputs().get(0).definition().defaultValue());
-        Assertions.assertEquals("kzbbtd", response.properties().inputs().get(0).definition().allowedValues().get(0));
-        Assertions.assertEquals("mgucna", response.properties().testStoreUri());
-        Assertions.assertEquals("t", response.properties().currentVersion());
-        Assertions.assertEquals("ellwptfdy", response.properties().latestPublishedVersion());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-31T02:22:45Z"), response.properties().lastPublishedAt());
     }
 }

@@ -13,13 +13,13 @@ public final class TestRunSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TestRunSummary model = BinaryData.fromString(
-            "{\"totalTests\":732372528,\"passedTests\":1906017395,\"failedTests\":1237091800,\"skippedTests\":897751873,\"overallResult\":\"PartiallyPassed\",\"message\":\"ftyhxhurokf\"}")
+            "{\"totalTests\":559319579,\"passedTests\":1369496360,\"failedTests\":1946901948,\"skippedTests\":1868047247,\"overallResult\":\"Passed\",\"message\":\"cukjf\"}")
             .toObject(TestRunSummary.class);
-        Assertions.assertEquals(732372528, model.totalTests());
-        Assertions.assertEquals(1906017395, model.passedTests());
-        Assertions.assertEquals(1237091800, model.failedTests());
-        Assertions.assertEquals(897751873, model.skippedTests());
-        Assertions.assertEquals(TestRunOverallResult.PARTIALLY_PASSED, model.overallResult());
-        Assertions.assertEquals("ftyhxhurokf", model.message());
+        Assertions.assertEquals(559319579, model.totalTests());
+        Assertions.assertEquals(1369496360, model.passedTests());
+        Assertions.assertEquals(1946901948, model.failedTests());
+        Assertions.assertEquals(1868047247, model.skippedTests());
+        Assertions.assertEquals(TestRunOverallResult.PASSED, model.overallResult());
+        Assertions.assertEquals("cukjf", model.message());
     }
 }

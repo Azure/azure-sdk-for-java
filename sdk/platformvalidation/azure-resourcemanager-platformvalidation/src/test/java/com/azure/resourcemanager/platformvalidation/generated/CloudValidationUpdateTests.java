@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.platformvalidation.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.platformvalidation.models.CloudValidationOverallState;
 import com.azure.resourcemanager.platformvalidation.models.CloudValidationUpdate;
 import com.azure.resourcemanager.platformvalidation.models.CloudValidationUpdateProperties;
 import java.util.HashMap;
@@ -16,24 +15,22 @@ public final class CloudValidationUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CloudValidationUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"ozkrwfndiodjpslw\":\"dvpjhulsuuvmk\",\"psoacctazakljl\":\"jdpvwryo\",\"paojakhmsbzjh\":\"hbcryffdfdosyge\"},\"properties\":{\"description\":\"evdphlxaol\",\"overallState\":\"Disabled\"}}")
+            "{\"tags\":{\"ozkrwfndiodjpslw\":\"dvpjhulsuuvmk\",\"psoacctazakljl\":\"jdpvwryo\",\"paojakhmsbzjh\":\"hbcryffdfdosyge\"},\"properties\":{\"description\":\"evdphlxaol\"}}")
             .toObject(CloudValidationUpdate.class);
         Assertions.assertEquals("dvpjhulsuuvmk", model.tags().get("ozkrwfndiodjpslw"));
         Assertions.assertEquals("evdphlxaol", model.properties().description());
-        Assertions.assertEquals(CloudValidationOverallState.DISABLED, model.properties().overallState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CloudValidationUpdate model = new CloudValidationUpdate()
-            .withTags(mapOf("ozkrwfndiodjpslw", "dvpjhulsuuvmk", "psoacctazakljl", "jdpvwryo", "paojakhmsbzjh",
-                "hbcryffdfdosyge"))
-            .withProperties(new CloudValidationUpdateProperties().withDescription("evdphlxaol")
-                .withOverallState(CloudValidationOverallState.DISABLED));
+        CloudValidationUpdate model
+            = new CloudValidationUpdate()
+                .withTags(mapOf("ozkrwfndiodjpslw", "dvpjhulsuuvmk", "psoacctazakljl", "jdpvwryo", "paojakhmsbzjh",
+                    "hbcryffdfdosyge"))
+                .withProperties(new CloudValidationUpdateProperties().withDescription("evdphlxaol"));
         model = BinaryData.fromObject(model).toObject(CloudValidationUpdate.class);
         Assertions.assertEquals("dvpjhulsuuvmk", model.tags().get("ozkrwfndiodjpslw"));
         Assertions.assertEquals("evdphlxaol", model.properties().description());
-        Assertions.assertEquals(CloudValidationOverallState.DISABLED, model.properties().overallState());
     }
 
     // Use "Map.of" if available

@@ -18,6 +18,6 @@ public final class ValidationTestsGetSamples {
      */
     public static void
         validationTestsGetMaximumSet(com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTests().getWithResponse("pgaqtvwrkwboi", com.azure.core.util.Context.NONE);
+        manager.validationTests().getWithResponse("linux-quality-validation", com.azure.core.util.Context.NONE);
     }
 }

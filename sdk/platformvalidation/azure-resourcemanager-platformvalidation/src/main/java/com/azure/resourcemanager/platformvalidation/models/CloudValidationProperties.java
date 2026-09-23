@@ -33,11 +33,6 @@ public final class CloudValidationProperties implements JsonSerializable<CloudVa
     private ManagementError error;
 
     /*
-     * The overall state of the resource.
-     */
-    private CloudValidationOverallState overallState;
-
-    /*
      * Managed On Behalf Of Configuration.
      */
     private ManagedOnBehalfOfConfiguration managedOnBehalfOfConfiguration;
@@ -87,26 +82,6 @@ public final class CloudValidationProperties implements JsonSerializable<CloudVa
     }
 
     /**
-     * Get the overallState property: The overall state of the resource.
-     * 
-     * @return the overallState value.
-     */
-    public CloudValidationOverallState overallState() {
-        return this.overallState;
-    }
-
-    /**
-     * Set the overallState property: The overall state of the resource.
-     * 
-     * @param overallState the overallState value to set.
-     * @return the CloudValidationProperties object itself.
-     */
-    public CloudValidationProperties withOverallState(CloudValidationOverallState overallState) {
-        this.overallState = overallState;
-        return this;
-    }
-
-    /**
      * Get the managedOnBehalfOfConfiguration property: Managed On Behalf Of Configuration.
      * 
      * @return the managedOnBehalfOfConfiguration value.
@@ -122,7 +97,6 @@ public final class CloudValidationProperties implements JsonSerializable<CloudVa
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("overallState", this.overallState == null ? null : this.overallState.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -148,9 +122,6 @@ public final class CloudValidationProperties implements JsonSerializable<CloudVa
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("error".equals(fieldName)) {
                     deserializedCloudValidationProperties.error = ManagementError.fromJson(reader);
-                } else if ("overallState".equals(fieldName)) {
-                    deserializedCloudValidationProperties.overallState
-                        = CloudValidationOverallState.fromString(reader.getString());
                 } else if ("managedOnBehalfOfConfiguration".equals(fieldName)) {
                     deserializedCloudValidationProperties.managedOnBehalfOfConfiguration
                         = ManagedOnBehalfOfConfiguration.fromJson(reader);

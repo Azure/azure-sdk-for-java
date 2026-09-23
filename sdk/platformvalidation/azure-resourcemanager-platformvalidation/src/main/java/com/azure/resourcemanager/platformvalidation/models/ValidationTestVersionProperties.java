@@ -18,6 +18,11 @@ import java.util.List;
 @Immutable
 public final class ValidationTestVersionProperties implements JsonSerializable<ValidationTestVersionProperties> {
     /*
+     * Display name of the validation test version.
+     */
+    private String displayName;
+
+    /*
      * Validation test description.
      */
     private String description;
@@ -39,12 +44,8 @@ public final class ValidationTestVersionProperties implements JsonSerializable<V
     private List<String> categoryIds;
 
     /*
-     * Overall state of the validation test.
-     */
-    private ValidationTestOverallState overallState;
-
-    /*
-     * Owners of the validation test version definition, expressed as email aliases or Microsoft Entra object IDs.
+     * Owners of the validation test version definition, expressed as team or distribution list aliases.
+     * Individual user aliases and directory object identifiers are not published in this field.
      * Only catalog publishers set this value through an internal publishing process; end users of the validation
      * service consume catalog entries read-only through Get/List and cannot modify it.
      */
@@ -69,6 +70,15 @@ public final class ValidationTestVersionProperties implements JsonSerializable<V
      * Creates an instance of ValidationTestVersionProperties class.
      */
     private ValidationTestVersionProperties() {
+    }
+
+    /**
+     * Get the displayName property: Display name of the validation test version.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
     }
 
     /**
@@ -109,17 +119,9 @@ public final class ValidationTestVersionProperties implements JsonSerializable<V
     }
 
     /**
-     * Get the overallState property: Overall state of the validation test.
-     * 
-     * @return the overallState value.
-     */
-    public ValidationTestOverallState overallState() {
-        return this.overallState;
-    }
-
-    /**
-     * Get the owners property: Owners of the validation test version definition, expressed as email aliases or
-     * Microsoft Entra object IDs.
+     * Get the owners property: Owners of the validation test version definition, expressed as team or distribution list
+     * aliases.
+     * Individual user aliases and directory object identifiers are not published in this field.
      * Only catalog publishers set this value through an internal publishing process; end users of the validation
      * service consume catalog entries read-only through Get/List and cannot modify it.
      * 
@@ -162,14 +164,6 @@ public final class ValidationTestVersionProperties implements JsonSerializable<V
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("audience", this.audience == null ? null : this.audience.toString());
-        jsonWriter.writeArrayField("categoryIds", this.categoryIds, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("overallState", this.overallState == null ? null : this.overallState.toString());
-        jsonWriter.writeArrayField("owners", this.owners, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("contentHash", this.contentHash);
-        jsonWriter.writeStringField("testStoreUri", this.testStoreUri);
         return jsonWriter.writeEndObject();
     }
 
@@ -189,7 +183,9 @@ public final class ValidationTestVersionProperties implements JsonSerializable<V
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("description".equals(fieldName)) {
+                if ("displayName".equals(fieldName)) {
+                    deserializedValidationTestVersionProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
                     deserializedValidationTestVersionProperties.description = reader.getString();
                 } else if ("audience".equals(fieldName)) {
                     deserializedValidationTestVersionProperties.audience
@@ -200,9 +196,6 @@ public final class ValidationTestVersionProperties implements JsonSerializable<V
                 } else if ("categoryIds".equals(fieldName)) {
                     List<String> categoryIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedValidationTestVersionProperties.categoryIds = categoryIds;
-                } else if ("overallState".equals(fieldName)) {
-                    deserializedValidationTestVersionProperties.overallState
-                        = ValidationTestOverallState.fromString(reader.getString());
                 } else if ("owners".equals(fieldName)) {
                     List<String> owners = reader.readArray(reader1 -> reader1.getString());
                     deserializedValidationTestVersionProperties.owners = owners;

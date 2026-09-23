@@ -5,26 +5,22 @@
 package com.azure.resourcemanager.platformvalidation.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.platformvalidation.models.CloudValidationOverallState;
 import com.azure.resourcemanager.platformvalidation.models.CloudValidationUpdateProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class CloudValidationUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CloudValidationUpdateProperties model
-            = BinaryData.fromString("{\"description\":\"rgqjbpfzfsinzg\",\"overallState\":\"Disabled\"}")
-                .toObject(CloudValidationUpdateProperties.class);
-        Assertions.assertEquals("rgqjbpfzfsinzg", model.description());
-        Assertions.assertEquals(CloudValidationOverallState.DISABLED, model.overallState());
+        CloudValidationUpdateProperties model = BinaryData.fromString("{\"description\":\"qtrgqjbpfzfsinzg\"}")
+            .toObject(CloudValidationUpdateProperties.class);
+        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CloudValidationUpdateProperties model = new CloudValidationUpdateProperties().withDescription("rgqjbpfzfsinzg")
-            .withOverallState(CloudValidationOverallState.DISABLED);
+        CloudValidationUpdateProperties model
+            = new CloudValidationUpdateProperties().withDescription("qtrgqjbpfzfsinzg");
         model = BinaryData.fromObject(model).toObject(CloudValidationUpdateProperties.class);
-        Assertions.assertEquals("rgqjbpfzfsinzg", model.description());
-        Assertions.assertEquals(CloudValidationOverallState.DISABLED, model.overallState());
+        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.description());
     }
 }

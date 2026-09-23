@@ -12,7 +12,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -20,6 +19,11 @@ import java.util.List;
  */
 @Immutable
 public final class ValidationTestProperties implements JsonSerializable<ValidationTestProperties> {
+    /*
+     * Display name of the validation test.
+     */
+    private String displayName;
+
     /*
      * Validation test description.
      */
@@ -42,12 +46,8 @@ public final class ValidationTestProperties implements JsonSerializable<Validati
     private List<String> categoryIds;
 
     /*
-     * Overall state of the validation test.
-     */
-    private ValidationTestOverallState overallState;
-
-    /*
-     * Owners of the validation test definition, expressed as aliases.
+     * Owners of the validation test definition, expressed as team or distribution list aliases.
+     * Individual user aliases and directory object identifiers are not published in this field.
      * Only catalog publishers(limited to microsoft internal only) set this value through an internal publishing
      * process; end users of the validation
      * service consume catalog entries read-only through Get/List and cannot modify it.
@@ -83,6 +83,15 @@ public final class ValidationTestProperties implements JsonSerializable<Validati
      * Creates an instance of ValidationTestProperties class.
      */
     private ValidationTestProperties() {
+    }
+
+    /**
+     * Get the displayName property: Display name of the validation test.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
     }
 
     /**
@@ -123,16 +132,9 @@ public final class ValidationTestProperties implements JsonSerializable<Validati
     }
 
     /**
-     * Get the overallState property: Overall state of the validation test.
-     * 
-     * @return the overallState value.
-     */
-    public ValidationTestOverallState overallState() {
-        return this.overallState;
-    }
-
-    /**
-     * Get the owners property: Owners of the validation test definition, expressed as aliases.
+     * Get the owners property: Owners of the validation test definition, expressed as team or distribution list
+     * aliases.
+     * Individual user aliases and directory object identifiers are not published in this field.
      * Only catalog publishers(limited to microsoft internal only) set this value through an internal publishing
      * process; end users of the validation
      * service consume catalog entries read-only through Get/List and cannot modify it.
@@ -194,17 +196,6 @@ public final class ValidationTestProperties implements JsonSerializable<Validati
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("audience", this.audience == null ? null : this.audience.toString());
-        jsonWriter.writeArrayField("categoryIds", this.categoryIds, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("overallState", this.overallState == null ? null : this.overallState.toString());
-        jsonWriter.writeArrayField("owners", this.owners, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("testStoreUri", this.testStoreUri);
-        jsonWriter.writeStringField("currentVersion", this.currentVersion);
-        jsonWriter.writeStringField("latestPublishedVersion", this.latestPublishedVersion);
-        jsonWriter.writeStringField("lastPublishedAt",
-            this.lastPublishedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastPublishedAt));
         return jsonWriter.writeEndObject();
     }
 
@@ -223,7 +214,9 @@ public final class ValidationTestProperties implements JsonSerializable<Validati
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("description".equals(fieldName)) {
+                if ("displayName".equals(fieldName)) {
+                    deserializedValidationTestProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
                     deserializedValidationTestProperties.description = reader.getString();
                 } else if ("audience".equals(fieldName)) {
                     deserializedValidationTestProperties.audience = CatalogAudience.fromString(reader.getString());
@@ -233,9 +226,6 @@ public final class ValidationTestProperties implements JsonSerializable<Validati
                 } else if ("categoryIds".equals(fieldName)) {
                     List<String> categoryIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedValidationTestProperties.categoryIds = categoryIds;
-                } else if ("overallState".equals(fieldName)) {
-                    deserializedValidationTestProperties.overallState
-                        = ValidationTestOverallState.fromString(reader.getString());
                 } else if ("owners".equals(fieldName)) {
                     List<String> owners = reader.readArray(reader1 -> reader1.getString());
                     deserializedValidationTestProperties.owners = owners;

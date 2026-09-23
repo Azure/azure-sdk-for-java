@@ -19,7 +19,8 @@ public final class OperationStatusGetSamples {
     public static void operationStatusGetMaximumSetGeneratedByMinimumSetRule(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.operationStatus()
-            .getWithResponse("obkgllzbzclv", "mewjfcrlycxuylboqxenpnsxxgcncx", com.azure.core.util.Context.NONE);
+            .getWithResponse("southcentralus", "11111111-1111-4111-8111-111111111111",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -33,6 +34,7 @@ public final class OperationStatusGetSamples {
     public static void
         operationStatusGetMaximumSet(com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.operationStatus()
-            .getWithResponse("obkgllzbzclv", "mewjfcrlycxuylboqxenpnsxxgcncx", com.azure.core.util.Context.NONE);
+            .getWithResponse("southcentralus", "11111111-1111-4111-8111-111111111111",
+                com.azure.core.util.Context.NONE);
     }
 }

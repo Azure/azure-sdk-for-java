@@ -6,20 +6,14 @@ package com.azure.resourcemanager.platformvalidation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.platformvalidation.implementation.models.ValidationTestCategoryListResult;
-import com.azure.resourcemanager.platformvalidation.models.CatalogAudience;
 import org.junit.jupiter.api.Assertions;
 
 public final class ValidationTestCategoryListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationTestCategoryListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"ocukoklyax\",\"description\":\"onuq\",\"audience\":\"Public\",\"provisioningState\":\"Succeeded\",\"parentCategoryId\":\"ypewrmjmwvvjekt\",\"owners\":[\"enhwlrs\",\"frzpwvlqdqgb\"]},\"id\":\"ylihkaetckt\",\"name\":\"fcivfsnkym\",\"type\":\"ctq\"},{\"properties\":{\"displayName\":\"bebrjcxerfuwuttt\",\"description\":\"vjrbirphxepcyvah\",\"audience\":\"Internal\",\"provisioningState\":\"Failed\",\"parentCategoryId\":\"qxj\",\"owners\":[\"j\",\"gidokgjljyoxgvcl\"]},\"id\":\"gsncghkjeszz\",\"name\":\"bijhtxfvgxbf\",\"type\":\"mxnehmp\"}],\"nextLink\":\"cxgod\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"tslhspkdeem\",\"description\":\"fm\",\"audience\":\"Internal\",\"provisioningState\":\"Canceled\",\"parentCategoryId\":\"melmqkrha\",\"owners\":[\"juahaquhcdhmdual\",\"exq\",\"vfadmws\"]},\"id\":\"r\",\"name\":\"vxpvgomz\",\"type\":\"fmisg\"}],\"nextLink\":\"nbbelda\"}")
             .toObject(ValidationTestCategoryListResult.class);
-        Assertions.assertEquals("ocukoklyax", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("onuq", model.value().get(0).properties().description());
-        Assertions.assertEquals(CatalogAudience.PUBLIC, model.value().get(0).properties().audience());
-        Assertions.assertEquals("ypewrmjmwvvjekt", model.value().get(0).properties().parentCategoryId());
-        Assertions.assertEquals("enhwlrs", model.value().get(0).properties().owners().get(0));
-        Assertions.assertEquals("cxgod", model.nextLink());
+        Assertions.assertEquals("nbbelda", model.nextLink());
     }
 }

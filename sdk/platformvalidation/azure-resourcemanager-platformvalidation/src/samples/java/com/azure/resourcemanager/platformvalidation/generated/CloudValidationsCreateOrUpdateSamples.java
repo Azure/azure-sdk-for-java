@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.platformvalidation.generated;
 
-import com.azure.resourcemanager.platformvalidation.models.CloudValidationOverallState;
 import com.azure.resourcemanager.platformvalidation.models.CloudValidationProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,11 +24,11 @@ public final class CloudValidationsCreateOrUpdateSamples {
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.cloudValidations()
             .define("cvtest01")
-            .withRegion("byryro")
+            .withRegion("southcentralus")
             .withExistingResourceGroup("rgvalidate")
-            .withTags(mapOf("key2277", "fakeTokenPlaceholder"))
-            .withProperties(new CloudValidationProperties().withDescription("ezutdlxrzaemjqpqpandwfixfkfk")
-                .withOverallState(CloudValidationOverallState.ENABLED))
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new CloudValidationProperties().withDescription(
+                "Cloud validation that groups platform validation execution plans for the target subscription."))
             .create();
     }
 

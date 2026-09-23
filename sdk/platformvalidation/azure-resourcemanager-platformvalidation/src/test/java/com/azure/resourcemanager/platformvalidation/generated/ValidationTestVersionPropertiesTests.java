@@ -5,30 +5,13 @@
 package com.azure.resourcemanager.platformvalidation.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.platformvalidation.models.CatalogAudience;
-import com.azure.resourcemanager.platformvalidation.models.ValidationTestInputDataType;
-import com.azure.resourcemanager.platformvalidation.models.ValidationTestOverallState;
 import com.azure.resourcemanager.platformvalidation.models.ValidationTestVersionProperties;
-import org.junit.jupiter.api.Assertions;
 
 public final class ValidationTestVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationTestVersionProperties model = BinaryData.fromString(
-            "{\"description\":\"vdcsitynn\",\"audience\":\"Internal\",\"provisioningState\":\"Canceled\",\"categoryIds\":[\"eh\",\"iqscjeypv\",\"ezrkgqhcjrefo\",\"gm\"],\"overallState\":\"Draft\",\"owners\":[\"yyvxyqjpkcattpn\",\"jcrcczsqpjhvmda\",\"v\",\"ysou\"],\"inputs\":[{\"name\":\"canoaeupf\",\"definition\":{\"description\":\"hltrpmopjmcmatuo\",\"type\":\"Integer\",\"required\":true,\"defaultValue\":\"uaodsfcpk\",\"allowedValues\":[\"dpuozmyz\",\"dagfuaxbezyiuok\",\"twhrdxwzywqsm\",\"surex\"]}}],\"contentHash\":\"o\",\"testStoreUri\":\"ocfs\"}")
+            "{\"displayName\":\"uknvudwti\",\"description\":\"bldngkpoc\",\"audience\":\"Internal\",\"provisioningState\":\"Failed\",\"categoryIds\":[\"egukgjnpiucg\"],\"owners\":[\"vqzntypmrbpizcdr\",\"j\",\"dpydn\"],\"inputs\":[{\"name\":\"xdeoejzic\",\"definition\":{\"description\":\"fsj\",\"type\":\"Integer\",\"required\":true,\"defaultValue\":\"ishc\",\"allowedValues\":[\"ajdeyeamdphaga\",\"pbuxwgipwhon\",\"wkgshwa\",\"kix\"]}},{\"name\":\"bin\",\"definition\":{\"description\":\"pu\",\"type\":\"Array\",\"required\":false,\"defaultValue\":\"nuzo\",\"allowedValues\":[\"iyqzrnk\",\"qvyxlwhzlsicoho\",\"qnwvlrya\"]}}],\"contentHash\":\"hheunmmqhgyx\",\"testStoreUri\":\"onocukok\"}")
             .toObject(ValidationTestVersionProperties.class);
-        Assertions.assertEquals("vdcsitynn", model.description());
-        Assertions.assertEquals(CatalogAudience.INTERNAL, model.audience());
-        Assertions.assertEquals("eh", model.categoryIds().get(0));
-        Assertions.assertEquals(ValidationTestOverallState.DRAFT, model.overallState());
-        Assertions.assertEquals("yyvxyqjpkcattpn", model.owners().get(0));
-        Assertions.assertEquals("canoaeupf", model.inputs().get(0).name());
-        Assertions.assertEquals("hltrpmopjmcmatuo", model.inputs().get(0).definition().description());
-        Assertions.assertEquals(ValidationTestInputDataType.INTEGER, model.inputs().get(0).definition().type());
-        Assertions.assertTrue(model.inputs().get(0).definition().required());
-        Assertions.assertEquals("uaodsfcpk", model.inputs().get(0).definition().defaultValue());
-        Assertions.assertEquals("dpuozmyz", model.inputs().get(0).definition().allowedValues().get(0));
-        Assertions.assertEquals("o", model.contentHash());
-        Assertions.assertEquals("ocfs", model.testStoreUri());
     }
 }

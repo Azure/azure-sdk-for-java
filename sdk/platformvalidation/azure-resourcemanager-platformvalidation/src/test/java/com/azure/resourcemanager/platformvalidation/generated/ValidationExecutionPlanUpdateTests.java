@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.platformvalidation.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanOverallState;
 import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanUpdate;
 import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanUpdateProperties;
 import java.util.HashMap;
@@ -16,29 +15,26 @@ public final class ValidationExecutionPlanUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationExecutionPlanUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"gxg\":\"zrnf\",\"fublj\":\"spemvtzfk\"},\"properties\":{\"description\":\"qeof\",\"planConfigurationUri\":\"e\",\"planConfigurationJson\":\"hqjbasvmsmj\",\"overallState\":\"Disabled\"}}")
+            "{\"tags\":{\"eofjaeqjh\":\"ofx\",\"tnb\":\"jbasvmsmjqulngs\"},\"properties\":{\"description\":\"zgcwrw\",\"planConfigurationUri\":\"xxwr\",\"planConfigurationJson\":\"douskcqvkocrcjdk\"}}")
             .toObject(ValidationExecutionPlanUpdate.class);
-        Assertions.assertEquals("zrnf", model.tags().get("gxg"));
-        Assertions.assertEquals("qeof", model.properties().description());
-        Assertions.assertEquals("e", model.properties().planConfigurationUri());
-        Assertions.assertEquals("hqjbasvmsmj", model.properties().planConfigurationJson());
-        Assertions.assertEquals(ValidationExecutionPlanOverallState.DISABLED, model.properties().overallState());
+        Assertions.assertEquals("ofx", model.tags().get("eofjaeqjh"));
+        Assertions.assertEquals("zgcwrw", model.properties().description());
+        Assertions.assertEquals("xxwr", model.properties().planConfigurationUri());
+        Assertions.assertEquals("douskcqvkocrcjdk", model.properties().planConfigurationJson());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ValidationExecutionPlanUpdate model
-            = new ValidationExecutionPlanUpdate().withTags(mapOf("gxg", "zrnf", "fublj", "spemvtzfk"))
-                .withProperties(new ValidationExecutionPlanUpdateProperties().withDescription("qeof")
-                    .withPlanConfigurationUri("e")
-                    .withPlanConfigurationJson("hqjbasvmsmj")
-                    .withOverallState(ValidationExecutionPlanOverallState.DISABLED));
+            = new ValidationExecutionPlanUpdate().withTags(mapOf("eofjaeqjh", "ofx", "tnb", "jbasvmsmjqulngs"))
+                .withProperties(new ValidationExecutionPlanUpdateProperties().withDescription("zgcwrw")
+                    .withPlanConfigurationUri("xxwr")
+                    .withPlanConfigurationJson("douskcqvkocrcjdk"));
         model = BinaryData.fromObject(model).toObject(ValidationExecutionPlanUpdate.class);
-        Assertions.assertEquals("zrnf", model.tags().get("gxg"));
-        Assertions.assertEquals("qeof", model.properties().description());
-        Assertions.assertEquals("e", model.properties().planConfigurationUri());
-        Assertions.assertEquals("hqjbasvmsmj", model.properties().planConfigurationJson());
-        Assertions.assertEquals(ValidationExecutionPlanOverallState.DISABLED, model.properties().overallState());
+        Assertions.assertEquals("ofx", model.tags().get("eofjaeqjh"));
+        Assertions.assertEquals("zgcwrw", model.properties().description());
+        Assertions.assertEquals("xxwr", model.properties().planConfigurationUri());
+        Assertions.assertEquals("douskcqvkocrcjdk", model.properties().planConfigurationJson());
     }
 
     // Use "Map.of" if available

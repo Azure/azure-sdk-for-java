@@ -31,6 +31,6 @@ public final class ValidationTestCategoriesListSamples {
      */
     public static void validationTestCategoriesListBySubscriptionMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTestCategories().list("yolfvidccdfa", com.azure.core.util.Context.NONE);
+        manager.validationTestCategories().list("audience eq 'Public'", com.azure.core.util.Context.NONE);
     }
 }

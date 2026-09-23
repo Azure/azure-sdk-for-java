@@ -21,9 +21,10 @@ public final class ExecutionPlanRunsCreateOrUpdateSamples {
     public static void executionPlanRunsCreateOrUpdateMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.executionPlanRuns()
-            .define("veprun01")
-            .withExistingValidationExecutionPlan("rgvalidate", "cvtest01", "veptest01")
-            .withProperties(new ExecutionPlanRunProperties().withDescription("zwakqazgtploz"))
+            .define("run-001")
+            .withExistingValidationExecutionPlan("rgvalidate", "cvtest01", "contoso-linux-cert")
+            .withProperties(
+                new ExecutionPlanRunProperties().withDescription("Run the Contoso Linux image certification plan."))
             .create();
     }
 }

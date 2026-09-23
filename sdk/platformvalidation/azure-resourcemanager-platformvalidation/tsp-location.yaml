@@ -1,4 +1,4 @@
 directory: specification/platformvalidation/resource-manager/Microsoft.PlatformValidation/PlatformValidation
-commit: 395e3a029791a6e56c414fd2b136bc4d37f1b859
+commit: 1b5de86203e384422d49080a955410aa553ed8a9
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

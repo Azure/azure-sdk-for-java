@@ -18,6 +18,7 @@ public final class ValidationTestCategoriesGetSamples {
      */
     public static void validationTestCategoriesGetMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTestCategories().getWithResponse("olnmhyteecutmvckbt", com.azure.core.util.Context.NONE);
+        manager.validationTestCategories()
+            .getWithResponse("linux-quality-validations", com.azure.core.util.Context.NONE);
     }
 }

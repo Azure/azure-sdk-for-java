@@ -5,20 +5,13 @@
 package com.azure.resourcemanager.platformvalidation.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.platformvalidation.models.CatalogAudience;
 import com.azure.resourcemanager.platformvalidation.models.ValidationTestCategoryProperties;
-import org.junit.jupiter.api.Assertions;
 
 public final class ValidationTestCategoryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationTestCategoryProperties model = BinaryData.fromString(
-            "{\"displayName\":\"ixzbinjeputtmryw\",\"description\":\"zoqftiyqzrnkcqvy\",\"audience\":\"Internal\",\"provisioningState\":\"Canceled\",\"parentCategoryId\":\"sicohoqqnwvlry\",\"owners\":[\"hheunmmqhgyx\"]}")
+            "{\"displayName\":\"udxytlmoyrx\",\"description\":\"fudwpznt\",\"audience\":\"Public\",\"provisioningState\":\"Succeeded\",\"parentCategoryId\":\"rqjbhckfrl\",\"owners\":[\"sbkyvpycanuzbp\",\"kafkuwbcrnwbm\",\"hhseyv\"]}")
             .toObject(ValidationTestCategoryProperties.class);
-        Assertions.assertEquals("ixzbinjeputtmryw", model.displayName());
-        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.description());
-        Assertions.assertEquals(CatalogAudience.INTERNAL, model.audience());
-        Assertions.assertEquals("sicohoqqnwvlry", model.parentCategoryId());
-        Assertions.assertEquals("hheunmmqhgyx", model.owners().get(0));
     }
 }

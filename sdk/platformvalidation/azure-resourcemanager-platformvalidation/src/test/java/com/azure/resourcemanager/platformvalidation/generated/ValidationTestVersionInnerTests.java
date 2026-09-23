@@ -6,30 +6,12 @@ package com.azure.resourcemanager.platformvalidation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.platformvalidation.fluent.models.ValidationTestVersionInner;
-import com.azure.resourcemanager.platformvalidation.models.CatalogAudience;
-import com.azure.resourcemanager.platformvalidation.models.ValidationTestInputDataType;
-import com.azure.resourcemanager.platformvalidation.models.ValidationTestOverallState;
-import org.junit.jupiter.api.Assertions;
 
 public final class ValidationTestVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationTestVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"hzrvqd\",\"audience\":\"Public\",\"provisioningState\":\"Failed\",\"categoryIds\":[\"igeho\"],\"overallState\":\"Active\",\"owners\":[\"skanyk\"],\"inputs\":[{\"name\":\"cuiywgqyw\",\"definition\":{\"description\":\"drvyn\",\"type\":\"Integer\",\"required\":true,\"defaultValue\":\"rcgyn\",\"allowedValues\":[\"pec\",\"vmmcoofs\",\"lzevgbmqjqab\",\"y\"]}},{\"name\":\"mivkwlzuvcc\",\"definition\":{\"description\":\"nfnbacfionlebxe\",\"type\":\"Object\",\"required\":true,\"defaultValue\":\"dpnqbq\",\"allowedValues\":[\"rjfeallnwsubisnj\",\"mpmngnzscxaqwoo\",\"hcbonqvpkvlr\",\"njeaseipheofloke\"]}},{\"name\":\"y\",\"definition\":{\"description\":\"nj\",\"type\":\"Boolean\",\"required\":true,\"defaultValue\":\"rhpdjpjumas\",\"allowedValues\":[\"jpqyegu\"]}},{\"name\":\"lhbxxhejjzzvdud\",\"definition\":{\"description\":\"dslfhotwmcy\",\"type\":\"Boolean\",\"required\":false,\"defaultValue\":\"npgacftade\",\"allowedValues\":[\"ltyfsop\",\"usue\",\"nzwdejba\",\"orxzdmohctbqvud\"]}}],\"contentHash\":\"dndnvow\",\"testStoreUri\":\"jjugwdkcglhslaz\"},\"id\":\"yggdtjixh\",\"name\":\"kuofqweykhme\",\"type\":\"evfyexfwhybcib\"}")
+            "{\"properties\":{\"displayName\":\"rq\",\"description\":\"poczvyifqrvkdvjs\",\"audience\":\"Public\",\"provisioningState\":\"Succeeded\",\"categoryIds\":[\"f\"],\"owners\":[\"kpnpulexxbczwtr\"],\"inputs\":[{\"name\":\"qzbqjvsov\",\"definition\":{\"description\":\"okacspk\",\"type\":\"Array\",\"required\":true,\"defaultValue\":\"bpxjmfl\",\"allowedValues\":[\"nchrkcciww\",\"juqk\",\"rsa\"]}},{\"name\":\"iwkuofos\",\"definition\":{\"description\":\"hsauuimjmvxied\",\"type\":\"String\",\"required\":true,\"defaultValue\":\"jrrfbyaosve\",\"allowedValues\":[\"onpc\",\"hocohslkev\",\"eggzfb\"]}}],\"contentHash\":\"fmvfaxkffeiit\",\"testStoreUri\":\"vmezy\"},\"id\":\"hxmzsbbzoggig\",\"name\":\"xwburvjxxjns\",\"type\":\"ydptkoen\"}")
             .toObject(ValidationTestVersionInner.class);
-        Assertions.assertEquals("hzrvqd", model.properties().description());
-        Assertions.assertEquals(CatalogAudience.PUBLIC, model.properties().audience());
-        Assertions.assertEquals("igeho", model.properties().categoryIds().get(0));
-        Assertions.assertEquals(ValidationTestOverallState.ACTIVE, model.properties().overallState());
-        Assertions.assertEquals("skanyk", model.properties().owners().get(0));
-        Assertions.assertEquals("cuiywgqyw", model.properties().inputs().get(0).name());
-        Assertions.assertEquals("drvyn", model.properties().inputs().get(0).definition().description());
-        Assertions.assertEquals(ValidationTestInputDataType.INTEGER,
-            model.properties().inputs().get(0).definition().type());
-        Assertions.assertTrue(model.properties().inputs().get(0).definition().required());
-        Assertions.assertEquals("rcgyn", model.properties().inputs().get(0).definition().defaultValue());
-        Assertions.assertEquals("pec", model.properties().inputs().get(0).definition().allowedValues().get(0));
-        Assertions.assertEquals("dndnvow", model.properties().contentHash());
-        Assertions.assertEquals("jjugwdkcglhslaz", model.properties().testStoreUri());
     }
 }

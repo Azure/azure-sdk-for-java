@@ -40,8 +40,6 @@
 
 ## ValidationTestRuns
 
-- [CreateOrUpdate](#validationtestruns_createorupdate)
-- [Delete](#validationtestruns_delete)
 - [Get](#validationtestruns_get)
 - [ListByExecutionPlanRun](#validationtestruns_listbyexecutionplanrun)
 
@@ -57,7 +55,6 @@
 ### CloudValidations_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.platformvalidation.models.CloudValidationOverallState;
 import com.azure.resourcemanager.platformvalidation.models.CloudValidationProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,7 +64,7 @@ import java.util.Map;
  */
 public final class CloudValidationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/CloudValidations_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/CloudValidations_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudValidations_CreateOrUpdate_MaximumSet.
@@ -78,11 +75,11 @@ public final class CloudValidationsCreateOrUpdateSamples {
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.cloudValidations()
             .define("cvtest01")
-            .withRegion("byryro")
+            .withRegion("southcentralus")
             .withExistingResourceGroup("rgvalidate")
-            .withTags(mapOf("key2277", "fakeTokenPlaceholder"))
-            .withProperties(new CloudValidationProperties().withDescription("ezutdlxrzaemjqpqpandwfixfkfk")
-                .withOverallState(CloudValidationOverallState.ENABLED))
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new CloudValidationProperties().withDescription(
+                "Cloud validation that groups platform validation execution plans for the target subscription."))
             .create();
     }
 
@@ -108,7 +105,7 @@ public final class CloudValidationsCreateOrUpdateSamples {
  */
 public final class CloudValidationsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/CloudValidations_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/CloudValidations_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudValidations_Delete_MaximumSet.
@@ -130,7 +127,7 @@ public final class CloudValidationsDeleteSamples {
  */
 public final class CloudValidationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/CloudValidations_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/CloudValidations_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudValidations_Get_MaximumSet.
@@ -153,7 +150,7 @@ public final class CloudValidationsGetByResourceGroupSamples {
  */
 public final class CloudValidationsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/CloudValidations_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/CloudValidations_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: CloudValidations_ListBySubscription_MinimumSet.
@@ -166,7 +163,7 @@ public final class CloudValidationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/CloudValidations_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/CloudValidations_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudValidations_ListBySubscription_MaximumSet.
@@ -188,7 +185,7 @@ public final class CloudValidationsListSamples {
  */
 public final class CloudValidationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/CloudValidations_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/CloudValidations_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: CloudValidations_ListByResourceGroup_MinimumSet.
@@ -201,7 +198,7 @@ public final class CloudValidationsListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/CloudValidations_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/CloudValidations_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudValidations_ListByResourceGroup_MaximumSet.
@@ -219,7 +216,6 @@ public final class CloudValidationsListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.platformvalidation.models.CloudValidation;
-import com.azure.resourcemanager.platformvalidation.models.CloudValidationOverallState;
 import com.azure.resourcemanager.platformvalidation.models.CloudValidationUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -229,7 +225,7 @@ import java.util.Map;
  */
 public final class CloudValidationsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/CloudValidations_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/CloudValidations_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudValidations_Update_MaximumSet.
@@ -242,9 +238,9 @@ public final class CloudValidationsUpdateSamples {
             .getByResourceGroupWithResponse("rgvalidate", "cvtest01", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key3330", "fakeTokenPlaceholder"))
-            .withProperties(new CloudValidationUpdateProperties().withDescription("ezutdlxrzaemjqpqpandwfixfkfk")
-                .withOverallState(CloudValidationOverallState.ENABLED))
+            .withTags(mapOf("cost-center", "platform-validation"))
+            .withProperties(new CloudValidationUpdateProperties().withDescription(
+                "Cloud validation that groups platform validation execution plans for the target subscription."))
             .apply();
     }
 
@@ -272,7 +268,7 @@ import com.azure.resourcemanager.platformvalidation.models.ExecutionPlanRunPrope
  */
 public final class ExecutionPlanRunsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ExecutionPlanRuns_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ExecutionPlanRuns_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExecutionPlanRuns_CreateOrUpdate_MaximumSet.
@@ -282,9 +278,10 @@ public final class ExecutionPlanRunsCreateOrUpdateSamples {
     public static void executionPlanRunsCreateOrUpdateMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.executionPlanRuns()
-            .define("veprun01")
-            .withExistingValidationExecutionPlan("rgvalidate", "cvtest01", "veptest01")
-            .withProperties(new ExecutionPlanRunProperties().withDescription("zwakqazgtploz"))
+            .define("run-001")
+            .withExistingValidationExecutionPlan("rgvalidate", "cvtest01", "contoso-linux-cert")
+            .withProperties(
+                new ExecutionPlanRunProperties().withDescription("Run the Contoso Linux image certification plan."))
             .create();
     }
 }
@@ -298,7 +295,7 @@ public final class ExecutionPlanRunsCreateOrUpdateSamples {
  */
 public final class ExecutionPlanRunsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ExecutionPlanRuns_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ExecutionPlanRuns_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExecutionPlanRuns_Delete_MaximumSet.
@@ -321,7 +318,7 @@ public final class ExecutionPlanRunsDeleteSamples {
  */
 public final class ExecutionPlanRunsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ExecutionPlanRuns_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ExecutionPlanRuns_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExecutionPlanRuns_Get_MaximumSet.
@@ -331,7 +328,8 @@ public final class ExecutionPlanRunsGetSamples {
     public static void
         executionPlanRunsGetMaximumSet(com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.executionPlanRuns()
-            .getWithResponse("rgvalidate", "cvtest01", "veptest01", "veprun01", com.azure.core.util.Context.NONE);
+            .getWithResponse("rgvalidate", "cvtest01", "contoso-linux-cert", "run-001",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -344,7 +342,7 @@ public final class ExecutionPlanRunsGetSamples {
  */
 public final class ExecutionPlanRunsListByExecutionPlanSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ExecutionPlanRuns_ListByExecutionPlan_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ExecutionPlanRuns_ListByExecutionPlan_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExecutionPlanRuns_ListByExecutionPlan_MaximumSet.
@@ -354,7 +352,8 @@ public final class ExecutionPlanRunsListByExecutionPlanSamples {
     public static void executionPlanRunsListByExecutionPlanMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.executionPlanRuns()
-            .listByExecutionPlan("rgvalidate", "cvtest01", "veptest01", null, com.azure.core.util.Context.NONE);
+            .listByExecutionPlan("rgvalidate", "cvtest01", "contoso-linux-cert", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -367,7 +366,7 @@ public final class ExecutionPlanRunsListByExecutionPlanSamples {
  */
 public final class OperationStatusGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/OperationStatus_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/OperationStatus_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: OperationStatus_Get_MaximumSet - generated by [MinimumSet] rule.
@@ -377,11 +376,12 @@ public final class OperationStatusGetSamples {
     public static void operationStatusGetMaximumSetGeneratedByMinimumSetRule(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.operationStatus()
-            .getWithResponse("obkgllzbzclv", "mewjfcrlycxuylboqxenpnsxxgcncx", com.azure.core.util.Context.NONE);
+            .getWithResponse("southcentralus", "11111111-1111-4111-8111-111111111111",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/OperationStatus_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/OperationStatus_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: OperationStatus_Get_MaximumSet.
@@ -391,7 +391,8 @@ public final class OperationStatusGetSamples {
     public static void
         operationStatusGetMaximumSet(com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.operationStatus()
-            .getWithResponse("obkgllzbzclv", "mewjfcrlycxuylboqxenpnsxxgcncx", com.azure.core.util.Context.NONE);
+            .getWithResponse("southcentralus", "11111111-1111-4111-8111-111111111111",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -404,7 +405,7 @@ public final class OperationStatusGetSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet.
@@ -417,7 +418,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet.
@@ -434,7 +435,6 @@ public final class OperationsListSamples {
 ### ValidationExecutionPlans_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanOverallState;
 import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -444,7 +444,7 @@ import java.util.Map;
  */
 public final class ValidationExecutionPlansCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationExecutionPlans_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationExecutionPlans_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationExecutionPlans_CreateOrUpdate_MaximumSet.
@@ -454,14 +454,15 @@ public final class ValidationExecutionPlansCreateOrUpdateSamples {
     public static void validationExecutionPlansCreateOrUpdateMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.validationExecutionPlans()
-            .define("veptest01")
-            .withRegion("cqqovjagjsndikbdlpltbtxisptjh")
+            .define("contoso-linux-cert")
+            .withRegion("southcentralus")
             .withExistingCloudValidation("rgvalidate", "cvtest01")
-            .withTags(mapOf("key3482", "fakeTokenPlaceholder"))
-            .withProperties(new ValidationExecutionPlanProperties().withDescription("ortzzlmaoxmwtcjkjkvuxx")
-                .withPlanConfigurationUri("xsouolufo")
-                .withPlanConfigurationJson("vmqqmcdpvhgu")
-                .withOverallState(ValidationExecutionPlanOverallState.ENABLED))
+            .withTags(mapOf("owner-team", "azure-platform-validation"))
+            .withProperties(new ValidationExecutionPlanProperties()
+                .withDescription(
+                    "Runs all public Linux-compatible AzCertify catalog tests against the Contoso Linux image.")
+                .withPlanConfigurationJson(
+                    "{\"apiVersion\":\"microsoft.PlatformValidation/validationExecutionPlan.v0\",\"kind\":\"ValidationExecutionPlan\",\"metadata\":{\"name\":\"contoso-linux-cert\"},\"parameters\":{\"certificationPackageReference\":{\"osType\":\"Linux\",\"vmGenerationType\":\"V1\",\"architectureType\":\"X64\",\"recommendedVMSizes\":[\"Standard_D4s_v3\"],\"storageProfile\":{\"osDiskImage\":{\"sourceVhdUri\":\"https://contoso.blob.core.windows.net/vhds/img.vhd?<sas>\"},\"dataDiskImages\":[]},\"additionalProperties\":{}}},\"authoring\":{\"steps\":[{\"name\":\"os-disk-size\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/os-disk-size/versions/1.0.0\"},{\"name\":\"data-disk-size\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/data-disk-size/versions/1.0.0\"},{\"name\":\"malware-defender\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/malware-defender/versions/1.0.0\"},{\"name\":\"malware-esrp\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/malware-esrp/versions/1.0.0\"},{\"name\":\"linux-quality-validation\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/linux-quality-validation/versions/1.0.0\",\"inputs\":{\"concurrency\":1,\"testSuite\":[{\"testNames\":[\"smoke_test\",\"validate_netvsc_reload\"]}]}}]}}"))
             .create();
     }
 
@@ -487,7 +488,7 @@ public final class ValidationExecutionPlansCreateOrUpdateSamples {
  */
 public final class ValidationExecutionPlansDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationExecutionPlans_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationExecutionPlans_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationExecutionPlans_Delete_MaximumSet.
@@ -510,7 +511,7 @@ public final class ValidationExecutionPlansDeleteSamples {
  */
 public final class ValidationExecutionPlansGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationExecutionPlans_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationExecutionPlans_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationExecutionPlans_Get_MaximumSet.
@@ -520,7 +521,7 @@ public final class ValidationExecutionPlansGetSamples {
     public static void validationExecutionPlansGetMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.validationExecutionPlans()
-            .getWithResponse("rgvalidate", "cvtest01", "veptest01", com.azure.core.util.Context.NONE);
+            .getWithResponse("rgvalidate", "cvtest01", "contoso-linux-cert", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -533,7 +534,7 @@ public final class ValidationExecutionPlansGetSamples {
  */
 public final class ValidationExecutionPlansListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationExecutionPlans_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationExecutionPlans_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationExecutionPlans_ListByResourceGroup_MaximumSet.
@@ -552,7 +553,6 @@ public final class ValidationExecutionPlansListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlan;
-import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanOverallState;
 import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -562,7 +562,7 @@ import java.util.Map;
  */
 public final class ValidationExecutionPlansUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationExecutionPlans_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationExecutionPlans_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationExecutionPlans_Update_MaximumSet.
@@ -575,11 +575,12 @@ public final class ValidationExecutionPlansUpdateSamples {
             .getWithResponse("rgvalidate", "cvtest01", "veptest01", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key145", "fakeTokenPlaceholder"))
-            .withProperties(new ValidationExecutionPlanUpdateProperties().withDescription("ortzzlmaoxmwtcjkjkvuxx")
-                .withPlanConfigurationUri("xsouolufo")
-                .withPlanConfigurationJson("vmqqmcdpvhgu")
-                .withOverallState(ValidationExecutionPlanOverallState.ENABLED))
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new ValidationExecutionPlanUpdateProperties()
+                .withDescription(
+                    "Validation execution plan that runs the network connectivity checks against the target image.")
+                .withPlanConfigurationJson(
+                    "{\"apiVersion\":\"microsoft.PlatformValidation/validationExecutionPlan.v0\",\"kind\":\"ValidationExecutionPlan\",\"metadata\":{\"name\":\"contoso-linux-cert\"},\"parameters\":{\"certificationPackageReference\":{\"osType\":\"Linux\",\"vmGenerationType\":\"V1\",\"architectureType\":\"X64\",\"recommendedVMSizes\":[\"Standard_D4s_v3\"],\"storageProfile\":{\"osDiskImage\":{\"sourceVhdUri\":\"https://contoso.blob.core.windows.net/vhds/img.vhd?<sas>\"},\"dataDiskImages\":[]},\"additionalProperties\":{}}},\"authoring\":{\"steps\":[{\"name\":\"os-disk-size\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/os-disk-size/versions/1.0.0\"},{\"name\":\"data-disk-size\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/data-disk-size/versions/1.0.0\"},{\"name\":\"malware-defender\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/malware-defender/versions/1.0.0\"},{\"name\":\"malware-esrp\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/malware-esrp/versions/1.0.0\"},{\"name\":\"linux-quality-validation\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/linux-quality-validation/versions/1.0.0\",\"inputs\":{\"concurrency\":1,\"testSuite\":[{\"testNames\":[\"smoke_test\",\"validate_netvsc_reload\"]}]}}]}}"))
             .apply();
     }
 
@@ -605,7 +606,7 @@ public final class ValidationExecutionPlansUpdateSamples {
  */
 public final class ValidationTestCategoriesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTestCategories_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationTestCategories_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationTestCategories_Get_MaximumSet.
@@ -614,7 +615,8 @@ public final class ValidationTestCategoriesGetSamples {
      */
     public static void validationTestCategoriesGetMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTestCategories().getWithResponse("olnmhyteecutmvckbt", com.azure.core.util.Context.NONE);
+        manager.validationTestCategories()
+            .getWithResponse("linux-quality-validations", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -627,7 +629,7 @@ public final class ValidationTestCategoriesGetSamples {
  */
 public final class ValidationTestCategoriesListSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTestCategories_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationTestCategories_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: ValidationTestCategories_ListBySubscription_MinimumSet.
@@ -640,7 +642,7 @@ public final class ValidationTestCategoriesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTestCategories_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationTestCategories_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationTestCategories_ListBySubscription_MaximumSet.
@@ -649,61 +651,7 @@ public final class ValidationTestCategoriesListSamples {
      */
     public static void validationTestCategoriesListBySubscriptionMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTestCategories().list("yolfvidccdfa", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ValidationTestRuns_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.platformvalidation.models.ValidationTestRunProperties;
-import java.util.Arrays;
-
-/**
- * Samples for ValidationTestRuns CreateOrUpdate.
- */
-public final class ValidationTestRunsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTestRuns_CreateOrUpdate_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: ValidationTestRuns_CreateOrUpdate_MaximumSet.
-     * 
-     * @param manager Entry point to PlatformValidationManager.
-     */
-    public static void validationTestRunsCreateOrUpdateMaximumSet(
-        com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTestRuns()
-            .define("vtrun01")
-            .withExistingExecutionPlanRun("rgvalidate", "cvtest01", "veptest01", "veprun01")
-            .withProperties(new ValidationTestRunProperties().withTestId("validation-test-001")
-                .withTestCategoryIds(Arrays.asList("cat-network", "cat-security"))
-                .withInputsJson("{\"region\":\"eastus\",\"sku\":\"standard\"}"))
-            .create();
-    }
-}
-```
-
-### ValidationTestRuns_Delete
-
-```java
-/**
- * Samples for ValidationTestRuns Delete.
- */
-public final class ValidationTestRunsDeleteSamples {
-    /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTestRuns_Delete_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: ValidationTestRuns_Delete_MaximumSet.
-     * 
-     * @param manager Entry point to PlatformValidationManager.
-     */
-    public static void validationTestRunsDeleteMaximumSet(
-        com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTestRuns()
-            .delete("rgvalidate", "cvtest01", "veptest01", "veprun01", "vtrun01", com.azure.core.util.Context.NONE);
+        manager.validationTestCategories().list("audience eq 'Public'", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -716,7 +664,7 @@ public final class ValidationTestRunsDeleteSamples {
  */
 public final class ValidationTestRunsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTestRuns_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationTestRuns_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationTestRuns_Get_MaximumSet.
@@ -726,7 +674,7 @@ public final class ValidationTestRunsGetSamples {
     public static void validationTestRunsGetMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.validationTestRuns()
-            .getWithResponse("rgvalidate", "cvtest01", "veptest01", "veprun01", "vtrun01",
+            .getWithResponse("rgvalidate", "cvtest01", "contoso-linux-cert", "run-001", "linux-quality-run",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -740,7 +688,7 @@ public final class ValidationTestRunsGetSamples {
  */
 public final class ValidationTestRunsListByExecutionPlanRunSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTestRuns_ListByExecutionPlanRun_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationTestRuns_ListByExecutionPlanRun_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationTestRuns_ListByExecutionPlanRun_MaximumSet.
@@ -750,7 +698,7 @@ public final class ValidationTestRunsListByExecutionPlanRunSamples {
     public static void validationTestRunsListByExecutionPlanRunMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.validationTestRuns()
-            .listByExecutionPlanRun("rgvalidate", "cvtest01", "veptest01", "veprun01",
+            .listByExecutionPlanRun("rgvalidate", "cvtest01", "contoso-linux-cert", "run-001",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -764,7 +712,7 @@ public final class ValidationTestRunsListByExecutionPlanRunSamples {
  */
 public final class ValidationTestVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTestVersions_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationTestVersions_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationTestVersions_Get_MaximumSet.
@@ -773,7 +721,8 @@ public final class ValidationTestVersionsGetSamples {
      */
     public static void validationTestVersionsGetMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTestVersions().getWithResponse("test1", "1.0.0", com.azure.core.util.Context.NONE);
+        manager.validationTestVersions()
+            .getWithResponse("linux-quality-validation", "1.0.0", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -786,7 +735,7 @@ public final class ValidationTestVersionsGetSamples {
  */
 public final class ValidationTestVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTestVersions_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationTestVersions_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationTestVersions_List_MaximumSet - generated by [MaximumSet] rule.
@@ -795,7 +744,8 @@ public final class ValidationTestVersionsListSamples {
      */
     public static void validationTestVersionsListMaximumSetGeneratedByMaximumSetRule(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTestVersions().list("test1", "yolfvidccdfa", com.azure.core.util.Context.NONE);
+        manager.validationTestVersions()
+            .list("linux-quality-validation", "audience eq 'Public'", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -808,7 +758,7 @@ public final class ValidationTestVersionsListSamples {
  */
 public final class ValidationTestsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTests_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationTests_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationTests_Get_MaximumSet.
@@ -817,7 +767,7 @@ public final class ValidationTestsGetSamples {
      */
     public static void
         validationTestsGetMaximumSet(com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTests().getWithResponse("pgaqtvwrkwboi", com.azure.core.util.Context.NONE);
+        manager.validationTests().getWithResponse("linux-quality-validation", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -830,7 +780,7 @@ public final class ValidationTestsGetSamples {
  */
 public final class ValidationTestsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTests_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationTests_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: ValidationTests_ListBySubscription_MaximumSet.
@@ -839,11 +789,11 @@ public final class ValidationTestsListSamples {
      */
     public static void validationTestsListBySubscriptionMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTests().list("yolfvidccdfa", com.azure.core.util.Context.NONE);
+        manager.validationTests().list("audience eq 'Public'", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-07-01-preview/ValidationTests_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-01-preview/ValidationTests_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: ValidationTests_ListBySubscription_MinimumSet.

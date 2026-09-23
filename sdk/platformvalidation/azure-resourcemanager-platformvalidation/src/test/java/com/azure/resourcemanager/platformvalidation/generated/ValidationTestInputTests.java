@@ -13,13 +13,13 @@ public final class ValidationTestInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationTestInput model = BinaryData.fromString(
-            "{\"name\":\"tjaodxobnb\",\"definition\":{\"description\":\"k\",\"type\":\"Boolean\",\"required\":true,\"defaultValue\":\"jionpimexgstxgc\",\"allowedValues\":[\"gmaajrm\"]}}")
+            "{\"name\":\"y\",\"definition\":{\"description\":\"kbfkg\",\"type\":\"String\",\"required\":true,\"defaultValue\":\"xppofmxaxcfjp\",\"allowedValues\":[\"toc\",\"j\"]}}")
             .toObject(ValidationTestInput.class);
-        Assertions.assertEquals("tjaodxobnb", model.name());
-        Assertions.assertEquals("k", model.definition().description());
-        Assertions.assertEquals(ValidationTestInputDataType.BOOLEAN, model.definition().type());
+        Assertions.assertEquals("y", model.name());
+        Assertions.assertEquals("kbfkg", model.definition().description());
+        Assertions.assertEquals(ValidationTestInputDataType.STRING, model.definition().type());
         Assertions.assertTrue(model.definition().required());
-        Assertions.assertEquals("jionpimexgstxgc", model.definition().defaultValue());
-        Assertions.assertEquals("gmaajrm", model.definition().allowedValues().get(0));
+        Assertions.assertEquals("xppofmxaxcfjp", model.definition().defaultValue());
+        Assertions.assertEquals("toc", model.definition().allowedValues().get(0));
     }
 }

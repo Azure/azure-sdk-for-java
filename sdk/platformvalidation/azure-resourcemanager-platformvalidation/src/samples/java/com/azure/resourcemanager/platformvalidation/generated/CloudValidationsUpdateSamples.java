@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.platformvalidation.generated;
 
 import com.azure.resourcemanager.platformvalidation.models.CloudValidation;
-import com.azure.resourcemanager.platformvalidation.models.CloudValidationOverallState;
 import com.azure.resourcemanager.platformvalidation.models.CloudValidationUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,9 +27,9 @@ public final class CloudValidationsUpdateSamples {
             .getByResourceGroupWithResponse("rgvalidate", "cvtest01", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key3330", "fakeTokenPlaceholder"))
-            .withProperties(new CloudValidationUpdateProperties().withDescription("ezutdlxrzaemjqpqpandwfixfkfk")
-                .withOverallState(CloudValidationOverallState.ENABLED))
+            .withTags(mapOf("cost-center", "platform-validation"))
+            .withProperties(new CloudValidationUpdateProperties().withDescription(
+                "Cloud validation that groups platform validation execution plans for the target subscription."))
             .apply();
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.platformvalidation.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanOverallState;
 import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanUpdateProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -13,25 +12,22 @@ public final class ValidationExecutionPlanUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationExecutionPlanUpdateProperties model = BinaryData.fromString(
-            "{\"description\":\"gsntnbybkzgcwr\",\"planConfigurationUri\":\"lxxwrljdouskc\",\"planConfigurationJson\":\"kocrcjdkwtnhx\",\"overallState\":\"Disabled\"}")
+            "{\"description\":\"nh\",\"planConfigurationUri\":\"njbiksqrglssain\",\"planConfigurationJson\":\"jwnzlljfmp\"}")
             .toObject(ValidationExecutionPlanUpdateProperties.class);
-        Assertions.assertEquals("gsntnbybkzgcwr", model.description());
-        Assertions.assertEquals("lxxwrljdouskc", model.planConfigurationUri());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.planConfigurationJson());
-        Assertions.assertEquals(ValidationExecutionPlanOverallState.DISABLED, model.overallState());
+        Assertions.assertEquals("nh", model.description());
+        Assertions.assertEquals("njbiksqrglssain", model.planConfigurationUri());
+        Assertions.assertEquals("jwnzlljfmp", model.planConfigurationJson());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ValidationExecutionPlanUpdateProperties model
-            = new ValidationExecutionPlanUpdateProperties().withDescription("gsntnbybkzgcwr")
-                .withPlanConfigurationUri("lxxwrljdouskc")
-                .withPlanConfigurationJson("kocrcjdkwtnhx")
-                .withOverallState(ValidationExecutionPlanOverallState.DISABLED);
+            = new ValidationExecutionPlanUpdateProperties().withDescription("nh")
+                .withPlanConfigurationUri("njbiksqrglssain")
+                .withPlanConfigurationJson("jwnzlljfmp");
         model = BinaryData.fromObject(model).toObject(ValidationExecutionPlanUpdateProperties.class);
-        Assertions.assertEquals("gsntnbybkzgcwr", model.description());
-        Assertions.assertEquals("lxxwrljdouskc", model.planConfigurationUri());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.planConfigurationJson());
-        Assertions.assertEquals(ValidationExecutionPlanOverallState.DISABLED, model.overallState());
+        Assertions.assertEquals("nh", model.description());
+        Assertions.assertEquals("njbiksqrglssain", model.planConfigurationUri());
+        Assertions.assertEquals("jwnzlljfmp", model.planConfigurationJson());
     }
 }

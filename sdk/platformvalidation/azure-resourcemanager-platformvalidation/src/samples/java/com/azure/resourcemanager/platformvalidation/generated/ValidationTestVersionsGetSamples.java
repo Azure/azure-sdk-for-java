@@ -18,6 +18,7 @@ public final class ValidationTestVersionsGetSamples {
      */
     public static void validationTestVersionsGetMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTestVersions().getWithResponse("test1", "1.0.0", com.azure.core.util.Context.NONE);
+        manager.validationTestVersions()
+            .getWithResponse("linux-quality-validation", "1.0.0", com.azure.core.util.Context.NONE);
     }
 }

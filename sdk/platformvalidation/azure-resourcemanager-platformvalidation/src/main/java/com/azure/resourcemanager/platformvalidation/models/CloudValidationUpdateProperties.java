@@ -21,11 +21,6 @@ public final class CloudValidationUpdateProperties implements JsonSerializable<C
      */
     private String description;
 
-    /*
-     * The overall state of the resource.
-     */
-    private CloudValidationOverallState overallState;
-
     /**
      * Creates an instance of CloudValidationUpdateProperties class.
      */
@@ -53,33 +48,12 @@ public final class CloudValidationUpdateProperties implements JsonSerializable<C
     }
 
     /**
-     * Get the overallState property: The overall state of the resource.
-     * 
-     * @return the overallState value.
-     */
-    public CloudValidationOverallState overallState() {
-        return this.overallState;
-    }
-
-    /**
-     * Set the overallState property: The overall state of the resource.
-     * 
-     * @param overallState the overallState value to set.
-     * @return the CloudValidationUpdateProperties object itself.
-     */
-    public CloudValidationUpdateProperties withOverallState(CloudValidationOverallState overallState) {
-        this.overallState = overallState;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("overallState", this.overallState == null ? null : this.overallState.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -101,9 +75,6 @@ public final class CloudValidationUpdateProperties implements JsonSerializable<C
 
                 if ("description".equals(fieldName)) {
                     deserializedCloudValidationUpdateProperties.description = reader.getString();
-                } else if ("overallState".equals(fieldName)) {
-                    deserializedCloudValidationUpdateProperties.overallState
-                        = CloudValidationOverallState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

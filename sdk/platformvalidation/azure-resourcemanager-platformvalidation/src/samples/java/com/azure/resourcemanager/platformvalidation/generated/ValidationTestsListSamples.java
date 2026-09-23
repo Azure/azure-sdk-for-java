@@ -18,7 +18,7 @@ public final class ValidationTestsListSamples {
      */
     public static void validationTestsListBySubscriptionMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTests().list("yolfvidccdfa", com.azure.core.util.Context.NONE);
+        manager.validationTests().list("audience eq 'Public'", com.azure.core.util.Context.NONE);
     }
 
     /*

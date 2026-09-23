@@ -46,7 +46,8 @@ public final class ValidationTestCategoryProperties implements JsonSerializable<
     private String parentCategoryId;
 
     /*
-     * Owners of the validation test category, expressed as email aliases or Microsoft Entra object IDs.
+     * Owners of the validation test category, expressed as team or distribution list aliases.
+     * Individual user aliases and directory object identifiers are not published in this field.
      * Only catalog publishers set this value through an internal publishing process; end users of the validation
      * service consume catalog entries read-only through Get/List and cannot modify it.
      */
@@ -108,8 +109,8 @@ public final class ValidationTestCategoryProperties implements JsonSerializable<
     }
 
     /**
-     * Get the owners property: Owners of the validation test category, expressed as email aliases or Microsoft Entra
-     * object IDs.
+     * Get the owners property: Owners of the validation test category, expressed as team or distribution list aliases.
+     * Individual user aliases and directory object identifiers are not published in this field.
      * Only catalog publishers set this value through an internal publishing process; end users of the validation
      * service consume catalog entries read-only through Get/List and cannot modify it.
      * 
@@ -125,11 +126,6 @@ public final class ValidationTestCategoryProperties implements JsonSerializable<
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("audience", this.audience == null ? null : this.audience.toString());
-        jsonWriter.writeStringField("parentCategoryId", this.parentCategoryId);
-        jsonWriter.writeArrayField("owners", this.owners, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 

@@ -10,11 +10,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.platformvalidation.PlatformValidationManager;
-import com.azure.resourcemanager.platformvalidation.models.CatalogAudience;
 import com.azure.resourcemanager.platformvalidation.models.ValidationTestCategory;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -22,7 +20,7 @@ public final class ValidationTestCategoriesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"swacffgdkzz\",\"description\":\"kfvhqcrailvpn\",\"audience\":\"Internal\",\"provisioningState\":\"Failed\",\"parentCategoryId\":\"rwdmhdlxyjrxsa\",\"owners\":[\"cnihgwqapnedgfbc\",\"kcvqvpke\"]},\"id\":\"cvdrhvoodsot\",\"name\":\"obzdopcjwvnhdl\",\"type\":\"wmgxcxrsl\"}";
+            = "{\"properties\":{\"displayName\":\"mfmtdaaygdvw\",\"description\":\"piohgwxrtfu\",\"audience\":\"Internal\",\"provisioningState\":\"Canceled\",\"parentCategoryId\":\"yqagvrvm\",\"owners\":[\"ukghimdblxgw\"]},\"id\":\"fnjhfjxwmszkkfo\",\"name\":\"rey\",\"type\":\"kzikfjawneaivxwc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +30,8 @@ public final class ValidationTestCategoriesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ValidationTestCategory response = manager.validationTestCategories()
-            .getWithResponse("wdsjnkalju", com.azure.core.util.Context.NONE)
+            .getWithResponse("rdvstkwqqtch", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("swacffgdkzz", response.properties().displayName());
-        Assertions.assertEquals("kfvhqcrailvpn", response.properties().description());
-        Assertions.assertEquals(CatalogAudience.INTERNAL, response.properties().audience());
-        Assertions.assertEquals("rwdmhdlxyjrxsa", response.properties().parentCategoryId());
-        Assertions.assertEquals("cnihgwqapnedgfbc", response.properties().owners().get(0));
     }
 }

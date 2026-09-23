@@ -51,8 +51,7 @@ public final class ValidationTestRunProperties implements JsonSerializable<Valid
     private OffsetDateTime reportedAt;
 
     /*
-     * The name of the validation test (ValidationTest resource name, not an ARM resource ID) in the validation test
-     * catalog.
+     * The resource ID of the validation test in the validation test catalog.
      */
     private String testId;
 
@@ -134,8 +133,7 @@ public final class ValidationTestRunProperties implements JsonSerializable<Valid
     }
 
     /**
-     * Get the testId property: The name of the validation test (ValidationTest resource name, not an ARM resource ID)
-     * in the validation test catalog.
+     * Get the testId property: The resource ID of the validation test in the validation test catalog.
      * 
      * @return the testId value.
      */
@@ -178,8 +176,6 @@ public final class ValidationTestRunProperties implements JsonSerializable<Valid
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("testId", this.testId);
-        jsonWriter.writeStringField("inputsJson", this.inputsJson);
         return jsonWriter.writeEndObject();
     }
 

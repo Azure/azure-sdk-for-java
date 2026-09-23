@@ -11,13 +11,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.platformvalidation.PlatformValidationManager;
-import com.azure.resourcemanager.platformvalidation.models.CatalogAudience;
-import com.azure.resourcemanager.platformvalidation.models.ValidationTestInputDataType;
-import com.azure.resourcemanager.platformvalidation.models.ValidationTestOverallState;
 import com.azure.resourcemanager.platformvalidation.models.ValidationTestVersion;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -25,7 +21,7 @@ public final class ValidationTestVersionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"weriofzpyqsem\",\"audience\":\"Public\",\"provisioningState\":\"Failed\",\"categoryIds\":[\"hhszh\",\"d\",\"lvwiwubmwmbesl\",\"nkww\"],\"overallState\":\"Published\",\"owners\":[\"lcxog\",\"okonzmnsikvmkqz\"],\"inputs\":[{\"name\":\"kdltfzxmhhvhg\",\"definition\":{\"description\":\"eodkwobda\",\"type\":\"Array\",\"required\":false,\"defaultValue\":\"dxbx\",\"allowedValues\":[\"bogqxndlkzgxhu\",\"iplbpodxunkbebxm\",\"byyntwlrbqt\",\"oievseotgqrlltm\"]}},{\"name\":\"wlauwzizxbmpg\",\"definition\":{\"description\":\"efuzmuvpbttd\",\"type\":\"String\",\"required\":false,\"defaultValue\":\"xe\",\"allowedValues\":[\"zbtbhj\",\"glkfg\"]}}],\"contentHash\":\"dneu\",\"testStoreUri\":\"fphsdyhtozfikdow\"},\"id\":\"uuvxz\",\"name\":\"clvit\",\"type\":\"hqzonosggbhcoh\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"zyh\",\"description\":\"tsmypyynpcdp\",\"audience\":\"Internal\",\"provisioningState\":\"Succeeded\",\"categoryIds\":[\"z\"],\"owners\":[\"biknsorgjhxbld\",\"lwwrl\"],\"inputs\":[{\"name\":\"tncvokot\",\"definition\":{\"description\":\"xdy\",\"type\":\"String\",\"required\":false,\"defaultValue\":\"ogjltdtbnnhad\",\"allowedValues\":[\"rkvcikhnvpa\",\"qgxqquezikyw\",\"gxk\"]}}],\"contentHash\":\"la\",\"testStoreUri\":\"elwuipi\"},\"id\":\"jzkzi\",\"name\":\"gvvcnayrhyr\",\"type\":\"xxmueedn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,25 +31,7 @@ public final class ValidationTestVersionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ValidationTestVersion> response
-            = manager.validationTestVersions().list("tdss", "s", com.azure.core.util.Context.NONE);
+            = manager.validationTestVersions().list("yatrwy", "q", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("weriofzpyqsem", response.iterator().next().properties().description());
-        Assertions.assertEquals(CatalogAudience.PUBLIC, response.iterator().next().properties().audience());
-        Assertions.assertEquals("hhszh", response.iterator().next().properties().categoryIds().get(0));
-        Assertions.assertEquals(ValidationTestOverallState.PUBLISHED,
-            response.iterator().next().properties().overallState());
-        Assertions.assertEquals("lcxog", response.iterator().next().properties().owners().get(0));
-        Assertions.assertEquals("kdltfzxmhhvhg", response.iterator().next().properties().inputs().get(0).name());
-        Assertions.assertEquals("eodkwobda",
-            response.iterator().next().properties().inputs().get(0).definition().description());
-        Assertions.assertEquals(ValidationTestInputDataType.ARRAY,
-            response.iterator().next().properties().inputs().get(0).definition().type());
-        Assertions.assertFalse(response.iterator().next().properties().inputs().get(0).definition().required());
-        Assertions.assertEquals("dxbx",
-            response.iterator().next().properties().inputs().get(0).definition().defaultValue());
-        Assertions.assertEquals("bogqxndlkzgxhu",
-            response.iterator().next().properties().inputs().get(0).definition().allowedValues().get(0));
-        Assertions.assertEquals("dneu", response.iterator().next().properties().contentHash());
-        Assertions.assertEquals("fphsdyhtozfikdow", response.iterator().next().properties().testStoreUri());
     }
 }

@@ -19,7 +19,7 @@ public final class ValidationTestRunsGetSamples {
     public static void validationTestRunsGetMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.validationTestRuns()
-            .getWithResponse("rgvalidate", "cvtest01", "veptest01", "veprun01", "vtrun01",
+            .getWithResponse("rgvalidate", "cvtest01", "contoso-linux-cert", "run-001", "linux-quality-run",
                 com.azure.core.util.Context.NONE);
     }
 }

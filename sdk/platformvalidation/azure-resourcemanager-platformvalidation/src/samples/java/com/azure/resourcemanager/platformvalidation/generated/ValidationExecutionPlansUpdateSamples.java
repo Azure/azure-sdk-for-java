@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.platformvalidation.generated;
 
 import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlan;
-import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanOverallState;
 import com.azure.resourcemanager.platformvalidation.models.ValidationExecutionPlanUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,11 +27,12 @@ public final class ValidationExecutionPlansUpdateSamples {
             .getWithResponse("rgvalidate", "cvtest01", "veptest01", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key145", "fakeTokenPlaceholder"))
-            .withProperties(new ValidationExecutionPlanUpdateProperties().withDescription("ortzzlmaoxmwtcjkjkvuxx")
-                .withPlanConfigurationUri("xsouolufo")
-                .withPlanConfigurationJson("vmqqmcdpvhgu")
-                .withOverallState(ValidationExecutionPlanOverallState.ENABLED))
+            .withTags(mapOf("environment", "production"))
+            .withProperties(new ValidationExecutionPlanUpdateProperties()
+                .withDescription(
+                    "Validation execution plan that runs the network connectivity checks against the target image.")
+                .withPlanConfigurationJson(
+                    "{\"apiVersion\":\"microsoft.PlatformValidation/validationExecutionPlan.v0\",\"kind\":\"ValidationExecutionPlan\",\"metadata\":{\"name\":\"contoso-linux-cert\"},\"parameters\":{\"certificationPackageReference\":{\"osType\":\"Linux\",\"vmGenerationType\":\"V1\",\"architectureType\":\"X64\",\"recommendedVMSizes\":[\"Standard_D4s_v3\"],\"storageProfile\":{\"osDiskImage\":{\"sourceVhdUri\":\"https://contoso.blob.core.windows.net/vhds/img.vhd?<sas>\"},\"dataDiskImages\":[]},\"additionalProperties\":{}}},\"authoring\":{\"steps\":[{\"name\":\"os-disk-size\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/os-disk-size/versions/1.0.0\"},{\"name\":\"data-disk-size\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/data-disk-size/versions/1.0.0\"},{\"name\":\"malware-defender\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/malware-defender/versions/1.0.0\"},{\"name\":\"malware-esrp\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/malware-esrp/versions/1.0.0\"},{\"name\":\"linux-quality-validation\",\"type\":\"test\",\"testRef\":\"/providers/Microsoft.PlatformValidation/validationTests/linux-quality-validation/versions/1.0.0\",\"inputs\":{\"concurrency\":1,\"testSuite\":[{\"testNames\":[\"smoke_test\",\"validate_netvsc_reload\"]}]}}]}}"))
             .apply();
     }
 

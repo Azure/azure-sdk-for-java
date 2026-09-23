@@ -18,6 +18,7 @@ public final class ValidationTestVersionsListSamples {
      */
     public static void validationTestVersionsListMaximumSetGeneratedByMaximumSetRule(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
-        manager.validationTestVersions().list("test1", "yolfvidccdfa", com.azure.core.util.Context.NONE);
+        manager.validationTestVersions()
+            .list("linux-quality-validation", "audience eq 'Public'", com.azure.core.util.Context.NONE);
     }
 }

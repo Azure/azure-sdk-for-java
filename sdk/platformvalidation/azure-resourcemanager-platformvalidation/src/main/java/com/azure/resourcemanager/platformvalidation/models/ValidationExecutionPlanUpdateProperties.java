@@ -25,6 +25,8 @@ public final class ValidationExecutionPlanUpdateProperties
     /*
      * URI where the configuration of the execution plan is defined.
      * Either this property or `planConfigurationJson` is mandatory while creating; they are mutually exclusive.
+     * This must be a plain, non-SAS reference (no embedded credentials, tokens, or query-string secrets);
+     * the service reads the referenced content using its managed identity.
      * This value is returned as-is in get responses, so it must not contain credentials or other secrets.
      */
     private String planConfigurationUri;
@@ -36,11 +38,6 @@ public final class ValidationExecutionPlanUpdateProperties
      * This value is returned as-is in get responses, so it must not contain credentials or other secrets.
      */
     private String planConfigurationJson;
-
-    /*
-     * The overall state of the resource.
-     */
-    private ValidationExecutionPlanOverallState overallState;
 
     /**
      * Creates an instance of ValidationExecutionPlanUpdateProperties class.
@@ -71,6 +68,8 @@ public final class ValidationExecutionPlanUpdateProperties
     /**
      * Get the planConfigurationUri property: URI where the configuration of the execution plan is defined.
      * Either this property or `planConfigurationJson` is mandatory while creating; they are mutually exclusive.
+     * This must be a plain, non-SAS reference (no embedded credentials, tokens, or query-string secrets);
+     * the service reads the referenced content using its managed identity.
      * This value is returned as-is in get responses, so it must not contain credentials or other secrets.
      * 
      * @return the planConfigurationUri value.
@@ -82,6 +81,8 @@ public final class ValidationExecutionPlanUpdateProperties
     /**
      * Set the planConfigurationUri property: URI where the configuration of the execution plan is defined.
      * Either this property or `planConfigurationJson` is mandatory while creating; they are mutually exclusive.
+     * This must be a plain, non-SAS reference (no embedded credentials, tokens, or query-string secrets);
+     * the service reads the referenced content using its managed identity.
      * This value is returned as-is in get responses, so it must not contain credentials or other secrets.
      * 
      * @param planConfigurationUri the planConfigurationUri value to set.
@@ -119,26 +120,6 @@ public final class ValidationExecutionPlanUpdateProperties
     }
 
     /**
-     * Get the overallState property: The overall state of the resource.
-     * 
-     * @return the overallState value.
-     */
-    public ValidationExecutionPlanOverallState overallState() {
-        return this.overallState;
-    }
-
-    /**
-     * Set the overallState property: The overall state of the resource.
-     * 
-     * @param overallState the overallState value to set.
-     * @return the ValidationExecutionPlanUpdateProperties object itself.
-     */
-    public ValidationExecutionPlanUpdateProperties withOverallState(ValidationExecutionPlanOverallState overallState) {
-        this.overallState = overallState;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -147,7 +128,6 @@ public final class ValidationExecutionPlanUpdateProperties
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("planConfigurationUri", this.planConfigurationUri);
         jsonWriter.writeStringField("planConfigurationJson", this.planConfigurationJson);
-        jsonWriter.writeStringField("overallState", this.overallState == null ? null : this.overallState.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -173,9 +153,6 @@ public final class ValidationExecutionPlanUpdateProperties
                     deserializedValidationExecutionPlanUpdateProperties.planConfigurationUri = reader.getString();
                 } else if ("planConfigurationJson".equals(fieldName)) {
                     deserializedValidationExecutionPlanUpdateProperties.planConfigurationJson = reader.getString();
-                } else if ("overallState".equals(fieldName)) {
-                    deserializedValidationExecutionPlanUpdateProperties.overallState
-                        = ValidationExecutionPlanOverallState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

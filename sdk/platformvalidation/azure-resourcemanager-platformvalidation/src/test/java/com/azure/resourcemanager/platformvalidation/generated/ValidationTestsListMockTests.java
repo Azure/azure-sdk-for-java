@@ -11,13 +11,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.platformvalidation.PlatformValidationManager;
-import com.azure.resourcemanager.platformvalidation.models.CatalogAudience;
 import com.azure.resourcemanager.platformvalidation.models.ValidationTest;
-import com.azure.resourcemanager.platformvalidation.models.ValidationTestInputDataType;
-import com.azure.resourcemanager.platformvalidation.models.ValidationTestOverallState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -25,7 +21,7 @@ public final class ValidationTestsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"xolzdahzx\",\"audience\":\"Internal\",\"provisioningState\":\"Canceled\",\"categoryIds\":[\"dmoizpostmg\",\"cfbu\"],\"overallState\":\"Published\",\"owners\":[\"jhhkxbp\",\"jy\",\"jhxxjyn\"],\"inputs\":[{\"name\":\"ivkrtsw\",\"definition\":{\"description\":\"qzvszjf\",\"type\":\"Number\",\"required\":true,\"defaultValue\":\"xxivetv\",\"allowedValues\":[\"aqtdoqmcbx\",\"wvxysl\",\"bhsfxob\",\"ytkblmpew\"]}},{\"name\":\"wfbkrvrns\",\"definition\":{\"description\":\"hqjohxcrsbfova\",\"type\":\"Integer\",\"required\":false,\"defaultValue\":\"bhsqfsubcgjbirxb\",\"allowedValues\":[\"srfbjfdtwss\",\"t\"]}}],\"testStoreUri\":\"pvjzbe\",\"currentVersion\":\"l\",\"latestPublishedVersion\":\"nfqqnvwp\",\"lastPublishedAt\":\"2021-08-13T08:01:40Z\"},\"id\":\"ruoujmk\",\"name\":\"jhwqytjrybnw\",\"type\":\"ewgdrjervn\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"nihgwqapnedg\",\"description\":\"cvkcvqvpkeqdcv\",\"audience\":\"Internal\",\"provisioningState\":\"Canceled\",\"categoryIds\":[\"sotbob\",\"dopcjwvnh\",\"ld\"],\"owners\":[\"xcxrsl\"],\"inputs\":[{\"name\":\"twuoegrpkhjwni\",\"definition\":{\"description\":\"sluicpdggkzz\",\"type\":\"Boolean\",\"required\":true,\"defaultValue\":\"axmodfvuef\",\"allowedValues\":[\"bpfvm\",\"yhrfouyftaakcpw\",\"yzvqt\"]}}],\"testStoreUri\":\"ubex\",\"currentVersion\":\"zksmondj\",\"latestPublishedVersion\":\"uxvypomgkopkwh\",\"lastPublishedAt\":\"2021-02-21T13:48:45Z\"},\"id\":\"ajqgxy\",\"name\":\"mocmbqfqvmk\",\"type\":\"xozap\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,28 +31,7 @@ public final class ValidationTestsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ValidationTest> response
-            = manager.validationTests().list("fqrhhuaopppc", com.azure.core.util.Context.NONE);
+            = manager.validationTests().list("sag", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xolzdahzx", response.iterator().next().properties().description());
-        Assertions.assertEquals(CatalogAudience.INTERNAL, response.iterator().next().properties().audience());
-        Assertions.assertEquals("dmoizpostmg", response.iterator().next().properties().categoryIds().get(0));
-        Assertions.assertEquals(ValidationTestOverallState.PUBLISHED,
-            response.iterator().next().properties().overallState());
-        Assertions.assertEquals("jhhkxbp", response.iterator().next().properties().owners().get(0));
-        Assertions.assertEquals("ivkrtsw", response.iterator().next().properties().inputs().get(0).name());
-        Assertions.assertEquals("qzvszjf",
-            response.iterator().next().properties().inputs().get(0).definition().description());
-        Assertions.assertEquals(ValidationTestInputDataType.NUMBER,
-            response.iterator().next().properties().inputs().get(0).definition().type());
-        Assertions.assertTrue(response.iterator().next().properties().inputs().get(0).definition().required());
-        Assertions.assertEquals("xxivetv",
-            response.iterator().next().properties().inputs().get(0).definition().defaultValue());
-        Assertions.assertEquals("aqtdoqmcbx",
-            response.iterator().next().properties().inputs().get(0).definition().allowedValues().get(0));
-        Assertions.assertEquals("pvjzbe", response.iterator().next().properties().testStoreUri());
-        Assertions.assertEquals("l", response.iterator().next().properties().currentVersion());
-        Assertions.assertEquals("nfqqnvwp", response.iterator().next().properties().latestPublishedVersion());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-13T08:01:40Z"),
-            response.iterator().next().properties().lastPublishedAt());
     }
 }

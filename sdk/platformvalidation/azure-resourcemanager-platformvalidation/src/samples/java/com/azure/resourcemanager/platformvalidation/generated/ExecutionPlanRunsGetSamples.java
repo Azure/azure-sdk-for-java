@@ -19,6 +19,7 @@ public final class ExecutionPlanRunsGetSamples {
     public static void
         executionPlanRunsGetMaximumSet(com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.executionPlanRuns()
-            .getWithResponse("rgvalidate", "cvtest01", "veptest01", "veprun01", com.azure.core.util.Context.NONE);
+            .getWithResponse("rgvalidate", "cvtest01", "contoso-linux-cert", "run-001",
+                com.azure.core.util.Context.NONE);
     }
 }

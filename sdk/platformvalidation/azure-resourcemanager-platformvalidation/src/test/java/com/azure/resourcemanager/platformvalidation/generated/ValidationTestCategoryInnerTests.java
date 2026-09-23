@@ -6,19 +6,12 @@ package com.azure.resourcemanager.platformvalidation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.platformvalidation.fluent.models.ValidationTestCategoryInner;
-import com.azure.resourcemanager.platformvalidation.models.CatalogAudience;
-import org.junit.jupiter.api.Assertions;
 
 public final class ValidationTestCategoryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationTestCategoryInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"dwtiukbldngkp\",\"description\":\"ipazyxoegukgjnpi\",\"audience\":\"Public\",\"provisioningState\":\"Succeeded\",\"parentCategoryId\":\"vqzntypmrbpizcdr\",\"owners\":[\"dpydn\",\"yhxdeoejzicwi\",\"sjttgzfbish\",\"bkh\"]},\"id\":\"deyeamdphagalpbu\",\"name\":\"wgipwhono\",\"type\":\"kgshwa\"}")
+            "{\"properties\":{\"displayName\":\"ovnotyfjfcnjbkcn\",\"description\":\"hbttkphyw\",\"audience\":\"Internal\",\"provisioningState\":\"Canceled\",\"parentCategoryId\":\"qnermclfplphoxu\",\"owners\":[\"pabgyeps\",\"jta\"]},\"id\":\"ugxywpmueef\",\"name\":\"zwfqkqujidsuyon\",\"type\":\"bglaocqxtccm\"}")
             .toObject(ValidationTestCategoryInner.class);
-        Assertions.assertEquals("dwtiukbldngkp", model.properties().displayName());
-        Assertions.assertEquals("ipazyxoegukgjnpi", model.properties().description());
-        Assertions.assertEquals(CatalogAudience.PUBLIC, model.properties().audience());
-        Assertions.assertEquals("vqzntypmrbpizcdr", model.properties().parentCategoryId());
-        Assertions.assertEquals("dpydn", model.properties().owners().get(0));
     }
 }

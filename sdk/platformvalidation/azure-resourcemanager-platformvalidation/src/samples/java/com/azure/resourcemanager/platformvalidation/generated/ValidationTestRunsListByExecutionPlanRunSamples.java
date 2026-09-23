@@ -19,7 +19,7 @@ public final class ValidationTestRunsListByExecutionPlanRunSamples {
     public static void validationTestRunsListByExecutionPlanRunMaximumSet(
         com.azure.resourcemanager.platformvalidation.PlatformValidationManager manager) {
         manager.validationTestRuns()
-            .listByExecutionPlanRun("rgvalidate", "cvtest01", "veptest01", "veprun01",
+            .listByExecutionPlanRun("rgvalidate", "cvtest01", "contoso-linux-cert", "run-001",
                 com.azure.core.util.Context.NONE);
     }
 }
