@@ -14,19 +14,19 @@ public final class FleetMemberUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetMemberUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"group\":\"fycc\",\"labels\":{\"flnrosfqpteehzz\":\"wmdwzjeiachboo\",\"swjdkirso\":\"ypyqrimzinp\"}}}")
+            "{\"properties\":{\"group\":\"bqe\",\"labels\":{\"icbtwnpzao\":\"xqbzvddntwnd\",\"jthjqkwpyei\":\"vuhrhcffcyddgl\",\"q\":\"xmqci\"}}}")
             .toObject(FleetMemberUpdate.class);
-        Assertions.assertEquals("fycc", model.group());
-        Assertions.assertEquals("wmdwzjeiachboo", model.labels().get("flnrosfqpteehzz"));
+        Assertions.assertEquals("bqe", model.group());
+        Assertions.assertEquals("xqbzvddntwnd", model.labels().get("icbtwnpzao"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetMemberUpdate model = new FleetMemberUpdate().withGroup("fycc")
-            .withLabels(mapOf("flnrosfqpteehzz", "wmdwzjeiachboo", "swjdkirso", "ypyqrimzinp"));
+        FleetMemberUpdate model = new FleetMemberUpdate().withGroup("bqe")
+            .withLabels(mapOf("icbtwnpzao", "xqbzvddntwnd", "jthjqkwpyei", "vuhrhcffcyddgl", "q", "xmqci"));
         model = BinaryData.fromObject(model).toObject(FleetMemberUpdate.class);
-        Assertions.assertEquals("fycc", model.group());
-        Assertions.assertEquals("wmdwzjeiachboo", model.labels().get("flnrosfqpteehzz"));
+        Assertions.assertEquals("bqe", model.group());
+        Assertions.assertEquals("xqbzvddntwnd", model.labels().get("icbtwnpzao"));
     }
 
     // Use "Map.of" if available

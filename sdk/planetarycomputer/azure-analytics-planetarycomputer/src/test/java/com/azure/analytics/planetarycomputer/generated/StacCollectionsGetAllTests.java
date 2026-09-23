@@ -4,6 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.StacAssetUrlSigningMode;
 import com.azure.analytics.planetarycomputer.models.StacCatalogCollections;
 import com.azure.analytics.planetarycomputer.models.StacCollection;
 import com.azure.analytics.planetarycomputer.models.StacCollectionTemporalExtent;
@@ -23,7 +24,7 @@ public final class StacCollectionsGetAllTests extends PlanetaryComputerProClient
     @Disabled
     public void testStacCollectionsGetAllTests() {
         // method invocation
-        StacCatalogCollections response = stacClient.getCollections(null, null);
+        StacCatalogCollections response = stacClient.getCollections((StacAssetUrlSigningMode) null, (Integer) null);
 
         // response assertion
         Assertions.assertNotNull(response);

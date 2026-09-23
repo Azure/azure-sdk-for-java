@@ -9,11 +9,15 @@ import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.models.FeatureType;
 import com.azure.analytics.planetarycomputer.models.GeoJsonFeature;
 import com.azure.analytics.planetarycomputer.models.GeoJsonPolygon;
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.StacItemStatisticsGeoJson;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MosaicItemsGeoJsonStatisticsGet {
@@ -32,8 +36,12 @@ public class MosaicItemsGeoJsonStatisticsGet {
                                 Arrays.asList(-84.3814, 33.6714), Arrays.asList(-84.3814, 33.6806),
                                 Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714)))),
                         FeatureType.FEATURE).setProperties(mapOf()),
-                    null, Arrays.asList("image"), null, null, null, null, null, null, null, null, null, null, null,
-                    null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                    (List<Integer>) null, Arrays.asList("image"), (String) null, (List<String>) null, (Boolean) null,
+                    (String) null, (Boolean) null, (WarpKernelResampling) null, (String) null, (Resampling) null,
+                    (Integer) null, (Boolean) null, (List<Integer>) null, (List<Integer>) null, (String) null,
+                    (String) null, (String) null, (String) null, (List<Integer>) null, (String) null, (String) null,
+                    (List<String>) null, (SelMethod) null, (String) null, (String) null, (Integer) null,
+                    (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-item-feature-statistics.mosaic-items-geo-json-statistics-get
     }
 

@@ -383,8 +383,10 @@ public final class SharedExecutorService implements ScheduledExecutorService {
             executorService.setKeepAliveTime(THREAD_POOL_KEEP_ALIVE_MILLIS, TimeUnit.MILLISECONDS);
             executorService.allowCoreThreadTimeOut(true);
         }
-        Thread shutdownThread = ImplUtils.createExecutorServiceShutdownThread(executorService, Duration.ofSeconds(5));
-        ImplUtils.addShutdownHookSafely(shutdownThread);
+        // A null shutdown thread means the JVM is already shutting down and the hook could not be registered. The
+        // executor is still usable for the work that is draining, and there is then no hook to remove later.
+        Thread shutdownThread = ImplUtils.addShutdownHookSafely(
+            ImplUtils.createExecutorServiceShutdownThread(executorService, Duration.ofSeconds(5)));
 
         return new InternalExecutorService(executorService, shutdownThread);
     }

@@ -6,10 +6,16 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.ColorMapNames;
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
+import com.azure.analytics.planetarycomputer.models.TerrainAlgorithm;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
+import java.util.List;
 
 public class MosaicItemsBboxGetCroppedToBoundingBox {
     public static void main(String[] args) {
@@ -19,8 +25,11 @@ public class MosaicItemsBboxGetCroppedToBoundingBox {
                 .buildDataClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.data-get-item-bbox-crop.mosaic-items-bbox-get-cropped-to-bounding-box
         BinaryData response = dataClient.getItemBboxCrop("naip-atl", "ga_m_3308421_se_16_060_20211114", -122.5, 37.7,
-            -122.3, 37.8, "png", null, Arrays.asList("image"), null, null, null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            -122.3, 37.8, "png", (List<Integer>) null, Arrays.asList("image"), (String) null, (List<String>) null,
+            (Boolean) null, (String) null, (Boolean) null, (WarpKernelResampling) null, (TerrainAlgorithm) null,
+            (String) null, (String) null, (String) null, (String) null, (Resampling) null, (Integer) null,
+            (Integer) null, (Integer) null, (List<String>) null, (ColorMapNames) null, (String) null, (Boolean) null,
+            (String) null, (List<Integer>) null, (String) null, (String) null, (List<String>) null, (SelMethod) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-get-item-bbox-crop.mosaic-items-bbox-get-cropped-to-bounding-box
     }
 }
