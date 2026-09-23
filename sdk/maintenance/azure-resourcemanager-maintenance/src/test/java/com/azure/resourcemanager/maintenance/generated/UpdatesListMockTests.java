@@ -25,7 +25,7 @@ public final class UpdatesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"maintenanceScope\":\"Resource\",\"impactType\":\"Redeploy\",\"status\":\"Cancelled\",\"impactDurationInSec\":426763582,\"notBefore\":\"2021-07-05T00:26:08Z\",\"properties\":{\"resourceId\":\"primr\"}}]}";
+            = "{\"value\":[{\"maintenanceScope\":\"InGuestPatch\",\"impactType\":\"Freeze\",\"status\":\"NoUpdatesPending\",\"impactDurationInSec\":2044561502,\"notBefore\":\"2021-01-27T12:03:12Z\",\"properties\":{\"resourceId\":\"ibmi\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class UpdatesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Update> response
-            = manager.updates().list("lllibph", "qzmiza", "a", "ankjpdnjzh", com.azure.core.util.Context.NONE);
+        PagedIterable<Update> response = manager.updates()
+            .list("linmfgv", "irpghriypoqeyh", "qhykprlpyzn", "ciqdsme", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(MaintenanceScope.RESOURCE, response.iterator().next().maintenanceScope());
-        Assertions.assertEquals(ImpactType.REDEPLOY, response.iterator().next().impactType());
-        Assertions.assertEquals(UpdateStatus.CANCELLED, response.iterator().next().status());
-        Assertions.assertEquals(426763582, response.iterator().next().impactDurationInSec());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-05T00:26:08Z"), response.iterator().next().notBefore());
-        Assertions.assertEquals("primr", response.iterator().next().resourceId());
+        Assertions.assertEquals(MaintenanceScope.IN_GUEST_PATCH, response.iterator().next().maintenanceScope());
+        Assertions.assertEquals(ImpactType.FREEZE, response.iterator().next().impactType());
+        Assertions.assertEquals(UpdateStatus.NO_UPDATES_PENDING, response.iterator().next().status());
+        Assertions.assertEquals(2044561502, response.iterator().next().impactDurationInSec());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-27T12:03:12Z"), response.iterator().next().notBefore());
+        Assertions.assertEquals("ibmi", response.iterator().next().resourceId());
     }
 }

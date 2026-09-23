@@ -23,7 +23,7 @@ public final class ApplyUpdatesCreateOrUpdateOrCancelWithResponseMockTests {
     @Test
     public void testCreateOrUpdateOrCancelWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"status\":\"Cancelled\",\"resourceId\":\"mhrkwofyyvoqacp\",\"lastUpdateTime\":\"2021-05-18T15:14:28Z\"},\"id\":\"btgiwbwoenwas\",\"name\":\"rtdtkcnqxw\",\"type\":\"p\"}";
+            = "{\"properties\":{\"status\":\"Pending\",\"resourceId\":\"jphuopxodlqi\",\"lastUpdateTime\":\"2021-10-02T17:09:33Z\"},\"id\":\"rz\",\"name\":\"hleosjsw\",\"type\":\"rmslyzrpzbchckqq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class ApplyUpdatesCreateOrUpdateOrCancelWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplyUpdate response = manager.applyUpdates()
-            .createOrUpdateOrCancelWithResponse("zksmondj", "quxvypomgkop", "whojvp", "jqg", "ysmocmbqfqvmkcxo",
-                new ApplyUpdateInner().withStatus(UpdateStatus.CANCEL)
-                    .withResourceId("elxprglyatddck")
-                    .withLastUpdateTime(OffsetDateTime.parse("2021-12-06T09:13:13Z")),
+            .createOrUpdateOrCancelWithResponse("reqnovvqfov", "jxywsuws", "rsndsytgadgvra", "aeneqnzarrwl", "uu",
+                new ApplyUpdateInner().withStatus(UpdateStatus.RETRY_NOW)
+                    .withResourceId("acewiipfpubjibw")
+                    .withLastUpdateTime(OffsetDateTime.parse("2021-02-08T13:33:20Z")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(UpdateStatus.CANCELLED, response.status());
-        Assertions.assertEquals("mhrkwofyyvoqacp", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T15:14:28Z"), response.lastUpdateTime());
+        Assertions.assertEquals(UpdateStatus.PENDING, response.status());
+        Assertions.assertEquals("jphuopxodlqi", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-02T17:09:33Z"), response.lastUpdateTime());
     }
 }

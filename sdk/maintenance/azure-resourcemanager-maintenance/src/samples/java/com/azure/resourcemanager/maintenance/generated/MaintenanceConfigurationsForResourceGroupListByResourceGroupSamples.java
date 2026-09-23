@@ -9,7 +9,7 @@ package com.azure.resourcemanager.maintenance.generated;
  */
 public final class MaintenanceConfigurationsForResourceGroupListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/MaintenanceConfigurationsResourceGroup_List.json
+     * x-ms-original-file: 2025-10-01-preview/MaintenanceConfigurationsResourceGroup_List.json
      */
     /**
      * Sample code: MaintenanceConfigurationsResourceGroup_List.
