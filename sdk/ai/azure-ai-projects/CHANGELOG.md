@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed serialization of OpenAI tools passed to `AzureAIAgentTarget.setToolsAsOpenAITools(...)` to avoid emitting computed properties such as `isValid` in request bodies.
+
 ### Other Changes
 
 ## 2.6.0 (2026-09-22)
