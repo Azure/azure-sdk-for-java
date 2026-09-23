@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Add Custom Measurements
+
 ### Breaking Changes
 
 ### Bugs Fixed
