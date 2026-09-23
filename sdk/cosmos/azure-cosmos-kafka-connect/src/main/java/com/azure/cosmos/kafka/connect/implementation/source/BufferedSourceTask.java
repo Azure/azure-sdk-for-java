@@ -26,8 +26,8 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Base class for source tasks whose source read can block indefinitely.
  *
- * <p>The source read runs on one generation-scoped background thread. Kafka Connect polls a
- * capacity-one result queue and therefore regains control regularly for pause and shutdown.
+ * <p>The source read runs on one background thread. Kafka Connect polls a bounded queue and
+ * therefore regains control regularly for pause and shutdown.
  */
 public abstract class BufferedSourceTask extends SourceTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(BufferedSourceTask.class);
@@ -38,9 +38,16 @@ public abstract class BufferedSourceTask extends SourceTask {
 
     private final Duration kafkaPollWait;
     private final Duration pollingThreadShutdownWait;
-    private final AtomicBoolean taskStarted = new AtomicBoolean();
-    private final AtomicReference<PollingGeneration> generation = new AtomicReference<>();
-    private volatile Map<String, String> taskProperties;
+    private final BlockingQueue<PollResult> pollResults =
+        new LinkedBlockingQueue<>(POLL_RESULT_CAPACITY);
+    private final AtomicReference<Throwable> pollingError = new AtomicReference<>();
+    private final AtomicBoolean startInvoked = new AtomicBoolean();
+    private final AtomicBoolean started = new AtomicBoolean();
+    private final AtomicBoolean stopping = new AtomicBoolean();
+    private final AtomicBoolean readerStarted = new AtomicBoolean();
+    private final AtomicBoolean readerFinished = new AtomicBoolean();
+    private ExecutorService pollingExecutor;
+    private String pollingThreadName;
 
     protected BufferedSourceTask() {
         this(DEFAULT_KAFKA_POLL_WAIT, DEFAULT_POLLING_THREAD_SHUTDOWN_WAIT);
@@ -55,19 +62,29 @@ public abstract class BufferedSourceTask extends SourceTask {
 
     @Override
     public final synchronized void start(Map<String, String> props) {
-        if (!this.taskStarted.compareAndSet(false, true)) {
-            throw new ConnectException("Source task is already running");
+        if (!this.startInvoked.compareAndSet(false, true)) {
+            throw new ConnectException("Source task has already been started");
         }
+        this.started.set(true);
+
+        this.stopping.set(false);
+        this.readerFinished.set(false);
+        this.pollResults.clear();
+        this.pollingError.set(null);
+        this.pollingThreadName = this.getPollingThreadName(props);
 
         try {
             this.startTask(props);
-            this.taskProperties = props;
+            this.pollingExecutor = Executors.newSingleThreadExecutor(runnable -> {
+                Thread thread = new Thread(runnable, this.pollingThreadName);
+                thread.setDaemon(true);
+                thread.setUncaughtExceptionHandler((ignored, error) -> {
+                    this.pollingError.compareAndSet(null, error);
+                    this.readerFinished.set(true);
+                });
+                return thread;
+            });
         } catch (RuntimeException | Error error) {
-            PollingGeneration failedGeneration = this.generation.getAndSet(null);
-            if (failedGeneration != null) {
-                failedGeneration.stopping.set(true);
-                failedGeneration.executor.shutdownNow();
-            }
             this.stopTaskOnce();
             throw error;
         }
@@ -75,18 +92,15 @@ public abstract class BufferedSourceTask extends SourceTask {
 
     @Override
     public final List<SourceRecord> poll() {
-        PollingGeneration currentGeneration = this.ensurePollingGeneration();
-        if (currentGeneration == null) {
-            return Collections.emptyList();
-        }
+        this.startReaderIfNeeded();
 
         PollResult result;
         try {
-            result = currentGeneration.pollResults.poll(
+            result = this.pollResults.poll(
                 this.kafkaPollWait.toMillis(),
                 TimeUnit.MILLISECONDS);
         } catch (InterruptedException exception) {
-            if (currentGeneration.stopping.get()) {
+            if (this.stopping.get()) {
                 return Collections.emptyList();
             }
             Thread.currentThread().interrupt();
@@ -94,37 +108,32 @@ public abstract class BufferedSourceTask extends SourceTask {
         }
 
         if (result == null) {
-            if (currentGeneration.readerFinished.get()
-                && !currentGeneration.stopping.get()) {
-                Throwable terminalError = currentGeneration.terminalError.get();
-                if (terminalError != null) {
-                    throwPollError(terminalError, false);
-                }
+            this.checkPollingError();
+            if (this.readerFinished.get() && !this.stopping.get()) {
                 throw new ConnectException("Background source polling thread stopped unexpectedly");
             }
             return Collections.emptyList();
         }
 
         if (result.error != null) {
-            throwPollError(result.error, currentGeneration.stopping.get());
+            throwPollError(result.error, this.stopping.get());
         }
         return result.records;
     }
 
     @Override
     public final synchronized void stop() {
-        PollingGeneration currentGeneration = this.generation.getAndSet(null);
-        if (currentGeneration != null) {
-            currentGeneration.stopping.set(true);
+        if (!this.stopping.compareAndSet(false, true)) {
+            return;
         }
 
         try {
             this.stopTaskOnce();
         } finally {
-            this.taskProperties = null;
-            if (currentGeneration != null) {
-                currentGeneration.executor.shutdownNow();
-                this.awaitPollingThreadShutdown(currentGeneration.executor);
+            if (this.pollingExecutor != null) {
+                this.pollingExecutor.shutdownNow();
+                this.awaitPollingThreadShutdown();
+                this.pollingExecutor = null;
             }
         }
     }
@@ -139,67 +148,57 @@ public abstract class BufferedSourceTask extends SourceTask {
         return this.getClass().getSimpleName() + "-poll";
     }
 
-    private PollingGeneration ensurePollingGeneration() {
-        PollingGeneration currentGeneration = this.generation.get();
-        if (currentGeneration != null || !this.taskStarted.get()) {
-            return currentGeneration;
+    private void startReaderIfNeeded() {
+        if (!this.started.get() || this.stopping.get() || this.readerStarted.get()) {
+            return;
         }
-
-        Map<String, String> properties = this.taskProperties;
-        if (properties == null) {
-            return null;
-        }
-
-        PollingGeneration newGeneration =
-            new PollingGeneration(this.getPollingThreadName(properties));
-        if (!this.generation.compareAndSet(null, newGeneration)) {
-            newGeneration.executor.shutdownNow();
-            return this.generation.get();
-        }
-        try {
-            newGeneration.executor.execute(
-                preserveMdc(() -> {
-                    this.pollContinuously(newGeneration);
-                    newGeneration.readerFinished.set(true);
-                }));
-            return newGeneration;
-        } catch (RuntimeException error) {
-            this.generation.compareAndSet(newGeneration, null);
-            newGeneration.stopping.set(true);
-            newGeneration.executor.shutdownNow();
-            throw error;
-        }
-    }
-
-    private void pollContinuously(PollingGeneration currentGeneration) {
-        while (!currentGeneration.stopping.get()) {
+        if (this.readerStarted.compareAndSet(false, true)) {
             try {
-                List<SourceRecord> records = this.pollTask();
-                if (!publishResult(currentGeneration, PollResult.records(records))) {
-                    return;
+                this.pollingExecutor.execute(
+                    preserveMdc(() -> {
+                        try {
+                            this.pollContinuously();
+                        } finally {
+                            this.readerFinished.set(true);
+                        }
+                    }));
+            } catch (RuntimeException error) {
+                if (!this.stopping.get()) {
+                    throw error;
                 }
-            } catch (Exception error) {
-                if (!currentGeneration.stopping.get()) {
-                    currentGeneration.terminalError.set(error);
-                    if (!publishResult(currentGeneration, PollResult.error(error))) {
-                        return;
-                    }
-                    if (isRetriable(error) && waitBeforeRetry(currentGeneration)) {
-                        currentGeneration.terminalError.compareAndSet(error, null);
-                        continue;
-                    }
-                }
-                return;
             }
         }
     }
 
-    private boolean publishResult(
-        PollingGeneration currentGeneration,
-        PollResult result) {
-        while (!currentGeneration.stopping.get()) {
+    private void pollContinuously() {
+        while (!this.stopping.get()) {
             try {
-                if (currentGeneration.pollResults.offer(result, 100, TimeUnit.MILLISECONDS)) {
+                List<SourceRecord> records = this.pollTask();
+                if (!this.publishResult(PollResult.records(records))) {
+                    return;
+                }
+            } catch (Exception error) {
+                if (this.stopping.get()) {
+                    return;
+                }
+
+                this.pollingError.set(error);
+                if (!this.publishResult(PollResult.error(error))) {
+                    return;
+                }
+                this.pollingError.compareAndSet(error, null);
+
+                if (!isRetriable(error) || !this.waitBeforeRetry()) {
+                    return;
+                }
+            }
+        }
+    }
+
+    private boolean publishResult(PollResult result) {
+        while (!this.stopping.get()) {
+            try {
+                if (this.pollResults.offer(result, 100, TimeUnit.MILLISECONDS)) {
                     return true;
                 }
             } catch (InterruptedException exception) {
@@ -210,9 +209,16 @@ public abstract class BufferedSourceTask extends SourceTask {
         return false;
     }
 
-    private void awaitPollingThreadShutdown(ExecutorService executor) {
+    private void checkPollingError() {
+        Throwable error = this.pollingError.get();
+        if (error != null) {
+            throwPollError(error, this.stopping.get());
+        }
+    }
+
+    private void awaitPollingThreadShutdown() {
         try {
-            if (!executor.awaitTermination(
+            if (!this.pollingExecutor.awaitTermination(
                 this.pollingThreadShutdownWait.toMillis(),
                 TimeUnit.MILLISECONDS)) {
                 LOGGER.error(
@@ -225,10 +231,10 @@ public abstract class BufferedSourceTask extends SourceTask {
         }
     }
 
-    private boolean waitBeforeRetry(PollingGeneration currentGeneration) {
+    private boolean waitBeforeRetry() {
         try {
             Thread.sleep(RETRIABLE_ERROR_BACKOFF.toMillis());
-            return !currentGeneration.stopping.get();
+            return !this.stopping.get();
         } catch (InterruptedException exception) {
             Thread.currentThread().interrupt();
             return false;
@@ -236,7 +242,7 @@ public abstract class BufferedSourceTask extends SourceTask {
     }
 
     private void stopTaskOnce() {
-        if (this.taskStarted.compareAndSet(true, false)) {
+        if (this.started.compareAndSet(true, false)) {
             this.stopTask();
         }
     }
@@ -301,27 +307,6 @@ public abstract class BufferedSourceTask extends SourceTask {
 
         private static PollResult error(Throwable error) {
             return new PollResult(Collections.emptyList(), error);
-        }
-    }
-
-    private static final class PollingGeneration {
-        private final BlockingQueue<PollResult> pollResults =
-            new LinkedBlockingQueue<>(POLL_RESULT_CAPACITY);
-        private final AtomicBoolean stopping = new AtomicBoolean();
-        private final AtomicBoolean readerFinished = new AtomicBoolean();
-        private final AtomicReference<Throwable> terminalError = new AtomicReference<>();
-        private final ExecutorService executor;
-
-        private PollingGeneration(String threadName) {
-            this.executor = Executors.newSingleThreadExecutor(runnable -> {
-                Thread thread = new Thread(runnable, threadName);
-                thread.setDaemon(true);
-                thread.setUncaughtExceptionHandler((ignored, error) -> {
-                    this.terminalError.compareAndSet(null, error);
-                    this.readerFinished.set(true);
-                });
-                return thread;
-            });
         }
     }
 }
