@@ -38,6 +38,8 @@ lockfile and the installed binary (never global CSpell).
 selection: `SDKType=client`, current `ExcludePaths`, and the shared `Get-PrPkgProperties`/Java metadata helpers.
 This includes indirect and template fallback packages and changes to POM versions, Java, or other package inputs,
 even when `CHANGELOG.md` was not edited. Explicit `ArtifactDetails.skipVerifyChangeLog` opt-outs remain effective.
+Except for the root/docs-only fast path, the shared Build selector's template fallback is retained even when
+`ExcludePaths` removes every changed and deleted path.
 Missing or malformed required metadata fails validation instead of silently dropping a package. The real
 `Confirm-ChangeLogEntry` runs with `ForRelease=false`; a dated entry still receives its automatic release checks,
 including section content and release-date validation. Only already-excluded root/docs-only diffs (or proven empty

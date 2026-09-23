@@ -422,6 +422,7 @@ function Invoke-PRChangeLogValidation {
         $targetedPaths = Update-TargetedFilesForExclude $paths $exclusions
         $result.DiscoveryPerformed = $true
         $result.Messages = @(Get-PRPackageDiscoveryErrors $RepositoryRoot $targetedPaths $SdkType)
+        # Preserve Build's template fallback even when ExcludePaths removes every targeted path.
         $packages = @(Get-PrPkgProperties $diffPath)
         if ($packages.Count -eq 0) {
             throw 'Package discovery returned no packages, including no template fallback. Validation is unavailable.'

@@ -7,6 +7,7 @@ BeforeAll {
     . (Join-Path $script:Scripts 'helpers' 'PR-Validation-Helpers.ps1')
     $script:PowerShell = (Get-Command pwsh -CommandType Application | Select-Object -First 1).Source
     $script:PreviousModulePath = $env:PSModulePath
+    $script:PreviousYamlModulePaths = @(Get-Module -Name powershell-yaml | ForEach-Object Path)
     $script:PreviousTeamProject = $env:SYSTEM_TEAMPROJECTID
     $env:SYSTEM_TEAMPROJECTID = $null
     $script:Modules = Join-Path $TestDrive 'modules'
@@ -163,8 +164,16 @@ $($artifacts -join "`n")
 }
 
 AfterAll {
-    $env:PSModulePath = $script:PreviousModulePath
-    $env:SYSTEM_TEAMPROJECTID = $script:PreviousTeamProject
+    try {
+        # Do not leak aliases from the task-owned module into later engineering test files.
+        Get-Module -Name powershell-yaml |
+            Where-Object { $_.Path -notin $script:PreviousYamlModulePaths } |
+            Remove-Module
+    }
+    finally {
+        $env:PSModulePath = $script:PreviousModulePath
+        $env:SYSTEM_TEAMPROJECTID = $script:PreviousTeamProject
+    }
 }
 
 Describe 'PR snapshot and root documentation fast path' -Tag 'UnitTest' {
@@ -393,6 +402,26 @@ Describe 'Shared Java package selection and changelog validation' -Tag 'UnitTest
         $fallback.Packages[0].Name | Should -Be 'azure-fixture-template'
         $fallback.Status | Should -Be 'Passed'
         $fallback.DiscoveryPerformed | Should -BeTrue
+    }
+
+    It 'preserves Build fallback for fully excluded changes with validator exit <ExpectedExit>' -TestCases @(
+        @{ ExpectedExit = 0 }, @{ ExpectedExit = 1 }
+    ) {
+        param($ExpectedExit)
+        if ($ExpectedExit -eq 1) {
+            Set-ValidationFixtureFile $fixture.Root 'sdk/template/azure-fixture-template/CHANGELOG.md' `
+                "# Release History`n## 0.0.1 (Unreleased)"
+        }
+        $result = Invoke-FixtureChangelogs $fixture @('sdk/excluded/azure-fixture-excluded/pom.xml') `
+            @('sdk/excluded/azure-fixture-excluded/src/main/java/Removed.java')
+        $result.DiscoveryPerformed | Should -BeTrue
+        $result.Packages.Count | Should -Be 1
+        $result.Packages[0].Name | Should -Be 'azure-fixture-template'
+        $actual = if ($result.Status -eq 'Passed') { 0 } else { 1 }
+        $existing = Invoke-ValidationScript (Join-Path $fixture.Root 'eng/common/scripts/Verify-ChangeLogs.ps1') `
+            @('-PackagePropertiesFolder', (Join-Path $fixture.Output 'PackageInfo')) $fixture.Root
+        $existing.ExitCode | Should -Be $ExpectedExit -Because ($existing.Output + $existing.Error)
+        $actual | Should -Be $existing.ExitCode
     }
 
     It 'does not mistake SDKType data for client package validation' {
