@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation.util;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -16,8 +17,6 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.ArrayDeque;
-import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -31,7 +30,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,34 +40,50 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AutoRefreshingCacheTests {
     private static final Duration VALUE_LIFETIME = Duration.ofMinutes(5);
 
+    private MutableClock clock;
+    private AtomicInteger syncCalls;
+    private AtomicInteger asyncCalls;
+    private TestExpiringValue first;
+    private TestExpiringValue second;
+
+    @BeforeEach
+    public void setup() {
+        clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        syncCalls = new AtomicInteger();
+        asyncCalls = new AtomicInteger();
+        OffsetDateTime now = OffsetDateTime.now(clock);
+        first = new TestExpiringValue(now.plus(VALUE_LIFETIME));
+        second = new TestExpiringValue(now.plus(VALUE_LIFETIME.multipliedBy(2)));
+    }
+
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     public void usableValueIsReturnedWhileOneBackgroundRefreshIsPending(boolean async) {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        RecordingSuppliers provider = new RecordingSuppliers();
         Sinks.One<TestExpiringValue> pending = Sinks.one();
-        TestExpiringValue first = value(now(clock).plus(VALUE_LIFETIME));
-        TestExpiringValue second = value(now(clock).plus(VALUE_LIFETIME.multipliedBy(2)));
-        provider.onSync(first).onAsync(pending.asMono());
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider::createAsync,
-            provider::createSync, TestExpiringValue::getExpiration, clock);
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(() -> {
+            asyncCalls.incrementAndGet();
+            return pending.asMono();
+        }, () -> {
+            syncCalls.incrementAndGet();
+            return first;
+        }, TestExpiringValue::getExpiration, clock);
         assertSame(first, cache.getValidValueSync());
         clock.advance(VALUE_LIFETIME.minusSeconds(2));
 
         for (int i = 0; i < 3; i++) {
             assertSame(first,
                 async ? cache.getValidValueAsync().block(Duration.ofSeconds(5)) : cache.getValidValueSync());
-            assertEquals(1, provider.createAsyncCount());
+            assertEquals(1, asyncCalls.get());
         }
-        assertEquals(1, provider.createSyncCount());
-        assertEquals(1, provider.createAsyncCount());
+        assertEquals(1, syncCalls.get());
+        assertEquals(1, asyncCalls.get());
 
         pending.tryEmitValue(second);
         clock.advance(Duration.ofSeconds(3));
         assertSame(second, cache.getValidValueSync());
         assertSame(second, cache.getValidValueAsync().block(Duration.ofSeconds(5)));
-        assertEquals(1, provider.createAsyncCount());
-        assertEquals(1, provider.createSyncCount());
+        assertEquals(1, asyncCalls.get());
+        assertEquals(1, syncCalls.get());
     }
 
     @Test
@@ -77,12 +91,11 @@ public class AutoRefreshingCacheTests {
         CountDownLatch entered = new CountDownLatch(1);
         CountDownLatch release = new CountDownLatch(1);
         IllegalStateException failure = new IllegalStateException("sync load failed");
-        TestExpiringValue recovered = value(OffsetDateTime.now().plusHours(1));
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(() -> Mono.just(recovered), () -> {
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(() -> Mono.just(second), () -> {
             entered.countDown();
             await(release);
             throw failure;
-        }, TestExpiringValue::getExpiration, Clock.systemUTC());
+        }, TestExpiringValue::getExpiration, clock);
         ExecutorService pool = Executors.newSingleThreadExecutor();
         try {
             Future<?> owner = pool.submit(cache::getValidValueSync);
@@ -96,7 +109,7 @@ public class AutoRefreshingCacheTests {
             assertSame(failure,
                 assertThrows(java.util.concurrent.ExecutionException.class, () -> joiner.get(5, TimeUnit.SECONDS))
                     .getCause());
-            assertSame(recovered, cache.getValidValueAsync().block(Duration.ofSeconds(5)));
+            assertSame(second, cache.getValidValueAsync().block(Duration.ofSeconds(5)));
         } finally {
             release.countDown();
             pool.shutdownNow();
@@ -106,39 +119,34 @@ public class AutoRefreshingCacheTests {
     @Test
     public void cancelledSubscriberDoesNotCancelSharedAcquisition() throws Exception {
         Sinks.One<TestExpiringValue> pending = Sinks.one();
-        AtomicInteger calls = new AtomicInteger();
         AtomicInteger cancellations = new AtomicInteger();
         AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(() -> {
-            calls.incrementAndGet();
+            asyncCalls.incrementAndGet();
             return pending.asMono().doOnCancel(cancellations::incrementAndGet);
-        }, () -> pending.asMono().block(), TestExpiringValue::getExpiration, Clock.systemUTC());
+        }, () -> pending.asMono().block(), TestExpiringValue::getExpiration, clock);
         CompletableFuture<TestExpiringValue> owner = cache.getValidValueAsync().toFuture();
         CompletableFuture<TestExpiringValue> joiner = cache.getValidValueAsync().toFuture();
         owner.cancel(true);
-        assertEquals(1, calls.get());
+        assertEquals(1, asyncCalls.get());
         assertEquals(0, cancellations.get());
-        TestExpiringValue created = value(OffsetDateTime.now().plusHours(1));
-        pending.tryEmitValue(created);
-        assertSame(created, joiner.get(5, TimeUnit.SECONDS));
-        assertSame(created, cache.getValidValueSync());
+        pending.tryEmitValue(first);
+        assertSame(first, joiner.get(5, TimeUnit.SECONDS));
+        assertSame(first, cache.getValidValueSync());
     }
 
     @Test
     public void syncAndAsyncCallersShareSynchronousAcquisition() throws Exception {
         CountDownLatch entered = new CountDownLatch(1);
         CountDownLatch release = new CountDownLatch(1);
-        AtomicInteger syncCalls = new AtomicInteger();
-        AtomicInteger asyncCalls = new AtomicInteger();
-        TestExpiringValue created = value(OffsetDateTime.now().plusHours(1));
         AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(() -> {
             asyncCalls.incrementAndGet();
-            return Mono.just(created);
+            return Mono.just(first);
         }, () -> {
             syncCalls.incrementAndGet();
             entered.countDown();
             await(release);
-            return created;
-        }, TestExpiringValue::getExpiration, Clock.systemUTC());
+            return first;
+        }, TestExpiringValue::getExpiration, clock);
         AtomicReference<Thread> waitingThread = new AtomicReference<>();
         ExecutorService pool = Executors.newFixedThreadPool(2);
         try {
@@ -152,9 +160,9 @@ public class AutoRefreshingCacheTests {
             });
             awaitWaiting(waitingThread);
             release.countDown();
-            assertSame(created, owner.get(5, TimeUnit.SECONDS));
-            assertSame(created, joiner.get(5, TimeUnit.SECONDS));
-            assertSame(created, syncJoiner.get(5, TimeUnit.SECONDS));
+            assertSame(first, owner.get(5, TimeUnit.SECONDS));
+            assertSame(first, joiner.get(5, TimeUnit.SECONDS));
+            assertSame(first, syncJoiner.get(5, TimeUnit.SECONDS));
             assertEquals(1, syncCalls.get());
             assertEquals(0, asyncCalls.get());
         } finally {
@@ -166,15 +174,13 @@ public class AutoRefreshingCacheTests {
     @Test
     public void syncJoinerSharesAsyncOwner() throws Exception {
         Sinks.One<TestExpiringValue> pending = Sinks.one();
-        AtomicInteger calls = new AtomicInteger();
         AtomicReference<Thread> waitingThread = new AtomicReference<>();
-        TestExpiringValue created = value(OffsetDateTime.now().plusHours(1));
         AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(() -> {
-            calls.incrementAndGet();
+            asyncCalls.incrementAndGet();
             return pending.asMono();
         }, () -> {
             throw new IllegalStateException("The sync loader must not run.");
-        }, TestExpiringValue::getExpiration, Clock.systemUTC());
+        }, TestExpiringValue::getExpiration, clock);
         CompletableFuture<TestExpiringValue> owner = cache.getValidValueAsync().toFuture();
         ExecutorService pool = Executors.newSingleThreadExecutor();
         try {
@@ -183,10 +189,10 @@ public class AutoRefreshingCacheTests {
                 return cache.getValidValueSync();
             });
             awaitWaiting(waitingThread);
-            pending.tryEmitValue(created);
-            assertSame(created, owner.get(5, TimeUnit.SECONDS));
-            assertSame(created, joiner.get(5, TimeUnit.SECONDS));
-            assertEquals(1, calls.get());
+            pending.tryEmitValue(first);
+            assertSame(first, owner.get(5, TimeUnit.SECONDS));
+            assertSame(first, joiner.get(5, TimeUnit.SECONDS));
+            assertEquals(1, asyncCalls.get());
         } finally {
             pending.tryEmitEmpty();
             pool.shutdownNow();
@@ -195,13 +201,9 @@ public class AutoRefreshingCacheTests {
 
     @Test
     public void backgroundTimeoutReleasesSyncAndAsyncWaitersAndAllowsRetry() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         VirtualTimeScheduler scheduler = VirtualTimeScheduler.create();
-        AtomicInteger calls = new AtomicInteger();
         AtomicInteger cancellations = new AtomicInteger();
-        TestExpiringValue first = value(now(clock).plus(VALUE_LIFETIME));
-        TestExpiringValue second = value(now(clock).plusHours(1));
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(() -> calls.incrementAndGet() == 1
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(() -> asyncCalls.incrementAndGet() == 1
             ? Mono.<TestExpiringValue>never().doOnCancel(cancellations::incrementAndGet)
             : Mono.just(second), () -> first, TestExpiringValue::getExpiration, clock, scheduler);
         ExecutorService pool = Executors.newSingleThreadExecutor();
@@ -218,7 +220,7 @@ public class AutoRefreshingCacheTests {
             });
             awaitWaiting(syncThread);
             assertFalse(asyncWaiter.isDone());
-            assertEquals(1, calls.get());
+            assertEquals(1, asyncCalls.get());
 
             scheduler.advanceTimeBy(Duration.ofSeconds(30));
             ExecutionException asyncError
@@ -232,7 +234,7 @@ public class AutoRefreshingCacheTests {
 
             assertSame(second, cache.getValidValueAsync().block(Duration.ofSeconds(5)));
             assertSame(second, cache.getValidValueSync());
-            assertEquals(2, calls.get());
+            assertEquals(2, asyncCalls.get());
         } finally {
             pool.shutdownNow();
             scheduler.dispose();
@@ -241,10 +243,8 @@ public class AutoRefreshingCacheTests {
 
     @Test
     public void foregroundAcquisitionDoesNotUseBackgroundTimeout() throws Exception {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         VirtualTimeScheduler scheduler = VirtualTimeScheduler.create();
         Sinks.One<TestExpiringValue> pending = Sinks.one();
-        TestExpiringValue first = value(now(clock).plusHours(1));
         AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(pending::asMono, () -> first,
             TestExpiringValue::getExpiration, clock, scheduler);
         try {
@@ -261,20 +261,18 @@ public class AutoRefreshingCacheTests {
     @Test
     public void asyncLoaderFailureReleasesWaitersAndAllowsRetry() {
         Sinks.One<TestExpiringValue> pending = Sinks.one();
-        AtomicInteger calls = new AtomicInteger();
         IllegalStateException failure = new IllegalStateException("load failed");
-        TestExpiringValue recovered = value(OffsetDateTime.now().plusHours(1));
         AutoRefreshingCache<TestExpiringValue> cache
-            = new AutoRefreshingCache<>(() -> calls.incrementAndGet() == 1 ? pending.asMono() : Mono.just(recovered),
-                () -> recovered, TestExpiringValue::getExpiration, Clock.systemUTC());
+            = new AutoRefreshingCache<>(() -> asyncCalls.incrementAndGet() == 1 ? pending.asMono() : Mono.just(second),
+                () -> second, TestExpiringValue::getExpiration, clock);
         CompletableFuture<TestExpiringValue> owner = cache.getValidValueAsync().toFuture();
         CompletableFuture<TestExpiringValue> joiner = cache.getValidValueAsync().toFuture();
         assertFalse(joiner.isDone());
         pending.tryEmitError(failure);
         assertSame(failure, assertThrows(ExecutionException.class, () -> owner.get(5, TimeUnit.SECONDS)).getCause());
         assertSame(failure, assertThrows(ExecutionException.class, () -> joiner.get(5, TimeUnit.SECONDS)).getCause());
-        assertSame(recovered, cache.getValidValueAsync().block(Duration.ofSeconds(5)));
-        assertEquals(2, calls.get());
+        assertSame(second, cache.getValidValueAsync().block(Duration.ofSeconds(5)));
+        assertEquals(2, asyncCalls.get());
     }
 
     private static void await(CountDownLatch latch) {
@@ -301,124 +299,60 @@ public class AutoRefreshingCacheTests {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     public void cachedValueIsReusedUntilExpiration(boolean async) {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        RecordingSuppliers provider = new RecordingSuppliers();
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider::createAsync,
-            provider::createSync, TestExpiringValue::getExpiration, clock);
-
-        TestExpiringValue first = value(now(clock).plus(VALUE_LIFETIME));
-        TestExpiringValue second = value(now(clock).plus(VALUE_LIFETIME.multipliedBy(2)));
-        if (async) {
-            provider.onAsync(Mono.just(first)).onAsync(Mono.just(second));
-        } else {
-            provider.onSync(first).onSync(second);
-        }
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(() -> Mono.just(asyncCalls.incrementAndGet() == 1 ? first : second),
+                () -> syncCalls.incrementAndGet() == 1 ? first : second, TestExpiringValue::getExpiration, clock);
 
         assertSame(first, async ? cache.getValidValueAsync().block(Duration.ofSeconds(5)) : cache.getValidValueSync());
         clock.advance(Duration.ofSeconds(30));
         assertSame(first, cache.getValidValueSync());
         assertSame(first, cache.getValidValueAsync().block(Duration.ofSeconds(5)));
-        assertEquals(async ? 1 : 0, provider.createAsyncCount());
-        assertEquals(async ? 0 : 1, provider.createSyncCount());
+        assertEquals(async ? 1 : 0, asyncCalls.get());
+        assertEquals(async ? 0 : 1, syncCalls.get());
         clock.advance(VALUE_LIFETIME.plusSeconds(1));
 
         assertSame(second, async ? cache.getValidValueAsync().block(Duration.ofSeconds(5)) : cache.getValidValueSync());
-        assertEquals(async ? 2 : 0, provider.createAsyncCount());
-        assertEquals(async ? 0 : 2, provider.createSyncCount());
+        assertEquals(async ? 2 : 0, asyncCalls.get());
+        assertEquals(async ? 0 : 2, syncCalls.get());
     }
 
     @Test
     public void failedRefreshRetainsValueAndRetriesAfterBackoff() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        RecordingSuppliers provider = new RecordingSuppliers();
-        TestExpiringValue first = value(now(clock).plus(VALUE_LIFETIME));
-        TestExpiringValue second = value(now(clock).plus(VALUE_LIFETIME.multipliedBy(2)));
-        provider.onSync(first)
-            .onAsync(Mono.error(new IllegalStateException("refresh failed")))
-            .onAsync(Mono.just(second));
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider::createAsync,
-            provider::createSync, TestExpiringValue::getExpiration, clock);
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(() -> asyncCalls.incrementAndGet() == 1
+            ? Mono.error(new IllegalStateException("refresh failed"))
+            : Mono.just(second), () -> {
+                syncCalls.incrementAndGet();
+                return first;
+            }, TestExpiringValue::getExpiration, clock);
 
         assertSame(first, cache.getValidValueSync());
         cache.forceRefreshValueInBackground();
         for (int i = 0; i < 3; i++) {
             assertSame(first, cache.getValidValueSync());
         }
-        assertEquals(1, provider.createAsyncCount());
+        assertEquals(1, asyncCalls.get());
         assertSame(first, cache.getValidValueSync());
         assertSame(first, cache.getValidValueAsync().block(Duration.ofSeconds(5)));
 
         clock.advance(Duration.ofSeconds(31));
         assertSame(first, cache.getValidValueSync());
-        assertEquals(2, provider.createAsyncCount());
+        assertEquals(2, asyncCalls.get());
         assertSame(second, cache.getValidValueSync());
-        assertEquals(1, provider.createSyncCount());
+        assertEquals(1, syncCalls.get());
     }
 
     @Test
     public void invalidateValueClearsOnlyMatchingValue() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        RecordingSuppliers provider = new RecordingSuppliers();
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider::createAsync,
-            provider::createSync, TestExpiringValue::getExpiration, clock);
-
-        TestExpiringValue first = value(now(clock).plus(VALUE_LIFETIME));
-        TestExpiringValue second = value(now(clock).plus(VALUE_LIFETIME.multipliedBy(2)));
-        provider.onSync(first).onSync(second);
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(() -> {
+            throw new AssertionError("The async loader must not run.");
+        }, () -> syncCalls.incrementAndGet() == 1 ? first : second, TestExpiringValue::getExpiration, clock);
 
         assertSame(first, cache.getValidValueSync());
         assertTrue(cache.invalidateValue(first));
         assertSame(second, cache.getValidValueSync());
         assertFalse(cache.invalidateValue(first));
         assertSame(second, cache.getValidValueSync());
-        assertEquals(2, provider.createSyncCount());
-    }
-
-    private static final class RecordingSuppliers {
-        private final Queue<TestExpiringValue> syncResults = new ArrayDeque<>();
-        private final Queue<Mono<TestExpiringValue>> asyncResults = new ArrayDeque<>();
-        private final AtomicInteger syncCount = new AtomicInteger();
-        private final AtomicInteger asyncCount = new AtomicInteger();
-
-        RecordingSuppliers onSync(TestExpiringValue result) {
-            syncResults.add(result);
-            return this;
-        }
-
-        RecordingSuppliers onAsync(Mono<TestExpiringValue> result) {
-            asyncResults.add(result);
-            return this;
-        }
-
-        int createSyncCount() {
-            return syncCount.get();
-        }
-
-        int createAsyncCount() {
-            return asyncCount.get();
-        }
-
-        public TestExpiringValue createSync() {
-            syncCount.incrementAndGet();
-            TestExpiringValue result = syncResults.poll();
-            assertNotNull(result, "createSync() was called but no result was configured.");
-            return result;
-        }
-
-        public Mono<TestExpiringValue> createAsync() {
-            asyncCount.incrementAndGet();
-            Mono<TestExpiringValue> result = asyncResults.poll();
-            assertNotNull(result, "createAsync() was called but no result was configured.");
-            return result;
-        }
-    }
-
-    private static OffsetDateTime now(Clock clock) {
-        return OffsetDateTime.now(clock);
-    }
-
-    private static TestExpiringValue value(OffsetDateTime expiration) {
-        return new TestExpiringValue(expiration);
+        assertEquals(2, syncCalls.get());
     }
 
     private static final class TestExpiringValue {
