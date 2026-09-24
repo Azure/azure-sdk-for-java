@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class BlobContainersObjectLevelWormSamples {
     /*
-     * x-ms-original-file: 2026-04-01/ObjectLevelWormContainerMigration.json
+     * x-ms-original-file: 2026-06-01/ObjectLevelWormContainerMigration.json
      */
     /**
      * Sample code: VersionLevelWormContainerMigration.

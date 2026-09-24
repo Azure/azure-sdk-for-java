@@ -14,6 +14,8 @@ import com.azure.resourcemanager.storage.fluent.BlobContainersClient;
 import com.azure.resourcemanager.storage.fluent.BlobInventoryPoliciesClient;
 import com.azure.resourcemanager.storage.fluent.BlobServicesClient;
 import com.azure.resourcemanager.storage.fluent.ConnectorsClient;
+import com.azure.resourcemanager.storage.fluent.ContextCacheContainersClient;
+import com.azure.resourcemanager.storage.fluent.ContextCachesClient;
 import com.azure.resourcemanager.storage.fluent.DataSharesClient;
 import com.azure.resourcemanager.storage.fluent.DeletedAccountsClient;
 import com.azure.resourcemanager.storage.fluent.EncryptionScopesClient;
@@ -367,6 +369,34 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The ContextCachesClient object to access its operations.
+     */
+    private final ContextCachesClient contextCaches;
+
+    /**
+     * Gets the ContextCachesClient object to access its operations.
+     * 
+     * @return the ContextCachesClient object.
+     */
+    public ContextCachesClient getContextCaches() {
+        return this.contextCaches;
+    }
+
+    /**
+     * The ContextCacheContainersClient object to access its operations.
+     */
+    private final ContextCacheContainersClient contextCacheContainers;
+
+    /**
+     * Gets the ContextCacheContainersClient object to access its operations.
+     * 
+     * @return the ContextCacheContainersClient object.
+     */
+    public ContextCacheContainersClient getContextCacheContainers() {
+        return this.contextCacheContainers;
+    }
+
+    /**
      * The AdvancedPlatformMetricsClient object to access its operations.
      */
     private final AdvancedPlatformMetricsClient advancedPlatformMetrics;
@@ -524,7 +554,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-04-01";
+        this.apiVersion = "2026-06-01";
         this.operations = new OperationsClientImpl(this);
         this.blobContainers = new BlobContainersClientImpl(this);
         this.blobServices = new BlobServicesClientImpl(this);
@@ -542,6 +572,8 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         this.storageTaskAssignments = new StorageTaskAssignmentsClientImpl(this);
         this.connectors = new ConnectorsClientImpl(this);
         this.dataShares = new DataSharesClientImpl(this);
+        this.contextCaches = new ContextCachesClientImpl(this);
+        this.contextCacheContainers = new ContextCacheContainersClientImpl(this);
         this.advancedPlatformMetrics = new AdvancedPlatformMetricsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.storageTaskAssignmentsInstancesReports = new StorageTaskAssignmentsInstancesReportsClientImpl(this);
