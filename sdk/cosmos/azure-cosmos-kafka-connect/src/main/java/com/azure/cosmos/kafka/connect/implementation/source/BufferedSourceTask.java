@@ -20,7 +20,7 @@ public abstract class BufferedSourceTask extends SourceTask {
     private static final long POLL_WAIT_MS = 1_000;
     private static final long THREAD_SHUTDOWN_WAIT_MS = 1_000;
 
-    private final BlockingQueue<PollResult> pollResults = new LinkedBlockingQueue<>(1);
+    private final BlockingQueue<Object> pollResults = new LinkedBlockingQueue<>(1);
     private volatile boolean stopping;
     private Thread pollingThread;
 
@@ -44,16 +44,19 @@ public abstract class BufferedSourceTask extends SourceTask {
         this.startPollingThread();
 
         try {
-            PollResult result = this.pollResults.poll(
+            Object result = this.pollResults.poll(
                 POLL_WAIT_MS,
                 TimeUnit.MILLISECONDS);
             if (result == null) {
                 return Collections.emptyList();
             }
-            if (result.error != null) {
-                throwPollingError(result.error);
+            if (result instanceof RuntimeException) {
+                throw (RuntimeException) result;
             }
-            return result.records;
+            if (result instanceof Error) {
+                throw (Error) result;
+            }
+            return castRecords(result);
         } catch (InterruptedException error) {
             Thread.currentThread().interrupt();
             return Collections.emptyList();
@@ -98,14 +101,15 @@ public abstract class BufferedSourceTask extends SourceTask {
         while (!this.stopping) {
             try {
                 List<SourceRecord> records = this.pollTask();
-                this.pollResults.put(PollResult.records(records));
+                this.pollResults.put(
+                    records == null ? Collections.emptyList() : records);
             } catch (RuntimeException error) {
-                if (!this.stopping && !this.putPollingError(error)) {
+                if (!this.stopping && !this.putResult(error)) {
                     return;
                 }
             } catch (Error error) {
                 if (!this.stopping) {
-                    this.putPollingError(error);
+                    this.putResult(error);
                 }
                 return;
             } catch (InterruptedException error) {
@@ -115,9 +119,9 @@ public abstract class BufferedSourceTask extends SourceTask {
         }
     }
 
-    private boolean putPollingError(Throwable error) {
+    private boolean putResult(Object result) {
         try {
-            this.pollResults.put(PollResult.error(error));
+            this.pollResults.put(result);
             return true;
         } catch (InterruptedException interruptedError) {
             Thread.currentThread().interrupt();
@@ -125,30 +129,8 @@ public abstract class BufferedSourceTask extends SourceTask {
         }
     }
 
-    private static void throwPollingError(Throwable error) {
-        if (error instanceof RuntimeException) {
-            throw (RuntimeException) error;
-        }
-        throw (Error) error;
-    }
-
-    private static final class PollResult {
-        private final List<SourceRecord> records;
-        private final Throwable error;
-
-        private PollResult(List<SourceRecord> records, Throwable error) {
-            this.records = records;
-            this.error = error;
-        }
-
-        private static PollResult records(List<SourceRecord> records) {
-            return new PollResult(
-                records == null ? Collections.emptyList() : records,
-                null);
-        }
-
-        private static PollResult error(Throwable error) {
-            return new PollResult(Collections.emptyList(), error);
-        }
+    @SuppressWarnings("unchecked")
+    private static List<SourceRecord> castRecords(Object result) {
+        return (List<SourceRecord>) result;
     }
 }
