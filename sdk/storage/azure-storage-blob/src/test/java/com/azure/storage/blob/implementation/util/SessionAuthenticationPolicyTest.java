@@ -20,6 +20,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.SessionCredential;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionProvider;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,7 +84,7 @@ public class SessionAuthenticationPolicyTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "400, 1", "401, 2", "403, 1", "404, 2", "429, 2", "500, 1", "503, 1", "599, 1", "600, 2" })
+    @CsvSource({ "400, 2", "401, 2", "403, 1", "404, 2", "429, 2", "500, 1", "503, 1", "599, 1", "600, 2" })
     public void sessionAcquisitionFailureCooldownAsync(int statusCode, int expectedAcquisitions) {
         BlobStorageException serverFailure
             = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, statusCode), null);
@@ -104,7 +105,7 @@ public class SessionAuthenticationPolicyTest {
     }
 
     @ParameterizedTest
-    @CsvSource({ "400, 1", "401, 2", "403, 1", "404, 2", "429, 2", "500, 1", "503, 1", "599, 1", "600, 2" })
+    @CsvSource({ "400, 2", "401, 2", "403, 1", "404, 2", "429, 2", "500, 1", "503, 1", "599, 1", "600, 2" })
     public void sessionAcquisitionFailureCooldownSync(int statusCode, int expectedAcquisitions) {
         BlobStorageException failure
             = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, statusCode), null);
@@ -120,6 +121,25 @@ public class SessionAuthenticationPolicyTest {
 
         verify(sessionProvider, times(expectedAcquisitions)).getSession(any());
         verify(bearerPolicy, times(2)).processSync(any(), any());
+    }
+
+    @Test
+    public void featureNotEnabledSessionAcquisitionStartsCooldown() {
+        HttpHeaders headers = new HttpHeaders().set(Constants.HeaderConstants.ERROR_CODE_HEADER_NAME,
+            "FeatureNotEnabled");
+        BlobStorageException failure
+            = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 400, headers), null);
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(failure));
+
+        HttpPipeline pipeline = buildPipeline(successTransport());
+        for (int i = 0; i < 2; i++) {
+            StepVerifier.create(pipeline.send(blobGetRequest()))
+                .assertNext(r -> assertEquals(200, r.getStatusCode()))
+                .verifyComplete();
+        }
+
+        verify(sessionProvider, times(1)).getSessionAsync(any());
+        verify(bearerPolicy, times(2)).process(any(), any());
     }
 
     @Test
@@ -149,144 +169,6 @@ public class SessionAuthenticationPolicyTest {
             .verifyComplete();
 
         verify(sessionProvider, times(2)).getSessionAsync(any());
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "400, testaccount, othercontainer",
-        "403, testaccount, othercontainer",
-        "503, testaccount, othercontainer",
-        "400, otheraccount, mycontainer",
-        "403, otheraccount, mycontainer",
-        "503, otheraccount, mycontainer" })
-    public void acquisitionCooldownIsIsolatedToContainerAsync(int statusCode, String otherAccount,
-        String otherContainer) {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        policy = createPolicy(clock);
-        BlobStorageException failure
-            = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, statusCode), null);
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(failure))
-            .thenReturn(Mono.just(credentialWithToken()));
-        HttpPipeline pipeline = buildPipeline(successTransport());
-
-        StepVerifier.create(pipeline.send(blobGetRequest()))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
-        StepVerifier.create(pipeline.send(blobGetRequest("TESTACCOUNT", "MYCONTAINER")))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
-        verify(sessionProvider, times(1)).getSessionAsync(any());
-
-        HttpRequest otherRequest = blobGetRequest(otherAccount, otherContainer);
-        StepVerifier.create(pipeline.send(otherRequest))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
-        assertTrue(isSessionAuthenticated(otherRequest));
-        verify(sessionProvider, times(1))
-            .getSessionAsync(argThat(context -> otherAccount.equals(context.getAccountName())
-                && otherContainer.equals(context.getContainerName())));
-
-        StepVerifier.create(pipeline.send(blobGetRequest()))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
-        verify(sessionProvider, times(2)).getSessionAsync(any());
-
-        clock.advance(Duration.ofMinutes(5));
-        HttpRequest resumedRequest = blobGetRequest();
-        StepVerifier.create(pipeline.send(resumedRequest))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
-        assertTrue(isSessionAuthenticated(resumedRequest));
-        verify(sessionProvider, times(3)).getSessionAsync(any());
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "400, testaccount, othercontainer",
-        "403, testaccount, othercontainer",
-        "503, testaccount, othercontainer",
-        "400, otheraccount, mycontainer",
-        "403, otheraccount, mycontainer",
-        "503, otheraccount, mycontainer" })
-    public void acquisitionCooldownIsIsolatedToContainerSync(int statusCode, String otherAccount,
-        String otherContainer) {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        policy = createPolicy(clock);
-        BlobStorageException failure
-            = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, statusCode), null);
-        when(sessionProvider.getSession(any())).thenThrow(failure).thenReturn(credentialWithToken());
-
-        sendSessionResponseSync(blobGetRequest(), 200);
-        sendSessionResponseSync(blobGetRequest("TESTACCOUNT", "MYCONTAINER"), 200);
-        verify(sessionProvider, times(1)).getSession(any());
-
-        HttpRequest otherRequest = blobGetRequest(otherAccount, otherContainer);
-        sendSessionResponseSync(otherRequest, 200);
-        assertTrue(isSessionAuthenticated(otherRequest));
-        verify(sessionProvider, times(1)).getSession(argThat(context -> otherAccount.equals(context.getAccountName())
-            && otherContainer.equals(context.getContainerName())));
-
-        sendSessionResponseSync(blobGetRequest(), 200);
-        verify(sessionProvider, times(2)).getSession(any());
-
-        clock.advance(Duration.ofMinutes(5));
-        HttpRequest resumedRequest = blobGetRequest();
-        sendSessionResponseSync(resumedRequest, 200);
-        assertTrue(isSessionAuthenticated(resumedRequest));
-        verify(sessionProvider, times(3)).getSession(any());
-    }
-
-    @ParameterizedTest
-    @CsvSource({ "testaccount, othercontainer", "otheraccount, mycontainer" })
-    public void rejectionCountsAndCooldownsAreIsolatedToContainerAsync(String otherAccount, String otherContainer) {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        policy = createPolicy(clock);
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
-        HttpPipeline pipeline = buildPipeline(sessionRejectionTransportWithAcceptedSecondRequest());
-        boolean[] useOtherContainer = { false, true, false, true, false, true, false, true, true };
-        int[] expectedAcquisitions = { 1, 2, 3, 4, 5, 6, 6, 7, 7 };
-
-        // B's success must not reset A's count, and their rejections must not combine.
-        // Once A enters cooldown, B still has one rejection left before its own cooldown.
-        for (int i = 0; i < useOtherContainer.length; i++) {
-            HttpRequest request
-                = useOtherContainer[i] ? blobGetRequest(otherAccount, otherContainer) : blobGetRequest();
-            StepVerifier.create(pipeline.send(request))
-                .assertNext(r -> assertEquals(200, r.getStatusCode()))
-                .verifyComplete();
-            verify(sessionProvider, times(expectedAcquisitions[i])).getSessionAsync(any());
-        }
-
-        clock.advance(Duration.ofMinutes(5));
-        StepVerifier.create(pipeline.send(blobGetRequest()))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
-        StepVerifier.create(pipeline.send(blobGetRequest(otherAccount, otherContainer)))
-            .assertNext(r -> assertEquals(200, r.getStatusCode()))
-            .verifyComplete();
-        verify(sessionProvider, times(9)).getSessionAsync(any());
-    }
-
-    @ParameterizedTest
-    @CsvSource({ "testaccount, othercontainer", "otheraccount, mycontainer" })
-    public void rejectionCountsAndCooldownsAreIsolatedToContainerSync(String otherAccount, String otherContainer) {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        policy = createPolicy(clock);
-        when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
-        boolean[] useOtherContainer = { false, true, false, true, false, true, false, true, true };
-        int[] expectedAcquisitions = { 1, 2, 3, 4, 5, 6, 6, 7, 7 };
-
-        for (int i = 0; i < useOtherContainer.length; i++) {
-            HttpRequest request
-                = useOtherContainer[i] ? blobGetRequest(otherAccount, otherContainer) : blobGetRequest();
-            sendSessionResponseSync(request, i == 1 ? 200 : 401);
-            verify(sessionProvider, times(expectedAcquisitions[i])).getSession(any());
-        }
-
-        clock.advance(Duration.ofMinutes(5));
-        sendSessionResponseSync(blobGetRequest(), 401);
-        sendSessionResponseSync(blobGetRequest(otherAccount, otherContainer), 401);
-        verify(sessionProvider, times(9)).getSession(any());
     }
 
     @Test
@@ -333,7 +215,7 @@ public class SessionAuthenticationPolicyTest {
      * all, that would repeat forever, so consecutive rejections must eventually suppress session authentication.
      */
     @Test
-    public void repeatedSessionRejectionStartsContainerCooldown() {
+    public void rejectedSessionIsNotCachedForTheNextRequest() {
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         WireTapHttpClient transport = bearerFallbackTransport(401);
@@ -345,9 +227,8 @@ public class SessionAuthenticationPolicyTest {
                 .verifyComplete();
         }
 
-        // Three rejections trip the cooldown, so the fourth request never acquires a session.
-        verify(sessionProvider, times(3)).getSessionAsync(any());
-        assertEquals(7, transport.getRequestCount());
+        verify(sessionProvider, times(4)).getSessionAsync(any());
+        assertEquals(8, transport.getRequestCount());
     }
 
     @Test
@@ -368,7 +249,7 @@ public class SessionAuthenticationPolicyTest {
     }
 
     @Test
-    public void sessionRejectionCooldownExpiresAfterFiveMinutes() {
+    public void rejectedSessionIsNotCachedAfterTimeAdvances() {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         policy = createPolicy(clock);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
@@ -381,7 +262,7 @@ public class SessionAuthenticationPolicyTest {
                 .assertNext(r -> assertEquals(200, r.getStatusCode()))
                 .verifyComplete();
         }
-        verify(sessionProvider, times(3)).getSessionAsync(any());
+        verify(sessionProvider, times(4)).getSessionAsync(any());
 
         clock.advance(Duration.ofMinutes(5));
 
@@ -389,11 +270,11 @@ public class SessionAuthenticationPolicyTest {
             .assertNext(r -> assertEquals(200, r.getStatusCode()))
             .verifyComplete();
 
-        verify(sessionProvider, times(4)).getSessionAsync(any());
+        verify(sessionProvider, times(5)).getSessionAsync(any());
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 404, 409, 429, 499, 600 })
+    @ValueSource(ints = { 400, 403, 404, 409, 429, 499, 500, 503, 599, 600 })
     public void policyReturnsNonFallbackStatusWithoutRetryAsync(int statusCode) {
         HttpRequest request = blobGetRequest();
         WireTapHttpClient transport = new WireTapHttpClient(statusCodeTransport(statusCode));
@@ -408,7 +289,7 @@ public class SessionAuthenticationPolicyTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 400, 401, 403, 500, 503, 599 })
+    @ValueSource(ints = { 401 })
     public void policyReturnsBearerFailureWithoutFurtherFallbackAsync(int statusCode) {
         HttpRequest request = blobGetRequest();
         WireTapHttpClient transport = new WireTapHttpClient(statusCodeTransport(statusCode));
@@ -421,30 +302,6 @@ public class SessionAuthenticationPolicyTest {
         assertEquals(2, transport.getRequestCount());
         assertNull(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
         verify(bearerPolicy, times(1)).process(any(), any());
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = { 400, 403, 500, 503, 599 })
-    public void policyFallsToBearerWithoutInvalidationAsync(int statusCode) {
-        HttpRequest request = blobGetRequest();
-        WireTapHttpClient transport = bearerFallbackTransport(statusCode);
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
-
-        HttpPipeline pipeline = buildPipeline(transport);
-        for (int i = 0; i < 4; i++) {
-            request = blobGetRequest();
-            StepVerifier.create(pipeline.send(request))
-                .assertNext(r -> assertEquals(200, r.getStatusCode()))
-                .verifyComplete();
-        }
-
-        assertEquals(8, transport.getRequestCount());
-        verify(bearerPolicy, times(4)).process(any(), any());
-        verify(sessionProvider, times(4)).getSessionAsync(any());
-        verify(sessionProvider, never()).invalidateSession(any(), any());
-        String authHeader = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
-        assertTrue(authHeader == null || !authHeader.startsWith("Session"),
-            "Session auth should have been stripped but was: " + authHeader);
     }
 
     @Test
@@ -538,7 +395,7 @@ public class SessionAuthenticationPolicyTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { 404, 409, 429, 499, 600 })
+    @ValueSource(ints = { 400, 403, 404, 409, 429, 499, 500, 503, 599, 600 })
     public void policyReturnsNonFallbackStatusWithoutRetrySync(int statusCode) {
         HttpPipelineCallContext context = createContext();
         HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
@@ -558,51 +415,11 @@ public class SessionAuthenticationPolicyTest {
         }
     }
 
-    @ParameterizedTest
-    @CsvSource({
-        "400, 200",
-        "403, 200",
-        "500, 200",
-        "503, 200",
-        "599, 200",
-        "400, 400",
-        "403, 403",
-        "500, 500",
-        "503, 503",
-        "599, 599" })
-    public void policyFallsToBearerWithoutInvalidationSync(int statusCode, int bearerStatusCode) {
-        HttpPipelineCallContext context = createContext();
-        HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
-        HttpPipelineNextSyncPolicy retryNext = mock(HttpPipelineNextSyncPolicy.class);
-        HttpResponse badRequestResponse = mock(HttpResponse.class);
-        HttpResponse bearerResponse = mock(HttpResponse.class);
-
-        when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
-        when(next.clone()).thenReturn(retryNext);
-        when(next.processSync()).thenReturn(badRequestResponse);
-        when(retryNext.processSync()).thenReturn(bearerResponse);
-        when(badRequestResponse.getStatusCode()).thenReturn(statusCode);
-        when(bearerResponse.getStatusCode()).thenReturn(bearerStatusCode);
-
-        try (HttpResponse actualResponse = policy.processSync(context, next)) {
-            assertEquals(bearerResponse, actualResponse);
-            assertEquals(bearerStatusCode, actualResponse.getStatusCode());
-            verify(badRequestResponse, times(1)).close();
-            verify(bearerPolicy, times(1)).processSync(any(), any());
-            verify(next, times(1)).processSync();
-            verify(retryNext, times(1)).processSync();
-            verify(sessionProvider, never()).invalidateSession(any(), any());
-            String authHeader = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
-            assertTrue(authHeader == null || !authHeader.startsWith("Session"),
-                "Session auth should have been stripped but was: " + authHeader);
-        }
-    }
-
     @Test
-    public void repeatedSessionRejectionStartsContainerCooldownSync() {
+    public void rejectedSessionIsNotCachedForTheNextRequestSync() {
         when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             HttpPipelineCallContext context = createContext();
             HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
             HttpPipelineNextSyncPolicy retryNext = mock(HttpPipelineNextSyncPolicy.class);
@@ -618,20 +435,7 @@ public class SessionAuthenticationPolicyTest {
             policy.processSync(context, next).close();
         }
 
-        verify(sessionProvider, times(3)).getSession(any());
-
-        // The cooldown is now active, so this request goes straight to bearer without acquiring a session.
-        HttpPipelineCallContext context = createContext();
-        HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
-        HttpResponse bearerResponse = mock(HttpResponse.class);
-        when(next.processSync()).thenReturn(bearerResponse);
-        when(bearerResponse.getStatusCode()).thenReturn(200);
-
-        try (HttpResponse actualResponse = policy.processSync(context, next)) {
-            assertEquals(bearerResponse, actualResponse);
-            verify(sessionProvider, times(3)).getSession(any());
-            verify(next, times(0)).clone();
-        }
+        verify(sessionProvider, times(4)).getSession(any());
     }
 
     @Test

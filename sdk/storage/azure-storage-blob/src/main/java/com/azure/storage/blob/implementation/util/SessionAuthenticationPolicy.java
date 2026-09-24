@@ -30,7 +30,8 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 
 /**
  * A pipeline policy that selects between session token and bearer token authentication.
@@ -40,13 +41,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * the policy authenticates with a session token. For all other requests, it delegates to the
  * wrapped bearer token policy.
  * <p>
- * Session-signed requests that receive HTTP 400, 401, 403, or 5xx are retried once with bearer
- * authentication. Only HTTP 401 invalidates the rejected session credential.
+ * Session-signed requests that receive HTTP 401 are retried once with bearer authentication, and the rejected
+ * session credential is invalidated. Other responses are returned to the caller unchanged.
  * <p>
- * If session authentication cannot be used against an account, either because session acquisition failed with
- * HTTP 400, 403, or 5xx, or because the service rejected session-signed requests with HTTP 401 three times in
- * a row, the account is placed in a five minute cooldown during which requests go straight to bearer
- * authentication. Cooldown state is held by this policy instance, so it is scoped to a single client pipeline.
+ * If session acquisition fails with HTTP 403, 5xx, or HTTP 400 with the {@code FeatureNotEnabled} error code, the
+ * account is placed in a five minute cooldown during which requests go straight to bearer authentication. Cooldown
+ * state is held by this policy instance, so it is scoped to a single client pipeline.
  * Acquisition failures that do not carry one of those status codes fall back to bearer for that request only
  * and do not start a cooldown.
  */
@@ -58,14 +58,12 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     private static final String SESSION_EXPIRING = "session_expiring";
     private static final String SESSION_PREFIX = "Session ";
     private static final Duration SESSION_COOLDOWN = Duration.ofMinutes(5);
-    private static final int MAX_CONSECUTIVE_SESSION_REJECTIONS = 3;
 
     private final StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
     private final SessionProvider sessionProvider;
     private final SessionOptions sessionOptions;
     private final Clock clock;
     private final ConcurrentHashMap<String, OffsetDateTime> accountCooldowns = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, AtomicInteger> accountRejections = new ConcurrentHashMap<>();
 
     SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
         SessionProvider sessionProvider, SessionOptions sessionOptions) {
@@ -176,8 +174,6 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
 
         if (response.getStatusCode() == 401) {
             handleSessionRejection(requestContext, session);
-        } else {
-            recordSessionAccepted(requestContext);
         }
 
         if (shouldFallBackToBearer(context, response)) {
@@ -201,8 +197,6 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
 
         if (response.getStatusCode() == 401) {
             handleSessionRejection(requestContext, session);
-        } else {
-            recordSessionAccepted(requestContext);
         }
 
         if (shouldFallBackToBearer(context, response)) {
@@ -243,35 +237,11 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Handles a session credential being rejected by the service. The rejected credential is invalidated so it is not
-     * reused, and the rejection is counted. Because invalidation causes the next request to create a brand new
-     * session, an environment that cannot use sessions at all would otherwise create and lose one session per
-     * request indefinitely. After {@value #MAX_CONSECUTIVE_SESSION_REJECTIONS} consecutive rejections the account is
-     * placed in cooldown so requests fall straight through to bearer.
+     * Handles a session credential being rejected by the service. The rejected credential is invalidated so the next
+     * request attempts to create a new session.
      */
     private void handleSessionRejection(SessionRequestContext requestContext, SessionCredential session) {
         logSessionInvalidation(requestContext, sessionProvider.invalidateSession(requestContext, session));
-
-        int consecutiveRejections = accountRejections
-            .computeIfAbsent(normalize(requestContext.getAccountName()), ignored -> new AtomicInteger())
-            .incrementAndGet();
-
-        if (consecutiveRejections >= MAX_CONSECUTIVE_SESSION_REJECTIONS
-            && beginAccountCooldown(requestContext.getAccountName())) {
-            LOGGER.warning(
-                "Session authentication was rejected {} times in a row for container '{}'. Suppressing session "
-                    + "authentication for this account for five minutes and using bearer token.",
-                consecutiveRejections, requestContext.getContainerName());
-        }
-    }
-
-    /**
-     * Clears the consecutive rejection count once the service accepts a session credential. Any response other than
-     * 401 means the session authenticated successfully, so an account where sessions work never reaches the
-     * rejection threshold.
-     */
-    private void recordSessionAccepted(SessionRequestContext requestContext) {
-        accountRejections.remove(normalize(requestContext.getAccountName()));
     }
 
     private void handleSessionExpiringHeader(HttpResponse response, SessionRequestContext requestContext) {
@@ -304,14 +274,13 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             return false;
         }
 
-        int statusCode = response.getStatusCode();
-        return statusCode == 401 || shouldStartAcquisitionCooldown(statusCode);
+        return response.getStatusCode() == 401;
     }
 
     /**
-     * Handles a failure to obtain a session credential. When the failure carries an HTTP 400, 403, or 5xx response
-     * the account is placed in cooldown so following requests skip session acquisition entirely. Any other failure
-     * is logged and falls back to bearer for the current request only.
+     * Handles a failure to obtain a session credential. When the failure carries an HTTP 403, 5xx, or HTTP 400
+     * FeatureNotEnabled response, the account is placed in cooldown so following requests skip session acquisition
+     * entirely. Any other failure is logged and falls back to bearer for the current request only.
      */
     private void handleSessionAcquisitionFailure(SessionRequestContext requestContext, Throwable error) {
         Throwable current = error;
@@ -322,7 +291,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         if (current != null && ((HttpResponseException) current).getResponse() != null) {
             HttpResponse response = ((HttpResponseException) current).getResponse();
             int statusCode = response.getStatusCode();
-            if (shouldStartAcquisitionCooldown(statusCode)) {
+            if (shouldStartAcquisitionCooldown(response)) {
                 if (beginAccountCooldown(requestContext.getAccountName())) {
                     LOGGER.warning(
                         "Session acquisition failed with HTTP {}. Suppressing session authentication for this account "
@@ -336,8 +305,14 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         LOGGER.warning("Unable to obtain a session credential. Using bearer token.", error);
     }
 
-    private static boolean shouldStartAcquisitionCooldown(int statusCode) {
-        return statusCode == 400 || statusCode == 403 || (statusCode >= 500 && statusCode <= 599);
+    private static boolean shouldStartAcquisitionCooldown(HttpResponse response) {
+        int statusCode = response.getStatusCode();
+        if (statusCode == 403 || (statusCode >= 500 && statusCode <= 599)) {
+            return true;
+        }
+
+        return statusCode == 400
+            && "FeatureNotEnabled".equals(response.getHeaderValue(ERROR_CODE_HEADER_NAME));
     }
 
     private boolean isAccountInCooldown(String accountName) {
@@ -369,12 +344,6 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             cooldownStarted.set(true);
             return cooldownUntil;
         });
-
-        if (cooldownStarted.get()) {
-            // Reset the count so the account gets a fresh set of attempts once the cooldown lapses.
-            accountRejections.remove(key);
-        }
-
         return cooldownStarted.get();
     }
 
