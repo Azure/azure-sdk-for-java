@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Add Custom Measurements
+- Add custom measurements support ([#50578](https://github.com/Azure/azure-sdk-for-java/pull/50578))
 
 ### Breaking Changes
 
