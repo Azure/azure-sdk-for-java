@@ -9,7 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Updated Gateway and thin-client request headers to include user-agent feature flags evaluated after transport initialization. - See PR [50580](https://github.com/Azure/azure-sdk-for-java/pull/50580).
+* Updated Gateway and thin-client request headers to include user-agent feature flags. - See PR [50580](https://github.com/Azure/azure-sdk-for-java/pull/50580).
 
 ### 4.83.0 (2026-09-22)
 
