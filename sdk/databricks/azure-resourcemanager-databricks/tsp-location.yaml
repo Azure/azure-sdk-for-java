@@ -1,4 +1,4 @@
 directory: specification/databricks/resource-manager/Microsoft.Databricks/Databricks
-commit: 89ff93230e6905243555531544a94f85f48b5dac
+commit: 74f4a55555f7e67433cd1a4b844bfca26086dba9
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 
