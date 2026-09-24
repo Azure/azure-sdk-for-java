@@ -54,7 +54,7 @@ public final class AutoRefreshingCache<CachedValue> {
     private final Clock clock;
     private final Scheduler timeoutScheduler;
     private CachedValueEntry<CachedValue> cachedValueEntry;
-    private CompletableFuture<CachedValue> inFlightAcquisition;
+    private CompletableFuture<CachedValue> pendingAcquisition;
     private OffsetDateTime retryNotBefore;
 
     /**
@@ -87,10 +87,11 @@ public final class AutoRefreshingCache<CachedValue> {
      */
     public Mono<CachedValue> getValidValueAsync() {
         return Mono.defer(() -> {
-            CachedValue current = getUsableValue();
-            if (current != null) {
-                refreshValueInBackground();
-                return Mono.just(current);
+            CachedValue cachedValue = getUsableCachedValue(OffsetDateTime.now(clock));
+            if (cachedValue != null) {
+                refreshValueInBackground(false);
+
+                return Mono.just(cachedValue);
             }
             return acquireValueAsync(acquireForegroundValue(), false);
         });
@@ -102,10 +103,11 @@ public final class AutoRefreshingCache<CachedValue> {
      * @return The cached or acquired value.
      */
     public CachedValue getValidValueSync() {
-        CachedValue current = getUsableValue();
-        if (current != null) {
-            refreshValueInBackground();
-            return current;
+        CachedValue cachedValue = getUsableCachedValue(OffsetDateTime.now(clock));
+
+        if (cachedValue != null) {
+            refreshValueInBackground(false);
+            return cachedValue;
         }
         ValueAcquisition<CachedValue> acquisition = acquireForegroundValue();
         if (acquisition.isOwner) {
@@ -151,13 +153,6 @@ public final class AutoRefreshingCache<CachedValue> {
     }
 
     /**
-     * Starts refresh if a usable value is due for refresh and failure backoff has elapsed.
-     */
-    public void refreshValueInBackground() {
-        refreshValueInBackground(false);
-    }
-
-    /**
      * Marks a usable value due for refresh, respecting failure backoff and sharing any existing acquisition.
      */
     public void forceRefreshValueInBackground() {
@@ -169,7 +164,7 @@ public final class AutoRefreshingCache<CachedValue> {
 
         synchronized (this) {
             OffsetDateTime now = OffsetDateTime.now(clock);
-            if (!isUsable(now)) {
+            if (isValueMissingOrExpired(now)) {
                 return;
             }
             if (force) {
@@ -186,38 +181,40 @@ public final class AutoRefreshingCache<CachedValue> {
         }
     }
 
-    private synchronized CachedValue getUsableValue() {
-        return isUsable(OffsetDateTime.now(clock)) ? cachedValueEntry.value : null;
-    }
-
     private synchronized ValueAcquisition<CachedValue> acquireForegroundValue() {
         // Another caller may have published a usable value since the initial lookup.
-        if (isUsable(OffsetDateTime.now(clock))) {
-            return new ValueAcquisition<>(CompletableFuture.completedFuture(cachedValueEntry.value), false);
+        if (isValueMissingOrExpired(OffsetDateTime.now(clock))) {
+            return acquireValue();
         }
-        return acquireValue();
+        return new ValueAcquisition<>(CompletableFuture.completedFuture(cachedValueEntry.value), false);
     }
 
     private ValueAcquisition<CachedValue> acquireValue() {
-        if (inFlightAcquisition != null) {
-            return new ValueAcquisition<>(inFlightAcquisition, false);
+        if (pendingAcquisition != null) {
+            return new ValueAcquisition<>(pendingAcquisition, false);
         }
-        inFlightAcquisition = new CompletableFuture<>();
-        return new ValueAcquisition<>(inFlightAcquisition, true);
+        pendingAcquisition = new CompletableFuture<>();
+        return new ValueAcquisition<>(pendingAcquisition, true);
     }
 
     private Mono<CachedValue> acquireValueAsync(ValueAcquisition<CachedValue> acquisition, boolean background) {
-        if (!acquisition.isOwner) {
-            return Mono.fromFuture(acquisition.result, true);
-        }
+        return acquisition.isOwner ? startAcquisition(acquisition, background) : joinAcquisition(acquisition);
+    }
+
+    private Mono<CachedValue> startAcquisition(ValueAcquisition<CachedValue> acquisition, boolean background) {
         Mono<CachedValue> source = Mono.defer(asyncSupplier)
             .switchIfEmpty(Mono.error(new IllegalStateException("The value supplier completed without a value.")));
         if (background) {
             source = source.timeout(BACKGROUND_ACQUIRE_TIMEOUT, timeoutScheduler);
         }
+
         return source.doOnNext(value -> complete(acquisition, value))
             .doOnError(error -> fail(acquisition, error))
             .cache();
+    }
+
+    private Mono<CachedValue> joinAcquisition(ValueAcquisition<CachedValue> acquisition) {
+        return Mono.fromFuture(acquisition.result, true);
     }
 
     private void complete(ValueAcquisition<CachedValue> acquisition, CachedValue value) {
@@ -226,10 +223,10 @@ public final class AutoRefreshingCache<CachedValue> {
             = Objects.requireNonNull(expirationExtractor.apply(value), "The value expiration cannot be null.");
         OffsetDateTime refreshAt = computeRefreshTime(OffsetDateTime.now(clock), expiration);
         synchronized (this) {
-            if (inFlightAcquisition == acquisition.result) {
+            if (pendingAcquisition == acquisition.result) {
                 cachedValueEntry = new CachedValueEntry<>(value, expiration, refreshAt);
                 retryNotBefore = null;
-                inFlightAcquisition = null;
+                pendingAcquisition = null;
             }
         }
         // Release ownership before invoking callbacks, which may invalidate or refresh the published value.
@@ -238,16 +235,25 @@ public final class AutoRefreshingCache<CachedValue> {
 
     private void fail(ValueAcquisition<CachedValue> acquisition, Throwable error) {
         synchronized (this) {
-            if (inFlightAcquisition == acquisition.result) {
+            if (pendingAcquisition == acquisition.result) {
                 retryNotBefore = OffsetDateTime.now(clock).plus(REFRESH_RETRY_DELAY);
-                inFlightAcquisition = null;
+                pendingAcquisition = null;
             }
         }
         acquisition.result.completeExceptionally(error);
     }
 
-    private boolean isUsable(OffsetDateTime now) {
-        return cachedValueEntry != null && !now.isAfter(cachedValueEntry.expiration);
+    private CachedValue getUsableCachedValue(OffsetDateTime now) {
+        synchronized (this) {
+            if (isValueMissingOrExpired(now)) {
+                return null;
+            }
+            return cachedValueEntry.value;
+        }
+    }
+
+    private boolean isValueMissingOrExpired(OffsetDateTime now) {
+        return cachedValueEntry == null || now.isAfter(cachedValueEntry.expiration);
     }
 
     private boolean isRetryBackoffActive(OffsetDateTime now) {

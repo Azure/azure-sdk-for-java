@@ -22,6 +22,7 @@ import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -147,7 +148,7 @@ public class AutoRefreshingCacheTests {
         for (int i = 0; i < 3; i++) {
             assertSame(first,
                 async ? cache.getValidValueAsync().block(Duration.ofSeconds(5)) : cache.getValidValueSync());
-            cache.refreshValueInBackground();
+            assertSame(first, cache.getValidValueSync());
             cache.forceRefreshValueInBackground();
         }
         assertEquals(1, provider.createSyncCount());
@@ -163,7 +164,7 @@ public class AutoRefreshingCacheTests {
 
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
-    public void backgroundRefreshDoesNotLoadMissingOrExpiredValues(boolean force) {
+    public void backgroundRefreshDoesNotUseAsyncSupplierForMissingOrExpiredValues(boolean force) {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         RecordingSuppliers provider = new RecordingSuppliers();
         TestExpiringValue first = value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME));
@@ -171,17 +172,17 @@ public class AutoRefreshingCacheTests {
         provider.onSync(first).onSync(second);
         AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider::createAsync,
             provider::createSync, TestExpiringValue::getExpiration, clock);
-        Runnable refresh = force ? cache::forceRefreshValueInBackground : cache::refreshValueInBackground;
+        Runnable refresh = force ? cache::forceRefreshValueInBackground : cache::getValidValueSync;
 
         refresh.run();
         assertEquals(0, provider.createAsyncCount());
-        assertEquals(0, provider.createSyncCount());
+        assertEquals(force ? 0 : 1, provider.createSyncCount());
         assertSame(first, cache.getValidValueSync());
 
         clock.advance(VALUE_LIFETIME.plusSeconds(1));
         refresh.run();
         assertEquals(0, provider.createAsyncCount());
-        assertEquals(1, provider.createSyncCount());
+        assertEquals(force ? 1 : 2, provider.createSyncCount());
         assertSame(second, cache.getValidValueSync());
         assertEquals(2, provider.createSyncCount());
     }
@@ -856,6 +857,60 @@ public class AutoRefreshingCacheTests {
 
         assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
         assertEquals(1, provider.createAsyncCount());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void explicitBackgroundRefreshRetriesAtBackoffBoundary(boolean force) {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        RecordingSuppliers provider = new RecordingSuppliers();
+        TestExpiringValue first = value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME));
+        TestExpiringValue second = value(SECOND_VALUE, now(clock).plus(VALUE_LIFETIME.multipliedBy(2)));
+        provider.onSync(first)
+            .onAsync(Mono.error(new IllegalStateException("refresh failed")))
+            .onAsync(Mono.just(second));
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider::createAsync,
+            provider::createSync, TestExpiringValue::getExpiration, clock);
+        Runnable refresh = force ? cache::forceRefreshValueInBackground : cache::getValidValueSync;
+
+        assertSame(first, cache.getValidValueSync());
+        cache.forceRefreshValueInBackground();
+        clock.advance(Duration.ofSeconds(29));
+        refresh.run();
+        assertEquals(1, provider.createAsyncCount());
+        assertSame(first, cache.getValidValueSync());
+        assertSame(first, cache.getValidValueAsync().block(Duration.ofSeconds(5)));
+
+        // The original hint remains due even before the normal jitter window opens.
+        clock.advance(Duration.ofSeconds(1));
+        refresh.run();
+        assertEquals(2, provider.createAsyncCount());
+        assertSame(second, cache.getValidValueSync());
+        assertEquals(1, provider.createSyncCount());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void invalidatedValueIsReacquiredDuringBackoff(boolean async) {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        RecordingSuppliers provider = new RecordingSuppliers();
+        TestExpiringValue first = value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME));
+        TestExpiringValue second = value(SECOND_VALUE, now(clock).plus(VALUE_LIFETIME.multipliedBy(2)));
+        provider.onSync(first).onAsync(Mono.error(new IllegalStateException("refresh failed")));
+        if (async) {
+            provider.onAsync(Mono.just(second));
+        } else {
+            provider.onSync(second);
+        }
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider::createAsync,
+            provider::createSync, TestExpiringValue::getExpiration, clock);
+
+        assertSame(first, cache.getValidValueSync());
+        cache.forceRefreshValueInBackground();
+        assertTrue(cache.invalidateValue(first));
+        assertSame(second, async ? cache.getValidValueAsync().block(Duration.ofSeconds(5)) : cache.getValidValueSync());
+        assertEquals(async ? 2 : 1, provider.createAsyncCount());
+        assertEquals(async ? 1 : 2, provider.createSyncCount());
     }
 
     @Test
