@@ -32,6 +32,7 @@ import java.net.SocketException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -43,6 +44,38 @@ import static org.mockito.ArgumentMatchers.any;
 
 public class RxGatewayStoreModelTest {
     private final static int TIMEOUT = 10000;
+
+    @Test(groups = "unit")
+    public void latestUserAgentIsAppliedToDatabaseAccountRequest() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        UserAgentContainer userAgentContainer = new UserAgentContainer();
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            Mockito.mock(ISessionContainer.class),
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            userAgentContainer,
+            Mockito.mock(GlobalEndpointManager.class),
+            Mockito.mock(HttpClient.class),
+            ApiType.SQL,
+            null);
+
+        userAgentContainer.setFeatureEnabledFlagsAsSuffix(
+            Collections.singleton(UserAgentFeatureFlags.ThinClient));
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            clientContext,
+            OperationType.Read,
+            ResourceType.DatabaseAccount,
+            "",
+            null,
+            (Object) null);
+
+        HttpRequest httpRequest = storeModel.wrapInHttpRequest(request, new URI("https://localhost"));
+
+        assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.USER_AGENT))
+            .isEqualTo(userAgentContainer.getUserAgent());
+    }
 
     @DataProvider(name = "sessionTokenConfigProvider")
     public Object[][] sessionTokenConfigProvider() {
