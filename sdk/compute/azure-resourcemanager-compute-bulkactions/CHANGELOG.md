@@ -1,14 +1,61 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.5 (2026-09-24)
 
-### Features Added
+- Azure Resource Manager Compute BulkActions client library for Java. This package contains Microsoft Azure SDK for Compute BulkActions Management SDK.  Package api-version 2026-10-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.BulkCreateVmSizeProfile` was removed
 
-### Other Changes
+#### `models.ZonePreference` was removed
+
+#### `models.BulkCreateCustomOverrideBase` was removed
+
+#### `models.DistributionStrategy` was removed
+
+#### `models.BulkCreateCustomDistributionStrategy` was removed
+
+#### `models.ZoneAllocationPolicy` was removed
+
+#### `models.BulkCreateCustomAllocationStrategy` was removed
+
+#### `models.BulkCreateCustomZoneAllocationPolicy` was removed
+
+#### `models.AllocationStrategy` was removed
+
+#### `models.BulkCreateCustomVmSizeProfile` was removed
+
+#### `models.BulkCreateCustomPriorityProfile` was modified
+
+* `allocationStrategy()` was removed
+* `withAllocationStrategy(models.BulkCreateCustomAllocationStrategy)` was removed
+
+#### `models.BulkCreateProperties` was modified
+
+* `vmSizesProfile()` was removed
+* `zoneAllocationPolicy()` was removed
+* `withZoneAllocationPolicy(models.ZoneAllocationPolicy)` was removed
+* `withVmSizesProfile(java.util.List)` was removed
+
+#### `models.BulkCreateCustomProperties` was modified
+
+* `vmSizesProfile()` was removed
+* `withZoneAllocationPolicy(models.BulkCreateCustomZoneAllocationPolicy)` was removed
+* `zoneAllocationPolicy()` was removed
+* `withVmSizesProfile(java.util.List)` was removed
+
+#### `models.PriorityProfile` was modified
+
+* `allocationStrategy()` was removed
+* `withAllocationStrategy(models.AllocationStrategy)` was removed
+
+### Features Added
+
+#### `models.ExecutionParameters` was modified
+
+* `withAdditionalCreateParameters(java.util.Map)` was added
+* `additionalCreateParameters()` was added
 
 ## 1.0.0-beta.4 (2026-09-11)
 

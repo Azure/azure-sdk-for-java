@@ -13,22 +13,22 @@ public final class CapacityRecommendationParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapacityRecommendationParameters model = BinaryData.fromString(
-            "{\"desiredLocations\":[\"kjozkrwfnd\",\"odjpslwejd\",\"vwryoqpso\"],\"desiredSizes\":[\"tazak\",\"j\",\"ahbc\",\"yffdfdos\"],\"availabilityZones\":false}")
+            "{\"desiredLocations\":[\"zakljlahbc\",\"yffdfdos\"],\"desiredSizes\":[\"xpaojakhmsbz\"],\"availabilityZones\":true}")
             .toObject(CapacityRecommendationParameters.class);
-        Assertions.assertEquals("kjozkrwfnd", model.desiredLocations().get(0));
-        Assertions.assertEquals("tazak", model.desiredSizes().get(0));
-        Assertions.assertFalse(model.availabilityZones());
+        Assertions.assertEquals("zakljlahbc", model.desiredLocations().get(0));
+        Assertions.assertEquals("xpaojakhmsbz", model.desiredSizes().get(0));
+        Assertions.assertTrue(model.availabilityZones());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CapacityRecommendationParameters model = new CapacityRecommendationParameters()
-            .withDesiredLocations(Arrays.asList("kjozkrwfnd", "odjpslwejd", "vwryoqpso"))
-            .withDesiredSizes(Arrays.asList("tazak", "j", "ahbc", "yffdfdos"))
-            .withAvailabilityZones(false);
+        CapacityRecommendationParameters model
+            = new CapacityRecommendationParameters().withDesiredLocations(Arrays.asList("zakljlahbc", "yffdfdos"))
+                .withDesiredSizes(Arrays.asList("xpaojakhmsbz"))
+                .withAvailabilityZones(true);
         model = BinaryData.fromObject(model).toObject(CapacityRecommendationParameters.class);
-        Assertions.assertEquals("kjozkrwfnd", model.desiredLocations().get(0));
-        Assertions.assertEquals("tazak", model.desiredSizes().get(0));
-        Assertions.assertFalse(model.availabilityZones());
+        Assertions.assertEquals("zakljlahbc", model.desiredLocations().get(0));
+        Assertions.assertEquals("xpaojakhmsbz", model.desiredSizes().get(0));
+        Assertions.assertTrue(model.availabilityZones());
     }
 }

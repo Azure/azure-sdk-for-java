@@ -13,7 +13,7 @@ public final class PartialFulfillmentPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartialFulfillmentPolicy model
-            = BinaryData.fromString("{\"fulfilledCapacity\":1861834573,\"mode\":\"Enabled\",\"reason\":\"None\"}")
+            = BinaryData.fromString("{\"fulfilledCapacity\":1012026798,\"mode\":\"Enabled\",\"reason\":\"None\"}")
                 .toObject(PartialFulfillmentPolicy.class);
         Assertions.assertEquals(PartialFulfillmentMode.ENABLED, model.mode());
     }
