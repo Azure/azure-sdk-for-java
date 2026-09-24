@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Added a 30-second timeout to background cache refreshes so stalled acquisitions release waiting callers and allow retries.
+
 ### Other Changes
 
 ## 12.34.1 (2026-08-18)

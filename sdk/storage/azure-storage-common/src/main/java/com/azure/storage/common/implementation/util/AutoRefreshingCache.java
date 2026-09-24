@@ -5,6 +5,8 @@ package com.azure.storage.common.implementation.util;
 
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -17,12 +19,13 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Cache for expiring values, such as storage session credentials and blob layouts. Values need not implement an
- * interface; an expiration extractor supplies their immutable expiration metadata.
+ * Cache for expiring values
  * <p>
  * Refresh is opportunistic rather than scheduled. Access to a usable value starts an asynchronous refresh when due,
- * while returning the current value. Failed background refreshes are retried after thirty seconds; acquisition of a
+ * while returning the current value. Background acquisitions time out after thirty seconds and cancel their subscription.
+ * Failed or timed-out background refreshes retain the current value and are retried after thirty seconds; acquisition of a
  * missing or expired value is not delayed by that backoff. There is no periodic timer or executor owned by this cache.
+ * Foreground acquisitions retain the supplier's timeout behavior. Callers joining a background acquisition share its timeout.
  * <p>
  * Async suppliers must be nonblocking and emit exactly one non-null value. Sync suppliers must return a non-null value.
  * Null expiration metadata and empty async results are acquisition errors. A newly acquired value that is already
@@ -42,12 +45,14 @@ public final class AutoRefreshingCache<CachedValue> {
     private static final ClientLogger LOGGER = new ClientLogger(AutoRefreshingCache.class);
     private static final Duration SAFETY_BUFFER = Duration.ofSeconds(5);
     private static final Duration REFRESH_RETRY_DELAY = Duration.ofSeconds(30);
+    private static final Duration BACKGROUND_ACQUIRE_TIMEOUT = Duration.ofSeconds(30);
     private static final double JITTER_WINDOW_START_RATIO = 0.8d;
 
     private final Supplier<Mono<CachedValue>> asyncSupplier;
     private final Supplier<CachedValue> syncSupplier;
     private final Function<CachedValue, OffsetDateTime> expirationExtractor;
     private final Clock clock;
+    private final Scheduler timeoutScheduler;
     private CachedValueEntry<CachedValue> cachedValueEntry;
     private CompletableFuture<CachedValue> inFlightAcquisition;
     private OffsetDateTime retryNotBefore;
@@ -62,11 +67,17 @@ public final class AutoRefreshingCache<CachedValue> {
      * @param clock The clock used for cache decisions.
      */
     public AutoRefreshingCache(Supplier<Mono<CachedValue>> asyncSupplier, Supplier<CachedValue> syncSupplier,
-                               Function<CachedValue, OffsetDateTime> expirationExtractor, Clock clock) {
+        Function<CachedValue, OffsetDateTime> expirationExtractor, Clock clock) {
+        this(asyncSupplier, syncSupplier, expirationExtractor, clock, Schedulers.parallel());
+    }
+
+    AutoRefreshingCache(Supplier<Mono<CachedValue>> asyncSupplier, Supplier<CachedValue> syncSupplier,
+        Function<CachedValue, OffsetDateTime> expirationExtractor, Clock clock, Scheduler timeoutScheduler) {
         this.asyncSupplier = Objects.requireNonNull(asyncSupplier, "'asyncSupplier' cannot be null.");
         this.syncSupplier = Objects.requireNonNull(syncSupplier, "'syncSupplier' cannot be null.");
         this.expirationExtractor = Objects.requireNonNull(expirationExtractor, "'expirationExtractor' cannot be null.");
         this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
+        this.timeoutScheduler = Objects.requireNonNull(timeoutScheduler, "'timeoutScheduler' cannot be null.");
     }
 
     /**
@@ -81,7 +92,7 @@ public final class AutoRefreshingCache<CachedValue> {
                 refreshValueInBackground();
                 return Mono.just(current);
             }
-            return acquireValueAsync(acquireForegroundValue());
+            return acquireValueAsync(acquireForegroundValue(), false);
         });
     }
 
@@ -162,8 +173,7 @@ public final class AutoRefreshingCache<CachedValue> {
                 return;
             }
             if (force) {
-                cachedValueEntry
-                    = new CachedValueEntry<>(cachedValueEntry.value, cachedValueEntry.expiration, now);
+                cachedValueEntry = new CachedValueEntry<>(cachedValueEntry.value, cachedValueEntry.expiration, now);
             }
             if (now.isBefore(cachedValueEntry.refreshAt) || isRetryBackoffActive(now)) {
                 return;
@@ -171,7 +181,7 @@ public final class AutoRefreshingCache<CachedValue> {
             acquisition = acquireValue();
         }
         if (acquisition.isOwner) {
-            acquireValueAsync(acquisition).subscribe(ignored -> {
+            acquireValueAsync(acquisition, true).subscribe(ignored -> {
             }, error -> LOGGER.warning("Background value refresh failed.", error));
         }
     }
@@ -196,13 +206,16 @@ public final class AutoRefreshingCache<CachedValue> {
         return new ValueAcquisition<>(inFlightAcquisition, true);
     }
 
-    private Mono<CachedValue> acquireValueAsync(ValueAcquisition<CachedValue> acquisition) {
+    private Mono<CachedValue> acquireValueAsync(ValueAcquisition<CachedValue> acquisition, boolean background) {
         if (!acquisition.isOwner) {
             return Mono.fromFuture(acquisition.result, true);
         }
-        return Mono.defer(asyncSupplier)
-            .switchIfEmpty(Mono.error(new IllegalStateException("The value supplier completed without a value.")))
-            .doOnNext(value -> complete(acquisition, value))
+        Mono<CachedValue> source = Mono.defer(asyncSupplier)
+            .switchIfEmpty(Mono.error(new IllegalStateException("The value supplier completed without a value.")));
+        if (background) {
+            source = source.timeout(BACKGROUND_ACQUIRE_TIMEOUT, timeoutScheduler);
+        }
+        return source.doOnNext(value -> complete(acquisition, value))
             .doOnError(error -> fail(acquisition, error))
             .cache();
     }

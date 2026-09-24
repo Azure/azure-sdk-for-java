@@ -17,10 +17,11 @@ public enum SessionMode {
     /**
      * The SDK creates a session on the first eligible request and, when using the built-in session provider,
      * keeps an active session until it receives no requests for 5 minutes. This is the default. If a session
-     * cannot be created, or the service answers a session-signed request with HTTP 400 or 401, the SDK
+     * cannot be created, or the service answers a session-signed request with HTTP 400, 401, 403, or 5xx, the SDK
      * transparently falls back to bearer token authentication for that request. Repeated failures stop the
-     * SDK from using sessions for that account for five minutes; during that window its requests are
-     * authenticated with bearer tokens without attempting to create a session.
+     * SDK from using sessions for that container in that account for five minutes; during that window its
+     * requests are authenticated with bearer tokens without attempting to create a session. Other containers
+     * are unaffected.
      */
     ENABLED,
 

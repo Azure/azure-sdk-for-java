@@ -41,6 +41,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * the policy authenticates with a session token. For all other requests, it delegates to the
  * wrapped bearer token policy.
  * <p>
+ * Session-signed requests that receive HTTP 400, 401, 403, or 5xx are retried once with bearer
+ * authentication. Only HTTP 401 invalidates the rejected session credential.
+ * <p>
  * If session authentication cannot be used against an account, either because session acquisition failed with
  * HTTP 400, 403, or 5xx, or because the service rejected session-signed requests with HTTP 401 three times in
  * a row, the account is placed in a five minute cooldown during which requests go straight to bearer
@@ -303,7 +306,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         }
 
         int statusCode = response.getStatusCode();
-        return statusCode == 400 || statusCode == 401;
+        return statusCode == 401 || shouldStartAcquisitionCooldown(statusCode);
     }
 
     /**
@@ -320,7 +323,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         if (current != null && ((HttpResponseException) current).getResponse() != null) {
             HttpResponse response = ((HttpResponseException) current).getResponse();
             int statusCode = response.getStatusCode();
-            if (statusCode == 400 || statusCode == 403 || (statusCode >= 500 && statusCode <= 599)) {
+            if (shouldStartAcquisitionCooldown(statusCode)) {
                 if (beginAccountCooldown(requestContext.getAccountName())) {
                     LOGGER.warning(
                         "Session acquisition failed with HTTP {}. Suppressing session authentication for this account "
@@ -332,6 +335,10 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         }
 
         LOGGER.warning("Unable to obtain a session credential. Using bearer token.", error);
+    }
+
+    private static boolean shouldStartAcquisitionCooldown(int statusCode) {
+        return statusCode == 400 || statusCode == 403 || (statusCode >= 500 && statusCode <= 599);
     }
 
     private boolean isAccountInCooldown(String accountName) {

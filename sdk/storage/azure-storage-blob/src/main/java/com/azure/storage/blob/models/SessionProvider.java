@@ -37,14 +37,14 @@ import reactor.core.publisher.Mono;
  * SDK: signing each request with the session's HMAC key, and choosing between session and bearer
  * authentication. The SDK authenticates a request with a bearer token rather than a session when the request
  * is not session-eligible, when no session credential could be obtained, and when the service answers a
- * session-signed request with HTTP 400 or 401.
+ * session-signed request with HTTP 400, 401, 403, or 5xx.
  * <p>
- * The SDK also stops using sessions for a storage account when they repeatedly fail against it. When a call
+ * The SDK also stops using sessions for a container when they repeatedly fail against it. When a call
  * to this provider fails with an HTTP 400, 403, or 5xx error, or the service rejects three session-signed
- * requests in a row with HTTP 401, the SDK stops requesting sessions for that account for five minutes and
+ * requests in a row with HTTP 401, the SDK stops requesting sessions for that container in that account for five minutes and
  * authenticates its requests with bearer tokens instead; {@link #getSession} and {@link #getSessionAsync} are
- * not called at all during that window. The pause covers every container in the account, not only the
- * container whose request failed, and a provider failure that carries no HTTP response does not start it -
+ * not called for that container during that window. Other containers, including identically named containers in
+ * other accounts, are unaffected. A provider failure that carries no HTTP response does not start a pause -
  * that request simply falls back to bearer. Each client tracks the pause on its own HTTP pipeline, so clients
  * pause independently even when they share one {@link SessionProvider} instance.
  *
