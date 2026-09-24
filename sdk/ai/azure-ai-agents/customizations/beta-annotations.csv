@@ -35,8 +35,6 @@ class;com.azure.ai.agents.models.BrowserAutomationPreviewTool;Preview API. previ
 class;com.azure.ai.agents.models.BrowserAutomationPreviewToolboxTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.BrowserAutomationToolCall;Preview API. preview_tool;
 class;com.azure.ai.agents.models.BrowserAutomationToolCallOutput;Preview API. preview_tool;
-class;com.azure.ai.agents.models.BrowserAutomationToolConnectionParameters;Preview API. preview_tool;
-class;com.azure.ai.agents.models.BrowserAutomationToolParameters;Preview API. preview_tool;
 class;com.azure.ai.agents.models.ChatSummaryMemoryItem;Preview API. MemoryStores=V1Preview;
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, ExternalAgents=V1Preview, GitHubCopilot=V1Preview, Skills=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview;definition
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview;digital_worker_type
