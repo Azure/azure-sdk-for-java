@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class InterconnectGroupsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/InterconnectGroupListAll.json
+     * x-ms-original-file: 2026-01-01/InterconnectGroupListAll.json
      */
     /**
      * Sample code: List all interconnect groups.

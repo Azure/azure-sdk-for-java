@@ -11,6 +11,12 @@
 
 ### Bugs Fixed
 
+- Registering or removing the shutdown hook that closes the shared executor service no longer fails when the JVM is
+  already shutting down. `Runtime.addShutdownHook` throws `IllegalStateException` once shutdown has begun, which
+  surfaced to callers of `SharedExecutorService` as `IllegalStateException: Shutdown in progress` when work, such as
+  an in-flight request draining during shutdown, needed the executor after it had been closed. A hook registered at
+  that point could never run, so this case is now logged and the work continues.
+
 ### Other Changes
 
 ## 1.0.0-beta.11 (2025-07-21)

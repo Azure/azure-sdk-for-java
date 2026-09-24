@@ -34,9 +34,19 @@ public final class DeletedServerProperties implements JsonSerializable<DeletedSe
     private String originalId;
 
     /*
+     * The resource group of the original server before deletion.
+     */
+    private String originalResourceGroup;
+
+    /*
      * The fully qualified domain name of the server.
      */
     private String fullyQualifiedDomainName;
+
+    /*
+     * The date and time when the deleted server will be permanently deleted (purged).
+     */
+    private OffsetDateTime scheduledPurgeTime;
 
     /**
      * Creates an instance of DeletedServerProperties class.
@@ -72,12 +82,31 @@ public final class DeletedServerProperties implements JsonSerializable<DeletedSe
     }
 
     /**
+     * Get the originalResourceGroup property: The resource group of the original server before deletion.
+     * 
+     * @return the originalResourceGroup value.
+     */
+    public String originalResourceGroup() {
+        return this.originalResourceGroup;
+    }
+
+    /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of the server.
      * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
         return this.fullyQualifiedDomainName;
+    }
+
+    /**
+     * Get the scheduledPurgeTime property: The date and time when the deleted server will be permanently deleted
+     * (purged).
+     * 
+     * @return the scheduledPurgeTime value.
+     */
+    public OffsetDateTime scheduledPurgeTime() {
+        return this.scheduledPurgeTime;
     }
 
     /**
@@ -119,8 +148,13 @@ public final class DeletedServerProperties implements JsonSerializable<DeletedSe
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("originalId".equals(fieldName)) {
                     deserializedDeletedServerProperties.originalId = reader.getString();
+                } else if ("originalResourceGroup".equals(fieldName)) {
+                    deserializedDeletedServerProperties.originalResourceGroup = reader.getString();
                 } else if ("fullyQualifiedDomainName".equals(fieldName)) {
                     deserializedDeletedServerProperties.fullyQualifiedDomainName = reader.getString();
+                } else if ("scheduledPurgeTime".equals(fieldName)) {
+                    deserializedDeletedServerProperties.scheduledPurgeTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

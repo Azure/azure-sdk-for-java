@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.policy.generated;
  */
 public final class PolicyDefinitionsDeleteAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/deletePolicyDefinitionAtManagementGroup.json
+     * x-ms-original-file: 2026-06-01/deletePolicyDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Delete a policy definition at management group level.

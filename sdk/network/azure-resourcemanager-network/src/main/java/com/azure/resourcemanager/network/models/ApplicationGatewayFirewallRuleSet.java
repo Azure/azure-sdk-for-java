@@ -111,6 +111,16 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
     }
 
     /**
+     * Get the displayName property: Human-readable display name for the managed rule set version (e.g., 'Default
+     * Ruleset 2.2 (Latest, Recommended)').
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
      * Get the ruleGroups property: The rule groups of the web application firewall rule set.
      * 
      * @return the ruleGroups value.

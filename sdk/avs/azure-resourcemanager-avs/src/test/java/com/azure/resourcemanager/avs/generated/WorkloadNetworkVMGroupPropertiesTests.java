@@ -13,21 +13,21 @@ public final class WorkloadNetworkVMGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVMGroupProperties model = BinaryData.fromString(
-            "{\"displayName\":\"cblembnkbwv\",\"members\":[\"kdi\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Building\",\"revision\":5502296031539440928}")
+            "{\"displayName\":\"cvbmqzb\",\"members\":[\"lajrnwxacevehj\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Failed\",\"revision\":5046707434469334203}")
             .toObject(WorkloadNetworkVMGroupProperties.class);
-        Assertions.assertEquals("cblembnkbwv", model.displayName());
-        Assertions.assertEquals("kdi", model.members().get(0));
-        Assertions.assertEquals(5502296031539440928L, model.revision());
+        Assertions.assertEquals("cvbmqzb", model.displayName());
+        Assertions.assertEquals("lajrnwxacevehj", model.members().get(0));
+        Assertions.assertEquals(5046707434469334203L, model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkVMGroupProperties model = new WorkloadNetworkVMGroupProperties().withDisplayName("cblembnkbwv")
-            .withMembers(Arrays.asList("kdi"))
-            .withRevision(5502296031539440928L);
+        WorkloadNetworkVMGroupProperties model = new WorkloadNetworkVMGroupProperties().withDisplayName("cvbmqzb")
+            .withMembers(Arrays.asList("lajrnwxacevehj"))
+            .withRevision(5046707434469334203L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkVMGroupProperties.class);
-        Assertions.assertEquals("cblembnkbwv", model.displayName());
-        Assertions.assertEquals("kdi", model.members().get(0));
-        Assertions.assertEquals(5502296031539440928L, model.revision());
+        Assertions.assertEquals("cvbmqzb", model.displayName());
+        Assertions.assertEquals("lajrnwxacevehj", model.members().get(0));
+        Assertions.assertEquals(5046707434469334203L, model.revision());
     }
 }

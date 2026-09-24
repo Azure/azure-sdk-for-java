@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-contentsafety</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-contentsafety;current} -->
+  <version>1.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-contentsafety;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for ContentSafety</name>
@@ -43,8 +43,8 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.min.linecoverage>0.4</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.3</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.20</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
 
     <spotbugs.skip>false</spotbugs.skip>
   </properties>

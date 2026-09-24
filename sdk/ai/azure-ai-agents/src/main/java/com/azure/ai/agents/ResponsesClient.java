@@ -5,9 +5,9 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.StreamingUtils;
 import com.azure.ai.agents.models.AzureCreateResponseDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.util.StreamingResponseUtils;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.ReturnType;
@@ -86,7 +86,7 @@ public final class ResponsesClient {
 
         Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return StreamingUtils.toIterableStream(this.responseService.createStreaming(params.build()));
+        return StreamingResponseUtils.toIterableStream(this.responseService.createStreaming(params.build()));
     }
 
     /**

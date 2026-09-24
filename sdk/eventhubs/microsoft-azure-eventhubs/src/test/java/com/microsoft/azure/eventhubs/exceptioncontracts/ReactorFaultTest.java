@@ -17,10 +17,10 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.impl.CollectorImpl;
 import org.apache.qpid.proton.engine.impl.ConnectionImpl;
 import org.apache.qpid.proton.reactor.Reactor;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.Iterator;
@@ -30,13 +30,13 @@ import java.util.concurrent.TimeUnit;
 public class ReactorFaultTest extends ApiTestBase {
     private static ConnectionStringBuilder connStr;
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() {
         connStr = TestContext.getConnectionString();
     }
 
-    @Ignore("TODO: Investigate testcase. This fails.")
-    @Test()
+    @Disabled("TODO: Investigate testcase. This fails.")
+    @Test
     public void verifyReactorRestartsOnProtonBugs() throws Exception {
         final EventHubClient eventHubClient = EventHubClient.createFromConnectionStringSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
         try {
@@ -64,7 +64,7 @@ public class ReactorFaultTest extends ApiTestBase {
                             }
                         });
                     } catch (Exception e) {
-                        Assert.fail(e.getMessage());
+                        Assertions.fail(e.getMessage());
                     }
                 }
             }, 2, TimeUnit.SECONDS);
@@ -73,7 +73,7 @@ public class ReactorFaultTest extends ApiTestBase {
                 Thread.sleep(4000);
 
                 final Iterable<EventData> events = partitionReceiver.receiveSync(100);
-                Assert.assertTrue(events != null && events.iterator().hasNext());
+                Assertions.assertTrue(events != null && events.iterator().hasNext());
             } finally {
                 partitionReceiver.closeSync();
             }
@@ -82,14 +82,14 @@ public class ReactorFaultTest extends ApiTestBase {
         }
     }
 
-    @Test()
+    @Test
     public void verifyTransportAbort() throws Exception {
         final EventHubClient eventHubClient = EventHubClient.createFromConnectionStringSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
         try {
             final PartitionReceiver partitionReceiver = eventHubClient.createEpochReceiverSync(
                     "$default", "0", EventPosition.fromStartOfStream(), System.currentTimeMillis());
             final Iterable<EventData> firstBatch = partitionReceiver.receiveSync(100);
-            Assert.assertTrue(firstBatch != null);
+            Assertions.assertTrue(firstBatch != null);
 
             long sequenceNumber = -1;
             final Iterator<EventData> iterator = firstBatch.iterator();
@@ -97,7 +97,7 @@ public class ReactorFaultTest extends ApiTestBase {
                 sequenceNumber = iterator.next().getSystemProperties().getSequenceNumber();
             }
 
-            Assert.assertTrue(sequenceNumber > -1);
+            Assertions.assertTrue(sequenceNumber > -1);
 
             Executors.newScheduledThreadPool(1).schedule(new Runnable() {
                 @Override
@@ -117,7 +117,7 @@ public class ReactorFaultTest extends ApiTestBase {
 
                         ((CollectorImpl) reactor.collector()).put(Event.Type.TRANSPORT_ERROR, connection.getTransport());
                     } catch (Exception e) {
-                        Assert.fail(e.getMessage());
+                        Assertions.fail(e.getMessage());
                     }
                 }
             }, 5, TimeUnit.SECONDS);
@@ -126,10 +126,10 @@ public class ReactorFaultTest extends ApiTestBase {
                 Thread.sleep(10000);
 
                 final Iterable<EventData> events = partitionReceiver.receiveSync(100);
-                Assert.assertTrue(events != null && events.iterator().hasNext());
-                Assert.assertEquals(sequenceNumber + 1, events.iterator().next().getSystemProperties().getSequenceNumber());
+                Assertions.assertTrue(events != null && events.iterator().hasNext());
+                Assertions.assertEquals(sequenceNumber + 1, events.iterator().next().getSystemProperties().getSequenceNumber());
             } catch (Exception e) {
-                Assert.fail(e.getMessage());
+                Assertions.fail(e.getMessage());
             } finally {
                 partitionReceiver.closeSync();
             }

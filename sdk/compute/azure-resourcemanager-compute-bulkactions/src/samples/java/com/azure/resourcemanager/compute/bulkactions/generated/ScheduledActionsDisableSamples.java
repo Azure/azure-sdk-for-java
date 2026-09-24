@@ -9,15 +9,15 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionsDisableSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_Disable_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_Disable_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_Disable_MaximumSet.
+     * Sample code: Disable a scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void scheduledActionsDisableMaximumSet(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void
+        disableAScheduledAction(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions().disable("rgcompute", "myScheduledAction", com.azure.core.util.Context.NONE);
     }
 }

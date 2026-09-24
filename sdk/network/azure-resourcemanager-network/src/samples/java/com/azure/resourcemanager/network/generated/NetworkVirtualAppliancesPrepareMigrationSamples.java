@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.NetworkVirtualAppliancePrepareMi
  */
 public final class NetworkVirtualAppliancesPrepareMigrationSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualAppliancePrepareMigration.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualAppliancePrepareMigration.json
      */
     /**
      * Sample code: Prepare migration of a NetworkVirtualAppliance to the new ILB architecture.
