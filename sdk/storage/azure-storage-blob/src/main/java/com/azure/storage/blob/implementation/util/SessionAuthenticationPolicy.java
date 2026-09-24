@@ -51,8 +51,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Acquisition failures that do not carry one of those status codes fall back to bearer for that request only
  * and do not start a cooldown.
  */
-public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(SessionTokenCredentialPolicy.class);
+public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(SessionAuthenticationPolicy.class);
     private static final String RETRY_CONTEXT_KEY = "azure-storage-blob-session-auth-retried";
     private static final HttpHeaderName X_MS_AUTH_INFO = HttpHeaderName.fromString("x-ms-auth-info");
     private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
@@ -68,13 +68,13 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private final ConcurrentHashMap<String, OffsetDateTime> accountCooldowns = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, AtomicInteger> accountRejections = new ConcurrentHashMap<>();
 
-    SessionTokenCredentialPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-        SessionProvider sessionProvider, SessionOptions sessionOptions) {
+    SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
+                                SessionProvider sessionProvider, SessionOptions sessionOptions) {
         this(bearerPolicy, sessionProvider, sessionOptions, Clock.systemUTC());
     }
 
-    SessionTokenCredentialPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-        SessionProvider sessionProvider, SessionOptions sessionOptions, Clock clock) {
+    SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
+                                SessionProvider sessionProvider, SessionOptions sessionOptions, Clock clock) {
         this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");
         this.sessionProvider = Objects.requireNonNull(sessionProvider, "'sessionProvider' cannot be null.");
         this.sessionOptions = Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null.");

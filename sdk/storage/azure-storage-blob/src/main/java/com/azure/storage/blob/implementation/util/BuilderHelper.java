@@ -170,7 +170,7 @@ public final class BuilderHelper {
                         effectiveHttpClient, clientOptions, endpoint, effectiveServiceVersion,
                         sessionOptions.getAccountName());
                 }
-                policies.add(new SessionTokenCredentialPolicy(bearerPolicy, sessionProvider, sessionOptions));
+                policies.add(new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionOptions));
             }
         }
 
@@ -199,7 +199,7 @@ public final class BuilderHelper {
         bearerPolicies.add(bearerPolicy);
         bearerPolicies.addAll(postAuthenticationPolicies);
 
-        return new TokenCredentialSessionProvider(createPipeline(bearerPolicies, httpClient, clientOptions), endpoint,
+        return new ContainerSessionProvider(createPipeline(bearerPolicies, httpClient, clientOptions), endpoint,
             serviceVersion, accountName);
     }
 

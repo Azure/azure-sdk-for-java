@@ -55,13 +55,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class SessionTokenCredentialPolicyTest {
+public class SessionAuthenticationPolicyTest {
 
     private static final String FIRST_TOKEN = "first-session-token";
 
     private SessionProvider sessionProvider;
     private StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
-    private SessionTokenCredentialPolicy policy;
+    private SessionAuthenticationPolicy policy;
 
     @BeforeEach
     public void beforeEach() {
@@ -747,13 +747,13 @@ public class SessionTokenCredentialPolicyTest {
             "https://" + accountName + ".blob.core.windows.net/" + containerName + "/myblob");
     }
 
-    private SessionTokenCredentialPolicy createPolicy() {
+    private SessionAuthenticationPolicy createPolicy() {
         return createPolicy(Clock.systemUTC());
     }
 
-    private SessionTokenCredentialPolicy createPolicy(Clock clock) {
+    private SessionAuthenticationPolicy createPolicy(Clock clock) {
         SessionOptions options = new SessionOptions();
-        return new SessionTokenCredentialPolicy(bearerPolicy, sessionProvider, options, clock);
+        return new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, options, clock);
     }
 
     private static SessionCredential credentialWithToken() {

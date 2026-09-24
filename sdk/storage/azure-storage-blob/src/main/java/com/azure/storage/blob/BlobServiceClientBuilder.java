@@ -30,7 +30,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
-import com.azure.storage.blob.implementation.util.SessionTokenCredentialPolicy;
+import com.azure.storage.blob.implementation.util.SessionAuthenticationPolicy;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
@@ -142,7 +142,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
                 foundCredential = true;
                 break;
             }
-            if (pipeline.getPolicy(i) instanceof SessionTokenCredentialPolicy) {
+            if (pipeline.getPolicy(i) instanceof SessionAuthenticationPolicy) {
                 foundCredential = true;
                 break;
             }
@@ -199,7 +199,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
                 foundCredential = true;
                 break;
             }
-            if (pipeline.getPolicy(i) instanceof SessionTokenCredentialPolicy) {
+            if (pipeline.getPolicy(i) instanceof SessionAuthenticationPolicy) {
                 foundCredential = true;
                 break;
             }

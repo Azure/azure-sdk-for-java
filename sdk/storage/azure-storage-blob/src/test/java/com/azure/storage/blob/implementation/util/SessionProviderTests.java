@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Small, focused tests for the public {@link SessionProvider} contract implemented by
- * {@link TokenCredentialSessionProvider}.
+ * {@link ContainerSessionProvider}.
  * <p>
  * These verify default synchronous retrieval and rejection of a context missing a container name.
  * The successful sync and async routing paths are covered by {@code TokenCredentialSessionProviderTests} against the
@@ -35,7 +35,7 @@ public class SessionProviderTests {
 
     @Test
     public void missingContextContainerThrowsSync() {
-        TokenCredentialSessionProvider sessionProvider = createSessionProvider();
+        ContainerSessionProvider sessionProvider = createSessionProvider();
 
         // There is no constructor-supplied fallback container: a context with no container name must be
         // rejected rather than silently degrading to some default.
@@ -46,7 +46,7 @@ public class SessionProviderTests {
 
     @Test
     public void missingContextContainerThrowsAsync() {
-        TokenCredentialSessionProvider sessionProvider = createSessionProvider();
+        ContainerSessionProvider sessionProvider = createSessionProvider();
 
         SessionRequestContext context = new SessionRequestContext();
 
@@ -99,9 +99,9 @@ public class SessionProviderTests {
         };
     }
 
-    private static TokenCredentialSessionProvider createSessionProvider() {
+    private static ContainerSessionProvider createSessionProvider() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).build();
-        return new TokenCredentialSessionProvider(pipeline,
+        return new ContainerSessionProvider(pipeline,
             "https://" + BlobTestBase.TEST_SESSION_ACCOUNT_NAME + ".blob.core.windows.net",
             BlobServiceVersion.getLatest(), BlobTestBase.TEST_SESSION_ACCOUNT_NAME);
     }

@@ -46,17 +46,17 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Deterministic, network-free tests for {@link TokenCredentialSessionProvider}'s time-based, per-container caching
+ * Deterministic, network-free tests for {@link ContainerSessionProvider}'s time-based, per-container caching
  * behavior.
  * <p>
- * These tests drive {@link TokenCredentialSessionProvider} with an injectable {@link Clock} and a fake HTTP transport
+ * These tests drive {@link ContainerSessionProvider} with an injectable {@link Clock} and a fake HTTP transport
  * ({@link CreateSessionTransport}) so the expiry, proactive-refresh, and per-container independence logic
  * can be exercised without sleeping or hitting the service. Unlike {@code SessionProviderSeamTest} (which
  * verifies the container name is placed correctly on the wire), these tests focus on cache timing: which
  * token is returned when, and how many CreateSession calls are made. Account-level acquisition cooldown is
  * covered separately by {@code SessionTokenCredentialPolicyTest}.
  */
-public class TokenCredentialSessionProviderCacheTest {
+public class ContainerSessionProviderCacheTest {
 
     private static final String ACCOUNT_NAME = "testaccount";
     private static final String CONTAINER_A = "container-a";
@@ -70,7 +70,7 @@ public class TokenCredentialSessionProviderCacheTest {
 
     private MutableClock clock;
     private CreateSessionTransport httpClient;
-    private TokenCredentialSessionProvider provider;
+    private ContainerSessionProvider provider;
 
     @BeforeEach
     public void setup() {
@@ -78,7 +78,7 @@ public class TokenCredentialSessionProviderCacheTest {
         httpClient = new CreateSessionTransport();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
-        provider = new TokenCredentialSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
+        provider = new ContainerSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
             BlobServiceVersion.getLatest(), ACCOUNT_NAME, clock);
     }
 
