@@ -2170,9 +2170,16 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     JsonNode bookmark = attempt.path("ppaf");
                     assertThat(bookmark.isObject()).as("ppaf must be an object in %s", attempt).isTrue();
                     if (!bookmark.isEmpty()) {
-                        assertThat(bookmark.size()).isEqualTo(2);
+                        assertThat(bookmark.size()).isEqualTo(3);
                         assertThat(bookmark.path("currWriteRegion").isTextual()).isTrue();
                         assertThat(bookmark.path("currWriteRegion").asText()).isNotBlank();
+                        JsonNode failedRegions = bookmark.path("failedRegions");
+                        assertThat(failedRegions.isArray()).isTrue();
+                        assertThat(failedRegions).isNotEmpty();
+                        for (JsonNode failedRegion : failedRegions) {
+                            assertThat(failedRegion.isTextual()).isTrue();
+                            assertThat(failedRegion.asText()).isNotBlank();
+                        }
                         assertThat(bookmark.path("since").isTextual()).isTrue();
                         assertThat(Instant.parse(bookmark.path("since").asText())).isBeforeOrEqualTo(Instant.now());
                     }
