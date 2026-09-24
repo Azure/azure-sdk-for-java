@@ -1,10 +1,9 @@
 # Release History
 
-## 12.29.0-beta.2 (Unreleased)
+## 12.29.0 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
+- Added support for service version 2026-10-06.
 
 ### Bugs Fixed
 - Fixed a bug where the client returned by `rename`, `renameWithResponse`, and `undeletePath` URL-encoded the path
@@ -19,6 +18,11 @@
 - Corrected documentation on `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` path client getters and on
   `DataLakePathClientBuilder.pathName(String)`, which incorrectly instructed callers to pass a URL-encoded path name.
   Path names have been used verbatim since 12.22.0 and are percent-encoded by the client when the request URL is built.
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.7`.
+- Upgraded `azure-core` from `1.59.0` to version `1.59.1`.
+- Upgraded `azure-storage-blob` from `12.35.1` to version `12.36.0`.
 
 ## 12.28.1 (2026-08-18)
 

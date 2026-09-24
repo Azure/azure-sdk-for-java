@@ -1,14 +1,18 @@
 # Release History
 
-## 12.35.0-beta.2 (Unreleased)
+## 12.35.0 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
+- Added support for service version 2026-10-06.
 
 ### Bugs Fixed
+- Fixed an async retry hang that could occur when draining a retryable response body after the response was closed.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.7`.
+- Upgraded `azure-core` from `1.59.0` to version `1.59.1`.
 
 ## 12.34.1 (2026-08-18)
 
