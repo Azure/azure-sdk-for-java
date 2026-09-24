@@ -13,5 +13,6 @@
     <module>azure-iot-deviceregistry-softwareupdate</module>
     <module>azure-iot-deviceregistry-softwareupdate/customization</module>
     <module>azure-resourcemanager-deviceregistry</module>
+    <module>azure-resourcemanager-deviceregistry-softwareupdate</module>
   </modules>
 </project>
