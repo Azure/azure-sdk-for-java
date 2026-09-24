@@ -121,17 +121,17 @@
 #### `models.CloudVmClusterProperties` was modified
 
 * `withSparseStoragePercentage(java.lang.Integer)` was added
-* `withResourceAnchorId(java.lang.String)` was added
-* `withRecoStoragePercentage(java.lang.Integer)` was added
 * `recoStoragePercentage()` was added
-* `sparseStoragePercentage()` was added
-* `networkAnchorId()` was added
-* `withProximityPlacementGroup(models.ProximityPlacementGroup)` was added
-* `withNetworkAnchorId(java.lang.String)` was added
+* `withRecoStoragePercentage(java.lang.Integer)` was added
 * `resourceAnchorId()` was added
+* `networkAnchorId()` was added
 * `isAcceleratedNetworkEnabled()` was added
-* `proximityPlacementGroup()` was added
+* `withNetworkAnchorId(java.lang.String)` was added
 * `withIsAcceleratedNetworkEnabled(java.lang.Boolean)` was added
+* `withProximityPlacementGroup(models.ProximityPlacementGroup)` was added
+* `withResourceAnchorId(java.lang.String)` was added
+* `sparseStoragePercentage()` was added
+* `proximityPlacementGroup()` was added
 
 #### `models.NetworkAnchorProperties` was modified
 
@@ -140,12 +140,12 @@
 
 #### `models.AutonomousDatabaseFromBackupTimestampProperties` was modified
 
-* `withTimeScheduledAzUpdate(java.lang.String)` was added
-* `withBackupDestination(models.BackupDestinationType)` was added
-* `withZone(java.lang.String)` was added
 * `withIsScheduleAzUpdateToEarliest(java.lang.Boolean)` was added
-* `withNetworkAnchorId(java.lang.String)` was added
+* `withZone(java.lang.String)` was added
 * `withResourceAnchorId(java.lang.String)` was added
+* `withTimeScheduledAzUpdate(java.lang.String)` was added
+* `withNetworkAnchorId(java.lang.String)` was added
+* `withBackupDestination(models.BackupDestinationType)` was added
 
 #### `models.WorkloadType` was modified
 
@@ -153,9 +153,9 @@
 
 #### `models.DbSystemProperties` was modified
 
+* `withDataCollectionOptions(models.DataCollectionOptions)` was added
 * `withNcharacterSet(java.lang.String)` was added
 * `withCharacterSet(java.lang.String)` was added
-* `withDataCollectionOptions(models.DataCollectionOptions)` was added
 
 #### `models.GiMinorVersions` was modified
 
@@ -163,28 +163,28 @@
 
 #### `models.AutonomousDatabaseCloneProperties` was modified
 
-* `withZone(java.lang.String)` was added
-* `withBackupDestination(models.BackupDestinationType)` was added
-* `withResourceAnchorId(java.lang.String)` was added
 * `withTimeScheduledAzUpdate(java.lang.String)` was added
-* `withNetworkAnchorId(java.lang.String)` was added
+* `withZone(java.lang.String)` was added
+* `withResourceAnchorId(java.lang.String)` was added
 * `withIsScheduleAzUpdateToEarliest(java.lang.Boolean)` was added
+* `withBackupDestination(models.BackupDestinationType)` was added
+* `withNetworkAnchorId(java.lang.String)` was added
 
 #### `models.ExascaleDbStorageVaultProperties` was modified
 
-* `withIsAutoscaleEnabled(java.lang.Boolean)` was added
-* `isAutoscaleEnabled()` was added
 * `withAutoscaleLimitInGbs(java.lang.Integer)` was added
 * `autoscaleLimitInGbs()` was added
+* `isAutoscaleEnabled()` was added
+* `withIsAutoscaleEnabled(java.lang.Boolean)` was added
 
 #### `models.AutonomousDatabaseProperties` was modified
 
 * `withBackupDestination(models.BackupDestinationType)` was added
-* `withResourceAnchorId(java.lang.String)` was added
-* `withNetworkAnchorId(java.lang.String)` was added
-* `withZone(java.lang.String)` was added
 * `withIsScheduleAzUpdateToEarliest(java.lang.Boolean)` was added
+* `withZone(java.lang.String)` was added
+* `withResourceAnchorId(java.lang.String)` was added
 * `withTimeScheduledAzUpdate(java.lang.String)` was added
+* `withNetworkAnchorId(java.lang.String)` was added
 
 #### `models.CloudVmClusterUpdateProperties` was modified
 
@@ -193,21 +193,21 @@
 
 #### `models.AutonomousDatabaseCrossRegionDisasterRecoveryProperties` was modified
 
-* `withBackupDestination(models.BackupDestinationType)` was added
 * `withNetworkAnchorId(java.lang.String)` was added
+* `withTimeScheduledAzUpdate(java.lang.String)` was added
+* `withBackupDestination(models.BackupDestinationType)` was added
 * `withResourceAnchorId(java.lang.String)` was added
 * `withIsScheduleAzUpdateToEarliest(java.lang.Boolean)` was added
-* `withTimeScheduledAzUpdate(java.lang.String)` was added
 * `withZone(java.lang.String)` was added
 
 #### `models.DbSystemBaseProperties` was modified
 
-* `withCharacterSet(java.lang.String)` was added
-* `withNcharacterSet(java.lang.String)` was added
-* `characterSet()` was added
-* `withDataCollectionOptions(models.DataCollectionOptions)` was added
 * `dataCollectionOptions()` was added
 * `ncharacterSet()` was added
+* `withDataCollectionOptions(models.DataCollectionOptions)` was added
+* `withCharacterSet(java.lang.String)` was added
+* `characterSet()` was added
+* `withNcharacterSet(java.lang.String)` was added
 
 #### `models.DbSystemShapes` was modified
 
@@ -223,17 +223,17 @@
 
 #### `OracleDatabaseManager` was modified
 
-* `goldenGateConnections()` was added
 * `databaseSystemShapeResources()` was added
 * `goldenGateDeployments()` was added
+* `goldenGateConnections()` was added
 * `databaseEditions()` was added
 
 #### `models.CloudExadataInfrastructureProperties` was modified
 
-* `withProximityPlacementGroup(models.ProximityPlacementGroup)` was added
-* `proximityPlacementGroup()` was added
-* `resourceAnchorId()` was added
 * `withResourceAnchorId(java.lang.String)` was added
+* `withProximityPlacementGroup(models.ProximityPlacementGroup)` was added
+* `resourceAnchorId()` was added
+* `proximityPlacementGroup()` was added
 
 #### `models.BaseDbSystemShapes` was modified
 
@@ -241,18 +241,18 @@
 
 #### `models.AutonomousDatabaseBaseProperties` was modified
 
-* `zone()` was added
-* `withResourceAnchorId(java.lang.String)` was added
-* `resourceAnchorId()` was added
-* `withTimeScheduledAzUpdate(java.lang.String)` was added
-* `withBackupDestination(models.BackupDestinationType)` was added
-* `withNetworkAnchorId(java.lang.String)` was added
-* `withIsScheduleAzUpdateToEarliest(java.lang.Boolean)` was added
-* `withZone(java.lang.String)` was added
-* `backupDestination()` was added
-* `isScheduleAzUpdateToEarliest()` was added
 * `networkAnchorId()` was added
+* `isScheduleAzUpdateToEarliest()` was added
+* `zone()` was added
+* `backupDestination()` was added
+* `withResourceAnchorId(java.lang.String)` was added
+* `withZone(java.lang.String)` was added
+* `withIsScheduleAzUpdateToEarliest(java.lang.Boolean)` was added
+* `resourceAnchorId()` was added
+* `withNetworkAnchorId(java.lang.String)` was added
+* `withBackupDestination(models.BackupDestinationType)` was added
 * `timeScheduledAzUpdate()` was added
+* `withTimeScheduledAzUpdate(java.lang.String)` was added
 
 #### `models.AutonomousDatabaseBackupProperties` was modified
 
