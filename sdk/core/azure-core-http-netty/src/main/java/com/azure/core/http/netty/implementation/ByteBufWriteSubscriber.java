@@ -23,6 +23,7 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
     private final MonoSink<Void> emitter;
     private final int bufferSize;
     private final ByteBuf buffer;
+    private final boolean useHeapBuffer;
 
     // This subscriber is effectively synchronous so there is no need for these fields to be volatile.
     private Subscription subscription;
@@ -36,12 +37,28 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
      * @param bodySize The size of the request body, if known.
      */
     public ByteBufWriteSubscriber(ExceptionThrowingConsumer<ByteBuffer> writer, MonoSink<Void> emitter, Long bodySize) {
+        this(writer, emitter, bodySize, false);
+    }
+
+    /**
+     * Creates a new {@link ByteBufWriteSubscriber} with control over direct buffer writes.
+     *
+     * @param writer Where to write the {@link ByteBuf ByteBufs}.
+     * @param emitter {@link MonoSink} to emit completion or error signals.
+     * @param bodySize The size of the request body, if known.
+     * @param useHeapBuffer Whether to copy all writes through a bounded heap buffer.
+     */
+    public ByteBufWriteSubscriber(ExceptionThrowingConsumer<ByteBuffer> writer, MonoSink<Void> emitter, Long bodySize,
+        boolean useHeapBuffer) {
         this.writer = writer;
         this.emitter = emitter;
+        this.useHeapBuffer = useHeapBuffer;
         // Create a writing buffer that has a minimum bound of 8KB and a maximum bound of 64KB.
         // This is safe as the writer performs writes synchronously.
         this.bufferSize = (bodySize == null) ? 65536 : (int) Math.max(8192, Math.min(bodySize, 65536));
-        this.buffer = PooledByteBufAllocator.DEFAULT.buffer(bufferSize);
+        this.buffer = useHeapBuffer
+            ? PooledByteBufAllocator.DEFAULT.heapBuffer(bufferSize)
+            : PooledByteBufAllocator.DEFAULT.buffer(bufferSize);
     }
 
     @Override
@@ -69,11 +86,25 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
             return;
         }
 
-        if (bytes.readableBytes() > bufferSize) {
+        if (useHeapBuffer) {
+            while (bytes.isReadable()) {
+                buffer.writeBytes(bytes, Math.min(bytes.readableBytes(), buffer.writableBytes()));
+                if (!buffer.isWritable()) {
+                    write(buffer);
+                    if (done) {
+                        return;
+                    }
+                    buffer.clear();
+                }
+            }
+        } else if (bytes.readableBytes() > bufferSize) {
             // If the next ByteBuf is larger than the buffer write the buffer, if there is any data to write, then
             // write the passed ByteBuf without buffering.
             if (buffer.readableBytes() > 0) {
                 write(buffer);
+                if (done) {
+                    return;
+                }
                 buffer.clear();
             }
 
@@ -84,6 +115,9 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
         } else {
             // If the next ByteBuf can't fit in the buffer write the buffer then buffer the passed ByteBuf.
             write(buffer);
+            if (done) {
+                return;
+            }
             buffer.clear();
             buffer.writeBytes(bytes);
         }

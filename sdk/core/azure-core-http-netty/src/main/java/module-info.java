@@ -5,11 +5,14 @@ module com.azure.http.netty {
     requires transitive com.azure.core;
     requires io.netty.buffer;
     requires io.netty.codec;
+    requires io.netty.codec.compression;
     requires io.netty.codec.http;
+    requires io.netty.codec.http2;
     requires io.netty.common;
     requires io.netty.handler;
     requires io.netty.handler.proxy;
     requires io.netty.resolver;
+    requires io.netty.resolver.dns;
     requires io.netty.transport;
     requires reactor.netty.core;
     requires reactor.netty.http;

@@ -21,7 +21,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -90,7 +89,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             StepVerifier.create(client.getCustomModelWithResponse(trainedModel.getModelId()))
                 .assertNext(customFormModelResponse -> {
-                    assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
+                    assertEquals(200, customFormModelResponse.getStatusCode());
                     validateCustomModelData(syncPoller.getFinalResult(), false, false);
                 });
         });
@@ -182,7 +181,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
             StepVerifier.create(client.deleteModelWithResponse(createdModel.getModelId()))
-                .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
+                .assertNext(response -> assertEquals(204, response.getStatusCode()))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
 
@@ -212,7 +211,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
             StepVerifier.create(client.deleteModelWithResponse(createdModel.getModelId()))
-                .assertNext(response -> assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
+                .assertNext(response -> assertEquals(204, response.getStatusCode()))
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
 

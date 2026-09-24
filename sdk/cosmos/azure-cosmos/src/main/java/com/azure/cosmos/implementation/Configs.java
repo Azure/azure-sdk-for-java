@@ -500,9 +500,10 @@ public class Configs {
 
             if (serverCertVerificationDisabled) {
                 sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
-            } else if (!isHostnameValidationDisabled()) {
-                sslContextBuilder.endpointIdentificationAlgorithm("HTTPS");
             }
+            // Netty 4.2 enables hostname validation by default; preserve explicit Cosmos opt-outs.
+            sslContextBuilder.endpointIdentificationAlgorithm(
+                serverCertVerificationDisabled || isHostnameValidationDisabled() ? null : "HTTPS");
 
             if (http2Enabled) {
                 sslContextBuilder

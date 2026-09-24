@@ -10,11 +10,15 @@ import com.azure.messaging.webpubsub.client.implementation.MessageEncoder;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
 import com.azure.messaging.webpubsub.client.models.ConnectFailedException;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.MultiThreadIoEventLoopGroup;
+import io.netty.channel.nio.NioIoHandler;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
@@ -29,6 +33,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketClientCompressionHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.util.internal.SystemPropertyUtil;
 
 import javax.net.ssl.SSLException;
 import java.net.URI;
@@ -75,7 +80,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
                 p.addLast(sslCtx.newHandler(ch.alloc(), host, port));
             }
 
-            p.addLast(new HttpClientCodec(), new HttpObjectAggregator(8192), WebSocketClientCompressionHandler.INSTANCE,
+            p.addLast(new HttpClientCodec(), new HttpObjectAggregator(8192), new WebSocketClientCompressionHandler(0),
                 handler);
         }
     }
@@ -123,7 +128,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
             sslCtx = null;
         }
 
-        group = new NioEventLoopGroup();
+        group = new MultiThreadIoEventLoopGroup(NioIoHandler.newFactory());
 
         handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri, WebSocketVersion.V13, protocol, true,
             new DefaultHttpHeaders().add(HttpHeaderName.USER_AGENT.getCaseInsensitiveName(), userAgent));
@@ -133,6 +138,10 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
         Bootstrap b = new Bootstrap();
         b.group(group)
             .channel(NioSocketChannel.class)
+            .option(ChannelOption.ALLOCATOR,
+                SystemPropertyUtil.contains("io.netty.allocator.type")
+                    ? ByteBufAllocator.DEFAULT
+                    : PooledByteBufAllocator.DEFAULT)
             .handler(new WebSocketChannelHandler(host, port, sslCtx, clientHandler));
 
         final CompletableFuture<Void> handshakeCallbackFuture = new CompletableFuture<>();

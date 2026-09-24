@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Upgraded Reactor to `3.8.7` and the shared Netty transport to Netty `4.2.17.Final` / Reactor Netty `1.3.7`.
+
 ## 1.27.0-beta.18 (2026-08-27)
 
 ### Other Changes

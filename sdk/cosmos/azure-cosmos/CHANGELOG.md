@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Updated Netty to `4.2.18.Final`, Reactor Netty to `1.3.7`, and Reactor Core to `3.8.7`. Migrated direct TCP event loops to the Netty 4.2 I/O handler API while preserving pooled buffers and explicit TLS validation settings.
 
 ### 4.83.0 (2026-09-22)
 
