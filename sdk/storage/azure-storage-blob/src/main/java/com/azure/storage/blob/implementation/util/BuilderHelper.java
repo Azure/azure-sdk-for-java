@@ -38,6 +38,7 @@ import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -166,9 +167,10 @@ public final class BuilderHelper {
                     = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
                 SessionProvider sessionProvider = sessionOptions.getSessionProvider();
                 if (sessionProvider == null) {
+                    String accountName = resolveSessionAccountName(endpoint, sessionOptions.getAccountName());
                     sessionProvider = createDefaultSessionProvider(policies, bearerPolicy, postAuthenticationPolicies,
                         effectiveHttpClient, clientOptions, endpoint, effectiveServiceVersion,
-                        sessionOptions.getAccountName());
+                        accountName);
                 }
                 policies.add(new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionOptions));
             }
@@ -183,6 +185,22 @@ public final class BuilderHelper {
         policies.addAll(postAuthenticationPolicies);
 
         return createPipeline(policies, effectiveHttpClient, clientOptions);
+    }
+
+    private static String resolveSessionAccountName(String endpoint, String accountName) {
+        if (!CoreUtils.isNullOrEmpty(accountName)) {
+            return accountName;
+        }
+
+        BlobUrlParts endpointParts = BlobUrlParts.parse(endpoint);
+        String host = endpointParts.getHost();
+        if (StorageImplUtils.isServiceEndpoint(host, Constants.UrlConstants.BLOB_URI_SUBDOMAIN)
+            || StorageImplUtils.isServiceEndpoint(host, Constants.UrlConstants.DFS_URI_SUBDOMAIN)) {
+            return endpointParts.getAccountName();
+        }
+
+        throw new IllegalArgumentException(
+            "The account name must be provided when sessions are used with a custom endpoint.");
     }
 
     /**
