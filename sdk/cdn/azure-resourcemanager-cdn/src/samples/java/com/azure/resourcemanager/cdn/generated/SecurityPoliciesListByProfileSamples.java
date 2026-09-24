@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class SecurityPoliciesListByProfileSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/SecurityPolicies_ListByProfile.json
+     * x-ms-original-file: 2026-07-01/SecurityPolicies_ListByProfile.json
      */
     /**
      * Sample code: SecurityPolicies_ListByProfile.

@@ -128,20 +128,6 @@ public interface CdnManagementClient {
     SecretsClient getSecrets();
 
     /**
-     * Gets the KeyGroupsClient object to access its operations.
-     * 
-     * @return the KeyGroupsClient object.
-     */
-    KeyGroupsClient getKeyGroups();
-
-    /**
-     * Gets the DeploymentVersionsClient object to access its operations.
-     * 
-     * @return the DeploymentVersionsClient object.
-     */
-    DeploymentVersionsClient getDeploymentVersions();
-
-    /**
      * Gets the EndpointsClient object to access its operations.
      * 
      * @return the EndpointsClient object.
@@ -168,27 +154,6 @@ public interface CdnManagementClient {
      * @return the CustomDomainsClient object.
      */
     CustomDomainsClient getCustomDomains();
-
-    /**
-     * Gets the ProfileAgentsClient object to access its operations.
-     * 
-     * @return the ProfileAgentsClient object.
-     */
-    ProfileAgentsClient getProfileAgents();
-
-    /**
-     * Gets the WebAgentsClient object to access its operations.
-     * 
-     * @return the WebAgentsClient object.
-     */
-    WebAgentsClient getWebAgents();
-
-    /**
-     * Gets the KnowledgeSourcesClient object to access its operations.
-     * 
-     * @return the KnowledgeSourcesClient object.
-     */
-    KnowledgeSourcesClient getKnowledgeSources();
 
     /**
      * Gets the AfdCustomDomainsClient object to access its operations.

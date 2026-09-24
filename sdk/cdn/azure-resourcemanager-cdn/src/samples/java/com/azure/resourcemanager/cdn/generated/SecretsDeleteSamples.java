@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class SecretsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Secrets_Delete.json
+     * x-ms-original-file: 2026-07-01/Secrets_Delete.json
      */
     /**
      * Sample code: Secrets_Delete.

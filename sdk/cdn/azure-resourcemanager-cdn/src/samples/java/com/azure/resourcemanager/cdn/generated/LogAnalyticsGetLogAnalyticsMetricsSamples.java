@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class LogAnalyticsGetLogAnalyticsMetricsSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/LogAnalytics_GetLogAnalyticsMetrics.json
+     * x-ms-original-file: 2026-07-01/LogAnalytics_GetLogAnalyticsMetrics.json
      */
     /**
      * Sample code: LogAnalytics_GetLogAnalyticsMetrics.

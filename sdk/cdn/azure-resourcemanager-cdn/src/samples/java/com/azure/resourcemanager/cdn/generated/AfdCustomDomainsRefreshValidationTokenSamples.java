@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class AfdCustomDomainsRefreshValidationTokenSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDCustomDomains_RefreshValidationToken.json
+     * x-ms-original-file: 2026-07-01/AFDCustomDomains_RefreshValidationToken.json
      */
     /**
      * Sample code: AFDCustomDomains_Delete.
