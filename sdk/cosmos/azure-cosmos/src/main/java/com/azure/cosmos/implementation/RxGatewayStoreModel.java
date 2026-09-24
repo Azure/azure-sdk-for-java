@@ -118,7 +118,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         }
 
         this.userAgentContainer = userAgentContainer;
-        this.defaultHeaders = createDefaultHeaders(apiType, userAgentContainer);
+        this.defaultHeaders = this.getDefaultHeaders(apiType, userAgentContainer);
 
         this.defaultConsistencyLevel = defaultConsistencyLevel;
         this.globalEndpointManager = globalEndpointManager;
@@ -142,7 +142,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         this.userAgentContainer = inner.userAgentContainer;
     }
 
-    private static Map<String, String> createDefaultHeaders(
+    protected Map<String, String> getDefaultHeaders(
         ApiType apiType,
         UserAgentContainer userAgentContainer) {
 
@@ -210,6 +210,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
         HttpMethod method = getHttpMethod(request);
         HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
+        if (!request.getHeaders().containsKey(HttpConstants.HttpHeaders.USER_AGENT)) {
+            httpHeaders.set(HttpConstants.HttpHeaders.USER_AGENT, this.getCurrentUserAgent());
+        }
 
         Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
         return new HttpRequest(method,
@@ -492,13 +495,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         for (Entry<String, String> entry : this.defaultHeaders.entrySet()) {
             if (!headers.containsKey(entry.getKey())) {
                 // populate default header only if there is no overwrite by the request header
-                String value = HttpConstants.HttpHeaders.USER_AGENT.equals(entry.getKey())
-                    ? this.userAgentContainer.getUserAgent()
-                    : entry.getValue();
                 if (headersNeedToBeEscaped.contains(entry.getKey())) {
-                    httpHeaders.set(entry.getKey(), Utils.escapeNonAscii(value));
+                    httpHeaders.set(entry.getKey(), Utils.escapeNonAscii(entry.getValue()));
                 } else {
-                    httpHeaders.set(entry.getKey(), value);
+                    httpHeaders.set(entry.getKey(), entry.getValue());
                 }
             }
         }
