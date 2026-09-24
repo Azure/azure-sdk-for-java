@@ -30,6 +30,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 public class FaultInjectionServerErrorResultInternal {
+    private static final int CONNECTION_RESET_BY_DOWNSTREAM_SERVICE_SUB_STATUS = 102;
+    private static final int COMPUTE_INTERNAL_ERROR_SUB_STATUS = 1021;
+    private static final int PARTITION_FAILOVER_ERROR_SUB_STATUS = 3010;
+    private static final int CHANNEL_CLOSED_SUB_STATUS = 20006;
+
     private final FaultInjectionServerErrorType serverErrorType;
     private final Integer times;
     private final Duration delay;
@@ -120,18 +125,66 @@ public class FaultInjectionServerErrorResultInternal {
                     HttpConstants.SubStatusCodes.SERVER_GENERATED_408);
                 break;
 
+            case REQUEST_TIMEOUT:
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(0));
+                cosmosException = new RequestTimeoutException(null, lsn, partitionKeyRangeId, responseHeaders);
+                break;
+
             case INTERNAL_SERVER_ERROR:
                 cosmosException = new InternalServerErrorException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
-            case COMPUTE_INTERNAL_SERVER_ERROR:
-                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(102));
-                cosmosException = new InternalServerErrorException(null, lsn, partitionKeyRangeId, responseHeaders);
+            case CONNECTION_RESET_BY_DOWNSTREAM_SERVICE:
+                cosmosException = createInternalServerError(
+                    lsn,
+                    partitionKeyRangeId,
+                    responseHeaders,
+                    CONNECTION_RESET_BY_DOWNSTREAM_SERVICE_SUB_STATUS);
                 break;
 
-            case COMPUTE_SERVICE_UNAVAILABLE:
-                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(0));
-                cosmosException = new ServiceUnavailableException(null, lsn, null, responseHeaders, 0);
+            case COMPUTE_INTERNAL_ERROR:
+                cosmosException = createInternalServerError(
+                    lsn,
+                    partitionKeyRangeId,
+                    responseHeaders,
+                    COMPUTE_INTERNAL_ERROR_SUB_STATUS);
+                break;
+
+            case PARTITION_FAILOVER_ERROR_CODE:
+                cosmosException = createInternalServerError(
+                    lsn,
+                    partitionKeyRangeId,
+                    responseHeaders,
+                    PARTITION_FAILOVER_ERROR_SUB_STATUS);
+                break;
+
+            case SERVICE_UNAVAILABLE_WITH_UNKNOWN_SUBSTATUS:
+                cosmosException = createServiceUnavailableError(lsn, responseHeaders, 0);
+                break;
+
+            case SERVICE_UNAVAILABLE_LEASE_NOT_FOUND:
+                cosmosException = createServiceUnavailableError(
+                    lsn,
+                    responseHeaders,
+                    HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
+                break;
+
+            case CHANNEL_CLOSED:
+                cosmosException = createServiceUnavailableError(lsn, responseHeaders, CHANNEL_CLOSED_SUB_STATUS);
+                break;
+
+            case SERVER_COMPLETING_PARTITION_MIGRATION_EXCEEDED_RETRY_LIMIT:
+                cosmosException = createServiceUnavailableError(
+                    lsn,
+                    responseHeaders,
+                    HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION_EXCEEDED_RETRY_LIMIT);
+                break;
+
+            case SERVER_READ_QUORUM_NOT_MET:
+                cosmosException = createServiceUnavailableError(
+                    lsn,
+                    responseHeaders,
+                    HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET);
                 break;
 
             case READ_SESSION_NOT_AVAILABLE:
@@ -204,6 +257,25 @@ public class FaultInjectionServerErrorResultInternal {
         }
 
         return cosmosException;
+    }
+
+    private static CosmosException createInternalServerError(
+        long lsn,
+        String partitionKeyRangeId,
+        Map<String, String> responseHeaders,
+        int subStatusCode) {
+
+        responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(subStatusCode));
+        return new InternalServerErrorException(null, lsn, partitionKeyRangeId, responseHeaders);
+    }
+
+    private static CosmosException createServiceUnavailableError(
+        long lsn,
+        Map<String, String> responseHeaders,
+        int subStatusCode) {
+
+        responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(subStatusCode));
+        return new ServiceUnavailableException(null, lsn, null, responseHeaders, subStatusCode);
     }
 
     private Map<String, String> getInjectedErrorResponseHeaders(

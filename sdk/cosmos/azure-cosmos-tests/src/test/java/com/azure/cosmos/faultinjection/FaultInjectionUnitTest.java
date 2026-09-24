@@ -71,6 +71,18 @@ public class FaultInjectionUnitTest {
                 FaultInjectionServerErrorType.CONNECTION_DELAY,
                 FaultInjectionServerErrorType.RESPONSE_DELAY);
 
+        List<FaultInjectionServerErrorType> validAddressRefreshServerErrorTypes =
+            Arrays.asList(
+                FaultInjectionServerErrorType.REQUEST_TIMEOUT,
+                FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR,
+                FaultInjectionServerErrorType.CONNECTION_RESET_BY_DOWNSTREAM_SERVICE,
+                FaultInjectionServerErrorType.COMPUTE_INTERNAL_ERROR,
+                FaultInjectionServerErrorType.PARTITION_FAILOVER_ERROR_CODE,
+                FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_WITH_UNKNOWN_SUBSTATUS,
+                FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_LEASE_NOT_FOUND,
+                FaultInjectionServerErrorType.CHANNEL_CLOSED,
+                FaultInjectionServerErrorType.SERVER_COMPLETING_PARTITION_MIGRATION_EXCEEDED_RETRY_LIMIT,
+                FaultInjectionServerErrorType.SERVER_READ_QUORUM_NOT_MET);
 
         for (FaultInjectionOperationType faultInjectionOperationTpe : FaultInjectionOperationType.values()) {
             for (FaultInjectionServerErrorType faultInjectionServerErrorType : FaultInjectionServerErrorType.values()) {
@@ -84,8 +96,7 @@ public class FaultInjectionUnitTest {
                     validMetadataServerErrorTypes.contains(faultInjectionServerErrorType)
                         || (isPartitionKeyRangeMetadataRequest && isPartitionKeyRangeMetadataNotFound)
                         || (faultInjectionOperationTpe == FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH
-                            && (faultInjectionServerErrorType == FaultInjectionServerErrorType.COMPUTE_SERVICE_UNAVAILABLE
-                                || faultInjectionServerErrorType == FaultInjectionServerErrorType.COMPUTE_INTERNAL_SERVER_ERROR));
+                            && validAddressRefreshServerErrorTypes.contains(faultInjectionServerErrorType));
 
                 if (metadataOperationTypes.contains(faultInjectionOperationTpe) && !isSupportedMetadataErrorType) {
                     try {
@@ -123,10 +134,17 @@ public class FaultInjectionUnitTest {
     @DataProvider(name = "serverErrorStatusCodes")
     public Object[][] serverErrorStatusCodes() {
         return new Object[][] {
-            {FaultInjectionServerErrorType.COMPUTE_SERVICE_UNAVAILABLE, 503, 0},
-            {FaultInjectionServerErrorType.COMPUTE_INTERNAL_SERVER_ERROR, 500, 102},
-            {FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 503, HttpConstants.SubStatusCodes.SERVER_GENERATED_503},
-            {FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, 500, 0}
+            {FaultInjectionServerErrorType.REQUEST_TIMEOUT, 408, 0},
+            {FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, 500, 0},
+            {FaultInjectionServerErrorType.CONNECTION_RESET_BY_DOWNSTREAM_SERVICE, 500, 102},
+            {FaultInjectionServerErrorType.COMPUTE_INTERNAL_ERROR, 500, 1021},
+            {FaultInjectionServerErrorType.PARTITION_FAILOVER_ERROR_CODE, 500, 3010},
+            {FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_WITH_UNKNOWN_SUBSTATUS, 503, 0},
+            {FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_LEASE_NOT_FOUND, 503, 1022},
+            {FaultInjectionServerErrorType.CHANNEL_CLOSED, 503, 20006},
+            {FaultInjectionServerErrorType.SERVER_COMPLETING_PARTITION_MIGRATION_EXCEEDED_RETRY_LIMIT, 503, 21004},
+            {FaultInjectionServerErrorType.SERVER_READ_QUORUM_NOT_MET, 503, 21007},
+            {FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 503, HttpConstants.SubStatusCodes.SERVER_GENERATED_503}
         };
     }
 

@@ -4,7 +4,7 @@
 
 #### Features Added
 
-* Added `COMPUTE_SERVICE_UNAVAILABLE` (503/0) and `COMPUTE_INTERNAL_SERVER_ERROR` (500/102) fault injection errors, including support for `METADATA_REQUEST_ADDRESS_REFRESH`.
+* Added support for injecting address-refresh request timeout, internal server, compute internal, partition failover, service unavailable, lease not found, channel closed, partition migration retry-limit, and read quorum errors.
 
 #### Breaking Changes
 
