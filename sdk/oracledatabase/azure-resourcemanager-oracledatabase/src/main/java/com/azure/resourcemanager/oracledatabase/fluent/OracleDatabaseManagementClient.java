@@ -227,4 +227,32 @@ public interface OracleDatabaseManagementClient {
      * @return the DbVersionsClient object.
      */
     DbVersionsClient getDbVersions();
+
+    /**
+     * Gets the DatabaseEditionsClient object to access its operations.
+     * 
+     * @return the DatabaseEditionsClient object.
+     */
+    DatabaseEditionsClient getDatabaseEditions();
+
+    /**
+     * Gets the DatabaseSystemShapeResourcesClient object to access its operations.
+     * 
+     * @return the DatabaseSystemShapeResourcesClient object.
+     */
+    DatabaseSystemShapeResourcesClient getDatabaseSystemShapeResources();
+
+    /**
+     * Gets the GoldenGateConnectionsClient object to access its operations.
+     * 
+     * @return the GoldenGateConnectionsClient object.
+     */
+    GoldenGateConnectionsClient getGoldenGateConnections();
+
+    /**
+     * Gets the GoldenGateDeploymentsClient object to access its operations.
+     * 
+     * @return the GoldenGateDeploymentsClient object.
+     */
+    GoldenGateDeploymentsClient getGoldenGateDeployments();
 }

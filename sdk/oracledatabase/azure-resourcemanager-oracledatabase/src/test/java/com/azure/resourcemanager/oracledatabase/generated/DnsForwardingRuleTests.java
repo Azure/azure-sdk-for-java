@@ -12,18 +12,18 @@ public final class DnsForwardingRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsForwardingRule model
-            = BinaryData.fromString("{\"domainNames\":\"jqepqwhi\",\"forwardingIpAddress\":\"monstshiyxgve\"}")
+            = BinaryData.fromString("{\"domainNames\":\"vhpsylkkshkbffmb\",\"forwardingIpAddress\":\"xzjrgy\"}")
                 .toObject(DnsForwardingRule.class);
-        Assertions.assertEquals("jqepqwhi", model.domainNames());
-        Assertions.assertEquals("monstshiyxgve", model.forwardingIpAddress());
+        Assertions.assertEquals("vhpsylkkshkbffmb", model.domainNames());
+        Assertions.assertEquals("xzjrgy", model.forwardingIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DnsForwardingRule model
-            = new DnsForwardingRule().withDomainNames("jqepqwhi").withForwardingIpAddress("monstshiyxgve");
+            = new DnsForwardingRule().withDomainNames("vhpsylkkshkbffmb").withForwardingIpAddress("xzjrgy");
         model = BinaryData.fromObject(model).toObject(DnsForwardingRule.class);
-        Assertions.assertEquals("jqepqwhi", model.domainNames());
-        Assertions.assertEquals("monstshiyxgve", model.forwardingIpAddress());
+        Assertions.assertEquals("vhpsylkkshkbffmb", model.domainNames());
+        Assertions.assertEquals("xzjrgy", model.forwardingIpAddress());
     }
 }
