@@ -8,7 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagediscovery.models.AzureBlobStorageCapability;
 import com.azure.resourcemanager.storagediscovery.models.CapabilityStatus;
 import com.azure.resourcemanager.storagediscovery.models.CapacityDetails;
-import com.azure.resourcemanager.storagediscovery.models.PrefixDefinition;
+import com.azure.resourcemanager.storagediscovery.models.PrefixConfiguration;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryCapabilities;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -17,13 +17,14 @@ public final class StorageDiscoveryCapabilitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageDiscoveryCapabilities model = BinaryData.fromString(
-            "{\"azureBlobStorage\":{\"capacityDetails\":{\"status\":\"Disabled\"},\"prefixDefinitions\":[{\"storageAccountName\":\"ryuanzwuxzdxtay\",\"containerName\":\"lhmwhfpmrqobm\",\"prefix\":\"kknryrtihf\"},{\"storageAccountName\":\"tijbpzvgnwzsymgl\",\"containerName\":\"uf\",\"prefix\":\"zk\"}]}}")
+            "{\"azureBlobStorage\":{\"capacityDetails\":{\"status\":\"Disabled\"},\"prefixConfigurations\":[{\"storageAccountName\":\"ryuanzwuxzdxtay\",\"containerName\":\"lhmwhfpmrqobm\",\"prefix\":\"kknryrtihf\"},{\"storageAccountName\":\"tijbpzvgnwzsymgl\",\"containerName\":\"uf\",\"prefix\":\"zk\"}]}}")
             .toObject(StorageDiscoveryCapabilities.class);
         Assertions.assertEquals(CapabilityStatus.DISABLED, model.azureBlobStorage().capacityDetails().status());
         Assertions.assertEquals("ryuanzwuxzdxtay",
-            model.azureBlobStorage().prefixDefinitions().get(0).storageAccountName());
-        Assertions.assertEquals("lhmwhfpmrqobm", model.azureBlobStorage().prefixDefinitions().get(0).containerName());
-        Assertions.assertEquals("kknryrtihf", model.azureBlobStorage().prefixDefinitions().get(0).prefix());
+            model.azureBlobStorage().prefixConfigurations().get(0).storageAccountName());
+        Assertions.assertEquals("lhmwhfpmrqobm",
+            model.azureBlobStorage().prefixConfigurations().get(0).containerName());
+        Assertions.assertEquals("kknryrtihf", model.azureBlobStorage().prefixConfigurations().get(0).prefix());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,18 +32,19 @@ public final class StorageDiscoveryCapabilitiesTests {
         StorageDiscoveryCapabilities model
             = new StorageDiscoveryCapabilities().withAzureBlobStorage(new AzureBlobStorageCapability()
                 .withCapacityDetails(new CapacityDetails().withStatus(CapabilityStatus.DISABLED))
-                .withPrefixDefinitions(Arrays.asList(
-                    new PrefixDefinition().withStorageAccountName("ryuanzwuxzdxtay")
+                .withPrefixConfigurations(Arrays.asList(
+                    new PrefixConfiguration().withStorageAccountName("ryuanzwuxzdxtay")
                         .withContainerName("lhmwhfpmrqobm")
                         .withPrefix("kknryrtihf"),
-                    new PrefixDefinition().withStorageAccountName("tijbpzvgnwzsymgl")
+                    new PrefixConfiguration().withStorageAccountName("tijbpzvgnwzsymgl")
                         .withContainerName("uf")
                         .withPrefix("zk"))));
         model = BinaryData.fromObject(model).toObject(StorageDiscoveryCapabilities.class);
         Assertions.assertEquals(CapabilityStatus.DISABLED, model.azureBlobStorage().capacityDetails().status());
         Assertions.assertEquals("ryuanzwuxzdxtay",
-            model.azureBlobStorage().prefixDefinitions().get(0).storageAccountName());
-        Assertions.assertEquals("lhmwhfpmrqobm", model.azureBlobStorage().prefixDefinitions().get(0).containerName());
-        Assertions.assertEquals("kknryrtihf", model.azureBlobStorage().prefixDefinitions().get(0).prefix());
+            model.azureBlobStorage().prefixConfigurations().get(0).storageAccountName());
+        Assertions.assertEquals("lhmwhfpmrqobm",
+            model.azureBlobStorage().prefixConfigurations().get(0).containerName());
+        Assertions.assertEquals("kknryrtihf", model.azureBlobStorage().prefixConfigurations().get(0).prefix());
     }
 }

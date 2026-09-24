@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storagediscovery.generated;
 import com.azure.resourcemanager.storagediscovery.models.AzureBlobStorageCapabilityUpdate;
 import com.azure.resourcemanager.storagediscovery.models.CapabilityStatus;
 import com.azure.resourcemanager.storagediscovery.models.CapacityDetailsUpdate;
-import com.azure.resourcemanager.storagediscovery.models.PrefixDefinitionUpdate;
+import com.azure.resourcemanager.storagediscovery.models.PrefixConfigurationUpdate;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryCapabilitiesUpdate;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryResourceType;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryScope;
@@ -47,14 +47,14 @@ public final class StorageDiscoveryWorkspacesUpdateSamples {
                 .withCapabilities(
                     new StorageDiscoveryCapabilitiesUpdate().withAzureBlobStorage(new AzureBlobStorageCapabilityUpdate()
                         .withCapacityDetails(new CapacityDetailsUpdate().withStatus(CapabilityStatus.ENABLED))
-                        .withPrefixDefinitions(Arrays.asList(
-                            new PrefixDefinitionUpdate().withStorageAccountName("firstsa")
+                        .withPrefixConfigurations(Arrays.asList(
+                            new PrefixConfigurationUpdate().withStorageAccountName("firstsa")
                                 .withContainerName("samplecontainer")
                                 .withPrefix("sampleDir"),
-                            new PrefixDefinitionUpdate().withStorageAccountName("secondsa")
+                            new PrefixConfigurationUpdate().withStorageAccountName("secondsa")
                                 .withContainerName("samplecontainer")
                                 .withPrefix("sampleDir/sampleSubDir"),
-                            new PrefixDefinitionUpdate().withStorageAccountName("thirdsa")
+                            new PrefixConfigurationUpdate().withStorageAccountName("thirdsa")
                                 .withContainerName("anothersamplecontainer")
                                 .withPrefix("anotherSampleDir"))))))
             .apply();

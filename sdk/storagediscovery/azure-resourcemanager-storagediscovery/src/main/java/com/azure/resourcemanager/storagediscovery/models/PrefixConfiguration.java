@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * A prefix definition that can be updated.
+ * A prefix configuration that scopes capacity details to a specific storage account, container, and prefix.
  */
 @Fluent
-public final class PrefixDefinitionUpdate implements JsonSerializable<PrefixDefinitionUpdate> {
+public final class PrefixConfiguration implements JsonSerializable<PrefixConfiguration> {
     /*
      * The name of the storage account.
      */
@@ -33,9 +33,9 @@ public final class PrefixDefinitionUpdate implements JsonSerializable<PrefixDefi
     private String prefix;
 
     /**
-     * Creates an instance of PrefixDefinitionUpdate class.
+     * Creates an instance of PrefixConfiguration class.
      */
-    public PrefixDefinitionUpdate() {
+    public PrefixConfiguration() {
     }
 
     /**
@@ -51,9 +51,9 @@ public final class PrefixDefinitionUpdate implements JsonSerializable<PrefixDefi
      * Set the storageAccountName property: The name of the storage account.
      * 
      * @param storageAccountName the storageAccountName value to set.
-     * @return the PrefixDefinitionUpdate object itself.
+     * @return the PrefixConfiguration object itself.
      */
-    public PrefixDefinitionUpdate withStorageAccountName(String storageAccountName) {
+    public PrefixConfiguration withStorageAccountName(String storageAccountName) {
         this.storageAccountName = storageAccountName;
         return this;
     }
@@ -71,9 +71,9 @@ public final class PrefixDefinitionUpdate implements JsonSerializable<PrefixDefi
      * Set the containerName property: The name of the blob container within the storage account.
      * 
      * @param containerName the containerName value to set.
-     * @return the PrefixDefinitionUpdate object itself.
+     * @return the PrefixConfiguration object itself.
      */
-    public PrefixDefinitionUpdate withContainerName(String containerName) {
+    public PrefixConfiguration withContainerName(String containerName) {
         this.containerName = containerName;
         return this;
     }
@@ -93,9 +93,9 @@ public final class PrefixDefinitionUpdate implements JsonSerializable<PrefixDefi
      * to the entire container. Must not start with a '/'.
      * 
      * @param prefix the prefix value to set.
-     * @return the PrefixDefinitionUpdate object itself.
+     * @return the PrefixConfiguration object itself.
      */
-    public PrefixDefinitionUpdate withPrefix(String prefix) {
+    public PrefixConfiguration withPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -113,32 +113,33 @@ public final class PrefixDefinitionUpdate implements JsonSerializable<PrefixDefi
     }
 
     /**
-     * Reads an instance of PrefixDefinitionUpdate from the JsonReader.
+     * Reads an instance of PrefixConfiguration from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PrefixDefinitionUpdate if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PrefixDefinitionUpdate.
+     * @return An instance of PrefixConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrefixConfiguration.
      */
-    public static PrefixDefinitionUpdate fromJson(JsonReader jsonReader) throws IOException {
+    public static PrefixConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PrefixDefinitionUpdate deserializedPrefixDefinitionUpdate = new PrefixDefinitionUpdate();
+            PrefixConfiguration deserializedPrefixConfiguration = new PrefixConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("storageAccountName".equals(fieldName)) {
-                    deserializedPrefixDefinitionUpdate.storageAccountName = reader.getString();
+                    deserializedPrefixConfiguration.storageAccountName = reader.getString();
                 } else if ("containerName".equals(fieldName)) {
-                    deserializedPrefixDefinitionUpdate.containerName = reader.getString();
+                    deserializedPrefixConfiguration.containerName = reader.getString();
                 } else if ("prefix".equals(fieldName)) {
-                    deserializedPrefixDefinitionUpdate.prefix = reader.getString();
+                    deserializedPrefixConfiguration.prefix = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedPrefixDefinitionUpdate;
+            return deserializedPrefixConfiguration;
         });
     }
 }

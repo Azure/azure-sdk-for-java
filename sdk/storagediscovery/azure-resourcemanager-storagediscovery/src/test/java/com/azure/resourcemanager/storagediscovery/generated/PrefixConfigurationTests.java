@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.storagediscovery.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.storagediscovery.models.PrefixDefinition;
+import com.azure.resourcemanager.storagediscovery.models.PrefixConfiguration;
 import org.junit.jupiter.api.Assertions;
 
-public final class PrefixDefinitionTests {
+public final class PrefixConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrefixDefinition model = BinaryData
+        PrefixConfiguration model = BinaryData
             .fromString("{\"storageAccountName\":\"rkxvdum\",\"containerName\":\"grtfwvu\",\"prefix\":\"gaudcc\"}")
-            .toObject(PrefixDefinition.class);
+            .toObject(PrefixConfiguration.class);
         Assertions.assertEquals("rkxvdum", model.storageAccountName());
         Assertions.assertEquals("grtfwvu", model.containerName());
         Assertions.assertEquals("gaudcc", model.prefix());
@@ -21,10 +21,10 @@ public final class PrefixDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrefixDefinition model = new PrefixDefinition().withStorageAccountName("rkxvdum")
+        PrefixConfiguration model = new PrefixConfiguration().withStorageAccountName("rkxvdum")
             .withContainerName("grtfwvu")
             .withPrefix("gaudcc");
-        model = BinaryData.fromObject(model).toObject(PrefixDefinition.class);
+        model = BinaryData.fromObject(model).toObject(PrefixConfiguration.class);
         Assertions.assertEquals("rkxvdum", model.storageAccountName());
         Assertions.assertEquals("grtfwvu", model.containerName());
         Assertions.assertEquals("gaudcc", model.prefix());

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storagediscovery.generated;
 import com.azure.resourcemanager.storagediscovery.models.AzureBlobStorageCapability;
 import com.azure.resourcemanager.storagediscovery.models.CapabilityStatus;
 import com.azure.resourcemanager.storagediscovery.models.CapacityDetails;
-import com.azure.resourcemanager.storagediscovery.models.PrefixDefinition;
+import com.azure.resourcemanager.storagediscovery.models.PrefixConfiguration;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryCapabilities;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryResourceType;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryScope;
@@ -40,15 +40,15 @@ public final class StorageDiscoveryWorkspacesCreateOrUpdateSamples {
                     .withCapabilities(
                         new StorageDiscoveryCapabilities().withAzureBlobStorage(new AzureBlobStorageCapability()
                             .withCapacityDetails(new CapacityDetails().withStatus(CapabilityStatus.ENABLED))
-                            .withPrefixDefinitions(
+                            .withPrefixConfigurations(
                                 Arrays.asList(
-                                    new PrefixDefinition().withStorageAccountName("firstsa")
+                                    new PrefixConfiguration().withStorageAccountName("firstsa")
                                         .withContainerName("samplecontainer")
                                         .withPrefix("sampleDir"),
-                                    new PrefixDefinition().withStorageAccountName("secondsa")
+                                    new PrefixConfiguration().withStorageAccountName("secondsa")
                                         .withContainerName("samplecontainer")
                                         .withPrefix("sampleDir/sampleSubDir"),
-                                    new PrefixDefinition()
+                                    new PrefixConfiguration()
                                         .withStorageAccountName("thirdsa")
                                         .withContainerName("anothersamplecontainer")
                                         .withPrefix("anotherSampleDir")))))

@@ -8,7 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagediscovery.models.AzureBlobStorageCapabilityUpdate;
 import com.azure.resourcemanager.storagediscovery.models.CapabilityStatus;
 import com.azure.resourcemanager.storagediscovery.models.CapacityDetailsUpdate;
-import com.azure.resourcemanager.storagediscovery.models.PrefixDefinitionUpdate;
+import com.azure.resourcemanager.storagediscovery.models.PrefixConfigurationUpdate;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryCapabilitiesUpdate;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -17,13 +17,13 @@ public final class StorageDiscoveryCapabilitiesUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageDiscoveryCapabilitiesUpdate model = BinaryData.fromString(
-            "{\"azureBlobStorage\":{\"capacityDetails\":{\"status\":\"Disabled\"},\"prefixDefinitions\":[{\"storageAccountName\":\"xofpdvhpfxxypi\",\"containerName\":\"nmayhuybb\",\"prefix\":\"odepoogin\"},{\"storageAccountName\":\"amiheognarxz\",\"containerName\":\"heotusiv\",\"prefix\":\"v\"},{\"storageAccountName\":\"iqihn\",\"containerName\":\"ngbwjz\",\"prefix\":\"fygxgispemvtzfk\"},{\"storageAccountName\":\"ubljofxqe\",\"containerName\":\"jaeq\",\"prefix\":\"qjbasvms\"}]}}")
+            "{\"azureBlobStorage\":{\"capacityDetails\":{\"status\":\"Disabled\"},\"prefixConfigurations\":[{\"storageAccountName\":\"xofpdvhpfxxypi\",\"containerName\":\"nmayhuybb\",\"prefix\":\"odepoogin\"},{\"storageAccountName\":\"amiheognarxz\",\"containerName\":\"heotusiv\",\"prefix\":\"v\"},{\"storageAccountName\":\"iqihn\",\"containerName\":\"ngbwjz\",\"prefix\":\"fygxgispemvtzfk\"},{\"storageAccountName\":\"ubljofxqe\",\"containerName\":\"jaeq\",\"prefix\":\"qjbasvms\"}]}}")
             .toObject(StorageDiscoveryCapabilitiesUpdate.class);
         Assertions.assertEquals(CapabilityStatus.DISABLED, model.azureBlobStorage().capacityDetails().status());
         Assertions.assertEquals("xofpdvhpfxxypi",
-            model.azureBlobStorage().prefixDefinitions().get(0).storageAccountName());
-        Assertions.assertEquals("nmayhuybb", model.azureBlobStorage().prefixDefinitions().get(0).containerName());
-        Assertions.assertEquals("odepoogin", model.azureBlobStorage().prefixDefinitions().get(0).prefix());
+            model.azureBlobStorage().prefixConfigurations().get(0).storageAccountName());
+        Assertions.assertEquals("nmayhuybb", model.azureBlobStorage().prefixConfigurations().get(0).containerName());
+        Assertions.assertEquals("odepoogin", model.azureBlobStorage().prefixConfigurations().get(0).prefix());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,24 +31,24 @@ public final class StorageDiscoveryCapabilitiesUpdateTests {
         StorageDiscoveryCapabilitiesUpdate model
             = new StorageDiscoveryCapabilitiesUpdate().withAzureBlobStorage(new AzureBlobStorageCapabilityUpdate()
                 .withCapacityDetails(new CapacityDetailsUpdate().withStatus(CapabilityStatus.DISABLED))
-                .withPrefixDefinitions(Arrays.asList(
-                    new PrefixDefinitionUpdate().withStorageAccountName("xofpdvhpfxxypi")
+                .withPrefixConfigurations(Arrays.asList(
+                    new PrefixConfigurationUpdate().withStorageAccountName("xofpdvhpfxxypi")
                         .withContainerName("nmayhuybb")
                         .withPrefix("odepoogin"),
-                    new PrefixDefinitionUpdate().withStorageAccountName("amiheognarxz")
+                    new PrefixConfigurationUpdate().withStorageAccountName("amiheognarxz")
                         .withContainerName("heotusiv")
                         .withPrefix("v"),
-                    new PrefixDefinitionUpdate().withStorageAccountName("iqihn")
+                    new PrefixConfigurationUpdate().withStorageAccountName("iqihn")
                         .withContainerName("ngbwjz")
                         .withPrefix("fygxgispemvtzfk"),
-                    new PrefixDefinitionUpdate().withStorageAccountName("ubljofxqe")
+                    new PrefixConfigurationUpdate().withStorageAccountName("ubljofxqe")
                         .withContainerName("jaeq")
                         .withPrefix("qjbasvms"))));
         model = BinaryData.fromObject(model).toObject(StorageDiscoveryCapabilitiesUpdate.class);
         Assertions.assertEquals(CapabilityStatus.DISABLED, model.azureBlobStorage().capacityDetails().status());
         Assertions.assertEquals("xofpdvhpfxxypi",
-            model.azureBlobStorage().prefixDefinitions().get(0).storageAccountName());
-        Assertions.assertEquals("nmayhuybb", model.azureBlobStorage().prefixDefinitions().get(0).containerName());
-        Assertions.assertEquals("odepoogin", model.azureBlobStorage().prefixDefinitions().get(0).prefix());
+            model.azureBlobStorage().prefixConfigurations().get(0).storageAccountName());
+        Assertions.assertEquals("nmayhuybb", model.azureBlobStorage().prefixConfigurations().get(0).containerName());
+        Assertions.assertEquals("odepoogin", model.azureBlobStorage().prefixConfigurations().get(0).prefix());
     }
 }

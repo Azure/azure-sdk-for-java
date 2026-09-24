@@ -23,9 +23,9 @@ public final class AzureBlobStorageCapability implements JsonSerializable<AzureB
     private CapacityDetails capacityDetails;
 
     /*
-     * The prefix definitions that scope the capacity details to specific storage accounts, containers, and prefixes.
+     * The prefix configurations that scope the capacity details to specific storage accounts, containers, and prefixes.
      */
-    private List<PrefixDefinition> prefixDefinitions;
+    private List<PrefixConfiguration> prefixConfigurations;
 
     /**
      * Creates an instance of AzureBlobStorageCapability class.
@@ -54,24 +54,24 @@ public final class AzureBlobStorageCapability implements JsonSerializable<AzureB
     }
 
     /**
-     * Get the prefixDefinitions property: The prefix definitions that scope the capacity details to specific storage
-     * accounts, containers, and prefixes.
+     * Get the prefixConfigurations property: The prefix configurations that scope the capacity details to specific
+     * storage accounts, containers, and prefixes.
      * 
-     * @return the prefixDefinitions value.
+     * @return the prefixConfigurations value.
      */
-    public List<PrefixDefinition> prefixDefinitions() {
-        return this.prefixDefinitions;
+    public List<PrefixConfiguration> prefixConfigurations() {
+        return this.prefixConfigurations;
     }
 
     /**
-     * Set the prefixDefinitions property: The prefix definitions that scope the capacity details to specific storage
-     * accounts, containers, and prefixes.
+     * Set the prefixConfigurations property: The prefix configurations that scope the capacity details to specific
+     * storage accounts, containers, and prefixes.
      * 
-     * @param prefixDefinitions the prefixDefinitions value to set.
+     * @param prefixConfigurations the prefixConfigurations value to set.
      * @return the AzureBlobStorageCapability object itself.
      */
-    public AzureBlobStorageCapability withPrefixDefinitions(List<PrefixDefinition> prefixDefinitions) {
-        this.prefixDefinitions = prefixDefinitions;
+    public AzureBlobStorageCapability withPrefixConfigurations(List<PrefixConfiguration> prefixConfigurations) {
+        this.prefixConfigurations = prefixConfigurations;
         return this;
     }
 
@@ -82,7 +82,7 @@ public final class AzureBlobStorageCapability implements JsonSerializable<AzureB
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("capacityDetails", this.capacityDetails);
-        jsonWriter.writeArrayField("prefixDefinitions", this.prefixDefinitions,
+        jsonWriter.writeArrayField("prefixConfigurations", this.prefixConfigurations,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -105,10 +105,10 @@ public final class AzureBlobStorageCapability implements JsonSerializable<AzureB
 
                 if ("capacityDetails".equals(fieldName)) {
                     deserializedAzureBlobStorageCapability.capacityDetails = CapacityDetails.fromJson(reader);
-                } else if ("prefixDefinitions".equals(fieldName)) {
-                    List<PrefixDefinition> prefixDefinitions
-                        = reader.readArray(reader1 -> PrefixDefinition.fromJson(reader1));
-                    deserializedAzureBlobStorageCapability.prefixDefinitions = prefixDefinitions;
+                } else if ("prefixConfigurations".equals(fieldName)) {
+                    List<PrefixConfiguration> prefixConfigurations
+                        = reader.readArray(reader1 -> PrefixConfiguration.fromJson(reader1));
+                    deserializedAzureBlobStorageCapability.prefixConfigurations = prefixConfigurations;
                 } else {
                     reader.skipChildren();
                 }

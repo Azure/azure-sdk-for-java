@@ -8,7 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagediscovery.models.AzureBlobStorageCapabilityUpdate;
 import com.azure.resourcemanager.storagediscovery.models.CapabilityStatus;
 import com.azure.resourcemanager.storagediscovery.models.CapacityDetailsUpdate;
-import com.azure.resourcemanager.storagediscovery.models.PrefixDefinitionUpdate;
+import com.azure.resourcemanager.storagediscovery.models.PrefixConfigurationUpdate;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,30 +16,32 @@ public final class AzureBlobStorageCapabilityUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobStorageCapabilityUpdate model = BinaryData.fromString(
-            "{\"capacityDetails\":{\"status\":\"Enabled\"},\"prefixDefinitions\":[{\"storageAccountName\":\"sntnbybkzgcw\",\"containerName\":\"clxxwrljdo\",\"prefix\":\"kcqvkocrc\"},{\"storageAccountName\":\"kwt\",\"containerName\":\"xbnjbiksq\",\"prefix\":\"lssai\"},{\"storageAccountName\":\"p\",\"containerName\":\"nzl\",\"prefix\":\"fmppe\"}]}")
+            "{\"capacityDetails\":{\"status\":\"Enabled\"},\"prefixConfigurations\":[{\"storageAccountName\":\"sntnbybkzgcw\",\"containerName\":\"clxxwrljdo\",\"prefix\":\"kcqvkocrc\"},{\"storageAccountName\":\"kwt\",\"containerName\":\"xbnjbiksq\",\"prefix\":\"lssai\"},{\"storageAccountName\":\"p\",\"containerName\":\"nzl\",\"prefix\":\"fmppe\"}]}")
             .toObject(AzureBlobStorageCapabilityUpdate.class);
         Assertions.assertEquals(CapabilityStatus.ENABLED, model.capacityDetails().status());
-        Assertions.assertEquals("sntnbybkzgcw", model.prefixDefinitions().get(0).storageAccountName());
-        Assertions.assertEquals("clxxwrljdo", model.prefixDefinitions().get(0).containerName());
-        Assertions.assertEquals("kcqvkocrc", model.prefixDefinitions().get(0).prefix());
+        Assertions.assertEquals("sntnbybkzgcw", model.prefixConfigurations().get(0).storageAccountName());
+        Assertions.assertEquals("clxxwrljdo", model.prefixConfigurations().get(0).containerName());
+        Assertions.assertEquals("kcqvkocrc", model.prefixConfigurations().get(0).prefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBlobStorageCapabilityUpdate model = new AzureBlobStorageCapabilityUpdate()
             .withCapacityDetails(new CapacityDetailsUpdate().withStatus(CapabilityStatus.ENABLED))
-            .withPrefixDefinitions(Arrays.asList(
-                new PrefixDefinitionUpdate().withStorageAccountName("sntnbybkzgcw")
+            .withPrefixConfigurations(Arrays.asList(
+                new PrefixConfigurationUpdate().withStorageAccountName("sntnbybkzgcw")
                     .withContainerName("clxxwrljdo")
                     .withPrefix("kcqvkocrc"),
-                new PrefixDefinitionUpdate().withStorageAccountName("kwt")
+                new PrefixConfigurationUpdate().withStorageAccountName("kwt")
                     .withContainerName("xbnjbiksq")
                     .withPrefix("lssai"),
-                new PrefixDefinitionUpdate().withStorageAccountName("p").withContainerName("nzl").withPrefix("fmppe")));
+                new PrefixConfigurationUpdate().withStorageAccountName("p")
+                    .withContainerName("nzl")
+                    .withPrefix("fmppe")));
         model = BinaryData.fromObject(model).toObject(AzureBlobStorageCapabilityUpdate.class);
         Assertions.assertEquals(CapabilityStatus.ENABLED, model.capacityDetails().status());
-        Assertions.assertEquals("sntnbybkzgcw", model.prefixDefinitions().get(0).storageAccountName());
-        Assertions.assertEquals("clxxwrljdo", model.prefixDefinitions().get(0).containerName());
-        Assertions.assertEquals("kcqvkocrc", model.prefixDefinitions().get(0).prefix());
+        Assertions.assertEquals("sntnbybkzgcw", model.prefixConfigurations().get(0).storageAccountName());
+        Assertions.assertEquals("clxxwrljdo", model.prefixConfigurations().get(0).containerName());
+        Assertions.assertEquals("kcqvkocrc", model.prefixConfigurations().get(0).prefix());
     }
 }

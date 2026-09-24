@@ -23,9 +23,9 @@ public final class AzureBlobStorageCapabilityUpdate implements JsonSerializable<
     private CapacityDetailsUpdate capacityDetails;
 
     /*
-     * The prefix definitions to update for Azure Blob Storage.
+     * The prefix configurations to update for Azure Blob Storage.
      */
-    private List<PrefixDefinitionUpdate> prefixDefinitions;
+    private List<PrefixConfigurationUpdate> prefixConfigurations;
 
     /**
      * Creates an instance of AzureBlobStorageCapabilityUpdate class.
@@ -54,22 +54,23 @@ public final class AzureBlobStorageCapabilityUpdate implements JsonSerializable<
     }
 
     /**
-     * Get the prefixDefinitions property: The prefix definitions to update for Azure Blob Storage.
+     * Get the prefixConfigurations property: The prefix configurations to update for Azure Blob Storage.
      * 
-     * @return the prefixDefinitions value.
+     * @return the prefixConfigurations value.
      */
-    public List<PrefixDefinitionUpdate> prefixDefinitions() {
-        return this.prefixDefinitions;
+    public List<PrefixConfigurationUpdate> prefixConfigurations() {
+        return this.prefixConfigurations;
     }
 
     /**
-     * Set the prefixDefinitions property: The prefix definitions to update for Azure Blob Storage.
+     * Set the prefixConfigurations property: The prefix configurations to update for Azure Blob Storage.
      * 
-     * @param prefixDefinitions the prefixDefinitions value to set.
+     * @param prefixConfigurations the prefixConfigurations value to set.
      * @return the AzureBlobStorageCapabilityUpdate object itself.
      */
-    public AzureBlobStorageCapabilityUpdate withPrefixDefinitions(List<PrefixDefinitionUpdate> prefixDefinitions) {
-        this.prefixDefinitions = prefixDefinitions;
+    public AzureBlobStorageCapabilityUpdate
+        withPrefixConfigurations(List<PrefixConfigurationUpdate> prefixConfigurations) {
+        this.prefixConfigurations = prefixConfigurations;
         return this;
     }
 
@@ -80,7 +81,7 @@ public final class AzureBlobStorageCapabilityUpdate implements JsonSerializable<
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("capacityDetails", this.capacityDetails);
-        jsonWriter.writeArrayField("prefixDefinitions", this.prefixDefinitions,
+        jsonWriter.writeArrayField("prefixConfigurations", this.prefixConfigurations,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -104,10 +105,10 @@ public final class AzureBlobStorageCapabilityUpdate implements JsonSerializable<
                 if ("capacityDetails".equals(fieldName)) {
                     deserializedAzureBlobStorageCapabilityUpdate.capacityDetails
                         = CapacityDetailsUpdate.fromJson(reader);
-                } else if ("prefixDefinitions".equals(fieldName)) {
-                    List<PrefixDefinitionUpdate> prefixDefinitions
-                        = reader.readArray(reader1 -> PrefixDefinitionUpdate.fromJson(reader1));
-                    deserializedAzureBlobStorageCapabilityUpdate.prefixDefinitions = prefixDefinitions;
+                } else if ("prefixConfigurations".equals(fieldName)) {
+                    List<PrefixConfigurationUpdate> prefixConfigurations
+                        = reader.readArray(reader1 -> PrefixConfigurationUpdate.fromJson(reader1));
+                    deserializedAzureBlobStorageCapabilityUpdate.prefixConfigurations = prefixConfigurations;
                 } else {
                     reader.skipChildren();
                 }

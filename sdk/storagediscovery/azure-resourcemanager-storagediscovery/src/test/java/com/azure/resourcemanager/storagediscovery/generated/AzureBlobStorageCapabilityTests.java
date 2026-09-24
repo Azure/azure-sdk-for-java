@@ -8,7 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagediscovery.models.AzureBlobStorageCapability;
 import com.azure.resourcemanager.storagediscovery.models.CapabilityStatus;
 import com.azure.resourcemanager.storagediscovery.models.CapacityDetails;
-import com.azure.resourcemanager.storagediscovery.models.PrefixDefinition;
+import com.azure.resourcemanager.storagediscovery.models.PrefixConfiguration;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,27 +16,29 @@ public final class AzureBlobStorageCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobStorageCapability model = BinaryData.fromString(
-            "{\"capacityDetails\":{\"status\":\"Enabled\"},\"prefixDefinitions\":[{\"storageAccountName\":\"ihanuf\",\"containerName\":\"fcbjysagithxqha\",\"prefix\":\"fpikxwczb\"},{\"storageAccountName\":\"scnpqxuhivy\",\"containerName\":\"n\",\"prefix\":\"b\"}]}")
+            "{\"capacityDetails\":{\"status\":\"Enabled\"},\"prefixConfigurations\":[{\"storageAccountName\":\"ihanuf\",\"containerName\":\"fcbjysagithxqha\",\"prefix\":\"fpikxwczb\"},{\"storageAccountName\":\"scnpqxuhivy\",\"containerName\":\"n\",\"prefix\":\"b\"}]}")
             .toObject(AzureBlobStorageCapability.class);
         Assertions.assertEquals(CapabilityStatus.ENABLED, model.capacityDetails().status());
-        Assertions.assertEquals("ihanuf", model.prefixDefinitions().get(0).storageAccountName());
-        Assertions.assertEquals("fcbjysagithxqha", model.prefixDefinitions().get(0).containerName());
-        Assertions.assertEquals("fpikxwczb", model.prefixDefinitions().get(0).prefix());
+        Assertions.assertEquals("ihanuf", model.prefixConfigurations().get(0).storageAccountName());
+        Assertions.assertEquals("fcbjysagithxqha", model.prefixConfigurations().get(0).containerName());
+        Assertions.assertEquals("fpikxwczb", model.prefixConfigurations().get(0).prefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBlobStorageCapability model = new AzureBlobStorageCapability()
             .withCapacityDetails(new CapacityDetails().withStatus(CapabilityStatus.ENABLED))
-            .withPrefixDefinitions(Arrays.asList(
-                new PrefixDefinition().withStorageAccountName("ihanuf")
+            .withPrefixConfigurations(Arrays.asList(
+                new PrefixConfiguration().withStorageAccountName("ihanuf")
                     .withContainerName("fcbjysagithxqha")
                     .withPrefix("fpikxwczb"),
-                new PrefixDefinition().withStorageAccountName("scnpqxuhivy").withContainerName("n").withPrefix("b")));
+                new PrefixConfiguration().withStorageAccountName("scnpqxuhivy")
+                    .withContainerName("n")
+                    .withPrefix("b")));
         model = BinaryData.fromObject(model).toObject(AzureBlobStorageCapability.class);
         Assertions.assertEquals(CapabilityStatus.ENABLED, model.capacityDetails().status());
-        Assertions.assertEquals("ihanuf", model.prefixDefinitions().get(0).storageAccountName());
-        Assertions.assertEquals("fcbjysagithxqha", model.prefixDefinitions().get(0).containerName());
-        Assertions.assertEquals("fpikxwczb", model.prefixDefinitions().get(0).prefix());
+        Assertions.assertEquals("ihanuf", model.prefixConfigurations().get(0).storageAccountName());
+        Assertions.assertEquals("fcbjysagithxqha", model.prefixConfigurations().get(0).containerName());
+        Assertions.assertEquals("fpikxwczb", model.prefixConfigurations().get(0).prefix());
     }
 }
