@@ -87,7 +87,7 @@ public final class AutoRefreshingCache<CachedValue> {
      */
     public Mono<CachedValue> getValidValueAsync() {
         return Mono.defer(() -> {
-            CachedValue cachedValue = isValueExpired(OffsetDateTime.now(clock)) ? cachedValueEntry.value : null;
+            CachedValue cachedValue = getUsableCachedValue(OffsetDateTime.now(clock));
             if (cachedValue != null) {
                 refreshValueInBackground(false);
 
@@ -103,7 +103,7 @@ public final class AutoRefreshingCache<CachedValue> {
      * @return The cached or acquired value.
      */
     public CachedValue getValidValueSync() {
-        CachedValue cachedValue = isValueExpired(OffsetDateTime.now(clock)) ? cachedValueEntry.value : null;
+        CachedValue cachedValue = getUsableCachedValue(OffsetDateTime.now(clock));
 
         if (cachedValue != null) {
             refreshValueInBackground(false);
@@ -163,7 +163,7 @@ public final class AutoRefreshingCache<CachedValue> {
         ValueAcquisition<CachedValue> acquisition;
         synchronized (this) {
             OffsetDateTime now = OffsetDateTime.now(clock);
-            if (!isValueExpired(now)) {
+            if (isValueMissingOrExpired(now)) {
                 return;
             }
             if (force) {
@@ -182,10 +182,10 @@ public final class AutoRefreshingCache<CachedValue> {
 
     private synchronized ValueAcquisition<CachedValue> acquireForegroundValue() {
         // Another caller may have published a usable value since the initial lookup.
-        if (isValueExpired(OffsetDateTime.now(clock))) {
-            return new ValueAcquisition<>(CompletableFuture.completedFuture(cachedValueEntry.value), false);
+        if (isValueMissingOrExpired(OffsetDateTime.now(clock))) {
+            return acquireValue();
         }
-        return acquireValue();
+        return new ValueAcquisition<>(CompletableFuture.completedFuture(cachedValueEntry.value), false);
     }
 
     private ValueAcquisition<CachedValue> acquireValue() {
@@ -241,8 +241,17 @@ public final class AutoRefreshingCache<CachedValue> {
         acquisition.result.completeExceptionally(error);
     }
 
-    private boolean isValueExpired(OffsetDateTime now) {
-        return cachedValueEntry != null && !now.isAfter(cachedValueEntry.expiration);
+    private CachedValue getUsableCachedValue(OffsetDateTime now) {
+        synchronized (this) {
+            if (isValueMissingOrExpired(now)) {
+                return null;
+            }
+            return cachedValueEntry.value;
+        }
+    }
+
+    private boolean isValueMissingOrExpired(OffsetDateTime now) {
+        return cachedValueEntry == null || now.isAfter(cachedValueEntry.expiration);
     }
 
     private boolean isRetryBackoffActive(OffsetDateTime now) {
