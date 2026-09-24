@@ -59,9 +59,11 @@ class MappingsTest {
 
     private static void assertMapsValidCustomMeasurements(Mappings mappings,
         Iterable<AbstractTelemetryBuilder> builders) {
+        String maxLengthKey = repeat('a', 150);
         Map<String, Value<?>> values = new LinkedHashMap<>();
         values.put("itemsProcessed", Value.of(42.0));
         values.put("queueDepth", Value.of(7.0));
+        values.put(maxLengthKey, Value.of(1.0));
         values.put("notDouble", Value.of(1L));
         values.put("notFinite", Value.of(Double.NaN));
         values.put("positiveInfinity", Value.of(Double.POSITIVE_INFINITY));
@@ -75,7 +77,8 @@ class MappingsTest {
             mappings.map(attributes, builder);
 
             MonitorDomain data = builder.build().getData().getBaseData();
-            assertThat(getMeasurements(data)).containsOnly(entry("itemsProcessed", 42.0), entry("queueDepth", 7.0));
+            assertThat(getMeasurements(data)).containsOnly(entry("itemsProcessed", 42.0), entry("queueDepth", 7.0),
+                entry(maxLengthKey, 1.0));
             assertThat(getProperties(data)).containsOnly(entry("color", "red"))
                 .doesNotContainKey("microsoft.custom_measurements");
         }
