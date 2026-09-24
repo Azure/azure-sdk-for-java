@@ -85,8 +85,7 @@ public final class JdkHttpClient implements HttpClient {
             // Content-Type header or the response body mode.
             java.net.http.HttpResponse.BodyHandler<InputStream> bodyHandler
                 = getResponseHandler(hasReadTimeout, readTimeout,
-                    java.net.http.HttpResponse.BodyHandlers::ofInputStream,
-                    timeoutMillis -> new InputStreamTimeoutResponseSubscriber(timeoutMillis, jdkHttpClient.executor()));
+                    java.net.http.HttpResponse.BodyHandlers::ofInputStream, InputStreamTimeoutResponseSubscriber::new);
 
             java.net.http.HttpResponse<InputStream> jdKResponse = jdkHttpClient.send(jdkRequest, bodyHandler);
             return toResponse(request, jdKResponse);
