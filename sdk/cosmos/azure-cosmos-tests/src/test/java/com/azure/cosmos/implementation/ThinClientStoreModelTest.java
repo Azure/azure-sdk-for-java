@@ -193,7 +193,7 @@ public class ThinClientStoreModelTest {
     }
 
     @Test(groups = "unit")
-    public void thinClientDoesNotAddNoRetry449Header() throws Exception {
+    public void thinClientUsesLatestUserAgentAndDoesNotAddNoRetry449Header() throws Exception {
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
         Mockito.doReturn(new DiagnosticsClientContext.DiagnosticsClientConfig()).when(clientContext).getConfig();
         Mockito
@@ -219,14 +219,18 @@ public class ThinClientStoreModelTest {
         Mockito.when(httpClient.send(requestCaptor.capture(), any()))
             .thenReturn(Mono.error(new ConnectTimeoutException()));
 
+        UserAgentContainer userAgentContainer = new UserAgentContainer();
         ThinClientStoreModel storeModel = new ThinClientStoreModel(
             clientContext,
             sessionContainer,
             ConsistencyLevel.SESSION,
-            new UserAgentContainer(),
+            userAgentContainer,
             globalEndpointManager,
             httpClient,
             null);
+
+        userAgentContainer.setFeatureEnabledFlagsAsSuffix(
+            Collections.singleton(UserAgentFeatureFlags.ThinClient));
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
             clientContext,
@@ -249,6 +253,9 @@ public class ThinClientStoreModelTest {
             .isNull();
 
         HttpHeaders httpHeaders = ReflectionUtils.getHttpHeaders(requestCaptor.getValue());
+        assertThat(httpHeaders.value(HttpConstants.HttpHeaders.USER_AGENT))
+            .as("ThinClient HTTP framing headers should use the latest evaluated user agent")
+            .isEqualTo(userAgentContainer.getUserAgent());
         assertThat(httpHeaders.toMap().get(HttpConstants.HttpHeaders.NO_RETRY_449))
             .as("ThinClient HTTP framing headers should not include the Gateway V1 no-retry-449 header")
             .isNull();

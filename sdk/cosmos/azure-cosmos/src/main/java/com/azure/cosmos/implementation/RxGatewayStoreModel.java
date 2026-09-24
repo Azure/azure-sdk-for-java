@@ -107,6 +107,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private final Map<String, String> additionalHeaders;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final ConcurrentHashMap<String, Tag> serviceEndpointMetricTags;
+    private final UserAgentContainer userAgentContainer;
 
     public RxGatewayStoreModel(
         DiagnosticsClientContext clientContext,
@@ -143,6 +144,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             userAgentContainer = new UserAgentContainer();
         }
 
+        this.userAgentContainer = userAgentContainer;
         this.defaultHeaders = this.getDefaultHeaders(apiType, userAgentContainer);
 
         this.defaultConsistencyLevel = defaultConsistencyLevel;
@@ -166,6 +168,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         this.httpClient = inner.httpClient;
         this.sessionContainer = inner.sessionContainer;
         this.additionalHeaders = inner.additionalHeaders;
+        this.userAgentContainer = inner.userAgentContainer;
     }
 
     public Tag getServiceEndpointMetricTag(URI requestUri) {
@@ -561,10 +564,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         for (Entry<String, String> entry : this.defaultHeaders.entrySet()) {
             if (!headers.containsKey(entry.getKey())) {
                 // populate default header only if there is no overwrite by the request header
+                String value = HttpConstants.HttpHeaders.USER_AGENT.equals(entry.getKey())
+                    ? this.userAgentContainer.getUserAgent()
+                    : entry.getValue();
                 if (headersNeedToBeEscaped.contains(entry.getKey())) {
-                    httpHeaders.set(entry.getKey(), Utils.escapeNonAscii(entry.getValue()));
+                    httpHeaders.set(entry.getKey(), Utils.escapeNonAscii(value));
                 } else {
-                    httpHeaders.set(entry.getKey(), entry.getValue());
+                    httpHeaders.set(entry.getKey(), value);
                 }
             }
         }
@@ -1166,6 +1172,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     public Map<String, String> getDefaultHeaders() {
         return this.defaultHeaders;
+    }
+
+    protected String getCurrentUserAgent() {
+        return this.userAgentContainer.getUserAgent();
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
