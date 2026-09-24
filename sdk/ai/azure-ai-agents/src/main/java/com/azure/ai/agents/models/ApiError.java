@@ -155,6 +155,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
         jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeStringField("param", this.param);
         jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("misalignment", this.misalignment);
         jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeMapField("additionalInfo", this.additionalInfo, (writer, element) -> {
             if (element == null) {
@@ -189,6 +190,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
             String message = null;
             String param = null;
             String type = null;
+            MisalignmentErrorDetailsResource misalignment = null;
             List<ApiError> details = null;
             Map<String, BinaryData> additionalInfo = null;
             Map<String, BinaryData> debugInfo = null;
@@ -203,6 +205,8 @@ public final class ApiError implements JsonSerializable<ApiError> {
                     param = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
+                } else if ("misalignment".equals(fieldName)) {
+                    misalignment = MisalignmentErrorDetailsResource.fromJson(reader);
                 } else if ("details".equals(fieldName)) {
                     details = reader.readArray(reader1 -> ApiError.fromJson(reader1));
                 } else if ("additionalInfo".equals(fieldName)) {
@@ -218,10 +222,27 @@ public final class ApiError implements JsonSerializable<ApiError> {
             ApiError deserializedApiError = new ApiError(code, message);
             deserializedApiError.param = param;
             deserializedApiError.type = type;
+            deserializedApiError.misalignment = misalignment;
             deserializedApiError.details = details;
             deserializedApiError.additionalInfo = additionalInfo;
             deserializedApiError.debugInfo = debugInfo;
             return deserializedApiError;
         });
+    }
+
+    /*
+     * The misalignment property.
+     */
+    @Generated
+    private MisalignmentErrorDetailsResource misalignment;
+
+    /**
+     * Get the misalignment property: The misalignment property.
+     *
+     * @return the misalignment value.
+     */
+    @Generated
+    public MisalignmentErrorDetailsResource getMisalignment() {
+        return this.misalignment;
     }
 }
