@@ -14,6 +14,7 @@
 * Fixed the Direct mode (RNTBD) encoding of the `x-ms-cosmos-workload-id` header, which was sent with the wrong token ID (`0x00DC`) and type (`Byte`) instead of `0x00E7` and `UShort`. - See [PR 50673](https://github.com/Azure/azure-sdk-for-java/pull/50673)
 
 #### Other Changes
+* Updated Gateway and thin-client request headers to include user-agent feature flags evaluated after transport initialization. - See PR [50580](https://github.com/Azure/azure-sdk-for-java/pull/50580).
 
 * Updated Netty to `4.2.19.Final`, Reactor Netty to `1.3.7`, and Reactor Core to `3.8.7`. Migrated direct TCP event loops to the Netty 4.2 I/O handler API while preserving pooled buffers and explicit TLS validation settings.
 * Added a compact `ppaf` bookmark to each data-plane attempt in `CosmosDiagnostics`, containing the current per-partition write region, failed regions, and the time it was designated, or an empty object when no override is active.
