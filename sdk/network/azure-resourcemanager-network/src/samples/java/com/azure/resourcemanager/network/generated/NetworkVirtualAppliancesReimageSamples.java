@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkVirtualAppliancesReimageSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceSpecificReimage.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceSpecificReimage.json
      */
     /**
      * Sample code: Reimages Specific NetworkVirtualAppliance VMs in VM Scale Set.

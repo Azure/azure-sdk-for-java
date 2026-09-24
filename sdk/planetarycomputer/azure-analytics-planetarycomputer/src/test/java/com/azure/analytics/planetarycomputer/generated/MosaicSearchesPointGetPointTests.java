@@ -4,7 +4,10 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TilerCoreModelsResponsesPoint;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -18,8 +21,10 @@ public final class MosaicSearchesPointGetPointTests extends PlanetaryComputerPro
     public void testMosaicSearchesPointGetPointTests() {
         // method invocation
         TilerCoreModelsResponsesPoint response = dataClient.getSearchPoint("ba13fc7947b9b585690d84ee61aaa653", -84.386,
-            33.676, null, null, null, null, null, null, null, null, null, null, null, null, Arrays.asList("image"),
-            null, null, null, null, null, null, null, null);
+            33.676, (Integer) null, (Integer) null, (Integer) null, (Boolean) null, (Boolean) null, (String) null,
+            (List<Integer>) null, (String) null, (String) null, (List<String>) null, (SelMethod) null,
+            (List<Integer>) null, Arrays.asList("image"), (String) null, (List<String>) null, (Boolean) null,
+            (String) null, (Boolean) null, (WarpKernelResampling) null, (String) null, (Resampling) null);
 
         // response assertion
         Assertions.assertNotNull(response);

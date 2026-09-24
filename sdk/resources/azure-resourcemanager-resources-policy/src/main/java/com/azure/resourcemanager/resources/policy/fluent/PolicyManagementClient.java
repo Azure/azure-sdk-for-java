@@ -75,20 +75,6 @@ public interface PolicyManagementClient {
     PolicyDefinitionVersionsClient getPolicyDefinitionVersions();
 
     /**
-     * Gets the PolicyEnrollmentsClient object to access its operations.
-     * 
-     * @return the PolicyEnrollmentsClient object.
-     */
-    PolicyEnrollmentsClient getPolicyEnrollments();
-
-    /**
-     * Gets the PolicyExemptionsClient object to access its operations.
-     * 
-     * @return the PolicyExemptionsClient object.
-     */
-    PolicyExemptionsClient getPolicyExemptions();
-
-    /**
      * Gets the PolicySetDefinitionsClient object to access its operations.
      * 
      * @return the PolicySetDefinitionsClient object.
@@ -101,20 +87,6 @@ public interface PolicyManagementClient {
      * @return the PolicySetDefinitionVersionsClient object.
      */
     PolicySetDefinitionVersionsClient getPolicySetDefinitionVersions();
-
-    /**
-     * Gets the VariablesClient object to access its operations.
-     * 
-     * @return the VariablesClient object.
-     */
-    VariablesClient getVariables();
-
-    /**
-     * Gets the VariableValuesClient object to access its operations.
-     * 
-     * @return the VariableValuesClient object.
-     */
-    VariableValuesClient getVariableValues();
 
     /**
      * Gets the PolicyTokensClient object to access its operations.

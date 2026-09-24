@@ -99,6 +99,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
             String id = null;
             String name = null;
             AgentState state = null;
+            AgentState configurationState = null;
             AgentDetailsVersions versions = null;
             AgentStateSource stateSource = null;
             AgentEndpointConfig agentEndpoint = null;
@@ -116,6 +117,8 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
                     name = reader.getString();
                 } else if ("state".equals(fieldName)) {
                     state = AgentState.fromString(reader.getString());
+                } else if ("configuration_state".equals(fieldName)) {
+                    configurationState = AgentState.fromString(reader.getString());
                 } else if ("versions".equals(fieldName)) {
                     versions = AgentDetailsVersions.fromJson(reader);
                 } else if ("state_source".equals(fieldName)) {
@@ -138,6 +141,7 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
             }
             AgentDetails deserializedAgentDetails = new AgentDetails(id, name, versions);
             deserializedAgentDetails.state = state;
+            deserializedAgentDetails.configurationState = configurationState;
             deserializedAgentDetails.stateSource = stateSource;
             deserializedAgentDetails.agentEndpoint = agentEndpoint;
             deserializedAgentDetails.digitalWorkerType = digitalWorkerType;
@@ -311,5 +315,23 @@ public final class AgentDetails implements JsonSerializable<AgentDetails> {
     @Beta(warningText = "Preview API. DigitalWorker=V1Preview")
     public DigitalWorkerType getDigitalWorkerType() {
         return this.digitalWorkerType;
+    }
+
+    /*
+     * The administrative configuration state of the agent. This reflects whether the agent was explicitly enabled or
+     * disabled, independently of identity-derived operational state.
+     */
+    @Generated
+    private AgentState configurationState;
+
+    /**
+     * Get the configurationState property: The administrative configuration state of the agent. This reflects whether
+     * the agent was explicitly enabled or disabled, independently of identity-derived operational state.
+     *
+     * @return the configurationState value.
+     */
+    @Generated
+    public AgentState getConfigurationState() {
+        return this.configurationState;
     }
 }

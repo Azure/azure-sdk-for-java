@@ -25,16 +25,6 @@ public final class TracesDataGenerationJobOptions extends DataGenerationJobOptio
     private DataGenerationJobType type = DataGenerationJobType.TRACES;
 
     /**
-     * Creates an instance of TracesDataGenerationJobOptions class.
-     *
-     * @param maxSamples the maxSamples value to set.
-     */
-    @Generated
-    public TracesDataGenerationJobOptions(int maxSamples) {
-        super(maxSamples);
-    }
-
-    /**
      * Get the type property: The data generation job type.
      *
      * @return the type value.
@@ -72,10 +62,10 @@ public final class TracesDataGenerationJobOptions extends DataGenerationJobOptio
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("max_samples", getMaxSamples());
         jsonWriter.writeNumberField("train_split", getTrainSplit());
         jsonWriter.writeJsonField("model_options", getModelOptions());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeNumberField("max_samples", this.maxSamples);
         jsonWriter.writeBooleanField("redact_private_content", this.redactPrivateContent);
         return jsonWriter.writeEndObject();
     }
@@ -86,40 +76,33 @@ public final class TracesDataGenerationJobOptions extends DataGenerationJobOptio
      * @param jsonReader The JsonReader being read.
      * @return An instance of TracesDataGenerationJobOptions if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TracesDataGenerationJobOptions.
      */
     @Generated
     public static TracesDataGenerationJobOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int maxSamples = 0;
-            Double trainSplit = null;
-            DataGenerationModelOptions modelOptions = null;
-            DataGenerationJobType type = DataGenerationJobType.TRACES;
-            Boolean redactPrivateContent = null;
+            TracesDataGenerationJobOptions deserializedTracesDataGenerationJobOptions
+                = new TracesDataGenerationJobOptions();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("max_samples".equals(fieldName)) {
-                    maxSamples = reader.getInt();
-                } else if ("train_split".equals(fieldName)) {
-                    trainSplit = reader.getNullable(JsonReader::getDouble);
+                if ("train_split".equals(fieldName)) {
+                    deserializedTracesDataGenerationJobOptions.setTrainSplit(reader.getNullable(JsonReader::getDouble));
                 } else if ("model_options".equals(fieldName)) {
-                    modelOptions = DataGenerationModelOptions.fromJson(reader);
+                    deserializedTracesDataGenerationJobOptions
+                        .setModelOptions(DataGenerationModelOptions.fromJson(reader));
                 } else if ("type".equals(fieldName)) {
-                    type = DataGenerationJobType.fromString(reader.getString());
+                    deserializedTracesDataGenerationJobOptions.type
+                        = DataGenerationJobType.fromString(reader.getString());
+                } else if ("max_samples".equals(fieldName)) {
+                    deserializedTracesDataGenerationJobOptions.maxSamples = reader.getNullable(JsonReader::getInt);
                 } else if ("redact_private_content".equals(fieldName)) {
-                    redactPrivateContent = reader.getNullable(JsonReader::getBoolean);
+                    deserializedTracesDataGenerationJobOptions.redactPrivateContent
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
-            TracesDataGenerationJobOptions deserializedTracesDataGenerationJobOptions
-                = new TracesDataGenerationJobOptions(maxSamples);
-            deserializedTracesDataGenerationJobOptions.setTrainSplit(trainSplit);
-            deserializedTracesDataGenerationJobOptions.setModelOptions(modelOptions);
-            deserializedTracesDataGenerationJobOptions.type = type;
-            deserializedTracesDataGenerationJobOptions.redactPrivateContent = redactPrivateContent;
             return deserializedTracesDataGenerationJobOptions;
         });
     }
@@ -152,6 +135,43 @@ public final class TracesDataGenerationJobOptions extends DataGenerationJobOptio
     @Generated
     public TracesDataGenerationJobOptions setRedactPrivateContent(Boolean redactPrivateContent) {
         this.redactPrivateContent = redactPrivateContent;
+        return this;
+    }
+
+    /*
+     * Maximum number of samples to generate, up to service-defined limits. If omitted, sampling is turned off.
+     */
+    @Generated
+    private Integer maxSamples;
+
+    /**
+     * Creates an instance of TracesDataGenerationJobOptions class.
+     */
+    @Generated
+    public TracesDataGenerationJobOptions() {
+    }
+
+    /**
+     * Get the maxSamples property: Maximum number of samples to generate, up to service-defined limits. If omitted,
+     * sampling is turned off.
+     *
+     * @return the maxSamples value.
+     */
+    @Generated
+    public Integer getMaxSamples() {
+        return this.maxSamples;
+    }
+
+    /**
+     * Set the maxSamples property: Maximum number of samples to generate, up to service-defined limits. If omitted,
+     * sampling is turned off.
+     *
+     * @param maxSamples the maxSamples value to set.
+     * @return the TracesDataGenerationJobOptions object itself.
+     */
+    @Generated
+    public TracesDataGenerationJobOptions setMaxSamples(Integer maxSamples) {
+        this.maxSamples = maxSamples;
         return this;
     }
 }

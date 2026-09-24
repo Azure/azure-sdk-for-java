@@ -1,6 +1,16 @@
 # Release History
 
-## 2.55.0-beta.2 (2026-07-16)
+## 2.55.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.55.0-beta.2 (2026-09-17)
 
 ### Features Added
 

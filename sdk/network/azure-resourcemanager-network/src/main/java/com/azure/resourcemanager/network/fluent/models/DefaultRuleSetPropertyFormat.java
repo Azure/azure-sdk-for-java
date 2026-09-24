@@ -26,6 +26,11 @@ public final class DefaultRuleSetPropertyFormat implements JsonSerializable<Defa
      */
     private String ruleSetVersion;
 
+    /*
+     * Human-readable display name for the managed rule set version (e.g., 'Default Ruleset 2.2 (Latest, Recommended)').
+     */
+    private String displayName;
+
     /**
      * Creates an instance of DefaultRuleSetPropertyFormat class.
      */
@@ -51,6 +56,16 @@ public final class DefaultRuleSetPropertyFormat implements JsonSerializable<Defa
     }
 
     /**
+     * Get the displayName property: Human-readable display name for the managed rule set version (e.g., 'Default
+     * Ruleset 2.2 (Latest, Recommended)').
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -66,6 +81,7 @@ public final class DefaultRuleSetPropertyFormat implements JsonSerializable<Defa
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("ruleSetType", this.ruleSetType);
         jsonWriter.writeStringField("ruleSetVersion", this.ruleSetVersion);
+        jsonWriter.writeStringField("displayName", this.displayName);
         return jsonWriter.writeEndObject();
     }
 
@@ -88,6 +104,8 @@ public final class DefaultRuleSetPropertyFormat implements JsonSerializable<Defa
                     deserializedDefaultRuleSetPropertyFormat.ruleSetType = reader.getString();
                 } else if ("ruleSetVersion".equals(fieldName)) {
                     deserializedDefaultRuleSetPropertyFormat.ruleSetVersion = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDefaultRuleSetPropertyFormat.displayName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerserviceaimanager.generated;
  */
 public final class AIManagerNamespacesRotateKeysSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/AIManagerNamespaces_RotateKeys.json
+     * x-ms-original-file: 2026-09-02-preview/AIManagerNamespaces_RotateKeys.json
      */
     /**
      * Sample code: AIManagerNamespaces_RotateKeys.

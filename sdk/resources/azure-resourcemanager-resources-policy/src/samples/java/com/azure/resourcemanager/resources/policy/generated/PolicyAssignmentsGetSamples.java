@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.policy.generated;
  */
 public final class PolicyAssignmentsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/getPolicyAssignmentWithOverrides.json
+     * x-ms-original-file: 2026-06-01/getPolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Retrieve a policy assignment with overrides.
@@ -24,7 +24,7 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/getPolicyAssignmentWithResourceSelectors.json
+     * x-ms-original-file: 2026-06-01/getPolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Retrieve a policy assignment with resource selectors.
@@ -39,7 +39,7 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/getPolicyAssignmentWithUserAssignedIdentity.json
+     * x-ms-original-file: 2026-06-01/getPolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
      * Sample code: Retrieve a policy assignment with a user assigned identity.
@@ -54,7 +54,7 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/getPolicyAssignment.json
+     * x-ms-original-file: 2026-06-01/getPolicyAssignment.json
      */
     /**
      * Sample code: Retrieve a policy assignment.
@@ -68,7 +68,22 @@ public final class PolicyAssignmentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/getPolicyAssignmentWithIdentity.json
+     * x-ms-original-file: 2026-06-01/getPolicyAssignmentWithResourceRolloutPercentageSelector.json
+     */
+    /**
+     * Sample code: Retrieve a policy assignment with a resource rollout percentage selector.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void retrieveAPolicyAssignmentWithAResourceRolloutPercentageSelector(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        manager.policyAssignments()
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-06-01/getPolicyAssignmentWithIdentity.json
      */
     /**
      * Sample code: Retrieve a policy assignment with a system assigned identity.
