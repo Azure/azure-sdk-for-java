@@ -8,6 +8,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.test.publisher.TestPublisher;
+import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -20,10 +22,12 @@ import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -143,7 +147,7 @@ public class AutoRefreshingCacheTests {
         for (int i = 0; i < 3; i++) {
             assertSame(first,
                 async ? cache.getValidValueAsync().block(Duration.ofSeconds(5)) : cache.getValidValueSync());
-            cache.refreshValueInBackground();
+            assertSame(first, cache.getValidValueSync());
             cache.forceRefreshValueInBackground();
         }
         assertEquals(1, provider.createSyncCount());
@@ -159,7 +163,7 @@ public class AutoRefreshingCacheTests {
 
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
-    public void backgroundRefreshDoesNotLoadMissingOrExpiredValues(boolean force) {
+    public void backgroundRefreshDoesNotUseAsyncSupplierForMissingOrExpiredValues(boolean force) {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         RecordingSuppliers provider = new RecordingSuppliers();
         TestExpiringValue first = value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME));
@@ -167,17 +171,17 @@ public class AutoRefreshingCacheTests {
         provider.onSync(first).onSync(second);
         AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider::createAsync,
             provider::createSync, TestExpiringValue::getExpiration, clock);
-        Runnable refresh = force ? cache::forceRefreshValueInBackground : cache::refreshValueInBackground;
+        Runnable refresh = force ? cache::forceRefreshValueInBackground : cache::getValidValueSync;
 
         refresh.run();
         assertEquals(0, provider.createAsyncCount());
-        assertEquals(0, provider.createSyncCount());
+        assertEquals(force ? 0 : 1, provider.createSyncCount());
         assertSame(first, cache.getValidValueSync());
 
         clock.advance(VALUE_LIFETIME.plusSeconds(1));
         refresh.run();
         assertEquals(0, provider.createAsyncCount());
-        assertEquals(1, provider.createSyncCount());
+        assertEquals(force ? 1 : 2, provider.createSyncCount());
         assertSame(second, cache.getValidValueSync());
         assertEquals(2, provider.createSyncCount());
     }
@@ -492,6 +496,141 @@ public class AutoRefreshingCacheTests {
         assertEquals(2, calls.get());
     }
 
+    @Test
+    public void backgroundTimeoutRetainsValueBacksOffAndIgnoresLateResult() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        VirtualTimeScheduler scheduler = VirtualTimeScheduler.create();
+        TestPublisher<TestExpiringValue> pending
+            = TestPublisher.createNoncompliant(TestPublisher.Violation.DEFER_CANCELLATION);
+        AtomicInteger calls = new AtomicInteger();
+        AtomicInteger cancellations = new AtomicInteger();
+        TestExpiringValue first = value(FIRST_VALUE, now(clock).plusHours(1));
+        TestExpiringValue second = value(SECOND_VALUE, now(clock).plusHours(1));
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(() -> calls.incrementAndGet() == 1
+            ? pending.mono().doOnCancel(cancellations::incrementAndGet)
+            : Mono.just(second), () -> first, TestExpiringValue::getExpiration, clock, scheduler);
+        try {
+            assertSame(first, cache.getValidValueSync());
+            cache.forceRefreshValueInBackground();
+            scheduler.advanceTimeBy(Duration.ofSeconds(29));
+            assertEquals(0, cancellations.get());
+            assertSame(first, cache.getValidValueSync());
+
+            scheduler.advanceTimeBy(Duration.ofSeconds(1));
+            assertEquals(1, cancellations.get());
+            assertSame(first, cache.getValidValueAsync().block(Duration.ofSeconds(5)));
+            cache.forceRefreshValueInBackground();
+            assertEquals(1, calls.get());
+            clock.advance(Duration.ofSeconds(29));
+            cache.forceRefreshValueInBackground();
+            assertEquals(1, calls.get());
+
+            clock.advance(Duration.ofSeconds(1));
+            cache.forceRefreshValueInBackground();
+            assertEquals(2, calls.get());
+            assertSame(second, cache.getValidValueSync());
+
+            pending.next(first).complete();
+            assertSame(second, cache.getValidValueSync());
+        } finally {
+            scheduler.dispose();
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void backgroundTimeoutReleasesSyncAndAsyncWaitersAndAllowsRetry(boolean invalidate) throws Exception {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        VirtualTimeScheduler scheduler = VirtualTimeScheduler.create();
+        AtomicInteger calls = new AtomicInteger();
+        AtomicInteger cancellations = new AtomicInteger();
+        TestExpiringValue first = value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME));
+        TestExpiringValue second = value(SECOND_VALUE, now(clock).plusHours(1));
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(() -> calls.incrementAndGet() == 1
+            ? Mono.<TestExpiringValue>never().doOnCancel(cancellations::incrementAndGet)
+            : Mono.just(second), () -> first, TestExpiringValue::getExpiration, clock, scheduler);
+        ExecutorService pool = Executors.newSingleThreadExecutor();
+        try {
+            assertSame(first, cache.getValidValueSync());
+            clock.advance(VALUE_LIFETIME.minusSeconds(2));
+            assertSame(first, cache.getValidValueSync());
+            if (invalidate) {
+                assertTrue(cache.invalidateValue(first));
+            } else {
+                clock.advance(Duration.ofSeconds(3));
+            }
+            CompletableFuture<TestExpiringValue> asyncWaiter = cache.getValidValueAsync().toFuture();
+            AtomicReference<Thread> syncThread = new AtomicReference<>();
+            Future<TestExpiringValue> syncWaiter = pool.submit(() -> {
+                syncThread.set(Thread.currentThread());
+                return cache.getValidValueSync();
+            });
+            awaitWaiting(syncThread);
+            assertFalse(asyncWaiter.isDone());
+            assertEquals(1, calls.get());
+
+            scheduler.advanceTimeBy(Duration.ofSeconds(30));
+            ExecutionException asyncError
+                = assertThrows(ExecutionException.class, () -> asyncWaiter.get(5, TimeUnit.SECONDS));
+            assertTrue(asyncError.getCause() instanceof TimeoutException);
+            ExecutionException syncError
+                = assertThrows(ExecutionException.class, () -> syncWaiter.get(5, TimeUnit.SECONDS));
+            assertTrue(syncError.getCause() instanceof IllegalStateException);
+            assertSame(asyncError.getCause(), syncError.getCause().getCause());
+            assertEquals(1, cancellations.get());
+
+            assertSame(second, cache.getValidValueAsync().block(Duration.ofSeconds(5)));
+            assertSame(second, cache.getValidValueSync());
+            assertEquals(2, calls.get());
+        } finally {
+            pool.shutdownNow();
+            scheduler.dispose();
+        }
+    }
+
+    @Test
+    public void successfulBackgroundRefreshIsNotInvalidatedByTimeout() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        VirtualTimeScheduler scheduler = VirtualTimeScheduler.create();
+        Sinks.One<TestExpiringValue> pending = Sinks.one();
+        TestExpiringValue first = value(FIRST_VALUE, now(clock).plusHours(1));
+        TestExpiringValue second = value(SECOND_VALUE, now(clock).plusHours(1));
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(pending::asMono, () -> first,
+            TestExpiringValue::getExpiration, clock, scheduler);
+        try {
+            assertSame(first, cache.getValidValueSync());
+            cache.forceRefreshValueInBackground();
+            scheduler.advanceTimeBy(Duration.ofSeconds(29));
+            pending.tryEmitValue(second);
+            assertSame(second, cache.getValidValueSync());
+
+            scheduler.advanceTimeBy(Duration.ofMinutes(1));
+            assertSame(second, cache.getValidValueSync());
+            assertSame(second, cache.getValidValueAsync().block(Duration.ofSeconds(5)));
+        } finally {
+            scheduler.dispose();
+        }
+    }
+
+    @Test
+    public void foregroundAcquisitionDoesNotUseBackgroundTimeout() throws Exception {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        VirtualTimeScheduler scheduler = VirtualTimeScheduler.create();
+        Sinks.One<TestExpiringValue> pending = Sinks.one();
+        TestExpiringValue first = value(FIRST_VALUE, now(clock).plusHours(1));
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(pending::asMono, () -> first,
+            TestExpiringValue::getExpiration, clock, scheduler);
+        try {
+            CompletableFuture<TestExpiringValue> acquisition = cache.getValidValueAsync().toFuture();
+            scheduler.advanceTimeBy(Duration.ofMinutes(1));
+            assertFalse(acquisition.isDone());
+            pending.tryEmitValue(first);
+            assertSame(first, acquisition.get(5, TimeUnit.SECONDS));
+        } finally {
+            scheduler.dispose();
+        }
+    }
+
     @ParameterizedTest
     @ValueSource(ints = { 0, 1, 2, 3, 4 })
     public void invalidAsyncResultsFailAllWaitersAndPermitRetry(int failure) throws Exception {
@@ -731,7 +870,7 @@ public class AutoRefreshingCacheTests {
             .onAsync(Mono.just(second));
         AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider::createAsync,
             provider::createSync, TestExpiringValue::getExpiration, clock);
-        Runnable refresh = force ? cache::forceRefreshValueInBackground : cache::refreshValueInBackground;
+        Runnable refresh = force ? cache::forceRefreshValueInBackground : cache::getValidValueSync;
 
         assertSame(first, cache.getValidValueSync());
         cache.forceRefreshValueInBackground();
