@@ -692,6 +692,19 @@ public class SessionAuthenticationPolicyTest {
         verify(bearerPolicy, never()).process(any(), any());
     }
 
+    @Test
+    public void asyncPolicyGetsContainerNameFromCustomEndpoint() {
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://custom.endpoint.example/mycontainer/myblob");
+
+        StepVerifier.create(buildPipeline(successTransport()).send(request)).assertNext(response -> {
+            assertEquals(200, response.getStatusCode());
+            response.close();
+        }).verifyComplete();
+
+        verify(sessionProvider).getSessionAsync(argThat(context -> "mycontainer".equals(context.getContainerName())));
+    }
+
     // Helpers
 
     private void sendSessionResponseSync(HttpRequest request, int sessionStatusCode) {

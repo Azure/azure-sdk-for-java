@@ -50,26 +50,6 @@ public final class SessionOptions {
     }
 
     /**
-     * Gets the container name override used when it cannot be resolved from the request URL.
-     *
-     * @return the container name, or {@code null} if not set.
-     */
-    public String getContainerName() {
-        return containerName;
-    }
-
-    /**
-     * Sets the container name override used when it cannot be resolved from the request URL.
-     *
-     * @param containerName the container name.
-     * @return the updated {@link SessionOptions} object.
-     */
-    public SessionOptions setContainerName(String containerName) {
-        this.containerName = containerName;
-        return this;
-    }
-
-    /**
      * Gets the storage account name used for session HMAC signing.
      *
      * @return the account name, or {@code null} if not set (will be parsed from the endpoint URL).

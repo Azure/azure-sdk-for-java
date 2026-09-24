@@ -5,7 +5,6 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -69,12 +68,12 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     private final ConcurrentHashMap<String, AtomicInteger> accountRejections = new ConcurrentHashMap<>();
 
     SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-                                SessionProvider sessionProvider, SessionOptions sessionOptions) {
+        SessionProvider sessionProvider, SessionOptions sessionOptions) {
         this(bearerPolicy, sessionProvider, sessionOptions, Clock.systemUTC());
     }
 
     SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-                                SessionProvider sessionProvider, SessionOptions sessionOptions, Clock clock) {
+        SessionProvider sessionProvider, SessionOptions sessionOptions, Clock clock) {
         this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");
         this.sessionProvider = Objects.requireNonNull(sessionProvider, "'sessionProvider' cannot be null.");
         this.sessionOptions = Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null.");
@@ -152,7 +151,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             return null;
         }
 
-        String containerName = getOverrideOrDefault(sessionOptions.getContainerName(), parts.getBlobContainerName());
+        String containerName = parts.getBlobContainerName();
         String accountName = getOverrideOrDefault(sessionOptions.getAccountName(), parts.getAccountName());
 
         if (CoreUtils.isNullOrEmpty(containerName) || CoreUtils.isNullOrEmpty(parts.getBlobName())) {
