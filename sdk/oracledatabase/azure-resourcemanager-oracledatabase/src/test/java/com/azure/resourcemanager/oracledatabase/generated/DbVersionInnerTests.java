@@ -12,12 +12,12 @@ public final class DbVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"version\":\"m\",\"isLatestForMajorVersion\":false,\"isPreviewDbVersion\":true,\"isUpgradeSupported\":false,\"supportsPdb\":true},\"id\":\"ps\",\"name\":\"shck\",\"type\":\"kyjpmspbps\"}")
+            "{\"properties\":{\"version\":\"uxuuyilflq\",\"isLatestForMajorVersion\":false,\"isPreviewDbVersion\":true,\"isUpgradeSupported\":false,\"supportsPdb\":false},\"id\":\"njhvsujztc\",\"name\":\"ytqj\",\"type\":\"w\"}")
             .toObject(DbVersionInner.class);
-        Assertions.assertEquals("m", model.properties().version());
+        Assertions.assertEquals("uxuuyilflq", model.properties().version());
         Assertions.assertFalse(model.properties().isLatestForMajorVersion());
         Assertions.assertTrue(model.properties().isPreviewDbVersion());
         Assertions.assertFalse(model.properties().isUpgradeSupported());
-        Assertions.assertTrue(model.properties().supportsPdb());
+        Assertions.assertFalse(model.properties().supportsPdb());
     }
 }

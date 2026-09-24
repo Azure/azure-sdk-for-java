@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AutonomousDatabaseWalletFileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutonomousDatabaseWalletFileInner model = BinaryData.fromString("{\"walletFiles\":\"bkwdlenrds\"}")
+        AutonomousDatabaseWalletFileInner model = BinaryData.fromString("{\"walletFiles\":\"aaewdaomdjv\"}")
             .toObject(AutonomousDatabaseWalletFileInner.class);
-        Assertions.assertEquals("bkwdlenrds", model.walletFiles());
+        Assertions.assertEquals("aaewdaomdjv", model.walletFiles());
     }
 }
