@@ -24,7 +24,7 @@ public final class ResourceAnchorsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"linkedCompartmentId\":\"culregpqt\"},\"location\":\"jhvrztnvgyshqrdg\",\"tags\":{\"fa\":\"mewjzlpyk\",\"zrransyb\":\"zwjcaye\",\"nkfscjfn\":\"lpolwzrghsrle\"},\"id\":\"jwvuag\",\"name\":\"qwtltngvmreupt\",\"type\":\"klzmijajw\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"linkedCompartmentId\":\"iqch\"},\"location\":\"tuicds\",\"tags\":{\"hzzwvywrgyngy\":\"fmmp\",\"clamgglvlmfejdoq\":\"grpxncakiqaondjr\",\"gxhqfgqkayejs\":\"ykglt\"},\"id\":\"tlgflwfgz\",\"name\":\"iucijjcea\",\"type\":\"lijjjrtvam\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class ResourceAnchorsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResourceAnchor response = manager.resourceAnchors()
-            .define("wmn")
-            .withRegion("wkudrbcpf")
-            .withExistingResourceGroup("clctzey")
-            .withTags(mapOf("irtneemmjau", "dqyemebunaucm", "rwgudasmxub", "cgxefnohaitraniz"))
+            .define("hdvafjrqpjiyrqjc")
+            .withRegion("rzorp")
+            .withExistingResourceGroup("ulhmzyq")
+            .withTags(mapOf("qjf", "bqc", "gvpyigdaqqilzdc", "xxsaetgz", "fpaurw", "uwjoedxnguca"))
             .withProperties(new ResourceAnchorProperties())
             .create();
 
-        Assertions.assertEquals("jhvrztnvgyshqrdg", response.location());
-        Assertions.assertEquals("mewjzlpyk", response.tags().get("fa"));
+        Assertions.assertEquals("tuicds", response.location());
+        Assertions.assertEquals("fmmp", response.tags().get("hzzwvywrgyngy"));
     }
 
     // Use "Map.of" if available
