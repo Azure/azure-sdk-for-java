@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.8.0 (2026-08-13)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK.  Package api-version 2026-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.RegionOfChoiceSettings` was added
+
+#### `models.VaultProperties` was modified
+
+* `withRegionOfChoiceSettings(models.RegionOfChoiceSettings)` was added
+* `regionOfChoiceSettings()` was added
 
 ## 1.7.0 (2026-07-10)
 

@@ -21,7 +21,7 @@ public final class CertificatesListByIotHubWithResponseMockTests {
     @Test
     public void testListByIotHubWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"subject\":\"zpnfqntcypsxj\",\"expiry\":\"Thu, 01 Apr 2021 01:04:39 GMT\",\"thumbprint\":\"mwks\",\"isVerified\":true,\"created\":\"Mon, 06 Sep 2021 21:17:56 GMT\",\"updated\":\"Thu, 08 Jul 2021 14:21:01 GMT\",\"certificate\":\"vydfceacvlhvygdy\",\"policyResourceId\":\"umrtwnawjsl\"},\"etag\":\"wkojgcyztsfmzn\",\"id\":\"eqphchqnrnr\",\"name\":\"x\",\"type\":\"huwrykqgaifm\"}]}";
+            = "{\"value\":[{\"properties\":{\"subject\":\"tylbfpncurdoiw\",\"expiry\":\"Thu, 09 Dec 2021 11:25:56 GMT\",\"thumbprint\":\"tywubxcbihwq\",\"isVerified\":true,\"created\":\"Sun, 05 Sep 2021 23:19:39 GMT\",\"updated\":\"Thu, 12 Aug 2021 13:32:47 GMT\",\"certificate\":\"chrdgoihxumwcto\",\"policyResourceId\":\"zj\"},\"etag\":\"udfdlwgg\",\"id\":\"sb\",\"name\":\"tov\",\"type\":\"tgseinqfiufxqkn\"},{\"properties\":{\"subject\":\"gnepttwqmsni\",\"expiry\":\"Mon, 12 Apr 2021 20:00:21 GMT\",\"thumbprint\":\"mqnrojlpijnkr\",\"isVerified\":false,\"created\":\"Tue, 09 Nov 2021 11:24:19 GMT\",\"updated\":\"Mon, 11 Jan 2021 16:21:05 GMT\",\"certificate\":\"atiz\",\"policyResourceId\":\"onasxifto\"},\"etag\":\"yzhftwesgogczh\",\"id\":\"nxkrlgnyhmossxkk\",\"name\":\"thrrgh\",\"type\":\"jbdhqxvc\"},{\"properties\":{\"subject\":\"rpdsof\",\"expiry\":\"Mon, 03 May 2021 16:15:22 GMT\",\"thumbprint\":\"nsvbuswdv\",\"isVerified\":true,\"created\":\"Mon, 22 Feb 2021 05:56:13 GMT\",\"updated\":\"Tue, 06 Apr 2021 20:50:40 GMT\",\"certificate\":\"nvjsrtkfa\",\"policyResourceId\":\"opqgikyzirtxdyux\"},\"etag\":\"jntpsewgioilqu\",\"id\":\"ydxtqm\",\"name\":\"eoxorggufhyao\",\"type\":\"tbghhavgrvkf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class CertificatesListByIotHubWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateListDescription response = manager.certificates()
-            .listByIotHubWithResponse("pauutpw", "qhih", com.azure.core.util.Context.NONE)
+            .listByIotHubWithResponse("lrcoolsttpki", "kkbnu", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertTrue(response.value().get(0).properties().isVerified());
-        Assertions.assertEquals("vydfceacvlhvygdy", response.value().get(0).properties().certificate());
-        Assertions.assertEquals("umrtwnawjsl", response.value().get(0).properties().policyResourceId());
+        Assertions.assertEquals("chrdgoihxumwcto", response.value().get(0).properties().certificate());
+        Assertions.assertEquals("zj", response.value().get(0).properties().policyResourceId());
     }
 }

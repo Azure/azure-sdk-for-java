@@ -672,7 +672,9 @@ public interface MonitorsClient {
     NewRelicMonitorResourceInner linkSaaS(String resourceGroupName, String monitorName, SaaSData body, Context context);
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace.
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
+     * 
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -686,7 +688,9 @@ public interface MonitorsClient {
         beginResubscribe(String resourceGroupName, String monitorName);
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace.
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
+     * 
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -702,7 +706,9 @@ public interface MonitorsClient {
         beginResubscribe(String resourceGroupName, String monitorName, ResubscribeProperties body, Context context);
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace.
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
+     * 
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -715,7 +721,9 @@ public interface MonitorsClient {
     NewRelicMonitorResourceInner resubscribe(String resourceGroupName, String monitorName);
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace.
+     * Resubscribes the New Relic Organization of the underlying Monitor Resource to be billed by Azure Marketplace.
+     * 
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.

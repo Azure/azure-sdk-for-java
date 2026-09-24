@@ -11,7 +11,7 @@ import com.azure.resourcemanager.providerhub.models.CheckinManifestParams;
  */
 public final class ResourceProviderCheckinManifestSamples {
     /*
-     * x-ms-original-file: 2024-09-01/CheckinManifest.json
+     * x-ms-original-file: 2025-10-01/CheckinManifest.json
      */
     /**
      * Sample code: CheckinManifest.

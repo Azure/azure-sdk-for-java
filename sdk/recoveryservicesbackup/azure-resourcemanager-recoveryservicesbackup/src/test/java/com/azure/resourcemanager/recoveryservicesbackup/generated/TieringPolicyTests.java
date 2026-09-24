@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class TieringPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TieringPolicy model = BinaryData
-            .fromString("{\"tieringMode\":\"TierRecommended\",\"duration\":1323683698,\"durationType\":\"Invalid\"}")
-            .toObject(TieringPolicy.class);
-        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringMode());
-        Assertions.assertEquals(1323683698, model.duration());
-        Assertions.assertEquals(RetentionDurationType.INVALID, model.durationType());
+        TieringPolicy model
+            = BinaryData.fromString("{\"tieringMode\":\"Invalid\",\"duration\":369373593,\"durationType\":\"Months\"}")
+                .toObject(TieringPolicy.class);
+        Assertions.assertEquals(TieringMode.INVALID, model.tieringMode());
+        Assertions.assertEquals(369373593, model.duration());
+        Assertions.assertEquals(RetentionDurationType.MONTHS, model.durationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TieringPolicy model = new TieringPolicy().withTieringMode(TieringMode.TIER_RECOMMENDED)
-            .withDuration(1323683698)
-            .withDurationType(RetentionDurationType.INVALID);
+        TieringPolicy model = new TieringPolicy().withTieringMode(TieringMode.INVALID)
+            .withDuration(369373593)
+            .withDurationType(RetentionDurationType.MONTHS);
         model = BinaryData.fromObject(model).toObject(TieringPolicy.class);
-        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringMode());
-        Assertions.assertEquals(1323683698, model.duration());
-        Assertions.assertEquals(RetentionDurationType.INVALID, model.durationType());
+        Assertions.assertEquals(TieringMode.INVALID, model.tieringMode());
+        Assertions.assertEquals(369373593, model.duration());
+        Assertions.assertEquals(RetentionDurationType.MONTHS, model.durationType());
     }
 }

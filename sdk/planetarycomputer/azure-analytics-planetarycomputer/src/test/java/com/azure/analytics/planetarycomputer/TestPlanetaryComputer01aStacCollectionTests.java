@@ -87,7 +87,7 @@ public class TestPlanetaryComputer01aStacCollectionTests extends PlanetaryComput
         System.out.println("Testing getConformanceClass");
 
         // Act
-        StacConformanceClasses conformance = stacClient.getConformanceClass();
+        StacConformanceClasses conformance = stacClient.getConformanceClasses();
 
         // Assert
         assertNotNull(conformance, "Conformance should not be null");
@@ -205,7 +205,7 @@ public class TestPlanetaryComputer01aStacCollectionTests extends PlanetaryComput
         System.out.println("Testing listRenderOptions for collection: " + collectionId);
 
         // Act
-        List<RenderOption> renderOptions = stacClient.listRenderOptions(collectionId);
+        List<RenderOption> renderOptions = stacClient.getRenderOptions(collectionId);
 
         // Assert
         assertNotNull(renderOptions, "RenderOptions should not be null");

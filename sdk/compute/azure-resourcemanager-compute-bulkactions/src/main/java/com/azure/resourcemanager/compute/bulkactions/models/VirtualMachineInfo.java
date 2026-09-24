@@ -26,6 +26,11 @@ public final class VirtualMachineInfo implements JsonSerializable<VirtualMachine
      */
     private String zone;
 
+    /*
+     * The resolved Azure virtual machine name.
+     */
+    private String name;
+
     /**
      * Creates an instance of VirtualMachineInfo class.
      */
@@ -51,11 +56,21 @@ public final class VirtualMachineInfo implements JsonSerializable<VirtualMachine
     }
 
     /**
+     * Get the name property: The resolved Azure virtual machine name.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("vmSize", this.vmSize);
         jsonWriter.writeStringField("zone", this.zone);
         return jsonWriter.writeEndObject();
@@ -67,6 +82,7 @@ public final class VirtualMachineInfo implements JsonSerializable<VirtualMachine
      * @param jsonReader The JsonReader being read.
      * @return An instance of VirtualMachineInfo if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VirtualMachineInfo.
      */
     public static VirtualMachineInfo fromJson(JsonReader jsonReader) throws IOException {
@@ -76,7 +92,9 @@ public final class VirtualMachineInfo implements JsonSerializable<VirtualMachine
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("vmSize".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineInfo.name = reader.getString();
+                } else if ("vmSize".equals(fieldName)) {
                     deserializedVirtualMachineInfo.vmSize = reader.getString();
                 } else if ("zone".equals(fieldName)) {
                     deserializedVirtualMachineInfo.zone = reader.getString();

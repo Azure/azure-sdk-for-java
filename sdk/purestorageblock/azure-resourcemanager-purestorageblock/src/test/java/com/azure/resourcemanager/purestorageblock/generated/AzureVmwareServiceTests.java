@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureVmwareServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureVmwareService model = BinaryData.fromString("{\"avsEnabled\":false,\"sddcResourceId\":\"t\"}")
+        AzureVmwareService model = BinaryData.fromString("{\"avsEnabled\":false,\"sddcResourceId\":\"btdhxujznbm\"}")
             .toObject(AzureVmwareService.class);
         Assertions.assertFalse(model.avsEnabled());
-        Assertions.assertEquals("t", model.clusterResourceId());
+        Assertions.assertEquals("btdhxujznbm", model.clusterResourceId());
     }
 }

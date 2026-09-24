@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class IspCacheNodesOperationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-30-preview/IspCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/IspCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: IspCacheNodesOperations_CreateOrUpdate.

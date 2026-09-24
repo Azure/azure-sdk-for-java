@@ -15,15 +15,15 @@ import java.util.Map;
  */
 public final class HorizonDbParameterGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/ParameterGroups_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/ParameterGroups_CreateOrUpdate.json
      */
     /**
-     * Sample code: Create or update a HorizonDb parameter group.
+     * Sample code: Create or update a HorizonDB parameter group.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        createOrUpdateAHorizonDbParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        createOrUpdateAHorizonDBParameterGroup(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbParameterGroups()
             .define("exampleparametergroup")
             .withRegion("westus2")

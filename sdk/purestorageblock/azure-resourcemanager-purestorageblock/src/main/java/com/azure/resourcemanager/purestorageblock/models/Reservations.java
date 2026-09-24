@@ -184,6 +184,63 @@ public interface Reservations {
     ReservationBillingUsageReport getBillingReport(String resourceGroupName, String reservationName);
 
     /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Reservation linkSaaS(String resourceGroupName, String reservationName, LinkSaaSRequest body);
+
+    /**
+     * Links a new SaaS to the reservation.
+     * 
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    Reservation linkSaaS(String resourceGroupName, String reservationName, LinkSaaSRequest body, Context context);
+
+    /**
+     * Returns the latest SaaS linked to the reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation along with {@link Response}.
+     */
+    Response<LatestLinkedSaaSResponse> latestLinkedSaaSWithResponse(String resourceGroupName, String reservationName,
+        Context context);
+
+    /**
+     * Returns the latest SaaS linked to the reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param reservationName Name of the reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get latest linked SaaS resource operation.
+     */
+    LatestLinkedSaaSResponse latestLinkedSaaS(String resourceGroupName, String reservationName);
+
+    /**
      * Get a reservation.
      * 
      * @param id the resource ID.

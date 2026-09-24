@@ -29,7 +29,7 @@ public class ProjectsCustomizations extends Customization {
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
     }
 
-        private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
+    private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
         customization.getPackage("com.azure.ai.projects")
             .listClasses()
             .stream()

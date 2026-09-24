@@ -11,7 +11,7 @@ public final class PhysicalToLogicalZoneMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PhysicalToLogicalZoneMapping model
-            = BinaryData.fromString("{\"physicalZone\":\"vczkcnyxrxmunjd\",\"logicalZone\":\"vg\"}")
+            = BinaryData.fromString("{\"physicalZone\":\"btozipqwje\",\"logicalZone\":\"mur\"}")
                 .toObject(PhysicalToLogicalZoneMapping.class);
     }
 }

@@ -14,7 +14,8 @@ public final class AvsStorageContainerVolumeUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvsStorageContainerVolumeUpdate model = BinaryData
-            .fromString("{\"properties\":{\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"wbw\"}}}")
+            .fromString(
+                "{\"properties\":{\"softDeletion\":{\"destroyed\":true,\"eradicationTimestamp\":\"idoamciodhkha\"}}}")
             .toObject(AvsStorageContainerVolumeUpdate.class);
         Assertions.assertTrue(model.properties().softDeletion().destroyed());
     }

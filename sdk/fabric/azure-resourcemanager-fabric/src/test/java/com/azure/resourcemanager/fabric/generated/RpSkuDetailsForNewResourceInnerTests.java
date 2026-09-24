@@ -12,10 +12,10 @@ public final class RpSkuDetailsForNewResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RpSkuDetailsForNewResourceInner model = BinaryData.fromString(
-            "{\"resourceType\":\"gakeqsr\",\"name\":\"yb\",\"locations\":[\"qedqytbciqfoufl\",\"mnkzsmod\",\"glougpbk\",\"tmut\"]}")
+            "{\"resourceType\":\"hsgcbacphejkot\",\"name\":\"nqgoulzndli\",\"locations\":[\"yqkgfg\",\"bmadgak\",\"qsrxybzqqed\"]}")
             .toObject(RpSkuDetailsForNewResourceInner.class);
-        Assertions.assertEquals("gakeqsr", model.resourceType());
-        Assertions.assertEquals("yb", model.name());
-        Assertions.assertEquals("qedqytbciqfoufl", model.locations().get(0));
+        Assertions.assertEquals("hsgcbacphejkot", model.resourceType());
+        Assertions.assertEquals("nqgoulzndli", model.name());
+        Assertions.assertEquals("yqkgfg", model.locations().get(0));
     }
 }

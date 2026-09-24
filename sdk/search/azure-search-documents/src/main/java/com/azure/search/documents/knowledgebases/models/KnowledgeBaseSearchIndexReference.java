@@ -75,6 +75,7 @@ public final class KnowledgeBaseSearchIndexReference extends KnowledgeBaseRefere
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("docKey", this.docKey);
         jsonWriter.writeJsonField("searchSensitivityLabelInfo", this.searchSensitivityLabelInfo);
+        jsonWriter.writeStringField("citationUrl", this.citationUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -97,6 +98,7 @@ public final class KnowledgeBaseSearchIndexReference extends KnowledgeBaseRefere
             KnowledgeBaseReferenceType type = KnowledgeBaseReferenceType.SEARCH_INDEX;
             String docKey = null;
             PurviewSensitivityLabelInfo searchSensitivityLabelInfo = null;
+            String citationUrl = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -114,6 +116,8 @@ public final class KnowledgeBaseSearchIndexReference extends KnowledgeBaseRefere
                     docKey = reader.getString();
                 } else if ("searchSensitivityLabelInfo".equals(fieldName)) {
                     searchSensitivityLabelInfo = PurviewSensitivityLabelInfo.fromJson(reader);
+                } else if ("citationUrl".equals(fieldName)) {
+                    citationUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -125,6 +129,7 @@ public final class KnowledgeBaseSearchIndexReference extends KnowledgeBaseRefere
             deserializedKnowledgeBaseSearchIndexReference.type = type;
             deserializedKnowledgeBaseSearchIndexReference.docKey = docKey;
             deserializedKnowledgeBaseSearchIndexReference.searchSensitivityLabelInfo = searchSensitivityLabelInfo;
+            deserializedKnowledgeBaseSearchIndexReference.citationUrl = citationUrl;
             return deserializedKnowledgeBaseSearchIndexReference;
         });
     }
@@ -143,5 +148,22 @@ public final class KnowledgeBaseSearchIndexReference extends KnowledgeBaseRefere
     @Generated
     public PurviewSensitivityLabelInfo getSearchSensitivityLabelInfo() {
         return this.searchSensitivityLabelInfo;
+    }
+
+    /*
+     * A Search-owned URL that points at the backing document for this reference, usable as a citation target.
+     */
+    @Generated
+    private String citationUrl;
+
+    /**
+     * Get the citationUrl property: A Search-owned URL that points at the backing document for this reference, usable
+     * as a citation target.
+     *
+     * @return the citationUrl value.
+     */
+    @Generated
+    public String getCitationUrl() {
+        return this.citationUrl;
     }
 }

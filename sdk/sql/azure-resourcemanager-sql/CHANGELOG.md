@@ -1,6 +1,6 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
+## 2.55.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,87 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.55.0-beta.1 (2026-09-09)
+
+- Package api-version 2026-08-01-preview.
+
+- Deprecated the handwritten SQL Data Sync convenience APIs because SQL Data Sync is scheduled for retirement, requires
+  SQL authentication, and doesn't support Microsoft Entra ID or managed identities. For distributed applications, use
+  `SqlDatabase.DefinitionStages.WithSourceDatabaseId.withSourceDatabase` to create a database copy. For globally
+  distributed applications, additionally use
+  `SqlDatabase.DefinitionStages.WithCreateMode.withMode(CreateMode.ONLINE_SECONDARY)` for active geo-replication. Refer
+  to the [official retirement migration guidance](https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration)
+  for more alternatives.
+
+### Breaking Changes
+
+#### `models.DataMaskingFunction` was modified
+
+* `models.DataMaskingFunction[] values()` -> `java.util.Collection values()`
+* `valueOf(java.lang.String)` was removed
+* `toString()` was removed
+
+#### `models.DataMaskingRuleState` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `models.DataMaskingRuleState[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+
+#### `models.PrivateEndpointProvisioningState` was modified
+
+* `READY` was removed
+* `APPROVING` was removed
+* `DROPPING` was removed
+* `REJECTING` was removed
+
+### Features Added
+
+* `models.ManagedInstanceAdministratorPrincipalType` was added
+
+* `models.LinkModeType` was added
+
+* `models.ImmutabilityStatus` was added
+
+* `models.EndpointTrustedRootCertificateInfo` was added
+
+* `models.DataSyncParticipantUserAssignedIdentity` was added
+
+* `models.DataSyncParticipantIdentityType` was added
+
+* `models.DataSyncParticipantIdentity` was added
+
+#### `models.ElasticPoolUpdate` was modified
+
+* `currentSku()` was added
+
+#### `models.DataMaskingFunction` was modified
+
+* `DataMaskingFunction()` was added
+
+#### `models.DatabaseUpdate` was modified
+
+* `provisioningState()` was added
+
+#### `models.DataMaskingRuleState` was modified
+
+* `DataMaskingRuleState()` was added
+
+#### `models.PrivateEndpointProvisioningState` was modified
+
+* `IN_PROGRESS` was added
+* `CREATED` was added
+* `SUCCEEDED` was added
+* `CANCELED` was added
+
+## 2.54.1 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.57.1` to version `2.57.2`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
 
 ## 2.54.0 (2026-07-16)
 

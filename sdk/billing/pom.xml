@@ -11,5 +11,6 @@
 
   <modules>
       <module>azure-resourcemanager-billing</module>
+      <module>azure-resourcemanager-billing-trust</module>
   </modules>
 </project>

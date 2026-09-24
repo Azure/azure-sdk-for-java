@@ -42,7 +42,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.23.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.26.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -62,12 +62,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:msal4j:[1.23.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
+                <include>com.microsoft.azure:msal4j:[1.26.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.microsoft.azure:msal4j-brokers:[1.0.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j-brokers;external_dependency} -->
               </includes>
             </bannedDependencies>

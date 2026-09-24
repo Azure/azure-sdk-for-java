@@ -67,6 +67,14 @@ public final class ConnectionsAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param name The friendly name of the connection, provided by the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -108,6 +116,14 @@ public final class ConnectionsAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param name The friendly name of the connection, provided by the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

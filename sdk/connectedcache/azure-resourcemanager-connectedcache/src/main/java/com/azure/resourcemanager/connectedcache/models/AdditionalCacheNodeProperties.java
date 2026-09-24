@@ -172,6 +172,67 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
     private String tlsStatus;
 
     /*
+     * Operating system edition of the cache node host machine
+     */
+    private String hostOsEdition;
+
+    /*
+     * Operating system version of the cache node host machine
+     */
+    private String hostOsVersion;
+
+    /*
+     * Operating system build of the cache node host machine
+     */
+    private String hostOsBuild;
+
+    /*
+     * Operating system edition of the WSL Linux distribution used to run the cache node on Windows host machines
+     */
+    private String distroOsEditionWsl;
+
+    /*
+     * Operating system version of the WSL Linux distribution used to run the cache node on Windows host machines
+     */
+    private String distroOsVersionWsl;
+
+    /*
+     * Operating system build of the WSL Linux distribution used to run the cache node on Windows host machines
+     */
+    private String distroOsBuildWsl;
+
+    /*
+     * Operating system edition of container used to run the cache node
+     */
+    private String containerOsEdition;
+
+    /*
+     * Operating system version of the container used to run the cache node
+     */
+    private String containerOsVersion;
+
+    /*
+     * Operating system build of the container used to run the cache node
+     */
+    private String containerOsBuild;
+
+    /*
+     * Version of the Windows deployment application used to deploy the cache node
+     */
+    private String installVersionMsix;
+
+    /*
+     * Version of the installation scripts used to deploy the cache node
+     */
+    private String installVersionScript;
+
+    /*
+     * Version of the Windows Subsystem for Linux application version used to run the cache node on the Windows host
+     * machine
+     */
+    private String appVersionWsl;
+
+    /*
      * Optional property #1 of Mcc response object
      */
     private String optionalProperty1;
@@ -589,6 +650,118 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
     }
 
     /**
+     * Get the hostOsEdition property: Operating system edition of the cache node host machine.
+     * 
+     * @return the hostOsEdition value.
+     */
+    public String hostOsEdition() {
+        return this.hostOsEdition;
+    }
+
+    /**
+     * Get the hostOsVersion property: Operating system version of the cache node host machine.
+     * 
+     * @return the hostOsVersion value.
+     */
+    public String hostOsVersion() {
+        return this.hostOsVersion;
+    }
+
+    /**
+     * Get the hostOsBuild property: Operating system build of the cache node host machine.
+     * 
+     * @return the hostOsBuild value.
+     */
+    public String hostOsBuild() {
+        return this.hostOsBuild;
+    }
+
+    /**
+     * Get the distroOsEditionWsl property: Operating system edition of the WSL Linux distribution used to run the cache
+     * node on Windows host machines.
+     * 
+     * @return the distroOsEditionWsl value.
+     */
+    public String distroOsEditionWsl() {
+        return this.distroOsEditionWsl;
+    }
+
+    /**
+     * Get the distroOsVersionWsl property: Operating system version of the WSL Linux distribution used to run the cache
+     * node on Windows host machines.
+     * 
+     * @return the distroOsVersionWsl value.
+     */
+    public String distroOsVersionWsl() {
+        return this.distroOsVersionWsl;
+    }
+
+    /**
+     * Get the distroOsBuildWsl property: Operating system build of the WSL Linux distribution used to run the cache
+     * node on Windows host machines.
+     * 
+     * @return the distroOsBuildWsl value.
+     */
+    public String distroOsBuildWsl() {
+        return this.distroOsBuildWsl;
+    }
+
+    /**
+     * Get the containerOsEdition property: Operating system edition of container used to run the cache node.
+     * 
+     * @return the containerOsEdition value.
+     */
+    public String containerOsEdition() {
+        return this.containerOsEdition;
+    }
+
+    /**
+     * Get the containerOsVersion property: Operating system version of the container used to run the cache node.
+     * 
+     * @return the containerOsVersion value.
+     */
+    public String containerOsVersion() {
+        return this.containerOsVersion;
+    }
+
+    /**
+     * Get the containerOsBuild property: Operating system build of the container used to run the cache node.
+     * 
+     * @return the containerOsBuild value.
+     */
+    public String containerOsBuild() {
+        return this.containerOsBuild;
+    }
+
+    /**
+     * Get the installVersionMsix property: Version of the Windows deployment application used to deploy the cache node.
+     * 
+     * @return the installVersionMsix value.
+     */
+    public String installVersionMsix() {
+        return this.installVersionMsix;
+    }
+
+    /**
+     * Get the installVersionScript property: Version of the installation scripts used to deploy the cache node.
+     * 
+     * @return the installVersionScript value.
+     */
+    public String installVersionScript() {
+        return this.installVersionScript;
+    }
+
+    /**
+     * Get the appVersionWsl property: Version of the Windows Subsystem for Linux application version used to run the
+     * cache node on the Windows host machine.
+     * 
+     * @return the appVersionWsl value.
+     */
+    public String appVersionWsl() {
+        return this.appVersionWsl;
+    }
+
+    /**
      * Get the optionalProperty1 property: Optional property #1 of Mcc response object.
      * 
      * @return the optionalProperty1 value.
@@ -810,6 +983,30 @@ public final class AdditionalCacheNodeProperties implements JsonSerializable<Add
                     deserializedAdditionalCacheNodeProperties.creationMethod = reader.getNullable(JsonReader::getInt);
                 } else if ("tlsStatus".equals(fieldName)) {
                     deserializedAdditionalCacheNodeProperties.tlsStatus = reader.getString();
+                } else if ("hostOsEdition".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.hostOsEdition = reader.getString();
+                } else if ("hostOsVersion".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.hostOsVersion = reader.getString();
+                } else if ("hostOsBuild".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.hostOsBuild = reader.getString();
+                } else if ("distroOsEditionWsl".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.distroOsEditionWsl = reader.getString();
+                } else if ("distroOsVersionWsl".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.distroOsVersionWsl = reader.getString();
+                } else if ("distroOsBuildWsl".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.distroOsBuildWsl = reader.getString();
+                } else if ("containerOsEdition".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.containerOsEdition = reader.getString();
+                } else if ("containerOsVersion".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.containerOsVersion = reader.getString();
+                } else if ("containerOsBuild".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.containerOsBuild = reader.getString();
+                } else if ("installVersionMsix".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.installVersionMsix = reader.getString();
+                } else if ("installVersionScript".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.installVersionScript = reader.getString();
+                } else if ("appVersionWsl".equals(fieldName)) {
+                    deserializedAdditionalCacheNodeProperties.appVersionWsl = reader.getString();
                 } else if ("optionalProperty1".equals(fieldName)) {
                     deserializedAdditionalCacheNodeProperties.optionalProperty1 = reader.getString();
                 } else if ("optionalProperty2".equals(fieldName)) {

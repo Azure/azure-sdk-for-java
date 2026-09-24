@@ -14,15 +14,15 @@ public final class HostModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HostModelInner model = BinaryData.fromString(
-            "{\"properties\":{\"kind\":\"HostProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"xhqyudxorrqnb\",\"moRefId\":\"czvyifq\",\"fqdn\":\"kdvjsll\",\"maintenance\":\"Upgrade\",\"faultDomain\":\"d\"},\"zones\":[\"t\",\"pnpulexxbczwtru\"],\"sku\":{\"name\":\"qzbqjvsov\",\"tier\":\"Basic\",\"size\":\"acspkwl\",\"family\":\"dobpxjmflbvvn\",\"capacity\":1044580515},\"id\":\"cciw\",\"name\":\"zjuqkhrsaj\",\"type\":\"wkuofoskghsauu\"}")
+            "{\"properties\":{\"kind\":\"HostProperties\",\"provisioningState\":\"Canceled\",\"displayName\":\"reximoryocfs\",\"moRefId\":\"s\",\"fqdn\":\"ddystkiiuxhqy\",\"maintenance\":\"Replacement\",\"faultDomain\":\"rrqnbpoczvyifqrv\",\"licenses\":[{\"kind\":\"HostLicense\"},{\"kind\":\"HostLicense\"},{\"kind\":\"HostLicense\"}]},\"zones\":[\"llr\"],\"sku\":{\"name\":\"vdfwatkpn\",\"tier\":\"Standard\",\"size\":\"xxbczwtr\",\"family\":\"iqzbq\",\"capacity\":1378529430},\"id\":\"vmyokacspkwl\",\"name\":\"zdobpxjmflbvvnch\",\"type\":\"kcciwwzjuqkhr\"}")
             .toObject(HostModelInner.class);
-        Assertions.assertEquals("xhqyudxorrqnb", model.properties().displayName());
-        Assertions.assertEquals(HostMaintenance.UPGRADE, model.properties().maintenance());
-        Assertions.assertEquals("t", model.zones().get(0));
-        Assertions.assertEquals("qzbqjvsov", model.sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("acspkwl", model.sku().size());
-        Assertions.assertEquals("dobpxjmflbvvn", model.sku().family());
-        Assertions.assertEquals(1044580515, model.sku().capacity());
+        Assertions.assertEquals("reximoryocfs", model.properties().displayName());
+        Assertions.assertEquals(HostMaintenance.REPLACEMENT, model.properties().maintenance());
+        Assertions.assertEquals("llr", model.zones().get(0));
+        Assertions.assertEquals("vdfwatkpn", model.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals("xxbczwtr", model.sku().size());
+        Assertions.assertEquals("iqzbq", model.sku().family());
+        Assertions.assertEquals(1378529430, model.sku().capacity());
     }
 }

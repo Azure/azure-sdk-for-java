@@ -13,18 +13,18 @@ public final class DiagnosticsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticsProfile model
-            = BinaryData.fromString("{\"bootDiagnostics\":{\"enabled\":true,\"storageUri\":\"exiili\"}}")
+            = BinaryData.fromString("{\"bootDiagnostics\":{\"enabled\":false,\"storageUri\":\"eyvpnqicvinvkj\"}}")
                 .toObject(DiagnosticsProfile.class);
-        Assertions.assertTrue(model.bootDiagnostics().enabled());
-        Assertions.assertEquals("exiili", model.bootDiagnostics().storageUri());
+        Assertions.assertFalse(model.bootDiagnostics().enabled());
+        Assertions.assertEquals("eyvpnqicvinvkj", model.bootDiagnostics().storageUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiagnosticsProfile model = new DiagnosticsProfile()
-            .withBootDiagnostics(new BootDiagnostics().withEnabled(true).withStorageUri("exiili"));
+            .withBootDiagnostics(new BootDiagnostics().withEnabled(false).withStorageUri("eyvpnqicvinvkj"));
         model = BinaryData.fromObject(model).toObject(DiagnosticsProfile.class);
-        Assertions.assertTrue(model.bootDiagnostics().enabled());
-        Assertions.assertEquals("exiili", model.bootDiagnostics().storageUri());
+        Assertions.assertFalse(model.bootDiagnostics().enabled());
+        Assertions.assertEquals("eyvpnqicvinvkj", model.bootDiagnostics().storageUri());
     }
 }

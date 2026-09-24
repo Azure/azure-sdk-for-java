@@ -1,0 +1,13 @@
+diff --git a/sdk/contoso/azure-resourcemanager-contosowidgets/src/test/java/com/azure/resourcemanager/contoso/generated/WidgetTests.java b/sdk/contoso/azure-resourcemanager-contosowidgets/src/test/java/com/azure/resourcemanager/contoso/generated/WidgetTests.java
+index 94468e1..9b3cb03 100644
+--- a/sdk/contoso/azure-resourcemanager-contosowidgets/src/test/java/com/azure/resourcemanager/contoso/generated/WidgetTests.java
++++ b/sdk/contoso/azure-resourcemanager-contosowidgets/src/test/java/com/azure/resourcemanager/contoso/generated/WidgetTests.java
+@@ -40,8 +40,4 @@ public class WidgetTests {
+     public void canCreateWidget() {
+         assertNotNull(client.create("widget"));
+     }
+-
+-    public Widget testWidget() {
+-        return client.get("widget");
+-    }
+ }

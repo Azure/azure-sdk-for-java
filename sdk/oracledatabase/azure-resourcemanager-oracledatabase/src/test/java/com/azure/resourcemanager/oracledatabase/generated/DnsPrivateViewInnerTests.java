@@ -14,14 +14,14 @@ public final class DnsPrivateViewInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateViewInner model = BinaryData.fromString(
-            "{\"properties\":{\"ocid\":\"htjsying\",\"displayName\":\"fq\",\"isProtected\":true,\"lifecycleState\":\"Active\",\"self\":\"tdhtmdvyp\",\"timeCreated\":\"2021-01-15T06:50:48Z\",\"timeUpdated\":\"2021-01-21T23:13:20Z\",\"provisioningState\":\"Canceled\"},\"id\":\"zywkb\",\"name\":\"rryuzhlhkjo\",\"type\":\"rvqqaatj\"}")
+            "{\"properties\":{\"ocid\":\"f\",\"displayName\":\"wnopqgikyzirtx\",\"isProtected\":true,\"lifecycleState\":\"Deleting\",\"self\":\"x\",\"timeCreated\":\"2021-12-08T11:07:15Z\",\"timeUpdated\":\"2021-05-05T23:09:26Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"sewgioilqukr\",\"name\":\"dxtqmieoxo\",\"type\":\"ggufhyaomtb\"}")
             .toObject(DnsPrivateViewInner.class);
-        Assertions.assertEquals("htjsying", model.properties().ocid());
-        Assertions.assertEquals("fq", model.properties().displayName());
+        Assertions.assertEquals("f", model.properties().ocid());
+        Assertions.assertEquals("wnopqgikyzirtx", model.properties().displayName());
         Assertions.assertTrue(model.properties().isProtected());
-        Assertions.assertEquals(DnsPrivateViewsLifecycleState.ACTIVE, model.properties().lifecycleState());
-        Assertions.assertEquals("tdhtmdvyp", model.properties().self());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-15T06:50:48Z"), model.properties().timeCreated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T23:13:20Z"), model.properties().timeUpdated());
+        Assertions.assertEquals(DnsPrivateViewsLifecycleState.DELETING, model.properties().lifecycleState());
+        Assertions.assertEquals("x", model.properties().self());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T11:07:15Z"), model.properties().timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T23:09:26Z"), model.properties().timeUpdated());
     }
 }

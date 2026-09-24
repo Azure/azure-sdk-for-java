@@ -13,27 +13,27 @@ public final class SignalHistoryRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalHistoryRequest model = BinaryData.fromString(
-            "{\"signalName\":\"xnyed\",\"startAt\":\"2021-04-02T22:41:49Z\",\"endAt\":\"2021-11-28T20:14:06Z\",\"top\":752021128,\"nextMarker\":\"juewbcihxuuwhcjy\"}")
+            "{\"signalName\":\"fqjbvleo\",\"startAt\":\"2021-08-14T12:16:21Z\",\"endAt\":\"2021-07-07T02:32:57Z\",\"top\":16475569,\"nextMarker\":\"qzfavyv\"}")
             .toObject(SignalHistoryRequest.class);
-        Assertions.assertEquals("xnyed", model.signalName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T22:41:49Z"), model.startAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-28T20:14:06Z"), model.endAt());
-        Assertions.assertEquals(752021128, model.top());
-        Assertions.assertEquals("juewbcihxuuwhcjy", model.nextMarker());
+        Assertions.assertEquals("fqjbvleo", model.signalName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T12:16:21Z"), model.startAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-07T02:32:57Z"), model.endAt());
+        Assertions.assertEquals(16475569, model.top());
+        Assertions.assertEquals("qzfavyv", model.nextMarker());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SignalHistoryRequest model = new SignalHistoryRequest().withSignalName("xnyed")
-            .withStartAt(OffsetDateTime.parse("2021-04-02T22:41:49Z"))
-            .withEndAt(OffsetDateTime.parse("2021-11-28T20:14:06Z"))
-            .withTop(752021128)
-            .withNextMarker("juewbcihxuuwhcjy");
+        SignalHistoryRequest model = new SignalHistoryRequest().withSignalName("fqjbvleo")
+            .withStartAt(OffsetDateTime.parse("2021-08-14T12:16:21Z"))
+            .withEndAt(OffsetDateTime.parse("2021-07-07T02:32:57Z"))
+            .withTop(16475569)
+            .withNextMarker("qzfavyv");
         model = BinaryData.fromObject(model).toObject(SignalHistoryRequest.class);
-        Assertions.assertEquals("xnyed", model.signalName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T22:41:49Z"), model.startAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-28T20:14:06Z"), model.endAt());
-        Assertions.assertEquals(752021128, model.top());
-        Assertions.assertEquals("juewbcihxuuwhcjy", model.nextMarker());
+        Assertions.assertEquals("fqjbvleo", model.signalName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T12:16:21Z"), model.startAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-07T02:32:57Z"), model.endAt());
+        Assertions.assertEquals(16475569, model.top());
+        Assertions.assertEquals("qzfavyv", model.nextMarker());
     }
 }

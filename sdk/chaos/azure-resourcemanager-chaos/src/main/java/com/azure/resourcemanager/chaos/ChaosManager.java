@@ -30,6 +30,7 @@ import com.azure.resourcemanager.chaos.implementation.ActionsImpl;
 import com.azure.resourcemanager.chaos.implementation.CapabilitiesImpl;
 import com.azure.resourcemanager.chaos.implementation.CapabilityTypesImpl;
 import com.azure.resourcemanager.chaos.implementation.ChaosManagementClientBuilder;
+import com.azure.resourcemanager.chaos.implementation.ConnectionsImpl;
 import com.azure.resourcemanager.chaos.implementation.DiscoveredResourcesImpl;
 import com.azure.resourcemanager.chaos.implementation.ExperimentsImpl;
 import com.azure.resourcemanager.chaos.implementation.OperationStatusesImpl;
@@ -45,6 +46,7 @@ import com.azure.resourcemanager.chaos.models.ActionVersions;
 import com.azure.resourcemanager.chaos.models.Actions;
 import com.azure.resourcemanager.chaos.models.Capabilities;
 import com.azure.resourcemanager.chaos.models.CapabilityTypes;
+import com.azure.resourcemanager.chaos.models.Connections;
 import com.azure.resourcemanager.chaos.models.DiscoveredResources;
 import com.azure.resourcemanager.chaos.models.Experiments;
 import com.azure.resourcemanager.chaos.models.OperationStatuses;
@@ -98,6 +100,8 @@ public final class ChaosManager {
     private ScenarioConfigurations scenarioConfigurations;
 
     private ScenarioRuns scenarioRuns;
+
+    private Connections connections;
 
     private final ChaosManagementClient clientObject;
 
@@ -493,6 +497,18 @@ public final class ChaosManager {
             this.scenarioRuns = new ScenarioRunsImpl(clientObject.getScenarioRuns(), this);
         }
         return scenarioRuns;
+    }
+
+    /**
+     * Gets the resource collection API of Connections. It manages Connection.
+     * 
+     * @return Resource collection API of Connections.
+     */
+    public Connections connections() {
+        if (this.connections == null) {
+            this.connections = new ConnectionsImpl(clientObject.getConnections(), this);
+        }
+        return connections;
     }
 
     /**

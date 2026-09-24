@@ -1,0 +1,245 @@
+{
+  "comment": "Desired fixed Cosmos accounts for the Java SDK live tests. Consumed by New-CosmosLiveTestAccounts.ps1 to (re)create accounts in the sdk-ci resource group and to emit JSON for the sub-config-cosmos-azure-cloud-test-resources Key Vault secret. Account names here are the logical selectors used by the azure-sdk-for-java tests.yml / kafka.yml stages. accountNamePrefix + name form the actual Cosmos account name (must be globally unique, <=44 chars, lowercase); the region is intentionally NOT encoded in the name. regionDefaults defines the provisioned topology and mirrors sdk/cosmos/test-resources.json (singleRegion: Central US; multiRegion: Central US write + East US 2), so preferredLocations values match a region that actually exists on the multi-region accounts. NOTE: thinClient=true only tags the emitted secret; enabling thin-client on the account itself requires the correct account 'capabilities' entry / federation config once confirmed - add it to a per-account \"capabilities\": [\"<name>\"] array.",
+  "accounts": [
+    {
+      "name": "single-session",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": false,
+      "enableMultipleRegions": false,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "single-session-pmerge",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": false,
+      "enableMultipleRegions": false,
+      "enablePartitionMerge": true,
+      "thinClient": false,
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "single-strong",
+      "defaultConsistencyLevel": "Strong",
+      "enableMultipleWriteLocations": false,
+      "enableMultipleRegions": false,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "single-session-split",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": false,
+      "enableMultipleRegions": false,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "single-session-cfp-split",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": false,
+      "enableMultipleRegions": false,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "single-strong-split",
+      "defaultConsistencyLevel": "Strong",
+      "enableMultipleWriteLocations": false,
+      "enableMultipleRegions": false,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "single-strong-cfp-split",
+      "defaultConsistencyLevel": "Strong",
+      "enableMultipleWriteLocations": false,
+      "enableMultipleRegions": false,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "multiregion-strong",
+      "defaultConsistencyLevel": "Strong",
+      "enableMultipleWriteLocations": false,
+      "enableMultipleRegions": true,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "multimaster-multiregion-session",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": true,
+      "enableMultipleRegions": true,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "multimaster-session-control",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": true,
+      "enableMultipleRegions": true,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "multimaster-session-http2",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": true,
+      "enableMultipleRegions": true,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "multimaster-session-circuit",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": true,
+      "enableMultipleRegions": true,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "multimaster-multiregion-session-fi",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": true,
+      "enableMultipleRegions": true,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "multimaster-multiregion-session-split",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": true,
+      "enableMultipleRegions": true,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "multimaster-session-cfp-split",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": true,
+      "enableMultipleRegions": true,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "preferredLocations": [
+        "East US 2"
+      ],
+      "includeSecondaryKey": true,
+      "capabilities": [
+        "EnableNoSQLVectorSearch"
+      ]
+    },
+    {
+      "name": "multiregion-tc-session",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": false,
+      "enableMultipleRegions": true,
+      "enablePartitionMerge": false,
+      "thinClient": true,
+      "includeSecondaryKey": true
+    },
+    {
+      "name": "gsi-single-session",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": false,
+      "enableMultipleRegions": false,
+      "regions": [
+        "East US 2"
+      ],
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "includeSecondaryKey": true
+    },
+    {
+      "name": "kafka-session",
+      "defaultConsistencyLevel": "Session",
+      "enableMultipleWriteLocations": false,
+      "enableMultipleRegions": false,
+      "enablePartitionMerge": false,
+      "thinClient": false,
+      "includeSecondaryKey": true
+    }
+  ],
+  "regionDefaults": {
+    "singleRegion": [
+      "Central US"
+    ],
+    "multiRegion": [
+      "Central US",
+      "East US 2"
+    ]
+  }
+}

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class ResourceTypeRegistrationsGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ResourceTypeRegistrations_Get.json
+     * x-ms-original-file: 2025-10-01/ResourceTypeRegistrations_Get.json
      */
     /**
      * Sample code: ResourceTypeRegistrations_Get.

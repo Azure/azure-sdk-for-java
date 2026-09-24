@@ -73,6 +73,30 @@ public final class HorizonDbClustersImpl implements HorizonDbClusters {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new HorizonDbClusterImpl(inner1, this.manager()));
     }
 
+    public void start(String resourceGroupName, String clusterName) {
+        this.serviceClient().start(resourceGroupName, clusterName);
+    }
+
+    public void start(String resourceGroupName, String clusterName, Context context) {
+        this.serviceClient().start(resourceGroupName, clusterName, context);
+    }
+
+    public void stop(String resourceGroupName, String clusterName) {
+        this.serviceClient().stop(resourceGroupName, clusterName);
+    }
+
+    public void stop(String resourceGroupName, String clusterName, Context context) {
+        this.serviceClient().stop(resourceGroupName, clusterName, context);
+    }
+
+    public void restart(String resourceGroupName, String clusterName) {
+        this.serviceClient().restart(resourceGroupName, clusterName);
+    }
+
+    public void restart(String resourceGroupName, String clusterName, Context context) {
+        this.serviceClient().restart(resourceGroupName, clusterName, context);
+    }
+
     public HorizonDbCluster getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

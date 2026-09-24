@@ -23,6 +23,16 @@ os.chdir(pwd)
 TSPCONFIG_URL_PATTERN = re.compile(
     r"^https://github.com/(?P<repo>Azure/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$",
 )
+
+GENERATED_SOURCE_CLEANUP_EXCLUDED_MODULES = {
+    "azure-resourcemanager-resources",
+}
+
+
+def should_remove_generated_source_code(module: str) -> bool:
+    return module not in GENERATED_SOURCE_CLEANUP_EXCLUDED_MODULES
+
+
 def remove_generated_source_code(sdk_folder: str, namespace: str):
     main_source_folder = os.path.join(sdk_folder, "src/main/java")
     main_resources_folder = os.path.join(sdk_folder, "src/main/resources")
@@ -427,7 +437,12 @@ def generate_typespec_project(
                 )
 
                 if remove_before_regen and group_id:
-                    remove_generated_source_code(os.path.join(sdk_root, sdk_folder), f"{group_id}.{service}")
+                    if should_remove_generated_source_code(module):
+                        remove_generated_source_code(os.path.join(sdk_root, sdk_folder), f"{group_id}.{service}")
+                    else:
+                        logging.info(
+                            f"[GENERATE] Skipping generated source cleanup for module {module}."
+                        )
                     if api_version:
                         emitter_options.append(f"api-version={api_version}")
 

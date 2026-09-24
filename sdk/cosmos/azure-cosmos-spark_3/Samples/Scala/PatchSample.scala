@@ -186,25 +186,25 @@ val cfgCondUpdate = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
         "spark.cosmos.write.patch.filter" -> predicate
       )
 
-val pulmonogyDoctorId = "fc6ccf65-c3f2-460b-8e07-93854074d1b5"
+val pulmonologyDoctorId = "fc6ccf65-c3f2-460b-8e07-93854074d1b5"
 val urologyDoctorId = "aae645f7-f56f-4929-9c27-9ff247b60f63"
 
 //precondition failure will occur if the df doesn't satisfy the predicate
 // val patchDf = Seq(
-//         (pulmonogyDoctorId, "false"), (urologyDoctorId, "true")
+//         (pulmonologyDoctorId, "false"), (urologyDoctorId, "true")
 //       ).toDF("id", "vaccinated")
 
 val patchDf = Seq(
-        (pulmonogyDoctorId, "false")
+        (pulmonologyDoctorId, "false")
       ).toDF("id", "vaccinated")
 
 patchDf.write.format("cosmos.oltp").mode("Append").options(cfgCondUpdate).save()
 
-val pulmonogyDoctor = spark.sql(s"select * from cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} where id = '$pulmonogyDoctorId';")
+val pulmonologyDoctor = spark.sql(s"select * from cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} where id = '$pulmonologyDoctorId';")
 val urologyDoctor = spark.sql(s"select * from cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} where id = '$urologyDoctorId';")
 
-println("vaccination status of pulmonogy doctor")
-pulmonogyDoctor.show()
+println("vaccination status of pulmonology doctor")
+pulmonologyDoctor.show()
 
 //only pulmonology doctor's vaccination status is updated
 println("vaccination status of urology doctor")

@@ -12,23 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkServiceConnectionState model = BinaryData
-            .fromString("{\"status\":\"Rejected\",\"description\":\"qex\",\"actionsRequired\":\"ocxscpaierhhbcs\"}")
+        PrivateLinkServiceConnectionState model = BinaryData.fromString(
+            "{\"status\":\"Disconnected\",\"description\":\"zcxtbzsgfyccsn\",\"actionsRequired\":\"mdwzjeiachboo\"}")
             .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("qex", model.description());
-        Assertions.assertEquals("ocxscpaierhhbcs", model.actionsRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED, model.status());
+        Assertions.assertEquals("zcxtbzsgfyccsn", model.description());
+        Assertions.assertEquals("mdwzjeiachboo", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model
-            = new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
-                .withDescription("qex")
-                .withActionsRequired("ocxscpaierhhbcs");
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
+                .withDescription("zcxtbzsgfyccsn")
+                .withActionsRequired("mdwzjeiachboo");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("qex", model.description());
-        Assertions.assertEquals("ocxscpaierhhbcs", model.actionsRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED, model.status());
+        Assertions.assertEquals("zcxtbzsgfyccsn", model.description());
+        Assertions.assertEquals("mdwzjeiachboo", model.actionsRequired());
     }
 }

@@ -16,7 +16,7 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"x\",\"tenantId\":\"q\",\"type\":\"None\",\"userAssignedIdentities\":{\"oegokdwbwh\":{\"principalId\":\"amcio\",\"clientId\":\"khazxkhnzbonlwn\"},\"xztvbtqgsfraoyzk\":{\"principalId\":\"z\",\"clientId\":\"mrv\"},\"erqf\":{\"principalId\":\"wtl\",\"clientId\":\"guxawqaldsyuuxi\"}}}")
+            "{\"principalId\":\"dkow\",\"tenantId\":\"bqpc\",\"type\":\"None\",\"userAssignedIdentities\":{\"y\":{\"principalId\":\"ccsnjvcdwxlpq\",\"clientId\":\"ftnkhtj\"},\"ywkbirryuzhlhkjo\":{\"principalId\":\"gwfqatmt\",\"clientId\":\"tmdvypgikdgs\"},\"ool\":{\"principalId\":\"vqqaatjinrvgo\",\"clientId\":\"mfiibfggj\"},\"hvkzuh\":{\"principalId\":\"wxkvtkkgll\",\"clientId\":\"jygvjayvbl\"}}}")
             .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
@@ -24,8 +24,8 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-            .withUserAssignedIdentities(mapOf("oegokdwbwh", new UserAssignedIdentity(), "xztvbtqgsfraoyzk",
-                new UserAssignedIdentity(), "erqf", new UserAssignedIdentity()));
+            .withUserAssignedIdentities(mapOf("y", new UserAssignedIdentity(), "ywkbirryuzhlhkjo",
+                new UserAssignedIdentity(), "ool", new UserAssignedIdentity(), "hvkzuh", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }

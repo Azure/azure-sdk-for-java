@@ -254,8 +254,17 @@ if ($createEnv) {
             Write-Host "  [INFO] Using DefaultAzureCredential - make sure to run 'az login'"
         }
 
+        Write-Host ""
+        Write-Host "  Logical model names:"
+        $completionModel = Read-Host "  CU_COMPLETION_MODEL (default: gpt-5.2)"
+        if (-not $completionModel) { $completionModel = 'gpt-5.2' }
+        $miniModel = Read-Host "  CU_COMPLETION_MODEL_MINI (default: $completionModel)"
+        if (-not $miniModel) { $miniModel = $completionModel }
+        $embeddingModel = Read-Host "  CU_EMBEDDING_MODEL (default: text-embedding-3-large)"
+        if (-not $embeddingModel) { $embeddingModel = 'text-embedding-3-large' }
+
         # Probe existing model defaults on the Foundry resource before prompting
-        $gpt41 = ''; $gpt41mini = ''; $embedding = ''
+        $completionDeployment = ''; $miniDeployment = ''; $embeddingDeployment = ''
         if ($endpoint) {
             Write-Host ""
             Write-Host "  Probing existing model defaults on the Foundry resource..."
@@ -310,22 +319,37 @@ if ($createEnv) {
 
             if ($probeOk -and $resp.modelDeployments) {
                 $md = $resp.modelDeployments
-                $gpt41 = if ($md.'gpt-4.1') { $md.'gpt-4.1' } else { '' }
-                $gpt41mini = if ($md.'gpt-4.1-mini') { $md.'gpt-4.1-mini' } else { '' }
-                $embedding = if ($md.'text-embedding-3-large') { $md.'text-embedding-3-large' } else { '' }
+                $completionProperty = $md.PSObject.Properties[$completionModel]
+                $completionDeployment = if ($completionProperty) { [string]$completionProperty.Value } else { '' }
+                if ($miniModel -eq $completionModel) {
+                    $miniDeployment = $completionDeployment
+                } else {
+                    $miniProperty = $md.PSObject.Properties[$miniModel]
+                    $miniDeployment = if ($miniProperty) { [string]$miniProperty.Value } else { '' }
+                }
+                $embeddingProperty = $md.PSObject.Properties[$embeddingModel]
+                $embeddingDeployment = if ($embeddingProperty) { [string]$embeddingProperty.Value } else { '' }
+                $aliasCompletion = [string]$md.'prebuilt-analyzer-completion'
+                $aliasCompletionMini = [string]$md.'prebuilt-analyzer-completion-mini'
+                $aliasEmbedding = [string]$md.'prebuilt-analyzer-embedding'
 
-                if ($gpt41 -and $gpt41mini -and $embedding) {
+                if ($completionDeployment -and $miniDeployment -and $embeddingDeployment `
+                    -and $completionDeployment -eq $aliasCompletion `
+                    -and $miniDeployment -eq $aliasCompletionMini `
+                    -and $embeddingDeployment -eq $aliasEmbedding) {
                     Write-Host "  [OK] Detected existing defaults:"
-                    Write-Host "      gpt-4.1              = $gpt41"
-                    Write-Host "      gpt-4.1-mini         = $gpt41mini"
-                    Write-Host "      text-embedding-3-large = $embedding"
+                    Write-Host "      $completionModel = $completionDeployment"
+                    Write-Host "      $miniModel = $miniDeployment"
+                    Write-Host "      $embeddingModel = $embeddingDeployment"
+                    Write-Host "      prebuilt analyzer aliases are configured"
                     $useDetected = Read-Host "  Use these detected values? (Y/n)"
                     if ($useDetected -notmatch '^[Nn]$') {
                         $skipUpdateDefaults = $true
                     } else {
-                        $gpt41 = ''; $gpt41mini = ''; $embedding = ''
+                        $completionDeployment = ''; $miniDeployment = ''; $embeddingDeployment = ''
                     }
-                } elseif ($gpt41 -or $gpt41mini -or $embedding) {
+                } elseif ($completionDeployment -or $miniDeployment -or $embeddingDeployment `
+                    -or $aliasCompletion -or $aliasCompletionMini -or $aliasEmbedding) {
                     Write-Host "  [INFO] Partial defaults detected; missing entries will be prompted below."
                 } else {
                     Write-Host "  [INFO] No existing defaults detected; continuing with manual entry."
@@ -336,25 +360,25 @@ if ($createEnv) {
         Write-Host ""
         Write-Host "  Model deployment configuration (for Sample00_UpdateDefaults):"
 
-        if (-not $gpt41) {
-            $gpt41 = Read-Host "  GPT_4_1_DEPLOYMENT (default: gpt-4.1)"
-            if (-not $gpt41) { $gpt41 = 'gpt-4.1' }
+        if (-not $completionDeployment) {
+            $completionDeployment = Read-Host "  CU_COMPLETION_MODEL_DEPLOYMENT (default: $completionModel)"
+            if (-not $completionDeployment) { $completionDeployment = $completionModel }
         } else {
-            Write-Host "  [OK] Using detected GPT_4_1_DEPLOYMENT=$gpt41"
+            Write-Host "  [OK] Using detected CU_COMPLETION_MODEL_DEPLOYMENT=$completionDeployment"
         }
 
-        if (-not $gpt41mini) {
-            $gpt41mini = Read-Host "  GPT_4_1_MINI_DEPLOYMENT (default: gpt-4.1-mini)"
-            if (-not $gpt41mini) { $gpt41mini = 'gpt-4.1-mini' }
+        if (-not $miniDeployment) {
+            $miniDeployment = Read-Host "  CU_COMPLETION_MINI_DEPLOYMENT (default: $completionDeployment)"
+            if (-not $miniDeployment) { $miniDeployment = $completionDeployment }
         } else {
-            Write-Host "  [OK] Using detected GPT_4_1_MINI_DEPLOYMENT=$gpt41mini"
+            Write-Host "  [OK] Using detected CU_COMPLETION_MINI_DEPLOYMENT=$miniDeployment"
         }
 
-        if (-not $embedding) {
-            $embedding = Read-Host "  TEXT_EMBEDDING_3_LARGE_DEPLOYMENT (default: text-embedding-3-large)"
-            if (-not $embedding) { $embedding = 'text-embedding-3-large' }
+        if (-not $embeddingDeployment) {
+            $embeddingDeployment = Read-Host "  CU_EMBEDDING_DEPLOYMENT (default: $embeddingModel)"
+            if (-not $embeddingDeployment) { $embeddingDeployment = $embeddingModel }
         } else {
-            Write-Host "  [OK] Using detected TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=$embedding"
+            Write-Host "  [OK] Using detected CU_EMBEDDING_DEPLOYMENT=$embeddingDeployment"
         }
 
         # Cross-resource copy
@@ -370,11 +394,14 @@ if ($createEnv) {
         }
 
         # Build .env content with safely-quoted values
-        $endpointQ  = Format-EnvValue $endpoint
-        $apiKeyQ    = Format-EnvValue $apiKey
-        $gpt41Q     = Format-EnvValue $gpt41
-        $gpt41miniQ = Format-EnvValue $gpt41mini
-        $embeddingQ = Format-EnvValue $embedding
+        $endpointQ             = Format-EnvValue $endpoint
+        $apiKeyQ               = Format-EnvValue $apiKey
+        $completionModelQ      = Format-EnvValue $completionModel
+        $miniModelQ            = Format-EnvValue $miniModel
+        $embeddingModelQ       = Format-EnvValue $embeddingModel
+        $completionDeploymentQ = Format-EnvValue $completionDeployment
+        $miniDeploymentQ       = Format-EnvValue $miniDeployment
+        $embeddingDeploymentQ  = Format-EnvValue $embeddingDeployment
 
         $envContent = @"
 # Azure AI Content Understanding - Environment Variables
@@ -386,10 +413,13 @@ CONTENTUNDERSTANDING_ENDPOINT=$endpointQ
 # Optional: API key (leave empty to use DefaultAzureCredential via az login)
 CONTENTUNDERSTANDING_KEY=$apiKeyQ
 
-# Model deployment names (used by Sample00_UpdateDefaults)
-GPT_4_1_DEPLOYMENT=$gpt41Q
-GPT_4_1_MINI_DEPLOYMENT=$gpt41miniQ
-TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=$embeddingQ
+# Model names and deployment names (used by Sample00_UpdateDefaults)
+CU_COMPLETION_MODEL=$completionModelQ
+CU_COMPLETION_MODEL_MINI=$miniModelQ
+CU_EMBEDDING_MODEL=$embeddingModelQ
+CU_COMPLETION_MODEL_DEPLOYMENT=$completionDeploymentQ
+CU_COMPLETION_MINI_DEPLOYMENT=$miniDeploymentQ
+CU_EMBEDDING_DEPLOYMENT=$embeddingDeploymentQ
 "@
 
         if ($wantCopy -match '^[Yy]$') {
@@ -424,10 +454,13 @@ CONTENTUNDERSTANDING_ENDPOINT=https://<your-resource>.services.ai.azure.com/
 # Optional: API key (leave empty to use DefaultAzureCredential via az login)
 CONTENTUNDERSTANDING_KEY=
 
-# Model deployment names (used by Sample00_UpdateDefaults)
-GPT_4_1_DEPLOYMENT=gpt-4.1
-GPT_4_1_MINI_DEPLOYMENT=gpt-4.1-mini
-TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=text-embedding-3-large
+# Model names and deployment names (used by Sample00_UpdateDefaults)
+CU_COMPLETION_MODEL=gpt-5.2
+CU_COMPLETION_MODEL_MINI=gpt-5.2
+CU_EMBEDDING_MODEL=text-embedding-3-large
+CU_COMPLETION_MODEL_DEPLOYMENT=gpt-5.2
+CU_COMPLETION_MINI_DEPLOYMENT=gpt-5.2
+CU_EMBEDDING_DEPLOYMENT=text-embedding-3-large
 '@
         Write-Utf8NoBom -Path $envFile -Content $templateContent
         Write-Host "  [OK] Wrote template to $envFile - please edit it before running samples."
