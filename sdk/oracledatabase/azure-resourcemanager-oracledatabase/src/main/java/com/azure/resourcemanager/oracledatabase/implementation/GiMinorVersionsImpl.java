@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.oracledatabase.fluent.GiMinorVersionsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.models.GiMinorVersionInner;
 import com.azure.resourcemanager.oracledatabase.models.GiMinorVersion;
-import com.azure.resourcemanager.oracledatabase.models.GiMinorVersionSortOrder;
 import com.azure.resourcemanager.oracledatabase.models.GiMinorVersions;
 import com.azure.resourcemanager.oracledatabase.models.ShapeFamily;
 
@@ -31,15 +30,6 @@ public final class GiMinorVersionsImpl implements GiMinorVersions {
 
     public PagedIterable<GiMinorVersion> listByParent(String location, String giversionname) {
         PagedIterable<GiMinorVersionInner> inner = this.serviceClient().listByParent(location, giversionname);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new GiMinorVersionImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<GiMinorVersion> listByParent(String location, String giversionname, ShapeFamily shapeFamily,
-        String zone, String shape, Boolean isGiVersionForProvisioning, GiMinorVersionSortOrder sortOrder,
-        Context context) {
-        PagedIterable<GiMinorVersionInner> inner = this.serviceClient()
-            .listByParent(location, giversionname, shapeFamily, zone, shape, isGiVersionForProvisioning, sortOrder,
-                context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new GiMinorVersionImpl(inner1, this.manager()));
     }
 

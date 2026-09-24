@@ -15,19 +15,19 @@ public final class DnsPrivateZoneListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateZoneListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ocid\":\"qioknssxmojm\",\"isProtected\":false,\"lifecycleState\":\"Updating\",\"self\":\"kjprvk\",\"serial\":955806064,\"version\":\"fz\",\"viewId\":\"jyxgtczh\",\"zoneType\":\"Primary\",\"timeCreated\":\"2020-12-22T20:00:46Z\",\"provisioningState\":\"Failed\"},\"id\":\"shmkxmaehvbbxur\",\"name\":\"pltfnhtba\",\"type\":\"kgxywr\"}],\"nextLink\":\"pyklyhpluodpvru\"}")
+            "{\"value\":[{\"properties\":{\"ocid\":\"bre\",\"isProtected\":true,\"lifecycleState\":\"Deleted\",\"self\":\"aysjkixqtnqttez\",\"serial\":880648467,\"version\":\"fffiak\",\"viewId\":\"pqqmted\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-09-01T21:15:43Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"hyeozphvwau\",\"name\":\"qncygupkvi\",\"type\":\"mdscwxqupev\"},{\"properties\":{\"ocid\":\"f\",\"isProtected\":true,\"lifecycleState\":\"Updating\",\"self\":\"txhojujb\",\"serial\":1872993536,\"version\":\"elmcuvhixbjxyfw\",\"viewId\":\"lrcoolsttpki\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-07-11T18:43:52Z\",\"provisioningState\":\"Failed\"},\"id\":\"jrywvtylbfpnc\",\"name\":\"rd\",\"type\":\"iwii\"},{\"properties\":{\"ocid\":\"tywubxcbihwq\",\"isProtected\":false,\"lifecycleState\":\"Active\",\"self\":\"dntwjchrdgo\",\"serial\":916840280,\"version\":\"xum\",\"viewId\":\"ton\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-01-26T20:44:07Z\",\"provisioningState\":\"Canceled\"},\"id\":\"dfdlwggyts\",\"name\":\"wtovvtgsein\",\"type\":\"fiufx\"},{\"properties\":{\"ocid\":\"npirgnepttw\",\"isProtected\":false,\"lifecycleState\":\"Deleting\",\"self\":\"niffcdmqnroj\",\"serial\":803649154,\"version\":\"ijnkrxfrdd\",\"viewId\":\"ratiz\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-06-27T16:40:41Z\",\"provisioningState\":\"Canceled\"},\"id\":\"xi\",\"name\":\"tozqyzhftwesgo\",\"type\":\"czhonnxkr\"}],\"nextLink\":\"nyhmossxkkgthr\"}")
             .toObject(DnsPrivateZoneListResult.class);
-        Assertions.assertEquals("qioknssxmojm", model.value().get(0).properties().ocid());
-        Assertions.assertFalse(model.value().get(0).properties().isProtected());
-        Assertions.assertEquals(DnsPrivateZonesLifecycleState.UPDATING,
+        Assertions.assertEquals("bre", model.value().get(0).properties().ocid());
+        Assertions.assertTrue(model.value().get(0).properties().isProtected());
+        Assertions.assertEquals(DnsPrivateZonesLifecycleState.DELETED,
             model.value().get(0).properties().lifecycleState());
-        Assertions.assertEquals("kjprvk", model.value().get(0).properties().self());
-        Assertions.assertEquals(955806064, model.value().get(0).properties().serial());
-        Assertions.assertEquals("fz", model.value().get(0).properties().version());
-        Assertions.assertEquals("jyxgtczh", model.value().get(0).properties().viewId());
-        Assertions.assertEquals(ZoneType.PRIMARY, model.value().get(0).properties().zoneType());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-22T20:00:46Z"),
+        Assertions.assertEquals("aysjkixqtnqttez", model.value().get(0).properties().self());
+        Assertions.assertEquals(880648467, model.value().get(0).properties().serial());
+        Assertions.assertEquals("fffiak", model.value().get(0).properties().version());
+        Assertions.assertEquals("pqqmted", model.value().get(0).properties().viewId());
+        Assertions.assertEquals(ZoneType.SECONDARY, model.value().get(0).properties().zoneType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T21:15:43Z"),
             model.value().get(0).properties().timeCreated());
-        Assertions.assertEquals("pyklyhpluodpvru", model.nextLink());
+        Assertions.assertEquals("nyhmossxkkgthr", model.nextLink());
     }
 }

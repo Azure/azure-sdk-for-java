@@ -54,11 +54,6 @@ public final class DbSystemShapesImpl implements DbSystemShapes {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new DbSystemShapeImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DbSystemShape> listByLocation(String location, String zone, Context context) {
-        PagedIterable<DbSystemShapeInner> inner = this.serviceClient().listByLocation(location, zone, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DbSystemShapeImpl(inner1, this.manager()));
-    }
-
     private DbSystemShapesClient serviceClient() {
         return this.innerClient;
     }

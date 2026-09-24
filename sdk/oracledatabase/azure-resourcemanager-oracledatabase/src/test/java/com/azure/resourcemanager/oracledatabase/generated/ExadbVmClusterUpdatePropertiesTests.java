@@ -12,14 +12,14 @@ public final class ExadbVmClusterUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExadbVmClusterUpdateProperties model
-            = BinaryData.fromString("{\"nodeCount\":2017429454}").toObject(ExadbVmClusterUpdateProperties.class);
-        Assertions.assertEquals(2017429454, model.nodeCount());
+            = BinaryData.fromString("{\"nodeCount\":38344578}").toObject(ExadbVmClusterUpdateProperties.class);
+        Assertions.assertEquals(38344578, model.nodeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExadbVmClusterUpdateProperties model = new ExadbVmClusterUpdateProperties().withNodeCount(2017429454);
+        ExadbVmClusterUpdateProperties model = new ExadbVmClusterUpdateProperties().withNodeCount(38344578);
         model = BinaryData.fromObject(model).toObject(ExadbVmClusterUpdateProperties.class);
-        Assertions.assertEquals(2017429454, model.nodeCount());
+        Assertions.assertEquals(38344578, model.nodeCount());
     }
 }

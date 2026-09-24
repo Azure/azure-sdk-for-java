@@ -14,22 +14,22 @@ public final class ScheduledOperationsTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledOperationsType model = BinaryData.fromString(
-            "{\"dayOfWeek\":{\"name\":\"Thursday\"},\"scheduledStartTime\":\"cvizqzdwlvw\",\"scheduledStopTime\":\"oupfgfb\"}")
+            "{\"dayOfWeek\":{\"name\":\"Sunday\"},\"scheduledStartTime\":\"jgcyztsfmznba\",\"scheduledStopTime\":\"ph\"}")
             .toObject(ScheduledOperationsType.class);
-        Assertions.assertEquals(DayOfWeekName.THURSDAY, model.dayOfWeek().name());
-        Assertions.assertEquals("cvizqzdwlvw", model.scheduledStartTime());
-        Assertions.assertEquals("oupfgfb", model.scheduledStopTime());
+        Assertions.assertEquals(DayOfWeekName.SUNDAY, model.dayOfWeek().name());
+        Assertions.assertEquals("jgcyztsfmznba", model.scheduledStartTime());
+        Assertions.assertEquals("ph", model.scheduledStopTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduledOperationsType model
-            = new ScheduledOperationsType().withDayOfWeek(new DayOfWeek().withName(DayOfWeekName.THURSDAY))
-                .withScheduledStartTime("cvizqzdwlvw")
-                .withScheduledStopTime("oupfgfb");
+            = new ScheduledOperationsType().withDayOfWeek(new DayOfWeek().withName(DayOfWeekName.SUNDAY))
+                .withScheduledStartTime("jgcyztsfmznba")
+                .withScheduledStopTime("ph");
         model = BinaryData.fromObject(model).toObject(ScheduledOperationsType.class);
-        Assertions.assertEquals(DayOfWeekName.THURSDAY, model.dayOfWeek().name());
-        Assertions.assertEquals("cvizqzdwlvw", model.scheduledStartTime());
-        Assertions.assertEquals("oupfgfb", model.scheduledStopTime());
+        Assertions.assertEquals(DayOfWeekName.SUNDAY, model.dayOfWeek().name());
+        Assertions.assertEquals("jgcyztsfmznba", model.scheduledStartTime());
+        Assertions.assertEquals("ph", model.scheduledStopTime());
     }
 }

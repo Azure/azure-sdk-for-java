@@ -12,9 +12,9 @@ public final class DbVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbVersionProperties model = BinaryData.fromString(
-            "{\"version\":\"auunfprnjletlx\",\"isLatestForMajorVersion\":true,\"isPreviewDbVersion\":false,\"isUpgradeSupported\":false,\"supportsPdb\":true}")
+            "{\"version\":\"df\",\"isLatestForMajorVersion\":true,\"isPreviewDbVersion\":false,\"isUpgradeSupported\":false,\"supportsPdb\":true}")
             .toObject(DbVersionProperties.class);
-        Assertions.assertEquals("auunfprnjletlx", model.version());
+        Assertions.assertEquals("df", model.version());
         Assertions.assertTrue(model.isLatestForMajorVersion());
         Assertions.assertFalse(model.isPreviewDbVersion());
         Assertions.assertFalse(model.isUpgradeSupported());

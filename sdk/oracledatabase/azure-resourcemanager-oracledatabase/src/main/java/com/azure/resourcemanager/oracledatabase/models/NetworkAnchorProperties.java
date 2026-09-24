@@ -112,11 +112,6 @@ public final class NetworkAnchorProperties implements JsonSerializable<NetworkAn
      */
     private String dnsForwardingEndpointNsgRulesUrl;
 
-    /*
-     * Proximity placement group settings
-     */
-    private ProximityPlacementGroup proximityPlacementGroup;
-
     /**
      * Creates an instance of NetworkAnchorProperties class.
      */
@@ -402,26 +397,6 @@ public final class NetworkAnchorProperties implements JsonSerializable<NetworkAn
     }
 
     /**
-     * Get the proximityPlacementGroup property: Proximity placement group settings.
-     * 
-     * @return the proximityPlacementGroup value.
-     */
-    public ProximityPlacementGroup proximityPlacementGroup() {
-        return this.proximityPlacementGroup;
-    }
-
-    /**
-     * Set the proximityPlacementGroup property: Proximity placement group settings.
-     * 
-     * @param proximityPlacementGroup the proximityPlacementGroup value to set.
-     * @return the NetworkAnchorProperties object itself.
-     */
-    public NetworkAnchorProperties withProximityPlacementGroup(ProximityPlacementGroup proximityPlacementGroup) {
-        this.proximityPlacementGroup = proximityPlacementGroup;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -437,7 +412,6 @@ public final class NetworkAnchorProperties implements JsonSerializable<NetworkAn
         jsonWriter.writeArrayField("dnsForwardingRules", this.dnsForwardingRules,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("dnsListeningEndpointAllowedCidrs", this.dnsListeningEndpointAllowedCidrs);
-        jsonWriter.writeJsonField("proximityPlacementGroup", this.proximityPlacementGroup);
         return jsonWriter.writeEndObject();
     }
 
@@ -501,9 +475,6 @@ public final class NetworkAnchorProperties implements JsonSerializable<NetworkAn
                     deserializedNetworkAnchorProperties.dnsListeningEndpointNsgRulesUrl = reader.getString();
                 } else if ("dnsForwardingEndpointNsgRulesUrl".equals(fieldName)) {
                     deserializedNetworkAnchorProperties.dnsForwardingEndpointNsgRulesUrl = reader.getString();
-                } else if ("proximityPlacementGroup".equals(fieldName)) {
-                    deserializedNetworkAnchorProperties.proximityPlacementGroup
-                        = ProximityPlacementGroup.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

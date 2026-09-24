@@ -12,10 +12,10 @@ public final class ResourceAnchorListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceAnchorListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"linkedCompartmentId\":\"stmninwjizcilng\"},\"location\":\"shejjtbxqm\",\"tags\":{\"rsbycucrwn\":\"xlxqzvn\",\"qbsms\":\"mikzeb\",\"kzruswh\":\"ziqgfuh\"},\"id\":\"hczznvf\",\"name\":\"ycjsx\",\"type\":\"wwixzvumw\"}],\"nextLink\":\"qhndvnoam\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"linkedCompartmentId\":\"ruswhv\"},\"location\":\"zznvfbyc\",\"tags\":{\"xzv\":\"jww\"},\"id\":\"mwmxqhndvnoamld\",\"name\":\"ehaohdjhh\",\"type\":\"lzok\"}],\"nextLink\":\"ox\"}")
             .toObject(ResourceAnchorListResult.class);
-        Assertions.assertEquals("shejjtbxqm", model.value().get(0).location());
-        Assertions.assertEquals("xlxqzvn", model.value().get(0).tags().get("rsbycucrwn"));
-        Assertions.assertEquals("qhndvnoam", model.nextLink());
+        Assertions.assertEquals("zznvfbyc", model.value().get(0).location());
+        Assertions.assertEquals("jww", model.value().get(0).tags().get("xzv"));
+        Assertions.assertEquals("ox", model.nextLink());
     }
 }

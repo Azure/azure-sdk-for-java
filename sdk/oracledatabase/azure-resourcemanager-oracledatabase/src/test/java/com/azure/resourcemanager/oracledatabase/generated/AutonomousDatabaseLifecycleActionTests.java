@@ -13,15 +13,15 @@ public final class AutonomousDatabaseLifecycleActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseLifecycleAction model
-            = BinaryData.fromString("{\"action\":\"Stop\"}").toObject(AutonomousDatabaseLifecycleAction.class);
-        Assertions.assertEquals(AutonomousDatabaseLifecycleActionEnum.STOP, model.action());
+            = BinaryData.fromString("{\"action\":\"Start\"}").toObject(AutonomousDatabaseLifecycleAction.class);
+        Assertions.assertEquals(AutonomousDatabaseLifecycleActionEnum.START, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutonomousDatabaseLifecycleAction model
-            = new AutonomousDatabaseLifecycleAction().withAction(AutonomousDatabaseLifecycleActionEnum.STOP);
+            = new AutonomousDatabaseLifecycleAction().withAction(AutonomousDatabaseLifecycleActionEnum.START);
         model = BinaryData.fromObject(model).toObject(AutonomousDatabaseLifecycleAction.class);
-        Assertions.assertEquals(AutonomousDatabaseLifecycleActionEnum.STOP, model.action());
+        Assertions.assertEquals(AutonomousDatabaseLifecycleActionEnum.START, model.action());
     }
 }

@@ -22,7 +22,7 @@ public final class ExascaleDbNodesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ocid\":\"vbxiwkgfbqlj\",\"additionalDetails\":\"khychocokulehur\",\"cpuCoreCount\":784642610,\"dbNodeStorageSizeInGbs\":2025937557,\"faultDomain\":\"aweyur\",\"hostname\":\"hy\",\"lifecycleState\":\"Failed\",\"maintenanceType\":\"av\",\"memorySizeInGbs\":257563193,\"softwareStorageSizeInGb\":1964239530,\"timeMaintenanceWindowEnd\":\"2021-06-03T09:33:43Z\",\"timeMaintenanceWindowStart\":\"2021-08-13T07:11:34Z\",\"totalCpuCoreCount\":225243344},\"id\":\"bapxkiyfjjkb\",\"name\":\"jbuscg\",\"type\":\"uusioycblev\"}";
+            = "{\"properties\":{\"ocid\":\"hllxricctkw\",\"additionalDetails\":\"qqoajxeiyglesrw\",\"cpuCoreCount\":601519517,\"dbNodeStorageSizeInGbs\":147788598,\"faultDomain\":\"ctrceqnkbr\",\"hostname\":\"obehdmljz\",\"lifecycleState\":\"Stopped\",\"maintenanceType\":\"me\",\"memorySizeInGbs\":1117408258,\"softwareStorageSizeInGb\":1106054303,\"timeMaintenanceWindowEnd\":\"2021-02-04T02:09:01Z\",\"timeMaintenanceWindowStart\":\"2021-07-09T06:00:41Z\",\"totalCpuCoreCount\":631713450},\"id\":\"pife\",\"name\":\"leqirccjclykcgxv\",\"type\":\"pjlvczuoda\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,23 +32,23 @@ public final class ExascaleDbNodesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExascaleDbNode response = manager.exascaleDbNodes()
-            .getWithResponse("ia", "cz", "vodrrslblxydkxr", com.azure.core.util.Context.NONE)
+            .getWithResponse("dmbi", "psnaww", "qkzn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vbxiwkgfbqlj", response.properties().ocid());
-        Assertions.assertEquals("khychocokulehur", response.properties().additionalDetails());
-        Assertions.assertEquals(784642610, response.properties().cpuCoreCount());
-        Assertions.assertEquals(2025937557, response.properties().dbNodeStorageSizeInGbs());
-        Assertions.assertEquals("aweyur", response.properties().faultDomain());
-        Assertions.assertEquals("hy", response.properties().hostname());
-        Assertions.assertEquals(DbNodeProvisioningState.FAILED, response.properties().lifecycleState());
-        Assertions.assertEquals("av", response.properties().maintenanceType());
-        Assertions.assertEquals(257563193, response.properties().memorySizeInGbs());
-        Assertions.assertEquals(1964239530, response.properties().softwareStorageSizeInGb());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-03T09:33:43Z"),
+        Assertions.assertEquals("hllxricctkw", response.properties().ocid());
+        Assertions.assertEquals("qqoajxeiyglesrw", response.properties().additionalDetails());
+        Assertions.assertEquals(601519517, response.properties().cpuCoreCount());
+        Assertions.assertEquals(147788598, response.properties().dbNodeStorageSizeInGbs());
+        Assertions.assertEquals("ctrceqnkbr", response.properties().faultDomain());
+        Assertions.assertEquals("obehdmljz", response.properties().hostname());
+        Assertions.assertEquals(DbNodeProvisioningState.STOPPED, response.properties().lifecycleState());
+        Assertions.assertEquals("me", response.properties().maintenanceType());
+        Assertions.assertEquals(1117408258, response.properties().memorySizeInGbs());
+        Assertions.assertEquals(1106054303, response.properties().softwareStorageSizeInGb());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-04T02:09:01Z"),
             response.properties().timeMaintenanceWindowEnd());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-13T07:11:34Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-09T06:00:41Z"),
             response.properties().timeMaintenanceWindowStart());
-        Assertions.assertEquals(225243344, response.properties().totalCpuCoreCount());
+        Assertions.assertEquals(631713450, response.properties().totalCpuCoreCount());
     }
 }

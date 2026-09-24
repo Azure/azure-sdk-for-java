@@ -26,7 +26,7 @@ public final class ExascaleDbStorageVaultsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"additionalFlashCacheInPercent\":467125688,\"description\":\"ngoadyedmzr\",\"displayName\":\"jfoknubnoitpkp\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":1947750114},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":1463828145,\"totalSizeInGbs\":264899453},\"timeZone\":\"coqra\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Updating\",\"lifecycleDetails\":\"pqitwe\",\"vmClusterCount\":248802373,\"ocid\":\"vskbuhzacaq\",\"ociUrl\":\"ltcoqc\",\"exadataInfrastructureId\":\"pdsxzakuejkm\",\"attachedShapeAttributes\":[\"BLOCK_STORAGE\",\"SMART_STORAGE\"],\"isAutoscaleEnabled\":true,\"autoscaleLimitInGbs\":1094680402},\"zones\":[\"ovjufycsjmlbe\",\"yeji\",\"iuxegth\",\"rtudawlpjfel\"],\"location\":\"rpptcbgqnzmnhiil\",\"tags\":{\"jgckbbc\":\"w\",\"fa\":\"cgzpraoxnyu\",\"byubhiqdxyurnpn\":\"sgftipwc\",\"ccnuhiig\":\"hza\"},\"id\":\"yl\",\"name\":\"ui\",\"type\":\"vxva\"}";
+            = "{\"properties\":{\"additionalFlashCacheInPercent\":1718713775,\"description\":\"fkg\",\"displayName\":\"syaowuzowp\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":586601408},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":308046550,\"totalSizeInGbs\":1455618872},\"timeZone\":\"gukxrztiochluti\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Terminating\",\"lifecycleDetails\":\"jizcbfzmcrunfhiu\",\"vmClusterCount\":1201337958,\"ocid\":\"bcpaqktkrumzued\",\"ociUrl\":\"zbfvxovqkxiu\",\"exadataInfrastructureId\":\"ggvqrnhyhlwcjs\",\"attachedShapeAttributes\":[\"BLOCK_STORAGE\",\"SMART_STORAGE\"]},\"zones\":[\"bxrqrkijp\"],\"location\":\"qlsdxeqztvxwmw\",\"tags\":{\"ecleqioulndhzyo\":\"swenawwa\",\"idmytzln\":\"ojhtollhs\"},\"id\":\"lxpnovyoanf\",\"name\":\"cswqa\",\"type\":\"ywv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,32 +36,29 @@ public final class ExascaleDbStorageVaultsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExascaleDbStorageVault response = manager.exascaleDbStorageVaults()
-            .define("oaiknaqlnuwig")
-            .withRegion("ftbcvexreuquow")
-            .withExistingResourceGroup("noakiz")
-            .withTags(mapOf("qtvbczsu", "vfwhreagkhyxv"))
-            .withProperties(new ExascaleDbStorageVaultProperties().withAdditionalFlashCacheInPercent(78336255)
-                .withDescription("kwph")
-                .withDisplayName("xzcwxhmpejt")
-                .withHighCapacityDatabaseStorageInput(new ExascaleDbStorageInputDetails().withTotalSizeInGbs(300403607))
-                .withTimeZone("ivkcqh")
-                .withExadataInfrastructureId("jkpdxphlkksnm")
-                .withIsAutoscaleEnabled(false)
-                .withAutoscaleLimitInGbs(826902853))
-            .withZones(Arrays.asList("nwsithuqolyahluq", "qulsutrjbhxykfhy", "ezvqq", "g"))
+            .define("r")
+            .withRegion("tlpqagynoi")
+            .withExistingResourceGroup("wiyjvzuko")
+            .withTags(mapOf("zxaqzibm", "zcalincryq"))
+            .withProperties(new ExascaleDbStorageVaultProperties().withAdditionalFlashCacheInPercent(925456345)
+                .withDescription("zm")
+                .withDisplayName("n")
+                .withHighCapacityDatabaseStorageInput(
+                    new ExascaleDbStorageInputDetails().withTotalSizeInGbs(1850274865))
+                .withTimeZone("abjqqaxuyvymcnud")
+                .withExadataInfrastructureId("kldgrcwfcmfc"))
+            .withZones(Arrays.asList("txjtielnzqgx", "gfb"))
             .create();
 
-        Assertions.assertEquals("rpptcbgqnzmnhiil", response.location());
-        Assertions.assertEquals("w", response.tags().get("jgckbbc"));
-        Assertions.assertEquals(467125688, response.properties().additionalFlashCacheInPercent());
-        Assertions.assertEquals("ngoadyedmzr", response.properties().description());
-        Assertions.assertEquals("jfoknubnoitpkp", response.properties().displayName());
-        Assertions.assertEquals(1947750114, response.properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
-        Assertions.assertEquals("coqra", response.properties().timeZone());
-        Assertions.assertEquals("pdsxzakuejkm", response.properties().exadataInfrastructureId());
-        Assertions.assertTrue(response.properties().isAutoscaleEnabled());
-        Assertions.assertEquals(1094680402, response.properties().autoscaleLimitInGbs());
-        Assertions.assertEquals("ovjufycsjmlbe", response.zones().get(0));
+        Assertions.assertEquals("qlsdxeqztvxwmw", response.location());
+        Assertions.assertEquals("swenawwa", response.tags().get("ecleqioulndhzyo"));
+        Assertions.assertEquals(1718713775, response.properties().additionalFlashCacheInPercent());
+        Assertions.assertEquals("fkg", response.properties().description());
+        Assertions.assertEquals("syaowuzowp", response.properties().displayName());
+        Assertions.assertEquals(586601408, response.properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
+        Assertions.assertEquals("gukxrztiochluti", response.properties().timeZone());
+        Assertions.assertEquals("ggvqrnhyhlwcjs", response.properties().exadataInfrastructureId());
+        Assertions.assertEquals("bxrqrkijp", response.zones().get(0));
     }
 
     // Use "Map.of" if available

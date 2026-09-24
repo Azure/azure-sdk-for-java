@@ -12,10 +12,10 @@ public final class VirtualNetworkAddressListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworkAddressListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ipAddress\":\"uijfqk\",\"vmOcid\":\"e\",\"ocid\":\"ipfpubji\",\"domain\":\"wifto\",\"lifecycleDetails\":\"kvpuvksgplsaknyn\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Failed\",\"timeAssigned\":\"2021-01-19T19:16:07Z\"},\"id\":\"uopxodlqiyntor\",\"name\":\"ihleos\",\"type\":\"swsrms\"},{\"properties\":{\"ipAddress\":\"rpzbchckqqzqi\",\"vmOcid\":\"iysui\",\"ocid\":\"ynkedyatrwyhqmib\",\"domain\":\"hwit\",\"lifecycleDetails\":\"ypyynpcdpumnzg\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-06-04T15:48:38Z\"},\"id\":\"knso\",\"name\":\"gj\",\"type\":\"xbldtlwwrlkdmtn\"},{\"properties\":{\"ipAddress\":\"kotl\",\"vmOcid\":\"d\",\"ocid\":\"gsyocogj\",\"domain\":\"dtbnnha\",\"lifecycleDetails\":\"ocrkvcikh\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Available\",\"timeAssigned\":\"2021-01-08T00:37:46Z\"},\"id\":\"qqu\",\"name\":\"zikywgg\",\"type\":\"kallatmel\"},{\"properties\":{\"ipAddress\":\"piccjzkzivgv\",\"vmOcid\":\"nayrhyrnxxmueedn\",\"ocid\":\"dvstkw\",\"domain\":\"tchealmf\",\"lifecycleDetails\":\"d\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Provisioning\",\"timeAssigned\":\"2021-08-04T08:19:13Z\"},\"id\":\"gpiohgwxrtfudxe\",\"name\":\"xg\",\"type\":\"qagvrvm\"}],\"nextLink\":\"k\"}")
+            "{\"value\":[{\"properties\":{\"ipAddress\":\"mbmpaxmodfvuefy\",\"vmOcid\":\"bpfvm\",\"ocid\":\"hrfou\",\"domain\":\"taakc\",\"lifecycleDetails\":\"iyzvqtmnub\",\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Terminated\",\"timeAssigned\":\"2021-05-08T13:31:38Z\"},\"id\":\"ondjmq\",\"name\":\"xvy\",\"type\":\"omgkopkwho\"}],\"nextLink\":\"pajqgxysm\"}")
             .toObject(VirtualNetworkAddressListResult.class);
-        Assertions.assertEquals("uijfqk", model.value().get(0).properties().ipAddress());
-        Assertions.assertEquals("e", model.value().get(0).properties().vmOcid());
-        Assertions.assertEquals("k", model.nextLink());
+        Assertions.assertEquals("mbmpaxmodfvuefy", model.value().get(0).properties().ipAddress());
+        Assertions.assertEquals("bpfvm", model.value().get(0).properties().vmOcid());
+        Assertions.assertEquals("pajqgxysm", model.nextLink());
     }
 }

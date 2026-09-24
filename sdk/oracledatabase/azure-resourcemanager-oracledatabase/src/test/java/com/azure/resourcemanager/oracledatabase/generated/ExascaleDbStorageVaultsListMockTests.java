@@ -22,7 +22,7 @@ public final class ExascaleDbStorageVaultsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"additionalFlashCacheInPercent\":143517524,\"description\":\"cyayk\",\"displayName\":\"mfzsbf\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":1870584633},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":1740416627,\"totalSizeInGbs\":768399032},\"timeZone\":\"wsrsxkrplbja\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Updating\",\"lifecycleDetails\":\"iyoypsuhbrnnhj\",\"vmClusterCount\":2105141648,\"ocid\":\"jhqkbiwetpozy\",\"ociUrl\":\"qiqyhgfsetzlexbs\",\"exadataInfrastructureId\":\"e\",\"attachedShapeAttributes\":[\"BLOCK_STORAGE\"],\"isAutoscaleEnabled\":true,\"autoscaleLimitInGbs\":1808651963},\"zones\":[\"fbzkk\",\"tnhqsycl\"],\"location\":\"elpkpbafvafhlbyl\",\"tags\":{\"fwrsofpltdbmair\":\"evxrhyz\",\"pqigtuujwouhd\":\"hvhfnracw\",\"bvitvqkjya\":\"wsigrbjbxsj\"},\"id\":\"nu\",\"name\":\"tggmuwdchozfnkfe\",\"type\":\"lv\"}]}";
+            = "{\"value\":[{\"properties\":{\"additionalFlashCacheInPercent\":394613556,\"description\":\"mbvx\",\"displayName\":\"kraokq\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":1232558880},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":1035181790,\"totalSizeInGbs\":818793523},\"timeZone\":\"okbavlyttaak\",\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Failed\",\"lifecycleDetails\":\"bsmhpdujdiga\",\"vmClusterCount\":1236887032,\"ocid\":\"ksc\",\"ociUrl\":\"tnanqimwb\",\"exadataInfrastructureId\":\"pdcldpka\",\"attachedShapeAttributes\":[\"BLOCK_STORAGE\",\"BLOCK_STORAGE\",\"BLOCK_STORAGE\"]},\"zones\":[\"o\",\"xwksq\",\"udmfcoibiczius\",\"s\"],\"location\":\"rk\",\"tags\":{\"yfscyrfwbivqvo\":\"jhbtqq\",\"wvbhlimbyq\":\"fuy\"},\"id\":\"crood\",\"name\":\"ikcdrdaasax\",\"type\":\"obsmf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +34,15 @@ public final class ExascaleDbStorageVaultsListMockTests {
         PagedIterable<ExascaleDbStorageVault> response
             = manager.exascaleDbStorageVaults().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("elpkpbafvafhlbyl", response.iterator().next().location());
-        Assertions.assertEquals("evxrhyz", response.iterator().next().tags().get("fwrsofpltdbmair"));
-        Assertions.assertEquals(143517524, response.iterator().next().properties().additionalFlashCacheInPercent());
-        Assertions.assertEquals("cyayk", response.iterator().next().properties().description());
-        Assertions.assertEquals("mfzsbf", response.iterator().next().properties().displayName());
-        Assertions.assertEquals(1870584633,
+        Assertions.assertEquals("rk", response.iterator().next().location());
+        Assertions.assertEquals("jhbtqq", response.iterator().next().tags().get("yfscyrfwbivqvo"));
+        Assertions.assertEquals(394613556, response.iterator().next().properties().additionalFlashCacheInPercent());
+        Assertions.assertEquals("mbvx", response.iterator().next().properties().description());
+        Assertions.assertEquals("kraokq", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(1232558880,
             response.iterator().next().properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
-        Assertions.assertEquals("wsrsxkrplbja", response.iterator().next().properties().timeZone());
-        Assertions.assertEquals("e", response.iterator().next().properties().exadataInfrastructureId());
-        Assertions.assertTrue(response.iterator().next().properties().isAutoscaleEnabled());
-        Assertions.assertEquals(1808651963, response.iterator().next().properties().autoscaleLimitInGbs());
-        Assertions.assertEquals("fbzkk", response.iterator().next().zones().get(0));
+        Assertions.assertEquals("okbavlyttaak", response.iterator().next().properties().timeZone());
+        Assertions.assertEquals("pdcldpka", response.iterator().next().properties().exadataInfrastructureId());
+        Assertions.assertEquals("o", response.iterator().next().zones().get(0));
     }
 }

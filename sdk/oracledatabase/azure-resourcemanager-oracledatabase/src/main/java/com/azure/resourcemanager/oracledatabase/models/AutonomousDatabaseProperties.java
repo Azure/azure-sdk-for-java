@@ -353,60 +353,6 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
      * {@inheritDoc}
      */
     @Override
-    public AutonomousDatabaseProperties withIsScheduleAzUpdateToEarliest(Boolean isScheduleAzUpdateToEarliest) {
-        super.withIsScheduleAzUpdateToEarliest(isScheduleAzUpdateToEarliest);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AutonomousDatabaseProperties withTimeScheduledAzUpdate(String timeScheduledAzUpdate) {
-        super.withTimeScheduledAzUpdate(timeScheduledAzUpdate);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AutonomousDatabaseProperties withZone(String zone) {
-        super.withZone(zone);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AutonomousDatabaseProperties withBackupDestination(BackupDestinationType backupDestination) {
-        super.withBackupDestination(backupDestination);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AutonomousDatabaseProperties withResourceAnchorId(String resourceAnchorId) {
-        super.withResourceAnchorId(resourceAnchorId);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AutonomousDatabaseProperties withNetworkAnchorId(String networkAnchorId) {
-        super.withNetworkAnchorId(networkAnchorId);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("adminPassword", adminPassword());
@@ -448,13 +394,6 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
         jsonWriter.writeNumberField("backupRetentionPeriodInDays", backupRetentionPeriodInDays());
         jsonWriter.writeArrayField("whitelistedIps", whitelistedIps(),
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("isScheduleAzUpdateToEarliest", isScheduleAzUpdateToEarliest());
-        jsonWriter.writeStringField("timeScheduledAzUpdate", timeScheduledAzUpdate());
-        jsonWriter.writeStringField("zone", zone());
-        jsonWriter.writeStringField("backupDestination",
-            backupDestination() == null ? null : backupDestination().toString());
-        jsonWriter.writeStringField("resourceAnchorId", resourceAnchorId());
-        jsonWriter.writeStringField("networkAnchorId", networkAnchorId());
         jsonWriter.writeStringField("dataBaseType", this.dataBaseType == null ? null : this.dataBaseType.toString());
         return jsonWriter.writeEndObject();
     }
@@ -675,20 +614,6 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
                 } else if ("whitelistedIps".equals(fieldName)) {
                     List<String> whitelistedIps = reader.readArray(reader1 -> reader1.getString());
                     deserializedAutonomousDatabaseProperties.withWhitelistedIps(whitelistedIps);
-                } else if ("isScheduleAzUpdateToEarliest".equals(fieldName)) {
-                    deserializedAutonomousDatabaseProperties
-                        .withIsScheduleAzUpdateToEarliest(reader.getNullable(JsonReader::getBoolean));
-                } else if ("timeScheduledAzUpdate".equals(fieldName)) {
-                    deserializedAutonomousDatabaseProperties.withTimeScheduledAzUpdate(reader.getString());
-                } else if ("zone".equals(fieldName)) {
-                    deserializedAutonomousDatabaseProperties.withZone(reader.getString());
-                } else if ("backupDestination".equals(fieldName)) {
-                    deserializedAutonomousDatabaseProperties
-                        .withBackupDestination(BackupDestinationType.fromString(reader.getString()));
-                } else if ("resourceAnchorId".equals(fieldName)) {
-                    deserializedAutonomousDatabaseProperties.withResourceAnchorId(reader.getString());
-                } else if ("networkAnchorId".equals(fieldName)) {
-                    deserializedAutonomousDatabaseProperties.withNetworkAnchorId(reader.getString());
                 } else if ("dataBaseType".equals(fieldName)) {
                     deserializedAutonomousDatabaseProperties.dataBaseType = DataBaseType.fromString(reader.getString());
                 } else {

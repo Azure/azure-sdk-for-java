@@ -28,7 +28,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.oracledatabase.fluent.GiMinorVersionsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.models.GiMinorVersionInner;
 import com.azure.resourcemanager.oracledatabase.implementation.models.GiMinorVersionListResult;
-import com.azure.resourcemanager.oracledatabase.models.GiMinorVersionSortOrder;
 import com.azure.resourcemanager.oracledatabase.models.ShapeFamily;
 import reactor.core.publisher.Mono;
 
@@ -72,10 +71,7 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("giversionname") String giversionname,
             @QueryParam("shapeFamily") ShapeFamily shapeFamily, @QueryParam("zone") String zone,
-            @QueryParam("shape") String shape,
-            @QueryParam("isGiVersionForProvisioning") Boolean isGiVersionForProvisioning,
-            @QueryParam("sortOrder") GiMinorVersionSortOrder sortOrder, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/giVersions/{giversionname}/giMinorVersions")
@@ -85,10 +81,7 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("giversionname") String giversionname,
             @QueryParam("shapeFamily") ShapeFamily shapeFamily, @QueryParam("zone") String zone,
-            @QueryParam("shape") String shape,
-            @QueryParam("isGiVersionForProvisioning") Boolean isGiVersionForProvisioning,
-            @QueryParam("sortOrder") GiMinorVersionSortOrder sortOrder, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/giVersions/{giversionname}/giMinorVersions/{giMinorVersionName}")
@@ -135,38 +128,6 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
      * given shape family.
      * @param zone Filters the result for the given Azure Availability Zone.
-     * @param shape If provided, filters the results to the set of GI minor versions supported for the given shape.
-     * @param isGiVersionForProvisioning If true, filters the results to GI minor versions supported during VM cluster
-     * provisioning.
-     * @param sortOrder Sort order for the returned GI minor versions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GiMinorVersion list operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GiMinorVersionInner>> listByParentSinglePageAsync(String location, String giversionname,
-        ShapeFamily shapeFamily, String zone, String shape, Boolean isGiVersionForProvisioning,
-        GiMinorVersionSortOrder sortOrder) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listByParent(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone, shape,
-                isGiVersionForProvisioning, sortOrder, accept, context))
-            .<PagedResponse<GiMinorVersionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List GiMinorVersion resources by GiVersion.
-     * 
-     * @param location The name of the Azure region.
-     * @param giversionname GiVersion name.
-     * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
-     * given shape family.
-     * @param zone Filters the result for the given Azure Availability Zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -176,63 +137,13 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GiMinorVersionInner>> listByParentSinglePageAsync(String location, String giversionname,
         ShapeFamily shapeFamily, String zone) {
-        final String shape = null;
-        final Boolean isGiVersionForProvisioning = null;
-        final GiMinorVersionSortOrder sortOrder = null;
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParent(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone, shape,
-                isGiVersionForProvisioning, sortOrder, accept, context))
+                this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone, accept, context))
             .<PagedResponse<GiMinorVersionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List GiMinorVersion resources by GiVersion.
-     * 
-     * @param location The name of the Azure region.
-     * @param giversionname GiVersion name.
-     * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
-     * given shape family.
-     * @param zone Filters the result for the given Azure Availability Zone.
-     * @param shape If provided, filters the results to the set of GI minor versions supported for the given shape.
-     * @param isGiVersionForProvisioning If true, filters the results to GI minor versions supported during VM cluster
-     * provisioning.
-     * @param sortOrder Sort order for the returned GI minor versions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GiMinorVersion list operation as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GiMinorVersionInner> listByParentAsync(String location, String giversionname,
-        ShapeFamily shapeFamily, String zone, String shape, Boolean isGiVersionForProvisioning,
-        GiMinorVersionSortOrder sortOrder) {
-        return new PagedFlux<>(() -> listByParentSinglePageAsync(location, giversionname, shapeFamily, zone, shape,
-            isGiVersionForProvisioning, sortOrder), nextLink -> listByParentNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * List GiMinorVersion resources by GiVersion.
-     * 
-     * @param location The name of the Azure region.
-     * @param giversionname GiVersion name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GiMinorVersion list operation as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GiMinorVersionInner> listByParentAsync(String location, String giversionname) {
-        final ShapeFamily shapeFamily = null;
-        final String zone = null;
-        final String shape = null;
-        final Boolean isGiVersionForProvisioning = null;
-        final GiMinorVersionSortOrder sortOrder = null;
-        return new PagedFlux<>(() -> listByParentSinglePageAsync(location, giversionname, shapeFamily, zone, shape,
-            isGiVersionForProvisioning, sortOrder), nextLink -> listByParentNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -260,28 +171,17 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      * 
      * @param location The name of the Azure region.
      * @param giversionname GiVersion name.
-     * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
-     * given shape family.
-     * @param zone Filters the result for the given Azure Availability Zone.
-     * @param shape If provided, filters the results to the set of GI minor versions supported for the given shape.
-     * @param isGiVersionForProvisioning If true, filters the results to GI minor versions supported during VM cluster
-     * provisioning.
-     * @param sortOrder Sort order for the returned GI minor versions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GiMinorVersion list operation along with {@link PagedResponse}.
+     * @return the response of a GiMinorVersion list operation as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<GiMinorVersionInner> listByParentSinglePage(String location, String giversionname,
-        ShapeFamily shapeFamily, String zone, String shape, Boolean isGiVersionForProvisioning,
-        GiMinorVersionSortOrder sortOrder) {
-        final String accept = "application/json";
-        Response<GiMinorVersionListResult> res = service.listByParentSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone,
-            shape, isGiVersionForProvisioning, sortOrder, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<GiMinorVersionInner> listByParentAsync(String location, String giversionname) {
+        final ShapeFamily shapeFamily = null;
+        final String zone = null;
+        return new PagedFlux<>(() -> listByParentSinglePageAsync(location, giversionname, shapeFamily, zone),
+            nextLink -> listByParentNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -292,11 +192,6 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
      * given shape family.
      * @param zone Filters the result for the given Azure Availability Zone.
-     * @param shape If provided, filters the results to the set of GI minor versions supported for the given shape.
-     * @param isGiVersionForProvisioning If true, filters the results to GI minor versions supported during VM cluster
-     * provisioning.
-     * @param sortOrder Sort order for the returned GI minor versions.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -304,12 +199,11 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiMinorVersionInner> listByParentSinglePage(String location, String giversionname,
-        ShapeFamily shapeFamily, String zone, String shape, Boolean isGiVersionForProvisioning,
-        GiMinorVersionSortOrder sortOrder, Context context) {
+        ShapeFamily shapeFamily, String zone) {
         final String accept = "application/json";
-        Response<GiMinorVersionListResult> res = service.listByParentSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone,
-            shape, isGiVersionForProvisioning, sortOrder, accept, context);
+        Response<GiMinorVersionListResult> res
+            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -331,13 +225,10 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiMinorVersionInner> listByParentSinglePage(String location, String giversionname,
         ShapeFamily shapeFamily, String zone, Context context) {
-        final String shape = null;
-        final Boolean isGiVersionForProvisioning = null;
-        final GiMinorVersionSortOrder sortOrder = null;
         final String accept = "application/json";
-        Response<GiMinorVersionListResult> res = service.listByParentSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone,
-            shape, isGiVersionForProvisioning, sortOrder, accept, context);
+        Response<GiMinorVersionListResult> res
+            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -356,37 +247,8 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     public PagedIterable<GiMinorVersionInner> listByParent(String location, String giversionname) {
         final ShapeFamily shapeFamily = null;
         final String zone = null;
-        final String shape = null;
-        final Boolean isGiVersionForProvisioning = null;
-        final GiMinorVersionSortOrder sortOrder = null;
-        return new PagedIterable<>(() -> listByParentSinglePage(location, giversionname, shapeFamily, zone, shape,
-            isGiVersionForProvisioning, sortOrder), nextLink -> listByParentNextSinglePage(nextLink));
-    }
-
-    /**
-     * List GiMinorVersion resources by GiVersion.
-     * 
-     * @param location The name of the Azure region.
-     * @param giversionname GiVersion name.
-     * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
-     * given shape family.
-     * @param zone Filters the result for the given Azure Availability Zone.
-     * @param shape If provided, filters the results to the set of GI minor versions supported for the given shape.
-     * @param isGiVersionForProvisioning If true, filters the results to GI minor versions supported during VM cluster
-     * provisioning.
-     * @param sortOrder Sort order for the returned GI minor versions.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GiMinorVersion list operation as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GiMinorVersionInner> listByParent(String location, String giversionname,
-        ShapeFamily shapeFamily, String zone, String shape, Boolean isGiVersionForProvisioning,
-        GiMinorVersionSortOrder sortOrder, Context context) {
-        return new PagedIterable<>(() -> listByParentSinglePage(location, giversionname, shapeFamily, zone, shape,
-            isGiVersionForProvisioning, sortOrder, context), nextLink -> listByParentNextSinglePage(nextLink, context));
+        return new PagedIterable<>(() -> listByParentSinglePage(location, giversionname, shapeFamily, zone),
+            nextLink -> listByParentNextSinglePage(nextLink));
     }
 
     /**

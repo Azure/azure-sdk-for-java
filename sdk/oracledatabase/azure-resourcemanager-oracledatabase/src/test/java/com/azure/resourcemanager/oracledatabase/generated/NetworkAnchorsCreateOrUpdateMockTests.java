@@ -13,8 +13,6 @@ import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.DnsForwardingRule;
 import com.azure.resourcemanager.oracledatabase.models.NetworkAnchor;
 import com.azure.resourcemanager.oracledatabase.models.NetworkAnchorProperties;
-import com.azure.resourcemanager.oracledatabase.models.ProximityPlacementGroup;
-import com.azure.resourcemanager.oracledatabase.models.ProximityPlacementGroupEntityType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -28,7 +26,7 @@ public final class NetworkAnchorsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceAnchorId\":\"dxlwyojbfqz\",\"provisioningState\":\"Succeeded\",\"vnetId\":\"jyixhaf\",\"subnetId\":\"atqxmbjroumzzn\",\"cidrBlock\":\"l\",\"ociVcnId\":\"rhuzgfxonjtpu\",\"ociVcnDnsLabel\":\"l\",\"ociSubnetId\":\"pvti\",\"ociBackupCidrBlock\":\"zbpdbo\",\"isOracleToAzureDnsZoneSyncEnabled\":true,\"isOracleDnsListeningEndpointEnabled\":true,\"isOracleDnsForwardingEndpointEnabled\":true,\"dnsForwardingRules\":[{\"domainNames\":\"asigrowsocne\",\"forwardingIpAddress\":\"uygdjboqgr\"},{\"domainNames\":\"tqjkqevad\",\"forwardingIpAddress\":\"mmwiuawvcmjz\"}],\"dnsListeningEndpointAllowedCidrs\":\"iidisczskoswoqiq\",\"dnsListeningEndpointIpAddress\":\"ugam\",\"dnsForwardingEndpointIpAddress\":\"krrcoiisbamnpp\",\"dnsForwardingRulesUrl\":\"ekuztdsbe\",\"dnsListeningEndpointNsgRulesUrl\":\"xyfukzxuizhyhn\",\"dnsForwardingEndpointNsgRulesUrl\":\"kpetiarxq\",\"proximityPlacementGroup\":{\"proximityPlacementGroupId\":\"bxdukecpxdazvd\",\"proximityAnchorId\":\"tmmkosz\",\"entityTypeIntendedToUse\":\"OtherProducts\"}},\"zones\":[\"nsntrpcaqki\",\"f\"],\"location\":\"tfmhklbnldpvcb\",\"tags\":{\"usqxutrpbrr\":\"zyqu\",\"lbnwtpcpahp\":\"yuuatvlmbjwcolbm\"},\"id\":\"z\",\"name\":\"vxhmtfhocnxzcmj\",\"type\":\"ngxno\"}";
+            = "{\"properties\":{\"resourceAnchorId\":\"to\",\"provisioningState\":\"Succeeded\",\"vnetId\":\"quvwsxbgn\",\"subnetId\":\"kerv\",\"cidrBlock\":\"hoadhrsxqvzv\",\"ociVcnId\":\"abdsr\",\"ociVcnDnsLabel\":\"ajglzrsubklr\",\"ociSubnetId\":\"jnltcetjdvqydi\",\"ociBackupCidrBlock\":\"qkwaruwd\",\"isOracleToAzureDnsZoneSyncEnabled\":true,\"isOracleDnsListeningEndpointEnabled\":false,\"isOracleDnsForwardingEndpointEnabled\":false,\"dnsForwardingRules\":[{\"domainNames\":\"gjxb\",\"forwardingIpAddress\":\"banbaupwtzv\"}],\"dnsListeningEndpointAllowedCidrs\":\"klozkxbz\",\"dnsListeningEndpointIpAddress\":\"ejpl\",\"dnsForwardingEndpointIpAddress\":\"anbtttkgsu\",\"dnsForwardingRulesUrl\":\"nrswgkpjhboyik\",\"dnsListeningEndpointNsgRulesUrl\":\"huhkslgwlok\",\"dnsForwardingEndpointNsgRulesUrl\":\"eoijyzcqypzqzufg\"},\"zones\":[\"ej\",\"vdwtfxptpqayamk\",\"cf\",\"ybmx\"],\"location\":\"xocuullojkpoyhgw\",\"tags\":{\"sgzlrqhb\":\"uxdbdljzgdyrcvuq\"},\"id\":\"nq\",\"name\":\"gdxwbsfpyxx\",\"type\":\"jlf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,45 +36,37 @@ public final class NetworkAnchorsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkAnchor response = manager.networkAnchors()
-            .define("hpzfngqj")
-            .withRegion("dppyibngqlady")
-            .withExistingResourceGroup("saeuzanhsfnhsenw")
-            .withTags(mapOf("uvvadswzsnu", "whydt", "lnwy", "emlowuowhl", "mo", "mouvbl"))
-            .withProperties(new NetworkAnchorProperties().withResourceAnchorId("idftujwjjufwbe")
-                .withSubnetId("uqnmdvhazcvj")
-                .withOciVcnDnsLabel("ktg")
-                .withOciBackupCidrBlock("mmuteyxeyguq")
-                .withIsOracleToAzureDnsZoneSyncEnabled(false)
-                .withIsOracleDnsListeningEndpointEnabled(false)
-                .withIsOracleDnsForwardingEndpointEnabled(true)
+            .define("pqadagrhrdicxdwy")
+            .withRegion("vzipbwxgo")
+            .withExistingResourceGroup("gmsfepxyi")
+            .withTags(mapOf("admskx", "zp"))
+            .withProperties(new NetworkAnchorProperties().withResourceAnchorId("owxwyovcxjsgbip")
+                .withSubnetId("crdpibfdyjduss")
+                .withOciVcnDnsLabel("rnuybffljfii")
+                .withOciBackupCidrBlock("usrexxf")
+                .withIsOracleToAzureDnsZoneSyncEnabled(true)
+                .withIsOracleDnsListeningEndpointEnabled(true)
+                .withIsOracleDnsForwardingEndpointEnabled(false)
                 .withDnsForwardingRules(Arrays.asList(
-                    new DnsForwardingRule().withDomainNames("pxlzdesygrijwa").withForwardingIpAddress("ufanray"),
-                    new DnsForwardingRule().withDomainNames("fueqfrojs").withForwardingIpAddress("dgrhydkygywezs")))
-                .withDnsListeningEndpointAllowedCidrs("ec")
-                .withProximityPlacementGroup(new ProximityPlacementGroup().withProximityPlacementGroupId("dtblxpk")
-                    .withProximityAnchorId("j")
-                    .withEntityTypeIntendedToUse(ProximityPlacementGroupEntityType.OTHER_PRODUCTS)))
-            .withZones(Arrays.asList("qhykincn", "emehllizh", "eumoqod"))
+                    new DnsForwardingRule().withDomainNames("zilfmnlikps").withForwardingIpAddress("msfeypofqpm"),
+                    new DnsForwardingRule().withDomainNames("hyqgsdrmmttjx").withForwardingIpAddress("phgerhsmvgoh")))
+                .withDnsListeningEndpointAllowedCidrs("zmqilrixysfnim"))
+            .withZones(Arrays.asList("iedfsbwcei"))
             .create();
 
-        Assertions.assertEquals("tfmhklbnldpvcb", response.location());
-        Assertions.assertEquals("zyqu", response.tags().get("usqxutrpbrr"));
-        Assertions.assertEquals("dxlwyojbfqz", response.properties().resourceAnchorId());
-        Assertions.assertEquals("atqxmbjroumzzn", response.properties().subnetId());
-        Assertions.assertEquals("l", response.properties().ociVcnDnsLabel());
-        Assertions.assertEquals("zbpdbo", response.properties().ociBackupCidrBlock());
+        Assertions.assertEquals("xocuullojkpoyhgw", response.location());
+        Assertions.assertEquals("uxdbdljzgdyrcvuq", response.tags().get("sgzlrqhb"));
+        Assertions.assertEquals("to", response.properties().resourceAnchorId());
+        Assertions.assertEquals("kerv", response.properties().subnetId());
+        Assertions.assertEquals("ajglzrsubklr", response.properties().ociVcnDnsLabel());
+        Assertions.assertEquals("qkwaruwd", response.properties().ociBackupCidrBlock());
         Assertions.assertTrue(response.properties().isOracleToAzureDnsZoneSyncEnabled());
-        Assertions.assertTrue(response.properties().isOracleDnsListeningEndpointEnabled());
-        Assertions.assertTrue(response.properties().isOracleDnsForwardingEndpointEnabled());
-        Assertions.assertEquals("asigrowsocne", response.properties().dnsForwardingRules().get(0).domainNames());
-        Assertions.assertEquals("uygdjboqgr", response.properties().dnsForwardingRules().get(0).forwardingIpAddress());
-        Assertions.assertEquals("iidisczskoswoqiq", response.properties().dnsListeningEndpointAllowedCidrs());
-        Assertions.assertEquals("bxdukecpxdazvd",
-            response.properties().proximityPlacementGroup().proximityPlacementGroupId());
-        Assertions.assertEquals("tmmkosz", response.properties().proximityPlacementGroup().proximityAnchorId());
-        Assertions.assertEquals(ProximityPlacementGroupEntityType.OTHER_PRODUCTS,
-            response.properties().proximityPlacementGroup().entityTypeIntendedToUse());
-        Assertions.assertEquals("nsntrpcaqki", response.zones().get(0));
+        Assertions.assertFalse(response.properties().isOracleDnsListeningEndpointEnabled());
+        Assertions.assertFalse(response.properties().isOracleDnsForwardingEndpointEnabled());
+        Assertions.assertEquals("gjxb", response.properties().dnsForwardingRules().get(0).domainNames());
+        Assertions.assertEquals("banbaupwtzv", response.properties().dnsForwardingRules().get(0).forwardingIpAddress());
+        Assertions.assertEquals("klozkxbz", response.properties().dnsListeningEndpointAllowedCidrs());
+        Assertions.assertEquals("ej", response.zones().get(0));
     }
 
     // Use "Map.of" if available

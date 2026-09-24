@@ -32,8 +32,6 @@ import com.azure.resourcemanager.oracledatabase.implementation.AutonomousDatabas
 import com.azure.resourcemanager.oracledatabase.implementation.AutonomousDatabasesImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.CloudExadataInfrastructuresImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.CloudVmClustersImpl;
-import com.azure.resourcemanager.oracledatabase.implementation.DatabaseEditionsImpl;
-import com.azure.resourcemanager.oracledatabase.implementation.DatabaseSystemShapeResourcesImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.DbNodesImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.DbServersImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.DbSystemShapesImpl;
@@ -47,8 +45,6 @@ import com.azure.resourcemanager.oracledatabase.implementation.ExascaleDbStorage
 import com.azure.resourcemanager.oracledatabase.implementation.FlexComponentsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.GiMinorVersionsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.GiVersionsImpl;
-import com.azure.resourcemanager.oracledatabase.implementation.GoldenGateConnectionsImpl;
-import com.azure.resourcemanager.oracledatabase.implementation.GoldenGateDeploymentsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.NetworkAnchorsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.OperationsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.OracleDatabaseManagementClientBuilder;
@@ -63,8 +59,6 @@ import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseVersion
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabases;
 import com.azure.resourcemanager.oracledatabase.models.CloudExadataInfrastructures;
 import com.azure.resourcemanager.oracledatabase.models.CloudVmClusters;
-import com.azure.resourcemanager.oracledatabase.models.DatabaseEditions;
-import com.azure.resourcemanager.oracledatabase.models.DatabaseSystemShapeResources;
 import com.azure.resourcemanager.oracledatabase.models.DbNodes;
 import com.azure.resourcemanager.oracledatabase.models.DbServers;
 import com.azure.resourcemanager.oracledatabase.models.DbSystemShapes;
@@ -78,8 +72,6 @@ import com.azure.resourcemanager.oracledatabase.models.ExascaleDbStorageVaults;
 import com.azure.resourcemanager.oracledatabase.models.FlexComponents;
 import com.azure.resourcemanager.oracledatabase.models.GiMinorVersions;
 import com.azure.resourcemanager.oracledatabase.models.GiVersions;
-import com.azure.resourcemanager.oracledatabase.models.GoldenGateConnections;
-import com.azure.resourcemanager.oracledatabase.models.GoldenGateDeployments;
 import com.azure.resourcemanager.oracledatabase.models.NetworkAnchors;
 import com.azure.resourcemanager.oracledatabase.models.Operations;
 import com.azure.resourcemanager.oracledatabase.models.OracleSubscriptions;
@@ -149,14 +141,6 @@ public final class OracleDatabaseManager {
     private DbSystems dbSystems;
 
     private DbVersions dbVersions;
-
-    private DatabaseEditions databaseEditions;
-
-    private DatabaseSystemShapeResources databaseSystemShapeResources;
-
-    private GoldenGateConnections goldenGateConnections;
-
-    private GoldenGateDeployments goldenGateDeployments;
 
     private final OracleDatabaseManagementClient clientObject;
 
@@ -690,55 +674,6 @@ public final class OracleDatabaseManager {
             this.dbVersions = new DbVersionsImpl(clientObject.getDbVersions(), this);
         }
         return dbVersions;
-    }
-
-    /**
-     * Gets the resource collection API of DatabaseEditions.
-     * 
-     * @return Resource collection API of DatabaseEditions.
-     */
-    public DatabaseEditions databaseEditions() {
-        if (this.databaseEditions == null) {
-            this.databaseEditions = new DatabaseEditionsImpl(clientObject.getDatabaseEditions(), this);
-        }
-        return databaseEditions;
-    }
-
-    /**
-     * Gets the resource collection API of DatabaseSystemShapeResources.
-     * 
-     * @return Resource collection API of DatabaseSystemShapeResources.
-     */
-    public DatabaseSystemShapeResources databaseSystemShapeResources() {
-        if (this.databaseSystemShapeResources == null) {
-            this.databaseSystemShapeResources
-                = new DatabaseSystemShapeResourcesImpl(clientObject.getDatabaseSystemShapeResources(), this);
-        }
-        return databaseSystemShapeResources;
-    }
-
-    /**
-     * Gets the resource collection API of GoldenGateConnections. It manages GoldenGateConnection.
-     * 
-     * @return Resource collection API of GoldenGateConnections.
-     */
-    public GoldenGateConnections goldenGateConnections() {
-        if (this.goldenGateConnections == null) {
-            this.goldenGateConnections = new GoldenGateConnectionsImpl(clientObject.getGoldenGateConnections(), this);
-        }
-        return goldenGateConnections;
-    }
-
-    /**
-     * Gets the resource collection API of GoldenGateDeployments. It manages GoldenGateDeployment.
-     * 
-     * @return Resource collection API of GoldenGateDeployments.
-     */
-    public GoldenGateDeployments goldenGateDeployments() {
-        if (this.goldenGateDeployments == null) {
-            this.goldenGateDeployments = new GoldenGateDeploymentsImpl(clientObject.getGoldenGateDeployments(), this);
-        }
-        return goldenGateDeployments;
     }
 
     /**
