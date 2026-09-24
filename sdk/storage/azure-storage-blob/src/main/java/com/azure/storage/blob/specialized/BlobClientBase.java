@@ -120,6 +120,7 @@ import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -587,20 +588,11 @@ public class BlobClientBase {
                     && layoutRoutingEnabled
                     && StorageImplUtils.pipelineSupportsDataLocality(finalClient.getHttpPipeline())) {
                     BlobRange layoutRange = new BlobRange(range.getOffset(), range.getCount());
-                    layoutCache
-                        = new AutoRefreshingCache<>(new AutoRefreshingCache.ValueProvider<BlobLayoutCacheValue>() {
-                            @Override
-                            public Mono<BlobLayoutCacheValue> createAsync() {
-                                return finalClient.client.fetchLayoutCacheValueAsync(layoutRange, requestConditions,
-                                    contextFinal);
-                            }
-
-                            @Override
-                            public BlobLayoutCacheValue createSync() {
-                                return finalClient.fetchLayoutCacheValueSync(layoutRange, requestConditions,
-                                    contextFinal);
-                            }
-                        }, BlobLayoutCacheValue::getExpiresOn);
+                    layoutCache = new AutoRefreshingCache<>(
+                        () -> finalClient.client.fetchLayoutCacheValueAsync(layoutRange, requestConditions,
+                            contextFinal),
+                        () -> finalClient.fetchLayoutCacheValueSync(layoutRange, requestConditions, contextFinal),
+                        BlobLayoutCacheValue::getExpiresOn, Clock.systemUTC());
                 }
 
                 return Mono.just(new BlobInputStream(finalClient, range.getOffset(), range.getCount(), chunkSize,
@@ -690,19 +682,11 @@ public class BlobClientBase {
             Context finalContext = context;
             BlobRange layoutRange = new BlobRange(0);
 
-            layoutCache = new AutoRefreshingCache<>(new AutoRefreshingCache.ValueProvider<BlobLayoutCacheValue>() {
-                @Override
-                public Mono<BlobLayoutCacheValue> createAsync() {
-                    return finalBehaviorClient.client.fetchLayoutCacheValueAsync(layoutRange, finalRequestConditions,
-                        finalContext);
-                }
-
-                @Override
-                public BlobLayoutCacheValue createSync() {
-                    return finalBehaviorClient.fetchLayoutCacheValueSync(layoutRange, finalRequestConditions,
-                        finalContext);
-                }
-            }, BlobLayoutCacheValue::getExpiresOn);
+            layoutCache = new AutoRefreshingCache<>(
+                () -> finalBehaviorClient.client.fetchLayoutCacheValueAsync(layoutRange, finalRequestConditions,
+                    finalContext),
+                () -> finalBehaviorClient.fetchLayoutCacheValueSync(layoutRange, finalRequestConditions, finalContext),
+                BlobLayoutCacheValue::getExpiresOn, Clock.systemUTC());
         }
 
         StorageSeekableByteChannelBlobReadBehavior behavior

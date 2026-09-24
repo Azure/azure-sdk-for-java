@@ -42,6 +42,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -312,6 +314,34 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
             assertEquals("account.blob.core.windows.net", record.requestHost);
             assertEquals("account.blob.core.windows.net", record.urlHost);
             assertNull(record.hostHeader);
+        }
+    }
+
+    @DoNotRecord
+    @Test
+    public void asyncDownloadToFileCachesLayoutAcrossChunks() throws IOException {
+        LayoutRoutingHttpClient httpClient = new LayoutRoutingHttpClient(MOCK_BODY);
+        BlobAsyncClient client = mockAsyncClient(httpClient);
+        testFile = Files.createTempFile(generateBlobName(), ".dat");
+        Files.deleteIfExists(testFile);
+
+        StepVerifier
+            .create(client
+                .downloadToFileWithResponse(
+                    new BlobDownloadToFileOptions(testFile.toString()).setParallelTransferOptions(
+                        new ParallelTransferOptions().setBlockSizeLong(8L).setMaxConcurrency(1)))
+                .subscribeOn(Schedulers.parallel()))
+            .assertNext(response -> assertEquals(MOCK_BODY.length, response.getValue().getBlobSize()))
+            .verifyComplete();
+
+        assertArrayEquals(MOCK_BODY, Files.readAllBytes(testFile));
+        assertEquals(1, httpClient.getLayoutRequestCount());
+        List<RequestRecord> requests = httpClient.getDataRequestRecords();
+        assertTrue(requests.size() > 2);
+        assertEquals(ORIGINAL_HOST, requests.get(0).urlHost);
+        for (RequestRecord request : requests.subList(1, requests.size())) {
+            assertEquals(DATA_LOCALITY_HOST, request.urlHost);
+            assertEquals(ORIGINAL_HOST, request.hostHeader);
         }
     }
 

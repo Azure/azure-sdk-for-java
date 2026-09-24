@@ -118,6 +118,7 @@ import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -1634,7 +1635,8 @@ public class BlobAsyncClientBase {
                     BlobRange layoutRange = new BlobRange(remainingOffset, remainingCount);
                     layoutCache = new AutoRefreshingCache<>(
                         () -> fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext),
-                        BlobLayoutCacheValue::getExpiresOn);
+                        () -> fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext).block(),
+                        BlobLayoutCacheValue::getExpiresOn, Clock.systemUTC());
                     AutoRefreshingCache<BlobLayoutCacheValue> finalLayoutCache = layoutCache;
                     chunkDownloadFunc = (range, conditions) -> finalLayoutCache.getValidValueAsync().flatMap(cached -> {
                         String endpoint
