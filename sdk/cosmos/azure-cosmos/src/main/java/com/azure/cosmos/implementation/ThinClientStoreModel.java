@@ -76,24 +76,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     }
 
     @Override
-    protected Map<String, String> getDefaultHeaders(
-        ApiType apiType,
-        UserAgentContainer userAgentContainer) {
-
-        // For ThinClient http/2 used for framing only
-        // All operation-level headers are only added to the rntbd-encoded message
-        // the thin client proxy will parse the rntbd headers (not the content!) and substitute any
-        // missing headers for routing (like partitionId or replicaId)
-        // Since the Thin client proxy also needs to set the user-agent header to a different value
-        // it is not added to the rntbd headers - just http-headers in the SDK
-        String userAgent = userAgentContainer != null
-            ? userAgentContainer.getUserAgent()
-            : UserAgentContainer.BASE_USER_AGENT_STRING;
-
-        return Collections.singletonMap(HttpConstants.HttpHeaders.USER_AGENT, userAgent);
-    }
-
-    @Override
     public URI getRootUri(RxDocumentServiceRequest request) {
         // need to have thin client endpoint here
         return this.globalEndpointManager.resolveServiceEndpoint(request).getThinclientRegionalEndpoint();

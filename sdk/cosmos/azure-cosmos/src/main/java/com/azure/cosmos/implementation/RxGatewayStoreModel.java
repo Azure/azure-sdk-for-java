@@ -118,7 +118,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         }
 
         this.userAgentContainer = userAgentContainer;
-        this.defaultHeaders = this.getDefaultHeaders(apiType, userAgentContainer);
+        this.defaultHeaders = createDefaultHeaders(apiType, userAgentContainer);
 
         this.defaultConsistencyLevel = defaultConsistencyLevel;
         this.globalEndpointManager = globalEndpointManager;
@@ -142,7 +142,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         this.userAgentContainer = inner.userAgentContainer;
     }
 
-    protected Map<String, String> getDefaultHeaders(
+    private static Map<String, String> createDefaultHeaders(
         ApiType apiType,
         UserAgentContainer userAgentContainer) {
 
