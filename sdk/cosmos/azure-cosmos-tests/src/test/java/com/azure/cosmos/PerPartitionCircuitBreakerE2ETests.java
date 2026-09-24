@@ -5918,9 +5918,14 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
     }
 
-    @DataProvider(name = "addressRefreshFailuresTriggeringPpcb")
-    public Object[][] addressRefreshFailuresTriggeringPpcb() {
-        List<FaultInjectionServerErrorType> serviceUnavailableFailureTypes = Arrays.asList(
+    @DataProvider(name = "addressRefreshFailurePpcbExpectations")
+    public Object[][] addressRefreshFailurePpcbExpectations() {
+        List<FaultInjectionServerErrorType> failureTypes = Arrays.asList(
+            FaultInjectionServerErrorType.REQUEST_TIMEOUT,
+            FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR,
+            FaultInjectionServerErrorType.CONNECTION_RESET_BY_DOWNSTREAM_SERVICE,
+            FaultInjectionServerErrorType.COMPUTE_INTERNAL_ERROR,
+            FaultInjectionServerErrorType.PARTITION_FAILOVER_ERROR_CODE,
             FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_WITH_UNKNOWN_SUBSTATUS,
             FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_LEASE_NOT_FOUND,
             FaultInjectionServerErrorType.CHANNEL_CLOSED,
@@ -5928,21 +5933,31 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             FaultInjectionServerErrorType.SERVER_READ_QUORUM_NOT_MET);
         List<Object[]> testCases = new ArrayList<>();
 
-        serviceUnavailableFailureTypes.forEach(errorType ->
-            testCases.add(new Object[] {errorType, FaultInjectionOperationType.READ_ITEM}));
-        serviceUnavailableFailureTypes.forEach(errorType ->
-            testCases.add(new Object[] {errorType, FaultInjectionOperationType.CREATE_ITEM}));
+        failureTypes.forEach(errorType -> {
+            boolean shouldTriggerPpcb = errorType != FaultInjectionServerErrorType.REQUEST_TIMEOUT;
+            testCases.add(new Object[] {
+                errorType,
+                FaultInjectionOperationType.READ_ITEM,
+                shouldTriggerPpcb
+            });
+            testCases.add(new Object[] {
+                errorType,
+                FaultInjectionOperationType.CREATE_ITEM,
+                shouldTriggerPpcb
+            });
+        });
 
         return testCases.toArray(new Object[0][]);
     }
 
     @Test(
         groups = {"circuit-breaker-misc-direct"},
-        dataProvider = "addressRefreshFailuresTriggeringPpcb",
+        dataProvider = "addressRefreshFailurePpcbExpectations",
         timeOut = 20 * TIMEOUT)
     public void ppcbTriggersAndRecoversAfterAddressRefreshFailures(
         FaultInjectionServerErrorType errorType,
-        FaultInjectionOperationType operationType) throws Exception {
+        FaultInjectionOperationType operationType,
+        boolean shouldTriggerPpcb) throws Exception {
 
         boolean isCreateOperation = operationType == FaultInjectionOperationType.CREATE_ITEM;
         List<String> applicableRegions = isCreateOperation ? this.writeRegions : this.readRegions;
@@ -6097,16 +6112,32 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             assertThat(observedAddressFailure)
                 .as("Address resolution diagnostics should record the injected %s failure", errorType)
                 .isTrue();
-            assertThat(hasUnavailableLocationForPartition(
+            boolean isPartitionRegionUnavailable = hasUnavailableLocationForPartition(
                 partitionKeyRangeWrapper,
                 partitionUnavailabilityMap,
-                locationContextMapField))
+                locationContextMapField);
+            assertThat(isPartitionRegionUnavailable)
                 .as(
-                    "PPCB should mark the partition-region unavailable after injected %s address failures for %s",
+                    "Unexpected PPCB state after injected %s address failures for %s",
                     errorType,
                     operationType)
-                .isTrue();
+                .isEqualTo(shouldTriggerPpcb);
             assertThat(lastDiagnostics).isNotNull();
+
+            if (!shouldTriggerPpcb) {
+                addressRefreshRule.disable();
+                CosmosItemResponse<TestObject> response = executePpcbAddressRefreshOperation(
+                    container,
+                    operationType,
+                    testObject,
+                    partitionKeyValue,
+                    requestOptions);
+                assertContactedRegionsContain(
+                    response.getDiagnostics().getDiagnosticsContext(),
+                    getRegionNameForAssertion(applicableRegions.get(0)),
+                    "PPCB should keep using the first preferred region when the failure does not open the breaker");
+                return;
+            }
 
             CosmosItemResponse<TestObject> failedOverResponse = executePpcbAddressRefreshOperation(
                 container,
