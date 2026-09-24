@@ -2167,7 +2167,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         String failingRegion = preferredRegions.get(0);
         String healthyRegion = preferredRegions.get(1);
         OperationType operationType = queryFlavor == QueryFlavor.NONE ? OperationType.Read : OperationType.Query;
-        boolean effectivelyDisabled = ppafEnabled && disabled;
+        boolean effectivelyDisabled = disabled;
         AtomicBoolean accountDisablesHedging = new AtomicBoolean(disabled);
         CosmosAsyncClient client = null;
         CosmosAsyncContainer container = null;

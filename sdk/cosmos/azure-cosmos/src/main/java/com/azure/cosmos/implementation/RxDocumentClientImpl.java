@@ -8792,8 +8792,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return EMPTY_REGION_LIST;
         }
 
-        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()
-            && this.globalEndpointManager.getCrossRegionalHedgingDisabledByAccount().get()) {
+        if (this.globalEndpointManager.getCrossRegionalHedgingDisabledByAccount().get()) {
             return EMPTY_REGION_LIST;
         }
 

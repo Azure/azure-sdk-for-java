@@ -9,7 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Added support for the account-level `disableCrossRegionalHedging` flag at client initialization and on account refresh when Per-Partition Automatic Failover (PPAF) is enabled. This flag suppresses availability strategy if and only if the account is PPAF enabled. - See [PR 50425](https://github.com/Azure/azure-sdk-for-java/pull/50425)
+* Added support for the account-level `disableCrossRegionalHedging` flag at client initialization and on account refresh. This flag suppresses explicit availability strategies as well as the SDK-default PPAF strategy. - See [PR 50425](https://github.com/Azure/azure-sdk-for-java/pull/50425)
 
 ### 4.83.0 (2026-09-22)
 

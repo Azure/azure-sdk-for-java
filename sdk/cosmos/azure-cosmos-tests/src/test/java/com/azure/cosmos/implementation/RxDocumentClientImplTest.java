@@ -650,20 +650,15 @@ public class RxDocumentClientImplTest {
     }
 
     @Test(groups = "unit")
-    public void accountHedgingOverrideAppliesOnlyWithPpaf() throws Exception {
+    public void accountHedgingOverrideSuppressesAllEligibleOperations() throws Exception {
         RxDocumentClientImpl client = Mockito.mock(RxDocumentClientImpl.class, Mockito.CALLS_REAL_METHODS);
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         AtomicBoolean disabledByAccount = new AtomicBoolean();
         Mockito.when(endpointManager.getCrossRegionalHedgingDisabledByAccount()).thenReturn(disabledByAccount);
-        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover ppafManager =
-            Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
+        Mockito.when(endpointManager.canUseMultipleWriteLocations()).thenReturn(true);
         Field endpointManagerField = RxDocumentClientImpl.class.getDeclaredField("globalEndpointManager");
         endpointManagerField.setAccessible(true);
         endpointManagerField.set(client, endpointManager);
-        Field ppafManagerField = RxDocumentClientImpl.class
-            .getDeclaredField("globalPartitionEndpointManagerForPerPartitionAutomaticFailover");
-        ppafManagerField.setAccessible(true);
-        ppafManagerField.set(client, ppafManager);
 
         Method applicableRegions = RxDocumentClientImpl.class.getDeclaredMethod("getApplicableRegionsForSpeculation",
             CosmosEndToEndOperationLatencyPolicyConfig.class, ResourceType.class, OperationType.class,
@@ -683,18 +678,25 @@ public class RxDocumentClientImplTest {
             new DatabaseAccount("{\"disableCrossRegionalHedging\":null}")
         };
 
-        for (boolean ppafEnabled : new boolean[] {true, false}) {
-            Mockito.when(ppafManager.isPerPartitionAutomaticFailoverEnabled()).thenReturn(ppafEnabled);
-            for (DatabaseAccount snapshot : snapshots) {
-                disabledByAccount.set(snapshot != null && snapshot.isCrossRegionalHedgingDisabled());
-                for (OperationType operation : new OperationType[] {OperationType.Read, OperationType.Query}) {
-                    Mockito.clearInvocations(endpointManager);
-                    applicableRegions.invoke(client, policy, ResourceType.Document, operation, false, null);
-                    boolean disabled = ppafEnabled && snapshot != null
-                        && Boolean.TRUE.equals(snapshot.getBoolean("disableCrossRegionalHedging"));
-                    Mockito.verify(endpointManager, Mockito.times(disabled ? 0 : 1))
-                        .getApplicableReadRegionalRoutingContexts((List<String>) null);
-                }
+        for (DatabaseAccount snapshot : snapshots) {
+            boolean disabled = snapshot != null && snapshot.isCrossRegionalHedgingDisabled();
+            disabledByAccount.set(disabled);
+            for (OperationType operation : new OperationType[] {
+                OperationType.Read, OperationType.Query, OperationType.ReadFeed, OperationType.QueryPlan
+            }) {
+                Mockito.clearInvocations(endpointManager);
+                applicableRegions.invoke(client, policy, ResourceType.Document, operation, false, null);
+                Mockito.verify(endpointManager, Mockito.times(disabled ? 0 : 1))
+                    .getApplicableReadRegionalRoutingContexts((List<String>) null);
+            }
+            for (OperationType operation : new OperationType[] {
+                OperationType.Create, OperationType.Upsert, OperationType.Replace, OperationType.Patch,
+                OperationType.Delete
+            }) {
+                Mockito.clearInvocations(endpointManager);
+                applicableRegions.invoke(client, policy, ResourceType.Document, operation, true, null);
+                Mockito.verify(endpointManager, Mockito.times(disabled ? 0 : 1))
+                    .getApplicableWriteRegionalRoutingContexts((List<String>) null);
             }
         }
     }
@@ -742,7 +744,7 @@ public class RxDocumentClientImplTest {
                 endpointManager.refreshLocationAsync(null, true).block(Duration.ofSeconds(5));
                 assertThat(serializeClientConfig(client).has("isPpafBasedAvailabilityStrategyEnabled")).isFalse();
                 assertThat((List<?>) applicableRegions.invoke(client, policy, ResourceType.Document,
-                    OperationType.Read, false, Collections.emptyList())).hasSize(2);
+                    OperationType.Read, false, Collections.emptyList())).isEmpty();
 
                 account.set(hedgingAccount(true, false));
                 endpointManager.refreshLocationAsync(null, true).block(Duration.ofSeconds(5));
