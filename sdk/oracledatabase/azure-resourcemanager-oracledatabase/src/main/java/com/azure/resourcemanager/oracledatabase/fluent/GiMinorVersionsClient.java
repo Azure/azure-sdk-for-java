@@ -10,7 +10,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.oracledatabase.fluent.models.GiMinorVersionInner;
-import com.azure.resourcemanager.oracledatabase.models.GiMinorVersionSortOrder;
 import com.azure.resourcemanager.oracledatabase.models.ShapeFamily;
 
 /**
@@ -38,10 +37,6 @@ public interface GiMinorVersionsClient {
      * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
      * given shape family.
      * @param zone Filters the result for the given Azure Availability Zone.
-     * @param shape If provided, filters the results to the set of GI minor versions supported for the given shape.
-     * @param isGiVersionForProvisioning If true, filters the results to GI minor versions supported during VM cluster
-     * provisioning.
-     * @param sortOrder Sort order for the returned GI minor versions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -50,8 +45,7 @@ public interface GiMinorVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GiMinorVersionInner> listByParent(String location, String giversionname, ShapeFamily shapeFamily,
-        String zone, String shape, Boolean isGiVersionForProvisioning, GiMinorVersionSortOrder sortOrder,
-        Context context);
+        String zone, Context context);
 
     /**
      * Get a GiMinorVersion.

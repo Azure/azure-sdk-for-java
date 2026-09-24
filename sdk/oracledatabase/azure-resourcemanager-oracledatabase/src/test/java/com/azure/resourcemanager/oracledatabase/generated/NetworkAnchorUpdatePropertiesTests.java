@@ -12,24 +12,24 @@ public final class NetworkAnchorUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkAnchorUpdateProperties model = BinaryData.fromString(
-            "{\"ociBackupCidrBlock\":\"lduccbi\",\"isOracleToAzureDnsZoneSyncEnabled\":false,\"isOracleDnsListeningEndpointEnabled\":false,\"isOracleDnsForwardingEndpointEnabled\":true}")
+            "{\"ociBackupCidrBlock\":\"amikzebrqbsm\",\"isOracleToAzureDnsZoneSyncEnabled\":false,\"isOracleDnsListeningEndpointEnabled\":true,\"isOracleDnsForwardingEndpointEnabled\":false}")
             .toObject(NetworkAnchorUpdateProperties.class);
-        Assertions.assertEquals("lduccbi", model.ociBackupCidrBlock());
+        Assertions.assertEquals("amikzebrqbsm", model.ociBackupCidrBlock());
         Assertions.assertFalse(model.isOracleToAzureDnsZoneSyncEnabled());
-        Assertions.assertFalse(model.isOracleDnsListeningEndpointEnabled());
-        Assertions.assertTrue(model.isOracleDnsForwardingEndpointEnabled());
+        Assertions.assertTrue(model.isOracleDnsListeningEndpointEnabled());
+        Assertions.assertFalse(model.isOracleDnsForwardingEndpointEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkAnchorUpdateProperties model = new NetworkAnchorUpdateProperties().withOciBackupCidrBlock("lduccbi")
+        NetworkAnchorUpdateProperties model = new NetworkAnchorUpdateProperties().withOciBackupCidrBlock("amikzebrqbsm")
             .withIsOracleToAzureDnsZoneSyncEnabled(false)
-            .withIsOracleDnsListeningEndpointEnabled(false)
-            .withIsOracleDnsForwardingEndpointEnabled(true);
+            .withIsOracleDnsListeningEndpointEnabled(true)
+            .withIsOracleDnsForwardingEndpointEnabled(false);
         model = BinaryData.fromObject(model).toObject(NetworkAnchorUpdateProperties.class);
-        Assertions.assertEquals("lduccbi", model.ociBackupCidrBlock());
+        Assertions.assertEquals("amikzebrqbsm", model.ociBackupCidrBlock());
         Assertions.assertFalse(model.isOracleToAzureDnsZoneSyncEnabled());
-        Assertions.assertFalse(model.isOracleDnsListeningEndpointEnabled());
-        Assertions.assertTrue(model.isOracleDnsForwardingEndpointEnabled());
+        Assertions.assertTrue(model.isOracleDnsListeningEndpointEnabled());
+        Assertions.assertFalse(model.isOracleDnsForwardingEndpointEnabled());
     }
 }

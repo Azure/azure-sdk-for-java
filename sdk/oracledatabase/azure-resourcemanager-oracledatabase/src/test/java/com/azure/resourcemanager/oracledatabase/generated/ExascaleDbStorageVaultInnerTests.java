@@ -17,47 +17,41 @@ public final class ExascaleDbStorageVaultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExascaleDbStorageVaultInner model = BinaryData.fromString(
-            "{\"properties\":{\"additionalFlashCacheInPercent\":1567146664,\"description\":\"gdakchz\",\"displayName\":\"vl\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":1984466292},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":1537129543,\"totalSizeInGbs\":1929531496},\"timeZone\":\"kjibnxmysuxswqrn\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Provisioning\",\"lifecycleDetails\":\"psttexoq\",\"vmClusterCount\":1231024606,\"ocid\":\"yyufmhruncuw\",\"ociUrl\":\"spkcdqzh\",\"exadataInfrastructureId\":\"tddunqnd\",\"attachedShapeAttributes\":[\"SMART_STORAGE\",\"BLOCK_STORAGE\"],\"isAutoscaleEnabled\":false,\"autoscaleLimitInGbs\":1805492291},\"zones\":[\"rcgegydcwboxjum\"],\"location\":\"qoli\",\"tags\":{\"oq\":\"aiouaubrjt\",\"rzpasccbiuimzdly\":\"fuojrngif\",\"fdvruz\":\"dfqwmkyoq\"},\"id\":\"lzo\",\"name\":\"hpc\",\"type\":\"fnmdxotn\"}")
+            "{\"properties\":{\"additionalFlashCacheInPercent\":1923836224,\"description\":\"qhlwigdivbkbxgo\",\"displayName\":\"fajuwas\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":1426574768},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":37361117,\"totalSizeInGbs\":13307941},\"timeZone\":\"uxakjsqzhzbezk\",\"provisioningState\":\"Provisioning\",\"lifecycleState\":\"Updating\",\"lifecycleDetails\":\"xasicddyvvjskg\",\"vmClusterCount\":1236254057,\"ocid\":\"wa\",\"ociUrl\":\"qgatjeaahhvjhhn\",\"exadataInfrastructureId\":\"zybbj\",\"attachedShapeAttributes\":[\"SMART_STORAGE\"]},\"zones\":[\"yxkyxvx\",\"vblbjednljlageua\",\"lxunsmjbnkppxy\",\"enlsvxeizzgwkln\"],\"location\":\"mffeycxcktpi\",\"tags\":{\"qiekkkzddrt\":\"rteeamm\",\"ojbmxv\":\"g\",\"cuijpxt\":\"vrefdeesv\",\"wprtu\":\"s\"},\"id\":\"wsawddjibabxvi\",\"name\":\"itvtzeexavo\",\"type\":\"tfgle\"}")
             .toObject(ExascaleDbStorageVaultInner.class);
-        Assertions.assertEquals("qoli", model.location());
-        Assertions.assertEquals("aiouaubrjt", model.tags().get("oq"));
-        Assertions.assertEquals(1567146664, model.properties().additionalFlashCacheInPercent());
-        Assertions.assertEquals("gdakchz", model.properties().description());
-        Assertions.assertEquals("vl", model.properties().displayName());
-        Assertions.assertEquals(1984466292, model.properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
-        Assertions.assertEquals("kjibnxmysuxswqrn", model.properties().timeZone());
-        Assertions.assertEquals("tddunqnd", model.properties().exadataInfrastructureId());
-        Assertions.assertFalse(model.properties().isAutoscaleEnabled());
-        Assertions.assertEquals(1805492291, model.properties().autoscaleLimitInGbs());
-        Assertions.assertEquals("rcgegydcwboxjum", model.zones().get(0));
+        Assertions.assertEquals("mffeycxcktpi", model.location());
+        Assertions.assertEquals("rteeamm", model.tags().get("qiekkkzddrt"));
+        Assertions.assertEquals(1923836224, model.properties().additionalFlashCacheInPercent());
+        Assertions.assertEquals("qhlwigdivbkbxgo", model.properties().description());
+        Assertions.assertEquals("fajuwas", model.properties().displayName());
+        Assertions.assertEquals(1426574768, model.properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
+        Assertions.assertEquals("uxakjsqzhzbezk", model.properties().timeZone());
+        Assertions.assertEquals("zybbj", model.properties().exadataInfrastructureId());
+        Assertions.assertEquals("yxkyxvx", model.zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExascaleDbStorageVaultInner model = new ExascaleDbStorageVaultInner().withLocation("qoli")
-            .withTags(mapOf("oq", "aiouaubrjt", "rzpasccbiuimzdly", "fuojrngif", "fdvruz", "dfqwmkyoq"))
-            .withProperties(new ExascaleDbStorageVaultProperties().withAdditionalFlashCacheInPercent(1567146664)
-                .withDescription("gdakchz")
-                .withDisplayName("vl")
+        ExascaleDbStorageVaultInner model = new ExascaleDbStorageVaultInner().withLocation("mffeycxcktpi")
+            .withTags(mapOf("qiekkkzddrt", "rteeamm", "ojbmxv", "g", "cuijpxt", "vrefdeesv", "wprtu", "s"))
+            .withProperties(new ExascaleDbStorageVaultProperties().withAdditionalFlashCacheInPercent(1923836224)
+                .withDescription("qhlwigdivbkbxgo")
+                .withDisplayName("fajuwas")
                 .withHighCapacityDatabaseStorageInput(
-                    new ExascaleDbStorageInputDetails().withTotalSizeInGbs(1984466292))
-                .withTimeZone("kjibnxmysuxswqrn")
-                .withExadataInfrastructureId("tddunqnd")
-                .withIsAutoscaleEnabled(false)
-                .withAutoscaleLimitInGbs(1805492291))
-            .withZones(Arrays.asList("rcgegydcwboxjum"));
+                    new ExascaleDbStorageInputDetails().withTotalSizeInGbs(1426574768))
+                .withTimeZone("uxakjsqzhzbezk")
+                .withExadataInfrastructureId("zybbj"))
+            .withZones(Arrays.asList("yxkyxvx", "vblbjednljlageua", "lxunsmjbnkppxy", "enlsvxeizzgwkln"));
         model = BinaryData.fromObject(model).toObject(ExascaleDbStorageVaultInner.class);
-        Assertions.assertEquals("qoli", model.location());
-        Assertions.assertEquals("aiouaubrjt", model.tags().get("oq"));
-        Assertions.assertEquals(1567146664, model.properties().additionalFlashCacheInPercent());
-        Assertions.assertEquals("gdakchz", model.properties().description());
-        Assertions.assertEquals("vl", model.properties().displayName());
-        Assertions.assertEquals(1984466292, model.properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
-        Assertions.assertEquals("kjibnxmysuxswqrn", model.properties().timeZone());
-        Assertions.assertEquals("tddunqnd", model.properties().exadataInfrastructureId());
-        Assertions.assertFalse(model.properties().isAutoscaleEnabled());
-        Assertions.assertEquals(1805492291, model.properties().autoscaleLimitInGbs());
-        Assertions.assertEquals("rcgegydcwboxjum", model.zones().get(0));
+        Assertions.assertEquals("mffeycxcktpi", model.location());
+        Assertions.assertEquals("rteeamm", model.tags().get("qiekkkzddrt"));
+        Assertions.assertEquals(1923836224, model.properties().additionalFlashCacheInPercent());
+        Assertions.assertEquals("qhlwigdivbkbxgo", model.properties().description());
+        Assertions.assertEquals("fajuwas", model.properties().displayName());
+        Assertions.assertEquals(1426574768, model.properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
+        Assertions.assertEquals("uxakjsqzhzbezk", model.properties().timeZone());
+        Assertions.assertEquals("zybbj", model.properties().exadataInfrastructureId());
+        Assertions.assertEquals("yxkyxvx", model.zones().get(0));
     }
 
     // Use "Map.of" if available

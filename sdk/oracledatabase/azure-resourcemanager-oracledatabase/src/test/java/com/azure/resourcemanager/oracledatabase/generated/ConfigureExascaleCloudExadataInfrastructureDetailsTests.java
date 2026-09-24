@@ -12,16 +12,16 @@ public final class ConfigureExascaleCloudExadataInfrastructureDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigureExascaleCloudExadataInfrastructureDetails model
-            = BinaryData.fromString("{\"totalStorageInGbs\":591118108}")
+            = BinaryData.fromString("{\"totalStorageInGbs\":2032893006}")
                 .toObject(ConfigureExascaleCloudExadataInfrastructureDetails.class);
-        Assertions.assertEquals(591118108, model.totalStorageInGbs());
+        Assertions.assertEquals(2032893006, model.totalStorageInGbs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConfigureExascaleCloudExadataInfrastructureDetails model
-            = new ConfigureExascaleCloudExadataInfrastructureDetails().withTotalStorageInGbs(591118108);
+            = new ConfigureExascaleCloudExadataInfrastructureDetails().withTotalStorageInGbs(2032893006);
         model = BinaryData.fromObject(model).toObject(ConfigureExascaleCloudExadataInfrastructureDetails.class);
-        Assertions.assertEquals(591118108, model.totalStorageInGbs());
+        Assertions.assertEquals(2032893006, model.totalStorageInGbs());
     }
 }

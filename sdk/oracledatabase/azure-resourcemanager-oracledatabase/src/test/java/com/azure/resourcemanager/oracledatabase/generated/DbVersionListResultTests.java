@@ -12,13 +12,13 @@ public final class DbVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"mowaziynknlqwzdv\",\"isLatestForMajorVersion\":false,\"isPreviewDbVersion\":true,\"isUpgradeSupported\":true,\"supportsPdb\":false},\"id\":\"maajquhuxylr\",\"name\":\"vmtygj\",\"type\":\"mzyospspshck\"}],\"nextLink\":\"yjpmspbpssdfppyo\"}")
+            "{\"value\":[{\"properties\":{\"version\":\"tvczkcnyxr\",\"isLatestForMajorVersion\":false,\"isPreviewDbVersion\":true,\"isUpgradeSupported\":true,\"supportsPdb\":true},\"id\":\"nkvxlxpaglqi\",\"name\":\"bgkc\",\"type\":\"khpzvuqdflv\"}],\"nextLink\":\"iypfp\"}")
             .toObject(DbVersionListResult.class);
-        Assertions.assertEquals("mowaziynknlqwzdv", model.value().get(0).properties().version());
+        Assertions.assertEquals("tvczkcnyxr", model.value().get(0).properties().version());
         Assertions.assertFalse(model.value().get(0).properties().isLatestForMajorVersion());
         Assertions.assertTrue(model.value().get(0).properties().isPreviewDbVersion());
         Assertions.assertTrue(model.value().get(0).properties().isUpgradeSupported());
-        Assertions.assertFalse(model.value().get(0).properties().supportsPdb());
-        Assertions.assertEquals("yjpmspbpssdfppyo", model.nextLink());
+        Assertions.assertTrue(model.value().get(0).properties().supportsPdb());
+        Assertions.assertEquals("iypfp", model.nextLink());
     }
 }

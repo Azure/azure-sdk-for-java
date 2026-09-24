@@ -15,35 +15,34 @@ public final class DbNodeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbNodeListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ocid\":\"msmlmzq\",\"additionalDetails\":\"ft\",\"backupIpId\":\"ae\",\"backupVnic2Id\":\"iahxicsl\",\"backupVnicId\":\"oqzpiyylha\",\"cpuCoreCount\":105326418,\"dbNodeStorageSizeInGbs\":324184633,\"dbServerId\":\"csphkaiv\",\"dbSystemId\":\"itqscywuggwoluhc\",\"faultDomain\":\"wem\",\"hostIpId\":\"i\",\"hostname\":\"brgz\",\"lifecycleState\":\"Terminating\",\"lifecycleDetails\":\"swe\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":2076786264,\"softwareStorageSizeInGb\":840450646,\"timeCreated\":\"2021-03-07T15:59:58Z\",\"timeMaintenanceWindowEnd\":\"2021-11-12T01:00:16Z\",\"timeMaintenanceWindowStart\":\"2021-09-13T12:29:48Z\",\"vnic2Id\":\"xqhuexm\",\"vnicId\":\"ttlstvlzywemhz\",\"provisioningState\":\"Failed\"},\"id\":\"dtclusiypb\",\"name\":\"fgytguslfeadcyg\",\"type\":\"ukyhejhzis\"},{\"properties\":{\"ocid\":\"fpel\",\"additionalDetails\":\"p\",\"backupIpId\":\"ksrpqv\",\"backupVnic2Id\":\"zraehtwd\",\"backupVnicId\":\"ftswibyrcdlbhsh\",\"cpuCoreCount\":206253573,\"dbNodeStorageSizeInGbs\":137143614,\"dbServerId\":\"stwit\",\"dbSystemId\":\"khevxccedc\",\"faultDomain\":\"md\",\"hostIpId\":\"dnwzxltjcvnhltiu\",\"hostname\":\"xnavvwxq\",\"lifecycleState\":\"Provisioning\",\"lifecycleDetails\":\"qunyowxwlmdjr\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":185014481,\"softwareStorageSizeInGb\":1410181750,\"timeCreated\":\"2021-11-30T14:41:11Z\",\"timeMaintenanceWindowEnd\":\"2020-12-25T17:04:25Z\",\"timeMaintenanceWindowStart\":\"2020-12-26T00:48:27Z\",\"vnic2Id\":\"acizsjqlhkrr\",\"vnicId\":\"bdeibqipqk\",\"provisioningState\":\"Failed\"},\"id\":\"ndzwmkrefa\",\"name\":\"pjorwkqnyhg\",\"type\":\"ij\"},{\"properties\":{\"ocid\":\"ivfxzsjabibsyst\",\"additionalDetails\":\"fsdjpvkvp\",\"backupIpId\":\"xbkzbzkdvncj\",\"backupVnic2Id\":\"udurgkakmokz\",\"backupVnicId\":\"jk\",\"cpuCoreCount\":1622584038,\"dbNodeStorageSizeInGbs\":1604322971,\"dbServerId\":\"uwqlgzrfzeey\",\"dbSystemId\":\"bizikayuhq\",\"faultDomain\":\"jbsybbqw\",\"hostIpId\":\"t\",\"hostname\":\"gmfpgvmp\",\"lifecycleState\":\"Terminating\",\"lifecycleDetails\":\"slthaq\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":400254725,\"softwareStorageSizeInGb\":236380813,\"timeCreated\":\"2021-05-06T12:17:18Z\",\"timeMaintenanceWindowEnd\":\"2021-02-18T02:58:52Z\",\"timeMaintenanceWindowStart\":\"2021-11-08T23:17:29Z\",\"vnic2Id\":\"ezpdrhneu\",\"vnicId\":\"owqkdwytisi\",\"provisioningState\":\"Succeeded\"},\"id\":\"gpikpzimejza\",\"name\":\"lfzxiavrmbzonoki\",\"type\":\"rjqc\"},{\"properties\":{\"ocid\":\"gzpfrla\",\"additionalDetails\":\"zrnw\",\"backupIpId\":\"indfpwpjyl\",\"backupVnic2Id\":\"tlhflsjcdhszf\",\"backupVnicId\":\"fbgofeljagrqmqh\",\"cpuCoreCount\":1366830771,\"dbNodeStorageSizeInGbs\":612777631,\"dbServerId\":\"iojnalghfkvtv\",\"dbSystemId\":\"ex\",\"faultDomain\":\"wueluqhhahhxv\",\"hostIpId\":\"mzkwpjg\",\"hostname\":\"spughftqsxhq\",\"lifecycleState\":\"Failed\",\"lifecycleDetails\":\"xukndxdigr\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":1040551397,\"softwareStorageSizeInGb\":1159016951,\"timeCreated\":\"2021-11-16T06:23:27Z\",\"timeMaintenanceWindowEnd\":\"2021-04-01T21:46:18Z\",\"timeMaintenanceWindowStart\":\"2021-11-18T16:14:24Z\",\"vnic2Id\":\"ihwhbotzingamvpp\",\"vnicId\":\"o\",\"provisioningState\":\"Failed\"},\"id\":\"udphqamvdkfwyn\",\"name\":\"cvtbv\",\"type\":\"ayhmtnvyqiatkz\"}],\"nextLink\":\"cnpwzcjaesgvvscc\"}")
+            "{\"value\":[{\"properties\":{\"ocid\":\"syyceuzsoibjud\",\"additionalDetails\":\"rx\",\"backupIpId\":\"thzvaytdwkqbrqu\",\"backupVnic2Id\":\"axhexiilivp\",\"backupVnicId\":\"iirqtd\",\"cpuCoreCount\":887642500,\"dbNodeStorageSizeInGbs\":1693357038,\"dbServerId\":\"uzf\",\"dbSystemId\":\"squyfxrxxlep\",\"faultDomain\":\"amxjezwlw\",\"hostIpId\":\"xuqlcvydypat\",\"hostname\":\"oa\",\"lifecycleState\":\"Failed\",\"lifecycleDetails\":\"niodkooeb\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":1107083346,\"softwareStorageSizeInGb\":1652844269,\"timeCreated\":\"2021-05-06T02:47:02Z\",\"timeMaintenanceWindowEnd\":\"2021-06-02T00:19:10Z\",\"timeMaintenanceWindowStart\":\"2021-07-03T07:44:33Z\",\"vnic2Id\":\"c\",\"vnicId\":\"odtji\",\"provisioningState\":\"Failed\"},\"id\":\"lfltka\",\"name\":\"jvefkdlfoakggkfp\",\"type\":\"gaowpulpqblylsyx\"},{\"properties\":{\"ocid\":\"jnsjervtiagxsd\",\"additionalDetails\":\"uem\",\"backupIpId\":\"bzkfzbeyvpn\",\"backupVnic2Id\":\"cvinvkjjxdxrbuuk\",\"backupVnicId\":\"lewyhmlwpaz\",\"cpuCoreCount\":1765730251,\"dbNodeStorageSizeInGbs\":437728645,\"dbServerId\":\"cckwyfzqwhxxbu\",\"dbSystemId\":\"qa\",\"faultDomain\":\"feqztppriol\",\"hostIpId\":\"rjaltolmncw\",\"hostname\":\"bqwcsdbnwdcf\",\"lifecycleState\":\"Provisioning\",\"lifecycleDetails\":\"qdpfuvglsbjjca\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":1075232734,\"softwareStorageSizeInGb\":152007455,\"timeCreated\":\"2021-05-11T02:00:05Z\",\"timeMaintenanceWindowEnd\":\"2021-04-07T04:06:35Z\",\"timeMaintenanceWindowStart\":\"2021-10-07T13:15:31Z\",\"vnic2Id\":\"ormrlxqtvcofudfl\",\"vnicId\":\"kgjubgdknnqvsazn\",\"provisioningState\":\"Failed\"},\"id\":\"rudsg\",\"name\":\"a\",\"type\":\"mkycgra\"},{\"properties\":{\"ocid\":\"juetaebur\",\"additionalDetails\":\"dmovsm\",\"backupIpId\":\"xwabmqoe\",\"backupVnic2Id\":\"ifrvtpu\",\"backupVnicId\":\"jmqlgkfb\",\"cpuCoreCount\":1252448159,\"dbNodeStorageSizeInGbs\":1601819937,\"dbServerId\":\"n\",\"dbSystemId\":\"bjcntujitc\",\"faultDomain\":\"df\",\"hostIpId\":\"waezkojvd\",\"hostname\":\"zfoqouicybxar\",\"lifecycleState\":\"Terminated\",\"lifecycleDetails\":\"zuf\",\"maintenanceType\":\"VmdbRebootMigration\",\"memorySizeInGbs\":95404001,\"softwareStorageSizeInGb\":153808073,\"timeCreated\":\"2020-12-29T22:09:15Z\",\"timeMaintenanceWindowEnd\":\"2021-12-03T09:55:25Z\",\"timeMaintenanceWindowStart\":\"2021-12-10T00:14:44Z\",\"vnic2Id\":\"iodhkhazxkhnz\",\"vnicId\":\"onlwntoeg\",\"provisioningState\":\"Succeeded\"},\"id\":\"bwh\",\"name\":\"szzcmrvexztv\",\"type\":\"t\"}],\"nextLink\":\"sfraoyzko\"}")
             .toObject(DbNodeListResult.class);
-        Assertions.assertEquals("msmlmzq", model.value().get(0).properties().ocid());
-        Assertions.assertEquals("ft", model.value().get(0).properties().additionalDetails());
-        Assertions.assertEquals("ae", model.value().get(0).properties().backupIpId());
-        Assertions.assertEquals("iahxicsl", model.value().get(0).properties().backupVnic2Id());
-        Assertions.assertEquals("oqzpiyylha", model.value().get(0).properties().backupVnicId());
-        Assertions.assertEquals(105326418, model.value().get(0).properties().cpuCoreCount());
-        Assertions.assertEquals(324184633, model.value().get(0).properties().dbNodeStorageSizeInGbs());
-        Assertions.assertEquals("csphkaiv", model.value().get(0).properties().dbServerId());
-        Assertions.assertEquals("itqscywuggwoluhc", model.value().get(0).properties().dbSystemId());
-        Assertions.assertEquals("wem", model.value().get(0).properties().faultDomain());
-        Assertions.assertEquals("i", model.value().get(0).properties().hostIpId());
-        Assertions.assertEquals("brgz", model.value().get(0).properties().hostname());
-        Assertions.assertEquals(DbNodeProvisioningState.TERMINATING,
-            model.value().get(0).properties().lifecycleState());
-        Assertions.assertEquals("swe", model.value().get(0).properties().lifecycleDetails());
+        Assertions.assertEquals("syyceuzsoibjud", model.value().get(0).properties().ocid());
+        Assertions.assertEquals("rx", model.value().get(0).properties().additionalDetails());
+        Assertions.assertEquals("thzvaytdwkqbrqu", model.value().get(0).properties().backupIpId());
+        Assertions.assertEquals("axhexiilivp", model.value().get(0).properties().backupVnic2Id());
+        Assertions.assertEquals("iirqtd", model.value().get(0).properties().backupVnicId());
+        Assertions.assertEquals(887642500, model.value().get(0).properties().cpuCoreCount());
+        Assertions.assertEquals(1693357038, model.value().get(0).properties().dbNodeStorageSizeInGbs());
+        Assertions.assertEquals("uzf", model.value().get(0).properties().dbServerId());
+        Assertions.assertEquals("squyfxrxxlep", model.value().get(0).properties().dbSystemId());
+        Assertions.assertEquals("amxjezwlw", model.value().get(0).properties().faultDomain());
+        Assertions.assertEquals("xuqlcvydypat", model.value().get(0).properties().hostIpId());
+        Assertions.assertEquals("oa", model.value().get(0).properties().hostname());
+        Assertions.assertEquals(DbNodeProvisioningState.FAILED, model.value().get(0).properties().lifecycleState());
+        Assertions.assertEquals("niodkooeb", model.value().get(0).properties().lifecycleDetails());
         Assertions.assertEquals(DbNodeMaintenanceType.VMDB_REBOOT_MIGRATION,
             model.value().get(0).properties().maintenanceType());
-        Assertions.assertEquals(2076786264, model.value().get(0).properties().memorySizeInGbs());
-        Assertions.assertEquals(840450646, model.value().get(0).properties().softwareStorageSizeInGb());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-07T15:59:58Z"),
+        Assertions.assertEquals(1107083346, model.value().get(0).properties().memorySizeInGbs());
+        Assertions.assertEquals(1652844269, model.value().get(0).properties().softwareStorageSizeInGb());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T02:47:02Z"),
             model.value().get(0).properties().timeCreated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-12T01:00:16Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T00:19:10Z"),
             model.value().get(0).properties().timeMaintenanceWindowEnd());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-13T12:29:48Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-03T07:44:33Z"),
             model.value().get(0).properties().timeMaintenanceWindowStart());
-        Assertions.assertEquals("xqhuexm", model.value().get(0).properties().vnic2Id());
-        Assertions.assertEquals("ttlstvlzywemhz", model.value().get(0).properties().vnicId());
-        Assertions.assertEquals("cnpwzcjaesgvvscc", model.nextLink());
+        Assertions.assertEquals("c", model.value().get(0).properties().vnic2Id());
+        Assertions.assertEquals("odtji", model.value().get(0).properties().vnicId());
+        Assertions.assertEquals("sfraoyzko", model.nextLink());
     }
 }

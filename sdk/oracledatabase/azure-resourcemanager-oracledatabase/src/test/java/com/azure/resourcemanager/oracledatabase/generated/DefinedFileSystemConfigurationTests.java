@@ -12,11 +12,11 @@ public final class DefinedFileSystemConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefinedFileSystemConfiguration model = BinaryData.fromString(
-            "{\"isBackupPartition\":true,\"isResizable\":true,\"minSizeGb\":292038248,\"mountPoint\":\"cxsenhwlrsff\"}")
+            "{\"isBackupPartition\":true,\"isResizable\":true,\"minSizeGb\":1729684503,\"mountPoint\":\"qvyxlwhzlsicoho\"}")
             .toObject(DefinedFileSystemConfiguration.class);
         Assertions.assertTrue(model.isBackupPartition());
         Assertions.assertTrue(model.isResizable());
-        Assertions.assertEquals(292038248, model.minSizeGb());
-        Assertions.assertEquals("cxsenhwlrsff", model.mountPoint());
+        Assertions.assertEquals(1729684503, model.minSizeGb());
+        Assertions.assertEquals("qvyxlwhzlsicoho", model.mountPoint());
     }
 }

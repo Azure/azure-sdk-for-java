@@ -22,11 +22,6 @@ public final class SystemShapes extends ExpandableStringEnum<SystemShapes> {
     public static final SystemShapes EXADATA_X11M = fromString("Exadata.X11M");
 
     /**
-     * Exadata X11M shape.
-     */
-    public static final SystemShapes EXADATA_X11MV = fromString("Exadata.X11MV");
-
-    /**
      * Exadata DB on Exascale Infrastructure shape.
      */
     public static final SystemShapes EXA_DB_XS = fromString("ExaDbXS");

@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class DbIormConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DbIormConfig model
-            = BinaryData.fromString("{\"dbName\":\"sjnkal\",\"flashCacheLimit\":\"tiiswacffg\",\"share\":1298793753}")
-                .toObject(DbIormConfig.class);
-        Assertions.assertEquals("sjnkal", model.dbName());
-        Assertions.assertEquals("tiiswacffg", model.flashCacheLimit());
-        Assertions.assertEquals(1298793753, model.share());
+        DbIormConfig model = BinaryData
+            .fromString("{\"dbName\":\"havhqlkthumaqolb\",\"flashCacheLimit\":\"cdui\",\"share\":1108910411}")
+            .toObject(DbIormConfig.class);
+        Assertions.assertEquals("havhqlkthumaqolb", model.dbName());
+        Assertions.assertEquals("cdui", model.flashCacheLimit());
+        Assertions.assertEquals(1108910411, model.share());
     }
 }

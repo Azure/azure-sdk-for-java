@@ -29,11 +29,6 @@ public final class CloudExadataInfrastructureProperties
     private String ocid;
 
     /*
-     * Azure Resource Anchor ID
-     */
-    private String resourceAnchorId;
-
-    /*
      * The number of compute servers for the cloud Exadata infrastructure.
      */
     private Integer computeCount;
@@ -96,11 +91,6 @@ public final class CloudExadataInfrastructureProperties
      * The model name of the cloud Exadata infrastructure resource.
      */
     private String shape;
-
-    /*
-     * Proximity placement group settings
-     */
-    private ProximityPlacementGroup proximityPlacementGroup;
 
     /*
      * HTTPS link to OCI resources exposed to Azure Customer via Azure Interface.
@@ -234,26 +224,6 @@ public final class CloudExadataInfrastructureProperties
      */
     public String ocid() {
         return this.ocid;
-    }
-
-    /**
-     * Get the resourceAnchorId property: Azure Resource Anchor ID.
-     * 
-     * @return the resourceAnchorId value.
-     */
-    public String resourceAnchorId() {
-        return this.resourceAnchorId;
-    }
-
-    /**
-     * Set the resourceAnchorId property: Azure Resource Anchor ID.
-     * 
-     * @param resourceAnchorId the resourceAnchorId value to set.
-     * @return the CloudExadataInfrastructureProperties object itself.
-     */
-    public CloudExadataInfrastructureProperties withResourceAnchorId(String resourceAnchorId) {
-        this.resourceAnchorId = resourceAnchorId;
-        return this;
     }
 
     /**
@@ -427,27 +397,6 @@ public final class CloudExadataInfrastructureProperties
      */
     public CloudExadataInfrastructureProperties withShape(String shape) {
         this.shape = shape;
-        return this;
-    }
-
-    /**
-     * Get the proximityPlacementGroup property: Proximity placement group settings.
-     * 
-     * @return the proximityPlacementGroup value.
-     */
-    public ProximityPlacementGroup proximityPlacementGroup() {
-        return this.proximityPlacementGroup;
-    }
-
-    /**
-     * Set the proximityPlacementGroup property: Proximity placement group settings.
-     * 
-     * @param proximityPlacementGroup the proximityPlacementGroup value to set.
-     * @return the CloudExadataInfrastructureProperties object itself.
-     */
-    public CloudExadataInfrastructureProperties
-        withProximityPlacementGroup(ProximityPlacementGroup proximityPlacementGroup) {
-        this.proximityPlacementGroup = proximityPlacementGroup;
         return this;
     }
 
@@ -694,13 +643,11 @@ public final class CloudExadataInfrastructureProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("shape", this.shape);
         jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeStringField("resourceAnchorId", this.resourceAnchorId);
         jsonWriter.writeNumberField("computeCount", this.computeCount);
         jsonWriter.writeNumberField("storageCount", this.storageCount);
         jsonWriter.writeJsonField("maintenanceWindow", this.maintenanceWindow);
         jsonWriter.writeArrayField("customerContacts", this.customerContacts,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("proximityPlacementGroup", this.proximityPlacementGroup);
         jsonWriter.writeStringField("databaseServerType", this.databaseServerType);
         jsonWriter.writeStringField("storageServerType", this.storageServerType);
         return jsonWriter.writeEndObject();
@@ -734,8 +681,6 @@ public final class CloudExadataInfrastructureProperties
                         = definedFileSystemConfiguration;
                 } else if ("ocid".equals(fieldName)) {
                     deserializedCloudExadataInfrastructureProperties.ocid = reader.getString();
-                } else if ("resourceAnchorId".equals(fieldName)) {
-                    deserializedCloudExadataInfrastructureProperties.resourceAnchorId = reader.getString();
                 } else if ("computeCount".equals(fieldName)) {
                     deserializedCloudExadataInfrastructureProperties.computeCount
                         = reader.getNullable(JsonReader::getInt);
@@ -768,9 +713,6 @@ public final class CloudExadataInfrastructureProperties
                 } else if ("lifecycleState".equals(fieldName)) {
                     deserializedCloudExadataInfrastructureProperties.lifecycleState
                         = CloudExadataInfrastructureLifecycleState.fromString(reader.getString());
-                } else if ("proximityPlacementGroup".equals(fieldName)) {
-                    deserializedCloudExadataInfrastructureProperties.proximityPlacementGroup
-                        = ProximityPlacementGroup.fromJson(reader);
                 } else if ("ociUrl".equals(fieldName)) {
                     deserializedCloudExadataInfrastructureProperties.ociUrl = reader.getString();
                 } else if ("cpuCount".equals(fieldName)) {

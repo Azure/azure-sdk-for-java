@@ -22,7 +22,7 @@ public final class ResourceAnchorsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"linkedCompartmentId\":\"wyojbfqzdkfnjyi\"},\"location\":\"afr\",\"tags\":{\"znv\":\"xmbjroum\",\"jrhuzgf\":\"l\",\"tpusllywp\":\"on\"},\"id\":\"tiotzb\",\"name\":\"d\",\"type\":\"ollgry\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"linkedCompartmentId\":\"inxojjlux\"},\"location\":\"hilzzdzzq\",\"tags\":{\"vribqlotokht\":\"ezay\",\"xwjyofgwhnk\":\"wtaznkcqw\"},\"id\":\"tlwljssmcts\",\"name\":\"ldkpwolgisu\",\"type\":\"xbteogfgfiijryk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class ResourceAnchorsListMockTests {
 
         PagedIterable<ResourceAnchor> response = manager.resourceAnchors().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("afr", response.iterator().next().location());
-        Assertions.assertEquals("xmbjroum", response.iterator().next().tags().get("znv"));
+        Assertions.assertEquals("hilzzdzzq", response.iterator().next().location());
+        Assertions.assertEquals("ezay", response.iterator().next().tags().get("vribqlotokht"));
     }
 }

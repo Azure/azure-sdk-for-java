@@ -32,10 +32,6 @@ public interface GiMinorVersions {
      * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
      * given shape family.
      * @param zone Filters the result for the given Azure Availability Zone.
-     * @param shape If provided, filters the results to the set of GI minor versions supported for the given shape.
-     * @param isGiVersionForProvisioning If true, filters the results to GI minor versions supported during VM cluster
-     * provisioning.
-     * @param sortOrder Sort order for the returned GI minor versions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,8 +39,7 @@ public interface GiMinorVersions {
      * @return the response of a GiMinorVersion list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<GiMinorVersion> listByParent(String location, String giversionname, ShapeFamily shapeFamily,
-        String zone, String shape, Boolean isGiVersionForProvisioning, GiMinorVersionSortOrder sortOrder,
-        Context context);
+        String zone, Context context);
 
     /**
      * Get a GiMinorVersion.

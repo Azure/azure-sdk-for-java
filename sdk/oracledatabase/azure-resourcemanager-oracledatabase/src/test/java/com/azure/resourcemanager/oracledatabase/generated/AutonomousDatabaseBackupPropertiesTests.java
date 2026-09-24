@@ -12,18 +12,18 @@ public final class AutonomousDatabaseBackupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseBackupProperties model = BinaryData.fromString(
-            "{\"autonomousDatabaseOcid\":\"egv\",\"databaseSizeInTbs\":77.1841634272535,\"dbVersion\":\"eqvldspast\",\"displayName\":\"kkdmfl\",\"ocid\":\"stmjlxrri\",\"isAutomatic\":true,\"isRestorable\":true,\"lifecycleDetails\":\"ewchpxlktwku\",\"lifecycleState\":\"Updating\",\"retentionPeriodInDays\":463707796,\"sizeInTbs\":50.28163956753957,\"timeAvailableTil\":\"2021-05-20T02:11:38Z\",\"timeStarted\":\"ztcktyh\",\"timeEnded\":\"qedcgzulwm\",\"backupType\":\"LongTerm\",\"provisioningState\":\"Canceled\",\"backupDestination\":\"AZURE\"}")
+            "{\"autonomousDatabaseOcid\":\"msi\",\"databaseSizeInTbs\":17.68460269000731,\"dbVersion\":\"loxggdufiqn\",\"displayName\":\"euzaof\",\"ocid\":\"hvcyyysfg\",\"isAutomatic\":true,\"isRestorable\":true,\"lifecycleDetails\":\"iipuipwoqonm\",\"lifecycleState\":\"Updating\",\"retentionPeriodInDays\":167629289,\"sizeInTbs\":20.112407568905265,\"timeAvailableTil\":\"2021-10-27T20:39:18Z\",\"timeStarted\":\"vcimpev\",\"timeEnded\":\"mblrrilbywd\",\"backupType\":\"Incremental\",\"provisioningState\":\"Succeeded\"}")
             .toObject(AutonomousDatabaseBackupProperties.class);
-        Assertions.assertEquals("kkdmfl", model.displayName());
-        Assertions.assertEquals(463707796, model.retentionPeriodInDays());
+        Assertions.assertEquals("euzaof", model.displayName());
+        Assertions.assertEquals(167629289, model.retentionPeriodInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutonomousDatabaseBackupProperties model
-            = new AutonomousDatabaseBackupProperties().withDisplayName("kkdmfl").withRetentionPeriodInDays(463707796);
+            = new AutonomousDatabaseBackupProperties().withDisplayName("euzaof").withRetentionPeriodInDays(167629289);
         model = BinaryData.fromObject(model).toObject(AutonomousDatabaseBackupProperties.class);
-        Assertions.assertEquals("kkdmfl", model.displayName());
-        Assertions.assertEquals(463707796, model.retentionPeriodInDays());
+        Assertions.assertEquals("euzaof", model.displayName());
+        Assertions.assertEquals(167629289, model.retentionPeriodInDays());
     }
 }

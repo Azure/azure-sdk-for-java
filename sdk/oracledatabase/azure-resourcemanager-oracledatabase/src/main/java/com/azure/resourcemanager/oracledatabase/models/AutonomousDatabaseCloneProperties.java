@@ -527,60 +527,6 @@ public final class AutonomousDatabaseCloneProperties extends AutonomousDatabaseB
      * {@inheritDoc}
      */
     @Override
-    public AutonomousDatabaseCloneProperties withIsScheduleAzUpdateToEarliest(Boolean isScheduleAzUpdateToEarliest) {
-        super.withIsScheduleAzUpdateToEarliest(isScheduleAzUpdateToEarliest);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AutonomousDatabaseCloneProperties withTimeScheduledAzUpdate(String timeScheduledAzUpdate) {
-        super.withTimeScheduledAzUpdate(timeScheduledAzUpdate);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AutonomousDatabaseCloneProperties withZone(String zone) {
-        super.withZone(zone);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AutonomousDatabaseCloneProperties withBackupDestination(BackupDestinationType backupDestination) {
-        super.withBackupDestination(backupDestination);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AutonomousDatabaseCloneProperties withResourceAnchorId(String resourceAnchorId) {
-        super.withResourceAnchorId(resourceAnchorId);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public AutonomousDatabaseCloneProperties withNetworkAnchorId(String networkAnchorId) {
-        super.withNetworkAnchorId(networkAnchorId);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("adminPassword", adminPassword());
@@ -622,13 +568,6 @@ public final class AutonomousDatabaseCloneProperties extends AutonomousDatabaseB
         jsonWriter.writeNumberField("backupRetentionPeriodInDays", backupRetentionPeriodInDays());
         jsonWriter.writeArrayField("whitelistedIps", whitelistedIps(),
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("isScheduleAzUpdateToEarliest", isScheduleAzUpdateToEarliest());
-        jsonWriter.writeStringField("timeScheduledAzUpdate", timeScheduledAzUpdate());
-        jsonWriter.writeStringField("zone", zone());
-        jsonWriter.writeStringField("backupDestination",
-            backupDestination() == null ? null : backupDestination().toString());
-        jsonWriter.writeStringField("resourceAnchorId", resourceAnchorId());
-        jsonWriter.writeStringField("networkAnchorId", networkAnchorId());
         jsonWriter.writeStringField("sourceId", this.sourceId);
         jsonWriter.writeStringField("cloneType", this.cloneType == null ? null : this.cloneType.toString());
         jsonWriter.writeStringField("dataBaseType", this.dataBaseType == null ? null : this.dataBaseType.toString());
@@ -863,20 +802,6 @@ public final class AutonomousDatabaseCloneProperties extends AutonomousDatabaseB
                 } else if ("whitelistedIps".equals(fieldName)) {
                     List<String> whitelistedIps = reader.readArray(reader1 -> reader1.getString());
                     deserializedAutonomousDatabaseCloneProperties.withWhitelistedIps(whitelistedIps);
-                } else if ("isScheduleAzUpdateToEarliest".equals(fieldName)) {
-                    deserializedAutonomousDatabaseCloneProperties
-                        .withIsScheduleAzUpdateToEarliest(reader.getNullable(JsonReader::getBoolean));
-                } else if ("timeScheduledAzUpdate".equals(fieldName)) {
-                    deserializedAutonomousDatabaseCloneProperties.withTimeScheduledAzUpdate(reader.getString());
-                } else if ("zone".equals(fieldName)) {
-                    deserializedAutonomousDatabaseCloneProperties.withZone(reader.getString());
-                } else if ("backupDestination".equals(fieldName)) {
-                    deserializedAutonomousDatabaseCloneProperties
-                        .withBackupDestination(BackupDestinationType.fromString(reader.getString()));
-                } else if ("resourceAnchorId".equals(fieldName)) {
-                    deserializedAutonomousDatabaseCloneProperties.withResourceAnchorId(reader.getString());
-                } else if ("networkAnchorId".equals(fieldName)) {
-                    deserializedAutonomousDatabaseCloneProperties.withNetworkAnchorId(reader.getString());
                 } else if ("sourceId".equals(fieldName)) {
                     deserializedAutonomousDatabaseCloneProperties.sourceId = reader.getString();
                 } else if ("cloneType".equals(fieldName)) {
