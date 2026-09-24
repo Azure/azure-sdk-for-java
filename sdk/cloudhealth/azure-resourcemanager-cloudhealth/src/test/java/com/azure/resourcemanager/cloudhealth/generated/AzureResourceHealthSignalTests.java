@@ -13,7 +13,7 @@ public final class AzureResourceHealthSignalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureResourceHealthSignal model = BinaryData.fromString(
-            "{\"enabled\":\"Enabled\",\"signalName\":\"cnpwzcjaesgvvscc\",\"status\":{\"healthState\":\"Degraded\",\"value\":31.828757984570732,\"reportedAt\":\"2021-04-26T06:49:27Z\",\"error\":\"gzlvdnkfxu\",\"additionalContext\":\"mdwzrmuhapfcqdps\",\"availabilityState\":\"Degraded\",\"category\":\"Unplanned\",\"detailedStatus\":\"vuoy\",\"summary\":\"ccelve\",\"reasonType\":\"Unplanned\",\"reasonChronicity\":\"Transient\",\"availabilityReportedTime\":\"2021-01-24T01:48:53Z\"}}")
+            "{\"enabled\":\"Enabled\",\"signalName\":\"smwutwbdsrezpd\",\"status\":{\"healthState\":\"Degraded\",\"value\":91.36744539943747,\"reportedAt\":\"2021-03-08T01:01:24Z\",\"error\":\"d\",\"additionalContext\":\"t\",\"availabilityState\":\"Available\",\"category\":\"Unplanned\",\"detailedStatus\":\"cgpik\",\"summary\":\"imejzanl\",\"reasonType\":\"Unplanned\",\"reasonChronicity\":\"Persistent\",\"availabilityReportedTime\":\"2021-01-19T02:13:13Z\"}}")
             .toObject(AzureResourceHealthSignal.class);
         Assertions.assertEquals(ResourceHealthAvailabilityStateSignalBehavior.ENABLED, model.enabled());
     }

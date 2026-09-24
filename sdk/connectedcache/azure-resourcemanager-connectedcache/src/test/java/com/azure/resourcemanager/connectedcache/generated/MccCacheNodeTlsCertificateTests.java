@@ -11,7 +11,7 @@ public final class MccCacheNodeTlsCertificateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MccCacheNodeTlsCertificate model = BinaryData.fromString(
-            "{\"actionRequired\":\"npc\",\"certificateFileName\":\"ocohslkevleg\",\"thumbprint\":\"fbuhfmvfaxkffe\",\"expiryDate\":\"2021-05-15T04:16:32Z\",\"notBeforeDate\":\"2020-12-30T10:59:09Z\",\"subject\":\"m\",\"subjectAltName\":\"yvshxmz\"}")
+            "{\"actionRequired\":\"ou\",\"certificateFileName\":\"vudwtiukbldng\",\"certType\":\"ocipazyxoeg\",\"thumbprint\":\"g\",\"expiryDate\":\"2021-05-26T22:48:17Z\",\"notBeforeDate\":\"2021-10-28T00:07:14Z\",\"subject\":\"gygev\",\"subjectAltName\":\"ntypmrbpizcdrqj\"}")
             .toObject(MccCacheNodeTlsCertificate.class);
     }
 }

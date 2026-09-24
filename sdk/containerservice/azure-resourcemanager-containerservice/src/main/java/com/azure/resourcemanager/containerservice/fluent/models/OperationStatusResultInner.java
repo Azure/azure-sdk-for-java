@@ -67,6 +67,16 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
      */
     private String resourceId;
 
+    /*
+     * The type of the operation.
+     */
+    private String operationType;
+
+    /*
+     * The type of the suboperation.
+     */
+    private String subOperationType;
+
     /**
      * Creates an instance of OperationStatusResultInner class.
      */
@@ -156,6 +166,24 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
     }
 
     /**
+     * Get the operationType property: The type of the operation.
+     * 
+     * @return the operationType value.
+     */
+    public String operationType() {
+        return this.operationType;
+    }
+
+    /**
+     * Get the subOperationType property: The type of the suboperation.
+     * 
+     * @return the subOperationType value.
+     */
+    public String subOperationType() {
+        return this.subOperationType;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -230,6 +258,10 @@ public final class OperationStatusResultInner implements JsonSerializable<Operat
                     deserializedOperationStatusResultInner.error = ManagementError.fromJson(reader);
                 } else if ("resourceId".equals(fieldName)) {
                     deserializedOperationStatusResultInner.resourceId = reader.getString();
+                } else if ("operationType".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.operationType = reader.getString();
+                } else if ("subOperationType".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.subOperationType = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

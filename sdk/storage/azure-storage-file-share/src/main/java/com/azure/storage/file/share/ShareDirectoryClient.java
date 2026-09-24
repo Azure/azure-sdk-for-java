@@ -1084,7 +1084,7 @@ public class ShareDirectoryClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
-     * @param handleId Handle ID to be clsoed.
+     * @param handleId Handle ID to be closed.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.

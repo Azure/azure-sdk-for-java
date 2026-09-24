@@ -21,7 +21,7 @@ public class MessageItem extends ConversationRequestItem {
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.MESSAGE;
+    private final ItemType type = ItemType.MESSAGE;
 
     /*
      * The role of the message origionator.

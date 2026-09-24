@@ -47,7 +47,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-  <version>7.4.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
+  <version>7.5.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
 
   <name>Azure Monitor OpenTelemetry Distro / Application Insights in Spring native Java application</name>
   <description>Spring Boot starter providing telemetry data to Azure Monitor for Spring Boot applications and GraalVM native images.</description>
@@ -57,14 +57,14 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>4.1.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-spring-boot-starter</artifactId>
-      <version>2.24.0</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
+      <version>2.31.1</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
     </dependency>
 
     <!-- Redeclaration of the OpenTelemetry Autoconfigure dependencies if Spring Monitor is released
@@ -72,39 +72,39 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.58.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.65.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.58.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.65.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-metrics</artifactId>
-      <version>1.58.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
+      <version>1.65.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-logs</artifactId>
-      <version>1.58.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
+      <version>1.65.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure-spi</artifactId>
-      <version>1.58.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
+      <version>1.65.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-      <version>1.58.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+      <version>1.65.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
     </dependency>
     <!-- End of redeclaration of the OpenTelemetry exporter dependencies -->
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId>
-      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;dependency} -->
+      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -136,7 +136,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>4.1.0</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>4.1.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- End of test dependencies -->
@@ -179,20 +179,20 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.1</version>  <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.3</version>  <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:[2.24.0]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.58.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[2.24.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-api:[1.58.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk:[1.58.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-metrics:[1.58.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-logs:[1.58.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.58.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter:[4.1.0]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:[2.31.1]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:[1.65.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry:[2.31.1-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.65.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk:[1.65.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-metrics:[1.65.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-logs:[1.65.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.65.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[4.1.1]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -211,7 +211,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.12.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -227,7 +227,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.4.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>empty-javadoc-jar-with-readme</id>
@@ -245,7 +245,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>copy-readme-to-javadocTemp</id>

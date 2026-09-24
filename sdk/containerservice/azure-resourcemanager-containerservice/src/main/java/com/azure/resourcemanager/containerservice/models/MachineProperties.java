@@ -101,6 +101,11 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
      */
     private LocalDnsProfile localDNSProfile;
 
+    /*
+     * The Capacity Reservation Group to provide virtual machines from a reserved group of Machines
+     */
+    private CapacityReservation capacityReservation;
+
     /**
      * Creates an instance of MachineProperties class.
      */
@@ -381,6 +386,28 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
     }
 
     /**
+     * Get the capacityReservation property: The Capacity Reservation Group to provide virtual machines from a reserved
+     * group of Machines.
+     * 
+     * @return the capacityReservation value.
+     */
+    public CapacityReservation capacityReservation() {
+        return this.capacityReservation;
+    }
+
+    /**
+     * Set the capacityReservation property: The Capacity Reservation Group to provide virtual machines from a reserved
+     * group of Machines.
+     * 
+     * @param capacityReservation the capacityReservation value to set.
+     * @return the MachineProperties object itself.
+     */
+    public MachineProperties withCapacityReservation(CapacityReservation capacityReservation) {
+        this.capacityReservation = capacityReservation;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -410,6 +437,9 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
         if (localDNSProfile() != null) {
             localDNSProfile().validate();
         }
+        if (capacityReservation() != null) {
+            capacityReservation().validate();
+        }
     }
 
     /**
@@ -430,6 +460,7 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
         jsonWriter.writeJsonField("billing", this.billing);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("localDNSProfile", this.localDNSProfile);
+        jsonWriter.writeJsonField("capacityReservation", this.capacityReservation);
         return jsonWriter.writeEndObject();
     }
 
@@ -482,6 +513,8 @@ public final class MachineProperties implements JsonSerializable<MachineProperti
                     deserializedMachineProperties.status = MachineStatus.fromJson(reader);
                 } else if ("localDNSProfile".equals(fieldName)) {
                     deserializedMachineProperties.localDNSProfile = LocalDnsProfile.fromJson(reader);
+                } else if ("capacityReservation".equals(fieldName)) {
+                    deserializedMachineProperties.capacityReservation = CapacityReservation.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

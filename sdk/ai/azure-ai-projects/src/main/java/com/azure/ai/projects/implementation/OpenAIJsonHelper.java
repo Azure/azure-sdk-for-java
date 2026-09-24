@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import java.io.StringReader;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openai.core.ObjectMappers;
 
@@ -20,13 +19,7 @@ import java.io.IOException;
  * Helper methods for adapting Azure SDK models to openai-java models.
  */
 public final class OpenAIJsonHelper {
-    private static final ObjectMapper MAPPER = ObjectMappers.jsonMapper()
-        .rebuild()
-        .configure(MapperFeature.AUTO_DETECT_FIELDS, true)
-        .configure(MapperFeature.AUTO_DETECT_GETTERS, true)
-        .configure(MapperFeature.AUTO_DETECT_CREATORS, true)
-        .configure(MapperFeature.AUTO_DETECT_SETTERS, true)
-        .build();
+    private static final ObjectMapper MAPPER = ObjectMappers.jsonMapper();
 
     private OpenAIJsonHelper() {
     }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class ProviderRegistrationsGenerateOperationsSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ProviderRegistrations_GenerateOperations.json
+     * x-ms-original-file: 2025-10-01/ProviderRegistrations_GenerateOperations.json
      */
     /**
      * Sample code: ProviderRegistrations_GenerateOperations.

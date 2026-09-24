@@ -6,6 +6,8 @@ package com.azure.resourcemanager.fabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.fabric.models.CapacityAdministration;
+import com.azure.resourcemanager.fabric.models.CapacityOverageProperties;
+import com.azure.resourcemanager.fabric.models.CapacityOverageState;
 import com.azure.resourcemanager.fabric.models.FabricCapacityUpdateProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -13,17 +15,23 @@ import org.junit.jupiter.api.Assertions;
 public final class FabricCapacityUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FabricCapacityUpdateProperties model
-            = BinaryData.fromString("{\"administration\":{\"members\":[\"flusarhmof\",\"qhsmyurkdtml\",\"he\"]}}")
-                .toObject(FabricCapacityUpdateProperties.class);
-        Assertions.assertEquals("flusarhmof", model.administration().members().get(0));
+        FabricCapacityUpdateProperties model = BinaryData.fromString(
+            "{\"overage\":{\"state\":\"Disabled\",\"thresholdCapacityUnitHours\":1720264500},\"administration\":{\"members\":[\"tu\"]}}")
+            .toObject(FabricCapacityUpdateProperties.class);
+        Assertions.assertEquals(CapacityOverageState.DISABLED, model.overage().state());
+        Assertions.assertEquals(1720264500, model.overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("tu", model.administration().members().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FabricCapacityUpdateProperties model = new FabricCapacityUpdateProperties().withAdministration(
-            new CapacityAdministration().withMembers(Arrays.asList("flusarhmof", "qhsmyurkdtml", "he")));
+        FabricCapacityUpdateProperties model = new FabricCapacityUpdateProperties()
+            .withOverage(new CapacityOverageProperties().withState(CapacityOverageState.DISABLED)
+                .withThresholdCapacityUnitHours(1720264500))
+            .withAdministration(new CapacityAdministration().withMembers(Arrays.asList("tu")));
         model = BinaryData.fromObject(model).toObject(FabricCapacityUpdateProperties.class);
-        Assertions.assertEquals("flusarhmof", model.administration().members().get(0));
+        Assertions.assertEquals(CapacityOverageState.DISABLED, model.overage().state());
+        Assertions.assertEquals(1720264500, model.overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("tu", model.administration().members().get(0));
     }
 }

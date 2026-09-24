@@ -11,11 +11,11 @@ import com.microsoft.azure.eventhubs.jproxy.ProxyServer;
 import com.microsoft.azure.eventhubs.lib.SasTokenTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.apache.qpid.proton.engine.SslDomain;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -35,7 +35,7 @@ public class ProxySendTest extends SasTokenTestBase {
     private static SendTest sendTest;
     private static ProxySelector defaultProxySelector;
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws Exception {
         proxyServer = ProxyServer.create("localhost", PROXY_PORT);
         proxyServer.start(t -> {
@@ -56,7 +56,7 @@ public class ProxySendTest extends SasTokenTestBase {
             }
         });
 
-        Assert.assertTrue(TestContext.getConnectionString().getSharedAccessSignature() != null
+        Assertions.assertTrue(TestContext.getConnectionString().getSharedAccessSignature() != null
                 && TestContext.getConnectionString().getSasKey() == null
                 && TestContext.getConnectionString().getSasKeyName() == null);
 
@@ -68,7 +68,7 @@ public class ProxySendTest extends SasTokenTestBase {
         SendTest.initializeEventHub(connectionString, SslDomain.VerifyMode.VERIFY_PEER_NAME);
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanupClient() throws Exception {
 
         SendTest.cleanupClient();
@@ -92,7 +92,7 @@ public class ProxySendTest extends SasTokenTestBase {
         sendTest.sendResultsInSysPropertiesWithPartitionKey();
     }
 
-    @After
+    @AfterEach
     public void cleanup() throws Exception {
 
         sendTest.cleanup();

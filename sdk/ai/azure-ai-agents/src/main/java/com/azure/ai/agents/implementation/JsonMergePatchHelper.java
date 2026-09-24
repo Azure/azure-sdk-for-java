@@ -16,6 +16,7 @@ import com.azure.ai.agents.models.McpProtocolConfiguration;
 import com.azure.ai.agents.models.ProtocolConfiguration;
 import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
+import com.azure.ai.agents.models.UpdateTelephonyBindingInput;
 import com.azure.ai.agents.models.VersionSelectionRule;
 import com.azure.ai.agents.models.VersionSelector;
 
@@ -23,6 +24,23 @@ import com.azure.ai.agents.models.VersionSelector;
  * This is the Helper class to enable json merge patch serialization for a model.
  */
 public class JsonMergePatchHelper {
+    private static UpdateTelephonyBindingInputAccessor updateTelephonyBindingInputAccessor;
+
+    public interface UpdateTelephonyBindingInputAccessor {
+        UpdateTelephonyBindingInput prepareModelForJsonMergePatch(
+            UpdateTelephonyBindingInput updateTelephonyBindingInput, boolean jsonMergePatchEnabled);
+
+        boolean isJsonMergePatch(UpdateTelephonyBindingInput updateTelephonyBindingInput);
+    }
+
+    public static void setUpdateTelephonyBindingInputAccessor(UpdateTelephonyBindingInputAccessor accessor) {
+        updateTelephonyBindingInputAccessor = accessor;
+    }
+
+    public static UpdateTelephonyBindingInputAccessor getUpdateTelephonyBindingInputAccessor() {
+        return updateTelephonyBindingInputAccessor;
+    }
+
     private static AgentEndpointConfigAccessor agentEndpointConfigAccessor;
 
     public interface AgentEndpointConfigAccessor {

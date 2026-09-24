@@ -10,6 +10,8 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAdvancedRoutingConditionSet;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAdvancedRoutingMap;
 import com.azure.resourcemanager.network.models.ApplicationGatewayAutoscaleConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
@@ -663,6 +665,34 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
+     * Get the advancedRoutingMaps property: Advanced routing maps of the application gateway resource. For default
+     * limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     * 
+     * @return the advancedRoutingMaps value.
+     */
+    public List<ApplicationGatewayAdvancedRoutingMap> advancedRoutingMaps() {
+        return this.innerProperties() == null ? null : this.innerProperties().advancedRoutingMaps();
+    }
+
+    /**
+     * Set the advancedRoutingMaps property: Advanced routing maps of the application gateway resource. For default
+     * limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     * 
+     * @param advancedRoutingMaps the advancedRoutingMaps value to set.
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner
+        withAdvancedRoutingMaps(List<ApplicationGatewayAdvancedRoutingMap> advancedRoutingMaps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPropertiesFormat();
+        }
+        this.innerProperties().withAdvancedRoutingMaps(advancedRoutingMaps);
+        return this;
+    }
+
+    /**
      * Get the requestRoutingRules property: Request routing rules of the application gateway resource.
      * 
      * @return the requestRoutingRules value.
@@ -729,6 +759,34 @@ public final class ApplicationGatewayInner extends Resource {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
         this.innerProperties().withRewriteRuleSets(rewriteRuleSets);
+        return this;
+    }
+
+    /**
+     * Get the advancedRoutingConditionSets property: Advanced routing condition sets of the application gateway
+     * resource. For default limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     * 
+     * @return the advancedRoutingConditionSets value.
+     */
+    public List<ApplicationGatewayAdvancedRoutingConditionSet> advancedRoutingConditionSets() {
+        return this.innerProperties() == null ? null : this.innerProperties().advancedRoutingConditionSets();
+    }
+
+    /**
+     * Set the advancedRoutingConditionSets property: Advanced routing condition sets of the application gateway
+     * resource. For default limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     * 
+     * @param advancedRoutingConditionSets the advancedRoutingConditionSets value to set.
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withAdvancedRoutingConditionSets(
+        List<ApplicationGatewayAdvancedRoutingConditionSet> advancedRoutingConditionSets) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPropertiesFormat();
+        }
+        this.innerProperties().withAdvancedRoutingConditionSets(advancedRoutingConditionSets);
         return this;
     }
 
@@ -874,6 +932,31 @@ public final class ApplicationGatewayInner extends Resource {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
         this.innerProperties().withAutoscaleConfiguration(autoscaleConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the reservedCapacity property: The reserved capacity of the application gateway resource. Applicable to the
+     * Basic_v2 and Basic_WAF_v2 SKU tiers.
+     * 
+     * @return the reservedCapacity value.
+     */
+    public Integer reservedCapacity() {
+        return this.innerProperties() == null ? null : this.innerProperties().reservedCapacity();
+    }
+
+    /**
+     * Set the reservedCapacity property: The reserved capacity of the application gateway resource. Applicable to the
+     * Basic_v2 and Basic_WAF_v2 SKU tiers.
+     * 
+     * @param reservedCapacity the reservedCapacity value to set.
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withReservedCapacity(Integer reservedCapacity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPropertiesFormat();
+        }
+        this.innerProperties().withReservedCapacity(reservedCapacity);
         return this;
     }
 

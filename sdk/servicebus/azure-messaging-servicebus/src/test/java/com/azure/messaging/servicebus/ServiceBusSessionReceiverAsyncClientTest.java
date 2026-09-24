@@ -43,10 +43,14 @@ import reactor.test.publisher.TestPublisher;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionOptions;
 import static com.azure.messaging.servicebus.ReceiverOptions.createUnnamedSessionOptions;
@@ -384,22 +388,41 @@ class ServiceBusSessionReceiverAsyncClientTest {
     }
 
     /**
-     * Verifies the no-arg listSessions() drives the broker with the active-messages sentinel and
-     * collects every page until the broker returns an empty page.
+     * Builds a full page of {@code count} session IDs ("{prefix}0" .. "{prefix}{count-1}") as a
+     * mutable list. A full page (count == the requested page size) drives a further page request
+     * under short-page pagination termination.
+     */
+    private static List<String> fullPage(String prefix, int count) {
+        return IntStream.range(0, count).mapToObj(i -> prefix + i).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private static List<String> fullPage(String prefix) {
+        return fullPage(prefix, 100);
+    }
+
+    /**
+     * Verifies the no-arg listSessions() drives the broker with the default-listing sentinel and
+     * collects every page until the broker returns a short page (fewer IDs than the requested page
+     * size), which terminates pagination.
      */
     @Test
-    void listSessionsActiveModeStreamsAllPagesUntilEmpty() {
-        // First page: 2 sessions, server-returned skip = 2.
-        when(managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(0), eq(100),
-            isNull())).thenReturn(Mono.just(new MessageSessionsResult(Arrays.asList("s1", "s2"), 2)));
-        // Cursor for the second page is encoded server-skip + base64url(lastSessionId), which decodes
-        // back to (skip=2, lastSessionId="s2"). Empty page terminates pagination.
-        when(managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(2), eq(100),
-            eq("s2"))).thenReturn(Mono.just(new MessageSessionsResult(Collections.emptyList(), 2)));
+    void listSessionsDefaultListingModeStreamsAllPagesUntilShortPage() {
+        // First page: a full page (100 sessions) continues; server-returned skip = 100.
+        final List<String> firstPage = fullPage("s");
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(0), eq(100),
+            isNull())).thenReturn(Mono.just(new MessageSessionsResult(firstPage, 100)));
+        // Cursor for the second page is server-skip (100) + base64url(lastSessionId "s99"). The second
+        // page is short (2 < 100), which terminates pagination.
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(100), eq(100),
+            eq("s99"))).thenReturn(Mono.just(new MessageSessionsResult(Arrays.asList("t1", "t2"), 102)));
 
         final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
 
-        StepVerifier.create(client.listSessions()).expectNext("s1", "s2").expectComplete().verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(client.listSessions())
+            .expectNextSequence(firstPage)
+            .expectNext("t1", "t2")
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -411,20 +434,22 @@ class ServiceBusSessionReceiverAsyncClientTest {
     void listSessionsHonorsServerSkipAndLastSessionId() {
         final OffsetDateTime sessionStateUpdatedAfter = OffsetDateTime.of(2026, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
-        // First page returns 2 items but the server reports skip = 7 (5 entries filtered server-side).
+        // First page returns a full page of 100 items but the server reports skip = 107 (extra entries
+        // filtered server-side), so the second-page request must use the server-returned skip, not
+        // requestSkip + page.size().
+        final List<String> firstPage = fullPage("a");
         when(managementNode.getMessageSessions(eq(sessionStateUpdatedAfter), eq(0), eq(100), isNull()))
-            .thenReturn(Mono.just(new MessageSessionsResult(Arrays.asList("a", "b"), 7)));
-        // Second-page request must use the server-returned skip (7) and lastSessionId ("b").
-        when(managementNode.getMessageSessions(eq(sessionStateUpdatedAfter), eq(7), eq(100), eq("b")))
-            .thenReturn(Mono.just(new MessageSessionsResult(Collections.singletonList("c"), 8)));
-        // Third page empty terminates pagination.
-        when(managementNode.getMessageSessions(eq(sessionStateUpdatedAfter), eq(8), eq(100), eq("c")))
-            .thenReturn(Mono.just(new MessageSessionsResult(Collections.emptyList(), 8)));
+            .thenReturn(Mono.just(new MessageSessionsResult(firstPage, 107)));
+        // Second-page request must use the server-returned skip (107) and lastSessionId ("a99"). It is
+        // short (1 < 100), which terminates pagination.
+        when(managementNode.getMessageSessions(eq(sessionStateUpdatedAfter), eq(107), eq(100), eq("a99")))
+            .thenReturn(Mono.just(new MessageSessionsResult(Collections.singletonList("c"), 108)));
 
         final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
 
         StepVerifier.create(client.listSessions(sessionStateUpdatedAfter))
-            .expectNext("a", "b", "c")
+            .expectNextSequence(firstPage)
+            .expectNext("c")
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -450,14 +475,23 @@ class ServiceBusSessionReceiverAsyncClientTest {
     void listSessionsRoundTripsArbitrarySessionIdsThroughCursor() {
         final String sessionWithPipe = "weird|session|id";
 
-        when(managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(0), eq(100),
-            isNull())).thenReturn(Mono.just(new MessageSessionsResult(Collections.singletonList(sessionWithPipe), 1)));
-        when(managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(1), eq(100),
-            eq(sessionWithPipe))).thenReturn(Mono.just(new MessageSessionsResult(Collections.emptyList(), 1)));
+        // First page is full (100 items) with the pipe-containing id LAST, so the cursor for the next
+        // page encodes it; a full page also drives the second request under short-page termination.
+        final List<String> firstPage = fullPage("x", 99);
+        firstPage.add(sessionWithPipe);
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(0), eq(100),
+            isNull())).thenReturn(Mono.just(new MessageSessionsResult(firstPage, 100)));
+        // The second-page request must decode the cursor back to lastSessionId=sessionWithPipe intact
+        // (pipe and all); the short (empty) page then terminates pagination.
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(100), eq(100),
+            eq(sessionWithPipe))).thenReturn(Mono.just(new MessageSessionsResult(Collections.emptyList(), 100)));
 
         final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
 
-        StepVerifier.create(client.listSessions()).expectNext(sessionWithPipe).expectComplete().verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(client.listSessions())
+            .expectNextSequence(firstPage)
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -525,22 +559,24 @@ class ServiceBusSessionReceiverAsyncClientTest {
      */
     @Test
     void listSessionsHonorsCallerPageSize() {
-        // Caller asks for pages of 25; both first-page and next-page calls must pass top=25.
-        when(managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(0), eq(25),
-            isNull())).thenReturn(Mono.just(new MessageSessionsResult(Arrays.asList("a", "b"), 2)));
-        when(
-            managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(2), eq(25), eq("b")))
-                .thenReturn(Mono.just(new MessageSessionsResult(Collections.emptyList(), 2)));
+        // Caller asks for pages of 25; both first-page and next-page calls must pass top=25. The first
+        // page is full (25 items) so a second page is requested; the short second page (1 < 25)
+        // terminates pagination.
+        final List<String> firstPage = fullPage("s", 25);
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(0), eq(25),
+            isNull())).thenReturn(Mono.just(new MessageSessionsResult(firstPage, 25)));
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(25), eq(25),
+            eq("s24"))).thenReturn(Mono.just(new MessageSessionsResult(Collections.singletonList("t1"), 26)));
 
         final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
 
         StepVerifier.create(client.listSessions().byPage(25)).assertNext(page -> {
-            org.junit.jupiter.api.Assertions.assertEquals(2, page.getValue().size());
-            org.junit.jupiter.api.Assertions.assertEquals("a", page.getValue().get(0));
-            org.junit.jupiter.api.Assertions.assertEquals("b", page.getValue().get(1));
-        })
-            .assertNext(page -> org.junit.jupiter.api.Assertions.assertTrue(page.getValue().isEmpty()))
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+            org.junit.jupiter.api.Assertions.assertEquals(25, page.getValue().size());
+            org.junit.jupiter.api.Assertions.assertEquals("s0", page.getValue().get(0));
+            org.junit.jupiter.api.Assertions.assertEquals("s24", page.getValue().get(24));
+        }).assertNext(page -> {
+            org.junit.jupiter.api.Assertions.assertEquals(1, page.getValue().size());
+            org.junit.jupiter.api.Assertions.assertEquals("t1", page.getValue().get(0));
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 }

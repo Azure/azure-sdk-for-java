@@ -1,12 +1,14 @@
 # Release History
 
-## 7.18.0-beta.3 (Unreleased)
+## 7.18.0 (2026-10-06)
 
 ### Features Added
 
-- Added `listSessions()` and `listSessions(OffsetDateTime sessionStateUpdatedAfter)` to `ServiceBusSessionReceiverAsyncClient` (returning `PagedFlux<String>`) and `ServiceBusSessionReceiverClient` (returning `PagedIterable<String>`). The no-arg overload returns sessions with active messages; the `sessionStateUpdatedAfter` overload returns sessions whose session state was updated after the given timestamp. Implements the `com.microsoft:get-message-sessions` AMQP management operation. ([#48956](https://github.com/Azure/azure-sdk-for-java/pull/48956))
+- Added `listSessions()` and `listSessions(OffsetDateTime sessionStateUpdatedAfter)` to `ServiceBusSessionReceiverAsyncClient` (returning `PagedFlux<String>`) and `ServiceBusSessionReceiverClient` (returning `PagedIterable<String>`). The no-arg overload returns sessions with active messages or stored session state; the `sessionStateUpdatedAfter` overload returns sessions whose session state was set or updated after the given timestamp. Implements the `com.microsoft:get-message-sessions` AMQP management operation. ([#48956](https://github.com/Azure/azure-sdk-for-java/pull/48956))
+- Added `getSqlFilterCount()` and `getCorrelationFilterCount()` to `TopicRuntimeProperties`, exposing the total number of SQL filters and correlation filters across all of a topic's subscriptions.
+- Added `ServiceBusServiceVersion.V2024_05` and made it the latest version. The administration client now uses `api-version=2024-05` by default, which is required for the topic filter counts above.
 
-### Breaking Changes
+- Added `drainTimeout(Duration)` to `ServiceBusProcessorClientBuilder` and `ServiceBusSessionProcessorClientBuilder` to configure the maximum wait time for in-flight message handlers during processor shutdown. Defaults to 30 seconds.
 
 ### Bugs Fixed
 
@@ -20,27 +22,6 @@
   and `ServiceBusSessionReceiverAsyncClient`), retries are now spaced by a bounded backoff instead of
   retrying with no delay, preventing a tight CPU-burning loop when acquire attempts fail fast.
   ([#49093](https://github.com/Azure/azure-sdk-for-java/issues/49093))
-
-### Other Changes
-
-## 7.17.19 (2026-07-01)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
-- Upgraded `azure-core-amqp` from `2.11.4` to version `2.12.0`.
-- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
-
-
-## 7.18.0-beta.2 (2026-06-22)
-
-### Features Added
-
-- Added `drainTimeout(Duration)` to `ServiceBusProcessorClientBuilder` and `ServiceBusSessionProcessorClientBuilder` to configure the maximum wait time for in-flight message handlers during processor shutdown. Defaults to 30 seconds.
-
-### Bugs Fixed
 
 - Fixed `ServiceBusProcessorClient.close()` disposing the receiver before in-flight message handlers could complete settlement, causing `IllegalStateException`. The processor now drains active handlers before closing. ([#45716](https://github.com/Azure/azure-sdk-for-java/issues/45716))
 - Fixed the first call to `ServiceBusSenderClient.sendMessage()` (and `ServiceBusSenderAsyncClient.sendMessage()`) not recognizing the caller's current OpenTelemetry trace context, causing the `ServiceBus.send` span and the outgoing message's `traceparent` to start a new, disconnected trace. The send span is now started on the calling thread before the first send establishes the AMQP connection on a background thread. ([#44958](https://github.com/Azure/azure-sdk-for-java/issues/44958))
@@ -57,6 +38,8 @@
 
 ### Other Changes
 
+- The default service version used by `ServiceBusAdministrationClientBuilder` is now `2024-05`, previously `2021-05`. Existing operations behave the same; the newer version is required to surface the new topic filter count properties. Callers that need the previous wire behavior can pin it with `serviceVersion(ServiceBusServiceVersion.V2021_05)`.
+
 - Implemented support for the `com.microsoft:max-message-batch-size` AMQP vendor property in
   `createMessageBatch`. The Service Bus service has advertised this property on sender links for some
   time to communicate the broker-enforced batch size limit; the SDK now reads it and sizes batches
@@ -65,6 +48,27 @@
   up to 100 MB while the batch limit stays at 1 MB) caused the broker to reject oversized batches.
   Single-message sends (`sendMessage`, `scheduleMessage`) continue using `max-message-size`.
   ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
+
+## 7.17.20 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-core-amqp` from `2.12.0` to version `2.12.1`.
+
+## 7.17.19 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-amqp` from `2.11.4` to version `2.12.0`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
 
 ## 7.17.18 (2026-05-05)
 
@@ -1006,4 +1010,3 @@ our efforts can be found in the [Azure SDK Design Guidelines for
 - Receive messages from an Azure Service Bus Queue or Subscriber.
 
 [known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
-

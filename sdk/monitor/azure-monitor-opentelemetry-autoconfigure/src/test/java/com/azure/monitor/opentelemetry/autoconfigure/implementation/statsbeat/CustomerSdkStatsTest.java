@@ -4,7 +4,9 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +19,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 
 public class CustomerSdkStatsTest {
 
@@ -119,10 +122,52 @@ public class CustomerSdkStatsTest {
         // Should have 3 metric items
         assertThat(items).hasSize(3);
 
+        MetricsData successMetric = getMetric(items, CustomerSdkStats.ITEM_SUCCESS_COUNT);
+        assertThat(successMetric.getMetrics().get(0).getValue()).isEqualTo(10);
+        assertThat(successMetric.getProperties()).containsOnly(entry("computeType", "unknown"),
+            entry("language", "java"), entry("version", "3.5.1"), entry("telemetryType", "REQUEST"));
+
+        MetricsData droppedMetric = getMetric(items, CustomerSdkStats.ITEM_DROPPED_COUNT);
+        assertThat(droppedMetric.getMetrics().get(0).getValue()).isEqualTo(5);
+        assertThat(droppedMetric.getProperties()).containsOnly(entry("computeType", "unknown"),
+            entry("language", "java"), entry("version", "3.5.1"), entry("telemetryType", "DEPENDENCY"),
+            entry("dropCode", "402"), entry("dropReason", "Exceeded daily quota"));
+
+        MetricsData retryMetric = getMetric(items, CustomerSdkStats.ITEM_RETRY_COUNT);
+        assertThat(retryMetric.getMetrics().get(0).getValue()).isEqualTo(3);
+        assertThat(retryMetric.getProperties()).containsOnly(entry("computeType", "unknown"), entry("language", "java"),
+            entry("version", "3.5.1"), entry("telemetryType", "TRACE"), entry("retryCode", "429"),
+            entry("retryReason", "Too many requests"));
+
+        assertThat(items).allSatisfy(item -> {
+            assertThat(item.getInstrumentationKey()).isEqualTo(CONNECTION_STRING.getInstrumentationKey());
+            assertThat(item.getTags()).containsEntry("ai.internal.sdkVersion", SDK_VERSION)
+                .containsEntry("ai.cloud.role", CLOUD_ROLE)
+                .containsEntry("ai.cloud.roleInstance", CLOUD_ROLE_INSTANCE);
+        });
+
         // Verify that counters are cleared
         assertThat(customerSdkStats.getSuccessCount("REQUEST")).isEqualTo(0);
         assertThat(customerSdkStats.getDroppedCount("DEPENDENCY", "402")).isEqualTo(0);
         assertThat(customerSdkStats.getRetryCount("TRACE", "429")).isEqualTo(0);
+    }
+
+    @Test
+    public void testDroppedMetricUsesTelemetrySuccessDimension() {
+        customerSdkStats.incrementDroppedCount(Collections.singletonMap("REQUEST", 2L), "402", "Exceeded daily quota",
+            Collections.singletonMap("REQUEST", 1L), Collections.singletonMap("REQUEST", 1L));
+
+        List<TelemetryItem> items
+            = customerSdkStats.collectAndReset(CONNECTION_STRING, SDK_VERSION, CLOUD_ROLE, CLOUD_ROLE_INSTANCE);
+
+        assertThat(items).hasSize(2);
+        assertThat(items)
+            .extracting(
+                item -> TestUtils.toMetricsData(item.getData().getBaseData()).getProperties().get("telemetrySuccess"))
+            .containsExactlyInAnyOrder("true", "false");
+        assertThat(items)
+            .allSatisfy(item -> assertThat(TestUtils.toMetricsData(item.getData().getBaseData()).getProperties())
+                .doesNotContainKeys("telemetry_success", "telemetry_type", "drop.code", "drop.reason"));
     }
 
     @Test
@@ -166,5 +211,15 @@ public class CustomerSdkStatsTest {
         assertThat(executor.awaitTermination(10, TimeUnit.SECONDS)).isTrue();
 
         assertThat(customerSdkStats.getSuccessCount("REQUEST")).isEqualTo(threads * incrementsPerThread);
+    }
+
+    private static MetricsData getMetric(List<TelemetryItem> items, String metricName) {
+        for (TelemetryItem item : items) {
+            MetricsData metric = TestUtils.toMetricsData(item.getData().getBaseData());
+            if (metricName.equals(metric.getMetrics().get(0).getName())) {
+                return metric;
+            }
+        }
+        throw new AssertionError("Metric not found: " + metricName);
     }
 }

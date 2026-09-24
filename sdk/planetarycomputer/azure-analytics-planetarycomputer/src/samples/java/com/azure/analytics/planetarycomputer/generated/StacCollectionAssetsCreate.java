@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
+import com.azure.analytics.planetarycomputer.models.StacAssetData;
 import com.azure.analytics.planetarycomputer.models.StacCollection;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -17,7 +18,7 @@ public class StacCollectionAssetsCreate {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-create-collection-asset.stac-collection-assets-create
-        StacCollection response = stacClient.createCollectionAsset("naip-atl", null);
+        StacCollection response = stacClient.createCollectionAsset("naip-atl", (StacAssetData) null);
         // END:com.azure.analytics.planetarycomputer.generated.stac-create-collection-asset.stac-collection-assets-create
     }
 }

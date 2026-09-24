@@ -12,9 +12,9 @@ public final class WorkloadNetworkVirtualMachinesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVirtualMachinesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"ojlvfhrbbpneqvc\",\"vmType\":\"REGULAR\"},\"id\":\"urmochpprprs\",\"name\":\"mo\",\"type\":\"ayzejnhlbkpbz\"},{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"jh\",\"vmType\":\"SERVICE\"},\"id\":\"echndbnwieholew\",\"name\":\"wiuub\",\"type\":\"efqsfapaqtferrqw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"fxapjwogqqnobpu\",\"vmType\":\"EDGE\"},\"id\":\"btqwpwyawbzas\",\"name\":\"bucljgkyexaogu\",\"type\":\"aipidsdaultxi\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"qwazlnqnmcjngzq\",\"vmType\":\"REGULAR\"},\"id\":\"bjwgnyfus\",\"name\":\"zsvtuikzhajqgl\",\"type\":\"fh\"}],\"nextLink\":\"rqryxynqn\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"srsjuivfc\",\"vmType\":\"REGULAR\"},\"id\":\"irnxz\",\"name\":\"czexrxzbujrtrhqv\",\"type\":\"revkhgnlnzo\"},{\"properties\":{\"provisioningState\":\"Building\",\"displayName\":\"i\",\"vmType\":\"SERVICE\"},\"id\":\"cvjtszcofiz\",\"name\":\"htd\",\"type\":\"gbjkvreljeamur\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"vuanashcxlp\",\"vmType\":\"EDGE\"},\"id\":\"bdkelvidizo\",\"name\":\"sdbccxjmonfdgnwn\",\"type\":\"ypuuwwltvuqjctze\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"zzhmkd\",\"vmType\":\"SERVICE\"},\"id\":\"lyhb\",\"name\":\"cu\",\"type\":\"chxgs\"}],\"nextLink\":\"oldforobw\"}")
             .toObject(WorkloadNetworkVirtualMachinesList.class);
-        Assertions.assertEquals("ojlvfhrbbpneqvc", model.value().get(0).displayName());
-        Assertions.assertEquals("rqryxynqn", model.nextLink());
+        Assertions.assertEquals("srsjuivfc", model.value().get(0).displayName());
+        Assertions.assertEquals("oldforobw", model.nextLink());
     }
 }

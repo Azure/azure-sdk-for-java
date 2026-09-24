@@ -12,12 +12,12 @@ public final class StoragePoolLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StoragePoolLimits model = BinaryData.fromString(
-            "{\"provisionedBandwidthMbPerSec\":{\"min\":7038668112279725759,\"max\":6892435850965040543},\"provisionedIops\":{\"min\":2307841656567378187,\"max\":6289683561460888713},\"physicalAvailabilityZones\":[\"uhrhcffcyddgl\",\"jthjqkwpyei\",\"xmqci\",\"q\"]}")
+            "{\"provisionedBandwidthMbPerSec\":{\"min\":5563523584093599698,\"max\":8357781437020373583},\"provisionedIops\":{\"min\":40835509897926426,\"max\":3171024248855177563},\"physicalAvailabilityZones\":[\"ojnxqbzvdd\",\"t\",\"ndei\"]}")
             .toObject(StoragePoolLimits.class);
-        Assertions.assertEquals(7038668112279725759L, model.provisionedBandwidthMbPerSec().min());
-        Assertions.assertEquals(6892435850965040543L, model.provisionedBandwidthMbPerSec().max());
-        Assertions.assertEquals(2307841656567378187L, model.provisionedIops().min());
-        Assertions.assertEquals(6289683561460888713L, model.provisionedIops().max());
-        Assertions.assertEquals("uhrhcffcyddgl", model.physicalAvailabilityZones().get(0));
+        Assertions.assertEquals(5563523584093599698L, model.provisionedBandwidthMbPerSec().min());
+        Assertions.assertEquals(8357781437020373583L, model.provisionedBandwidthMbPerSec().max());
+        Assertions.assertEquals(40835509897926426L, model.provisionedIops().min());
+        Assertions.assertEquals(3171024248855177563L, model.provisionedIops().max());
+        Assertions.assertEquals("ojnxqbzvdd", model.physicalAvailabilityZones().get(0));
     }
 }

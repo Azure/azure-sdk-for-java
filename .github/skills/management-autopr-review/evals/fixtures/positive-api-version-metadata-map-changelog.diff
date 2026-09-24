@@ -1,0 +1,13 @@
+diff --git a/sdk/compute/azure-resourcemanager-compute/CHANGELOG.md b/sdk/compute/azure-resourcemanager-compute/CHANGELOG.md
+index c06389d..4bca1d1 100644
+--- a/sdk/compute/azure-resourcemanager-compute/CHANGELOG.md
++++ b/sdk/compute/azure-resourcemanager-compute/CHANGELOG.md
+@@ -1,3 +1,8 @@
+ # Release History
++
++## 1.2.0 (Unreleased)
++
++### Features Added
++- Added placement operations.
+ 
+ ## 1.1.0 (2026-02-01)

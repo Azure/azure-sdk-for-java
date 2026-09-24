@@ -15,24 +15,33 @@ public final class BulkCreateCustomZoneAllocationPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BulkCreateCustomZoneAllocationPolicy model = BinaryData.fromString(
-            "{\"distributionStrategy\":\"BestEffortSingleZone\",\"zonePreferences\":[{\"zone\":\"fbshrnsvbuswd\",\"rank\":106815843},{\"zone\":\"yybyc\",\"rank\":1761285242}]}")
+            "{\"distributionStrategy\":\"BestEffortSingleZone\",\"zonePreferences\":[{\"zone\":\"uhqlbjbsybbqwrvt\",\"rank\":1583288095,\"targetMaxCapacity\":1256241648},{\"zone\":\"fp\",\"rank\":392654404,\"targetMaxCapacity\":601730297},{\"zone\":\"ipaslthaqfxssmwu\",\"rank\":1174161651,\"targetMaxCapacity\":1781178234},{\"zone\":\"srezp\",\"rank\":187520251,\"targetMaxCapacity\":1550318758}]}")
             .toObject(BulkCreateCustomZoneAllocationPolicy.class);
         Assertions.assertEquals(BulkCreateCustomDistributionStrategy.BEST_EFFORT_SINGLE_ZONE,
             model.distributionStrategy());
-        Assertions.assertEquals("fbshrnsvbuswd", model.zonePreferences().get(0).zone());
-        Assertions.assertEquals(106815843, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals("uhqlbjbsybbqwrvt", model.zonePreferences().get(0).zone());
+        Assertions.assertEquals(1583288095, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals(1256241648, model.zonePreferences().get(0).targetMaxCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BulkCreateCustomZoneAllocationPolicy model = new BulkCreateCustomZoneAllocationPolicy()
             .withDistributionStrategy(BulkCreateCustomDistributionStrategy.BEST_EFFORT_SINGLE_ZONE)
-            .withZonePreferences(Arrays.asList(new ZonePreference().withZone("fbshrnsvbuswd").withRank(106815843),
-                new ZonePreference().withZone("yybyc").withRank(1761285242)));
+            .withZonePreferences(Arrays.asList(
+                new ZonePreference().withZone("uhqlbjbsybbqwrvt")
+                    .withRank(1583288095)
+                    .withTargetMaxCapacity(1256241648),
+                new ZonePreference().withZone("fp").withRank(392654404).withTargetMaxCapacity(601730297),
+                new ZonePreference().withZone("ipaslthaqfxssmwu")
+                    .withRank(1174161651)
+                    .withTargetMaxCapacity(1781178234),
+                new ZonePreference().withZone("srezp").withRank(187520251).withTargetMaxCapacity(1550318758)));
         model = BinaryData.fromObject(model).toObject(BulkCreateCustomZoneAllocationPolicy.class);
         Assertions.assertEquals(BulkCreateCustomDistributionStrategy.BEST_EFFORT_SINGLE_ZONE,
             model.distributionStrategy());
-        Assertions.assertEquals("fbshrnsvbuswd", model.zonePreferences().get(0).zone());
-        Assertions.assertEquals(106815843, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals("uhqlbjbsybbqwrvt", model.zonePreferences().get(0).zone());
+        Assertions.assertEquals(1583288095, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals(1256241648, model.zonePreferences().get(0).targetMaxCapacity());
     }
 }

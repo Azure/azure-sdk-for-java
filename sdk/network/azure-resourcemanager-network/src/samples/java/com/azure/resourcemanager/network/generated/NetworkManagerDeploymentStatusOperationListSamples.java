@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class NetworkManagerDeploymentStatusOperationListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NetworkManagerDeploymentStatusList.json
+     * x-ms-original-file: 2026-01-01/NetworkManagerDeploymentStatusList.json
      */
     /**
      * Sample code: NetworkManagerDeploymentStatusList.

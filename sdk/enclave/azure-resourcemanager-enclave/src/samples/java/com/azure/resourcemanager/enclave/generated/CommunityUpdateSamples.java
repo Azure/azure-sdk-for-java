@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public final class CommunityUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Community_Update.json
+     * x-ms-original-file: 2026-04-01/Community_Update.json
      */
     /**
      * Sample code: Community_Update.

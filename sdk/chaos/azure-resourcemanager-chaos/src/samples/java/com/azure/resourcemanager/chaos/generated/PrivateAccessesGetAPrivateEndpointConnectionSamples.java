@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class PrivateAccessesGetAPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/PrivateAccesses_GetAPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-08-01-preview/PrivateAccesses_GetAPrivateEndpointConnection.json
      */
     /**
      * Sample code: Get information about a private endpoint connection under a private access resource.

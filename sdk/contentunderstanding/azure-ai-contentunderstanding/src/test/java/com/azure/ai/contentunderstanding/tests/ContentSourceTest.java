@@ -4,18 +4,23 @@
 package com.azure.ai.contentunderstanding.tests;
 
 import com.azure.ai.contentunderstanding.models.AudioVisualSource;
+import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.ai.contentunderstanding.models.PointF;
 import com.azure.ai.contentunderstanding.models.Rectangle;
 import com.azure.ai.contentunderstanding.models.RectangleF;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -88,6 +93,16 @@ public class ContentSourceTest {
     @Test
     public void documentSourceParseEmptyThrows() {
         assertThrows(IllegalArgumentException.class, () -> DocumentSource.parse(""));
+    }
+
+    @Test
+    public void documentSourceParseOnlySeparatorsThrows() {
+        assertThrows(IllegalArgumentException.class, () -> DocumentSource.parse("; ;"));
+    }
+
+    @Test
+    public void documentSourceParseTrailingPageGarbageThrows() {
+        assertThrows(IllegalArgumentException.class, () -> DocumentSource.parse("D(1abc)"));
     }
 
     @Test
@@ -224,6 +239,16 @@ public class ContentSourceTest {
     }
 
     @Test
+    public void audioVisualSourceParseOnlySeparatorsThrows() {
+        assertThrows(IllegalArgumentException.class, () -> AudioVisualSource.parse("; ;"));
+    }
+
+    @Test
+    public void audioVisualSourceParseTrailingTimeGarbageThrows() {
+        assertThrows(IllegalArgumentException.class, () -> AudioVisualSource.parse("AV(1abc)"));
+    }
+
+    @Test
     public void audioVisualSourceParseMultiSegment() {
         String input = "AV(0,100,200,50,60);AV(1000,105,205,50,60)";
         List<AudioVisualSource> sources = AudioVisualSource.parse(input);
@@ -243,6 +268,91 @@ public class ContentSourceTest {
     public void audioVisualSourceGetTimeZero() {
         AudioVisualSource source = AudioVisualSource.parse("AV(0)").get(0);
         assertEquals(Duration.ZERO, source.getTime());
+    }
+
+    // =================== ContentSource Parsing ===================
+
+    @Test
+    public void contentSourceParseAllDocumentPrefixReturnsDocumentSource() {
+        List<ContentSource> sources = ContentSource.parseAll("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)");
+
+        assertEquals(1, sources.size());
+        assertInstanceOf(DocumentSource.class, sources.get(0));
+    }
+
+    @Test
+    public void contentSourceParseAllAudioVisualPrefixReturnsAudioVisualSource() {
+        List<ContentSource> sources = ContentSource.parseAll("AV(5000,100,200,50,60)");
+
+        assertEquals(1, sources.size());
+        assertInstanceOf(AudioVisualSource.class, sources.get(0));
+    }
+
+    @Test
+    public void contentSourceParseAllMultiRegionDocumentReturnsAll() {
+        List<ContentSource> sources = ContentSource.parseAll("D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0);D(2)");
+
+        assertEquals(2, sources.size());
+        assertInstanceOf(DocumentSource.class, sources.get(0));
+        assertInstanceOf(DocumentSource.class, sources.get(1));
+    }
+
+    @Test
+    public void contentSourceParseAllUnknownPrefixThrows() {
+        assertThrows(IllegalArgumentException.class, () -> ContentSource.parseAll("R(1,2,3)"));
+    }
+
+    @Test
+    public void contentSourceParseAllNullThrows() {
+        assertThrows(NullPointerException.class, () -> ContentSource.parseAll(null));
+    }
+
+    @Test
+    public void contentSourceParseAllWhitespaceThrows() {
+        assertThrows(IllegalArgumentException.class, () -> ContentSource.parseAll("   "));
+    }
+
+    @Test
+    public void contentSourceParseAllOnlySeparatorsThrows() {
+        assertThrows(IllegalArgumentException.class, () -> ContentSource.parseAll("; ;"));
+    }
+
+    // =================== ContentField.getSources ===================
+
+    @Test
+    public void contentFieldGetSourcesNullSourceReturnsNull() {
+        ContentField field = parseContentField("{\"type\":\"string\",\"valueString\":\"value\"}");
+
+        assertNull(field.getSources());
+    }
+
+    @Test
+    public void contentFieldGetSourcesEmptySourceReturnsNull() {
+        ContentField field = parseContentField("{\"type\":\"string\",\"valueString\":\"value\",\"source\":\"\"}");
+
+        assertNull(field.getSources());
+    }
+
+    @Test
+    public void contentFieldGetSourcesDocumentSourceReturnsParsedList() {
+        ContentField field = parseContentField(
+            "{\"type\":\"string\",\"valueString\":\"value\",\"source\":\"D(1,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)\"}");
+
+        assertNotNull(field.getSources());
+        assertEquals(1, field.getSources().size());
+        assertInstanceOf(DocumentSource.class, field.getSources().get(0));
+        assertEquals(1, ((DocumentSource) field.getSources().get(0)).getPageNumber());
+    }
+
+    @Test
+    public void contentFieldGetSourcesMultiRegionReturnsAll() {
+        ContentField field = parseContentField("{\"type\":\"string\",\"valueString\":\"value\","
+            + "\"source\":\"D(1);D(2,0.0,0.0,1.0,0.0,1.0,1.0,0.0,1.0)\"}");
+
+        assertNotNull(field.getSources());
+        assertEquals(2, field.getSources().size());
+        assertInstanceOf(DocumentSource.class, field.getSources().get(0));
+        assertInstanceOf(DocumentSource.class, field.getSources().get(1));
     }
 
     // =================== ContentSource.toRawString ===================
@@ -269,6 +379,17 @@ public class ContentSourceTest {
     @Test
     public void contentSourceToRawStringEmptyList() {
         assertEquals("", ContentSource.toRawString(Arrays.asList()));
+    }
+
+    @Test
+    public void contentSourceToRawStringMixedSourcesRoundTrips() {
+        String raw = "D(1);AV(5000,100,200,50,60)";
+        List<ContentSource> sources = ContentSource.parseAll(raw);
+
+        assertEquals(2, sources.size());
+        assertInstanceOf(DocumentSource.class, sources.get(0));
+        assertInstanceOf(AudioVisualSource.class, sources.get(1));
+        assertEquals(raw, ContentSource.toRawString(sources));
     }
 
     // =================== Geometry Types ===================
@@ -343,5 +464,13 @@ public class ContentSourceTest {
     private static void assertPointApproximate(float expectedX, float expectedY, PointF actual) {
         assertEquals(expectedX, actual.getX(), 0.0001f, "X coordinate mismatch");
         assertEquals(expectedY, actual.getY(), 0.0001f, "Y coordinate mismatch");
+    }
+
+    private static ContentField parseContentField(String json) {
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            return ContentField.fromJson(reader);
+        } catch (IOException exception) {
+            throw new RuntimeException("Failed to parse ContentField fixture.", exception);
+        }
     }
 }

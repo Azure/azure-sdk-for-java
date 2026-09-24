@@ -3,8 +3,6 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
@@ -14,6 +12,7 @@ import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
@@ -43,7 +42,6 @@ public class MemorySearchAgent {
         AgentsClient agentsClient = builder.buildAgentsClient();
         BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
         ConversationService conversationService = builder.buildOpenAIClient().conversations();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         String memoryStoreName = "my_memory_store";
         String agentName = "MyAgent";
@@ -74,18 +72,20 @@ public class MemorySearchAgent {
             agent = agentsClient.createAgentVersion(agentName, agentDefinition);
             System.out.printf("Agent created (id: %s, version: %s)\n", agent.getId(), agent.getVersion());
 
-            AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
+            SampleUtils.pinAgentVersion(agentsClient, agent);
+
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             Conversation conversation = conversationService.create();
             firstConversationId = conversation.id();
             System.out.println("Created conversation (id: " + firstConversationId + ")");
 
 
-            Response response = responsesClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+            Response response = openAIClient.responses().create(
                     ResponseCreateParams.builder()
                         .conversation(firstConversationId)
-                        .input("I prefer dark roast coffee"));
+                        .input("I prefer dark roast coffee")
+                        .build());
             System.out.println("Response output: " + getResponseText(response));
 
             System.out.println("Waiting for memories to be stored...");
@@ -95,11 +95,11 @@ public class MemorySearchAgent {
             followUpConversationId = newConversation.id();
             System.out.println("Created new conversation (id: " + followUpConversationId + ")");
 
-            Response followUpResponse = responsesClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+            Response followUpResponse = openAIClient.responses().create(
                     ResponseCreateParams.builder()
                         .conversation(followUpConversationId)
-                        .input("Please order my usual coffee"));
+                        .input("Please order my usual coffee")
+                        .build());
             System.out.println("Response output: " + getResponseText(followUpResponse));
 
             System.out.println("Sample completed successfully.");

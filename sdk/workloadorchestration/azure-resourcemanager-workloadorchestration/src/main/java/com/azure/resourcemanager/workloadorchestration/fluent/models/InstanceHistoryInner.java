@@ -25,7 +25,7 @@ public final class InstanceHistoryInner extends ProxyResource {
     private InstanceHistoryProperties properties;
 
     /*
-     * The extendedLocation property.
+     * The extended location of the resource.
      */
     private ExtendedLocation extendedLocation;
 
@@ -73,7 +73,7 @@ public final class InstanceHistoryInner extends ProxyResource {
     }
 
     /**
-     * Get the extendedLocation property: The extendedLocation property.
+     * Get the extendedLocation property: The extended location of the resource.
      * 
      * @return the extendedLocation value.
      */

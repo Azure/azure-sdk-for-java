@@ -22,7 +22,7 @@ public final class HorizonDbFirewallRulesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"startIpAddress\":\"washr\",\"endIpAddress\":\"dtkcnqxwbpokulp\",\"description\":\"jwaa\",\"provisioningState\":\"Succeeded\"},\"id\":\"i\",\"name\":\"obyu\",\"type\":\"erpqlpqwcciuqg\"}";
+            = "{\"properties\":{\"startIpAddress\":\"epxgyqagvr\",\"endIpAddress\":\"mnpkukghimdblxg\",\"description\":\"mfnjh\",\"provisioningState\":\"Succeeded\"},\"id\":\"mszkkfo\",\"name\":\"rey\",\"type\":\"kzikfjawneaivxwc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class HorizonDbFirewallRulesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HorizonDbFirewallRule response = manager.horizonDbFirewallRules()
-            .define("tddckcb")
-            .withExistingPool("smocmbq", "qvmkcxo", "apvhelxprgly")
-            .withProperties(new HorizonDbFirewallRuleProperties().withStartIpAddress("ejrjxgciqibrho")
-                .withEndIpAddress("xsdqrhzoymibmrqy")
-                .withDescription("ahwfluszdtmhrk"))
+            .define("v")
+            .withExistingPool("lla", "melwuipiccjz", "z")
+            .withProperties(new HorizonDbFirewallRuleProperties().withStartIpAddress("vc")
+                .withEndIpAddress("ayrhyrnx")
+                .withDescription("ueedndrdvs"))
             .create();
 
-        Assertions.assertEquals("washr", response.properties().startIpAddress());
-        Assertions.assertEquals("dtkcnqxwbpokulp", response.properties().endIpAddress());
-        Assertions.assertEquals("jwaa", response.properties().description());
+        Assertions.assertEquals("epxgyqagvr", response.properties().startIpAddress());
+        Assertions.assertEquals("mnpkukghimdblxg", response.properties().endIpAddress());
+        Assertions.assertEquals("mfnjh", response.properties().description());
     }
 }

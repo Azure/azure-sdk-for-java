@@ -51,6 +51,11 @@ public final class HubVirtualNetworkConnectionProperties
     private RoutingConfiguration routingConfiguration;
 
     /*
+     * Enable Only IPv6 Peering for this connection.
+     */
+    private Boolean enableOnlyIPv6Peering;
+
+    /*
      * The provisioning state of the hub virtual network connection resource.
      */
     private ProvisioningState provisioningState;
@@ -187,6 +192,26 @@ public final class HubVirtualNetworkConnectionProperties
     }
 
     /**
+     * Get the enableOnlyIPv6Peering property: Enable Only IPv6 Peering for this connection.
+     * 
+     * @return the enableOnlyIPv6Peering value.
+     */
+    public Boolean enableOnlyIPv6Peering() {
+        return this.enableOnlyIPv6Peering;
+    }
+
+    /**
+     * Set the enableOnlyIPv6Peering property: Enable Only IPv6 Peering for this connection.
+     * 
+     * @param enableOnlyIPv6Peering the enableOnlyIPv6Peering value to set.
+     * @return the HubVirtualNetworkConnectionProperties object itself.
+     */
+    public HubVirtualNetworkConnectionProperties withEnableOnlyIPv6Peering(Boolean enableOnlyIPv6Peering) {
+        this.enableOnlyIPv6Peering = enableOnlyIPv6Peering;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the hub virtual network connection resource.
      * 
      * @return the provisioningState value.
@@ -218,6 +243,7 @@ public final class HubVirtualNetworkConnectionProperties
         jsonWriter.writeJsonField("connectionPolicy", this.connectionPolicy);
         jsonWriter.writeBooleanField("enableInternetSecurity", this.enableInternetSecurity);
         jsonWriter.writeJsonField("routingConfiguration", this.routingConfiguration);
+        jsonWriter.writeBooleanField("enableOnlyIPv6Peering", this.enableOnlyIPv6Peering);
         return jsonWriter.writeEndObject();
     }
 
@@ -254,6 +280,9 @@ public final class HubVirtualNetworkConnectionProperties
                 } else if ("routingConfiguration".equals(fieldName)) {
                     deserializedHubVirtualNetworkConnectionProperties.routingConfiguration
                         = RoutingConfiguration.fromJson(reader);
+                } else if ("enableOnlyIPv6Peering".equals(fieldName)) {
+                    deserializedHubVirtualNetworkConnectionProperties.enableOnlyIPv6Peering
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedHubVirtualNetworkConnectionProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

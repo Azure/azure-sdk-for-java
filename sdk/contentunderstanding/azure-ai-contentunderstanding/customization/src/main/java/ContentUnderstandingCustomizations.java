@@ -32,6 +32,9 @@ import org.slf4j.Logger;
  *       {@code stringEncoding} parameter (default utf16).</li>
  *   <li>Add {@code beginAnalyzeBinary} overload accepting {@link com.azure.ai.contentunderstanding.models.ContentRange ContentRange}
  *       and {@code setContentRange(ContentRange)} on {@code AnalysisInput} for a self-documenting range API.</li>
+ *   <li>Add minimal and options-based inline analysis convenience methods that return
+ *       {@code ContentAnalyzerInlineResponse}, preserving status, result, and usage details.</li>
+ *   <li>Validate delete-result operation IDs before constructing or sending an HTTP request.</li>
  * </ul>
  *
  * <p><b>Scenarios and before/after</b></p>
@@ -136,6 +139,13 @@ public class ContentUnderstandingCustomizations extends Customization {
         // Hide methods that expose stringEncoding parameter (if generator still emits them)
         hideStringEncodingMethods(customization, logger);
 
+        // Preserve GA protocol descriptors after allowInputTruncation was added by the service.
+        preserveGaAnalyzeProtocolOverloads(customization, logger);
+
+        // Add client loggers used by validation paths
+        addClientLoggers(customization, logger);
+        addDeleteResultValidation(customization, logger);
+
         // Make ContentUnderstandingDefaults constructor public for updateDefaults convenience methods
         customizeContentUnderstandingDefaults(customization, logger);
 
@@ -145,14 +155,18 @@ public class ContentUnderstandingCustomizations extends Customization {
         // Add beginAnalyzeBinary convenience overloads (no stringEncoding)
         addBeginAnalyzeBinaryConvenienceOverloads(customization, logger);
 
-        // Add ContentRange overloads for beginAnalyzeBinary and setInputRange on AnalysisInput
+        // Add ContentRange overloads for beginAnalyzeBinary and a typed setter on AnalysisInput
         addContentRangeOverloads(customization, logger);
-        addContentRangeSetterToAnalyzeInput(customization, logger);
+        addContentRangeAccessorsToAnalysisInput(customization, logger);
 
         // Add beginAnalyze convenience overloads (no stringEncoding)
         addBeginAnalyzeConvenienceOverloads(customization, logger);
 
+        // Add preview binary options and inline analysis convenience overloads
+        customizePreviewAnalysisMethods(customization, logger);
+
         // Add typed getValue() to each ContentField subclass and hide verbose getters
+
         customizeFieldValueAccessors(customization, logger);
 
         // Add ContentSource class hierarchy for grounding source parsing
@@ -171,6 +185,104 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         // Default LRO polling interval to 3 seconds for Content Understanding operations
         customizePollingInterval(customization, logger);
+    }
+
+    private void addClientLoggers(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding client loggers");
+
+        for (String clientClassName : new String[] { "ContentUnderstandingClient", "ContentUnderstandingAsyncClient" }) {
+            customization.getClass(PACKAGE_NAME, clientClassName).customizeAst(ast -> {
+                ast.addImport("com.azure.core.util.logging.ClientLogger");
+                ast.getClassByName(clientClassName).ifPresent(clazz -> clazz.addFieldWithInitializer(
+                    "ClientLogger", "LOGGER", StaticJavaParser.parseExpression("new ClientLogger(" + clientClassName + ".class)"),
+                    Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL));
+            });
+        }
+    }
+
+    private void addDeleteResultValidation(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding delete-result operation ID validation");
+
+        for (String clientClassName : new String[] { "ContentUnderstandingClient", "ContentUnderstandingAsyncClient" }) {
+            customization.getClass(PACKAGE_NAME, clientClassName).customizeAst(ast -> {
+                ast.addImport("java.util.Objects");
+                ast.getClassByName(clientClassName).ifPresent(clazz ->
+                    clazz.getMethodsByName("deleteResultWithResponse").forEach(method -> {
+                        if (!method.getParameters().isEmpty()
+                            && method.getParameter(0).getNameAsString().equals("operationId")) {
+                            method.getBody().ifPresent(body -> {
+                                body.addStatement(0, StaticJavaParser.parseStatement(
+                                    "if (operationId.isEmpty()) {"
+                                        + " throw LOGGER.logThrowableAsError(new IllegalArgumentException("
+                                        + "\"'operationId' cannot be empty.\"));"
+                                        + " }"));
+                                body.addStatement(0, StaticJavaParser.parseStatement(
+                                    "Objects.requireNonNull(operationId, \"'operationId' cannot be null.\");"));
+                            });
+                        }
+                    }));
+            });
+        }
+    }
+
+    private void preserveGaAnalyzeProtocolOverloads(LibraryCustomization customization, Logger logger) {
+        logger.info("Preserving GA analyze protocol descriptors");
+        preserveGaAnalyzeProtocolOverloads(customization, "ContentUnderstandingClient",
+            "SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>");
+        preserveGaAnalyzeProtocolOverloads(customization, "ContentUnderstandingAsyncClient",
+            "PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>");
+    }
+
+    private void preserveGaAnalyzeProtocolOverloads(LibraryCustomization customization, String clientClassName,
+        String returnType) {
+        customization.getClass(PACKAGE_NAME, clientClassName).customizeAst(ast ->
+            ast.getClassByName(clientClassName).ifPresent(clazz -> {
+                MethodDeclaration analyze = clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
+                    .setType(returnType)
+                    .addParameter("String", "analyzerId")
+                    .addParameter("List<AnalysisInput>", "inputs")
+                    .addParameter("String", "stringEncoding")
+                    .addParameter("Map<String, String>", "modelDeployments")
+                    .addParameter("ProcessingLocation", "processingLocation")
+                    .addAnnotation(StaticJavaParser.parseAnnotation(
+                        "@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Extract content and fields from input."))
+                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                        .addBlockTag("param", "inputs Inputs to analyze.")
+                        .addBlockTag("param", "stringEncoding The string encoding format for content spans.")
+                        .addBlockTag("param", "modelDeployments Custom model deployment mappings.")
+                        .addBlockTag("param", "processingLocation The location where data may be processed.")
+                        .addBlockTag("return", "the poller for the analyze operation."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "return beginAnalyze(analyzerId, inputs, stringEncoding, modelDeployments, "
+                        + "processingLocation, null); }"));
+                analyze.removeModifier(Modifier.Keyword.PUBLIC);
+
+                MethodDeclaration analyzeBinary = clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
+                    .setType(returnType)
+                    .addParameter("String", "analyzerId")
+                    .addParameter("BinaryData", "binaryInput")
+                    .addParameter("String", "stringEncoding")
+                    .addParameter("String", "contentType")
+                    .addParameter("String", "contentRange")
+                    .addParameter("ProcessingLocation", "processingLocation")
+                    .addAnnotation(StaticJavaParser.parseAnnotation(
+                        "@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Extract content and fields from binary input."))
+                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                        .addBlockTag("param", "binaryInput The binary content to analyze.")
+                        .addBlockTag("param", "stringEncoding The string encoding format for content spans.")
+                        .addBlockTag("param", "contentType The request content type.")
+                        .addBlockTag("param", "contentRange The range of the input to analyze.")
+                        .addBlockTag("param", "processingLocation The location where data may be processed.")
+                        .addBlockTag("return", "the poller for the analyze operation."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "return beginAnalyzeBinary(analyzerId, binaryInput, stringEncoding, contentType, "
+                        + "contentRange, processingLocation, null); }"));
+                analyzeBinary.removeModifier(Modifier.Keyword.PUBLIC);
+            }));
     }
 
     /**
@@ -244,7 +356,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "- {@link ContentNumberField#getValue()} returns {@code Double}\n"
                         + "- {@link ContentIntegerField#getValue()} returns {@code Long}\n"
                         + "- {@link ContentDateField#getValue()} returns {@code LocalDate}\n"
-                        + "- {@link ContentTimeField#getValue()} returns {@code String}\n"
+                        + "- {@link ContentTimeField#getValue()} returns {@code LocalTime}\n"
                         + "- {@link ContentBooleanField#getValue()} returns {@code Boolean}\n"
                         + "- {@link ContentObjectField#getValue()} returns {@code Map<String, ContentField>}\n"
                         + "- {@link ContentArrayField#getValue()} returns {@code List<ContentField>}\n"
@@ -258,7 +370,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "if (this instanceof ContentNumberField) { return ((ContentNumberField) this).getValueNumber(); }"
                         + "if (this instanceof ContentIntegerField) { return ((ContentIntegerField) this).getValueInteger(); }"
                         + "if (this instanceof ContentDateField) { return ((ContentDateField) this).getValueDate(); }"
-                        + "if (this instanceof ContentTimeField) { return ((ContentTimeField) this).getValueTime(); }"
+                        + "if (this instanceof ContentTimeField) { return ((ContentTimeField) this).getValue(); }"
                         + "if (this instanceof ContentBooleanField) { return ((ContentBooleanField) this).isValueBoolean(); }"
                         + "if (this instanceof ContentObjectField) { return ((ContentObjectField) this).getValueObject(); }"
                         + "if (this instanceof ContentArrayField) { return ((ContentArrayField) this).getValueArray(); }"
@@ -515,6 +627,7 @@ public class ContentUnderstandingCustomizations extends Customization {
             ast.addImport("com.azure.core.annotation.ServiceMethod");
             ast.addImport("com.azure.core.util.BinaryData");
             ast.addImport("java.util.Map");
+            ast.addImport("java.util.Objects");
 
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
                 // Add updateDefaults convenience method with Map parameter - returns ContentUnderstandingDefaults directly
@@ -528,10 +641,12 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "This method provides a simpler API that accepts a Map of model names to deployment names."))
                         .addBlockTag("param", "modelDeployments Mapping of model names to deployment names. "
                             + "For example: { \"gpt-4.1\": \"myGpt41Deployment\", \"text-embedding-3-large\": \"myTextEmbedding3LargeDeployment\" }.")
-                        .addBlockTag("return", "the updated ContentUnderstandingDefaults.")
+                         .addBlockTag("return", "the updated ContentUnderstandingDefaults.")
+                        .addBlockTag("throws", "NullPointerException if modelDeployments is null.")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
+                        + "Objects.requireNonNull(modelDeployments, \"'modelDeployments' cannot be null.\");"
                         + "ContentUnderstandingDefaults defaults = new ContentUnderstandingDefaults(modelDeployments);"
                         + "Response<BinaryData> response = updateDefaultsWithResponse(BinaryData.fromObject(defaults), null);"
                         + "return response.getValue().toObject(ContentUnderstandingDefaults.class); }"));
@@ -545,10 +660,12 @@ public class ContentUnderstandingCustomizations extends Customization {
                         "Update default model deployment settings.\n\n"
                         + "This is a convenience method that accepts a ContentUnderstandingDefaults object."))
                         .addBlockTag("param", "defaults The ContentUnderstandingDefaults instance with settings to update.")
-                        .addBlockTag("return", "the updated ContentUnderstandingDefaults.")
+                         .addBlockTag("return", "the updated ContentUnderstandingDefaults.")
+                        .addBlockTag("throws", "NullPointerException if defaults is null.")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
+                        + "Objects.requireNonNull(defaults, \"'defaults' cannot be null.\");"
                         + "Response<BinaryData> response = updateDefaultsWithResponse(BinaryData.fromObject(defaults), null);"
                         + "return response.getValue().toObject(ContentUnderstandingDefaults.class); }"));
             });
@@ -561,6 +678,7 @@ public class ContentUnderstandingCustomizations extends Customization {
             ast.addImport("com.azure.core.annotation.ServiceMethod");
             ast.addImport("com.azure.core.util.BinaryData");
             ast.addImport("java.util.Map");
+            ast.addImport("java.util.Objects");
 
             ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
                 // Add updateDefaults convenience method with Map parameter - returns Mono<ContentUnderstandingDefaults>
@@ -574,10 +692,12 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "This method provides a simpler API that accepts a Map of model names to deployment names."))
                         .addBlockTag("param", "modelDeployments Mapping of model names to deployment names. "
                             + "For example: { \"gpt-4.1\": \"myGpt41Deployment\", \"text-embedding-3-large\": \"myTextEmbedding3LargeDeployment\" }.")
-                        .addBlockTag("return", "the updated ContentUnderstandingDefaults on successful completion of {@link Mono}.")
+                         .addBlockTag("return", "the updated ContentUnderstandingDefaults on successful completion of {@link Mono}.")
+                        .addBlockTag("throws", "NullPointerException if modelDeployments is null.")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
+                        + "Objects.requireNonNull(modelDeployments, \"'modelDeployments' cannot be null.\");"
                         + "ContentUnderstandingDefaults defaults = new ContentUnderstandingDefaults(modelDeployments);"
                         + "return updateDefaultsWithResponse(BinaryData.fromObject(defaults), null)"
                         + ".map(response -> response.getValue().toObject(ContentUnderstandingDefaults.class)); }"));
@@ -591,10 +711,12 @@ public class ContentUnderstandingCustomizations extends Customization {
                         "Update default model deployment settings.\n\n"
                         + "This is a convenience method that accepts a ContentUnderstandingDefaults object."))
                         .addBlockTag("param", "defaults The ContentUnderstandingDefaults instance with settings to update.")
-                        .addBlockTag("return", "the updated ContentUnderstandingDefaults on successful completion of {@link Mono}.")
+                         .addBlockTag("return", "the updated ContentUnderstandingDefaults on successful completion of {@link Mono}.")
+                        .addBlockTag("throws", "NullPointerException if defaults is null.")
                         .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
+                        + "Objects.requireNonNull(defaults, \"'defaults' cannot be null.\");"
                         + "return updateDefaultsWithResponse(BinaryData.fromObject(defaults), null)"
                         + ".map(response -> response.getValue().toObject(ContentUnderstandingDefaults.class)); }"));
             });
@@ -667,6 +789,7 @@ public class ContentUnderstandingCustomizations extends Customization {
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
             ast.addImport("java.time.Duration");
+            ast.addImport("java.util.Objects");
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
                     .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
@@ -687,9 +810,13 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("param", "contentType Request content type.")
                         .addBlockTag("param", "processingLocation The location where the data may be processed. Set to null for service default.")
                         .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "NullPointerException if analyzerId or binaryInput is null.")
+                        .addBlockTag("throws", "IllegalArgumentException if analyzerId is empty, or other parameters fail validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
+                        + "Objects.requireNonNull(analyzerId, \"'analyzerId' cannot be null.\");"
+                        + "if (analyzerId.isEmpty()) { throw LOGGER.logThrowableAsError(new IllegalArgumentException(\"'analyzerId' cannot be empty.\")); }"
+                        + "Objects.requireNonNull(binaryInput, \"'binaryInput' cannot be null.\");"
                         + "RequestOptions requestOptions = new RequestOptions();"
                         + "if (contentRange != null) { requestOptions.addQueryParam(\"range\", contentRange.toString(), false); }"
                         + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
@@ -703,6 +830,7 @@ public class ContentUnderstandingCustomizations extends Customization {
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast -> {
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
             ast.addImport("java.time.Duration");
+            ast.addImport("java.util.Objects");
             ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
                     .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
@@ -723,9 +851,13 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("param", "contentType Request content type.")
                         .addBlockTag("param", "processingLocation The location where the data may be processed. Set to null for service default.")
                         .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "NullPointerException if analyzerId or binaryInput is null.")
+                        .addBlockTag("throws", "IllegalArgumentException if analyzerId is empty, or other parameters fail validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
+                        + "Objects.requireNonNull(analyzerId, \"'analyzerId' cannot be null.\");"
+                        + "if (analyzerId.isEmpty()) { throw LOGGER.logThrowableAsError(new IllegalArgumentException(\"'analyzerId' cannot be empty.\")); }"
+                        + "Objects.requireNonNull(binaryInput, \"'binaryInput' cannot be null.\");"
                         + "RequestOptions requestOptions = new RequestOptions();"
                         + "if (contentRange != null) { requestOptions.addQueryParam(\"range\", contentRange.toString(), false); }"
                         + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
@@ -737,23 +869,22 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * Add setContentRange(ContentRange) overload to AnalysisInput and hide raw String accessors.
-     * The typed overload replaces the String-based getter/setter for a self-documenting API.
+     * Add a typed ContentRange setter to AnalysisInput while preserving the released raw accessors.
      */
-    private void addContentRangeSetterToAnalyzeInput(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding setContentRange(ContentRange) overload and hiding String accessors on AnalysisInput");
+    private void addContentRangeAccessorsToAnalysisInput(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding a typed ContentRange setter while preserving GA accessors on AnalysisInput");
 
         customization.getClass(MODELS_PACKAGE, "AnalysisInput").customizeAst(ast -> {
             ast.addImport("com.azure.ai.contentunderstanding.models.ContentRange");
             ast.getClassByName("AnalysisInput").ifPresent(clazz -> {
-                // Hide getContentRange() returning String — make package-private
+                // Preserve the released package-private raw getter.
                 clazz.getMethodsByName("getContentRange").forEach(m -> {
                     if (m.getType().asString().equals("String")) {
                         m.removeModifier(Modifier.Keyword.PUBLIC);
                     }
                 });
 
-                // Hide setContentRange(String) — make package-private
+                // Preserve the released package-private raw setter.
                 clazz.getMethodsByName("setContentRange").forEach(m -> {
                     if (m.getParameters().size() == 1
                         && m.getParameter(0).getType().asString().equals("String")) {
@@ -780,17 +911,21 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
+
      * Add beginAnalyze convenience overloads without stringEncoding.
      * Adds 2-param and 4-param overloads that default utf16.
      */
     private void addBeginAnalyzeConvenienceOverloads(LibraryCustomization customization, Logger logger) {
         logger.info("Adding beginAnalyze convenience overloads (2/4 param)");
 
+
         // Sync client
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
             ast.addImport("com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest");
+            ast.addImport("com.azure.ai.contentunderstanding.models.AnalyzeOptions");
             ast.addImport("com.azure.core.util.BinaryData");
             ast.addImport("java.time.Duration");
+            ast.addImport("java.util.Objects");
             ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
                 // 2-param: analyzerId, inputs
                 clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
@@ -804,10 +939,11 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
                         .addBlockTag("param", "inputs The inputs to analyze.")
                         .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "NullPointerException if analyzerId or inputs is null.")
+                        .addBlockTag("throws", "IllegalArgumentException if analyzerId is empty, or other parameters fail validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyze(analyzerId, inputs, null, null); }"));
+                        + "return beginAnalyze(analyzerId, inputs, (AnalyzeOptions) null); }"));
 
                 // 4-param: analyzerId, inputs, modelDeployments, processingLocation
                 clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
@@ -824,12 +960,36 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("param", "modelDeployments Custom model deployment mappings. Set to null to use service defaults.")
                         .addBlockTag("param", "processingLocation The processing location for the analysis. Set to null to use the service default.")
                         .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
+                        .addBlockTag("throws", "NullPointerException if analyzerId or inputs is null.")
+                        .addBlockTag("throws", "IllegalArgumentException if analyzerId is empty, or other parameters fail validation.")
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
-                        + "RequestOptions requestOptions = new RequestOptions();"
-                        + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
-                        + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
+                        + "AnalyzeOptions options = new AnalyzeOptions()"
+                        + "    .setModelDeployments(modelDeployments)"
+                        + "    .setProcessingLocation(processingLocation);"
+                        + "return beginAnalyze(analyzerId, inputs, options); }"));
+
+                // 3-param: analyzerId, inputs, options
+                clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
+                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
+                    .addParameter("String", "analyzerId")
+                    .addParameter("List<AnalysisInput>", "inputs")
+                    .addParameter("AnalyzeOptions", "options")
+                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Extract content and fields from inputs. Uses default string encoding (utf16)."))
+                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                        .addBlockTag("param", "inputs The inputs to analyze.")
+                        .addBlockTag("param", "options Additional analysis options, or null to use defaults.")
+                        .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
+                        .addBlockTag("throws", "NullPointerException if analyzerId or inputs is null.")
+                        .addBlockTag("throws", "IllegalArgumentException if analyzerId is empty."))
+                    .setBody(StaticJavaParser.parseBlock("{"
+                        + "Objects.requireNonNull(analyzerId, \"'analyzerId' cannot be null.\");"
+                        + "if (analyzerId.isEmpty()) { throw LOGGER.logThrowableAsError(new IllegalArgumentException(\"'analyzerId' cannot be empty.\")); }"
+                        + "Objects.requireNonNull(inputs, \"'inputs' cannot be null.\");"
+                        + "RequestOptions requestOptions = createAnalyzeRequestOptions(options);"
+                        + "Map<String, String> modelDeployments = options == null ? null : options.getModelDeployments();"
                         + "AnalyzeRequest analyzeRequestObj = new AnalyzeRequest(inputs).setModelDeployments(modelDeployments);"
                         + "BinaryData analyzeRequest = BinaryData.fromObject(analyzeRequestObj);"
                         + "return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest, requestOptions)"
@@ -837,28 +997,357 @@ public class ContentUnderstandingCustomizations extends Customization {
             });
         });
 
+        addBeginAnalyzeConvenienceOverloadsAsync(customization);
+    }
+
+    private void customizePreviewAnalysisMethods(LibraryCustomization customization, Logger logger) {
+        logger.info("Adding preview binary options and inline analysis convenience overloads");
+        customizePreviewAnalysisMethods(customization, "ContentUnderstandingClient", false);
+        customizePreviewAnalysisMethods(customization, "ContentUnderstandingAsyncClient", true);
+    }
+
+    private void customizePreviewAnalysisMethods(LibraryCustomization customization, String clientClassName,
+        boolean async) {
+        customization.getClass(PACKAGE_NAME, clientClassName).customizeAst(ast -> {
+            ast.addImport("com.azure.ai.contentunderstanding.implementation.models.AnalyzeInlineRequest");
+            ast.addImport("com.azure.ai.contentunderstanding.models.AnalyzeBinaryOptions");
+            ast.addImport("com.azure.ai.contentunderstanding.models.AnalyzeOptions");
+            ast.addImport("com.azure.ai.contentunderstanding.models.AnalysisInput");
+            ast.addImport("com.azure.ai.contentunderstanding.models.AnalysisResult");
+            ast.addImport("com.azure.ai.contentunderstanding.models.ContentAnalyzerInlineResponse");
+            ast.addImport("com.azure.ai.contentunderstanding.models.OperationState");
+            ast.addImport("com.azure.core.annotation.ReturnType");
+            ast.addImport("com.azure.core.annotation.ServiceMethod");
+            ast.addImport("com.azure.core.exception.HttpResponseException");
+            ast.addImport("com.azure.core.http.HttpHeaders");
+            ast.addImport("com.azure.core.http.HttpResponse");
+            ast.addImport("com.azure.core.http.rest.RequestOptions");
+            ast.addImport("com.azure.core.http.rest.Response");
+            ast.addImport("com.azure.core.util.BinaryData");
+            ast.addImport("java.time.Duration");
+            ast.addImport("java.nio.ByteBuffer");
+            ast.addImport("java.nio.charset.Charset");
+            ast.addImport("java.util.List");
+            ast.addImport("java.util.Map");
+            ast.addImport("reactor.core.publisher.Flux");
+            ast.addImport("reactor.core.publisher.Mono");
+            if (async) {
+                ast.addImport("com.azure.core.util.FluxUtil");
+            }
+            ast.addImport("java.util.Objects");
+
+            ast.getClassByName(clientClassName).ifPresent(clazz -> {
+                clazz.getMethods().stream()
+                    .filter(method -> "analyzeInline".equals(method.getNameAsString())
+                        || "analyzeBinaryInline".equals(method.getNameAsString()))
+                    .filter(method -> method.getParameters().stream()
+                        .anyMatch(parameter -> "stringEncoding".equals(parameter.getNameAsString())))
+                    .forEach(method -> method.removeModifier(Modifier.Keyword.PUBLIC));
+
+                addAnalyzeRequestOptionsHelper(clazz);
+                addBinaryRequestOptionsHelper(clazz);
+                addSucceededInlineResultHelper(clazz);
+                addBeginAnalyzeBinaryOptionsOverload(clazz, async);
+                addAnalyzeInlineOverloads(clazz, async);
+                addAnalyzeBinaryInlineOverloads(clazz, async);
+            });
+        });
+    }
+
+    private void addAnalyzeRequestOptionsHelper(ClassOrInterfaceDeclaration clazz) {
+        clazz.addMethod("createAnalyzeRequestOptions", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC)
+            .setType("RequestOptions")
+            .addParameter("AnalyzeOptions", "options")
+            .setBody(StaticJavaParser.parseBlock("{"
+                + "RequestOptions requestOptions = new RequestOptions();"
+                + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
+                + "if (options == null) { return requestOptions; }"
+                + "if (options.isInputTruncationAllowed() != null) {"
+                + "    requestOptions.addQueryParam(\"allowInputTruncation\","
+                + "        options.isInputTruncationAllowed().toString(), false);"
+                + "}"
+                + "if (options.getProcessingLocation() != null) {"
+                + "    requestOptions.addQueryParam(\"processingLocation\","
+                + "        options.getProcessingLocation().toString(), false);"
+                + "}"
+                + "return requestOptions; }"));
+    }
+
+    private void addBinaryRequestOptionsHelper(ClassOrInterfaceDeclaration clazz) {
+        clazz.addMethod("createBinaryAnalyzeRequestOptions", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC)
+            .setType("RequestOptions")
+            .addParameter("AnalyzeBinaryOptions", "options")
+            .setBody(StaticJavaParser.parseBlock("{"
+                + "RequestOptions requestOptions = new RequestOptions();"
+                + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
+                + "if (options == null) { return requestOptions; }"
+                + "if (options.getContentRange() != null) {"
+                + "    requestOptions.addQueryParam(\"range\", options.getContentRange().toString(), false);"
+                + "}"
+                + "if (options.isInputTruncationAllowed() != null) {"
+                + "    requestOptions.addQueryParam(\"allowInputTruncation\","
+                + "        options.isInputTruncationAllowed().toString(), false);"
+                + "}"
+                + "if (options.getProcessingLocation() != null) {"
+                + "    requestOptions.addQueryParam(\"processingLocation\","
+                + "        options.getProcessingLocation().toString(), false);"
+                + "}"
+                + "return requestOptions; }"));
+    }
+
+    private void addSucceededInlineResultHelper(ClassOrInterfaceDeclaration clazz) {
+        clazz.addMethod("deserializeInlineResponse", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC)
+            .setType("ContentAnalyzerInlineResponse")
+            .addParameter("Response<BinaryData>", "response")
+            .setBody(StaticJavaParser.parseBlock("{"
+                + "BinaryData responseBody = response.getValue();"
+                + "if (responseBody == null) {"
+                + "    throw new HttpResponseException(\"Inline analysis returned an empty response body.\","
+                + "        toHttpResponse(response), null);"
+                + "}"
+                + "ContentAnalyzerInlineResponse inlineResponse;"
+                + "try {"
+                + "    inlineResponse = responseBody.toObject(ContentAnalyzerInlineResponse.class);"
+                + "} catch (RuntimeException exception) {"
+                + "    throw new HttpResponseException(\"Inline analysis returned a malformed response body.\","
+                + "        toHttpResponse(response), exception);"
+                + "}"
+                + "if (inlineResponse == null) {"
+                + "    throw new HttpResponseException(\"Inline analysis returned an empty response body.\","
+                + "        toHttpResponse(response), null);"
+                + "}"
+                + "return inlineResponse; }"));
+
+        clazz.addMethod("getSucceededInlineResult", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC)
+            .setType("AnalysisResult")
+            .addParameter("ContentAnalyzerInlineResponse", "inlineResponse")
+            .addParameter("Response<BinaryData>", "response")
+            .setBody(StaticJavaParser.parseBlock("{"
+                + "if (inlineResponse != null && OperationState.SUCCEEDED.equals(inlineResponse.getStatus())) {"
+                + "    if (inlineResponse.getResult() != null) { return inlineResponse.getResult(); }"
+                + "    throw new HttpResponseException(\"Inline analysis succeeded without a result.\","
+                + "        toHttpResponse(response), inlineResponse);"
+                + "}"
+                + "throw new HttpResponseException("
+                + "    \"Inline analysis failed with operation status '\""
+                + "        + (inlineResponse == null ? null : inlineResponse.getStatus()) + \"'.\","
+                + "    toHttpResponse(response), inlineResponse); }"));
+
+        clazz.addMethod("toHttpResponse", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC)
+            .setType("HttpResponse")
+            .addParameter("Response<BinaryData>", "response")
+            .setBody(StaticJavaParser.parseBlock("{"
+                + "BinaryData body = response.getValue();"
+                + "return new HttpResponse(response.getRequest()) {"
+                + "    @Override public int getStatusCode() { return response.getStatusCode(); }"
+                + "    @Override @Deprecated public String getHeaderValue(String name) {"
+                + "        return response.getHeaders().getValue(name);"
+                + "    }"
+                + "    @Override public HttpHeaders getHeaders() { return response.getHeaders(); }"
+                + "    @Override public Flux<ByteBuffer> getBody() {"
+                + "        return body == null ? Flux.empty() : body.toFluxByteBuffer();"
+                + "    }"
+                + "    @Override public Mono<byte[]> getBodyAsByteArray() {"
+                + "        return body == null ? Mono.empty() : Mono.fromCallable(body::toBytes);"
+                + "    }"
+                + "    @Override public Mono<String> getBodyAsString() {"
+                + "        return body == null ? Mono.empty() : Mono.fromCallable(body::toString);"
+                + "    }"
+                + "    @Override public Mono<String> getBodyAsString(Charset charset) {"
+                + "        return body == null ? Mono.empty()"
+                + "            : Mono.fromCallable(() -> new String(body.toBytes(), charset));"
+                + "    }"
+                + "    @Override public BinaryData getBodyAsBinaryData() { return body; }"
+                + "}; }"));
+    }
+
+    private void addBeginAnalyzeBinaryOptionsOverload(ClassOrInterfaceDeclaration clazz, boolean async) {
+        String pollerType = async
+            ? "PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>"
+            : "SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>";
+        String serviceMethod = async ? "beginAnalyzeBinaryWithModelAsync" : "beginAnalyzeBinaryWithModel";
+
+        clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
+            .setType(pollerType)
+            .addParameter("String", "analyzerId")
+            .addParameter("BinaryData", "binaryInput")
+            .addParameter("AnalyzeBinaryOptions", "options")
+            .addAnnotation(StaticJavaParser.parseAnnotation(
+                "@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+            .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                "Extract content and fields from binary input. Uses default string encoding (utf16)."))
+                .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                .addBlockTag("param", "binaryInput The binary content to analyze.")
+                .addBlockTag("param", "options Additional binary analysis options, or null to use defaults.")
+                .addBlockTag("return", async
+                    ? "the {@link PollerFlux} for polling of the analyze operation."
+                    : "the {@link SyncPoller} for polling of the analyze operation.")
+                .addBlockTag("throws", "NullPointerException if analyzerId or binaryInput is null.")
+                .addBlockTag("throws", "IllegalArgumentException if analyzerId is empty."))
+            .setBody(StaticJavaParser.parseBlock("{"
+                + "Objects.requireNonNull(analyzerId, \"'analyzerId' cannot be null.\");"
+                + "if (analyzerId.isEmpty()) { throw LOGGER.logThrowableAsError(new IllegalArgumentException(\"'analyzerId' cannot be empty.\")); }"
+                + "Objects.requireNonNull(binaryInput, \"'binaryInput' cannot be null.\");"
+                + "RequestOptions requestOptions = createBinaryAnalyzeRequestOptions(options);"
+                + "String contentType = options != null && options.getContentType() != null"
+                + "    ? options.getContentType() : \"application/octet-stream\";"
+                + "return serviceClient." + serviceMethod
+                + "(analyzerId, contentType, binaryInput, requestOptions)"
+                + ".setPollInterval(Duration.ofSeconds(3)); }"));
+    }
+
+    private void addAnalyzeInlineOverloads(ClassOrInterfaceDeclaration clazz, boolean async) {
+        String resultType = async
+            ? "Mono<ContentAnalyzerInlineResponse>"
+            : "ContentAnalyzerInlineResponse";
+        String responseExpression = async
+            ? "return analyzeInlineWithResponse(analyzerId, BinaryData.fromObject(request), requestOptions)"
+                + ".map(response -> {"
+                + "    ContentAnalyzerInlineResponse inlineResponse = deserializeInlineResponse(response);"
+                + "    getSucceededInlineResult(inlineResponse, response);"
+                + "    return inlineResponse;"
+                + "});"
+            : "Response<BinaryData> response = analyzeInlineWithResponse(analyzerId,"
+                + "BinaryData.fromObject(request), requestOptions);"
+                + "ContentAnalyzerInlineResponse inlineResponse = deserializeInlineResponse(response);"
+                + "getSucceededInlineResult(inlineResponse, response);"
+                + "return inlineResponse;";
+
+        clazz.addMethod("analyzeInline", Modifier.Keyword.PUBLIC)
+            .setType(resultType)
+            .addParameter("String", "analyzerId")
+            .addParameter("List<AnalysisInput>", "inputs")
+            .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
+            .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                "Analyzes content inline using default options and string encoding (utf16)."))
+                .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                .addBlockTag("param", "inputs The inputs to analyze.")
+                .addBlockTag("return", async
+                    ? "the complete inline response on successful completion of {@link Mono}."
+                    : "the complete inline response."))
+            .setBody(StaticJavaParser.parseBlock(
+                "{ return analyzeInline(analyzerId, inputs, (AnalyzeOptions) null); }"));
+
+        clazz.addMethod("analyzeInline", Modifier.Keyword.PUBLIC)
+            .setType(resultType)
+            .addParameter("String", "analyzerId")
+            .addParameter("List<AnalysisInput>", "inputs")
+            .addParameter("AnalyzeOptions", "options")
+            .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
+            .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                "Analyzes content inline using default string encoding (utf16)."))
+                .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                .addBlockTag("param", "inputs The inputs to analyze.")
+                .addBlockTag("param", "options Additional analysis options, or null to use defaults.")
+                .addBlockTag("return", async
+                    ? "the complete inline response on successful completion of {@link Mono}."
+                    : "the complete inline response.")
+                .addBlockTag("throws", "NullPointerException if analyzerId or inputs is null.")
+                .addBlockTag("throws", "IllegalArgumentException if analyzerId is empty.")
+                .addBlockTag("throws", "HttpResponseException if the service rejects the request or the inline operation state is not Succeeded."))
+            .setBody(StaticJavaParser.parseBlock("{"
+                + "Objects.requireNonNull(analyzerId, \"'analyzerId' cannot be null.\");"
+                + "if (analyzerId.isEmpty()) { throw LOGGER.logThrowableAsError(new IllegalArgumentException(\"'analyzerId' cannot be empty.\")); }"
+                + "Objects.requireNonNull(inputs, \"'inputs' cannot be null.\");"
+                + "RequestOptions requestOptions = createAnalyzeRequestOptions(options);"
+                + "Map<String, String> modelDeployments = options == null ? null : options.getModelDeployments();"
+                + "AnalyzeInlineRequest request = new AnalyzeInlineRequest(inputs)"
+                + "    .setModelDeployments(modelDeployments);"
+                + responseExpression + " }"));
+    }
+
+
+
+    private void addAnalyzeBinaryInlineOverloads(ClassOrInterfaceDeclaration clazz, boolean async) {
+        String resultType = async
+            ? "Mono<ContentAnalyzerInlineResponse>"
+            : "ContentAnalyzerInlineResponse";
+        String responseExpression = async
+            ? "return analyzeBinaryInlineWithResponse(analyzerId, contentType, binaryInput, requestOptions)"
+                + ".map(response -> {"
+                + "    ContentAnalyzerInlineResponse inlineResponse = deserializeInlineResponse(response);"
+                + "    getSucceededInlineResult(inlineResponse, response);"
+                + "    return inlineResponse;"
+                + "});"
+            : "Response<BinaryData> response = analyzeBinaryInlineWithResponse(analyzerId, contentType,"
+                + "binaryInput, requestOptions);"
+                + "ContentAnalyzerInlineResponse inlineResponse = deserializeInlineResponse(response);"
+                + "getSucceededInlineResult(inlineResponse, response);"
+                + "return inlineResponse;";
+
+        clazz.addMethod("analyzeBinaryInline", Modifier.Keyword.PUBLIC)
+            .setType(resultType)
+            .addParameter("String", "analyzerId")
+            .addParameter("BinaryData", "binaryInput")
+            .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
+            .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                "Analyzes binary content inline using default options and string encoding (utf16)."))
+                .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                .addBlockTag("param", "binaryInput The binary content to analyze.")
+                .addBlockTag("return", async
+                    ? "the complete inline response on successful completion of {@link Mono}."
+                    : "the complete inline response."))
+            .setBody(StaticJavaParser.parseBlock(
+                "{ return analyzeBinaryInline(analyzerId, binaryInput, (AnalyzeBinaryOptions) null); }"));
+
+        clazz.addMethod("analyzeBinaryInline", Modifier.Keyword.PUBLIC)
+            .setType(resultType)
+            .addParameter("String", "analyzerId")
+            .addParameter("BinaryData", "binaryInput")
+            .addParameter("AnalyzeBinaryOptions", "options")
+            .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.SINGLE)"))
+            .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                "Analyzes binary content inline using default string encoding (utf16)."))
+                .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                .addBlockTag("param", "binaryInput The binary content to analyze.")
+                .addBlockTag("param", "options Additional binary analysis options, or null to use defaults.")
+                .addBlockTag("return", async
+                    ? "the complete inline response on successful completion of {@link Mono}."
+                    : "the complete inline response.")
+                .addBlockTag("throws", "NullPointerException if analyzerId or binaryInput is null.")
+                .addBlockTag("throws", "IllegalArgumentException if analyzerId is empty.")
+                .addBlockTag("throws", "HttpResponseException if the service rejects the request or the inline operation state is not Succeeded."))
+            .setBody(StaticJavaParser.parseBlock("{"
+                + "Objects.requireNonNull(analyzerId, \"'analyzerId' cannot be null.\");"
+                + "if (analyzerId.isEmpty()) { throw LOGGER.logThrowableAsError(new IllegalArgumentException(\"'analyzerId' cannot be empty.\")); }"
+                + "Objects.requireNonNull(binaryInput, \"'binaryInput' cannot be null.\");"
+                + "RequestOptions requestOptions = createBinaryAnalyzeRequestOptions(options);"
+                + "String contentType = options != null && options.getContentType() != null"
+                + "    ? options.getContentType() : \"application/octet-stream\";"
+                + responseExpression + " }"));
+    }
+
+
+
+    private void addBeginAnalyzeConvenienceOverloadsAsync(LibraryCustomization customization) {
         // Async client
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast -> {
             ast.addImport("com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1");
+            ast.addImport("com.azure.ai.contentunderstanding.models.AnalyzeOptions");
             ast.addImport("com.azure.core.util.BinaryData");
             ast.addImport("java.time.Duration");
+            ast.addImport("java.util.Objects");
             ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
                 // 2-param: analyzerId, inputs
                 clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
                     .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
                     .addParameter("String", "analyzerId")
                     .addParameter("List<AnalysisInput>", "inputs")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Extract content and fields from inputs. Uses default string encoding (utf16), "
-                        + "service default model deployments, and global processing location."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "inputs The inputs to analyze.")
-                        .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyze(analyzerId, inputs, null, null); }"));
+                    .addAnnotation(
+                        StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription
+                        .parseText("Extract content and fields from inputs. Uses default string encoding (utf16), "
+                            + "service default model deployments, and global processing location."))
+                                .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                                .addBlockTag("param", "inputs The inputs to analyze.")
+                                .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
+                                .addBlockTag("throws", "NullPointerException if analyzerId or inputs is null.")
+                                .addBlockTag("throws",
+                                    "IllegalArgumentException if analyzerId is empty, or other parameters fail validation.")
+                                .addBlockTag("throws",
+                                    "HttpResponseException thrown if the request is rejected by server."))
+                    .setBody(StaticJavaParser
+                        .parseBlock("{" + "return beginAnalyze(analyzerId, inputs, (AnalyzeOptions) null); }"));
 
                 // 4-param: analyzerId, inputs, modelDeployments, processingLocation
                 clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
@@ -867,20 +1356,49 @@ public class ContentUnderstandingCustomizations extends Customization {
                     .addParameter("List<AnalysisInput>", "inputs")
                     .addParameter("Map<String, String>", "modelDeployments")
                     .addParameter("ProcessingLocation", "processingLocation")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Extract content and fields from inputs. Uses default string encoding (utf16)."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "inputs The inputs to analyze.")
-                        .addBlockTag("param", "modelDeployments Custom model deployment mappings. Set to null to use service defaults.")
-                        .addBlockTag("param", "processingLocation The processing location for the analysis. Set to null to use the service default.")
-                        .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
+                    .addAnnotation(
+                        StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription
+                        .parseText("Extract content and fields from inputs. Uses default string encoding (utf16)."))
+                            .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                            .addBlockTag("param", "inputs The inputs to analyze.")
+                            .addBlockTag("param",
+                                "modelDeployments Custom model deployment mappings. Set to null to use service defaults.")
+                            .addBlockTag("param",
+                                "processingLocation The processing location for the analysis. Set to null to use the service default.")
+                            .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
+                            .addBlockTag("throws", "NullPointerException if analyzerId or inputs is null.")
+                            .addBlockTag("throws",
+                                "IllegalArgumentException if analyzerId is empty, or other parameters fail validation.")
+                            .addBlockTag("throws",
+                                "HttpResponseException thrown if the request is rejected by server."))
+                    .setBody(StaticJavaParser.parseBlock("{" + "AnalyzeOptions options = new AnalyzeOptions()"
+                        + "    .setModelDeployments(modelDeployments)"
+                        + "    .setProcessingLocation(processingLocation);"
+                        + "return beginAnalyze(analyzerId, inputs, options); }"));
+
+                // 3-param: analyzerId, inputs, options
+                clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
+                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult>")
+                    .addParameter("String", "analyzerId")
+                    .addParameter("List<AnalysisInput>", "inputs")
+                    .addParameter("AnalyzeOptions", "options")
+                    .addAnnotation(
+                        StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
+                    .setJavadocComment(new Javadoc(JavadocDescription
+                        .parseText("Extract content and fields from inputs. Uses default string encoding (utf16)."))
+                            .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
+                            .addBlockTag("param", "inputs The inputs to analyze.")
+                            .addBlockTag("param", "options Additional analysis options, or null to use defaults.")
+                            .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
+                            .addBlockTag("throws", "NullPointerException if analyzerId or inputs is null.")
+                            .addBlockTag("throws", "IllegalArgumentException if analyzerId is empty."))
                     .setBody(StaticJavaParser.parseBlock("{"
-                        + "RequestOptions requestOptions = new RequestOptions();"
-                        + "if (processingLocation != null) { requestOptions.addQueryParam(\"processingLocation\", processingLocation.toString(), false); }"
-                        + "requestOptions.addQueryParam(\"stringEncoding\", \"utf16\", false);"
+                        + "Objects.requireNonNull(analyzerId, \"'analyzerId' cannot be null.\");"
+                        + "if (analyzerId.isEmpty()) { throw LOGGER.logThrowableAsError(new IllegalArgumentException(\"'analyzerId' cannot be empty.\")); }"
+                        + "Objects.requireNonNull(inputs, \"'inputs' cannot be null.\");"
+                        + "RequestOptions requestOptions = createAnalyzeRequestOptions(options);"
+                        + "Map<String, String> modelDeployments = options == null ? null : options.getModelDeployments();"
                         + "AnalyzeRequest analyzeRequestObj = new AnalyzeRequest(inputs).setModelDeployments(modelDeployments);"
                         + "BinaryData analyzeRequest = BinaryData.fromObject(analyzeRequestObj);"
                         + "return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest, requestOptions)"
@@ -912,20 +1430,19 @@ public class ContentUnderstandingCustomizations extends Customization {
             "getValueInteger()", logger);
 
         // ContentDateField: getValue() -> LocalDate, hide getValueDate()
-        addTypedGetValueAndHideVerbose(customization, "ContentDateField", "LocalDate", "getValueDate",
-            "getValueDate()", logger);
+        addTypedGetValueAndHideVerbose(customization, "ContentDateField", "LocalDate", "getValueDate", "getValueDate()",
+            logger);
 
-        // ContentTimeField: getValue() -> String, hide getValueTime()
-        addTypedGetValueAndHideVerbose(customization, "ContentTimeField", "String", "getValueTime",
-            "getValueTime()", logger);
+        // ContentTimeField: getValue() -> LocalTime, hide getValueTime()
+        customizeTimeFieldValueAccessor(customization);
 
         // ContentBooleanField: getValue() -> Boolean, hide isValueBoolean()
         addTypedGetValueAndHideVerbose(customization, "ContentBooleanField", "Boolean", "isValueBoolean",
             "isValueBoolean()", logger);
 
         // ContentObjectField: getValue() -> Map<String, ContentField>, hide getValueObject()
-        addTypedGetValueAndHideVerbose(customization, "ContentObjectField", "Map<String, ContentField>", "getValueObject",
-            "getValueObject()", logger);
+        addTypedGetValueAndHideVerbose(customization, "ContentObjectField", "Map<String, ContentField>",
+            "getValueObject", "getValueObject()", logger);
 
         // ContentArrayField: getValue() -> List<ContentField>, hide getValueArray()
         addTypedGetValueAndHideVerbose(customization, "ContentArrayField", "List<ContentField>", "getValueArray",
@@ -939,23 +1456,48 @@ public class ContentUnderstandingCustomizations extends Customization {
     /**
      * Helper: adds a typed getValue() override to a ContentField subclass and hides the verbose getter.
      */
-    private void addTypedGetValueAndHideVerbose(LibraryCustomization customization, String className,
-            String returnType, String verboseMethodName, String delegateCall, Logger logger) {
-        customization.getClass(MODELS_PACKAGE, className).customizeAst(ast ->
-            ast.getClassByName(className).ifPresent(clazz -> {
+    private void addTypedGetValueAndHideVerbose(LibraryCustomization customization, String className, String returnType,
+        String verboseMethodName, String delegateCall, Logger logger) {
+        customization.getClass(MODELS_PACKAGE, className)
+            .customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> {
                 // Hide the verbose getter by removing PUBLIC modifier
-                clazz.getMethodsByName(verboseMethodName).forEach(method ->
-                    method.removeModifier(Modifier.Keyword.PUBLIC));
+                clazz.getMethodsByName(verboseMethodName)
+                    .forEach(method -> method.removeModifier(Modifier.Keyword.PUBLIC));
 
                 // Add typed getValue() override
                 clazz.addMethod("getValue", Modifier.Keyword.PUBLIC)
                     .setType(returnType)
                     .addMarkerAnnotation(Override.class)
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Gets the strongly-typed value of this field."))
-                        .addBlockTag("return", "the field value, or null if not available."))
+                    .setJavadocComment(
+                        new Javadoc(JavadocDescription.parseText("Gets the strongly-typed value of this field."))
+                            .addBlockTag("return", "the field value, or null if not available."))
                     .setBody(StaticJavaParser.parseBlock("{ return " + delegateCall + "; }"));
             }));
+    }
+
+    private void customizeTimeFieldValueAccessor(LibraryCustomization customization) {
+        customization.getClass(MODELS_PACKAGE, "ContentTimeField").customizeAst(ast -> {
+            ast.addImport("java.time.LocalTime");
+            ast.getClassByName("ContentTimeField").ifPresent(clazz -> {
+                clazz.getMethodsByName("getValueTime")
+                    .forEach(method -> method.removeModifier(Modifier.Keyword.PUBLIC));
+
+                clazz.addMethod("getValue", Modifier.Keyword.PUBLIC)
+                    .setType("String")
+                    .addMarkerAnnotation(Override.class)
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Gets the time value of this field."))
+                        .addBlockTag("return", "the time value, or null if not available."))
+                    .setBody(StaticJavaParser.parseBlock("{ return getValueTime(); }"));
+
+                clazz.addMethod("getTimeValue", Modifier.Keyword.PUBLIC)
+                    .setType("LocalTime")
+                    .setJavadocComment(
+                        new Javadoc(JavadocDescription.parseText("Gets the strongly-typed time value of this field."))
+                            .addBlockTag("return", "the local time value, or null if not available."))
+                    .setBody(StaticJavaParser.parseBlock("{" + "String value = getValueTime();"
+                        + "return value == null ? null : LocalTime.parse(value); }"));
+            });
+        });
     }
 
     // =================== Duration property customizations ===================
@@ -982,10 +1524,9 @@ public class ContentUnderstandingCustomizations extends Customization {
             ast.getClassByName("AudioVisualContent").ifPresent(clazz -> {
                 hideMsGetterAndAddDuration(clazz, "getStartTimeMs", "getStartTime", "startTimeMs", false);
                 hideMsGetterAndAddDuration(clazz, "getEndTimeMs", "getEndTime", "endTimeMs", false);
-                hideMsGetterAndAddDuration(clazz, "getCameraShotTimesMs", "getCameraShotTimes",
-                    "cameraShotTimesMs", true);
-                hideMsGetterAndAddDuration(clazz, "getKeyFrameTimesMs", "getKeyFrameTimes",
-                    "keyFrameTimesMs", true);
+                hideMsGetterAndAddDuration(clazz, "getCameraShotTimesMs", "getCameraShotTimes", "cameraShotTimesMs",
+                    true);
+                hideMsGetterAndAddDuration(clazz, "getKeyFrameTimesMs", "getKeyFrameTimes", "keyFrameTimesMs", true);
             });
         });
 
@@ -1027,32 +1568,28 @@ public class ContentUnderstandingCustomizations extends Customization {
      * @param isList true if the property is List&lt;Long&gt; (returns List&lt;Duration&gt;)
      */
     private void hideMsGetterAndAddDuration(ClassOrInterfaceDeclaration clazz, String msMethodName,
-            String durationMethodName, String fieldName, boolean isList) {
+        String durationMethodName, String fieldName, boolean isList) {
         // Hide the *Ms() getter by removing PUBLIC modifier
-        clazz.getMethodsByName(msMethodName).forEach(method ->
-            method.removeModifier(Modifier.Keyword.PUBLIC));
+        clazz.getMethodsByName(msMethodName).forEach(method -> method.removeModifier(Modifier.Keyword.PUBLIC));
 
         if (isList) {
             // List<Long> -> List<Duration>
             clazz.addMethod(durationMethodName, Modifier.Keyword.PUBLIC)
                 .setType("List<Duration>")
-                .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                    "Gets the " + fieldName.replace("Ms", "") + " as a list of Duration values."))
-                    .addBlockTag("return", "the durations, or null if not available."))
-                .setBody(StaticJavaParser.parseBlock(
-                    "{ if (this." + fieldName + " == null) { return null; } "
-                    + "return this." + fieldName + ".stream()"
-                    + ".map(Duration::ofMillis)"
-                    + ".collect(Collectors.toList()); }"));
+                .setJavadocComment(new Javadoc(JavadocDescription
+                    .parseText("Gets the " + fieldName.replace("Ms", "") + " as a list of Duration values."))
+                        .addBlockTag("return", "the durations, or null if not available."))
+                .setBody(StaticJavaParser
+                    .parseBlock("{ if (this." + fieldName + " == null) { return null; } " + "return this." + fieldName
+                        + ".stream()" + ".map(Duration::ofMillis)" + ".collect(Collectors.toList()); }"));
         } else {
             // long -> Duration
             clazz.addMethod(durationMethodName, Modifier.Keyword.PUBLIC)
                 .setType("Duration")
-                .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                    "Gets the " + fieldName.replace("Ms", "") + " as a Duration."))
-                    .addBlockTag("return", "the duration."))
-                .setBody(StaticJavaParser.parseBlock(
-                    "{ return Duration.ofMillis(this." + fieldName + "); }"));
+                .setJavadocComment(new Javadoc(
+                    JavadocDescription.parseText("Gets the " + fieldName.replace("Ms", "") + " as a Duration."))
+                        .addBlockTag("return", "the duration."))
+                .setBody(StaticJavaParser.parseBlock("{ return Duration.ofMillis(this." + fieldName + "); }"));
         }
     }
 
@@ -1064,6 +1601,7 @@ public class ContentUnderstandingCustomizations extends Customization {
      * Add ContentSource, DocumentSource, AudioVisualSource, and geometry types
      * (PointF, RectangleF, Rectangle) as custom files via the raw editor.
      */
+
     private void addContentSourceAndGeometryTypes(LibraryCustomization customization, Logger logger) {
         logger.info("Adding ContentSource class hierarchy and geometry types");
 
@@ -1081,23 +1619,22 @@ public class ContentUnderstandingCustomizations extends Customization {
     private void addSourcesMethod(LibraryCustomization customization, Logger logger) {
         logger.info("Adding getSources() and hiding getSource() on ContentField");
 
-        customization.getClass(MODELS_PACKAGE, "ContentField").customizeAst(ast ->
-            ast.getClassByName("ContentField").ifPresent(clazz -> {
+        customization.getClass(MODELS_PACKAGE, "ContentField")
+            .customizeAst(ast -> ast.getClassByName("ContentField").ifPresent(clazz -> {
                 // Hide getSource() — users should use getSources() for typed access
                 clazz.getMethodsByName("getSource").forEach(m -> m.removeModifier(Modifier.Keyword.PUBLIC));
                 ast.addImport("java.util.List");
                 clazz.addMethod("getSources", Modifier.Keyword.PUBLIC)
                     .setType("List<ContentSource>")
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Parses the encoded source string into typed content sources.\n\n"
-                        + "The returned list contains {@link DocumentSource} or {@link AudioVisualSource} "
-                        + "instances depending on the wire format.\n"
-                        + "Returns {@code null} if the source string is null or empty."))
-                        .addBlockTag("return", "an unmodifiable list of {@link ContentSource} instances, or null if no source is available.")
-                        .addBlockTag("see", "DocumentSource#parse(String)")
-                        .addBlockTag("see", "AudioVisualSource#parse(String)"))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "String src = this.source;"
+                    .setJavadocComment(new Javadoc(
+                        JavadocDescription.parseText("Parses the encoded source string into typed content sources.\n\n"
+                            + "The returned list contains {@link DocumentSource} or {@link AudioVisualSource} "
+                            + "instances depending on the wire format.\n"
+                            + "Returns {@code null} if the source string is null or empty.")).addBlockTag("return",
+                                "an unmodifiable list of {@link ContentSource} instances, or null if no source is available.")
+                                .addBlockTag("see", "DocumentSource#parse(String)")
+                                .addBlockTag("see", "AudioVisualSource#parse(String)"))
+                    .setBody(StaticJavaParser.parseBlock("{" + "String src = this.source;"
                         + "return (src == null || src.isEmpty()) ? null : ContentSource.parseAll(src); }"));
             }));
     }
@@ -1112,640 +1649,332 @@ public class ContentUnderstandingCustomizations extends Customization {
     //   - models/DocumentSource.java
     //   - models/AudioVisualSource.java
 
-    private static final String POINT_F_CONTENT =
-        "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
-        + "// Licensed under the MIT License.\n\n"
-        + "package com.azure.ai.contentunderstanding.models;\n\n"
-        + "import com.azure.core.annotation.Immutable;\n\n"
-        + "import java.util.Objects;\n\n"
-        + "/**\n"
+    private static final String POINT_F_CONTENT = "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
+        + "// Licensed under the MIT License.\n\n" + "package com.azure.ai.contentunderstanding.models;\n\n"
+        + "import com.azure.core.annotation.Immutable;\n\n" + "import java.util.Objects;\n\n" + "/**\n"
         + " * Represents a point with float-precision x and y coordinates.\n"
-        + " * Used by {@link DocumentSource} to define polygon vertices in document coordinate space.\n"
-        + " */\n"
-        + "@Immutable\n"
-        + "public final class PointF {\n"
-        + "    private final float x;\n"
-        + "    private final float y;\n\n"
-        + "    /**\n"
-        + "     * Creates a new {@link PointF}.\n"
-        + "     *\n"
-        + "     * @param x The x-coordinate.\n"
-        + "     * @param y The y-coordinate.\n"
-        + "     */\n"
-        + "    public PointF(float x, float y) {\n"
-        + "        this.x = x;\n"
-        + "        this.y = y;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the x-coordinate.\n"
-        + "     *\n"
-        + "     * @return The x-coordinate.\n"
-        + "     */\n"
-        + "    public float getX() {\n"
-        + "        return x;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the y-coordinate.\n"
-        + "     *\n"
-        + "     * @return The y-coordinate.\n"
-        + "     */\n"
-        + "    public float getY() {\n"
-        + "        return y;\n"
-        + "    }\n\n"
-        + "    @Override\n"
-        + "    public String toString() {\n"
-        + "        return \"(\" + x + \", \" + y + \")\";\n"
-        + "    }\n\n"
-        + "    @Override\n"
-        + "    public boolean equals(Object obj) {\n"
-        + "        if (this == obj) {\n"
-        + "            return true;\n"
-        + "        }\n"
-        + "        if (!(obj instanceof PointF)) {\n"
-        + "            return false;\n"
-        + "        }\n"
-        + "        PointF other = (PointF) obj;\n"
-        + "        return Float.compare(x, other.x) == 0 && Float.compare(y, other.y) == 0;\n"
-        + "    }\n\n"
-        + "    @Override\n"
-        + "    public int hashCode() {\n"
-        + "        return Objects.hash(x, y);\n"
-        + "    }\n"
+        + " * Used by {@link DocumentSource} to define polygon vertices in document coordinate space.\n" + " */\n"
+        + "@Immutable\n" + "public final class PointF {\n" + "    private final float x;\n"
+        + "    private final float y;\n\n" + "    /**\n" + "     * Creates a new {@link PointF}.\n" + "     *\n"
+        + "     * @param x The x-coordinate.\n" + "     * @param y The y-coordinate.\n" + "     */\n"
+        + "    public PointF(float x, float y) {\n" + "        this.x = x;\n" + "        this.y = y;\n" + "    }\n\n"
+        + "    /**\n" + "     * Gets the x-coordinate.\n" + "     *\n" + "     * @return The x-coordinate.\n"
+        + "     */\n" + "    public float getX() {\n" + "        return x;\n" + "    }\n\n" + "    /**\n"
+        + "     * Gets the y-coordinate.\n" + "     *\n" + "     * @return The y-coordinate.\n" + "     */\n"
+        + "    public float getY() {\n" + "        return y;\n" + "    }\n\n" + "    @Override\n"
+        + "    public String toString() {\n" + "        return \"(\" + x + \", \" + y + \")\";\n" + "    }\n\n"
+        + "    @Override\n" + "    public boolean equals(Object obj) {\n" + "        if (this == obj) {\n"
+        + "            return true;\n" + "        }\n" + "        if (!(obj instanceof PointF)) {\n"
+        + "            return false;\n" + "        }\n" + "        PointF other = (PointF) obj;\n"
+        + "        return Float.compare(x, other.x) == 0 && Float.compare(y, other.y) == 0;\n" + "    }\n\n"
+        + "    @Override\n" + "    public int hashCode() {\n" + "        return Objects.hash(x, y);\n" + "    }\n"
         + "}\n";
 
-    private static final String RECTANGLE_F_CONTENT =
-        "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
-        + "// Licensed under the MIT License.\n\n"
-        + "package com.azure.ai.contentunderstanding.models;\n\n"
-        + "import com.azure.core.annotation.Immutable;\n\n"
-        + "import java.util.Objects;\n\n"
-        + "/**\n"
+    private static final String RECTANGLE_F_CONTENT = "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
+        + "// Licensed under the MIT License.\n\n" + "package com.azure.ai.contentunderstanding.models;\n\n"
+        + "import com.azure.core.annotation.Immutable;\n\n" + "import java.util.Objects;\n\n" + "/**\n"
         + " * Represents an axis-aligned rectangle with float-precision coordinates.\n"
-        + " * Used by {@link DocumentSource} as the bounding box computed from polygon coordinates.\n"
-        + " */\n"
-        + "@Immutable\n"
-        + "public final class RectangleF {\n"
-        + "    private final float x;\n"
-        + "    private final float y;\n"
-        + "    private final float width;\n"
-        + "    private final float height;\n\n"
-        + "    /**\n"
-        + "     * Creates a new {@link RectangleF}.\n"
-        + "     *\n"
+        + " * Used by {@link DocumentSource} as the bounding box computed from polygon coordinates.\n" + " */\n"
+        + "@Immutable\n" + "public final class RectangleF {\n" + "    private final float x;\n"
+        + "    private final float y;\n" + "    private final float width;\n" + "    private final float height;\n\n"
+        + "    /**\n" + "     * Creates a new {@link RectangleF}.\n" + "     *\n"
         + "     * @param x The x-coordinate of the top-left corner.\n"
         + "     * @param y The y-coordinate of the top-left corner.\n"
-        + "     * @param width The width of the rectangle.\n"
-        + "     * @param height The height of the rectangle.\n"
-        + "     */\n"
-        + "    public RectangleF(float x, float y, float width, float height) {\n"
-        + "        this.x = x;\n"
-        + "        this.y = y;\n"
-        + "        this.width = width;\n"
-        + "        this.height = height;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the x-coordinate of the top-left corner.\n"
-        + "     *\n"
-        + "     * @return The x-coordinate.\n"
-        + "     */\n"
-        + "    public float getX() {\n"
-        + "        return x;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the y-coordinate of the top-left corner.\n"
-        + "     *\n"
-        + "     * @return The y-coordinate.\n"
-        + "     */\n"
-        + "    public float getY() {\n"
-        + "        return y;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the width of the rectangle.\n"
-        + "     *\n"
-        + "     * @return The width.\n"
-        + "     */\n"
-        + "    public float getWidth() {\n"
-        + "        return width;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the height of the rectangle.\n"
-        + "     *\n"
-        + "     * @return The height.\n"
-        + "     */\n"
-        + "    public float getHeight() {\n"
-        + "        return height;\n"
-        + "    }\n\n"
-        + "    @Override\n"
+        + "     * @param width The width of the rectangle.\n" + "     * @param height The height of the rectangle.\n"
+        + "     */\n" + "    public RectangleF(float x, float y, float width, float height) {\n"
+        + "        this.x = x;\n" + "        this.y = y;\n" + "        this.width = width;\n"
+        + "        this.height = height;\n" + "    }\n\n" + "    /**\n"
+        + "     * Gets the x-coordinate of the top-left corner.\n" + "     *\n" + "     * @return The x-coordinate.\n"
+        + "     */\n" + "    public float getX() {\n" + "        return x;\n" + "    }\n\n" + "    /**\n"
+        + "     * Gets the y-coordinate of the top-left corner.\n" + "     *\n" + "     * @return The y-coordinate.\n"
+        + "     */\n" + "    public float getY() {\n" + "        return y;\n" + "    }\n\n" + "    /**\n"
+        + "     * Gets the width of the rectangle.\n" + "     *\n" + "     * @return The width.\n" + "     */\n"
+        + "    public float getWidth() {\n" + "        return width;\n" + "    }\n\n" + "    /**\n"
+        + "     * Gets the height of the rectangle.\n" + "     *\n" + "     * @return The height.\n" + "     */\n"
+        + "    public float getHeight() {\n" + "        return height;\n" + "    }\n\n" + "    @Override\n"
         + "    public String toString() {\n"
         + "        return \"[x=\" + x + \", y=\" + y + \", width=\" + width + \", height=\" + height + \"]\";\n"
-        + "    }\n\n"
-        + "    @Override\n"
-        + "    public boolean equals(Object obj) {\n"
-        + "        if (this == obj) {\n"
-        + "            return true;\n"
-        + "        }\n"
-        + "        if (!(obj instanceof RectangleF)) {\n"
-        + "            return false;\n"
-        + "        }\n"
-        + "        RectangleF other = (RectangleF) obj;\n"
-        + "        return Float.compare(x, other.x) == 0\n"
-        + "            && Float.compare(y, other.y) == 0\n"
+        + "    }\n\n" + "    @Override\n" + "    public boolean equals(Object obj) {\n" + "        if (this == obj) {\n"
+        + "            return true;\n" + "        }\n" + "        if (!(obj instanceof RectangleF)) {\n"
+        + "            return false;\n" + "        }\n" + "        RectangleF other = (RectangleF) obj;\n"
+        + "        return Float.compare(x, other.x) == 0\n" + "            && Float.compare(y, other.y) == 0\n"
         + "            && Float.compare(width, other.width) == 0\n"
-        + "            && Float.compare(height, other.height) == 0;\n"
-        + "    }\n\n"
-        + "    @Override\n"
-        + "    public int hashCode() {\n"
-        + "        return Objects.hash(x, y, width, height);\n"
-        + "    }\n"
-        + "}\n";
+        + "            && Float.compare(height, other.height) == 0;\n" + "    }\n\n" + "    @Override\n"
+        + "    public int hashCode() {\n" + "        return Objects.hash(x, y, width, height);\n" + "    }\n" + "}\n";
 
-    private static final String RECTANGLE_CONTENT =
-        "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
-        + "// Licensed under the MIT License.\n\n"
-        + "package com.azure.ai.contentunderstanding.models;\n\n"
-        + "import com.azure.core.annotation.Immutable;\n\n"
-        + "import java.util.Objects;\n\n"
-        + "/**\n"
+    private static final String RECTANGLE_CONTENT = "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
+        + "// Licensed under the MIT License.\n\n" + "package com.azure.ai.contentunderstanding.models;\n\n"
+        + "import com.azure.core.annotation.Immutable;\n\n" + "import java.util.Objects;\n\n" + "/**\n"
         + " * Represents an axis-aligned rectangle with integer coordinates.\n"
         + " * Used by {@link AudioVisualSource} as the bounding box for spatial information (e.g., face detection).\n"
-        + " */\n"
-        + "@Immutable\n"
-        + "public final class Rectangle {\n"
-        + "    private final int x;\n"
-        + "    private final int y;\n"
-        + "    private final int width;\n"
-        + "    private final int height;\n\n"
-        + "    /**\n"
-        + "     * Creates a new {@link Rectangle}.\n"
-        + "     *\n"
+        + " */\n" + "@Immutable\n" + "public final class Rectangle {\n" + "    private final int x;\n"
+        + "    private final int y;\n" + "    private final int width;\n" + "    private final int height;\n\n"
+        + "    /**\n" + "     * Creates a new {@link Rectangle}.\n" + "     *\n"
         + "     * @param x The x-coordinate of the top-left corner.\n"
         + "     * @param y The y-coordinate of the top-left corner.\n"
-        + "     * @param width The width of the rectangle.\n"
-        + "     * @param height The height of the rectangle.\n"
-        + "     */\n"
-        + "    public Rectangle(int x, int y, int width, int height) {\n"
-        + "        this.x = x;\n"
-        + "        this.y = y;\n"
-        + "        this.width = width;\n"
-        + "        this.height = height;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the x-coordinate of the top-left corner.\n"
-        + "     *\n"
-        + "     * @return The x-coordinate.\n"
-        + "     */\n"
-        + "    public int getX() {\n"
-        + "        return x;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the y-coordinate of the top-left corner.\n"
-        + "     *\n"
-        + "     * @return The y-coordinate.\n"
-        + "     */\n"
-        + "    public int getY() {\n"
-        + "        return y;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the width of the rectangle.\n"
-        + "     *\n"
-        + "     * @return The width.\n"
-        + "     */\n"
-        + "    public int getWidth() {\n"
-        + "        return width;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the height of the rectangle.\n"
-        + "     *\n"
-        + "     * @return The height.\n"
-        + "     */\n"
-        + "    public int getHeight() {\n"
-        + "        return height;\n"
-        + "    }\n\n"
-        + "    @Override\n"
-        + "    public String toString() {\n"
+        + "     * @param width The width of the rectangle.\n" + "     * @param height The height of the rectangle.\n"
+        + "     */\n" + "    public Rectangle(int x, int y, int width, int height) {\n" + "        this.x = x;\n"
+        + "        this.y = y;\n" + "        this.width = width;\n" + "        this.height = height;\n" + "    }\n\n"
+        + "    /**\n" + "     * Gets the x-coordinate of the top-left corner.\n" + "     *\n"
+        + "     * @return The x-coordinate.\n" + "     */\n" + "    public int getX() {\n" + "        return x;\n"
+        + "    }\n\n" + "    /**\n" + "     * Gets the y-coordinate of the top-left corner.\n" + "     *\n"
+        + "     * @return The y-coordinate.\n" + "     */\n" + "    public int getY() {\n" + "        return y;\n"
+        + "    }\n\n" + "    /**\n" + "     * Gets the width of the rectangle.\n" + "     *\n"
+        + "     * @return The width.\n" + "     */\n" + "    public int getWidth() {\n" + "        return width;\n"
+        + "    }\n\n" + "    /**\n" + "     * Gets the height of the rectangle.\n" + "     *\n"
+        + "     * @return The height.\n" + "     */\n" + "    public int getHeight() {\n" + "        return height;\n"
+        + "    }\n\n" + "    @Override\n" + "    public String toString() {\n"
         + "        return \"[x=\" + x + \", y=\" + y + \", width=\" + width + \", height=\" + height + \"]\";\n"
-        + "    }\n\n"
-        + "    @Override\n"
-        + "    public boolean equals(Object obj) {\n"
-        + "        if (this == obj) {\n"
-        + "            return true;\n"
-        + "        }\n"
-        + "        if (!(obj instanceof Rectangle)) {\n"
-        + "            return false;\n"
-        + "        }\n"
-        + "        Rectangle other = (Rectangle) obj;\n"
+        + "    }\n\n" + "    @Override\n" + "    public boolean equals(Object obj) {\n" + "        if (this == obj) {\n"
+        + "            return true;\n" + "        }\n" + "        if (!(obj instanceof Rectangle)) {\n"
+        + "            return false;\n" + "        }\n" + "        Rectangle other = (Rectangle) obj;\n"
         + "        return x == other.x && y == other.y && width == other.width && height == other.height;\n"
-        + "    }\n\n"
-        + "    @Override\n"
-        + "    public int hashCode() {\n"
-        + "        return Objects.hash(x, y, width, height);\n"
-        + "    }\n"
-        + "}\n";
+        + "    }\n\n" + "    @Override\n" + "    public int hashCode() {\n"
+        + "        return Objects.hash(x, y, width, height);\n" + "    }\n" + "}\n";
 
-    private static final String CONTENT_SOURCE_CONTENT =
-        "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
-        + "// Licensed under the MIT License.\n\n"
-        + "package com.azure.ai.contentunderstanding.models;\n\n"
-        + "import com.azure.core.annotation.Immutable;\n"
-        + "import com.azure.core.util.logging.ClientLogger;\n"
-        + "import java.util.ArrayList;\n"
-        + "import java.util.Collections;\n"
-        + "import java.util.List;\n"
-        + "import java.util.Objects;\n\n"
-        + "/**\n"
-        + " * Abstract base class for parsed grounding sources returned by Content Understanding.\n"
-        + " *\n"
-        + " * <p>The service encodes source positions as compact strings in the {@link ContentField#getSources()} property.\n"
-        + " * This class hierarchy parses those strings into strongly-typed objects:</p>\n"
-        + " * <ul>\n"
-        + " * <li>{@link DocumentSource} &mdash; {@code D(page,x1,y1,x2,y2,x3,y3,x4,y4)}</li>\n"
-        + " * <li>{@link AudioVisualSource} &mdash; {@code AV(time[,x,y,w,h])}</li>\n"
-        + " * </ul>\n"
-        + " *\n"
-        + " * <p>Use {@link DocumentSource#parse(String)} or {@link AudioVisualSource#parse(String)} to parse\n"
-        + " * a semicolon-delimited string containing one or more segments.</p>\n"
-        + " *\n"
-        + " * @see ContentField#getSources()\n"
-        + " */\n"
-        + "@Immutable\n"
-        + "public abstract class ContentSource {\n"
-        + "    private static final ClientLogger LOGGER = new ClientLogger(ContentSource.class);\n\n"
-        + "    private final String rawValue;\n\n"
-        + "    /**\n"
-        + "     * Initializes a new instance of {@link ContentSource}.\n"
-        + "     *\n"
-        + "     * @param rawValue The raw wire-format source string.\n"
-        + "     */\n"
-        + "    protected ContentSource(String rawValue) {\n"
-        + "        this.rawValue = Objects.requireNonNull(rawValue, \"'rawValue' cannot be null.\");\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the original wire-format source string.\n"
-        + "     *\n"
-        + "     * @return The raw source string.\n"
-        + "     */\n"
-        + "    public String getRawValue() {\n"
-        + "        return rawValue;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Parses a single source segment, automatically detecting the source type.\n"
-        + "     *\n"
-        + "     * @param source The source string to parse.\n"
-        + "     * @return A {@link ContentSource} subclass instance.\n"
-        + "     * @throws NullPointerException if {@code source} is null.\n"
-        + "     * @throws IllegalArgumentException if {@code source} is empty or has an unrecognized format.\n"
-        + "     */\n"
-        + "    static ContentSource parseSingle(String source) {\n"
-        + "        Objects.requireNonNull(source, \"'source' cannot be null.\");\n"
-        + "        if (source.isEmpty()) {\n"
-        + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"'source' cannot be empty.\"));\n"
-        + "        }\n"
-        + "        if (source.startsWith(\"D(\")) {\n"
-        + "            return DocumentSource.parseSingle(source);\n"
-        + "        }\n"
-        + "        if (source.startsWith(\"AV(\")) {\n"
-        + "            return AudioVisualSource.parseSingle(source);\n"
-        + "        }\n"
-        + "        throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Unrecognized source format: '\" + source + \"'.\"));\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Parses a semicolon-delimited string containing one or more source segments.\n"
-        + "     *\n"
-        + "     * <p>Each segment is parsed individually, detecting the source type automatically.</p>\n"
-        + "     *\n"
-        + "     * @param source The source string (may contain {@code ;} delimiters).\n"
-        + "     * @return An unmodifiable list of {@link ContentSource} instances.\n"
-        + "     * @throws NullPointerException if {@code source} is null.\n"
-        + "     * @throws IllegalArgumentException if {@code source} is empty or any segment has an unrecognized format.\n"
-        + "     */\n"
-        + "    public static List<ContentSource> parseAll(String source) {\n"
-        + "        Objects.requireNonNull(source, \"'source' cannot be null.\");\n"
-        + "        if (source.isEmpty()) {\n"
-        + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"'source' cannot be empty.\"));\n"
-        + "        }\n"
-        + "        String[] segments = source.split(\";\");\n"
-        + "        List<ContentSource> results = new ArrayList<>(segments.length);\n"
-        + "        for (String segment : segments) {\n"
-        + "            String trimmed = segment.trim();\n"
-        + "            if (!trimmed.isEmpty()) {\n"
-        + "                results.add(parseSingle(trimmed));\n"
-        + "            }\n"
-        + "        }\n"
-        + "        return Collections.unmodifiableList(results);\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Reconstructs the wire-format source string by joining each element's\n"
-        + "     * {@link #getRawValue()} with semicolons.\n"
-        + "     *\n"
-        + "     * @param sources The content source list.\n"
-        + "     * @return A semicolon-delimited string of raw source values.\n"
-        + "     * @throws NullPointerException if {@code sources} is null.\n"
-        + "     */\n"
-        + "    public static String toRawString(List<? extends ContentSource> sources) {\n"
-        + "        Objects.requireNonNull(sources, \"'sources' cannot be null.\");\n"
-        + "        StringBuilder sb = new StringBuilder();\n"
-        + "        for (int i = 0; i < sources.size(); i++) {\n"
-        + "            if (i > 0) {\n"
-        + "                sb.append(';');\n"
-        + "            }\n"
-        + "            sb.append(sources.get(i).getRawValue());\n"
-        + "        }\n"
-        + "        return sb.toString();\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Returns the wire-format string representation of this source.\n"
-        + "     *\n"
-        + "     * @return The raw source string.\n"
-        + "     */\n"
-        + "    @Override\n"
-        + "    public String toString() {\n"
-        + "        return rawValue;\n"
-        + "    }\n\n"
-        + "    @Override\n"
-        + "    public boolean equals(Object obj) {\n"
-        + "        if (this == obj) {\n"
-        + "            return true;\n"
-        + "        }\n"
-        + "        if (!(obj instanceof ContentSource)) {\n"
-        + "            return false;\n"
-        + "        }\n"
-        + "        ContentSource other = (ContentSource) obj;\n"
-        + "        return Objects.equals(rawValue, other.rawValue);\n"
-        + "    }\n\n"
-        + "    @Override\n"
-        + "    public int hashCode() {\n"
-        + "        return Objects.hashCode(rawValue);\n"
-        + "    }\n"
-        + "}\n";
+    private static final String CONTENT_SOURCE_CONTENT
+        = "// Copyright (c) Microsoft Corporation. All rights reserved.\n" + "// Licensed under the MIT License.\n\n"
+            + "package com.azure.ai.contentunderstanding.models;\n\n" + "import com.azure.core.annotation.Immutable;\n"
+            + "import com.azure.core.util.logging.ClientLogger;\n" + "import java.util.ArrayList;\n"
+            + "import java.util.Collections;\n" + "import java.util.List;\n" + "import java.util.Objects;\n\n" + "/**\n"
+            + " * Abstract base class for parsed grounding sources returned by Content Understanding.\n" + " *\n"
+            + " * <p>The service encodes source positions as compact strings in the {@link ContentField#getSources()} property.\n"
+            + " * This class hierarchy parses those strings into strongly-typed objects:</p>\n" + " * <ul>\n"
+            + " * <li>{@link DocumentSource} &mdash; {@code D(page,x1,y1,x2,y2,x3,y3,x4,y4)}</li>\n"
+            + " * <li>{@link AudioVisualSource} &mdash; {@code AV(time[,x,y,w,h])}</li>\n" + " * </ul>\n" + " *\n"
+            + " * <p>Use {@link DocumentSource#parse(String)} or {@link AudioVisualSource#parse(String)} to parse\n"
+            + " * a semicolon-delimited string containing one or more segments.</p>\n" + " *\n"
+            + " * @see ContentField#getSources()\n" + " */\n" + "@Immutable\n"
+            + "public abstract class ContentSource {\n"
+            + "    private static final ClientLogger LOGGER = new ClientLogger(ContentSource.class);\n\n"
+            + "    private final String rawValue;\n\n" + "    /**\n"
+            + "     * Initializes a new instance of {@link ContentSource}.\n" + "     *\n"
+            + "     * @param rawValue The raw wire-format source string.\n" + "     */\n"
+            + "    protected ContentSource(String rawValue) {\n"
+            + "        this.rawValue = Objects.requireNonNull(rawValue, \"'rawValue' cannot be null.\");\n"
+            + "    }\n\n" + "    /**\n" + "     * Gets the original wire-format source string.\n" + "     *\n"
+            + "     * @return The raw source string.\n" + "     */\n" + "    public String getRawValue() {\n"
+            + "        return rawValue;\n" + "    }\n\n" + "    /**\n"
+            + "     * Parses a single source segment, automatically detecting the source type.\n" + "     *\n"
+            + "     * @param source The source string to parse.\n"
+            + "     * @return A {@link ContentSource} subclass instance.\n"
+            + "     * @throws NullPointerException if {@code source} is null.\n"
+            + "     * @throws IllegalArgumentException if {@code source} is empty or has an unrecognized format.\n"
+            + "     */\n" + "    static ContentSource parseSingle(String source) {\n"
+            + "        Objects.requireNonNull(source, \"'source' cannot be null.\");\n"
+            + "        if (source.isEmpty()) {\n"
+            + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"'source' cannot be empty.\"));\n"
+            + "        }\n" + "        if (source.startsWith(\"D(\")) {\n"
+            + "            return DocumentSource.parseSingle(source);\n" + "        }\n"
+            + "        if (source.startsWith(\"AV(\")) {\n"
+            + "            return AudioVisualSource.parseSingle(source);\n" + "        }\n"
+            + "        throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Unrecognized source format: '\" + source + \"'.\"));\n"
+            + "    }\n\n" + "    /**\n"
+            + "     * Parses a semicolon-delimited string containing one or more source segments.\n" + "     *\n"
+            + "     * <p>Each segment is parsed individually, detecting the source type automatically.</p>\n"
+            + "     *\n" + "     * @param source The source string (may contain {@code ;} delimiters).\n"
+            + "     * @return An unmodifiable list of {@link ContentSource} instances.\n"
+            + "     * @throws NullPointerException if {@code source} is null.\n"
+            + "     * @throws IllegalArgumentException if {@code source} contains no source segments or any segment has an\n"
+            + "     * unrecognized format.\n" + "     */\n"
+            + "    public static List<ContentSource> parseAll(String source) {\n"
+            + "        Objects.requireNonNull(source, \"'source' cannot be null.\");\n"
+            + "        if (source.isEmpty()) {\n"
+            + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"'source' cannot be empty.\"));\n"
+            + "        }\n" + "        String[] segments = source.split(\";\");\n"
+            + "        List<ContentSource> results = new ArrayList<>(segments.length);\n"
+            + "        for (String segment : segments) {\n" + "            String trimmed = segment.trim();\n"
+            + "            if (!trimmed.isEmpty()) {\n" + "                results.add(parseSingle(trimmed));\n"
+            + "            }\n" + "        }\n" + "        if (results.isEmpty()) {\n"
+            + "            throw LOGGER.logExceptionAsError(\n"
+            + "                new IllegalArgumentException(\"'source' must contain at least one source segment.\"));\n"
+            + "        }\n" + "        return Collections.unmodifiableList(results);\n" + "    }\n\n" + "    /**\n"
+            + "     * Reconstructs the wire-format source string by joining each element's\n"
+            + "     * {@link #getRawValue()} with semicolons.\n" + "     *\n"
+            + "     * @param sources The content source list.\n"
+            + "     * @return A semicolon-delimited string of raw source values.\n"
+            + "     * @throws NullPointerException if {@code sources} is null.\n" + "     */\n"
+            + "    public static String toRawString(List<? extends ContentSource> sources) {\n"
+            + "        Objects.requireNonNull(sources, \"'sources' cannot be null.\");\n"
+            + "        StringBuilder sb = new StringBuilder();\n"
+            + "        for (int i = 0; i < sources.size(); i++) {\n" + "            if (i > 0) {\n"
+            + "                sb.append(';');\n" + "            }\n"
+            + "            sb.append(sources.get(i).getRawValue());\n" + "        }\n"
+            + "        return sb.toString();\n" + "    }\n\n" + "    /**\n"
+            + "     * Returns the wire-format string representation of this source.\n" + "     *\n"
+            + "     * @return The raw source string.\n" + "     */\n" + "    @Override\n"
+            + "    public String toString() {\n" + "        return rawValue;\n" + "    }\n\n" + "    @Override\n"
+            + "    public boolean equals(Object obj) {\n" + "        if (this == obj) {\n"
+            + "            return true;\n" + "        }\n" + "        if (!(obj instanceof ContentSource)) {\n"
+            + "            return false;\n" + "        }\n" + "        ContentSource other = (ContentSource) obj;\n"
+            + "        return Objects.equals(rawValue, other.rawValue);\n" + "    }\n\n" + "    @Override\n"
+            + "    public int hashCode() {\n" + "        return Objects.hashCode(rawValue);\n" + "    }\n" + "}\n";
 
-    private static final String DOCUMENT_SOURCE_CONTENT =
-        "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
-        + "// Licensed under the MIT License.\n\n"
-        + "package com.azure.ai.contentunderstanding.models;\n\n"
-        + "import com.azure.core.annotation.Immutable;\n"
-        + "import com.azure.core.util.logging.ClientLogger;\n\n"
-        + "import java.util.ArrayList;\n"
-        + "import java.util.Collections;\n"
-        + "import java.util.List;\n"
-        + "import java.util.Objects;\n\n"
-        + "/**\n"
-        + " * Represents a parsed document grounding source in the format {@code D(page,x1,y1,...,xN,yN)}\n"
-        + " * or {@code D(page)} when only a page number is available.\n"
-        + " *\n"
-        + " * <p>The page number is 1-based. When coordinates are present, the polygon defines a region\n"
-        + " * with three or more points in the document's coordinate space. When only a page number is\n"
-        + " * provided (no coordinates), {@link #getPolygon()} and {@link #getBoundingBox()} return\n"
-        + " * {@code null}.</p>\n"
-        + " *\n"
-        + " * @see ContentSource\n"
-        + " */\n"
-        + "@Immutable\n"
-        + "public final class DocumentSource extends ContentSource {\n"
-        + "    private static final ClientLogger LOGGER = new ClientLogger(DocumentSource.class);\n"
-        + "    private static final String PREFIX = \"D(\";\n\n"
-        + "    private final int pageNumber;\n"
-        + "    private final List<PointF> polygon;\n"
-        + "    private final RectangleF boundingBox;\n\n"
-        + "    private DocumentSource(String source) {\n"
-        + "        super(source);\n"
-        + "        if (!source.startsWith(PREFIX) || !source.endsWith(\")\")) {\n"
-        + "            throw LOGGER.logExceptionAsError(\n"
-        + "                new IllegalArgumentException(\"Document source must start with '\" + PREFIX + \"' and end with ')': '\" + source + \"'.\"));\n"
-        + "        }\n"
-        + "        String inner = source.substring(PREFIX.length(), source.length() - 1);\n"
-        + "        String[] parts = inner.split(\",\");\n"
-        + "        try {\n"
-        + "            this.pageNumber = Integer.parseInt(parts[0].trim());\n"
-        + "        } catch (NumberFormatException e) {\n"
-        + "            throw LOGGER.logExceptionAsError(\n"
-        + "                new IllegalArgumentException(\"Invalid page number in document source: '\" + parts[0] + \"'.\", e));\n"
-        + "        }\n"
-        + "        if (this.pageNumber < 1) {\n"
-        + "            throw LOGGER.logExceptionAsError(\n"
-        + "                new IllegalArgumentException(\"Page number must be >= 1, got \" + this.pageNumber + \".\"));\n"
-        + "        }\n\n"
-        + "        if (parts.length == 1) {\n"
-        + "            // Page-only form: D(page)\n"
-        + "            this.polygon = null;\n"
-        + "            this.boundingBox = null;\n"
-        + "            return;\n"
-        + "        }\n\n"
-        + "        int coordCount = parts.length - 1;\n"
-        + "        if (coordCount < 6 || coordCount % 2 != 0) {\n"
-        + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\n"
-        + "                \"Document source expected page-only (1 param) or page + at least 3 coordinate pairs (7+ params), got \"\n"
-        + "                    + parts.length + \": '\" + source + \"'.\"));\n"
-        + "        }\n\n"
-        + "        int pointCount = coordCount / 2;\n"
-        + "        List<PointF> points = new ArrayList<>(pointCount);\n"
-        + "        float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE;\n"
-        + "        float maxX = -Float.MAX_VALUE, maxY = -Float.MAX_VALUE;\n"
-        + "        for (int i = 0; i < pointCount; i++) {\n"
-        + "            int xIndex = 1 + (i * 2);\n"
-        + "            int yIndex = 2 + (i * 2);\n"
-        + "            float x, y;\n"
-        + "            try {\n"
-        + "                x = Float.parseFloat(parts[xIndex].trim());\n"
-        + "            } catch (NumberFormatException e) {\n"
-        + "                throw LOGGER.logExceptionAsError(\n"
-        + "                    new IllegalArgumentException(\"Invalid x-coordinate at index \" + xIndex + \": '\" + parts[xIndex] + \"'.\", e));\n"
-        + "            }\n"
-        + "            try {\n"
-        + "                y = Float.parseFloat(parts[yIndex].trim());\n"
-        + "            } catch (NumberFormatException e) {\n"
-        + "                throw LOGGER.logExceptionAsError(\n"
-        + "                    new IllegalArgumentException(\"Invalid y-coordinate at index \" + yIndex + \": '\" + parts[yIndex] + \"'.\", e));\n"
-        + "            }\n"
-        + "            points.add(new PointF(x, y));\n"
-        + "            minX = Math.min(minX, x);\n"
-        + "            minY = Math.min(minY, y);\n"
-        + "            maxX = Math.max(maxX, x);\n"
-        + "            maxY = Math.max(maxY, y);\n"
-        + "        }\n"
-        + "        this.polygon = Collections.unmodifiableList(points);\n"
-        + "        this.boundingBox = new RectangleF(minX, minY, maxX - minX, maxY - minY);\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the 1-based page number.\n"
-        + "     *\n"
-        + "     * @return The page number.\n"
-        + "     */\n"
-        + "    public int getPageNumber() {\n"
-        + "        return pageNumber;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the polygon coordinates defining the region, or {@code null} when only a page\n"
-        + "     * number is available (i.e., the source was in the form {@code D(page)}).\n"
-        + "     *\n"
-        + "     * @return An unmodifiable list of {@link PointF} values, or {@code null}.\n"
-        + "     */\n"
-        + "    public List<PointF> getPolygon() {\n"
-        + "        return polygon;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the axis-aligned bounding rectangle computed from the polygon coordinates,\n"
-        + "     * or {@code null} when no polygon is available.\n"
-        + "     * Useful for drawing highlight rectangles over extracted fields.\n"
-        + "     *\n"
-        + "     * @return The bounding box, or {@code null}.\n"
-        + "     */\n"
-        + "    public RectangleF getBoundingBox() {\n"
-        + "        return boundingBox;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Parses a single document source segment.\n"
-        + "     *\n"
-        + "     * @param source The source string in the format {@code D(page,x1,y1,...,xN,yN)} or {@code D(page)}.\n"
-        + "     * @return A new {@link DocumentSource}.\n"
-        + "     * @throws NullPointerException if {@code source} is null.\n"
-        + "     * @throws IllegalArgumentException if the source string is not in the expected format.\n"
-        + "     */\n"
-        + "    static DocumentSource parseSingle(String source) {\n"
-        + "        Objects.requireNonNull(source, \"'source' cannot be null.\");\n"
-        + "        if (source.isEmpty()) {\n"
-        + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"'source' cannot be empty.\"));\n"
-        + "        }\n"
-        + "        return new DocumentSource(source);\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Parses a source string containing one or more document source segments separated by {@code ;}.\n"
-        + "     *\n"
-        + "     * @param source The source string (may contain {@code ;} delimiters).\n"
-        + "     * @return An unmodifiable list of {@link DocumentSource} instances.\n"
-        + "     * @throws NullPointerException if {@code source} is null.\n"
-        + "     * @throws IllegalArgumentException if any segment is not in the expected format.\n"
-        + "     */\n"
-        + "    public static List<DocumentSource> parse(String source) {\n"
-        + "        Objects.requireNonNull(source, \"'source' cannot be null.\");\n"
-        + "        if (source.isEmpty()) {\n"
-        + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"'source' cannot be empty.\"));\n"
-        + "        }\n"
-        + "        String[] segments = source.split(\";\");\n"
-        + "        List<DocumentSource> results = new ArrayList<>(segments.length);\n"
-        + "        for (String segment : segments) {\n"
-        + "            String trimmed = segment.trim();\n"
-        + "            if (!trimmed.isEmpty()) {\n"
-        + "                results.add(new DocumentSource(trimmed));\n"
-        + "            }\n"
-        + "        }\n"
-        + "        return Collections.unmodifiableList(results);\n"
-        + "    }\n"
-        + "}\n";
+    private static final String DOCUMENT_SOURCE_CONTENT
+        = "// Copyright (c) Microsoft Corporation. All rights reserved.\n" + "// Licensed under the MIT License.\n\n"
+            + "package com.azure.ai.contentunderstanding.models;\n\n" + "import com.azure.core.annotation.Immutable;\n"
+            + "import com.azure.core.util.logging.ClientLogger;\n\n" + "import java.util.ArrayList;\n"
+            + "import java.util.Collections;\n" + "import java.util.List;\n" + "import java.util.Objects;\n\n" + "/**\n"
+            + " * Represents a parsed document grounding source in the format {@code D(page,x1,y1,...,xN,yN)}\n"
+            + " * or {@code D(page)} when only a page number is available.\n" + " *\n"
+            + " * <p>The page number is 1-based. When coordinates are present, the polygon defines a region\n"
+            + " * with three or more points in the document's coordinate space. When only a page number is\n"
+            + " * provided (no coordinates), {@link #getPolygon()} and {@link #getBoundingBox()} return\n"
+            + " * {@code null}.</p>\n" + " *\n" + " * @see ContentSource\n" + " */\n" + "@Immutable\n"
+            + "public final class DocumentSource extends ContentSource {\n"
+            + "    private static final ClientLogger LOGGER = new ClientLogger(DocumentSource.class);\n"
+            + "    private static final String PREFIX = \"D(\";\n\n" + "    private final int pageNumber;\n"
+            + "    private final List<PointF> polygon;\n" + "    private final RectangleF boundingBox;\n\n"
+            + "    private DocumentSource(String source) {\n" + "        super(source);\n"
+            + "        if (!source.startsWith(PREFIX) || !source.endsWith(\")\")) {\n"
+            + "            throw LOGGER.logExceptionAsError(\n"
+            + "                new IllegalArgumentException(\"Document source must start with '\" + PREFIX + \"' and end with ')': '\" + source + \"'.\"));\n"
+            + "        }\n" + "        String inner = source.substring(PREFIX.length(), source.length() - 1);\n"
+            + "        String[] parts = inner.split(\",\");\n" + "        try {\n"
+            + "            this.pageNumber = Integer.parseInt(parts[0].trim());\n"
+            + "        } catch (NumberFormatException e) {\n" + "            throw LOGGER.logExceptionAsError(\n"
+            + "                new IllegalArgumentException(\"Invalid page number in document source: '\" + parts[0] + \"'.\", e));\n"
+            + "        }\n" + "        if (this.pageNumber < 1) {\n" + "            throw LOGGER.logExceptionAsError(\n"
+            + "                new IllegalArgumentException(\"Page number must be >= 1, got \" + this.pageNumber + \".\"));\n"
+            + "        }\n\n" + "        if (parts.length == 1) {\n" + "            // Page-only form: D(page)\n"
+            + "            this.polygon = null;\n" + "            this.boundingBox = null;\n" + "            return;\n"
+            + "        }\n\n" + "        int coordCount = parts.length - 1;\n"
+            + "        if (coordCount < 6 || coordCount % 2 != 0) {\n"
+            + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\n"
+            + "                \"Document source expected page-only (1 param) or page + at least 3 coordinate pairs (7+ params), got \"\n"
+            + "                    + parts.length + \": '\" + source + \"'.\"));\n" + "        }\n\n"
+            + "        int pointCount = coordCount / 2;\n"
+            + "        List<PointF> points = new ArrayList<>(pointCount);\n"
+            + "        float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE;\n"
+            + "        float maxX = -Float.MAX_VALUE, maxY = -Float.MAX_VALUE;\n"
+            + "        for (int i = 0; i < pointCount; i++) {\n" + "            int xIndex = 1 + (i * 2);\n"
+            + "            int yIndex = 2 + (i * 2);\n" + "            float x, y;\n" + "            try {\n"
+            + "                x = Float.parseFloat(parts[xIndex].trim());\n"
+            + "            } catch (NumberFormatException e) {\n"
+            + "                throw LOGGER.logExceptionAsError(\n"
+            + "                    new IllegalArgumentException(\"Invalid x-coordinate at index \" + xIndex + \": '\" + parts[xIndex] + \"'.\", e));\n"
+            + "            }\n" + "            try {\n"
+            + "                y = Float.parseFloat(parts[yIndex].trim());\n"
+            + "            } catch (NumberFormatException e) {\n"
+            + "                throw LOGGER.logExceptionAsError(\n"
+            + "                    new IllegalArgumentException(\"Invalid y-coordinate at index \" + yIndex + \": '\" + parts[yIndex] + \"'.\", e));\n"
+            + "            }\n" + "            points.add(new PointF(x, y));\n"
+            + "            minX = Math.min(minX, x);\n" + "            minY = Math.min(minY, y);\n"
+            + "            maxX = Math.max(maxX, x);\n" + "            maxY = Math.max(maxY, y);\n" + "        }\n"
+            + "        this.polygon = Collections.unmodifiableList(points);\n"
+            + "        this.boundingBox = new RectangleF(minX, minY, maxX - minX, maxY - minY);\n" + "    }\n\n"
+            + "    /**\n" + "     * Gets the 1-based page number.\n" + "     *\n" + "     * @return The page number.\n"
+            + "     */\n" + "    public int getPageNumber() {\n" + "        return pageNumber;\n" + "    }\n\n"
+            + "    /**\n"
+            + "     * Gets the polygon coordinates defining the region, or {@code null} when only a page\n"
+            + "     * number is available (i.e., the source was in the form {@code D(page)}).\n" + "     *\n"
+            + "     * @return An unmodifiable list of {@link PointF} values, or {@code null}.\n" + "     */\n"
+            + "    public List<PointF> getPolygon() {\n" + "        return polygon;\n" + "    }\n\n" + "    /**\n"
+            + "     * Gets the axis-aligned bounding rectangle computed from the polygon coordinates,\n"
+            + "     * or {@code null} when no polygon is available.\n"
+            + "     * Useful for drawing highlight rectangles over extracted fields.\n" + "     *\n"
+            + "     * @return The bounding box, or {@code null}.\n" + "     */\n"
+            + "    public RectangleF getBoundingBox() {\n" + "        return boundingBox;\n" + "    }\n\n" + "    /**\n"
+            + "     * Parses a single document source segment.\n" + "     *\n"
+            + "     * @param source The source string in the format {@code D(page,x1,y1,...,xN,yN)} or {@code D(page)}.\n"
+            + "     * @return A new {@link DocumentSource}.\n"
+            + "     * @throws NullPointerException if {@code source} is null.\n"
+            + "     * @throws IllegalArgumentException if the source string is not in the expected format.\n"
+            + "     */\n" + "    static DocumentSource parseSingle(String source) {\n"
+            + "        Objects.requireNonNull(source, \"'source' cannot be null.\");\n"
+            + "        if (source.isEmpty()) {\n"
+            + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"'source' cannot be empty.\"));\n"
+            + "        }\n" + "        return new DocumentSource(source);\n" + "    }\n\n" + "    /**\n"
+            + "     * Parses a source string containing one or more document source segments separated by {@code ;}.\n"
+            + "     *\n" + "     * @param source The source string (may contain {@code ;} delimiters).\n"
+            + "     * @return An unmodifiable list of {@link DocumentSource} instances.\n"
+            + "     * @throws NullPointerException if {@code source} is null.\n"
+            + "     * @throws IllegalArgumentException if {@code source} contains no document source segments or any segment is not\n"
+            + "     * in the expected format.\n" + "     */\n"
+            + "    public static List<DocumentSource> parse(String source) {\n"
+            + "        Objects.requireNonNull(source, \"'source' cannot be null.\");\n"
+            + "        if (source.isEmpty()) {\n"
+            + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"'source' cannot be empty.\"));\n"
+            + "        }\n" + "        String[] segments = source.split(\";\");\n"
+            + "        List<DocumentSource> results = new ArrayList<>(segments.length);\n"
+            + "        for (String segment : segments) {\n" + "            String trimmed = segment.trim();\n"
+            + "            if (!trimmed.isEmpty()) {\n" + "                results.add(new DocumentSource(trimmed));\n"
+            + "            }\n" + "        }\n" + "        if (results.isEmpty()) {\n"
+            + "            throw LOGGER.logExceptionAsError(\n"
+            + "                new IllegalArgumentException(\"'source' must contain at least one document source segment.\"));\n"
+            + "        }\n" + "        return Collections.unmodifiableList(results);\n" + "    }\n" + "}\n";
 
-    private static final String AUDIO_VISUAL_SOURCE_CONTENT =
-        "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
-        + "// Licensed under the MIT License.\n\n"
-        + "package com.azure.ai.contentunderstanding.models;\n\n"
-        + "import com.azure.core.annotation.Immutable;\n"
-        + "import com.azure.core.util.logging.ClientLogger;\n"
-        + "import java.time.Duration;\n"
-        + "import java.util.ArrayList;\n"
-        + "import java.util.Collections;\n"
-        + "import java.util.List;\n"
-        + "import java.util.Objects;\n\n"
-        + "/**\n"
-        + " * Represents a parsed audio/visual grounding source in the format {@code AV(time[,x,y,w,h])}.\n"
-        + " *\n"
-        + " * <p>The time is in milliseconds. The bounding box (x, y, width, height) is optional and\n"
-        + " * present only when spatial information is available (e.g., face detection).</p>\n"
-        + " *\n"
-        + " * @see ContentSource\n"
-        + " */\n"
-        + "@Immutable\n"
-        + "public final class AudioVisualSource extends ContentSource {\n"
-        + "    private static final ClientLogger LOGGER = new ClientLogger(AudioVisualSource.class);\n"
-        + "    private static final String PREFIX = \"AV(\";\n\n"
-        + "    private final int timeMs;\n"
-        + "    private final Rectangle boundingBox;\n\n"
-        + "    AudioVisualSource(String source) {\n"
-        + "        super(source);\n"
-        + "        if (!source.startsWith(PREFIX) || !source.endsWith(\")\")) {\n"
-        + "            throw LOGGER.logExceptionAsError(\n"
-        + "                new IllegalArgumentException(\"Audio/visual source must start with '\" + PREFIX + \"' and end with ')': '\" + source + \"'.\"));\n"
-        + "        }\n"
-        + "        String inner = source.substring(PREFIX.length(), source.length() - 1);\n"
-        + "        String[] parts = inner.split(\",\");\n"
-        + "        if (parts.length != 1 && parts.length != 5) {\n"
-        + "            throw LOGGER.logExceptionAsError(\n"
-        + "                new IllegalArgumentException(\"Audio/visual source expected 1 or 5 parameters, got \" + parts.length + \": '\" + source + \"'.\"));\n"
-        + "        }\n"
-        + "        try {\n"
-        + "            this.timeMs = Integer.parseInt(parts[0].trim());\n"
-        + "        } catch (NumberFormatException e) {\n"
-        + "            throw LOGGER.logExceptionAsError(\n"
-        + "                new IllegalArgumentException(\"Invalid time value in audio/visual source: '\" + parts[0] + \"'.\", e));\n"
-        + "        }\n"
-        + "        if (parts.length == 5) {\n"
-        + "            int xVal, yVal, wVal, hVal;\n"
-        + "            try { xVal = Integer.parseInt(parts[1].trim()); }\n"
-        + "            catch (NumberFormatException e) { throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Invalid x value: '\" + parts[1] + \"'.\", e)); }\n"
-        + "            try { yVal = Integer.parseInt(parts[2].trim()); }\n"
-        + "            catch (NumberFormatException e) { throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Invalid y value: '\" + parts[2] + \"'.\", e)); }\n"
-        + "            try { wVal = Integer.parseInt(parts[3].trim()); }\n"
-        + "            catch (NumberFormatException e) { throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Invalid width value: '\" + parts[3] + \"'.\", e)); }\n"
-        + "            try { hVal = Integer.parseInt(parts[4].trim()); }\n"
-        + "            catch (NumberFormatException e) { throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Invalid height value: '\" + parts[4] + \"'.\", e)); }\n"
-        + "            this.boundingBox = new Rectangle(xVal, yVal, wVal, hVal);\n"
-        + "        } else {\n"
-        + "            this.boundingBox = null;\n"
-        + "        }\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the time as a Duration.\n"
-        + "     *\n"
-        + "     * @return The time as a Duration.\n"
-        + "     */\n"
-        + "    public Duration getTime() {\n"
-        + "        return Duration.ofMillis(timeMs);\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Gets the bounding box in pixel coordinates, or {@code null} if no spatial information\n"
-        + "     * is available (e.g., audio-only).\n"
-        + "     *\n"
-        + "     * @return The bounding box, or {@code null}.\n"
-        + "     */\n"
-        + "    public Rectangle getBoundingBox() {\n"
-        + "        return boundingBox;\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Parses a single audio/visual source segment.\n"
-        + "     *\n"
-        + "     * @param source The source string in the format {@code AV(time[,x,y,w,h])}.\n"
-        + "     * @return A new {@link AudioVisualSource}.\n"
-        + "     * @throws NullPointerException if {@code source} is null.\n"
-        + "     * @throws IllegalArgumentException if the source string is not in the expected format.\n"
-        + "     */\n"
-        + "    static AudioVisualSource parseSingle(String source) {\n"
-        + "        Objects.requireNonNull(source, \"'source' cannot be null.\");\n"
-        + "        if (source.isEmpty()) {\n"
-        + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"'source' cannot be empty.\"));\n"
-        + "        }\n"
-        + "        return new AudioVisualSource(source);\n"
-        + "    }\n\n"
-        + "    /**\n"
-        + "     * Parses a source string containing one or more audio/visual source segments separated by {@code ;}.\n"
-        + "     *\n"
-        + "     * @param source The source string (may contain {@code ;} delimiters).\n"
-        + "     * @return An unmodifiable list of {@link AudioVisualSource} instances.\n"
-        + "     * @throws NullPointerException if {@code source} is null.\n"
-        + "     * @throws IllegalArgumentException if any segment is not in the expected format.\n"
-        + "     */\n"
-        + "    public static List<AudioVisualSource> parse(String source) {\n"
-        + "        Objects.requireNonNull(source, \"'source' cannot be null.\");\n"
-        + "        if (source.isEmpty()) {\n"
-        + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"'source' cannot be empty.\"));\n"
-        + "        }\n"
-        + "        String[] segments = source.split(\";\");\n"
-        + "        List<AudioVisualSource> results = new ArrayList<>(segments.length);\n"
-        + "        for (String segment : segments) {\n"
-        + "            String trimmed = segment.trim();\n"
-        + "            if (!trimmed.isEmpty()) {\n"
-        + "                results.add(new AudioVisualSource(trimmed));\n"
-        + "            }\n"
-        + "        }\n"
-        + "        return Collections.unmodifiableList(results);\n"
-        + "    }\n"
-        + "}\n";
+    private static final String AUDIO_VISUAL_SOURCE_CONTENT
+        = "// Copyright (c) Microsoft Corporation. All rights reserved.\n" + "// Licensed under the MIT License.\n\n"
+            + "package com.azure.ai.contentunderstanding.models;\n\n" + "import com.azure.core.annotation.Immutable;\n"
+            + "import com.azure.core.util.logging.ClientLogger;\n" + "import java.time.Duration;\n"
+            + "import java.util.ArrayList;\n" + "import java.util.Collections;\n" + "import java.util.List;\n"
+            + "import java.util.Objects;\n\n" + "/**\n"
+            + " * Represents a parsed audio/visual grounding source in the format {@code AV(time[,x,y,w,h])}.\n"
+            + " *\n" + " * <p>The time is in milliseconds. The bounding box (x, y, width, height) is optional and\n"
+            + " * present only when spatial information is available (e.g., face detection).</p>\n" + " *\n"
+            + " * @see ContentSource\n" + " */\n" + "@Immutable\n"
+            + "public final class AudioVisualSource extends ContentSource {\n"
+            + "    private static final ClientLogger LOGGER = new ClientLogger(AudioVisualSource.class);\n"
+            + "    private static final String PREFIX = \"AV(\";\n\n" + "    private final int timeMs;\n"
+            + "    private final Rectangle boundingBox;\n\n" + "    AudioVisualSource(String source) {\n"
+            + "        super(source);\n" + "        if (!source.startsWith(PREFIX) || !source.endsWith(\")\")) {\n"
+            + "            throw LOGGER.logExceptionAsError(\n"
+            + "                new IllegalArgumentException(\"Audio/visual source must start with '\" + PREFIX + \"' and end with ')': '\" + source + \"'.\"));\n"
+            + "        }\n" + "        String inner = source.substring(PREFIX.length(), source.length() - 1);\n"
+            + "        String[] parts = inner.split(\",\");\n"
+            + "        if (parts.length != 1 && parts.length != 5) {\n"
+            + "            throw LOGGER.logExceptionAsError(\n"
+            + "                new IllegalArgumentException(\"Audio/visual source expected 1 or 5 parameters, got \" + parts.length + \": '\" + source + \"'.\"));\n"
+            + "        }\n" + "        try {\n" + "            this.timeMs = Integer.parseInt(parts[0].trim());\n"
+            + "        } catch (NumberFormatException e) {\n" + "            throw LOGGER.logExceptionAsError(\n"
+            + "                new IllegalArgumentException(\"Invalid time value in audio/visual source: '\" + parts[0] + \"'.\", e));\n"
+            + "        }\n" + "        if (parts.length == 5) {\n" + "            int xVal, yVal, wVal, hVal;\n"
+            + "            try { xVal = Integer.parseInt(parts[1].trim()); }\n"
+            + "            catch (NumberFormatException e) { throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Invalid x value: '\" + parts[1] + \"'.\", e)); }\n"
+            + "            try { yVal = Integer.parseInt(parts[2].trim()); }\n"
+            + "            catch (NumberFormatException e) { throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Invalid y value: '\" + parts[2] + \"'.\", e)); }\n"
+            + "            try { wVal = Integer.parseInt(parts[3].trim()); }\n"
+            + "            catch (NumberFormatException e) { throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Invalid width value: '\" + parts[3] + \"'.\", e)); }\n"
+            + "            try { hVal = Integer.parseInt(parts[4].trim()); }\n"
+            + "            catch (NumberFormatException e) { throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Invalid height value: '\" + parts[4] + \"'.\", e)); }\n"
+            + "            this.boundingBox = new Rectangle(xVal, yVal, wVal, hVal);\n" + "        } else {\n"
+            + "            this.boundingBox = null;\n" + "        }\n" + "    }\n\n" + "    /**\n"
+            + "     * Gets the time as a Duration.\n" + "     *\n" + "     * @return The time as a Duration.\n"
+            + "     */\n" + "    public Duration getTime() {\n" + "        return Duration.ofMillis(timeMs);\n"
+            + "    }\n\n" + "    /**\n"
+            + "     * Gets the bounding box in pixel coordinates, or {@code null} if no spatial information\n"
+            + "     * is available (e.g., audio-only).\n" + "     *\n"
+            + "     * @return The bounding box, or {@code null}.\n" + "     */\n"
+            + "    public Rectangle getBoundingBox() {\n" + "        return boundingBox;\n" + "    }\n\n" + "    /**\n"
+            + "     * Parses a single audio/visual source segment.\n" + "     *\n"
+            + "     * @param source The source string in the format {@code AV(time[,x,y,w,h])}.\n"
+            + "     * @return A new {@link AudioVisualSource}.\n"
+            + "     * @throws NullPointerException if {@code source} is null.\n"
+            + "     * @throws IllegalArgumentException if the source string is not in the expected format.\n"
+            + "     */\n" + "    static AudioVisualSource parseSingle(String source) {\n"
+            + "        Objects.requireNonNull(source, \"'source' cannot be null.\");\n"
+            + "        if (source.isEmpty()) {\n"
+            + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"'source' cannot be empty.\"));\n"
+            + "        }\n" + "        return new AudioVisualSource(source);\n" + "    }\n\n" + "    /**\n"
+            + "     * Parses a source string containing one or more audio/visual source segments separated by {@code ;}.\n"
+            + "     *\n" + "     * @param source The source string (may contain {@code ;} delimiters).\n"
+            + "     * @return An unmodifiable list of {@link AudioVisualSource} instances.\n"
+            + "     * @throws NullPointerException if {@code source} is null.\n"
+            + "     * @throws IllegalArgumentException if {@code source} contains no audio/visual source segments or any segment is\n"
+            + "     * not in the expected format.\n" + "     */\n"
+            + "    public static List<AudioVisualSource> parse(String source) {\n"
+            + "        Objects.requireNonNull(source, \"'source' cannot be null.\");\n"
+            + "        if (source.isEmpty()) {\n"
+            + "            throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"'source' cannot be empty.\"));\n"
+            + "        }\n" + "        String[] segments = source.split(\";\");\n"
+            + "        List<AudioVisualSource> results = new ArrayList<>(segments.length);\n"
+            + "        for (String segment : segments) {\n" + "            String trimmed = segment.trim();\n"
+            + "            if (!trimmed.isEmpty()) {\n"
+            + "                results.add(new AudioVisualSource(trimmed));\n" + "            }\n" + "        }\n"
+            + "        if (results.isEmpty()) {\n" + "            throw LOGGER.logExceptionAsError(\n"
+            + "                new IllegalArgumentException(\"'source' must contain at least one audio/visual source segment.\"));\n"
+            + "        }\n" + "        return Collections.unmodifiableList(results);\n" + "    }\n" + "}\n";
 
     /**
      * Rename protocol method parameters that have emitter-generated numeric suffixes.
@@ -1778,14 +2007,14 @@ public class ContentUnderstandingCustomizations extends Customization {
                                 method.getJavadoc().ifPresent(javadoc -> {
                                     String javadocStr = javadoc.toText();
                                     if (javadocStr.contains("@param " + name)) {
-                                        javadocStr = javadocStr.replace(
-                                            "@param " + name + " The " + name + " parameter.",
-                                            "@param " + newName + " The " + newName + " parameter.");
+                                        javadocStr
+                                            = javadocStr.replace("@param " + name + " The " + name + " parameter.",
+                                                "@param " + newName + " The " + newName + " parameter.");
                                         method.setJavadocComment(javadocStr);
                                     }
                                 });
-                                logger.info("Renamed parameter '{}' -> '{}' in {}.{}", name, newName,
-                                    className, method.getNameAsString());
+                                logger.info("Renamed parameter '{}' -> '{}' in {}.{}", name, newName, className,
+                                    method.getNameAsString());
                             }
                         }
                     }
@@ -1805,8 +2034,8 @@ public class ContentUnderstandingCustomizations extends Customization {
     private void customizePollingInterval(LibraryCustomization customization, Logger logger) {
         logger.info("Customizing default LRO polling interval to 3 seconds");
 
-        customization.getClass(IMPLEMENTATION_PACKAGE, "ContentUnderstandingClientImpl").customizeAst(ast ->
-            ast.getClassByName("ContentUnderstandingClientImpl").ifPresent(clazz -> {
+        customization.getClass(IMPLEMENTATION_PACKAGE, "ContentUnderstandingClientImpl")
+            .customizeAst(ast -> ast.getClassByName("ContentUnderstandingClientImpl").ifPresent(clazz -> {
                 int count = 0;
                 for (MethodDeclaration method : clazz.getMethods()) {
                     method.getBody().ifPresent(body -> {
