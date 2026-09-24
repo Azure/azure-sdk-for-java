@@ -4,10 +4,10 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.models.ArrowConfiguration;
-import com.azure.storage.blob.implementation.models.ArrowField;
+import com.azure.storage.blob.implementation.models.ArrowTextConfigurationInternal;
+import com.azure.storage.blob.implementation.models.ArrowFieldInternal;
 import com.azure.storage.blob.implementation.models.DelimitedTextConfiguration;
-import com.azure.storage.blob.implementation.models.JsonTextConfiguration;
+import com.azure.storage.blob.implementation.models.JsonTextConfigurationInternal;
 import com.azure.storage.blob.implementation.models.QueryFormat;
 import com.azure.storage.blob.implementation.models.QueryFormatType;
 import com.azure.storage.blob.implementation.models.QuerySerialization;
@@ -306,23 +306,24 @@ public class BlobQueryReader {
     }
 
     /**
-     * Transforms a BlobQueryJsonSerialization into a JsonTextConfiguration.
+     * Transforms a BlobQueryJsonSerialization into a JsonTextConfigurationInternal.
      *
      * @param jsonSerialization {@link BlobQueryJsonSerialization}
-     * @return {@link JsonTextConfiguration}
+     * @return {@link JsonTextConfigurationInternal}
      */
-    private static JsonTextConfiguration transformJson(BlobQueryJsonSerialization jsonSerialization) {
+    private static JsonTextConfigurationInternal transformJson(BlobQueryJsonSerialization jsonSerialization) {
         if (jsonSerialization == null) {
             return null;
         }
-        return new JsonTextConfiguration().setRecordSeparator(charToString(jsonSerialization.getRecordSeparator()));
+        return new JsonTextConfigurationInternal()
+            .setRecordSeparator(charToString(jsonSerialization.getRecordSeparator()));
     }
 
     /**
      * Transforms a BlobQueryParquetSerialization into an Object.
      *
      * @param parquetSerialization {@link BlobQueryParquetSerialization}
-     * @return {@link JsonTextConfiguration}
+     * @return {@link JsonTextConfigurationInternal}
      */
     private static Object transformParquet(BlobQueryParquetSerialization parquetSerialization) {
         /* This method returns an Object since the ParquetConfiguration currently accepts no options. This results in
@@ -334,30 +335,30 @@ public class BlobQueryReader {
     }
 
     /**
-     * Transforms a BlobQueryArrowSerialization into a ArrowConfiguration.
+     * Transforms a BlobQueryArrowSerialization into a ArrowTextConfigurationInternal.
      *
      * @param arrowSerialization {@link BlobQueryArrowSerialization}
-     * @return {@link ArrowConfiguration}
+     * @return {@link ArrowTextConfigurationInternal}
      */
-    private static ArrowConfiguration transformArrow(BlobQueryArrowSerialization arrowSerialization) {
+    private static ArrowTextConfigurationInternal transformArrow(BlobQueryArrowSerialization arrowSerialization) {
         if (arrowSerialization == null) {
             return null;
         }
-        List<ArrowField> schema
+        List<ArrowFieldInternal> schema
             = arrowSerialization.getSchema() == null ? null : new ArrayList<>(arrowSerialization.getSchema().size());
         if (schema != null) {
             for (BlobQueryArrowField field : arrowSerialization.getSchema()) {
                 if (field == null) {
                     schema.add(null);
                 } else {
-                    schema.add(new ArrowField().setName(field.getName())
+                    schema.add(new ArrowFieldInternal().setName(field.getName())
                         .setPrecision(field.getPrecision())
                         .setScale(field.getScale())
                         .setType(field.getType().toString()));
                 }
             }
         }
-        return new ArrowConfiguration().setSchema(schema);
+        return new ArrowTextConfigurationInternal().setSchema(schema);
     }
 
     private static String charToString(char c) {

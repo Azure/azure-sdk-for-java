@@ -15,9 +15,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.storage.blob.implementation.BlockBlobAsyncClientInternal;
+import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
 import com.azure.storage.blob.implementation.accesshelpers.BlockBlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlockBlobsCommitBlockListHeaders;
-import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobsUploadBlobFromUrlHeaders;
 import com.azure.storage.blob.implementation.models.BlockBlobsUploadHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BlobConstants;
@@ -127,6 +130,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         EncryptionScope encryptionScope, String versionId) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
+        this.blockBlobClientInternal = new BlockBlobAsyncClientInternal(this.azureBlobStorage.getBlockBlobs());
+    }
+
+    private final BlockBlobAsyncClientInternal blockBlobClientInternal;
+
+    private RequestOptions blockBlobRequestOptions(Context context) {
+        return RequestOptionsHelper.blobRequestOptions(context, this.azureBlobStorage.getUrl(), getContainerName(),
+            getBlobName());
     }
 
     /**
@@ -442,19 +453,25 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
         Context finalContext = context;
 
-        return dataMono.flatMap(data -> this.azureBlobStorage.getBlockBlobs()
-            .uploadWithResponseAsync(containerName, blobName, options.getLength(), data, null, options.getContentMd5(),
-                options.getMetadata(), requestConditions.getLeaseId(), options.getTier(),
-                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                requestConditions.getTagsConditions(), null, ModelHelper.tagsToString(options.getTags()),
+        BlobHttpHeaders uploadHeaders = options.getHeaders() == null ? new BlobHttpHeaders() : options.getHeaders();
+        CpkInfo cpk = getCustomerProvidedKey();
+        RequestOptions requestOptions = blockBlobRequestOptions(finalContext);
+
+        return dataMono.flatMap(data -> this.blockBlobClientInternal
+            .uploadWithResponse(options.getLength(), data, options.getMetadata(), null, options.getContentMd5(),
+                uploadHeaders.getContentType(), uploadHeaders.getContentEncoding(), uploadHeaders.getContentLanguage(),
+                uploadHeaders.getContentMd5(), uploadHeaders.getCacheControl(), requestConditions.getLeaseId(),
+                uploadHeaders.getContentDisposition(), cpk == null ? null : cpk.getEncryptionKey(),
+                cpk == null ? null : cpk.getEncryptionKeySha256(), cpk == null ? null : cpk.getEncryptionAlgorithm(),
+                encryptionScope == null ? null : encryptionScope.getEncryptionScope(), options.getTier(),
+                requestConditions.getTagsConditions(), ModelHelper.tagsToString(options.getTags()),
                 immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(), null,
-                null, null, options.getHeaders(), getCustomerProvidedKey(), encryptionScope, finalContext)
+                null, null, requestConditions, requestOptions)
             .map(rb -> {
                 BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = BlockBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
-                    hd.getContentMD5(), hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(),
-                    hd.getXMsEncryptionScope(), hd.getXMsVersionId(), hd.getXMsContentCrc64());
+                    hd.getContentMd5(), hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
+                    hd.getVersionId(), hd.getContentCrc64());
                 return new SimpleResponse<>(rb, item);
             }));
     }
@@ -597,23 +614,27 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
 
         // TODO (kasobol-msft) add metadata back (https://github.com/Azure/azure-sdk-for-net/issues/15969)
-        return this.azureBlobStorage.getBlockBlobs()
-            .putBlobFromUrlWithResponseAsync(containerName, blobName, 0, options.getSourceUrl(), null, null, null,
-                destinationRequestConditions.getLeaseId(), options.getTier(),
-                destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
-                destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
-                destinationRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
-                sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
-                sourceRequestConditions.getIfNoneMatch(), sourceRequestConditions.getTagsConditions(), null,
-                options.getContentMd5(), ModelHelper.tagsToString(options.getTags()),
-                options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(),
-                options.getSourceShareTokenIntent(), sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm,
-                options.getHeaders(), getCustomerProvidedKey(), encryptionScope, context)
-            .map(rb -> {
-                BlockBlobsPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
+        BlobHttpHeaders fromUrlHeaders = options.getHeaders() == null ? new BlobHttpHeaders() : options.getHeaders();
+        CpkInfo fromUrlCpk = getCustomerProvidedKey();
+
+        return this.blockBlobClientInternal.uploadBlobFromUrlWithResponse(options.getSourceUrl(), null, null, null,
+            fromUrlHeaders.getContentType(), fromUrlHeaders.getContentEncoding(), fromUrlHeaders.getContentLanguage(),
+            fromUrlHeaders.getContentMd5(), fromUrlHeaders.getCacheControl(), destinationRequestConditions.getLeaseId(),
+            fromUrlHeaders.getContentDisposition(), fromUrlCpk == null ? null : fromUrlCpk.getEncryptionKey(),
+            fromUrlCpk == null ? null : fromUrlCpk.getEncryptionKeySha256(),
+            fromUrlCpk == null ? null : fromUrlCpk.getEncryptionAlgorithm(),
+            encryptionScope == null ? null : encryptionScope.getEncryptionScope(), options.getTier(),
+            destinationRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
+            sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
+            sourceRequestConditions.getIfNoneMatch(), sourceRequestConditions.getTagsConditions(),
+            options.getContentMd5(), ModelHelper.tagsToString(options.getTags()), options.isCopySourceBlobProperties(),
+            sourceAuth, ModelHelper.toCopySourceTags(options.getCopySourceTagsMode()),
+            options.getSourceShareTokenIntent(), sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm,
+            destinationRequestConditions, blockBlobRequestOptions(context)).map(rb -> {
+                BlockBlobsUploadBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = BlockBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
-                    hd.getContentMD5(), hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(),
-                    hd.getXMsEncryptionScope(), hd.getXMsVersionId(), hd.getXMsContentCrc64());
+                    hd.getContentMd5(), hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
+                    hd.getVersionId(), hd.getContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }
@@ -766,10 +787,17 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         context = ContentValidationModeResolver.addContentValidationMode(context,
             options.getContentValidationAlgorithm(), options.getData().getLength(), false);
 
-        return this.azureBlobStorage.getBlockBlobs()
-            .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(),
-                options.getData().getLength(), options.getData(), options.getContentMd5(), null, null,
-                options.getLeaseId(), null, null, null, getCustomerProvidedKey(), encryptionScope, context);
+        CpkInfo stageCpk = getCustomerProvidedKey();
+
+        return this.blockBlobClientInternal
+            .stageBlockWithResponse(options.getBase64BlockId(), options.getData().getLength(), options.getData(),
+                options.getContentMd5(), null, null, options.getLeaseId(),
+                stageCpk == null ? null : stageCpk.getEncryptionKey(),
+                stageCpk == null ? null : stageCpk.getEncryptionKeySha256(),
+                stageCpk == null ? null : stageCpk.getEncryptionAlgorithm(),
+                encryptionScope == null ? null : encryptionScope.getEncryptionScope(), null, null,
+                blockBlobRequestOptions(context))
+            .map(rb -> (Response<Void>) rb);
 
     }
 
@@ -901,14 +929,20 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         EncryptionAlgorithmType sourceCpkAlgorithm
             = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getEncryptionAlgorithm() : null;
 
-        return this.azureBlobStorage.getBlockBlobs()
-            .stageBlockFromURLNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(), 0,
-                options.getSourceUrl(), sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,
-                options.getLeaseId(), sourceRequestConditions.getIfModifiedSince(),
-                sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
-                sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, options.getSourceShareTokenIntent(),
-                sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm, getCustomerProvidedKey(), encryptionScope,
-                context);
+        CpkInfo stageUrlCpk = getCustomerProvidedKey();
+
+        return this.blockBlobClientInternal
+            .stageBlockFromUrlWithResponse(options.getBase64BlockId(), 0, options.getSourceUrl(),
+                sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,
+                stageUrlCpk == null ? null : stageUrlCpk.getEncryptionKey(),
+                stageUrlCpk == null ? null : stageUrlCpk.getEncryptionKeySha256(),
+                stageUrlCpk == null ? null : stageUrlCpk.getEncryptionAlgorithm(),
+                encryptionScope == null ? null : encryptionScope.getEncryptionScope(), options.getLeaseId(),
+                sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
+                sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), sourceAuth,
+                options.getSourceShareTokenIntent(), sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm,
+                blockBlobRequestOptions(context))
+            .map(rb -> (Response<Void>) rb);
     }
 
     /**
@@ -1009,9 +1043,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<BlockList>> listBlocksWithResponse(BlockBlobListBlocksOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
 
-        return this.azureBlobStorage.getBlockBlobs()
-            .getBlockListWithResponseAsync(containerName, blobName, options.getType(), getSnapshotId(), null,
-                options.getLeaseId(), options.getIfTagsMatch(), null, context)
+        return this.blockBlobClientInternal
+            .getBlockListWithResponse(getSnapshotId(), options.getType(), null, options.getLeaseId(),
+                options.getIfTagsMatch(), blockBlobRequestOptions(context))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -1172,20 +1206,27 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobImmutabilityPolicy immutabilityPolicy
             = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        return this.azureBlobStorage.getBlockBlobs()
-            .commitBlockListWithResponseAsync(containerName, blobName,
-                new BlockLookupList().setLatest(options.getBase64BlockIds()), null, null, null, options.getMetadata(),
-                requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
-                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-                ModelHelper.tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(),
-                immutabilityPolicy.getPolicyMode(), options.isLegalHold(), options.getHeaders(),
-                getCustomerProvidedKey(), encryptionScope, context)
+        BlobHttpHeaders commitHeaders = options.getHeaders() == null ? new BlobHttpHeaders() : options.getHeaders();
+        CpkInfo commitCpk = getCustomerProvidedKey();
+        RequestOptions commitRequestOptions = blockBlobRequestOptions(context);
+
+        return this.blockBlobClientInternal
+            .commitBlockListWithResponse(new BlockLookupList().setLatest(options.getBase64BlockIds()), null,
+                commitHeaders.getCacheControl(), commitHeaders.getContentType(), commitHeaders.getContentEncoding(),
+                commitHeaders.getContentLanguage(), commitHeaders.getContentMd5(), null, null, options.getMetadata(),
+                requestConditions.getLeaseId(), commitHeaders.getContentDisposition(),
+                commitCpk == null ? null : commitCpk.getEncryptionKey(),
+                commitCpk == null ? null : commitCpk.getEncryptionKeySha256(),
+                commitCpk == null ? null : commitCpk.getEncryptionAlgorithm(),
+                encryptionScope == null ? null : encryptionScope.getEncryptionScope(), options.getTier(),
+                requestConditions.getTagsConditions(), ModelHelper.tagsToString(options.getTags()),
+                immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(),
+                requestConditions, commitRequestOptions)
             .map(rb -> {
                 BlockBlobsCommitBlockListHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = BlockBlobItemConstructorProxy.create(hd.getETag(), hd.getLastModified(),
-                    hd.getContentMD5(), hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(),
-                    hd.getXMsEncryptionScope(), hd.getXMsVersionId(), hd.getXMsContentCrc64());
+                    hd.getContentMd5(), hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(),
+                    hd.getVersionId(), hd.getContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
     }

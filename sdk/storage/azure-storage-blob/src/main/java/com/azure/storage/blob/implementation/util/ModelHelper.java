@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -16,6 +17,7 @@ import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersCo
 import com.azure.storage.blob.implementation.accesshelpers.BlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobQueryHeadersConstructorProxy;
+import com.azure.storage.blob.implementation.models.BlobCopySourceTags;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload;
@@ -27,6 +29,7 @@ import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
 import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobContainerListDetails;
+import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
@@ -53,7 +56,11 @@ import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlWriter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -66,6 +73,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.stream.XMLStreamException;
 
 /**
  * This class provides helper methods for common model patterns.
@@ -703,6 +712,87 @@ public final class ModelHelper {
             throw new IllegalArgumentException(
                 "The endBefore option is only supported when storageResponseSerializationFormat is set to ARROW.");
         }
+    }
+
+    /**
+     * Serializes an {@link XmlSerializable} request body into XML {@link BinaryData} for the protocol layer.
+     * <p>
+     * The generated protocol methods take the request body as {@link BinaryData}; the hand-written clients use this
+     * to encode the typed model the same way the AutoRest convenience methods did.
+     *
+     * @param value The value to serialize; may be {@code null}.
+     * @return The XML-encoded {@link BinaryData}, or {@code null} when {@code value} is {@code null}.
+     */
+    public static BinaryData serializeXmlBody(XmlSerializable<?> value) {
+        if (value == null) {
+            return null;
+        }
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            try (XmlWriter xmlWriter = XmlWriter.toStream(stream)) {
+                value.toXml(xmlWriter);
+                xmlWriter.flush();
+            }
+            return BinaryData.fromBytes(stream.toByteArray());
+        } catch (XMLStreamException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    /**
+     * Deserializes an XML protocol-response body into the given model.
+     * <p>
+     * The generated protocol methods return the response body as {@link BinaryData}; the hand-written clients use
+     * this to reconstruct the typed model via its generated {@code fromXml(XmlReader)} factory, matching the value
+     * the AutoRest convenience methods returned directly.
+     *
+     * @param data The raw XML body; may be {@code null}.
+     * @param deserializer The model's {@code fromXml} factory.
+     * @param <T> The deserialized type.
+     * @return The deserialized model, or {@code null} when {@code data} is {@code null}.
+     */
+    public static <T> T deserializeXmlBody(BinaryData data, XmlDeserializer<T> deserializer) {
+        if (data == null) {
+            return null;
+        }
+        try (XmlReader xmlReader = XmlReader.fromBytes(data.toBytes())) {
+            return deserializer.deserialize(xmlReader);
+        } catch (XMLStreamException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    /**
+     * Functional interface matching the generated {@code fromXml(XmlReader)} factory methods so protocol responses
+     * can be deserialized generically.
+     *
+     * @param <T> The deserialized type.
+     */
+    @FunctionalInterface
+    public interface XmlDeserializer<T> {
+        /**
+         * Deserializes an instance of {@code T} from the reader.
+         *
+         * @param reader The {@link XmlReader} positioned at the body.
+         * @return The deserialized instance.
+         * @throws XMLStreamException If deserialization fails.
+         */
+        T deserialize(XmlReader reader) throws XMLStreamException;
+    }
+
+    /**
+     * Maps the public {@link BlobCopySourceTagsMode} onto the generated {@link BlobCopySourceTags}.
+     * <p>
+     * The spec models the copy source tags mode as a closed enum, so the emitter generates an internal
+     * {@code enum} while the shipped public type is an {@link com.azure.core.util.ExpandableStringEnum}. Both carry
+     * the same wire values, so the bridge is a value lookup. Remove once the spec exposes the type as an open union
+     * named {@code BlobCopySourceTagsMode} for java.
+     *
+     * @param mode The public copy source tags mode; may be {@code null}.
+     * @return The generated equivalent, or {@code null} if {@code mode} is {@code null}.
+     */
+    public static BlobCopySourceTags toCopySourceTags(BlobCopySourceTagsMode mode) {
+        return mode == null ? null : BlobCopySourceTags.fromString(mode.toString());
     }
 
     private ModelHelper() {

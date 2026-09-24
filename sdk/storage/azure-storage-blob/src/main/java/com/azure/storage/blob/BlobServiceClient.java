@@ -9,6 +9,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.storage.blob.implementation.models.BlobContainersSegment;
+import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -19,10 +23,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
-import com.azure.storage.blob.implementation.models.ContainersRestoreHeaders;
+import com.azure.storage.blob.implementation.BlobContainerClientInternal;
+import com.azure.storage.blob.implementation.BlobServiceClientInternal;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.FilterBlobSegment;
 import com.azure.storage.blob.implementation.models.ServicesFilterBlobsHeaders;
+import com.azure.storage.blob.implementation.models.ServicesListContainersSegmentHeaders;
 import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ServicesGetStatisticsHeaders;
@@ -37,7 +43,6 @@ import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.KeyInfo;
-import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -84,6 +89,10 @@ import java.util.function.Consumer;
 public final class BlobServiceClient {
     private static final ClientLogger LOGGER = new ClientLogger(BlobServiceClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
+
+    private final BlobServiceClientInternal serviceClientInternal;
+
+    private final BlobContainerClientInternal containerClientInternal;
     private final String accountName;
     private final BlobServiceVersion serviceVersion;
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
@@ -115,10 +124,10 @@ public final class BlobServiceClient {
         } catch (IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
-        this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(pipeline)
-            .url(url)
-            .version(serviceVersion.getVersion())
-            .buildClient();
+        this.azureBlobStorage
+            = new AzureBlobStorageImplBuilder().pipeline(pipeline).url(url).version(serviceVersion).buildClient();
+        this.serviceClientInternal = new BlobServiceClientInternal(this.azureBlobStorage.getServices());
+        this.containerClientInternal = new BlobContainerClientInternal(this.azureBlobStorage.getContainers());
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -442,11 +451,14 @@ public final class BlobServiceClient {
 
     private PagedResponse<BlobContainerItem> listBlobContainersSegment(String marker, BlobContainerListDetails details,
         String prefix, Integer maxResultsPerPage, Duration timeout) {
-        // Set up the include types based on the details provided in the options
-        List<ListBlobContainersIncludeType> include = ModelHelper.toIncludeTypes(details);
-
-        Callable<PagedResponse<BlobContainerItem>> operation = () -> this.azureBlobStorage.getServices()
-            .listBlobContainersSegmentSinglePage(prefix, marker, maxResultsPerPage, include, null, null, Context.NONE);
+        Callable<PagedResponse<BlobContainerItem>> operation = () -> {
+            ResponseBase<ServicesListContainersSegmentHeaders, BlobContainersSegment> response
+                = this.serviceClientInternal.listContainersSegmentWithResponse(prefix, marker, maxResultsPerPage, null,
+                    ModelHelper.toIncludeTypes(details), RequestOptionsHelper.requestOptions(Context.NONE));
+            BlobContainersSegment segment = response.getValue();
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                segment.getContainerItems(), segment.getNextMarker(), null);
+        };
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
@@ -510,22 +522,20 @@ public final class BlobServiceClient {
         Context finalContext = context == null ? Context.NONE : context;
 
         StorageImplUtils.assertNotNull("options", options);
+
         Callable<ResponseBase<ServicesFilterBlobsHeaders, FilterBlobSegment>> operation
-            = () -> this.azureBlobStorage.getServices()
-                .filterBlobsWithResponse(null, null, options.getQuery(), marker, options.getMaxResultsPerPage(), null,
-                    finalContext);
+            = () -> this.serviceClientInternal.filterBlobsWithResponse(options.getQuery(), null, marker,
+                options.getMaxResultsPerPage(), null, RequestOptionsHelper.requestOptions(finalContext));
 
         ResponseBase<ServicesFilterBlobsHeaders, FilterBlobSegment> response
             = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
+        FilterBlobSegment segment = response.getValue();
 
-        List<TaggedBlobItem> value = response.getValue()
-            .getBlobs()
-            .stream()
-            .map(ModelHelper::populateTaggedBlobItem)
-            .collect(Collectors.toList());
+        List<TaggedBlobItem> value
+            = segment.getBlobItems().stream().map(ModelHelper::populateTaggedBlobItem).collect(Collectors.toList());
 
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), value,
-            response.getValue().getNextMarker(), response.getDeserializedHeaders());
+            segment.getNextMarker(), null);
     }
 
     /**
@@ -577,7 +587,8 @@ public final class BlobServiceClient {
         Context finalContext = context == null ? Context.NONE : context;
         throwOnAnonymousAccess();
         Callable<ResponseBase<ServicesGetPropertiesHeaders, BlobServiceProperties>> operation
-            = () -> this.azureBlobStorage.getServices().getPropertiesWithResponse(null, null, finalContext);
+            = () -> this.serviceClientInternal.getPropertiesWithResponse(null,
+                RequestOptionsHelper.requestOptions(finalContext));
         ResponseBase<ServicesGetPropertiesHeaders, BlobServiceProperties> response
             = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
 
@@ -738,8 +749,8 @@ public final class BlobServiceClient {
             finalProperties = null;
         }
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<Response<Void>> operation = () -> this.azureBlobStorage.getServices()
-            .setPropertiesNoCustomHeadersWithResponse(finalProperties, null, null, finalContext);
+        Callable<Response<Void>> operation = () -> this.serviceClientInternal.setPropertiesWithResponse(finalProperties,
+            null, RequestOptionsHelper.requestOptions(finalContext));
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
@@ -813,13 +824,14 @@ public final class BlobServiceClient {
         }
 
         Callable<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> operation
-            = () -> this.azureBlobStorage.getServices()
-                .getUserDelegationKeyWithResponse(new KeyInfo()
+            = () -> this.serviceClientInternal.getUserDelegationKeyWithResponse(
+                new KeyInfo()
                     .setStart(options.getStartsOn() == null
                         ? ""
                         : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
                     .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
-                    .setDelegatedUserTenantId(options.getDelegatedUserTenantId()), null, null, finalContext);
+                    .setDelegatedUserTenantId(options.getDelegatedUserTenantId()),
+                null, RequestOptionsHelper.requestOptions(finalContext));
 
         ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> response
             = sendRequest(operation, timeout, BlobStorageException.class);
@@ -872,8 +884,11 @@ public final class BlobServiceClient {
         throwOnAnonymousAccess();
         Context finalContext = context == null ? Context.NONE : context;
         Callable<ResponseBase<ServicesGetStatisticsHeaders, BlobServiceStatistics>> operation
-            = () -> this.azureBlobStorage.getServices().getStatisticsWithResponse(null, null, finalContext);
-        return sendRequest(operation, timeout, BlobStorageException.class);
+            = () -> this.serviceClientInternal.getStatisticsWithResponse(null,
+                RequestOptionsHelper.requestOptions(finalContext));
+        ResponseBase<ServicesGetStatisticsHeaders, BlobServiceStatistics> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
+        return new SimpleResponse<>(response, response.getValue());
     }
 
     /**
@@ -909,13 +924,13 @@ public final class BlobServiceClient {
     public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context) {
         throwOnAnonymousAccess();
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<ServicesGetAccountInfoHeaders, Void>> operation
-            = () -> this.azureBlobStorage.getServices().getAccountInfoWithResponse(null, null, finalContext);
+        Callable<ResponseBase<ServicesGetAccountInfoHeaders, Void>> operation = () -> this.serviceClientInternal
+            .getAccountInfoWithResponse(null, RequestOptionsHelper.requestOptions(finalContext));
         ResponseBase<ServicesGetAccountInfoHeaders, Void> response
             = sendRequest(operation, timeout, BlobStorageException.class);
         ServicesGetAccountInfoHeaders hd = response.getDeserializedHeaders();
         return new SimpleResponse<>(response,
-            new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind(), hd.isXMsIsHnsEnabled()));
+            new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind(), hd.isHierarchicalNamespaceEnabled()));
     }
 
     /**
@@ -1099,11 +1114,20 @@ public final class BlobServiceClient {
             ? options.getDestinationContainerName()
             : options.getDeletedContainerName();
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<ContainersRestoreHeaders, Void>> operation = () -> this.azureBlobStorage.getContainers()
-            .restoreWithResponse(finalDestinationContainerName, null, null, options.getDeletedContainerName(),
-                options.getDeletedContainerVersion(), finalContext);
-        ResponseBase<ContainersRestoreHeaders, Void> response
-            = sendRequest(operation, timeout, BlobStorageException.class);
+        RequestOptions requestOptions = RequestOptionsHelper.containerRequestOptions(finalContext,
+            this.azureBlobStorage.getUrl(), finalDestinationContainerName);
+        if (options.getDeletedContainerName() != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-deleted-container-name"),
+                options.getDeletedContainerName());
+        }
+        if (options.getDeletedContainerVersion() != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-deleted-container-version"),
+                options.getDeletedContainerVersion());
+        }
+        Callable<Response<Void>> operation
+            = () -> this.containerClientInternal.restoreWithResponse(options.getDeletedContainerName(),
+                options.getDeletedContainerVersion(), null, requestOptions);
+        Response<Void> response = sendRequest(operation, timeout, BlobStorageException.class);
         return new SimpleResponse<>(response, getBlobContainerClient(finalDestinationContainerName));
     }
 

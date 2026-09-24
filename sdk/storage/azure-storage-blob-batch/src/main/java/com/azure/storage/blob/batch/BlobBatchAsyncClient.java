@@ -17,8 +17,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -54,10 +58,8 @@ public final class BlobBatchAsyncClient {
 
     BlobBatchAsyncClient(String clientUrl, HttpPipeline pipeline, BlobServiceVersion version, boolean containerScoped) {
         this.serviceVersion = version;
-        this.client = new AzureBlobStorageImplBuilder().url(clientUrl)
-            .pipeline(pipeline)
-            .version(version.getVersion())
-            .buildClient();
+        this.client
+            = new AzureBlobStorageImplBuilder().url(clientUrl).pipeline(pipeline).version(version).buildClient();
         this.containerScoped = containerScoped;
     }
 
@@ -154,20 +156,22 @@ public final class BlobBatchAsyncClient {
 
     Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        return batch.prepareBlobBatchSubmission()
-            .flatMap(batchOperationInfo -> containerScoped
-                ? client.getContainers()
-                    .submitBatchWithResponseAsync(null, batchOperationInfo.getContentLength(),
-                        batchOperationInfo.getContentType(), Flux.fromIterable(batchOperationInfo.getBody()), null,
-                        null, finalContext)
-                    .flatMap(response -> BlobBatchHelper.mapBatchResponse(batchOperationInfo, response,
-                        throwOnAnyFailure, LOGGER))
-                : client.getServices()
-                    .submitBatchWithResponseAsync(batchOperationInfo.getContentLength(),
-                        batchOperationInfo.getContentType(), Flux.fromIterable(batchOperationInfo.getBody()), null,
-                        null, finalContext)
-                    .flatMap(response -> BlobBatchHelper.mapBatchResponse(batchOperationInfo, response,
-                        throwOnAnyFailure, LOGGER)));
+        return batch.prepareBlobBatchSubmission().flatMap(batchOperationInfo -> {
+            long contentLength = batchOperationInfo.getContentLength();
+
+            // The generated operation fixes Content-Type to "multipart/mixed"; the service also needs the batch
+            // boundary, so the full value is set on the request options, which are applied after the request is
+            // built.
+            RequestOptions requestOptions = RequestOptionsHelper.requestOptions(finalContext);
+            requestOptions.setHeader(HttpHeaderName.CONTENT_TYPE, batchOperationInfo.getContentType());
+
+            return BinaryData.fromFlux(Flux.fromIterable(batchOperationInfo.getBody()), contentLength, false)
+                .flatMap(body -> containerScoped
+                    ? client.getContainers().submitBatchWithResponseInternalAsync(contentLength, body, requestOptions)
+                    : client.getServices().submitBatchWithResponseInternalAsync(contentLength, body, requestOptions))
+                .flatMap(response -> BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure,
+                    LOGGER));
+        });
     }
 
     /**

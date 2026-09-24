@@ -8,15 +8,20 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.BlobAsyncClientInternal;
+import com.azure.storage.blob.implementation.BlobContainerAsyncClientInternal;
+import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.options.BlobAcquireLeaseOptions;
@@ -72,16 +77,28 @@ public final class BlobLeaseAsyncClient {
     private final String blobName;
     private final boolean isBlob;
     private final AzureBlobStorageImpl client;
+    private final BlobAsyncClientInternal blobClientInternal;
+    private final BlobContainerAsyncClientInternal containerClientInternal;
     private final String accountName;
 
     private volatile String leaseId;
 
+    // A lease client addresses either a container or a blob, so the request has to be scoped to whichever this
+    // client was built for.
+    private RequestOptions leaseRequestOptions(Context context) {
+        return this.isBlob
+            ? RequestOptionsHelper.blobRequestOptions(context, this.client.getUrl(), containerName, blobName)
+            : RequestOptionsHelper.containerRequestOptions(context, this.client.getUrl(), containerName);
+    }
+
     BlobLeaseAsyncClient(HttpPipeline pipeline, String url, String containerName, String blobName, String leaseId,
-        boolean isBlob, String accountName, String serviceVersion) {
+        boolean isBlob, String accountName, BlobServiceVersion serviceVersion) {
         this.isBlob = isBlob;
         this.leaseId = leaseId;
         this.client
             = new AzureBlobStorageImplBuilder().pipeline(pipeline).url(url).version(serviceVersion).buildClient();
+        this.blobClientInternal = new BlobAsyncClientInternal(this.client.getBlobs());
+        this.containerClientInternal = new BlobContainerAsyncClientInternal(this.client.getContainers());
         this.accountName = accountName;
         this.containerName = containerName;
         this.blobName = blobName;
@@ -200,17 +217,16 @@ public final class BlobLeaseAsyncClient {
 
         Mono<Response<String>> response;
         if (this.isBlob) {
-            response = this.client.getBlobs()
-                .acquireLeaseWithResponseAsync(containerName, blobName, null, options.getDuration(), this.leaseId,
-                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                    requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                    requestConditions.getTagsConditions(), null, context)
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
+            response = this.blobClientInternal
+                .acquireLeaseWithResponse(options.getDuration(), null, this.leaseId,
+                    requestConditions.getTagsConditions(), requestConditions, leaseRequestOptions(context))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            response = this.client.getContainers()
-                .acquireLeaseWithResponseAsync(containerName, null, options.getDuration(), this.leaseId,
-                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), null, context)
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
+            response = this.containerClientInternal
+                .acquireLeaseWithResponse(options.getDuration(), null, this.leaseId,
+                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                    leaseRequestOptions(context))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
 
         response = response.doOnSuccess(r -> this.leaseId = r.getValue());
@@ -300,17 +316,15 @@ public final class BlobLeaseAsyncClient {
 
         Mono<Response<String>> response;
         if (this.isBlob) {
-            response = this.client.getBlobs()
-                .renewLeaseWithResponseAsync(containerName, blobName, this.leaseId, null,
-                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                    requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                    requestConditions.getTagsConditions(), null, context)
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
+            response = this.blobClientInternal
+                .renewLeaseWithResponse(this.leaseId, null, requestConditions.getTagsConditions(), requestConditions,
+                    leaseRequestOptions(context))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            response = this.client.getContainers()
-                .renewLeaseWithResponseAsync(containerName, this.leaseId, null, requestConditions.getIfModifiedSince(),
-                    requestConditions.getIfUnmodifiedSince(), null, context)
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
+            response = this.containerClientInternal
+                .renewLeaseWithResponse(this.leaseId, null, requestConditions.getIfModifiedSince(),
+                    requestConditions.getIfUnmodifiedSince(), leaseRequestOptions(context))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
 
         response = response.doOnSuccess(r -> this.leaseId = r.getValue());
@@ -399,15 +413,15 @@ public final class BlobLeaseAsyncClient {
         context = context == null ? Context.NONE : context;
 
         if (this.isBlob) {
-            return this.client.getBlobs()
-                .releaseLeaseNoCustomHeadersWithResponseAsync(containerName, blobName, this.leaseId, null,
-                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                    requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                    requestConditions.getTagsConditions(), null, context);
+            return this.blobClientInternal
+                .releaseLeaseWithResponse(this.leaseId, null, requestConditions.getTagsConditions(), requestConditions,
+                    leaseRequestOptions(context))
+                .map(rb -> (Response<Void>) rb);
         } else {
-            return this.client.getContainers()
-                .releaseLeaseNoCustomHeadersWithResponseAsync(containerName, this.leaseId, null,
-                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), null, context);
+            return this.containerClientInternal
+                .releaseLeaseWithResponse(this.leaseId, null, requestConditions.getIfModifiedSince(),
+                    requestConditions.getIfUnmodifiedSince(), leaseRequestOptions(context))
+                .map(rb -> (Response<Void>) rb);
         }
     }
 
@@ -511,17 +525,15 @@ public final class BlobLeaseAsyncClient {
             = options.getBreakPeriod() == null ? null : Math.toIntExact(options.getBreakPeriod().getSeconds());
 
         if (this.isBlob) {
-            return this.client.getBlobs()
-                .breakLeaseWithResponseAsync(containerName, blobName, null, breakPeriod,
-                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                    requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                    requestConditions.getTagsConditions(), null, context)
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseTime()));
+            return this.blobClientInternal
+                .breakLeaseWithResponse(null, breakPeriod, requestConditions.getTagsConditions(), requestConditions,
+                    leaseRequestOptions(context))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseTime()));
         } else {
-            return this.client.getContainers()
-                .breakLeaseWithResponseAsync(containerName, null, breakPeriod, requestConditions.getIfModifiedSince(),
-                    requestConditions.getIfUnmodifiedSince(), null, context)
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseTime()));
+            return this.containerClientInternal
+                .breakLeaseWithResponse(null, requestConditions.getIfModifiedSince(),
+                    requestConditions.getIfUnmodifiedSince(), breakPeriod, leaseRequestOptions(context))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseTime()));
         }
     }
 
@@ -611,17 +623,16 @@ public final class BlobLeaseAsyncClient {
 
         Mono<Response<String>> response;
         if (this.isBlob) {
-            response = this.client.getBlobs()
-                .changeLeaseWithResponseAsync(containerName, blobName, this.leaseId, options.getProposedId(), null,
-                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-                    requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
-                    requestConditions.getTagsConditions(), null, context)
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
+            response = this.blobClientInternal
+                .changeLeaseWithResponse(this.leaseId, options.getProposedId(), null,
+                    requestConditions.getTagsConditions(), requestConditions, leaseRequestOptions(context))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
-            response = this.client.getContainers()
-                .changeLeaseWithResponseAsync(containerName, this.leaseId, options.getProposedId(), null,
-                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), null, context)
-                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsLeaseId()));
+            response = this.containerClientInternal
+                .changeLeaseWithResponse(this.leaseId, options.getProposedId(), null,
+                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                    leaseRequestOptions(context))
+                .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
 
         response = response.doOnSuccess(r -> this.leaseId = r.getValue());
