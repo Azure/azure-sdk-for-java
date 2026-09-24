@@ -5,7 +5,6 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -100,13 +99,6 @@ final class TokenCredentialSessionProvider implements SessionProvider {
     }
 
     @Override
-    public SessionCredential getSession(SessionRequestContext context) {
-        String container = requireContainerName(context);
-        String resolvedAccount = resolveAccountName(context);
-        return updateCache(container, resolvedAccount).cache.getValidValueSync();
-    }
-
-    @Override
     public boolean invalidateSession(SessionRequestContext context, SessionCredential rejectedCredential) {
         if (context == null) {
             return false;
@@ -177,14 +169,6 @@ final class TokenCredentialSessionProvider implements SessionProvider {
             .map(response -> toCredential(response, resolvedAccountName));
     }
 
-    private SessionCredential createSessionSync(String container, String resolvedAccountName) {
-        CreateSessionConfiguration config
-            = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
-        Response<CreateSessionResponse> response
-            = azureBlobStorage.getContainers().createSessionWithResponse(container, config, null, null, Context.NONE);
-        return toCredential(response, resolvedAccountName);
-    }
-
     private SessionCredential toCredential(Response<CreateSessionResponse> response, String resolvedAccountName) {
         CreateSessionResponse session = response.getValue();
         if (session == null) {
@@ -217,7 +201,6 @@ final class TokenCredentialSessionProvider implements SessionProvider {
             String resolvedAccountName, OffsetDateTime lastAccess) {
             this.cache
                 = new AutoRefreshingCache<>(() -> provider.createSessionAsync(containerName, resolvedAccountName),
-                    () -> provider.createSessionSync(containerName, resolvedAccountName),
                     SessionCredential::getExpiresAt, clock);
             this.lastAccess = lastAccess;
         }

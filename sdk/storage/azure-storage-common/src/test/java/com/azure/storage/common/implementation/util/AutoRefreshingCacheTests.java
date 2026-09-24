@@ -240,8 +240,8 @@ public class AutoRefreshingCacheTests {
     public void foregroundAcquisitionDoesNotUseBackgroundTimeout() throws Exception {
         VirtualTimeScheduler scheduler = VirtualTimeScheduler.create();
         Sinks.One<TestExpiringValue> pending = Sinks.one();
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(pending::asMono,
-            TestExpiringValue::getExpiration, clock, scheduler);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(pending::asMono, TestExpiringValue::getExpiration, clock, scheduler);
         try {
             CompletableFuture<TestExpiringValue> acquisition = cache.getValidValueAsync().toFuture();
             scheduler.advanceTimeBy(Duration.ofMinutes(1));
@@ -294,9 +294,9 @@ public class AutoRefreshingCacheTests {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     public void cachedValueIsReusedUntilExpiration(boolean async) {
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(
-            () -> Mono.just(asyncCalls.incrementAndGet() == 1 ? first : second), TestExpiringValue::getExpiration,
-            clock);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(() -> Mono.just(asyncCalls.incrementAndGet() == 1 ? first : second),
+                TestExpiringValue::getExpiration, clock);
 
         assertSame(first, async ? cache.getValidValueAsync().block(Duration.ofSeconds(5)) : cache.getValidValueSync());
         clock.advance(Duration.ofSeconds(30));
@@ -339,9 +339,9 @@ public class AutoRefreshingCacheTests {
 
     @Test
     public void invalidateValueClearsOnlyMatchingValue() {
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(
-            () -> Mono.just(asyncCalls.incrementAndGet() == 1 ? first : second), TestExpiringValue::getExpiration,
-            clock);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(() -> Mono.just(asyncCalls.incrementAndGet() == 1 ? first : second),
+                TestExpiringValue::getExpiration, clock);
 
         assertSame(first, cache.getValidValueSync());
         assertTrue(cache.invalidateValue(first));

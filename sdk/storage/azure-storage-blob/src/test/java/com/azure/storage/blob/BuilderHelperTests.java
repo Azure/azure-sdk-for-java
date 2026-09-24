@@ -797,12 +797,6 @@ public class BuilderHelperTests {
             }
 
             @Override
-            public SessionCredential getSession(SessionRequestContext context) {
-                capture.set(context);
-                return credential;
-            }
-
-            @Override
             public boolean invalidateSession(SessionRequestContext context, SessionCredential rejectedCredential) {
                 return false;
             }

@@ -633,6 +633,64 @@ public class SessionTokenCredentialPolicyTest {
         }
     }
 
+    @Test
+    public void syncPolicyUsesGetSessionOverride() {
+        when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
+        HttpRequest request = blobGetRequest();
+
+        sendSessionResponseSync(request, 200);
+
+        assertTrue(isSessionAuthenticated(request));
+        verify(sessionProvider).getSession(argThat(context -> "testaccount".equals(context.getAccountName())
+            && "mycontainer".equals(context.getContainerName())));
+        verify(sessionProvider, never()).getSessionAsync(any());
+        verify(bearerPolicy, never()).processSync(any(), any());
+    }
+
+    @Test
+    public void syncPolicyUsesDefaultGetSession() {
+        when(sessionProvider.getSession(any())).thenCallRealMethod();
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
+        HttpRequest request = blobGetRequest();
+
+        sendSessionResponseSync(request, 200);
+
+        assertTrue(isSessionAuthenticated(request));
+        verify(sessionProvider).getSession(any());
+        verify(sessionProvider).getSessionAsync(any());
+        verify(bearerPolicy, never()).processSync(any(), any());
+    }
+
+    @Test
+    public void syncPolicyFallsBackWhenDefaultGetSessionFails() {
+        when(sessionProvider.getSession(any())).thenCallRealMethod();
+        when(sessionProvider.getSessionAsync(any()))
+            .thenReturn(Mono.error(new IllegalStateException("Session acquisition failed.")));
+
+        sendSessionResponseSync(blobGetRequest(), 200);
+
+        verify(sessionProvider).getSession(any());
+        verify(sessionProvider).getSessionAsync(any());
+        verify(bearerPolicy).processSync(any(), any());
+    }
+
+    @Test
+    public void asyncPolicyUsesGetSessionAsync() {
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
+        HttpRequest request = blobGetRequest();
+
+        StepVerifier.create(buildPipeline(successTransport()).send(request)).assertNext(response -> {
+            assertEquals(200, response.getStatusCode());
+            response.close();
+        }).verifyComplete();
+
+        assertTrue(isSessionAuthenticated(request));
+        verify(sessionProvider).getSessionAsync(argThat(context -> "testaccount".equals(context.getAccountName())
+            && "mycontainer".equals(context.getContainerName())));
+        verify(sessionProvider, never()).getSession(any());
+        verify(bearerPolicy, never()).process(any(), any());
+    }
+
     // Helpers
 
     private void sendSessionResponseSync(HttpRequest request, int sessionStatusCode) {

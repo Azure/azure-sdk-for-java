@@ -27,9 +27,13 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -38,6 +42,7 @@ import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -364,6 +369,54 @@ public class TokenCredentialSessionProviderCacheTest {
         assertEquals(FIRST_TOKEN, firstResult.get().getSessionToken());
         assertEquals(FIRST_TOKEN, secondResult.get().getSessionToken());
         assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    @Test
+    public void syncAndAsyncRequestsReuseCachedSession() {
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
+        SessionRequestContext context = contextFor(CONTAINER_A);
+
+        SessionCredential credential = provider.getSession(context);
+        StepVerifier.create(provider.getSessionAsync(context))
+            .assertNext(value -> assertSame(credential, value))
+            .verifyComplete();
+        assertSame(credential, provider.getSession(context));
+        assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    @Test
+    public void syncAndAsyncRequestsShareInFlightCreation() throws Exception {
+        Sinks.One<HttpResponse> pendingResponse = Sinks.one();
+        AtomicReference<HttpRequest> pendingRequest = new AtomicReference<>();
+        CountDownLatch requestStarted = new CountDownLatch(1);
+        httpClient.enqueueResponse(CONTAINER_A, request -> {
+            pendingRequest.set(request);
+            requestStarted.countDown();
+            return pendingResponse.asMono();
+        });
+        SessionRequestContext context = contextFor(CONTAINER_A);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<SessionCredential> syncResult = executor.submit(() -> provider.getSession(context));
+        try {
+            awaitLatch(requestStarted);
+            CompletableFuture<SessionCredential> asyncResult = provider.getSessionAsync(context).toFuture();
+            assertFalse(syncResult.isDone());
+            assertFalse(asyncResult.isDone());
+            assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+
+            assertEquals(Sinks.EmitResult.OK, pendingResponse
+                .tryEmitValue(buildResponse(pendingRequest.get(), FIRST_TOKEN, now().plus(SESSION_LIFETIME))));
+
+            SessionCredential credential = syncResult.get(5, TimeUnit.SECONDS);
+            assertEquals(FIRST_TOKEN, credential.getSessionToken());
+            assertSame(credential, asyncResult.get(5, TimeUnit.SECONDS));
+            assertSame(credential, provider.getSession(context));
+            assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
+        } finally {
+            pendingResponse.tryEmitError(new IllegalStateException("Test finished."));
+            syncResult.cancel(true);
+            executor.shutdownNow();
+        }
     }
 
     private static void awaitLatch(CountDownLatch latch) {
