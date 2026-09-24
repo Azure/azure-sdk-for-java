@@ -29,7 +29,7 @@ public class RealtimeSessionConfigurationBase implements JsonSerializable<Realti
      * Creates an instance of RealtimeSessionConfigurationBase class.
      */
     @Generated
-    public RealtimeSessionConfigurationBase() {
+    protected RealtimeSessionConfigurationBase() {
     }
 
     /**

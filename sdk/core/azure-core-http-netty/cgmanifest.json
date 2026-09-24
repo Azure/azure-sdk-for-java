@@ -9,7 +9,7 @@
         "maven": {
           "groupId": "io.netty",
           "artifactId": "netty-handler-proxy",
-          "version": "4.1.110.Final"
+          "version": "4.2.18.Final"
         }
       }
     }

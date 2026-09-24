@@ -115,6 +115,22 @@
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
+      <artifactId>netty-codec-http3</artifactId>
+      <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-codec-http3;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-resolver-dns</artifactId>
+      <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-resolver-dns;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-resolver-dns-native-macos</artifactId>
+      <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-resolver-dns-native-macos;external_dependency} -->
+      <classifier>osx-x86_64</classifier>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-unix-common</artifactId>
       <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
     </dependency>
@@ -215,8 +231,11 @@
                 <include>io.netty:netty-codec-base:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-codec-base;external_dependency} -->
                 <include>io.netty:netty-codec-http:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
                 <include>io.netty:netty-codec-http2:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
+                <include>io.netty:netty-codec-http3:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http3;external_dependency} -->
                 <include>io.netty:netty-handler:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
                 <include>io.netty:netty-handler-proxy:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
+                <include>io.netty:netty-resolver-dns:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-resolver-dns;external_dependency} -->
+                <include>io.netty:netty-resolver-dns-native-macos:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-resolver-dns-native-macos;external_dependency} -->
                 <include>io.netty:netty-transport-native-unix-common:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
                 <include>io.netty:netty-transport-native-epoll:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
                 <include>io.netty:netty-transport-native-kqueue:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->

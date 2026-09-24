@@ -14,7 +14,7 @@
 
 #### Dependency Updates
 
-- Migrated Netty dependencies from `4.1.137.Final` to `4.2.17.Final`.
+- Migrated Netty dependencies from `4.1.137.Final` to `4.2.18.Final`.
 - Upgraded Reactor Netty from `1.2.18` to `1.3.7` and Reactor from `3.7.19` to `3.8.7`.
 
 ## 1.16.7 (2026-08-27)

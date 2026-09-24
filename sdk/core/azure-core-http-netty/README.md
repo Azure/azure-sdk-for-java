@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 
 ### Netty 4.2 compatibility
 
-Starting with `1.17.0-beta.1`, this library uses Netty `4.2.17.Final`, Reactor Netty `1.3.7`, and Reactor `3.8.7`.
+Starting with `1.17.0-beta.1`, this library uses Netty `4.2.18.Final`, Reactor Netty `1.3.7`, and Reactor `3.8.7`.
 Netty 4.1 and 4.2 must not be mixed on the classpath. If your application or framework manages these dependencies,
 align the entire Netty and Reactor stack when upgrading. Java 8 remains supported.
 
@@ -65,6 +65,36 @@ Netty 4.2 enables TLS hostname verification by default and changes its default b
 This library retains pooled allocation unless the application explicitly configures an allocator.
 See the [Netty 4.2 migration guide](https://netty.io/wiki/netty-4.2-migration-guide.html#recommended-upgrade-process)
 for application-level migration guidance.
+
+### Native transports on the module path
+
+On JDK 11 or later, Netty 4.2 packages the epoll/kqueue classes and their platform-specific JNI libraries
+as **separate explicit Java modules**. Having the JARs on the module path does not resolve either module
+automatically. A named-module application that wants native transport must include the matching
+`netty-transport-native-epoll` or `netty-transport-native-kqueue` classifier JAR (which brings in its
+`netty-transport-classes-*` JAR) and add **both** modules as launch roots:
+
+| Platform and classifier | Launch option |
+| --- | --- |
+| Linux x86_64 (`netty-transport-native-epoll:linux-x86_64`) | `--add-modules=io.netty.transport.classes.epoll,io.netty.transport.epoll.linux.x86_64` |
+| macOS x86_64 (`netty-transport-native-kqueue:osx-x86_64`) | `--add-modules=io.netty.transport.classes.kqueue,io.netty.transport.kqueue.osx.x86_64` |
+
+For example, with the Linux classifier JAR and its dependencies on the module path:
+
+```text
+java --module-path "path-to-application-and-dependency-JARs" --add-modules=io.netty.transport.classes.epoll,io.netty.transport.epoll.linux.x86_64 -m my.app/com.example.Main
+```
+
+This library declares the x86_64 classifier dependencies, but applications using another architecture
+must supply the corresponding native classifier and resolve its module instead. Check that JAR's
+module name with `jar --describe-module --file <native-JAR> --release 11`; see
+[Netty's native transport guide](https://netty.io/wiki/native-transports.html#using-the-native-transports)
+for classifier details. Resolving only the classes
+leaves the bundled JNI library invisible to Netty; `requires static` in a library descriptor does not
+resolve either optional module at run time. If native transport is unavailable, Reactor Netty uses
+JDK NIO. These launch options do not apply to Java 8 or to applications using the classpath rather
+than the module path, and resolving the modules alone does not guarantee native transport is usable
+on the current OS.
 
 ## Examples
 

@@ -21,7 +21,7 @@ public final class ResourceAnchorsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Provisioning\",\"linkedCompartmentId\":\"ossscyva\"},\"location\":\"ppuacvfyeowp\",\"tags\":{\"ttehdp\":\"tjdhsoymhpvtyq\"},\"id\":\"ou\",\"name\":\"stkfvvdshxcdeds\",\"type\":\"enygnxcgjtfrnquk\"}";
+            = "{\"properties\":{\"provisioningState\":\"Provisioning\",\"linkedCompartmentId\":\"hjhgem\"},\"location\":\"wakywalhjymxcgq\",\"tags\":{\"tfy\":\"drclssoljome\",\"ji\":\"nlbvgjcodkk\",\"cufqbvntnrgmqs\":\"ytssikiz\"},\"id\":\"rhcekxgnly\",\"name\":\"mxcpwzvmdoks\",\"type\":\"dt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class ResourceAnchorsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResourceAnchor response = manager.resourceAnchors()
-            .getByResourceGroupWithResponse("lefksxq", "eazfpxgnmqvzvlu", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("kaobrl", "pgsn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ppuacvfyeowp", response.location());
-        Assertions.assertEquals("tjdhsoymhpvtyq", response.tags().get("ttehdp"));
+        Assertions.assertEquals("wakywalhjymxcgq", response.location());
+        Assertions.assertEquals("drclssoljome", response.tags().get("tfy"));
     }
 }

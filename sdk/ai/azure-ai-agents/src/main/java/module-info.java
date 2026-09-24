@@ -6,17 +6,16 @@ module com.azure.ai.agents {
     requires transitive com.azure.core;
     requires transitive openai.java.core;
     requires transitive openai.java.client.okhttp;
-
-    requires io.netty.buffer;
+    requires reactor.netty.http;
+    requires reactor.netty.core;
+    requires io.netty.codec.http;
+    requires io.netty.transport;
+    requires io.netty.common;
     requires io.netty.codec;
     requires io.netty.codec.compression;
-    requires io.netty.codec.http;
-    requires io.netty.common;
-    requires io.netty.transport;
+    requires io.netty.buffer;
     requires okhttp3;
     requires okio;
-    requires reactor.netty.core;
-    requires reactor.netty.http;
 
     exports com.azure.ai.agents;
     exports com.azure.ai.agents.models;
