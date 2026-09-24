@@ -135,8 +135,11 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     private SessionRequestContext resolveSessionRequest(HttpPipelineCallContext context) {
-        if (sessionOptions.getSessionMode() == SessionMode.DISABLED
-            || context.getHttpRequest().getHttpMethod() != HttpMethod.GET) {
+        if (sessionOptions.getSessionMode() == SessionMode.DISABLED) {
+            return null;
+        }
+
+        if (!sessionProvider.isRequestEligible(context.getHttpRequest())) {
             return null;
         }
 
@@ -152,10 +155,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         String containerName = getOverrideOrDefault(sessionOptions.getContainerName(), parts.getBlobContainerName());
         String accountName = getOverrideOrDefault(sessionOptions.getAccountName(), parts.getAccountName());
 
-        // comp indicates sub-operations (metadata, tags, etc.) that should use bearer auth.
-        if (CoreUtils.isNullOrEmpty(containerName)
-            || CoreUtils.isNullOrEmpty(parts.getBlobName())
-            || parts.getUnparsedParameters().containsKey("comp")) {
+        if (CoreUtils.isNullOrEmpty(containerName) || CoreUtils.isNullOrEmpty(parts.getBlobName())) {
             return null;
         }
 

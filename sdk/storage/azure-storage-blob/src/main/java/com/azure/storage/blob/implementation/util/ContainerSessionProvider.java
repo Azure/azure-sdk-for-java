@@ -3,11 +3,15 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.AuthenticationType;
@@ -87,6 +91,29 @@ final class ContainerSessionProvider implements SessionProvider {
             .buildClient();
         this.accountName = accountName;
         this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
+    }
+
+    @Override
+    public boolean isRequestEligible(HttpRequest request) {
+        if (request == null || request.getHttpMethod() != HttpMethod.GET) {
+            return false;
+        }
+
+        BlobUrlParts parts;
+        try {
+            parts = BlobUrlParts.parse(request.getUrl());
+        } catch (RuntimeException ex) {
+            return false;
+        }
+
+        if (CoreUtils.isNullOrEmpty(parts.getBlobContainerName())
+            || CoreUtils.isNullOrEmpty(parts.getBlobName())
+            || parts.getUnparsedParameters().containsKey("comp")
+            || parts.getUnparsedParameters().containsKey("restype")) {
+            return false;
+        }
+
+        return request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-structured-body")) == null;
     }
 
     @Override

@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.http.HttpRequest;
 import reactor.core.publisher.Mono;
 
 /**
@@ -58,6 +59,13 @@ public interface SessionProvider {
     default SessionCredential getSession(SessionRequestContext context) {
         return getSessionAsync(context).block();
     }
+
+    /**
+     * Determines whether the request is eligible for session authentication.
+     * @param request the request being evaluated.
+     * @return {@code true} if the request can be authenticated with a session token; {@code false} otherwise.
+     */
+    boolean isRequestEligible(HttpRequest request);
 
     /**
      * Atomically invalidates the rejected credential if it is still current.

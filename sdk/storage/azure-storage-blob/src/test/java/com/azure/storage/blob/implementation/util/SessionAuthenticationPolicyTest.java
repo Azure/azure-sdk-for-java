@@ -67,6 +67,7 @@ public class SessionAuthenticationPolicyTest {
     public void beforeEach() {
         sessionProvider = mock(SessionProvider.class);
         bearerPolicy = mock(StorageBearerTokenChallengeAuthorizationPolicy.class);
+        when(sessionProvider.isRequestEligible(any())).thenReturn(true);
 
         // Default mock behavior: bearer policy delegates to next policy in the pipeline.
         when(bearerPolicy.process(any(), any())).thenAnswer(invocation -> {

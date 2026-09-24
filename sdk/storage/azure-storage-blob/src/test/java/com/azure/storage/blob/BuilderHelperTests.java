@@ -791,6 +791,11 @@ public class BuilderHelperTests {
 
         return new SessionProvider() {
             @Override
+            public boolean isRequestEligible(com.azure.core.http.HttpRequest request) {
+                return request != null && request.getHttpMethod() == com.azure.core.http.HttpMethod.GET;
+            }
+
+            @Override
             public Mono<SessionCredential> getSessionAsync(SessionRequestContext context) {
                 capture.set(context);
                 return Mono.just(credential);
