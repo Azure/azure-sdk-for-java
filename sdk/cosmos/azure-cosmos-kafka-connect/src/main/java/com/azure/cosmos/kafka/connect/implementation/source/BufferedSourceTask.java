@@ -3,76 +3,35 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import org.apache.kafka.connect.errors.ConnectException;
-import org.apache.kafka.connect.errors.RetriableException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Base class for source tasks whose source read can block indefinitely.
- *
- * <p>The source read runs on one background thread. Kafka Connect polls a bounded queue and
- * therefore regains control regularly for pause and shutdown.
  */
 public abstract class BufferedSourceTask extends SourceTask {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BufferedSourceTask.class);
-    private static final int POLL_RESULT_CAPACITY = 1;
-    private static final Duration DEFAULT_KAFKA_POLL_WAIT = Duration.ofSeconds(1);
-    private static final Duration DEFAULT_POLLING_THREAD_SHUTDOWN_WAIT = Duration.ofSeconds(1);
-    private static final Duration RETRIABLE_ERROR_BACKOFF = Duration.ofMillis(100);
+    private static final long POLL_WAIT_MS = 1_000;
+    private static final long THREAD_SHUTDOWN_WAIT_MS = 1_000;
 
-    private final Duration kafkaPollWait;
-    private final Duration pollingThreadShutdownWait;
-    private final BlockingQueue<PollResult> pollResults =
-        new LinkedBlockingQueue<>(POLL_RESULT_CAPACITY);
+    private final BlockingQueue<PollResult> pollResults = new LinkedBlockingQueue<>(1);
     private volatile boolean stopping;
-    private volatile Future<?> pollingFuture;
-    private ExecutorService pollingExecutor;
-
-    protected BufferedSourceTask() {
-        this(DEFAULT_KAFKA_POLL_WAIT, DEFAULT_POLLING_THREAD_SHUTDOWN_WAIT);
-    }
-
-    BufferedSourceTask(
-        Duration kafkaPollWait,
-        Duration pollingThreadShutdownWait) {
-        this.kafkaPollWait = kafkaPollWait;
-        this.pollingThreadShutdownWait = pollingThreadShutdownWait;
-    }
+    private Thread pollingThread;
 
     @Override
     public final synchronized void start(Map<String, String> props) {
-        if (this.pollingExecutor != null) {
-            throw new ConnectException("Source task is already running");
-        }
         this.stopping = false;
-        this.pollingFuture = null;
         this.pollResults.clear();
-
         try {
             this.startTask(props);
-            String pollingThreadName = this.getPollingThreadName(props);
-            this.pollingExecutor = Executors.newSingleThreadExecutor(runnable -> {
-                Thread thread = new Thread(runnable, pollingThreadName);
-                thread.setDaemon(true);
-                return thread;
-            });
+            this.pollingThread = new Thread(this::pollContinuously);
+            this.pollingThread.setDaemon(true);
         } catch (RuntimeException | Error error) {
             this.stopping = true;
             this.stopTask();
@@ -82,46 +41,42 @@ public abstract class BufferedSourceTask extends SourceTask {
 
     @Override
     public final List<SourceRecord> poll() {
-        this.startReaderIfNeeded();
+        this.startPollingThread();
 
-        PollResult result;
         try {
-            result = this.pollResults.poll(
-                this.kafkaPollWait.toMillis(),
+            PollResult result = this.pollResults.poll(
+                POLL_WAIT_MS,
                 TimeUnit.MILLISECONDS);
-        } catch (InterruptedException exception) {
-            if (this.stopping) {
+            if (result == null) {
                 return Collections.emptyList();
             }
+            if (result.error != null) {
+                throwPollingError(result.error);
+            }
+            return result.records;
+        } catch (InterruptedException error) {
             Thread.currentThread().interrupt();
-            throw new ConnectException("Interrupted while waiting for source poll result", exception);
-        }
-
-        if (result == null) {
-            this.throwIfReaderStopped();
             return Collections.emptyList();
         }
-
-        if (result.error != null) {
-            throwPollError(result.error, this.stopping);
-        }
-        return result.records;
     }
 
     @Override
     public final synchronized void stop() {
-        if (this.stopping || this.pollingExecutor == null) {
+        if (this.stopping) {
             return;
         }
         this.stopping = true;
-
         try {
             this.stopTask();
         } finally {
-            if (this.pollingExecutor != null) {
-                this.pollingExecutor.shutdownNow();
-                this.awaitPollingThreadShutdown();
-                this.pollingExecutor = null;
+            if (this.pollingThread != null) {
+                this.pollingThread.interrupt();
+                try {
+                    this.pollingThread.join(THREAD_SHUTDOWN_WAIT_MS);
+                } catch (InterruptedException error) {
+                    Thread.currentThread().interrupt();
+                }
+                this.pollingThread = null;
             }
         }
     }
@@ -132,151 +87,49 @@ public abstract class BufferedSourceTask extends SourceTask {
 
     protected abstract void stopTask();
 
-    protected String getPollingThreadName(Map<String, String> props) {
-        return this.getClass().getSimpleName() + "-poll";
-    }
-
-    private void startReaderIfNeeded() {
-        if (this.stopping || this.pollingFuture != null) {
+    private synchronized void startPollingThread() {
+        if (this.stopping || this.pollingThread.getState() != Thread.State.NEW) {
             return;
         }
-        synchronized (this) {
-            if (this.stopping || this.pollingFuture != null) {
-                return;
-            }
-            if (this.pollingExecutor == null) {
-                throw new ConnectException("Source task has not been started");
-            }
-            this.pollingFuture = this.pollingExecutor.submit(
-                preserveMdc(this::pollContinuously));
-        }
+        this.pollingThread.start();
     }
 
     private void pollContinuously() {
         while (!this.stopping) {
             try {
                 List<SourceRecord> records = this.pollTask();
-                if (!this.publishResult(PollResult.records(records))) {
+                this.pollResults.put(PollResult.records(records));
+            } catch (RuntimeException error) {
+                if (!this.stopping && !this.putPollingError(error)) {
                     return;
                 }
-            } catch (Exception error) {
-                if (this.stopping) {
-                    return;
+            } catch (Error error) {
+                if (!this.stopping) {
+                    this.putPollingError(error);
                 }
-
-                if (!this.publishResult(PollResult.error(error))) {
-                    return;
-                }
-
-                if (!isRetriable(error) || !this.waitBeforeRetry()) {
-                    return;
-                }
-            }
-        }
-    }
-
-    private boolean publishResult(PollResult result) {
-        while (!this.stopping) {
-            try {
-                if (this.pollResults.offer(result, 100, TimeUnit.MILLISECONDS)) {
-                    return true;
-                }
-            } catch (InterruptedException exception) {
+                return;
+            } catch (InterruptedException error) {
                 Thread.currentThread().interrupt();
-                return false;
+                return;
             }
         }
-        return false;
     }
 
-    private void throwIfReaderStopped() {
-        Future<?> currentPollingFuture = this.pollingFuture;
-        if (currentPollingFuture == null
-            || !currentPollingFuture.isDone()
-            || this.stopping) {
-            return;
-        }
-
+    private boolean putPollingError(Throwable error) {
         try {
-            currentPollingFuture.get();
-        } catch (ExecutionException error) {
-            throwPollError(error.getCause(), false);
-        } catch (CancellationException error) {
-            throw new ConnectException("Background source polling thread was cancelled unexpectedly", error);
-        } catch (InterruptedException error) {
-            Thread.currentThread().interrupt();
-            throw new ConnectException("Interrupted while checking background source polling thread", error);
-        }
-
-        throw new ConnectException("Background source polling thread stopped unexpectedly");
-    }
-
-    private void awaitPollingThreadShutdown() {
-        try {
-            if (!this.pollingExecutor.awaitTermination(
-                this.pollingThreadShutdownWait.toMillis(),
-                TimeUnit.MILLISECONDS)) {
-                LOGGER.error(
-                    "Source polling thread did not stop within {} ms after cancellation",
-                    this.pollingThreadShutdownWait.toMillis());
-            }
-        } catch (InterruptedException exception) {
-            Thread.currentThread().interrupt();
-            LOGGER.warn("Interrupted while waiting for source polling thread shutdown");
-        }
-    }
-
-    private boolean waitBeforeRetry() {
-        try {
-            Thread.sleep(RETRIABLE_ERROR_BACKOFF.toMillis());
-            return !this.stopping;
-        } catch (InterruptedException exception) {
+            this.pollResults.put(PollResult.error(error));
+            return true;
+        } catch (InterruptedException interruptedError) {
             Thread.currentThread().interrupt();
             return false;
         }
     }
 
-    private static boolean isRetriable(Throwable error) {
-        return error instanceof RetriableException
-            || error instanceof org.apache.kafka.common.errors.RetriableException;
-    }
-
-    private static void throwPollError(Throwable error, boolean stopping) {
-        if (error instanceof InterruptedException) {
-            if (stopping) {
-                return;
-            }
-            Thread.currentThread().interrupt();
-            throw new ConnectException("Background source poll was interrupted", error);
-        }
+    private static void throwPollingError(Throwable error) {
         if (error instanceof RuntimeException) {
             throw (RuntimeException) error;
         }
-        if (error instanceof Error) {
-            throw (Error) error;
-        }
-        throw new ConnectException("Background source poll failed", error);
-    }
-
-    private static Runnable preserveMdc(Runnable runnable) {
-        Map<String, String> context = MDC.getCopyOfContextMap();
-        return () -> {
-            Map<String, String> originalContext = MDC.getCopyOfContextMap();
-            if (context != null) {
-                MDC.setContextMap(context);
-            } else {
-                MDC.clear();
-            }
-            try {
-                runnable.run();
-            } finally {
-                if (originalContext != null) {
-                    MDC.setContextMap(originalContext);
-                } else {
-                    MDC.clear();
-                }
-            }
-        };
+        throw (Error) error;
     }
 
     private static final class PollResult {

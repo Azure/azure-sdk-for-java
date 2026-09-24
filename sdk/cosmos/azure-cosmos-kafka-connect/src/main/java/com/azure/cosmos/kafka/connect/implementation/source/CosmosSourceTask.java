@@ -543,12 +543,6 @@ public class CosmosSourceTask extends BufferedSourceTask {
         this.cleanup();
     }
 
-    @Override
-    protected String getPollingThreadName(Map<String, String> props) {
-        return "cosmos-change-feed-poll-"
-            + props.getOrDefault(CosmosSourceTaskConfig.SOURCE_TASK_ID, "unknown");
-    }
-
     private static class FeedRangeLoggingContext {
         private final FeedRangeTaskUnit feedRangeTaskUnit;
         private final AtomicLong count;

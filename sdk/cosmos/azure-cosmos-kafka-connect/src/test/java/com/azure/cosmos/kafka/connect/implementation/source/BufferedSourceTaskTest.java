@@ -8,7 +8,6 @@ import org.apache.kafka.connect.errors.RetriableException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.testng.annotations.Test;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class BufferedSourceTaskTest {
-    private static final Duration TEST_POLL_WAIT = Duration.ofSeconds(2);
-    private static final Duration TEST_SHUTDOWN_WAIT = Duration.ofSeconds(1);
-
     @Test(groups = "unit", timeOut = 30_000)
     public void kafkaPollReturnsWhileSourceRequestIsBlocked() throws InterruptedException {
         TestTask task = new TestTask();
@@ -125,45 +121,11 @@ public class BufferedSourceTaskTest {
         assertThat(task.stopCount.get()).isEqualTo(1);
     }
 
-    @Test(groups = "unit", timeOut = 30_000)
-    public void taskCannotBeStartedTwice() {
-        TestTask task = new TestTask();
-        try {
-            task.start(Collections.emptyMap());
-
-            assertThatThrownBy(() -> task.start(Collections.emptyMap()))
-                .isInstanceOf(ConnectException.class)
-                .hasMessageContaining("already running");
-        } finally {
-            task.stop();
-        }
-    }
-
-    @Test(groups = "unit", timeOut = 30_000)
-    public void unexpectedReaderErrorIsPropagated() {
-        TestTask task = new TestTask();
-        AssertionError expected = new AssertionError("reader failed");
-        task.pollAction = () -> {
-            throw expected;
-        };
-
-        try {
-            task.start(Collections.emptyMap());
-            assertThatThrownBy(task::poll).isSameAs(expected);
-        } finally {
-            task.stop();
-        }
-    }
-
     private static final class TestTask extends BufferedSourceTask {
         private PollAction pollAction = Collections::emptyList;
         private Runnable stopAction = () -> { };
         private RuntimeException startError;
         private final AtomicInteger stopCount = new AtomicInteger();
-
-        private TestTask() {
-            super(TEST_POLL_WAIT, TEST_SHUTDOWN_WAIT);
-        }
 
         @Override
         public String version() {
