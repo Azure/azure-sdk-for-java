@@ -16,38 +16,39 @@ public final class VirtualNetworkPeeringInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworkPeeringInner model = BinaryData.fromString(
-            "{\"properties\":{\"allowVirtualNetworkAccess\":false,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":true,\"useRemoteGateways\":false,\"databricksVirtualNetwork\":{\"id\":\"uzbpzkafku\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"nwbmeh\"]},\"remoteVirtualNetwork\":{\"id\":\"eyvjusrtslhspkde\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"fm\",\"ag\",\"vt\",\"elmqk\"]},\"peeringState\":\"Connected\",\"provisioningState\":\"Updating\"},\"id\":\"juahaquhcdhmdual\",\"name\":\"exq\",\"type\":\"vfadmws\"}")
+            "{\"properties\":{\"allowVirtualNetworkAccess\":false,\"allowForwardedTraffic\":false,\"allowGatewayTransit\":true,\"useRemoteGateways\":false,\"databricksVirtualNetwork\":{\"id\":\"svmkfssxquk\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"gmgsxnkjzkde\"]},\"remoteVirtualNetwork\":{\"id\":\"pvlopwiyighxpkd\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"iuebbaumny\",\"upedeojnabckhs\",\"txp\",\"ie\"]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Failed\"},\"id\":\"esap\",\"name\":\"krdqmh\",\"type\":\"jdhtldwkyzxu\"}")
             .toObject(VirtualNetworkPeeringInner.class);
         Assertions.assertFalse(model.allowVirtualNetworkAccess());
-        Assertions.assertTrue(model.allowForwardedTraffic());
+        Assertions.assertFalse(model.allowForwardedTraffic());
         Assertions.assertTrue(model.allowGatewayTransit());
         Assertions.assertFalse(model.useRemoteGateways());
-        Assertions.assertEquals("uzbpzkafku", model.databricksVirtualNetwork().id());
-        Assertions.assertEquals("nwbmeh", model.databricksAddressSpace().addressPrefixes().get(0));
-        Assertions.assertEquals("eyvjusrtslhspkde", model.remoteVirtualNetwork().id());
-        Assertions.assertEquals("fm", model.remoteAddressSpace().addressPrefixes().get(0));
+        Assertions.assertEquals("svmkfssxquk", model.databricksVirtualNetwork().id());
+        Assertions.assertEquals("gmgsxnkjzkde", model.databricksAddressSpace().addressPrefixes().get(0));
+        Assertions.assertEquals("pvlopwiyighxpkd", model.remoteVirtualNetwork().id());
+        Assertions.assertEquals("iuebbaumny", model.remoteAddressSpace().addressPrefixes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualNetworkPeeringInner model = new VirtualNetworkPeeringInner().withAllowVirtualNetworkAccess(false)
-            .withAllowForwardedTraffic(true)
+            .withAllowForwardedTraffic(false)
             .withAllowGatewayTransit(true)
             .withUseRemoteGateways(false)
             .withDatabricksVirtualNetwork(
-                new VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork().withId("uzbpzkafku"))
-            .withDatabricksAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("nwbmeh")))
+                new VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork().withId("svmkfssxquk"))
+            .withDatabricksAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("gmgsxnkjzkde")))
             .withRemoteVirtualNetwork(
-                new VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork().withId("eyvjusrtslhspkde"))
-            .withRemoteAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("fm", "ag", "vt", "elmqk")));
+                new VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork().withId("pvlopwiyighxpkd"))
+            .withRemoteAddressSpace(
+                new AddressSpace().withAddressPrefixes(Arrays.asList("iuebbaumny", "upedeojnabckhs", "txp", "ie")));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkPeeringInner.class);
         Assertions.assertFalse(model.allowVirtualNetworkAccess());
-        Assertions.assertTrue(model.allowForwardedTraffic());
+        Assertions.assertFalse(model.allowForwardedTraffic());
         Assertions.assertTrue(model.allowGatewayTransit());
         Assertions.assertFalse(model.useRemoteGateways());
-        Assertions.assertEquals("uzbpzkafku", model.databricksVirtualNetwork().id());
-        Assertions.assertEquals("nwbmeh", model.databricksAddressSpace().addressPrefixes().get(0));
-        Assertions.assertEquals("eyvjusrtslhspkde", model.remoteVirtualNetwork().id());
-        Assertions.assertEquals("fm", model.remoteAddressSpace().addressPrefixes().get(0));
+        Assertions.assertEquals("svmkfssxquk", model.databricksVirtualNetwork().id());
+        Assertions.assertEquals("gmgsxnkjzkde", model.databricksAddressSpace().addressPrefixes().get(0));
+        Assertions.assertEquals("pvlopwiyighxpkd", model.remoteVirtualNetwork().id());
+        Assertions.assertEquals("iuebbaumny", model.remoteAddressSpace().addressPrefixes().get(0));
     }
 }

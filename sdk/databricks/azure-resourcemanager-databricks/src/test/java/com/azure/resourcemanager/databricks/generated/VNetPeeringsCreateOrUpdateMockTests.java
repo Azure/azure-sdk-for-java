@@ -25,7 +25,7 @@ public final class VNetPeeringsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":false,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"uhczbwemh\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"brgz\",\"wmsweypqwd\"]},\"remoteVirtualNetwork\":{\"id\":\"gicccnxqhuex\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"lstvlzywe\",\"hz\",\"ncsdtclusiyp\"]},\"peeringState\":\"Initiated\",\"provisioningState\":\"Succeeded\"},\"id\":\"gusl\",\"name\":\"eadcygqukyhejhz\",\"type\":\"sx\"}";
+            = "{\"properties\":{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":true,\"useRemoteGateways\":false,\"databricksVirtualNetwork\":{\"id\":\"oakufgm\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"rdgrtw\"]},\"remoteVirtualNetwork\":{\"id\":\"nuuzkopbm\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"dwoyuhhziuiefoz\",\"hdmsmlmzqhoftrm\"]},\"peeringState\":\"Initiated\",\"provisioningState\":\"Succeeded\"},\"id\":\"hxicslfaoqz\",\"name\":\"iyylhalnswhccsp\",\"type\":\"kaivwit\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,29 +35,29 @@ public final class VNetPeeringsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VirtualNetworkPeering response = manager.vNetPeerings()
-            .define("kkze")
-            .withExistingWorkspace("r", "kdsnfdsdoakgtdl")
+            .define("qouicybxarzgsz")
+            .withExistingWorkspace("ed", "twwaezkojvdcpzf")
             .withRemoteVirtualNetwork(
-                new VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork().withId("nuuzkopbm"))
-            .withAllowVirtualNetworkAccess(false)
+                new VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork().withId("mnguxawqaldsyu"))
+            .withAllowVirtualNetworkAccess(true)
             .withAllowForwardedTraffic(true)
             .withAllowGatewayTransit(false)
-            .withUseRemoteGateways(true)
+            .withUseRemoteGateways(false)
             .withDatabricksVirtualNetwork(
-                new VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork().withId("ttwvogvbbe"))
-            .withDatabricksAddressSpace(
-                new AddressSpace().withAddressPrefixes(Arrays.asList("gqqmoakufgm", "zr", "rdgrtw")))
+                new VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork().withId("oamciodh"))
+            .withDatabricksAddressSpace(new AddressSpace()
+                .withAddressPrefixes(Arrays.asList("xkhnzbonlwnto", "gokdwbwhks", "zcmrvexztvb", "qgsfraoyzkoow")))
             .withRemoteAddressSpace(
-                new AddressSpace().withAddressPrefixes(Arrays.asList("dwoyuhhziuiefoz", "hdmsmlmzqhoftrm")))
+                new AddressSpace().withAddressPrefixes(Arrays.asList("erqf", "bw", "znkbykutwpfhpagm", "r")))
             .create();
 
         Assertions.assertTrue(response.allowVirtualNetworkAccess());
-        Assertions.assertFalse(response.allowForwardedTraffic());
+        Assertions.assertTrue(response.allowForwardedTraffic());
         Assertions.assertTrue(response.allowGatewayTransit());
-        Assertions.assertTrue(response.useRemoteGateways());
-        Assertions.assertEquals("uhczbwemh", response.databricksVirtualNetwork().id());
-        Assertions.assertEquals("brgz", response.databricksAddressSpace().addressPrefixes().get(0));
-        Assertions.assertEquals("gicccnxqhuex", response.remoteVirtualNetwork().id());
-        Assertions.assertEquals("lstvlzywe", response.remoteAddressSpace().addressPrefixes().get(0));
+        Assertions.assertFalse(response.useRemoteGateways());
+        Assertions.assertEquals("oakufgm", response.databricksVirtualNetwork().id());
+        Assertions.assertEquals("rdgrtw", response.databricksAddressSpace().addressPrefixes().get(0));
+        Assertions.assertEquals("nuuzkopbm", response.remoteVirtualNetwork().id());
+        Assertions.assertEquals("dwoyuhhziuiefoz", response.remoteAddressSpace().addressPrefixes().get(0));
     }
 }

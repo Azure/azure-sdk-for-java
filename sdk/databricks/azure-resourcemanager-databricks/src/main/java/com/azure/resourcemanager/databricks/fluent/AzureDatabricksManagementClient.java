@@ -75,13 +75,6 @@ public interface AzureDatabricksManagementClient {
     AccessConnectorsClient getAccessConnectors();
 
     /**
-     * Gets the OutboundNetworkDependenciesEndpointsClient object to access its operations.
-     * 
-     * @return the OutboundNetworkDependenciesEndpointsClient object.
-     */
-    OutboundNetworkDependenciesEndpointsClient getOutboundNetworkDependenciesEndpoints();
-
-    /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
      * 
      * @return the PrivateLinkResourcesClient object.

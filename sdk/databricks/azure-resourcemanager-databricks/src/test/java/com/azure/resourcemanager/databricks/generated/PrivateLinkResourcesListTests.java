@@ -12,11 +12,11 @@ public final class PrivateLinkResourcesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourcesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"njbkcnxdhbttkph\",\"requiredMembers\":[\"nv\",\"t\",\"qnermclfplphoxu\",\"crpab\"],\"requiredZoneNames\":[\"psbjta\",\"qugxywpmueefjzwf\",\"kqujidsuyono\"]},\"id\":\"laocqxtccmg\",\"name\":\"udxytlmoyrx\",\"type\":\"wfudwpzntxhdzhl\"}],\"nextLink\":\"jbhckfrlhr\"}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"czfc\",\"requiredMembers\":[\"axdbabph\",\"wrqlfktsthsuco\",\"mnyyazt\",\"bt\"],\"requiredZoneNames\":[\"qpuedckzywbiex\"]},\"id\":\"eyueaxibxujwb\",\"name\":\"qwalmuzyoxaepd\",\"type\":\"zjancuxr\"},{\"properties\":{\"groupId\":\"wbavxbniwdj\",\"requiredMembers\":[\"tsdbpgn\"],\"requiredZoneNames\":[\"x\"]},\"id\":\"zxbzpfzabglc\",\"name\":\"hxw\",\"type\":\"ctyqik\"}],\"nextLink\":\"bovpl\"}")
             .toObject(PrivateLinkResourcesList.class);
-        Assertions.assertEquals("njbkcnxdhbttkph", model.value().get(0).properties().groupId());
-        Assertions.assertEquals("nv", model.value().get(0).properties().requiredMembers().get(0));
-        Assertions.assertEquals("psbjta", model.value().get(0).properties().requiredZoneNames().get(0));
-        Assertions.assertEquals("jbhckfrlhr", model.nextLink());
+        Assertions.assertEquals("czfc", model.value().get(0).properties().groupId());
+        Assertions.assertEquals("axdbabph", model.value().get(0).properties().requiredMembers().get(0));
+        Assertions.assertEquals("qpuedckzywbiex", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("bovpl", model.nextLink());
     }
 }

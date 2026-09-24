@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+#### `models.OutboundNetworkDependenciesEndpoints` was removed
+
 #### `models.OperationListResult` was removed
 
 #### `models.VirtualNetworkPeeringList` was removed
@@ -14,7 +16,13 @@
 
 #### `models.AccessConnectorListResult` was removed
 
+#### `models.EndpointDetail` was removed
+
+#### `models.OutboundEnvironmentEndpoint` was removed
+
 #### `models.PrivateLinkResourcesList` was removed
+
+#### `models.EndpointDependency` was removed
 
 #### `models.PrivateEndpointConnectionsList` was removed
 
@@ -36,9 +44,13 @@
 
 #### `models.CreatedBy` was modified
 
-* `java.util.UUID applicationId()` -> `java.lang.String applicationId()`
 * `validate()` was removed
 * `java.util.UUID oid()` -> `java.lang.String oid()`
+* `java.util.UUID applicationId()` -> `java.lang.String applicationId()`
+
+#### `AzureDatabricksManager` was modified
+
+* `outboundNetworkDependenciesEndpoints()` was removed
 
 #### `models.AddressSpace` was modified
 
@@ -47,17 +59,17 @@
 #### `models.ManagedServiceIdentity` was modified
 
 * `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
-* `validate()` was removed
 * `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
 
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
-* `withProvider(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
 * `withOperation(java.lang.String)` was removed
 * `validate()` was removed
-* `withDescription(java.lang.String)` was removed
 * `withResource(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
 
 #### `models.EncryptionV2` was modified
 
@@ -66,10 +78,10 @@
 #### `models.GroupIdInformationProperties` was modified
 
 * `GroupIdInformationProperties()` was changed to private access
-* `withRequiredMembers(java.util.List)` was removed
-* `withGroupId(java.lang.String)` was removed
-* `withRequiredZoneNames(java.util.List)` was removed
 * `validate()` was removed
+* `withRequiredZoneNames(java.util.List)` was removed
+* `withGroupId(java.lang.String)` was removed
+* `withRequiredMembers(java.util.List)` was removed
 
 #### `models.WorkspaceCustomBooleanParameter` was modified
 
@@ -78,15 +90,6 @@
 #### `models.WorkspaceEncryptionParameter` was modified
 
 * `validate()` was removed
-
-#### `models.EndpointDetail` was modified
-
-* `EndpointDetail()` was changed to private access
-* `withLatency(java.lang.Double)` was removed
-* `withPort(java.lang.Integer)` was removed
-* `validate()` was removed
-* `withIpAddress(java.lang.String)` was removed
-* `withIsAccessible(java.lang.Boolean)` was removed
 
 #### `models.EncryptionEntitiesDefinition` was modified
 
@@ -105,13 +108,6 @@
 #### `models.WorkspacePropertiesEncryption` was modified
 
 * `validate()` was removed
-
-#### `models.EndpointDependency` was modified
-
-* `EndpointDependency()` was changed to private access
-* `validate()` was removed
-* `withEndpointDetails(java.util.List)` was removed
-* `withDomainName(java.lang.String)` was removed
 
 #### `models.WorkspaceUpdate` was modified
 
@@ -156,23 +152,23 @@
 
 #### `models.Workspaces` was modified
 
-* `deleteByResourceGroup(java.lang.String,java.lang.String)` was removed
 * `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByResourceGroup(java.lang.String,java.lang.String)` was removed
 
 #### `models.WorkspaceProviderAuthorization` was modified
 
 * `withRoleDefinitionId(java.util.UUID)` was removed
-* `java.util.UUID roleDefinitionId()` -> `java.lang.String roleDefinitionId()`
 * `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `validate()` was removed
+* `java.util.UUID roleDefinitionId()` -> `java.lang.String roleDefinitionId()`
 * `withPrincipalId(java.util.UUID)` was removed
 
 #### `models.UserAssignedIdentity` was modified
 
-* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 * `java.util.UUID clientId()` -> `java.lang.String clientId()`
 * `validate()` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
 
 #### `models.AccessConnectorProperties` was modified
 
@@ -222,10 +218,10 @@
 
 #### `models.Workspace$Definition` was modified
 
+* `withDefaultCatalog(models.DefaultCatalogProperties)` was added
+* `withAccessConnector(models.WorkspacePropertiesAccessConnector)` was added
 * `withEnhancedSecurityCompliance(models.EnhancedSecurityComplianceDefinition)` was added
 * `withComputeMode(models.ComputeMode)` was added
-* `withAccessConnector(models.WorkspacePropertiesAccessConnector)` was added
-* `withDefaultCatalog(models.DefaultCatalogProperties)` was added
 * `withDefaultStorageFirewall(models.DefaultStorageFirewall)` was added
 
 #### `models.VirtualNetworkPeering` was modified
@@ -238,12 +234,12 @@
 
 #### `models.Workspace` was modified
 
-* `isUcEnabled()` was added
 * `enhancedSecurityCompliance()` was added
 * `accessConnector()` was added
 * `defaultStorageFirewall()` was added
-* `computeMode()` was added
+* `isUcEnabled()` was added
 * `defaultCatalog()` was added
+* `computeMode()` was added
 
 #### `models.WorkspaceCustomBooleanParameter` was modified
 
@@ -268,8 +264,8 @@
 #### `models.Workspaces` was modified
 
 * `delete(java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
-* `delete(java.lang.String,java.lang.String)` was added
 * `deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String)` was added
 
 #### `models.WorkspaceProviderAuthorization` was modified
 

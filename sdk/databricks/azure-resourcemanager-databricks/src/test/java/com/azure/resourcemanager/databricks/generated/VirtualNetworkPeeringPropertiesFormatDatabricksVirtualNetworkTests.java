@@ -11,17 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetworkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork model = BinaryData.fromString("{\"id\":\"x\"}")
-            .toObject(VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork.class);
-        Assertions.assertEquals("x", model.id());
+        VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork model
+            = BinaryData.fromString("{\"id\":\"lphox\"}")
+                .toObject(VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork.class);
+        Assertions.assertEquals("lphox", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork model
-            = new VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork().withId("x");
+            = new VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork().withId("lphox");
         model = BinaryData.fromObject(model)
             .toObject(VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork.class);
-        Assertions.assertEquals("x", model.id());
+        Assertions.assertEquals("lphox", model.id());
     }
 }
