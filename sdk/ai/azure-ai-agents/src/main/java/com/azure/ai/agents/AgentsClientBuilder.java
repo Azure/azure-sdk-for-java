@@ -94,7 +94,7 @@ public final class AgentsClientBuilder
 
     private static final String AGENT_PREVIEW_FEATURES = Stream
         .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString),
-            Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString()))
+            Stream.of(""))
         .collect(Collectors.joining(","));
 
     private static final String MEMORY_STORES_PREVIEW_FEATURES
