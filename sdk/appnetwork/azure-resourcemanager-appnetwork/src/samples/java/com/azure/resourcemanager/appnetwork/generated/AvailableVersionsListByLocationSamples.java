@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appnetwork.generated;
  */
 public final class AvailableVersionsListByLocationSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AvailableVersions_ListByLocationWithFilter.json
+     * x-ms-original-file: 2026-08-01-preview/AvailableVersions_ListByLocationWithFilter.json
      */
     /**
      * Sample code: AvailableVersions_ListByLocationWithFilter.
@@ -22,7 +22,7 @@ public final class AvailableVersionsListByLocationSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01-preview/AvailableVersions_ListByLocation.json
+     * x-ms-original-file: 2026-08-01-preview/AvailableVersions_ListByLocation.json
      */
     /**
      * Sample code: AvailableVersions_ListByLocation.

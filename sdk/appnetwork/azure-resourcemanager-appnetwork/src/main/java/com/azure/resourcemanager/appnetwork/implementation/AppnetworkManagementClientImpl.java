@@ -217,7 +217,7 @@ public final class AppnetworkManagementClientImpl implements AppnetworkManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-08-01-preview";
+        this.apiVersion = "2026-08-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.appLinks = new AppLinksClientImpl(this);
         this.appLinkMembers = new AppLinkMembersClientImpl(this);

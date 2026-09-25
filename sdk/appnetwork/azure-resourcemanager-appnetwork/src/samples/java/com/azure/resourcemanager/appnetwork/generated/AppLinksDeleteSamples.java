@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appnetwork.generated;
  */
 public final class AppLinksDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinks_Delete.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinks_Delete.json
      */
     /**
      * Sample code: AppLinks_Delete.

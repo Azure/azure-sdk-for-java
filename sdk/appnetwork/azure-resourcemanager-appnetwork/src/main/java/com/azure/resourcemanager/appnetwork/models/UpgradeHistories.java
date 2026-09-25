@@ -12,7 +12,7 @@ import com.azure.core.util.Context;
  */
 public interface UpgradeHistories {
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -26,7 +26,7 @@ public interface UpgradeHistories {
         String appLinkMemberName);
 
     /**
-     * List UpgradeHistory resources by AppLinkMember.
+     * List the upgrade history of an Azure Kubernetes Application Network member.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.

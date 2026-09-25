@@ -14,21 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectivityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectivityProfile model = BinaryData
-            .fromString(
-                "{\"eastWestGateway\":{\"visibility\":\"Internal\"},\"privateConnect\":{\"subnetResourceId\":\"c\"}}")
+        ConnectivityProfile model = BinaryData.fromString(
+            "{\"eastWestGateway\":{\"visibility\":\"Internal\"},\"privateConnect\":{\"subnetResourceId\":\"lwhijcoejctbzaq\"},\"network\":\"sycbkbfk\"}")
             .toObject(ConnectivityProfile.class);
         Assertions.assertEquals(EastWestGatewayVisibility.INTERNAL, model.eastWestGateway().visibility());
-        Assertions.assertEquals("c", model.privateConnect().subnetResourceId());
+        Assertions.assertEquals("lwhijcoejctbzaq", model.privateConnect().subnetResourceId());
+        Assertions.assertEquals("sycbkbfk", model.network());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConnectivityProfile model = new ConnectivityProfile()
             .withEastWestGateway(new EastWestGatewayProfile().withVisibility(EastWestGatewayVisibility.INTERNAL))
-            .withPrivateConnect(new PrivateConnectProfile().withSubnetResourceId("c"));
+            .withPrivateConnect(new PrivateConnectProfile().withSubnetResourceId("lwhijcoejctbzaq"))
+            .withNetwork("sycbkbfk");
         model = BinaryData.fromObject(model).toObject(ConnectivityProfile.class);
         Assertions.assertEquals(EastWestGatewayVisibility.INTERNAL, model.eastWestGateway().visibility());
-        Assertions.assertEquals("c", model.privateConnect().subnetResourceId());
+        Assertions.assertEquals("lwhijcoejctbzaq", model.privateConnect().subnetResourceId());
+        Assertions.assertEquals("sycbkbfk", model.network());
     }
 }
