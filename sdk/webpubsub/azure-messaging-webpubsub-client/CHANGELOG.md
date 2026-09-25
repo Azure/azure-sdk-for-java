@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for invoking upstream events and receiving correlated responses through `WebPubSubClient.invokeEvent`, with configurable timeouts and invocation IDs.
+
 ### Breaking Changes
 
 ### Bugs Fixed
