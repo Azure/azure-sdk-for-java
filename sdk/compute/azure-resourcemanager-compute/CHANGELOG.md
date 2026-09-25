@@ -1,14 +1,49 @@
 # Release History
 
-## 2.61.0-beta.1 (Unreleased)
+## 2.61.0 (2026-09-14)
 
 ### Features Added
 
-### Breaking Changes
+* `models.ImageMetadataProfile` was added
 
-### Bugs Fixed
+* `models.SecretsProvisioningSettings` was added
 
-### Other Changes
+* `models.MetadataKeyValue` was added
+
+* `models.MetadataType` was added
+
+* `models.GalleryImageVersionState` was added
+
+* `models.SecretsProvisioningComponent` was added
+
+* `models.DataDiskImageSecurityProfile` was added
+
+* `models.SecretsProvisioningComponentName` was added
+
+#### `models.ImageVersionSecurityProfile` was modified
+
+* `withSecretsProvisioningSettings(models.SecretsProvisioningSettings)` was added
+* `secretsProvisioningSettings()` was added
+
+#### `models.ConfidentialVMEncryptionType` was modified
+
+* `DATA_DISK_ENCRYPTED_WITH_CMK` was added
+
+#### `models.SoftDeletePolicy` was modified
+
+* `withGracePeriodInDays(java.lang.Integer)` was added
+* `retentionPeriodInDays()` was added
+* `withRetentionPeriodInDays(java.lang.Integer)` was added
+* `gracePeriodInDays()` was added
+
+#### `models.GalleryImageVersionUpdate` was modified
+
+* `imageMetadataProfiles()` was added
+
+#### `models.DataDiskImageEncryption` was modified
+
+* `securityProfile()` was added
+* `withSecurityProfile(models.DataDiskImageSecurityProfile)` was added
 
 ## 2.60.0 (2026-08-12)
 

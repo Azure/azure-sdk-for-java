@@ -21,6 +21,19 @@ public final class SoftDeletePolicy implements JsonSerializable<SoftDeletePolicy
      */
     private Boolean isSoftDeleteEnabled;
 
+    /*
+     * The retention period in days for a soft-deleted resource. After this period elapses, the soft-deleted gallery
+     * image version transitions to a simulated hard-deleted state.
+     */
+    private Integer retentionPeriodInDays;
+
+    /*
+     * The grace period in days for a simulated hard-deleted resource. During this period the gallery image version is
+     * unusable but can still be recovered if required. After this period elapses, the gallery image version is
+     * permanently (hard) deleted.
+     */
+    private Integer gracePeriodInDays;
+
     /**
      * Creates an instance of SoftDeletePolicy class.
      */
@@ -50,6 +63,52 @@ public final class SoftDeletePolicy implements JsonSerializable<SoftDeletePolicy
     }
 
     /**
+     * Get the retentionPeriodInDays property: The retention period in days for a soft-deleted resource. After this
+     * period elapses, the soft-deleted gallery image version transitions to a simulated hard-deleted state.
+     * 
+     * @return the retentionPeriodInDays value.
+     */
+    public Integer retentionPeriodInDays() {
+        return this.retentionPeriodInDays;
+    }
+
+    /**
+     * Set the retentionPeriodInDays property: The retention period in days for a soft-deleted resource. After this
+     * period elapses, the soft-deleted gallery image version transitions to a simulated hard-deleted state.
+     * 
+     * @param retentionPeriodInDays the retentionPeriodInDays value to set.
+     * @return the SoftDeletePolicy object itself.
+     */
+    public SoftDeletePolicy withRetentionPeriodInDays(Integer retentionPeriodInDays) {
+        this.retentionPeriodInDays = retentionPeriodInDays;
+        return this;
+    }
+
+    /**
+     * Get the gracePeriodInDays property: The grace period in days for a simulated hard-deleted resource. During this
+     * period the gallery image version is unusable but can still be recovered if required. After this period elapses,
+     * the gallery image version is permanently (hard) deleted.
+     * 
+     * @return the gracePeriodInDays value.
+     */
+    public Integer gracePeriodInDays() {
+        return this.gracePeriodInDays;
+    }
+
+    /**
+     * Set the gracePeriodInDays property: The grace period in days for a simulated hard-deleted resource. During this
+     * period the gallery image version is unusable but can still be recovered if required. After this period elapses,
+     * the gallery image version is permanently (hard) deleted.
+     * 
+     * @param gracePeriodInDays the gracePeriodInDays value to set.
+     * @return the SoftDeletePolicy object itself.
+     */
+    public SoftDeletePolicy withGracePeriodInDays(Integer gracePeriodInDays) {
+        this.gracePeriodInDays = gracePeriodInDays;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -64,6 +123,8 @@ public final class SoftDeletePolicy implements JsonSerializable<SoftDeletePolicy
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("isSoftDeleteEnabled", this.isSoftDeleteEnabled);
+        jsonWriter.writeNumberField("retentionPeriodInDays", this.retentionPeriodInDays);
+        jsonWriter.writeNumberField("gracePeriodInDays", this.gracePeriodInDays);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,6 +145,10 @@ public final class SoftDeletePolicy implements JsonSerializable<SoftDeletePolicy
 
                 if ("isSoftDeleteEnabled".equals(fieldName)) {
                     deserializedSoftDeletePolicy.isSoftDeleteEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("retentionPeriodInDays".equals(fieldName)) {
+                    deserializedSoftDeletePolicy.retentionPeriodInDays = reader.getNullable(JsonReader::getInt);
+                } else if ("gracePeriodInDays".equals(fieldName)) {
+                    deserializedSoftDeletePolicy.gracePeriodInDays = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
