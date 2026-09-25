@@ -22,7 +22,7 @@ public final class WorkflowsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"workflowTemplateId\":\"zaj\",\"provisioningState\":\"Initialized\"},\"extendedLocation\":{\"name\":\"hwjuyxxbxqvmvua\",\"type\":\"CustomLocation\"},\"eTag\":\"adxkxeqbwpntghy\",\"id\":\"a\",\"name\":\"cdrnxsl\",\"type\":\"vlzladl\"}";
+            = "{\"properties\":{\"workflowTemplateId\":\"rbzakpjtcqr\",\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"jpsucmxi\",\"type\":\"EdgeZone\"},\"eTag\":\"qxynqj\",\"id\":\"atkyvscbgngcr\",\"name\":\"sxhircpgc\",\"type\":\"svkkjbjolpyokl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class WorkflowsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Workflow response = manager.workflows()
-            .getWithResponse("powzafcz", "umljcirvpef", "cdveititj", com.azure.core.util.Context.NONE)
+            .getWithResponse("ffbvtzldzchub", "gwn", "zuvigvl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hwjuyxxbxqvmvua", response.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
+        Assertions.assertEquals("jpsucmxi", response.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
     }
 }

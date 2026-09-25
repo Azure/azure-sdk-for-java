@@ -9,6 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTemplateVersionInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTemplateVersionWithUpdateTypeInner;
@@ -28,7 +29,7 @@ public final class SolutionTemplatesCreateVersionMockTests {
     @Test
     public void testCreateVersion() throws Exception {
         String responseStr
-            = "{\"properties\":{\"configurations\":\"jsllfryvd\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"cfrgnawbabgfbkt\",\"id\":\"mfczl\",\"name\":\"syqkfrbzgowox\",\"type\":\"mj\"}";
+            = "{\"properties\":{\"configurations\":\"\\\"datafnqh\\\"\",\"specification\":{\"tyalh\":\"\\\"datasnosnqliwkmzojf\\\"\"},\"orchestratorType\":\"TO\",\"internalState\":\"ValidatedWithoutSchema\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"bjbhrpgiqsttc\",\"id\":\"rcmmaixpqj\",\"name\":\"wifhbksldttohq\",\"type\":\"lna\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,16 +39,20 @@ public final class SolutionTemplatesCreateVersionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SolutionTemplateVersion response = manager.solutionTemplates()
-            .createVersion("zknxkv", "cxetyvkunmignoh",
-                new SolutionTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.MINOR)
-                    .withVersion("qo")
-                    .withSolutionTemplateVersion(new SolutionTemplateVersionInner()
-                        .withProperties(new SolutionTemplateVersionProperties().withConfigurations("wpin")
-                            .withSpecification(mapOf())
+            .createVersion("z", "canzb",
+                new SolutionTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.MAJOR)
+                    .withVersion("uyckyvnensmu")
+                    .withSolutionTemplateVersion(
+                        new SolutionTemplateVersionInner().withProperties(new SolutionTemplateVersionProperties()
+                            .withConfigurations(BinaryData.fromBytes("\"datawjbct\"".getBytes(StandardCharsets.UTF_8)))
+                            .withSpecification(mapOf("ujqjtotdxp",
+                                BinaryData.fromBytes("\"datap\"".getBytes(StandardCharsets.UTF_8)), "wuusiecktybh",
+                                BinaryData.fromBytes("\"datascsl\"".getBytes(StandardCharsets.UTF_8)), "d",
+                                BinaryData.fromBytes("\"datauxidhhxomilddxj\"".getBytes(StandardCharsets.UTF_8)),
+                                "qrslaate", BinaryData.fromBytes("\"datagxwjwil\"".getBytes(StandardCharsets.UTF_8))))
                             .withOrchestratorType(OrchestratorType.TO))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jsllfryvd", response.properties().configurations());
         Assertions.assertEquals(OrchestratorType.TO, response.properties().orchestratorType());
     }
 

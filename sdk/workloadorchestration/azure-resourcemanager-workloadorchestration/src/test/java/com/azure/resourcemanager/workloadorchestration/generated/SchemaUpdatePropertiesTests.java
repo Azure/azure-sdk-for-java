@@ -10,7 +10,9 @@ import com.azure.resourcemanager.workloadorchestration.models.SchemaUpdateProper
 public final class SchemaUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SchemaUpdateProperties model = BinaryData.fromString("{}").toObject(SchemaUpdateProperties.class);
+        SchemaUpdateProperties model
+            = BinaryData.fromString("{\"currentVersion\":\"apcz\",\"provisioningState\":\"Initialized\"}")
+                .toObject(SchemaUpdateProperties.class);
     }
 
     @org.junit.jupiter.api.Test

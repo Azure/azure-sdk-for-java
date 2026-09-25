@@ -22,7 +22,7 @@ public final class ConfigTemplatesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"cleqioulndhzyo\",\"latestVersion\":\"jhtollh\",\"provisioningState\":\"Deleting\"},\"eTag\":\"mytzln\",\"location\":\"xpno\",\"tags\":{\"wqagy\":\"anfbc\",\"tpgaeukya\":\"vtxigvjr\",\"csklhsidsjt\":\"ohpmwhqn\",\"gazlsvbz\":\"lpbnin\"},\"id\":\"cpuo\",\"name\":\"e\",\"type\":\"wjcciklhsy\"}]}";
+            = "{\"value\":[{\"properties\":{\"uniqueIdentifier\":\"svjmnsvujnjk\",\"description\":\"volefcj\",\"latestVersion\":\"epkdbxot\",\"provisioningState\":\"Deleting\"},\"eTag\":\"mp\",\"location\":\"c\",\"tags\":{\"k\":\"nmxynlsuqbwzst\",\"trgjjkt\":\"gvp\",\"fhok\":\"i\",\"cru\":\"mmculwkq\"},\"id\":\"okr\",\"name\":\"flsgaoj\",\"type\":\"tqpqsdoctpzpujzf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class ConfigTemplatesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ConfigTemplate> response
-            = manager.configTemplates().listByResourceGroup("wwa", com.azure.core.util.Context.NONE);
+            = manager.configTemplates().listByResourceGroup("uekdcpvu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xpno", response.iterator().next().location());
-        Assertions.assertEquals("anfbc", response.iterator().next().tags().get("wqagy"));
-        Assertions.assertEquals("cleqioulndhzyo", response.iterator().next().properties().description());
+        Assertions.assertEquals("c", response.iterator().next().location());
+        Assertions.assertEquals("nmxynlsuqbwzst", response.iterator().next().tags().get("k"));
+        Assertions.assertEquals("volefcj", response.iterator().next().properties().description());
     }
 }
