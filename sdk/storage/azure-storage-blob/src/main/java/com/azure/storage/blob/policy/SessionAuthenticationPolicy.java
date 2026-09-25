@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.implementation.util;
+package com.azure.storage.blob.policy;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
@@ -65,11 +65,26 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     private final Clock clock;
     private final ConcurrentHashMap<String, OffsetDateTime> containerCooldowns = new ConcurrentHashMap<>();
 
-    SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
+    /**
+     * Creates a session authentication policy.
+     *
+     * @param bearerPolicy the bearer token policy used for non-session requests and fallback.
+     * @param sessionProvider the provider used to acquire and manage session credentials.
+     * @param sessionOptions the options that configure session authentication.
+     */
+    public SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
         SessionProvider sessionProvider, SessionOptions sessionOptions) {
         this(bearerPolicy, sessionProvider, sessionOptions, Clock.systemUTC());
     }
 
+    /**
+     * Creates a session authentication policy with a clock.
+     *
+     * @param bearerPolicy the bearer token policy used for non-session requests and fallback.
+     * @param sessionProvider the provider used to acquire and manage session credentials.
+     * @param sessionOptions the options that configure session authentication.
+     * @param clock the clock used for cooldown tracking.
+     */
     SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
         SessionProvider sessionProvider, SessionOptions sessionOptions, Clock clock) {
         this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");

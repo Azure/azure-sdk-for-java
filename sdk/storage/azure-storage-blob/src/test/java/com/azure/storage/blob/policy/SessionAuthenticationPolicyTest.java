@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.implementation.util;
+package com.azure.storage.blob.policy;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpClient;
