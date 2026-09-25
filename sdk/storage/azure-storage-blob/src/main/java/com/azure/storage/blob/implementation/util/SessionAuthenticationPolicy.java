@@ -45,8 +45,8 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
  * session credential is invalidated. Other responses are returned to the caller unchanged.
  * <p>
  * If session acquisition fails with HTTP 403, 5xx, or HTTP 400 with the {@code FeatureNotEnabled} error code, the
- * account is placed in a five minute cooldown during which requests go straight to bearer authentication. Cooldown
- * state is held by this policy instance, so it is scoped to a single client pipeline.
+ * container is placed in a five minute cooldown during which requests for that container go straight to bearer
+ * authentication. Cooldown state is held by this policy instance, so it is scoped to a single client pipeline.
  * Acquisition failures that do not carry one of those status codes fall back to bearer for that request only
  * and do not start a cooldown.
  */
@@ -63,7 +63,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     private final SessionProvider sessionProvider;
     private final SessionOptions sessionOptions;
     private final Clock clock;
-    private final ConcurrentHashMap<String, OffsetDateTime> accountCooldowns = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, OffsetDateTime> containerCooldowns = new ConcurrentHashMap<>();
 
     SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
         SessionProvider sessionProvider, SessionOptions sessionOptions) {
@@ -84,7 +84,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         if (requestContext == null) {
             return bearerPolicy.process(context, next);
         }
-        if (isAccountInCooldown(requestContext.getAccountName())) {
+        if (isContainerInCooldown(requestContext.getContainerName())) {
             return bearerPolicy.process(context, next);
         }
 
@@ -113,7 +113,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         if (requestContext == null) {
             return bearerPolicy.processSync(context, next);
         }
-        if (isAccountInCooldown(requestContext.getAccountName())) {
+        if (isContainerInCooldown(requestContext.getContainerName())) {
             return bearerPolicy.processSync(context, next);
         }
 
@@ -279,8 +279,8 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
 
     /**
      * Handles a failure to obtain a session credential. When the failure carries an HTTP 403, 5xx, or HTTP 400
-     * FeatureNotEnabled response, the account is placed in cooldown so following requests skip session acquisition
-     * entirely. Any other failure is logged and falls back to bearer for the current request only.
+     * FeatureNotEnabled response, the container is placed in cooldown so following requests skip session
+     * acquisition entirely. Any other failure is logged and falls back to bearer for the current request only.
      */
     private void handleSessionAcquisitionFailure(SessionRequestContext requestContext, Throwable error) {
         Throwable current = error;
@@ -292,11 +292,11 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             HttpResponse response = ((HttpResponseException) current).getResponse();
             int statusCode = response.getStatusCode();
             if (shouldStartAcquisitionCooldown(response)) {
-                if (beginAccountCooldown(requestContext.getAccountName())) {
+                if (beginContainerCooldown(requestContext.getContainerName())) {
                     LOGGER.warning(
-                        "Session acquisition failed with HTTP {}. Suppressing session authentication for this account "
+                        "Session acquisition failed with HTTP {}. Suppressing session authentication for container '{}' "
                             + "for five minutes and using bearer token.",
-                        statusCode);
+                        statusCode, requestContext.getContainerName());
                 }
                 return;
             }
@@ -315,9 +315,9 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             && "FeatureNotEnabled".equals(response.getHeaderValue(ERROR_CODE_HEADER_NAME));
     }
 
-    private boolean isAccountInCooldown(String accountName) {
-        String key = normalize(accountName);
-        OffsetDateTime cooldownUntil = accountCooldowns.get(key);
+    private boolean isContainerInCooldown(String containerName) {
+        String key = normalize(containerName);
+        OffsetDateTime cooldownUntil = containerCooldowns.get(key);
         if (cooldownUntil == null) {
             return false;
         }
@@ -327,16 +327,16 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             return true;
         }
 
-        accountCooldowns.remove(key, cooldownUntil);
+        containerCooldowns.remove(key, cooldownUntil);
         return false;
     }
 
-    private boolean beginAccountCooldown(String accountName) {
-        String key = normalize(accountName);
+    private boolean beginContainerCooldown(String containerName) {
+        String key = normalize(containerName);
         OffsetDateTime now = OffsetDateTime.now(clock);
         OffsetDateTime cooldownUntil = now.plus(SESSION_COOLDOWN);
         AtomicBoolean cooldownStarted = new AtomicBoolean();
-        accountCooldowns.compute(key, (ignored, currentExpirationTime) -> {
+        containerCooldowns.compute(key, (ignored, currentExpirationTime) -> {
             if (currentExpirationTime != null && now.isBefore(currentExpirationTime)) {
                 return currentExpirationTime;
             }
@@ -347,7 +347,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         return cooldownStarted.get();
     }
 
-    private static String normalize(String accountName) {
-        return CoreUtils.isNullOrEmpty(accountName) ? "" : accountName.trim().toLowerCase(Locale.ROOT);
+    private static String normalize(String containerName) {
+        return CoreUtils.isNullOrEmpty(containerName) ? "" : containerName.trim().toLowerCase(Locale.ROOT);
     }
 }

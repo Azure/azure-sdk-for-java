@@ -143,6 +143,49 @@ public class SessionAuthenticationPolicyTest {
     }
 
     @Test
+    public void sessionAcquisitionCooldownIsScopedPerContainerAsync() {
+        BlobStorageException failure
+            = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 500), null);
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(failure))
+            .thenReturn(Mono.just(credentialWithToken()));
+        HttpPipeline pipeline = buildPipeline(successTransport());
+
+        StepVerifier.create(pipeline.send(blobGetRequest("testaccount", "container-a")))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+        StepVerifier.create(pipeline.send(blobGetRequest("testaccount", "container-a")))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        HttpRequest otherContainerRequest = blobGetRequest("testaccount", "container-b");
+        StepVerifier.create(pipeline.send(otherContainerRequest))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        assertTrue(isSessionAuthenticated(otherContainerRequest));
+        verify(sessionProvider, times(2)).getSessionAsync(any());
+        verify(bearerPolicy, times(2)).process(any(), any());
+    }
+
+    @Test
+    public void sessionAcquisitionCooldownIsScopedPerContainerSync() {
+        BlobStorageException failure
+            = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 500), null);
+        when(sessionProvider.getSession(any())).thenThrow(failure).thenReturn(credentialWithToken());
+        HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
+        when(next.processSync()).thenAnswer(invocation -> new MockHttpResponse(null, 200));
+
+        sendSessionResponseSync(blobGetRequest("testaccount", "container-a"), 200, next);
+        sendSessionResponseSync(blobGetRequest("testaccount", "container-a"), 200, next);
+        HttpRequest otherContainerRequest = blobGetRequest("testaccount", "container-b");
+        sendSessionResponseSync(otherContainerRequest, 200, next);
+
+        assertTrue(isSessionAuthenticated(otherContainerRequest));
+        verify(sessionProvider, times(2)).getSession(any());
+        verify(bearerPolicy, times(2)).processSync(any(), any());
+    }
+
+    @Test
     public void sessionAcquisitionCooldownExpiresAfterFiveMinutes() {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         policy = createPolicy(clock);
@@ -512,7 +555,10 @@ public class SessionAuthenticationPolicyTest {
     // Helpers
 
     private void sendSessionResponseSync(HttpRequest request, int sessionStatusCode) {
-        HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
+        sendSessionResponseSync(request, sessionStatusCode, mock(HttpPipelineNextSyncPolicy.class));
+    }
+
+    private void sendSessionResponseSync(HttpRequest request, int sessionStatusCode, HttpPipelineNextSyncPolicy next) {
         HttpPipelineNextSyncPolicy retryNext = mock(HttpPipelineNextSyncPolicy.class);
         when(next.clone()).thenReturn(retryNext);
         when(next.processSync()).thenAnswer(
