@@ -80,13 +80,10 @@ public class StorageImplUtilsTests {
     }
 
     private static Stream<Arguments> serviceEndpointValues() {
-        return Stream.of(
-            Arguments.of("account.blob.core.windows.net", "blob", true),
+        return Stream.of(Arguments.of("account.blob.core.windows.net", "blob", true),
             Arguments.of("account.dfs.core.windows.net", "dfs", true),
-            Arguments.of("custom.example.com", "blob", false),
-            Arguments.of("account.blob.example.com", "dfs", false),
-            Arguments.of(null, "blob", false),
-            Arguments.of("account.blob.core.windows.net", null, false));
+            Arguments.of("custom.example.com", "blob", false), Arguments.of("account.blob.example.com", "dfs", false),
+            Arguments.of(null, "blob", false), Arguments.of("account.blob.core.windows.net", null, false));
     }
 
     private static Stream<Arguments> etagValues() {
