@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 12.31.2 (2026-09-15)
+
+### Bugs Fixed
+- Fixed a header-injection issue where carriage-return (`\r`) or line-feed (`\n`) characters in a batch operation's
+  inner request header names or values (for example, a tag condition supplied via
+  `BlobRequestConditions.setTagsConditions`) were serialized into the multipart batch body without validation. Such
+  characters are now rejected with an `IllegalArgumentException` before serialization.
+
 ## 12.31.1 (2026-08-18)
 
 ### Other Changes

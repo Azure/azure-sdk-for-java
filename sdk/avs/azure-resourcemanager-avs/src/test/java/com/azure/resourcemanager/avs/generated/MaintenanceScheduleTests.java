@@ -13,19 +13,19 @@ public final class MaintenanceScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceSchedule model
-            = BinaryData.fromString("{\"scheduleTime\":\"2021-10-22T04:54:45Z\",\"message\":\"jvzunluthnnp\"}")
+            = BinaryData.fromString("{\"scheduleTime\":\"2021-06-07T17:58:08Z\",\"message\":\"oujmkcjhwqytj\"}")
                 .toObject(MaintenanceSchedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T04:54:45Z"), model.scheduleTime());
-        Assertions.assertEquals("jvzunluthnnp", model.message());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-07T17:58:08Z"), model.scheduleTime());
+        Assertions.assertEquals("oujmkcjhwqytj", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceSchedule model
-            = new MaintenanceSchedule().withScheduleTime(OffsetDateTime.parse("2021-10-22T04:54:45Z"))
-                .withMessage("jvzunluthnnp");
+            = new MaintenanceSchedule().withScheduleTime(OffsetDateTime.parse("2021-06-07T17:58:08Z"))
+                .withMessage("oujmkcjhwqytj");
         model = BinaryData.fromObject(model).toObject(MaintenanceSchedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T04:54:45Z"), model.scheduleTime());
-        Assertions.assertEquals("jvzunluthnnp", model.message());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-07T17:58:08Z"), model.scheduleTime());
+        Assertions.assertEquals("oujmkcjhwqytj", model.message());
     }
 }

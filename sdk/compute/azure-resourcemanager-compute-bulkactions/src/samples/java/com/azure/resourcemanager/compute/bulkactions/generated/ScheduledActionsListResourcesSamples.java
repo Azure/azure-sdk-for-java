@@ -9,14 +9,14 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionsListResourcesSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_ListResources_MaximumSet.
+     * Sample code: List resources associated with a scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void scheduledActionsListResourcesMaximumSet(
+    public static void listResourcesAssociatedWithAScheduledAction(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions().listResources("rgcompute", "myScheduledAction", com.azure.core.util.Context.NONE);
     }

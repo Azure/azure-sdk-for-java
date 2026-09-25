@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The state the resource is on after the resource operation is applied.
+ * Current status of an operation for the specific occurrence and resource.
  */
 public final class ResourceOperationStatus extends ExpandableStringEnum<ResourceOperationStatus> {
     /**
-     * The resource operation was successful.
+     * The operation completed successfully for the resource.
      */
     public static final ResourceOperationStatus SUCCEEDED = fromString("Succeeded");
 
     /**
-     * The resource operation has failed.
+     * The operation failed for the resource.
      */
     public static final ResourceOperationStatus FAILED = fromString("Failed");
 

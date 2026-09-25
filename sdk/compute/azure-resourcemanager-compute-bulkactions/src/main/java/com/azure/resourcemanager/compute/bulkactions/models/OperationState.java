@@ -12,24 +12,9 @@ import java.util.Collection;
  */
 public final class OperationState extends ExpandableStringEnum<OperationState> {
     /**
-     * The default value for the operation state enum.
-     */
-    public static final OperationState UNKNOWN = fromString("Unknown");
-
-    /**
-     * Operations that are pending scheduling.
-     */
-    public static final OperationState PENDING_SCHEDULING = fromString("PendingScheduling");
-
-    /**
      * Operations that have been scheduled.
      */
     public static final OperationState SCHEDULED = fromString("Scheduled");
-
-    /**
-     * Operations that are waiting to be executed.
-     */
-    public static final OperationState PENDING_EXECUTION = fromString("PendingExecution");
 
     /**
      * Operations that are in the process of being executed.

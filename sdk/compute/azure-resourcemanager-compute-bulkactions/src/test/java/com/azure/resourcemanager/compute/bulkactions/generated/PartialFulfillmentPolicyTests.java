@@ -13,15 +13,15 @@ public final class PartialFulfillmentPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartialFulfillmentPolicy model
-            = BinaryData.fromString("{\"fulfilledCapacity\":880683863,\"mode\":\"Disabled\",\"reason\":\"None\"}")
+            = BinaryData.fromString("{\"fulfilledCapacity\":1861834573,\"mode\":\"Enabled\",\"reason\":\"None\"}")
                 .toObject(PartialFulfillmentPolicy.class);
-        Assertions.assertEquals(PartialFulfillmentMode.DISABLED, model.mode());
+        Assertions.assertEquals(PartialFulfillmentMode.ENABLED, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartialFulfillmentPolicy model = new PartialFulfillmentPolicy().withMode(PartialFulfillmentMode.DISABLED);
+        PartialFulfillmentPolicy model = new PartialFulfillmentPolicy().withMode(PartialFulfillmentMode.ENABLED);
         model = BinaryData.fromObject(model).toObject(PartialFulfillmentPolicy.class);
-        Assertions.assertEquals(PartialFulfillmentMode.DISABLED, model.mode());
+        Assertions.assertEquals(PartialFulfillmentMode.ENABLED, model.mode());
     }
 }

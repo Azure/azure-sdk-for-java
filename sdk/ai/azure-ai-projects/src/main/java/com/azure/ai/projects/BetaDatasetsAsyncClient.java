@@ -69,7 +69,6 @@ public final class BetaDatasetsAsyncClient {
      *         ]
      *         options (Required): {
      *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -82,6 +81,7 @@ public final class BetaDatasetsAsyncClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -183,7 +183,6 @@ public final class BetaDatasetsAsyncClient {
      *         ]
      *         options (Required): {
      *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -196,6 +195,7 @@ public final class BetaDatasetsAsyncClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -266,7 +266,6 @@ public final class BetaDatasetsAsyncClient {
      *         ]
      *         options (Required): {
      *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -279,6 +278,7 @@ public final class BetaDatasetsAsyncClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -535,7 +535,6 @@ public final class BetaDatasetsAsyncClient {
      *         ]
      *         options (Required): {
      *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -548,6 +547,7 @@ public final class BetaDatasetsAsyncClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -601,7 +601,6 @@ public final class BetaDatasetsAsyncClient {
      *         ]
      *         options (Required): {
      *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -614,6 +613,7 @@ public final class BetaDatasetsAsyncClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {

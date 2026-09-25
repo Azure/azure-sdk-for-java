@@ -14,7 +14,6 @@ import com.azure.resourcemanager.compute.bulkactions.models.Language;
 import com.azure.resourcemanager.compute.bulkactions.models.Month;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationType;
-import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdate;
@@ -46,35 +45,43 @@ public final class ScheduledActionsUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.scheduledActions()
-            .update("bapxkiyfjjkb", "jbuscg",
-                new ScheduledActionUpdate().withTags(mapOf("jy", "sioycblevpmcl"))
-                    .withProperties(
-                        new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE_SCALE_SET)
-                            .withActionType(ScheduledActionType.START)
-                            .withStartTime(OffsetDateTime.parse("2021-03-17T14:57:16Z"))
-                            .withEndTime(OffsetDateTime.parse("2021-03-05T09:00:27Z"))
-                            .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("zltafhbzffovwm")
-                                .withTimeZone("lz")
-                                .withRequestedWeekDays(
-                                    Arrays.asList(WeekDay.SATURDAY, WeekDay.SATURDAY, WeekDay.THURSDAY, WeekDay.SUNDAY))
-                                .withRequestedMonths(Arrays.asList(Month.OCTOBER, Month.JANUARY))
-                                .withRequestedDaysOfTheMonth(Arrays.asList(163135398, 677485726, 587191677))
-                                .withExecutionParameters(new ScheduledActionsExecutionParameters()
-                                    .withOptimizationPreference(OptimizationPreference.AVAILABILITY)
-                                    .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(1041328191)
-                                        .withRetryWindowInMinutes(1411010874)
-                                        .withOnFailureAction(ScheduledActionsResourceOperationType.UNKNOWN)))
-                                .withDeadlineType(ScheduledActionsDeadlineType.COMPLETE_BY))
-                            .withNotificationSettings(Arrays.asList(
-                                new NotificationProperties().withDestination("h")
-                                    .withType(NotificationType.EMAIL)
-                                    .withLanguage(Language.EN_US)
-                                    .withDisabled(false),
-                                new NotificationProperties().withDestination("hleseyqrh")
-                                    .withType(NotificationType.EMAIL)
-                                    .withLanguage(Language.EN_US)
-                                    .withDisabled(false)))
-                            .withDisabled(false)),
+            .update("nbatzvi", "sowsaael", new ScheduledActionUpdate()
+                .withTags(mapOf("uhplrvkmjcwmjv", "tc", "sfxsf", "gfggcvkyylizrzbj", "ukoveofi", "ztlvtmvagbwidqlv",
+                    "z", "rvjfnmjmvlw"))
+                .withProperties(
+                    new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE_SCALE_SET)
+                        .withActionType(ScheduledActionType.START)
+                        .withStartTime(OffsetDateTime.parse("2021-10-25T22:17:09Z"))
+                        .withEndTime(OffsetDateTime.parse("2021-09-19T18:23:41Z"))
+                        .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("juid")
+                            .withTimeZone("uuyjucejikz")
+                            .withRequestedWeekDays(
+                                Arrays.asList(WeekDay.SATURDAY, WeekDay.SUNDAY, WeekDay.SATURDAY, WeekDay.WEDNESDAY))
+                            .withRequestedMonths(Arrays.asList(Month.OCTOBER))
+                            .withRequestedDaysOfTheMonth(Arrays.asList(372519595, 334992913, 526075495))
+                            .withExecutionParameters(new ScheduledActionsExecutionParameters()
+                                .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(1811682620)
+                                    .withRetryWindowInMinutes(604848210)
+                                    .withOnFailureAction(ScheduledActionsResourceOperationType.HIBERNATE)))
+                            .withDeadlineType(ScheduledActionsDeadlineType.INITIATE_AT))
+                        .withNotificationSettings(Arrays.asList(
+                            new NotificationProperties().withDestination("o")
+                                .withType(NotificationType.EMAIL)
+                                .withLanguage(Language.EN_US)
+                                .withDisabled(true),
+                            new NotificationProperties().withDestination("hqjwtrhtgvg")
+                                .withType(NotificationType.EMAIL)
+                                .withLanguage(Language.EN_US)
+                                .withDisabled(false),
+                            new NotificationProperties().withDestination("kolawjmjsmwrokc")
+                                .withType(NotificationType.EMAIL)
+                                .withLanguage(Language.EN_US)
+                                .withDisabled(false),
+                            new NotificationProperties().withDestination("zwyjafitlhgu")
+                                .withType(NotificationType.EMAIL)
+                                .withLanguage(Language.EN_US)
+                                .withDisabled(true)))
+                        .withDisabled(false)),
                 com.azure.core.util.Context.NONE);
 
     }

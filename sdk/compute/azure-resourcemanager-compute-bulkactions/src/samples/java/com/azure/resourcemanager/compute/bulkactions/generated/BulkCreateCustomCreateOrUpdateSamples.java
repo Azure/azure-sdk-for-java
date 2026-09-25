@@ -56,7 +56,7 @@ import java.util.Map;
  */
 public final class BulkCreateCustomCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BulkCreateCustom_CreateOrUpdate_MaximumSet.

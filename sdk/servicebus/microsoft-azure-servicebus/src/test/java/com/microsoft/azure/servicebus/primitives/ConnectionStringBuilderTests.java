@@ -3,15 +3,15 @@
 
 package com.microsoft.azure.servicebus.primitives;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.microsoft.azure.servicebus.ClientSettings;
-import com.microsoft.azure.servicebus.TestUtils;
 import com.microsoft.azure.servicebus.security.ManagedIdentityTokenProvider;
 import com.microsoft.azure.servicebus.security.SharedAccessSignatureTokenProvider;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConnectionStringBuilderTests {
     @Test
@@ -25,12 +25,12 @@ public class ConnectionStringBuilderTests {
 
     @Test
     public void invalidAadTokenConnectionStringTest() {
-        TestUtils.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SHAREDACCESSKEYNAME=val2";
             new ConnectionStringBuilder(connecitionString);
         });
         
-        TestUtils.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SharedAccessSignatureToken=val2";
             new ConnectionStringBuilder(connecitionString);
         });
