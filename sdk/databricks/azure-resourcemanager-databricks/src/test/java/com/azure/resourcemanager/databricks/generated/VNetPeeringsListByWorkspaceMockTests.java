@@ -22,7 +22,7 @@ public final class VNetPeeringsListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":false,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"hkh\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"hnzbonl\",\"ntoe\",\"okdwb\"]},\"remoteVirtualNetwork\":{\"id\":\"kszzcmrvexztv\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"sfraoyzko\",\"wtl\",\"nguxawqaldsy\"]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Failed\"},\"id\":\"rqf\",\"name\":\"bw\",\"type\":\"znkbykutwpfhpagm\"}]}";
+            = "{\"value\":[{\"properties\":{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":false,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"lvkgju\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"nnqvsa\",\"nqntorudsgsahm\",\"yc\"]},\"remoteVirtualNetwork\":{\"id\":\"auwjuetaebu\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"movsmzlxwabmqoe\",\"kif\"]},\"peeringState\":\"Initiated\",\"provisioningState\":\"Succeeded\"},\"id\":\"ujmqlgkfbtndoa\",\"name\":\"n\",\"type\":\"bjcntujitc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class VNetPeeringsListByWorkspaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VirtualNetworkPeering> response
-            = manager.vNetPeerings().listByWorkspace("qouicybxarzgsz", "foxciq", com.azure.core.util.Context.NONE);
+            = manager.vNetPeerings().listByWorkspace("vudutncor", "r", com.azure.core.util.Context.NONE);
 
         Assertions.assertTrue(response.iterator().next().allowVirtualNetworkAccess());
         Assertions.assertFalse(response.iterator().next().allowForwardedTraffic());
         Assertions.assertTrue(response.iterator().next().allowGatewayTransit());
         Assertions.assertTrue(response.iterator().next().useRemoteGateways());
-        Assertions.assertEquals("hkh", response.iterator().next().databricksVirtualNetwork().id());
-        Assertions.assertEquals("hnzbonl",
-            response.iterator().next().databricksAddressSpace().addressPrefixes().get(0));
-        Assertions.assertEquals("kszzcmrvexztv", response.iterator().next().remoteVirtualNetwork().id());
-        Assertions.assertEquals("sfraoyzko", response.iterator().next().remoteAddressSpace().addressPrefixes().get(0));
+        Assertions.assertEquals("lvkgju", response.iterator().next().databricksVirtualNetwork().id());
+        Assertions.assertEquals("nnqvsa", response.iterator().next().databricksAddressSpace().addressPrefixes().get(0));
+        Assertions.assertEquals("auwjuetaebu", response.iterator().next().remoteVirtualNetwork().id());
+        Assertions.assertEquals("movsmzlxwabmqoe",
+            response.iterator().next().remoteAddressSpace().addressPrefixes().get(0));
     }
 }

@@ -12,16 +12,17 @@ public final class VirtualNetworkPeeringListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworkPeeringList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"allowVirtualNetworkAccess\":false,\"allowForwardedTraffic\":false,\"allowGatewayTransit\":true,\"useRemoteGateways\":false,\"databricksVirtualNetwork\":{\"id\":\"ualupjmkh\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"bcswsrt\",\"riplrbpbewtg\",\"fgb\"]},\"remoteVirtualNetwork\":{\"id\":\"gw\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"v\",\"hjkbegibtnmxieb\",\"waloayqcgwr\",\"zjuzgwyz\"]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Updating\"},\"id\":\"gmtsavjcbpwxqpsr\",\"name\":\"nftguvriuhpr\",\"type\":\"mdyvxqtayriw\"}],\"nextLink\":\"oyq\"}")
+            "{\"value\":[{\"properties\":{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"laocqxtccmg\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"ytlmoyrxvwfud\"]},\"remoteVirtualNetwork\":{\"id\":\"zntxhdz\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"jbhckfrlhr\"]},\"peeringState\":\"Connected\",\"provisioningState\":\"Failed\"},\"id\":\"pycanuzbpz\",\"name\":\"afkuwb\",\"type\":\"rnwb\"},{\"properties\":{\"allowVirtualNetworkAccess\":false,\"allowForwardedTraffic\":false,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"rts\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"kdeemaofmxagkvtm\",\"lmqkrhahvlj\",\"ahaquh\",\"dhmdua\"]},\"remoteVirtualNetwork\":{\"id\":\"exq\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"dmwsrcrgvxpvgomz\"]},\"peeringState\":\"Initiated\",\"provisioningState\":\"Deleting\"},\"id\":\"wbnb\",\"name\":\"e\",\"type\":\"dawkzbali\"},{\"properties\":{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"shsfwxosowzxcu\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"ooxdjebwpuc\",\"wfvovbv\",\"euecivyhzceuoj\"]},\"remoteVirtualNetwork\":{\"id\":\"rw\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"otwmcdyt\",\"x\",\"it\",\"nrjawgqwg\"]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Updating\"},\"id\":\"x\",\"name\":\"bkpyc\",\"type\":\"klwndnhjdauwhv\"},{\"properties\":{\"allowVirtualNetworkAccess\":false,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"znbmpowuwprzq\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"alupjm\",\"hfxobbcswsrtj\",\"iplrbpbewtghfgb\"]},\"remoteVirtualNetwork\":{\"id\":\"gw\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"v\",\"hjkbegibtnmxieb\",\"waloayqcgwr\",\"zjuzgwyz\"]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Updating\"},\"id\":\"gmtsavjcbpwxqpsr\",\"name\":\"nftguvriuhpr\",\"type\":\"mdyvxqtayriw\"}],\"nextLink\":\"oyq\"}")
             .toObject(VirtualNetworkPeeringList.class);
-        Assertions.assertFalse(model.value().get(0).allowVirtualNetworkAccess());
-        Assertions.assertFalse(model.value().get(0).allowForwardedTraffic());
+        Assertions.assertTrue(model.value().get(0).allowVirtualNetworkAccess());
+        Assertions.assertTrue(model.value().get(0).allowForwardedTraffic());
         Assertions.assertTrue(model.value().get(0).allowGatewayTransit());
-        Assertions.assertFalse(model.value().get(0).useRemoteGateways());
-        Assertions.assertEquals("ualupjmkh", model.value().get(0).databricksVirtualNetwork().id());
-        Assertions.assertEquals("bcswsrt", model.value().get(0).databricksAddressSpace().addressPrefixes().get(0));
-        Assertions.assertEquals("gw", model.value().get(0).remoteVirtualNetwork().id());
-        Assertions.assertEquals("v", model.value().get(0).remoteAddressSpace().addressPrefixes().get(0));
+        Assertions.assertTrue(model.value().get(0).useRemoteGateways());
+        Assertions.assertEquals("laocqxtccmg", model.value().get(0).databricksVirtualNetwork().id());
+        Assertions.assertEquals("ytlmoyrxvwfud",
+            model.value().get(0).databricksAddressSpace().addressPrefixes().get(0));
+        Assertions.assertEquals("zntxhdz", model.value().get(0).remoteVirtualNetwork().id());
+        Assertions.assertEquals("jbhckfrlhr", model.value().get(0).remoteAddressSpace().addressPrefixes().get(0));
         Assertions.assertEquals("oyq", model.nextLink());
     }
 }

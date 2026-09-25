@@ -14,10 +14,6 @@
 
 - [List](#operations_list)
 
-## OutboundNetworkDependenciesEndpoints
-
-- [List](#outboundnetworkdependenciesendpoints_list)
-
 ## PrivateEndpointConnections
 
 - [Create](#privateendpointconnections_create)
@@ -235,29 +231,6 @@ public final class OperationsListSamples {
      */
     public static void operations(com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### OutboundNetworkDependenciesEndpoints_List
-
-```java
-/**
- * Samples for OutboundNetworkDependenciesEndpoints List.
- */
-public final class OutboundNetworkDependenciesEndpointsListSamples {
-    /*
-     * x-ms-original-file: 2026-01-01/OutboundNetworkDependenciesEndpointsList.json
-     */
-    /**
-     * Sample code: List OutboundNetworkDependenciesEndpoints by Workspace.
-     * 
-     * @param manager Entry point to AzureDatabricksManager.
-     */
-    public static void listOutboundNetworkDependenciesEndpointsByWorkspace(
-        com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
-        manager.outboundNetworkDependenciesEndpoints()
-            .listWithResponse("myResourceGroup", "myWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```

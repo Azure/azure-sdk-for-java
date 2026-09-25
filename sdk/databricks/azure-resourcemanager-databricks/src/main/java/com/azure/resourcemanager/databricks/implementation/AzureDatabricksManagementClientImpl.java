@@ -29,7 +29,6 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.databricks.fluent.AccessConnectorsClient;
 import com.azure.resourcemanager.databricks.fluent.AzureDatabricksManagementClient;
 import com.azure.resourcemanager.databricks.fluent.OperationsClient;
-import com.azure.resourcemanager.databricks.fluent.OutboundNetworkDependenciesEndpointsClient;
 import com.azure.resourcemanager.databricks.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.databricks.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.databricks.fluent.VNetPeeringsClient;
@@ -189,20 +188,6 @@ public final class AzureDatabricksManagementClientImpl implements AzureDatabrick
     }
 
     /**
-     * The OutboundNetworkDependenciesEndpointsClient object to access its operations.
-     */
-    private final OutboundNetworkDependenciesEndpointsClient outboundNetworkDependenciesEndpoints;
-
-    /**
-     * Gets the OutboundNetworkDependenciesEndpointsClient object to access its operations.
-     * 
-     * @return the OutboundNetworkDependenciesEndpointsClient object.
-     */
-    public OutboundNetworkDependenciesEndpointsClient getOutboundNetworkDependenciesEndpoints() {
-        return this.outboundNetworkDependenciesEndpoints;
-    }
-
-    /**
      * The PrivateLinkResourcesClient object to access its operations.
      */
     private final PrivateLinkResourcesClient privateLinkResources;
@@ -252,7 +237,6 @@ public final class AzureDatabricksManagementClientImpl implements AzureDatabrick
         this.workspaces = new WorkspacesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.accessConnectors = new AccessConnectorsClientImpl(this);
-        this.outboundNetworkDependenciesEndpoints = new OutboundNetworkDependenciesEndpointsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.vNetPeerings = new VNetPeeringsClientImpl(this);
     }

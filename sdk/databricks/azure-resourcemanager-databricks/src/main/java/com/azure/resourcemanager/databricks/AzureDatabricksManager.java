@@ -28,14 +28,12 @@ import com.azure.resourcemanager.databricks.fluent.AzureDatabricksManagementClie
 import com.azure.resourcemanager.databricks.implementation.AccessConnectorsImpl;
 import com.azure.resourcemanager.databricks.implementation.AzureDatabricksManagementClientBuilder;
 import com.azure.resourcemanager.databricks.implementation.OperationsImpl;
-import com.azure.resourcemanager.databricks.implementation.OutboundNetworkDependenciesEndpointsImpl;
 import com.azure.resourcemanager.databricks.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.databricks.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.databricks.implementation.VNetPeeringsImpl;
 import com.azure.resourcemanager.databricks.implementation.WorkspacesImpl;
 import com.azure.resourcemanager.databricks.models.AccessConnectors;
 import com.azure.resourcemanager.databricks.models.Operations;
-import com.azure.resourcemanager.databricks.models.OutboundNetworkDependenciesEndpoints;
 import com.azure.resourcemanager.databricks.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.databricks.models.PrivateLinkResources;
 import com.azure.resourcemanager.databricks.models.VNetPeerings;
@@ -60,8 +58,6 @@ public final class AzureDatabricksManager {
     private PrivateEndpointConnections privateEndpointConnections;
 
     private AccessConnectors accessConnectors;
-
-    private OutboundNetworkDependenciesEndpoints outboundNetworkDependenciesEndpoints;
 
     private PrivateLinkResources privateLinkResources;
 
@@ -329,19 +325,6 @@ public final class AzureDatabricksManager {
             this.accessConnectors = new AccessConnectorsImpl(clientObject.getAccessConnectors(), this);
         }
         return accessConnectors;
-    }
-
-    /**
-     * Gets the resource collection API of OutboundNetworkDependenciesEndpoints.
-     * 
-     * @return Resource collection API of OutboundNetworkDependenciesEndpoints.
-     */
-    public OutboundNetworkDependenciesEndpoints outboundNetworkDependenciesEndpoints() {
-        if (this.outboundNetworkDependenciesEndpoints == null) {
-            this.outboundNetworkDependenciesEndpoints = new OutboundNetworkDependenciesEndpointsImpl(
-                clientObject.getOutboundNetworkDependenciesEndpoints(), this);
-        }
-        return outboundNetworkDependenciesEndpoints;
     }
 
     /**

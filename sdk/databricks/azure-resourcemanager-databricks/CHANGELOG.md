@@ -1,14 +1,280 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2026-09-24)
 
-### Features Added
+- Azure Resource Manager Azure Databricks client library for Java. This package contains Microsoft Azure SDK for Azure Databricks Management SDK. ARM Databricks. Package api-version 2026-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OutboundNetworkDependenciesEndpoints` was removed
 
-### Other Changes
+#### `models.OperationListResult` was removed
+
+#### `models.VirtualNetworkPeeringList` was removed
+
+#### `models.WorkspaceListResult` was removed
+
+#### `models.AccessConnectorListResult` was removed
+
+#### `models.EndpointDetail` was removed
+
+#### `models.OutboundEnvironmentEndpoint` was removed
+
+#### `models.PrivateLinkResourcesList` was removed
+
+#### `models.EndpointDependency` was removed
+
+#### `models.PrivateEndpointConnectionsList` was removed
+
+#### `models.Workspace$DefinitionStages` was modified
+
+* `withManagedResourceGroupId(java.lang.String)` was removed in stage 3
+
+#### `models.AccessConnectorUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedDiskEncryption` was modified
+
+* `validate()` was removed
+
+#### `models.CreatedBy` was modified
+
+* `validate()` was removed
+* `java.util.UUID oid()` -> `java.lang.String oid()`
+* `java.util.UUID applicationId()` -> `java.lang.String applicationId()`
+
+#### `AzureDatabricksManager` was modified
+
+* `outboundNetworkDependenciesEndpoints()` was removed
+
+#### `models.AddressSpace` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `validate()` was removed
+* `withResource(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+
+#### `models.EncryptionV2` was modified
+
+* `validate()` was removed
+
+#### `models.GroupIdInformationProperties` was modified
+
+* `GroupIdInformationProperties()` was changed to private access
+* `validate()` was removed
+* `withRequiredZoneNames(java.util.List)` was removed
+* `withGroupId(java.lang.String)` was removed
+* `withRequiredMembers(java.util.List)` was removed
+
+#### `models.WorkspaceCustomBooleanParameter` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceEncryptionParameter` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionEntitiesDefinition` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceCustomObjectParameter` was modified
+
+* `WorkspaceCustomObjectParameter()` was changed to private access
+* `withValue(java.lang.Object)` was removed
+* `validate()` was removed
+
+#### `models.VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspacePropertiesEncryption` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceCustomStringParameter` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork` was modified
+
+* `validate()` was removed
+
+#### `models.WorkspaceCustomParameters` was modified
+
+* `models.WorkspaceCustomBooleanParameter enableNoPublicIp()` -> `models.WorkspaceNoPublicIpBooleanParameter enableNoPublicIp()`
+* `validate()` was removed
+* `withEnableNoPublicIp(models.WorkspaceCustomBooleanParameter)` was removed
+
+#### `models.PrivateEndpointConnectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Encryption` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIdentityConfiguration` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+#### `models.ErrorInfo` was modified
+
+* `ErrorInfo()` was changed to private access
+* `validate()` was removed
+
+#### `models.Workspaces` was modified
+
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByResourceGroup(java.lang.String,java.lang.String)` was removed
+
+#### `models.WorkspaceProviderAuthorization` was modified
+
+* `withRoleDefinitionId(java.util.UUID)` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+* `java.util.UUID roleDefinitionId()` -> `java.lang.String roleDefinitionId()`
+* `withPrincipalId(java.util.UUID)` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `validate()` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.AccessConnectorProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedDiskEncryptionKeyVaultProperties` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionV2KeyVaultProperties` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.EnhancedSecurityMonitoringDefinition` was added
+
+* `models.IdentityType` was added
+
+* `models.EnhancedSecurityMonitoringValue` was added
+
+* `models.DefaultStorageFirewall` was added
+
+* `models.AutomaticClusterUpdateValue` was added
+
+* `models.WorkspaceNoPublicIpBooleanParameter` was added
+
+* `models.ComplianceSecurityProfileValue` was added
+
+* `models.ComplianceSecurityProfileDefinition` was added
+
+* `models.EnhancedSecurityComplianceDefinition` was added
+
+* `models.ComputeMode` was added
+
+* `models.WorkspacePropertiesAccessConnector` was added
+
+* `models.InitialType` was added
+
+* `models.AutomaticClusterUpdateDefinition` was added
+
+* `models.DefaultCatalogProperties` was added
+
+#### `models.Workspace$Definition` was modified
+
+* `withDefaultCatalog(models.DefaultCatalogProperties)` was added
+* `withAccessConnector(models.WorkspacePropertiesAccessConnector)` was added
+* `withEnhancedSecurityCompliance(models.EnhancedSecurityComplianceDefinition)` was added
+* `withComputeMode(models.ComputeMode)` was added
+* `withDefaultStorageFirewall(models.DefaultStorageFirewall)` was added
+
+#### `models.VirtualNetworkPeering` was modified
+
+* `systemData()` was added
+
+#### `models.GroupIdInformation` was modified
+
+* `systemData()` was added
+
+#### `models.Workspace` was modified
+
+* `enhancedSecurityCompliance()` was added
+* `accessConnector()` was added
+* `defaultStorageFirewall()` was added
+* `isUcEnabled()` was added
+* `defaultCatalog()` was added
+* `computeMode()` was added
+
+#### `models.WorkspaceCustomBooleanParameter` was modified
+
+* `withType(models.CustomParameterType)` was added
+
+#### `models.WorkspaceEncryptionParameter` was modified
+
+* `withType(models.CustomParameterType)` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `systemData()` was added
+
+#### `models.WorkspaceCustomStringParameter` was modified
+
+* `withType(models.CustomParameterType)` was added
+
+#### `models.WorkspaceCustomParameters` was modified
+
+* `withEnableNoPublicIp(models.WorkspaceNoPublicIpBooleanParameter)` was added
+
+#### `models.Workspaces` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String)` was added
+
+#### `models.WorkspaceProviderAuthorization` was modified
+
+* `withPrincipalId(java.lang.String)` was added
+* `withRoleDefinitionId(java.lang.String)` was added
+
+#### `models.AccessConnectorProperties` was modified
+
+* `referedBy()` was added
 
 ## 1.0.0 (2024-12-23)
 
