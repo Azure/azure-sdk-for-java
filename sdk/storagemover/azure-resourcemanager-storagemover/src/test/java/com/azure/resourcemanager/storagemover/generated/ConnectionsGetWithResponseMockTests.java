@@ -21,7 +21,7 @@ public final class ConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"wjchrdg\",\"connectionStatus\":\"Stale\",\"privateLinkServiceId\":\"xum\",\"privateEndpointName\":\"ton\",\"privateEndpointResourceId\":\"jl\",\"jobList\":[\"fdlwg\",\"ytsbwtovv\",\"gseinq\"],\"provisioningState\":\"Deleting\"},\"id\":\"x\",\"name\":\"knpirgnepttwq\",\"type\":\"sniffc\"}";
+            = "{\"properties\":{\"description\":\"x\",\"connectionStatus\":\"Pending\",\"privateLinkServiceId\":\"zheydbsdshmk\",\"privateEndpointName\":\"aehvbbxuri\",\"privateEndpointResourceId\":\"tfnhtbaxkgxywr\",\"jobList\":[\"yklyhpluodpvruud\",\"gzibthostgktstv\",\"xeclzedqbcvhzlhp\",\"odqkdlwwqfb\"],\"provisioningState\":\"Succeeded\"},\"id\":\"xtrqjfs\",\"name\":\"lmbtxhwgfwsrt\",\"type\":\"wcoezbrhub\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class ConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Connection response = manager.connections()
-            .getWithResponse("iithtywu", "xcbihw", "knfd", com.azure.core.util.Context.NONE)
+            .getWithResponse("vpkjpr", "kwcf", "ql", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wjchrdg", response.properties().description());
-        Assertions.assertEquals("xum", response.properties().privateLinkServiceId());
-        Assertions.assertEquals("fdlwg", response.properties().jobList().get(0));
+        Assertions.assertEquals("x", response.properties().description());
+        Assertions.assertEquals("zheydbsdshmk", response.properties().privateLinkServiceId());
+        Assertions.assertEquals("yklyhpluodpvruud", response.properties().jobList().get(0));
     }
 }
