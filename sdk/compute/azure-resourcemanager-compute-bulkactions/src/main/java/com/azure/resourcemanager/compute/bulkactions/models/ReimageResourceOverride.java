@@ -12,17 +12,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Per-resource override entry for reimage requests.
+ * A reimage configuration override for one virtual machine.
  */
 @Fluent
 public final class ReimageResourceOverride implements JsonSerializable<ReimageResourceOverride> {
     /*
-     * The Azure resource ID of the virtual machine for this override
+     * The Azure resource ID of the virtual machine to which the override applies.
      */
     private String resourceId;
 
     /*
-     * Per-resource reimage profile override
+     * The reimage configuration for this virtual machine.
      */
     private VirtualMachineReimageParameters profile;
 
@@ -33,7 +33,7 @@ public final class ReimageResourceOverride implements JsonSerializable<ReimageRe
     }
 
     /**
-     * Get the resourceId property: The Azure resource ID of the virtual machine for this override.
+     * Get the resourceId property: The Azure resource ID of the virtual machine to which the override applies.
      * 
      * @return the resourceId value.
      */
@@ -42,7 +42,7 @@ public final class ReimageResourceOverride implements JsonSerializable<ReimageRe
     }
 
     /**
-     * Set the resourceId property: The Azure resource ID of the virtual machine for this override.
+     * Set the resourceId property: The Azure resource ID of the virtual machine to which the override applies.
      * 
      * @param resourceId the resourceId value to set.
      * @return the ReimageResourceOverride object itself.
@@ -53,7 +53,7 @@ public final class ReimageResourceOverride implements JsonSerializable<ReimageRe
     }
 
     /**
-     * Get the profile property: Per-resource reimage profile override.
+     * Get the profile property: The reimage configuration for this virtual machine.
      * 
      * @return the profile value.
      */
@@ -62,7 +62,7 @@ public final class ReimageResourceOverride implements JsonSerializable<ReimageRe
     }
 
     /**
-     * Set the profile property: Per-resource reimage profile override.
+     * Set the profile property: The reimage configuration for this virtual machine.
      * 
      * @param profile the profile value to set.
      * @return the ReimageResourceOverride object itself.
