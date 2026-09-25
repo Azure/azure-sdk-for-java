@@ -20,7 +20,7 @@ public final class IncomingQuotaTransfersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"transferStatus\":\"Pending\",\"transferId\":\"vu\",\"transferRef\":\"raehtwdwrft\",\"sourceSubscriptionId\":\"iby\",\"sourceTenantId\":\"dl\",\"billingAccountId\":\"shfwpracstwity\",\"resourceName\":\"evxccedcp\",\"amount\":2519577399124400742,\"sourceEtag\":\"dnwzxltjcvnhltiu\",\"approval\":{\"comment\":\"navvwx\",\"actor\":\"ibyqunyowxwlmdj\",\"occurredAt\":\"2021-09-01T17:47:47Z\"},\"rejection\":{\"reason\":\"g\",\"actor\":\"vfvpdbodaciz\",\"occurredAt\":\"2021-07-05T22:49:30Z\"}},\"etag\":\"lhkrribdeibqipqk\",\"id\":\"vxndz\",\"name\":\"mkrefajpjorwkq\",\"type\":\"yhgbijtjivfx\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"transferStatus\":\"Failed\",\"transferId\":\"ujmqlgkfbtndoa\",\"transferRef\":\"gbjcntujitcjed\",\"sourceSubscriptionId\":\"wwa\",\"sourceTenantId\":\"kojvd\",\"billingAccountId\":\"zfoqouicybxar\",\"resourceName\":\"szufoxciqopidoa\",\"amount\":4762978154142225773,\"sourceEtag\":\"hkh\",\"approval\":{\"comment\":\"khnzbonlw\",\"actor\":\"toego\",\"occurredAt\":\"2021-08-27T04:05:42Z\"},\"rejection\":{\"reason\":\"whkszzcmrvexztvb\",\"actor\":\"qgsfraoyzkoow\",\"occurredAt\":\"2021-07-06T19:00:01Z\"}},\"etag\":\"nguxawqaldsy\",\"id\":\"ximerqfobwyznk\",\"name\":\"ykutwpf\",\"type\":\"pagmhrskdsnf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class IncomingQuotaTransfersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IncomingQuotaTransfer response = manager.incomingQuotaTransfers()
-            .getWithResponse("ygqukyhejh", "isxgfp", "lolp", com.azure.core.util.Context.NONE)
+            .getWithResponse("l", "wabm", "oefki", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

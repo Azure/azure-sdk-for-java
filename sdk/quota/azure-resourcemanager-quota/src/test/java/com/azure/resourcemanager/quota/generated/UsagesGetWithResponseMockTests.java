@@ -22,7 +22,7 @@ public final class UsagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"usages\":{\"value\":1097500565,\"usagesType\":\"Combined\"},\"unit\":\"i\",\"name\":{\"value\":\"ed\",\"localizedValue\":\"wwa\"},\"resourceType\":\"kojvd\",\"quotaPeriod\":\"zfoqouicybxar\",\"isQuotaApplicable\":true,\"properties\":\"dataufoxc\"},\"id\":\"opidoamciodh\",\"name\":\"haz\",\"type\":\"khnzbonlw\"}";
+            = "{\"properties\":{\"usages\":{\"value\":1825972263,\"usagesType\":\"Individual\"},\"unit\":\"uisavokq\",\"name\":{\"value\":\"vazivjlfr\",\"localizedValue\":\"tbajlkatn\"},\"resourceType\":\"yiopi\",\"quotaPeriod\":\"qqfkuv\",\"isQuotaApplicable\":false,\"properties\":\"\\\"datadmligovibrxk\\\"\"},\"id\":\"loazuruocbgoo\",\"name\":\"bteoybf\",\"type\":\"jxakv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,13 @@ public final class UsagesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        CurrentUsagesBase response
-            = manager.usages().getWithResponse("tpuqujmq", "gkfbtndoaong", com.azure.core.util.Context.NONE).getValue();
+        CurrentUsagesBase response = manager.usages()
+            .getWithResponse("ctxtgzukxi", "mmqtgqqqxhr", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(1097500565, response.properties().usages().value());
-        Assertions.assertEquals(UsagesTypes.COMBINED, response.properties().usages().usagesType());
-        Assertions.assertEquals("ed", response.properties().name().value());
-        Assertions.assertEquals("kojvd", response.properties().resourceType());
+        Assertions.assertEquals(1825972263, response.properties().usages().value());
+        Assertions.assertEquals(UsagesTypes.INDIVIDUAL, response.properties().usages().usagesType());
+        Assertions.assertEquals("vazivjlfr", response.properties().name().value());
+        Assertions.assertEquals("yiopi", response.properties().resourceType());
     }
 }

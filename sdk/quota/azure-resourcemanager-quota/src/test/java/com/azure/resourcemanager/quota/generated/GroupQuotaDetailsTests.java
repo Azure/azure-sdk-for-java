@@ -12,21 +12,20 @@ public final class GroupQuotaDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaDetails model = BinaryData.fromString(
-            "{\"resourceName\":\"c\",\"limit\":643106143486636349,\"comment\":\"ierhhbcsglummaj\",\"unit\":\"aodxo\",\"name\":{\"value\":\"dxkqpx\",\"localizedValue\":\"ajionpimexgstxg\"},\"availableLimit\":6397747610647889189,\"allocatedToSubscriptions\":{\"value\":[{\"subscriptionId\":\"jrmvdjwzrlo\",\"quotaAllocated\":6053828266727030876},{\"subscriptionId\":\"hijco\",\"quotaAllocated\":6404750437930204033}]}}")
+            "{\"resourceName\":\"kzywbiex\",\"limit\":5180032300799662241,\"comment\":\"eaxib\",\"unit\":\"jwbhqwalmuz\",\"name\":{\"value\":\"aepdkzjanc\",\"localizedValue\":\"rhdwbavxbniw\"},\"availableLimit\":4617074532054766612,\"allocatedToSubscriptions\":{\"value\":[{\"subscriptionId\":\"bpg\",\"quotaAllocated\":4841147507527178453}]}}")
             .toObject(GroupQuotaDetails.class);
-        Assertions.assertEquals("c", model.resourceName());
-        Assertions.assertEquals(643106143486636349L, model.limit());
-        Assertions.assertEquals("ierhhbcsglummaj", model.comment());
+        Assertions.assertEquals("kzywbiex", model.resourceName());
+        Assertions.assertEquals(5180032300799662241L, model.limit());
+        Assertions.assertEquals("eaxib", model.comment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotaDetails model = new GroupQuotaDetails().withResourceName("c")
-            .withLimit(643106143486636349L)
-            .withComment("ierhhbcsglummaj");
+        GroupQuotaDetails model
+            = new GroupQuotaDetails().withResourceName("kzywbiex").withLimit(5180032300799662241L).withComment("eaxib");
         model = BinaryData.fromObject(model).toObject(GroupQuotaDetails.class);
-        Assertions.assertEquals("c", model.resourceName());
-        Assertions.assertEquals(643106143486636349L, model.limit());
-        Assertions.assertEquals("ierhhbcsglummaj", model.comment());
+        Assertions.assertEquals("kzywbiex", model.resourceName());
+        Assertions.assertEquals(5180032300799662241L, model.limit());
+        Assertions.assertEquals("eaxib", model.comment());
     }
 }

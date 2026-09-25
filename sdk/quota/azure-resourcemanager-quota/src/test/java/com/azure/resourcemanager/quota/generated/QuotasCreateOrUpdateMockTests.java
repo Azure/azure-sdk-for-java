@@ -24,7 +24,7 @@ public final class QuotasCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"nyowxwlmdjrkvfg\",\"name\":{\"value\":\"vpdbodaciz\",\"localizedValue\":\"q\"},\"resourceType\":\"krribdeibqi\",\"quotaPeriod\":\"kghv\",\"isQuotaApplicable\":true,\"properties\":\"datawm\"},\"id\":\"efajpj\",\"name\":\"rwkq\",\"type\":\"yhgbijtjivfx\"}";
+            = "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"rvqeevtoepryutn\",\"name\":{\"value\":\"pzdm\",\"localizedValue\":\"zvfvaawz\"},\"resourceType\":\"dflgzuri\",\"quotaPeriod\":\"aecxndtic\",\"isQuotaApplicable\":false,\"properties\":\"\\\"datazmlqtmldgxo\\\"\"},\"id\":\"irclnpk\",\"name\":\"iayz\",\"type\":\"iykhy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class QuotasCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CurrentQuotaLimitBase response = manager.quotas()
-            .define("vk")
-            .withExistingScope("r")
+            .define("xfzwi")
+            .withExistingScope("vwzjbhyz")
             .withProperties(new QuotaProperties().withLimit(new LimitJsonObject())
-                .withName(new ResourceName().withValue("iby"))
-                .withResourceType("shfwpracstwity")
-                .withProperties("dataodn"))
+                .withName(new ResourceName().withValue("dspastjbkkdmfl"))
+                .withResourceType("zapeewchpx")
+                .withProperties("\"dataf\""))
             .create();
 
-        Assertions.assertEquals("vpdbodaciz", response.properties().name().value());
-        Assertions.assertEquals("krribdeibqi", response.properties().resourceType());
+        Assertions.assertEquals("pzdm", response.properties().name().value());
+        Assertions.assertEquals("dflgzuri", response.properties().resourceType());
     }
 }

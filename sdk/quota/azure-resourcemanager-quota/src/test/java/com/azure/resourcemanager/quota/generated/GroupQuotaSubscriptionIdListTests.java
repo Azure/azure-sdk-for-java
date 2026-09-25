@@ -12,9 +12,9 @@ public final class GroupQuotaSubscriptionIdListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaSubscriptionIdList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"subscriptionId\":\"wlbjnpgacftade\",\"provisioningState\":\"Canceled\"},\"id\":\"tyfsoppusuesn\",\"name\":\"wd\",\"type\":\"jbavorxzdm\"},{\"properties\":{\"subscriptionId\":\"tbqvudw\",\"provisioningState\":\"Invalid\"},\"id\":\"nvowgujju\",\"name\":\"wdkcglhsl\",\"type\":\"zj\"}],\"nextLink\":\"ggd\"}")
+            "{\"value\":[{\"properties\":{\"subscriptionId\":\"lmoyrx\",\"provisioningState\":\"Succeeded\"},\"id\":\"dw\",\"name\":\"zntxhdz\",\"type\":\"lrqjbhckfr\"}],\"nextLink\":\"rxsbkyvp\"}")
             .toObject(GroupQuotaSubscriptionIdList.class);
-        Assertions.assertEquals("wlbjnpgacftade", model.value().get(0).properties().subscriptionId());
-        Assertions.assertEquals("ggd", model.nextLink());
+        Assertions.assertEquals("lmoyrx", model.value().get(0).properties().subscriptionId());
+        Assertions.assertEquals("rxsbkyvp", model.nextLink());
     }
 }
