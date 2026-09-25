@@ -1,0 +1,10 @@
+diff --git a/sdk/contoso/azure-contoso-widgets/pom.xml b/sdk/contoso/azure-contoso-widgets/pom.xml
+index 1111111..2222222 100644
+--- a/sdk/contoso/azure-contoso-widgets/pom.xml
++++ b/sdk/contoso/azure-contoso-widgets/pom.xml
+@@ -8,4 +8,4 @@
+   <groupId>com.azure</groupId>
+   <artifactId>azure-contoso-widgets</artifactId>
+-  <version>1.1.0</version>
++  <version>1.2.0</version>
+ </project>
