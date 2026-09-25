@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.RecoveryActionReque
  */
 public final class RecoveryJobsCancelSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RecoveryJobs_Cancel_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/RecoveryJobs_Cancel_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryJobs_Cancel_MaximumSet.

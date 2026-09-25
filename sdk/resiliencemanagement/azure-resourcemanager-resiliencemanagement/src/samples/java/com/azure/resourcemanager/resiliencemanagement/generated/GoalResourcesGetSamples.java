@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class GoalResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalResources_Get_Complete_Example.json
+     * x-ms-original-file: 2026-08-31-preview/GoalResources_Get_Complete_Example.json
      */
     /**
      * Sample code: GoalResources_Get_Complete_Example.
@@ -24,7 +24,7 @@ public final class GoalResourcesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/GoalResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalResources_Get_MaximumSet.
@@ -38,7 +38,7 @@ public final class GoalResourcesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalResources_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/GoalResources_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: GoalResources_Get_MinimumSet.
