@@ -125,8 +125,8 @@ public class SessionAuthenticationPolicyTest {
 
     @Test
     public void featureNotEnabledSessionAcquisitionStartsCooldown() {
-        HttpHeaders headers = new HttpHeaders().set(Constants.HeaderConstants.ERROR_CODE_HEADER_NAME,
-            "FeatureNotEnabled");
+        HttpHeaders headers
+            = new HttpHeaders().set(Constants.HeaderConstants.ERROR_CODE_HEADER_NAME, "FeatureNotEnabled");
         BlobStorageException failure
             = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 400, headers), null);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(failure));

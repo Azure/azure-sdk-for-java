@@ -2819,8 +2819,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     private SessionOptions sessionEnabledOptions() {
-        return new SessionOptions().setSessionMode(SessionMode.ENABLED)
-            .setAccountName(cc.getAccountName());
+        return new SessionOptions().setSessionMode(SessionMode.ENABLED).setAccountName(cc.getAccountName());
     }
 
 }

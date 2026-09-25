@@ -2655,8 +2655,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     private SessionOptions sessionEnabledOptions() {
-        return new SessionOptions().setSessionMode(SessionMode.ENABLED)
-            .setAccountName(ccAsync.getAccountName());
+        return new SessionOptions().setSessionMode(SessionMode.ENABLED).setAccountName(ccAsync.getAccountName());
     }
 
 }

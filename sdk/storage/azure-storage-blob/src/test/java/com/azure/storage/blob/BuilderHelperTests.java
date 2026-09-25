@@ -772,11 +772,12 @@ public class BuilderHelperTests {
 
     @Test
     public void customEndpointRequiresAccountNameForDefaultSessionProvider() {
-        assertThrows(IllegalArgumentException.class, () -> BuilderHelper.buildPipeline(null, new MockTokenCredential(),
-            null, null, "https://custom.endpoint.example/", REQUEST_RETRY_OPTIONS, null,
-            BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
-            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), new SessionOptions(),
-            BlobServiceVersion.getLatest()));
+        assertThrows(IllegalArgumentException.class,
+            () -> BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null,
+                "https://custom.endpoint.example/", REQUEST_RETRY_OPTIONS, null,
+                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
+                new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), new SessionOptions(),
+                BlobServiceVersion.getLatest()));
     }
 
     @Test

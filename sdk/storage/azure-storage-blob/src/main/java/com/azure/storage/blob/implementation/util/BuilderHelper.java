@@ -169,8 +169,7 @@ public final class BuilderHelper {
                 if (sessionProvider == null) {
                     String accountName = resolveSessionAccountName(endpoint, sessionOptions.getAccountName());
                     sessionProvider = createDefaultSessionProvider(policies, bearerPolicy, postAuthenticationPolicies,
-                        effectiveHttpClient, clientOptions, endpoint, effectiveServiceVersion,
-                        accountName);
+                        effectiveHttpClient, clientOptions, endpoint, effectiveServiceVersion, accountName);
                 }
                 policies.add(new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionOptions));
             }

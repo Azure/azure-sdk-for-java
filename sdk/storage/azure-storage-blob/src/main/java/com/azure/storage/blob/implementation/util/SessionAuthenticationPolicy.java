@@ -313,8 +313,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             return true;
         }
 
-        return statusCode == 400
-            && "FeatureNotEnabled".equals(response.getHeaderValue(ERROR_CODE_HEADER_NAME));
+        return statusCode == 400 && "FeatureNotEnabled".equals(response.getHeaderValue(ERROR_CODE_HEADER_NAME));
     }
 
     private boolean isContainerInCooldown(String containerName) {
