@@ -236,9 +236,18 @@ public class SessionAuthenticationPolicyTest {
     @Test
     public void policyInvalidatesSessionAndFallsBackToBearerAsync() {
         HttpRequest request = blobGetRequest();
+        String date = "Thu, 24 Sep 2026 00:00:00 GMT";
+        request.setHeader(HttpHeaderName.DATE, date);
         WireTapHttpClient transport = bearerFallbackTransport(401);
 
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
+        doAnswer(invocation -> {
+            assertNull(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            assertNull(request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-date")));
+            assertEquals(date, request.getHeaders().getValue(HttpHeaderName.DATE));
+            HttpPipelineNextPolicy next = invocation.getArgument(1);
+            return next.process();
+        }).when(bearerPolicy).process(any(), any());
 
         StepVerifier.create(buildPipeline(transport).send(request))
             .assertNext(r -> assertEquals(200, r.getStatusCode()))
@@ -415,6 +424,8 @@ public class SessionAuthenticationPolicyTest {
     @Test
     public void policyInvalidatesSessionAndFallsBackToBearerSync() {
         HttpPipelineCallContext context = createContext();
+        String date = "Thu, 24 Sep 2026 00:00:00 GMT";
+        context.getHttpRequest().setHeader(HttpHeaderName.DATE, date);
         HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
         HttpPipelineNextSyncPolicy retryNext = mock(HttpPipelineNextSyncPolicy.class);
         HttpResponse initialResponse = mock(HttpResponse.class);
@@ -426,6 +437,13 @@ public class SessionAuthenticationPolicyTest {
         when(retryNext.processSync()).thenReturn(retriedResponse);
         when(initialResponse.getStatusCode()).thenReturn(401);
         when(retriedResponse.getStatusCode()).thenReturn(200);
+        doAnswer(invocation -> {
+            assertNull(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            assertNull(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.fromString("x-ms-date")));
+            assertEquals(date, context.getHttpRequest().getHeaders().getValue(HttpHeaderName.DATE));
+            HttpPipelineNextSyncPolicy bearerNext = invocation.getArgument(1);
+            return bearerNext.processSync();
+        }).when(bearerPolicy).processSync(any(), any());
 
         try (HttpResponse actualResponse = policy.processSync(context, next)) {
             assertEquals(retriedResponse, actualResponse);

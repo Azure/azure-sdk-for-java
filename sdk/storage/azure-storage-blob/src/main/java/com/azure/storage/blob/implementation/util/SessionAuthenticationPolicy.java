@@ -180,6 +180,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             response.close();
             context.setData(RETRY_CONTEXT_KEY, true);
             context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+            context.getHttpRequest().getHeaders().remove(X_MS_DATE);
             return bearerPolicy.process(context, retryNext);
         }
 
@@ -203,6 +204,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
             response.close();
             context.setData(RETRY_CONTEXT_KEY, true);
             context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+            context.getHttpRequest().getHeaders().remove(X_MS_DATE);
             return bearerPolicy.processSync(context, retryNext);
         }
 
