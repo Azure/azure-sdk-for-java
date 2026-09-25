@@ -9,15 +9,15 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionsEnableSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_Enable_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_Enable_BasicSuccess.json
      */
     /**
-     * Sample code: Enable a scheduled action.
+     * Sample code: Enable a recurring scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void
-        enableAScheduledAction(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
-        manager.scheduledActions().enable("rgcompute", "myScheduledAction", com.azure.core.util.Context.NONE);
+    public static void enableARecurringScheduledAction(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions().enable("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }
 }

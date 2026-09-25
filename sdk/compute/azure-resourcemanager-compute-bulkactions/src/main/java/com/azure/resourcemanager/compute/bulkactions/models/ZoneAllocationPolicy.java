@@ -13,17 +13,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The zone allocation policy for distributing VMs across availability zones.
+ * The preferences for distributing virtual machines across availability zones.
  */
 @Fluent
 public final class ZoneAllocationPolicy implements JsonSerializable<ZoneAllocationPolicy> {
     /*
-     * The distribution strategy for zone allocation
+     * The strategy used to distribute virtual machines across availability zones.
      */
     private DistributionStrategy distributionStrategy;
 
     /*
-     * The zone preferences for allocation priority
+     * The availability zones and their allocation priorities.
      */
     private List<ZonePreference> zonePreferences;
 
@@ -34,7 +34,8 @@ public final class ZoneAllocationPolicy implements JsonSerializable<ZoneAllocati
     }
 
     /**
-     * Get the distributionStrategy property: The distribution strategy for zone allocation.
+     * Get the distributionStrategy property: The strategy used to distribute virtual machines across availability
+     * zones.
      * 
      * @return the distributionStrategy value.
      */
@@ -43,7 +44,8 @@ public final class ZoneAllocationPolicy implements JsonSerializable<ZoneAllocati
     }
 
     /**
-     * Set the distributionStrategy property: The distribution strategy for zone allocation.
+     * Set the distributionStrategy property: The strategy used to distribute virtual machines across availability
+     * zones.
      * 
      * @param distributionStrategy the distributionStrategy value to set.
      * @return the ZoneAllocationPolicy object itself.
@@ -54,7 +56,7 @@ public final class ZoneAllocationPolicy implements JsonSerializable<ZoneAllocati
     }
 
     /**
-     * Get the zonePreferences property: The zone preferences for allocation priority.
+     * Get the zonePreferences property: The availability zones and their allocation priorities.
      * 
      * @return the zonePreferences value.
      */
@@ -63,7 +65,7 @@ public final class ZoneAllocationPolicy implements JsonSerializable<ZoneAllocati
     }
 
     /**
-     * Set the zonePreferences property: The zone preferences for allocation priority.
+     * Set the zonePreferences property: The availability zones and their allocation priorities.
      * 
      * @param zonePreferences the zonePreferences value to set.
      * @return the ZoneAllocationPolicy object itself.

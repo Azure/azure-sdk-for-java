@@ -4,71 +4,54 @@
 
 package com.azure.resourcemanager.compute.bulkactions.generated;
 
-import com.azure.resourcemanager.compute.bulkactions.models.Language;
 import com.azure.resourcemanager.compute.bulkactions.models.Month;
-import com.azure.resourcemanager.compute.bulkactions.models.NotificationProperties;
-import com.azure.resourcemanager.compute.bulkactions.models.NotificationType;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourceType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdate;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdateProperties;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsDeadlineType;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsScheduleUpdate;
 import com.azure.resourcemanager.compute.bulkactions.models.WeekDay;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Samples for ScheduledActions Update.
  */
 public final class ScheduledActionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_Update_ComprehensiveSuccess.json
      */
     /**
-     * Sample code: Update a scheduled action.
+     * Sample code: 02 - Update a recurring scheduled action schedule.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void zeroTwoSpaceHyphenMinusSpaceUpdateSpaceaSpacerecurringSpacescheduledSpaceactionSpaceschedule(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .update("example-rg", "weekday-start",
+                new ScheduledActionUpdate().withProperties(new ScheduledActionUpdateProperties()
+                    .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("19:00:00")
+                        .withTimeZone("America/Los_Angeles")
+                        .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
+                        .withRequestedMonths(Arrays.asList(Month.JANUARY))
+                        .withRequestedDaysOfTheMonth(Arrays.asList(15)))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_Update_BasicSuccess.json
+     */
+    /**
+     * Sample code: 01 - Update the action type of a recurring scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        updateAScheduledAction(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        zeroOneSpaceHyphenMinusSpaceUpdateSpacetheSpaceactionSpacetypeSpaceofSpaceaSpacerecurringSpacescheduledSpaceaction(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
-            .update("rgcompute", "myScheduledAction",
-                new ScheduledActionUpdate().withTags(mapOf("key9989", "fakeTokenPlaceholder"))
-                    .withProperties(new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
-                        .withActionType(ScheduledActionType.START)
-                        .withStartTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
-                        .withEndTime(OffsetDateTime.parse("2025-04-17T00:23:58.149Z"))
-                        .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("19:00:00")
-                            .withTimeZone("America/Los_Angeles")
-                            .withRequestedWeekDays(Arrays.asList(WeekDay.MONDAY))
-                            .withRequestedMonths(Arrays.asList(Month.JANUARY))
-                            .withRequestedDaysOfTheMonth(Arrays.asList(15))
-                            .withExecutionParameters(new ScheduledActionsExecutionParameters().withRetryPolicy(
-                                new ScheduledActionsRetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
-                            .withDeadlineType(ScheduledActionsDeadlineType.INITIATE_AT))
-                        .withNotificationSettings(
-                            Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
-                                .withType(NotificationType.EMAIL)
-                                .withLanguage(Language.EN_US)
-                                .withDisabled(true)))
-                        .withDisabled(true)),
+            .update("example-rg", "weekday-start",
+                new ScheduledActionUpdate().withProperties(
+                    new ScheduledActionUpdateProperties().withActionType(ScheduledActionType.DEALLOCATE)),
                 com.azure.core.util.Context.NONE);
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }

@@ -16,31 +16,76 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsAttachResourcesSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_AttachResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_AttachResources_ComprehensiveSuccess.json
      */
     /**
-     * Sample code: Add resources to a scheduled action.
+     * Sample code: 02 - Attach resources to a recurring scheduled action with individual notification settings.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void addResourcesToAScheduledAction(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceAttachSpaceresourcesSpacetoSpaceaSpacerecurringSpacescheduledSpaceactionSpacewithSpaceindividualSpacenotificationSpacesettings(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
-            .attachResources("rgcompute", "myScheduledAction", new ResourceAttachRequest().withResources(Arrays.asList(
+            .attachResources("example-rg", "weekday-start", new ResourceAttachRequest().withResources(Arrays.asList(
                 new ScheduledActionResourceInput().withResourceId(
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01")
                     .withNotificationSettings(
-                        Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
+                        Arrays.asList(new NotificationProperties().withDestination("web-operations@contoso.com")
                             .withType(NotificationType.EMAIL)
                             .withLanguage(Language.EN_US)
-                            .withDisabled(true))),
+                            .withDisabled(false))),
                 new ScheduledActionResourceInput().withResourceId(
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2")
-                    .withNotificationSettings(
-                        Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")
+                    .withNotificationSettings(Arrays.asList(
+                        new NotificationProperties().withDestination("service-owners@contoso.com")
+                            .withType(NotificationType.EMAIL)
+                            .withLanguage(Language.EN_US)
+                            .withDisabled(false),
+                        new NotificationProperties().withDestination("audit@contoso.com")
                             .withType(NotificationType.EMAIL)
                             .withLanguage(Language.EN_US)
                             .withDisabled(true))))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_AttachResources_BasicSuccess.json
+     */
+    /**
+     * Sample code: 01 - Attach resources to a recurring scheduled action.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroOneSpaceHyphenMinusSpaceAttachSpaceresourcesSpacetoSpaceaSpacerecurringSpacescheduledSpaceaction(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .attachResources("example-rg", "weekday-start", new ResourceAttachRequest().withResources(Arrays.asList(
+                new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+                new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_AttachResources_PartialSuccess.json
+     */
+    /**
+     * Sample code: 03 - Response with partial results when attaching resources to a recurring scheduled action.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpaceattachingSpaceresourcesSpacetoSpaceaSpacerecurringSpacescheduledSpaceaction(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .attachResources("example-rg", "weekday-start", new ResourceAttachRequest().withResources(Arrays.asList(
+                new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01"),
+                new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02"))),
                 com.azure.core.util.Context.NONE);
     }
 }

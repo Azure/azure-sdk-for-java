@@ -8,21 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The allocation strategy for VM size selection.
+ * The strategy Bulk Actions uses to select a virtual machine size.
  */
 public final class AllocationStrategy extends ExpandableStringEnum<AllocationStrategy> {
     /**
-     * Platform prioritizes VM sizes with the lowest hourly cost.
+     * Bulk Actions prioritizes virtual machine sizes with the lowest hourly cost.
      */
     public static final AllocationStrategy LOWEST_PRICE = fromString("LowestPrice");
 
     /**
-     * Customer specifies a rank for each VM size, platform uses VM sizes in rank order.
+     * Bulk Actions considers virtual machine sizes in the customer-specified rank order.
      */
     public static final AllocationStrategy PRIORITIZED = fromString("Prioritized");
 
     /**
-     * Platform prioritizes VM sizes with the highest available capacity first.
+     * Bulk Actions prioritizes virtual machine sizes with the highest available capacity.
      */
     public static final AllocationStrategy CAPACITY_OPTIMIZED = fromString("CapacityOptimized");
 

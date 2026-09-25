@@ -9,15 +9,29 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class OccurrencesListByScheduledActionSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/Occurrences_ListByScheduledAction_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/Occurrences_ListByScheduledAction_BasicSuccess.json
      */
     /**
-     * Sample code: List occurrences for a scheduled action.
+     * Sample code: 01 - List recurring scheduled action occurrences.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void listOccurrencesForAScheduledAction(
+    public static void zeroOneSpaceHyphenMinusSpaceListSpacerecurringSpacescheduledSpaceactionSpaceoccurrences(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
-        manager.occurrences().listByScheduledAction("rgcompute", "myScheduledAction", com.azure.core.util.Context.NONE);
+        manager.occurrences().listByScheduledAction("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-06-preview/Occurrences_ListByScheduledAction_PagedSuccess.json
+     */
+    /**
+     * Sample code: 02 - List a page of recurring scheduled action occurrences.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceListSpaceaSpacepageSpaceofSpacerecurringSpacescheduledSpaceactionSpaceoccurrences(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.occurrences().listByScheduledAction("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }
 }

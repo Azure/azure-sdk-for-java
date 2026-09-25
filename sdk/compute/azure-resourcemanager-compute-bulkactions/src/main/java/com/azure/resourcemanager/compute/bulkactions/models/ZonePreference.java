@@ -12,17 +12,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * A zone preference with a zone identifier and rank.
+ * An availability zone and its allocation priority.
  */
 @Fluent
 public final class ZonePreference implements JsonSerializable<ZonePreference> {
     /*
-     * The zone identifier
+     * The availability zone identifier.
      */
     private String zone;
 
     /*
-     * The rank of this zone in the priority order
+     * The customer-defined priority rank for this availability zone.
      */
     private int rank;
 
@@ -39,7 +39,7 @@ public final class ZonePreference implements JsonSerializable<ZonePreference> {
     }
 
     /**
-     * Get the zone property: The zone identifier.
+     * Get the zone property: The availability zone identifier.
      * 
      * @return the zone value.
      */
@@ -48,7 +48,7 @@ public final class ZonePreference implements JsonSerializable<ZonePreference> {
     }
 
     /**
-     * Set the zone property: The zone identifier.
+     * Set the zone property: The availability zone identifier.
      * 
      * @param zone the zone value to set.
      * @return the ZonePreference object itself.
@@ -59,7 +59,7 @@ public final class ZonePreference implements JsonSerializable<ZonePreference> {
     }
 
     /**
-     * Get the rank property: The rank of this zone in the priority order.
+     * Get the rank property: The customer-defined priority rank for this availability zone.
      * 
      * @return the rank value.
      */
@@ -68,7 +68,7 @@ public final class ZonePreference implements JsonSerializable<ZonePreference> {
     }
 
     /**
-     * Set the rank property: The rank of this zone in the priority order.
+     * Set the rank property: The customer-defined priority rank for this availability zone.
      * 
      * @param rank the rank value to set.
      * @return the ZonePreference object itself.

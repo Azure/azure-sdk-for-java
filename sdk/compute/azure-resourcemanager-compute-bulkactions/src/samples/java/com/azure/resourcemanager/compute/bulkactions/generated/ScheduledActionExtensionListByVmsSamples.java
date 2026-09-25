@@ -12,11 +12,11 @@ public final class ScheduledActionExtensionListByVmsSamples {
      * x-ms-original-file: 2026-09-06-preview/ScheduledActionExtension_ListByVms_MaximumSet_Gen.json
      */
     /**
-     * Sample code: List scheduled actions for a compute resource.
+     * Sample code: List recurring scheduled actions for a VM.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void listScheduledActionsForAComputeResource(
+    public static void listRecurringScheduledActionsForAVM(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActionExtensions()
             .listByVms(

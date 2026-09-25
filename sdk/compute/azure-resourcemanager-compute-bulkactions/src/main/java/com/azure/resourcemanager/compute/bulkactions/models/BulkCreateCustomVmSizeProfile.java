@@ -19,12 +19,12 @@ import java.io.IOException;
 @Fluent
 public final class BulkCreateCustomVmSizeProfile implements JsonSerializable<BulkCreateCustomVmSizeProfile> {
     /*
-     * The name of the VM size, eg Standard_D2ads_v5
+     * The virtual machine SKU, for example `Standard_D2ads_v5`.
      */
     private String name;
 
     /*
-     * The rank of this VM size in the priority order
+     * The customer-defined priority rank for this virtual machine size.
      */
     private int rank;
 
@@ -42,7 +42,7 @@ public final class BulkCreateCustomVmSizeProfile implements JsonSerializable<Bul
     }
 
     /**
-     * Get the name property: The name of the VM size, eg Standard_D2ads_v5.
+     * Get the name property: The virtual machine SKU, for example `Standard_D2ads_v5`.
      * 
      * @return the name value.
      */
@@ -51,7 +51,7 @@ public final class BulkCreateCustomVmSizeProfile implements JsonSerializable<Bul
     }
 
     /**
-     * Set the name property: The name of the VM size, eg Standard_D2ads_v5.
+     * Set the name property: The virtual machine SKU, for example `Standard_D2ads_v5`.
      * 
      * @param name the name value to set.
      * @return the BulkCreateCustomVmSizeProfile object itself.
@@ -62,7 +62,7 @@ public final class BulkCreateCustomVmSizeProfile implements JsonSerializable<Bul
     }
 
     /**
-     * Get the rank property: The rank of this VM size in the priority order.
+     * Get the rank property: The customer-defined priority rank for this virtual machine size.
      * 
      * @return the rank value.
      */
@@ -71,7 +71,7 @@ public final class BulkCreateCustomVmSizeProfile implements JsonSerializable<Bul
     }
 
     /**
-     * Set the rank property: The rank of this VM size in the priority order.
+     * Set the rank property: The customer-defined priority rank for this virtual machine size.
      * 
      * @param rank the rank value to set.
      * @return the BulkCreateCustomVmSizeProfile object itself.

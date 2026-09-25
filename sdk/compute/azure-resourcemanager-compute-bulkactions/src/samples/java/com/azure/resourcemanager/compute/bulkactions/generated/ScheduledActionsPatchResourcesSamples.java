@@ -16,26 +16,91 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsPatchResourcesSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_PatchResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_PatchResources_ComprehensiveSuccess.json
      */
     /**
-     * Sample code: Update resource settings for a scheduled action.
+     * Sample code: 02 - Update resource-specific notification settings for a recurring scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void updateResourceSettingsForAScheduledAction(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceUpdateSpaceresourceHyphenMinusspecificSpacenotificationSpacesettingsSpaceforSpaceaSpacerecurringSpacescheduledSpaceaction(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
-            .patchResourcesWithResponse("rgcompute", "myScheduledAction", new ResourcePatchRequest()
+            .patchResourcesWithResponse("example-rg", "weekday-start", new ResourcePatchRequest()
                 .withResources(Arrays.asList(new ScheduledActionResourceInput().withResourceId(
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01")
+                    .withNotificationSettings(
+                        Arrays.asList(new NotificationProperties().withDestination("web-operations@contoso.com")
+                            .withType(NotificationType.EMAIL)
+                            .withLanguage(Language.EN_US)
+                            .withDisabled(false))),
+                    new ScheduledActionResourceInput().withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")
+                        .withNotificationSettings(Arrays.asList(
+                            new NotificationProperties().withDestination("service-owners@contoso.com")
+                                .withType(NotificationType.EMAIL)
+                                .withLanguage(Language.EN_US)
+                                .withDisabled(false),
+                            new NotificationProperties().withDestination("audit@contoso.com")
+                                .withType(NotificationType.EMAIL)
+                                .withLanguage(Language.EN_US)
+                                .withDisabled(true))))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_PatchResources_BasicSuccess.json
+     */
+    /**
+     * Sample code: 01 - Update settings for recurring scheduled action resources.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroOneSpaceHyphenMinusSpaceUpdateSpacesettingsSpaceforSpacerecurringSpacescheduledSpaceactionSpaceresources(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .patchResourcesWithResponse("example-rg", "weekday-start", new ResourcePatchRequest()
+                .withResources(Arrays.asList(new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01")
+                    .withNotificationSettings(
+                        Arrays.asList(new NotificationProperties().withDestination("operations@contoso.com")
+                            .withType(NotificationType.EMAIL)
+                            .withLanguage(Language.EN_US)
+                            .withDisabled(false))),
+                    new ScheduledActionResourceInput().withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")
+                        .withNotificationSettings(
+                            Arrays.asList(new NotificationProperties().withDestination("operations@contoso.com")
+                                .withType(NotificationType.EMAIL)
+                                .withLanguage(Language.EN_US)
+                                .withDisabled(false))))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_PatchResources_PartialSuccess.json
+     */
+    /**
+     * Sample code: 03 - Response with partial results when updating recurring scheduled action resources.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpaceresultsSpacewhenSpaceupdatingSpacerecurringSpacescheduledSpaceactionSpaceresources(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions()
+            .patchResourcesWithResponse("example-rg", "weekday-start", new ResourcePatchRequest()
+                .withResources(Arrays.asList(new ScheduledActionResourceInput().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01")
                     .withNotificationSettings(
                         Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
                             .withType(NotificationType.EMAIL)
                             .withLanguage(Language.EN_US)
                             .withDisabled(true))),
                     new ScheduledActionResourceInput().withResourceId(
-                        "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2")
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")
                         .withNotificationSettings(
                             Arrays.asList(new NotificationProperties().withDestination("admin@contoso.com")
                                 .withType(NotificationType.EMAIL)

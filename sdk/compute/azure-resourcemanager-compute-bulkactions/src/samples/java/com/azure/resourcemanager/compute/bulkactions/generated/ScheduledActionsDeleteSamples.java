@@ -9,15 +9,15 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_Delete_BasicSuccess.json
      */
     /**
-     * Sample code: Delete a scheduled action.
+     * Sample code: Delete a recurring scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void
-        deleteAScheduledAction(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
-        manager.scheduledActions().delete("rgcompute", "myScheduledAction", com.azure.core.util.Context.NONE);
+    public static void deleteARecurringScheduledAction(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.scheduledActions().delete("example-rg", "weekday-start", com.azure.core.util.Context.NONE);
     }
 }
