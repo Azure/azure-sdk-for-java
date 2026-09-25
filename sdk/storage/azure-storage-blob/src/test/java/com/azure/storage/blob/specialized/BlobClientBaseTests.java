@@ -525,7 +525,7 @@ public class BlobClientBaseTests extends BlobTestBase {
 
     @DoNotRecord
     @Test
-    public void openInputStreamWithDefaultDataLocalityUsesSyncLayoutProvider() throws IOException {
+    public void openInputStreamWithDefaultDataLocalityUsesAsyncLayoutProvider() throws IOException {
         byte[] contentBytes = createTestContent();
         List<LayoutRequestRecord> records = new ArrayList<>();
         SeekableReadHttpClient httpClient = new SeekableReadHttpClient(contentBytes, true, 200, SEEKABLE_LAYOUT_XML);
@@ -544,7 +544,7 @@ public class BlobClientBaseTests extends BlobTestBase {
             .filter(record -> record.requestUrl.contains("comp=layout"))
             .findFirst()
             .orElseThrow(() -> new AssertionError("Expected a layout request."));
-        assertTrue(layoutRequest.syncCall, "Expected the layout request to use the synchronous pipeline.");
+        assertFalse(layoutRequest.syncCall, "Expected the layout cache to acquire values through the async pipeline.");
         assertEquals(CALLER_CONTEXT_VALUE, layoutRequest.callerContextValue);
         assertArrayEquals(contentBytes, readBytes);
     }
