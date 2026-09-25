@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixed connection and transport resources not being disposed when a remote endpoint closes a connection with an AMQP
+  error condition. ([#49440](https://github.com/Azure/azure-sdk-for-java/issues/49440))
+
 ### Other Changes
 
 ## 2.13.0-beta.1 (2026-08-27)
