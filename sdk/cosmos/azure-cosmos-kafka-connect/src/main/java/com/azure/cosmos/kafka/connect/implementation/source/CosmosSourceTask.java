@@ -538,14 +538,10 @@ public class CosmosSourceTask extends BufferedSourceTask {
     }
 
     @Override
-    public void stop() {
+    protected void stopTask() {
         LOGGER.info("Stopping CosmosSourceTask");
-        try {
-            this.logFeedRangeCounts(true);
-            this.cleanup();
-        } finally {
-            this.stopPolling();
-        }
+        this.logFeedRangeCounts(true);
+        this.cleanup();
     }
 
     private static class FeedRangeLoggingContext {
