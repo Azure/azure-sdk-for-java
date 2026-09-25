@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class OrganizationsGetElasticToAzureSubscriptionMappingSamples {
     /*
-     * x-ms-original-file: 2025-06-01/Organizations_GetElasticToAzureSubscriptionMapping.json
+     * x-ms-original-file: 2026-03-15-preview/Organizations_GetElasticToAzureSubscriptionMapping.json
      */
     /**
      * Sample code: Organizations_GetElasticToAzureSubscriptionMapping.

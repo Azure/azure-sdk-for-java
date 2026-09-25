@@ -27,7 +27,7 @@ public final class MonitorsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.monitors().delete("dbnw", "cf", com.azure.core.util.Context.NONE);
+        manager.monitors().delete("dbnw", "cf", true, com.azure.core.util.Context.NONE);
 
     }
 }
