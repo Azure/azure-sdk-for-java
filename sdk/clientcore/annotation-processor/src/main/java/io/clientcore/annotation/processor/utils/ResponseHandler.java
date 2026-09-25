@@ -20,12 +20,12 @@ import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.GeneratedCodeUtils;
 import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -41,53 +41,58 @@ public final class ResponseHandler {
      * @param body the method builder to append generated code.
      * @param returnType the return type of the method.
      * @param method whether request options are used.
-     * @param serializationFormatSet indicates if a serialization format is set.
      */
-    public static void generateResponseHandling(BlockStmt body, TypeMirror returnType, HttpRequestContext method,
-        boolean serializationFormatSet) {
+    public static void generateResponseHandling(BlockStmt body, TypeMirror returnType, HttpRequestContext method) {
         java.lang.reflect.Type entityType = TypeConverter.getEntityType(returnType);
 
-        boolean usingTryWithResources = useTryWithResources(entityType, method);
-        if (usingTryWithResources) {
-            TryStmt statement = StaticJavaParser
-                .parseStatement("try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {}")
-                .asTryStmt();
-            statement.setLineComment("\n Send the request through the httpPipeline");
+        boolean usingTryWithResources = useTryWithResources(entityType);
+        Statement sendStatement = StaticJavaParser
+            .parseStatement("Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);");
+        sendStatement.setLineComment("\n Send the request through the httpPipeline");
+        body.addStatement(sendStatement);
 
-            body.addStatement(statement);
-            body = statement.getTryBlock();
-        } else {
-            Statement statement = StaticJavaParser
-                .parseStatement("Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);");
-            statement.setLineComment("\n Send the request through the httpPipeline");
-            body.addStatement(statement);
+        validateResponseStatus(body, method);
+
+        TryStmt closingStatement = null;
+        if (usingTryWithResources) {
+            closingStatement = StaticJavaParser
+                .parseStatement("try (Response<BinaryData> networkResponseToClose = networkResponse) {}")
+                .asTryStmt();
+            body.addStatement(closingStatement);
+            body = closingStatement.getTryBlock();
         }
 
-        validateResponseStatus(body, method, usingTryWithResources);
-
-        handleRequestReturn(body, returnType, entityType, method, serializationFormatSet);
+        handleRequestReturn(body, returnType, entityType, method);
+        if (usingTryWithResources) {
+            body.findAll(NameExpr.class)
+                .stream()
+                .filter(expression -> "networkResponse".equals(expression.getNameAsString()))
+                .forEach(expression -> expression.setName("networkResponseToClose"));
+            boolean responseIsReferenced = body.findAll(NameExpr.class)
+                .stream()
+                .anyMatch(expression -> "networkResponseToClose".equals(expression.getNameAsString()));
+            if (!responseIsReferenced) {
+                closingStatement.getResources().clear();
+                closingStatement.setFinallyBlock(
+                    new BlockStmt().addStatement(StaticJavaParser.parseStatement("networkResponse.close();")));
+            }
+        }
     }
 
-    private static boolean useTryWithResources(java.lang.reflect.Type entityType, HttpRequestContext method) {
+    static boolean useTryWithResources(java.lang.reflect.Type entityType) {
         // Use try-with-resources, where the Response<BinaryData> is the resource, if one of the following are true:
         // - Return type is a Void.class, exclude void.class as that will be handled separately.
         // - The request used method HEAD and return type boolean.
         // - Return type is byte[], which will consume the entire network response eagerly.
         // - Return type isn't InputStream or BinaryData, both will need to have the network response remain open.
-        if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)
-            || TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
-            return false;
-        }
-
-        return entityType == Void.class
-            || (method.getHttpMethod() == HttpMethod.HEAD && isBooleanType(entityType))
-            || TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class);
+        return entityType != Void.TYPE
+            && !TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)
+            && !TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class);
     }
 
-    private static void validateResponseStatus(BlockStmt body, HttpRequestContext method,
-        boolean usingTryWithResources) {
+    private static void validateResponseStatus(BlockStmt body, HttpRequestContext method) {
         addStatusCodeCheck(body, method);
-        addExceptionHandling(body, method, usingTryWithResources);
+        addExceptionHandling(body, method);
     }
 
     private static void addStatusCodeCheck(BlockStmt body, HttpRequestContext method) {
@@ -97,7 +102,7 @@ public final class ResponseHandler {
         body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck + ";"));
     }
 
-    private static void addExceptionHandling(BlockStmt body, HttpRequestContext method, boolean usingTryWithResources) {
+    static void addExceptionHandling(BlockStmt body, HttpRequestContext method) {
         BlockStmt errorBlock = new BlockStmt();
         body.tryAddImportToParentCompilationUnit(GeneratedCodeUtils.class);
         Map<Integer, HttpRequestContext.ExceptionBodyTypeInfo> mappings = method.getExceptionBodyMappings();
@@ -129,9 +134,6 @@ public final class ResponseHandler {
             stmt.setLineComment("\n Handle unexpected response");
             errorBlock.addStatement(stmt);
         }
-        if (!usingTryWithResources) {
-            closeResponse(errorBlock);
-        }
         IfStmt ifStmt = new IfStmt()
             .setCondition(new UnaryExpr(new NameExpr("expectedResponse"), UnaryExpr.Operator.LOGICAL_COMPLEMENT))
             .setThenStmt(errorBlock);
@@ -158,11 +160,9 @@ public final class ResponseHandler {
     }
 
     private static void handleRequestReturn(BlockStmt body, TypeMirror returnType, java.lang.reflect.Type entityType,
-        HttpRequestContext method, boolean serializationFormatSet) {
+        HttpRequestContext method) {
         boolean returnIsResponse = TypeConverter.isResponseType(returnType);
 
-        // TODO (alzimmer): Base64Uri needs to be handled. Determine how this will show up in code generation and then
-        //  add support for it.
         if (returnType.getKind() == TypeKind.VOID) {
             // This handles the case where the API returns 'void' itself. This will result in code such as
             // "networkResponse.close()" as 'void' return doesn't use try-with-resources as the compiler will complain
@@ -177,28 +177,7 @@ public final class ResponseHandler {
             // HTTP method was either HEAD or the return is a boolean. Use the status code to determine response value.
             addReturnStatement(body, returnIsResponse, "expectedResponse");
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
-            // Return is a byte[]. Convert the network response body into a byte[].
-            body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = networkResponse.getValue();"));
-            // If the wire type is Base64Uri, decode it accordingly.
-            boolean isBase64Uri = false;
-            TypeMirror wireType = method.getReturnValueWireType();
-            if (wireType != null && wireType.getKind() == TypeKind.DECLARED) {
-                DeclaredType declaredWireType = (DeclaredType) wireType;
-                TypeElement wireTypeElement = (TypeElement) declaredWireType.asElement();
-                isBase64Uri = Base64Uri.class.getCanonicalName().equals(wireTypeElement.getQualifiedName().toString());
-            }
-            String returnExpr;
-            if (isBase64Uri) {
-                body.tryAddImportToParentCompilationUnit(Base64Uri.class);
-                returnExpr = "responseBody != null ? new Base64Uri(responseBody.toBytes()).decodedBytes() : null";
-            } else {
-                returnExpr = "responseBody != null ? responseBody.toBytes() : null";
-            }
-
-            // Return responseBody.toBytes(), or null if it was null, as-is which will have the behavior of
-            // null -> null, empty -> empty, and data -> data, which offers three unique states for knowing information
-            // about the network response shape, as nullness != emptiness.
-            addReturnStatement(body, returnIsResponse, returnExpr);
+            handleByteArrayReturn(body, returnIsResponse, method.getReturnValueWireType());
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
             // Return type is an InputStream. Return the network response body as an InputStream.
             // DO NOT close the network response for this return as it will result in the InputStream either being
@@ -215,7 +194,7 @@ public final class ResponseHandler {
                             .getQualifiedName()
                             .contentEquals(List.class.getCanonicalName())) {
                         // Response<List<BinaryData>> or other generics
-                        handleDeclaredTypes(body, returnType, serializationFormatSet, true, true);
+                        handleDeclaredTypes(body, returnType, true, true);
                         return;
                     }
                 }
@@ -227,17 +206,46 @@ public final class ResponseHandler {
         } else {
             // Fallback to a generalized code path that handles declared types as the entity, which uses deserialization
             // to create the return.
-            handleDeclaredTypes(body, returnType, serializationFormatSet, returnIsResponse, false);
+            handleDeclaredTypes(body, returnType, returnIsResponse, false);
         }
     }
 
-    private static void handleDeclaredTypes(BlockStmt body, TypeMirror returnType, boolean serializationFormatSet,
-        boolean returnIsResponse, boolean closeResponse) {
-        String typeCast = determineTypeCast(returnType, body);
+    static void handleByteArrayReturn(BlockStmt body, boolean returnIsResponse, TypeMirror wireType) {
+        body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = networkResponse.getValue();"));
+        boolean isBase64Uri = false;
+        if (wireType != null && wireType.getKind() == TypeKind.DECLARED) {
+            DeclaredType declaredWireType = (DeclaredType) wireType;
+            TypeElement wireTypeElement = (TypeElement) declaredWireType.asElement();
+            isBase64Uri = Base64Uri.class.getCanonicalName().equals(wireTypeElement.getQualifiedName().toString());
+        }
+
+        String returnExpression;
+        if (isBase64Uri) {
+            body.tryAddImportToParentCompilationUnit(Base64Uri.class);
+            returnExpression = "responseBody != null ? new Base64Uri(responseBody.toBytes()).decodedBytes() : null";
+        } else {
+            body.tryAddImportToParentCompilationUnit(Arrays.class);
+            body.tryAddImportToParentCompilationUnit(Base64.class);
+            body.tryAddImportToParentCompilationUnit(CoreUtils.class);
+            body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
+            body.addStatement("byte[] responseBytes = responseBody != null ? responseBody.toBytes() : null;");
+            body.addStatement("boolean quotedBase64 = responseBytes != null && responseBytes.length >= 2 "
+                + "&& responseBytes[0] == '\"' && responseBytes[responseBytes.length - 1] == '\"' "
+                + "&& GeneratedCodeUtils.isJsonContentType(networkResponse.getHeaders());");
+            returnExpression = "quotedBase64 ? Base64.getDecoder().decode(Arrays.copyOfRange(responseBytes, 1, "
+                + "responseBytes.length - 1)) : responseBytes";
+        }
+
+        addReturnStatement(body, returnIsResponse, returnExpression);
+    }
+
+    private static void handleDeclaredTypes(BlockStmt body, TypeMirror returnType, boolean returnIsResponse,
+        boolean closeResponse) {
+        String typeCast = determineTypeCast(returnType);
 
         // Initialize the variable that will be used in the return statement.
         body.addStatement(StaticJavaParser.parseStatement(typeCast + " deserializedResult;"));
-        handleDeclaredTypeResponse(body, (DeclaredType) returnType, serializationFormatSet, typeCast);
+        handleTypeResponse(body, returnType, typeCast);
         if (closeResponse) {
             body.addStatement(StaticJavaParser.parseStatement("networkResponse.close();"));
         }
@@ -254,40 +262,15 @@ public final class ResponseHandler {
         }
     }
 
-    private static String determineTypeCast(TypeMirror returnType, BlockStmt body) {
-        if (returnType instanceof DeclaredType) {
-            DeclaredType declaredType = (DeclaredType) returnType;
-            TypeElement typeElement = (TypeElement) declaredType.asElement();
-            body.tryAddImportToParentCompilationUnit(CoreUtils.class);
-
-            if (!declaredType.getTypeArguments().isEmpty()) {
-                TypeMirror firstGenericType = declaredType.getTypeArguments().get(0);
-                if (firstGenericType.getKind() == TypeKind.ARRAY) {
-                    ArrayType arrayType = (ArrayType) firstGenericType;
-                    String componentTypeName = arrayType.getComponentType().toString();
-                    return componentTypeName + "[]";
-                } else if (firstGenericType instanceof DeclaredType) {
-                    DeclaredType genericDeclaredType = (DeclaredType) firstGenericType;
-                    TypeElement genericTypeElement = (TypeElement) genericDeclaredType.asElement();
-                    body.findCompilationUnit()
-                        .ifPresent(compilationUnit -> compilationUnit
-                            .addImport(genericTypeElement.getQualifiedName().toString()));
-                    if (genericTypeElement.getQualifiedName().contentEquals(List.class.getCanonicalName())) {
-                        String typeArgs = genericDeclaredType.getTypeArguments()
-                            .stream()
-                            .map(arg -> ((DeclaredType) arg).asElement().getSimpleName().toString())
-                            .collect(Collectors.joining(", "));
-
-                        return ((DeclaredType) firstGenericType).asElement().getSimpleName().toString() + "<" + typeArgs
-                            + ">";
-                    } else {
-                        return genericTypeElement.getSimpleName().toString();
-                    }
-                }
+    static String determineTypeCast(TypeMirror returnType) {
+        if (TypeConverter.isResponseType(returnType)) {
+            DeclaredType responseType = (DeclaredType) returnType;
+            if (!responseType.getTypeArguments().isEmpty()) {
+                return TypeConverter.getAstType(responseType.getTypeArguments().get(0)).toString();
             }
-            return typeElement.getSimpleName().toString();
         }
-        return returnType.toString();
+
+        return TypeConverter.getAstType(returnType).toString();
     }
 
     private static boolean isBooleanType(java.lang.reflect.Type entityType) {
@@ -295,40 +278,39 @@ public final class ResponseHandler {
             || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class);
     }
 
-    private static void handleDeclaredTypeResponse(BlockStmt body, DeclaredType returnType,
-        boolean serializationFormatSet, String typeCast) {
+    private static void handleTypeResponse(BlockStmt body, TypeMirror returnType, String typeCast) {
         body.tryAddImportToParentCompilationUnit(CoreUtils.class);
         body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
+        body.addStatement(StaticJavaParser.parseStatement("ParameterizedType returnType = "
+            + AnnotationProcessorUtils.createParameterizedTypeStatement(returnType, body) + ";"));
 
-        if (!returnType.getTypeArguments().isEmpty()) {
-            body.addStatement(StaticJavaParser.parseStatement("ParameterizedType returnType = "
-                + AnnotationProcessorUtils.createParameterizedTypeStatement(returnType, body) + ";"));
-        } else {
-            body.addStatement(
-                "ParameterizedType returnType = CoreUtils.createParameterizedType(" + typeCast + ".class);");
-        }
-
-        if (serializationFormatSet) {
-            addSerializationFormatResponseBodyStatements(body);
-        } else {
-            body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
-            body.addStatement(
-                "SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());");
-            addSerializationFormatResponseBodyStatements(body);
-        }
+        body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
+        body.addStatement(
+            "SerializationFormat responseSerializationFormat = CoreUtils.serializationFormatFromContentType(networkResponse.getHeaders());");
+        addSerializationFormatResponseBodyStatements(body,
+            "String".equals(typeCast) || String.class.getCanonicalName().equals(typeCast));
     }
 
     private static void closeResponse(BlockStmt body) {
         body.addStatement(StaticJavaParser.parseStatement("networkResponse.close();"));
     }
 
-    private static void addSerializationFormatResponseBodyStatements(BlockStmt body) {
-        body.addStatement("if (jsonSerializer.supportsFormat(serializationFormat)) { "
+    static void addSerializationFormatResponseBodyStatements(BlockStmt body, boolean supportsText) {
+        String textHandling = supportsText
+            ? "if (responseSerializationFormat == SerializationFormat.TEXT) { "
+                + "    BinaryData responseBody = networkResponse.getValue(); "
+                + "    deserializedResult = responseBody == null ? null : responseBody.toString(); " + "} else "
+            : "";
+        String jsonCondition = supportsText
+            ? "jsonSerializer.supportsFormat(responseSerializationFormat)"
+            : "jsonSerializer.supportsFormat(responseSerializationFormat) "
+                + "|| responseSerializationFormat == SerializationFormat.TEXT";
+        body.addStatement(textHandling + "if (" + jsonCondition + ") { "
             + "    deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType); "
-            + "} else if (xmlSerializer.supportsFormat(serializationFormat)) { "
+            + "} else if (xmlSerializer.supportsFormat(responseSerializationFormat)) { "
             + "    deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType); "
             + "} else { "
-            + "    throw LOGGER.throwableAtError().addKeyValue(\"serializationFormat\", serializationFormat.name())\n"
+            + "    throw LOGGER.throwableAtError().addKeyValue(\"serializationFormat\", responseSerializationFormat.name())\n"
             + "                .log(\"None of the provided serializers support the format.\", UnsupportedOperationException::new);"
             + "}");
     }

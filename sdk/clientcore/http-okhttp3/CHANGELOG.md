@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Closed server-sent event response bodies before rejecting requests that do not provide an event listener.
 
 ### Other Changes
 

@@ -44,22 +44,22 @@ public class HostPathEdgeCase3ServiceImpl implements HostPathEdgeCase3Service {
         return new HostPathEdgeCase3ServiceImpl(httpPipeline);
     }
 
-    @SuppressWarnings("cast")
     @Override
     public Response<Void> noOperationParams(String endpoint, String apiVersion, RequestContext requestContext) {
         // Create the HttpRequest.
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint + "/server/path/multiple/" + apiVersion + "/");
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri((endpoint == null ? "" : endpoint) + "/server/path/multiple/" + (apiVersion == null ? "" : apiVersion) + "/");
         httpRequest.setContext(requestContext);
         httpRequest.getContext().getRequestCallback().accept(httpRequest);
         // Send the request through the httpPipeline
-        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
-            int responseCode = networkResponse.getStatusCode();
-            boolean expectedResponse = responseCode == 204;
-            if (!expectedResponse) {
-                // Handle unexpected response
-                GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
-            }
-            return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
+        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
+        int responseCode = networkResponse.getStatusCode();
+        boolean expectedResponse = responseCode == 204;
+        if (!expectedResponse) {
+            // Handle unexpected response
+            GeneratedCodeUtils.handleUnexpectedResponse(responseCode, networkResponse, jsonSerializer, xmlSerializer, null, null, LOGGER);
+        }
+        try (Response<BinaryData> networkResponseToClose = networkResponse) {
+            return new Response<>(networkResponseToClose.getRequest(), responseCode, networkResponseToClose.getHeaders(), null);
         }
     }
 }

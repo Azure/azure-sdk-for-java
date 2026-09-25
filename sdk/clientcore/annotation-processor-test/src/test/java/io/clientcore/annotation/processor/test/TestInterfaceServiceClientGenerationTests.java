@@ -67,7 +67,6 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -82,6 +81,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -498,7 +498,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result
             = service.putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), "");
 
-        assertEquals("", result.data());
+        assertEquals("\"\"", result.data());
     }
 
     @Test
@@ -509,7 +509,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result = service
             .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), requestBody);
 
-        assertEquals("soups and stuff", result.data());
+        assertEquals("\"soups and stuff\"", result.data());
     }
 
     @Test
@@ -625,7 +625,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result
             = service.putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), "");
 
-        assertEquals("", result.data());
+        assertEquals("\"\"", result.data());
     }
 
     @Test
@@ -636,7 +636,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final HttpBinJSON result = service
             .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), "soups and stuff");
 
-        assertEquals("soups and stuff", result.data());
+        assertEquals("\"soups and stuff\"", result.data());
     }
 
     @Test
@@ -1464,7 +1464,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("None of the provided serializers support the format: TEXT.")
     public void binaryDataUploadTest() throws Exception {
         Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
         BinaryData data = BinaryData.fromFile(filePath);
@@ -1487,7 +1486,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("Add support for header collection")
     public void service24Put() {
         final Map<String, String> headerCollection = new HashMap<>();
 
@@ -1506,6 +1504,42 @@ public class TestInterfaceServiceClientGenerationTests {
 
         assertEquals("GHIJ", resultHeaders.getValue(HttpHeaderName.fromString("ABCDEF")));
         assertEquals("45", resultHeaders.getValue(HttpHeaderName.fromString("ABC123")));
+    }
+
+    @Test
+    public void formParametersAreEncodedIntoRequestBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertEquals("application/x-www-form-urlencoded",
+                request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+            assertEquals("display+name=Ada+Lovelace&alreadyEncoded=a%2Fb", request.getBody().toString());
+            return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
+        }).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        try (Response<Void> response
+            = service.submitForm("https://example.test", "Ada Lovelace", "a%2Fb")) {
+            assertEquals(200, response.getStatusCode());
+        }
+    }
+
+    @Test
+    public void preSerializedMultipartBodyIsPassedThrough() {
+        BinaryData multipartBody = BinaryData.fromString("--boundary\r\ncontent\r\n--boundary--");
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertEquals("multipart/form-data; boundary=boundary",
+                request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+            assertSame(multipartBody, request.getBody());
+            return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
+        }).build();
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        try (Response<Void> response = service.submitMultipart("https://example.test",
+            "multipart/form-data; boundary=boundary", multipartBody)) {
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @Test
@@ -1601,7 +1635,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
     public void canReceiveServerSentEvents() {
         final int[] i = { 0 };
         TestInterfaceClientImpl.TestInterfaceClientService service
@@ -1635,7 +1668,6 @@ public class TestInterfaceServiceClientGenerationTests {
      * Tests that eagerly converting implementation HTTP headers to Client Core Headers is done.
      */
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
     public void canRecognizeServerSentEvent() {
         BinaryData requestBody = BinaryData.fromString("test body");
         TestInterfaceClientImpl.TestInterfaceClientService service
@@ -1652,7 +1684,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
     public void onErrorServerSentEvents() throws IOException {
         TestInterfaceClientImpl.TestInterfaceClientService service
             = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
@@ -1675,7 +1706,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
     public void onRetryWithLastEventIdReceiveServerSentEvents() throws IOException {
         TestInterfaceClientImpl.TestInterfaceClientService service
             = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
@@ -1707,7 +1737,6 @@ public class TestInterfaceServiceClientGenerationTests {
      * Test throws Runtime exception for no listener attached.
      */
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
     public void throwsExceptionForNoListener() {
         TestInterfaceClientImpl.TestInterfaceClientService service
             = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);

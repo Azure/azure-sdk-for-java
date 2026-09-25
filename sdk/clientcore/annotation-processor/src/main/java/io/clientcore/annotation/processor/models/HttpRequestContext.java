@@ -50,6 +50,7 @@ public final class HttpRequestContext {
 
     private final Map<String, List<String>> headers;
     private final Map<String, QueryParameter> queryParams;
+    private final List<FormParameter> formParameters;
 
     private final Map<String, Substitution> substitutions;
 
@@ -65,6 +66,7 @@ public final class HttpRequestContext {
         this.parameters = new ArrayList<>();
         this.headers = new HashMap<>();
         this.queryParams = new LinkedHashMap<>();
+        this.formParameters = new ArrayList<>();
         this.substitutions = new HashMap<>();
     }
 
@@ -238,6 +240,17 @@ public final class HttpRequestContext {
     }
 
     /**
+     * Replaces a header value, matching existing header names case-insensitively.
+     *
+     * @param key the header key.
+     * @param value the header value.
+     */
+    public void setHeader(String key, String value) {
+        headers.keySet().removeIf(existingKey -> existingKey.equalsIgnoreCase(key));
+        headers.put(key, new ArrayList<>(Collections.singletonList(value)));
+    }
+
+    /**
      * Gets the query parameters.
      *
      * @return the query parameters.
@@ -262,6 +275,24 @@ public final class HttpRequestContext {
         } else {
             queryParams.put(key, new QueryParameter(value, isMultiple, shouldEncode, isStatic));
         }
+    }
+
+    /**
+     * Adds a form parameter.
+     *
+     * @param formParameter The form parameter to add.
+     */
+    public void addFormParameter(FormParameter formParameter) {
+        formParameters.add(formParameter);
+    }
+
+    /**
+     * Gets the form parameters.
+     *
+     * @return The form parameters.
+     */
+    public List<FormParameter> getFormParameters() {
+        return Collections.unmodifiableList(formParameters);
     }
 
     /**
@@ -575,6 +606,67 @@ public final class HttpRequestContext {
          */
         public String getParameterName() {
             return parameterName;
+        }
+    }
+
+    /**
+     * Represents an application/x-www-form-urlencoded request parameter.
+     */
+    public static class FormParameter {
+        private final String name;
+        private final TypeMirror parameterType;
+        private final String parameterName;
+        private final boolean shouldEncode;
+
+        /**
+         * Creates a form parameter.
+         *
+         * @param name The wire name.
+         * @param parameterType The parameter type.
+         * @param parameterName The Java parameter name.
+         * @param shouldEncode Whether the value should be encoded.
+         */
+        public FormParameter(String name, TypeMirror parameterType, String parameterName, boolean shouldEncode) {
+            this.name = name;
+            this.parameterType = parameterType;
+            this.parameterName = parameterName;
+            this.shouldEncode = shouldEncode;
+        }
+
+        /**
+         * Gets the wire name.
+         *
+         * @return The wire name.
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * Gets the parameter type.
+         *
+         * @return The parameter type.
+         */
+        public TypeMirror getParameterType() {
+            return parameterType;
+        }
+
+        /**
+         * Gets the Java parameter name.
+         *
+         * @return The Java parameter name.
+         */
+        public String getParameterName() {
+            return parameterName;
+        }
+
+        /**
+         * Whether the value should be encoded.
+         *
+         * @return Whether the value should be encoded.
+         */
+        public boolean shouldEncode() {
+            return shouldEncode;
         }
     }
 
