@@ -16,7 +16,7 @@ autorest
 ### Code generation settings
 ``` yaml
 use: '@autorest/java@4.1.63'
-input-file: https://raw.githubusercontent.com/nickliu-msft/azure-rest-api-specs/f85584d452061985a5fc21a67b8fc0b46b75188a/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-10-06/blob.json
+input-file: https://raw.githubusercontent.com/nickliu-msft/azure-rest-api-specs/5ea182a2db7dac06ed5cbf95a91db66255c20b69/specification/storage/data-plane/Microsoft.BlobStorage/stable/2027-03-07/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -44,7 +44,6 @@ directive:
     $.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
     $.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
 ```
-
 
 ### /{containerName}/{blob}?comp=appendblock
 ``` yaml
@@ -591,24 +590,6 @@ directive:
     delete $["x-ms-pageable"];
 ```
 
-### Delete Container_ListBlobFlatSegment_ApacheArrow x-ms-pageable as response is raw Arrow stream
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&flat&arrow"].get
-  transform: >
-    delete $["x-ms-pageable"];
-```
-
-### Delete Container_ListBlobHierarchySegment_ApacheArrow x-ms-pageable as response is raw Arrow stream
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy&arrow"].get
-  transform: >
-    delete $["x-ms-pageable"];
-```
-
 ### BlobDeleteType expandable string enum
 ``` yaml
 directive:
@@ -632,6 +613,19 @@ directive:
 directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{containerName}/{blob}?comp=pagelist&diff"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
+### Delete the Apache Arrow list x-ms-pageable extensions as autorest can't recognize the itemName for their binary responses
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&flat&arrow"].get
+  transform: >
+    delete $["x-ms-pageable"];
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy&arrow"].get
   transform: >
     delete $["x-ms-pageable"];
 ```
