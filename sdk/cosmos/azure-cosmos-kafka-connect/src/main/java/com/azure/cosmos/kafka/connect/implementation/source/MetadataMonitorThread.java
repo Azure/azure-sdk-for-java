@@ -14,6 +14,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import org.apache.kafka.connect.source.SourceConnectorContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -41,6 +42,8 @@ public class MetadataMonitorThread extends Thread {
     private final SqlQuerySpec containersQuerySpec;
     private final ContainersMetadataTopicPartition containersMetadataTopicPartition;
     private final AtomicBoolean isRunning = new AtomicBoolean(true);
+    private final Object subscriptionLock = new Object();
+    private Disposable monitoringSubscription;
 
     public MetadataMonitorThread(
         String connectorName,
@@ -72,7 +75,7 @@ public class MetadataMonitorThread extends Thread {
 
         int containersPollDelayInMs = this.metadataConfig.getMetadataPollDelayInMs();
         if (containersPollDelayInMs >= 0) {
-            Mono
+            Disposable subscription = Mono
                 .delay(Duration.ofMillis(containersPollDelayInMs))
                 .flatMap(t -> {
                     if (this.isRunning.get()) {
@@ -94,6 +97,13 @@ public class MetadataMonitorThread extends Thread {
                 .repeat(() -> this.isRunning.get())
                 .subscribeOn(CONTAINERS_MONITORING_SCHEDULER)
                 .subscribe();
+            synchronized (this.subscriptionLock) {
+                if (this.isRunning.get()) {
+                    this.monitoringSubscription = subscription;
+                } else {
+                    subscription.dispose();
+                }
+            }
         } else {
             LOGGER.info("Containers monitoring task not started due to negative containers poll delay");
         }
@@ -328,5 +338,11 @@ public class MetadataMonitorThread extends Thread {
 
     public void close() {
         this.isRunning.set(false);
+        synchronized (this.subscriptionLock) {
+            if (this.monitoringSubscription != null) {
+                this.monitoringSubscription.dispose();
+                this.monitoringSubscription = null;
+            }
+        }
     }
 }

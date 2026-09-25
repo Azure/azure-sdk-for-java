@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 * Fixed `ItemPatch` writes to skip items excluded by `azure.cosmos.sink.write.patch.filter` instead of failing with `412 Precondition Failed`.
+* Disposed source metadata monitoring subscriptions during connector shutdown. - See [PR 50593](https://github.com/Azure/azure-sdk-for-java/pull/50593)
 
 #### Other Changes
 
