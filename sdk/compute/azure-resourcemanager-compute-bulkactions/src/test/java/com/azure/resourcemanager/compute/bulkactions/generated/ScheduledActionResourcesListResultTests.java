@@ -20,30 +20,30 @@ public final class ScheduledActionResourcesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionResourcesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceType\":\"VirtualMachine\",\"actionType\":\"Deallocate\",\"startTime\":\"2021-02-26T15:30:37Z\",\"endTime\":\"2021-07-28T04:39:03Z\",\"schedule\":{\"scheduledTime\":\"dcnifmz\",\"timeZone\":\"sdymbrn\",\"requestedWeekDays\":[\"Thursday\"],\"requestedMonths\":[\"March\",\"May\",\"January\"],\"requestedDaysOfTheMonth\":[757386773],\"executionParameters\":{\"retryPolicy\":{}},\"deadlineType\":\"CompleteBy\"},\"notificationSettings\":[{\"destination\":\"vdff\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}],\"disabled\":true,\"provisioningState\":\"Updating\",\"resourceNotificationSettings\":[{\"destination\":\"pavehhr\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"zoz\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]},\"id\":\"kmoyxcdyuibh\",\"name\":\"fdn\",\"type\":\"zydvfvf\"}],\"nextLink\":\"naeo\"}")
+            "{\"value\":[{\"properties\":{\"resourceType\":\"VirtualMachine\",\"actionType\":\"Hibernate\",\"startTime\":\"2021-01-28T11:51:13Z\",\"endTime\":\"2021-08-13T00:58:21Z\",\"schedule\":{\"scheduledTime\":\"komtkubotppn\",\"timeZone\":\"dxzxhi\",\"requestedWeekDays\":[\"Tuesday\",\"Monday\"],\"requestedMonths\":[\"May\",\"September\"],\"requestedDaysOfTheMonth\":[1087067477,559974778],\"executionParameters\":{\"retryPolicy\":{}},\"deadlineType\":\"InitiateAt\"},\"notificationSettings\":[{\"destination\":\"kqo\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"gtrd\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}],\"disabled\":true,\"provisioningState\":\"Canceled\",\"resourceNotificationSettings\":[{\"destination\":\"brn\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]},\"id\":\"rafwgckhocxvdf\",\"name\":\"fwafqrouda\",\"type\":\"pavehhr\"},{\"properties\":{\"resourceType\":\"VirtualMachineScaleSet\",\"actionType\":\"Hibernate\",\"startTime\":\"2021-10-10T05:55:50Z\",\"endTime\":\"2021-10-24T00:53:01Z\",\"schedule\":{\"scheduledTime\":\"zudhcxg\",\"timeZone\":\"moy\",\"requestedWeekDays\":[\"Wednesday\",\"All\"],\"requestedMonths\":[\"February\",\"August\"],\"requestedDaysOfTheMonth\":[612330611,485824562,1709399278,566054970],\"executionParameters\":{\"retryPolicy\":{}},\"deadlineType\":\"CompleteBy\"},\"notificationSettings\":[{\"destination\":\"cjnaeoisrvhmgor\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"scvwmzhwplef\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"l\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"hnze\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}],\"disabled\":true,\"provisioningState\":\"Failed\",\"resourceNotificationSettings\":[{\"destination\":\"hycav\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"dbeesmie\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"riaa\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"ydwqfbylyrf\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]},\"id\":\"ojocqwogf\",\"name\":\"zjvusfzldmo\",\"type\":\"uxylfsbtkadpy\"},{\"properties\":{\"resourceType\":\"VirtualMachine\",\"actionType\":\"Deallocate\",\"startTime\":\"2021-06-16T11:37:33Z\",\"endTime\":\"2021-03-28T18:59:19Z\",\"schedule\":{\"scheduledTime\":\"kb\",\"timeZone\":\"grjqctojcmi\",\"requestedWeekDays\":[\"Wednesday\",\"Friday\",\"Sunday\",\"Monday\"],\"requestedMonths\":[\"June\"],\"requestedDaysOfTheMonth\":[1124679448,359045420,1403585202,1283952114],\"executionParameters\":{\"retryPolicy\":{}},\"deadlineType\":\"InitiateAt\"},\"notificationSettings\":[{\"destination\":\"lcwkhihihlhz\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"bsrgnowc\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}],\"disabled\":false,\"provisioningState\":\"Deleting\",\"resourceNotificationSettings\":[{\"destination\":\"xmwoteyowcluqo\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"gqouwifzmpj\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"ikf\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]},\"id\":\"sphuagrttikteus\",\"name\":\"c\",\"type\":\"kvyklxubyjaffmm\"}],\"nextLink\":\"lcqcuubgqibrt\"}")
             .toObject(ScheduledActionResourcesListResult.class);
         Assertions.assertEquals(ResourceType.VIRTUAL_MACHINE, model.value().get(0).properties().resourceType());
-        Assertions.assertEquals(ScheduledActionType.DEALLOCATE, model.value().get(0).properties().actionType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-26T15:30:37Z"),
+        Assertions.assertEquals(ScheduledActionType.HIBERNATE, model.value().get(0).properties().actionType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-28T11:51:13Z"),
             model.value().get(0).properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-28T04:39:03Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-13T00:58:21Z"),
             model.value().get(0).properties().endTime());
-        Assertions.assertEquals("dcnifmz", model.value().get(0).properties().schedule().scheduledTime());
-        Assertions.assertEquals("sdymbrn", model.value().get(0).properties().schedule().timeZone());
-        Assertions.assertEquals(WeekDay.THURSDAY,
+        Assertions.assertEquals("komtkubotppn", model.value().get(0).properties().schedule().scheduledTime());
+        Assertions.assertEquals("dxzxhi", model.value().get(0).properties().schedule().timeZone());
+        Assertions.assertEquals(WeekDay.TUESDAY,
             model.value().get(0).properties().schedule().requestedWeekDays().get(0));
-        Assertions.assertEquals(Month.MARCH, model.value().get(0).properties().schedule().requestedMonths().get(0));
-        Assertions.assertEquals(757386773,
+        Assertions.assertEquals(Month.MAY, model.value().get(0).properties().schedule().requestedMonths().get(0));
+        Assertions.assertEquals(1087067477,
             model.value().get(0).properties().schedule().requestedDaysOfTheMonth().get(0));
-        Assertions.assertEquals(ScheduledActionsDeadlineType.COMPLETE_BY,
+        Assertions.assertEquals(ScheduledActionsDeadlineType.INITIATE_AT,
             model.value().get(0).properties().schedule().deadlineType());
-        Assertions.assertEquals("vdff", model.value().get(0).properties().notificationSettings().get(0).destination());
+        Assertions.assertEquals("kqo", model.value().get(0).properties().notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL,
             model.value().get(0).properties().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US,
             model.value().get(0).properties().notificationSettings().get(0).language());
-        Assertions.assertFalse(model.value().get(0).properties().notificationSettings().get(0).disabled());
+        Assertions.assertTrue(model.value().get(0).properties().notificationSettings().get(0).disabled());
         Assertions.assertTrue(model.value().get(0).properties().disabled());
-        Assertions.assertEquals("naeo", model.nextLink());
+        Assertions.assertEquals("lcqcuubgqibrt", model.nextLink());
     }
 }

@@ -12,14 +12,14 @@ public final class UserInitiatedRedeployTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserInitiatedRedeploy model
-            = BinaryData.fromString("{\"automaticallyApprove\":false}").toObject(UserInitiatedRedeploy.class);
-        Assertions.assertFalse(model.userInitiatedRedeployAutomaticallyApprove());
+            = BinaryData.fromString("{\"automaticallyApprove\":true}").toObject(UserInitiatedRedeploy.class);
+        Assertions.assertTrue(model.userInitiatedRedeployAutomaticallyApprove());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserInitiatedRedeploy model = new UserInitiatedRedeploy().withUserInitiatedRedeployAutomaticallyApprove(false);
+        UserInitiatedRedeploy model = new UserInitiatedRedeploy().withUserInitiatedRedeployAutomaticallyApprove(true);
         model = BinaryData.fromObject(model).toObject(UserInitiatedRedeploy.class);
-        Assertions.assertFalse(model.userInitiatedRedeployAutomaticallyApprove());
+        Assertions.assertTrue(model.userInitiatedRedeployAutomaticallyApprove());
     }
 }

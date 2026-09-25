@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.bulkactions.fluent.BulkCreatesClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.OperationStatusResultInner;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreates;
 import com.azure.resourcemanager.compute.bulkactions.models.LocationBasedBulkCreate;
 import com.azure.resourcemanager.compute.bulkactions.models.OperationStatusResult;
@@ -83,12 +84,16 @@ public final class BulkCreatesImpl implements BulkCreates {
 
     public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
         String name) {
-        return this.serviceClient().virtualMachinesGetOperationStatus(resourceGroupName, location, name);
+        PagedIterable<ResourceOperationInner> inner
+            = this.serviceClient().virtualMachinesGetOperationStatus(resourceGroupName, location, name);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceOperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
         String name, Context context) {
-        return this.serviceClient().virtualMachinesGetOperationStatus(resourceGroupName, location, name, context);
+        PagedIterable<ResourceOperationInner> inner
+            = this.serviceClient().virtualMachinesGetOperationStatus(resourceGroupName, location, name, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceOperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LocationBasedBulkCreate> listByResourceGroup(String resourceGroupName, String location) {

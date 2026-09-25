@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.compute.bulkactions.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -238,4 +239,32 @@ public interface VirtualMachineBulkOperations {
      */
     ReimageResourceOperationResponse bulkReimageOperation(String resourceGroupName, String location,
         ExecuteReimageRequest requestBody);
+
+    /**
+     * List recent errors for operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged list of recent bulk action errors as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<ResourceOperation> bulkListOperationErrors(String resourceGroupName, String location);
+
+    /**
+     * List recent errors for operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param lookbackInMinutes The number of minutes before the current time to include when listing bulk action
+     * errors.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged list of recent bulk action errors as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<ResourceOperation> bulkListOperationErrors(String resourceGroupName, String location,
+        Integer lookbackInMinutes, Context context);
 }

@@ -14,21 +14,21 @@ public final class PriorityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PriorityProfile model = BinaryData
-            .fromString("{\"type\":\"Spot\",\"maxPricePerVM\":80.33415237986642,\"evictionPolicy\":\"Delete\"}")
+            .fromString("{\"type\":\"Spot\",\"maxPricePerVM\":18.989409423086645,\"evictionPolicy\":\"Delete\"}")
             .toObject(PriorityProfile.class);
         Assertions.assertEquals(PriorityType.SPOT, model.type());
-        Assertions.assertEquals(80.33415237986642D, model.maxPricePerVM());
+        Assertions.assertEquals(18.989409423086645D, model.maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PriorityProfile model = new PriorityProfile().withType(PriorityType.SPOT)
-            .withMaxPricePerVM(80.33415237986642D)
+            .withMaxPricePerVM(18.989409423086645D)
             .withEvictionPolicy(EvictionPolicy.DELETE);
         model = BinaryData.fromObject(model).toObject(PriorityProfile.class);
         Assertions.assertEquals(PriorityType.SPOT, model.type());
-        Assertions.assertEquals(80.33415237986642D, model.maxPricePerVM());
+        Assertions.assertEquals(18.989409423086645D, model.maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
     }
 }

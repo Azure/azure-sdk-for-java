@@ -14,21 +14,21 @@ public final class BulkCreateCustomPriorityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BulkCreateCustomPriorityProfile model = BinaryData
-            .fromString("{\"type\":\"Regular\",\"maxPricePerVM\":14.33114279763551,\"evictionPolicy\":\"Deallocate\"}")
+            .fromString("{\"type\":\"Spot\",\"maxPricePerVM\":95.63518440013925,\"evictionPolicy\":\"Delete\"}")
             .toObject(BulkCreateCustomPriorityProfile.class);
-        Assertions.assertEquals(PriorityType.REGULAR, model.type());
-        Assertions.assertEquals(14.33114279763551D, model.maxPricePerVM());
-        Assertions.assertEquals(EvictionPolicy.DEALLOCATE, model.evictionPolicy());
+        Assertions.assertEquals(PriorityType.SPOT, model.type());
+        Assertions.assertEquals(95.63518440013925D, model.maxPricePerVM());
+        Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BulkCreateCustomPriorityProfile model = new BulkCreateCustomPriorityProfile().withType(PriorityType.REGULAR)
-            .withMaxPricePerVM(14.33114279763551D)
-            .withEvictionPolicy(EvictionPolicy.DEALLOCATE);
+        BulkCreateCustomPriorityProfile model = new BulkCreateCustomPriorityProfile().withType(PriorityType.SPOT)
+            .withMaxPricePerVM(95.63518440013925D)
+            .withEvictionPolicy(EvictionPolicy.DELETE);
         model = BinaryData.fromObject(model).toObject(BulkCreateCustomPriorityProfile.class);
-        Assertions.assertEquals(PriorityType.REGULAR, model.type());
-        Assertions.assertEquals(14.33114279763551D, model.maxPricePerVM());
-        Assertions.assertEquals(EvictionPolicy.DEALLOCATE, model.evictionPolicy());
+        Assertions.assertEquals(PriorityType.SPOT, model.type());
+        Assertions.assertEquals(95.63518440013925D, model.maxPricePerVM());
+        Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
     }
 }
