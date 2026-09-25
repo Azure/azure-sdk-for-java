@@ -3,14 +3,12 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.errors.RetriableException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -71,20 +69,9 @@ public class BufferedSourceTaskTest {
         }
     }
 
-    @Test(groups = "unit", timeOut = 30_000)
-    public void startFailureStillStopsTask() {
-        TestTask task = new TestTask();
-        ConnectException expected = new ConnectException("start failed");
-        task.startError = expected;
-
-        assertThatThrownBy(() -> task.start(Collections.emptyMap())).isSameAs(expected);
-        assertThat(task.stopCount.get()).isEqualTo(1);
-    }
-
     private static final class TestTask extends BufferedSourceTask {
         private PollAction pollAction = Collections::emptyList;
         private Runnable stopAction = () -> { };
-        private RuntimeException startError;
         private final AtomicInteger stopCount = new AtomicInteger();
 
         @Override
@@ -93,10 +80,7 @@ public class BufferedSourceTaskTest {
         }
 
         @Override
-        protected void startTask(Map<String, String> props) {
-            if (this.startError != null) {
-                throw this.startError;
-            }
+        public void start(java.util.Map<String, String> props) {
         }
 
         @Override
@@ -110,9 +94,10 @@ public class BufferedSourceTaskTest {
         }
 
         @Override
-        protected void stopTask() {
+        public void stop() {
             this.stopCount.incrementAndGet();
             this.stopAction.run();
+            this.stopPolling();
         }
     }
 

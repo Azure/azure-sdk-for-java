@@ -59,7 +59,7 @@ public class CosmosSourceTask extends BufferedSourceTask {
     }
 
     @Override
-    protected void startTask(Map<String, String> map) {
+    public void start(Map<String, String> map) {
         LOGGER.info("Starting the kafka cosmos source task...");
         try {
             LOGGER.info("Resetting task queue");
@@ -94,6 +94,7 @@ public class CosmosSourceTask extends BufferedSourceTask {
             this.throughputControlCosmosClientItem = this.getThroughputControlCosmosClientItem();
         } catch (Throwable ex) {
             LOGGER.warn("Failed to start the cosmos source task", ex);
+            this.cleanup();
             throw ex;
         }
     }
@@ -537,10 +538,14 @@ public class CosmosSourceTask extends BufferedSourceTask {
     }
 
     @Override
-    protected void stopTask() {
+    public void stop() {
         LOGGER.info("Stopping CosmosSourceTask");
-        this.logFeedRangeCounts(true);
-        this.cleanup();
+        try {
+            this.logFeedRangeCounts(true);
+            this.cleanup();
+        } finally {
+            this.stopPolling();
+        }
     }
 
     private static class FeedRangeLoggingContext {
