@@ -534,7 +534,7 @@ com.azure.resourcemanager:azure-resourcemanager-monitor-workspaces;1.0.0;1.1.0-b
 com.azure.resourcemanager:azure-resourcemanager-programenrollment;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resiliencemanagement;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-napsteromniagentapi;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-compute-bulkactions;1.0.0-beta.4;1.0.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-compute-bulkactions;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-commvaultcontentstore;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-billing-trust;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-containerservicepreparedimgspec;1.0.0-beta.1;1.0.0-beta.2
