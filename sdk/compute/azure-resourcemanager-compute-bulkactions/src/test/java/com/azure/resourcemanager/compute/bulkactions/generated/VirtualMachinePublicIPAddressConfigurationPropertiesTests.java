@@ -20,41 +20,42 @@ public final class VirtualMachinePublicIPAddressConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachinePublicIPAddressConfigurationProperties model = BinaryData.fromString(
-            "{\"idleTimeoutInMinutes\":414197490,\"deleteOption\":\"Detach\",\"dnsSettings\":{\"domainNameLabel\":\"rx\",\"domainNameLabelScope\":\"NoReuse\"},\"ipTags\":[{\"ipTagType\":\"aytdwkqbrq\",\"tag\":\"paxh\"},{\"ipTagType\":\"iilivpdtiirqtd\",\"tag\":\"axoruzfgsquy\"},{\"ipTagType\":\"rxxle\",\"tag\":\"ramxjezwlwnw\"}],\"publicIPPrefix\":{\"id\":\"lcvydy\"},\"publicIPAddressVersion\":\"IPv4\",\"publicIPAllocationMethod\":\"Static\"}")
+            "{\"idleTimeoutInMinutes\":1417389324,\"deleteOption\":\"Detach\",\"dnsSettings\":{\"domainNameLabel\":\"yyceuzsoi\",\"domainNameLabelScope\":\"TenantReuse\"},\"ipTags\":[{\"ipTagType\":\"rx\",\"tag\":\"thzvaytdwkqbrqu\"},{\"ipTagType\":\"axhexiilivp\",\"tag\":\"iirqtd\"},{\"ipTagType\":\"axoruzfgsquy\",\"tag\":\"rxxle\"}],\"publicIPPrefix\":{\"id\":\"amxjezwlw\"},\"publicIPAddressVersion\":\"IPv6\",\"publicIPAllocationMethod\":\"Dynamic\"}")
             .toObject(VirtualMachinePublicIPAddressConfigurationProperties.class);
-        Assertions.assertEquals(414197490, model.idleTimeoutInMinutes());
+        Assertions.assertEquals(1417389324, model.idleTimeoutInMinutes());
         Assertions.assertEquals(DeleteOptions.DETACH, model.deleteOption());
-        Assertions.assertEquals("rx", model.dnsSettings().domainNameLabel());
-        Assertions.assertEquals(DomainNameLabelScopeTypes.NO_REUSE, model.dnsSettings().domainNameLabelScope());
-        Assertions.assertEquals("aytdwkqbrq", model.ipTags().get(0).ipTagType());
-        Assertions.assertEquals("paxh", model.ipTags().get(0).tag());
-        Assertions.assertEquals("lcvydy", model.publicIPPrefix().id());
-        Assertions.assertEquals(IPVersions.IPV4, model.publicIPAddressVersion());
-        Assertions.assertEquals(PublicIPAllocationMethod.STATIC, model.publicIPAllocationMethod());
+        Assertions.assertEquals("yyceuzsoi", model.dnsSettings().domainNameLabel());
+        Assertions.assertEquals(DomainNameLabelScopeTypes.TENANT_REUSE, model.dnsSettings().domainNameLabelScope());
+        Assertions.assertEquals("rx", model.ipTags().get(0).ipTagType());
+        Assertions.assertEquals("thzvaytdwkqbrqu", model.ipTags().get(0).tag());
+        Assertions.assertEquals("amxjezwlw", model.publicIPPrefix().id());
+        Assertions.assertEquals(IPVersions.IPV6, model.publicIPAddressVersion());
+        Assertions.assertEquals(PublicIPAllocationMethod.DYNAMIC, model.publicIPAllocationMethod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachinePublicIPAddressConfigurationProperties model
-            = new VirtualMachinePublicIPAddressConfigurationProperties().withIdleTimeoutInMinutes(414197490)
+            = new VirtualMachinePublicIPAddressConfigurationProperties().withIdleTimeoutInMinutes(1417389324)
                 .withDeleteOption(DeleteOptions.DETACH)
-                .withDnsSettings(new VirtualMachinePublicIPAddressDnsSettingsConfiguration().withDomainNameLabel("rx")
-                    .withDomainNameLabelScope(DomainNameLabelScopeTypes.NO_REUSE))
-                .withIpTags(Arrays.asList(new VirtualMachineIpTag().withIpTagType("aytdwkqbrq").withTag("paxh"),
-                    new VirtualMachineIpTag().withIpTagType("iilivpdtiirqtd").withTag("axoruzfgsquy"),
-                    new VirtualMachineIpTag().withIpTagType("rxxle").withTag("ramxjezwlwnw")))
-                .withPublicIPPrefix(new SubResource().withId("lcvydy"))
-                .withPublicIPAddressVersion(IPVersions.IPV4)
-                .withPublicIPAllocationMethod(PublicIPAllocationMethod.STATIC);
+                .withDnsSettings(
+                    new VirtualMachinePublicIPAddressDnsSettingsConfiguration().withDomainNameLabel("yyceuzsoi")
+                        .withDomainNameLabelScope(DomainNameLabelScopeTypes.TENANT_REUSE))
+                .withIpTags(Arrays.asList(new VirtualMachineIpTag().withIpTagType("rx").withTag("thzvaytdwkqbrqu"),
+                    new VirtualMachineIpTag().withIpTagType("axhexiilivp").withTag("iirqtd"),
+                    new VirtualMachineIpTag().withIpTagType("axoruzfgsquy").withTag("rxxle")))
+                .withPublicIPPrefix(new SubResource().withId("amxjezwlw"))
+                .withPublicIPAddressVersion(IPVersions.IPV6)
+                .withPublicIPAllocationMethod(PublicIPAllocationMethod.DYNAMIC);
         model = BinaryData.fromObject(model).toObject(VirtualMachinePublicIPAddressConfigurationProperties.class);
-        Assertions.assertEquals(414197490, model.idleTimeoutInMinutes());
+        Assertions.assertEquals(1417389324, model.idleTimeoutInMinutes());
         Assertions.assertEquals(DeleteOptions.DETACH, model.deleteOption());
-        Assertions.assertEquals("rx", model.dnsSettings().domainNameLabel());
-        Assertions.assertEquals(DomainNameLabelScopeTypes.NO_REUSE, model.dnsSettings().domainNameLabelScope());
-        Assertions.assertEquals("aytdwkqbrq", model.ipTags().get(0).ipTagType());
-        Assertions.assertEquals("paxh", model.ipTags().get(0).tag());
-        Assertions.assertEquals("lcvydy", model.publicIPPrefix().id());
-        Assertions.assertEquals(IPVersions.IPV4, model.publicIPAddressVersion());
-        Assertions.assertEquals(PublicIPAllocationMethod.STATIC, model.publicIPAllocationMethod());
+        Assertions.assertEquals("yyceuzsoi", model.dnsSettings().domainNameLabel());
+        Assertions.assertEquals(DomainNameLabelScopeTypes.TENANT_REUSE, model.dnsSettings().domainNameLabelScope());
+        Assertions.assertEquals("rx", model.ipTags().get(0).ipTagType());
+        Assertions.assertEquals("thzvaytdwkqbrqu", model.ipTags().get(0).tag());
+        Assertions.assertEquals("amxjezwlw", model.publicIPPrefix().id());
+        Assertions.assertEquals(IPVersions.IPV6, model.publicIPAddressVersion());
+        Assertions.assertEquals(PublicIPAllocationMethod.DYNAMIC, model.publicIPAllocationMethod());
     }
 }

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class BootDiagnosticsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BootDiagnostics model = BinaryData.fromString("{\"enabled\":true,\"storageUri\":\"rbuukzclewyhmlwp\"}")
+        BootDiagnostics model = BinaryData.fromString("{\"enabled\":false,\"storageUri\":\"iagxsdszuempsbz\"}")
             .toObject(BootDiagnostics.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("rbuukzclewyhmlwp", model.storageUri());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("iagxsdszuempsbz", model.storageUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BootDiagnostics model = new BootDiagnostics().withEnabled(true).withStorageUri("rbuukzclewyhmlwp");
+        BootDiagnostics model = new BootDiagnostics().withEnabled(false).withStorageUri("iagxsdszuempsbz");
         model = BinaryData.fromObject(model).toObject(BootDiagnostics.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("rbuukzclewyhmlwp", model.storageUri());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("iagxsdszuempsbz", model.storageUri());
     }
 }

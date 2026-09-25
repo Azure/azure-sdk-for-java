@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AdditionalCapabilitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdditionalCapabilities model = BinaryData.fromString("{\"ultraSSDEnabled\":true,\"hibernationEnabled\":true}")
+        AdditionalCapabilities model = BinaryData.fromString("{\"ultraSSDEnabled\":true,\"hibernationEnabled\":false}")
             .toObject(AdditionalCapabilities.class);
         Assertions.assertTrue(model.ultraSSDEnabled());
-        Assertions.assertTrue(model.hibernationEnabled());
+        Assertions.assertFalse(model.hibernationEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdditionalCapabilities model
-            = new AdditionalCapabilities().withUltraSSDEnabled(true).withHibernationEnabled(true);
+            = new AdditionalCapabilities().withUltraSSDEnabled(true).withHibernationEnabled(false);
         model = BinaryData.fromObject(model).toObject(AdditionalCapabilities.class);
         Assertions.assertTrue(model.ultraSSDEnabled());
-        Assertions.assertTrue(model.hibernationEnabled());
+        Assertions.assertFalse(model.hibernationEnabled());
     }
 }
