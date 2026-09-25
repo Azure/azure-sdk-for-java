@@ -32,7 +32,7 @@ public final class SessionOptions {
     /**
      * Gets the session mode.
      *
-     * @return the {@link SessionMode}; defaults to {@link SessionMode#ENABLED}.
+     * @return the {@link SessionMode}; defaults to {@link SessionMode#DISABLED}.
      */
     public SessionMode getSessionMode() {
         return sessionMode;

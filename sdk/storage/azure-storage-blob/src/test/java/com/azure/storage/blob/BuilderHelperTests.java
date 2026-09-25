@@ -709,28 +709,28 @@ public class BuilderHelperTests {
         Supplier<HttpPipeline> pipelineSupplier, boolean expectsBearerPolicy) {
         HttpPipeline pipeline = pipelineSupplier.get();
 
-        assertFalse(hasPolicyOfType(pipeline, "SessionTokenCredentialPolicy"),
-            scenario + " should not contain SessionTokenCredentialPolicy");
+        assertFalse(hasPolicyOfType(pipeline, "SessionAuthenticationPolicy"),
+            scenario + " should not contain SessionAuthenticationPolicy");
         assertEquals(expectsBearerPolicy, hasPolicyOfType(pipeline, "StorageBearerTokenChallengeAuthorizationPolicy"),
             scenario + " bearer policy expectation mismatch");
     }
 
     @Test
-    public void serviceBuilderUsesBuiltInSessionProviderByDefault() {
+    public void serviceBuilderDoesNotUseSessionByDefault() {
         BlobServiceClient client = new BlobServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new MockTokenCredential())
             .httpClient(new NoOpHttpClient())
             .buildClient();
 
-        assertTrue(hasPolicyOfType(client.getHttpPipeline(), "SessionTokenCredentialPolicy"));
+        assertFalse(hasPolicyOfType(client.getHttpPipeline(), "SessionAuthenticationPolicy"));
     }
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("standaloneSessionPipelineSupplier")
-    public void standaloneBlobBuildersUseBuiltInSessionProviderByDefault(String scenario,
+    public void standaloneBlobBuildersDoNotUseSessionByDefault(String scenario,
         Supplier<HttpPipeline> pipelineSupplier) {
-        assertTrue(hasPolicyOfType(pipelineSupplier.get(), "SessionTokenCredentialPolicy"),
-            scenario + " should contain SessionTokenCredentialPolicy");
+        assertFalse(hasPolicyOfType(pipelineSupplier.get(), "SessionAuthenticationPolicy"),
+            scenario + " should not contain SessionAuthenticationPolicy");
     }
 
     /**
@@ -758,7 +758,8 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
             REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), sessionClient,
             new ArrayList<>(), Collections.singletonList(perRetryPolicy), null, null,
-            new ClientLogger(BuilderHelperTests.class), new SessionOptions(), BlobServiceVersion.getLatest());
+            new ClientLogger(BuilderHelperTests.class), new SessionOptions().setSessionMode(SessionMode.ENABLED),
+            BlobServiceVersion.getLatest());
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
@@ -776,8 +777,8 @@ public class BuilderHelperTests {
             () -> BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null,
                 "https://custom.endpoint.example/", REQUEST_RETRY_OPTIONS, null,
                 BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
-                new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), new SessionOptions(),
-                BlobServiceVersion.getLatest()));
+                new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class),
+                new SessionOptions().setSessionMode(SessionMode.ENABLED), BlobServiceVersion.getLatest()));
     }
 
     @Test
@@ -823,7 +824,7 @@ public class BuilderHelperTests {
     }
 
     private HttpPipeline buildPipelineWithSessionProvider(SessionProvider provider) {
-        SessionOptions options = new SessionOptions().setSessionProvider(provider);
+        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ENABLED).setSessionProvider(provider);
         HttpClient mockClient = request -> {
             MockHttpResponse response = new MockHttpResponse(request, 200);
             return Mono.just(response);

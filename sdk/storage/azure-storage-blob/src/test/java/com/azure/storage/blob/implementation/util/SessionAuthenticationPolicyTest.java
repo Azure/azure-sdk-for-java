@@ -18,6 +18,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.SessionCredential;
+import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.common.implementation.Constants;
@@ -634,7 +635,7 @@ public class SessionAuthenticationPolicyTest {
     }
 
     private SessionAuthenticationPolicy createPolicy(Clock clock) {
-        SessionOptions options = new SessionOptions();
+        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ENABLED);
         return new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, options, clock);
     }
 
