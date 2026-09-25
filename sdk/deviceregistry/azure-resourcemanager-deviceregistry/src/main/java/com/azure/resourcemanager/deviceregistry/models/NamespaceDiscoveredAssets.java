@@ -76,7 +76,7 @@ public interface NamespaceDiscoveredAssets {
      * @return the response of a NamespaceDiscoveredAsset list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<NamespaceDiscoveredAsset> listByResourceGroup(String resourceGroupName, String namespaceName);
+    PagedIterable<NamespaceDiscoveredAsset> listByNamespace(String resourceGroupName, String namespaceName);
 
     /**
      * List NamespaceDiscoveredAsset resources by Namespace.
@@ -90,7 +90,7 @@ public interface NamespaceDiscoveredAssets {
      * @return the response of a NamespaceDiscoveredAsset list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<NamespaceDiscoveredAsset> listByResourceGroup(String resourceGroupName, String namespaceName,
+    PagedIterable<NamespaceDiscoveredAsset> listByNamespace(String resourceGroupName, String namespaceName,
         Context context);
 
     /**

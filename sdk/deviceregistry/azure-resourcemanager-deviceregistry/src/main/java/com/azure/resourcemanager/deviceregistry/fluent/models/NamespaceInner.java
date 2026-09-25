@@ -10,8 +10,8 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceProperties;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentity;
 import java.io.IOException;
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public final class NamespaceInner extends Resource {
     /*
      * The managed service identities assigned to this resource.
      */
-    private SystemAssignedServiceIdentity identity;
+    private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -81,7 +81,7 @@ public final class NamespaceInner extends Resource {
      * 
      * @return the identity value.
      */
-    public SystemAssignedServiceIdentity identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
@@ -91,7 +91,7 @@ public final class NamespaceInner extends Resource {
      * @param identity the identity value to set.
      * @return the NamespaceInner object itself.
      */
-    public NamespaceInner withIdentity(SystemAssignedServiceIdentity identity) {
+    public NamespaceInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -196,7 +196,7 @@ public final class NamespaceInner extends Resource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedNamespaceInner.properties = NamespaceProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
-                    deserializedNamespaceInner.identity = SystemAssignedServiceIdentity.fromJson(reader);
+                    deserializedNamespaceInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedNamespaceInner.systemData = SystemData.fromJson(reader);
                 } else {

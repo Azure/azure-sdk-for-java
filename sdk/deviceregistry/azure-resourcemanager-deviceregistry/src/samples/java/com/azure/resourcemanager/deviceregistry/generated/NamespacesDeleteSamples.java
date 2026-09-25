@@ -9,14 +9,14 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class NamespacesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Delete_Namespace.json
+     * x-ms-original-file: 2026-11-01/Delete_Namespace.json
      */
     /**
-     * Sample code: Delete_Namespace.
+     * Sample code: Delete a Namespace.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
-    public static void deleteNamespace(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+    public static void deleteANamespace(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaces().delete("myResourceGroup", "adr-namespace-gbk0925-n01", com.azure.core.util.Context.NONE);
     }
 }
