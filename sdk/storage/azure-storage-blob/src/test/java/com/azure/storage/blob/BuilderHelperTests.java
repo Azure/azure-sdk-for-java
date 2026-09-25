@@ -755,11 +755,11 @@ public class BuilderHelperTests {
             return Mono.just(new MockHttpResponse(request, 200));
         };
 
-        HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
-            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), sessionClient,
-            new ArrayList<>(), Collections.singletonList(perRetryPolicy), null, null,
-            new ClientLogger(BuilderHelperTests.class), new SessionOptions().setSessionMode(SessionMode.ENABLED),
-            BlobServiceVersion.getLatest());
+        HttpPipeline pipeline
+            = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
+                null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), sessionClient, new ArrayList<>(),
+                Collections.singletonList(perRetryPolicy), null, null, new ClientLogger(BuilderHelperTests.class),
+                new SessionOptions().setSessionMode(SessionMode.ENABLED), BlobServiceVersion.getLatest());
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
