@@ -12,12 +12,12 @@ public final class CveSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CveSummary model = BinaryData.fromString(
-            "{\"summaryType\":\"CommonVulnerabilitiesAndExposures\",\"criticalCveCount\":7888839879044625152,\"highCveCount\":7224326417185039390,\"mediumCveCount\":8997830980671290094,\"lowCveCount\":6020102037259892671,\"unknownCveCount\":2699715212989118591,\"provisioningState\":\"Analyzing\"}")
+            "{\"summaryType\":\"CommonVulnerabilitiesAndExposures\",\"criticalCveCount\":4142035688524662408,\"highCveCount\":6387595634350478550,\"mediumCveCount\":7376414013893695115,\"lowCveCount\":4679929570751619388,\"unknownCveCount\":6266011921490350927,\"provisioningState\":\"Succeeded\"}")
             .toObject(CveSummary.class);
-        Assertions.assertEquals(7888839879044625152L, model.criticalCveCount());
-        Assertions.assertEquals(7224326417185039390L, model.highCveCount());
-        Assertions.assertEquals(8997830980671290094L, model.mediumCveCount());
-        Assertions.assertEquals(6020102037259892671L, model.lowCveCount());
-        Assertions.assertEquals(2699715212989118591L, model.unknownCveCount());
+        Assertions.assertEquals(4142035688524662408L, model.criticalCveCount());
+        Assertions.assertEquals(6387595634350478550L, model.highCveCount());
+        Assertions.assertEquals(7376414013893695115L, model.mediumCveCount());
+        Assertions.assertEquals(4679929570751619388L, model.lowCveCount());
+        Assertions.assertEquals(6266011921490350927L, model.unknownCveCount());
     }
 }

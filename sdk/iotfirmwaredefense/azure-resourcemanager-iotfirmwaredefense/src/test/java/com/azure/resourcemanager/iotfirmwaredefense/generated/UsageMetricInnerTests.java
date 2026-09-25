@@ -11,7 +11,7 @@ public final class UsageMetricInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageMetricInner model = BinaryData.fromString(
-            "{\"properties\":{\"monthlyFirmwareUploadCount\":35726863806871709,\"totalFirmwareCount\":1560146384184244309,\"provisioningState\":\"Succeeded\"},\"id\":\"ah\",\"name\":\"pjyzhpv\",\"type\":\"qzcjrvxdj\"}")
+            "{\"properties\":{\"monthlyFirmwareUploadCount\":5745486884853604754,\"totalFirmwareCount\":5310362210667414821,\"provisioningState\":\"Failed\"},\"id\":\"akcp\",\"name\":\"iyzvqtmnub\",\"type\":\"xkp\"}")
             .toObject(UsageMetricInner.class);
     }
 }
