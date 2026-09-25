@@ -9,11 +9,16 @@ import com.azure.resourcemanager.resiliencemanagement.models.AssociatedIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ChaosResourcePropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillUpdate;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillUpdateProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.HealthModelMonitoringProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.resiliencemanagement.models.MonitoringPropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.RBACSetupMode;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryPlanPropertiesOfDrill;
+import com.azure.resourcemanager.resiliencemanagement.models.SliMonitoringProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.SliSelection;
+import com.azure.resourcemanager.resiliencemanagement.models.SliType;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +27,7 @@ import java.util.Map;
  */
 public final class DrillsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/Drills_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/Drills_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_Update_MaximumSet.
@@ -54,7 +59,20 @@ public final class DrillsUpdateSamples {
                     .withMonitoringProperties(new MonitoringPropertiesOfDrill().withIdentity(new AssociatedIdentity()
                         .withType(ManagedServiceIdentityType.USER_ASSIGNED)
                         .withUserAssignedIdentity(
-                            "/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1")))),
+                            "/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1")))
+                    .withHealthModelMonitoringProperties(new HealthModelMonitoringProperties()
+                        .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                            .withUserAssignedIdentity(
+                                "/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"))
+                        .withDiscoveryRuleId(
+                            "/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourceGroups/contoso-health/providers/Microsoft.CloudHealth/healthmodels/contoso-payments-hm/discoveryrules/payments-frontend-rule"))
+                    .withSliMonitoringProperties(new SliMonitoringProperties().withIdentity(new AssociatedIdentity()
+                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentity(
+                            "/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1"))
+                        .withSlis(Arrays.asList(new SliSelection().withSliId(
+                            "/providers/Microsoft.Management/serviceGroups/sampleServiceGroupName/providers/Microsoft.Monitor/slis/checkout-availability")
+                            .withType(SliType.AVAILABILITY))))),
                 com.azure.core.util.Context.NONE);
     }
 

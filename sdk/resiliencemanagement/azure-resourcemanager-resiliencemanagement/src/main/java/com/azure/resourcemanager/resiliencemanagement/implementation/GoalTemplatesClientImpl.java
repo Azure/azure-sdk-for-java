@@ -176,14 +176,17 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Get a GoalTemplate.
+     * Gets a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalTemplate along with {@link Response} on successful completion of {@link Mono}.
+     * @return a goal template along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GoalTemplateInner>> getWithResponseAsync(String serviceGroupName, String goalTemplateName) {
@@ -195,14 +198,17 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Get a GoalTemplate.
+     * Gets a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalTemplate on successful completion of {@link Mono}.
+     * @return a goal template on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GoalTemplateInner> getAsync(String serviceGroupName, String goalTemplateName) {
@@ -211,7 +217,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Get a GoalTemplate.
+     * Gets a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -219,7 +228,7 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalTemplate along with {@link Response}.
+     * @return a goal template along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GoalTemplateInner> getWithResponse(String serviceGroupName, String goalTemplateName,
@@ -230,14 +239,17 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Get a GoalTemplate.
+     * Gets a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a GoalTemplate.
+     * @return a goal template.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GoalTemplateInner get(String serviceGroupName, String goalTemplateName) {
@@ -245,7 +257,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Create a GoalTemplate.
+     * Creates or updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -268,7 +283,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Create a GoalTemplate.
+     * Creates or updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -288,7 +306,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Create a GoalTemplate.
+     * Creates or updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -309,7 +330,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Create a GoalTemplate.
+     * Creates or updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -329,7 +353,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Create a GoalTemplate.
+     * Creates or updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -348,7 +375,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Create a GoalTemplate.
+     * Creates or updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -369,7 +399,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Create a GoalTemplate.
+     * Creates or updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -387,7 +420,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Create a GoalTemplate.
+     * Creates or updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -404,7 +440,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Create a GoalTemplate.
+     * Creates or updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -422,7 +461,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Update a GoalTemplate.
+     * Updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -445,7 +487,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Update a GoalTemplate.
+     * Updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -465,7 +510,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Update a GoalTemplate.
+     * Updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -486,7 +534,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Update a GoalTemplate.
+     * Updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -505,7 +556,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Update a GoalTemplate.
+     * Updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -523,7 +577,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Update a GoalTemplate.
+     * Updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -542,7 +599,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Update a GoalTemplate.
+     * Updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -559,7 +619,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Update a GoalTemplate.
+     * Updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -574,7 +637,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Update a GoalTemplate.
+     * Updates a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -591,7 +657,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Delete a GoalTemplate.
+     * Deletes a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -609,7 +678,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Delete a GoalTemplate.
+     * Deletes a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -625,7 +697,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Delete a GoalTemplate.
+     * Deletes a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -642,7 +717,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Delete a GoalTemplate.
+     * Deletes a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -659,7 +737,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Delete a GoalTemplate.
+     * Deletes a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -675,7 +756,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Delete a GoalTemplate.
+     * Deletes a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -693,7 +777,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Delete a GoalTemplate.
+     * Deletes a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -709,7 +796,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Delete a GoalTemplate.
+     * Deletes a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -723,7 +813,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * Delete a GoalTemplate.
+     * Deletes a goal template. Deprecated: the GoalTemplate resource type is deprecated and is removed in
+     * 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param goalTemplateName The name of the goalTemplate.
@@ -738,7 +831,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * List GoalTemplate resources by tenant.
+     * Lists the goal templates of a service group. Deprecated: the GoalTemplate resource type is deprecated and is
+     * removed in 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param skipToken Skip over when retrieving results.
@@ -762,7 +858,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * List GoalTemplate resources by tenant.
+     * Lists the goal templates of a service group. Deprecated: the GoalTemplate resource type is deprecated and is
+     * removed in 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param skipToken Skip over when retrieving results.
@@ -779,7 +878,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * List GoalTemplate resources by tenant.
+     * Lists the goal templates of a service group. Deprecated: the GoalTemplate resource type is deprecated and is
+     * removed in 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -796,7 +898,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * List GoalTemplate resources by tenant.
+     * Lists the goal templates of a service group. Deprecated: the GoalTemplate resource type is deprecated and is
+     * removed in 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param skipToken Skip over when retrieving results.
@@ -816,7 +921,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * List GoalTemplate resources by tenant.
+     * Lists the goal templates of a service group. Deprecated: the GoalTemplate resource type is deprecated and is
+     * removed in 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param skipToken Skip over when retrieving results.
@@ -838,7 +946,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * List GoalTemplate resources by tenant.
+     * Lists the goal templates of a service group. Deprecated: the GoalTemplate resource type is deprecated and is
+     * removed in 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -855,7 +966,10 @@ public final class GoalTemplatesClientImpl implements GoalTemplatesClient {
     }
 
     /**
-     * List GoalTemplate resources by tenant.
+     * Lists the goal templates of a service group. Deprecated: the GoalTemplate resource type is deprecated and is
+     * removed in 2026-09-30-preview. Set resiliency intent directly on the GoalAssignment (requireZonalResiliency,
+     * requireRegionalResiliency) and read resource posture from GoalResource (zonalResiliency, regionalResiliency)
+     * instead.
      * 
      * @param serviceGroupName The name of the service group.
      * @param skipToken Skip over when retrieving results.

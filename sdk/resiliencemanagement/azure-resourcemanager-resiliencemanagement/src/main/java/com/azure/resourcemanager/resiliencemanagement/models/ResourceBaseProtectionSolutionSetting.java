@@ -79,6 +79,8 @@ public class ResourceBaseProtectionSolutionSetting implements JsonSerializable<R
                     return ResourceCustomProtectionSetting.fromJson(readerToUse.reset());
                 } else if ("AzureSiteRecovery".equals(discriminatorValue)) {
                     return ResourceSiteRecoveryProtectionSetting.fromJson(readerToUse.reset());
+                } else if ("CrossZoneVMRecovery".equals(discriminatorValue)) {
+                    return ResourceCrossZoneVmRecoveryProtectionSetting.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

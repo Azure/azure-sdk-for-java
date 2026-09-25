@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.EnrollmentPropertie
  */
 public final class EnrollmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/Enrollments_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/Enrollments_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Enrollments_CreateOrUpdate_MaximumSet.

@@ -123,6 +123,42 @@ public final class AttentionReason implements JsonSerializable<AttentionReason> 
      */
     private List<String> missingRequiredResourceProviders;
 
+    /*
+     * Neither an Azure Health Model nor an SLI is configured for the Drill. Execution is blocked until a monitoring
+     * source is configured.
+     */
+    private Boolean monitoringSourceNotConfigured;
+
+    /*
+     * Whether the selected Azure Health Model still exists.
+     */
+    private ExtensionObjectState healthModelExists;
+
+    /*
+     * Whether the selected discovery rule still exists.
+     */
+    private ExtensionObjectState discoveryRuleExists;
+
+    /*
+     * Whether the Drill identity has the necessary RBAC (Reader) to read the selected Azure Health Model.
+     */
+    private RBACState drillRbacOnHealthModel;
+
+    /*
+     * Permissions needed by the Drill identity to read the selected Azure Health Model.
+     */
+    private List<String> rbacNeededForDrillOnHealthModel;
+
+    /*
+     * Rolled-up RBAC state: NotSet if the Drill identity is missing the necessary RBAC to read any selected SLI.
+     */
+    private RBACState drillRbacOnSli;
+
+    /*
+     * Per-SLI attention status for each SLI selected for Drill monitoring.
+     */
+    private List<SliAttentionStatus> sliAttentionStatuses;
+
     /**
      * Creates an instance of AttentionReason class.
      */
@@ -328,6 +364,73 @@ public final class AttentionReason implements JsonSerializable<AttentionReason> 
     }
 
     /**
+     * Get the monitoringSourceNotConfigured property: Neither an Azure Health Model nor an SLI is configured for the
+     * Drill. Execution is blocked until a monitoring source is configured.
+     * 
+     * @return the monitoringSourceNotConfigured value.
+     */
+    public Boolean monitoringSourceNotConfigured() {
+        return this.monitoringSourceNotConfigured;
+    }
+
+    /**
+     * Get the healthModelExists property: Whether the selected Azure Health Model still exists.
+     * 
+     * @return the healthModelExists value.
+     */
+    public ExtensionObjectState healthModelExists() {
+        return this.healthModelExists;
+    }
+
+    /**
+     * Get the discoveryRuleExists property: Whether the selected discovery rule still exists.
+     * 
+     * @return the discoveryRuleExists value.
+     */
+    public ExtensionObjectState discoveryRuleExists() {
+        return this.discoveryRuleExists;
+    }
+
+    /**
+     * Get the drillRbacOnHealthModel property: Whether the Drill identity has the necessary RBAC (Reader) to read the
+     * selected Azure Health Model.
+     * 
+     * @return the drillRbacOnHealthModel value.
+     */
+    public RBACState drillRbacOnHealthModel() {
+        return this.drillRbacOnHealthModel;
+    }
+
+    /**
+     * Get the rbacNeededForDrillOnHealthModel property: Permissions needed by the Drill identity to read the selected
+     * Azure Health Model.
+     * 
+     * @return the rbacNeededForDrillOnHealthModel value.
+     */
+    public List<String> rbacNeededForDrillOnHealthModel() {
+        return this.rbacNeededForDrillOnHealthModel;
+    }
+
+    /**
+     * Get the drillRbacOnSli property: Rolled-up RBAC state: NotSet if the Drill identity is missing the necessary RBAC
+     * to read any selected SLI.
+     * 
+     * @return the drillRbacOnSli value.
+     */
+    public RBACState drillRbacOnSli() {
+        return this.drillRbacOnSli;
+    }
+
+    /**
+     * Get the sliAttentionStatuses property: Per-SLI attention status for each SLI selected for Drill monitoring.
+     * 
+     * @return the sliAttentionStatuses value.
+     */
+    public List<SliAttentionStatus> sliAttentionStatuses() {
+        return this.sliAttentionStatuses;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -374,6 +477,19 @@ public final class AttentionReason implements JsonSerializable<AttentionReason> 
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("missingRequiredResourceProviders", this.missingRequiredResourceProviders,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("monitoringSourceNotConfigured", this.monitoringSourceNotConfigured);
+        jsonWriter.writeStringField("healthModelExists",
+            this.healthModelExists == null ? null : this.healthModelExists.toString());
+        jsonWriter.writeStringField("discoveryRuleExists",
+            this.discoveryRuleExists == null ? null : this.discoveryRuleExists.toString());
+        jsonWriter.writeStringField("drillRbacOnHealthModel",
+            this.drillRbacOnHealthModel == null ? null : this.drillRbacOnHealthModel.toString());
+        jsonWriter.writeArrayField("rbacNeededForDrillOnHealthModel", this.rbacNeededForDrillOnHealthModel,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("drillRbacOnSli",
+            this.drillRbacOnSli == null ? null : this.drillRbacOnSli.toString());
+        jsonWriter.writeArrayField("sliAttentionStatuses", this.sliAttentionStatuses,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -452,6 +568,25 @@ public final class AttentionReason implements JsonSerializable<AttentionReason> 
                 } else if ("missingRequiredResourceProviders".equals(fieldName)) {
                     List<String> missingRequiredResourceProviders = reader.readArray(reader1 -> reader1.getString());
                     deserializedAttentionReason.missingRequiredResourceProviders = missingRequiredResourceProviders;
+                } else if ("monitoringSourceNotConfigured".equals(fieldName)) {
+                    deserializedAttentionReason.monitoringSourceNotConfigured
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("healthModelExists".equals(fieldName)) {
+                    deserializedAttentionReason.healthModelExists = ExtensionObjectState.fromString(reader.getString());
+                } else if ("discoveryRuleExists".equals(fieldName)) {
+                    deserializedAttentionReason.discoveryRuleExists
+                        = ExtensionObjectState.fromString(reader.getString());
+                } else if ("drillRbacOnHealthModel".equals(fieldName)) {
+                    deserializedAttentionReason.drillRbacOnHealthModel = RBACState.fromString(reader.getString());
+                } else if ("rbacNeededForDrillOnHealthModel".equals(fieldName)) {
+                    List<String> rbacNeededForDrillOnHealthModel = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAttentionReason.rbacNeededForDrillOnHealthModel = rbacNeededForDrillOnHealthModel;
+                } else if ("drillRbacOnSli".equals(fieldName)) {
+                    deserializedAttentionReason.drillRbacOnSli = RBACState.fromString(reader.getString());
+                } else if ("sliAttentionStatuses".equals(fieldName)) {
+                    List<SliAttentionStatus> sliAttentionStatuses
+                        = reader.readArray(reader1 -> SliAttentionStatus.fromJson(reader1));
+                    deserializedAttentionReason.sliAttentionStatuses = sliAttentionStatuses;
                 } else {
                     reader.skipChildren();
                 }
