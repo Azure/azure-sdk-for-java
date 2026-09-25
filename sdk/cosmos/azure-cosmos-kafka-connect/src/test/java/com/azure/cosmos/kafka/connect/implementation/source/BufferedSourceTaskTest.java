@@ -94,10 +94,9 @@ public class BufferedSourceTaskTest {
         }
 
         @Override
-        public void stop() {
+        protected void stopTask() {
             this.stopCount.incrementAndGet();
             this.stopAction.run();
-            this.stopPolling();
         }
     }
 

@@ -48,23 +48,30 @@ public abstract class BufferedSourceTask extends SourceTask {
         }
     }
 
-    protected final synchronized void stopPolling() {
+    @Override
+    public final synchronized void stop() {
         if (this.stopping) {
             return;
         }
         this.stopping = true;
-        if (this.pollingThread != null) {
-            this.pollingThread.interrupt();
-            try {
-                this.pollingThread.join(THREAD_SHUTDOWN_WAIT_MS);
-            } catch (InterruptedException error) {
-                Thread.currentThread().interrupt();
+        try {
+            this.stopTask();
+        } finally {
+            if (this.pollingThread != null) {
+                this.pollingThread.interrupt();
+                try {
+                    this.pollingThread.join(THREAD_SHUTDOWN_WAIT_MS);
+                } catch (InterruptedException error) {
+                    Thread.currentThread().interrupt();
+                }
+                this.pollingThread = null;
             }
-            this.pollingThread = null;
         }
     }
 
     protected abstract List<SourceRecord> pollTask();
+
+    protected abstract void stopTask();
 
     private synchronized void startPollingThread() {
         if (this.stopping || this.pollingThread != null) {
