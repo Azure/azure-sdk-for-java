@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class SignalDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/SignalDefinitions_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/SignalDefinitions_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalDefinitions_CreateOrUpdate.

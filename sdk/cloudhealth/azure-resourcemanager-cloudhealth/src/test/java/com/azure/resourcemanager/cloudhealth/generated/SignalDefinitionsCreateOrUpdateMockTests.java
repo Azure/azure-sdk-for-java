@@ -29,7 +29,7 @@ public final class SignalDefinitionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"sjuivfcdisyir\",\"refreshInterval\":\"PT2H\",\"tags\":{\"hqvwrevkhgnlnzon\":\"zexrxzbujrt\",\"jtszcof\":\"lrpiqywnc\",\"k\":\"zehtdhgb\",\"zmlovuanash\":\"reljeamur\"},\"dataUnit\":\"lpmjerb\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":59.17640311037494,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":65.49431083379979,\"sensitivity\":\"Low\"}}},\"id\":\"cxjmonfdgnwncyp\",\"name\":\"uwwltvuqjctz\",\"type\":\"nkeifz\"}";
+            = "{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"kjjeokbz\",\"refreshInterval\":\"PT1H\",\"tags\":{\"ipqxbkwvzgnzv\":\"xcczurtl\"},\"dataUnit\":\"bzdixzmq\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":36.659936416675855,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":45.10328360218613,\"sensitivity\":\"Medium\"}}},\"id\":\"mcgsbostzelnd\",\"name\":\"atutmzlbiojlvfhr\",\"type\":\"bpneqvcwwyyurm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,35 +39,36 @@ public final class SignalDefinitionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SignalDefinition response = manager.signalDefinitions()
-            .define("fuzboyjathwtzolb")
-            .withExistingHealthmodel("stvasylwxdzaumw", "oohgu")
-            .withProperties(new SignalDefinitionProperties().withDisplayName("dxmeb")
+            .define("or")
+            .withExistingHealthmodel("rotwypundmbxhugc", "jkavl")
+            .withProperties(new SignalDefinitionProperties().withDisplayName("mdtzfjltfvnzc")
                 .withRefreshInterval(RefreshInterval.PT30M)
-                .withTags(mapOf("hlxvea", "p", "xnmwmqtibxyijddt", "f", "ekpndzaapmudq", "qcttadijaeukmrsi"))
-                .withDataUnit("qwigpibudqwyxe")
+                .withTags(mapOf("opv", "p", "qgqqihedsvqwthmk", "bdb", "dhohsdtmcdzsuf", "ibcysihsgqc"))
+                .withDataUnit("hdxbzlm")
                 .withEvaluationRules(new EvaluationRule()
                     .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.EQUAL)
-                        .withThreshold(65.15205499201743D)
-                        .withSensitivity(DynamicThresholdSensitivity.MEDIUM))
-                    .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN_OR_EQUAL)
-                        .withThreshold(45.301698255925125D)
-                        .withSensitivity(DynamicThresholdSensitivity.MEDIUM))))
+                        .withThreshold(91.29743010513795D)
+                        .withSensitivity(DynamicThresholdSensitivity.HIGH))
+                    .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
+                        .withThreshold(78.00867559611804D)
+                        .withSensitivity(DynamicThresholdSensitivity.LOW))))
             .create();
 
-        Assertions.assertEquals("sjuivfcdisyir", response.properties().displayName());
-        Assertions.assertEquals(RefreshInterval.PT2H, response.properties().refreshInterval());
-        Assertions.assertEquals("zexrxzbujrt", response.properties().tags().get("hqvwrevkhgnlnzon"));
-        Assertions.assertEquals("lpmjerb", response.properties().dataUnit());
+        Assertions.assertEquals("kjjeokbz", response.properties().displayName());
+        Assertions.assertEquals(RefreshInterval.PT1H, response.properties().refreshInterval());
+        Assertions.assertEquals("xcczurtl", response.properties().tags().get("ipqxbkwvzgnzv"));
+        Assertions.assertEquals("bzdixzmq", response.properties().dataUnit());
         Assertions.assertEquals(SignalOperator.EQUAL,
             response.properties().evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(59.17640311037494D, response.properties().evaluationRules().degradedRule().threshold());
+        Assertions.assertEquals(36.659936416675855D,
+            response.properties().evaluationRules().degradedRule().threshold());
         Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
             response.properties().evaluationRules().degradedRule().sensitivity());
         Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
             response.properties().evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(65.49431083379979D,
+        Assertions.assertEquals(45.10328360218613D,
             response.properties().evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
             response.properties().evaluationRules().unhealthyRule().sensitivity());
     }
 

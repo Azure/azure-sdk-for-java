@@ -64,7 +64,7 @@ import com.azure.resourcemanager.cloudhealth.models.ManagedIdentityAuthenticatio
  */
 public final class AuthenticationSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/AuthenticationSettings_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/AuthenticationSettings_CreateOrUpdate.json
      */
     /**
      * Sample code: AuthenticationSettings_CreateOrUpdate.
@@ -92,7 +92,7 @@ public final class AuthenticationSettingsCreateOrUpdateSamples {
  */
 public final class AuthenticationSettingsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/AuthenticationSettings_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/AuthenticationSettings_Delete.json
      */
     /**
      * Sample code: AuthenticationSettings_Delete.
@@ -114,7 +114,7 @@ public final class AuthenticationSettingsDeleteSamples {
  */
 public final class AuthenticationSettingsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/AuthenticationSettings_Get.json
+     * x-ms-original-file: 2026-10-01-preview/AuthenticationSettings_Get.json
      */
     /**
      * Sample code: AuthenticationSettings_Get.
@@ -136,7 +136,7 @@ public final class AuthenticationSettingsGetSamples {
  */
 public final class AuthenticationSettingsListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/AuthenticationSettings_ListByHealthModel.json
+     * x-ms-original-file: 2026-10-01-preview/AuthenticationSettings_ListByHealthModel.json
      */
     /**
      * Sample code: AuthenticationSettings_ListByHealthModel.
@@ -165,7 +165,7 @@ import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilitySt
  */
 public final class DiscoveryRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/DiscoveryRules_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/DiscoveryRules_CreateOrUpdate.json
      */
     /**
      * Sample code: DiscoveryRules_CreateOrUpdate.
@@ -196,7 +196,7 @@ public final class DiscoveryRulesCreateOrUpdateSamples {
  */
 public final class DiscoveryRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/DiscoveryRules_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/DiscoveryRules_Delete.json
      */
     /**
      * Sample code: DiscoveryRules_Delete.
@@ -218,7 +218,7 @@ public final class DiscoveryRulesDeleteSamples {
  */
 public final class DiscoveryRulesGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/DiscoveryRules_Get.json
+     * x-ms-original-file: 2026-10-01-preview/DiscoveryRules_Get.json
      */
     /**
      * Sample code: DiscoveryRules_Get.
@@ -241,7 +241,7 @@ public final class DiscoveryRulesGetSamples {
  */
 public final class DiscoveryRulesListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/DiscoveryRules_ListByHealthModel.json
+     * x-ms-original-file: 2026-10-01-preview/DiscoveryRules_ListByHealthModel.json
      */
     /**
      * Sample code: DiscoveryRules_ListByHealthModel.
@@ -268,7 +268,7 @@ import java.util.Map;
  */
 public final class EntitiesAddDataAnnotationSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Entities_AddDataAnnotation.json
+     * x-ms-original-file: 2026-10-01-preview/Entities_AddDataAnnotation.json
      */
     /**
      * Sample code: Entities_AddDataAnnotation.
@@ -336,7 +336,7 @@ import java.util.Map;
  */
 public final class EntitiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Entities_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/Entities_CreateOrUpdate.json
      */
     /**
      * Sample code: Entities_CreateOrUpdate.
@@ -480,7 +480,7 @@ public final class EntitiesCreateOrUpdateSamples {
  */
 public final class EntitiesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Entities_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/Entities_Delete.json
      */
     /**
      * Sample code: Entities_Delete.
@@ -502,7 +502,7 @@ public final class EntitiesDeleteSamples {
  */
 public final class EntitiesGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Entities_Get.json
+     * x-ms-original-file: 2026-10-01-preview/Entities_Get.json
      */
     /**
      * Sample code: Entities_Get.
@@ -527,7 +527,7 @@ import java.time.OffsetDateTime;
  */
 public final class EntitiesGetDataAnnotationsSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Entities_GetDataAnnotations.json
+     * x-ms-original-file: 2026-10-01-preview/Entities_GetDataAnnotations.json
      */
     /**
      * Sample code: Entities_GetDataAnnotations.
@@ -555,7 +555,7 @@ import java.time.OffsetDateTime;
  */
 public final class EntitiesGetHistorySamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Entities_GetHistory.json
+     * x-ms-original-file: 2026-10-01-preview/Entities_GetHistory.json
      */
     /**
      * Sample code: Entities_GetHistory.
@@ -584,7 +584,7 @@ import java.time.OffsetDateTime;
  */
 public final class EntitiesGetSignalHistorySamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Entities_GetSignalHistory.json
+     * x-ms-original-file: 2026-10-01-preview/Entities_GetSignalHistory.json
      */
     /**
      * Sample code: Entities_GetSignalHistory.
@@ -611,7 +611,7 @@ public final class EntitiesGetSignalHistorySamples {
  */
 public final class EntitiesGetSignalRecommendationsSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Entities_GetSignalRecommendations.json
+     * x-ms-original-file: 2026-10-01-preview/Entities_GetSignalRecommendations.json
      */
     /**
      * Sample code: Entities_GetSignalRecommendations.
@@ -621,7 +621,7 @@ public final class EntitiesGetSignalRecommendationsSamples {
     public static void
         entitiesGetSignalRecommendations(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.entities()
-            .getSignalRecommendationsWithResponse("online-store-rg", "online-store", "orders-db",
+            .getSignalRecommendationsWithResponse("online-store-rg", "online-store", "online-store-aks",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -641,7 +641,7 @@ import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
  */
 public final class EntitiesIngestHealthReportSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Entities_IngestHealthReport.json
+     * x-ms-original-file: 2026-10-01-preview/Entities_IngestHealthReport.json
      */
     /**
      * Sample code: Entities_IngestHealthReport.
@@ -675,7 +675,7 @@ public final class EntitiesIngestHealthReportSamples {
  */
 public final class EntitiesListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Entities_ListByHealthModel.json
+     * x-ms-original-file: 2026-10-01-preview/Entities_ListByHealthModel.json
      */
     /**
      * Sample code: Entities_ListByHealthModel.
@@ -702,7 +702,7 @@ import java.util.Map;
  */
 public final class HealthModelsCreateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/HealthModels_Create.json
+     * x-ms-original-file: 2026-10-01-preview/HealthModels_Create.json
      */
     /**
      * Sample code: HealthModels_Create.
@@ -742,7 +742,7 @@ public final class HealthModelsCreateSamples {
  */
 public final class HealthModelsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/HealthModels_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/HealthModels_Delete.json
      */
     /**
      * Sample code: HealthModels_Delete.
@@ -763,7 +763,7 @@ public final class HealthModelsDeleteSamples {
  */
 public final class HealthModelsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/HealthModels_Get.json
+     * x-ms-original-file: 2026-10-01-preview/HealthModels_Get.json
      */
     /**
      * Sample code: HealthModels_Get.
@@ -785,7 +785,7 @@ public final class HealthModelsGetByResourceGroupSamples {
  */
 public final class HealthModelsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/HealthModels_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01-preview/HealthModels_ListBySubscription.json
      */
     /**
      * Sample code: HealthModels_ListBySubscription.
@@ -807,7 +807,7 @@ public final class HealthModelsListSamples {
  */
 public final class HealthModelsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/HealthModels_ListByResourceGroup.json
+     * x-ms-original-file: 2026-10-01-preview/HealthModels_ListByResourceGroup.json
      */
     /**
      * Sample code: HealthModels_ListByResourceGroup.
@@ -833,7 +833,7 @@ import java.util.Map;
  */
 public final class HealthModelsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/HealthModels_Update.json
+     * x-ms-original-file: 2026-10-01-preview/HealthModels_Update.json
      */
     /**
      * Sample code: HealthModels_Update.
@@ -869,7 +869,7 @@ public final class HealthModelsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-10-01-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -894,7 +894,7 @@ import java.util.Map;
  */
 public final class RelationshipsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Relationships_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/Relationships_CreateOrUpdate.json
      */
     /**
      * Sample code: Relationships_CreateOrUpdate.
@@ -934,7 +934,7 @@ public final class RelationshipsCreateOrUpdateSamples {
  */
 public final class RelationshipsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Relationships_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/Relationships_Delete.json
      */
     /**
      * Sample code: Relationships_Delete.
@@ -957,7 +957,7 @@ public final class RelationshipsDeleteSamples {
  */
 public final class RelationshipsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Relationships_Get.json
+     * x-ms-original-file: 2026-10-01-preview/Relationships_Get.json
      */
     /**
      * Sample code: Relationships_Get.
@@ -981,7 +981,7 @@ public final class RelationshipsGetSamples {
  */
 public final class RelationshipsListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Relationships_ListByHealthModel.json
+     * x-ms-original-file: 2026-10-01-preview/Relationships_ListByHealthModel.json
      */
     /**
      * Sample code: Relationships_ListByHealthModel.
@@ -1014,7 +1014,7 @@ import java.util.Map;
  */
 public final class SignalDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/SignalDefinitions_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/SignalDefinitions_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalDefinitions_CreateOrUpdate.
@@ -1064,7 +1064,7 @@ public final class SignalDefinitionsCreateOrUpdateSamples {
  */
 public final class SignalDefinitionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/SignalDefinitions_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/SignalDefinitions_Delete.json
      */
     /**
      * Sample code: SignalDefinitions_Delete.
@@ -1086,7 +1086,7 @@ public final class SignalDefinitionsDeleteSamples {
  */
 public final class SignalDefinitionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/SignalDefinitions_Get.json
+     * x-ms-original-file: 2026-10-01-preview/SignalDefinitions_Get.json
      */
     /**
      * Sample code: SignalDefinitions_Get.
@@ -1109,7 +1109,7 @@ public final class SignalDefinitionsGetSamples {
  */
 public final class SignalDefinitionsListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/SignalDefinitions_ListByHealthModel.json
+     * x-ms-original-file: 2026-10-01-preview/SignalDefinitions_ListByHealthModel.json
      */
     /**
      * Sample code: SignalDefinitions_ListByHealthModel.
