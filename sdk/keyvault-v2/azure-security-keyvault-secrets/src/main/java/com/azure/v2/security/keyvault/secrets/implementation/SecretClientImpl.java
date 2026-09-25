@@ -350,7 +350,7 @@ public final class SecretClientImpl {
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretsSinglePage(Integer maxresults) {
+    public PagedResponse<SecretItem, String> getSecretsSinglePage(Integer maxresults) {
         final String accept = "application/json";
         Response<SecretListResult> res = service.getSecrets(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, RequestContext.none());
@@ -374,7 +374,7 @@ public final class SecretClientImpl {
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretsSinglePage(Integer maxresults, RequestContext requestContext) {
+    public PagedResponse<SecretItem, String> getSecretsSinglePage(Integer maxresults, RequestContext requestContext) {
         final String accept = "application/json";
         Response<SecretListResult> res = service.getSecrets(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, requestContext);
@@ -397,7 +397,7 @@ public final class SecretClientImpl {
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecretItem> getSecrets(Integer maxresults) {
+    public PagedIterable<SecretItem, String> getSecrets(Integer maxresults) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
                 throw LOGGER.throwableAtError()
@@ -443,7 +443,7 @@ public final class SecretClientImpl {
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecretItem> getSecrets(Integer maxresults, RequestContext requestContext) {
+    public PagedIterable<SecretItem, String> getSecrets(Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -489,7 +489,7 @@ public final class SecretClientImpl {
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretVersionsSinglePage(String secretName, Integer maxresults) {
+    public PagedResponse<SecretItem, String> getSecretVersionsSinglePage(String secretName, Integer maxresults) {
         final String accept = "application/json";
         Response<SecretListResult> res = service.getSecretVersions(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), secretName, maxresults, accept, RequestContext.none());
@@ -513,7 +513,7 @@ public final class SecretClientImpl {
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretVersionsSinglePage(String secretName, Integer maxresults,
+    public PagedResponse<SecretItem, String> getSecretVersionsSinglePage(String secretName, Integer maxresults,
         RequestContext requestContext) {
         final String accept = "application/json";
         Response<SecretListResult> res = service.getSecretVersions(this.getVaultBaseUrl(),
@@ -537,7 +537,7 @@ public final class SecretClientImpl {
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecretItem> getSecretVersions(String secretName, Integer maxresults) {
+    public PagedIterable<SecretItem, String> getSecretVersions(String secretName, Integer maxresults) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
                 throw LOGGER.throwableAtError()
@@ -580,7 +580,7 @@ public final class SecretClientImpl {
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecretItem> getSecretVersions(String secretName) {
+    public PagedIterable<SecretItem, String> getSecretVersions(String secretName) {
         final Integer maxresults = null;
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -627,7 +627,7 @@ public final class SecretClientImpl {
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecretItem> getSecretVersions(String secretName, Integer maxresults,
+    public PagedIterable<SecretItem, String> getSecretVersions(String secretName, Integer maxresults,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
@@ -673,7 +673,7 @@ public final class SecretClientImpl {
      * @return the deleted secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedSecretItem> getDeletedSecretsSinglePage(Integer maxresults) {
+    public PagedResponse<DeletedSecretItem, String> getDeletedSecretsSinglePage(Integer maxresults) {
         final String accept = "application/json";
         Response<DeletedSecretListResult> res = service.getDeletedSecrets(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, RequestContext.none());
@@ -696,7 +696,7 @@ public final class SecretClientImpl {
      * @return the deleted secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedSecretItem> getDeletedSecretsSinglePage(Integer maxresults,
+    public PagedResponse<DeletedSecretItem, String> getDeletedSecretsSinglePage(Integer maxresults,
         RequestContext requestContext) {
         final String accept = "application/json";
         Response<DeletedSecretListResult> res = service.getDeletedSecrets(this.getVaultBaseUrl(),
@@ -719,7 +719,7 @@ public final class SecretClientImpl {
      * @return the deleted secret list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedSecretItem> getDeletedSecrets(Integer maxresults) {
+    public PagedIterable<DeletedSecretItem, String> getDeletedSecrets(Integer maxresults) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
                 throw LOGGER.throwableAtError()
@@ -764,7 +764,8 @@ public final class SecretClientImpl {
      * @return the deleted secret list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedSecretItem> getDeletedSecrets(Integer maxresults, RequestContext requestContext) {
+    public PagedIterable<DeletedSecretItem, String> getDeletedSecrets(Integer maxresults,
+        RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -913,7 +914,7 @@ public final class SecretClientImpl {
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretsNextSinglePage(String nextLink) {
+    public PagedResponse<SecretItem, String> getSecretsNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<SecretListResult> res
             = service.getSecretsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
@@ -934,7 +935,7 @@ public final class SecretClientImpl {
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretsNextSinglePage(String nextLink, RequestContext requestContext) {
+    public PagedResponse<SecretItem, String> getSecretsNextSinglePage(String nextLink, RequestContext requestContext) {
         final String accept = "application/json";
         Response<SecretListResult> res
             = service.getSecretsNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
@@ -954,7 +955,7 @@ public final class SecretClientImpl {
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretVersionsNextSinglePage(String nextLink) {
+    public PagedResponse<SecretItem, String> getSecretVersionsNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<SecretListResult> res
             = service.getSecretVersionsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
@@ -975,7 +976,8 @@ public final class SecretClientImpl {
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretVersionsNextSinglePage(String nextLink, RequestContext requestContext) {
+    public PagedResponse<SecretItem, String> getSecretVersionsNextSinglePage(String nextLink,
+        RequestContext requestContext) {
         final String accept = "application/json";
         Response<SecretListResult> res
             = service.getSecretVersionsNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
@@ -995,7 +997,7 @@ public final class SecretClientImpl {
      * @return the deleted secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedSecretItem> getDeletedSecretsNextSinglePage(String nextLink) {
+    public PagedResponse<DeletedSecretItem, String> getDeletedSecretsNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<DeletedSecretListResult> res
             = service.getDeletedSecretsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
@@ -1016,7 +1018,7 @@ public final class SecretClientImpl {
      * @return the deleted secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedSecretItem> getDeletedSecretsNextSinglePage(String nextLink,
+    public PagedResponse<DeletedSecretItem, String> getDeletedSecretsNextSinglePage(String nextLink,
         RequestContext requestContext) {
         final String accept = "application/json";
         Response<DeletedSecretListResult> res

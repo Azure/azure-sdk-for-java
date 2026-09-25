@@ -16,7 +16,7 @@ public class PagingOptionsTests {
         final long offset = 50L;
         final String continuationToken = "continuation_token";
 
-        PagingOptions pagingOptions = new PagingOptions().setPageSize(pageSize)
+        PagingOptions<String> pagingOptions = new PagingOptions<String>().setPageSize(pageSize)
             .setPageIndex(pageIndex)
             .setOffset(offset)
             .setContinuationToken(continuationToken);
@@ -25,5 +25,14 @@ public class PagingOptionsTests {
         Assertions.assertEquals(pageIndex, pagingOptions.getPageIndex());
         Assertions.assertEquals(offset, pagingOptions.getOffset());
         Assertions.assertEquals(continuationToken, pagingOptions.getContinuationToken());
+    }
+
+    @Test
+    public void supportsNonStringContinuationToken() {
+        Object continuationToken = new Object();
+        PagingOptions<Object> pagingOptions = new PagingOptions<>().setContinuationToken(continuationToken);
+
+        Object actual = pagingOptions.getContinuationToken();
+        Assertions.assertSame(continuationToken, actual);
     }
 }

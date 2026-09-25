@@ -416,7 +416,8 @@ public final class CertificateClientImpl {
      * @return the certificate list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificatesSinglePage(Integer maxresults, Boolean includePending) {
+    public PagedResponse<CertificateItem, String> getCertificatesSinglePage(Integer maxresults,
+        Boolean includePending) {
         final String accept = "application/json";
         Response<CertificateListResult> res = service.getCertificates(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, includePending, accept, RequestContext.none());
@@ -440,7 +441,7 @@ public final class CertificateClientImpl {
      * @return the certificate list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificatesSinglePage(Integer maxresults, Boolean includePending,
+    public PagedResponse<CertificateItem, String> getCertificatesSinglePage(Integer maxresults, Boolean includePending,
         RequestContext requestContext) {
         final String accept = "application/json";
         Response<CertificateListResult> res = service.getCertificates(this.getVaultBaseUrl(),
@@ -464,7 +465,7 @@ public final class CertificateClientImpl {
      * @return the certificate list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateItem> getCertificates(Integer maxresults, Boolean includePending) {
+    public PagedIterable<CertificateItem, String> getCertificates(Integer maxresults, Boolean includePending) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
                 throw LOGGER.throwableAtError()
@@ -510,7 +511,7 @@ public final class CertificateClientImpl {
      * @return the certificate list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateItem> getCertificates(Integer maxresults, Boolean includePending,
+    public PagedIterable<CertificateItem, String> getCertificates(Integer maxresults, Boolean includePending,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
@@ -638,7 +639,7 @@ public final class CertificateClientImpl {
      * @return the certificate issuer list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateIssuerItem> getCertificateIssuersSinglePage(Integer maxresults) {
+    public PagedResponse<CertificateIssuerItem, String> getCertificateIssuersSinglePage(Integer maxresults) {
         final String accept = "application/json";
         Response<CertificateIssuerListResult> res = service.getCertificateIssuers(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, RequestContext.none());
@@ -661,7 +662,7 @@ public final class CertificateClientImpl {
      * @return the certificate issuer list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateIssuerItem> getCertificateIssuersSinglePage(Integer maxresults,
+    public PagedResponse<CertificateIssuerItem, String> getCertificateIssuersSinglePage(Integer maxresults,
         RequestContext requestContext) {
         final String accept = "application/json";
         Response<CertificateIssuerListResult> res = service.getCertificateIssuers(this.getVaultBaseUrl(),
@@ -684,7 +685,7 @@ public final class CertificateClientImpl {
      * @return the certificate issuer list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateIssuerItem> getCertificateIssuers(Integer maxresults) {
+    public PagedIterable<CertificateIssuerItem, String> getCertificateIssuers(Integer maxresults) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
                 throw LOGGER.throwableAtError()
@@ -729,7 +730,7 @@ public final class CertificateClientImpl {
      * @return the certificate issuer list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateIssuerItem> getCertificateIssuers(Integer maxresults,
+    public PagedIterable<CertificateIssuerItem, String> getCertificateIssuers(Integer maxresults,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
@@ -914,7 +915,8 @@ public final class CertificateClientImpl {
      * @return the certificate list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificateVersionsSinglePage(String certificateName, Integer maxresults) {
+    public PagedResponse<CertificateItem, String> getCertificateVersionsSinglePage(String certificateName,
+        Integer maxresults) {
         final String accept = "application/json";
         Response<CertificateListResult> res = service.getCertificateVersions(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), certificateName, maxresults, accept, RequestContext.none());
@@ -938,8 +940,8 @@ public final class CertificateClientImpl {
      * @return the certificate list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificateVersionsSinglePage(String certificateName, Integer maxresults,
-        RequestContext requestContext) {
+    public PagedResponse<CertificateItem, String> getCertificateVersionsSinglePage(String certificateName,
+        Integer maxresults, RequestContext requestContext) {
         final String accept = "application/json";
         Response<CertificateListResult> res = service.getCertificateVersions(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), certificateName, maxresults, accept, requestContext);
@@ -962,7 +964,7 @@ public final class CertificateClientImpl {
      * @return the certificate list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateItem> getCertificateVersions(String certificateName, Integer maxresults) {
+    public PagedIterable<CertificateItem, String> getCertificateVersions(String certificateName, Integer maxresults) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
                 throw LOGGER.throwableAtError()
@@ -1005,7 +1007,7 @@ public final class CertificateClientImpl {
      * @return the certificate list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateItem> getCertificateVersions(String certificateName) {
+    public PagedIterable<CertificateItem, String> getCertificateVersions(String certificateName) {
         final Integer maxresults = null;
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -1052,7 +1054,7 @@ public final class CertificateClientImpl {
      * @return the certificate list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateItem> getCertificateVersions(String certificateName, Integer maxresults,
+    public PagedIterable<CertificateItem, String> getCertificateVersions(String certificateName, Integer maxresults,
         RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
@@ -1325,7 +1327,7 @@ public final class CertificateClientImpl {
      * @return a list of certificates that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedCertificateItem> getDeletedCertificatesSinglePage(Integer maxresults,
+    public PagedResponse<DeletedCertificateItem, String> getDeletedCertificatesSinglePage(Integer maxresults,
         Boolean includePending) {
         final String accept = "application/json";
         Response<DeletedCertificateListResult> res = service.getDeletedCertificates(this.getVaultBaseUrl(),
@@ -1351,7 +1353,7 @@ public final class CertificateClientImpl {
      * @return a list of certificates that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedCertificateItem> getDeletedCertificatesSinglePage(Integer maxresults,
+    public PagedResponse<DeletedCertificateItem, String> getDeletedCertificatesSinglePage(Integer maxresults,
         Boolean includePending, RequestContext requestContext) {
         final String accept = "application/json";
         Response<DeletedCertificateListResult> res = service.getDeletedCertificates(this.getVaultBaseUrl(),
@@ -1376,7 +1378,8 @@ public final class CertificateClientImpl {
      * @return a list of certificates that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedCertificateItem> getDeletedCertificates(Integer maxresults, Boolean includePending) {
+    public PagedIterable<DeletedCertificateItem, String> getDeletedCertificates(Integer maxresults,
+        Boolean includePending) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
                 throw LOGGER.throwableAtError()
@@ -1423,8 +1426,8 @@ public final class CertificateClientImpl {
      * @return a list of certificates that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedCertificateItem> getDeletedCertificates(Integer maxresults, Boolean includePending,
-        RequestContext requestContext) {
+    public PagedIterable<DeletedCertificateItem, String> getDeletedCertificates(Integer maxresults,
+        Boolean includePending, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -1533,7 +1536,7 @@ public final class CertificateClientImpl {
      * @return the certificate list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificatesNextSinglePage(String nextLink) {
+    public PagedResponse<CertificateItem, String> getCertificatesNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<CertificateListResult> res
             = service.getCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
@@ -1554,7 +1557,7 @@ public final class CertificateClientImpl {
      * @return the certificate list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificatesNextSinglePage(String nextLink,
+    public PagedResponse<CertificateItem, String> getCertificatesNextSinglePage(String nextLink,
         RequestContext requestContext) {
         final String accept = "application/json";
         Response<CertificateListResult> res
@@ -1575,7 +1578,7 @@ public final class CertificateClientImpl {
      * @return the certificate issuer list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateIssuerItem> getCertificateIssuersNextSinglePage(String nextLink) {
+    public PagedResponse<CertificateIssuerItem, String> getCertificateIssuersNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<CertificateIssuerListResult> res
             = service.getCertificateIssuersNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
@@ -1596,7 +1599,7 @@ public final class CertificateClientImpl {
      * @return the certificate issuer list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateIssuerItem> getCertificateIssuersNextSinglePage(String nextLink,
+    public PagedResponse<CertificateIssuerItem, String> getCertificateIssuersNextSinglePage(String nextLink,
         RequestContext requestContext) {
         final String accept = "application/json";
         Response<CertificateIssuerListResult> res
@@ -1617,7 +1620,7 @@ public final class CertificateClientImpl {
      * @return the certificate list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificateVersionsNextSinglePage(String nextLink) {
+    public PagedResponse<CertificateItem, String> getCertificateVersionsNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<CertificateListResult> res
             = service.getCertificateVersionsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
@@ -1638,7 +1641,7 @@ public final class CertificateClientImpl {
      * @return the certificate list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<CertificateItem> getCertificateVersionsNextSinglePage(String nextLink,
+    public PagedResponse<CertificateItem, String> getCertificateVersionsNextSinglePage(String nextLink,
         RequestContext requestContext) {
         final String accept = "application/json";
         Response<CertificateListResult> res
@@ -1659,7 +1662,7 @@ public final class CertificateClientImpl {
      * @return a list of certificates that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedCertificateItem> getDeletedCertificatesNextSinglePage(String nextLink) {
+    public PagedResponse<DeletedCertificateItem, String> getDeletedCertificatesNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<DeletedCertificateListResult> res
             = service.getDeletedCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
@@ -1680,7 +1683,7 @@ public final class CertificateClientImpl {
      * @return a list of certificates that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedCertificateItem> getDeletedCertificatesNextSinglePage(String nextLink,
+    public PagedResponse<DeletedCertificateItem, String> getDeletedCertificatesNextSinglePage(String nextLink,
         RequestContext requestContext) {
         final String accept = "application/json";
         Response<DeletedCertificateListResult> res

@@ -15,11 +15,12 @@ import java.util.List;
  * Response of a REST API that returns page.
  *
  * @param <T> The type of items in the page.
+ * @param <C> The type of the continuation token.
  * @see Response
  */
 @Metadata(properties = MetadataProperties.IMMUTABLE)
-public final class PagedResponse<T> extends Response<List<T>> {
-    private final String continuationToken;
+public final class PagedResponse<T, C> extends Response<List<T>> {
+    private final C continuationToken;
     private final String nextLink;
     private final String previousLink;
     private final String firstLink;
@@ -51,8 +52,8 @@ public final class PagedResponse<T> extends Response<List<T>> {
      * @param firstLink The first page link returned from the service.
      * @param lastLink The last page link returned from the service.
      */
-    public PagedResponse(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items,
-        String continuationToken, String nextLink, String previousLink, String firstLink, String lastLink) {
+    public PagedResponse(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items, C continuationToken,
+        String nextLink, String previousLink, String firstLink, String lastLink) {
         super(request, statusCode, headers, items);
         this.continuationToken = continuationToken;
         this.nextLink = nextLink;
@@ -66,7 +67,7 @@ public final class PagedResponse<T> extends Response<List<T>> {
      *
      * @return The continuation token, or null if there isn't a next page.
      */
-    public String getContinuationToken() {
+    public C getContinuationToken() {
         return continuationToken;
     }
 

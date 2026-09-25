@@ -41,7 +41,7 @@ public class ReadRevisionHistory {
         settings.add(client.setConfigurationSetting(key, null, "newValue"));
 
 
-        PagedIterable<ConfigurationSetting> configurationSettings = client.listRevisions(new SettingSelector().setKeyFilter(key));
+        PagedIterable<ConfigurationSetting, String> configurationSettings = client.listRevisions(new SettingSelector().setKeyFilter(key));
         configurationSettings.forEach(configurationSetting -> {
             System.out.printf("Key: %s, Value: %s%n", configurationSetting.getKey(), configurationSetting.getValue());
         });

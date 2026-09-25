@@ -30,12 +30,14 @@ import io.clientcore.core.utils.CoreUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -196,6 +198,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private final boolean isLoggingEnabled;
     private final boolean isContentLoggingEnabled;
     private final boolean isRedactedHeadersLoggingEnabled;
+    private final HttpRequestLogger requestLogger;
+    private final HttpResponseLogger responseLogger;
 
     /**
      * Creates a new instrumentation policy.
@@ -220,6 +224,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
             .stream()
             .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
             .collect(Collectors.toSet());
+        this.requestLogger = optionsToUse.getRequestLogger();
+        this.responseLogger = optionsToUse.getResponseLogger();
 
         this.isTracingEnabled = tracer.isEnabled();
         this.isMetricsEnabled = meter.isEnabled();
@@ -231,7 +237,11 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     @SuppressWarnings("try")
     @Override
     public Response<BinaryData> process(HttpRequest request, HttpPipelineNextPolicy next) {
-        if (!isTracingEnabled && !isLoggingEnabled && !isMetricsEnabled) {
+        if (!isTracingEnabled
+            && !isLoggingEnabled
+            && !isMetricsEnabled
+            && requestLogger == null
+            && responseLogger == null) {
             return next.process();
         }
 
@@ -402,6 +412,11 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     private void logRequest(ClientLogger logger, HttpRequest request, long startNanoTime, long requestContentLength,
         String redactedUrl, int tryCount, InstrumentationContext context) {
+        if (requestLogger != null) {
+            requestLogger.logRequest(logger, new HttpRequestLoggingContext(request, request.getContext(), tryCount));
+            return;
+        }
+
         LoggingEvent logBuilder = logger.atLevel(HTTP_REQUEST_LOG_LEVEL);
         if (!logBuilder.isEnabled() || !isLoggingEnabled) {
             return;
@@ -433,6 +448,13 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     private Response<BinaryData> logResponse(ClientLogger logger, Response<BinaryData> response, long startNanoTime,
         long requestContentLength, String redactedUrl, int tryCount, InstrumentationContext context) {
+        if (responseLogger != null) {
+            return Objects.requireNonNull(
+                responseLogger.logResponse(logger, new HttpResponseLoggingContext(response,
+                    Duration.ofNanos(System.nanoTime() - startNanoTime), response.getRequest().getContext(), tryCount)),
+                "HttpResponseLogger returned null.");
+        }
+
         LoggingEvent logBuilder = logger.atLevel(HTTP_RESPONSE_LOG_LEVEL);
         if (!isLoggingEnabled) {
             return response;

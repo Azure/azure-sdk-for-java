@@ -1027,7 +1027,7 @@ public final class CertificateClient {
      * contains all information about the certificate, except its key material.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateProperties> listPropertiesOfCertificates() {
+    public PagedIterable<CertificateProperties, String> listPropertiesOfCertificates() {
         return listPropertiesOfCertificates(false, RequestContext.none());
     }
 
@@ -1085,7 +1085,7 @@ public final class CertificateClient {
      * contains all information about the certificate, except its key material.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateProperties> listPropertiesOfCertificates(boolean includePending,
+    public PagedIterable<CertificateProperties, String> listPropertiesOfCertificates(boolean includePending,
         RequestContext requestContext) {
 
         return mapPages(pagingOptions -> clientImpl.getCertificatesSinglePage(null, includePending),
@@ -1124,7 +1124,7 @@ public final class CertificateClient {
      * @return A {@link PagedIterable} of the deleted certificates in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedCertificate> listDeletedCertificates() {
+    public PagedIterable<DeletedCertificate, String> listDeletedCertificates() {
         return listDeletedCertificates(false, RequestContext.none());
     }
 
@@ -1169,7 +1169,7 @@ public final class CertificateClient {
      * @return A {@link PagedIterable} of the deleted certificates in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedCertificate> listDeletedCertificates(boolean includePending,
+    public PagedIterable<DeletedCertificate, String> listDeletedCertificates(boolean includePending,
         RequestContext requestContext) {
 
         return mapPages(pagingOptions -> clientImpl.getDeletedCertificatesSinglePage(null, includePending),
@@ -1226,7 +1226,7 @@ public final class CertificateClient {
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String name) {
+    public PagedIterable<CertificateProperties, String> listPropertiesOfCertificateVersions(String name) {
         return listPropertiesOfCertificateVersions(name, RequestContext.none());
     }
 
@@ -1289,7 +1289,7 @@ public final class CertificateClient {
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String name,
+    public PagedIterable<CertificateProperties, String> listPropertiesOfCertificateVersions(String name,
         RequestContext requestContext) {
 
         return mapPages(pagingOptions -> clientImpl.getCertificateVersionsSinglePage(name, null),
@@ -1756,7 +1756,7 @@ public final class CertificateClient {
      * object contains the issuer identifier and provider.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IssuerProperties> listPropertiesOfIssuers() {
+    public PagedIterable<IssuerProperties, String> listPropertiesOfIssuers() {
         return listPropertiesOfIssuers(RequestContext.none());
     }
 
@@ -1808,7 +1808,7 @@ public final class CertificateClient {
      * object contains the issuer identifier and provider.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IssuerProperties> listPropertiesOfIssuers(RequestContext requestContext) {
+    public PagedIterable<IssuerProperties, String> listPropertiesOfIssuers(RequestContext requestContext) {
         return mapPages(pagingOptions -> clientImpl.getCertificateIssuersSinglePage(null),
             (pagingOptions, nextLink) -> clientImpl.getCertificateIssuersNextSinglePage(nextLink, requestContext),
             IssuerPropertiesHelper::createIssuerProperties);
@@ -1947,7 +1947,7 @@ public final class CertificateClient {
      * @throws HttpResponseException If the provided contact information is malformed.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts) {
+    public PagedIterable<CertificateContact, String> setContacts(List<CertificateContact> contacts) {
         return setContacts(contacts, RequestContext.none());
     }
 
@@ -1981,7 +1981,7 @@ public final class CertificateClient {
      * @throws HttpResponseException If the provided contact information is malformed.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts,
+    public PagedIterable<CertificateContact, String> setContacts(List<CertificateContact> contacts,
         RequestContext requestContext) {
 
         return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(
@@ -2006,7 +2006,7 @@ public final class CertificateClient {
      * @return A {@link PagedIterable} containing all the certificate contacts in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateContact> listContacts() {
+    public PagedIterable<CertificateContact, String> listContacts() {
         return listContacts(RequestContext.none());
     }
 
@@ -2033,7 +2033,7 @@ public final class CertificateClient {
      * @return A {@link PagedIterable} containing all the certificate contacts in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateContact> listContacts(RequestContext requestContext) {
+    public PagedIterable<CertificateContact, String> listContacts(RequestContext requestContext) {
         return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(
             clientImpl.getCertificateContactsWithResponse(requestContext)));
     }
@@ -2056,7 +2056,7 @@ public final class CertificateClient {
      * @return A {@link PagedIterable} containing the freshly deleted certificate contacts.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateContact> deleteContacts() {
+    public PagedIterable<CertificateContact, String> deleteContacts() {
         return deleteContacts(RequestContext.none());
     }
 
@@ -2083,7 +2083,7 @@ public final class CertificateClient {
      * @return A {@link PagedIterable} containing the freshly deleted certificate contacts.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateContact> deleteContacts(RequestContext requestContext) {
+    public PagedIterable<CertificateContact, String> deleteContacts(RequestContext requestContext) {
         return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(
             clientImpl.deleteCertificateContactsWithResponse(requestContext)));
     }
@@ -2518,15 +2518,17 @@ public final class CertificateClient {
             mapper.apply(response.getValue()));
     }
 
-    private static <T, S> PagedIterable<S> mapPages(Function<PagingOptions, PagedResponse<T>> firstPageRetriever,
-        BiFunction<PagingOptions, String, PagedResponse<T>> nextPageRetriever, Function<T, S> mapper) {
+    private static <T, S> PagedIterable<S, String> mapPages(
+        Function<PagingOptions<String>, PagedResponse<T, String>> firstPageRetriever,
+        BiFunction<PagingOptions<String>, String, PagedResponse<T, String>> nextPageRetriever, Function<T, S> mapper) {
 
         return new PagedIterable<>(pageSize -> mapPagedResponse(firstPageRetriever.apply(pageSize), mapper),
             (continuationToken, pageSize) -> mapPagedResponse(nextPageRetriever.apply(continuationToken, pageSize),
                 mapper));
     }
 
-    private static <T, S> PagedResponse<S> mapPagedResponse(PagedResponse<T> pagedResponse, Function<T, S> mapper) {
+    private static <T, S> PagedResponse<S, String> mapPagedResponse(PagedResponse<T, String> pagedResponse,
+        Function<T, S> mapper) {
         if (pagedResponse == null) {
             return null;
         }
@@ -2540,7 +2542,7 @@ public final class CertificateClient {
             pagedResponse.getContinuationToken(), null, null, null, null);
     }
 
-    private static PagedResponse<CertificateContact> mapContactsToPagedResponse(Response<Contacts> response) {
+    private static PagedResponse<CertificateContact, String> mapContactsToPagedResponse(Response<Contacts> response) {
         return new PagedResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             response.getValue().getContactList());
     }

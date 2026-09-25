@@ -44,7 +44,7 @@ public class ConditionalRequestForSettingsPagination {
                 pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)))
             .collect(Collectors.toList());
 
-        PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(
+        PagedIterable<ConfigurationSetting, String> settings = client.listConfigurationSettings(
             new SettingSelector().setMatchConditions(matchConditionsList));
 
         settings.iterableByPage().forEach(pagedResponse -> {

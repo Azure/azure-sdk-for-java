@@ -54,6 +54,7 @@ public class TokenRequestContext {
     private String claims;
     private String tenantId;
     private boolean enableCae;
+    private ProofOfPossessionOptions proofOfPossessionOptions;
 
     /**
      * Creates a token request instance.
@@ -177,5 +178,25 @@ public class TokenRequestContext {
      */
     public boolean isCaeEnabled() {
         return this.enableCae;
+    }
+
+    /**
+     * Gets the Proof-of-Possession options for the token request.
+     *
+     * @return The Proof-of-Possession options, or {@code null} when a bearer token is requested.
+     */
+    public ProofOfPossessionOptions getProofOfPossessionOptions() {
+        return proofOfPossessionOptions;
+    }
+
+    /**
+     * Sets the Proof-of-Possession options for the token request.
+     *
+     * @param proofOfPossessionOptions The Proof-of-Possession options.
+     * @return The updated token request context.
+     */
+    public TokenRequestContext setProofOfPossessionOptions(ProofOfPossessionOptions proofOfPossessionOptions) {
+        this.proofOfPossessionOptions = proofOfPossessionOptions;
+        return this;
     }
 }

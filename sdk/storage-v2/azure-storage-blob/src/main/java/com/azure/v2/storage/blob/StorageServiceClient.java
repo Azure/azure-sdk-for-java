@@ -210,8 +210,9 @@ public final class StorageServiceClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BlobContainerItem> listBlobContainersSegment(String prefix, String marker, Integer maxresults,
-        List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout, String requestId) {
+    public PagedIterable<BlobContainerItem, String> listBlobContainersSegment(String prefix, String marker,
+        Integer maxresults, List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout,
+        String requestId) {
         return listBlobContainersSegment(prefix, marker, maxresults, listBlobContainersIncludeType, timeout, requestId,
             RequestContext.none());
     }
@@ -245,9 +246,9 @@ public final class StorageServiceClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BlobContainerItem> listBlobContainersSegment(String prefix, String marker, Integer maxresults,
-        List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout, String requestId,
-        RequestContext requestContext) {
+    public PagedIterable<BlobContainerItem, String> listBlobContainersSegment(String prefix, String marker,
+        Integer maxresults, List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout,
+        String requestId, RequestContext requestContext) {
         return this.serviceClient.listBlobContainersSegment(prefix, marker, maxresults, listBlobContainersIncludeType,
             timeout, requestId, requestContext);
     }
