@@ -28,7 +28,7 @@ public final class ServiceConfigurationsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.serviceConfigurations()
-            .deleteWithResponse("seotgqrllt", "u", "lauwzizxbmpgcjef", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("ypyynpcdpumnzg", "wznm", "biknsorgjhxbld", com.azure.core.util.Context.NONE);
 
     }
 }
