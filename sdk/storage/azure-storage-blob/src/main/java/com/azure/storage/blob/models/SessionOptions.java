@@ -16,7 +16,7 @@ package com.azure.storage.blob.models;
  */
 public final class SessionOptions {
 
-    private SessionMode sessionMode = SessionMode.ENABLED;
+    private SessionMode sessionMode = SessionMode.DISABLED;
     private String containerName;
     private String accountName;
     private SessionProvider sessionProvider;
