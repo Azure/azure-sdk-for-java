@@ -16,7 +16,7 @@ steps:
       pwsh: true
       workingDirectory: $(Pipeline.Workspace)
     displayName: Dump Package properties
-    condition: ${{ parameters.Condition }}
+    condition: and(succeededOrFailed(), ${{ parameters.Condition }})
 - pwsh: |
     $setDailyDevBuild = "false"
     if (('$(Build.Reason)' -eq 'Schedule') -and ('$(System.TeamProject)' -eq 'internal')) {
@@ -24,4 +24,4 @@ steps:
     }
     echo "##vso[task.setvariable variable=SetDevVersion]$setDailyDevBuild"
   displayName: "Setup Versioning Properties"
-  condition: and(${{ parameters.Condition }}, eq(variables['SetDevVersion'], ''))
+  condition: and(succeededOrFailed(), ${{ parameters.Condition }}, eq(variables['SetDevVersion'], ''))

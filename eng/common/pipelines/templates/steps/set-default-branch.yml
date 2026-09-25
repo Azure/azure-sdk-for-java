@@ -14,5 +14,5 @@ steps:
     Write-Host "##vso[task.setvariable variable=${{ parameters.DefaultBranchVariableName }}]$setDefaultBranch"
   displayName: "Setup Default Branch"
   workingDirectory: ${{ parameters.workingDirectory }}
-  condition: ${{ parameters.Condition }}
+  condition: and(succeededOrFailed(), ${{ parameters.Condition }})
   ignoreLASTEXITCODE: true
