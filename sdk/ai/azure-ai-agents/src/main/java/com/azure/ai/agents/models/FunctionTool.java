@@ -17,7 +17,7 @@ import java.util.Map;
  * Function
  *
  * Defines a function in your own code the model can choose to call. Learn more about [function
- * calling](https://platform.openai.com/docs/guides/function-calling).
+ * calling](https://developers.openai.com/api/docs/guides/function-calling).
  */
 @Fluent
 public final class FunctionTool extends Tool {
