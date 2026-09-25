@@ -1,14 +1,27 @@
 # Release History
 
-## 1.1.0-beta.4 (Unreleased)
+## 1.1.0-beta.4 (2026-09-23)
 
-### Features Added
+- Azure Resource Manager Maintenance client library for Java. This package contains Microsoft Azure SDK for Maintenance Management SDK. Azure Maintenance Management Client. Package api-version 2025-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ScheduledEventApproveResponse` was removed
 
-### Other Changes
+#### `models.ScheduledEvents` was modified
+
+* `models.ScheduledEventApproveResponse acknowledge(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` -> `models.ScheduledEventsApproveResponse acknowledge(java.lang.String,java.lang.String,java.lang.String,java.lang.String)`
+
+### Features Added
+
+* `models.ScheduledEventsApproveResponse` was added
+
+* `models.ScheduledEventsIdList` was added
+
+#### `models.ScheduledEvents` was modified
+
+* `acknowledgeListWithResponse(java.lang.String,java.lang.String,java.lang.String,models.ScheduledEventsIdList,com.azure.core.util.Context)` was added
+* `acknowledgeList(java.lang.String,java.lang.String,java.lang.String,models.ScheduledEventsIdList)` was added
 
 ## 1.1.0-beta.3 (2026-03-04)
 

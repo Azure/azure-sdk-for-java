@@ -22,7 +22,7 @@ public final class ApplyUpdatesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"status\":\"Completed\",\"resourceId\":\"vuefywsbpfvmwyh\",\"lastUpdateTime\":\"2021-03-30T01:45:45Z\"},\"id\":\"yftaakcpw\",\"name\":\"yzvqt\",\"type\":\"nubexk\"}";
+            = "{\"properties\":{\"status\":\"Cancel\",\"resourceId\":\"fnndl\",\"lastUpdateTime\":\"2021-05-26T09:41:10Z\"},\"id\":\"koymkcd\",\"name\":\"h\",\"type\":\"pkkpw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class ApplyUpdatesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplyUpdate response = manager.applyUpdates()
-            .getWithResponse("ld", "mgxcxrslpm", "twuoegrpkhjwni", "qsluicp", "ggkzzlvmbmpa",
+            .getWithResponse("asipqiio", "yuq", "rpqlp", "wcciuqgbdbu", "auvfbtkuwhhmhyk",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(UpdateStatus.COMPLETED, response.status());
-        Assertions.assertEquals("vuefywsbpfvmwyh", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-30T01:45:45Z"), response.lastUpdateTime());
+        Assertions.assertEquals(UpdateStatus.CANCEL, response.status());
+        Assertions.assertEquals("fnndl", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-26T09:41:10Z"), response.lastUpdateTime());
     }
 }

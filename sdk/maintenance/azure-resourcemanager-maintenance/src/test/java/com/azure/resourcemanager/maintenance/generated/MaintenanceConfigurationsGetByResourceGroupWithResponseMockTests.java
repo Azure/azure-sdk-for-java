@@ -24,7 +24,7 @@ public final class MaintenanceConfigurationsGetByResourceGroupWithResponseMockTe
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"namespace\":\"qmhjjdhtld\",\"extensionProperties\":{\"otogtwrupqs\":\"zxuutkncwscwsvl\",\"cykvceo\":\"vnm\",\"vnotyfjfcnj\":\"eil\"},\"maintenanceScope\":\"SQLDB\",\"maintenanceWindow\":{\"startDateTime\":\"dhbt\",\"expirationDateTime\":\"phywpnvj\",\"duration\":\"qnermclfplphoxu\",\"timeZone\":\"rpabg\",\"recurEvery\":\"psbjta\"},\"visibility\":\"Public\",\"installPatches\":{\"rebootSetting\":\"Never\",\"windowsParameters\":{\"kbNumbersToExclude\":[\"ueefjzwfqkqu\",\"ids\"],\"kbNumbersToInclude\":[\"nobglaocq\",\"tcc\",\"g\"],\"classificationsToInclude\":[\"xy\"],\"excludeKbsRequiringReboot\":true},\"linuxParameters\":{\"packageNameMasksToExclude\":[\"xv\"],\"packageNameMasksToInclude\":[\"dw\"],\"classificationsToInclude\":[\"txhdzh\",\"rqjbhckfrl\",\"rxsbkyvp\",\"ca\"]}}},\"location\":\"z\",\"tags\":{\"hhseyv\":\"kafkuwbcrnwbm\"},\"id\":\"srtslhspkdeem\",\"name\":\"ofmxagkvtmelmqkr\",\"type\":\"ahvljuaha\"}";
+            = "{\"properties\":{\"namespace\":\"psiebtfhvpes\",\"extensionProperties\":{\"jdhtldwkyzxu\":\"krdqmh\",\"svlxotogtwrup\":\"tkncwsc\",\"nmic\":\"sx\"},\"maintenanceScope\":\"OSImage\",\"maintenanceWindow\":{\"startDateTime\":\"o\",\"expirationDateTime\":\"ilovnot\",\"duration\":\"jfcn\",\"timeZone\":\"k\",\"recurEvery\":\"x\"},\"visibility\":\"Custom\",\"installPatches\":{\"rebootSetting\":\"IfRequired\",\"windowsParameters\":{\"kbNumbersToExclude\":[\"wpn\",\"jtoqne\"],\"kbNumbersToInclude\":[\"lfplp\"],\"classificationsToInclude\":[\"uscrpabgyepsb\"],\"excludeKbsRequiringReboot\":true},\"linuxParameters\":{\"packageNameMasksToExclude\":[\"gxywpmue\",\"fjz\",\"fqkquj\"],\"packageNameMasksToInclude\":[\"uyonobglaoc\",\"xtccmg\",\"udxytlmoyrx\",\"wfudwpzntxhdzhl\"],\"classificationsToInclude\":[\"bh\",\"kfrlhrxsbky\",\"pycanuzbpz\"]}}},\"location\":\"fkuwbcrnwbmehhse\",\"tags\":{\"tslhspkdeem\":\"us\",\"ahvljuaha\":\"ofmxagkvtmelmqkr\",\"ualaexqpvfadmw\":\"uhcdhm\"},\"id\":\"crgvxpvgom\",\"name\":\"lf\",\"type\":\"isgwbnbbeldawkz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,29 +34,30 @@ public final class MaintenanceConfigurationsGetByResourceGroupWithResponseMockTe
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MaintenanceConfiguration response = manager.maintenanceConfigurations()
-            .getByResourceGroupWithResponse("smtxpsieb", "fhvpesaps", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("baiuebbaumny", "upedeojnabckhs", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("z", response.location());
-        Assertions.assertEquals("kafkuwbcrnwbm", response.tags().get("hhseyv"));
-        Assertions.assertEquals("qmhjjdhtld", response.namespace());
-        Assertions.assertEquals("zxuutkncwscwsvl", response.extensionProperties().get("otogtwrupqs"));
-        Assertions.assertEquals(MaintenanceScope.SQLDB, response.maintenanceScope());
-        Assertions.assertEquals(Visibility.PUBLIC, response.visibility());
-        Assertions.assertEquals(RebootOptions.NEVER, response.installPatches().rebootSetting());
-        Assertions.assertEquals("ueefjzwfqkqu",
-            response.installPatches().windowsParameters().kbNumbersToExclude().get(0));
-        Assertions.assertEquals("nobglaocq", response.installPatches().windowsParameters().kbNumbersToInclude().get(0));
-        Assertions.assertEquals("xy", response.installPatches().windowsParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals("fkuwbcrnwbmehhse", response.location());
+        Assertions.assertEquals("us", response.tags().get("tslhspkdeem"));
+        Assertions.assertEquals("psiebtfhvpes", response.namespace());
+        Assertions.assertEquals("krdqmh", response.extensionProperties().get("jdhtldwkyzxu"));
+        Assertions.assertEquals(MaintenanceScope.OSIMAGE, response.maintenanceScope());
+        Assertions.assertEquals(Visibility.CUSTOM, response.visibility());
+        Assertions.assertEquals(RebootOptions.IF_REQUIRED, response.installPatches().rebootSetting());
+        Assertions.assertEquals("wpn", response.installPatches().windowsParameters().kbNumbersToExclude().get(0));
+        Assertions.assertEquals("lfplp", response.installPatches().windowsParameters().kbNumbersToInclude().get(0));
+        Assertions.assertEquals("uscrpabgyepsb",
+            response.installPatches().windowsParameters().classificationsToInclude().get(0));
         Assertions.assertTrue(response.installPatches().windowsParameters().excludeKbsRequiringReboot());
-        Assertions.assertEquals("xv", response.installPatches().linuxParameters().packageNameMasksToExclude().get(0));
-        Assertions.assertEquals("dw", response.installPatches().linuxParameters().packageNameMasksToInclude().get(0));
-        Assertions.assertEquals("txhdzh",
-            response.installPatches().linuxParameters().classificationsToInclude().get(0));
-        Assertions.assertEquals("dhbt", response.startDateTime());
-        Assertions.assertEquals("phywpnvj", response.expirationDateTime());
-        Assertions.assertEquals("qnermclfplphoxu", response.duration());
-        Assertions.assertEquals("rpabg", response.timeZone());
-        Assertions.assertEquals("psbjta", response.recurEvery());
+        Assertions.assertEquals("gxywpmue",
+            response.installPatches().linuxParameters().packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("uyonobglaoc",
+            response.installPatches().linuxParameters().packageNameMasksToInclude().get(0));
+        Assertions.assertEquals("bh", response.installPatches().linuxParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals("o", response.startDateTime());
+        Assertions.assertEquals("ilovnot", response.expirationDateTime());
+        Assertions.assertEquals("jfcn", response.duration());
+        Assertions.assertEquals("k", response.timeZone());
+        Assertions.assertEquals("x", response.recurEvery());
     }
 }

@@ -4,15 +4,15 @@
 
 package com.azure.resourcemanager.maintenance.implementation;
 
-import com.azure.resourcemanager.maintenance.fluent.models.ScheduledEventApproveResponseInner;
-import com.azure.resourcemanager.maintenance.models.ScheduledEventApproveResponse;
+import com.azure.resourcemanager.maintenance.fluent.models.ScheduledEventsApproveResponseInner;
+import com.azure.resourcemanager.maintenance.models.ScheduledEventsApproveResponse;
 
-public final class ScheduledEventApproveResponseImpl implements ScheduledEventApproveResponse {
-    private ScheduledEventApproveResponseInner innerObject;
+public final class ScheduledEventsApproveResponseImpl implements ScheduledEventsApproveResponse {
+    private ScheduledEventsApproveResponseInner innerObject;
 
     private final com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager;
 
-    ScheduledEventApproveResponseImpl(ScheduledEventApproveResponseInner innerObject,
+    ScheduledEventsApproveResponseImpl(ScheduledEventsApproveResponseInner innerObject,
         com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -22,7 +22,7 @@ public final class ScheduledEventApproveResponseImpl implements ScheduledEventAp
         return this.innerModel().value();
     }
 
-    public ScheduledEventApproveResponseInner innerModel() {
+    public ScheduledEventsApproveResponseInner innerModel() {
         return this.innerObject;
     }
 

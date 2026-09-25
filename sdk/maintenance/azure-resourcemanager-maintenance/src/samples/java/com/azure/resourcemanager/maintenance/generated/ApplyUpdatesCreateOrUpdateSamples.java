@@ -9,7 +9,7 @@ package com.azure.resourcemanager.maintenance.generated;
  */
 public final class ApplyUpdatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ApplyUpdates_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01-preview/ApplyUpdates_CreateOrUpdate.json
      */
     /**
      * Sample code: ApplyUpdates_CreateOrUpdate.

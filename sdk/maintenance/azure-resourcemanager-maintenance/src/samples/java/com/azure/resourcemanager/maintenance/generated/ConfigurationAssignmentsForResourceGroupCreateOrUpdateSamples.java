@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class ConfigurationAssignmentsForResourceGroupCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2023-10-01-preview/ConfigurationAssignmentsForResourceGroup_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01-preview/ConfigurationAssignmentsForResourceGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: ConfigurationAssignmentsForResourceGroup_CreateOrUpdate.

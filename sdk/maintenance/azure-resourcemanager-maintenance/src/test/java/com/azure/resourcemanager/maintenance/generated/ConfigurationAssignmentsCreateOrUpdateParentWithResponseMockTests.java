@@ -28,7 +28,7 @@ public final class ConfigurationAssignmentsCreateOrUpdateParentWithResponseMockT
     @Test
     public void testCreateOrUpdateParentWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"maintenanceConfigurationId\":\"fxrxxle\",\"resourceId\":\"ramxjezwlwnw\",\"filter\":{\"resourceTypes\":[\"cvydypatdoo\",\"ojknio\"],\"resourceGroups\":[\"oebwnujhemms\"],\"osTypes\":[\"kcrodtjinfw\",\"lfltka\"],\"locations\":[\"efkdlf\",\"akggkfpag\",\"owpulpq\",\"lyls\"],\"tagSettings\":{\"tags\":{\"psbzkfzbeyvpn\":[\"nsj\",\"r\",\"tiagx\",\"dszue\"],\"clewyhm\":[\"cvinvkjjxdxrbuuk\"],\"yfzqwhxxbu\":[\"paztzpofncck\"]},\"filterOperator\":\"All\"}}},\"location\":\"zfeqztppri\",\"id\":\"xorjaltolmncwsob\",\"name\":\"wcsdbnwdcfhucq\",\"type\":\"pfuvglsbjjca\"}";
+            = "{\"properties\":{\"maintenanceConfigurationId\":\"mpsbzkfzbeyv\",\"resourceId\":\"qi\",\"filter\":{\"resourceTypes\":[\"v\",\"jjxd\",\"rbuukzclewyhmlwp\",\"ztzp\"],\"resourceGroups\":[\"cckwyfzqwhxxbu\",\"qa\"],\"osTypes\":[\"eqz\",\"ppriol\",\"or\"],\"locations\":[\"tolmncwsobqw\"],\"tagSettings\":{\"tags\":{\"vudutncor\":[\"wdcfhucqdpfuv\",\"lsbjjcanvxbv\"],\"kgjubgdknnqvsazn\":[\"lxqtvcofudfl\"]},\"filterOperator\":\"All\"}}},\"location\":\"rudsg\",\"id\":\"hmk\",\"name\":\"c\",\"type\":\"rauwjuetaebu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,35 +37,31 @@ public final class ConfigurationAssignmentsCreateOrUpdateParentWithResponseMockT
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ConfigurationAssignment response
-            = manager.configurationAssignments()
-                .createOrUpdateParentWithResponse("fnjhfjxwmszkkfo", "rey", "kzikfjawneaivxwc", "elpcirelsfeaenwa",
-                    "fatkld", "xbjhwuaanozjosph", "oulpjrv",
-                    new ConfigurationAssignmentInner().withLocation("vaytdwkqbrq")
-                        .withMaintenanceConfigurationId("l")
-                        .withResourceId("imjwosyt")
-                        .withFilter(new ConfigurationAssignmentFilterProperties()
-                            .withResourceTypes(Arrays.asList("skfc", "tq", "miekkezzikhlyfjh", "gqggebdunygae"))
-                            .withResourceGroups(Arrays.asList("bqfatpxllrxcyjmo"))
-                            .withOsTypes(Arrays.asList("uvarmywdmjsjq"))
-                            .withLocations(Arrays.asList("hyxxrwlycoduhpk", "kgymareqnajxqug"))
-                            .withTagSettings(new TagSettingsProperties()
-                                .withTags(
-                                    mapOf("yxbaaabjyvayf", Arrays.asList("ubeddg", "sofwqmzqalkrmnji", "pxacqqudfn"),
-                                        "fdnw", Arrays.asList("m", "zrtuzq", "gsexne"), "judpfrxt",
-                                        Arrays.asList("mewzsyyc", "uzsoi")))
+        ConfigurationAssignment response = manager.configurationAssignments()
+            .createOrUpdateParentWithResponse("sofwqmzqalkrmnji", "pxacqqudfn", "yxbaaabjyvayf", "imrzrtuzqog", "exn",
+                "vfdnwnwmewzsyyce", "zsoibjudpfrxtr",
+                new ConfigurationAssignmentInner().withLocation("wpu")
+                    .withMaintenanceConfigurationId("vaytdwkqbrq")
+                    .withResourceId("paxh")
+                    .withFilter(
+                        new ConfigurationAssignmentFilterProperties().withResourceTypes(Arrays.asList("livpdt"))
+                            .withResourceGroups(Arrays.asList("q"))
+                            .withOsTypes(Arrays.asList("oaxoruzfgsqu", "fxrxxle", "tramxjez"))
+                            .withLocations(Arrays.asList("nwxuqlcvydyp", "tdooaoj", "niodkooeb"))
+                            .withTagSettings(new TagSettingsProperties().withTags(mapOf("fw",
+                                Arrays.asList("emmsbvdkc", "odtji"), "dlfoakggkfp", Arrays.asList("fltkacjv", "f")))
                                 .withFilterOperator(TagOperators.ALL))),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("zfeqztppri", response.location());
-        Assertions.assertEquals("fxrxxle", response.maintenanceConfigurationId());
-        Assertions.assertEquals("ramxjezwlwnw", response.resourceId());
-        Assertions.assertEquals("cvydypatdoo", response.filter().resourceTypes().get(0));
-        Assertions.assertEquals("oebwnujhemms", response.filter().resourceGroups().get(0));
-        Assertions.assertEquals("kcrodtjinfw", response.filter().osTypes().get(0));
-        Assertions.assertEquals("efkdlf", response.filter().locations().get(0));
-        Assertions.assertEquals("nsj", response.filter().tagSettings().tags().get("psbzkfzbeyvpn").get(0));
+        Assertions.assertEquals("rudsg", response.location());
+        Assertions.assertEquals("mpsbzkfzbeyv", response.maintenanceConfigurationId());
+        Assertions.assertEquals("qi", response.resourceId());
+        Assertions.assertEquals("v", response.filter().resourceTypes().get(0));
+        Assertions.assertEquals("cckwyfzqwhxxbu", response.filter().resourceGroups().get(0));
+        Assertions.assertEquals("eqz", response.filter().osTypes().get(0));
+        Assertions.assertEquals("tolmncwsobqw", response.filter().locations().get(0));
+        Assertions.assertEquals("wdcfhucqdpfuv", response.filter().tagSettings().tags().get("vudutncor").get(0));
         Assertions.assertEquals(TagOperators.ALL, response.filter().tagSettings().filterOperator());
     }
 
