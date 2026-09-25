@@ -588,11 +588,9 @@ public class BlobClientBase {
                     && layoutRoutingEnabled
                     && StorageImplUtils.pipelineSupportsDataLocality(finalClient.getHttpPipeline())) {
                     BlobRange layoutRange = new BlobRange(range.getOffset(), range.getCount());
-                    layoutCache = new AutoRefreshingCache<>(
-                        () -> finalClient.client.fetchLayoutCacheValueAsync(layoutRange, requestConditions,
-                            contextFinal),
-                        () -> finalClient.fetchLayoutCacheValueSync(layoutRange, requestConditions, contextFinal),
-                        BlobLayoutCacheValue::getExpiresOn, Clock.systemUTC());
+                    layoutCache
+                        = new AutoRefreshingCache<>(() -> finalClient.client.fetchLayoutCacheValueAsync(layoutRange,
+                            requestConditions, contextFinal), BlobLayoutCacheValue::getExpiresOn, Clock.systemUTC());
                 }
 
                 return Mono.just(new BlobInputStream(finalClient, range.getOffset(), range.getCount(), chunkSize,
@@ -682,11 +680,9 @@ public class BlobClientBase {
             Context finalContext = context;
             BlobRange layoutRange = new BlobRange(0);
 
-            layoutCache = new AutoRefreshingCache<>(
-                () -> finalBehaviorClient.client.fetchLayoutCacheValueAsync(layoutRange, finalRequestConditions,
-                    finalContext),
-                () -> finalBehaviorClient.fetchLayoutCacheValueSync(layoutRange, finalRequestConditions, finalContext),
-                BlobLayoutCacheValue::getExpiresOn, Clock.systemUTC());
+            layoutCache
+                = new AutoRefreshingCache<>(() -> finalBehaviorClient.client.fetchLayoutCacheValueAsync(layoutRange,
+                    finalRequestConditions, finalContext), BlobLayoutCacheValue::getExpiresOn, Clock.systemUTC());
         }
 
         StorageSeekableByteChannelBlobReadBehavior behavior

@@ -1635,7 +1635,6 @@ public class BlobAsyncClientBase {
                     BlobRange layoutRange = new BlobRange(remainingOffset, remainingCount);
                     layoutCache = new AutoRefreshingCache<>(
                         () -> fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext),
-                        () -> fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext).block(),
                         BlobLayoutCacheValue::getExpiresOn, Clock.systemUTC());
                     AutoRefreshingCache<BlobLayoutCacheValue> finalLayoutCache = layoutCache;
                     chunkDownloadFunc = (range, conditions) -> finalLayoutCache.getValidValueAsync().flatMap(cached -> {
