@@ -13,9 +13,9 @@ public final class IotHubSkuDescriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotHubSkuDescriptionInner model = BinaryData.fromString(
-            "{\"resourceType\":\"notyfjfcnjbkcn\",\"sku\":{\"name\":\"B2\",\"tier\":\"Standard\",\"capacity\":6091905272407979167},\"capacity\":{\"minimum\":255176425560484267,\"maximum\":6450730438848589350,\"default\":5798583815536033606,\"scaleType\":\"Automatic\"}}")
+            "{\"resourceType\":\"hzovawjvzunlut\",\"sku\":{\"name\":\"F1\",\"tier\":\"Basic\",\"capacity\":7986653224206637858},\"capacity\":{\"minimum\":6612912787566658831,\"maximum\":2619121034413299523,\"default\":7813618899616430195,\"scaleType\":\"Manual\"}}")
             .toObject(IotHubSkuDescriptionInner.class);
-        Assertions.assertEquals(IotHubSku.B2, model.sku().name());
-        Assertions.assertEquals(6091905272407979167L, model.sku().capacity());
+        Assertions.assertEquals(IotHubSku.F1, model.sku().name());
+        Assertions.assertEquals(7986653224206637858L, model.sku().capacity());
     }
 }

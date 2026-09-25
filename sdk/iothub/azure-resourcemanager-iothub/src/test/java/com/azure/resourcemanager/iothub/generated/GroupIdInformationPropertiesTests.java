@@ -12,10 +12,10 @@ public final class GroupIdInformationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupIdInformationProperties model = BinaryData.fromString(
-            "{\"groupId\":\"yrs\",\"requiredMembers\":[\"ytgadgvraeaene\",\"nzar\",\"wlquuijfqkace\"],\"requiredZoneNames\":[\"pfpubjibww\",\"f\"]}")
+            "{\"groupId\":\"glsbjjc\",\"requiredMembers\":[\"xbvtvudu\"],\"requiredZoneNames\":[\"ormrlxqtvcofudfl\",\"kgjubgdknnqvsazn\"]}")
             .toObject(GroupIdInformationProperties.class);
-        Assertions.assertEquals("yrs", model.groupId());
-        Assertions.assertEquals("ytgadgvraeaene", model.requiredMembers().get(0));
-        Assertions.assertEquals("pfpubjibww", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("glsbjjc", model.groupId());
+        Assertions.assertEquals("xbvtvudu", model.requiredMembers().get(0));
+        Assertions.assertEquals("ormrlxqtvcofudfl", model.requiredZoneNames().get(0));
     }
 }
