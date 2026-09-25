@@ -570,6 +570,74 @@ function Add-ArtifactToCiYml {
     return $true
 }
 
+function Update-CiPathFilters {
+    <#
+    .SYNOPSIS
+        Adds package-specific include and POM exclude paths to CI and PR triggers.
+
+    .OUTPUTS
+        Boolean indicating whether any path filter was added.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        $CiYml,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Service,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Module
+    )
+
+    $includePath = "sdk/$Service/$Module/"
+    $excludePath = "sdk/$Service/$Module/pom.xml"
+    $updated = $false
+
+    foreach ($triggerType in @("trigger", "pr")) {
+        if (-not $CiYml.Contains($triggerType)) {
+            continue
+        }
+        $trigger = $CiYml[$triggerType]
+        if ($trigger -is [string] -and $trigger -ceq "none") {
+            continue
+        }
+        if (-not ($trigger -is [System.Collections.IDictionary])) {
+            Write-Warning "[CI][Skip] '$triggerType' is not a mapping"
+            continue
+        }
+
+        if (-not $trigger.Contains("paths")) {
+            $trigger["paths"] = [ordered]@{}
+        }
+        $paths = $trigger["paths"]
+        if (-not ($paths -is [System.Collections.IDictionary])) {
+            Write-Warning "[CI][Skip] '$triggerType.paths' is not a mapping"
+            continue
+        }
+
+        foreach ($filter in @(
+            @{ Type = "include"; Path = $includePath },
+            @{ Type = "exclude"; Path = $excludePath }
+        )) {
+            if (-not $paths.Contains($filter.Type)) {
+                $paths[$filter.Type] = [System.Collections.ArrayList]::new()
+            }
+            $entries = $paths[$filter.Type]
+            if (-not ($entries -is [System.Collections.IList])) {
+                Write-Warning "[CI][Skip] '$triggerType.paths.$($filter.Type)' is not a list"
+                continue
+            }
+            if (-not $entries.Contains($filter.Path)) {
+                $null = $entries.Add($filter.Path)
+                $updated = $true
+            }
+        }
+    }
+
+    return $updated
+}
+
 function ConvertTo-CiYmlString {
     <#
     .SYNOPSIS
@@ -672,8 +740,9 @@ function Update-CiYml {
         $ciYml = ConvertFrom-Yaml $ciYmlContent -Ordered
     }
 
-    $added = Add-ArtifactToCiYml -CiYml $ciYml -Module $Module -GroupId $GroupId
-    if ($added) {
+    $pathFiltersUpdated = Update-CiPathFilters -CiYml $ciYml -Service $Service -Module $Module
+    $artifactAdded = Add-ArtifactToCiYml -CiYml $ciYml -Module $Module -GroupId $GroupId
+    if ($artifactAdded -or $pathFiltersUpdated) {
         $outputStr = ConvertTo-CiYmlString -CiYml $ciYml
         $ciDir = Split-Path $ciYmlFile -Parent
         if (-not (Test-Path $ciDir)) {

@@ -36,6 +36,22 @@ public final class RelationshipsManagementClientBuilder {
     }
 
     /*
+     * The ID of the target subscription. The value must be an UUID.
+     */
+    private String subscriptionId;
+
+    /**
+     * Sets The ID of the target subscription. The value must be an UUID.
+     * 
+     * @param subscriptionId the subscriptionId value.
+     * @return the RelationshipsManagementClientBuilder.
+     */
+    public RelationshipsManagementClientBuilder subscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+        return this;
+    }
+
+    /*
      * The environment to connect to
      */
     private AzureEnvironment environment;
@@ -116,7 +132,7 @@ public final class RelationshipsManagementClientBuilder {
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         RelationshipsManagementClientImpl client = new RelationshipsManagementClientImpl(localPipeline,
-            localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint);
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
         return client;
     }
 }

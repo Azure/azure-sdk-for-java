@@ -15,7 +15,8 @@ import java.io.IOException;
  * **WebRTC/SIP Only:** Emitted when the output audio buffer has been completely drained on the server,
  * and no more audio is forthcoming. This event is emitted after the full response
  * data has been sent to the client (`response.done`).
- * [Learn more](/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
+ * [Learn
+ * more](https://developers.openai.com/api/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")

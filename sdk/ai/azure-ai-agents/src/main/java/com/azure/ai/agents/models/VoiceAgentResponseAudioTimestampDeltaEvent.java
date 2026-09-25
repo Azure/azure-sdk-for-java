@@ -59,13 +59,13 @@ public final class VoiceAgentResponseAudioTimestampDeltaEvent extends RealtimeSe
      * The audio_offset_ms property.
      */
     @Generated
-    private final long audioOffsetMs;
+    private final long audioOffset;
 
     /*
      * The audio_duration_ms property.
      */
     @Generated
-    private final long audioDurationMs;
+    private final long audioDuration;
 
     /*
      * The text property.
@@ -87,27 +87,27 @@ public final class VoiceAgentResponseAudioTimestampDeltaEvent extends RealtimeSe
      * @param itemId the itemId value to set.
      * @param outputIndex the outputIndex value to set.
      * @param contentIndex the contentIndex value to set.
-     * @param audioOffsetMs the audioOffsetMs value to set.
-     * @param audioDurationMs the audioDurationMs value to set.
+     * @param audioOffset the audioOffset value to set.
+     * @param audioDuration the audioDuration value to set.
      * @param text the text value to set.
      */
     @Generated
     private VoiceAgentResponseAudioTimestampDeltaEvent(String eventId, String responseId, String itemId,
-        int outputIndex, int contentIndex, Duration audioOffsetMs, Duration audioDurationMs, String text) {
+        int outputIndex, int contentIndex, Duration audioOffset, Duration audioDuration, String text) {
         this.eventId = eventId;
         this.responseId = responseId;
         this.itemId = itemId;
         this.outputIndex = outputIndex;
         this.contentIndex = contentIndex;
-        if (audioOffsetMs == null) {
-            this.audioOffsetMs = 0L;
+        if (audioOffset == null) {
+            this.audioOffset = 0L;
         } else {
-            this.audioOffsetMs = audioOffsetMs.toMillis();
+            this.audioOffset = audioOffset.toMillis();
         }
-        if (audioDurationMs == null) {
-            this.audioDurationMs = 0L;
+        if (audioDuration == null) {
+            this.audioDuration = 0L;
         } else {
-            this.audioDurationMs = audioDurationMs.toMillis();
+            this.audioDuration = audioDuration.toMillis();
         }
         this.text = text;
     }
@@ -174,23 +174,23 @@ public final class VoiceAgentResponseAudioTimestampDeltaEvent extends RealtimeSe
     }
 
     /**
-     * Get the audioOffsetMs property: The audio_offset_ms property.
+     * Get the audioOffset property: The audio_offset_ms property.
      *
-     * @return the audioOffsetMs value.
+     * @return the audioOffset value.
      */
     @Generated
-    public Duration getAudioOffsetMs() {
-        return Duration.ofMillis(this.audioOffsetMs);
+    public Duration getAudioOffset() {
+        return Duration.ofMillis(this.audioOffset);
     }
 
     /**
-     * Get the audioDurationMs property: The audio_duration_ms property.
+     * Get the audioDuration property: The audio_duration_ms property.
      *
-     * @return the audioDurationMs value.
+     * @return the audioDuration value.
      */
     @Generated
-    public Duration getAudioDurationMs() {
-        return Duration.ofMillis(this.audioDurationMs);
+    public Duration getAudioDuration() {
+        return Duration.ofMillis(this.audioDuration);
     }
 
     /**
@@ -225,8 +225,8 @@ public final class VoiceAgentResponseAudioTimestampDeltaEvent extends RealtimeSe
         jsonWriter.writeStringField("item_id", this.itemId);
         jsonWriter.writeIntField("output_index", this.outputIndex);
         jsonWriter.writeIntField("content_index", this.contentIndex);
-        jsonWriter.writeLongField("audio_offset_ms", this.audioOffsetMs);
-        jsonWriter.writeLongField("audio_duration_ms", this.audioDurationMs);
+        jsonWriter.writeLongField("audio_offset_ms", this.audioOffset);
+        jsonWriter.writeLongField("audio_duration_ms", this.audioDuration);
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("timestamp_type", this.timestampType);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
@@ -250,8 +250,8 @@ public final class VoiceAgentResponseAudioTimestampDeltaEvent extends RealtimeSe
             String itemId = null;
             int outputIndex = 0;
             int contentIndex = 0;
-            Duration audioOffsetMs = null;
-            Duration audioDurationMs = null;
+            Duration audioOffset = null;
+            Duration audioDuration = null;
             String text = null;
             RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_AUDIO_TIMESTAMP_DELTA;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -268,9 +268,9 @@ public final class VoiceAgentResponseAudioTimestampDeltaEvent extends RealtimeSe
                 } else if ("content_index".equals(fieldName)) {
                     contentIndex = reader.getInt();
                 } else if ("audio_offset_ms".equals(fieldName)) {
-                    audioOffsetMs = Duration.ofMillis(reader.getLong());
+                    audioOffset = Duration.ofMillis(reader.getLong());
                 } else if ("audio_duration_ms".equals(fieldName)) {
-                    audioDurationMs = Duration.ofMillis(reader.getLong());
+                    audioDuration = Duration.ofMillis(reader.getLong());
                 } else if ("text".equals(fieldName)) {
                     text = reader.getString();
                 } else if ("type".equals(fieldName)) {
@@ -281,7 +281,7 @@ public final class VoiceAgentResponseAudioTimestampDeltaEvent extends RealtimeSe
             }
             VoiceAgentResponseAudioTimestampDeltaEvent deserializedVoiceAgentResponseAudioTimestampDeltaEvent
                 = new VoiceAgentResponseAudioTimestampDeltaEvent(eventId, responseId, itemId, outputIndex, contentIndex,
-                    audioOffsetMs, audioDurationMs, text);
+                    audioOffset, audioDuration, text);
             deserializedVoiceAgentResponseAudioTimestampDeltaEvent.type = type;
             return deserializedVoiceAgentResponseAudioTimestampDeltaEvent;
         });

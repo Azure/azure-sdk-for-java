@@ -66,19 +66,9 @@ public final class BulkCreateCustomProperties implements JsonSerializable<BulkCr
     private BulkCreateCustomPriorityProfile priorityProfile;
 
     /*
-     * List of VM sizes supported for BulkCreateCustom
-     */
-    private List<BulkCreateCustomVmSizeProfile> vmSizesProfile;
-
-    /*
      * Compute Profile to configure the Virtual Machines.
      */
     private ComputeProfile computeProfile;
-
-    /*
-     * Zone Allocation Policy for launching instances.
-     */
-    private BulkCreateCustomZoneAllocationPolicy zoneAllocationPolicy;
 
     /*
      * Per-VM overrides and the shared name prefix, specified when the operation is created.
@@ -238,26 +228,6 @@ public final class BulkCreateCustomProperties implements JsonSerializable<BulkCr
     }
 
     /**
-     * Get the vmSizesProfile property: List of VM sizes supported for BulkCreateCustom.
-     * 
-     * @return the vmSizesProfile value.
-     */
-    public List<BulkCreateCustomVmSizeProfile> vmSizesProfile() {
-        return this.vmSizesProfile;
-    }
-
-    /**
-     * Set the vmSizesProfile property: List of VM sizes supported for BulkCreateCustom.
-     * 
-     * @param vmSizesProfile the vmSizesProfile value to set.
-     * @return the BulkCreateCustomProperties object itself.
-     */
-    public BulkCreateCustomProperties withVmSizesProfile(List<BulkCreateCustomVmSizeProfile> vmSizesProfile) {
-        this.vmSizesProfile = vmSizesProfile;
-        return this;
-    }
-
-    /**
      * Get the computeProfile property: Compute Profile to configure the Virtual Machines.
      * 
      * @return the computeProfile value.
@@ -274,27 +244,6 @@ public final class BulkCreateCustomProperties implements JsonSerializable<BulkCr
      */
     public BulkCreateCustomProperties withComputeProfile(ComputeProfile computeProfile) {
         this.computeProfile = computeProfile;
-        return this;
-    }
-
-    /**
-     * Get the zoneAllocationPolicy property: Zone Allocation Policy for launching instances.
-     * 
-     * @return the zoneAllocationPolicy value.
-     */
-    public BulkCreateCustomZoneAllocationPolicy zoneAllocationPolicy() {
-        return this.zoneAllocationPolicy;
-    }
-
-    /**
-     * Set the zoneAllocationPolicy property: Zone Allocation Policy for launching instances.
-     * 
-     * @param zoneAllocationPolicy the zoneAllocationPolicy value to set.
-     * @return the BulkCreateCustomProperties object itself.
-     */
-    public BulkCreateCustomProperties
-        withZoneAllocationPolicy(BulkCreateCustomZoneAllocationPolicy zoneAllocationPolicy) {
-        this.zoneAllocationPolicy = zoneAllocationPolicy;
         return this;
     }
 
@@ -354,9 +303,6 @@ public final class BulkCreateCustomProperties implements JsonSerializable<BulkCr
         jsonWriter.writeStringField("capacityType", this.capacityType == null ? null : this.capacityType.toString());
         jsonWriter.writeNumberField("minCapacity", this.minCapacity);
         jsonWriter.writeJsonField("partialFulfillmentPolicy", this.partialFulfillmentPolicy);
-        jsonWriter.writeArrayField("vmSizesProfile", this.vmSizesProfile,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("zoneAllocationPolicy", this.zoneAllocationPolicy);
         jsonWriter.writeJsonField("overridesProfile", this.overridesProfile);
         jsonWriter.writeJsonField("executionParameters", this.executionParameters);
         return jsonWriter.writeEndObject();
@@ -402,13 +348,6 @@ public final class BulkCreateCustomProperties implements JsonSerializable<BulkCr
                     List<BulkCreateCustomResource> resources
                         = reader.readArray(reader1 -> BulkCreateCustomResource.fromJson(reader1));
                     deserializedBulkCreateCustomProperties.resources = resources;
-                } else if ("vmSizesProfile".equals(fieldName)) {
-                    List<BulkCreateCustomVmSizeProfile> vmSizesProfile
-                        = reader.readArray(reader1 -> BulkCreateCustomVmSizeProfile.fromJson(reader1));
-                    deserializedBulkCreateCustomProperties.vmSizesProfile = vmSizesProfile;
-                } else if ("zoneAllocationPolicy".equals(fieldName)) {
-                    deserializedBulkCreateCustomProperties.zoneAllocationPolicy
-                        = BulkCreateCustomZoneAllocationPolicy.fromJson(reader);
                 } else if ("overridesProfile".equals(fieldName)) {
                     deserializedBulkCreateCustomProperties.overridesProfile
                         = BulkCreateCustomOverridesProfile.fromJson(reader);

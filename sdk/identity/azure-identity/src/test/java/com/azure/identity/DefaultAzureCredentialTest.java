@@ -57,6 +57,11 @@ public class DefaultAzureCredentialTest {
 
     private static final String TENANT_ID = "contoso.com";
     private static final String CLIENT_ID = UUID.randomUUID().toString();
+    private static final String RESOURCE_ID = "/subscriptions/" + UUID.randomUUID()
+        + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
+    private static final int IDENTITY_CLIENT_CLIENT_ID_ARGUMENT_INDEX = 1;
+    private static final int IDENTITY_CLIENT_RESOURCE_ID_ARGUMENT_INDEX = 5;
+    private static final int IDENTITY_CLIENT_OBJECT_ID_ARGUMENT_INDEX = 6;
 
     @Test
     public void testUseEnvironmentCredential() {
@@ -179,6 +184,47 @@ public class DefaultAzureCredentialTest {
                 verify(developerCredentials.constructed().get(0)).getToken(request);
             }
             assertEquals(0, tokenRequests.get(), "Unavailable IMDS must not enter token acquisition or retries.");
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "clientId", "resourceId" })
+    public void testUseArcUserAssignedManagedIdentityCredential(String identityType) {
+        // setup
+        String token = "token";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", "ManagedIdentityCredential"));
+        String clientId = "clientId".equals(identityType) ? CLIENT_ID : null;
+        String resourceId = "resourceId".equals(identityType) ? RESOURCE_ID : null;
+
+        // mock
+        try (MockedStatic<ManagedIdentityApplication> applicationMock = mockStatic(ManagedIdentityApplication.class);
+            MockedConstruction<IdentityClient> mocked
+                = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                    assertEquals(clientId, context.arguments().get(IDENTITY_CLIENT_CLIENT_ID_ARGUMENT_INDEX));
+                    assertEquals(resourceId, context.arguments().get(IDENTITY_CLIENT_RESOURCE_ID_ARGUMENT_INDEX));
+                    Assertions.assertNull(context.arguments().get(IDENTITY_CLIENT_OBJECT_ID_ARGUMENT_INDEX));
+                    when(identityClient.authenticateWithManagedIdentityMsalClient(request))
+                        .thenReturn(TestUtils.getMockAccessToken(token, expiresAt));
+                })) {
+            applicationMock.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.AZURE_ARC);
+
+            DefaultAzureCredentialBuilder builder = new DefaultAzureCredentialBuilder().configuration(configuration);
+            if (clientId != null) {
+                builder.managedIdentityClientId(clientId);
+            } else {
+                builder.managedIdentityResourceId(resourceId);
+            }
+
+            // test
+            StepVerifier.create(builder.build().getToken(request))
+                .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            assertEquals(1, mocked.constructed().size());
         }
     }
 
@@ -519,14 +565,10 @@ public class DefaultAzureCredentialTest {
 
     @Test
     public void testInvalidIdCombination() {
-        // setup
-        String resourceId = "/subscriptions/" + UUID.randomUUID()
-            + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
-
         // test
         Assertions.assertThrows(IllegalStateException.class,
             () -> new DefaultAzureCredentialBuilder().managedIdentityClientId(CLIENT_ID)
-                .managedIdentityResourceId(resourceId)
+                .managedIdentityResourceId(RESOURCE_ID)
                 .build());
     }
 

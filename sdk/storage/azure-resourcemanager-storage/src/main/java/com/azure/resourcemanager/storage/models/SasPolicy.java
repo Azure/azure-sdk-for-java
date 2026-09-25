@@ -29,6 +29,18 @@ public final class SasPolicy implements JsonSerializable<SasPolicy> {
      */
     private ExpirationAction expirationAction;
 
+    /*
+     * Indicates whether user delegation SAS (shared access signature) tokens are required to be bound to a specific
+     * user. The default interpretation is false for this property.
+     */
+    private Boolean requireUserBoundUserDelegationSas;
+
+    /*
+     * The action to perform when a user delegation SAS (shared access signature) token is not bound to a user as
+     * required by requireUserBoundUserDelegationSas.
+     */
+    private PolicyViolationAction requireUserBoundUserDelegationSasAction;
+
     /**
      * Creates an instance of SasPolicy class.
      */
@@ -80,6 +92,53 @@ public final class SasPolicy implements JsonSerializable<SasPolicy> {
     }
 
     /**
+     * Get the requireUserBoundUserDelegationSas property: Indicates whether user delegation SAS (shared access
+     * signature) tokens are required to be bound to a specific user. The default interpretation is false for this
+     * property.
+     * 
+     * @return the requireUserBoundUserDelegationSas value.
+     */
+    public Boolean requireUserBoundUserDelegationSas() {
+        return this.requireUserBoundUserDelegationSas;
+    }
+
+    /**
+     * Set the requireUserBoundUserDelegationSas property: Indicates whether user delegation SAS (shared access
+     * signature) tokens are required to be bound to a specific user. The default interpretation is false for this
+     * property.
+     * 
+     * @param requireUserBoundUserDelegationSas the requireUserBoundUserDelegationSas value to set.
+     * @return the SasPolicy object itself.
+     */
+    public SasPolicy withRequireUserBoundUserDelegationSas(Boolean requireUserBoundUserDelegationSas) {
+        this.requireUserBoundUserDelegationSas = requireUserBoundUserDelegationSas;
+        return this;
+    }
+
+    /**
+     * Get the requireUserBoundUserDelegationSasAction property: The action to perform when a user delegation SAS
+     * (shared access signature) token is not bound to a user as required by requireUserBoundUserDelegationSas.
+     * 
+     * @return the requireUserBoundUserDelegationSasAction value.
+     */
+    public PolicyViolationAction requireUserBoundUserDelegationSasAction() {
+        return this.requireUserBoundUserDelegationSasAction;
+    }
+
+    /**
+     * Set the requireUserBoundUserDelegationSasAction property: The action to perform when a user delegation SAS
+     * (shared access signature) token is not bound to a user as required by requireUserBoundUserDelegationSas.
+     * 
+     * @param requireUserBoundUserDelegationSasAction the requireUserBoundUserDelegationSasAction value to set.
+     * @return the SasPolicy object itself.
+     */
+    public SasPolicy
+        withRequireUserBoundUserDelegationSasAction(PolicyViolationAction requireUserBoundUserDelegationSasAction) {
+        this.requireUserBoundUserDelegationSasAction = requireUserBoundUserDelegationSasAction;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,6 +165,11 @@ public final class SasPolicy implements JsonSerializable<SasPolicy> {
         jsonWriter.writeStringField("sasExpirationPeriod", this.sasExpirationPeriod);
         jsonWriter.writeStringField("expirationAction",
             this.expirationAction == null ? null : this.expirationAction.toString());
+        jsonWriter.writeBooleanField("requireUserBoundUserDelegationSas", this.requireUserBoundUserDelegationSas);
+        jsonWriter.writeStringField("requireUserBoundUserDelegationSasAction",
+            this.requireUserBoundUserDelegationSasAction == null
+                ? null
+                : this.requireUserBoundUserDelegationSasAction.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -129,6 +193,12 @@ public final class SasPolicy implements JsonSerializable<SasPolicy> {
                     deserializedSasPolicy.sasExpirationPeriod = reader.getString();
                 } else if ("expirationAction".equals(fieldName)) {
                     deserializedSasPolicy.expirationAction = ExpirationAction.fromString(reader.getString());
+                } else if ("requireUserBoundUserDelegationSas".equals(fieldName)) {
+                    deserializedSasPolicy.requireUserBoundUserDelegationSas
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("requireUserBoundUserDelegationSasAction".equals(fieldName)) {
+                    deserializedSasPolicy.requireUserBoundUserDelegationSasAction
+                        = PolicyViolationAction.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
