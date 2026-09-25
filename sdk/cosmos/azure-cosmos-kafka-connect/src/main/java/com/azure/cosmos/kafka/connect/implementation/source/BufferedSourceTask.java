@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,14 +20,13 @@ public abstract class BufferedSourceTask extends SourceTask {
     private static final long POLL_WAIT_MS = 1_000;
     private static final long THREAD_SHUTDOWN_WAIT_MS = 1_000;
 
-    private final BlockingQueue<Object> pollResults = new LinkedBlockingQueue<>(1);
+    private final BlockingQueue<Object> pollResults = new SynchronousQueue<>();
     private volatile boolean stopping;
     private Thread pollingThread;
 
     @Override
     public final synchronized void start(Map<String, String> props) {
         this.stopping = false;
-        this.pollResults.clear();
         try {
             this.startTask(props);
             this.pollingThread = new Thread(this::pollContinuously);
@@ -40,6 +39,7 @@ public abstract class BufferedSourceTask extends SourceTask {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public final List<SourceRecord> poll() {
         this.startPollingThread();
 
@@ -56,7 +56,7 @@ public abstract class BufferedSourceTask extends SourceTask {
             if (result instanceof Error) {
                 throw (Error) result;
             }
-            return castRecords(result);
+            return (List<SourceRecord>) result;
         } catch (InterruptedException error) {
             Thread.currentThread().interrupt();
             return Collections.emptyList();
@@ -99,38 +99,22 @@ public abstract class BufferedSourceTask extends SourceTask {
 
     private void pollContinuously() {
         while (!this.stopping) {
+            Object result;
             try {
-                List<SourceRecord> records = this.pollTask();
-                this.pollResults.put(
-                    records == null ? Collections.emptyList() : records);
-            } catch (RuntimeException error) {
-                if (!this.stopping && !this.putResult(error)) {
-                    return;
-                }
-            } catch (Error error) {
-                if (!this.stopping) {
-                    this.putResult(error);
-                }
+                result = this.pollTask();
+            } catch (RuntimeException | Error error) {
+                result = error;
+            }
+
+            if (this.stopping) {
                 return;
+            }
+            try {
+                this.pollResults.put(result);
             } catch (InterruptedException error) {
                 Thread.currentThread().interrupt();
                 return;
             }
         }
-    }
-
-    private boolean putResult(Object result) {
-        try {
-            this.pollResults.put(result);
-            return true;
-        } catch (InterruptedException interruptedError) {
-            Thread.currentThread().interrupt();
-            return false;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private static List<SourceRecord> castRecords(Object result) {
-        return (List<SourceRecord>) result;
     }
 }

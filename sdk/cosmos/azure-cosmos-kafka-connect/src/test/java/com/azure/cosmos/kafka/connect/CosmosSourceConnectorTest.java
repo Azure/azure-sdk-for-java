@@ -31,10 +31,10 @@ import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedMode
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedStartFromMode;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTaskConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataCosmosStorageManager;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataKafkaStorageManager;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceTask;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuationTopicOffset;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeContinuationTopicPartition;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangeTaskUnit;
