@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.http.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,5 +35,11 @@ public class HttpLogOptionsTest {
     @Test
     public void testSetPrettyPrintBody() {
         assertTrue(new HttpLogOptions().setPrettyPrintBody(true).isPrettyPrintBody());
+    }
+
+    @Test
+    public void defaultAllowlistContainsAzureDeprecating() {
+        assertTrue(HttpLogOptions.DEFAULT_HEADERS_ALLOWLIST.contains(HttpHeaderName.AZURE_DEPRECATING),
+            "azure-deprecating should be in the default headers allowlist");
     }
 }
