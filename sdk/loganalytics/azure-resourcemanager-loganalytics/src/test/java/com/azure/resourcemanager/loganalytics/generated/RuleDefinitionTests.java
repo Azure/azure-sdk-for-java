@@ -14,30 +14,30 @@ public final class RuleDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuleDefinition model = BinaryData.fromString(
-            "{\"query\":\"phuartv\",\"binSize\":2146264945,\"binDelay\":1848545940,\"binStartTime\":\"2021-04-14T09:14:30Z\",\"timeSelector\":\"TimeGenerated\",\"destinationTable\":\"mnahmnxh\"}")
+            "{\"query\":\"mcmuapc\",\"binSize\":1303035802,\"binDelay\":1202963506,\"binStartTime\":\"2021-09-04T08:14:55Z\",\"timeSelector\":\"TimeGenerated\",\"destinationTable\":\"ey\"}")
             .toObject(RuleDefinition.class);
-        Assertions.assertEquals("phuartv", model.query());
-        Assertions.assertEquals(2146264945, model.binSize());
-        Assertions.assertEquals(1848545940, model.binDelay());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T09:14:30Z"), model.binStartTime());
+        Assertions.assertEquals("mcmuapc", model.query());
+        Assertions.assertEquals(1303035802, model.binSize());
+        Assertions.assertEquals(1202963506, model.binDelay());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-04T08:14:55Z"), model.binStartTime());
         Assertions.assertEquals(TimeSelectorEnum.TIME_GENERATED, model.timeSelector());
-        Assertions.assertEquals("mnahmnxh", model.destinationTable());
+        Assertions.assertEquals("ey", model.destinationTable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RuleDefinition model = new RuleDefinition().withQuery("phuartv")
-            .withBinSize(2146264945)
-            .withBinDelay(1848545940)
-            .withBinStartTime(OffsetDateTime.parse("2021-04-14T09:14:30Z"))
+        RuleDefinition model = new RuleDefinition().withQuery("mcmuapc")
+            .withBinSize(1303035802)
+            .withBinDelay(1202963506)
+            .withBinStartTime(OffsetDateTime.parse("2021-09-04T08:14:55Z"))
             .withTimeSelector(TimeSelectorEnum.TIME_GENERATED)
-            .withDestinationTable("mnahmnxh");
+            .withDestinationTable("ey");
         model = BinaryData.fromObject(model).toObject(RuleDefinition.class);
-        Assertions.assertEquals("phuartv", model.query());
-        Assertions.assertEquals(2146264945, model.binSize());
-        Assertions.assertEquals(1848545940, model.binDelay());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T09:14:30Z"), model.binStartTime());
+        Assertions.assertEquals("mcmuapc", model.query());
+        Assertions.assertEquals(1303035802, model.binSize());
+        Assertions.assertEquals(1202963506, model.binDelay());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-04T08:14:55Z"), model.binStartTime());
         Assertions.assertEquals(TimeSelectorEnum.TIME_GENERATED, model.timeSelector());
-        Assertions.assertEquals("mnahmnxh", model.destinationTable());
+        Assertions.assertEquals("ey", model.destinationTable());
     }
 }

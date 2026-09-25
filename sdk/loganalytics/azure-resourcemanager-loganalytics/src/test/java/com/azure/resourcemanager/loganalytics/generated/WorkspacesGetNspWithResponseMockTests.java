@@ -22,7 +22,7 @@ public final class WorkspacesGetNspWithResponseMockTests {
     @Test
     public void testGetNspWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"provisioningIssues\":[{\"name\":\"awzovgkk\",\"properties\":{\"issueType\":\"MissingPerimeterConfiguration\",\"severity\":\"Warning\",\"description\":\"jcazt\",\"suggestedResourceIds\":[\"nsq\",\"wxwcomli\",\"ytwvczcswkacve\"],\"suggestedAccessRules\":[{}]}}],\"networkSecurityPerimeter\":{\"id\":\"lvhbwrnf\",\"perimeterGuid\":\"gddpq\",\"location\":\"ehnmnaoyankco\"},\"resourceAssociation\":{\"name\":\"wankltytmhdroznn\",\"accessMode\":\"Audit\"},\"profile\":{\"name\":\"tgjcsgguxheml\",\"accessRulesVersion\":133075669,\"accessRules\":[{\"name\":\"czg\",\"properties\":{}},{\"name\":\"kklelssxblycs\",\"properties\":{}}],\"diagnosticSettingsVersion\":802444072,\"enabledLogCategories\":[\"rlsmdesqplpvmjc\",\"oewbid\"]}},\"id\":\"t\",\"name\":\"owx\",\"type\":\"gpiudeug\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"provisioningIssues\":[{\"name\":\"jztczytqj\",\"properties\":{\"issueType\":\"MissingIdentityConfiguration\",\"severity\":\"Error\",\"description\":\"fprnjl\",\"suggestedResourceIds\":[\"xsmrpddouifamow\",\"z\",\"yn\",\"nlqwzdvpiwhx\"],\"suggestedAccessRules\":[{},{},{},{}]}}],\"networkSecurityPerimeter\":{\"id\":\"maajquhuxylr\",\"perimeterGuid\":\"m\",\"location\":\"g\"},\"resourceAssociation\":{\"name\":\"zyos\",\"accessMode\":\"Learning\"},\"profile\":{\"name\":\"c\",\"accessRulesVersion\":311832546,\"accessRules\":[{\"name\":\"mspbpssdfpp\",\"properties\":{}},{\"name\":\"tieyujtvczkcny\",\"properties\":{}},{\"name\":\"munjdxvglnkvx\",\"properties\":{}},{\"name\":\"aglqivbgkcvkh\",\"properties\":{}}],\"diagnosticSettingsVersion\":87158467,\"enabledLogCategories\":[\"fl\"]}},\"id\":\"niypfpubcpzg\",\"name\":\"xtiv\",\"type\":\"j\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,19 +32,19 @@ public final class WorkspacesGetNspWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkSecurityPerimeterConfiguration response = manager.workspaces()
-            .getNspWithResponse("hrkmdyomkxfbvfbh", "y", "rhpw", com.azure.core.util.Context.NONE)
+            .getNspWithResponse("biygnugjknfsmfct", "uxuuyilflq", "iquvrehm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lvhbwrnf", response.properties().networkSecurityPerimeter().id());
-        Assertions.assertEquals("gddpq", response.properties().networkSecurityPerimeter().perimeterGuid());
-        Assertions.assertEquals("ehnmnaoyankco", response.properties().networkSecurityPerimeter().location());
-        Assertions.assertEquals("wankltytmhdroznn", response.properties().resourceAssociation().name());
-        Assertions.assertEquals(ResourceAssociationAccessMode.AUDIT,
+        Assertions.assertEquals("maajquhuxylr", response.properties().networkSecurityPerimeter().id());
+        Assertions.assertEquals("m", response.properties().networkSecurityPerimeter().perimeterGuid());
+        Assertions.assertEquals("g", response.properties().networkSecurityPerimeter().location());
+        Assertions.assertEquals("zyos", response.properties().resourceAssociation().name());
+        Assertions.assertEquals(ResourceAssociationAccessMode.LEARNING,
             response.properties().resourceAssociation().accessMode());
-        Assertions.assertEquals("tgjcsgguxheml", response.properties().profile().name());
-        Assertions.assertEquals(133075669, response.properties().profile().accessRulesVersion());
-        Assertions.assertEquals("czg", response.properties().profile().accessRules().get(0).name());
-        Assertions.assertEquals(802444072, response.properties().profile().diagnosticSettingsVersion());
-        Assertions.assertEquals("rlsmdesqplpvmjc", response.properties().profile().enabledLogCategories().get(0));
+        Assertions.assertEquals("c", response.properties().profile().name());
+        Assertions.assertEquals(311832546, response.properties().profile().accessRulesVersion());
+        Assertions.assertEquals("mspbpssdfpp", response.properties().profile().accessRules().get(0).name());
+        Assertions.assertEquals(87158467, response.properties().profile().diagnosticSettingsVersion());
+        Assertions.assertEquals("fl", response.properties().profile().enabledLogCategories().get(0));
     }
 }

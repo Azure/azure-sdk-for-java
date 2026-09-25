@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class QueryPacksCreateOrUpdateWithoutNameSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPacksCreateNoName.json
+     * x-ms-original-file: 2026-03-01/QueryPacksCreateNoName.json
      */
     /**
      * Sample code: QueryPackCreateNoName.
@@ -27,7 +27,7 @@ public final class QueryPacksCreateOrUpdateWithoutNameSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/QueryPackUpdateNoName.json
+     * x-ms-original-file: 2026-03-01/QueryPackUpdateNoName.json
      */
     /**
      * Sample code: QueryPackUpdateNoName.

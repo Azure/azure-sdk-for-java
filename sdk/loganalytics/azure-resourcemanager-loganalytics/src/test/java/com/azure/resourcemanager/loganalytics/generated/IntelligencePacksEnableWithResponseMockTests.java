@@ -28,7 +28,7 @@ public final class IntelligencePacksEnableWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.intelligencePacks()
-            .enableWithResponse("hepfwwtjfdoes", "xhmw", "dbckyo", com.azure.core.util.Context.NONE);
+            .enableWithResponse("aupia", "cxnafbwqrooh", "uovmaonurjt", com.azure.core.util.Context.NONE);
 
     }
 }

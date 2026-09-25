@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesGet.json
+     * x-ms-original-file: 2026-03-01/WorkspacesGet.json
      */
     /**
      * Sample code: WorkspaceGet.

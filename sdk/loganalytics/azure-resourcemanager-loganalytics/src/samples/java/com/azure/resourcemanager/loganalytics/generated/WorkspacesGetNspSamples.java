@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class WorkspacesGetNspSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NSPForWorkspaces_Get.json
+     * x-ms-original-file: 2026-03-01/NSPForWorkspaces_Get.json
      */
     /**
      * Sample code: Get NSP config by name for Scheduled Query Rule.

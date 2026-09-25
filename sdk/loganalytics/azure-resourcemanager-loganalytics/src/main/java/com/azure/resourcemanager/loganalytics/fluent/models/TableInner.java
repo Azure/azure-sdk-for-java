@@ -16,6 +16,7 @@ import com.azure.resourcemanager.loganalytics.models.ResultStatistics;
 import com.azure.resourcemanager.loganalytics.models.Schema;
 import com.azure.resourcemanager.loganalytics.models.SearchResults;
 import com.azure.resourcemanager.loganalytics.models.TablePlanEnum;
+import com.azure.resourcemanager.loganalytics.models.TableProtectionLevelEnum;
 import java.io.IOException;
 
 /**
@@ -239,6 +240,31 @@ public final class TableInner extends ProxyResource {
             this.innerProperties = new TableProperties();
         }
         this.innerProperties().withPlan(plan);
+        return this;
+    }
+
+    /**
+     * Get the protectionLevel property: The protection level of the table. Determines the default data access isolation
+     * behavior.
+     * 
+     * @return the protectionLevel value.
+     */
+    public TableProtectionLevelEnum protectionLevel() {
+        return this.innerProperties() == null ? null : this.innerProperties().protectionLevel();
+    }
+
+    /**
+     * Set the protectionLevel property: The protection level of the table. Determines the default data access isolation
+     * behavior.
+     * 
+     * @param protectionLevel the protectionLevel value to set.
+     * @return the TableInner object itself.
+     */
+    public TableInner withProtectionLevel(TableProtectionLevelEnum protectionLevel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TableProperties();
+        }
+        this.innerProperties().withProtectionLevel(protectionLevel);
         return this;
     }
 

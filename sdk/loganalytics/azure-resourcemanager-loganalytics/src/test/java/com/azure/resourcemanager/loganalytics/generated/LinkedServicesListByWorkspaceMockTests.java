@@ -23,7 +23,7 @@ public final class LinkedServicesListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceId\":\"sokdgoge\",\"writeAccessResourceId\":\"jymrhbg\",\"provisioningState\":\"ProvisioningAccount\"},\"tags\":{\"ffjkutycyarnroo\":\"yewnfnzhhhqos\",\"abzoghktdpyczhco\":\"g\",\"pt\":\"ocnhzqrottjzcfyj\",\"h\":\"rl\"},\"id\":\"qinfszpyglqd\",\"name\":\"mrjzral\",\"type\":\"xpjb\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceId\":\"ddbhf\",\"writeAccessResourceId\":\"fpazjzoywjxhpd\",\"provisioningState\":\"Deleting\"},\"tags\":{\"qwtehtuevr\":\"acn\",\"gwbsreurf\":\"rljyoogwxhnsdu\",\"htkln\":\"kfuarenlv\",\"bo\":\"nafvvkyfedev\"},\"id\":\"cqxypokkhminq\",\"name\":\"ymc\",\"type\":\"ngnbdxxew\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,11 @@ public final class LinkedServicesListByWorkspaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<LinkedService> response
-            = manager.linkedServices().listByWorkspace("mqkra", "bnxwbjsidbirkf", com.azure.core.util.Context.NONE);
+            = manager.linkedServices().listByWorkspace("jcpeogkhnmg", "ro", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yewnfnzhhhqos", response.iterator().next().tags().get("ffjkutycyarnroo"));
-        Assertions.assertEquals("sokdgoge", response.iterator().next().resourceId());
-        Assertions.assertEquals("jymrhbg", response.iterator().next().writeAccessResourceId());
-        Assertions.assertEquals(LinkedServiceEntityStatus.PROVISIONING_ACCOUNT,
-            response.iterator().next().provisioningState());
+        Assertions.assertEquals("acn", response.iterator().next().tags().get("qwtehtuevr"));
+        Assertions.assertEquals("ddbhf", response.iterator().next().resourceId());
+        Assertions.assertEquals("fpazjzoywjxhpd", response.iterator().next().writeAccessResourceId());
+        Assertions.assertEquals(LinkedServiceEntityStatus.DELETING, response.iterator().next().provisioningState());
     }
 }

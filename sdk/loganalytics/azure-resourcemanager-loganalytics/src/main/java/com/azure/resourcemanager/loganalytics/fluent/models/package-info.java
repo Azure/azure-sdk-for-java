@@ -4,6 +4,5 @@
 
 /**
  * Package containing the inner data models for LogAnalytics.
- * Provides NSP operations for working with Log Analytics.
  */
 package com.azure.resourcemanager.loganalytics.fluent.models;
