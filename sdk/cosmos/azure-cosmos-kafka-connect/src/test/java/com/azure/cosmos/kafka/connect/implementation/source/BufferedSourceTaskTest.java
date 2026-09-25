@@ -20,49 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class BufferedSourceTaskTest {
     @Test(groups = "unit", timeOut = 30_000)
-    public void kafkaPollReturnsWhileSourceRequestIsBlocked() throws InterruptedException {
-        TestTask task = new TestTask();
-        CountDownLatch requestStarted = new CountDownLatch(1);
-        CountDownLatch releaseRequest = new CountDownLatch(1);
-        task.pollAction = () -> {
-            requestStarted.countDown();
-            releaseRequest.await();
-            return Collections.emptyList();
-        };
-
-        try {
-            task.start(Collections.emptyMap());
-            assertThat(task.poll()).isEmpty();
-            assertThat(requestStarted.await(5, TimeUnit.SECONDS)).isTrue();
-        } finally {
-            releaseRequest.countDown();
-            task.stop();
-        }
-    }
-
-    @Test(groups = "unit", timeOut = 30_000)
-    public void sourceReaderStartsLazilyOnFirstPoll() {
-        TestTask task = new TestTask();
-        AtomicInteger pollCount = new AtomicInteger();
-        task.pollAction = () -> {
-            pollCount.incrementAndGet();
-            return Collections.emptyList();
-        };
-
-        try {
-            task.start(Collections.emptyMap());
-            assertThat(pollCount.get()).isZero();
-
-            task.poll();
-
-            assertThat(pollCount.get()).isGreaterThanOrEqualTo(1);
-        } finally {
-            task.stop();
-        }
-    }
-
-    @Test(groups = "unit", timeOut = 30_000)
-    public void stopClosesTaskAndUnblocksBackgroundRequest() throws InterruptedException {
+    public void blockedReadStartsLazilyAndStopsCleanly() throws InterruptedException {
         TestTask task = new TestTask();
         CountDownLatch requestStarted = new CountDownLatch(1);
         CountDownLatch requestExited = new CountDownLatch(1);
@@ -78,6 +36,8 @@ public class BufferedSourceTaskTest {
         };
         task.stopAction = taskStopped::countDown;
         task.start(Collections.emptyMap());
+        assertThat(requestStarted.getCount()).isEqualTo(1);
+
         assertThat(task.poll()).isEmpty();
         assertThat(requestStarted.await(5, TimeUnit.SECONDS)).isTrue();
 
