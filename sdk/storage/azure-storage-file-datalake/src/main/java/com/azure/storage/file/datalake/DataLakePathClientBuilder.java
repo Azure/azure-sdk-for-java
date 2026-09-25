@@ -28,6 +28,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
@@ -106,6 +107,19 @@ public final class DataLakePathClientBuilder
         logOptions = getDefaultHttpLogOptions();
         blobClientBuilder = new BlobClientBuilder();
         blobClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
+    }
+
+    /**
+     * Sets the options for session-based authentication of eligible GET blob requests made by the underlying Blob
+     * clients used by this Data Lake client. Requests that are not eligible continue to use bearer token
+     * authentication.
+     *
+     * @param sessionOptions The session options for the HTTP pipeline.
+     * @return the updated DataLakePathClientBuilder object.
+     */
+    public DataLakePathClientBuilder sessionOptions(SessionOptions sessionOptions) {
+        blobClientBuilder.sessionOptions(sessionOptions);
+        return this;
     }
 
     private DataLakeServiceVersion getServiceVersion() {

@@ -28,6 +28,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -550,6 +551,27 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
         if (audience != null) {
             blobServiceClientBuilder.audience(BlobAudience.fromString(audience.toString()));
         }
+        return this;
+    }
+
+    /**
+     * Sets the {@link SessionOptions} that controls how the SDK manages session-based authentication for the
+     * OAuth-authenticated Blob pipeline shared by the file system and path clients created from this service
+     * client.
+     * <p>
+     * Sessions amortize authentication and authorization cost across many requests by signing them with a
+     * lightweight HMAC key instead of a full bearer token, and are only effective for accounts with a
+     * hierarchical namespace (HNS) enabled. Session mode is enabled by default whenever this builder is
+     * configured with a {@link com.azure.core.credential.TokenCredential}. Session authentication is attempted only
+     * for eligible GET blob requests; requests that are not eligible for
+     * session authentication, or for which session negotiation fails (for example, because HNS is not enabled),
+     * transparently fall back to bearer token authentication.
+     *
+     * @param sessionOptions The session options for the HTTP pipeline.
+     * @return the updated DataLakeServiceClientBuilder object.
+     */
+    public DataLakeServiceClientBuilder sessionOptions(SessionOptions sessionOptions) {
+        blobServiceClientBuilder.sessionOptions(sessionOptions);
         return this;
     }
 }

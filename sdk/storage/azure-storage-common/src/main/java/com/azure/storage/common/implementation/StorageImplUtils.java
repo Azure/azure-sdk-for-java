@@ -296,6 +296,19 @@ public class StorageImplUtils {
     }
 
     /**
+     * Determines whether a host contains the given storage service subdomain.
+     *
+     * @param host The host string to check.
+     * @param serviceSubDomain The service subdomain (e.g., "blob", "file", "queue", or "dfs").
+     * @return {@code true} if the host contains the service subdomain.
+     */
+    public static boolean isServiceEndpoint(String host, String serviceSubDomain) {
+        return !CoreUtils.isNullOrEmpty(host)
+            && !CoreUtils.isNullOrEmpty(serviceSubDomain)
+            && host.contains("." + serviceSubDomain + ".");
+    }
+
+    /**
      * Gets the account name from a host string, stripping IPv6, dualstack, and secondary suffixes.
      * <p>
      * For IPv6/dualstack endpoints, hosts look like {@code accountname-ipv6.blob.core.windows.net} or
@@ -316,8 +329,7 @@ public class StorageImplUtils {
 
         int accountEndIndex = host.indexOf('.');
         if (accountEndIndex >= 0) {
-            int serviceStartIndex = host.indexOf(serviceSubDomain, accountEndIndex);
-            if (serviceStartIndex > -1) {
+            if (isServiceEndpoint(host, serviceSubDomain)) {
                 String accountName = host.substring(0, accountEndIndex);
 
                 // Note: The suffixes are specifically checked/trimmed in this order to
