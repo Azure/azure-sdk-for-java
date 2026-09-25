@@ -14,13 +14,13 @@ public final class GremlinDatabaseGetPropertiesResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GremlinDatabaseGetPropertiesResource model = BinaryData.fromString(
-            "{\"_rid\":\"rt\",\"_ts\":30.747408,\"_etag\":\"meboywhczzq\",\"id\":\"hmngqb\",\"restoreParameters\":{\"restoreSource\":\"gis\",\"restoreTimestampInUtc\":\"2021-07-11T10:10:53Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Default\"}")
+            "{\"_rid\":\"lwzrg\",\"_ts\":26.501434,\"_etag\":\"einkfsc\",\"id\":\"fncjwvua\",\"restoreParameters\":{\"restoreSource\":\"wtltngvmreuptrk\",\"restoreTimestampInUtc\":\"2021-10-19T03:33:45Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Restore\"}")
             .toObject(GremlinDatabaseGetPropertiesResource.class);
-        Assertions.assertEquals("hmngqb", model.id());
-        Assertions.assertEquals("gis", model.restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-11T10:10:53Z"),
+        Assertions.assertEquals("fncjwvua", model.id());
+        Assertions.assertEquals("wtltngvmreuptrk", model.restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-19T03:33:45Z"),
             model.restoreParameters().restoreTimestampInUtc());
-        Assertions.assertFalse(model.restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.DEFAULT, model.createMode());
+        Assertions.assertTrue(model.restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertEquals(CreateMode.RESTORE, model.createMode());
     }
 }

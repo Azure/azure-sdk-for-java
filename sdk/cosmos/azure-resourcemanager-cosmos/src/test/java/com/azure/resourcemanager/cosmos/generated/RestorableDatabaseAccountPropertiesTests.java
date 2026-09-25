@@ -13,11 +13,11 @@ public final class RestorableDatabaseAccountPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableDatabaseAccountProperties model = BinaryData.fromString(
-            "{\"accountName\":\"mainwhed\",\"creationTime\":\"2021-08-28T14:00:16Z\",\"oldestRestorableTime\":\"2021-11-24T07:15:35Z\",\"deletionTime\":\"2020-12-28T12:47:32Z\",\"apiType\":\"Table\",\"restorableLocations\":[{\"locationName\":\"izazz\",\"regionalDatabaseAccountInstanceId\":\"wgvydjufb\",\"creationTime\":\"2021-02-13T16:28:56Z\",\"deletionTime\":\"2021-05-16T04:49:21Z\"},{\"locationName\":\"xpegj\",\"regionalDatabaseAccountInstanceId\":\"abalfdxaglz\",\"creationTime\":\"2021-05-27T21:06:24Z\",\"deletionTime\":\"2021-07-31T21:27:41Z\"},{\"locationName\":\"lqhopxouvmrs\",\"regionalDatabaseAccountInstanceId\":\"likyypzkgxfxfmyr\",\"creationTime\":\"2021-04-19T01:47:58Z\",\"deletionTime\":\"2021-03-28T18:58:57Z\"}]}")
+            "{\"accountName\":\"ychakvy\",\"creationTime\":\"2021-09-02T00:07:47Z\",\"oldestRestorableTime\":\"2021-03-01T17:50:02Z\",\"deletionTime\":\"2021-10-12T10:09:20Z\",\"apiType\":\"Cassandra\",\"restorableLocations\":[{\"locationName\":\"iuepmaxfnzlpqmp\",\"regionalDatabaseAccountInstanceId\":\"xef\",\"creationTime\":\"2021-10-06T02:03:12Z\",\"deletionTime\":\"2021-03-27T14:00:55Z\"},{\"locationName\":\"rtux\",\"regionalDatabaseAccountInstanceId\":\"rhfcaeooifqdyw\",\"creationTime\":\"2020-12-26T02:16:51Z\",\"deletionTime\":\"2021-03-17T16:24:26Z\"},{\"locationName\":\"ahqmom\",\"regionalDatabaseAccountInstanceId\":\"corkfrocgbmxl\",\"creationTime\":\"2021-11-29T06:49:01Z\",\"deletionTime\":\"2021-10-01T18:03:45Z\"}]}")
             .toObject(RestorableDatabaseAccountProperties.class);
-        Assertions.assertEquals("mainwhed", model.accountName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T14:00:16Z"), model.creationTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-24T07:15:35Z"), model.oldestRestorableTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-28T12:47:32Z"), model.deletionTime());
+        Assertions.assertEquals("ychakvy", model.accountName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-02T00:07:47Z"), model.creationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-01T17:50:02Z"), model.oldestRestorableTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T10:09:20Z"), model.deletionTime());
     }
 }

@@ -15,40 +15,43 @@ public final class TableRoleDefinitionResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TableRoleDefinitionResourceProperties model = BinaryData.fromString(
-            "{\"id\":\"kfexlv\",\"roleName\":\"oakizvoai\",\"type\":\"BuiltInRole\",\"assignableScopes\":[\"nuwiguyxlykwph\",\"xzcwxhmpejt\"],\"permissions\":[{\"id\":\"aonwivkcqhrxh\",\"dataActions\":[\"lccrmmkyupi\",\"ubyqj\"],\"notDataActions\":[\"kfq\",\"rke\",\"yildudxjascow\",\"f\"]},{\"id\":\"kpdxphlk\",\"dataActions\":[\"mgzvyfi\",\"dkz\",\"qnwsithuqolyah\",\"uqwqulsutrjbhxyk\"],\"notDataActions\":[\"qezv\"]},{\"id\":\"ugdrftbc\",\"dataActions\":[\"reuquowtljvf\",\"hreagk\",\"yxvrqtvbczsul\"],\"notDataActions\":[\"glmep\",\"pfseykgs\",\"ngpszngafpg\"]}]}")
+            "{\"id\":\"gmmuteyxey\",\"roleName\":\"qigijiitnspxlzde\",\"type\":\"CustomRole\",\"assignableScopes\":[\"jwaiuf\",\"n\"],\"permissions\":[{\"id\":\"fueqfrojs\",\"dataActions\":[\"rhydkygywez\",\"kiecafygzm\"],\"notDataActions\":[\"qv\",\"smaklixqcahy\"]},{\"id\":\"alybxawoijpo\",\"dataActions\":[\"lxp\",\"kwjdjodqhy\",\"incnr\",\"mehllizhceu\"],\"notDataActions\":[\"odkadppyibngq\",\"adywrxwhydt\",\"uvvadswzsnu\",\"emlowuowhl\"]},{\"id\":\"nwyrmouv\",\"dataActions\":[\"mo\",\"zkltrfowtdvrfmv\",\"ih\",\"vjdrqcrjidhftuk\"],\"notDataActions\":[\"xlwyoj\",\"fqz\",\"kfnjyixhafrat\"]},{\"id\":\"mbjrou\",\"dataActions\":[\"n\"],\"notDataActions\":[\"qjrhuzgfxonj\"]}]}")
             .toObject(TableRoleDefinitionResourceProperties.class);
-        Assertions.assertEquals("kfexlv", model.id());
-        Assertions.assertEquals("oakizvoai", model.roleName());
-        Assertions.assertEquals(RoleDefinitionType.BUILT_IN_ROLE, model.type());
-        Assertions.assertEquals("nuwiguyxlykwph", model.assignableScopes().get(0));
-        Assertions.assertEquals("aonwivkcqhrxh", model.permissions().get(0).id());
-        Assertions.assertEquals("lccrmmkyupi", model.permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("kfq", model.permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("gmmuteyxey", model.id());
+        Assertions.assertEquals("qigijiitnspxlzde", model.roleName());
+        Assertions.assertEquals(RoleDefinitionType.CUSTOM_ROLE, model.type());
+        Assertions.assertEquals("jwaiuf", model.assignableScopes().get(0));
+        Assertions.assertEquals("fueqfrojs", model.permissions().get(0).id());
+        Assertions.assertEquals("rhydkygywez", model.permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("qv", model.permissions().get(0).notDataActions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TableRoleDefinitionResourceProperties model = new TableRoleDefinitionResourceProperties().withId("kfexlv")
-            .withRoleName("oakizvoai")
-            .withType(RoleDefinitionType.BUILT_IN_ROLE)
-            .withAssignableScopes(Arrays.asList("nuwiguyxlykwph", "xzcwxhmpejt"))
+        TableRoleDefinitionResourceProperties model = new TableRoleDefinitionResourceProperties().withId("gmmuteyxey")
+            .withRoleName("qigijiitnspxlzde")
+            .withType(RoleDefinitionType.CUSTOM_ROLE)
+            .withAssignableScopes(Arrays.asList("jwaiuf", "n"))
             .withPermissions(Arrays.asList(
-                new Permission().withId("aonwivkcqhrxh")
-                    .withDataActions(Arrays.asList("lccrmmkyupi", "ubyqj"))
-                    .withNotDataActions(Arrays.asList("kfq", "rke", "yildudxjascow", "f")),
-                new Permission().withId("kpdxphlk")
-                    .withDataActions(Arrays.asList("mgzvyfi", "dkz", "qnwsithuqolyah", "uqwqulsutrjbhxyk"))
-                    .withNotDataActions(Arrays.asList("qezv")),
-                new Permission().withId("ugdrftbc")
-                    .withDataActions(Arrays.asList("reuquowtljvf", "hreagk", "yxvrqtvbczsul"))
-                    .withNotDataActions(Arrays.asList("glmep", "pfseykgs", "ngpszngafpg"))));
+                new Permission().withId("fueqfrojs")
+                    .withDataActions(Arrays.asList("rhydkygywez", "kiecafygzm"))
+                    .withNotDataActions(Arrays.asList("qv", "smaklixqcahy")),
+                new Permission().withId("alybxawoijpo")
+                    .withDataActions(Arrays.asList("lxp", "kwjdjodqhy", "incnr", "mehllizhceu"))
+                    .withNotDataActions(Arrays.asList("odkadppyibngq", "adywrxwhydt", "uvvadswzsnu", "emlowuowhl")),
+                new Permission().withId("nwyrmouv")
+                    .withDataActions(Arrays.asList("mo", "zkltrfowtdvrfmv", "ih", "vjdrqcrjidhftuk"))
+                    .withNotDataActions(Arrays.asList("xlwyoj", "fqz", "kfnjyixhafrat")),
+                new Permission().withId("mbjrou")
+                    .withDataActions(Arrays.asList("n"))
+                    .withNotDataActions(Arrays.asList("qjrhuzgfxonj"))));
         model = BinaryData.fromObject(model).toObject(TableRoleDefinitionResourceProperties.class);
-        Assertions.assertEquals("kfexlv", model.id());
-        Assertions.assertEquals("oakizvoai", model.roleName());
-        Assertions.assertEquals(RoleDefinitionType.BUILT_IN_ROLE, model.type());
-        Assertions.assertEquals("nuwiguyxlykwph", model.assignableScopes().get(0));
-        Assertions.assertEquals("aonwivkcqhrxh", model.permissions().get(0).id());
-        Assertions.assertEquals("lccrmmkyupi", model.permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("kfq", model.permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("gmmuteyxey", model.id());
+        Assertions.assertEquals("qigijiitnspxlzde", model.roleName());
+        Assertions.assertEquals(RoleDefinitionType.CUSTOM_ROLE, model.type());
+        Assertions.assertEquals("jwaiuf", model.assignableScopes().get(0));
+        Assertions.assertEquals("fueqfrojs", model.permissions().get(0).id());
+        Assertions.assertEquals("rhydkygywez", model.permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("qv", model.permissions().get(0).notDataActions().get(0));
     }
 }

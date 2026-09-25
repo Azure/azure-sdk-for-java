@@ -12,22 +12,22 @@ public final class GremlinRoleAssignmentResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GremlinRoleAssignmentResourceProperties model = BinaryData.fromString(
-            "{\"roleDefinitionId\":\"abmdlqj\",\"scope\":\"dp\",\"principalId\":\"xlhupmomihzbdnp\",\"provisioningState\":\"kcdpreyxelyi\"}")
+            "{\"roleDefinitionId\":\"gzukw\",\"scope\":\"nzkjthfceyjn\",\"principalId\":\"mlfuyfjbp\",\"provisioningState\":\"ddhlrufzcqyj\"}")
             .toObject(GremlinRoleAssignmentResourceProperties.class);
-        Assertions.assertEquals("abmdlqj", model.roleDefinitionId());
-        Assertions.assertEquals("dp", model.scope());
-        Assertions.assertEquals("xlhupmomihzbdnp", model.principalId());
+        Assertions.assertEquals("gzukw", model.roleDefinitionId());
+        Assertions.assertEquals("nzkjthfceyjn", model.scope());
+        Assertions.assertEquals("mlfuyfjbp", model.principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GremlinRoleAssignmentResourceProperties model
-            = new GremlinRoleAssignmentResourceProperties().withRoleDefinitionId("abmdlqj")
-                .withScope("dp")
-                .withPrincipalId("xlhupmomihzbdnp");
+            = new GremlinRoleAssignmentResourceProperties().withRoleDefinitionId("gzukw")
+                .withScope("nzkjthfceyjn")
+                .withPrincipalId("mlfuyfjbp");
         model = BinaryData.fromObject(model).toObject(GremlinRoleAssignmentResourceProperties.class);
-        Assertions.assertEquals("abmdlqj", model.roleDefinitionId());
-        Assertions.assertEquals("dp", model.scope());
-        Assertions.assertEquals("xlhupmomihzbdnp", model.principalId());
+        Assertions.assertEquals("gzukw", model.roleDefinitionId());
+        Assertions.assertEquals("nzkjthfceyjn", model.scope());
+        Assertions.assertEquals("mlfuyfjbp", model.principalId());
     }
 }

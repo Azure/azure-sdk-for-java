@@ -16,20 +16,17 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"npiucgygevqznty\",\"tenantId\":\"rbpizc\",\"type\":\"None\",\"userAssignedIdentities\":{\"sjttgzfbish\":{\"principalId\":\"pyd\",\"clientId\":\"yhxdeoejzicwi\"},\"xw\":{\"principalId\":\"khaj\",\"clientId\":\"yeamdphagalpb\"},\"jeputtmrywn\":{\"principalId\":\"pwhonowkg\",\"clientId\":\"wankixzbi\"},\"qqn\":{\"principalId\":\"oqftiyqzrnkcq\",\"clientId\":\"xlwhzlsicoh\"}}}")
+            "{\"principalId\":\"r\",\"tenantId\":\"sdpydnfyhxdeoejz\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"agalpbuxwgipwhon\":{\"principalId\":\"jttgzf\",\"clientId\":\"shcbkhajdeyeamdp\"}}}")
             .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ResourceIdentityType.NONE)
-            .withUserAssignedIdentities(mapOf("sjttgzfbish", new ManagedServiceIdentityUserAssignedIdentities(), "xw",
-                new ManagedServiceIdentityUserAssignedIdentities(), "jeputtmrywn",
-                new ManagedServiceIdentityUserAssignedIdentities(), "qqn",
-                new ManagedServiceIdentityUserAssignedIdentities()));
+        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("agalpbuxwgipwhon", new ManagedServiceIdentityUserAssignedIdentities()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

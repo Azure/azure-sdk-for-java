@@ -13,9 +13,9 @@ public final class DataTransferServiceResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataTransferServiceResourceProperties model = BinaryData.fromString(
-            "{\"serviceType\":\"DataTransfer\",\"locations\":[{\"name\":\"faxdtnqifbsa\",\"location\":\"oiauesugmocpcj\",\"status\":\"Updating\"},{\"name\":\"elrgttwfldsiuo\",\"location\":\"nikcedpk\",\"status\":\"Running\"}],\"creationTime\":\"2021-05-23T18:22:44Z\",\"instanceSize\":\"Cosmos.D8s\",\"instanceCount\":1817794368,\"status\":\"Deleting\",\"btgmbxi\":\"\\\"dataqvvyczyay\\\"\"}")
+            "{\"serviceType\":\"DataTransfer\",\"locations\":[{\"name\":\"cqufylam\",\"location\":\"wbg\",\"status\":\"Running\"}],\"creationTime\":\"2021-11-06T04:37:52Z\",\"instanceSize\":\"Cosmos.D8s\",\"instanceCount\":2114305274,\"status\":\"Updating\",\"iknsgo\":\"\\\"datatipquks\\\"\",\"gvm\":\"\\\"dataunswhpcek\\\"\",\"eetxtpwcv\":\"\\\"datannbbxngdfkke\\\"\",\"wsunjzijaciwmmpd\":\"\\\"datai\\\"\"}")
             .toObject(DataTransferServiceResourceProperties.class);
         Assertions.assertEquals(ServiceSize.COSMOS_D8S, model.instanceSize());
-        Assertions.assertEquals(1817794368, model.instanceCount());
+        Assertions.assertEquals(2114305274, model.instanceCount());
     }
 }

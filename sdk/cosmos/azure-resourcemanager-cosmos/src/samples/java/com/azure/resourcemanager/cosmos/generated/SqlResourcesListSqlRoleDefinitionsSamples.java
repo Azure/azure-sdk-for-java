@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesListSqlRoleDefinitionsSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBSqlRoleDefinitionList.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlRoleDefinitionList.json
      */
     /**
      * Sample code: CosmosDBSqlRoleDefinitionList.
