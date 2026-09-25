@@ -16,6 +16,10 @@
 
 ## 1.7.0 (2026-09-17)
 
+### Features Added
+
+- Route internal SDKStats using OneSettings data-boundary connection strings, with the existing Breeze connection string as the fallback.
+
 ### Bugs Fixed
 
 - Ensure the SDKStats all-disable setting also suppresses internal Statsbeat exports and background tasks. ([#50382](https://github.com/Azure/azure-sdk-for-java/pull/50382))
