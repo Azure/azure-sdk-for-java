@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerinstance.generated;
  */
 public final class CGProfileGetByRevisionNumberSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupProfileGetByRevisionNumber.json
+     * x-ms-original-file: 2026-08-01-preview/ContainerGroupProfileGetByRevisionNumber.json
      */
     /**
      * Sample code: ContainerGroupProfileGetByRevisionNumber.
