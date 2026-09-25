@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Playwright Management</name>
-  <description>This package contains Microsoft Azure SDK for Playwright Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Playwright Service Management API provides access to Playwright workspace resources and their operations through Azure Resource Manager. Package api-version 2026-02-01-preview.</description>
+  <description>This package contains Microsoft Azure SDK for Playwright Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Playwright Service Management API provides access to Playwright workspace resources and their operations through Azure Resource Manager. Package api-version 2026-08-01-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
