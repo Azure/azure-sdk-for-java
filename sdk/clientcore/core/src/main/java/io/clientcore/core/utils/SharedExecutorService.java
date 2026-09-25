@@ -24,8 +24,10 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * An {@link ScheduledExecutorService} that is shared by multiple consumers.
@@ -143,9 +145,7 @@ public final class SharedExecutorService implements ScheduledExecutorService {
     }
 
     volatile ScheduledExecutorService executor;
-    private static final AtomicReferenceFieldUpdater<SharedExecutorService, ScheduledExecutorService> EXECUTOR_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(SharedExecutorService.class, ScheduledExecutorService.class,
-            "executor");
+    private final Lock executorLock = new ReentrantLock();
 
     private SharedExecutorService() {
     }
@@ -171,7 +171,7 @@ public final class SharedExecutorService implements ScheduledExecutorService {
      * set.
      */
     public ScheduledExecutorService getExecutorService() {
-        return EXECUTOR_UPDATER.get(this);
+        return executor;
     }
 
     /**
@@ -199,12 +199,18 @@ public final class SharedExecutorService implements ScheduledExecutorService {
         // Another scenario could be an executor service that creates threads with specific permissions, such as
         // allowing Client Core or Jackson to perform deep reflection on classes that are not normally allowed.
         Objects.requireNonNull(executorService, "'executorService' cannot be null.");
-        if (executorService.isShutdown() || executorService.isTerminated()) {
-            throw LOGGER.throwableAtError()
-                .log("The passed executor service is shutdown or terminated.", IllegalStateException::new);
+        ExecutorService existing;
+        executorLock.lock();
+        try {
+            if (executorService.isShutdown() || executorService.isTerminated()) {
+                throw LOGGER.throwableAtError()
+                    .log("The passed executor service is shutdown or terminated.", IllegalStateException::new);
+            }
+            existing = executor;
+            executor = executorService;
+        } finally {
+            executorLock.unlock();
         }
-
-        ExecutorService existing = EXECUTOR_UPDATER.getAndSet(this, executorService);
 
         if (existing instanceof InternalExecutorService) {
             // Only the InternalExecutorService should be shut down when setting a new ExecutorService.
@@ -218,7 +224,14 @@ public final class SharedExecutorService implements ScheduledExecutorService {
      * This will shut down the executor service if it was created by this class.
      */
     public void reset() {
-        ScheduledExecutorService existing = EXECUTOR_UPDATER.getAndSet(this, null);
+        ScheduledExecutorService existing;
+        executorLock.lock();
+        try {
+            existing = executor;
+            executor = null;
+        } finally {
+            executorLock.unlock();
+        }
 
         if (existing instanceof InternalExecutorService) {
             // Only the InternalExecutorService should be shut down when resetting SharedExecutorService.
@@ -357,11 +370,30 @@ public final class SharedExecutorService implements ScheduledExecutorService {
     }
 
     private ScheduledExecutorService ensureNotShutdown() {
-        return EXECUTOR_UPDATER.updateAndGet(INSTANCE,
-            ex -> (ex == null || ex.isShutdown() || ex.isTerminated()) ? createSharedExecutor() : ex);
+        return ensureNotShutdown(SharedExecutorService::createSharedExecutor);
     }
 
-    private static ScheduledExecutorService createSharedExecutor() {
+    ScheduledExecutorService ensureNotShutdown(Supplier<InternalExecutorService> executorFactory) {
+        ScheduledExecutorService current = executor;
+        if (current != null && !current.isShutdown() && !current.isTerminated()) {
+            return current;
+        }
+
+        executorLock.lock();
+        try {
+            // Another caller may have initialized or replaced the executor while we waited for the lock.
+            current = executor;
+            if (current == null || current.isShutdown() || current.isTerminated()) {
+                current = executorFactory.get();
+                executor = current;
+            }
+            return current;
+        } finally {
+            executorLock.unlock();
+        }
+    }
+
+    private static InternalExecutorService createSharedExecutor() {
         ThreadFactory threadFactory;
         if (VIRTUAL_THREAD_SUPPORTED && THREAD_POOL_VIRTUAL) {
             try {
@@ -415,7 +447,7 @@ public final class SharedExecutorService implements ScheduledExecutorService {
         private final ScheduledExecutorService wrapped;
         private final Thread shutdownThread;
 
-        private InternalExecutorService(ScheduledExecutorService wrapped, Thread shutdownThread) {
+        InternalExecutorService(ScheduledExecutorService wrapped, Thread shutdownThread) {
             this.wrapped = wrapped;
             this.shutdownThread = shutdownThread;
         }
