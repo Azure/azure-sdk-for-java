@@ -15,7 +15,8 @@ import java.io.IOException;
  * **WebRTC/SIP Only:** Emitted when the server begins streaming audio to the client. This event is
  * emitted after an audio content part has been added (`response.content_part.added`)
  * to the response.
- * [Learn more](/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
+ * [Learn
+ * more](https://developers.openai.com/api/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
  */
 @Immutable
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")

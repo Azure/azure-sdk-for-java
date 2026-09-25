@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionOperationStatusGetSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/ScheduledActionOperationStatus_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-06-preview/ScheduledActionOperationStatus_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Get scheduled action operation status.

@@ -5918,11 +5918,56 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"circuit-breaker-misc-direct"}, timeOut = 20 * TIMEOUT)
-    public void ppcbRecoveryResolvesAddressesAfterInitialAddressRefreshFailures() throws Exception {
-        if (this.readRegions == null || this.readRegions.size() <= 1) {
-            throw new SkipException("Test requires a multi-region account");
-        }
+    @DataProvider(name = "addressRefreshFailurePpcbExpectations")
+    public Object[][] addressRefreshFailurePpcbExpectations() {
+        List<FaultInjectionServerErrorType> failureTypes = Arrays.asList(
+            FaultInjectionServerErrorType.REQUEST_TIMEOUT,
+            FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR,
+            FaultInjectionServerErrorType.CONNECTION_RESET_BY_DOWNSTREAM_SERVICE,
+            FaultInjectionServerErrorType.COMPUTE_INTERNAL_ERROR,
+            FaultInjectionServerErrorType.PARTITION_FAILOVER_ERROR_CODE,
+            FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_WITH_UNKNOWN_SUBSTATUS,
+            FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_LEASE_NOT_FOUND,
+            FaultInjectionServerErrorType.CHANNEL_CLOSED,
+            FaultInjectionServerErrorType.SERVER_COMPLETING_PARTITION_MIGRATION_EXCEEDED_RETRY_LIMIT,
+            FaultInjectionServerErrorType.SERVER_READ_QUORUM_NOT_MET);
+        List<Object[]> testCases = new ArrayList<>();
+
+        failureTypes.forEach(errorType -> {
+            boolean shouldTriggerPpcb = errorType != FaultInjectionServerErrorType.REQUEST_TIMEOUT;
+            testCases.add(new Object[] {
+                errorType,
+                FaultInjectionOperationType.READ_ITEM,
+                shouldTriggerPpcb
+            });
+            testCases.add(new Object[] {
+                errorType,
+                FaultInjectionOperationType.CREATE_ITEM,
+                shouldTriggerPpcb
+            });
+        });
+
+        return testCases.toArray(new Object[0][]);
+    }
+
+    @Test(
+        groups = {"circuit-breaker-misc-direct"},
+        dataProvider = "addressRefreshFailurePpcbExpectations",
+        timeOut = 20 * TIMEOUT)
+    public void ppcbTriggersAndRecoversAfterAddressRefreshFailures(
+        FaultInjectionServerErrorType errorType,
+        FaultInjectionOperationType operationType,
+        boolean shouldTriggerPpcb) throws Exception {
+
+        boolean isCreateOperation = operationType == FaultInjectionOperationType.CREATE_ITEM;
+        List<String> applicableRegions = isCreateOperation ? this.writeRegions : this.readRegions;
+        assertThat(applicableRegions)
+            .as(
+                "PPCB address-refresh %s test requires at least two %s regions",
+                operationType,
+                isCreateOperation ? "writable" : "readable")
+            .isNotNull()
+            .hasSizeGreaterThan(1);
 
         ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(getClientBuilder());
         if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
@@ -5934,15 +5979,23 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
 
         String originalPpcbConfig = System.getProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
-        TestObject testObject = TestObject.create();
-        PartitionKey partitionKey = new PartitionKey(testObject.getId());
-        try (CosmosAsyncClient bootstrapClient = getClientBuilder().buildAsyncClient()) {
-            bootstrapClient
-                .getDatabase(this.sharedAsyncDatabaseId)
-                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey)
-                .createItem(testObject, partitionKey, new CosmosItemRequestOptions())
-                .block();
+        String partitionKeyValue = UUID.randomUUID().toString();
+        TestObject testObject = isCreateOperation ? null : TestObject.create();
+        if (!isCreateOperation) {
+            partitionKeyValue = testObject.getId();
+            try (CosmosAsyncClient bootstrapClient = getClientBuilder().buildAsyncClient()) {
+                bootstrapClient
+                    .getDatabase(this.sharedAsyncDatabaseId)
+                    .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey)
+                    .createItem(testObject, new PartitionKey(partitionKeyValue), new CosmosItemRequestOptions())
+                    .block();
+            }
+            waitForItemReplication(
+                testObject,
+                new PartitionKey(partitionKeyValue),
+                this.readRegions.get(1));
         }
+        PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
 
         CosmosAsyncClient testClient = null;
         FaultInjectionRule addressRefreshRule = null;
@@ -5953,12 +6006,16 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     + "\"circuitBreakerType\":\"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
                     + "\"consecutiveExceptionCountToleratedForReads\":10,"
                     + "\"consecutiveExceptionCountToleratedForWrites\":5}");
-            testClient = getClientBuilder()
-                .preferredRegions(this.readRegions)
-                .buildAsyncClient();
+            CosmosClientBuilder clientBuilder = getClientBuilder().preferredRegions(applicableRegions);
+            if (isCreateOperation) {
+                clientBuilder.multipleWriteRegionsEnabled(true);
+            }
+            testClient = clientBuilder.buildAsyncClient();
             CosmosAsyncContainer container = testClient
                 .getDatabase(this.sharedAsyncDatabaseId)
-                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+                .getContainer(isCreateOperation
+                    ? this.sharedMultiPartitionAsyncContainerIdWhereMyPkIsPartitionKey
+                    : this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
 
             RxDocumentClientImpl documentClient
                 = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(testClient);
@@ -6000,28 +6057,31 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 .getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
             locationContextMapField.setAccessible(true);
 
-            addressRefreshRule = new FaultInjectionRuleBuilder(
-                "ppcb-address-refresh-connection-delay-" + UUID.randomUUID())
+            boolean isResponseDelay = errorType == FaultInjectionServerErrorType.RESPONSE_DELAY;
+            String addressRefreshRuleId
+                = "ppcb-address-refresh-" + operationType + "-" + errorType + "-" + UUID.randomUUID();
+            addressRefreshRule = new FaultInjectionRuleBuilder(addressRefreshRuleId)
                 .condition(new FaultInjectionConditionBuilder()
-                    .region(this.readRegions.get(0))
+                    .region(applicableRegions.get(0))
                     .operationType(FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH)
                     .build())
                 .result(FaultInjectionResultBuilders
-                    .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-                    .delay(Duration.ofSeconds(11))
-                    .times(3)
+                    .getResultBuilder(errorType)
+                    .delay(isResponseDelay ? Duration.ofSeconds(11) : Duration.ZERO)
+                    .times(isResponseDelay ? 3 : Integer.MAX_VALUE)
                     .build())
                 .duration(Duration.ofMinutes(10))
                 // Keep recovery probes faulted until the test has observed failover.
-                .hitLimit(60)
+                .hitLimit(isResponseDelay ? 60 : Integer.MAX_VALUE)
                 .build();
             CosmosFaultInjectionHelper.configureFaultInjectionRules(
                 container,
                 Collections.singletonList(addressRefreshRule)).block();
 
-            CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
+            CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
                 .setCosmosEndToEndOperationLatencyPolicyConfig(NO_END_TO_END_TIMEOUT);
             CosmosDiagnostics lastDiagnostics = null;
+            boolean observedAddressFailure = false;
             for (int i = 0; i < 20
                 && !hasUnavailableLocationForPartition(
                     partitionKeyRangeWrapper,
@@ -6029,28 +6089,65 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     locationContextMapField); i++) {
 
                 try {
-                    CosmosItemResponse<TestObject> response = container
-                        .readItem(testObject.getId(), partitionKey, readOptions, TestObject.class)
-                        .block();
+                    CosmosItemResponse<TestObject> response = executePpcbAddressRefreshOperation(
+                        container,
+                        operationType,
+                        testObject,
+                        partitionKeyValue,
+                        requestOptions);
                     lastDiagnostics = response.getDiagnostics();
                 } catch (CosmosException exception) {
                     lastDiagnostics = exception.getDiagnostics();
                 }
+
+                assertThat(lastDiagnostics).isNotNull();
+                observedAddressFailure |= cosmosDiagnosticsAccessor.getClientSideRequestStatistics(lastDiagnostics)
+                    .stream()
+                    .flatMap(statistics -> statistics.getAddressResolutionStatistics().values().stream())
+                    .anyMatch(statistics -> addressRefreshRuleId.equals(statistics.getFaultInjectionRuleId())
+                        && statistics.getExceptionMessage() != null);
             }
 
-            assertThat(addressRefreshRule.getHitCount()).isGreaterThanOrEqualTo(30);
-            assertThat(hasUnavailableLocationForPartition(
+            assertThat(addressRefreshRule.getHitCount()).isGreaterThanOrEqualTo(isResponseDelay ? 30 : 1);
+            assertThat(observedAddressFailure)
+                .as("Address resolution diagnostics should record the injected %s failure", errorType)
+                .isTrue();
+            boolean isPartitionRegionUnavailable = hasUnavailableLocationForPartition(
                 partitionKeyRangeWrapper,
                 partitionUnavailabilityMap,
-                locationContextMapField)).isTrue();
+                locationContextMapField);
+            assertThat(isPartitionRegionUnavailable)
+                .as(
+                    "Unexpected PPCB state after injected %s address failures for %s",
+                    errorType,
+                    operationType)
+                .isEqualTo(shouldTriggerPpcb);
             assertThat(lastDiagnostics).isNotNull();
 
-            CosmosItemResponse<TestObject> failedOverResponse = container
-                .readItem(testObject.getId(), partitionKey, readOptions, TestObject.class)
-                .block();
+            if (!shouldTriggerPpcb) {
+                addressRefreshRule.disable();
+                CosmosItemResponse<TestObject> response = executePpcbAddressRefreshOperation(
+                    container,
+                    operationType,
+                    testObject,
+                    partitionKeyValue,
+                    requestOptions);
+                assertContactedRegionsContain(
+                    response.getDiagnostics().getDiagnosticsContext(),
+                    getRegionNameForAssertion(applicableRegions.get(0)),
+                    "PPCB should keep using the first preferred region when the failure does not open the breaker");
+                return;
+            }
+
+            CosmosItemResponse<TestObject> failedOverResponse = executePpcbAddressRefreshOperation(
+                container,
+                operationType,
+                testObject,
+                partitionKeyValue,
+                requestOptions);
             assertContactedRegionsContain(
                 failedOverResponse.getDiagnostics().getDiagnosticsContext(),
-                getRegionNameForAssertion(this.readRegions.get(1)),
+                getRegionNameForAssertion(applicableRegions.get(1)),
                 "PPCB should route the partition to the second preferred region");
 
             addressRefreshRule.disable();
@@ -6068,16 +6165,19 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 partitionUnavailabilityMap,
                 locationContextMapField)).isFalse();
 
-            CosmosItemResponse<TestObject> recoveredResponse = container
-                .readItem(testObject.getId(), partitionKey, readOptions, TestObject.class)
-                .block();
+            CosmosItemResponse<TestObject> recoveredResponse = executePpcbAddressRefreshOperation(
+                container,
+                operationType,
+                testObject,
+                partitionKeyValue,
+                requestOptions);
             assertContactedRegionCount(
                 recoveredResponse.getDiagnostics().getDiagnosticsContext(),
                 1,
                 "Recovered partition should use one preferred region");
             assertContactedRegionsContain(
                 recoveredResponse.getDiagnostics().getDiagnosticsContext(),
-                getRegionNameForAssertion(this.readRegions.get(0)),
+                getRegionNameForAssertion(applicableRegions.get(0)),
                 "PPCB should fail back to the first preferred region after recovery");
         } finally {
             if (addressRefreshRule != null) {
@@ -6090,6 +6190,55 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", originalPpcbConfig);
             }
         }
+    }
+
+    private static CosmosItemResponse<TestObject> executePpcbAddressRefreshOperation(
+        CosmosAsyncContainer container,
+        FaultInjectionOperationType operationType,
+        TestObject testObject,
+        String partitionKeyValue,
+        CosmosItemRequestOptions requestOptions) {
+
+        PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
+        if (operationType == FaultInjectionOperationType.READ_ITEM) {
+            return container
+                .readItem(testObject.getId(), partitionKey, requestOptions, TestObject.class)
+                .block();
+        }
+
+        if (operationType == FaultInjectionOperationType.CREATE_ITEM) {
+            return container.createItem(TestObject.create(partitionKeyValue), partitionKey, requestOptions).block();
+        }
+
+        throw new IllegalArgumentException("Unsupported PPCB address refresh operation type " + operationType);
+    }
+
+    private void waitForItemReplication(TestObject testObject, PartitionKey partitionKey, String region) throws Exception {
+        long deadline = System.nanoTime() + Duration.ofSeconds(60).toNanos();
+        try (CosmosAsyncClient replicationClient = getClientBuilder()
+            .preferredRegions(Collections.singletonList(region))
+            .buildAsyncClient()) {
+
+            CosmosAsyncContainer container = replicationClient
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+            while (System.nanoTime() < deadline) {
+                try {
+                    container.readItem(testObject.getId(), partitionKey, TestObject.class).block();
+                    return;
+                } catch (CosmosException exception) {
+                    int statusCode = exception.getStatusCode();
+                    if (statusCode != HttpConstants.StatusCodes.NOTFOUND
+                        && statusCode != HttpConstants.StatusCodes.REQUEST_TIMEOUT
+                        && statusCode != HttpConstants.StatusCodes.SERVICE_UNAVAILABLE) {
+                        throw exception;
+                    }
+                    Thread.sleep(Duration.ofSeconds(1).toMillis());
+                }
+            }
+        }
+
+        throw new AssertionError("Item did not replicate to region " + region + " within 60 seconds");
     }
 
     @Test(groups = {"circuit-breaker-misc-direct"}, timeOut = 4 * TIMEOUT)

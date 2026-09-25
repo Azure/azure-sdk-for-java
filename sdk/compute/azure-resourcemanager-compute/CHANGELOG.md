@@ -1,6 +1,6 @@
 # Release History
 
-## 2.61.0-beta.1 (Unreleased)
+## 2.62.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,63 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.61.0 (2026-09-14)
+
+### Features Added
+
+* `models.ImageMetadataProfile` was added
+
+* `models.SecretsProvisioningSettings` was added
+
+* `models.MetadataKeyValue` was added
+
+* `models.MetadataType` was added
+
+* `models.GalleryImageVersionState` was added
+
+* `models.SecretsProvisioningComponent` was added
+
+* `models.DataDiskImageSecurityProfile` was added
+
+* `models.SecretsProvisioningComponentName` was added
+
+#### `models.ImageVersionSecurityProfile` was modified
+
+* `withSecretsProvisioningSettings(models.SecretsProvisioningSettings)` was added
+* `secretsProvisioningSettings()` was added
+
+#### `models.ConfidentialVMEncryptionType` was modified
+
+* `DATA_DISK_ENCRYPTED_WITH_CMK` was added
+
+#### `models.SoftDeletePolicy` was modified
+
+* `withGracePeriodInDays(java.lang.Integer)` was added
+* `retentionPeriodInDays()` was added
+* `withRetentionPeriodInDays(java.lang.Integer)` was added
+* `gracePeriodInDays()` was added
+
+#### `models.GalleryImageVersionUpdate` was modified
+
+* `imageMetadataProfiles()` was added
+
+#### `models.DataDiskImageEncryption` was modified
+
+* `securityProfile()` was added
+* `withSecurityProfile(models.DataDiskImageSecurityProfile)` was added
+
+## 2.59.1 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-msi` from `2.54.0` to version `2.54.1`.
+- Upgraded `azure-resourcemanager-storage` from `2.57.1` to version `2.57.2`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.10` to version `2.53.12`.
+- Upgraded `azure-resourcemanager-network` from `2.59.1` to version `2.60.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
 
 ## 2.60.0 (2026-08-12)
 
@@ -130,18 +187,6 @@
 
 * `withProcessorMode(models.ProcessorMode)` was added
 * `processorMode()` was added
-
-## 2.59.1 (2026-08-18)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-resourcemanager-msi` from `2.54.0` to version `2.54.1`.
-- Upgraded `azure-resourcemanager-storage` from `2.57.1` to version `2.57.2`.
-- Upgraded `azure-resourcemanager-authorization` from `2.53.10` to version `2.53.12`.
-- Upgraded `azure-resourcemanager-network` from `2.59.1` to version `2.60.1`.
-- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
 
 ## 2.59.0 (2026-07-15)
 

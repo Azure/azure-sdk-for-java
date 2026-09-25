@@ -33,6 +33,15 @@ public final class ConfidentialVMEncryptionType extends ExpandableStringEnum<Con
     public static final ConfidentialVMEncryptionType NON_PERSISTED_TPM = fromString("NonPersistedTPM");
 
     /**
+     * Confidential VM Encryption Type which should be used for encrypting the data disks with customer managed keys.
+     * This Encryption type should only be used for data disks, and should not be used for OS disk encryption. When this
+     * encryption type is used for data disk encryption.Subscriptions need to be enrolled for Confidential VM with data
+     * encryption through following AFEC - Microsoft.Compute/ConfidentialVMDataDiskEncryptionPreview.
+     */
+    public static final ConfidentialVMEncryptionType DATA_DISK_ENCRYPTED_WITH_CMK
+        = fromString("DataDiskEncryptedWithCmk");
+
+    /**
      * Creates a new instance of ConfidentialVMEncryptionType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

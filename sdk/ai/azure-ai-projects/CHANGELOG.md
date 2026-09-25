@@ -1,5 +1,21 @@
 # Release History
 
+## 2.7.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.6.1 (2026-09-23)
+
+### Bugs Fixed
+
+- Fixed serialization of OpenAI tools passed to `AzureAIAgentTarget.setToolsAsOpenAITools(...)` to avoid emitting computed properties such as `isValid` in request bodies.
+
 ## 2.6.0 (2026-09-22)
 
 ### Features Added

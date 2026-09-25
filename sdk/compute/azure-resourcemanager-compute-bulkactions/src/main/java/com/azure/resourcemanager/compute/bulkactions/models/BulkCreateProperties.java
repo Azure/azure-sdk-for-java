@@ -12,7 +12,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 /**
  * Details of the BulkCreate.
@@ -61,21 +60,10 @@ public final class BulkCreateProperties implements JsonSerializable<BulkCreatePr
     private PriorityProfile priorityProfile;
 
     /*
-     * List of VM sizes supported for BulkCreate. Every virtual machine is created from the operation-level
-     * computeProfile regardless of the size selected, so no per-VM-size override can be supplied here.
-     */
-    private List<BulkCreateVmSizeProfile> vmSizesProfile;
-
-    /*
      * Compute Profile to configure the Virtual Machines. Applied uniformly to every virtual machine created by the
      * operation.
      */
     private ComputeProfile computeProfile;
-
-    /*
-     * Zone Allocation Policy for launching instances.
-     */
-    private ZoneAllocationPolicy zoneAllocationPolicy;
 
     /*
      * Extra parameters that control how the request is executed, including the retry policy.
@@ -221,30 +209,6 @@ public final class BulkCreateProperties implements JsonSerializable<BulkCreatePr
     }
 
     /**
-     * Get the vmSizesProfile property: List of VM sizes supported for BulkCreate. Every virtual machine is created from
-     * the operation-level computeProfile regardless of the size selected, so no per-VM-size override can be supplied
-     * here.
-     * 
-     * @return the vmSizesProfile value.
-     */
-    public List<BulkCreateVmSizeProfile> vmSizesProfile() {
-        return this.vmSizesProfile;
-    }
-
-    /**
-     * Set the vmSizesProfile property: List of VM sizes supported for BulkCreate. Every virtual machine is created from
-     * the operation-level computeProfile regardless of the size selected, so no per-VM-size override can be supplied
-     * here.
-     * 
-     * @param vmSizesProfile the vmSizesProfile value to set.
-     * @return the BulkCreateProperties object itself.
-     */
-    public BulkCreateProperties withVmSizesProfile(List<BulkCreateVmSizeProfile> vmSizesProfile) {
-        this.vmSizesProfile = vmSizesProfile;
-        return this;
-    }
-
-    /**
      * Get the computeProfile property: Compute Profile to configure the Virtual Machines. Applied uniformly to every
      * virtual machine created by the operation.
      * 
@@ -263,26 +227,6 @@ public final class BulkCreateProperties implements JsonSerializable<BulkCreatePr
      */
     public BulkCreateProperties withComputeProfile(ComputeProfile computeProfile) {
         this.computeProfile = computeProfile;
-        return this;
-    }
-
-    /**
-     * Get the zoneAllocationPolicy property: Zone Allocation Policy for launching instances.
-     * 
-     * @return the zoneAllocationPolicy value.
-     */
-    public ZoneAllocationPolicy zoneAllocationPolicy() {
-        return this.zoneAllocationPolicy;
-    }
-
-    /**
-     * Set the zoneAllocationPolicy property: Zone Allocation Policy for launching instances.
-     * 
-     * @param zoneAllocationPolicy the zoneAllocationPolicy value to set.
-     * @return the BulkCreateProperties object itself.
-     */
-    public BulkCreateProperties withZoneAllocationPolicy(ZoneAllocationPolicy zoneAllocationPolicy) {
-        this.zoneAllocationPolicy = zoneAllocationPolicy;
         return this;
     }
 
@@ -320,9 +264,6 @@ public final class BulkCreateProperties implements JsonSerializable<BulkCreatePr
         jsonWriter.writeStringField("capacityType", this.capacityType == null ? null : this.capacityType.toString());
         jsonWriter.writeNumberField("minCapacity", this.minCapacity);
         jsonWriter.writeJsonField("partialFulfillmentPolicy", this.partialFulfillmentPolicy);
-        jsonWriter.writeArrayField("vmSizesProfile", this.vmSizesProfile,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("zoneAllocationPolicy", this.zoneAllocationPolicy);
         jsonWriter.writeJsonField("executionParameters", this.executionParameters);
         return jsonWriter.writeEndObject();
     }
@@ -362,12 +303,6 @@ public final class BulkCreateProperties implements JsonSerializable<BulkCreatePr
                 } else if ("partialFulfillmentPolicy".equals(fieldName)) {
                     deserializedBulkCreateProperties.partialFulfillmentPolicy
                         = PartialFulfillmentPolicy.fromJson(reader);
-                } else if ("vmSizesProfile".equals(fieldName)) {
-                    List<BulkCreateVmSizeProfile> vmSizesProfile
-                        = reader.readArray(reader1 -> BulkCreateVmSizeProfile.fromJson(reader1));
-                    deserializedBulkCreateProperties.vmSizesProfile = vmSizesProfile;
-                } else if ("zoneAllocationPolicy".equals(fieldName)) {
-                    deserializedBulkCreateProperties.zoneAllocationPolicy = ZoneAllocationPolicy.fromJson(reader);
                 } else if ("executionParameters".equals(fieldName)) {
                     deserializedBulkCreateProperties.executionParameters = ExecutionParameters.fromJson(reader);
                 } else {

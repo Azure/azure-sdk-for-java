@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.compute.models.GalleryImageVersionState;
 import com.azure.resourcemanager.compute.models.SharedGalleryImageVersionStorageProfile;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -49,6 +50,18 @@ public final class SharedGalleryImageVersionProperties
      * The artifact tags of a shared gallery resource.
      */
     private Map<String, String> artifactTags;
+
+    /*
+     * The timestamp after which a soft-deleted gallery image version is no longer consumable for VM/VMSS creation or
+     * VMSS scale out. It is calculated from the soft-deleted time plus the retention period, and is not present for
+     * active gallery image versions. In dateTime offset format.
+     */
+    private OffsetDateTime consumptionEndTime;
+
+    /*
+     * The state of the gallery image version, derived from its soft-delete status.
+     */
+    private GalleryImageVersionState imageState;
 
     /**
      * Creates an instance of SharedGalleryImageVersionProperties class.
@@ -102,6 +115,26 @@ public final class SharedGalleryImageVersionProperties
      */
     public Map<String, String> artifactTags() {
         return this.artifactTags;
+    }
+
+    /**
+     * Get the consumptionEndTime property: The timestamp after which a soft-deleted gallery image version is no longer
+     * consumable for VM/VMSS creation or VMSS scale out. It is calculated from the soft-deleted time plus the retention
+     * period, and is not present for active gallery image versions. In dateTime offset format.
+     * 
+     * @return the consumptionEndTime value.
+     */
+    public OffsetDateTime consumptionEndTime() {
+        return this.consumptionEndTime;
+    }
+
+    /**
+     * Get the imageState property: The state of the gallery image version, derived from its soft-delete status.
+     * 
+     * @return the imageState value.
+     */
+    public GalleryImageVersionState imageState() {
+        return this.imageState;
     }
 
     /**
@@ -162,6 +195,12 @@ public final class SharedGalleryImageVersionProperties
                 } else if ("artifactTags".equals(fieldName)) {
                     Map<String, String> artifactTags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSharedGalleryImageVersionProperties.artifactTags = artifactTags;
+                } else if ("consumptionEndTime".equals(fieldName)) {
+                    deserializedSharedGalleryImageVersionProperties.consumptionEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("imageState".equals(fieldName)) {
+                    deserializedSharedGalleryImageVersionProperties.imageState
+                        = GalleryImageVersionState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
