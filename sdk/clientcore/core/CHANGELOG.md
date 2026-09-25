@@ -8,14 +8,10 @@
 - Changed `HttpRetryOptions.delayFromHeaders` to `HttpRetryOptions.delayFromRetryCondition`. The `Function` is now a
   `Function<HttpRetryCondition, Duration>` instead of `Function<HttpHeaders, Duration>`. This allows richer inspection
   of the reason the request failed and is being retried when calculating the delay. ([#46384](https://github.com/Azure/azure-sdk-for-java/pull/46384))
+- Removed `SharedExecutorService`. HTTP transports now use their native default executors unless one is explicitly
+  configured.
 
 ### Bugs Fixed
-
-- Registering or removing the shutdown hook that closes the shared executor service no longer fails when the JVM is
-  already shutting down. `Runtime.addShutdownHook` throws `IllegalStateException` once shutdown has begun, which
-  surfaced to callers of `SharedExecutorService` as `IllegalStateException: Shutdown in progress` when work, such as
-  an in-flight request draining during shutdown, needed the executor after it had been closed. A hook registered at
-  that point could never run, so this case is now logged and the work continues.
 
 ### Other Changes
 

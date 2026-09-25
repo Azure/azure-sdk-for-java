@@ -29,11 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static io.clientcore.core.utils.CoreUtils.serializationFormatFromContentType;
@@ -224,24 +219,6 @@ public class CoreUtilsTests {
         }
 
         assertEquals(new UUID(msbForJava, lsbForJava), CoreUtils.randomUuid(msb, lsb));
-    }
-
-    @Test
-    public void futureCompletesBeforeTimeout() {
-        try {
-            AtomicBoolean completed = new AtomicBoolean(false);
-            Future<?> future = SharedExecutorService.getInstance().submit(() -> {
-                Thread.sleep(10);
-                completed.set(true);
-                return null;
-            });
-
-            future.get(5000, TimeUnit.MILLISECONDS);
-
-            assertTrue(completed.get());
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @ParameterizedTest

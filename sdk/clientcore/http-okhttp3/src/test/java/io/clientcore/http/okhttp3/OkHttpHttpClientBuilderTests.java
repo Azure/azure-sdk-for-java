@@ -13,7 +13,6 @@ import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.shared.TestConfigurationSource;
-import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.core.utils.configuration.ConfigurationSource;
 import okhttp3.Call;
@@ -41,6 +40,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -359,15 +359,20 @@ public class OkHttpHttpClientBuilderTests {
          * result in the request we are about to send to be cancelled since the server will wait 5 seconds before
          * returning a response.
          */
-        SharedExecutorService.getInstance().schedule(() -> {
-            assertEquals(1, dispatcher.runningCallsCount());
-            dispatcher.cancelAll();
-        }, 1000, TimeUnit.MILLISECONDS);
+        ScheduledExecutorService cancellationExecutor = Executors.newSingleThreadScheduledExecutor();
+        try {
+            cancellationExecutor.schedule(() -> {
+                assertEquals(1, dispatcher.runningCallsCount());
+                dispatcher.cancelAll();
+            }, 1000, TimeUnit.MILLISECONDS);
 
-        CoreException ex = assertThrows(CoreException.class,
-            () -> client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(dispatcherUri)).close());
+            CoreException ex = assertThrows(CoreException.class,
+                () -> client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(dispatcherUri)).close());
 
-        assertInstanceOf(IOException.class, ex.getCause());
+            assertInstanceOf(IOException.class, ex.getCause());
+        } finally {
+            cancellationExecutor.shutdownNow();
+        }
     }
 
     /**
