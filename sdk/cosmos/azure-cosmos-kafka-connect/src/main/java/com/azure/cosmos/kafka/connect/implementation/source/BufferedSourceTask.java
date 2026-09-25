@@ -8,7 +8,6 @@ import org.apache.kafka.connect.source.SourceTask;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
@@ -23,20 +22,6 @@ public abstract class BufferedSourceTask extends SourceTask {
     private final BlockingQueue<Object> pollResults = new SynchronousQueue<>();
     private volatile boolean stopping;
     private Thread pollingThread;
-
-    @Override
-    public final synchronized void start(Map<String, String> props) {
-        this.stopping = false;
-        try {
-            this.startTask(props);
-            this.pollingThread = new Thread(this::pollContinuously);
-            this.pollingThread.setDaemon(true);
-        } catch (RuntimeException | Error error) {
-            this.stopping = true;
-            this.stopTask();
-            throw error;
-        }
-    }
 
     @Override
     @SuppressWarnings("unchecked")
@@ -63,37 +48,30 @@ public abstract class BufferedSourceTask extends SourceTask {
         }
     }
 
-    @Override
-    public final synchronized void stop() {
+    protected final synchronized void stopPolling() {
         if (this.stopping) {
             return;
         }
         this.stopping = true;
-        try {
-            this.stopTask();
-        } finally {
-            if (this.pollingThread != null) {
-                this.pollingThread.interrupt();
-                try {
-                    this.pollingThread.join(THREAD_SHUTDOWN_WAIT_MS);
-                } catch (InterruptedException error) {
-                    Thread.currentThread().interrupt();
-                }
-                this.pollingThread = null;
+        if (this.pollingThread != null) {
+            this.pollingThread.interrupt();
+            try {
+                this.pollingThread.join(THREAD_SHUTDOWN_WAIT_MS);
+            } catch (InterruptedException error) {
+                Thread.currentThread().interrupt();
             }
+            this.pollingThread = null;
         }
     }
 
-    protected abstract void startTask(Map<String, String> props);
-
     protected abstract List<SourceRecord> pollTask();
 
-    protected abstract void stopTask();
-
     private synchronized void startPollingThread() {
-        if (this.stopping || this.pollingThread.getState() != Thread.State.NEW) {
+        if (this.stopping || this.pollingThread != null) {
             return;
         }
+        this.pollingThread = new Thread(this::pollContinuously);
+        this.pollingThread.setDaemon(true);
         this.pollingThread.start();
     }
 
