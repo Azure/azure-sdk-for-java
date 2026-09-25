@@ -143,6 +143,7 @@ private[spark] object CosmosConfigNames {
   val ChangeFeedBatchCheckpointLocation = "spark.cosmos.changeFeed.batchCheckpointLocation"
   val ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid = "spark.cosmos.changeFeed.batchCheckpointLocation.ignoreWhenInvalid"
   val ChangeFeedPerformanceMonitoringEnabled = "spark.cosmos.changeFeed.performance.monitoring.enabled"
+  val ChangeFeedMaxRetryDurationInSeconds = "spark.cosmos.changeFeed.maxRetryDurationInSeconds"
   val ThroughputControlEnabled = "spark.cosmos.throughputControl.enabled"
   val ThroughputControlAccountEndpoint = "spark.cosmos.throughputControl.accountEndpoint"
   val ThroughputControlAccountKey = "spark.cosmos.throughputControl.accountKey"
@@ -281,6 +282,7 @@ private[spark] object CosmosConfigNames {
     ChangeFeedBatchCheckpointLocation,
     ChangeFeedBatchCheckpointLocationIgnoreWhenInvalid,
     ChangeFeedPerformanceMonitoringEnabled,
+    ChangeFeedMaxRetryDurationInSeconds,
     ThroughputControlEnabled,
     ThroughputControlAccountEndpoint,
     ThroughputControlAccountKey,
@@ -2370,7 +2372,8 @@ private case class CosmosChangeFeedConfig
   maxItemCountPerTrigger: Option[Long],
   batchCheckpointLocation: Option[String],
   ignoreOffsetWhenInvalid: Boolean,
-  performanceMonitoringEnabled: Boolean
+  performanceMonitoringEnabled: Boolean,
+  maxRetryDuration: Duration
 ) {
 
   def toRequestOptions(feedRange: FeedRange): CosmosChangeFeedRequestOptions = {
@@ -2402,6 +2405,7 @@ private object CosmosChangeFeedConfig {
   private val DefaultStartFromMode: ChangeFeedStartFromMode = ChangeFeedStartFromModes.Beginning
   private val DefaultIgnoreOffsetWhenInvalid: Boolean = false
   private val DefaultPerformanceMonitoringEnabled: Boolean = true
+  private val DefaultMaxRetryDuration: Duration = Duration.ofSeconds(300)
 
   private val startFrom = CosmosConfigEntry[ChangeFeedStartFromMode](
     key = CosmosConfigNames.ChangeFeedStartFrom,
@@ -2459,6 +2463,18 @@ private object CosmosChangeFeedConfig {
     helpMessage = "A Flag to indicate whether enable change feed performance monitoring." +
      " When enabled, custom task metrics will be tracked internally, which will be used to dynamically tuning the change feed micro-batch size.")
 
+  private val maxRetryDuration = CosmosConfigEntry[Duration](
+    key = CosmosConfigNames.ChangeFeedMaxRetryDurationInSeconds,
+    mandatory = false,
+    defaultValue = Some(DefaultMaxRetryDuration),
+    parseFromStringFunction = value => {
+      val duration = Duration.ofSeconds(value.toLong)
+      require(!duration.isZero && !duration.isNegative, "value must be greater than zero")
+      duration
+    },
+    helpMessage = "Maximum duration in seconds allowed for change feed offset metadata discovery. " +
+      "The value must be greater than zero.")
+
   private def validateStartFromMode(startFrom: String): ChangeFeedStartFromMode = {
     Option(startFrom).fold(DefaultStartFromMode)(sf => {
       val trimmed = sf.trim
@@ -2484,6 +2500,7 @@ private object CosmosChangeFeedConfig {
     }
     val batchCheckpointLocationParsed = CosmosConfigEntry.parse(cfg, batchCheckpointLocation)
     val performanceMonitoringEnabledParsed = CosmosConfigEntry.parse(cfg, performanceMonitoringEnabled)
+    val maxRetryDurationParsed = CosmosConfigEntry.parse(cfg, maxRetryDuration)
 
     CosmosChangeFeedConfig(
       changeFeedModeParsed.getOrElse(DefaultChangeFeedMode),
@@ -2492,7 +2509,8 @@ private object CosmosChangeFeedConfig {
       maxItemCountPerTriggerHintParsed,
       batchCheckpointLocationParsed,
       ignoreOffsetWhenInvalidParsed.getOrElse(DefaultIgnoreOffsetWhenInvalid),
-      performanceMonitoringEnabledParsed.get
+      performanceMonitoringEnabledParsed.get,
+      maxRetryDurationParsed.get
     )
   }
 }
