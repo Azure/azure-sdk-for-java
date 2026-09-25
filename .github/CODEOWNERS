@@ -964,7 +964,7 @@
 /eng/bomgenerator/                                                 @vcolin7 @alzimmermsft @jonathangiles @Azure/azure-java-sdk
 /eng/code-quality-reports/                                         @JonathanGiles @alzimmermsft @domainname @dingmeng-xue @moarychan @Azure/azure-java-sdk
 /eng/lintingconfigs/                                               @JonathanGiles @alzimmermsft @domainname @dingmeng-xue @moarychan @Azure/azure-java-sdk
-/eng/common/                                                       @Azure/azure-sdk-eng
+/eng/common/                                                       @Azure/azure-sdk-eng @Azure/azure-sdk-eng-common-maintainers
 /eng/versioning/                                                   @alzimmermsft @g2vinay @Azure/azure-java-sdk
 /eng/versioning/external_dependencies.txt                          @alzimmermsft @g2vinay @jonathangiles @domainname @dingmeng-xue @moarychan @Azure/azure-java-sdk
 /.github/                                                          @Azure/azure-java-sdk
