@@ -25,7 +25,7 @@ public final class SignalDefinitionsListByHealthModelMockTests {
     @Test
     public void testListByHealthModel() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Deleting\",\"displayName\":\"tqlgehgppi\",\"refreshInterval\":\"PT30M\",\"tags\":{\"oajvgcxtxjcs\":\"f\",\"ssjhoiftxfkf\":\"eafidltugsresm\",\"ucb\":\"egprhptil\",\"riz\":\"qtgdqohmcwsl\"},\"dataUnit\":\"pwbralllibphbqz\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThan\",\"threshold\":90.26280500293655,\"sensitivity\":\"High\"},\"unhealthyRule\":{\"operator\":\"NotEqual\",\"threshold\":23.132541848974377,\"sensitivity\":\"High\"}}},\"id\":\"zhajoylhjlmuo\",\"name\":\"xprimrsop\",\"type\":\"eecjmeis\"}]}";
+            = "{\"value\":[{\"properties\":{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"mfg\",\"refreshInterval\":\"PT15M\",\"tags\":{\"etnluankrrfx\":\"gleohi\",\"qzbqqxlajrnwxa\":\"eebtijvacvb\",\"aoqltfaey\":\"evehjkuyxoaf\",\"hriypoqeyhlqhy\":\"inmfgvxirp\"},\"dataUnit\":\"rlpyznuciqdsmexi\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\",\"threshold\":66.78962221159378,\"sensitivity\":\"Low\"},\"unhealthyRule\":{\"operator\":\"GreaterThan\",\"threshold\":29.47227691412494,\"sensitivity\":\"Low\"}}},\"id\":\"ybnnustg\",\"name\":\"ljhnmgixhcmav\",\"type\":\"qfoudorhcgyy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,24 +35,24 @@ public final class SignalDefinitionsListByHealthModelMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SignalDefinition> response = manager.signalDefinitions()
-            .listByHealthModel("ylkdghrje", "utlwxezwzhok", OffsetDateTime.parse("2021-03-27T09:53:41Z"),
+            .listByHealthModel("ojeevy", "yhsgz", OffsetDateTime.parse("2021-10-15T05:08:39Z"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tqlgehgppi", response.iterator().next().properties().displayName());
-        Assertions.assertEquals(RefreshInterval.PT30M, response.iterator().next().properties().refreshInterval());
-        Assertions.assertEquals("f", response.iterator().next().properties().tags().get("oajvgcxtxjcs"));
-        Assertions.assertEquals("pwbralllibphbqz", response.iterator().next().properties().dataUnit());
-        Assertions.assertEquals(SignalOperator.LESS_THAN,
+        Assertions.assertEquals("mfg", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(RefreshInterval.PT15M, response.iterator().next().properties().refreshInterval());
+        Assertions.assertEquals("gleohi", response.iterator().next().properties().tags().get("etnluankrrfx"));
+        Assertions.assertEquals("rlpyznuciqdsmexi", response.iterator().next().properties().dataUnit());
+        Assertions.assertEquals(SignalOperator.EQUAL,
             response.iterator().next().properties().evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(90.26280500293655D,
+        Assertions.assertEquals(66.78962221159378D,
             response.iterator().next().properties().evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
             response.iterator().next().properties().evaluationRules().degradedRule().sensitivity());
-        Assertions.assertEquals(SignalOperator.NOT_EQUAL,
+        Assertions.assertEquals(SignalOperator.GREATER_THAN,
             response.iterator().next().properties().evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(23.132541848974377D,
+        Assertions.assertEquals(29.47227691412494D,
             response.iterator().next().properties().evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
             response.iterator().next().properties().evaluationRules().unhealthyRule().sensitivity());
     }
 }

@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public final class EntitiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01-preview/Entities_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/Entities_CreateOrUpdate.json
      */
     /**
      * Sample code: Entities_CreateOrUpdate.

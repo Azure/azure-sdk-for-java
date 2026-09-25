@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A signal configuration for an Azure resource type.
@@ -22,34 +23,34 @@ public final class SignalConfiguration implements JsonSerializable<SignalConfigu
     private String signalId;
 
     /*
-     * Metric namespace (e.g. 'microsoft.compute/virtualmachines').
+     * Display name of the recommended signal configuration.
      */
-    private String metricNamespace;
+    private String displayName;
 
     /*
-     * Name of the metric (e.g. 'Percentage CPU').
+     * Description of the recommended signal configuration.
      */
-    private String metricName;
+    private String description;
 
     /*
-     * Type of aggregation to apply to the metric.
+     * Azure resource types to which the recommended signal configuration applies.
      */
-    private MetricAggregationType aggregationType;
+    private List<String> applicableResourceTypes;
 
     /*
-     * Unit of the metric (e.g. Percent, Bytes, Count).
+     * Interval in which the recommended signal is evaluated.
      */
-    private String unit;
+    private RefreshInterval refreshInterval;
 
     /*
-     * Time range of the metric. ISO 8601 duration format (e.g. 'PT5M').
+     * Unit of the recommended signal result (e.g. Bytes, MilliSeconds, Percent, Count).
      */
-    private String timeGrain;
+    private String dataUnit;
 
     /*
-     * Optional dimension filter to apply to the metric.
+     * Kind-specific settings for the recommended signal.
      */
-    private String dimensionFilter;
+    private SignalRecommendationConfiguration configuration;
 
     /*
      * Evaluation rules with recommended thresholds.
@@ -72,57 +73,58 @@ public final class SignalConfiguration implements JsonSerializable<SignalConfigu
     }
 
     /**
-     * Get the metricNamespace property: Metric namespace (e.g. 'microsoft.compute/virtualmachines').
+     * Get the displayName property: Display name of the recommended signal configuration.
      * 
-     * @return the metricNamespace value.
+     * @return the displayName value.
      */
-    public String metricNamespace() {
-        return this.metricNamespace;
+    public String displayName() {
+        return this.displayName;
     }
 
     /**
-     * Get the metricName property: Name of the metric (e.g. 'Percentage CPU').
+     * Get the description property: Description of the recommended signal configuration.
      * 
-     * @return the metricName value.
+     * @return the description value.
      */
-    public String metricName() {
-        return this.metricName;
+    public String description() {
+        return this.description;
     }
 
     /**
-     * Get the aggregationType property: Type of aggregation to apply to the metric.
+     * Get the applicableResourceTypes property: Azure resource types to which the recommended signal configuration
+     * applies.
      * 
-     * @return the aggregationType value.
+     * @return the applicableResourceTypes value.
      */
-    public MetricAggregationType aggregationType() {
-        return this.aggregationType;
+    public List<String> applicableResourceTypes() {
+        return this.applicableResourceTypes;
     }
 
     /**
-     * Get the unit property: Unit of the metric (e.g. Percent, Bytes, Count).
+     * Get the refreshInterval property: Interval in which the recommended signal is evaluated.
      * 
-     * @return the unit value.
+     * @return the refreshInterval value.
      */
-    public String unit() {
-        return this.unit;
+    public RefreshInterval refreshInterval() {
+        return this.refreshInterval;
     }
 
     /**
-     * Get the timeGrain property: Time range of the metric. ISO 8601 duration format (e.g. 'PT5M').
+     * Get the dataUnit property: Unit of the recommended signal result (e.g. Bytes, MilliSeconds, Percent, Count).
      * 
-     * @return the timeGrain value.
+     * @return the dataUnit value.
      */
-    public String timeGrain() {
-        return this.timeGrain;
+    public String dataUnit() {
+        return this.dataUnit;
     }
 
     /**
-     * Get the dimensionFilter property: Optional dimension filter to apply to the metric.
+     * Get the configuration property: Kind-specific settings for the recommended signal.
      * 
-     * @return the dimensionFilter value.
+     * @return the configuration value.
      */
-    public String dimensionFilter() {
-        return this.dimensionFilter;
+    public SignalRecommendationConfiguration configuration() {
+        return this.configuration;
     }
 
     /**
@@ -141,13 +143,14 @@ public final class SignalConfiguration implements JsonSerializable<SignalConfigu
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("signalId", this.signalId);
-        jsonWriter.writeStringField("metricNamespace", this.metricNamespace);
-        jsonWriter.writeStringField("metricName", this.metricName);
-        jsonWriter.writeStringField("aggregationType",
-            this.aggregationType == null ? null : this.aggregationType.toString());
-        jsonWriter.writeStringField("unit", this.unit);
-        jsonWriter.writeStringField("timeGrain", this.timeGrain);
-        jsonWriter.writeStringField("dimensionFilter", this.dimensionFilter);
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("applicableResourceTypes", this.applicableResourceTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("refreshInterval",
+            this.refreshInterval == null ? null : this.refreshInterval.toString());
+        jsonWriter.writeStringField("dataUnit", this.dataUnit);
         jsonWriter.writeJsonField("evaluationRules", this.evaluationRules);
         return jsonWriter.writeEndObject();
     }
@@ -170,19 +173,19 @@ public final class SignalConfiguration implements JsonSerializable<SignalConfigu
 
                 if ("signalId".equals(fieldName)) {
                     deserializedSignalConfiguration.signalId = reader.getString();
-                } else if ("metricNamespace".equals(fieldName)) {
-                    deserializedSignalConfiguration.metricNamespace = reader.getString();
-                } else if ("metricName".equals(fieldName)) {
-                    deserializedSignalConfiguration.metricName = reader.getString();
-                } else if ("aggregationType".equals(fieldName)) {
-                    deserializedSignalConfiguration.aggregationType
-                        = MetricAggregationType.fromString(reader.getString());
-                } else if ("unit".equals(fieldName)) {
-                    deserializedSignalConfiguration.unit = reader.getString();
-                } else if ("timeGrain".equals(fieldName)) {
-                    deserializedSignalConfiguration.timeGrain = reader.getString();
-                } else if ("dimensionFilter".equals(fieldName)) {
-                    deserializedSignalConfiguration.dimensionFilter = reader.getString();
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedSignalConfiguration.configuration = SignalRecommendationConfiguration.fromJson(reader);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSignalConfiguration.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSignalConfiguration.description = reader.getString();
+                } else if ("applicableResourceTypes".equals(fieldName)) {
+                    List<String> applicableResourceTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSignalConfiguration.applicableResourceTypes = applicableResourceTypes;
+                } else if ("refreshInterval".equals(fieldName)) {
+                    deserializedSignalConfiguration.refreshInterval = RefreshInterval.fromString(reader.getString());
+                } else if ("dataUnit".equals(fieldName)) {
+                    deserializedSignalConfiguration.dataUnit = reader.getString();
                 } else if ("evaluationRules".equals(fieldName)) {
                     deserializedSignalConfiguration.evaluationRules = EvaluationRule.fromJson(reader);
                 } else {

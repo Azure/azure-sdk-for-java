@@ -34,19 +34,19 @@ public final class EntitiesIngestHealthReportWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.entities()
-            .ingestHealthReportWithResponse("ky", "cxcjxgry", "fmpcycilrmca",
-                new HealthReportRequest().withSignalName("kggnoxu")
+            .ingestHealthReportWithResponse("ljfp", "picrmnzhrgmqgjsx", "pqcbfrmbodthsq",
+                new HealthReportRequest().withSignalName("gvriibakclac")
                     .withHealthState(HealthState.HEALTHY)
-                    .withValue(40.05409029458903D)
+                    .withValue(17.040125358959525D)
                     .withEvaluationRules(new HealthReportEvaluationRule()
-                        .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.EQUAL)
-                            .withThreshold(1.8801026148641653D)
-                            .withSensitivity(DynamicThresholdSensitivity.LOW))
-                        .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.NOT_EQUAL)
-                            .withThreshold(19.389890070162185D)
-                            .withSensitivity(DynamicThresholdSensitivity.LOW)))
-                    .withExpiresInMinutes(784891190)
-                    .withAdditionalContext("kjaosrxuzv"),
+                        .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
+                            .withThreshold(7.994147397942275D)
+                            .withSensitivity(DynamicThresholdSensitivity.HIGH))
+                        .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN)
+                            .withThreshold(34.26032922017384D)
+                            .withSensitivity(DynamicThresholdSensitivity.MEDIUM)))
+                    .withExpiresInMinutes(800283877)
+                    .withAdditionalContext("fz"),
                 com.azure.core.util.Context.NONE);
 
     }
