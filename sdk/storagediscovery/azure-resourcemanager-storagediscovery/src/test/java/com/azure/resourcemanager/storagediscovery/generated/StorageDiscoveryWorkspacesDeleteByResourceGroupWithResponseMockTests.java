@@ -28,7 +28,7 @@ public final class StorageDiscoveryWorkspacesDeleteByResourceGroupWithResponseMo
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.storageDiscoveryWorkspaces()
-            .deleteByResourceGroupWithResponse("vmgxsab", "yqduujit", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("gpbtoqcjmklj", "vbqid", com.azure.core.util.Context.NONE);
 
     }
 }

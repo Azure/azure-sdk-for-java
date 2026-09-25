@@ -29,6 +29,11 @@ public final class StorageDiscoveryWorkspaceProperties
     private String description;
 
     /*
+     * The capabilities configured for the storage discovery workspace.
+     */
+    private StorageDiscoveryCapabilities capabilities;
+
+    /*
      * The view level storage discovery data estate
      */
     private List<String> workspaceRoots;
@@ -86,6 +91,26 @@ public final class StorageDiscoveryWorkspaceProperties
      */
     public StorageDiscoveryWorkspaceProperties withDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the capabilities property: The capabilities configured for the storage discovery workspace.
+     * 
+     * @return the capabilities value.
+     */
+    public StorageDiscoveryCapabilities capabilities() {
+        return this.capabilities;
+    }
+
+    /**
+     * Set the capabilities property: The capabilities configured for the storage discovery workspace.
+     * 
+     * @param capabilities the capabilities value to set.
+     * @return the StorageDiscoveryWorkspaceProperties object itself.
+     */
+    public StorageDiscoveryWorkspaceProperties withCapabilities(StorageDiscoveryCapabilities capabilities) {
+        this.capabilities = capabilities;
         return this;
     }
 
@@ -149,6 +174,7 @@ public final class StorageDiscoveryWorkspaceProperties
         jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("sku", this.sku == null ? null : this.sku.toString());
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("capabilities", this.capabilities);
         return jsonWriter.writeEndObject();
     }
 
@@ -181,6 +207,9 @@ public final class StorageDiscoveryWorkspaceProperties
                         = StorageDiscoverySku.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     deserializedStorageDiscoveryWorkspaceProperties.description = reader.getString();
+                } else if ("capabilities".equals(fieldName)) {
+                    deserializedStorageDiscoveryWorkspaceProperties.capabilities
+                        = StorageDiscoveryCapabilities.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedStorageDiscoveryWorkspaceProperties.provisioningState
                         = ResourceProvisioningState.fromString(reader.getString());
