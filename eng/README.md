@@ -10,6 +10,30 @@ All the tools/utilities used in Microsoft Azure Java SDK's build config are defi
 
 - `lintingconfigs` - CheckStyle and SpotBugs rule configurations.
 
+## PR Documentation Validation
+
+The unified Java PR pipeline excludes `docs/**`, shared `.github/skills/azsdk-common-*/**` content, and exactly
+these repository-root documents: `AGENTS.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `LICENSE.txt`, `NOTICE.txt`,
+`README.md`, `SECURITY.md`, and `SUPPORT.md`. The `docs/` and root-document entries are also listed in
+`ExcludePaths` in [pullrequest.yml](pipelines/pullrequest.yml), so they do not select Java packages in mixed PRs.
+SDK-package documents, CHANGELOGs, source/resources, and unknown paths gain no trigger exclusions.
+Build/Analyze orchestration and the existing test-matrix classifier are unchanged.
+
+The required **Check Spelling** job still checks all supported PR branches without path filters, using the existing
+CSpell configuration and ignore rules. **Verify Links** remains a separate, unchanged workflow.
+Package selection retains the existing `ExcludePaths` prefix-matching behavior.
+
+Run the trigger and classifier regression tests with PowerShell 7, Git, and the CI-declared Pester 5.7.1
+(no YAML module required):
+
+```powershell
+Import-Module Pester -RequiredVersion 5.7.1
+Invoke-Pester -Path @(
+    'eng/scripts/tests/PullRequest-Trigger.tests.ps1',
+    'eng/scripts/tests/Classify-PRChanges.tests.ps1'
+) -Tag UnitTest -Output Detailed
+```
+
 ## Sparse Checkouts
 
 Java-owned pipeline jobs use the native Azure Pipelines

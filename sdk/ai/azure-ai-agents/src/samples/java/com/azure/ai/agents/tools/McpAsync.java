@@ -5,14 +5,13 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseOutputItem;
@@ -42,13 +41,14 @@ public class McpAsync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        String agentName = "mcp-agent";
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
@@ -63,24 +63,18 @@ public class McpAsync {
                 + "Use the available MCP tools to answer questions and perform tasks.")
             .setTools(Collections.singletonList(tool));
 
-        agentsAsyncClient.createAgentVersion("mcp-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
-
-                return responsesAsyncClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
-                    ResponseCreateParams.builder()
-                        .input("Please summarize the Azure REST API specifications Readme"));
+                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
+                    .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                        ResponseCreateParams.builder()
+                            .input("Please summarize the Azure REST API specifications Readme")
+                            .build())));
             })
             .flatMap(response -> {
-                AgentVersionDetails agent = agentRef.get();
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
-
                 // Process MCP approval requests
                 List<ResponseInputItem> approvals = new ArrayList<ResponseInputItem>();
                 for (ResponseOutputItem item : response.output()) {
@@ -99,11 +93,11 @@ public class McpAsync {
 
                 if (!approvals.isEmpty()) {
                     System.out.println("Sending " + approvals.size() + " approval(s)...");
-                    return responsesAsyncClient.createAzureResponse(
-                        new AzureCreateResponseOptions().setAgentReference(agentReference),
+                    return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
                         ResponseCreateParams.builder()
                             .inputOfResponse(approvals)
-                            .previousResponseId(response.id()));
+                            .previousResponseId(response.id())
+                            .build()));
                 }
 
                 return Mono.just(response);

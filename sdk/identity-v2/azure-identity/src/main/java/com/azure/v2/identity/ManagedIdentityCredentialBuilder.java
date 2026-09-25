@@ -26,6 +26,9 @@ import java.util.concurrent.ExecutorService;
  * <a href="https://aka.ms/azsdk/java/identity/managedidentitycredential/docs">managed identity authentication
  * documentation</a>.</p>
  *
+ * <p>Azure Arc-enabled servers support user-assigned managed identities selected by client ID, resource ID, or object
+ * ID.</p>
+ *
  * <p><strong>Sample: Construct a simple ManagedIdentityCredential</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a {@link ManagedIdentityCredential},

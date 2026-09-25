@@ -15,7 +15,9 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.Metri
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryEventData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
@@ -23,17 +25,36 @@ import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.resources.Resource;
 
 import java.io.IOException;
+import java.nio.file.FileSystemException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+
 public final class TestUtils {
 
     private static final String TRACE_CONNECTION_STRING = "InstrumentationKey=00000000-0000-0000-0000-000000000000;"
         + "IngestionEndpoint=https://test.in.applicationinsights.azure.com/;"
         + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
+
+    public static void createSymbolicLinkOrSkip(Path link, Path target) throws IOException {
+        try {
+            Files.createSymbolicLink(link, target);
+        } catch (UnsupportedOperationException e) {
+            assumeTrue(false, "File system does not support symbolic links: " + e);
+        } catch (FileSystemException e) {
+            if (SystemInformation.isWindows()
+                && "A required privilege is not held by the client.".equals(e.getReason())) {
+                assumeTrue(false, "Symbolic link creation requires Windows privileges: " + e);
+            }
+            throw e;
+        }
+    }
 
     public static TelemetryItem createMetricTelemetry(String name, int value, String connectionString) {
         return createMetricTelemetry(name, value, connectionString, "state", "blocked");
@@ -106,6 +127,14 @@ public final class TestUtils {
         }
     }
 
+    public static RequestData toRequestData(MonitorDomain baseData) {
+        try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
+            return RequestData.fromJson(jsonReader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to MetricsData
     public static MetricsData toMetricsData(MonitorDomain baseData) {
         try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
@@ -128,6 +157,14 @@ public final class TestUtils {
     public static TelemetryEventData toTelemetryEventData(MonitorDomain baseData) {
         try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
             return TelemetryEventData.fromJson(jsonReader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static TelemetryExceptionData toTelemetryExceptionData(MonitorDomain baseData) {
+        try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
+            return TelemetryExceptionData.fromJson(jsonReader);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

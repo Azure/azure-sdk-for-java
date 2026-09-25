@@ -1,6 +1,6 @@
 # Release History
 
-## 2.58.0-beta.1 (Unreleased)
+## 2.59.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,59 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.58.0 (2026-08-26)
+
+- Package api-version 2026-06-01.
+
+### Features Added
+
+* `models.ContextCacheUpdate` was added
+
+* `models.KeyEncryptionKeyIdentityType` was added
+
+* `models.AiProvider` was added
+
+* `models.InfrastructureEncryption` was added
+
+* `models.ContextCacheAccountKind` was added
+
+* `models.ContextCacheContainerUpdate` was added
+
+* `models.PolicyViolationAction` was added
+
+* `models.StorageAccountEncryption` was added
+
+* `models.ContextCacheContainerPropertiesUpdate` was added
+
+* `models.CustomerManagedKeyEncryption` was added
+
+* `models.ContextCacheProvisioningState` was added
+
+* `models.KeyEncryptionKeyIdentity` was added
+
+* `models.ContextCacheContainerProperties` was added
+
+* `models.ContextCacheProperties` was added
+
+* `models.ContextCachePropertiesUpdate` was added
+
+#### `models.SasPolicy` was modified
+
+* `requireUserBoundUserDelegationSas()` was added
+* `withRequireUserBoundUserDelegationSasAction(models.PolicyViolationAction)` was added
+* `requireUserBoundUserDelegationSasAction()` was added
+* `withRequireUserBoundUserDelegationSas(java.lang.Boolean)` was added
+
+#### `models.StorageAccountUpdateParameters` was modified
+
+* `allowCrossTenantDelegationSas()` was added
+* `withAllowCrossTenantDelegationSas(java.lang.Boolean)` was added
+
+#### `models.StorageAccountCreateParameters` was modified
+
+* `withAllowCrossTenantDelegationSas(java.lang.Boolean)` was added
+* `allowCrossTenantDelegationSas()` was added
 
 ## 2.57.2 (2026-08-18)
 
@@ -30,6 +83,17 @@
 - Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
 - Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
 
+## 2.56.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
+
+
 ## 2.57.0 (2026-06-01)
 
 ### Features Added
@@ -48,17 +112,6 @@
 
 * `guardrailIOScalar()` was added
 * `guardrailBandwidthScalar()` was added
-
-## 2.56.1 (2026-07-01)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
-- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
-- Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
-
 
 ## 2.56.0 (2026-05-07)
 

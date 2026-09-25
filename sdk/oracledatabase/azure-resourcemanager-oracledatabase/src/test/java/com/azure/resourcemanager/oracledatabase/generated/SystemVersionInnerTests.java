@@ -12,8 +12,8 @@ public final class SystemVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"systemVersion\":\"mbqfqvmk\"},\"id\":\"oz\",\"name\":\"pvhelxprg\",\"type\":\"yat\"}")
+            "{\"properties\":{\"systemVersion\":\"ghimdblx\"},\"id\":\"imfnjhfjx\",\"name\":\"mszkkfo\",\"type\":\"rey\"}")
             .toObject(SystemVersionInner.class);
-        Assertions.assertEquals("mbqfqvmk", model.properties().systemVersion());
+        Assertions.assertEquals("ghimdblx", model.properties().systemVersion());
     }
 }

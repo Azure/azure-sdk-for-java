@@ -9,17 +9,34 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class OccurrencesListResourcesSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/Occurrences_ListResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_ListResources_PagedSuccess.json
      */
     /**
-     * Sample code: List resources in a scheduled action occurrence.
+     * Sample code: 02 - List a page of resources in a recurring scheduled action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void listResourcesInAScheduledActionOccurrence(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceListSpaceaSpacepageSpaceofSpaceresourcesSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
-            .listResources("rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45",
+            .listResources("example-rg", "weekday-start", "88888888-8888-8888-8888-888888888888",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_ListResources_BasicSuccess.json
+     */
+    /**
+     * Sample code: 01 - List resources in a recurring scheduled action occurrence.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroOneSpaceHyphenMinusSpaceListSpaceresourcesSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.occurrences()
+            .listResources("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
                 com.azure.core.util.Context.NONE);
     }
 }

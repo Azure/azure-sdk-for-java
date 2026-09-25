@@ -15,11 +15,10 @@ import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import junit.framework.AssertionFailedError;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.Iterator;
@@ -40,14 +39,14 @@ public class EventDataBatchAPITest extends ApiTestBase {
     private static EventHubClient ehClient;
     private static PartitionSender sender = null;
 
-    @BeforeClass
+    @BeforeAll
     public static void initializeEventHub() throws Exception {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
         ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
         sender = ehClient.createPartitionSenderSync(PARTITION_ID);
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanupClient() throws EventHubException {
         if (sender != null) {
             sender.closeSync();
@@ -119,7 +118,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
                         final EventData currentData = eterator.next();
                         final String currentPartitionKey = currentData.getSystemProperties().getPartitionKey();
                         if (!currentPartitionKey.equalsIgnoreCase(partitionKey)) {
-                            testResult.completeExceptionally(new AssertionFailedError());
+                            testResult.completeExceptionally(new AssertionError());
                         }
 
                         final int countSoFar = netCount.incrementAndGet();
@@ -187,7 +186,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
                 }
             }
 
-            Assert.assertEquals(count, batchEvents.getSize());
+            Assertions.assertEquals(count, batchEvents.getSize());
             receiver.setReceiveHandler(new CountValidator(validator, count));
 
             sender.sendSync(batchEvents);
@@ -221,11 +220,11 @@ public class EventDataBatchAPITest extends ApiTestBase {
             }
         }
 
-        Assert.assertEquals(count, batchEvents.getSize());
+        Assertions.assertEquals(count, batchEvents.getSize());
         ehClient.sendSync(batchEvents);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void sendBatchWithPartitionKeyOnPartitionSenderTest() throws EventHubException {
 
 
@@ -246,11 +245,11 @@ public class EventDataBatchAPITest extends ApiTestBase {
             }
         }
 
-        Assert.assertEquals(count, batchEvents.getSize());
+        Assertions.assertEquals(count, batchEvents.getSize());
 
         // the CreateBatch was created without taking PartitionKey size into account
         // so this call should fail with payload size exceeded
-        sender.sendSync(batchEvents);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> sender.sendSync(batchEvents));
     }
 
     public static class CountValidator implements PartitionReceiveHandler {
