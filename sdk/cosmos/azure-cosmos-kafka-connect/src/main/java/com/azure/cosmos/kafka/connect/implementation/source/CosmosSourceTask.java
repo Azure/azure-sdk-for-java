@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
 import org.apache.kafka.connect.source.SourceRecord;
-import org.apache.kafka.connect.source.SourceTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -38,20 +37,20 @@ import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class CosmosSourceTask extends SourceTask {
+public class CosmosSourceTask extends BufferedSourceTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceTask.class);
     private static final String LSN_ATTRIBUTE_NAME = "_lsn";
     private static final String METADATA_ATTRIBUTE_NAME = "metadata";
     private static final String METADATA_LSN_ATTRIBUTE_NAME = "lsn";
 
     private CosmosSourceTaskConfig taskConfig;
-    private CosmosClientCacheItem cosmosClientItem;
-    private CosmosClientCacheItem throughputControlCosmosClientItem;
+    private volatile CosmosClientCacheItem cosmosClientItem;
+    private volatile CosmosClientCacheItem throughputControlCosmosClientItem;
     private MetadataKafkaStorageManager kafkaOffsetStorageReader;
 
     private final Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
 
-    private long lastLogTimeMs = System.currentTimeMillis();
+    private volatile long lastLogTimeMs = System.currentTimeMillis();
     private final Map<String, FeedRangeLoggingContext> feedRangeCounts = new ConcurrentHashMap<>();
 
     @Override
@@ -166,7 +165,7 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     @Override
-    public List<SourceRecord> poll() {
+    protected List<SourceRecord> pollTask() {
         // do not poll it from the queue yet
         // we need to make sure not losing tasks for failure cases
         ITaskUnit taskUnit = this.taskUnitsQueue.poll();
@@ -539,7 +538,7 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     @Override
-    public void stop() {
+    protected void stopTask() {
         LOGGER.info("Stopping CosmosSourceTask");
         this.logFeedRangeCounts(true);
         this.cleanup();
