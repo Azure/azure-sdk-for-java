@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class LocalRulestacksListPredefinedUrlCategoriesMockTests {
     @Test
     public void testListPredefinedUrlCategories() throws Exception {
-        String responseStr = "{\"value\":[{\"action\":\"aevwjcnkot\",\"name\":\"lwuhvajmailfe\"}]}";
+        String responseStr = "{\"value\":[{\"action\":\"uyzwvbhlimbyqecr\",\"name\":\"odlikcdrdaasax\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class LocalRulestacksListPredefinedUrlCategoriesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PredefinedUrlCategory> response = manager.localRulestacks()
-            .listPredefinedUrlCategories("vn", "gflqqbtnyjp", "lxdbfvabmvms", 1081151366,
+            .listPredefinedUrlCategories("iuswswj", "kbqsjhbtqqvyfscy", "fwbivqvo", 588858153,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("aevwjcnkot", response.iterator().next().action());
-        Assertions.assertEquals("lwuhvajmailfe", response.iterator().next().name());
+        Assertions.assertEquals("uyzwvbhlimbyqecr", response.iterator().next().action());
+        Assertions.assertEquals("odlikcdrdaasax", response.iterator().next().name());
     }
 }

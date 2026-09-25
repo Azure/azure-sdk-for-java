@@ -13,24 +13,24 @@ public final class FqdnObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FqdnObject model = BinaryData.fromString(
-            "{\"description\":\"vnotyfjfcnj\",\"fqdnList\":[\"cn\"],\"etag\":\"hbttkphyw\",\"auditComment\":\"vjtoqnermclfp\",\"provisioningState\":\"Succeeded\"}")
+            "{\"description\":\"hvljuahaquh\",\"fqdnList\":[\"hmdua\",\"aex\"],\"etag\":\"vfadmws\",\"auditComment\":\"r\",\"provisioningState\":\"Accepted\"}")
             .toObject(FqdnObject.class);
-        Assertions.assertEquals("vnotyfjfcnj", model.description());
-        Assertions.assertEquals("cn", model.fqdnList().get(0));
-        Assertions.assertEquals("hbttkphyw", model.etag());
-        Assertions.assertEquals("vjtoqnermclfp", model.auditComment());
+        Assertions.assertEquals("hvljuahaquh", model.description());
+        Assertions.assertEquals("hmdua", model.fqdnList().get(0));
+        Assertions.assertEquals("vfadmws", model.etag());
+        Assertions.assertEquals("r", model.auditComment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FqdnObject model = new FqdnObject().withDescription("vnotyfjfcnj")
-            .withFqdnList(Arrays.asList("cn"))
-            .withEtag("hbttkphyw")
-            .withAuditComment("vjtoqnermclfp");
+        FqdnObject model = new FqdnObject().withDescription("hvljuahaquh")
+            .withFqdnList(Arrays.asList("hmdua", "aex"))
+            .withEtag("vfadmws")
+            .withAuditComment("r");
         model = BinaryData.fromObject(model).toObject(FqdnObject.class);
-        Assertions.assertEquals("vnotyfjfcnj", model.description());
-        Assertions.assertEquals("cn", model.fqdnList().get(0));
-        Assertions.assertEquals("hbttkphyw", model.etag());
-        Assertions.assertEquals("vjtoqnermclfp", model.auditComment());
+        Assertions.assertEquals("hvljuahaquh", model.description());
+        Assertions.assertEquals("hmdua", model.fqdnList().get(0));
+        Assertions.assertEquals("vfadmws", model.etag());
+        Assertions.assertEquals("r", model.auditComment());
     }
 }

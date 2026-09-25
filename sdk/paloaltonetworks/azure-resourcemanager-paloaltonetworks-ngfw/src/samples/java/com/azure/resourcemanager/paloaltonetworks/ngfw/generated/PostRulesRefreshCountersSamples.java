@@ -9,7 +9,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
  */
 public final class PostRulesRefreshCountersSamples {
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_refreshCounters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_refreshCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: PostRules_refreshCounters_MaximumSet_Gen.
@@ -22,7 +22,7 @@ public final class PostRulesRefreshCountersSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/PostRules_refreshCounters_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/PostRules_refreshCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: PostRules_refreshCounters_MinimumSet_Gen.

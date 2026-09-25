@@ -27,6 +27,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.PaloAltoNetworksNgfwManagementClient;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.CertificateObjectGlobalRulestacksImpl;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.CertificateObjectLocalRulestacksImpl;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.CustomCaptureConfigurationsFirewallResourcesImpl;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.FirewallStatusImpl;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.FirewallsImpl;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.FqdnListGlobalRulestacksImpl;
@@ -34,6 +35,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.FqdnListLo
 import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.GlobalRulestacksImpl;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.LocalRulesImpl;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.LocalRulestacksImpl;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.LogIngestionSettingsResourcesImpl;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.MetricsObjectFirewallsImpl;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.OperationsImpl;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.PaloAltoNetworksCloudngfwOperationsImpl;
@@ -44,6 +46,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.PrefixList
 import com.azure.resourcemanager.paloaltonetworks.ngfw.implementation.PrefixListLocalRulestacksImpl;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.CertificateObjectGlobalRulestacks;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.CertificateObjectLocalRulestacks;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.models.CustomCaptureConfigurationsFirewallResources;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.FirewallStatus;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.Firewalls;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.FqdnListGlobalRulestacks;
@@ -51,6 +54,7 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.FqdnListLocalRules
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.GlobalRulestacks;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LocalRules;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LocalRulestacks;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LogIngestionSettingsResources;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.MetricsObjectFirewalls;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.Operations;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.PaloAltoNetworksCloudngfwOperations;
@@ -71,6 +75,10 @@ import java.util.stream.Collectors;
  */
 public final class PaloAltoNetworksNgfwManager {
     private Operations operations;
+
+    private CustomCaptureConfigurationsFirewallResources customCaptureConfigurationsFirewallResources;
+
+    private LogIngestionSettingsResources logIngestionSettingsResources;
 
     private GlobalRulestacks globalRulestacks;
 
@@ -327,6 +335,32 @@ public final class PaloAltoNetworksNgfwManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
+    }
+
+    /**
+     * Gets the resource collection API of CustomCaptureConfigurationsFirewallResources.
+     * 
+     * @return Resource collection API of CustomCaptureConfigurationsFirewallResources.
+     */
+    public CustomCaptureConfigurationsFirewallResources customCaptureConfigurationsFirewallResources() {
+        if (this.customCaptureConfigurationsFirewallResources == null) {
+            this.customCaptureConfigurationsFirewallResources = new CustomCaptureConfigurationsFirewallResourcesImpl(
+                clientObject.getCustomCaptureConfigurationsFirewallResources(), this);
+        }
+        return customCaptureConfigurationsFirewallResources;
+    }
+
+    /**
+     * Gets the resource collection API of LogIngestionSettingsResources.
+     * 
+     * @return Resource collection API of LogIngestionSettingsResources.
+     */
+    public LogIngestionSettingsResources logIngestionSettingsResources() {
+        if (this.logIngestionSettingsResources == null) {
+            this.logIngestionSettingsResources
+                = new LogIngestionSettingsResourcesImpl(clientObject.getLogIngestionSettingsResources(), this);
+        }
+        return logIngestionSettingsResources;
     }
 
     /**

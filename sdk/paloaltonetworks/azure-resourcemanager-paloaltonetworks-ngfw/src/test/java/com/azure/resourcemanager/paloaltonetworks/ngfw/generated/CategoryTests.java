@@ -12,19 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class CategoryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Category model = BinaryData
-            .fromString("{\"urlCustom\":[\"gdkz\",\"ewkfvhqcrai\"],\"feeds\":[\"pnppfuf\",\"rwdmhdlxyjrxsa\"]}")
+        Category model = BinaryData.fromString("{\"urlCustom\":[\"fzp\"],\"feeds\":[\"semwabnet\",\"hhszh\",\"d\"]}")
             .toObject(Category.class);
-        Assertions.assertEquals("gdkz", model.urlCustom().get(0));
-        Assertions.assertEquals("pnppfuf", model.feeds().get(0));
+        Assertions.assertEquals("fzp", model.urlCustom().get(0));
+        Assertions.assertEquals("semwabnet", model.feeds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Category model = new Category().withUrlCustom(Arrays.asList("gdkz", "ewkfvhqcrai"))
-            .withFeeds(Arrays.asList("pnppfuf", "rwdmhdlxyjrxsa"));
+        Category model
+            = new Category().withUrlCustom(Arrays.asList("fzp")).withFeeds(Arrays.asList("semwabnet", "hhszh", "d"));
         model = BinaryData.fromObject(model).toObject(Category.class);
-        Assertions.assertEquals("gdkz", model.urlCustom().get(0));
-        Assertions.assertEquals("pnppfuf", model.feeds().get(0));
+        Assertions.assertEquals("fzp", model.urlCustom().get(0));
+        Assertions.assertEquals("semwabnet", model.feeds().get(0));
     }
 }

@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public final class GlobalRulestackUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_Update_MaximumSet_Gen.
@@ -56,7 +56,7 @@ public final class GlobalRulestackUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/GlobalRulestack_Update_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/GlobalRulestack_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: GlobalRulestack_Update_MinimumSet_Gen.

@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class PaloAltoNetworksCloudngfwOperationsListProductSerialNumberStatusWithResMockTests {
     @Test
     public void testListProductSerialNumberStatusWithResponse() throws Exception {
-        String responseStr = "{\"serialNumber\":\"vnjobfelhldiuhzz\",\"status\":\"Allocated\"}";
+        String responseStr = "{\"serialNumber\":\"xlhupmomihzbdnp\",\"status\":\"InProgress\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,7 +34,7 @@ public final class PaloAltoNetworksCloudngfwOperationsListProductSerialNumberSta
             .listProductSerialNumberStatusWithResponse(com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vnjobfelhldiuhzz", response.serialNumber());
-        Assertions.assertEquals(ProductSerialStatusValues.ALLOCATED, response.status());
+        Assertions.assertEquals("xlhupmomihzbdnp", response.serialNumber());
+        Assertions.assertEquals(ProductSerialStatusValues.IN_PROGRESS, response.status());
     }
 }
