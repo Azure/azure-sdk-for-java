@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added a compact `ppaf` bookmark to each data-plane attempt in `CosmosDiagnostics`, containing the current per-partition write region, failed regions, and the time it was designated, or an empty object when no override is active.
 
 ### 4.83.0 (2026-09-22)
 

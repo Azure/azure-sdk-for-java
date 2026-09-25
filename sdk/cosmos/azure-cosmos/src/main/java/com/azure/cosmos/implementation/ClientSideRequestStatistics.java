@@ -177,7 +177,8 @@ public class ClientSideRequestStatistics {
             storeResponseStatistics.sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
             storeResponseStatistics.perPartitionCircuitBreakerInfoHolder
                 = request.requestContext.getPerPartitionCircuitBreakerInfoHolder().snapshot();
-            storeResponseStatistics.perPartitionAutomaticFailoverInfoHolder = request.requestContext.getPerPartitionFailoverContextHolder();
+            storeResponseStatistics.perPartitionAutomaticFailoverInfoHolder
+                = request.requestContext.getPerPartitionFailoverContextHolder().snapshot();
 
             if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
                 CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
@@ -272,7 +273,8 @@ public class ClientSideRequestStatistics {
                     gatewayStatistics.sessionTokenEvaluationResults = rxDocumentServiceRequest.requestContext.getSessionTokenEvaluationResults();
                     gatewayStatistics.perPartitionCircuitBreakerInfoHolder
                         = rxDocumentServiceRequest.requestContext.getPerPartitionCircuitBreakerInfoHolder().snapshot();
-                    gatewayStatistics.perPartitionAutomaticFailoverInfoHolder = rxDocumentServiceRequest.requestContext.getPerPartitionFailoverContextHolder();
+                    gatewayStatistics.perPartitionAutomaticFailoverInfoHolder
+                        = rxDocumentServiceRequest.requestContext.getPerPartitionFailoverContextHolder().snapshot();
                     gatewayStatistics.isHubRegionProcessingOnly = "false";
 
                     CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
@@ -749,7 +751,9 @@ public class ClientSideRequestStatistics {
         private PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
 
         @JsonSerialize(using = PerPartitionAutomaticFailoverInfoHolder.PerPartitionFailoverInfoHolderSerializer.class)
-        private PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder;
+        @JsonProperty("ppaf")
+        private PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder
+            = PerPartitionAutomaticFailoverInfoHolder.EMPTY;
 
         @JsonSerialize
         private String isHubRegionProcessingOnly;
@@ -969,7 +973,8 @@ public class ClientSideRequestStatistics {
         private List<String> faultInjectionEvaluationResults;
         private Set<String> sessionTokenEvaluationResults;
         private PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
-        private PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder;
+        private PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder
+            = PerPartitionAutomaticFailoverInfoHolder.EMPTY;
         private String endpoint;
         private String requestThroughputControlGroupName;
         private String requestThroughputControlGroupConfig;
@@ -1118,7 +1123,7 @@ public class ClientSideRequestStatistics {
 
                 this.writeNonEmptyStringSetField(jsonGenerator, "sessionTokenEvaluationResults", gatewayStatistics.getSessionTokenEvaluationResults());
                 this.writeNonNullObjectField(jsonGenerator, "ppcb", gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder());
-                this.writeNonNullObjectField(jsonGenerator, "perPartitionAutomaticFailoverInfoHolder", gatewayStatistics.getPerPartitionFailoverInfoHolder());
+                jsonGenerator.writeObjectField("ppaf", gatewayStatistics.getPerPartitionFailoverInfoHolder());
 
                 this.writeNonNullStringField(jsonGenerator, "requestTCG", gatewayStatistics.getRequestThroughputControlGroupName());
                 this.writeNonNullStringField(jsonGenerator, "requestTCGConfig", gatewayStatistics.getRequestThroughputControlGroupConfig());

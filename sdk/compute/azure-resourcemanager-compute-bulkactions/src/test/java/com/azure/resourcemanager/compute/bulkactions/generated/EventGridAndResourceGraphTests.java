@@ -12,18 +12,18 @@ public final class EventGridAndResourceGraphTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventGridAndResourceGraph model
-            = BinaryData.fromString("{\"enable\":true,\"scheduledEventsApiVersion\":\"bzpfzab\"}")
+            = BinaryData.fromString("{\"enable\":true,\"scheduledEventsApiVersion\":\"pgn\"}")
                 .toObject(EventGridAndResourceGraph.class);
         Assertions.assertTrue(model.enable());
-        Assertions.assertEquals("bzpfzab", model.scheduledEventsApiVersion());
+        Assertions.assertEquals("pgn", model.scheduledEventsApiVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventGridAndResourceGraph model
-            = new EventGridAndResourceGraph().withEnable(true).withScheduledEventsApiVersion("bzpfzab");
+            = new EventGridAndResourceGraph().withEnable(true).withScheduledEventsApiVersion("pgn");
         model = BinaryData.fromObject(model).toObject(EventGridAndResourceGraph.class);
         Assertions.assertTrue(model.enable());
-        Assertions.assertEquals("bzpfzab", model.scheduledEventsApiVersion());
+        Assertions.assertEquals("pgn", model.scheduledEventsApiVersion());
     }
 }

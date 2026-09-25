@@ -13,18 +13,18 @@ public final class NetworkInterfaceReferencePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterfaceReferenceProperties model
-            = BinaryData.fromString("{\"primary\":false,\"deleteOption\":\"Detach\"}")
+            = BinaryData.fromString("{\"primary\":false,\"deleteOption\":\"Delete\"}")
                 .toObject(NetworkInterfaceReferenceProperties.class);
         Assertions.assertFalse(model.primary());
-        Assertions.assertEquals(DeleteOptions.DETACH, model.deleteOption());
+        Assertions.assertEquals(DeleteOptions.DELETE, model.deleteOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkInterfaceReferenceProperties model
-            = new NetworkInterfaceReferenceProperties().withPrimary(false).withDeleteOption(DeleteOptions.DETACH);
+            = new NetworkInterfaceReferenceProperties().withPrimary(false).withDeleteOption(DeleteOptions.DELETE);
         model = BinaryData.fromObject(model).toObject(NetworkInterfaceReferenceProperties.class);
         Assertions.assertFalse(model.primary());
-        Assertions.assertEquals(DeleteOptions.DETACH, model.deleteOption());
+        Assertions.assertEquals(DeleteOptions.DELETE, model.deleteOption());
     }
 }

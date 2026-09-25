@@ -1,5 +1,15 @@
 # Release History
 
+## 2.59.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.58.0 (2026-08-26)
 
 - Package api-version 2026-06-01.
@@ -73,6 +83,17 @@
 - Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
 - Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
 
+## 2.56.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
+
+
 ## 2.57.0 (2026-06-01)
 
 ### Features Added
@@ -91,17 +112,6 @@
 
 * `guardrailIOScalar()` was added
 * `guardrailBandwidthScalar()` was added
-
-## 2.56.1 (2026-07-01)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
-- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
-- Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
-
 
 ## 2.56.0 (2026-05-07)
 

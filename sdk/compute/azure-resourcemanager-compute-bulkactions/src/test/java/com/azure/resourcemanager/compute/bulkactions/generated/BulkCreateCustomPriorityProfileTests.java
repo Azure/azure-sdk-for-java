@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.bulkactions.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomAllocationStrategy;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomPriorityProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.EvictionPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.PriorityType;
@@ -14,25 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class BulkCreateCustomPriorityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BulkCreateCustomPriorityProfile model = BinaryData.fromString(
-            "{\"type\":\"Spot\",\"maxPricePerVM\":22.02768736904398,\"evictionPolicy\":\"Deallocate\",\"allocationStrategy\":\"LowestPrice\"}")
+        BulkCreateCustomPriorityProfile model = BinaryData
+            .fromString("{\"type\":\"Regular\",\"maxPricePerVM\":14.33114279763551,\"evictionPolicy\":\"Deallocate\"}")
             .toObject(BulkCreateCustomPriorityProfile.class);
-        Assertions.assertEquals(PriorityType.SPOT, model.type());
-        Assertions.assertEquals(22.02768736904398D, model.maxPricePerVM());
+        Assertions.assertEquals(PriorityType.REGULAR, model.type());
+        Assertions.assertEquals(14.33114279763551D, model.maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DEALLOCATE, model.evictionPolicy());
-        Assertions.assertEquals(BulkCreateCustomAllocationStrategy.LOWEST_PRICE, model.allocationStrategy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BulkCreateCustomPriorityProfile model = new BulkCreateCustomPriorityProfile().withType(PriorityType.SPOT)
-            .withMaxPricePerVM(22.02768736904398D)
-            .withEvictionPolicy(EvictionPolicy.DEALLOCATE)
-            .withAllocationStrategy(BulkCreateCustomAllocationStrategy.LOWEST_PRICE);
+        BulkCreateCustomPriorityProfile model = new BulkCreateCustomPriorityProfile().withType(PriorityType.REGULAR)
+            .withMaxPricePerVM(14.33114279763551D)
+            .withEvictionPolicy(EvictionPolicy.DEALLOCATE);
         model = BinaryData.fromObject(model).toObject(BulkCreateCustomPriorityProfile.class);
-        Assertions.assertEquals(PriorityType.SPOT, model.type());
-        Assertions.assertEquals(22.02768736904398D, model.maxPricePerVM());
+        Assertions.assertEquals(PriorityType.REGULAR, model.type());
+        Assertions.assertEquals(14.33114279763551D, model.maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DEALLOCATE, model.evictionPolicy());
-        Assertions.assertEquals(BulkCreateCustomAllocationStrategy.LOWEST_PRICE, model.allocationStrategy());
     }
 }

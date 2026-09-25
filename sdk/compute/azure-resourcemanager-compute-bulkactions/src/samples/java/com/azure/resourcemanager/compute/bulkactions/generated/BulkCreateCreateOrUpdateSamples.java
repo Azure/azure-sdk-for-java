@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.compute.bulkactions.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.compute.bulkactions.models.AllocationStrategy;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateProperties;
-import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateVmSizeProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkactionVMProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.CachingTypes;
 import com.azure.resourcemanager.compute.bulkactions.models.CapacityType;
@@ -15,9 +13,9 @@ import com.azure.resourcemanager.compute.bulkactions.models.ComputeProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.DeleteOptions;
 import com.azure.resourcemanager.compute.bulkactions.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.bulkactions.models.DiskDeleteOptionTypes;
-import com.azure.resourcemanager.compute.bulkactions.models.DistributionStrategy;
 import com.azure.resourcemanager.compute.bulkactions.models.EvictionPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
+import com.azure.resourcemanager.compute.bulkactions.models.HardwareProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.ImageReference;
 import com.azure.resourcemanager.compute.bulkactions.models.LinuxConfiguration;
 import com.azure.resourcemanager.compute.bulkactions.models.ManagedDiskParametersContent;
@@ -42,8 +40,6 @@ import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetwor
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceConfigurationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceIPConfiguration;
 import com.azure.resourcemanager.compute.bulkactions.models.VirtualMachineNetworkInterfaceIPConfigurationProperties;
-import com.azure.resourcemanager.compute.bulkactions.models.ZoneAllocationPolicy;
-import com.azure.resourcemanager.compute.bulkactions.models.ZonePreference;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +49,7 @@ import java.util.Map;
  */
 public final class BulkCreateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/BulkCreate_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-06-preview/BulkCreate_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BulkCreate_CreateOrUpdate_MaximumSet.
@@ -72,10 +68,7 @@ public final class BulkCreateCreateOrUpdateSamples {
                 .withPartialFulfillmentPolicy(new PartialFulfillmentPolicy().withMode(PartialFulfillmentMode.ENABLED))
                 .withPriorityProfile(new PriorityProfile().withType(PriorityType.SPOT)
                     .withMaxPricePerVM(0.2D)
-                    .withEvictionPolicy(EvictionPolicy.DELETE)
-                    .withAllocationStrategy(AllocationStrategy.LOWEST_PRICE))
-                .withVmSizesProfile(Arrays.asList(new BulkCreateVmSizeProfile().withName("Standard_D2s_v5").withRank(1),
-                    new BulkCreateVmSizeProfile().withName("Standard_D4s_v5").withRank(2)))
+                    .withEvictionPolicy(EvictionPolicy.DELETE))
                 .withComputeProfile(new ComputeProfile().withVirtualMachineProfile(new BulkactionVMProperties()
                     .withStorageProfile(new StorageProfile()
                         .withImageReference(new ImageReference().withPublisher("Canonical")
@@ -88,6 +81,7 @@ public final class BulkCreateCreateOrUpdateSamples {
                             .withManagedDisk(new ManagedDiskParametersContent()
                                 .withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))
                             .withDeleteOption(DiskDeleteOptionTypes.DELETE)))
+                    .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D2s_v5"))
                     .withOsProfile(new OSProfile().withComputerName("bulkvm")
                         .withAdminUsername("azureuser")
                         .withLinuxConfiguration(new LinuxConfiguration().withDisablePasswordAuthentication(true)
@@ -109,10 +103,6 @@ public final class BulkCreateCreateOrUpdateSamples {
                                                         "/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Network/virtualNetworks/bulkvnet/subnets/default"))
                                                     .withPrimary(true)))))))))
                     .withComputeApiVersion("2024-11-01"))
-                .withZoneAllocationPolicy(
-                    new ZoneAllocationPolicy().withDistributionStrategy(DistributionStrategy.BEST_EFFORT_BALANCED)
-                        .withZonePreferences(Arrays.asList(new ZonePreference().withZone("1").withRank(1),
-                            new ZonePreference().withZone("2").withRank(2))))
                 .withExecutionParameters(new ExecutionParameters().withRetryPolicy(
                     new RetryPolicy().withRetryWindowInMinutes(30).withOnFailureAction(ResourceOperationType.DELETE))))
             .withZones(Arrays.asList("1", "2"))
