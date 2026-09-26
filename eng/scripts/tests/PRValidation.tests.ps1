@@ -735,7 +735,7 @@ Describe 'Package-root changelog routing eligibility' -Tag 'UnitTest' {
         $fixture.Validation.Packages[0].Status | Should -Be 'Passed'
     }
 
-    It 'routes invalid changelog content to the required check, which still fails' {
+    It 'routes invalid changelog content to the combined check, which still fails' {
         $fixture = Initialize-RoutingFixture
         Set-ValidationFixtureFile $fixture.Root 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md' "# Release History`n`n## 0.0.1 (Unreleased)"
         $fixture = Complete-RoutingFixture $fixture
@@ -907,8 +907,7 @@ Describe 'Combined changelog pipeline coverage' -Tag 'UnitTest' {
         $context = New-CoveredRoutingContext
         $enabled = Get-PRChangeLogCoverage $true 'auto' 'client' $context
         $enabled.Covered | Should -BeTrue
-        $enabled.Reason | Should -Match 'assumes enforced required Validate documentation coverage'
-        $enabled.Reason | Should -Match 'required-check settings are not probed'
+        $enabled.Reason | Should -Be 'Validate documentation covers changelog validation for this public unified main PR.'
         $enabled.Reason | Should -Not -Match 'Check Spelling'
         $disabled = Get-PRChangeLogCoverage $false 'auto' 'client' $context
         $disabled.Covered | Should -BeFalse
@@ -994,7 +993,7 @@ Describe 'Preflight changelog routing integration' -Tag 'UnitTest' {
         $invocation.Result.SkipBuildChangeLogValidation | Should -BeTrue
         $invocation.Result.ChangeLogOnly | Should -Be $ChangeLogOnly
         $invocation.Result.RunTests | Should -Be $RunTests
-        $invocation.Log | Should -Match 'assumes enforced required Validate documentation coverage'
+        $invocation.Log | Should -Match 'Validate documentation covers changelog validation'
         Test-Path (Join-Path $fixture.Output 'routing/routing.json') | Should -BeTrue
         Test-Path (Join-Path $fixture.Output 'routing/PackageInfo/azure-fixture-alpha.json') | Should -Be $ChangeLogOnly
     }
@@ -1457,8 +1456,6 @@ Describe 'Combined documentation workflow and final result contracts' -Tag 'Unit
         $summary | Should -Match '### Spelling'
         $summary | Should -Match '### Changelogs'
         $summary | Should -Match 'unified public PR pipeline opts in to Validate documentation coverage'
-        $summary | Should -Match 'Merge prerequisite: Validate documentation must be enforced as a required check'
-        $summary | Should -Match 'Required-check settings are not verified or changed by this job'
         $summary | Should -Match 'Only covered public unified main PRs'
         $summary | Should -Match 'Other scopes and ForceFullValidation retain their existing Azure checks'
         $summary | Should -Match 'Release validation is unchanged'

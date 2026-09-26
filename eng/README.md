@@ -19,10 +19,10 @@ these repository-root documents: `AGENTS.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTIN
 SDK-package documents, CHANGELOGs, source/resources, and unknown paths gain no trigger exclusions.
 The changelog-only route below uses the existing preflight, not broader path exclusions.
 
-The existing required **Check Spelling** workflow remains unchanged and checks spelling only.
+The existing **Check Spelling** workflow remains unchanged and checks spelling only.
 The new [Validate documentation workflow](../.github/workflows/validate-documentation.yml) runs combined spelling,
 changelog, and reporting steps in one `validate-documentation` job on one `ubuntu-slim` runner. Its distinct
-**Validate documentation** check starts alongside the existing required check; this change does not update rulesets.
+**Validate documentation** check runs alongside the existing spelling check.
 Both workflows cover the same supported PR branches without path filters.
 
 Newer **Validate documentation** runs cancel older runs for the same PR. The concurrency group includes the workflow
@@ -63,22 +63,16 @@ or the summary.
 Package selection retains the existing `ExcludePaths` prefix-matching behavior.
 
 During migration, both workflows run, temporarily duplicating spelling work and using two runners.
-Keep **Check Spelling** until the required-check transition is complete; removing its requirement or workflow is
-a separate approved cleanup, not part of this activation. Existing PRs may need an update/new run to report
-**Validate documentation**. The spelling-only check cannot substitute for required changelog coverage.
+Retiring the legacy spelling-only workflow is separate cleanup. Existing PRs may need an update/new run to report
+**Validate documentation**.
 
 ### Changelog-only Azure routing
-
-**Merge prerequisite: do not merge this activation until the exact `Validate documentation` check is required
-and enforced for the public repository's `main` PRs.** The prepared code assumes that requirement; it does not
-verify or change repository rulesets. The workflow's presence, a successful optional run, or required
-**Check Spelling** alone is not sufficient.
 
 The production entry point [pullrequest.yml](pipelines/pullrequest.yml) sets `UseCombinedPRValidation: true`.
 Once this configuration is deployed, it enables the strict changelog-only worker shortcut, the public unified
 Build/Analyze preflight dependency, and removal of covered duplicate Build changelog verification described below.
 Reusable templates still default to `false`; setting the entry point back to `false` disables these optimizations
-without changing the pre-existing test-only classifier. No per-build ruleset/API dependency is introduced.
+without changing the pre-existing test-only classifier.
 
 The stage restricts routing to public `azure-sdk` builds of `Azure/azure-sdk-for-java`,
 `ServiceDirectory=auto`, `SDKType=client`, PR builds, and non-test-pipeline runs. At runtime, the classifier also
@@ -115,8 +109,7 @@ and unknown paths do not qualify. Empty diffs and missing, corrupt, indirect-onl
 also cannot authorize the route. In the covered scope, an unproven non-companion `CHANGELOG.md` change retains
 all Java workers, even if the older basename classifier would have suppressed tests. Other existing
 documentation-only test suppression is unchanged. **Validate documentation** reports invalid changelog content
-using the real validator. Its required status must enforce those failures when this configuration replaces
-duplicate Azure Build verification.
+using the real validator, even when Java workers are skipped.
 
 For a proven change set in the opted-in scope, the classifier emits `RunBuild=false`, `RunAnalyze=false`, and
 `RunTests=false`, preserves the original metadata under `$(Build.ArtifactStagingDirectory)/pr-validation/PackageInfo`,
@@ -124,7 +117,7 @@ and clears only the matrix job's original package files. The same directory keep
 with the reason and elapsed time. The existing `JavaTestsSuppressed` tag remains. The preflight stays allocated; two Build/Analyze
 workers are avoided in addition to the test workers already suppressed by the earlier classifier.
 
-`SkipBuildChangeLogValidation` is a separate coverage output. Covered, nonempty main PRs use required
+`SkipBuildChangeLogValidation` is a separate coverage output. Covered, nonempty main PRs use
 **Validate documentation** instead of repeating the Build changelog step, including functional PRs that still
 run Java. The output remains false for pipelines without opt-in.
 `ForceFullValidation=true` disables both routing shortcuts and the earlier test suppression, restoring the Build

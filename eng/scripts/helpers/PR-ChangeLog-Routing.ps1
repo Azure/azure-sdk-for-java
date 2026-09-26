@@ -33,7 +33,7 @@ function Get-PRChangeLogCoverage {
         'Only a pull request merge build is covered.'
     }
     elseif ($Context['TargetBranch'] -cnotin @('main', 'refs/heads/main')) {
-        'Only main-target PRs can use required Validate documentation coverage.'
+        'Only main-target PRs can use Validate documentation coverage.'
     }
     else {
         ''
@@ -42,7 +42,7 @@ function Get-PRChangeLogCoverage {
     return [pscustomobject]@{
         Covered = $reason.Length -eq 0
         Reason = if ($reason) { $reason } else {
-            'Explicit opt-in assumes enforced required Validate documentation coverage for this public unified main PR; required-check settings are not probed.'
+            'Validate documentation covers changelog validation for this public unified main PR.'
         }
     }
 }

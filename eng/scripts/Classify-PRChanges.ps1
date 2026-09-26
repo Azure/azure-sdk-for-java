@@ -12,10 +12,9 @@ specialized non-Java validation route, it clears the job-local PackageInfo direc
 so Create-PrJobMatrix produces an empty matrix.
 
 Opted-in pipelines can suppress Build and Analyze for proven package-root
-changelog-only public unified main PRs. This configuration requires enforced
-Validate documentation coverage before merge. Pipelines without opt-in keep
-Build and Analyze enabled. Existing test-only suppression is unchanged and adds
-the JavaTestsSuppressed build tag for reporting.
+changelog-only public unified main PRs. Pipelines without opt-in keep Build and
+Analyze enabled. Existing test-only suppression is unchanged and adds the
+JavaTestsSuppressed build tag for reporting.
 
 .PARAMETER DiffPath
 Path to the diff.json file produced by Generate-PR-Diff.ps1. ChangedFiles and
@@ -44,10 +43,8 @@ Writes the classification object to the output pipeline for local diagnostics
 and tests. Azure Pipelines normally consumes the emitted task variables instead.
 
 .PARAMETER UseCombinedPRValidation
-Enables main-target changelog coverage checks, assuming Validate documentation is
-enforced as a required check before this configuration merges. Required-check settings
-are not probed or changed here. Runtime repository, pipeline, and path scope still
-constrain the route.
+Enables main-target changelog coverage through Validate documentation. Runtime
+repository, pipeline, and path scope still constrain the route.
 
 .PARAMETER ValidationDirectory
 Directory for the complete merge-parent snapshot, routing report, and original

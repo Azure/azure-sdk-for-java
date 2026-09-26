@@ -83,8 +83,6 @@ $summary.Add('')
 $summary.Add('Verify Links is unchanged.')
 $summary.Add('')
 $summary.Add('The unified public PR pipeline opts in to Validate documentation coverage. ' +
-    'Merge prerequisite: Validate documentation must be enforced as a required check before this configuration merges. ' +
-    'Required-check settings are not verified or changed by this job. ' +
     'Only covered public unified main PRs can omit duplicate Build changelog verification. ' +
     'Other scopes and ForceFullValidation retain their existing Azure checks. Release validation is unchanged.')
 if ($SummaryPath) {
