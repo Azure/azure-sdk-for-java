@@ -41,8 +41,8 @@ extends:
   parameters:
     oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
     SkipPrValidation: ${{ parameters.SkipPrValidation }}
-    # Enable only after an approved, verified required-check migration to Validate documentation.
-    UseCombinedPRValidation: false
+    # Merge prerequisite: the exact Validate documentation check must be required for main PRs.
+    UseCombinedPRValidation: true
     # Short term hack to get 1es canary validation working until we can fix manual runs with 'auto'
     ${{ if and(eq(parameters.oneESTemplateTag, 'canary'), eq(parameters.Service, 'auto')) }}:
       ServiceDirectory: template

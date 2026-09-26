@@ -907,11 +907,12 @@ Describe 'Combined changelog pipeline coverage' -Tag 'UnitTest' {
         $context = New-CoveredRoutingContext
         $enabled = Get-PRChangeLogCoverage $true 'auto' 'client' $context
         $enabled.Covered | Should -BeTrue
-        $enabled.Reason | Should -Match 'verified required Validate documentation coverage'
+        $enabled.Reason | Should -Match 'assumes enforced required Validate documentation coverage'
+        $enabled.Reason | Should -Match 'required-check settings are not probed'
         $enabled.Reason | Should -Not -Match 'Check Spelling'
         $disabled = Get-PRChangeLogCoverage $false 'auto' 'client' $context
         $disabled.Covered | Should -BeFalse
-        $disabled.Reason | Should -Match 'disabled.*Validate documentation.*approved and verified'
+        $disabled.Reason | Should -Match 'disabled for this pipeline; Azure changelog verification remains enabled'
         (Get-PRChangeLogCoverage $true 'auto' 'client' @{}).Covered | Should -BeFalse
         $context.TargetBranch = 'refs/heads/main'
         (Get-PRChangeLogCoverage $true 'auto' 'client' $context).Covered | Should -BeTrue
@@ -975,19 +976,37 @@ Describe 'Preflight changelog routing integration' -Tag 'UnitTest' {
         }
     }
 
-    It 'keeps production Build/Analyze and changelog verification enabled for <Path>' -TestCases @(
+    It 'uses the production opt-in to route <Path>' -TestCases @(
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md'; RunBuild = $false; RunTests = $false; ChangeLogOnly = $true },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/README.md'; RunBuild = $true; RunTests = $false; ChangeLogOnly = $false },
+        @{ Path = 'sdk/fixture/azure-fixture-alpha/src/main/java/Example.java'; RunBuild = $true; RunTests = $true; ChangeLogOnly = $false }
+    ) {
+        param($Path, $RunBuild, $RunTests, $ChangeLogOnly)
+        $fixture = Complete-RoutingFixture (Initialize-RoutingFixture) @($Path)
+        $pipeline = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/pipelines/pullrequest.yml') -Raw)
+        $enabled = $pipeline.extends.parameters.UseCombinedPRValidation
+        $enabled | Should -BeTrue
+        $combined = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot '.github/workflows/validate-documentation.yml') -Raw)
+        $combined.jobs['validate-documentation'].name | Should -Be 'Validate documentation'
+        $invocation = Invoke-FixtureClassifier $fixture -UseCombinedPRValidation $enabled
+        $invocation.Result.RunBuild | Should -Be $RunBuild
+        $invocation.Result.RunAnalyze | Should -Be $RunBuild
+        $invocation.Result.SkipBuildChangeLogValidation | Should -BeTrue
+        $invocation.Result.ChangeLogOnly | Should -Be $ChangeLogOnly
+        $invocation.Result.RunTests | Should -Be $RunTests
+        $invocation.Log | Should -Match 'assumes enforced required Validate documentation coverage'
+        Test-Path (Join-Path $fixture.Output 'routing/routing.json') | Should -BeTrue
+        Test-Path (Join-Path $fixture.Output 'routing/PackageInfo/azure-fixture-alpha.json') | Should -Be $ChangeLogOnly
+    }
+
+    It 'retains Build/Analyze and changelog verification with an explicit opt-out for <Path>' -TestCases @(
         @{ Path = 'sdk/fixture/azure-fixture-alpha/CHANGELOG.md'; LegacyRunTests = $false },
         @{ Path = 'sdk/fixture/azure-fixture-alpha/README.md'; LegacyRunTests = $false },
         @{ Path = 'sdk/fixture/azure-fixture-alpha/src/main/java/Example.java'; LegacyRunTests = $true }
     ) {
         param($Path, $LegacyRunTests)
         $fixture = Complete-RoutingFixture (Initialize-RoutingFixture) @($Path)
-        $pipeline = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/pipelines/pullrequest.yml') -Raw)
-        $enabled = $pipeline.extends.parameters.UseCombinedPRValidation
-        $enabled | Should -BeFalse
-        $combined = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot '.github/workflows/validate-documentation.yml') -Raw)
-        $combined.jobs['validate-documentation'].name | Should -Be 'Validate documentation'
-        $invocation = Invoke-FixtureClassifier $fixture -UseCombinedPRValidation $enabled
+        $invocation = Invoke-FixtureClassifier $fixture -UseCombinedPRValidation $false
         $invocation.Result.RunBuild | Should -BeTrue
         $invocation.Result.RunAnalyze | Should -BeTrue
         $invocation.Result.SkipBuildChangeLogValidation | Should -BeFalse
@@ -1243,9 +1262,9 @@ Describe 'Azure changelog routing job graph' -Tag 'UnitTest' {
         $script:MatrixReference = @(Get-ValidationTemplateReference $script:CiJobs '/eng/common/pipelines/templates/jobs/generate-job-matrix.yml')[0]
     }
 
-    It 'keeps the production opt-in off and preserves future enabled scopes without runtime-only template variables' {
+    It 'enables the production entry point while keeping reusable templates opt-out by default' {
         $pipeline = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/pipelines/pullrequest.yml') -Raw)
-        $pipeline.extends.parameters.UseCombinedPRValidation | Should -BeFalse
+        $pipeline.extends.parameters.UseCombinedPRValidation | Should -BeTrue
         ($script:CiStage.parameters | Where-Object name -EQ 'UseCombinedPRValidation').default | Should -BeFalse
         ($script:CiJobs.parameters | Where-Object name -EQ 'UseCombinedPRValidation').default | Should -BeFalse
         $call = @(Get-ValidationTemplateReference $script:CiStage '/eng/pipelines/templates/jobs/ci.yml')[0]
@@ -1256,9 +1275,8 @@ Describe 'Azure changelog routing job graph' -Tag 'UnitTest' {
         $cosmosCall.parameters.ContainsKey('UseCombinedPRValidation') | Should -BeFalse
     }
 
-    It 'does not add default scheduling dependencies or override the default Build changelog condition' {
-        $pipeline = ConvertFrom-Yaml (Get-Content (Join-Path $script:RepositoryRoot 'eng/pipelines/pullrequest.yml') -Raw)
-        $pipeline.extends.parameters.UseCombinedPRValidation | Should -BeFalse
+    It 'preserves independent scheduling and Build changelog verification for templates without opt-in' {
+        ($script:CiJobs.parameters | Where-Object name -EQ 'UseCombinedPRValidation').default | Should -BeFalse
         foreach ($job in @($script:BuildJob, $script:AnalyzeJob)) {
             $job.ContainsKey('dependsOn') | Should -BeFalse
         }
@@ -1438,13 +1456,13 @@ Describe 'Combined documentation workflow and final result contracts' -Tag 'Unit
         }
         $summary | Should -Match '### Spelling'
         $summary | Should -Match '### Changelogs'
-        $summary | Should -Match 'Validate documentation is optional during the staged rollout'
-        $summary | Should -Match 'Azure routing is disabled by default'
-        $summary | Should -Match 'approved, verified required-check migration to Validate documentation'
-        $summary | Should -Match 'After activation, only covered public unified main PRs'
+        $summary | Should -Match 'unified public PR pipeline opts in to Validate documentation coverage'
+        $summary | Should -Match 'Merge prerequisite: Validate documentation must be enforced as a required check'
+        $summary | Should -Match 'Required-check settings are not verified or changed by this job'
+        $summary | Should -Match 'Only covered public unified main PRs'
         $summary | Should -Match 'Other scopes and ForceFullValidation retain their existing Azure checks'
         $summary | Should -Match 'Release validation is unchanged'
-        $summary | Should -Not -Match 'parity burn-in|Azure Build still repeats'
+        $summary | Should -Not -Match 'parity burn-in|Azure Build still repeats|disabled by default|optional during the staged rollout'
     }
 
     It 'fails for failed, cancelled, missing, or unexpectedly skipped stages: <Stage> <Outcome>' -TestCases @(

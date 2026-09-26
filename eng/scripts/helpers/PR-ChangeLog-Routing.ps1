@@ -12,7 +12,7 @@ function Get-PRChangeLogCoverage {
     )
 
     $reason = if (-not $Enabled) {
-        'Combined PR routing is disabled until the Validate documentation required-check migration is approved and verified.'
+        'Combined PR routing is disabled for this pipeline; Azure changelog verification remains enabled.'
     }
     elseif ($ServiceDirectory -cne 'auto' -or $SdkType -cne 'client') {
         'Only the unified auto/client pipeline is covered.'
@@ -33,7 +33,7 @@ function Get-PRChangeLogCoverage {
         'Only a pull request merge build is covered.'
     }
     elseif ($Context['TargetBranch'] -cnotin @('main', 'refs/heads/main')) {
-        'Only main-target PRs can use required Validate documentation coverage after migration.'
+        'Only main-target PRs can use required Validate documentation coverage.'
     }
     else {
         ''
@@ -42,7 +42,7 @@ function Get-PRChangeLogCoverage {
     return [pscustomobject]@{
         Covered = $reason.Length -eq 0
         Reason = if ($reason) { $reason } else {
-            'Explicit opt-in assumes verified required Validate documentation coverage for this public unified main PR.'
+            'Explicit opt-in assumes enforced required Validate documentation coverage for this public unified main PR; required-check settings are not probed.'
         }
     }
 }

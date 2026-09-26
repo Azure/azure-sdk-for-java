@@ -17,8 +17,7 @@ these repository-root documents: `AGENTS.md`, `CODE_OF_CONDUCT.md`, `CONTRIBUTIN
 `README.md`, `SECURITY.md`, and `SUPPORT.md`. The `docs/` and root-document entries are also listed in
 `ExcludePaths` in [pullrequest.yml](pipelines/pullrequest.yml), so they do not select Java packages in mixed PRs.
 SDK-package documents, CHANGELOGs, source/resources, and unknown paths gain no trigger exclusions.
-The future changelog-only route below uses the existing preflight, not broader path exclusions, and is disabled
-by default during the separate-workflow rollout.
+The changelog-only route below uses the existing preflight, not broader path exclusions.
 
 The existing required **Check Spelling** workflow remains unchanged and checks spelling only.
 The new [Validate documentation workflow](../.github/workflows/validate-documentation.yml) runs combined spelling,
@@ -64,31 +63,31 @@ or the summary.
 Package selection retains the existing `ExcludePaths` prefix-matching behavior.
 
 During migration, both workflows run, temporarily duplicating spelling work and using two runners.
-Only a separately approved required-check migration may make **Validate documentation** required after successful
-runs and verified failure behavior. Keep **Check Spelling** until that transition is complete; removing its
-requirement or workflow is a separate approved cleanup, not part of this layer. Existing PRs may need an update/new
-run to report the new check. The optional combined check is not a replacement for existing required validation.
+Keep **Check Spelling** until the required-check transition is complete; removing its requirement or workflow is
+a separate approved cleanup, not part of this activation. Existing PRs may need an update/new run to report
+**Validate documentation**. The spelling-only check cannot substitute for required changelog coverage.
 
-### Changelog-only Azure routing (disabled by default)
+### Changelog-only Azure routing
 
-The production entry point [pullrequest.yml](pipelines/pullrequest.yml) explicitly sets
-`UseCombinedPRValidation: false`. Consequently this layer does not suppress Build/Analyze workers, add their
-preflight scheduling dependency, or remove the Azure Build changelog check during staging. The pre-existing
-test-only classifier remains unchanged. Required **Check Spelling** checks spelling only and cannot establish
-changelog coverage; the presence of the optional **Validate documentation** workflow does not enable routing.
+**Merge prerequisite: do not merge this activation until the exact `Validate documentation` check is required
+and enforced for the public repository's `main` PRs.** The prepared code assumes that requirement; it does not
+verify or change repository rulesets. The workflow's presence, a successful optional run, or required
+**Check Spelling** alone is not sufficient.
 
-Activation is blocked until the required-check migration to exactly **Validate documentation** is explicitly
-approved and verified. A later, separately approved opt-in can enable the path below. The flag records that
-activation decision; no per-build ruleset/API probing is introduced.
+The production entry point [pullrequest.yml](pipelines/pullrequest.yml) sets `UseCombinedPRValidation: true`.
+Once this configuration is deployed, it enables the strict changelog-only worker shortcut, the public unified
+Build/Analyze preflight dependency, and removal of covered duplicate Build changelog verification described below.
+Reusable templates still default to `false`; setting the entry point back to `false` disables these optimizations
+without changing the pre-existing test-only classifier. No per-build ruleset/API dependency is introduced.
 
-Once enabled, the stage restricts routing to public `azure-sdk` builds of `Azure/azure-sdk-for-java`,
+The stage restricts routing to public `azure-sdk` builds of `Azure/azure-sdk-for-java`,
 `ServiceDirectory=auto`, `SDKType=client`, PR builds, and non-test-pipeline runs. At runtime, the classifier also
 requires the canonical GitHub repository, a PR merge ref, and target `main` (or `refs/heads/main`).
 Private/mirrored/internal repositories, service-specific pipelines (including Cosmos and Spring), other SDK types,
 manual/scheduled/CI builds, and release stages do not opt in. Feature, release, and hotfix PR targets retain their
 existing validation and Build changelog check.
 
-In the enabled path, the existing `generate_job_matrix` job discovers packages first.
+The existing `generate_job_matrix` job discovers packages first.
 [Classify-PRChanges.ps1](scripts/Classify-PRChanges.ps1) then uses the shared complete merge-parent snapshot helper,
 verifies the checked-out SHA against `Build.SourceVersion`, and calls the Java-owned
 [eligibility helper](scripts/helpers/PR-ChangeLog-Routing.ps1) **before** clearing any job-local `PackageInfo`.
@@ -102,8 +101,8 @@ bootstrap accepts newer versions, but that is not evidence of this exact pin: an
 version, or import failure retains Java workers with an explicit diagnostic. The GitHub runner keeps its separate,
 public, run-owned cold bootstrap described above.
 
-After activation, skipping Build, Analyze, and tests requires at least one actual, applicable package changelog
-edit. Every path must be either its exact `sdk/<service>/<package>/CHANGELOG.md` or an already-reviewed root document / `docs/`
+Skipping Build, Analyze, and tests requires at least one actual, applicable package changelog edit. Every path
+must be either its exact `sdk/<service>/<package>/CHANGELOG.md` or an already-reviewed root document / `docs/`
 text file (`.md` or `.txt`) outside protected input directories. Packages must be track 2 with metadata SDK type
 `client` or `mgmt`, have one directly selected owner, and match their real Java POM and service- or package-level
 CI artifact metadata. Changelogs and POMs must be existing regular files in both Git revisions. Companion documents
@@ -113,41 +112,39 @@ not permission to bypass Java workers.
 New packages/POM changes, added/deleted/renamed package changelogs, package READMEs (which still need snippet and
 Analyze validation), source/test/resources, Swagger/codegen/TypeSpec, engineering inputs, unsupported layouts/types,
 and unknown paths do not qualify. Empty diffs and missing, corrupt, indirect-only, or unmapped package metadata
-also cannot authorize the route. In the enabled covered scope, an unproven non-companion `CHANGELOG.md` change
-retains all Java workers, even if the older basename classifier would have suppressed tests. Other existing documentation-only
-test suppression is unchanged. **Validate documentation** reports invalid changelog content using the real
-validator, while the Azure Build changelog check retains its existing enforcement during staging. Only after
-the required-check migration may the combined check replace that enforcement for the enabled scope.
+also cannot authorize the route. In the covered scope, an unproven non-companion `CHANGELOG.md` change retains
+all Java workers, even if the older basename classifier would have suppressed tests. Other existing
+documentation-only test suppression is unchanged. **Validate documentation** reports invalid changelog content
+using the real validator. Its required status must enforce those failures when this configuration replaces
+duplicate Azure Build verification.
 
-When explicitly enabled for a proven change set, the classifier emits `RunBuild=false`, `RunAnalyze=false`, and
+For a proven change set in the opted-in scope, the classifier emits `RunBuild=false`, `RunAnalyze=false`, and
 `RunTests=false`, preserves the original metadata under `$(Build.ArtifactStagingDirectory)/pr-validation/PackageInfo`,
-and clears only the
-matrix job's original package files. The same directory keeps `diff.json` and `routing.json` with the reason and
-elapsed time. The existing `JavaTestsSuppressed` tag remains. The preflight stays allocated; two Build/Analyze
-workers can then be avoided in addition to the test workers already suppressed by the earlier classifier.
+and clears only the matrix job's original package files. The same directory keeps `diff.json` and `routing.json`
+with the reason and elapsed time. The existing `JavaTestsSuppressed` tag remains. The preflight stays allocated; two Build/Analyze
+workers are avoided in addition to the test workers already suppressed by the earlier classifier.
 
-`SkipBuildChangeLogValidation` is a separate output that remains false with routing disabled. After the verified
-migration and explicit opt-in, covered, nonempty main PRs can use required **Validate documentation** instead of
-repeating the Build changelog step, including functional PRs that still run Java.
+`SkipBuildChangeLogValidation` is a separate coverage output. Covered, nonempty main PRs use required
+**Validate documentation** instead of repeating the Build changelog step, including functional PRs that still
+run Java. The output remains false for pipelines without opt-in.
 `ForceFullValidation=true` disables both routing shortcuts and the earlier test suppression, restoring the Build
 changelog check too. Missing/unknown job outputs default to running workers, and missing coverage output retains
 the Build changelog step. Success guards prevent cancellation or failed preflight from becoming a successful Azure
 check. All non-covered Build invocations, SDK-type behavior, artifact opt-outs, and explicit `ForRelease=true`
 checks in batch, automatic, and patch releases remain unchanged. Automatic dated-entry checks also remain intact.
 
-**Scheduling tradeoff after activation:** Enabling the option adds a Build/Analyze dependency on the existing
-matrix job for public unified PRs. There is no new scheduling dependency while the production option is false.
+**Scheduling tradeoff:** The opted-in configuration adds a Build/Analyze dependency on the existing matrix job
+for public unified PRs. Pipelines without opt-in retain their independent scheduling.
 Azure does [not expose `System.PullRequest.TargetBranch` in templates](https://learn.microsoft.com/azure/devops/pipelines/build/variables#system-variables-devops-services),
 so non-main public unified PRs wait too, although they do not use the new bypass. Service/private/non-PR/release jobs
-are not serialized by this change. Once enabled, ordinary public unified PRs must wait for the preflight's checkout,
+are not serialized by this change. Ordinary public unified PRs must wait for the preflight's checkout,
 metadata discovery, and matrix generation before Build/Analyze can be scheduled; this is not a claim of lower
 latency for every PR.
 Historical local Windows measurements, before the latest main merge, were 0.23-0.37 seconds for a complete
 non-changelog snapshot/routing probe (five runs, no optional modules loaded), and 1.6-2.3 seconds for eligibility
 against copied real core, communication, and management metadata (excluding dependency restore and prior package
-selection). Hosted queue time and end-to-end
-Azure scheduling were not measured locally. The focused tests verify YAML wiring/conditions, not server-side
-template expansion.
+selection). Hosted queue time and end-to-end Azure scheduling were not measured locally. The focused tests
+verify YAML wiring/conditions, not server-side template expansion.
 
 Run the trigger and classifier regression tests with PowerShell 7, Git, and the CI-declared Pester 5.7.1
 (no YAML module required):
