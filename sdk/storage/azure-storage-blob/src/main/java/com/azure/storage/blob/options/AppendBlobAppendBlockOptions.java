@@ -8,13 +8,14 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.ValidatableContent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * Extended options that may be passed when appending a block to an append blob.
  */
 @Fluent
-public final class AppendBlobAppendBlockOptions {
+public final class AppendBlobAppendBlockOptions implements ValidatableContent {
     private final BinaryData data;
     private byte[] contentMd5;
     private AppendBlobRequestConditions requestConditions;
@@ -87,6 +88,7 @@ public final class AppendBlobAppendBlockOptions {
      *
      * @return The transfer validation checksum algorithm.
      */
+    @Override
     public ContentValidationAlgorithm getContentValidationAlgorithm() {
         return contentValidationAlgorithm;
     }
@@ -97,6 +99,7 @@ public final class AppendBlobAppendBlockOptions {
      * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
+    @Override
     public AppendBlobAppendBlockOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;

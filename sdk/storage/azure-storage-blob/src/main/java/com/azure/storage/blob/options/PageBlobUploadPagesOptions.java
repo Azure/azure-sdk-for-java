@@ -9,13 +9,14 @@ import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.ValidatableContent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * Extended options that may be passed when uploading pages to a page blob.
  */
 @Fluent
-public final class PageBlobUploadPagesOptions {
+public final class PageBlobUploadPagesOptions implements ValidatableContent {
     private final PageRange pageRange;
     private final BinaryData body;
     private byte[] contentMd5;
@@ -105,6 +106,7 @@ public final class PageBlobUploadPagesOptions {
      *
      * @return The transfer validation checksum algorithm.
      */
+    @Override
     public ContentValidationAlgorithm getContentValidationAlgorithm() {
         return contentValidationAlgorithm;
     }
@@ -116,6 +118,7 @@ public final class PageBlobUploadPagesOptions {
      * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
+    @Override
     public PageBlobUploadPagesOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;
