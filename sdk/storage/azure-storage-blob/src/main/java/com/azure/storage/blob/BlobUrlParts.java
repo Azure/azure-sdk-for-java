@@ -453,8 +453,10 @@ public final class BlobUrlParts {
         parts.setHost(host);
 
         // Parse host to get account name. Prefer known blob/dfs subdomains; fall back to first label otherwise.
-        boolean isBlobEndpoint = host != null && host.contains(Constants.UrlConstants.BLOB_URI_SUBDOMAIN);
-        boolean isDfsEndpoint = host != null && host.contains(Constants.UrlConstants.DFS_URI_SUBDOMAIN);
+        boolean isBlobEndpoint = host != null
+            && host.contains("." + Constants.UrlConstants.BLOB_URI_SUBDOMAIN + ".");
+        boolean isDfsEndpoint = host != null
+            && host.contains("." + Constants.UrlConstants.DFS_URI_SUBDOMAIN + ".");
 
         if (isBlobEndpoint) {
             parts.setAccountName(

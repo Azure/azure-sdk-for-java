@@ -553,6 +553,19 @@ public class BuilderHelperTests {
     }
 
     @ParameterizedTest
+    @MethodSource("accountNameContainingBlobSupplier")
+    void accountNameContainingBlob(String urlString, String expectedAccountName) throws MalformedURLException {
+        BlobUrlParts blobUrlParts = BlobUrlParts.parse(new URL(urlString));
+
+        assertEquals(expectedAccountName, blobUrlParts.getAccountName());
+    }
+
+    private static Stream<Arguments> accountNameContainingBlobSupplier() {
+        return Stream.of(Arguments.of("https://blobtest.dfs.core.windows.net/", "blobtest"),
+            Arguments.of("https://blobtest.blob.core.windows.net/", "blobtest"));
+    }
+
+    @ParameterizedTest
     @MethodSource("blobManagedDiskAccountNameSupplier")
     void ipv6InternalAccounts(String urlString, String expectedAccountName) throws MalformedURLException {
         BlobUrlParts blobUrlParts = BlobUrlParts.parse(new URL(urlString));
