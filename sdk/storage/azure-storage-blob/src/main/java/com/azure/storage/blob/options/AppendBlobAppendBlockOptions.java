@@ -4,23 +4,42 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * Extended options that may be passed when appending a block to an append blob.
  */
 @Fluent
 public final class AppendBlobAppendBlockOptions {
+    private final BinaryData data;
     private byte[] contentMd5;
     private AppendBlobRequestConditions requestConditions;
     private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link AppendBlobAppendBlockOptions}.
+     *
+     * @param data The data to write to the blob. Note that this {@code BinaryData} must have defined length
+     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
+     * @throws NullPointerException If {@code data} is null or does not have a defined length.
      */
-    public AppendBlobAppendBlockOptions() {
+    public AppendBlobAppendBlockOptions(BinaryData data) {
+        StorageImplUtils.assertNotNull("data must not be null", data);
+        StorageImplUtils.assertNotNull("data must have defined length", data.getLength());
+        this.data = data;
+    }
+
+    /**
+     * Gets the data to write to the blob.
+     *
+     * @return The data to write to the blob.
+     */
+    public BinaryData getData() {
+        return this.data;
     }
 
     /**

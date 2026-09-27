@@ -16,6 +16,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
@@ -72,6 +73,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -454,7 +456,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
-        return uploadPagesWithResponse(pageRange, body, null).flatMap(FluxUtil::toMono);
+        return uploadPagesWithResponse(pageRange, body, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -492,7 +494,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * operation will fail.
      * @param pageBlobRequestConditions {@link PageBlobRequestConditions}
      * @return A reactive response containing the information of the uploaded pages.
-     * @deprecated Use {@link #uploadPagesWithResponse(PageRange, Flux, PageBlobUploadPagesOptions)}. The optional
+     * @deprecated Use {@link #uploadPagesWithResponse(PageBlobUploadPagesOptions)}. The data and optional
      * parameters are now carried by {@link PageBlobUploadPagesOptions}, which is also forward-compatible with
      * future optional settings.
      */
@@ -501,8 +503,17 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions) {
         try {
-            return withContext(
-                context -> uploadPagesWithResponse(pageRange, body, contentMd5, pageBlobRequestConditions, context));
+            if (pageRange == null) {
+                return monoError(LOGGER, new NullPointerException("'pageRange' cannot be null."));
+            }
+            if (body == null) {
+                return monoError(LOGGER, new NullPointerException("'body' cannot be null."));
+            }
+            long length = pageRange.getEnd() - pageRange.getStart() + 1;
+            return BinaryData.fromFlux(body, length, false)
+                .flatMap(binaryData -> uploadPagesWithResponse(
+                    new PageBlobUploadPagesOptions(pageRange, binaryData).setContentMd5(contentMd5)
+                        .setRequestConditions(pageBlobRequestConditions)));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -510,20 +521,18 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
 
     /**
      * Writes one or more pages to the page blob with options.
+     * <p>Note that the data passed must be replayable if retries are enabled (the default),
+     * see {@link BinaryData#isReplayable()}.
      *
-     * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
-     * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
-     * are 0-511, 512-1023, etc.
-     * @param body The data to upload. Note that this {@code Flux} must be replayable if retries are enabled (the
-     * default). In other words, the {@code Flux} must produce the same data each time it is subscribed to.
-     * @param options Optional parameters for the request. Pass {@code null} to use defaults.
+     * @param options {@link PageBlobUploadPagesOptions}
      * @return A reactive response containing the information of the uploaded pages.
+     * @throws NullPointerException if {@code options} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
-        PageBlobUploadPagesOptions options) {
+    public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageBlobUploadPagesOptions options) {
+        Objects.requireNonNull(options, "options must not be null");
         try {
-            return withContext(context -> uploadPagesWithResponseInternal(pageRange, body, options, context));
+            return withContext(context -> uploadPagesWithResponseInternal(options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -532,30 +541,37 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body, byte[] contentMd5,
         PageBlobRequestConditions pageBlobRequestConditions, Context context) {
         // Prevents revapi visibility increased error
-        return uploadPagesWithResponseInternal(pageRange, body,
-            new PageBlobUploadPagesOptions().setContentMd5(contentMd5).setRequestConditions(pageBlobRequestConditions),
-            context);
-    }
-
-    Mono<Response<PageBlobItem>> uploadPagesWithResponseInternal(PageRange pageRange, Flux<ByteBuffer> body,
-        PageBlobUploadPagesOptions options, Context context) {
         if (pageRange == null) {
             return monoError(LOGGER, new NullPointerException("'pageRange' cannot be null."));
         }
         if (body == null) {
             return monoError(LOGGER, new NullPointerException("'body' cannot be null."));
         }
-        PageBlobUploadPagesOptions opts = options == null ? new PageBlobUploadPagesOptions() : options;
+        long length = pageRange.getEnd() - pageRange.getStart() + 1;
+        return BinaryData.fromFlux(body, length, false)
+            .flatMap(binaryData -> uploadPagesWithResponseInternal(
+                new PageBlobUploadPagesOptions(pageRange, binaryData).setContentMd5(contentMd5)
+                    .setRequestConditions(pageBlobRequestConditions),
+                context));
+    }
+
+    Mono<Response<PageBlobItem>> uploadPagesWithResponseInternal(PageBlobUploadPagesOptions options, Context context) {
+        Objects.requireNonNull(options, "options must not be null");
+        PageRange pageRange = options.getPageRange();
+        Objects.requireNonNull(pageRange, "pageRange must not be null");
+        BinaryData body = options.getBody();
+        Objects.requireNonNull(body, "body must not be null");
+        Objects.requireNonNull(body.getLength(), "body must have defined length");
         PageBlobRequestConditions pageBlobRequestConditions
-            = opts.getRequestConditions() == null ? new PageBlobRequestConditions() : opts.getRequestConditions();
+            = options.getRequestConditions() == null ? new PageBlobRequestConditions() : options.getRequestConditions();
 
         String pageRangeStr = ModelHelper.pageRangeToString(pageRange);
         long length = pageRange.getEnd() - pageRange.getStart() + 1;
         context = ContentValidationModeResolver.addContentValidationMode(context == null ? Context.NONE : context,
-            opts.getContentValidationAlgorithm(), length, false);
+            options.getContentValidationAlgorithm(), length, false);
 
         return this.azureBlobStorage.getPageBlobs()
-            .uploadPagesWithResponseAsync(containerName, blobName, length, body, opts.getContentMd5(), null, null,
+            .uploadPagesWithResponseAsync(containerName, blobName, length, body, options.getContentMd5(), null, null,
                 pageRangeStr, pageBlobRequestConditions.getLeaseId(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThan(),

@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
@@ -46,6 +47,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
@@ -470,7 +472,7 @@ public final class AppendBlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppendBlobItem appendBlock(InputStream data, long length) {
-        return appendBlockWithResponse(data, length, null, null, Context.NONE).getValue();
+        return appendBlockWithResponse(data, length, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -512,43 +514,45 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the append blob operation.
      * @throws NullPointerException if the input data is null.
-     * @deprecated Use {@link #appendBlockWithResponse(InputStream, long, AppendBlobAppendBlockOptions, Duration,
-     * Context)}. The optional parameters are now carried by {@link AppendBlobAppendBlockOptions}, which is also
+     * @deprecated Use {@link #appendBlockWithResponse(AppendBlobAppendBlockOptions, Duration,
+     * Context)}. The data and optional parameters are now carried by {@link AppendBlobAppendBlockOptions}, which is also
      * forward-compatible with future optional settings.
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
-        return appendBlockWithResponse(data, length, new AppendBlobAppendBlockOptions().setContentMd5(contentMd5)
-            .setRequestConditions(appendBlobRequestConditions), timeout, context);
-    }
-
-    /**
-     * Commits a new block of data to the end of the existing append blob with options.
-     *
-     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
-     * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
-     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data.
-     * @param options Optional parameters for the request. Pass {@code null} to use defaults.
-     * @param timeout An optional timeout value.
-     * @param context Additional context.
-     * @return The information of the append blob operation.
-     * @throws NullPointerException if {@code data} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length,
-        AppendBlobAppendBlockOptions options, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
 
         // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service versions
         // support up to 4MB
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, getMaxAppendBlockBytes(), true);
 
+        Mono<Response<AppendBlobItem>> response = BinaryData.fromFlux(fbb, length, false)
+            .flatMap(binaryData -> appendBlobAsyncClient
+                .appendBlockWithResponseInternal(new AppendBlobAppendBlockOptions(binaryData).setContentMd5(contentMd5)
+                    .setRequestConditions(appendBlobRequestConditions), context));
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Commits a new block of data to the end of the existing append blob with options.
+     * <p>Note that the data passed must be replayable if retries are enabled (the default),
+     * see {@link BinaryData#isReplayable()}.
+     *
+     * @param options {@link AppendBlobAppendBlockOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The information of the append blob operation.
+     * @throws NullPointerException if {@code options} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AppendBlobItem> appendBlockWithResponse(AppendBlobAppendBlockOptions options, Duration timeout,
+        Context context) {
+        Objects.requireNonNull(options, "options must not be null");
+
         Mono<Response<AppendBlobItem>> response
-            = appendBlobAsyncClient.appendBlockWithResponseInternal(fbb, length, options, context);
+            = appendBlobAsyncClient.appendBlockWithResponseInternal(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
