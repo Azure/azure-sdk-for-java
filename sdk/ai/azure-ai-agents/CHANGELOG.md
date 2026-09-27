@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added a transport option to `VoiceAgentWebSocketConnectionOptions` for selecting between the `websocket` (default)
+  and `webrtc` realtime connection transports.
+
 ### Breaking Changes
 
 ### Bugs Fixed
