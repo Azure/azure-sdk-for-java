@@ -86,12 +86,7 @@ public enum ToolboxToolType {
     /**
      * Enum value web_iq_preview.
      */
-    WEB_IQ_PREVIEW("web_iq_preview"),
-
-    /**
-     * Enum value browser_automation.
-     */
-    BROWSER_AUTOMATION("browser_automation");
+    WEB_IQ_PREVIEW("web_iq_preview");
 
     /**
      * The actual serialized value for a ToolboxToolType instance.
