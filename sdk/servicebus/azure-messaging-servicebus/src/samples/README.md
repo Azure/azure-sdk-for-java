@@ -35,12 +35,20 @@ connection string value can be obtained by:
 - [Send a message][SendMessageAsyncSample]
 - [Send messages using Azure Identity][SendMessageWithAzureIdentityAsyncSample]
 - [Process all messages using processor][ServiceBusProcessorPeekLockReceiveSample]
+- [Close a processor with a drain timeout][ServiceBusProcessorDrainTimeoutSample]
 - [Processor client Java doc code samples][ServiceBusProcessorClientJavaDocCodeSamples]
 - [Receive and auto-complete messages][ReceiveMessageAsyncSample]
 - [Receive and manually settle messages][ReceiveMessageAndSettleAsyncSample]
 - [Receive messages with auto-lock renewal][ReceiveMessageAutoLockRenewal]
 - [Schedule and cancel a message][SendScheduledMessageAndCancelAsyncSample]
 - [Peek at a message][PeekMessageAsyncSample]
+
+To run the [processor drain-timeout sample][ServiceBusProcessorDrainTimeoutSample], set
+`AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING` and `AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME`, then add a message to that
+queue. Run `ServiceBusProcessorDrainTimeoutSample.main`: it waits for a message handler to start, then calls `close()`
+from the main thread. The configured 10-second drain timeout lets the handler finish and settle its message before the
+receiver closes; if it expires, shutdown proceeds anyway. Without an available message, the sample closes after 30
+seconds. `stop()` pauses receiving but does not drain or dispose the processor.
 
 ### Synchronous sending and receiving
 - [Send message batches synchronously][SendMessageBatchSyncSample]
@@ -97,10 +105,9 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [SendScheduledMessageAndCancelAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/SendScheduledMessageAndCancelAsyncSample.java
 [ServiceBusProcessorClientJavaDocCodeSamples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusProcessorClientJavaDocCodeSamples.java
 [ServiceBusProcessorPeekLockReceiveSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusProcessorPeekLockReceiveSample.java
+[ServiceBusProcessorDrainTimeoutSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusProcessorDrainTimeoutSample.java
 [ServiceBusReceiverAsyncClientRetrySample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusReceiverAsyncClientRetrySample.java
 [ServiceBusSessionProcessorSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusSessionProcessorSample.java
 [AdministrationClientUpdateQueueSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/AdministrationClientUpdateQueueSample.java
 [ReceiveMessageAsyncUsingSasSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageUsingSasSample.java
 [AdvancedConfigurationSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/AdvancedConfigurationSample.java
-
-
