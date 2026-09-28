@@ -14,66 +14,11 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Terminal-state result body. Populated when status is succeeded or failed.
+ * Partial or terminal result produced by an agent optimization job.
  */
 @Immutable
 @Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
 public final class AgentOptimizationJobResult implements JsonSerializable<AgentOptimizationJobResult> {
-
-    /*
-     * Candidate ID of the original (un-optimized) baseline evaluation.
-     */
-    @Generated
-    private String baseline;
-
-    /*
-     * Candidate ID of the highest-scoring candidate found during optimization.
-     */
-    @Generated
-    private String best;
-
-    /*
-     * All evaluated candidates including baseline.
-     */
-    @Generated
-    private List<AgentOptimizationCandidate> candidates;
-
-    /**
-     * Creates an instance of AgentOptimizationJobResult class.
-     */
-    @Generated
-    private AgentOptimizationJobResult() {
-    }
-
-    /**
-     * Get the baseline property: Candidate ID of the original (un-optimized) baseline evaluation.
-     *
-     * @return the baseline value.
-     */
-    @Generated
-    public String getBaseline() {
-        return this.baseline;
-    }
-
-    /**
-     * Get the best property: Candidate ID of the highest-scoring candidate found during optimization.
-     *
-     * @return the best value.
-     */
-    @Generated
-    public String getBest() {
-        return this.best;
-    }
-
-    /**
-     * Get the candidates property: All evaluated candidates including baseline.
-     *
-     * @return the candidates value.
-     */
-    @Generated
-    public List<AgentOptimizationCandidate> getCandidates() {
-        return this.candidates;
-    }
 
     /**
      * {@inheritDoc}
@@ -82,9 +27,12 @@ public final class AgentOptimizationJobResult implements JsonSerializable<AgentO
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("baseline", this.baseline);
-        jsonWriter.writeStringField("best", this.best);
-        jsonWriter.writeArrayField("candidates", this.candidates, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("token_usage", this.tokenUsage, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("latency_metrics", this.latencyMetrics,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("candidate_summary", this.candidateSummary);
+        jsonWriter.writeStringField("termination_reason",
+            this.terminationReason == null ? null : this.terminationReason.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -94,28 +42,118 @@ public final class AgentOptimizationJobResult implements JsonSerializable<AgentO
      * @param jsonReader The JsonReader being read.
      * @return An instance of AgentOptimizationJobResult if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AgentOptimizationJobResult.
      */
     @Generated
     public static AgentOptimizationJobResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AgentOptimizationJobResult deserializedAgentOptimizationJobResult = new AgentOptimizationJobResult();
+            List<AgentOptimizationJobTokenUsage> tokenUsage = null;
+            List<AgentOptimizationJobLatency> latencyMetrics = null;
+            AgentOptimizationResultCandidateSummary candidateSummary = null;
+            AgentOptimizationTerminationReason terminationReason = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("baseline".equals(fieldName)) {
-                    deserializedAgentOptimizationJobResult.baseline = reader.getString();
-                } else if ("best".equals(fieldName)) {
-                    deserializedAgentOptimizationJobResult.best = reader.getString();
-                } else if ("candidates".equals(fieldName)) {
-                    List<AgentOptimizationCandidate> candidates
-                        = reader.readArray(reader1 -> AgentOptimizationCandidate.fromJson(reader1));
-                    deserializedAgentOptimizationJobResult.candidates = candidates;
+                if ("token_usage".equals(fieldName)) {
+                    tokenUsage = reader.readArray(reader1 -> AgentOptimizationJobTokenUsage.fromJson(reader1));
+                } else if ("latency_metrics".equals(fieldName)) {
+                    latencyMetrics = reader.readArray(reader1 -> AgentOptimizationJobLatency.fromJson(reader1));
+                } else if ("candidate_summary".equals(fieldName)) {
+                    candidateSummary = AgentOptimizationResultCandidateSummary.fromJson(reader);
+                } else if ("termination_reason".equals(fieldName)) {
+                    terminationReason = AgentOptimizationTerminationReason.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
+            AgentOptimizationJobResult deserializedAgentOptimizationJobResult
+                = new AgentOptimizationJobResult(tokenUsage, latencyMetrics);
+            deserializedAgentOptimizationJobResult.candidateSummary = candidateSummary;
+            deserializedAgentOptimizationJobResult.terminationReason = terminationReason;
             return deserializedAgentOptimizationJobResult;
         });
+    }
+
+    /*
+     * Summary of candidates produced by the job. Omitted until candidate processing begins.
+     */
+    @Generated
+    private AgentOptimizationResultCandidateSummary candidateSummary;
+
+    /*
+     * Aggregate token usage per stage and model. Always present; empty array when no calls were measured.
+     */
+    @Generated
+    private final List<AgentOptimizationJobTokenUsage> tokenUsage;
+
+    /*
+     * Aggregate latency per stage and model. Always present; empty when no server-measured latency is available.
+     */
+    @Generated
+    private final List<AgentOptimizationJobLatency> latencyMetrics;
+
+    /*
+     * Reason the candidate search terminated. Omitted for jobs that do not comparatively evaluate candidates and until
+     * the job reaches a terminal state.
+     */
+    @Generated
+    private AgentOptimizationTerminationReason terminationReason;
+
+    /**
+     * Creates an instance of AgentOptimizationJobResult class.
+     *
+     * @param tokenUsage the tokenUsage value to set.
+     * @param latencyMetrics the latencyMetrics value to set.
+     */
+    @Generated
+    private AgentOptimizationJobResult(List<AgentOptimizationJobTokenUsage> tokenUsage,
+        List<AgentOptimizationJobLatency> latencyMetrics) {
+        this.tokenUsage = tokenUsage;
+        this.latencyMetrics = latencyMetrics;
+    }
+
+    /**
+     * Get the candidateSummary property: Summary of candidates produced by the job. Omitted until candidate processing
+     * begins.
+     *
+     * @return the candidateSummary value.
+     */
+    @Generated
+    public AgentOptimizationResultCandidateSummary getCandidateSummary() {
+        return this.candidateSummary;
+    }
+
+    /**
+     * Get the tokenUsage property: Aggregate token usage per stage and model. Always present; empty array when no calls
+     * were measured.
+     *
+     * @return the tokenUsage value.
+     */
+    @Generated
+    public List<AgentOptimizationJobTokenUsage> getTokenUsage() {
+        return this.tokenUsage;
+    }
+
+    /**
+     * Get the latencyMetrics property: Aggregate latency per stage and model. Always present; empty when no
+     * server-measured latency is available.
+     *
+     * @return the latencyMetrics value.
+     */
+    @Generated
+    public List<AgentOptimizationJobLatency> getLatencyMetrics() {
+        return this.latencyMetrics;
+    }
+
+    /**
+     * Get the terminationReason property: Reason the candidate search terminated. Omitted for jobs that do not
+     * comparatively evaluate candidates and until the job reaches a terminal state.
+     *
+     * @return the terminationReason value.
+     */
+    @Generated
+    public AgentOptimizationTerminationReason getTerminationReason() {
+        return this.terminationReason;
     }
 }

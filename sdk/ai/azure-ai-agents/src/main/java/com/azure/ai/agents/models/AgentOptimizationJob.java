@@ -11,14 +11,15 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
 /**
- * Agent optimization job resource — a long-running job that optimizes an agent's configuration (instructions, model,
- * skills, tools) to maximize evaluation scores. On success, the result contains scored candidates.
+ * Agent optimization job resource — a long-running job that produces candidate changes to a Foundry agent
+ * configuration.
  */
 @Fluent
 @Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
@@ -29,12 +30,6 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
      */
     @Generated
     private String id;
-
-    /*
-     * Caller-supplied inputs.
-     */
-    @Generated
-    private AgentOptimizationJobInputs inputs;
 
     /*
      * Result produced on success.
@@ -67,23 +62,10 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     private long updatedAt;
 
     /*
-     * Progress snapshot. May be present in terminal states reflecting last-known progress.
-     */
-    @Generated
-    private AgentOptimizationJobProgress progress;
-
-    /*
-     * Non-fatal warnings emitted at any point during optimization.
+     * Non-fatal warnings emitted during optimization. Omitted when no warnings were produced.
      */
     @Generated
     private List<String> warnings;
-
-    /**
-     * Creates an instance of AgentOptimizationJob class.
-     */
-    @Generated
-    public AgentOptimizationJob() {
-    }
 
     /**
      * Get the id property: Server-assigned unique identifier.
@@ -93,28 +75,6 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Get the inputs property: Caller-supplied inputs.
-     *
-     * @return the inputs value.
-     */
-    @Generated
-    public AgentOptimizationJobInputs getInputs() {
-        return this.inputs;
-    }
-
-    /**
-     * Set the inputs property: Caller-supplied inputs.
-     *
-     * @param inputs the inputs value to set.
-     * @return the AgentOptimizationJob object itself.
-     */
-    @Generated
-    public AgentOptimizationJob setInputs(AgentOptimizationJobInputs inputs) {
-        this.inputs = inputs;
-        return this;
     }
 
     /**
@@ -168,17 +128,8 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     }
 
     /**
-     * Get the progress property: Progress snapshot. May be present in terminal states reflecting last-known progress.
-     *
-     * @return the progress value.
-     */
-    @Generated
-    public AgentOptimizationJobProgress getProgress() {
-        return this.progress;
-    }
-
-    /**
-     * Get the warnings property: Non-fatal warnings emitted at any point during optimization.
+     * Get the warnings property: Non-fatal warnings emitted during optimization. Omitted when no warnings were
+     * produced.
      *
      * @return the warnings value.
      */
@@ -194,7 +145,10 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("inputs", this.inputs);
+        jsonWriter.writeJsonField("optimization_model_configuration", this.optimizationModelConfiguration);
+        jsonWriter.writeJsonField("optimization_configuration", this.optimizationConfiguration);
+        jsonWriter.writeStringField("display_name", this.displayName);
+        jsonWriter.writeJsonField("target_configuration", this.targetConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -210,34 +164,185 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     @Generated
     public static AgentOptimizationJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AgentOptimizationJob deserializedAgentOptimizationJob = new AgentOptimizationJob();
+            String id = null;
+            JobStatus status = null;
+            AgentOptimizationModelConfiguration optimizationModelConfiguration = null;
+            AgentOptimizationConfigurationBase optimizationConfiguration = null;
+            long runDurationMs = 0L;
+            long createdAt = 0L;
+            long updatedAt = 0L;
+            AgentOptimizationJobResult result = null;
+            ApiError error = null;
+            String displayName = null;
+            AgentOptimizationTargetConfiguration targetConfiguration = null;
+            List<String> warnings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
-                    deserializedAgentOptimizationJob.id = reader.getString();
+                    id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    deserializedAgentOptimizationJob.status = JobStatus.fromString(reader.getString());
+                    status = JobStatus.fromString(reader.getString());
+                } else if ("optimization_model_configuration".equals(fieldName)) {
+                    optimizationModelConfiguration = AgentOptimizationModelConfiguration.fromJson(reader);
+                } else if ("optimization_configuration".equals(fieldName)) {
+                    optimizationConfiguration = AgentOptimizationConfigurationBase.fromJson(reader);
+                } else if ("run_duration_ms".equals(fieldName)) {
+                    runDurationMs = reader.getLong();
                 } else if ("created_at".equals(fieldName)) {
-                    deserializedAgentOptimizationJob.createdAt = reader.getLong();
+                    createdAt = reader.getLong();
                 } else if ("updated_at".equals(fieldName)) {
-                    deserializedAgentOptimizationJob.updatedAt = reader.getLong();
-                } else if ("inputs".equals(fieldName)) {
-                    deserializedAgentOptimizationJob.inputs = AgentOptimizationJobInputs.fromJson(reader);
+                    updatedAt = reader.getLong();
                 } else if ("result".equals(fieldName)) {
-                    deserializedAgentOptimizationJob.result = AgentOptimizationJobResult.fromJson(reader);
+                    result = AgentOptimizationJobResult.fromJson(reader);
                 } else if ("error".equals(fieldName)) {
-                    deserializedAgentOptimizationJob.error = ApiError.fromJson(reader);
-                } else if ("progress".equals(fieldName)) {
-                    deserializedAgentOptimizationJob.progress = AgentOptimizationJobProgress.fromJson(reader);
+                    error = ApiError.fromJson(reader);
+                } else if ("display_name".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("target_configuration".equals(fieldName)) {
+                    targetConfiguration = AgentOptimizationTargetConfiguration.fromJson(reader);
                 } else if ("warnings".equals(fieldName)) {
-                    List<String> warnings = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAgentOptimizationJob.warnings = warnings;
+                    warnings = reader.readArray(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
+            AgentOptimizationJob deserializedAgentOptimizationJob
+                = new AgentOptimizationJob(optimizationModelConfiguration, optimizationConfiguration);
+            deserializedAgentOptimizationJob.id = id;
+            deserializedAgentOptimizationJob.status = status;
+            deserializedAgentOptimizationJob.runDurationMs = runDurationMs;
+            deserializedAgentOptimizationJob.createdAt = createdAt;
+            deserializedAgentOptimizationJob.updatedAt = updatedAt;
+            deserializedAgentOptimizationJob.result = result;
+            deserializedAgentOptimizationJob.error = error;
+            deserializedAgentOptimizationJob.displayName = displayName;
+            deserializedAgentOptimizationJob.targetConfiguration = targetConfiguration;
+            deserializedAgentOptimizationJob.warnings = warnings;
             return deserializedAgentOptimizationJob;
         });
+    }
+
+    /*
+     * Human-readable label. Omitted when no label is needed; it has no uniqueness, routing, or idempotency semantics.
+     */
+    @Generated
+    private String displayName;
+
+    /*
+     * Foundry agent whose configuration is optimized. Omitted when the workflow does not target a registered Foundry
+     * agent.
+     */
+    @Generated
+    private AgentOptimizationTargetConfiguration targetConfiguration;
+
+    /*
+     * Model used to generate candidate changes. An existing deployment name is also accepted.
+     */
+    @Generated
+    private final AgentOptimizationModelConfiguration optimizationModelConfiguration;
+
+    /*
+     * Type-specific optimization configuration.
+     */
+    @Generated
+    private final AgentOptimizationConfigurationBase optimizationConfiguration;
+
+    /*
+     * Duration for which the job has been running, in milliseconds.
+     */
+    @Generated
+    private long runDurationMs;
+
+    /**
+     * Creates an instance of AgentOptimizationJob class.
+     *
+     * @param optimizationModelConfiguration the optimizationModelConfiguration value to set.
+     * @param optimizationConfiguration the optimizationConfiguration value to set.
+     */
+    @Generated
+    public AgentOptimizationJob(AgentOptimizationModelConfiguration optimizationModelConfiguration,
+        AgentOptimizationConfigurationBase optimizationConfiguration) {
+        this.optimizationModelConfiguration = optimizationModelConfiguration;
+        this.optimizationConfiguration = optimizationConfiguration;
+    }
+
+    /**
+     * Get the displayName property: Human-readable label. Omitted when no label is needed; it has no uniqueness,
+     * routing, or idempotency semantics.
+     *
+     * @return the displayName value.
+     */
+    @Generated
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the displayName property: Human-readable label. Omitted when no label is needed; it has no uniqueness,
+     * routing, or idempotency semantics.
+     *
+     * @param displayName the displayName value to set.
+     * @return the AgentOptimizationJob object itself.
+     */
+    @Generated
+    public AgentOptimizationJob setDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
+     * Get the targetConfiguration property: Foundry agent whose configuration is optimized. Omitted when the workflow
+     * does not target a registered Foundry agent.
+     *
+     * @return the targetConfiguration value.
+     */
+    @Generated
+    public AgentOptimizationTargetConfiguration getTargetConfiguration() {
+        return this.targetConfiguration;
+    }
+
+    /**
+     * Set the targetConfiguration property: Foundry agent whose configuration is optimized. Omitted when the workflow
+     * does not target a registered Foundry agent.
+     *
+     * @param targetConfiguration the targetConfiguration value to set.
+     * @return the AgentOptimizationJob object itself.
+     */
+    @Generated
+    public AgentOptimizationJob setTargetConfiguration(AgentOptimizationTargetConfiguration targetConfiguration) {
+        this.targetConfiguration = targetConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the optimizationModelConfiguration property: Model used to generate candidate changes. An existing deployment
+     * name is also accepted.
+     *
+     * @return the optimizationModelConfiguration value.
+     */
+    @Generated
+    public AgentOptimizationModelConfiguration getOptimizationModelConfiguration() {
+        return this.optimizationModelConfiguration;
+    }
+
+    /**
+     * Get the optimizationConfiguration property: Type-specific optimization configuration.
+     *
+     * @return the optimizationConfiguration value.
+     */
+    @Generated
+    public AgentOptimizationConfigurationBase getOptimizationConfiguration() {
+        return this.optimizationConfiguration;
+    }
+
+    /**
+     * Get the runDurationMs property: Duration for which the job has been running, in milliseconds.
+     *
+     * @return the runDurationMs value.
+     */
+    @Generated
+    public Duration getRunDurationMs() {
+        return Duration.ofMillis(this.runDurationMs);
     }
 }

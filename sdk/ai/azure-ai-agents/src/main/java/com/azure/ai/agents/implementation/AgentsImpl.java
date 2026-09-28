@@ -5,6 +5,8 @@
 package com.azure.ai.agents.implementation;
 
 import com.azure.ai.agents.AgentsServiceVersion;
+import com.azure.ai.agents.models.AgentOptimizationJob;
+import com.azure.ai.agents.models.AgentOptimizationJobResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -35,6 +37,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -793,6 +800,193 @@ public final class AgentsImpl {
         Response<BinaryData> getMicrosoft365PublishDefaultsSync(@HostParam("endpoint") String endpoint,
             @PathParam("agent_name") String agentName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/agent_optimization_jobs")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createOptimizationJob(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agent_optimization_jobs")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createOptimizationJobSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData job,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agent_optimization_jobs:estimate")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> estimate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData inputs,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agent_optimization_jobs:estimate")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> estimateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData inputs,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/agent_optimization_jobs/{jobId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getOptimizationJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agent_optimization_jobs/{jobId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getOptimizationJobSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agent_optimization_jobs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listOptimizationJobs(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/agent_optimization_jobs")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listOptimizationJobsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agent_optimization_jobs/{jobId}:cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> cancelOptimizationJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/agent_optimization_jobs/{jobId}:cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> cancelOptimizationJobSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Delete("/agent_optimization_jobs/{jobId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteOptimizationJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/agent_optimization_jobs/{jobId}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteOptimizationJobSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/agent_optimization_jobs/{jobId}/candidates")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listCandidates(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agent_optimization_jobs/{jobId}/candidates")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listCandidatesSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getCandidate(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/agent_optimization_jobs/{jobId}/candidates/{candidateId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getCandidateSync(@HostParam("endpoint") String endpoint, @PathParam("jobId") String jobId,
+            @PathParam("candidateId") String candidateId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/agent_optimization_jobs/{jobId}/candidates/{candidateId}:promote")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> promoteCandidate(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agent_optimization_jobs/{jobId}/candidates/{candidateId}:promote")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> promoteCandidateSync(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/openai/v1/conversations")
         @ExpectedResponses({ 200 })
@@ -7152,6 +7346,3037 @@ public final class AgentsImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getMicrosoft365PublishDefaultsSync(this.client.getEndpoint(), agentName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Create an agent optimization job
+     * 
+     * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry. Clients poll
+     * the URL in `Operation-Location` by using the get operation.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The job to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return agent optimization job resource — a long-running job that produces candidate changes to a Foundry agent
+     * configuration along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BinaryData>> createOptimizationJobWithResponseAsync(BinaryData job,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createOptimizationJob(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, context));
+    }
+
+    /**
+     * Create an agent optimization job
+     * 
+     * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry. Clients poll
+     * the URL in `Operation-Location` by using the get operation.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The job to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return agent optimization job resource — a long-running job that produces candidate changes to a Foundry agent
+     * configuration along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOptimizationJobWithResponse(BinaryData job, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOptimizationJobSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, job, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Create an agent optimization job
+     * 
+     * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry. Clients poll
+     * the URL in `Operation-Location` by using the get operation.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The job to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of agent optimization job resource — a long-running job that produces
+     * candidate changes to a Foundry agent configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<AgentOptimizationJob, AgentOptimizationJobResult>
+        beginCreateOptimizationJobWithModelAsync(BinaryData job, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createOptimizationJobWithResponseAsync(job, requestOptions),
+            new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(AgentOptimizationJob.class),
+            TypeReference.createInstance(AgentOptimizationJobResult.class));
+    }
+
+    /**
+     * Create an agent optimization job
+     * 
+     * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry. Clients poll
+     * the URL in `Operation-Location` by using the get operation.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The job to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of agent optimization job resource — a long-running job that produces
+     * candidate changes to a Foundry agent configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<AgentOptimizationJob, AgentOptimizationJobResult>
+        beginCreateOptimizationJobWithModel(BinaryData job, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createOptimizationJobWithResponse(job, requestOptions),
+            new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(AgentOptimizationJob.class),
+            TypeReference.createInstance(AgentOptimizationJobResult.class));
+    }
+
+    /**
+     * Create an agent optimization job
+     * 
+     * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry. Clients poll
+     * the URL in `Operation-Location` by using the get operation.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The job to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of agent optimization job resource — a long-running job that produces
+     * candidate changes to a Foundry agent configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCreateOptimizationJobAsync(BinaryData job,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createOptimizationJobWithResponseAsync(job, requestOptions),
+            new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Create an agent optimization job
+     * 
+     * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry. Clients poll
+     * the URL in `Operation-Location` by using the get operation.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Operation-Id</td><td>String</td><td>No</td><td>Client-generated unique ID for idempotent retries. When
+     * absent, the server creates the job unconditionally.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param job The job to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of agent optimization job resource — a long-running job that produces
+     * candidate changes to a Foundry agent configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginCreateOptimizationJob(BinaryData job,
+        RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createOptimizationJobWithResponse(job, requestOptions),
+            new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.client.getHttpPipeline())
+                    .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.client.getServiceVersion().getVersion()),
+                "result"),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Estimate an agent optimization job
+     * 
+     * Estimates validation-set rows, per-stage model call volumes, and cost bands without submitting the job.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         goal: String(improve_quality) (Optional)
+     *         evaluation_configuration (Required): {
+     *             training_set (Required): {
+     *                 type: String(target_completion/user_conversation_simulation) (Required)
+     *             }
+     *             validation_set (Optional): (recursive schema, see validation_set above)
+     *             evaluators (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                     initialization_parameters (Optional): {
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 }
+     *             ]
+     *             evaluation_model (Required): {
+     *                 model: String (Required)
+     *                 sampling_params (Optional): {
+     *                     temperature: Double (Optional)
+     *                     top_p: Double (Optional)
+     *                     seed: Integer (Optional)
+     *                     max_completion_tokens: Integer (Optional)
+     *                 }
+     *                 voice_model (Optional): {
+     *                     type: String (Required)
+     *                 }
+     *             }
+     *             max_concurrent_agent_runs: Integer (Optional)
+     *         }
+     *         candidate_search_configuration (Required): {
+     *             max_candidates: Integer (Optional)
+     *         }
+     *         baseline_agent_configuration (Optional): {
+     *             system_prompt: String (Optional)
+     *             current_model: String (Optional)
+     *             skills (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     description: String (Required)
+     *                     body: String (Optional)
+     *                 }
+     *             ]
+     *             tools (Optional): [
+     *                  (Optional){
+     *                     type: String (Required)
+     *                     function (Required): {
+     *                         description: String (Optional)
+     *                         name: String (Required)
+     *                         parameters (Optional): {
+     *                              (Optional): {
+     *                                 String: BinaryData (Required)
+     *                             }
+     *                         }
+     *                         strict: Boolean (Optional)
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         agent_optimization_space (Required): {
+     *             target_attributes (Optional): [
+     *                 String(instructions/model/skills/tools) (Optional)
+     *             ]
+     *             model_search_space (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     call_counts (Optional): {
+     *         agent (Optional): {
+     *             low: double (Required)
+     *             typical: double (Required)
+     *             ceiling: double (Required)
+     *         }
+     *         evaluation (Optional): (recursive schema, see evaluation above)
+     *         optimization (Optional): (recursive schema, see optimization above)
+     *     }
+     *     cost (Optional): {
+     *         currency: String (Required)
+     *         total (Optional): (recursive schema, see total above)
+     *         by_stage (Optional): (recursive schema, see by_stage above)
+     *         unpriced_stages (Optional): [
+     *             String(agent/evaluation/optimization) (Optional)
+     *         ]
+     *     }
+     *     prices_as_of: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param inputs The inputs to estimate against.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return result returned when estimating an agent-optimization job along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> estimateWithResponseAsync(BinaryData inputs, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.estimate(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, inputs, requestOptions, context));
+    }
+
+    /**
+     * Estimate an agent optimization job
+     * 
+     * Estimates validation-set rows, per-stage model call volumes, and cost bands without submitting the job.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         goal: String(improve_quality) (Optional)
+     *         evaluation_configuration (Required): {
+     *             training_set (Required): {
+     *                 type: String(target_completion/user_conversation_simulation) (Required)
+     *             }
+     *             validation_set (Optional): (recursive schema, see validation_set above)
+     *             evaluators (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                     initialization_parameters (Optional): {
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 }
+     *             ]
+     *             evaluation_model (Required): {
+     *                 model: String (Required)
+     *                 sampling_params (Optional): {
+     *                     temperature: Double (Optional)
+     *                     top_p: Double (Optional)
+     *                     seed: Integer (Optional)
+     *                     max_completion_tokens: Integer (Optional)
+     *                 }
+     *                 voice_model (Optional): {
+     *                     type: String (Required)
+     *                 }
+     *             }
+     *             max_concurrent_agent_runs: Integer (Optional)
+     *         }
+     *         candidate_search_configuration (Required): {
+     *             max_candidates: Integer (Optional)
+     *         }
+     *         baseline_agent_configuration (Optional): {
+     *             system_prompt: String (Optional)
+     *             current_model: String (Optional)
+     *             skills (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     description: String (Required)
+     *                     body: String (Optional)
+     *                 }
+     *             ]
+     *             tools (Optional): [
+     *                  (Optional){
+     *                     type: String (Required)
+     *                     function (Required): {
+     *                         description: String (Optional)
+     *                         name: String (Required)
+     *                         parameters (Optional): {
+     *                              (Optional): {
+     *                                 String: BinaryData (Required)
+     *                             }
+     *                         }
+     *                         strict: Boolean (Optional)
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         agent_optimization_space (Required): {
+     *             target_attributes (Optional): [
+     *                 String(instructions/model/skills/tools) (Optional)
+     *             ]
+     *             model_search_space (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     call_counts (Optional): {
+     *         agent (Optional): {
+     *             low: double (Required)
+     *             typical: double (Required)
+     *             ceiling: double (Required)
+     *         }
+     *         evaluation (Optional): (recursive schema, see evaluation above)
+     *         optimization (Optional): (recursive schema, see optimization above)
+     *     }
+     *     cost (Optional): {
+     *         currency: String (Required)
+     *         total (Optional): (recursive schema, see total above)
+     *         by_stage (Optional): (recursive schema, see by_stage above)
+     *         unpriced_stages (Optional): [
+     *             String(agent/evaluation/optimization) (Optional)
+     *         ]
+     *     }
+     *     prices_as_of: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param inputs The inputs to estimate against.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return result returned when estimating an agent-optimization job along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> estimateWithResponse(BinaryData inputs, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.estimateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            contentType, accept, inputs, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Get an agent optimization job
+     * 
+     * Retrieves an optimization job by its identifier.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
+     * 
+     * @param jobId The ID of the job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an agent optimization job
+     * 
+     * Retrieves an optimization job by its identifier along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getOptimizationJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getOptimizationJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Get an agent optimization job
+     * 
+     * Retrieves an optimization job by its identifier.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
+     * 
+     * @param jobId The ID of the job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return an agent optimization job
+     * 
+     * Retrieves an optimization job by its identifier along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getOptimizationJobSync(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * List agent optimization jobs
+     * 
+     * Lists optimization jobs with cursor pagination and optional status or agent name filters.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
+     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
+     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listOptimizationJobsSinglePageAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listOptimizationJobs(this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), null, null));
+    }
+
+    /**
+     * List agent optimization jobs
+     * 
+     * Lists optimization jobs with cursor pagination and optional status or agent name filters.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
+     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
+     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listOptimizationJobsAsync(RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listOptimizationJobsSinglePageAsync(requestOptions));
+    }
+
+    /**
+     * List agent optimization jobs
+     * 
+     * Lists optimization jobs with cursor pagination and optional status or agent name filters.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
+     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
+     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listOptimizationJobsSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listOptimizationJobsSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), null, null);
+    }
+
+    /**
+     * List agent optimization jobs
+     * 
+     * Lists optimization jobs with cursor pagination and optional status or agent name filters.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Filter to jobs in this lifecycle state. Allowed values:
+     * "queued", "in_progress", "succeeded", "failed", "cancelled".</td></tr>
+     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter to jobs targeting this agent name.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listOptimizationJobs(RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listOptimizationJobsSinglePage(requestOptions));
+    }
+
+    /**
+     * Cancel an agent optimization job
+     * 
+     * Requests cancellation of a running or queued job. Returns 409 Conflict if the job is already in a terminal state.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the job to cancel.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return agent optimization job resource — a long-running job that produces candidate changes to a Foundry agent
+     * configuration along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> cancelOptimizationJobWithResponseAsync(String jobId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.cancelOptimizationJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Cancel an agent optimization job
+     * 
+     * Requests cancellation of a running or queued job. Returns 409 Conflict if the job is already in a terminal state.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     result (Optional): {
+     *         candidate_summary (Optional): {
+     *             completed_candidate_count: int (Required)
+     *             baseline_id: String (Optional)
+     *             best_id: String (Optional)
+     *             baseline_score: Double (Optional)
+     *             best_score: Double (Optional)
+     *             latest_promoted_candidate (Optional): {
+     *                 promoted_at: long (Required)
+     *                 promoted_agent (Required): {
+     *                     type: String (Required)
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                 }
+     *             }
+     *         }
+     *         token_usage (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 input_tokens: Long (Optional)
+     *                 output_tokens: Long (Optional)
+     *                 total_tokens: Long (Optional)
+     *                 cached_tokens: Long (Optional)
+     *                 reasoning_tokens: Long (Optional)
+     *             }
+     *         ]
+     *         latency_metrics (Required): [
+     *              (Required){
+     *                 stage: String(agent/evaluation/optimization) (Required)
+     *                 model: String (Optional)
+     *                 avg_latency_ms: long (Required)
+     *                 call_count: long (Required)
+     *             }
+     *         ]
+     *         termination_reason: String(completed/budget_exhausted/candidate_screening_stalled) (Optional)
+     *     }
+     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         param: String (Optional)
+     *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         additionalInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *         debugInfo (Optional): {
+     *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     display_name: String (Optional)
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     run_duration_ms: long (Required)
+     *     created_at: long (Required)
+     *     updated_at: long (Required)
+     *     warnings (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the job to cancel.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return agent optimization job resource — a long-running job that produces candidate changes to a Foundry agent
+     * configuration along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> cancelOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.cancelOptimizationJobSync(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Delete an agent optimization job
+     * 
+     * Cancels active work, then deletes the job and its candidate artifacts.
+     * 
+     * @param jobId The ID of the job to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteOptimizationJobWithResponseAsync(String jobId, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> service.deleteOptimizationJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
+    }
+
+    /**
+     * Delete an agent optimization job
+     * 
+     * Cancels active work, then deletes the job and its candidate artifacts.
+     * 
+     * @param jobId The ID of the job to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteOptimizationJobWithResponse(String jobId, RequestOptions requestOptions) {
+        return service.deleteOptimizationJobSync(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+    }
+
+    /**
+     * List candidates for an agent optimization job
+     * 
+     * Lists candidates for the given optimization job with cursor pagination, including the original baseline and
+     * generated candidates. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
+     * fields are omitted unless the client passes `expand=mutations`.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>expand</td><td>List&lt;String&gt;</td><td>No</td><td>Comma-separated list of expand keys. Pass
+     * `mutations` to populate mutation `value` fields; omit to receive mutation items containing only `type`.
+     * Additional expand keys may be added in future previews. In the form of "," separated string.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the candidate `started_at` timestamp. Allowed
+     * values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Candidate-ID cursor identifying the last item from the previous
+     * page.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Candidate-ID cursor identifying the first item from the
+     * following page.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidate_id: String (Required)
+     *     job_id: String (Required)
+     *     name: String (Required)
+     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     started_at: long (Required)
+     *     output (Optional): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     rationale: String (Optional)
+     *     agent_version: String (Optional)
+     *     evaluation (Optional): {
+     *         score: Double (Optional)
+     *         avg_tokens: Double (Optional)
+     *         avg_latency_ms: Long (Optional)
+     *         eval_id: String (Optional)
+     *         eval_run_id: String (Optional)
+     *         completed_at: Long (Optional)
+     *     }
+     *     promotion (Optional): {
+     *         promoted_at: long (Required)
+     *         promoted_agent (Required): {
+     *             type: String (Required)
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the parent optimization job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listCandidatesSinglePageAsync(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listCandidates(this.client.getEndpoint(), jobId,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "data"), null, null));
+    }
+
+    /**
+     * List candidates for an agent optimization job
+     * 
+     * Lists candidates for the given optimization job with cursor pagination, including the original baseline and
+     * generated candidates. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
+     * fields are omitted unless the client passes `expand=mutations`.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>expand</td><td>List&lt;String&gt;</td><td>No</td><td>Comma-separated list of expand keys. Pass
+     * `mutations` to populate mutation `value` fields; omit to receive mutation items containing only `type`.
+     * Additional expand keys may be added in future previews. In the form of "," separated string.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the candidate `started_at` timestamp. Allowed
+     * values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Candidate-ID cursor identifying the last item from the previous
+     * page.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Candidate-ID cursor identifying the first item from the
+     * following page.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidate_id: String (Required)
+     *     job_id: String (Required)
+     *     name: String (Required)
+     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     started_at: long (Required)
+     *     output (Optional): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     rationale: String (Optional)
+     *     agent_version: String (Optional)
+     *     evaluation (Optional): {
+     *         score: Double (Optional)
+     *         avg_tokens: Double (Optional)
+     *         avg_latency_ms: Long (Optional)
+     *         eval_id: String (Optional)
+     *         eval_run_id: String (Optional)
+     *         completed_at: Long (Optional)
+     *     }
+     *     promotion (Optional): {
+     *         promoted_at: long (Required)
+     *         promoted_agent (Required): {
+     *             type: String (Required)
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the parent optimization job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listCandidatesAsync(String jobId, RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listCandidatesSinglePageAsync(jobId, requestOptions));
+    }
+
+    /**
+     * List candidates for an agent optimization job
+     * 
+     * Lists candidates for the given optimization job with cursor pagination, including the original baseline and
+     * generated candidates. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
+     * fields are omitted unless the client passes `expand=mutations`.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>expand</td><td>List&lt;String&gt;</td><td>No</td><td>Comma-separated list of expand keys. Pass
+     * `mutations` to populate mutation `value` fields; omit to receive mutation items containing only `type`.
+     * Additional expand keys may be added in future previews. In the form of "," separated string.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the candidate `started_at` timestamp. Allowed
+     * values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Candidate-ID cursor identifying the last item from the previous
+     * page.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Candidate-ID cursor identifying the first item from the
+     * following page.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidate_id: String (Required)
+     *     job_id: String (Required)
+     *     name: String (Required)
+     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     started_at: long (Required)
+     *     output (Optional): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     rationale: String (Optional)
+     *     agent_version: String (Optional)
+     *     evaluation (Optional): {
+     *         score: Double (Optional)
+     *         avg_tokens: Double (Optional)
+     *         avg_latency_ms: Long (Optional)
+     *         eval_id: String (Optional)
+     *         eval_run_id: String (Optional)
+     *         completed_at: Long (Optional)
+     *     }
+     *     promotion (Optional): {
+     *         promoted_at: long (Required)
+     *         promoted_agent (Required): {
+     *             type: String (Required)
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the parent optimization job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listCandidatesSinglePage(String jobId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res = service.listCandidatesSync(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "data"), null, null);
+    }
+
+    /**
+     * List candidates for an agent optimization job
+     * 
+     * Lists candidates for the given optimization job with cursor pagination, including the original baseline and
+     * generated candidates. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
+     * fields are omitted unless the client passes `expand=mutations`.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>expand</td><td>List&lt;String&gt;</td><td>No</td><td>Comma-separated list of expand keys. Pass
+     * `mutations` to populate mutation `value` fields; omit to receive mutation items containing only `type`.
+     * Additional expand keys may be added in future previews. In the form of "," separated string.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the candidate `started_at` timestamp. Allowed
+     * values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Candidate-ID cursor identifying the last item from the previous
+     * page.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Candidate-ID cursor identifying the first item from the
+     * following page.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidate_id: String (Required)
+     *     job_id: String (Required)
+     *     name: String (Required)
+     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     started_at: long (Required)
+     *     output (Optional): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     rationale: String (Optional)
+     *     agent_version: String (Optional)
+     *     evaluation (Optional): {
+     *         score: Double (Optional)
+     *         avg_tokens: Double (Optional)
+     *         avg_latency_ms: Long (Optional)
+     *         eval_id: String (Optional)
+     *         eval_run_id: String (Optional)
+     *         completed_at: Long (Optional)
+     *     }
+     *     promotion (Optional): {
+     *         promoted_at: long (Required)
+     *         promoted_agent (Required): {
+     *             type: String (Required)
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the parent optimization job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listCandidates(String jobId, RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listCandidatesSinglePage(jobId, requestOptions));
+    }
+
+    /**
+     * Get a candidate for an agent optimization job
+     * 
+     * Retrieves a single candidate. Mutation values are always included.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidate_id: String (Required)
+     *     job_id: String (Required)
+     *     name: String (Required)
+     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     started_at: long (Required)
+     *     output (Optional): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     rationale: String (Optional)
+     *     agent_version: String (Optional)
+     *     evaluation (Optional): {
+     *         score: Double (Optional)
+     *         avg_tokens: Double (Optional)
+     *         avg_latency_ms: Long (Optional)
+     *         eval_id: String (Optional)
+     *         eval_run_id: String (Optional)
+     *         completed_at: Long (Optional)
+     *     }
+     *     promotion (Optional): {
+     *         promoted_at: long (Required)
+     *         promoted_agent (Required): {
+     *             type: String (Required)
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the parent optimization job.
+     * @param candidateId The candidate identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a candidate for an agent optimization job
+     * 
+     * Retrieves a single candidate along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getCandidateWithResponseAsync(String jobId, String candidateId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getCandidate(this.client.getEndpoint(), jobId, candidateId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Get a candidate for an agent optimization job
+     * 
+     * Retrieves a single candidate. Mutation values are always included.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidate_id: String (Required)
+     *     job_id: String (Required)
+     *     name: String (Required)
+     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     started_at: long (Required)
+     *     output (Optional): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     rationale: String (Optional)
+     *     agent_version: String (Optional)
+     *     evaluation (Optional): {
+     *         score: Double (Optional)
+     *         avg_tokens: Double (Optional)
+     *         avg_latency_ms: Long (Optional)
+     *         eval_id: String (Optional)
+     *         eval_run_id: String (Optional)
+     *         completed_at: Long (Optional)
+     *     }
+     *     promotion (Optional): {
+     *         promoted_at: long (Required)
+     *         promoted_agent (Required): {
+     *             type: String (Required)
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the parent optimization job.
+     * @param candidateId The candidate identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a candidate for an agent optimization job
+     * 
+     * Retrieves a single candidate along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getCandidateWithResponse(String jobId, String candidateId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getCandidateSync(this.client.getEndpoint(), jobId, candidateId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Promote a candidate for an agent optimization job
+     * 
+     * Promotes a candidate to the Foundry agent stored in the parent job's target configuration. Promotion is
+     * unavailable when the job omitted target_configuration. Prompt-agent promotion creates a new agent version.
+     * Hosted-agent promotion currently records promotion metadata without deploying a new hosted-agent version.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidate_id: String (Required)
+     *     job_id: String (Required)
+     *     name: String (Required)
+     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     started_at: long (Required)
+     *     output (Optional): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     rationale: String (Optional)
+     *     agent_version: String (Optional)
+     *     evaluation (Optional): {
+     *         score: Double (Optional)
+     *         avg_tokens: Double (Optional)
+     *         avg_latency_ms: Long (Optional)
+     *         eval_id: String (Optional)
+     *         eval_run_id: String (Optional)
+     *         completed_at: Long (Optional)
+     *     }
+     *     promotion (Optional): {
+     *         promoted_at: long (Required)
+     *         promoted_agent (Required): {
+     *             type: String (Required)
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the parent optimization job.
+     * @param candidateId The candidate identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a candidate generated by an optimization job along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> promoteCandidateWithResponseAsync(String jobId, String candidateId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.promoteCandidate(this.client.getEndpoint(), jobId, candidateId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Promote a candidate for an agent optimization job
+     * 
+     * Promotes a candidate to the Foundry agent stored in the parent job's target configuration. Promotion is
+     * unavailable when the job omitted target_configuration. Prompt-agent promotion creates a new agent version.
+     * Hosted-agent promotion currently records promotion metadata without deploying a new hosted-agent version.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidate_id: String (Required)
+     *     job_id: String (Required)
+     *     name: String (Required)
+     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     started_at: long (Required)
+     *     output (Optional): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     rationale: String (Optional)
+     *     agent_version: String (Optional)
+     *     evaluation (Optional): {
+     *         score: Double (Optional)
+     *         avg_tokens: Double (Optional)
+     *         avg_latency_ms: Long (Optional)
+     *         eval_id: String (Optional)
+     *         eval_run_id: String (Optional)
+     *         completed_at: Long (Optional)
+     *     }
+     *     promotion (Optional): {
+     *         promoted_at: long (Required)
+     *         promoted_agent (Required): {
+     *             type: String (Required)
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param jobId The ID of the parent optimization job.
+     * @param candidateId The candidate identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a candidate generated by an optimization job along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> promoteCandidateWithResponse(String jobId, String candidateId,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.promoteCandidateSync(this.client.getEndpoint(), jobId, candidateId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 

@@ -6,11 +6,13 @@ package com.azure.ai.agents.models;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Reference to a named evaluator, optionally pinned to a version.
@@ -27,7 +29,7 @@ public final class AgentOptimizationEvaluatorReference
     private final String name;
 
     /*
-     * Evaluator version. If not specified, the latest version is used.
+     * Evaluator version. Omitted to use the latest version.
      */
     @Generated
     private String version;
@@ -53,7 +55,7 @@ public final class AgentOptimizationEvaluatorReference
     }
 
     /**
-     * Get the version property: Evaluator version. If not specified, the latest version is used.
+     * Get the version property: Evaluator version. Omitted to use the latest version.
      *
      * @return the version value.
      */
@@ -63,7 +65,7 @@ public final class AgentOptimizationEvaluatorReference
     }
 
     /**
-     * Set the version property: Evaluator version. If not specified, the latest version is used.
+     * Set the version property: Evaluator version. Omitted to use the latest version.
      *
      * @param version the version value to set.
      * @return the AgentOptimizationEvaluatorReference object itself.
@@ -83,6 +85,13 @@ public final class AgentOptimizationEvaluatorReference
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeMapField("initialization_parameters", this.initializationParameters, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 
@@ -100,6 +109,7 @@ public final class AgentOptimizationEvaluatorReference
         return jsonReader.readObject(reader -> {
             String name = null;
             String version = null;
+            Map<String, BinaryData> initializationParameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -107,6 +117,9 @@ public final class AgentOptimizationEvaluatorReference
                     name = reader.getString();
                 } else if ("version".equals(fieldName)) {
                     version = reader.getString();
+                } else if ("initialization_parameters".equals(fieldName)) {
+                    initializationParameters = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else {
                     reader.skipChildren();
                 }
@@ -114,7 +127,40 @@ public final class AgentOptimizationEvaluatorReference
             AgentOptimizationEvaluatorReference deserializedAgentOptimizationEvaluatorReference
                 = new AgentOptimizationEvaluatorReference(name);
             deserializedAgentOptimizationEvaluatorReference.version = version;
+            deserializedAgentOptimizationEvaluatorReference.initializationParameters = initializationParameters;
             return deserializedAgentOptimizationEvaluatorReference;
         });
+    }
+
+    /*
+     * Parameters passed to the evaluator at initialization. Omitted when the evaluator requires no initialization
+     * parameters.
+     */
+    @Generated
+    private Map<String, BinaryData> initializationParameters;
+
+    /**
+     * Get the initializationParameters property: Parameters passed to the evaluator at initialization. Omitted when the
+     * evaluator requires no initialization parameters.
+     *
+     * @return the initializationParameters value.
+     */
+    @Generated
+    public Map<String, BinaryData> getInitializationParameters() {
+        return this.initializationParameters;
+    }
+
+    /**
+     * Set the initializationParameters property: Parameters passed to the evaluator at initialization. Omitted when the
+     * evaluator requires no initialization parameters.
+     *
+     * @param initializationParameters the initializationParameters value to set.
+     * @return the AgentOptimizationEvaluatorReference object itself.
+     */
+    @Generated
+    public AgentOptimizationEvaluatorReference
+        setInitializationParameters(Map<String, BinaryData> initializationParameters) {
+        this.initializationParameters = initializationParameters;
+        return this;
     }
 }
