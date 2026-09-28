@@ -25,6 +25,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.ShareDirectoryClientInternal;
+import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
@@ -136,11 +137,15 @@ public class ShareDirectoryClient {
             directoryUrlString.append("?sharesnapshot=").append(snapshot);
         }
         this.directoryUrl = directoryUrlString.toString();
-        this.directoryClientInternal = new ShareDirectoryClientInternal(
-            ModelHelper
-                .getFileStorageForUrl(azureFileStorageClient,
-                    azureFileStorageClient.getUrl() + "/" + shareName + "/" + directoryPath)
-                .getDirectories());
+        this.directoryClientInternal = new ShareDirectoryClientInternal(azureFileStorageClient.getDirectories());
+    }
+
+    /**
+     * Builds a {@link RequestOptions} that scopes an account-targeted protocol call to this directory's resource path.
+     */
+    private RequestOptions scopedRequestOptions(Context context) {
+        return RequestOptionsHelper.directoryRequestOptions(context, azureFileStorageClient.getUrl(), shareName,
+            directoryPath);
     }
 
     /**
@@ -365,7 +370,7 @@ public class ShareDirectoryClient {
             smbProperties.getFileLastWriteTimeString(), smbProperties.getFileChangeTimeString(),
             finalOptions.getFilePermissionFormat(), fileposixProperties.getOwner(), fileposixProperties.getGroup(),
             fileposixProperties.getFileMode(), finalOptions.getFilePropertySemantics(),
-            new RequestOptions().setContext(finalContext));
+            scopedRequestOptions(finalContext));
 
         return ModelHelper.mapShareDirectoryInfo(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -501,7 +506,7 @@ public class ShareDirectoryClient {
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Callable<Response<Void>> operation
-            = () -> directoryClientInternal.deleteWithResponse(null, new RequestOptions().setContext(finalContext));
+            = () -> directoryClientInternal.deleteWithResponse(null, scopedRequestOptions(finalContext));
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
@@ -629,7 +634,7 @@ public class ShareDirectoryClient {
     public Response<ShareDirectoryProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Callable<Response<DirectoriesGetPropertiesHeaders>> operation = () -> directoryClientInternal
-            .getPropertiesWithResponse(snapshot, null, new RequestOptions().setContext(finalContext));
+            .getPropertiesWithResponse(snapshot, null, scopedRequestOptions(finalContext));
 
         return ModelHelper
             .mapShareDirectoryPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
@@ -748,7 +753,7 @@ public class ShareDirectoryClient {
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
                 smbProperties.getFileChangeTimeString(), filePermission.getPermissionFormat(),
                 fileposixProperties.getOwner(), fileposixProperties.getGroup(), fileposixProperties.getFileMode(),
-                new RequestOptions().setContext(finalContext));
+                scopedRequestOptions(finalContext));
 
         return ModelHelper.mapSetPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -835,8 +840,8 @@ public class ShareDirectoryClient {
     public Response<ShareDirectorySetMetadataInfo> setMetadataWithResponse(Map<String, String> metadata,
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<Response<DirectoriesSetMetadataHeaders>> operation = () -> directoryClientInternal
-            .setMetadataWithResponse(null, metadata, new RequestOptions().setContext(finalContext));
+        Callable<Response<DirectoriesSetMetadataHeaders>> operation
+            = () -> directoryClientInternal.setMetadataWithResponse(null, metadata, scopedRequestOptions(finalContext));
 
         return ModelHelper
             .setShareDirectoryMetadataResponse(sendRequest(operation, timeout, ShareStorageException.class));
@@ -969,8 +974,7 @@ public class ShareDirectoryClient {
             Callable<Response<ListFilesAndDirectoriesSegmentResponse>> operation
                 = () -> directoryClientInternal.listFilesAndDirectoriesSegmentWithResponse(modifiedOptions.getPrefix(),
                     snapshot, marker, pageSize == null ? modifiedOptions.getMaxResultsPerPage() : pageSize,
-                    finalIncludeTypes, null, modifiedOptions.includeExtendedInfo(),
-                    new RequestOptions().setContext(finalContext));
+                    finalIncludeTypes, null, modifiedOptions.includeExtendedInfo(), scopedRequestOptions(finalContext));
 
             Response<ListFilesAndDirectoriesSegmentResponse> response
                 = sendRequest(operation, timeout, ShareStorageException.class);
@@ -1021,7 +1025,7 @@ public class ShareDirectoryClient {
         Function<String, PagedResponse<HandleItem>> retriever = (marker) -> {
             Callable<ResponseBase<DirectoriesListHandlesHeaders, ListHandlesResponse>> operation
                 = () -> directoryClientInternal.listHandlesWithResponse(marker, maxResultPerPage, null, snapshot,
-                    recursive, new RequestOptions().setContext(finalContext));
+                    recursive, scopedRequestOptions(finalContext));
 
             ResponseBase<DirectoriesListHandlesHeaders, ListHandlesResponse> response
                 = sendRequest(operation, timeout, ShareStorageException.class);
@@ -1094,9 +1098,8 @@ public class ShareDirectoryClient {
     public Response<CloseHandlesInfo> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<Response<DirectoriesForceCloseHandlesHeaders>> operation
-            = () -> directoryClientInternal.forceCloseHandlesWithResponse(handleId, null, null, snapshot, false,
-                new RequestOptions().setContext(finalContext));
+        Callable<Response<DirectoriesForceCloseHandlesHeaders>> operation = () -> directoryClientInternal
+            .forceCloseHandlesWithResponse(handleId, null, null, snapshot, false, scopedRequestOptions(finalContext));
 
         Response<DirectoriesForceCloseHandlesHeaders> response
             = sendRequest(operation, timeout, ShareStorageException.class);
@@ -1138,7 +1141,7 @@ public class ShareDirectoryClient {
         Function<String, PagedResponse<CloseHandlesInfo>> retriever = (marker) -> {
             Callable<Response<DirectoriesForceCloseHandlesHeaders>> operation
                 = () -> directoryClientInternal.forceCloseHandlesWithResponse("*", null, marker, snapshot, recursive,
-                    new RequestOptions().setContext(finalContext));
+                    scopedRequestOptions(finalContext));
 
             Response<DirectoriesForceCloseHandlesHeaders> response
                 = sendRequest(operation, timeout, ShareStorageException.class);
@@ -1259,7 +1262,7 @@ public class ShareDirectoryClient {
                 sourceRequestConditions.getLeaseId(), destinationRequestConditions.getLeaseId(), fileAttributes,
                 fileCreationTime, fileLastWriteTime, fileChangeTime, options.getFilePermission(),
                 options.getFilePermissionFormat(), filePermissionKey, options.getMetadata(),
-                new RequestOptions().setContext(finalContext));
+                destinationDirectoryClient.scopedRequestOptions(finalContext));
 
         return new SimpleResponse<>(sendRequest(operation, timeout, ShareStorageException.class),
             destinationDirectoryClient);
