@@ -33,7 +33,6 @@ import com.azure.storage.file.share.implementation.models.KeyInfo;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListSharesResponse;
 import com.azure.storage.file.share.implementation.models.ServicesGetUserDelegationKeyHeaders;
-import com.azure.storage.file.share.implementation.models.UserDelegationKeyInternal;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -868,7 +867,7 @@ public final class ShareServiceClient {
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
 
-        Callable<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKeyInternal>> operation
+        Callable<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> operation
             = () -> this.serviceClientInternal.getUserDelegationKeyWithResponse(
                 new KeyInfo(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
                     .setStart(options.getStartsOn() == null
@@ -877,8 +876,8 @@ public final class ShareServiceClient {
                     .setDelegatedUserTenantId(options.getDelegatedUserTenantId()),
                 null, new RequestOptions().setContext(finalContext));
 
-        ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKeyInternal> response
+        ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> response
             = sendRequest(operation, timeout, ShareStorageException.class);
-        return new SimpleResponse<>(response, ModelHelper.mapUserDelegationKey(response.getValue()));
+        return new SimpleResponse<>(response, response.getValue());
     }
 }

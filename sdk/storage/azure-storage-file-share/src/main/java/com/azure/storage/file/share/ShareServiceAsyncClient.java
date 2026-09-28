@@ -949,6 +949,6 @@ public final class ShareServiceAsyncClient {
             .getUserDelegationKeyWithResponse(new KeyInfo(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
                 .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
                 .setDelegatedUserTenantId(delegatedUserTenantId), null, new RequestOptions().setContext(context))
-            .map(rb -> new SimpleResponse<>(rb, ModelHelper.mapUserDelegationKey(rb.getValue())));
+            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 }

@@ -24,8 +24,8 @@ import com.azure.storage.file.share.implementation.models.ServicesGetPropertiesH
 import com.azure.storage.file.share.implementation.models.ServicesGetUserDelegationKeyHeaders;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ServicesSetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.UserDelegationKeyInternal;
 import com.azure.storage.file.share.models.ShareServiceProperties;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -669,7 +669,7 @@ public final class ShareServiceAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKeyInternal>>
+    public Mono<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>>
         getUserDelegationKeyWithResponse(KeyInfo keyInfo, Integer timeout, RequestOptions requestOptions) {
         // Generated convenience method for getUserDelegationKeyWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -679,7 +679,7 @@ public final class ShareServiceAsyncClientInternal {
         return getUserDelegationKeyWithResponseInternal(BinaryData.fromObject(keyInfo, XML_SERIALIZER), requestOptions)
             .map(protocolMethodResponse -> new ResponseBase<>(protocolMethodResponse.getRequest(),
                 protocolMethodResponse.getStatusCode(), protocolMethodResponse.getHeaders(),
-                protocolMethodResponse.getValue().toObject(UserDelegationKeyInternal.class, XML_SERIALIZER),
+                protocolMethodResponse.getValue().toObject(UserDelegationKey.class, XML_SERIALIZER),
                 new ServicesGetUserDelegationKeyHeaders(protocolMethodResponse.getHeaders())));
     }
 
@@ -698,7 +698,7 @@ public final class ShareServiceAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UserDelegationKeyInternal> getUserDelegationKey(KeyInfo keyInfo, Integer timeout) {
+    public Mono<UserDelegationKey> getUserDelegationKey(KeyInfo keyInfo, Integer timeout) {
         // Generated convenience method for getUserDelegationKeyWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (timeout != null) {
@@ -706,7 +706,7 @@ public final class ShareServiceAsyncClientInternal {
         }
         return getUserDelegationKeyWithResponseInternal(BinaryData.fromObject(keyInfo, XML_SERIALIZER), requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(UserDelegationKeyInternal.class, XML_SERIALIZER));
+            .map(protocolMethodData -> protocolMethodData.toObject(UserDelegationKey.class, XML_SERIALIZER));
     }
 
     /**
@@ -723,11 +723,11 @@ public final class ShareServiceAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UserDelegationKeyInternal> getUserDelegationKey(KeyInfo keyInfo) {
+    public Mono<UserDelegationKey> getUserDelegationKey(KeyInfo keyInfo) {
         // Generated convenience method for getUserDelegationKeyWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         return getUserDelegationKeyWithResponseInternal(BinaryData.fromObject(keyInfo, XML_SERIALIZER), requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(UserDelegationKeyInternal.class, XML_SERIALIZER));
+            .map(protocolMethodData -> protocolMethodData.toObject(UserDelegationKey.class, XML_SERIALIZER));
     }
 }

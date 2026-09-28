@@ -14,8 +14,6 @@ import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.expr.ArrayInitializerExpr;
-import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.Statement;
@@ -43,7 +41,7 @@ public class ShareStorageCustomization extends Customization {
     // restores the shipped fluent shape per-model. Expand this list from the RevApi "method removed" report.
     private static final List<String> FLUENT_MODELS_TO_RESTORE = Arrays.asList(
         "FileRange", "ClearRange", "ShareCorsRule", "ShareFileRangeList", "ShareMetrics", "ShareRetentionPolicy",
-        "ShareSignedIdentifier", "ShareFileDownloadHeaders");
+        "ShareSignedIdentifier", "ShareFileDownloadHeaders", "UserDelegationKey");
 
     // Generated builders / main service-client surface emitted by typespec-java on top of the
     // implementation/*Impl operation layer. These are deleted; the shipped public surface is the
@@ -87,8 +85,6 @@ public class ShareStorageCustomization extends Customization {
         relocateConvenienceClientsToImplementation(customization, logger);
 
         retypeServiceVersionToShareServiceVersion(customization, logger);
-
-        fixXmlSerializerRedundantCast(customization, logger);
 
         relocateDownloadHeadersToModels(customization, logger);
 
@@ -278,28 +274,6 @@ public class ShareStorageCustomization extends Customization {
                 logger.info("Retyped FileServiceVersion -> ShareServiceVersion in {}", path);
             }
         }
-    }
-
-    /**
-     * Relaxes the javac "redundant cast" lint for the single {@code (Class<T>)} cast the emitter generates in
-     * {@code XmlSerializer.deserialize}. The current azure-core {@code TypeReference#getJavaClass()} already returns
-     * {@code Class<T>}, so the cast is redundant and fails the {@code -Werror} build; this adds {@code "cast"} to the
-     * method's existing {@code @SuppressWarnings}.
-     *
-     * @param customization The library customization.
-     * @param logger The logger.
-     */
-    private static void fixXmlSerializerRedundantCast(LibraryCustomization customization, Logger logger) {
-        customization.getClass("com.azure.storage.file.share.implementation", "XmlSerializer")
-            .customizeAst(ast -> ast.getClassByName("XmlSerializer").ifPresent(clazz -> {
-                clazz.getMethodsByName("deserialize")
-                    .forEach(method -> method.getAnnotationByName("SuppressWarnings")
-                        .filter(annotation -> annotation.isSingleMemberAnnotationExpr())
-                        .ifPresent(annotation -> annotation.asSingleMemberAnnotationExpr()
-                            .setMemberValue(new ArrayInitializerExpr(new NodeList<>(
-                                new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast"))))));
-                logger.info("Suppressed redundant-cast warning on XmlSerializer.deserialize");
-            }));
     }
 
     /**
