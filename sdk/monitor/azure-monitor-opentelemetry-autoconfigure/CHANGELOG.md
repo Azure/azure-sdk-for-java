@@ -6,10 +6,6 @@
 
 - Add custom measurements support ([#50578](https://github.com/Azure/azure-sdk-for-java/pull/50578))
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 - Upgraded OpenTelemetry SDK dependencies to 1.65.0 and OpenTelemetry Instrumentation dependencies to 2.31.1. ([#50543](https://github.com/Azure/azure-sdk-for-java/pull/50543))
