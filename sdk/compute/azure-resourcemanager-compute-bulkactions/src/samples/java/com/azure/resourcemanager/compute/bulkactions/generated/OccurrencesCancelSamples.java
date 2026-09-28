@@ -12,19 +12,20 @@ import java.util.Arrays;
  */
 public final class OccurrencesCancelSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/Occurrences_Cancel_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/Occurrences_Cancel_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Occurrences_Cancel_MaximumSet.
+     * Sample code: Cancel resources in a scheduled action occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void
-        occurrencesCancelMaximumSet(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void cancelResourcesInAScheduledActionOccurrence(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
-            .cancel("rgcompute", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245",
+            .cancel("rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45",
                 new CancelOccurrenceRequest().withResourceIds(Arrays.asList(
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm")),
+                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm",
+                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2")),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -42,7 +42,7 @@ public final class AgentOptimizationJobInputs implements JsonSerializable<AgentO
      * Job-level evaluators referenced by name and optional version. Required; at least one must be provided.
      */
     @Generated
-    private final List<AgentOptimizationEvaluatorRef> evaluators;
+    private final List<AgentOptimizationEvaluatorReference> evaluators;
 
     /*
      * Tuning knobs and run-mode.
@@ -59,7 +59,7 @@ public final class AgentOptimizationJobInputs implements JsonSerializable<AgentO
      */
     @Generated
     public AgentOptimizationJobInputs(OptimizedAgentIdentifier agent, AgentOptimizationDatasetInput trainDataset,
-        List<AgentOptimizationEvaluatorRef> evaluators) {
+        List<AgentOptimizationEvaluatorReference> evaluators) {
         this.agent = agent;
         this.trainDataset = trainDataset;
         this.evaluators = evaluators;
@@ -117,7 +117,7 @@ public final class AgentOptimizationJobInputs implements JsonSerializable<AgentO
      * @return the evaluators value.
      */
     @Generated
-    public List<AgentOptimizationEvaluatorRef> getEvaluators() {
+    public List<AgentOptimizationEvaluatorReference> getEvaluators() {
         return this.evaluators;
     }
 
@@ -172,7 +172,7 @@ public final class AgentOptimizationJobInputs implements JsonSerializable<AgentO
         return jsonReader.readObject(reader -> {
             OptimizedAgentIdentifier agent = null;
             AgentOptimizationDatasetInput trainDataset = null;
-            List<AgentOptimizationEvaluatorRef> evaluators = null;
+            List<AgentOptimizationEvaluatorReference> evaluators = null;
             AgentOptimizationDatasetInput validationDataset = null;
             AgentOptimizationOptions options = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -183,7 +183,7 @@ public final class AgentOptimizationJobInputs implements JsonSerializable<AgentO
                 } else if ("train_dataset".equals(fieldName)) {
                     trainDataset = AgentOptimizationDatasetInput.fromJson(reader);
                 } else if ("evaluators".equals(fieldName)) {
-                    evaluators = reader.readArray(reader1 -> AgentOptimizationEvaluatorRef.fromJson(reader1));
+                    evaluators = reader.readArray(reader1 -> AgentOptimizationEvaluatorReference.fromJson(reader1));
                 } else if ("validation_dataset".equals(fieldName)) {
                     validationDataset = AgentOptimizationDatasetInput.fromJson(reader);
                 } else if ("options".equals(fieldName)) {

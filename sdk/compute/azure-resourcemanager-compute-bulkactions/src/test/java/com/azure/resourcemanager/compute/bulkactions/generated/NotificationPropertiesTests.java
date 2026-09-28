@@ -14,9 +14,9 @@ public final class NotificationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NotificationProperties model = BinaryData
-            .fromString("{\"destination\":\"mhfbuzjy\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}")
+            .fromString("{\"destination\":\"upfgfbk\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}")
             .toObject(NotificationProperties.class);
-        Assertions.assertEquals("mhfbuzjy", model.destination());
+        Assertions.assertEquals("upfgfbk", model.destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.type());
         Assertions.assertEquals(Language.EN_US, model.language());
         Assertions.assertFalse(model.disabled());
@@ -24,12 +24,12 @@ public final class NotificationPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationProperties model = new NotificationProperties().withDestination("mhfbuzjy")
+        NotificationProperties model = new NotificationProperties().withDestination("upfgfbk")
             .withType(NotificationType.EMAIL)
             .withLanguage(Language.EN_US)
             .withDisabled(false);
         model = BinaryData.fromObject(model).toObject(NotificationProperties.class);
-        Assertions.assertEquals("mhfbuzjy", model.destination());
+        Assertions.assertEquals("upfgfbk", model.destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.type());
         Assertions.assertEquals(Language.EN_US, model.language());
         Assertions.assertFalse(model.disabled());

@@ -15,21 +15,21 @@ public final class WinRMConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WinRMConfiguration model = BinaryData.fromString(
-            "{\"listeners\":[{\"protocol\":\"Http\",\"certificateUrl\":\"n\"},{\"protocol\":\"Https\",\"certificateUrl\":\"flrwd\"},{\"protocol\":\"Http\",\"certificateUrl\":\"xyjrxsagafcnih\"},{\"protocol\":\"Https\",\"certificateUrl\":\"pnedgf\"}]}")
+            "{\"listeners\":[{\"protocol\":\"Https\",\"certificateUrl\":\"wjue\"},{\"protocol\":\"Http\",\"certificateUrl\":\"mcdytdxwitxnrj\"},{\"protocol\":\"Https\",\"certificateUrl\":\"wgxhn\"},{\"protocol\":\"Https\",\"certificateUrl\":\"fbkp\"}]}")
             .toObject(WinRMConfiguration.class);
-        Assertions.assertEquals(ProtocolTypes.HTTP, model.listeners().get(0).protocol());
-        Assertions.assertEquals("n", model.listeners().get(0).certificateUrl());
+        Assertions.assertEquals(ProtocolTypes.HTTPS, model.listeners().get(0).protocol());
+        Assertions.assertEquals("wjue", model.listeners().get(0).certificateUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WinRMConfiguration model = new WinRMConfiguration()
-            .withListeners(Arrays.asList(new WinRMListener().withProtocol(ProtocolTypes.HTTP).withCertificateUrl("n"),
-                new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("flrwd"),
-                new WinRMListener().withProtocol(ProtocolTypes.HTTP).withCertificateUrl("xyjrxsagafcnih"),
-                new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("pnedgf")));
+        WinRMConfiguration model = new WinRMConfiguration().withListeners(
+            Arrays.asList(new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("wjue"),
+                new WinRMListener().withProtocol(ProtocolTypes.HTTP).withCertificateUrl("mcdytdxwitxnrj"),
+                new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("wgxhn"),
+                new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("fbkp")));
         model = BinaryData.fromObject(model).toObject(WinRMConfiguration.class);
-        Assertions.assertEquals(ProtocolTypes.HTTP, model.listeners().get(0).protocol());
-        Assertions.assertEquals("n", model.listeners().get(0).certificateUrl());
+        Assertions.assertEquals(ProtocolTypes.HTTPS, model.listeners().get(0).protocol());
+        Assertions.assertEquals("wjue", model.listeners().get(0).certificateUrl());
     }
 }

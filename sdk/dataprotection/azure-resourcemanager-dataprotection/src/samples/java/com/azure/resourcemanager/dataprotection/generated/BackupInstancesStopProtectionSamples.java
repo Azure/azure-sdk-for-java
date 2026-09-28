@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class BackupInstancesStopProtectionSamples {
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/StopProtection.json
+     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/StopProtection.json
      */
     /**
      * Sample code: StopProtection.
@@ -25,7 +25,7 @@ public final class BackupInstancesStopProtectionSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/StopProtection_ResourceGuardEnabled.json
+     * x-ms-original-file: 2026-06-01/BackupInstanceOperations/StopProtection_ResourceGuardEnabled.json
      */
     /**
      * Sample code: StopProtection with MUA.
@@ -36,7 +36,7 @@ public final class BackupInstancesStopProtectionSamples {
         manager.backupInstances()
             .stopProtection("testrg", "testvault", "testbi",
                 new StopProtectionRequest().withResourceGuardOperationRequests(Arrays.asList(
-                    "/subscriptions/754ec39f-8d2a-44cf-bfbf-13107ac85c36/resourcegroups/mua-testing/providers/Microsoft.DataProtection/resourceGuards/gvjreddy-test-ecy-rg-reader/dppDisableStopProtectionRequests/default")),
+                    "/subscriptions/754ec39f-8d2a-44cf-bfbf-13107ac85c36/resourceGroups/mua-testing/providers/Microsoft.DataProtection/resourceGuards/gvjreddy-test-ecy-rg-reader/dppDisableStopProtectionRequests/default")),
                 com.azure.core.util.Context.NONE);
     }
 }

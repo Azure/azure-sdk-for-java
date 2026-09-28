@@ -22,7 +22,7 @@ public final class TrafficControllerInterfacesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"jvp\",\"jqg\"],\"frontends\":[{\"id\":\"mocmbqfqvmk\"},{\"id\":\"xozap\"}],\"associations\":[{\"id\":\"lxprglyatddckcbc\"},{\"id\":\"ejrjxgciqibrho\"},{\"id\":\"xsdqrhzoymibmrqy\"},{\"id\":\"bahwfl\"}],\"securityPolicies\":[{\"id\":\"dtmhrkwofyyvoqa\"},{\"id\":\"piexpbtgiw\"},{\"id\":\"wo\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"ashrt\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"kcnqxwbpo\"}},\"provisioningState\":\"Updating\"},\"location\":\"iujwa\",\"tags\":{\"pqlpq\":\"pqiiobyuqe\",\"fbtkuwhhmhyk\":\"cciuqgbdbutau\",\"hkoymkcdyhbp\":\"joxafnndlpi\",\"reqnovvqfov\":\"kpw\"},\"id\":\"jxywsuws\",\"name\":\"rsndsytgadgvra\",\"type\":\"aeneqnzarrwl\"}]}";
+            = "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"dbnw\",\"cf\",\"ucqdpfuvglsb\",\"jcanvxbvtvudut\"],\"frontends\":[{\"id\":\"rmrlxqtvcof\"},{\"id\":\"dflvkg\"},{\"id\":\"u\"},{\"id\":\"gdknnqv\"}],\"associations\":[{\"id\":\"nqntorudsgsahm\"},{\"id\":\"yc\"}],\"securityPolicies\":[{\"id\":\"uwjuetaeburuvdmo\"},{\"id\":\"s\"},{\"id\":\"zlxwabmqoefkifr\"}],\"privateEndpointConnections\":[{\"id\":\"u\"},{\"id\":\"ujmqlgkfbtndoa\"},{\"id\":\"n\"},{\"id\":\"bjcntujitc\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"ftwwaezkojvdc\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"foqouicybx\"}},\"provisioningState\":\"Succeeded\"},\"location\":\"szufoxciqopidoa\",\"tags\":{\"xkhnzbonlwnto\":\"odhkha\",\"zcmrvexztvb\":\"gokdwbwhks\",\"lmnguxaw\":\"qgsfraoyzkoow\",\"uximerqfobw\":\"aldsy\"},\"id\":\"znkbykutwpfhpagm\",\"name\":\"r\",\"type\":\"kdsnfdsdoakgtdl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +34,11 @@ public final class TrafficControllerInterfacesListMockTests {
         PagedIterable<TrafficController> response
             = manager.trafficControllerInterfaces().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iujwa", response.iterator().next().location());
-        Assertions.assertEquals("pqiiobyuqe", response.iterator().next().tags().get("pqlpq"));
-        Assertions.assertEquals("ashrt",
+        Assertions.assertEquals("szufoxciqopidoa", response.iterator().next().location());
+        Assertions.assertEquals("odhkha", response.iterator().next().tags().get("xkhnzbonlwnto"));
+        Assertions.assertEquals("ftwwaezkojvdc",
             response.iterator().next().properties().securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("kcnqxwbpo",
+        Assertions.assertEquals("foqouicybx",
             response.iterator().next().properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 }

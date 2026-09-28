@@ -9,15 +9,15 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-06-preview/ScheduledActions_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_Get_MaximumSet.
+     * Sample code: Get a scheduled action.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
     public static void
-        scheduledActionsGetMaximumSet(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        getAScheduledAction(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.scheduledActions()
             .getByResourceGroupWithResponse("rgcompute", "myScheduledAction", com.azure.core.util.Context.NONE);
     }
