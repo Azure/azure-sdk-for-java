@@ -348,6 +348,15 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     }
 
     /**
+     * Force-closes the current cached channel so that the next subscriber receives a fresh one.
+     * This is used for connection-level recovery when the current connection is stale
+     * but the processor has not detected it (e.g., heartbeats echoed by intermediate infrastructure).
+     */
+    public void forceCloseChannel() {
+        setAndClearChannel();
+    }
+
+    /**
      * Checks the current state of the channel for this channel and returns true if the channel is null or if this
      * processor is disposed.
      *
