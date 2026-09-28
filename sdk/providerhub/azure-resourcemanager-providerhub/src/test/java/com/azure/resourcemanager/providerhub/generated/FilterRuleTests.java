@@ -15,31 +15,28 @@ public final class FilterRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FilterRule model = BinaryData.fromString(
-            "{\"filterQuery\":\"idxas\",\"endpointInformation\":[{\"endpoint\":\"yvvjskgfmo\",\"endpointType\":\"Webhook\",\"schemaVersion\":\"pqg\"},{\"endpoint\":\"jeaahhvjhh\",\"endpointType\":\"Webhook\",\"schemaVersion\":\"ybbjjidjksyx\"},{\"endpoint\":\"xvxevblbjednljla\",\"endpointType\":\"Eventhub\",\"schemaVersion\":\"ulxunsmjbnkpp\"}]}")
+            "{\"filterQuery\":\"xtgzukxitmmqtgqq\",\"endpointInformation\":[{\"endpoint\":\"n\",\"endpointType\":\"Eventhub\",\"schemaVersion\":\"pjui\"},{\"endpoint\":\"vokqdzfv\",\"endpointType\":\"Eventhub\",\"schemaVersion\":\"jlfrq\"}]}")
             .toObject(FilterRule.class);
-        Assertions.assertEquals("idxas", model.filterQuery());
-        Assertions.assertEquals("yvvjskgfmo", model.endpointInformation().get(0).endpoint());
-        Assertions.assertEquals(NotificationEndpointType.WEBHOOK, model.endpointInformation().get(0).endpointType());
-        Assertions.assertEquals("pqg", model.endpointInformation().get(0).schemaVersion());
+        Assertions.assertEquals("xtgzukxitmmqtgqq", model.filterQuery());
+        Assertions.assertEquals("n", model.endpointInformation().get(0).endpoint());
+        Assertions.assertEquals(NotificationEndpointType.EVENTHUB, model.endpointInformation().get(0).endpointType());
+        Assertions.assertEquals("pjui", model.endpointInformation().get(0).schemaVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FilterRule model = new FilterRule().withFilterQuery("idxas")
+        FilterRule model = new FilterRule().withFilterQuery("xtgzukxitmmqtgqq")
             .withEndpointInformation(Arrays.asList(
-                new EndpointInformation().withEndpoint("yvvjskgfmo")
-                    .withEndpointType(NotificationEndpointType.WEBHOOK)
-                    .withSchemaVersion("pqg"),
-                new EndpointInformation().withEndpoint("jeaahhvjhh")
-                    .withEndpointType(NotificationEndpointType.WEBHOOK)
-                    .withSchemaVersion("ybbjjidjksyx"),
-                new EndpointInformation().withEndpoint("xvxevblbjednljla")
+                new EndpointInformation().withEndpoint("n")
                     .withEndpointType(NotificationEndpointType.EVENTHUB)
-                    .withSchemaVersion("ulxunsmjbnkpp")));
+                    .withSchemaVersion("pjui"),
+                new EndpointInformation().withEndpoint("vokqdzfv")
+                    .withEndpointType(NotificationEndpointType.EVENTHUB)
+                    .withSchemaVersion("jlfrq")));
         model = BinaryData.fromObject(model).toObject(FilterRule.class);
-        Assertions.assertEquals("idxas", model.filterQuery());
-        Assertions.assertEquals("yvvjskgfmo", model.endpointInformation().get(0).endpoint());
-        Assertions.assertEquals(NotificationEndpointType.WEBHOOK, model.endpointInformation().get(0).endpointType());
-        Assertions.assertEquals("pqg", model.endpointInformation().get(0).schemaVersion());
+        Assertions.assertEquals("xtgzukxitmmqtgqq", model.filterQuery());
+        Assertions.assertEquals("n", model.endpointInformation().get(0).endpoint());
+        Assertions.assertEquals(NotificationEndpointType.EVENTHUB, model.endpointInformation().get(0).endpointType());
+        Assertions.assertEquals("pjui", model.endpointInformation().get(0).schemaVersion());
     }
 }

@@ -21,7 +21,7 @@ public final class ReservationsGetBillingStatusWithResponseMockTests {
     @Test
     public void testGetBillingStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"timestamp\":\"fqntcyp\",\"totalUsedCapacityReported\":2635944081266702122,\"lowDrrPoolCount\":426307955,\"drrWeightedAverage\":95.23347855459366,\"totalNonReducibleReported\":4546309057929935505,\"extraUsedCapacityNonReducible\":6047137828551232297,\"extraUsedCapacityLowUsageRounding\":8042667527966501304,\"extraUsedCapacityNonReduciblePlanDiscount\":159225456433786941,\"totalUsedCapacityBilled\":7739182003359751945,\"totalUsedCapacityIncludedPlan\":1648418859978390426,\"totalUsedCapacityOverage\":8402050671930646038,\"totalPerformanceReported\":5029301967777206897,\"totalPerformanceIncludedPlan\":4440382960214117779,\"totalPerformanceOverage\":4987210128841466857}";
+            = "{\"timestamp\":\"qwthmky\",\"totalUsedCapacityReported\":6308050303389285350,\"lowDrrPoolCount\":669264341,\"drrWeightedAverage\":82.00838158982012,\"totalNonReducibleReported\":4999567940157518830,\"extraUsedCapacityNonReducible\":5547419004345930777,\"extraUsedCapacityLowUsageRounding\":2251416135088020925,\"extraUsedCapacityNonReduciblePlanDiscount\":6639397482383698267,\"totalUsedCapacityBilled\":8114283161752734168,\"totalUsedCapacityIncludedPlan\":8229457154745715233,\"totalUsedCapacityOverage\":4553721559996277354,\"totalPerformanceReported\":5468502244343964133,\"totalPerformanceIncludedPlan\":2499995130164336659,\"totalPerformanceOverage\":959554963448832293}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,22 +31,22 @@ public final class ReservationsGetBillingStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ReservationBillingStatus response = manager.reservations()
-            .getBillingStatusWithResponse("uutpwoqhih", "jqgwzp", com.azure.core.util.Context.NONE)
+            .getBillingStatusWithResponse("jltfvnzcyjtotpv", "pvpbdbzqgqqiheds", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fqntcyp", response.timestamp());
-        Assertions.assertEquals(2635944081266702122L, response.totalUsedCapacityReported());
-        Assertions.assertEquals(426307955, response.lowDrrPoolCount());
-        Assertions.assertEquals(95.23347855459366, response.drrWeightedAverage());
-        Assertions.assertEquals(4546309057929935505L, response.totalNonReducibleReported());
-        Assertions.assertEquals(6047137828551232297L, response.extraUsedCapacityNonReducible());
-        Assertions.assertEquals(8042667527966501304L, response.extraUsedCapacityLowUsageRounding());
-        Assertions.assertEquals(159225456433786941L, response.extraUsedCapacityNonReduciblePlanDiscount());
-        Assertions.assertEquals(7739182003359751945L, response.totalUsedCapacityBilled());
-        Assertions.assertEquals(1648418859978390426L, response.totalUsedCapacityIncludedPlan());
-        Assertions.assertEquals(8402050671930646038L, response.totalUsedCapacityOverage());
-        Assertions.assertEquals(5029301967777206897L, response.totalPerformanceReported());
-        Assertions.assertEquals(4440382960214117779L, response.totalPerformanceIncludedPlan());
-        Assertions.assertEquals(4987210128841466857L, response.totalPerformanceOverage());
+        Assertions.assertEquals("qwthmky", response.timestamp());
+        Assertions.assertEquals(6308050303389285350L, response.totalUsedCapacityReported());
+        Assertions.assertEquals(669264341, response.lowDrrPoolCount());
+        Assertions.assertEquals(82.00838158982012, response.drrWeightedAverage());
+        Assertions.assertEquals(4999567940157518830L, response.totalNonReducibleReported());
+        Assertions.assertEquals(5547419004345930777L, response.extraUsedCapacityNonReducible());
+        Assertions.assertEquals(2251416135088020925L, response.extraUsedCapacityLowUsageRounding());
+        Assertions.assertEquals(6639397482383698267L, response.extraUsedCapacityNonReduciblePlanDiscount());
+        Assertions.assertEquals(8114283161752734168L, response.totalUsedCapacityBilled());
+        Assertions.assertEquals(8229457154745715233L, response.totalUsedCapacityIncludedPlan());
+        Assertions.assertEquals(4553721559996277354L, response.totalUsedCapacityOverage());
+        Assertions.assertEquals(5468502244343964133L, response.totalPerformanceReported());
+        Assertions.assertEquals(2499995130164336659L, response.totalPerformanceIncludedPlan());
+        Assertions.assertEquals(959554963448832293L, response.totalPerformanceOverage());
     }
 }

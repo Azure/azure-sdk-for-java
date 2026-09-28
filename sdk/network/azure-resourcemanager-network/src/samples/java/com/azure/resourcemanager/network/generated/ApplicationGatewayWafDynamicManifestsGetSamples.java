@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewayWafDynamicManifestsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GetApplicationGatewayWafDynamicManifests.json
+     * x-ms-original-file: 2026-01-01/GetApplicationGatewayWafDynamicManifests.json
      */
     /**
      * Sample code: Gets WAF manifests.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class BackupJobsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Common/ListJobs.json
+     * x-ms-original-file: 2026-08-01/Common/ListJobs.json
      */
     /**
      * Sample code: List All Jobs.
@@ -22,7 +22,7 @@ public final class BackupJobsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/Common/ListJobsWithAllSupportedFilters.json
+     * x-ms-original-file: 2026-08-01/Common/ListJobsWithAllSupportedFilters.json
      */
     /**
      * Sample code: List Jobs With Filters.
@@ -38,7 +38,7 @@ public final class BackupJobsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/Common/ListJobsWithStartTimeAndEndTimeFilters.json
+     * x-ms-original-file: 2026-08-01/Common/ListJobsWithStartTimeAndEndTimeFilters.json
      */
     /**
      * Sample code: List Jobs With Time Filter.

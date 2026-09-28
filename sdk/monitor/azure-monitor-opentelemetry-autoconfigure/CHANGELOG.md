@@ -1,8 +1,10 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Add custom measurements support ([#50578](https://github.com/Azure/azure-sdk-for-java/pull/50578))
 
 ### Breaking Changes
 
@@ -10,7 +12,24 @@
 
 ### Other Changes
 
-- Align customer-facing SDKStats configuration and custom dimension names with the stable specification.
+- Upgraded OpenTelemetry SDK dependencies to 1.65.0 and OpenTelemetry Instrumentation dependencies to 2.31.1. ([#50543](https://github.com/Azure/azure-sdk-for-java/pull/50543))
+
+## 1.7.0 (2026-09-17)
+
+### Bugs Fixed
+
+- Ensure the SDKStats all-disable setting also suppresses internal Statsbeat exports and background tasks. ([#50382](https://github.com/Azure/azure-sdk-for-java/pull/50382))
+- Harden the local telemetry spool directory against symlink, Windows junction, and path-squatting attacks. If secure directory initialization is denied, continue exporting without disk persistence. ([#50463](https://github.com/Azure/azure-sdk-for-java/pull/50463))
+
+## 1.6.0 (2026-08-17)
+
+### Bugs Fixed
+
+- Validate ingestion and Live Metrics redirect targets before following them ([#50117](https://github.com/Azure/azure-sdk-for-java/pull/50117))
+
+### Other Changes
+
+- Align customer-facing SDKStats configuration and custom dimension names with the stable specification. ([#50056](https://github.com/Azure/azure-sdk-for-java/pull/50056))
 
 ## 1.5.0 (2026-06-11)
 
@@ -30,8 +49,8 @@
 
 ### Other Changes
 
-- Update OpenTelemetry SDK to 1.58.0 ([#44950](https://github.com/Azure/azure-sdk-for-java/pull/44950)))
-- Clean up checkstyle suppressions for io.opentelemetry* imports ([#49040](https://github.com/Azure/azure-sdk-for-java/pull/49040)))
+- Update OpenTelemetry SDK to 1.58.0 ([#44950](https://github.com/Azure/azure-sdk-for-java/pull/44950))
+- Clean up checkstyle suppressions for io.opentelemetry* imports ([#49040](https://github.com/Azure/azure-sdk-for-java/pull/49040))
 
 ## 1.4.0 (2025-09-24)
 
@@ -41,7 +60,7 @@
 
 ### Breaking Changes
 
-- Updated mapping for `enduser.id` attribute from `user_Id` to `user_AuthenticatedId` ([#46506](https://github.com/Azure/azure-sdk-for-java/pull/46506)
+- Updated mapping for `enduser.id` attribute from `user_Id` to `user_AuthenticatedId` ([#46506](https://github.com/Azure/azure-sdk-for-java/pull/46506))
 
 ## 1.3.0 (2025-08-01)
 

@@ -4,6 +4,8 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.SelMethod;
+import com.azure.analytics.planetarycomputer.models.TileMatrixSetId;
 import com.azure.core.util.BinaryData;
 import java.util.List;
 import org.junit.jupiter.api.Disabled;
@@ -16,6 +18,8 @@ public final class MosaicSearchesAssetsForTilesGetZxyAssetsTests extends Planeta
     public void testMosaicSearchesAssetsForTilesGetZxyAssetsTests() {
         // method invocation
         List<BinaryData> response = dataClient.getSearchAssetsForTileNoTms("ba13fc7947b9b585690d84ee61aaa653", 13.0,
-            2174.0, 3282.0, null, null, null, null, null, null, null, null, null, null, null, null);
+            2174.0, 3282.0, (Integer) null, (Integer) null, (Integer) null, (Boolean) null, (Boolean) null,
+            (String) null, (List<Integer>) null, (String) null, (String) null, (List<String>) null, (SelMethod) null,
+            (TileMatrixSetId) null);
     }
 }

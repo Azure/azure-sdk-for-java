@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.bulkactions.fluent.models.OperationStat
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustoms;
 import com.azure.resourcemanager.compute.bulkactions.models.LocationBasedBulkCreateCustom;
 import com.azure.resourcemanager.compute.bulkactions.models.OperationStatusResult;
+import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 
 public final class BulkCreateCustomsImpl implements BulkCreateCustoms {
     private static final ClientLogger LOGGER = new ClientLogger(BulkCreateCustomsImpl.class);
@@ -78,6 +79,16 @@ public final class BulkCreateCustomsImpl implements BulkCreateCustoms {
 
     public void cancel(String resourceGroupName, String location, String name, Context context) {
         this.serviceClient().cancel(resourceGroupName, location, name, context);
+    }
+
+    public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+        String name) {
+        return this.serviceClient().virtualMachinesGetOperationStatus(resourceGroupName, location, name);
+    }
+
+    public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+        String name, Context context) {
+        return this.serviceClient().virtualMachinesGetOperationStatus(resourceGroupName, location, name, context);
     }
 
     public PagedIterable<LocationBasedBulkCreateCustom> listByResourceGroup(String resourceGroupName, String location) {

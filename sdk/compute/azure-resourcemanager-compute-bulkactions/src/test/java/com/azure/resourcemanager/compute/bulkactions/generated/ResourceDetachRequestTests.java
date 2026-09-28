@@ -13,14 +13,14 @@ public final class ResourceDetachRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceDetachRequest model
-            = BinaryData.fromString("{\"resources\":[\"wn\"]}").toObject(ResourceDetachRequest.class);
-        Assertions.assertEquals("wn", model.resources().get(0));
+            = BinaryData.fromString("{\"resources\":[\"nk\"]}").toObject(ResourceDetachRequest.class);
+        Assertions.assertEquals("nk", model.resources().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceDetachRequest model = new ResourceDetachRequest().withResources(Arrays.asList("wn"));
+        ResourceDetachRequest model = new ResourceDetachRequest().withResources(Arrays.asList("nk"));
         model = BinaryData.fromObject(model).toObject(ResourceDetachRequest.class);
-        Assertions.assertEquals("wn", model.resources().get(0));
+        Assertions.assertEquals("nk", model.resources().get(0));
     }
 }

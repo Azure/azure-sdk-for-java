@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class PrivateAccessesGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/PrivateAccesses_GetPrivateLinkResources.json
+     * x-ms-original-file: 2026-08-01-preview/PrivateAccesses_GetPrivateLinkResources.json
      */
     /**
      * Sample code: List all possible private link resources under private access resource.

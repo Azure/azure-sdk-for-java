@@ -16,7 +16,7 @@ import java.io.IOException;
  * Base model for a routine trigger.
  */
 @Immutable
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public class RoutineTrigger implements JsonSerializable<RoutineTrigger> {
 
     /*

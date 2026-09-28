@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class IdentityBindingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/IdentityBindings_Create_Or_Update.json
+     * x-ms-original-file: 2026-06-02-preview/IdentityBindings_Create_Or_Update.json
      */
     /**
      * Sample code: Create or update Identity Binding.
@@ -37,7 +37,7 @@ public final class IdentityBindingsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-02-preview/IdentityBindings_Create_Or_UpdateWithAllowedSubjects.json
+     * x-ms-original-file: 2026-06-02-preview/IdentityBindings_Create_Or_UpdateWithAllowedSubjects.json
      */
     /**
      * Sample code: Create or update Identity Binding with allowed subjects.

@@ -22,7 +22,7 @@ public final class ResourceGuardsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"ua\",\"requestResourceType\":\"zkwrrwoyc\"},{\"vaultCriticalOperation\":\"cwyhahno\",\"requestResourceType\":\"rkywuhpsvfuu\"},{\"vaultCriticalOperation\":\"tlwexxwlalniexz\",\"requestResourceType\":\"zpgepqty\"},{\"vaultCriticalOperation\":\"wwpgdakchzyvlixq\",\"requestResourceType\":\"kcxk\"}],\"vaultCriticalOperationExclusionList\":[\"nxm\"],\"description\":\"uxswqrntvl\"},\"eTag\":\"jpsttexoq\",\"location\":\"wcyyufmhruncu\",\"tags\":{\"ctddun\":\"spkcdqzh\",\"pchrqbn\":\"ndy\",\"gydcw\":\"jrcg\",\"ihrraiouaub\":\"oxjumvqqo\"},\"id\":\"jtlo\",\"name\":\"xfuojrn\",\"type\":\"iflrzpasccbiu\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"yb\",\"requestResourceType\":\"wpgdak\"}],\"vaultCriticalOperationExclusionList\":[\"yvlixqnrk\",\"xkjibnxmy\"],\"description\":\"xs\"},\"eTag\":\"rntvlwijp\",\"location\":\"texoqqpwc\",\"tags\":{\"spkcdqzh\":\"fmhruncuwm\",\"ndy\":\"ctddun\"},\"id\":\"pchrqbn\",\"name\":\"jrcg\",\"type\":\"gydcw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class ResourceGuardsListMockTests {
 
         PagedIterable<ResourceGuardResource> response = manager.resourceGuards().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wcyyufmhruncu", response.iterator().next().location());
-        Assertions.assertEquals("spkcdqzh", response.iterator().next().tags().get("ctddun"));
-        Assertions.assertEquals("nxm",
+        Assertions.assertEquals("texoqqpwc", response.iterator().next().location());
+        Assertions.assertEquals("fmhruncuwm", response.iterator().next().tags().get("spkcdqzh"));
+        Assertions.assertEquals("yvlixqnrk",
             response.iterator().next().properties().vaultCriticalOperationExclusionList().get(0));
-        Assertions.assertEquals("jpsttexoq", response.iterator().next().etag());
+        Assertions.assertEquals("rntvlwijp", response.iterator().next().etag());
     }
 }

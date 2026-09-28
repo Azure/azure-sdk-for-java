@@ -11,18 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class OSImageNotificationProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OSImageNotificationProfile model = BinaryData.fromString("{\"notBeforeTimeout\":\"niodkooeb\",\"enable\":true}")
-            .toObject(OSImageNotificationProfile.class);
-        Assertions.assertEquals("niodkooeb", model.notBeforeTimeout());
+        OSImageNotificationProfile model
+            = BinaryData.fromString("{\"notBeforeTimeout\":\"rjaltolmncw\",\"enable\":true}")
+                .toObject(OSImageNotificationProfile.class);
+        Assertions.assertEquals("rjaltolmncw", model.notBeforeTimeout());
         Assertions.assertTrue(model.enable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OSImageNotificationProfile model
-            = new OSImageNotificationProfile().withNotBeforeTimeout("niodkooeb").withEnable(true);
+            = new OSImageNotificationProfile().withNotBeforeTimeout("rjaltolmncw").withEnable(true);
         model = BinaryData.fromObject(model).toObject(OSImageNotificationProfile.class);
-        Assertions.assertEquals("niodkooeb", model.notBeforeTimeout());
+        Assertions.assertEquals("rjaltolmncw", model.notBeforeTimeout());
         Assertions.assertTrue(model.enable());
     }
 }

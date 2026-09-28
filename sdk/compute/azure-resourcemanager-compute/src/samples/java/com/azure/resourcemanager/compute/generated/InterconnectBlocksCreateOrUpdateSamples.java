@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class InterconnectBlocksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01/interconnectBlockExamples/InterconnectBlocks_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-01/interconnectBlockExamples/InterconnectBlocks_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update an Interconnect Block with a specific zone.
@@ -40,7 +40,7 @@ public final class InterconnectBlocksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/interconnectBlockExamples/InterconnectBlocks_CreateOrUpdate_AnyZone.json
+     * x-ms-original-file: 2026-04-01/interconnectBlockExamples/InterconnectBlocks_CreateOrUpdate_AnyZone.json
      */
     /**
      * Sample code: Create or update an Interconnect Block with automatic zone placement.

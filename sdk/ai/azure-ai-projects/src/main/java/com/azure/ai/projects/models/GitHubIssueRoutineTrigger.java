@@ -15,7 +15,7 @@ import java.io.IOException;
  * A GitHub issue routine trigger.
  */
 @Immutable
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class GitHubIssueRoutineTrigger extends RoutineTrigger {
 
     /*

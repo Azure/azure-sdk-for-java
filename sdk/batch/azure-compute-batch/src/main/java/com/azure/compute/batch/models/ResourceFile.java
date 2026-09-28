@@ -10,6 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Objects;
 
 /**
  * A single file or multiple files to be downloaded to a Compute Node.
@@ -236,6 +238,17 @@ public final class ResourceFile implements JsonSerializable<ResourceFile> {
     public ResourceFile setFilePath(String filePath) {
         this.filePath = filePath;
         return this;
+    }
+
+    /**
+     * Set the filePath property: The location on the Compute Node to which to download the file(s), relative to the
+     * Task's working directory.
+     *
+     * @param filePath the filePath value to set.
+     * @return the ResourceFile object itself.
+     */
+    public ResourceFile setFilePath(Path filePath) {
+        return setFilePath(Objects.toString(filePath, null));
     }
 
     /**

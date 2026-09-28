@@ -5,14 +5,13 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeInterpreterTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCodeInterpreterToolCall;
 import com.openai.models.responses.ResponseCreateParams;
@@ -41,7 +40,6 @@ public class CodeInterpreterSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         AgentVersionDetails agent = null;
 
@@ -60,13 +58,14 @@ public class CodeInterpreterSync {
             agent = agentsClient.createAgentVersion("code-interpreter-agent", agentDefinition);
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            SampleUtils.pinAgentVersion(agentsClient, agent);
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
+
+            Response response = openAIClient.responses().create(
                 ResponseCreateParams.builder()
-                    .input("Calculate the first 10 prime numbers and show me the Python code you used."));
+                    .input("Calculate the first 10 prime numbers and show me the Python code you used.")
+                    .build());
 
             // Process and display the response
             for (ResponseOutputItem outputItem : response.output()) {

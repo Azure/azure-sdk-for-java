@@ -104,6 +104,11 @@ public final class ExtensionCategory extends ExpandableStringEnum<ExtensionCateg
         = fromString("SubscriptionLifecycleNotificationDeletion");
 
     /**
+     * Resource billing notification extension category.
+     */
+    public static final ExtensionCategory RESOURCE_BILLING_NOTIFICATION = fromString("ResourceBillingNotification");
+
+    /**
      * Creates a new instance of ExtensionCategory value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

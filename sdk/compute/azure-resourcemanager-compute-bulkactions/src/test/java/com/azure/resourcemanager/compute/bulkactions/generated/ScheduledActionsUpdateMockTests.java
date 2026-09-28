@@ -14,15 +14,14 @@ import com.azure.resourcemanager.compute.bulkactions.models.Language;
 import com.azure.resourcemanager.compute.bulkactions.models.Month;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationType;
-import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsDeadlineType;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsResourceOperationType;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdate;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdateProperties;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsDeadlineType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsExecutionParameters;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsResourceOperationType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsScheduleUpdate;
 import com.azure.resourcemanager.compute.bulkactions.models.WeekDay;
 import java.nio.charset.StandardCharsets;
@@ -46,36 +45,37 @@ public final class ScheduledActionsUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.scheduledActions()
-            .update("crse", "wjksghudgzhxo",
-                new ScheduledActionUpdate()
-                    .withTags(mapOf("u", "gsv", "kmdyomkxfbvfbh", "kxibdafh", "rhpw", "y", "o", "gddeimaw"))
-                    .withProperties(new ScheduledActionUpdateProperties()
-                        .withResourceType(ResourceType.VIRTUAL_MACHINE_SCALE_SET)
-                        .withActionType(ScheduledActionType.DEALLOCATE)
-                        .withStartTime(OffsetDateTime.parse("2021-07-27T18:18:48Z"))
-                        .withEndTime(OffsetDateTime.parse("2021-06-18T05:33:50Z"))
-                        .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("cazt")
-                            .withTimeZone("snsqowxwcoml")
+            .update("akdkifmjnnawtqab", "xuckpggqoweyir",
+                new ScheduledActionUpdate().withTags(mapOf("n", "isngwflqqmpizru"))
+                    .withProperties(new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
+                        .withActionType(ScheduledActionType.START)
+                        .withStartTime(OffsetDateTime.parse("2021-07-30T07:52:46Z"))
+                        .withEndTime(OffsetDateTime.parse("2021-09-02T05:49:50Z"))
+                        .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("saasiixtmkzj")
+                            .withTimeZone("viirhgfgrws")
                             .withRequestedWeekDays(
-                                Arrays.asList(WeekDay.TUESDAY, WeekDay.SATURDAY, WeekDay.MONDAY, WeekDay.THURSDAY))
-                            .withRequestedMonths(Arrays.asList(Month.MARCH, Month.JUNE, Month.OCTOBER))
-                            .withRequestedDaysOfTheMonth(Arrays.asList(411021525, 1614313914, 1847821984, 1992700575))
-                            .withExecutionParameters(new RecurringScheduledActionsExecutionParameters()
-                                .withOptimizationPreference(OptimizationPreference.AVAILABILITY)
-                                .withRetryPolicy(new RecurringScheduledActionsRetryPolicy().withRetryCount(1835258535)
-                                    .withRetryWindowInMinutes(98505502)
-                                    .withOnFailureAction(RecurringScheduledActionsResourceOperationType.HIBERNATE)))
-                            .withDeadlineType(RecurringScheduledActionsDeadlineType.COMPLETE_BY))
+                                Arrays.asList(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.MONDAY, WeekDay.FRIDAY))
+                            .withRequestedMonths(Arrays.asList(Month.ALL))
+                            .withRequestedDaysOfTheMonth(Arrays.asList(871795155, 39003903, 156163640, 1015396503))
+                            .withExecutionParameters(new ScheduledActionsExecutionParameters()
+                                .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(1666158836)
+                                    .withRetryWindowInMinutes(1709678755)
+                                    .withOnFailureAction(ScheduledActionsResourceOperationType.CREATE)))
+                            .withDeadlineType(ScheduledActionsDeadlineType.COMPLETE_BY))
                         .withNotificationSettings(Arrays.asList(
-                            new NotificationProperties().withDestination("ddpqt")
+                            new NotificationProperties().withDestination("gxffmshkwf")
                                 .withType(NotificationType.EMAIL)
                                 .withLanguage(Language.EN_US)
-                                .withDisabled(false),
-                            new NotificationProperties().withDestination("naoyank")
+                                .withDisabled(true),
+                            new NotificationProperties().withDestination("xwopdbydpizqa")
+                                .withType(NotificationType.EMAIL)
+                                .withLanguage(Language.EN_US)
+                                .withDisabled(true),
+                            new NotificationProperties().withDestination("xbiygnugjknfsmf")
                                 .withType(NotificationType.EMAIL)
                                 .withLanguage(Language.EN_US)
                                 .withDisabled(true)))
-                        .withDisabled(false)),
+                        .withDisabled(true)),
                 com.azure.core.util.Context.NONE);
 
     }

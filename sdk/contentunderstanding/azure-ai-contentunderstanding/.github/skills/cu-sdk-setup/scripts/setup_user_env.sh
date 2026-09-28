@@ -15,6 +15,10 @@ echo ""
 
 cd "$PACKAGE_ROOT"
 
+escape_basic_regex() {
+    printf '%s' "$1" | sed 's/[][\\.^$*]/\\&/g'
+}
+
 # --- helper: offer to install JDK/Maven via the platform's package manager ---
 # Usage: offer_install_tool <tool>
 #   tool: "jdk" | "maven"
@@ -237,11 +241,20 @@ if [ "$CREATE_ENV" = true ]; then
             echo "  ℹ Using DefaultAzureCredential — remember to run 'az login' before invoking samples."
         fi
 
+        echo ""
+        echo "  Logical model names:"
+        read -r -p "  CU_COMPLETION_MODEL (default: gpt-5.2): " completion_model || completion_model=""
+        completion_model="${completion_model:-gpt-5.2}"
+        read -r -p "  CU_COMPLETION_MODEL_MINI (default: $completion_model): " mini_model || mini_model=""
+        mini_model="${mini_model:-$completion_model}"
+        read -r -p "  CU_EMBEDDING_MODEL (default: text-embedding-3-large): " embedding_model || embedding_model=""
+        embedding_model="${embedding_model:-text-embedding-3-large}"
+
         # Probe existing model defaults on the Foundry resource before prompting.
         # Uses curl to call the defaults API directly.
-        gpt41=""
-        gpt41mini=""
-        embedding=""
+        completion_deployment=""
+        mini_deployment=""
+        embedding_deployment=""
         if [ -n "$endpoint" ]; then
             echo ""
             echo "  Probing existing model defaults on the Foundry resource..."
@@ -280,22 +293,38 @@ if [ "$CREATE_ENV" = true ]; then
 
             if [ "$http_code" = "200" ]; then
                 # Parse modelDeployments from JSON using grep/sed (no jq dependency)
-                gpt41=$(echo "$body" | grep -o '"gpt-4\.1"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*: *"//;s/"//' | head -1)
-                gpt41mini=$(echo "$body" | grep -o '"gpt-4\.1-mini"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*: *"//;s/"//' | head -1)
-                embedding=$(echo "$body" | grep -o '"text-embedding-3-large"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*: *"//;s/"//' | head -1)
+                completion_model_pattern=$(escape_basic_regex "$completion_model")
+                mini_model_pattern=$(escape_basic_regex "$mini_model")
+                embedding_model_pattern=$(escape_basic_regex "$embedding_model")
+                completion_deployment=$(echo "$body" | grep -o "\"$completion_model_pattern\"[[:space:]]*:[[:space:]]*\"[^\"]*\"" | sed 's/.*: *"//;s/"//' | head -1 || true)
+                if [ "$mini_model" = "$completion_model" ]; then
+                    mini_deployment="$completion_deployment"
+                else
+                    mini_deployment=$(echo "$body" | grep -o "\"$mini_model_pattern\"[[:space:]]*:[[:space:]]*\"[^\"]*\"" | sed 's/.*: *"//;s/"//' | head -1 || true)
+                fi
+                embedding_deployment=$(echo "$body" | grep -o "\"$embedding_model_pattern\"[[:space:]]*:[[:space:]]*\"[^\"]*\"" | sed 's/.*: *"//;s/"//' | head -1 || true)
+                alias_completion=$(echo "$body" | grep -o '"prebuilt-analyzer-completion"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*: *"//;s/"//' | head -1 || true)
+                alias_completion_mini=$(echo "$body" | grep -o '"prebuilt-analyzer-completion-mini"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*: *"//;s/"//' | head -1 || true)
+                alias_embedding=$(echo "$body" | grep -o '"prebuilt-analyzer-embedding"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*: *"//;s/"//' | head -1 || true)
 
-                if [ -n "$gpt41" ] && [ -n "$gpt41mini" ] && [ -n "$embedding" ]; then
+                if [ -n "$completion_deployment" ] && [ -n "$mini_deployment" ] \
+                    && [ -n "$embedding_deployment" ] && [ "$completion_deployment" = "$alias_completion" ] \
+                    && [ "$mini_deployment" = "$alias_completion_mini" ] \
+                    && [ "$embedding_deployment" = "$alias_embedding" ]; then
                     echo "  ✓ Detected existing defaults:"
-                    echo "      gpt-4.1              = $gpt41"
-                    echo "      gpt-4.1-mini         = $gpt41mini"
-                    echo "      text-embedding-3-large = $embedding"
+                    echo "      $completion_model = $completion_deployment"
+                    echo "      $mini_model = $mini_deployment"
+                    echo "      $embedding_model = $embedding_deployment"
+                    echo "      prebuilt analyzer aliases are configured"
                     read -r -p "  Use these detected values? (Y/n): " use_detected || use_detected="y"
                     if [[ ! "$use_detected" =~ ^[Nn]$ ]]; then
                         skip_update_defaults=1
                     else
-                        gpt41=""; gpt41mini=""; embedding=""
+                        completion_deployment=""; mini_deployment=""; embedding_deployment=""
                     fi
-                elif [ -n "$gpt41" ] || [ -n "$gpt41mini" ] || [ -n "$embedding" ]; then
+                elif [ -n "$completion_deployment" ] || [ -n "$mini_deployment" ] \
+                    || [ -n "$embedding_deployment" ] || [ -n "$alias_completion" ] \
+                    || [ -n "$alias_completion_mini" ] || [ -n "$alias_embedding" ]; then
                     echo "  ℹ Partial defaults detected; missing entries will be prompted below."
                 else
                     echo "  ℹ No existing defaults detected; continuing with manual entry."
@@ -315,28 +344,25 @@ if [ "$CREATE_ENV" = true ]; then
         echo ""
         echo "  Model deployment configuration (for Sample00_UpdateDefaults):"
 
-        # GPT_4_1_DEPLOYMENT
-        if [ -z "$gpt41" ]; then
-            read -r -p "  GPT_4_1_DEPLOYMENT (default: gpt-4.1): " gpt41 || gpt41=""
-            gpt41="${gpt41:-gpt-4.1}"
+        if [ -z "$completion_deployment" ]; then
+            read -r -p "  CU_COMPLETION_MODEL_DEPLOYMENT (default: $completion_model): " completion_deployment || completion_deployment=""
+            completion_deployment="${completion_deployment:-$completion_model}"
         else
-            echo "  ✓ Using detected GPT_4_1_DEPLOYMENT=$gpt41"
+            echo "  ✓ Using detected CU_COMPLETION_MODEL_DEPLOYMENT=$completion_deployment"
         fi
 
-        # GPT_4_1_MINI_DEPLOYMENT
-        if [ -z "$gpt41mini" ]; then
-            read -r -p "  GPT_4_1_MINI_DEPLOYMENT (default: gpt-4.1-mini): " gpt41mini || gpt41mini=""
-            gpt41mini="${gpt41mini:-gpt-4.1-mini}"
+        if [ -z "$mini_deployment" ]; then
+            read -r -p "  CU_COMPLETION_MINI_DEPLOYMENT (default: $completion_deployment): " mini_deployment || mini_deployment=""
+            mini_deployment="${mini_deployment:-$completion_deployment}"
         else
-            echo "  ✓ Using detected GPT_4_1_MINI_DEPLOYMENT=$gpt41mini"
+            echo "  ✓ Using detected CU_COMPLETION_MINI_DEPLOYMENT=$mini_deployment"
         fi
 
-        # TEXT_EMBEDDING_3_LARGE_DEPLOYMENT
-        if [ -z "$embedding" ]; then
-            read -r -p "  TEXT_EMBEDDING_3_LARGE_DEPLOYMENT (default: text-embedding-3-large): " embedding || embedding=""
-            embedding="${embedding:-text-embedding-3-large}"
+        if [ -z "$embedding_deployment" ]; then
+            read -r -p "  CU_EMBEDDING_DEPLOYMENT (default: $embedding_model): " embedding_deployment || embedding_deployment=""
+            embedding_deployment="${embedding_deployment:-$embedding_model}"
         else
-            echo "  ✓ Using detected TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=$embedding"
+            echo "  ✓ Using detected CU_EMBEDDING_DEPLOYMENT=$embedding_deployment"
         fi
 
         # Cross-resource copy
@@ -361,10 +387,13 @@ CONTENTUNDERSTANDING_ENDPOINT=$(escape_env_val "$endpoint")
 # Optional: API key (leave empty to use DefaultAzureCredential via az login)
 CONTENTUNDERSTANDING_KEY=$(escape_env_val "$api_key")
 
-# Model deployment names (used by Sample00_UpdateDefaults)
-GPT_4_1_DEPLOYMENT=$(escape_env_val "$gpt41")
-GPT_4_1_MINI_DEPLOYMENT=$(escape_env_val "$gpt41mini")
-TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=$(escape_env_val "$embedding")
+# Model names and deployment names (used by Sample00_UpdateDefaults)
+CU_COMPLETION_MODEL=$(escape_env_val "$completion_model")
+CU_COMPLETION_MODEL_MINI=$(escape_env_val "$mini_model")
+CU_EMBEDDING_MODEL=$(escape_env_val "$embedding_model")
+CU_COMPLETION_MODEL_DEPLOYMENT=$(escape_env_val "$completion_deployment")
+CU_COMPLETION_MINI_DEPLOYMENT=$(escape_env_val "$mini_deployment")
+CU_EMBEDDING_DEPLOYMENT=$(escape_env_val "$embedding_deployment")
 EOF
 
         if [[ "$want_copy" =~ ^[Yy]$ ]]; then
@@ -392,10 +421,13 @@ CONTENTUNDERSTANDING_ENDPOINT=https://<your-resource>.services.ai.azure.com/
 # Optional: API key (leave empty to use DefaultAzureCredential via az login)
 CONTENTUNDERSTANDING_KEY=
 
-# Model deployment names (used by Sample00_UpdateDefaults)
-GPT_4_1_DEPLOYMENT=gpt-4.1
-GPT_4_1_MINI_DEPLOYMENT=gpt-4.1-mini
-TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=text-embedding-3-large
+# Model names and deployment names (used by Sample00_UpdateDefaults)
+CU_COMPLETION_MODEL=gpt-5.2
+CU_COMPLETION_MODEL_MINI=gpt-5.2
+CU_EMBEDDING_MODEL=text-embedding-3-large
+CU_COMPLETION_MODEL_DEPLOYMENT=gpt-5.2
+CU_COMPLETION_MINI_DEPLOYMENT=gpt-5.2
+CU_EMBEDDING_DEPLOYMENT=text-embedding-3-large
 EOF
         echo "  ✓ Wrote template to $ENV_FILE — please edit it before running samples."
     fi

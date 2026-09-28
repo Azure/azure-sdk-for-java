@@ -12,14 +12,14 @@ public final class TrafficControllerListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrafficControllerListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"ciwwzjuqkhr\"],\"frontends\":[{\"id\":\"iwkuofos\"},{\"id\":\"ghsauuimjmvxied\"},{\"id\":\"ugidyjrr\"},{\"id\":\"byao\"}],\"associations\":[{\"id\":\"xc\"}],\"securityPolicies\":[{\"id\":\"pclhocohslk\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"eggzfb\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"fmvfaxkffeiit\"}},\"provisioningState\":\"Accepted\"},\"location\":\"ez\",\"tags\":{\"xwburvjxxjns\":\"hxmzsbbzoggig\",\"ou\":\"ydptkoen\",\"dng\":\"nvudwtiukb\",\"g\":\"pocipazyxoegu\"},\"id\":\"npiucgygevqznty\",\"name\":\"mrbpizcdrqj\",\"type\":\"dpydn\"}],\"nextLink\":\"hxdeoejz\"}")
+            "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"hxmzsbbzoggig\",\"xwburvjxxjns\",\"ydptkoen\",\"ou\"],\"frontends\":[{\"id\":\"udwtiukbl\"},{\"id\":\"ngkpocipazy\"},{\"id\":\"o\"},{\"id\":\"gukgjnpiucgygevq\"}],\"associations\":[{\"id\":\"yp\"},{\"id\":\"rbpizc\"},{\"id\":\"r\"},{\"id\":\"j\"}],\"securityPolicies\":[{\"id\":\"ydnfyhxdeoejz\"}],\"privateEndpointConnections\":[{\"id\":\"ifsjttgzfbishcb\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"jdeyeamdpha\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"lpbuxwgipwhonowk\"}},\"provisioningState\":\"Succeeded\"},\"location\":\"ankixzbinjeput\",\"tags\":{\"tiyqzrnkcqv\":\"ywnuzoq\"},\"id\":\"xlwhzlsicoh\",\"name\":\"qqn\",\"type\":\"vlryavwhheunmmq\"}],\"nextLink\":\"yxzk\"}")
             .toObject(TrafficControllerListResult.class);
-        Assertions.assertEquals("ez", model.value().get(0).location());
-        Assertions.assertEquals("hxmzsbbzoggig", model.value().get(0).tags().get("xwburvjxxjns"));
-        Assertions.assertEquals("eggzfb",
+        Assertions.assertEquals("ankixzbinjeput", model.value().get(0).location());
+        Assertions.assertEquals("ywnuzoq", model.value().get(0).tags().get("tiyqzrnkcqv"));
+        Assertions.assertEquals("jdeyeamdpha",
             model.value().get(0).properties().securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("fmvfaxkffeiit",
+        Assertions.assertEquals("lpbuxwgipwhonowk",
             model.value().get(0).properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
-        Assertions.assertEquals("hxdeoejz", model.nextLink());
+        Assertions.assertEquals("yxzk", model.nextLink());
     }
 }

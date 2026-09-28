@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  */
 public final class EntitiesGetHistorySamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Entities_GetHistory.json
+     * x-ms-original-file: 2026-09-01-preview/Entities_GetHistory.json
      */
     /**
      * Sample code: Entities_GetHistory.

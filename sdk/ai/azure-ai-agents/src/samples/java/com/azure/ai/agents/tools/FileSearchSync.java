@@ -5,9 +5,7 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FileSearchTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -56,9 +54,8 @@ public class FileSearchSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
-        ConversationService conversationService = builder.buildOpenAIClient().conversations();
-        OpenAIClient openAIClient = builder.buildOpenAIClient();
+        OpenAIClient projectOpenAIClient = builder.buildOpenAIClient();
+        ConversationService conversationService = projectOpenAIClient.conversations();
 
         AgentVersionDetails agent = null;
         Conversation conversation = null;
@@ -76,14 +73,14 @@ public class FileSearchSync {
             tempFile = Files.createTempFile("sample_document", ".txt");
             Files.write(tempFile, sampleContent.getBytes(StandardCharsets.UTF_8));
 
-            uploadedFile = openAIClient.files().create(FileCreateParams.builder()
+            uploadedFile = projectOpenAIClient.files().create(FileCreateParams.builder()
                 .file(tempFile)
                 .purpose(FilePurpose.ASSISTANTS)
                 .build());
             System.out.println("Uploaded file: " + uploadedFile.id());
 
             // Create a vector store with the uploaded file
-            vectorStore = openAIClient.vectorStores().create(VectorStoreCreateParams.builder()
+            vectorStore = projectOpenAIClient.vectorStores().create(VectorStoreCreateParams.builder()
                 .name("SampleVectorStore")
                 .fileIds(Collections.singletonList(uploadedFile.id()))
                 .build());
@@ -105,18 +102,18 @@ public class FileSearchSync {
             agent = agentsClient.createAgentVersion("file-search-agent", agentDefinition);
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            SampleUtils.pinAgentVersion(agentsClient, agent);
+            OpenAIClient agentOpenAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // Create a conversation and ask the agent
             conversation = conversationService.create();
             System.out.println("Created conversation: " + conversation.id());
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
+            Response response = agentOpenAIClient.responses().create(
                 ResponseCreateParams.builder()
                     .conversation(conversation.id())
-                    .input("What is the largest planet in the Solar System?"));
+                    .input("What is the largest planet in the Solar System?")
+                    .build());
 
             // Process and display the response
             for (ResponseOutputItem outputItem : response.output()) {
@@ -164,11 +161,11 @@ public class FileSearchSync {
                 System.out.println("Agent deleted");
             }
             if (vectorStore != null) {
-                openAIClient.vectorStores().delete(vectorStore.id());
+                projectOpenAIClient.vectorStores().delete(vectorStore.id());
                 System.out.println("Vector store deleted");
             }
             if (uploadedFile != null) {
-                openAIClient.files().delete(uploadedFile.id());
+                projectOpenAIClient.files().delete(uploadedFile.id());
                 System.out.println("File deleted");
             }
         }

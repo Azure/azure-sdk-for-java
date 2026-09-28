@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewayConnectionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VirtualNetworkGatewayConnectionsList.json
+     * x-ms-original-file: 2026-01-01/VirtualNetworkGatewayConnectionsList.json
      */
     /**
      * Sample code: ListVirtualNetworkGatewayConnectionsinResourceGroup.

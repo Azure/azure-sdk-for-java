@@ -11,7 +11,7 @@ public final class DppBaseResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DppBaseResourceInner model
-            = BinaryData.fromString("{\"id\":\"ohxcrsbfova\",\"name\":\"rruvwbhsq\",\"type\":\"sub\"}")
+            = BinaryData.fromString("{\"id\":\"qtkoievs\",\"name\":\"otgqrlltmu\",\"type\":\"lauwzizxbmpgcjef\"}")
                 .toObject(DppBaseResourceInner.class);
     }
 }

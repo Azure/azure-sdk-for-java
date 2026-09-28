@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class MaintenanceWindowsListSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/MaintenanceWindowsListBySubscription.json
+     * x-ms-original-file: 2026-06-02-preview/MaintenanceWindowsListBySubscription.json
      */
     /**
      * Sample code: List Maintenance Windows by Subscription.

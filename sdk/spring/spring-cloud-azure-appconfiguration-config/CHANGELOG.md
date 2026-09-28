@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed an issue where a refresh, when using multiple stores, could result in a partially loaded store failed to load across retries and all available replicas.
+
 ### Other Changes
 
 ## 7.4.0 (2026-07-24)

@@ -31,7 +31,7 @@ public final class RecoveryPointsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AzureBackupRecoveryPointResource> response = manager.recoveryPoints()
-            .list("hkwfbkgozxwop", "bydpizqaclnapxb", "yg", "ugjknf", "mfcttux", com.azure.core.util.Context.NONE);
+            .list("kgozxwop", "bydpizqaclnapxb", "yg", "ugjknf", "mfcttux", com.azure.core.util.Context.NONE);
 
     }
 }

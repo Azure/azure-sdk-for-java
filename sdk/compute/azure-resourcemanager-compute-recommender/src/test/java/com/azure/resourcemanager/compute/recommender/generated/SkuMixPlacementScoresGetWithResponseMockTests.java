@@ -21,7 +21,7 @@ public final class SkuMixPlacementScoresGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"supportedResourceTypes\":[\"qidtqajzyu\",\"pku\"]},\"id\":\"krlkhbzhfepg\",\"name\":\"gqexzlocxs\",\"type\":\"paierh\"}";
+            = "{\"properties\":{\"supportedResourceTypes\":[\"kirsoodqxhc\",\"mnoh\",\"t\",\"kwh\"]},\"id\":\"oifiyipjxsqwpgr\",\"name\":\"bznorcjxvsnby\",\"type\":\"qabnmoc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +30,9 @@ public final class SkuMixPlacementScoresGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        SkuMixPlacementBase response = manager.skuMixPlacementScores()
-            .getWithResponse("ljjgpbtoqcjmkl", com.azure.core.util.Context.NONE)
-            .getValue();
+        SkuMixPlacementBase response
+            = manager.skuMixPlacementScores().getWithResponse("qrimzinpv", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("qidtqajzyu", response.properties().supportedResourceTypes().get(0));
+        Assertions.assertEquals("kirsoodqxhc", response.properties().supportedResourceTypes().get(0));
     }
 }

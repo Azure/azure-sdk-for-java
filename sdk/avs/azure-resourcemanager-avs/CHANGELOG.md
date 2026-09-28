@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,78 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0 (2026-09-03)
+
+- Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. Package api-version 2026-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.MaintenanceRelationships` was added
+
+* `models.MaintenanceGroupKind` was added
+
+* `models.HostUpdateProperties` was added
+
+* `models.MaintenanceRecommendation` was added
+
+* `models.HostUpdate` was added
+
+* `models.HostLicense` was added
+
+* `models.HostLicenseKind` was added
+
+* `models.WeekendSchedulingConstraint` was added
+
+* `models.MaintenanceActivity` was added
+
+* `models.WeekendReschedulingConstraint` was added
+
+* `models.MaintenanceWindowRecommendation` was added
+
+* `models.WindowsServerLicense` was added
+
+* `models.MaintenanceGroup` was added
+
+* `models.ReschedulingWindowConstraint` was added
+
+* `models.MaintenanceActivityKind` was added
+
+#### `models.BlockedDatesConstraintCategory` was modified
+
+* `OVERLAPPING_MAINTENANCE` was added
+
+#### `models.RescheduleOperationConstraintKind` was modified
+
+* `RESCHEDULING_WINDOW` was added
+* `WEEKEND_RESCHEDULING` was added
+
+#### `models.HostProperties` was modified
+
+* `licenses()` was added
+
+#### `models.ScheduleOperationConstraintKind` was modified
+
+* `WEEKEND_SCHEDULING` was added
+
+#### `models.ScheduleOperation` was modified
+
+* `recommendation()` was added
+
+#### `models.RescheduleOperation` was modified
+
+* `recommendation()` was added
+
+#### `models.Hosts` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.HostUpdate)` was added
+* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.HostUpdate,com.azure.core.util.Context)` was added
+
+#### `models.MaintenanceProperties` was modified
+
+* `activities()` was added
+* `group()` was added
+* `relationships()` was added
 
 ## 1.4.0 (2025-12-12)
 
