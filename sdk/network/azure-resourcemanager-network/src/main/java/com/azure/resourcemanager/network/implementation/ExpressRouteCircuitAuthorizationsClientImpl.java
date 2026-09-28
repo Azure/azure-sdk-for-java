@@ -13,6 +13,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -32,6 +33,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitAuthorizationsClient;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteAuthorizationKeyInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitAuthorizationInner;
 import com.azure.resourcemanager.network.implementation.models.AuthorizationListResult;
 import java.nio.ByteBuffer;
@@ -110,6 +112,16 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}/listKeys")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ExpressRouteAuthorizationKeyInner>> listKeys(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("circuitName") String circuitName,
+            @PathParam("authorizationName") String authorizationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -151,7 +163,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -194,7 +206,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -297,7 +309,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -351,7 +363,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -570,7 +582,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, circuitName, authorizationName, context))
@@ -611,7 +623,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             circuitName, authorizationName, context);
@@ -790,7 +802,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -830,7 +842,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -904,6 +916,145 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
     public PagedIterable<ExpressRouteCircuitAuthorizationInner> list(String resourceGroupName, String circuitName,
         Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, circuitName, context));
+    }
+
+    /**
+     * Gets the authorization key associated with the specified express route circuit authorization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization key associated with the specified express route circuit authorization along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ExpressRouteAuthorizationKeyInner>> listKeysWithResponseAsync(String resourceGroupName,
+        String circuitName, String authorizationName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (circuitName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+        }
+        if (authorizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
+        }
+        final String apiVersion = "2026-01-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listKeys(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, circuitName, authorizationName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the authorization key associated with the specified express route circuit authorization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization key associated with the specified express route circuit authorization along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ExpressRouteAuthorizationKeyInner>> listKeysWithResponseAsync(String resourceGroupName,
+        String circuitName, String authorizationName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (circuitName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
+        }
+        if (authorizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter authorizationName is required and cannot be null."));
+        }
+        final String apiVersion = "2026-01-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listKeys(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, circuitName, authorizationName, accept, context);
+    }
+
+    /**
+     * Gets the authorization key associated with the specified express route circuit authorization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization key associated with the specified express route circuit authorization on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ExpressRouteAuthorizationKeyInner> listKeysAsync(String resourceGroupName, String circuitName,
+        String authorizationName) {
+        return listKeysWithResponseAsync(resourceGroupName, circuitName, authorizationName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the authorization key associated with the specified express route circuit authorization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization key associated with the specified express route circuit authorization along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ExpressRouteAuthorizationKeyInner> listKeysWithResponse(String resourceGroupName,
+        String circuitName, String authorizationName, Context context) {
+        return listKeysWithResponseAsync(resourceGroupName, circuitName, authorizationName, context).block();
+    }
+
+    /**
+     * Gets the authorization key associated with the specified express route circuit authorization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization key associated with the specified express route circuit authorization.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExpressRouteAuthorizationKeyInner listKeys(String resourceGroupName, String circuitName,
+        String authorizationName) {
+        return listKeysWithResponse(resourceGroupName, circuitName, authorizationName, Context.NONE).getValue();
     }
 
     /**

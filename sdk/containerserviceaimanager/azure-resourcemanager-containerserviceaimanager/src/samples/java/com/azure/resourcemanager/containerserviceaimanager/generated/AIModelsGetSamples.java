@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerserviceaimanager.generated;
  */
 public final class AIModelsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/AIModels_Get.json
+     * x-ms-original-file: 2026-09-02-preview/AIModels_Get.json
      */
     /**
      * Sample code: AIModels_Get_MaximumSet.

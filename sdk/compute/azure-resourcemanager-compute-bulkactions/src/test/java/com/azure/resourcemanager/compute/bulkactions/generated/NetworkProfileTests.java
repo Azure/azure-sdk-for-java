@@ -27,140 +27,143 @@ public final class NetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkProfile model = BinaryData.fromString(
-            "{\"networkInterfaces\":[{\"properties\":{\"primary\":false,\"deleteOption\":\"Delete\"},\"id\":\"ndjmquxvyp\"},{\"properties\":{\"primary\":true,\"deleteOption\":\"Detach\"},\"id\":\"whojvp\"},{\"properties\":{\"primary\":true,\"deleteOption\":\"Detach\"},\"id\":\"mocmbqfqvmk\"}],\"networkApiVersion\":\"2020-11-01\",\"networkInterfaceConfigurations\":[{\"name\":\"pvhelxprg\",\"properties\":{\"primary\":false,\"deleteOption\":\"Delete\",\"enableAcceleratedNetworking\":false,\"disableTcpStateTracking\":true,\"enableFpga\":false,\"enableIPForwarding\":true,\"networkSecurityGroup\":{\"id\":\"xgc\"},\"dnsSettings\":{\"dnsServers\":[\"rhos\"]},\"ipConfigurations\":[{\"name\":\"dqrhzoymib\",\"properties\":{}},{\"name\":\"qyib\",\"properties\":{}},{\"name\":\"wfluszdt\",\"properties\":{}},{\"name\":\"rkwofyyvoqa\",\"properties\":{}}],\"dscpConfiguration\":{\"id\":\"xpbtgiwbwo\"},\"auxiliaryMode\":\"None\",\"auxiliarySku\":\"None\"},\"tags\":{\"xwbpokulpiuj\":\"tdtkcn\",\"obyu\":\"aasipqi\",\"dbutauvfbtkuwhh\":\"erpqlpqwcciuqg\"}},{\"name\":\"hykojoxafnndlpic\",\"properties\":{\"primary\":false,\"deleteOption\":\"Delete\",\"enableAcceleratedNetworking\":false,\"disableTcpStateTracking\":false,\"enableFpga\":false,\"enableIPForwarding\":false,\"networkSecurityGroup\":{\"id\":\"dreqnovvqf\"},\"dnsSettings\":{\"dnsServers\":[\"xywsuws\",\"rsndsytgadgvra\"]},\"ipConfigurations\":[{\"name\":\"en\",\"properties\":{}},{\"name\":\"nzar\",\"properties\":{}},{\"name\":\"lquuijfqkacewii\",\"properties\":{}}],\"dscpConfiguration\":{\"id\":\"bjibwwiftohq\"},\"auxiliaryMode\":\"None\",\"auxiliarySku\":\"A8\"},\"tags\":{\"ynl\":\"gplsaknynf\",\"op\":\"ph\"}},{\"name\":\"odlqiyntor\",\"properties\":{\"primary\":true,\"deleteOption\":\"Delete\",\"enableAcceleratedNetworking\":true,\"disableTcpStateTracking\":false,\"enableFpga\":true,\"enableIPForwarding\":true,\"networkSecurityGroup\":{\"id\":\"zrpzb\"},\"dnsSettings\":{\"dnsServers\":[\"qqzqioxiysuiizyn\",\"edyatrwyhqmibzyh\",\"itsmypyyn\"]},\"ipConfigurations\":[{\"name\":\"dpumnzgmw\",\"properties\":{}}],\"dscpConfiguration\":{\"id\":\"biknsorgjhxbld\"},\"auxiliaryMode\":\"None\",\"auxiliarySku\":\"A1\"},\"tags\":{\"ok\":\"dmtnc\",\"tdtbnnhadooc\":\"tllxdyhgsyocogj\",\"hnvpamqgxq\":\"kvci\",\"zikywgg\":\"u\"}}]}")
+            "{\"networkInterfaces\":[{\"properties\":{\"primary\":true,\"deleteOption\":\"Detach\"},\"id\":\"jzlmw\"},{\"properties\":{\"primary\":false,\"deleteOption\":\"Detach\"},\"id\":\"hzovawjvzunlut\"},{\"properties\":{\"primary\":true,\"deleteOption\":\"Delete\"},\"id\":\"i\"},{\"properties\":{\"primary\":true,\"deleteOption\":\"Detach\"},\"id\":\"uaejxdultsk\"}],\"networkApiVersion\":\"2022-11-01\",\"networkInterfaceConfigurations\":[{\"name\":\"zumveekgpwo\",\"properties\":{\"primary\":false,\"deleteOption\":\"Delete\",\"enableAcceleratedNetworking\":false,\"disableTcpStateTracking\":false,\"enableFpga\":false,\"enableIPForwarding\":false,\"networkSecurityGroup\":{\"id\":\"us\"},\"dnsSettings\":{\"dnsServers\":[\"uwaboekqvke\",\"nsmvbxwyj\",\"flhhcaal\",\"jixisxyawjoyaqcs\"]},\"ipConfigurations\":[{\"name\":\"jpkiidzyexznelix\",\"properties\":{}},{\"name\":\"rzt\",\"properties\":{}},{\"name\":\"lhbnxkna\",\"properties\":{}}],\"dscpConfiguration\":{\"id\":\"ppg\"},\"auxiliaryMode\":\"None\",\"auxiliarySku\":\"A2\"},\"tags\":{\"vpgylgqgitxmed\":\"nyiropuhpi\",\"slynqwwnc\":\"v\",\"ucnapkteoellwp\":\"zzhxgktrm\"}},{\"name\":\"fdygpfqbuaceopz\",\"properties\":{\"primary\":false,\"deleteOption\":\"Detach\",\"enableAcceleratedNetworking\":false,\"disableTcpStateTracking\":true,\"enableFpga\":false,\"enableIPForwarding\":false,\"networkSecurityGroup\":{\"id\":\"ol\"},\"dnsSettings\":{\"dnsServers\":[\"zxctobgb\",\"dmoizpostmg\"]},\"ipConfigurations\":[{\"name\":\"fbunrmfqjhhk\",\"properties\":{}}],\"dscpConfiguration\":{\"id\":\"jy\"},\"auxiliaryMode\":\"Floating\",\"auxiliarySku\":\"A2\"},\"tags\":{\"u\":\"n\",\"xqzvszjfa\":\"ivkrtsw\"}},{\"name\":\"vjfdx\",\"properties\":{\"primary\":false,\"deleteOption\":\"Detach\",\"enableAcceleratedNetworking\":true,\"disableTcpStateTracking\":true,\"enableFpga\":false,\"enableIPForwarding\":true,\"networkSecurityGroup\":{\"id\":\"cbxvwvxyslqbh\"},\"dnsSettings\":{\"dnsServers\":[\"blytk\"]},\"ipConfigurations\":[{\"name\":\"mpew\",\"properties\":{}},{\"name\":\"fbkrvrnsvs\",\"properties\":{}},{\"name\":\"johxcrsb\",\"properties\":{}}],\"dscpConfiguration\":{\"id\":\"srruvwbhsqfsubcg\"},\"auxiliaryMode\":\"None\",\"auxiliarySku\":\"A1\"},\"tags\":{\"t\":\"ybsrfbjfdtwss\",\"vwpm\":\"tpvjzbexilzznfqq\",\"wqytjrybnwjewgdr\":\"taruoujmkcj\"}}]}")
             .toObject(NetworkProfile.class);
-        Assertions.assertEquals("ndjmquxvyp", model.networkInterfaces().get(0).id());
-        Assertions.assertFalse(model.networkInterfaces().get(0).properties().primary());
-        Assertions.assertEquals(DeleteOptions.DELETE, model.networkInterfaces().get(0).properties().deleteOption());
-        Assertions.assertEquals(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE, model.networkApiVersion());
-        Assertions.assertEquals("pvhelxprg", model.networkInterfaceConfigurations().get(0).name());
+        Assertions.assertEquals("jzlmw", model.networkInterfaces().get(0).id());
+        Assertions.assertTrue(model.networkInterfaces().get(0).properties().primary());
+        Assertions.assertEquals(DeleteOptions.DETACH, model.networkInterfaces().get(0).properties().deleteOption());
+        Assertions.assertEquals(NetworkApiVersion.TWO_ZERO_TWO_TWO_ONE_ONE_ZERO_ONE, model.networkApiVersion());
+        Assertions.assertEquals("zumveekgpwo", model.networkInterfaceConfigurations().get(0).name());
         Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().primary());
         Assertions.assertEquals(DeleteOptions.DELETE,
             model.networkInterfaceConfigurations().get(0).properties().deleteOption());
         Assertions
             .assertFalse(model.networkInterfaceConfigurations().get(0).properties().enableAcceleratedNetworking());
-        Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().disableTcpStateTracking());
+        Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().disableTcpStateTracking());
         Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().enableFpga());
-        Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableIPForwarding());
-        Assertions.assertEquals("xgc",
+        Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().enableIPForwarding());
+        Assertions.assertEquals("us",
             model.networkInterfaceConfigurations().get(0).properties().networkSecurityGroup().id());
-        Assertions.assertEquals("rhos",
+        Assertions.assertEquals("uwaboekqvke",
             model.networkInterfaceConfigurations().get(0).properties().dnsSettings().dnsServers().get(0));
-        Assertions.assertEquals("dqrhzoymib",
+        Assertions.assertEquals("jpkiidzyexznelix",
             model.networkInterfaceConfigurations().get(0).properties().ipConfigurations().get(0).name());
-        Assertions.assertEquals("xpbtgiwbwo",
+        Assertions.assertEquals("ppg",
             model.networkInterfaceConfigurations().get(0).properties().dscpConfiguration().id());
         Assertions.assertEquals(NetworkInterfaceAuxiliaryMode.NONE,
             model.networkInterfaceConfigurations().get(0).properties().auxiliaryMode());
-        Assertions.assertEquals(NetworkInterfaceAuxiliarySku.NONE,
+        Assertions.assertEquals(NetworkInterfaceAuxiliarySku.A2,
             model.networkInterfaceConfigurations().get(0).properties().auxiliarySku());
-        Assertions.assertEquals("tdtkcn", model.networkInterfaceConfigurations().get(0).tags().get("xwbpokulpiuj"));
+        Assertions.assertEquals("nyiropuhpi",
+            model.networkInterfaceConfigurations().get(0).tags().get("vpgylgqgitxmed"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkProfile model = new NetworkProfile()
             .withNetworkInterfaces(Arrays.asList(
-                new NetworkInterfaceReference().withId("ndjmquxvyp")
-                    .withProperties(new NetworkInterfaceReferenceProperties().withPrimary(false)
-                        .withDeleteOption(DeleteOptions.DELETE)),
-                new NetworkInterfaceReference().withId("whojvp")
+                new NetworkInterfaceReference().withId("jzlmw")
                     .withProperties(new NetworkInterfaceReferenceProperties().withPrimary(true)
                         .withDeleteOption(DeleteOptions.DETACH)),
-                new NetworkInterfaceReference().withId("mocmbqfqvmk")
+                new NetworkInterfaceReference().withId("hzovawjvzunlut")
+                    .withProperties(new NetworkInterfaceReferenceProperties().withPrimary(false)
+                        .withDeleteOption(DeleteOptions.DETACH)),
+                new NetworkInterfaceReference().withId("i")
+                    .withProperties(new NetworkInterfaceReferenceProperties().withPrimary(true)
+                        .withDeleteOption(DeleteOptions.DELETE)),
+                new NetworkInterfaceReference().withId("uaejxdultsk")
                     .withProperties(new NetworkInterfaceReferenceProperties().withPrimary(true)
                         .withDeleteOption(DeleteOptions.DETACH))))
-            .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE)
+            .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_TWO_ONE_ONE_ZERO_ONE)
             .withNetworkInterfaceConfigurations(Arrays.asList(
-                new VirtualMachineNetworkInterfaceConfiguration().withName("pvhelxprg")
-                    .withProperties(new VirtualMachineNetworkInterfaceConfigurationProperties().withPrimary(false)
-                        .withDeleteOption(DeleteOptions.DELETE)
-                        .withEnableAcceleratedNetworking(false)
-                        .withDisableTcpStateTracking(true)
-                        .withEnableFpga(false)
-                        .withEnableIPForwarding(true)
-                        .withNetworkSecurityGroup(new SubResource().withId("xgc"))
-                        .withDnsSettings(new VirtualMachineNetworkInterfaceDnsSettingsConfiguration()
-                            .withDnsServers(Arrays.asList("rhos")))
-                        .withIpConfigurations(Arrays.asList(
-                            new VirtualMachineNetworkInterfaceIPConfiguration().withName("dqrhzoymib")
-                                .withProperties(new VirtualMachineNetworkInterfaceIPConfigurationProperties()),
-                            new VirtualMachineNetworkInterfaceIPConfiguration().withName("qyib")
-                                .withProperties(new VirtualMachineNetworkInterfaceIPConfigurationProperties()),
-                            new VirtualMachineNetworkInterfaceIPConfiguration().withName("wfluszdt")
-                                .withProperties(new VirtualMachineNetworkInterfaceIPConfigurationProperties()),
-                            new VirtualMachineNetworkInterfaceIPConfiguration().withName("rkwofyyvoqa")
-                                .withProperties(new VirtualMachineNetworkInterfaceIPConfigurationProperties())))
-                        .withDscpConfiguration(new SubResource().withId("xpbtgiwbwo"))
-                        .withAuxiliaryMode(NetworkInterfaceAuxiliaryMode.NONE)
-                        .withAuxiliarySku(NetworkInterfaceAuxiliarySku.NONE))
-                    .withTags(mapOf("xwbpokulpiuj", "tdtkcn", "obyu", "aasipqi", "dbutauvfbtkuwhh", "erpqlpqwcciuqg")),
-                new VirtualMachineNetworkInterfaceConfiguration().withName("hykojoxafnndlpic")
+                new VirtualMachineNetworkInterfaceConfiguration().withName("zumveekgpwo")
                     .withProperties(new VirtualMachineNetworkInterfaceConfigurationProperties().withPrimary(false)
                         .withDeleteOption(DeleteOptions.DELETE)
                         .withEnableAcceleratedNetworking(false)
                         .withDisableTcpStateTracking(false)
                         .withEnableFpga(false)
                         .withEnableIPForwarding(false)
-                        .withNetworkSecurityGroup(new SubResource().withId("dreqnovvqf"))
+                        .withNetworkSecurityGroup(new SubResource().withId("us"))
                         .withDnsSettings(new VirtualMachineNetworkInterfaceDnsSettingsConfiguration()
-                            .withDnsServers(Arrays.asList("xywsuws", "rsndsytgadgvra")))
+                            .withDnsServers(Arrays.asList("uwaboekqvke", "nsmvbxwyj", "flhhcaal", "jixisxyawjoyaqcs")))
                         .withIpConfigurations(Arrays.asList(
-                            new VirtualMachineNetworkInterfaceIPConfiguration().withName("en")
+                            new VirtualMachineNetworkInterfaceIPConfiguration().withName("jpkiidzyexznelix")
                                 .withProperties(new VirtualMachineNetworkInterfaceIPConfigurationProperties()),
-                            new VirtualMachineNetworkInterfaceIPConfiguration().withName("nzar")
+                            new VirtualMachineNetworkInterfaceIPConfiguration().withName("rzt")
                                 .withProperties(new VirtualMachineNetworkInterfaceIPConfigurationProperties()),
-                            new VirtualMachineNetworkInterfaceIPConfiguration().withName("lquuijfqkacewii")
+                            new VirtualMachineNetworkInterfaceIPConfiguration().withName("lhbnxkna")
                                 .withProperties(new VirtualMachineNetworkInterfaceIPConfigurationProperties())))
-                        .withDscpConfiguration(new SubResource().withId("bjibwwiftohq"))
+                        .withDscpConfiguration(new SubResource().withId("ppg"))
                         .withAuxiliaryMode(NetworkInterfaceAuxiliaryMode.NONE)
-                        .withAuxiliarySku(NetworkInterfaceAuxiliarySku.A8))
-                    .withTags(mapOf("ynl", "gplsaknynf", "op", "ph")),
-                new VirtualMachineNetworkInterfaceConfiguration().withName("odlqiyntor")
-                    .withProperties(new VirtualMachineNetworkInterfaceConfigurationProperties().withPrimary(true)
-                        .withDeleteOption(DeleteOptions.DELETE)
-                        .withEnableAcceleratedNetworking(true)
-                        .withDisableTcpStateTracking(false)
-                        .withEnableFpga(true)
-                        .withEnableIPForwarding(true)
-                        .withNetworkSecurityGroup(new SubResource().withId("zrpzb"))
+                        .withAuxiliarySku(NetworkInterfaceAuxiliarySku.A2))
+                    .withTags(mapOf("vpgylgqgitxmed", "nyiropuhpi", "slynqwwnc", "v", "ucnapkteoellwp", "zzhxgktrm")),
+                new VirtualMachineNetworkInterfaceConfiguration().withName("fdygpfqbuaceopz")
+                    .withProperties(new VirtualMachineNetworkInterfaceConfigurationProperties().withPrimary(false)
+                        .withDeleteOption(DeleteOptions.DETACH)
+                        .withEnableAcceleratedNetworking(false)
+                        .withDisableTcpStateTracking(true)
+                        .withEnableFpga(false)
+                        .withEnableIPForwarding(false)
+                        .withNetworkSecurityGroup(new SubResource().withId("ol"))
                         .withDnsSettings(new VirtualMachineNetworkInterfaceDnsSettingsConfiguration()
-                            .withDnsServers(Arrays.asList("qqzqioxiysuiizyn", "edyatrwyhqmibzyh", "itsmypyyn")))
+                            .withDnsServers(Arrays.asList("zxctobgb", "dmoizpostmg")))
                         .withIpConfigurations(
-                            Arrays.asList(new VirtualMachineNetworkInterfaceIPConfiguration().withName("dpumnzgmw")
+                            Arrays.asList(new VirtualMachineNetworkInterfaceIPConfiguration().withName("fbunrmfqjhhk")
                                 .withProperties(new VirtualMachineNetworkInterfaceIPConfigurationProperties())))
-                        .withDscpConfiguration(new SubResource().withId("biknsorgjhxbld"))
+                        .withDscpConfiguration(new SubResource().withId("jy"))
+                        .withAuxiliaryMode(NetworkInterfaceAuxiliaryMode.FLOATING)
+                        .withAuxiliarySku(NetworkInterfaceAuxiliarySku.A2))
+                    .withTags(mapOf("u", "n", "xqzvszjfa", "ivkrtsw")),
+                new VirtualMachineNetworkInterfaceConfiguration().withName("vjfdx")
+                    .withProperties(new VirtualMachineNetworkInterfaceConfigurationProperties().withPrimary(false)
+                        .withDeleteOption(DeleteOptions.DETACH)
+                        .withEnableAcceleratedNetworking(true)
+                        .withDisableTcpStateTracking(true)
+                        .withEnableFpga(false)
+                        .withEnableIPForwarding(true)
+                        .withNetworkSecurityGroup(new SubResource().withId("cbxvwvxyslqbh"))
+                        .withDnsSettings(new VirtualMachineNetworkInterfaceDnsSettingsConfiguration()
+                            .withDnsServers(Arrays.asList("blytk")))
+                        .withIpConfigurations(Arrays.asList(
+                            new VirtualMachineNetworkInterfaceIPConfiguration().withName("mpew")
+                                .withProperties(new VirtualMachineNetworkInterfaceIPConfigurationProperties()),
+                            new VirtualMachineNetworkInterfaceIPConfiguration().withName("fbkrvrnsvs")
+                                .withProperties(new VirtualMachineNetworkInterfaceIPConfigurationProperties()),
+                            new VirtualMachineNetworkInterfaceIPConfiguration().withName("johxcrsb")
+                                .withProperties(new VirtualMachineNetworkInterfaceIPConfigurationProperties())))
+                        .withDscpConfiguration(new SubResource().withId("srruvwbhsqfsubcg"))
                         .withAuxiliaryMode(NetworkInterfaceAuxiliaryMode.NONE)
                         .withAuxiliarySku(NetworkInterfaceAuxiliarySku.A1))
-                    .withTags(mapOf("ok", "dmtnc", "tdtbnnhadooc", "tllxdyhgsyocogj", "hnvpamqgxq", "kvci", "zikywgg",
-                        "u"))));
+                    .withTags(
+                        mapOf("t", "ybsrfbjfdtwss", "vwpm", "tpvjzbexilzznfqq", "wqytjrybnwjewgdr", "taruoujmkcj"))));
         model = BinaryData.fromObject(model).toObject(NetworkProfile.class);
-        Assertions.assertEquals("ndjmquxvyp", model.networkInterfaces().get(0).id());
-        Assertions.assertFalse(model.networkInterfaces().get(0).properties().primary());
-        Assertions.assertEquals(DeleteOptions.DELETE, model.networkInterfaces().get(0).properties().deleteOption());
-        Assertions.assertEquals(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE, model.networkApiVersion());
-        Assertions.assertEquals("pvhelxprg", model.networkInterfaceConfigurations().get(0).name());
+        Assertions.assertEquals("jzlmw", model.networkInterfaces().get(0).id());
+        Assertions.assertTrue(model.networkInterfaces().get(0).properties().primary());
+        Assertions.assertEquals(DeleteOptions.DETACH, model.networkInterfaces().get(0).properties().deleteOption());
+        Assertions.assertEquals(NetworkApiVersion.TWO_ZERO_TWO_TWO_ONE_ONE_ZERO_ONE, model.networkApiVersion());
+        Assertions.assertEquals("zumveekgpwo", model.networkInterfaceConfigurations().get(0).name());
         Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().primary());
         Assertions.assertEquals(DeleteOptions.DELETE,
             model.networkInterfaceConfigurations().get(0).properties().deleteOption());
         Assertions
             .assertFalse(model.networkInterfaceConfigurations().get(0).properties().enableAcceleratedNetworking());
-        Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().disableTcpStateTracking());
+        Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().disableTcpStateTracking());
         Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().enableFpga());
-        Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableIPForwarding());
-        Assertions.assertEquals("xgc",
+        Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().enableIPForwarding());
+        Assertions.assertEquals("us",
             model.networkInterfaceConfigurations().get(0).properties().networkSecurityGroup().id());
-        Assertions.assertEquals("rhos",
+        Assertions.assertEquals("uwaboekqvke",
             model.networkInterfaceConfigurations().get(0).properties().dnsSettings().dnsServers().get(0));
-        Assertions.assertEquals("dqrhzoymib",
+        Assertions.assertEquals("jpkiidzyexznelix",
             model.networkInterfaceConfigurations().get(0).properties().ipConfigurations().get(0).name());
-        Assertions.assertEquals("xpbtgiwbwo",
+        Assertions.assertEquals("ppg",
             model.networkInterfaceConfigurations().get(0).properties().dscpConfiguration().id());
         Assertions.assertEquals(NetworkInterfaceAuxiliaryMode.NONE,
             model.networkInterfaceConfigurations().get(0).properties().auxiliaryMode());
-        Assertions.assertEquals(NetworkInterfaceAuxiliarySku.NONE,
+        Assertions.assertEquals(NetworkInterfaceAuxiliarySku.A2,
             model.networkInterfaceConfigurations().get(0).properties().auxiliarySku());
-        Assertions.assertEquals("tdtkcn", model.networkInterfaceConfigurations().get(0).tags().get("xwbpokulpiuj"));
+        Assertions.assertEquals("nyiropuhpi",
+            model.networkInterfaceConfigurations().get(0).tags().get("vpgylgqgitxmed"));
     }
 
     // Use "Map.of" if available

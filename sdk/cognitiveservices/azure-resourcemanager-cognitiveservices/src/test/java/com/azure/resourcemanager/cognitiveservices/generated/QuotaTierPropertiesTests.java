@@ -13,15 +13,16 @@ public final class QuotaTierPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaTierProperties model = BinaryData.fromString(
-            "{\"currentTierName\":\"oqfyiaseqch\",\"tierUpgradePolicy\":\"NoAutoUpgrade\",\"assignmentDate\":\"2021-08-04T17:40:23Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"zisgykiuemvanb\",\"upgradeAvailabilityStatus\":\"Available\",\"upgradeApplicableDate\":\"2021-07-11T14:17:07Z\",\"upgradeUnavailabilityReason\":\"rx\"}}")
+            "{\"currentTierName\":\"mupgxy\",\"tierUpgradePolicy\":\"OnceUpgradeIsAvailable\",\"assignmentDate\":\"2021-10-04T13:22:27Z\",\"tierUpgradeEligibilityInfo\":{\"nextTierName\":\"bujftaben\",\"upgradeAvailabilityStatus\":\"Available\",\"upgradeApplicableDate\":\"2021-04-04T06:33:35Z\",\"upgradeUnavailabilityReason\":\"xzu\"}}")
             .toObject(QuotaTierProperties.class);
-        Assertions.assertEquals(TierUpgradePolicy.NO_AUTO_UPGRADE, model.tierUpgradePolicy());
+        Assertions.assertEquals(TierUpgradePolicy.ONCE_UPGRADE_IS_AVAILABLE, model.tierUpgradePolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaTierProperties model = new QuotaTierProperties().withTierUpgradePolicy(TierUpgradePolicy.NO_AUTO_UPGRADE);
+        QuotaTierProperties model
+            = new QuotaTierProperties().withTierUpgradePolicy(TierUpgradePolicy.ONCE_UPGRADE_IS_AVAILABLE);
         model = BinaryData.fromObject(model).toObject(QuotaTierProperties.class);
-        Assertions.assertEquals(TierUpgradePolicy.NO_AUTO_UPGRADE, model.tierUpgradePolicy());
+        Assertions.assertEquals(TierUpgradePolicy.ONCE_UPGRADE_IS_AVAILABLE, model.tierUpgradePolicy());
     }
 }

@@ -126,8 +126,14 @@ jobs:
               ${{ if eq('true', parameters.UseFederatedAuth) }}:
                 SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
 
-          - ${{ if parameters.TestResourceDirectories }}:
-              - ${{ each directory in parameters.TestResourceDirectories }}:
+      - ${{ parameters.PreSteps }}
+
+      - template: /eng/pipelines/templates/steps/build-and-test-native.yml
+        parameters:
+          PreTestRunSteps:
+            - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+              - ${{ if parameters.TestResourceDirectories }}:
+                - ${{ each directory in parameters.TestResourceDirectories }}:
                   - template: /eng/common/TestResources/deploy-test-resources.yml
                     parameters:
                       ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
@@ -135,19 +141,14 @@ jobs:
                       ServiceDirectory: '${{ directory }}'
                       SubscriptionConfiguration: $(SubscriptionConfiguration)
                       ArmTemplateParameters: $(ArmTemplateParameters)
-          - ${{ if not(parameters.TestResourceDirectories) }}:
-              - template: /eng/common/TestResources/deploy-test-resources.yml
-                parameters:
-                  ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
-                    Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
-                  ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-                  SubscriptionConfiguration: $(SubscriptionConfiguration)
-                  ArmTemplateParameters: $(ArmTemplateParameters)
-
-      - ${{ parameters.PreSteps }}
-
-      - template: /eng/pipelines/templates/steps/build-and-test-native.yml
-        parameters:
+              - ${{ if not(parameters.TestResourceDirectories) }}:
+                - template: /eng/common/TestResources/deploy-test-resources.yml
+                  parameters:
+                    ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
+                      Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
+                    ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+                    SubscriptionConfiguration: $(SubscriptionConfiguration)
+                    ArmTemplateParameters: $(ArmTemplateParameters)
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
           IsLiveTest: true

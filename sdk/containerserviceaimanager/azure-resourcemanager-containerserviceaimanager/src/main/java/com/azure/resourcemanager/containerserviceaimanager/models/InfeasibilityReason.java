@@ -13,7 +13,7 @@ import java.io.IOException;
 
 /**
  * Reason explaining why a `CalculateCostPlan` is not deployable. This is a per-plan annotation surfaced inside a
- * successful `calculateCost` response, not an ARM error envelope.
+ * successful `calculateCost` response, not an Azure Resource Manager error envelope.
  */
 @Immutable
 public final class InfeasibilityReason implements JsonSerializable<InfeasibilityReason> {

@@ -274,7 +274,7 @@ This version of the client library defaults to the service API version 2023-04-0
 
 ### Breaking Changes
 > Note: The following changes are only breaking from the previous beta. They are not breaking against previous stable versions.
-- Removed `Auto Language Detection`, `Dynamic Classification`, `Entity Resoluton`, and `Healthcare FHIR` features,
+- Removed `Auto Language Detection`, `Dynamic Classification`, `Entity Resolution`, and `Healthcare FHIR` features,
   which were introduced in the previous beta releases.
 - Renamed class:
   `SummaryContext` to `AbstractiveSummaryContext`,
@@ -290,7 +290,7 @@ This version of the client library defaults to the service API version 2023-04-0
   `ExtractSummaryPagedIterable` to `ExtractiveSummaryPagedIterable`,
   `AbstractSummaryOptions` to `AbstractiveSummaryOptions`,
   `AbstractSummaryAction` to `AbstractiveSummaryAction`,
-  `AbstractSummaryActionResult` to `AbtractiveSummaryActionResult`,
+  `AbstractSummaryActionResult` to `AbstractiveSummaryActionResult`,
   `AbstractSummaryResultCollection` to `AbstractiveSummaryResultCollection`
   `AbstractSummaryResult` to `AbstractiveSummaryResult`,
   `AbstractSummaryOperationDetail` to `AbstractiveSummaryOperationDetail`,
@@ -352,7 +352,7 @@ This version of the client library defaults to the service API version 2023-04-0
 
 ### Breaking Changes
 - Changed `dynamic classify categories` as a required parameter in dynamic text classification methods.
-- Renamed naming phrase `DynamicClassficationXXX` to `DynamicClassifyXXX` in class name, method name.
+- Renamed naming phrase `DynamicClassificationXXX` to `DynamicClassifyXXX` in class name, method name.
 - Changed `BaseResolution` to an abstract class.
 - Removed class `BooleanResolution` and enum value `BooleanResolution` in the class `ResolutionKind`.
 - Renamed `maxSentenceCount` to `sentenceCount` in abstractive summarization.
@@ -685,9 +685,9 @@ library defaults to the latest supported API version, which currently is `2022-0
 
 ### Breaking Changes
 - Removed `PiiEntity` constructor and `PiiEntity`'s `category` property is no longer a type of `EntityCategory` but use a new introduced type `PiiEntityCategory`.
-- Replace `isNegated` by `HealthcareEntityAssertion` to `HealthcareEntity` which further exposes `EntityAssociation`, `EntityCertainity` and `EntityConditionality`.
+- Replace `isNegated` by `HealthcareEntityAssertion` to `HealthcareEntity` which further exposes `EntityAssociation`, `EntityCertainty` and `EntityConditionality`.
 - Renamed classes,
-  `AspectSentiment` to `TargetSentiment`, `OpinionSentiment` to `AssesssmentSentiment`, `MinedOpinion` to `SentenceOpinion`.
+  `AspectSentiment` to `TargetSentiment`, `OpinionSentiment` to `AssessmentSentiment`, `MinedOpinion` to `SentenceOpinion`.
 - Renamed
   `SentenceSentiment`'s method, `getMinedOpinions()` to `getOpinions()`.
   `MinedOpinion`'s methods, `getAspect()` to `getTarget()`, `getOpinions()` to `getAssessments()`.

@@ -12,22 +12,22 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The status of the resources.
+ * Summary of operation results across targeted resources.
  */
 @Immutable
 public final class ResourceResultSummary implements JsonSerializable<ResourceResultSummary> {
     /*
-     * The error code for those resources. In case of success, code is populated with Success.
+     * The result code shared by the resources in this group. A successful result uses `Success`.
      */
     private String code;
 
     /*
-     * The number of resources that the code applies to.
+     * The number of resources with this result code.
      */
     private int count;
 
     /*
-     * The error details for the resources. Not populated on success cases.
+     * Error details for failed resources. This property is omitted for successful results.
      */
     private Error errorDetails;
 
@@ -38,7 +38,7 @@ public final class ResourceResultSummary implements JsonSerializable<ResourceRes
     }
 
     /**
-     * Get the code property: The error code for those resources. In case of success, code is populated with Success.
+     * Get the code property: The result code shared by the resources in this group. A successful result uses `Success`.
      * 
      * @return the code value.
      */
@@ -47,7 +47,7 @@ public final class ResourceResultSummary implements JsonSerializable<ResourceRes
     }
 
     /**
-     * Get the count property: The number of resources that the code applies to.
+     * Get the count property: The number of resources with this result code.
      * 
      * @return the count value.
      */
@@ -56,7 +56,8 @@ public final class ResourceResultSummary implements JsonSerializable<ResourceRes
     }
 
     /**
-     * Get the errorDetails property: The error details for the resources. Not populated on success cases.
+     * Get the errorDetails property: Error details for failed resources. This property is omitted for successful
+     * results.
      * 
      * @return the errorDetails value.
      */

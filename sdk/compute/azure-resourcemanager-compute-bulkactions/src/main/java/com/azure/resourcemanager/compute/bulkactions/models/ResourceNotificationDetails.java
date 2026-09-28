@@ -12,12 +12,13 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Resource notification details containing notification metadata like the resource context.
+ * Caller-provided context associated with a virtual machine operation.
  */
 @Immutable
 public final class ResourceNotificationDetails implements JsonSerializable<ResourceNotificationDetails> {
     /*
-     * Resource context for notification tracking
+     * Caller-provided context string returned with the virtual machine operation result notification. Do not include
+     * secrets or personal data.
      */
     private String resourceContext;
 
@@ -28,7 +29,8 @@ public final class ResourceNotificationDetails implements JsonSerializable<Resou
     }
 
     /**
-     * Get the resourceContext property: Resource context for notification tracking.
+     * Get the resourceContext property: Caller-provided context string returned with the virtual machine operation
+     * result notification. Do not include secrets or personal data.
      * 
      * @return the resourceContext value.
      */

@@ -20,52 +20,51 @@ public final class SecurityPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityPolicyInner model = BinaryData.fromString(
-            "{\"properties\":{\"policyType\":\"ipAccessRules\",\"wafPolicy\":{\"id\":\"xxwr\"},\"ipAccessRulesPolicy\":{\"rules\":[{\"name\":\"uskcqvkocrcj\",\"priority\":747491790,\"sourceAddressPrefixes\":[\"tnhxbn\",\"biksq\",\"gls\",\"ainqpjwnzlljfm\"],\"action\":\"allow\"},{\"name\":\"eebvmgxsab\",\"priority\":2117273621,\"sourceAddressPrefixes\":[\"duuji\",\"c\",\"czdzev\",\"dhkrwpdappdsbdk\"],\"action\":\"allow\"},{\"name\":\"rwjfe\",\"priority\":905142721,\"sourceAddressPrefixes\":[\"hutje\",\"tmrldhugjzzdatq\",\"hocdgeab\",\"gphuticndvka\"],\"action\":\"deny\"}]},\"provisioningState\":\"Succeeded\"},\"location\":\"ftyhxhurokf\",\"tags\":{\"giawx\":\"olniwpwcukjf\",\"nddhsgcbacph\":\"lryplwckbasyy\",\"nqgoulzndli\":\"jkot\",\"dgak\":\"wyqkgfgibm\"},\"id\":\"qsrxybzqqed\",\"name\":\"ytb\",\"type\":\"iqfouflmmnkz\"}")
+            "{\"properties\":{\"policyType\":\"waf\",\"wafPolicy\":{\"id\":\"b\"},\"ipAccessRulesPolicy\":{\"rules\":[{\"name\":\"smjqulngsntnbyb\",\"priority\":1557726477,\"sourceAddressPrefixes\":[\"cwrwclxxwrljdous\"],\"action\":\"deny\"},{\"name\":\"qvkoc\",\"priority\":1419244382,\"sourceAddressPrefixes\":[\"dkwt\",\"hxbnjbiksqrg\",\"ssainqpjwnzll\"],\"action\":\"allow\"},{\"name\":\"mppeebvmgxs\",\"priority\":1742159588,\"sourceAddressPrefixes\":[\"yqduujit\",\"jczdzevndh\",\"rwpdappdsbdkvwrw\"],\"action\":\"allow\"},{\"name\":\"eusnhutj\",\"priority\":1743582993,\"sourceAddressPrefixes\":[\"mrldhu\",\"jzzd\",\"tqxhocdgeab\",\"gphuticndvka\"],\"action\":\"deny\"}]},\"provisioningState\":\"Succeeded\"},\"location\":\"ftyhxhurokf\",\"tags\":{\"giawx\":\"olniwpwcukjf\",\"nddhsgcbacph\":\"lryplwckbasyy\",\"nqgoulzndli\":\"jkot\",\"dgak\":\"wyqkgfgibm\"},\"id\":\"qsrxybzqqed\",\"name\":\"ytb\",\"type\":\"iqfouflmmnkz\"}")
             .toObject(SecurityPolicyInner.class);
         Assertions.assertEquals("ftyhxhurokf", model.location());
         Assertions.assertEquals("olniwpwcukjf", model.tags().get("giawx"));
-        Assertions.assertEquals("xxwr", model.properties().wafPolicy().id());
-        Assertions.assertEquals("uskcqvkocrcj", model.properties().ipAccessRulesPolicy().rules().get(0).name());
-        Assertions.assertEquals(747491790, model.properties().ipAccessRulesPolicy().rules().get(0).priority());
-        Assertions.assertEquals("tnhxbn",
+        Assertions.assertEquals("b", model.properties().wafPolicy().id());
+        Assertions.assertEquals("smjqulngsntnbyb", model.properties().ipAccessRulesPolicy().rules().get(0).name());
+        Assertions.assertEquals(1557726477, model.properties().ipAccessRulesPolicy().rules().get(0).priority());
+        Assertions.assertEquals("cwrwclxxwrljdous",
             model.properties().ipAccessRulesPolicy().rules().get(0).sourceAddressPrefixes().get(0));
-        Assertions.assertEquals(IpAccessRuleAction.ALLOW,
+        Assertions.assertEquals(IpAccessRuleAction.DENY,
             model.properties().ipAccessRulesPolicy().rules().get(0).action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityPolicyInner model
-            = new SecurityPolicyInner().withLocation("ftyhxhurokf")
-                .withTags(mapOf("giawx", "olniwpwcukjf", "nddhsgcbacph", "lryplwckbasyy", "nqgoulzndli", "jkot", "dgak",
-                    "wyqkgfgibm"))
-                .withProperties(
-                    new SecurityPolicyProperties().withWafPolicy(new WafPolicy().withId("xxwr"))
-                        .withIpAccessRulesPolicy(
-                            new IpAccessRulesPolicy().withRules(Arrays.asList(
-                                new IpAccessRule().withName("uskcqvkocrcj")
-                                    .withPriority(747491790)
-                                    .withSourceAddressPrefixes(
-                                        Arrays.asList("tnhxbn", "biksq", "gls", "ainqpjwnzlljfm"))
-                                    .withAction(IpAccessRuleAction.ALLOW),
-                                new IpAccessRule().withName("eebvmgxsab")
-                                    .withPriority(2117273621)
-                                    .withSourceAddressPrefixes(Arrays.asList("duuji", "c", "czdzev", "dhkrwpdappdsbdk"))
-                                    .withAction(IpAccessRuleAction.ALLOW),
-                                new IpAccessRule().withName("rwjfe")
-                                    .withPriority(905142721)
-                                    .withSourceAddressPrefixes(
-                                        Arrays.asList("hutje", "tmrldhugjzzdatq", "hocdgeab", "gphuticndvka"))
-                                    .withAction(IpAccessRuleAction.DENY)))));
+        SecurityPolicyInner model = new SecurityPolicyInner().withLocation("ftyhxhurokf")
+            .withTags(mapOf("giawx", "olniwpwcukjf", "nddhsgcbacph", "lryplwckbasyy", "nqgoulzndli", "jkot", "dgak",
+                "wyqkgfgibm"))
+            .withProperties(new SecurityPolicyProperties().withWafPolicy(new WafPolicy().withId("b"))
+                .withIpAccessRulesPolicy(new IpAccessRulesPolicy().withRules(Arrays.asList(
+                    new IpAccessRule().withName("smjqulngsntnbyb")
+                        .withPriority(1557726477)
+                        .withSourceAddressPrefixes(Arrays.asList("cwrwclxxwrljdous"))
+                        .withAction(IpAccessRuleAction.DENY),
+                    new IpAccessRule().withName("qvkoc")
+                        .withPriority(1419244382)
+                        .withSourceAddressPrefixes(Arrays.asList("dkwt", "hxbnjbiksqrg", "ssainqpjwnzll"))
+                        .withAction(IpAccessRuleAction.ALLOW),
+                    new IpAccessRule().withName("mppeebvmgxs")
+                        .withPriority(1742159588)
+                        .withSourceAddressPrefixes(Arrays.asList("yqduujit", "jczdzevndh", "rwpdappdsbdkvwrw"))
+                        .withAction(IpAccessRuleAction.ALLOW),
+                    new IpAccessRule().withName("eusnhutj")
+                        .withPriority(1743582993)
+                        .withSourceAddressPrefixes(Arrays.asList("mrldhu", "jzzd", "tqxhocdgeab", "gphuticndvka"))
+                        .withAction(IpAccessRuleAction.DENY)))));
         model = BinaryData.fromObject(model).toObject(SecurityPolicyInner.class);
         Assertions.assertEquals("ftyhxhurokf", model.location());
         Assertions.assertEquals("olniwpwcukjf", model.tags().get("giawx"));
-        Assertions.assertEquals("xxwr", model.properties().wafPolicy().id());
-        Assertions.assertEquals("uskcqvkocrcj", model.properties().ipAccessRulesPolicy().rules().get(0).name());
-        Assertions.assertEquals(747491790, model.properties().ipAccessRulesPolicy().rules().get(0).priority());
-        Assertions.assertEquals("tnhxbn",
+        Assertions.assertEquals("b", model.properties().wafPolicy().id());
+        Assertions.assertEquals("smjqulngsntnbyb", model.properties().ipAccessRulesPolicy().rules().get(0).name());
+        Assertions.assertEquals(1557726477, model.properties().ipAccessRulesPolicy().rules().get(0).priority());
+        Assertions.assertEquals("cwrwclxxwrljdous",
             model.properties().ipAccessRulesPolicy().rules().get(0).sourceAddressPrefixes().get(0));
-        Assertions.assertEquals(IpAccessRuleAction.ALLOW,
+        Assertions.assertEquals(IpAccessRuleAction.DENY,
             model.properties().ipAccessRulesPolicy().rules().get(0).action());
     }
 

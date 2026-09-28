@@ -13,19 +13,19 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinuxVMGuestPatchAutomaticByPlatformSettings model
-            = BinaryData.fromString("{\"rebootSetting\":\"Never\",\"bypassPlatformSafetyChecksOnUserSchedule\":true}")
+            = BinaryData.fromString("{\"rebootSetting\":\"Never\",\"bypassPlatformSafetyChecksOnUserSchedule\":false}")
                 .toObject(LinuxVMGuestPatchAutomaticByPlatformSettings.class);
         Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.NEVER, model.rebootSetting());
-        Assertions.assertTrue(model.bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertFalse(model.bypassPlatformSafetyChecksOnUserSchedule());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LinuxVMGuestPatchAutomaticByPlatformSettings model = new LinuxVMGuestPatchAutomaticByPlatformSettings()
             .withRebootSetting(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.NEVER)
-            .withBypassPlatformSafetyChecksOnUserSchedule(true);
+            .withBypassPlatformSafetyChecksOnUserSchedule(false);
         model = BinaryData.fromObject(model).toObject(LinuxVMGuestPatchAutomaticByPlatformSettings.class);
         Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.NEVER, model.rebootSetting());
-        Assertions.assertTrue(model.bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertFalse(model.bypassPlatformSafetyChecksOnUserSchedule());
     }
 }

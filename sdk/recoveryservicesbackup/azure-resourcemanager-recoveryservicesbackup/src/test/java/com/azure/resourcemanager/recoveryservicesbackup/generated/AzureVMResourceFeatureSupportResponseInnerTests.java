@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureVMResourceFeatureSupportResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureVMResourceFeatureSupportResponseInner model = BinaryData.fromString("{\"supportStatus\":\"Supported\"}")
+        AzureVMResourceFeatureSupportResponseInner model = BinaryData.fromString("{\"supportStatus\":\"DefaultON\"}")
             .toObject(AzureVMResourceFeatureSupportResponseInner.class);
-        Assertions.assertEquals(SupportStatus.SUPPORTED, model.supportStatus());
+        Assertions.assertEquals(SupportStatus.DEFAULT_ON, model.supportStatus());
     }
 }

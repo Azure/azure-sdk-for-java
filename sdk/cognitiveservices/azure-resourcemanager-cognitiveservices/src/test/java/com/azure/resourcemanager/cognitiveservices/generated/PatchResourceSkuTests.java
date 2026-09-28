@@ -14,27 +14,27 @@ public final class PatchResourceSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PatchResourceSku model = BinaryData.fromString(
-            "{\"sku\":{\"name\":\"yxlzgs\",\"tier\":\"Basic\",\"size\":\"zltafhbzffovwm\",\"family\":\"lz\",\"capacity\":1087560201}}")
+            "{\"sku\":{\"name\":\"nmdvha\",\"tier\":\"Standard\",\"size\":\"ytiq\",\"family\":\"bqerzwx\",\"capacity\":959013845}}")
             .toObject(PatchResourceSku.class);
-        Assertions.assertEquals("yxlzgs", model.sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("zltafhbzffovwm", model.sku().size());
-        Assertions.assertEquals("lz", model.sku().family());
-        Assertions.assertEquals(1087560201, model.sku().capacity());
+        Assertions.assertEquals("nmdvha", model.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals("ytiq", model.sku().size());
+        Assertions.assertEquals("bqerzwx", model.sku().family());
+        Assertions.assertEquals(959013845, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchResourceSku model = new PatchResourceSku().withSku(new Sku().withName("yxlzgs")
-            .withTier(SkuTier.BASIC)
-            .withSize("zltafhbzffovwm")
-            .withFamily("lz")
-            .withCapacity(1087560201));
+        PatchResourceSku model = new PatchResourceSku().withSku(new Sku().withName("nmdvha")
+            .withTier(SkuTier.STANDARD)
+            .withSize("ytiq")
+            .withFamily("bqerzwx")
+            .withCapacity(959013845));
         model = BinaryData.fromObject(model).toObject(PatchResourceSku.class);
-        Assertions.assertEquals("yxlzgs", model.sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals("zltafhbzffovwm", model.sku().size());
-        Assertions.assertEquals("lz", model.sku().family());
-        Assertions.assertEquals(1087560201, model.sku().capacity());
+        Assertions.assertEquals("nmdvha", model.sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
+        Assertions.assertEquals("ytiq", model.sku().size());
+        Assertions.assertEquals("bqerzwx", model.sku().family());
+        Assertions.assertEquals(959013845, model.sku().capacity());
     }
 }

@@ -21,7 +21,7 @@ public final class AssistantMessageItem extends MessageItem {
      * The type property.
      */
     @Generated
-    private ItemType type = ItemType.MESSAGE;
+    private final ItemType type = ItemType.MESSAGE;
 
     /*
      * The role of the message origionator.

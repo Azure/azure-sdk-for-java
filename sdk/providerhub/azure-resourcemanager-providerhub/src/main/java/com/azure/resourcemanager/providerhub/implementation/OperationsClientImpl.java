@@ -33,7 +33,6 @@ import com.azure.resourcemanager.providerhub.fluent.OperationsClient;
 import com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionInner;
 import com.azure.resourcemanager.providerhub.fluent.models.OperationsPutContentInner;
 import com.azure.resourcemanager.providerhub.implementation.models.OperationsDefinitionArrayResponseWithContinuation;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /**
@@ -86,9 +85,8 @@ public final class OperationsClientImpl implements OperationsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<OperationsDefinitionInner>>> listByProviderRegistration(
-            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<OperationsPutContentInner>> listByProviderRegistration(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("providerNamespace") String providerNamespace, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -96,7 +94,7 @@ public final class OperationsClientImpl implements OperationsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<List<OperationsDefinitionInner>> listByProviderRegistrationSync(@HostParam("endpoint") String endpoint,
+        Response<OperationsPutContentInner> listByProviderRegistrationSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("providerNamespace") String providerNamespace, @HeaderParam("Accept") String accept,
             Context context);
@@ -121,7 +119,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default")
-        @ExpectedResponses({ 200, 204 })
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -129,7 +127,7 @@ public final class OperationsClientImpl implements OperationsClient {
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default")
-        @ExpectedResponses({ 200, 204 })
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -267,7 +265,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<OperationsDefinitionInner>>>
+    private Mono<Response<OperationsPutContentInner>>
         listByProviderRegistrationWithResponseAsync(String providerNamespace) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -298,7 +296,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the operations supported by the given provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<OperationsDefinitionInner>> listByProviderRegistrationAsync(String providerNamespace) {
+    private Mono<OperationsPutContentInner> listByProviderRegistrationAsync(String providerNamespace) {
         return listByProviderRegistrationWithResponseAsync(providerNamespace)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -314,7 +312,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the operations supported by the given provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<OperationsDefinitionInner>> listByProviderRegistrationWithResponse(String providerNamespace,
+    public Response<OperationsPutContentInner> listByProviderRegistrationWithResponse(String providerNamespace,
         Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
@@ -345,7 +343,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the operations supported by the given provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<OperationsDefinitionInner> listByProviderRegistration(String providerNamespace) {
+    public OperationsPutContentInner listByProviderRegistration(String providerNamespace) {
         return listByProviderRegistrationWithResponse(providerNamespace, Context.NONE).getValue();
     }
 

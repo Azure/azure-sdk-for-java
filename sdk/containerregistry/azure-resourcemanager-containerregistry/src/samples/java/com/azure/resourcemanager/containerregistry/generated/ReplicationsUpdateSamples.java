@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ReplicationsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/ReplicationUpdate.json
+     * x-ms-original-file: 2026-09-01-preview/ReplicationUpdate.json
      */
     /**
      * Sample code: ReplicationUpdate.

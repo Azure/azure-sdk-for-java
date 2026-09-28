@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class TransitHubCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/TransitHub_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-01/TransitHub_CreateOrUpdate.json
      */
     /**
      * Sample code: TransitHub_CreateOrUpdate.

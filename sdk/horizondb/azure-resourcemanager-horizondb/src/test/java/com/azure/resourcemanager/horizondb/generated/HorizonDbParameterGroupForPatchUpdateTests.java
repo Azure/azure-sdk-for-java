@@ -17,30 +17,32 @@ public final class HorizonDbParameterGroupForPatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HorizonDbParameterGroupForPatchUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"nbtkcxywnytnr\":\"pbh\"},\"properties\":{\"parameters\":[{\"name\":\"idybyxczf\",\"description\":\"haaxdbabphl\",\"value\":\"qlfktsths\",\"dataType\":\"ocmnyyazttbtwwrq\",\"allowedValues\":\"edckzywbiexzfey\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"xujwbhqwalmuzyo\",\"unit\":\"epdkzja\"},{\"name\":\"ux\",\"description\":\"d\",\"value\":\"avxbniwdjswztsdb\",\"dataType\":\"nxytxh\",\"allowedValues\":\"xbzpfzab\",\"isDynamic\":false,\"isReadOnly\":false,\"documentationLink\":\"wtctyqi\",\"unit\":\"bbovplwzbhvgyugu\"}],\"description\":\"vmkfssxqu\",\"applyImmediately\":false}}")
+            "{\"tags\":{\"zrnkcqvyxlwh\":\"qftiy\",\"ryavwhheunmmqh\":\"lsicohoqqnwv\",\"noc\":\"yxzk\",\"uconuqszfkbey\":\"koklya\"},\"properties\":{\"parameters\":[{\"name\":\"jmwvvj\",\"description\":\"tcxsenhwlrs\",\"value\":\"rzpwvlqdqgbiq\",\"dataType\":\"ihkaetcktvfc\",\"allowedValues\":\"fsnkymuctq\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"rjcxerfuwu\",\"unit\":\"txfvjrbirph\"},{\"name\":\"pcyvahfnljkyqx\",\"description\":\"uujqgidokgjljyo\",\"value\":\"vcltbgsncgh\",\"dataType\":\"esz\",\"allowedValues\":\"bijhtxfvgxbf\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"mpvecxgodebfqk\",\"unit\":\"bmpukgriwflz\"},{\"name\":\"bxzpuzycisp\",\"description\":\"zahmgkbrpyydhibn\",\"value\":\"qkpikadrgvtqagnb\",\"dataType\":\"nhijggmebfsi\",\"allowedValues\":\"butr\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"zmhjrunmp\",\"unit\":\"tdbhrbnla\"}],\"description\":\"xmyskp\",\"applyImmediately\":true}}")
             .toObject(HorizonDbParameterGroupForPatchUpdate.class);
-        Assertions.assertEquals("pbh", model.tags().get("nbtkcxywnytnr"));
-        Assertions.assertEquals("idybyxczf", model.properties().parameters().get(0).name());
-        Assertions.assertEquals("qlfktsths", model.properties().parameters().get(0).value());
-        Assertions.assertEquals("vmkfssxqu", model.properties().description());
-        Assertions.assertFalse(model.properties().applyImmediately());
+        Assertions.assertEquals("qftiy", model.tags().get("zrnkcqvyxlwh"));
+        Assertions.assertEquals("jmwvvj", model.properties().parameters().get(0).name());
+        Assertions.assertEquals("rzpwvlqdqgbiq", model.properties().parameters().get(0).value());
+        Assertions.assertEquals("xmyskp", model.properties().description());
+        Assertions.assertTrue(model.properties().applyImmediately());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HorizonDbParameterGroupForPatchUpdate model = new HorizonDbParameterGroupForPatchUpdate()
-            .withTags(mapOf("nbtkcxywnytnr", "pbh"))
+            .withTags(mapOf("zrnkcqvyxlwh", "qftiy", "ryavwhheunmmqh", "lsicohoqqnwv", "noc", "yxzk", "uconuqszfkbey",
+                "koklya"))
             .withProperties(new HorizonDbParameterGroupPropertiesForPatchUpdate()
-                .withParameters(Arrays.asList(new ParameterProperties().withName("idybyxczf").withValue("qlfktsths"),
-                    new ParameterProperties().withName("ux").withValue("avxbniwdjswztsdb")))
-                .withDescription("vmkfssxqu")
-                .withApplyImmediately(false));
+                .withParameters(Arrays.asList(new ParameterProperties().withName("jmwvvj").withValue("rzpwvlqdqgbiq"),
+                    new ParameterProperties().withName("pcyvahfnljkyqx").withValue("vcltbgsncgh"),
+                    new ParameterProperties().withName("bxzpuzycisp").withValue("qkpikadrgvtqagnb")))
+                .withDescription("xmyskp")
+                .withApplyImmediately(true));
         model = BinaryData.fromObject(model).toObject(HorizonDbParameterGroupForPatchUpdate.class);
-        Assertions.assertEquals("pbh", model.tags().get("nbtkcxywnytnr"));
-        Assertions.assertEquals("idybyxczf", model.properties().parameters().get(0).name());
-        Assertions.assertEquals("qlfktsths", model.properties().parameters().get(0).value());
-        Assertions.assertEquals("vmkfssxqu", model.properties().description());
-        Assertions.assertFalse(model.properties().applyImmediately());
+        Assertions.assertEquals("qftiy", model.tags().get("zrnkcqvyxlwh"));
+        Assertions.assertEquals("jmwvvj", model.properties().parameters().get(0).name());
+        Assertions.assertEquals("rzpwvlqdqgbiq", model.properties().parameters().get(0).value());
+        Assertions.assertEquals("xmyskp", model.properties().description());
+        Assertions.assertTrue(model.properties().applyImmediately());
     }
 
     // Use "Map.of" if available

@@ -14,21 +14,24 @@ public final class SkuZoneDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuZoneDetail model = BinaryData.fromString(
-            "{\"name\":[\"hbrnnhjx\",\"qwjhqkbiwetpozyc\",\"qiqyhgfsetzlexbs\"],\"capabilities\":[{\"name\":\"dynojpziuwfb\",\"value\":\"kkdtnhqsy\"}]}")
+            "{\"name\":[\"lcecfeh\",\"waoaguhi\",\"qllizstac\",\"jvhrweft\"],\"capabilities\":[{\"name\":\"ejpmvssehaepwa\",\"value\":\"cxtczhupeukn\"},{\"name\":\"jduyyespydjfb\",\"value\":\"c\"},{\"name\":\"v\",\"value\":\"hulrtywikdmhla\"},{\"name\":\"uflgbhgauacdixm\",\"value\":\"ufr\"}]}")
             .toObject(SkuZoneDetail.class);
-        Assertions.assertEquals("hbrnnhjx", model.name().get(0));
-        Assertions.assertEquals("dynojpziuwfb", model.capabilities().get(0).name());
-        Assertions.assertEquals("kkdtnhqsy", model.capabilities().get(0).value());
+        Assertions.assertEquals("lcecfeh", model.name().get(0));
+        Assertions.assertEquals("ejpmvssehaepwa", model.capabilities().get(0).name());
+        Assertions.assertEquals("cxtczhupeukn", model.capabilities().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuZoneDetail model
-            = new SkuZoneDetail().withName(Arrays.asList("hbrnnhjx", "qwjhqkbiwetpozyc", "qiqyhgfsetzlexbs"))
-                .withCapabilities(Arrays.asList(new SkuCapability().withName("dynojpziuwfb").withValue("kkdtnhqsy")));
+        SkuZoneDetail model = new SkuZoneDetail()
+            .withName(Arrays.asList("lcecfeh", "waoaguhi", "qllizstac", "jvhrweft"))
+            .withCapabilities(Arrays.asList(new SkuCapability().withName("ejpmvssehaepwa").withValue("cxtczhupeukn"),
+                new SkuCapability().withName("jduyyespydjfb").withValue("c"),
+                new SkuCapability().withName("v").withValue("hulrtywikdmhla"),
+                new SkuCapability().withName("uflgbhgauacdixm").withValue("ufr")));
         model = BinaryData.fromObject(model).toObject(SkuZoneDetail.class);
-        Assertions.assertEquals("hbrnnhjx", model.name().get(0));
-        Assertions.assertEquals("dynojpziuwfb", model.capabilities().get(0).name());
-        Assertions.assertEquals("kkdtnhqsy", model.capabilities().get(0).value());
+        Assertions.assertEquals("lcecfeh", model.name().get(0));
+        Assertions.assertEquals("ejpmvssehaepwa", model.capabilities().get(0).name());
+        Assertions.assertEquals("cxtczhupeukn", model.capabilities().get(0).value());
     }
 }

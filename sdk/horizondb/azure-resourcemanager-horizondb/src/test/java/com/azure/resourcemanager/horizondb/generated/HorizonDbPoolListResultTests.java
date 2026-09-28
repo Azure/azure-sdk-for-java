@@ -12,10 +12,10 @@ public final class HorizonDbPoolListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HorizonDbPoolListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"location\":\"pini\",\"state\":\"Disabled\",\"replicaCount\":861239752,\"version\":\"ybb\",\"createMode\":\"Update\",\"provisioningState\":\"Canceled\"},\"tags\":{\"zxtheotusivyevcc\":\"oginuvamiheognar\",\"nhungbw\":\"qi\",\"gxg\":\"zrnf\"},\"id\":\"pemvtzfkufubljof\",\"name\":\"qeof\",\"type\":\"aeqjhqjbasvms\"},{\"properties\":{\"location\":\"ulngsntn\",\"state\":\"Stopped\",\"replicaCount\":1557726477,\"version\":\"cwrwclxxwrljdous\",\"createMode\":\"Create\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"wtnhxbnjbiksqr\":\"rcjd\"},\"id\":\"ssainqpjwnzll\",\"name\":\"fmppe\",\"type\":\"bvmgxsabkyqduuji\"},{\"properties\":{\"location\":\"czdzev\",\"state\":\"Dropping\",\"replicaCount\":2049933545,\"version\":\"pdappds\",\"createMode\":\"Update\",\"provisioningState\":\"Provisioning\"},\"tags\":{\"tjelt\":\"jfeusnh\",\"hugjzzdatqxhoc\":\"rl\",\"ozwyiftyhxhuro\":\"geablgphuticndvk\",\"wcukjfkgiawxk\":\"ftyxolniw\"},\"id\":\"ypl\",\"name\":\"ckbasyypndd\",\"type\":\"sgcbac\"}],\"nextLink\":\"ejk\"}")
+            "{\"value\":[{\"properties\":{\"location\":\"ljfmppee\",\"state\":\"Dropping\",\"replicaCount\":168593557,\"version\":\"abkyqduujitcjcz\",\"createMode\":\"Create\",\"provisioningState\":\"Succeeded\"},\"tags\":{\"dsbdkvwrwjf\":\"krwpdap\"},\"id\":\"snhu\",\"name\":\"je\",\"type\":\"tmrldhugjzzdatq\"}],\"nextLink\":\"oc\"}")
             .toObject(HorizonDbPoolListResult.class);
-        Assertions.assertEquals("pini", model.value().get(0).properties().location());
-        Assertions.assertEquals("oginuvamiheognar", model.value().get(0).tags().get("zxtheotusivyevcc"));
-        Assertions.assertEquals("ejk", model.nextLink());
+        Assertions.assertEquals("ljfmppee", model.value().get(0).properties().location());
+        Assertions.assertEquals("krwpdap", model.value().get(0).tags().get("dsbdkvwrwjf"));
+        Assertions.assertEquals("oc", model.nextLink());
     }
 }

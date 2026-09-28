@@ -10,6 +10,7 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetCredentialRes
 public final class FleetCredentialResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FleetCredentialResult model = BinaryData.fromString("{\"name\":\"o\"}").toObject(FleetCredentialResult.class);
+        FleetCredentialResult model
+            = BinaryData.fromString("{\"name\":\"iachbo\"}").toObject(FleetCredentialResult.class);
     }
 }

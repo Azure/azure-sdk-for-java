@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class HealthModelsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/HealthModels_Update.json
+     * x-ms-original-file: 2026-09-01-preview/HealthModels_Update.json
      */
     /**
      * Sample code: HealthModels_Update.

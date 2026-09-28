@@ -22,7 +22,7 @@
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-05-05-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-05-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
@@ -35,7 +35,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-05-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-05-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.
@@ -57,7 +57,7 @@ public final class OperationsListSamples {
  */
 public final class SkuMixPlacementScoresGetSamples {
     /*
-     * x-ms-original-file: 2026-05-05-preview/GetSkuMixPlacementScores.json
+     * x-ms-original-file: 2026-09-05-preview/GetSkuMixPlacementScores.json
      */
     /**
      * Sample code: Gets the metadata of SkuMixPlacement Scores.
@@ -91,7 +91,7 @@ import java.util.Arrays;
  */
 public final class SkuMixPlacementScoresPostSamples {
     /*
-     * x-ms-original-file: 2026-05-05-preview/GenerateSkuMixPlacementScores.json
+     * x-ms-original-file: 2026-09-05-preview/GenerateSkuMixPlacementScores.json
      */
     /**
      * Sample code: Generates SkuMixPlacement scores for VM SKU mix placement with explicit VM sizes.
@@ -127,7 +127,7 @@ public final class SkuMixPlacementScoresPostSamples {
  */
 public final class SpotPlacementScoresGetSamples {
     /*
-     * x-ms-original-file: 2026-05-05-preview/GetSpotPlacementScores.json
+     * x-ms-original-file: 2026-09-05-preview/GetSpotPlacementScores.json
      */
     /**
      * Sample code: Gets the metadata of Spot Placement Scores.
@@ -153,7 +153,7 @@ import java.util.Arrays;
  */
 public final class SpotPlacementScoresPostSamples {
     /*
-     * x-ms-original-file: 2026-05-05-preview/GenerateSpotPlacementScores.json
+     * x-ms-original-file: 2026-09-05-preview/GenerateSpotPlacementScores.json
      */
     /**
      * Sample code: Returns spot VM placement scores for given configurations.

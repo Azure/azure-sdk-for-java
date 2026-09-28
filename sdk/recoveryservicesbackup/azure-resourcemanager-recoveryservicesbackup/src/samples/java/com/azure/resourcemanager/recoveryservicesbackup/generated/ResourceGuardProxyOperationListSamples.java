@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ResourceGuardProxyOperationListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
+     * x-ms-original-file: 2026-08-01/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
      */
     /**
      * Sample code: Get VaultGuardProxies.

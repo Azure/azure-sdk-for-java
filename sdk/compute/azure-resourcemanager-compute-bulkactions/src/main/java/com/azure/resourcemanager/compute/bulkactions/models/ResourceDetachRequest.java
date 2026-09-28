@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Request model to detach a list of scheduled action resources.
+ * Resources to remove from a scheduled action.
  */
 @Fluent
 public final class ResourceDetachRequest implements JsonSerializable<ResourceDetachRequest> {
     /*
-     * List of resources to be detached
+     * The Azure resource IDs of the resources to remove.
      */
     private List<String> resources;
 
@@ -29,7 +29,7 @@ public final class ResourceDetachRequest implements JsonSerializable<ResourceDet
     }
 
     /**
-     * Get the resources property: List of resources to be detached.
+     * Get the resources property: The Azure resource IDs of the resources to remove.
      * 
      * @return the resources value.
      */
@@ -38,7 +38,7 @@ public final class ResourceDetachRequest implements JsonSerializable<ResourceDet
     }
 
     /**
-     * Set the resources property: List of resources to be detached.
+     * Set the resources property: The Azure resource IDs of the resources to remove.
      * 
      * @param resources the resources value to set.
      * @return the ResourceDetachRequest object itself.

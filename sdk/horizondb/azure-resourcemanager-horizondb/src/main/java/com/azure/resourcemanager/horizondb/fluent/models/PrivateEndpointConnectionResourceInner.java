@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.horizondb.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * A private endpoint connection resource.
  */
-@Immutable
+@Fluent
 public final class PrivateEndpointConnectionResourceInner extends ProxyResource {
     /*
      * The private endpoint connection properties
@@ -46,7 +46,7 @@ public final class PrivateEndpointConnectionResourceInner extends ProxyResource 
     /**
      * Creates an instance of PrivateEndpointConnectionResourceInner class.
      */
-    private PrivateEndpointConnectionResourceInner() {
+    public PrivateEndpointConnectionResourceInner() {
     }
 
     /**
@@ -56,6 +56,17 @@ public final class PrivateEndpointConnectionResourceInner extends ProxyResource 
      */
     public PrivateEndpointConnectionProperties properties() {
         return this.properties;
+    }
+
+    /**
+     * Set the properties property: The private endpoint connection properties.
+     * 
+     * @param properties the properties value to set.
+     * @return the PrivateEndpointConnectionResourceInner object itself.
+     */
+    public PrivateEndpointConnectionResourceInner withProperties(PrivateEndpointConnectionProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**

@@ -17,7 +17,6 @@ import com.azure.core.util.polling.PollResponse;
  * <p>This class is package-private; it is <b>not</b> part of the public API.</p>
  */
 final class AgentsServicePollUtils {
-
     private AgentsServicePollUtils() {
     }
 
@@ -47,7 +46,9 @@ final class AgentsServicePollUtils {
         String name = status.toString();
         if (MemoryStoreUpdateStatus.COMPLETED.toString().equalsIgnoreCase(name)) {
             return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-        } else if (MemoryStoreUpdateStatus.SUPERSEDED.toString().equalsIgnoreCase(name)) {
+        } else if (MemoryStoreUpdateStatus.SUPERSEDED.toString().equalsIgnoreCase(name)
+            // Optimization jobs and telephony use "cancelled"; MemoryStoreUpdateStatus intentionally has no CANCELLED.
+            || "cancelled".equalsIgnoreCase(name)) {
             return LongRunningOperationStatus.USER_CANCELLED;
         }
         return status;
