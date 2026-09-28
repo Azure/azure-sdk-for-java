@@ -11,6 +11,7 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
 
 /**
  * TypeSpec customization for azure-storage-blob.
@@ -91,6 +93,11 @@ public class BlobStorageCustomizations extends Customization {
         mapInternalStorageException(editor, logger);
         base64EncodeBinaryHeaders(editor, logger);
         initializeEmptyListSegments(editor, logger);
+        restoreShippedEnumOrder(customization.getPackage(MODELS_PACKAGE), logger);
+        useXMsRangeHeader(editor, logger);
+        sendXmlAcceptOnStreamingOperations(editor, logger);
+        restoreClearPagesEncryptionHeaders(editor, logger);
+        allowNullBlockListType(editor, logger);
     }
 
     private static void removeGeneratedFiles(Editor editor, Logger logger) {
@@ -563,6 +570,172 @@ public class BlobStorageCustomizations extends Customization {
             from = haystack.indexOf(needle, from + needle.length());
         }
         return count;
+    }
+
+    // The shipped java enums declare their constants in a different order to the spec. Ordinals are part of the
+    // public contract -- values(), ordinal() and anything persisted against them -- so the shipped order is restored
+    // here rather than by reordering the spec, which would reorder the enum for every other language too.
+    private static final List<String[]> SHIPPED_ENUM_ORDER = Arrays.asList(
+        new String[] { "CopyStatusType", "PENDING", "SUCCESS", "ABORTED", "FAILED" },
+        new String[] { "LeaseStatusType", "LOCKED", "UNLOCKED" },
+        new String[] { "BlobImmutabilityPolicyMode", "MUTABLE", "UNLOCKED", "LOCKED" },
+        new String[] { "SequenceNumberActionType", "MAX", "UPDATE", "INCREMENT" },
+        new String[] { "DeleteSnapshotsOptionType", "INCLUDE", "ONLY" });
+
+    private static void restoreShippedEnumOrder(PackageCustomization models, Logger logger) {
+        for (String[] spec : SHIPPED_ENUM_ORDER) {
+            String enumName = spec[0];
+            List<String> order = Arrays.asList(spec).subList(1, spec.length);
+            if (models.getClass(enumName) == null) {
+                throw new IllegalStateException(enumName + " not present; the emitter output changed.");
+            }
+            models.getClass(enumName).customizeAst(ast -> ast.getEnumByName(enumName).ifPresent(decl -> {
+                NodeList<EnumConstantDeclaration> entries = decl.getEntries();
+                List<String> actual = new ArrayList<>();
+                entries.forEach(entry -> actual.add(entry.getNameAsString()));
+                if (!new java.util.HashSet<>(actual).equals(new java.util.HashSet<>(order))) {
+                    throw new IllegalStateException(
+                        enumName + " constants are " + actual + " but the shipped order names " + order);
+                }
+                List<EnumConstantDeclaration> reordered = new ArrayList<>();
+                for (String name : order) {
+                    entries.stream()
+                        .filter(entry -> entry.getNameAsString().equals(name))
+                        .findFirst()
+                        .ifPresent(reordered::add);
+                }
+                entries.clear();
+                reordered.forEach(entries::add);
+            }));
+        }
+        logger.info("Restored the shipped constant order on {} enum(s).", SHIPPED_ENUM_ORDER.size());
+    }
+
+    // The service reads the range from x-ms-range; the shipped SDK has always sent that rather than the standard
+    // Range header, and the recordings capture it. The spec models it as Range for every language, so the rename is
+    // applied here instead of in the shared spec.
+    private static void useXMsRangeHeader(Editor editor, Logger logger) {
+        int renamed = 0;
+        for (String path : new ArrayList<>(editor.getContents().keySet())) {
+            if (!path.startsWith(PKG_ROOT + "implementation/")) {
+                continue;
+            }
+            String content = editor.getContents().get(path);
+            if (content == null
+                || (!content.contains("HttpHeaderName.RANGE") && !content.contains("@HeaderParam(\"Range\")"))) {
+                continue;
+            }
+            String updated = content.replace("@HeaderParam(\"Range\") String range", "@HeaderParam(\"x-ms-range\") String range")
+                .replace("requestOptions.setHeader(HttpHeaderName.RANGE, range)",
+                "requestOptions.setHeader(HttpHeaderName.fromString(\"x-ms-range\"), range)")
+                .replace("requestOptionsLocal.setHeader(HttpHeaderName.RANGE, range)",
+                    "requestOptionsLocal.setHeader(HttpHeaderName.fromString(\"x-ms-range\"), range)")
+                .replace("<tr><td>Range</td>", "<tr><td>x-ms-range</td>");
+            if (updated.equals(content)) {
+                continue;
+            }
+            editor.replaceFile(path, updated);
+            renamed++;
+        }
+        if (renamed == 0) {
+            throw new IllegalStateException("No Range headers found to rename; the emitter output changed.");
+        }
+        logger.info("Sent the blob range as x-ms-range in {} file(s).", renamed);
+    }
+
+    // The shipped SDK sends Accept: application/xml on download and query even though the response carries blob
+    // content, and the recordings capture that. The emitter derives application/octet-stream from the response media
+    // type. Operations that declare no Accept at all are handled by the pipeline policy in BuilderHelper.
+    private static void sendXmlAcceptOnStreamingOperations(Editor editor, Logger logger) {
+        int updatedFiles = 0;
+        for (String path : new ArrayList<>(editor.getContents().keySet())) {
+            if (!path.startsWith(PKG_ROOT + "implementation/")) {
+                continue;
+            }
+            String content = editor.getContents().get(path);
+            if (content == null || !content.contains("final String accept = \"application/octet-stream\"")) {
+                continue;
+            }
+            editor.replaceFile(path, content.replace("final String accept = \"application/octet-stream\"",
+                "final String accept = \"application/xml\""));
+            updatedFiles++;
+        }
+        if (updatedFiles == 0) {
+            throw new IllegalStateException(
+                "No application/octet-stream Accept headers found; the emitter output changed.");
+        }
+        logger.info("Sent Accept: application/xml on the streaming operations in {} file(s).", updatedFiles);
+    }
+
+    // clearPages returns the encryption headers, but the spec does not model them on that response. The shipped
+    // header model exposes both, so they are added back rather than changed in the shared spec.
+
+    // listBlocks(null) is part of the shipped contract: AutoRest passed the block list type straight through as a
+    // query parameter and RestProxy omits a null one, so the request went out without blocklisttype. The spec models
+    // it as required, and the generated convenience method calls toString() on it unguarded. The protocol layer below
+    // already omits a null query parameter, so only the conversion needs guarding -- done here rather than by making
+    // the parameter optional in the shared spec, which would relax it for every language.
+    private static void allowNullBlockListType(Editor editor, Logger logger) {
+        int guarded = 0;
+        for (String className : Arrays.asList("BlockBlobAsyncClientInternal", "BlockBlobClientInternal")) {
+            String path = PKG_ROOT + "implementation/" + className + ".java";
+            String content = editor.getContents().get(path);
+            if (content == null) {
+                throw new IllegalStateException(className + " not present; the emitter output changed.");
+            }
+            String updated = content.replace("getBlockListWithResponseInternal(listType.toString(), requestOptions)",
+                "getBlockListWithResponseInternal(listType == null ? null : listType.toString(), requestOptions)");
+            if (updated.equals(content)) {
+                throw new IllegalStateException(
+                    "Unguarded listType conversion not found in " + className + "; the emitter output changed.");
+            }
+            editor.replaceFile(path, updated);
+            guarded++;
+        }
+        logger.info("Allowed a null block list type in {} file(s).", guarded);
+    }
+    private static void restoreClearPagesEncryptionHeaders(Editor editor, Logger logger) {
+        String path = PKG_ROOT + "implementation/models/PageBlobsClearPagesHeaders.java";
+        String content = editor.getContents().get(path);
+        if (content == null) {
+            throw new IllegalStateException("PageBlobsClearPagesHeaders not present; the emitter output changed.");
+        }
+        if (content.contains("isServerEncrypted")) {
+            logger.info("PageBlobsClearPagesHeaders already exposes the encryption headers.");
+            return;
+        }
+
+        String anchor = "    public PageBlobsClearPagesHeaders(HttpHeaders rawHeaders) {";
+        if (!content.contains(anchor)) {
+            throw new IllegalStateException("PageBlobsClearPagesHeaders constructor not found.");
+        }
+        String fields = "    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED\n"
+            + "        = HttpHeaderName.fromString(\"x-ms-request-server-encrypted\");\n\n"
+            + "    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256\n"
+            + "        = HttpHeaderName.fromString(\"x-ms-encryption-key-sha256\");\n\n"
+            + "    private final Boolean isServerEncrypted;\n\n"
+            + "    private final String encryptionKeySha256;\n\n";
+        String updated = content.replace(anchor, fields + anchor);
+
+        String ctorTail = "        this.encryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);\n";
+        String parse = "        String isServerEncryptedValue = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);\n"
+            + "        this.isServerEncrypted = isServerEncryptedValue == null\n"
+            + "            ? null\n"
+            + "            : Boolean.parseBoolean(isServerEncryptedValue);\n" + ctorTail;
+        updated = updated.replaceFirst("(?m)^(\\s*public PageBlobsClearPagesHeaders\\(HttpHeaders rawHeaders\\) \\{\\r?\\n)",
+            "$1" + Matcher.quoteReplacement(parse));
+
+        String accessors = "\n    /**\n     * Get the isServerEncrypted property.\n     *\n"
+            + "     * @return the isServerEncrypted value.\n     */\n"
+            + "    public Boolean isServerEncrypted() {\n        return this.isServerEncrypted;\n    }\n\n"
+            + "    /**\n     * Get the encryptionKeySha256 property.\n     *\n"
+            + "     * @return the encryptionKeySha256 value.\n     */\n"
+            + "    public String getEncryptionKeySha256() {\n        return this.encryptionKeySha256;\n    }\n";
+        int lastBrace = updated.lastIndexOf('}');
+        updated = updated.substring(0, lastBrace) + accessors + updated.substring(lastBrace);
+
+        editor.replaceFile(path, addImport(updated, "import com.azure.core.http.HttpHeaderName;"));
+        logger.info("Restored the encryption headers on PageBlobsClearPagesHeaders.");
     }
 
     private static void restoreHeaderSetters(PackageCustomization implModels, Logger logger) {

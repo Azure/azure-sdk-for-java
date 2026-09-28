@@ -76,94 +76,93 @@ public final class BlockBlobsImpl {
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> upload(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-blob-type") String blobType,
-            @BodyParam("application/octet-stream") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("x-ms-blob-type") String blobType, @BodyParam("application/octet-stream") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Put("/")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> uploadSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-blob-type") String blobType,
-            @BodyParam("application/octet-stream") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("x-ms-blob-type") String blobType, @BodyParam("application/octet-stream") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Put("/")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> uploadBlobFromUrl(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("x-ms-copy-source") String copySource, @HeaderParam("Content-Length") int contentLength,
-            @HeaderParam("x-ms-blob-type") String blobType, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-copy-source") String copySource,
+            @HeaderParam("Content-Length") int contentLength, @HeaderParam("x-ms-blob-type") String blobType,
+            RequestOptions requestOptions, Context context);
 
         @Put("/")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> uploadBlobFromUrlSync(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("x-ms-copy-source") String copySource, @HeaderParam("Content-Length") int contentLength,
-            @HeaderParam("x-ms-blob-type") String blobType, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-copy-source") String copySource,
+            @HeaderParam("Content-Length") int contentLength, @HeaderParam("x-ms-blob-type") String blobType,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=block")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> stageBlock(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
-            @QueryParam("blockid") String blockId, @HeaderParam("Content-Length") long contentLength,
-            @BodyParam("application/octet-stream") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @QueryParam("blockid") String blockId,
+            @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=block")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> stageBlockSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
-            @QueryParam("blockid") String blockId, @HeaderParam("Content-Length") long contentLength,
-            @BodyParam("application/octet-stream") BinaryData body, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @QueryParam("blockid") String blockId,
+            @HeaderParam("Content-Length") long contentLength, @BodyParam("application/octet-stream") BinaryData body,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=block")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> stageBlockFromUrl(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
-            @QueryParam("blockid") String blockId, @HeaderParam("Content-Length") long contentLength,
-            @HeaderParam("x-ms-copy-source") String sourceUrl, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @QueryParam("blockid") String blockId,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-copy-source") String sourceUrl,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=block")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> stageBlockFromUrlSync(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
-            @QueryParam("blockid") String blockId, @HeaderParam("Content-Length") long contentLength,
-            @HeaderParam("x-ms-copy-source") String sourceUrl, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @QueryParam("blockid") String blockId,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-copy-source") String sourceUrl,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=blocklist")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> commitBlockList(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/xml") BinaryData blocks,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/xml") BinaryData blocks, RequestOptions requestOptions, Context context);
 
         @Put("?comp=blocklist")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> commitBlockListSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/xml") BinaryData blocks, RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/xml") BinaryData blocks,
+            RequestOptions requestOptions, Context context);
 
         @Get("?comp=blocklist")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<BinaryData>> getBlockList(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @QueryParam("blocklisttype") String listType,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("?comp=blocklist")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<BinaryData> getBlockListSync(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @QueryParam("blocklisttype") String listType,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -225,7 +224,7 @@ public final class BlockBlobsImpl {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
+     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * <tr><td>x-ms-content-crc64</td><td>byte[]</td><td>No</td><td>Specifies the transactional CRC64 hash for the
      * body.</td></tr>
@@ -284,12 +283,11 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadWithResponseInternalAsync(long contentLength, BinaryData body,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final String contentType = "application/octet-stream";
         final String blobType = "BlockBlob";
         return FluxUtil
             .withContext(context -> service.upload(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                accept, contentType, contentLength, blobType, body, requestOptions, context))
+                contentType, contentLength, blobType, body, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -352,7 +350,7 @@ public final class BlockBlobsImpl {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
+     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * <tr><td>x-ms-content-crc64</td><td>byte[]</td><td>No</td><td>Specifies the transactional CRC64 hash for the
      * body.</td></tr>
@@ -411,12 +409,11 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadWithResponseInternal(long contentLength, BinaryData body,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final String contentType = "application/octet-stream";
         final String blobType = "BlockBlob";
         try {
-            return service.uploadSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-                contentType, contentLength, blobType, body, requestOptions, Context.NONE);
+            return service.uploadSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), contentType,
+                contentLength, blobType, body, requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -545,13 +542,12 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadBlobFromUrlWithResponseInternalAsync(String copySource,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final int contentLength = 0;
         final String blobType = "BlockBlob";
         return FluxUtil
             .withContext(
                 context -> service.uploadBlobFromUrl(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    accept, copySource, contentLength, blobType, requestOptions, context))
+                    copySource, contentLength, blobType, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -677,12 +673,11 @@ public final class BlockBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadBlobFromUrlWithResponseInternal(String copySource, RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final int contentLength = 0;
         final String blobType = "BlockBlob";
         try {
             return service.uploadBlobFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                accept, copySource, contentLength, blobType, requestOptions, Context.NONE);
+                copySource, contentLength, blobType, requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -773,12 +768,11 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockWithResponseInternalAsync(String blockId, long contentLength, BinaryData body,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final String contentType = "application/octet-stream";
         return FluxUtil
             .withContext(
                 context -> service.stageBlock(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    accept, contentType, blockId, contentLength, body, requestOptions, context))
+                    contentType, blockId, contentLength, body, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -867,10 +861,9 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockWithResponseInternal(String blockId, long contentLength, BinaryData body,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final String contentType = "application/octet-stream";
         try {
-            return service.stageBlockSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            return service.stageBlockSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 contentType, blockId, contentLength, body, requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
@@ -967,11 +960,10 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockFromUrlWithResponseInternalAsync(String blockId, long contentLength,
         String sourceUrl, RequestOptions requestOptions) {
-        final String accept = "application/xml";
         return FluxUtil
             .withContext(
                 context -> service.stageBlockFromUrl(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    accept, blockId, contentLength, sourceUrl, requestOptions, context))
+                    blockId, contentLength, sourceUrl, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1065,10 +1057,9 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockFromUrlWithResponseInternal(String blockId, long contentLength, String sourceUrl,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         try {
             return service.stageBlockFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                accept, blockId, contentLength, sourceUrl, requestOptions, Context.NONE);
+                blockId, contentLength, sourceUrl, requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1134,7 +1125,7 @@ public final class BlockBlobsImpl {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
+     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -1193,11 +1184,10 @@ public final class BlockBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> commitBlockListWithResponseInternalAsync(BinaryData blocks,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final String contentType = "application/xml";
         return FluxUtil
             .withContext(context -> service.commitBlockList(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), accept, contentType, blocks, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), contentType, blocks, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1261,7 +1251,7 @@ public final class BlockBlobsImpl {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
+     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -1319,11 +1309,10 @@ public final class BlockBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> commitBlockListWithResponseInternal(BinaryData blocks, RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final String contentType = "application/xml";
         try {
             return service.commitBlockListSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                accept, contentType, blocks, requestOptions, Context.NONE);
+                contentType, blocks, requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1336,9 +1325,6 @@ public final class BlockBlobsImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>snapshot</td><td>String</td><td>No</td><td>Specifies the snapshot of the blob.</td></tr>
-     * <tr><td>blocklisttype</td><td>String</td><td>No</td><td>Specifies whether to return the list of committed blocks,
-     * the list of uncommitted blocks, or both lists together. Allowed values: "committed", "uncommitted",
-     * "all".</td></tr>
      * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds. For more
      * information, see &lt;a
      * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
@@ -1390,6 +1376,8 @@ public final class BlockBlobsImpl {
      * identifier for the request.</td></tr>
      * </table>
      * 
+     * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both
+     * lists together. Allowed values: "committed", "uncommitted", "all".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1399,11 +1387,12 @@ public final class BlockBlobsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBlockListWithResponseInternalAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getBlockListWithResponseInternalAsync(String listType,
+        RequestOptions requestOptions) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.getBlockList(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), listType, accept, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1414,9 +1403,6 @@ public final class BlockBlobsImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>snapshot</td><td>String</td><td>No</td><td>Specifies the snapshot of the blob.</td></tr>
-     * <tr><td>blocklisttype</td><td>String</td><td>No</td><td>Specifies whether to return the list of committed blocks,
-     * the list of uncommitted blocks, or both lists together. Allowed values: "committed", "uncommitted",
-     * "all".</td></tr>
      * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds. For more
      * information, see &lt;a
      * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
@@ -1468,6 +1454,8 @@ public final class BlockBlobsImpl {
      * identifier for the request.</td></tr>
      * </table>
      * 
+     * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both
+     * lists together. Allowed values: "committed", "uncommitted", "all".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1476,11 +1464,11 @@ public final class BlockBlobsImpl {
      * @return contains the committed and uncommitted blocks in a block blob along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBlockListWithResponseInternal(RequestOptions requestOptions) {
+    public Response<BinaryData> getBlockListWithResponseInternal(String listType, RequestOptions requestOptions) {
         final String accept = "application/xml";
         try {
-            return service.getBlockListSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
-                requestOptions, Context.NONE);
+            return service.getBlockListSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                listType, accept, requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }

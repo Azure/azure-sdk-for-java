@@ -116,7 +116,7 @@ public final class BlockBlobClientInternal {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
+     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * <tr><td>x-ms-content-crc64</td><td>byte[]</td><td>No</td><td>Specifies the transactional CRC64 hash for the
      * body.</td></tr>
@@ -548,7 +548,7 @@ public final class BlockBlobClientInternal {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
+     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -617,9 +617,6 @@ public final class BlockBlobClientInternal {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>snapshot</td><td>String</td><td>No</td><td>Specifies the snapshot of the blob.</td></tr>
-     * <tr><td>blocklisttype</td><td>String</td><td>No</td><td>Specifies whether to return the list of committed blocks,
-     * the list of uncommitted blocks, or both lists together. Allowed values: "committed", "uncommitted",
-     * "all".</td></tr>
      * <tr><td>timeout</td><td>Integer</td><td>No</td><td>The timeout parameter is expressed in seconds. For more
      * information, see &lt;a
      * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
@@ -671,6 +668,8 @@ public final class BlockBlobClientInternal {
      * identifier for the request.</td></tr>
      * </table>
      * 
+     * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both
+     * lists together. Allowed values: "committed", "uncommitted", "all".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -680,8 +679,8 @@ public final class BlockBlobClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getBlockListWithResponseInternal(RequestOptions requestOptions) {
-        return this.serviceClient.getBlockListWithResponseInternal(requestOptions);
+    Response<BinaryData> getBlockListWithResponseInternal(String listType, RequestOptions requestOptions) {
+        return this.serviceClient.getBlockListWithResponseInternal(listType, requestOptions);
     }
 
     /**
@@ -2264,9 +2263,9 @@ public final class BlockBlobClientInternal {
     /**
      * Retrieves the list of blocks that have been uploaded as part of the block blob.
      * 
-     * @param snapshot Specifies the snapshot of the blob.
      * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both
      * lists together.
+     * @param snapshot Specifies the snapshot of the blob.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -2283,15 +2282,12 @@ public final class BlockBlobClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<BlockBlobsGetBlockListHeaders, BlockList> getBlockListWithResponse(String snapshot,
-        BlockListType listType, Integer timeout, String leaseId, String ifTags, RequestOptions requestOptions) {
+    public ResponseBase<BlockBlobsGetBlockListHeaders, BlockList> getBlockListWithResponse(BlockListType listType,
+        String snapshot, Integer timeout, String leaseId, String ifTags, RequestOptions requestOptions) {
         // Generated convenience method for getBlockListWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (snapshot != null) {
             requestOptions.addQueryParam("snapshot", snapshot, false);
-        }
-        if (listType != null) {
-            requestOptions.addQueryParam("blocklisttype", listType.toString(), false);
         }
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
@@ -2302,7 +2298,8 @@ public final class BlockBlobClientInternal {
         if (ifTags != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
         }
-        Response<BinaryData> protocolMethodResponse = getBlockListWithResponseInternal(requestOptions);
+        Response<BinaryData> protocolMethodResponse
+            = getBlockListWithResponseInternal(listType == null ? null : listType.toString(), requestOptions);
         return new ResponseBase<>(protocolMethodResponse.getRequest(), protocolMethodResponse.getStatusCode(),
             protocolMethodResponse.getHeaders(),
             protocolMethodResponse.getValue().toObject(BlockList.class, XML_SERIALIZER),
@@ -2312,9 +2309,9 @@ public final class BlockBlobClientInternal {
     /**
      * Retrieves the list of blocks that have been uploaded as part of the block blob.
      * 
-     * @param snapshot Specifies the snapshot of the blob.
      * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both
      * lists together.
+     * @param snapshot Specifies the snapshot of the blob.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href=\"https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations\"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -2330,15 +2327,12 @@ public final class BlockBlobClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlockList getBlockList(String snapshot, BlockListType listType, Integer timeout, String leaseId,
+    public BlockList getBlockList(BlockListType listType, String snapshot, Integer timeout, String leaseId,
         String ifTags) {
         // Generated convenience method for getBlockListWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         if (snapshot != null) {
             requestOptions.addQueryParam("snapshot", snapshot, false);
-        }
-        if (listType != null) {
-            requestOptions.addQueryParam("blocklisttype", listType.toString(), false);
         }
         if (timeout != null) {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
@@ -2349,12 +2343,17 @@ public final class BlockBlobClientInternal {
         if (ifTags != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-if-tags"), ifTags);
         }
-        return getBlockListWithResponseInternal(requestOptions).getValue().toObject(BlockList.class, XML_SERIALIZER);
+        return getBlockListWithResponseInternal(listType == null ? null : listType.toString(), requestOptions)
+            .getValue()
+            .toObject(BlockList.class, XML_SERIALIZER);
     }
 
     /**
      * Retrieves the list of blocks that have been uploaded as part of the block blob.
      * 
+     * @param listType Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both
+     * lists together.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -2364,9 +2363,11 @@ public final class BlockBlobClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlockList getBlockList() {
+    public BlockList getBlockList(BlockListType listType) {
         // Generated convenience method for getBlockListWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return getBlockListWithResponseInternal(requestOptions).getValue().toObject(BlockList.class, XML_SERIALIZER);
+        return getBlockListWithResponseInternal(listType == null ? null : listType.toString(), requestOptions)
+            .getValue()
+            .toObject(BlockList.class, XML_SERIALIZER);
     }
 }

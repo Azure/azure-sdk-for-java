@@ -75,69 +75,63 @@ public final class PageBlobsImpl {
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> create(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-blob-content-length") long size,
-            @HeaderParam("Content-Length") int contentLength, @HeaderParam("x-ms-blob-type") String blobType,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-blob-content-length") long size, @HeaderParam("Content-Length") int contentLength,
+            @HeaderParam("x-ms-blob-type") String blobType, RequestOptions requestOptions, Context context);
 
         @Put("/")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> createSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-blob-content-length") long size,
-            @HeaderParam("Content-Length") int contentLength, @HeaderParam("x-ms-blob-type") String blobType,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-blob-content-length") long size, @HeaderParam("Content-Length") int contentLength,
+            @HeaderParam("x-ms-blob-type") String blobType, RequestOptions requestOptions, Context context);
 
         @Put("?comp=page")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> uploadPages(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-range") String range,
-            @HeaderParam("x-ms-page-write") String pageWrite, @BodyParam("application/octet-stream") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
+            @BodyParam("application/octet-stream") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("?comp=page")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> uploadPagesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-range") String range,
-            @HeaderParam("x-ms-page-write") String pageWrite, @BodyParam("application/octet-stream") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
+            @BodyParam("application/octet-stream") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("?comp=page")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> clearPages(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("Content-Length") int contentLength,
-            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Length") int contentLength, @HeaderParam("x-ms-range") String range,
+            @HeaderParam("x-ms-page-write") String pageWrite, RequestOptions requestOptions, Context context);
 
         @Put("?comp=page")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> clearPagesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("Content-Length") int contentLength,
+            @HeaderParam("Content-Length") int contentLength, @HeaderParam("x-ms-range") String range,
+            @HeaderParam("x-ms-page-write") String pageWrite, RequestOptions requestOptions, Context context);
+
+        @Put("?comp=page")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Mono<Response<Void>> uploadPagesFromUrl(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-copy-source") String sourceUrl,
+            @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
             RequestOptions requestOptions, Context context);
 
         @Put("?comp=page")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
-        Mono<Response<Void>> uploadPagesFromUrl(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("x-ms-copy-source") String sourceUrl, @HeaderParam("x-ms-source-range") String sourceRange,
-            @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-range") String range,
-            @HeaderParam("x-ms-page-write") String pageWrite, RequestOptions requestOptions, Context context);
-
-        @Put("?comp=page")
-        @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> uploadPagesFromUrlSync(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("x-ms-copy-source") String sourceUrl, @HeaderParam("x-ms-source-range") String sourceRange,
-            @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-range") String range,
-            @HeaderParam("x-ms-page-write") String pageWrite, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-copy-source") String sourceUrl,
+            @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("Content-Length") long contentLength,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
+            RequestOptions requestOptions, Context context);
 
         @Get("?comp=pagelist")
         @ExpectedResponses({ 200 })
@@ -171,21 +165,19 @@ public final class PageBlobsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> resize(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-blob-content-length") long size,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-blob-content-length") long size, RequestOptions requestOptions, Context context);
 
         @Put("?comp=properties")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> resizeSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-blob-content-length") long size,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-blob-content-length") long size, RequestOptions requestOptions, Context context);
 
         @Put("?comp=properties")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> setSequenceNumber(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-sequence-number-action") String sequenceNumberAction, RequestOptions requestOptions,
             Context context);
 
@@ -193,7 +185,7 @@ public final class PageBlobsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> setSequenceNumberSync(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
+            @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-sequence-number-action") String sequenceNumberAction, RequestOptions requestOptions,
             Context context);
 
@@ -201,15 +193,14 @@ public final class PageBlobsImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> copyIncremental(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("x-ms-copy-source") String copySource, RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-copy-source") String copySource,
+            RequestOptions requestOptions, Context context);
 
         @Put("?comp=incrementalcopy")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> copyIncrementalSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("x-ms-copy-source") String copySource,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-copy-source") String copySource, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -269,7 +260,7 @@ public final class PageBlobsImpl {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
+     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -308,12 +299,11 @@ public final class PageBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createWithResponseInternalAsync(long size, RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final int contentLength = 0;
         final String blobType = "PageBlob";
         return FluxUtil
             .withContext(context -> service.create(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                accept, size, contentLength, blobType, requestOptions, context))
+                size, contentLength, blobType, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -374,7 +364,7 @@ public final class PageBlobsImpl {
      * <tr><td>x-ms-immutability-policy-until-date</td><td>OffsetDateTime</td><td>No</td><td>The date-time that
      * indicates the time at which the blob immutability policy will expire.</td></tr>
      * <tr><td>x-ms-immutability-policy-mode</td><td>String</td><td>No</td><td>Indicates the immutability policy mode of
-     * the blob. Allowed values: "mutable", "unlocked", "locked".</td></tr>
+     * the blob. Allowed values: "mutable", "locked", "unlocked".</td></tr>
      * <tr><td>x-ms-legal-hold</td><td>Boolean</td><td>No</td><td>Indicates whether the blob has a legal hold.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
@@ -413,11 +403,10 @@ public final class PageBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createWithResponseInternal(long size, RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final int contentLength = 0;
         final String blobType = "PageBlob";
         try {
-            return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept, size,
+            return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), size,
                 contentLength, blobType, requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
@@ -526,13 +515,12 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadPagesWithResponseInternalAsync(long contentLength, String range, BinaryData body,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final String contentType = "application/octet-stream";
         final String pageWrite = "update";
         return FluxUtil
             .withContext(
                 context -> service.uploadPages(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    accept, contentType, contentLength, range, pageWrite, body, requestOptions, context))
+                    contentType, contentLength, range, pageWrite, body, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -638,11 +626,10 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadPagesWithResponseInternal(long contentLength, String range, BinaryData body,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final String contentType = "application/octet-stream";
         final String pageWrite = "update";
         try {
-            return service.uploadPagesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            return service.uploadPagesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 contentType, contentLength, range, pageWrite, body, requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
@@ -703,10 +690,6 @@ public final class PageBlobsImpl {
      * read.</td></tr>
      * <tr><td>x-ms-content-crc64</td><td>byte[]</td><td>The CRC64 hash of the content.</td></tr>
      * <tr><td>x-ms-blob-sequence-number</td><td>long</td><td>The current sequence number for a page blob.</td></tr>
-     * <tr><td>x-ms-request-server-encrypted</td><td>boolean</td><td>Indicates whether the contents of the request are
-     * successfully encrypted.</td></tr>
-     * <tr><td>x-ms-encryption-key-sha256</td><td>String</td><td>The SHA-256 hash of the provided encryption
-     * key.</td></tr>
      * <tr><td>Date</td><td>OffsetDateTime</td><td>Date-time value generated by the service that indicates the time at
      * which the response was initiated.</td></tr>
      * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
@@ -727,13 +710,11 @@ public final class PageBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> clearPagesWithResponseInternalAsync(String range, RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final int contentLength = 0;
         final String pageWrite = "clear";
         return FluxUtil
-            .withContext(
-                context -> service.clearPages(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    accept, contentLength, range, pageWrite, requestOptions, context))
+            .withContext(context -> service.clearPages(this.client.getUrl(),
+                this.client.getServiceVersion().getVersion(), contentLength, range, pageWrite, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -791,10 +772,6 @@ public final class PageBlobsImpl {
      * read.</td></tr>
      * <tr><td>x-ms-content-crc64</td><td>byte[]</td><td>The CRC64 hash of the content.</td></tr>
      * <tr><td>x-ms-blob-sequence-number</td><td>long</td><td>The current sequence number for a page blob.</td></tr>
-     * <tr><td>x-ms-request-server-encrypted</td><td>boolean</td><td>Indicates whether the contents of the request are
-     * successfully encrypted.</td></tr>
-     * <tr><td>x-ms-encryption-key-sha256</td><td>String</td><td>The SHA-256 hash of the provided encryption
-     * key.</td></tr>
      * <tr><td>Date</td><td>OffsetDateTime</td><td>Date-time value generated by the service that indicates the time at
      * which the response was initiated.</td></tr>
      * <tr><td>x-ms-version</td><td>String</td><td>Specifies the version of the operation to use for this
@@ -815,11 +792,10 @@ public final class PageBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> clearPagesWithResponseInternal(String range, RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final int contentLength = 0;
         final String pageWrite = "clear";
         try {
-            return service.clearPagesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            return service.clearPagesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 contentLength, range, pageWrite, requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
@@ -933,12 +909,11 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadPagesFromUrlWithResponseInternalAsync(String sourceUrl, String sourceRange,
         long contentLength, String range, RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final String pageWrite = "update";
         return FluxUtil
             .withContext(context -> service.uploadPagesFromUrl(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), accept, sourceUrl, sourceRange, contentLength, range,
-                pageWrite, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), sourceUrl, sourceRange, contentLength, range, pageWrite,
+                requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1049,11 +1024,10 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadPagesFromUrlWithResponseInternal(String sourceUrl, String sourceRange,
         long contentLength, String range, RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final String pageWrite = "update";
         try {
             return service.uploadPagesFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                accept, sourceUrl, sourceRange, contentLength, range, pageWrite, requestOptions, Context.NONE);
+                sourceUrl, sourceRange, contentLength, range, pageWrite, requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1504,10 +1478,9 @@ public final class PageBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resizeWithResponseInternalAsync(long size, RequestOptions requestOptions) {
-        final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.resize(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                accept, size, requestOptions, context))
+                size, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1576,9 +1549,8 @@ public final class PageBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resizeWithResponseInternal(long size, RequestOptions requestOptions) {
-        final String accept = "application/xml";
         try {
-            return service.resizeSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept, size,
+            return service.resizeSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), size,
                 requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
@@ -1636,7 +1608,7 @@ public final class PageBlobsImpl {
      * </table>
      * 
      * @param sequenceNumberAction Required if the blob sequence number is provided. This property indicates how the
-     * service should modify the blob's sequence number. Allowed values: "max", "update", "increment".
+     * service should modify the blob's sequence number. Allowed values: "increment", "max", "update".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1647,10 +1619,9 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setSequenceNumberWithResponseInternalAsync(String sequenceNumberAction,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.setSequenceNumber(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), accept, sequenceNumberAction, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), sequenceNumberAction, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1705,7 +1676,7 @@ public final class PageBlobsImpl {
      * </table>
      * 
      * @param sequenceNumberAction Required if the blob sequence number is provided. This property indicates how the
-     * service should modify the blob's sequence number. Allowed values: "max", "update", "increment".
+     * service should modify the blob's sequence number. Allowed values: "increment", "max", "update".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1716,10 +1687,9 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setSequenceNumberWithResponseInternal(String sequenceNumberAction,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         try {
             return service.setSequenceNumberSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                accept, sequenceNumberAction, requestOptions, Context.NONE);
+                sequenceNumberAction, requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1784,10 +1754,9 @@ public final class PageBlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> copyIncrementalWithResponseInternalAsync(String copySource,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.copyIncremental(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), accept, copySource, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), copySource, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1849,10 +1818,9 @@ public final class PageBlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> copyIncrementalWithResponseInternal(String copySource, RequestOptions requestOptions) {
-        final String accept = "application/xml";
         try {
             return service.copyIncrementalSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                accept, copySource, requestOptions, Context.NONE);
+                copySource, requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }

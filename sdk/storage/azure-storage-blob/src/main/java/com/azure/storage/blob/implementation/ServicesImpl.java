@@ -76,7 +76,7 @@ public final class ServicesImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> setProperties(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/xml") BinaryData storageServiceProperties, RequestOptions requestOptions,
             Context context);
 
@@ -84,7 +84,7 @@ public final class ServicesImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> setPropertiesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/xml") BinaryData storageServiceProperties, RequestOptions requestOptions,
             Context context);
 
@@ -150,14 +150,13 @@ public final class ServicesImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> getAccountInfo(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("x-ms-version") String xMsVersion, RequestOptions requestOptions, Context context);
 
         @Get("?restype=account&comp=properties")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> getAccountInfoSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("?comp=batch")
         @ExpectedResponses({ 202 })
@@ -272,12 +271,11 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesWithResponseInternalAsync(BinaryData storageServiceProperties,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final String contentType = "application/xml";
         return FluxUtil
             .withContext(
                 context -> service.setProperties(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    accept, contentType, storageServiceProperties, requestOptions, context))
+                    contentType, storageServiceProperties, requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -363,10 +361,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponseInternal(BinaryData storageServiceProperties,
         RequestOptions requestOptions) {
-        final String accept = "application/xml";
         final String contentType = "application/xml";
         try {
-            return service.setPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), accept,
+            return service.setPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                 contentType, storageServiceProperties, requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
@@ -701,7 +698,7 @@ public final class ServicesImpl {
      *             Properties (Required): {
      *                 Last-Modified: DateTimeRfc1123 (Required)
      *                 Etag: String (Required)
-     *                 LeaseStatus: String(locked/unlocked) (Optional)
+     *                 LeaseStatus: String(unlocked/locked) (Optional)
      *                 LeaseState: String(available/leased/expired/breaking/broken) (Optional)
      *                 LeaseDuration: String(infinite/fixed) (Optional)
      *                 PublicAccess: String(blob/container) (Optional)
@@ -792,7 +789,7 @@ public final class ServicesImpl {
      *             Properties (Required): {
      *                 Last-Modified: DateTimeRfc1123 (Required)
      *                 Etag: String (Required)
-     *                 LeaseStatus: String(locked/unlocked) (Optional)
+     *                 LeaseStatus: String(unlocked/locked) (Optional)
      *                 LeaseState: String(available/leased/expired/breaking/broken) (Optional)
      *                 LeaseDuration: String(infinite/fixed) (Optional)
      *                 PublicAccess: String(blob/container) (Optional)
@@ -1037,10 +1034,9 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getAccountInfoWithResponseInternalAsync(RequestOptions requestOptions) {
-        final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.getAccountInfo(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), requestOptions, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1083,10 +1079,9 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getAccountInfoWithResponseInternal(RequestOptions requestOptions) {
-        final String accept = "application/xml";
         try {
             return service.getAccountInfoSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                accept, requestOptions, Context.NONE);
+                requestOptions, Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }

@@ -10,6 +10,10 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
@@ -42,6 +46,7 @@ import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationP
 import com.azure.storage.common.policy.StorageContentValidationDecodingPolicy;
 import com.azure.storage.common.policy.StorageContentValidationEncodingPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
+import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -63,6 +68,42 @@ public final class BuilderHelper {
         Map<String, String> properties = CoreUtils.getProperties("azure-storage-blob.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
+
+    /**
+     * Sends {@code Accept: application/xml} on the operations the generated layer leaves without one.
+     * <p>
+     * The shipped SDK has always sent {@code application/xml} on every operation, including those that return no
+     * body, and the recordings capture that. Operations with a response body get the header from the generated code;
+     * operations without one have no media type for the emitter to derive it from, so the request would otherwise go
+     * out with whatever the transport defaults to. Only a missing or wildcard value is replaced, so the operations
+     * that genuinely negotiate something else -- the Apache Arrow listings and the batch operations -- keep the value
+     * the generated code set. Kept as an anonymous policy because a named one may not live in an implementation
+     * package, and this is not public API.
+     *
+     * @return the policy.
+     */
+    private static HttpPipelinePolicy acceptXmlPolicy() {
+        return new HttpPipelinePolicy() {
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                setAcceptIfAbsent(context);
+                return next.process();
+            }
+
+            @Override
+            public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+                setAcceptIfAbsent(context);
+                return next.processSync();
+            }
+
+            private void setAcceptIfAbsent(HttpPipelineCallContext context) {
+                String accept = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.ACCEPT);
+                if (accept == null || accept.isEmpty() || "*/*".equals(accept)) {
+                    context.getHttpRequest().getHeaders().set(HttpHeaderName.ACCEPT, "application/xml");
+                }
+            }
+        };
     }
 
     /**
@@ -116,6 +157,7 @@ public final class BuilderHelper {
             policies.add(new AddHeadersPolicy(headers));
         }
         policies.add(new MetadataValidationPolicy());
+        policies.add(acceptXmlPolicy());
 
         policies.add(new StorageContentValidationEncodingPolicy());
         policies.add(new StorageContentValidationDecodingPolicy());
