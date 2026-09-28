@@ -33,7 +33,6 @@ final class InputStreamTimeoutResponseSubscriber extends InputStream
     // Sentinel values to indicate completion.
     private static final ByteBuffer LAST_BUFFER = ByteBuffer.wrap(new byte[0]);
     private static final List<ByteBuffer> LAST_LIST = List.of(LAST_BUFFER);
-    private static final Timer TIMER = new Timer(true);
 
     // A queue of yet unprocessed ByteBuffers received from the flow API.
     private final BlockingQueue<List<ByteBuffer>> buffers;
@@ -44,6 +43,7 @@ final class InputStreamTimeoutResponseSubscriber extends InputStream
     private volatile Iterator<ByteBuffer> currentListItr;
     private volatile ByteBuffer currentBuffer;
 
+    private final Timer timer = new Timer(true);
     private final Semaphore semaphore = new Semaphore(1);
     private final long readTimeout;
     private TimerTask currentTimeout;
@@ -285,6 +285,11 @@ final class InputStreamTimeoutResponseSubscriber extends InputStream
             }
 
             closed = true;
+            if (currentTimeout != null) {
+                currentTimeout.cancel();
+            }
+            timer.cancel();
+            timer.purge();
             s = subscription;
             subscription = null;
         } finally {
@@ -306,14 +311,14 @@ final class InputStreamTimeoutResponseSubscriber extends InputStream
             @Override
             public void run() {
                 // Set the failed exception before cancelling. Cancelling the subscription causes an error to be emitted
-                // about the subscription being cancelled which we don't want to propagate as we are explicitly doing
+                // about the subscription being canceled which we don't want to propagate as we are explicitly doing
                 // it.
                 failed = new HttpTimeoutException("Timeout reading response body.");
                 subscription.cancel();
                 close();
             }
         };
-        TIMER.schedule(task, readTimeout);
+        timer.schedule(task, readTimeout);
         return task;
     }
 }

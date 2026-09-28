@@ -9,18 +9,18 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class OccurrenceExtensionListOccurrenceByVmsSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-06-preview/OccurrenceExtension_ListOccurrenceByVms_BasicSuccess.json
      */
     /**
-     * Sample code: List scheduled action occurrences for a compute resource.
+     * Sample code: List recurring scheduled action occurrences for a virtual machine.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void listScheduledActionOccurrencesForAComputeResource(
+    public static void listRecurringScheduledActionOccurrencesForAVirtualMachine(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrenceExtensions()
             .listOccurrenceByVms(
-                "subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm",
+                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
                 com.azure.core.util.Context.NONE);
     }
 }

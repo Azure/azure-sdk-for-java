@@ -10,6 +10,11 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded Netty dependencies from `4.1.137.Final` to `4.1.138.Final`.
+- Upgraded Netty TcNative dependencies from `2.0.81.Final` to `2.0.84.Final`.
+
 ## 1.16.7 (2026-08-27)
 
 ### Other Changes
