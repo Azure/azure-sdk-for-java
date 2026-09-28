@@ -633,7 +633,6 @@ public final class AttestationAsyncClient {
         return attestTpmWithResponse(request).onErrorMap(Utilities::mapException).flatMap(FluxUtil::toMono);
     }
 
-    @Deprecated
     Mono<Response<String>> attestTpmWithResponse(String request, Context context) {
         Objects.requireNonNull(request);
         return attestTpmWithResponse(BinaryData.fromString(request), context).map(response -> Utilities
