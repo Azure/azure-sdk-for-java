@@ -8,12 +8,9 @@ import com.azure.ai.agents.implementation.JsonMergePatchHelper;
 import com.azure.ai.agents.implementation.models.ReplaceTelephonyTransferTargetsRequest;
 import com.azure.ai.agents.implementation.models.TransferTelephonyCallRequest;
 import com.azure.ai.agents.implementation.utils.Beta;
-import com.azure.ai.agents.models.CreateTelephonyBindingRequest;
-import com.azure.ai.agents.models.CreateTelephonyCallJobRequest;
-import com.azure.ai.agents.models.CreateTelephonyCampaignRequest;
-import com.azure.ai.agents.models.ImportTelephonyCampaignRecipientsRequest;
+import com.azure.ai.agents.models.CreateTelephonyBindingInput;
+import com.azure.ai.agents.models.CreateTelephonyCallJobInput;
 import com.azure.ai.agents.models.PageOrder;
-import com.azure.ai.agents.models.PublishTelephonyCampaignRequest;
 import com.azure.ai.agents.models.TelephonyBinding;
 import com.azure.ai.agents.models.TelephonyBindingListItem;
 import com.azure.ai.agents.models.TelephonyBindingStatus;
@@ -21,14 +18,10 @@ import com.azure.ai.agents.models.TelephonyCallJob;
 import com.azure.ai.agents.models.TelephonyCallRecord;
 import com.azure.ai.agents.models.TelephonyCallStatus;
 import com.azure.ai.agents.models.TelephonyCallSummary;
-import com.azure.ai.agents.models.TelephonyCampaign;
-import com.azure.ai.agents.models.TelephonyCampaignRecipientImport;
-import com.azure.ai.agents.models.TelephonyOperation;
-import com.azure.ai.agents.models.TelephonyOperationResource;
 import com.azure.ai.agents.models.TelephonyProvider;
 import com.azure.ai.agents.models.TelephonyTransferTarget;
 import com.azure.ai.agents.models.TelephonyTransferTargets;
-import com.azure.ai.agents.models.UpdateTelephonyBindingRequest;
+import com.azure.ai.agents.models.UpdateTelephonyBindingInput;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -41,7 +34,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.SyncPoller;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -829,7 +821,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *     }
      *     retry_policy (Required): {
      *         type: String(fixed_interval) (Required)
-     *         max_attempts: int (Required)
+     *         max_attempts: Integer (Optional)
      *     }
      *     attempt_count: int (Required)
      *     next_attempt_at: Long (Optional)
@@ -903,7 +895,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *     }
      *     retry_policy (Required): {
      *         type: String(fixed_interval) (Required)
-     *         max_attempts: int (Required)
+     *         max_attempts: Integer (Optional)
      *     }
      *     attempt_count: int (Required)
      *     next_attempt_at: Long (Optional)
@@ -975,7 +967,7 @@ public final class BetaVoiceAgentsTelephonyClient {
      *     }
      *     retry_policy (Required): {
      *         type: String(fixed_interval) (Required)
-     *         max_attempts: int (Required)
+     *         max_attempts: Integer (Optional)
      *     }
      *     attempt_count: int (Required)
      *     next_attempt_at: Long (Optional)
@@ -1012,631 +1004,6 @@ public final class BetaVoiceAgentsTelephonyClient {
     public Response<BinaryData> cancelTelephonyCallJobWithResponse(String agentName, String callJobId, String ifMatch,
         RequestOptions requestOptions) {
         return this.serviceClient.cancelTelephonyCallJobWithResponse(agentName, callJobId, ifMatch, requestOptions);
-    }
-
-    /**
-     * Create an outbound telephony campaign
-     *
-     * Creates a draft outbound campaign. Recipients are imported and validated before the campaign can be published.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     display_name: String (Required)
-     *     connection_name: String (Required)
-     *     source: String (Required)
-     *     purpose: String (Optional)
-     *     schedule (Optional): {
-     *         type: String(immediate/scheduled) (Required)
-     *         start_at: Long (Optional)
-     *     }
-     *     retry_policy (Optional): {
-     *         type: String(fixed_interval) (Required)
-     *         max_attempts: Integer (Optional)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     display_name: String (Required)
-     *     connection_name: String (Required)
-     *     source: String (Required)
-     *     purpose: String (Optional)
-     *     schedule (Optional): {
-     *         type: String(immediate/scheduled) (Required)
-     *         start_at: Long (Optional)
-     *     }
-     *     id: String (Required)
-     *     object: String (Required)
-     *     agent_name: String (Required)
-     *     configuration_status: String(draft/importing/validating/publishing/published/publish_failed) (Required)
-     *     execution_status: String(none/scheduled/running/paused/completed/failed/cancelled) (Required)
-     *     retry_policy (Required): {
-     *         type: String(fixed_interval) (Required)
-     *         max_attempts: int (Required)
-     *     }
-     *     latest_successful_validation_id: String (Optional)
-     *     active_validation_id: String (Optional)
-     *     active_recipient_import_id: String (Optional)
-     *     published_at: Long (Optional)
-     *     call_job_counts (Required): {
-     *         total: long (Required)
-     *         pending: long (Required)
-     *         in_progress: long (Required)
-     *         completed: long (Required)
-     *         failed: long (Required)
-     *         blocked: long (Required)
-     *         cancelled: long (Required)
-     *         expired: long (Required)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: long (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Headers</strong></p>
-     * <table border="1">
-     * <caption>Response Headers</caption>
-     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     * <tr><td>Location</td><td>String</td><td>The Location response header.</td></tr>
-     * </table>
-     *
-     * @param agentName The agentName parameter.
-     * @param body The body parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a durable outbound campaign owned by a voice agent along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTelephonyCampaignWithResponse(String agentName, BinaryData body,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createTelephonyCampaignWithResponse(agentName, body, requestOptions);
-    }
-
-    /**
-     * Get an outbound telephony campaign
-     *
-     * Retrieves an outbound campaign, including configuration, execution state, and aggregate call-job counts.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     display_name: String (Required)
-     *     connection_name: String (Required)
-     *     source: String (Required)
-     *     purpose: String (Optional)
-     *     schedule (Optional): {
-     *         type: String(immediate/scheduled) (Required)
-     *         start_at: Long (Optional)
-     *     }
-     *     id: String (Required)
-     *     object: String (Required)
-     *     agent_name: String (Required)
-     *     configuration_status: String(draft/importing/validating/publishing/published/publish_failed) (Required)
-     *     execution_status: String(none/scheduled/running/paused/completed/failed/cancelled) (Required)
-     *     retry_policy (Required): {
-     *         type: String(fixed_interval) (Required)
-     *         max_attempts: int (Required)
-     *     }
-     *     latest_successful_validation_id: String (Optional)
-     *     active_validation_id: String (Optional)
-     *     active_recipient_import_id: String (Optional)
-     *     published_at: Long (Optional)
-     *     call_job_counts (Required): {
-     *         total: long (Required)
-     *         pending: long (Required)
-     *         in_progress: long (Required)
-     *         completed: long (Required)
-     *         failed: long (Required)
-     *         blocked: long (Required)
-     *         cancelled: long (Required)
-     *         expired: long (Required)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an outbound telephony campaign
-     *
-     * Retrieves an outbound campaign, including configuration, execution state, and aggregate call-job counts along
-     * with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTelephonyCampaignWithResponse(String agentName, String campaignId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getTelephonyCampaignWithResponse(agentName, campaignId, requestOptions);
-    }
-
-    /**
-     * Import outbound telephony campaign recipients
-     *
-     * Starts an asynchronous import of campaign recipients from a Dataset CSV, JSON array, or JSONL file.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     source (Required): {
-     *         type: String (Required)
-     *         dataset_name: String (Required)
-     *         dataset_version: String (Required)
-     *         file_name: String (Required)
-     *         format: String(csv/json/jsonl) (Required)
-     *     }
-     *     mapping (Optional): {
-     *         destination: String (Optional)
-     *         recipient_key: String (Optional)
-     *         recipient_item_key: String (Optional)
-     *         not_before: String (Optional)
-     *         expires_at: String (Optional)
-     *     }
-     *     duplicate_handling: String(reject/keep_each/merge) (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     kind: String(recipient_import/validation/publish) (Required)
-     *     status: String(not_started/running/succeeded/failed/cancelled/unknown) (Required)
-     *     campaign_id: String (Required)
-     *     recipient_import_id: String (Optional)
-     *     created_at: Long (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @param idempotencyKey The idempotencyKey parameter.
-     * @param body The body parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of an accepted outbound campaign operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginImportTelephonyCampaignRecipients(String agentName,
-        String campaignId, String idempotencyKey, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.beginImportTelephonyCampaignRecipients(agentName, campaignId, idempotencyKey, body,
-            requestOptions);
-    }
-
-    /**
-     * Get an outbound telephony campaign recipient import
-     *
-     * Retrieves the durable status and counters for a campaign recipient import.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     campaign_id: String (Required)
-     *     status: String(running/succeeded/failed) (Required)
-     *     source (Required): {
-     *         type: String (Required)
-     *         dataset_name: String (Required)
-     *         dataset_version: String (Required)
-     *         file_name: String (Required)
-     *         format: String(csv/json/jsonl) (Required)
-     *     }
-     *     mapping (Optional): {
-     *         destination: String (Required)
-     *         recipient_key: String (Required)
-     *         recipient_item_key: String (Optional)
-     *         not_before: String (Optional)
-     *         expires_at: String (Optional)
-     *     }
-     *     duplicate_handling: String(reject/keep_each/merge) (Required)
-     *     rows_processed: long (Required)
-     *     eligible_recipient_count: long (Required)
-     *     invalid_recipient_count: long (Required)
-     *     error_code: String (Optional)
-     *     error_message: String (Optional)
-     *     created_at: long (Required)
-     *     updated_at: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @param importId The importId parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an outbound telephony campaign recipient import
-     *
-     * Retrieves the durable status and counters for a campaign recipient import along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTelephonyCampaignRecipientImportWithResponse(String agentName, String campaignId,
-        String importId, RequestOptions requestOptions) {
-        return this.serviceClient.getTelephonyCampaignRecipientImportWithResponse(agentName, campaignId, importId,
-            requestOptions);
-    }
-
-    /**
-     * Validate an outbound telephony campaign
-     *
-     * Starts asynchronous validation of the current campaign draft and imported recipient snapshot.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     kind: String(recipient_import/validation/publish) (Required)
-     *     status: String(not_started/running/succeeded/failed/cancelled/unknown) (Required)
-     *     campaign_id: String (Required)
-     *     recipient_import_id: String (Optional)
-     *     created_at: Long (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of an accepted outbound campaign operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginValidateTelephonyCampaign(String agentName, String campaignId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.beginValidateTelephonyCampaign(agentName, campaignId, requestOptions);
-    }
-
-    /**
-     * Publish an outbound telephony campaign
-     *
-     * Permanently locks the validated campaign draft and starts asynchronous call-job materialization.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     validation_id: String (Required)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     kind: String(recipient_import/validation/publish) (Required)
-     *     status: String(not_started/running/succeeded/failed/cancelled/unknown) (Required)
-     *     campaign_id: String (Required)
-     *     recipient_import_id: String (Optional)
-     *     created_at: Long (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @param body The body parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of an accepted outbound campaign operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginPublishTelephonyCampaign(String agentName, String campaignId,
-        BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.beginPublishTelephonyCampaign(agentName, campaignId, body, requestOptions);
-    }
-
-    /**
-     * Pause an outbound telephony campaign
-     *
-     * Pauses dispatch of call jobs owned by a published campaign.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     display_name: String (Required)
-     *     connection_name: String (Required)
-     *     source: String (Required)
-     *     purpose: String (Optional)
-     *     schedule (Optional): {
-     *         type: String(immediate/scheduled) (Required)
-     *         start_at: Long (Optional)
-     *     }
-     *     id: String (Required)
-     *     object: String (Required)
-     *     agent_name: String (Required)
-     *     configuration_status: String(draft/importing/validating/publishing/published/publish_failed) (Required)
-     *     execution_status: String(none/scheduled/running/paused/completed/failed/cancelled) (Required)
-     *     retry_policy (Required): {
-     *         type: String(fixed_interval) (Required)
-     *         max_attempts: int (Required)
-     *     }
-     *     latest_successful_validation_id: String (Optional)
-     *     active_validation_id: String (Optional)
-     *     active_recipient_import_id: String (Optional)
-     *     published_at: Long (Optional)
-     *     call_job_counts (Required): {
-     *         total: long (Required)
-     *         pending: long (Required)
-     *         in_progress: long (Required)
-     *         completed: long (Required)
-     *         failed: long (Required)
-     *         blocked: long (Required)
-     *         cancelled: long (Required)
-     *         expired: long (Required)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a durable outbound campaign owned by a voice agent along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> pauseTelephonyCampaignWithResponse(String agentName, String campaignId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.pauseTelephonyCampaignWithResponse(agentName, campaignId, requestOptions);
-    }
-
-    /**
-     * Resume an outbound telephony campaign
-     *
-     * Resumes dispatch of call jobs owned by a paused campaign.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     display_name: String (Required)
-     *     connection_name: String (Required)
-     *     source: String (Required)
-     *     purpose: String (Optional)
-     *     schedule (Optional): {
-     *         type: String(immediate/scheduled) (Required)
-     *         start_at: Long (Optional)
-     *     }
-     *     id: String (Required)
-     *     object: String (Required)
-     *     agent_name: String (Required)
-     *     configuration_status: String(draft/importing/validating/publishing/published/publish_failed) (Required)
-     *     execution_status: String(none/scheduled/running/paused/completed/failed/cancelled) (Required)
-     *     retry_policy (Required): {
-     *         type: String(fixed_interval) (Required)
-     *         max_attempts: int (Required)
-     *     }
-     *     latest_successful_validation_id: String (Optional)
-     *     active_validation_id: String (Optional)
-     *     active_recipient_import_id: String (Optional)
-     *     published_at: Long (Optional)
-     *     call_job_counts (Required): {
-     *         total: long (Required)
-     *         pending: long (Required)
-     *         in_progress: long (Required)
-     *         completed: long (Required)
-     *         failed: long (Required)
-     *         blocked: long (Required)
-     *         cancelled: long (Required)
-     *         expired: long (Required)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a durable outbound campaign owned by a voice agent along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> resumeTelephonyCampaignWithResponse(String agentName, String campaignId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.resumeTelephonyCampaignWithResponse(agentName, campaignId, requestOptions);
-    }
-
-    /**
-     * Cancel an outbound telephony campaign
-     *
-     * Cancels a campaign and prevents any further call-job dispatch.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     display_name: String (Required)
-     *     connection_name: String (Required)
-     *     source: String (Required)
-     *     purpose: String (Optional)
-     *     schedule (Optional): {
-     *         type: String(immediate/scheduled) (Required)
-     *         start_at: Long (Optional)
-     *     }
-     *     id: String (Required)
-     *     object: String (Required)
-     *     agent_name: String (Required)
-     *     configuration_status: String(draft/importing/validating/publishing/published/publish_failed) (Required)
-     *     execution_status: String(none/scheduled/running/paused/completed/failed/cancelled) (Required)
-     *     retry_policy (Required): {
-     *         type: String(fixed_interval) (Required)
-     *         max_attempts: int (Required)
-     *     }
-     *     latest_successful_validation_id: String (Optional)
-     *     active_validation_id: String (Optional)
-     *     active_recipient_import_id: String (Optional)
-     *     published_at: Long (Optional)
-     *     call_job_counts (Required): {
-     *         total: long (Required)
-     *         pending: long (Required)
-     *         in_progress: long (Required)
-     *         completed: long (Required)
-     *         failed: long (Required)
-     *         blocked: long (Required)
-     *         cancelled: long (Required)
-     *         expired: long (Required)
-     *     }
-     *     created_at: long (Required)
-     *     updated_at: long (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a durable outbound campaign owned by a voice agent along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelTelephonyCampaignWithResponse(String agentName, String campaignId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.cancelTelephonyCampaignWithResponse(agentName, campaignId, requestOptions);
-    }
-
-    /**
-     * Get an outbound telephony operation
-     *
-     * Retrieves an asynchronous outbound campaign operation.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     status: String(not_started/running/succeeded/failed/cancelled/unknown) (Required)
-     *     created_at: Long (Optional)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     resource (Optional): {
-     *         id: String (Required)
-     *         type: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The agentName parameter.
-     * @param operationId The operationId parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an outbound telephony operation
-     *
-     * Retrieves an asynchronous outbound campaign operation along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTelephonyOperationWithResponse(String agentName, String operationId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getTelephonyOperationWithResponse(agentName, operationId, requestOptions);
-    }
-
-    /**
-     * Create an agent telephony binding
-     *
-     * Creates a telephony binding for the voice agent named in the path.
-     *
-     * @param agentName The name of the voice agent that owns the binding.
-     * @param telephonyBinding The provider-specific binding to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a telephony binding owned by a voice agent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyBinding createTelephonyBinding(String agentName, CreateTelephonyBindingRequest telephonyBinding) {
-        // Generated convenience method for createTelephonyBindingWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createTelephonyBindingWithResponse(agentName, BinaryData.fromObject(telephonyBinding), requestOptions)
-            .getValue()
-            .toObject(TelephonyBinding.class);
     }
 
     /**
@@ -1739,40 +1106,6 @@ public final class BetaVoiceAgentsTelephonyClient {
         // Generated convenience method for getTelephonyBindingWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getTelephonyBindingWithResponse(agentName, bindingId, requestOptions).getValue()
-            .toObject(TelephonyBinding.class);
-    }
-
-    /**
-     * Update an agent telephony binding
-     *
-     * Updates a telephony binding owned by the voice agent named in the path.
-     *
-     * @param agentName The name of the voice agent that owns the binding.
-     * @param bindingId The service-generated binding identifier.
-     * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
-     * read.
-     * @param body The binding properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a telephony binding owned by a voice agent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyBinding updateTelephonyBinding(String agentName, String bindingId, String ifMatch,
-        UpdateTelephonyBindingRequest body) {
-        // Generated convenience method for updateTelephonyBindingWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getUpdateTelephonyBindingRequestAccessor().prepareModelForJsonMergePatch(body, true);
-        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        bodyInBinaryData.getLength();
-        JsonMergePatchHelper.getUpdateTelephonyBindingRequestAccessor().prepareModelForJsonMergePatch(body, false);
-        return updateTelephonyBindingWithResponse(agentName, bindingId, ifMatch, bodyInBinaryData, requestOptions)
-            .getValue()
             .toObject(TelephonyBinding.class);
     }
 
@@ -2022,33 +1355,6 @@ public final class BetaVoiceAgentsTelephonyClient {
     }
 
     /**
-     * Create an outbound telephony call job
-     *
-     * Creates one durable direct outbound call job. The latest agent definition is resolved when each attempt executes.
-     *
-     * @param agentName The name of the voice agent that executes the call.
-     * @param idempotencyKey A customer-generated idempotency key. Reusing it with an equivalent request returns the
-     * same call job.
-     * @param body The direct outbound call to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a durable direct or campaign-created outbound call intent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCallJob createTelephonyCallJob(String agentName, String idempotencyKey,
-        CreateTelephonyCallJobRequest body) {
-        // Generated convenience method for createTelephonyCallJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createTelephonyCallJobWithResponse(agentName, idempotencyKey, BinaryData.fromObject(body),
-            requestOptions).getValue().toObject(TelephonyCallJob.class);
-    }
-
-    /**
      * Get an outbound telephony call job
      *
      * Retrieves a durable direct or campaign-created outbound call job.
@@ -2101,256 +1407,88 @@ public final class BetaVoiceAgentsTelephonyClient {
     }
 
     /**
-     * Create an outbound telephony campaign
+     * Create an agent telephony binding
      *
-     * Creates a draft outbound campaign. Recipients are imported and validated before the campaign can be published.
+     * Creates a telephony binding for the voice agent named in the path.
      *
-     * @param agentName The agentName parameter.
-     * @param body The body parameter.
+     * @param agentName The name of the voice agent that owns the binding.
+     * @param telephonyBinding The provider-specific binding to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a durable outbound campaign owned by a voice agent.
+     * @return a telephony binding owned by a voice agent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaign createTelephonyCampaign(String agentName, CreateTelephonyCampaignRequest body) {
-        // Generated convenience method for createTelephonyCampaignWithResponse
+    public TelephonyBinding createTelephonyBinding(String agentName, CreateTelephonyBindingInput telephonyBinding) {
+        // Generated convenience method for createTelephonyBindingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createTelephonyCampaignWithResponse(agentName, BinaryData.fromObject(body), requestOptions).getValue()
-            .toObject(TelephonyCampaign.class);
-    }
-
-    /**
-     * Get an outbound telephony campaign
-     *
-     * Retrieves an outbound campaign, including configuration, execution state, and aggregate call-job counts.
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an outbound telephony campaign
-     *
-     * Retrieves an outbound campaign, including configuration, execution state, and aggregate call-job counts.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaign getTelephonyCampaign(String agentName, String campaignId) {
-        // Generated convenience method for getTelephonyCampaignWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getTelephonyCampaignWithResponse(agentName, campaignId, requestOptions).getValue()
-            .toObject(TelephonyCampaign.class);
-    }
-
-    /**
-     * Import outbound telephony campaign recipients
-     *
-     * Starts an asynchronous import of campaign recipients from a Dataset CSV, JSON array, or JSONL file.
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @param idempotencyKey The idempotencyKey parameter.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an accepted outbound campaign operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginImportTelephonyCampaignRecipients(
-        String agentName, String campaignId, String idempotencyKey, ImportTelephonyCampaignRecipientsRequest body) {
-        // Generated convenience method for beginImportTelephonyCampaignRecipientsWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginImportTelephonyCampaignRecipientsWithModel(agentName, campaignId, idempotencyKey,
-            BinaryData.fromObject(body), requestOptions);
-    }
-
-    /**
-     * Get an outbound telephony campaign recipient import
-     *
-     * Retrieves the durable status and counters for a campaign recipient import.
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @param importId The importId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an outbound telephony campaign recipient import
-     *
-     * Retrieves the durable status and counters for a campaign recipient import.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaignRecipientImport getTelephonyCampaignRecipientImport(String agentName, String campaignId,
-        String importId) {
-        // Generated convenience method for getTelephonyCampaignRecipientImportWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getTelephonyCampaignRecipientImportWithResponse(agentName, campaignId, importId, requestOptions)
+        return createTelephonyBindingWithResponse(agentName, BinaryData.fromObject(telephonyBinding), requestOptions)
             .getValue()
-            .toObject(TelephonyCampaignRecipientImport.class);
+            .toObject(TelephonyBinding.class);
     }
 
     /**
-     * Validate an outbound telephony campaign
+     * Update an agent telephony binding
      *
-     * Starts asynchronous validation of the current campaign draft and imported recipient snapshot.
+     * Updates a telephony binding owned by the voice agent named in the path.
      *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
+     * @param agentName The name of the voice agent that owns the binding.
+     * @param bindingId The service-generated binding identifier.
+     * @param ifMatch The entity tag returned by the latest read. The request fails if the resource changed since that
+     * read.
+     * @param body The binding properties to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an accepted outbound campaign operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginValidateTelephonyCampaign(String agentName,
-        String campaignId) {
-        // Generated convenience method for beginValidateTelephonyCampaignWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginValidateTelephonyCampaignWithModel(agentName, campaignId, requestOptions);
-    }
-
-    /**
-     * Publish an outbound telephony campaign
-     *
-     * Permanently locks the validated campaign draft and starts asynchronous call-job materialization.
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an accepted outbound campaign operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<TelephonyOperation, TelephonyOperationResource> beginPublishTelephonyCampaign(String agentName,
-        String campaignId, PublishTelephonyCampaignRequest body) {
-        // Generated convenience method for beginPublishTelephonyCampaignWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginPublishTelephonyCampaignWithModel(agentName, campaignId, BinaryData.fromObject(body),
-            requestOptions);
-    }
-
-    /**
-     * Pause an outbound telephony campaign
-     *
-     * Pauses dispatch of call jobs owned by a published campaign.
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a durable outbound campaign owned by a voice agent.
+     * @return a telephony binding owned by a voice agent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaign pauseTelephonyCampaign(String agentName, String campaignId) {
-        // Generated convenience method for pauseTelephonyCampaignWithResponse
+    public TelephonyBinding updateTelephonyBinding(String agentName, String bindingId, String ifMatch,
+        UpdateTelephonyBindingInput body) {
+        // Generated convenience method for updateTelephonyBindingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return pauseTelephonyCampaignWithResponse(agentName, campaignId, requestOptions).getValue()
-            .toObject(TelephonyCampaign.class);
+        JsonMergePatchHelper.getUpdateTelephonyBindingInputAccessor().prepareModelForJsonMergePatch(body, true);
+        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        bodyInBinaryData.getLength();
+        JsonMergePatchHelper.getUpdateTelephonyBindingInputAccessor().prepareModelForJsonMergePatch(body, false);
+        return updateTelephonyBindingWithResponse(agentName, bindingId, ifMatch, bodyInBinaryData, requestOptions)
+            .getValue()
+            .toObject(TelephonyBinding.class);
     }
 
     /**
-     * Resume an outbound telephony campaign
+     * Create an outbound telephony call job
      *
-     * Resumes dispatch of call jobs owned by a paused campaign.
+     * Creates one durable direct outbound call job. The latest agent definition is resolved when each attempt executes.
      *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
+     * @param agentName The name of the voice agent that executes the call.
+     * @param idempotencyKey A customer-generated idempotency key. Reusing it with an equivalent request returns the
+     * same call job.
+     * @param body The direct outbound call to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a durable outbound campaign owned by a voice agent.
+     * @return a durable direct or campaign-created outbound call intent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaign resumeTelephonyCampaign(String agentName, String campaignId) {
-        // Generated convenience method for resumeTelephonyCampaignWithResponse
+    public TelephonyCallJob createTelephonyCallJob(String agentName, String idempotencyKey,
+        CreateTelephonyCallJobInput body) {
+        // Generated convenience method for createTelephonyCallJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return resumeTelephonyCampaignWithResponse(agentName, campaignId, requestOptions).getValue()
-            .toObject(TelephonyCampaign.class);
-    }
-
-    /**
-     * Cancel an outbound telephony campaign
-     *
-     * Cancels a campaign and prevents any further call-job dispatch.
-     *
-     * @param agentName The agentName parameter.
-     * @param campaignId The campaignId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a durable outbound campaign owned by a voice agent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyCampaign cancelTelephonyCampaign(String agentName, String campaignId) {
-        // Generated convenience method for cancelTelephonyCampaignWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return cancelTelephonyCampaignWithResponse(agentName, campaignId, requestOptions).getValue()
-            .toObject(TelephonyCampaign.class);
-    }
-
-    /**
-     * Get an outbound telephony operation
-     *
-     * Retrieves an asynchronous outbound campaign operation.
-     *
-     * @param agentName The agentName parameter.
-     * @param operationId The operationId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an outbound telephony operation
-     *
-     * Retrieves an asynchronous outbound campaign operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TelephonyOperation getTelephonyOperation(String agentName, String operationId) {
-        // Generated convenience method for getTelephonyOperationWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getTelephonyOperationWithResponse(agentName, operationId, requestOptions).getValue()
-            .toObject(TelephonyOperation.class);
+        return createTelephonyCallJobWithResponse(agentName, idempotencyKey, BinaryData.fromObject(body),
+            requestOptions).getValue().toObject(TelephonyCallJob.class);
     }
 }

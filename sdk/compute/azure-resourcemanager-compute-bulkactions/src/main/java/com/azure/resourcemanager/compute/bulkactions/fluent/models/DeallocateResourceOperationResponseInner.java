@@ -14,28 +14,28 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The response from a deallocate request.
+ * The result of a bulk deallocate action.
  */
 @Immutable
 public final class DeallocateResourceOperationResponseInner
     implements JsonSerializable<DeallocateResourceOperationResponseInner> {
     /*
-     * The description of the operation response
+     * A description of the bulk action result.
      */
     private String description;
 
     /*
-     * The type of resources used in the deallocate request eg virtual machines
+     * The type of resources targeted by the bulk action.
      */
     private String type;
 
     /*
-     * The location of the deallocate request eg westus
+     * The Azure region where Bulk Actions processes the request.
      */
     private String location;
 
     /*
-     * The results from the deallocate request if no errors exist
+     * The result for each virtual machine.
      */
     private List<ResourceOperation> results;
 
@@ -46,7 +46,7 @@ public final class DeallocateResourceOperationResponseInner
     }
 
     /**
-     * Get the description property: The description of the operation response.
+     * Get the description property: A description of the bulk action result.
      * 
      * @return the description value.
      */
@@ -55,7 +55,7 @@ public final class DeallocateResourceOperationResponseInner
     }
 
     /**
-     * Get the type property: The type of resources used in the deallocate request eg virtual machines.
+     * Get the type property: The type of resources targeted by the bulk action.
      * 
      * @return the type value.
      */
@@ -64,7 +64,7 @@ public final class DeallocateResourceOperationResponseInner
     }
 
     /**
-     * Get the location property: The location of the deallocate request eg westus.
+     * Get the location property: The Azure region where Bulk Actions processes the request.
      * 
      * @return the location value.
      */
@@ -73,7 +73,7 @@ public final class DeallocateResourceOperationResponseInner
     }
 
     /**
-     * Get the results property: The results from the deallocate request if no errors exist.
+     * Get the results property: The result for each virtual machine.
      * 
      * @return the results value.
      */

@@ -49,12 +49,6 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
     @Generated
     private final String incomingCallUrl;
 
-    /*
-     * The entity tag to send in the `If-Match` header when updating or deleting this binding.
-     */
-    @Generated
-    private String etag;
-
     /**
      * Creates an instance of TelephonyBindingListItem class.
      *
@@ -135,28 +129,6 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
     }
 
     /**
-     * Get the etag property: The entity tag to send in the `If-Match` header when updating or deleting this binding.
-     *
-     * @return the etag value.
-     */
-    @Generated
-    public String getEtag() {
-        return this.etag;
-    }
-
-    /**
-     * Set the etag property: The entity tag to send in the `If-Match` header when updating or deleting this binding.
-     *
-     * @param etag the etag value to set.
-     * @return the TelephonyBindingListItem object itself.
-     */
-    @Generated
-    TelephonyBindingListItem setEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -217,7 +189,7 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
             String connectionName = null;
             TelephonyBindingStatus status = null;
             String incomingCallUrl = null;
-            String etag = null;
+            String eTag = null;
             TelephonyProvider provider = null;
             String label = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -232,7 +204,7 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
                 } else if ("incoming_call_url".equals(fieldName)) {
                     incomingCallUrl = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    etag = reader.getString();
+                    eTag = reader.getString();
                 } else if ("provider".equals(fieldName)) {
                     provider = TelephonyProvider.fromString(reader.getString());
                 } else if ("label".equals(fieldName)) {
@@ -243,7 +215,7 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
             }
             TelephonyBindingListItem deserializedTelephonyBindingListItem
                 = new TelephonyBindingListItem(id, connectionName, status, incomingCallUrl);
-            deserializedTelephonyBindingListItem.etag = etag;
+            deserializedTelephonyBindingListItem.eTag = eTag;
             deserializedTelephonyBindingListItem.provider = provider;
             deserializedTelephonyBindingListItem.label = label;
             return deserializedTelephonyBindingListItem;
@@ -264,5 +236,33 @@ public class TelephonyBindingListItem implements JsonSerializable<TelephonyBindi
     @Generated
     public String getConnectionName() {
         return this.connectionName;
+    }
+
+    /*
+     * The entity tag to send in the `If-Match` header when updating or deleting this binding.
+     */
+    @Generated
+    private String eTag;
+
+    /**
+     * Get the eTag property: The entity tag to send in the `If-Match` header when updating or deleting this binding.
+     *
+     * @return the eTag value.
+     */
+    @Generated
+    public String getETag() {
+        return this.eTag;
+    }
+
+    /**
+     * Set the eTag property: The entity tag to send in the `If-Match` header when updating or deleting this binding.
+     *
+     * @param eTag the eTag value to set.
+     * @return the TelephonyBindingListItem object itself.
+     */
+    @Generated
+    TelephonyBindingListItem setETag(String eTag) {
+        this.eTag = eTag;
+        return this;
     }
 }

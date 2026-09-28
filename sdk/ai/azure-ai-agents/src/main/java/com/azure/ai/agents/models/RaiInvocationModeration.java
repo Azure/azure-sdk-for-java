@@ -34,7 +34,7 @@ public final class RaiInvocationModeration implements JsonSerializable<RaiInvoca
      * Author-declared response shape; drives which output gate runs and which fields are required.
      */
     @Generated
-    private final RaiInvocationMode responseMode;
+    private final RaiInvocationResponseMode responseMode;
 
     /*
      * Path(s) to user text in the REQUEST body. Required when input_content_type is `json`.
@@ -55,16 +55,6 @@ public final class RaiInvocationModeration implements JsonSerializable<RaiInvoca
      */
     @Generated
     private List<RaiSseTextSelector> streamSelectors;
-
-    /**
-     * Creates an instance of RaiInvocationModeration class.
-     *
-     * @param responseMode the responseMode value to set.
-     */
-    @Generated
-    public RaiInvocationModeration(RaiInvocationMode responseMode) {
-        this.responseMode = responseMode;
-    }
 
     /**
      * Get the inputContentType property: How the REQUEST body is parsed. When omitted, the service defaults to `json`.
@@ -119,7 +109,7 @@ public final class RaiInvocationModeration implements JsonSerializable<RaiInvoca
      * @return the responseMode value.
      */
     @Generated
-    public RaiInvocationMode getResponseMode() {
+    public RaiInvocationResponseMode getResponseMode() {
         return this.responseMode;
     }
 
@@ -226,7 +216,7 @@ public final class RaiInvocationModeration implements JsonSerializable<RaiInvoca
     @Generated
     public static RaiInvocationModeration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RaiInvocationMode responseMode = null;
+            RaiInvocationResponseMode responseMode = null;
             RaiInvocationContentType inputContentType = null;
             RaiInvocationContentType outputContentType = null;
             List<String> inputPaths = null;
@@ -236,7 +226,7 @@ public final class RaiInvocationModeration implements JsonSerializable<RaiInvoca
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("response_mode".equals(fieldName)) {
-                    responseMode = RaiInvocationMode.fromString(reader.getString());
+                    responseMode = RaiInvocationResponseMode.fromString(reader.getString());
                 } else if ("input_content_type".equals(fieldName)) {
                     inputContentType = RaiInvocationContentType.fromString(reader.getString());
                 } else if ("output_content_type".equals(fieldName)) {
@@ -259,5 +249,15 @@ public final class RaiInvocationModeration implements JsonSerializable<RaiInvoca
             deserializedRaiInvocationModeration.streamSelectors = streamSelectors;
             return deserializedRaiInvocationModeration;
         });
+    }
+
+    /**
+     * Creates an instance of RaiInvocationModeration class.
+     *
+     * @param responseMode the responseMode value to set.
+     */
+    @Generated
+    public RaiInvocationModeration(RaiInvocationResponseMode responseMode) {
+        this.responseMode = responseMode;
     }
 }

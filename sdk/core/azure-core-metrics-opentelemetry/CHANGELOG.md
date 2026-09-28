@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `opentelemetry-api` from `1.58.0` to `1.65.0`.
+
 ## 1.0.0-beta.39 (2026-08-27)
 
 ### Other Changes

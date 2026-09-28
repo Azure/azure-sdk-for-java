@@ -14,7 +14,10 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -360,6 +363,23 @@ public class FoundryFeaturesHeaderVerificationTest {
 
     private static String customPipelineHeader(RecordingHttpClient httpClient) {
         return httpClient.getLastRequest().getHeaders().getValue(CUSTOM_PIPELINE_HEADER);
+    }
+
+    @Test
+    public void webSocketClientsRejectUnsupportedHttpConfiguration() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        AgentsClientBuilder builder = createBuilder(createCustomPipeline(httpClient)).httpClient(httpClient)
+            .addPolicy(new CustomPipelinePolicy())
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy());
+
+        IllegalStateException syncError
+            = assertThrows(IllegalStateException.class, () -> builder.beta().buildBetaVoiceAgentWebSocketClient());
+        assertTrue(syncError.getMessage().contains("httpClient, pipeline, addPolicy, retryOptions, retryPolicy"));
+
+        IllegalStateException asyncError
+            = assertThrows(IllegalStateException.class, () -> builder.beta().buildBetaVoiceAgentWebSocketAsyncClient());
+        assertEquals(syncError.getMessage(), asyncError.getMessage());
     }
 
     private static HttpResponse openAIResponse(HttpRequest request) {

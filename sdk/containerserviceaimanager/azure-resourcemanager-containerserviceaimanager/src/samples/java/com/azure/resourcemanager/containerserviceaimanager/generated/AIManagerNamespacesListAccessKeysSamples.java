@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerserviceaimanager.generated;
  */
 public final class AIManagerNamespacesListAccessKeysSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/AIManagerNamespaces_ListAccessKeys.json
+     * x-ms-original-file: 2026-09-02-preview/AIManagerNamespaces_ListAccessKeys.json
      */
     /**
      * Sample code: AIManagerNamespaces_ListAccessKeys_MaximumSet.

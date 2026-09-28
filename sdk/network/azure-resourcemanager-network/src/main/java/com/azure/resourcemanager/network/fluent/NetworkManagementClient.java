@@ -97,6 +97,13 @@ public interface NetworkManagementClient {
     ApplicationSecurityGroupsClient getApplicationSecurityGroups();
 
     /**
+     * Gets the AuthenticationPoliciesClient object to access its operations.
+     * 
+     * @return the AuthenticationPoliciesClient object.
+     */
+    AuthenticationPoliciesClient getAuthenticationPolicies();
+
+    /**
      * Gets the AzureFirewallsClient object to access its operations.
      * 
      * @return the AzureFirewallsClient object.

@@ -45,43 +45,37 @@ public final class ScheduledActionsUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.scheduledActions()
-            .update("nbatzvi", "sowsaael", new ScheduledActionUpdate()
-                .withTags(mapOf("uhplrvkmjcwmjv", "tc", "sfxsf", "gfggcvkyylizrzbj", "ukoveofi", "ztlvtmvagbwidqlv",
-                    "z", "rvjfnmjmvlw"))
-                .withProperties(
-                    new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE_SCALE_SET)
+            .update("akdkifmjnnawtqab", "xuckpggqoweyir",
+                new ScheduledActionUpdate().withTags(mapOf("n", "isngwflqqmpizru"))
+                    .withProperties(new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
                         .withActionType(ScheduledActionType.START)
-                        .withStartTime(OffsetDateTime.parse("2021-10-25T22:17:09Z"))
-                        .withEndTime(OffsetDateTime.parse("2021-09-19T18:23:41Z"))
-                        .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("juid")
-                            .withTimeZone("uuyjucejikz")
+                        .withStartTime(OffsetDateTime.parse("2021-07-30T07:52:46Z"))
+                        .withEndTime(OffsetDateTime.parse("2021-09-02T05:49:50Z"))
+                        .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("saasiixtmkzj")
+                            .withTimeZone("viirhgfgrws")
                             .withRequestedWeekDays(
-                                Arrays.asList(WeekDay.SATURDAY, WeekDay.SUNDAY, WeekDay.SATURDAY, WeekDay.WEDNESDAY))
-                            .withRequestedMonths(Arrays.asList(Month.OCTOBER))
-                            .withRequestedDaysOfTheMonth(Arrays.asList(372519595, 334992913, 526075495))
+                                Arrays.asList(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.MONDAY, WeekDay.FRIDAY))
+                            .withRequestedMonths(Arrays.asList(Month.ALL))
+                            .withRequestedDaysOfTheMonth(Arrays.asList(871795155, 39003903, 156163640, 1015396503))
                             .withExecutionParameters(new ScheduledActionsExecutionParameters()
-                                .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(1811682620)
-                                    .withRetryWindowInMinutes(604848210)
-                                    .withOnFailureAction(ScheduledActionsResourceOperationType.HIBERNATE)))
-                            .withDeadlineType(ScheduledActionsDeadlineType.INITIATE_AT))
+                                .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(1666158836)
+                                    .withRetryWindowInMinutes(1709678755)
+                                    .withOnFailureAction(ScheduledActionsResourceOperationType.CREATE)))
+                            .withDeadlineType(ScheduledActionsDeadlineType.COMPLETE_BY))
                         .withNotificationSettings(Arrays.asList(
-                            new NotificationProperties().withDestination("o")
+                            new NotificationProperties().withDestination("gxffmshkwf")
                                 .withType(NotificationType.EMAIL)
                                 .withLanguage(Language.EN_US)
                                 .withDisabled(true),
-                            new NotificationProperties().withDestination("hqjwtrhtgvg")
+                            new NotificationProperties().withDestination("xwopdbydpizqa")
                                 .withType(NotificationType.EMAIL)
                                 .withLanguage(Language.EN_US)
-                                .withDisabled(false),
-                            new NotificationProperties().withDestination("kolawjmjsmwrokc")
-                                .withType(NotificationType.EMAIL)
-                                .withLanguage(Language.EN_US)
-                                .withDisabled(false),
-                            new NotificationProperties().withDestination("zwyjafitlhgu")
+                                .withDisabled(true),
+                            new NotificationProperties().withDestination("xbiygnugjknfsmf")
                                 .withType(NotificationType.EMAIL)
                                 .withLanguage(Language.EN_US)
                                 .withDisabled(true)))
-                        .withDisabled(false)),
+                        .withDisabled(true)),
                 com.azure.core.util.Context.NONE);
 
     }

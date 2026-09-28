@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public final class PolicyAssignmentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/updatePolicyAssignmentWithResourceSelectors.json
+     * x-ms-original-file: 2026-06-01/updatePolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Update a policy assignment with resource selectors.
@@ -44,7 +44,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/updatePolicyAssignmentWithUserAssignedIdentity.json
+     * x-ms-original-file: 2026-06-01/updatePolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
      * Sample code: Update a policy assignment with a user assigned identity.
@@ -66,7 +66,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/updatePolicyAssignmentWithOverrides.json
+     * x-ms-original-file: 2026-06-01/updatePolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Update a policy assignment with overrides.
@@ -88,7 +88,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/updatePolicyAssignmentWithSelfserveExemptionSettings.json
+     * x-ms-original-file: 2026-06-01/updatePolicyAssignmentWithSelfserveExemptionSettings.json
      */
     /**
      * Sample code: Update a policy assignment with self-serve exemption settings.
@@ -108,7 +108,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/updatePolicyAssignmentWithIdentity.json
+     * x-ms-original-file: 2026-06-01/updatePolicyAssignmentWithIdentity.json
      */
     /**
      * Sample code: Update a policy assignment with a system assigned identity.
@@ -122,6 +122,28 @@ public final class PolicyAssignmentsUpdateSamples {
                 com.azure.core.util.Context.NONE)
             .getValue();
         resource.update().withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)).apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-06-01/updatePolicyAssignmentWithResourceRolloutPercentageSelector.json
+     */
+    /**
+     * Sample code: Update a policy assignment with a resource rollout percentage selector.
+     * 
+     * @param manager Entry point to PolicyManager.
+     */
+    public static void updateAPolicyAssignmentWithAResourceRolloutPercentageSelector(
+        com.azure.resourcemanager.resources.policy.PolicyManager manager) {
+        PolicyAssignment resource = manager.policyAssignments()
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withResourceSelectors(
+                Arrays.asList(new ResourceSelector().withName("SDPRollout")
+                    .withSelectors(Arrays
+                        .asList(new Selector().withKind(SelectorKind.RESOURCE_ROLLOUT_PERCENTAGE).withProgress(80)))))
+            .apply();
     }
 
     // Use "Map.of" if available

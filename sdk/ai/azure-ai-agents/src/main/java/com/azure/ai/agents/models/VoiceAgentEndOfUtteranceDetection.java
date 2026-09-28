@@ -36,7 +36,7 @@ public final class VoiceAgentEndOfUtteranceDetection implements JsonSerializable
      * The detection timeout in milliseconds.
      */
     @Generated
-    private Long timeoutMs;
+    private Long timeout;
 
     /**
      * Creates an instance of VoiceAgentEndOfUtteranceDetection class.
@@ -81,30 +81,30 @@ public final class VoiceAgentEndOfUtteranceDetection implements JsonSerializable
     }
 
     /**
-     * Get the timeoutMs property: The detection timeout in milliseconds.
+     * Get the timeout property: The detection timeout in milliseconds.
      *
-     * @return the timeoutMs value.
+     * @return the timeout value.
      */
     @Generated
-    public Duration getTimeoutMs() {
-        if (this.timeoutMs == null) {
+    public Duration getTimeout() {
+        if (this.timeout == null) {
             return null;
         }
-        return Duration.ofMillis(this.timeoutMs);
+        return Duration.ofMillis(this.timeout);
     }
 
     /**
-     * Set the timeoutMs property: The detection timeout in milliseconds.
+     * Set the timeout property: The detection timeout in milliseconds.
      *
-     * @param timeoutMs the timeoutMs value to set.
+     * @param timeout the timeout value to set.
      * @return the VoiceAgentEndOfUtteranceDetection object itself.
      */
     @Generated
-    public VoiceAgentEndOfUtteranceDetection setTimeoutMs(Duration timeoutMs) {
-        if (timeoutMs == null) {
-            this.timeoutMs = null;
+    public VoiceAgentEndOfUtteranceDetection setTimeout(Duration timeout) {
+        if (timeout == null) {
+            this.timeout = null;
         } else {
-            this.timeoutMs = timeoutMs.toMillis();
+            this.timeout = timeout.toMillis();
         }
         return this;
     }
@@ -119,7 +119,7 @@ public final class VoiceAgentEndOfUtteranceDetection implements JsonSerializable
         jsonWriter.writeStringField("model", this.model == null ? null : this.model.toString());
         jsonWriter.writeStringField("threshold_level",
             this.thresholdLevel == null ? null : this.thresholdLevel.toString());
-        jsonWriter.writeNumberField("timeout_ms", this.timeoutMs);
+        jsonWriter.writeNumberField("timeout_ms", this.timeout);
         return jsonWriter.writeEndObject();
     }
 
@@ -137,7 +137,7 @@ public final class VoiceAgentEndOfUtteranceDetection implements JsonSerializable
         return jsonReader.readObject(reader -> {
             VoiceAgentEndOfUtteranceDetectionModel model = null;
             VoiceAgentEndOfUtteranceThresholdLevel thresholdLevel = null;
-            Long timeoutMs = null;
+            Long timeout = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -146,7 +146,7 @@ public final class VoiceAgentEndOfUtteranceDetection implements JsonSerializable
                 } else if ("threshold_level".equals(fieldName)) {
                     thresholdLevel = VoiceAgentEndOfUtteranceThresholdLevel.fromString(reader.getString());
                 } else if ("timeout_ms".equals(fieldName)) {
-                    timeoutMs = reader.getNullable(JsonReader::getLong);
+                    timeout = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
@@ -154,7 +154,7 @@ public final class VoiceAgentEndOfUtteranceDetection implements JsonSerializable
             VoiceAgentEndOfUtteranceDetection deserializedVoiceAgentEndOfUtteranceDetection
                 = new VoiceAgentEndOfUtteranceDetection(model);
             deserializedVoiceAgentEndOfUtteranceDetection.thresholdLevel = thresholdLevel;
-            deserializedVoiceAgentEndOfUtteranceDetection.timeoutMs = timeoutMs;
+            deserializedVoiceAgentEndOfUtteranceDetection.timeout = timeout;
             return deserializedVoiceAgentEndOfUtteranceDetection;
         });
     }

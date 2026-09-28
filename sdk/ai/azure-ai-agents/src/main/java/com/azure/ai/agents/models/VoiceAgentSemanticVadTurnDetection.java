@@ -9,6 +9,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.RealtimeAudioInputTurnDetection.SemanticVad.Eagerness;
 import java.io.IOException;
 
 /**
@@ -16,7 +17,7 @@ import java.io.IOException;
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")
-public final class VoiceAgentSemanticVadTurnDetection extends VoiceAgentTurnDetectionConfig {
+public final class VoiceAgentSemanticVadTurnDetection extends VoiceAgentTurnDetectionConfiguration {
 
     /*
      * The turn-detection strategy.
@@ -24,11 +25,8 @@ public final class VoiceAgentSemanticVadTurnDetection extends VoiceAgentTurnDete
     @Generated
     private VoiceAgentTurnDetectionType type = VoiceAgentTurnDetectionType.SEMANTIC_VAD;
 
-    /*
-     * The eagerness property.
-     */
-    @Generated
-    private VoiceAgentSemanticVadTurnDetectionEagerness eagerness;
+    // AI Tooling: openai-java de-dup
+    private Eagerness eagerness;
 
     /*
      * The create_response property.
@@ -65,21 +63,9 @@ public final class VoiceAgentSemanticVadTurnDetection extends VoiceAgentTurnDete
      *
      * @return the eagerness value.
      */
-    @Generated
-    public VoiceAgentSemanticVadTurnDetectionEagerness getEagerness() {
+    public Eagerness getEagerness() {
+        // AI Tooling: openai-java de-dup
         return this.eagerness;
-    }
-
-    /**
-     * Set the eagerness property: The eagerness property.
-     *
-     * @param eagerness the eagerness value to set.
-     * @return the VoiceAgentSemanticVadTurnDetection object itself.
-     */
-    @Generated
-    public VoiceAgentSemanticVadTurnDetection setEagerness(VoiceAgentSemanticVadTurnDetectionEagerness eagerness) {
-        this.eagerness = eagerness;
-        return this;
     }
 
     /**
@@ -139,13 +125,13 @@ public final class VoiceAgentSemanticVadTurnDetection extends VoiceAgentTurnDete
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        // AI Tooling: openai-java de-dup
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("auto_truncate", isAutoTruncate());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("eagerness", this.eagerness == null ? null : this.eagerness.toString());
+        jsonWriter.writeStringField("eagerness", this.eagerness == null ? null : this.eagerness.asString());
         jsonWriter.writeBooleanField("create_response", this.createResponse);
         jsonWriter.writeBooleanField("interrupt_response", this.interruptResponse);
         return jsonWriter.writeEndObject();
@@ -159,8 +145,8 @@ public final class VoiceAgentSemanticVadTurnDetection extends VoiceAgentTurnDete
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the VoiceAgentSemanticVadTurnDetection.
      */
-    @Generated
     public static VoiceAgentSemanticVadTurnDetection fromJson(JsonReader jsonReader) throws IOException {
+        // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
             VoiceAgentSemanticVadTurnDetection deserializedVoiceAgentSemanticVadTurnDetection
                 = new VoiceAgentSemanticVadTurnDetection();
@@ -175,7 +161,7 @@ public final class VoiceAgentSemanticVadTurnDetection extends VoiceAgentTurnDete
                         = VoiceAgentTurnDetectionType.fromString(reader.getString());
                 } else if ("eagerness".equals(fieldName)) {
                     deserializedVoiceAgentSemanticVadTurnDetection.eagerness
-                        = VoiceAgentSemanticVadTurnDetectionEagerness.fromString(reader.getString());
+                        = reader.getNullable(r -> Eagerness.of(r.getString()));
                 } else if ("create_response".equals(fieldName)) {
                     deserializedVoiceAgentSemanticVadTurnDetection.createResponse
                         = reader.getNullable(JsonReader::getBoolean);
@@ -188,5 +174,17 @@ public final class VoiceAgentSemanticVadTurnDetection extends VoiceAgentTurnDete
             }
             return deserializedVoiceAgentSemanticVadTurnDetection;
         });
+    }
+
+    /**
+     * Set the eagerness property: The eagerness property.
+     *
+     * @param eagerness the eagerness value to set.
+     * @return the VoiceAgentSemanticVadTurnDetection object itself.
+     */
+    public VoiceAgentSemanticVadTurnDetection setEagerness(Eagerness eagerness) {
+        // AI Tooling: openai-java de-dup
+        this.eagerness = eagerness;
+        return this;
     }
 }

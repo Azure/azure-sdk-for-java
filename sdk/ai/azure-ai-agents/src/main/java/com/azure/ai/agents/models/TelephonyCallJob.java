@@ -57,12 +57,6 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     private final String id;
 
     /*
-     * The object type. Always `telephony.call_job`.
-     */
-    @Generated
-    private final String object = "telephony.call_job";
-
-    /*
      * The name of the voice agent used at execution time.
      */
     @Generated
@@ -84,7 +78,7 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
      * The frozen provider-attempt retry policy.
      */
     @Generated
-    private final TelephonyOutboundRetryPolicyResponse retryPolicy;
+    private final TelephonyOutboundRetryPolicy retryPolicy;
 
     /*
      * The number of provider attempts created so far.
@@ -178,16 +172,6 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     }
 
     /**
-     * Get the object property: The object type. Always `telephony.call_job`.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public String getObject() {
-        return this.object;
-    }
-
-    /**
      * Get the agentName property: The name of the voice agent used at execution time.
      *
      * @return the agentName value.
@@ -223,7 +207,7 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
      * @return the retryPolicy value.
      */
     @Generated
-    public TelephonyOutboundRetryPolicyResponse getRetryPolicy() {
+    public TelephonyOutboundRetryPolicy getRetryPolicy() {
         return this.retryPolicy;
     }
 
@@ -303,7 +287,7 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
         jsonWriter.writeStringField("connection_name", this.connectionName);
         jsonWriter.writeStringField("source", this.source);
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("object", this.objectType);
         jsonWriter.writeStringField("agent_name", this.agentName);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeJsonField("retry_policy", this.retryPolicy);
@@ -345,7 +329,7 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
             String id = null;
             String agentName = null;
             TelephonyCallJobStatus status = null;
-            TelephonyOutboundRetryPolicyResponse retryPolicy = null;
+            TelephonyOutboundRetryPolicy retryPolicy = null;
             int attemptCount = 0;
             long revision = 0L;
             OffsetDateTime createdAt = null;
@@ -372,7 +356,7 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
                 } else if ("status".equals(fieldName)) {
                     status = TelephonyCallJobStatus.fromString(reader.getString());
                 } else if ("retry_policy".equals(fieldName)) {
-                    retryPolicy = TelephonyOutboundRetryPolicyResponse.fromJson(reader);
+                    retryPolicy = TelephonyOutboundRetryPolicy.fromJson(reader);
                 } else if ("attempt_count".equals(fieldName)) {
                     attemptCount = reader.getInt();
                 } else if ("revision".equals(fieldName)) {
@@ -427,46 +411,6 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     private final String source;
 
     /**
-     * Creates an instance of TelephonyCallJob class.
-     *
-     * @param destination the destination value to set.
-     * @param connectionName the connectionName value to set.
-     * @param source the source value to set.
-     * @param id the id value to set.
-     * @param agentName the agentName value to set.
-     * @param status the status value to set.
-     * @param retryPolicy the retryPolicy value to set.
-     * @param attemptCount the attemptCount value to set.
-     * @param revision the revision value to set.
-     * @param createdAt the createdAt value to set.
-     * @param updatedAt the updatedAt value to set.
-     */
-    @Generated
-    private TelephonyCallJob(TelephonyOutboundDestination destination, String connectionName, String source, String id,
-        String agentName, TelephonyCallJobStatus status, TelephonyOutboundRetryPolicyResponse retryPolicy,
-        int attemptCount, long revision, OffsetDateTime createdAt, OffsetDateTime updatedAt) {
-        this.destination = destination;
-        this.connectionName = connectionName;
-        this.source = source;
-        this.id = id;
-        this.agentName = agentName;
-        this.status = status;
-        this.retryPolicy = retryPolicy;
-        this.attemptCount = attemptCount;
-        this.revision = revision;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        if (updatedAt == null) {
-            this.updatedAt = 0L;
-        } else {
-            this.updatedAt = updatedAt.toEpochSecond();
-        }
-    }
-
-    /**
      * Get the connectionName property: The Foundry connection name in the current project used to originate the call.
      * Its category selects Twilio or Azure Communication Services / Teams Phone Extension. No inbound telephony binding
      * is required.
@@ -489,5 +433,61 @@ public final class TelephonyCallJob implements JsonSerializable<TelephonyCallJob
     @Generated
     public String getSource() {
         return this.source;
+    }
+
+    /**
+     * Creates an instance of TelephonyCallJob class.
+     *
+     * @param destination the destination value to set.
+     * @param connectionName the connectionName value to set.
+     * @param source the source value to set.
+     * @param id the id value to set.
+     * @param agentName the agentName value to set.
+     * @param status the status value to set.
+     * @param retryPolicy the retryPolicy value to set.
+     * @param attemptCount the attemptCount value to set.
+     * @param revision the revision value to set.
+     * @param createdAt the createdAt value to set.
+     * @param updatedAt the updatedAt value to set.
+     */
+    @Generated
+    private TelephonyCallJob(TelephonyOutboundDestination destination, String connectionName, String source, String id,
+        String agentName, TelephonyCallJobStatus status, TelephonyOutboundRetryPolicy retryPolicy, int attemptCount,
+        long revision, OffsetDateTime createdAt, OffsetDateTime updatedAt) {
+        this.destination = destination;
+        this.connectionName = connectionName;
+        this.source = source;
+        this.id = id;
+        this.agentName = agentName;
+        this.status = status;
+        this.retryPolicy = retryPolicy;
+        this.attemptCount = attemptCount;
+        this.revision = revision;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        if (updatedAt == null) {
+            this.updatedAt = 0L;
+        } else {
+            this.updatedAt = updatedAt.toEpochSecond();
+        }
+    }
+
+    /*
+     * The object type. Always `telephony.call_job`.
+     */
+    @Generated
+    private final String objectType = "telephony.call_job";
+
+    /**
+     * Get the objectType property: The object type. Always `telephony.call_job`.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public String getObjectType() {
+        return this.objectType;
     }
 }

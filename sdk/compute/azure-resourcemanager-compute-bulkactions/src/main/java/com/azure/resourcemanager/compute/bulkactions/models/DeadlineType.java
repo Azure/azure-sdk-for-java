@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The types of deadlines supported by Bulkactions.
+ * The deadline behavior for a bulk action.
  */
 public final class DeadlineType extends ExpandableStringEnum<DeadlineType> {
     /**
-     * Initiate the operation at the given deadline.
+     * Bulk Actions attempts to start the operation at the specified deadline.
      */
     public static final DeadlineType INITIATE_AT = fromString("InitiateAt");
 
     /**
-     * Complete the operation by the given deadline.
+     * Bulk Actions attempts to complete the operation by the specified deadline.
      */
     public static final DeadlineType COMPLETE_BY = fromString("CompleteBy");
 

@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class CommitsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkManagerCommitPut.json
+     * x-ms-original-file: 2026-01-01/NetworkManagerCommitPut.json
      */
     /**
      * Sample code: Create or Update Network Manager Commit.

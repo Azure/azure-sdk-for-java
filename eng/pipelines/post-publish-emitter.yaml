@@ -22,6 +22,10 @@ parameters:
   displayName: 'typespec-azure PR ID or branch — used only when Emitter Version is none (e.g. 43321 or my-branch; none = main)'
   type: string
   default: 'none'
+- name: UpgradeDesignatedLibraries
+  displayName: 'Upgrade designated TypeSpec libraries'
+  type: boolean
+  default: true
 
 jobs:
 - job: Generate_SDK
@@ -142,7 +146,7 @@ jobs:
       workingDirectory: $(TypeSpecAzureDirectory)
 
   - script: |
-      python3 ./eng/pipelines/scripts/sync_emitter.py --sdk-root=$(Build.SourcesDirectory) --emitter-version='${{ parameters.EmitterVersion }}' --package-json-path=$(TypeSpecAzureDirectory)/packages/typespec-java/package.json
+      python3 ./eng/pipelines/scripts/sync_emitter.py --sdk-root=$(Build.SourcesDirectory) --emitter-version='${{ parameters.EmitterVersion }}' --package-json-path=$(TypeSpecAzureDirectory)/packages/typespec-java/package.json --upgrade-designated-libraries='${{ parameters.UpgradeDesignatedLibraries }}'
     displayName: 'Generate SDK'
     workingDirectory: $(Build.SourcesDirectory)
 

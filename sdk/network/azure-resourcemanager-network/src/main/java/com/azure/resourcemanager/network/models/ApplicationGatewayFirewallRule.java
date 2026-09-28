@@ -42,6 +42,11 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
     private ApplicationGatewayWafRuleSensitivityTypes sensitivity;
 
     /*
+     * OWASP CRS paranoia level of a managed rule. Applicable only for DRS and OWASP rules.
+     */
+    private ApplicationGatewayWafRuleParanoiaLevel paranoiaLevel;
+
+    /*
      * The description of the web application firewall rule.
      */
     private String description;
@@ -98,6 +103,16 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
     }
 
     /**
+     * Get the paranoiaLevel property: OWASP CRS paranoia level of a managed rule. Applicable only for DRS and OWASP
+     * rules.
+     * 
+     * @return the paranoiaLevel value.
+     */
+    public ApplicationGatewayWafRuleParanoiaLevel paranoiaLevel() {
+        return this.paranoiaLevel;
+    }
+
+    /**
      * Get the description property: The description of the web application firewall rule.
      * 
      * @return the description value.
@@ -125,6 +140,7 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
         jsonWriter.writeStringField("sensitivity", this.sensitivity == null ? null : this.sensitivity.toString());
+        jsonWriter.writeStringField("paranoiaLevel", this.paranoiaLevel == null ? null : this.paranoiaLevel.toString());
         jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
@@ -159,6 +175,9 @@ public final class ApplicationGatewayFirewallRule implements JsonSerializable<Ap
                 } else if ("sensitivity".equals(fieldName)) {
                     deserializedApplicationGatewayFirewallRule.sensitivity
                         = ApplicationGatewayWafRuleSensitivityTypes.fromString(reader.getString());
+                } else if ("paranoiaLevel".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRule.paranoiaLevel
+                        = ApplicationGatewayWafRuleParanoiaLevel.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     deserializedApplicationGatewayFirewallRule.description = reader.getString();
                 } else {
