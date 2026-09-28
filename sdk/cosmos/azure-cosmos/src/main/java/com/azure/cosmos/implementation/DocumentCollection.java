@@ -15,6 +15,7 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.UniqueKeyPolicy;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -35,6 +36,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public final class DocumentCollection extends Resource {
     private static final String COLLECTIONS_ROOT_PROPERTY_NAME = "col";
     private static final String ALT_LINK_PROPERTY_NAME = "altLink";
+    private static final String ALL_VERSIONS_AND_DELETES_RETENTION_POLICY_PATH
+        = "/supportedFeatures/allVersionsAndDeletes";
 
     private IndexingPolicy indexingPolicy;
     private UniqueKeyPolicy uniqueKeyPolicy;
@@ -296,6 +299,40 @@ public final class DocumentCollection extends Resource {
         }
 
         this.set(Constants.Properties.CHANGE_FEED_POLICY, value);
+    }
+
+    public Integer getChangeFeedPreviousImageRetentionMode() {
+        ObjectNode policy = this.getObject(Constants.Properties.PREVIOUS_IMAGE_RETENTION_POLICY);
+        if (policy == null) {
+            return null;
+        }
+
+        JsonNode featurePolicy = policy.at(ALL_VERSIONS_AND_DELETES_RETENTION_POLICY_PATH);
+        if (featurePolicy.isMissingNode() || featurePolicy.isNull()) {
+            return null;
+        }
+        if (!featurePolicy.isObject()) {
+            throw new IllegalStateException("The all versions and deletes previous image retention policy must be an object.");
+        }
+        JsonNode mode = featurePolicy.get(Constants.Properties.MODE);
+        if (mode == null) {
+            return null;
+        }
+        if (!mode.isIntegralNumber() || !mode.canConvertToInt()) {
+            throw new IllegalStateException("The change feed previous image retention mode must be an integer.");
+        }
+        return mode.intValue();
+    }
+
+    public void setChangeFeedPreviousImageRetentionMode(int mode) {
+        if (mode < 0 || mode > 3) {
+            throw new IllegalArgumentException("Unsupported change feed previous image retention mode: " + mode);
+        }
+        ObjectNode currentPolicy = this.getObject(Constants.Properties.PREVIOUS_IMAGE_RETENTION_POLICY);
+        ObjectNode policy = currentPolicy == null ? Utils.getSimpleObjectMapper().createObjectNode() : currentPolicy.deepCopy();
+        // Update only the customer-controlled mode, preserving other features and any existing path selection.
+        policy.withObject(ALL_VERSIONS_AND_DELETES_RETENTION_POLICY_PATH).put(Constants.Properties.MODE, mode);
+        this.set(Constants.Properties.PREVIOUS_IMAGE_RETENTION_POLICY, policy);
     }
 
     /**

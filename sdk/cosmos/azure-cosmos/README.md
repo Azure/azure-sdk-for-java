@@ -125,6 +125,7 @@ The following section provides several code snippets covering some of the most c
 * [Create Cosmos Client](#create-cosmos-client)
 * [Create Database](#create-database)
 * [Create Container](#create-container)
+* [Retain previous images in the change feed](#retain-previous-images-in-the-change-feed)
 * [CRUD operation on Items](#crud-operation-on-items)
 
 ### Create Cosmos Client
@@ -184,6 +185,66 @@ cosmosAsyncClient.createDatabaseIfNotExists("<YOUR DATABASE NAME>")
     .subscribe(container -> System.out.printf("Created container '%s' in database '%s'.%n",
         container.getId(), container.getDatabase().getId()));
 ```
+### Retain previous images in the change feed
+
+On accounts that support container-level previous image retention and the all versions and deletes change feed,
+configure which operations capture previous item images when creating or replacing a container. This preview setting
+does not provision continuous backup or enable the account-level prerequisites for all versions and deletes mode.
+With no existing path selection, the service captures the full previous item.
+
+```java readme-sample-createContainerWithPreviousImages
+CosmosContainerProperties properties = new CosmosContainerProperties("feedContainer", "/pk")
+    .setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)))
+    .setChangeFeedPreviousImageRetentionMode(
+        CosmosChangeFeedPreviousImageRetentionMode.ENABLED_FOR_ALL_OPERATIONS);
+Mono<CosmosContainerResponse> createResponse = database.createContainer(properties);
+```
+
+Subscribe to the returned `Mono` to execute the operation. To update an existing container, read and modify its properties
+so that other settings returned by the service are preserved:
+
+```java readme-sample-updatePreviousImageRetention
+Mono<CosmosContainerResponse> replaceResponse = feedContainer.read()
+    .flatMap(response -> {
+        CosmosContainerProperties properties = response.getProperties();
+        properties.setChangeFeedPreviousImageRetentionMode(
+            CosmosChangeFeedPreviousImageRetentionMode.ENABLED_FOR_REPLACE_OPERATIONS);
+        return feedContainer.replace(properties);
+    });
+```
+
+`ENABLED_FOR_REPLACE_OPERATIONS` covers replace, patch, and upsert operations that update an existing item.
+`ENABLED_FOR_DELETE_OPERATIONS` captures images for deletes; `ENABLED_FOR_ALL_OPERATIONS` covers both.
+Initial creates, including upserts that create an item, have no previous image.
+
+`DISABLED` withdraws this feature's request for capture, but other container features or account-level configuration
+can still enable capture. An unspecified mode is not equivalent to `DISABLED`: omitting the entire retention policy
+on container replacement preserves the service's existing policy. The getter returns `null` when this feature's mode
+is not specified; the setter requires a non-null mode. This API preserves any existing path selection and does not
+provide a path-selection API.
+
+Use the existing change feed pull APIs or processor to consume the captured images:
+
+```java readme-sample-processPreviousImages
+ChangeFeedProcessor processor = new ChangeFeedProcessorBuilder()
+    .hostName("previous-images-host")
+    .feedContainer(feedContainer)
+    .leaseContainer(leaseContainer)
+    .handleAllVersionsAndDeletesChanges(items -> {
+        for (ChangeFeedProcessorItem item : items) {
+            if (item.getPrevious() != null) {
+                // Process the captured previous item alongside the operation metadata.
+                System.out.println(item.getChangeFeedMetaData().getOperationType() + ": " + item.getPrevious());
+            }
+        }
+    })
+    .buildChangeFeedProcessor();
+```
+
+Start the processor by subscribing to `processor.start()` and stop it with `processor.stop()` when finished.
+`getPrevious()` can be absent, including on deletes, if an image was not captured. Enabling capture is not retroactive.
+Consume changes within the change feed retention window. Previous image capture can increase write and storage costs.
+
 ### CRUD operation on Items
 
 ```java readme-sample-crudOperationOnItems
