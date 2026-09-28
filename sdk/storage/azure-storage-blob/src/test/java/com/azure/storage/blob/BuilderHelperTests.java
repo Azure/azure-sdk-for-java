@@ -562,6 +562,7 @@ public class BuilderHelperTests {
 
     private static Stream<Arguments> accountNameContainingBlobSupplier() {
         return Stream.of(Arguments.of("https://blobtest.dfs.core.windows.net/", "blobtest"),
+            Arguments.of("https://myblobstorage.dfs.core.windows.net/", "myblobstorage"),
             Arguments.of("https://blobtest.blob.core.windows.net/", "blobtest"));
     }
 
