@@ -18,12 +18,6 @@ import java.io.IOException;
 public final class GitHubCopilotToolsetConfig implements JsonSerializable<GitHubCopilotToolsetConfig> {
 
     /*
-     * The built-in tool to configure.
-     */
-    @Generated
-    private final GitHubCopilotBuiltInTool name;
-
-    /*
      * Whether the built-in tool is enabled. If omitted, the toolset default applies.
      */
     @Generated
@@ -32,21 +26,11 @@ public final class GitHubCopilotToolsetConfig implements JsonSerializable<GitHub
     /**
      * Creates an instance of GitHubCopilotToolsetConfig class.
      *
-     * @param name the name value to set.
+     * @param toolName the toolName value to set.
      */
     @Generated
-    public GitHubCopilotToolsetConfig(GitHubCopilotBuiltInTool name) {
-        this.name = name;
-    }
-
-    /**
-     * Get the name property: The built-in tool to configure.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public GitHubCopilotBuiltInTool getName() {
-        return this.name;
+    public GitHubCopilotToolsetConfig(GitHubCopilotBuiltInTool toolName) {
+        this.toolName = toolName;
     }
 
     /**
@@ -78,7 +62,7 @@ public final class GitHubCopilotToolsetConfig implements JsonSerializable<GitHub
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("name", this.toolName == null ? null : this.toolName.toString());
         jsonWriter.writeBooleanField("enabled", this.enabled);
         return jsonWriter.writeEndObject();
     }
@@ -95,22 +79,39 @@ public final class GitHubCopilotToolsetConfig implements JsonSerializable<GitHub
     @Generated
     public static GitHubCopilotToolsetConfig fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            GitHubCopilotBuiltInTool name = null;
+            GitHubCopilotBuiltInTool toolName = null;
             Boolean enabled = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
-                    name = GitHubCopilotBuiltInTool.fromString(reader.getString());
+                    toolName = GitHubCopilotBuiltInTool.fromString(reader.getString());
                 } else if ("enabled".equals(fieldName)) {
                     enabled = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
-            GitHubCopilotToolsetConfig deserializedGitHubCopilotToolsetConfig = new GitHubCopilotToolsetConfig(name);
+            GitHubCopilotToolsetConfig deserializedGitHubCopilotToolsetConfig
+                = new GitHubCopilotToolsetConfig(toolName);
             deserializedGitHubCopilotToolsetConfig.enabled = enabled;
             return deserializedGitHubCopilotToolsetConfig;
         });
+    }
+
+    /*
+     * The built-in tool to configure.
+     */
+    @Generated
+    private final GitHubCopilotBuiltInTool toolName;
+
+    /**
+     * Get the toolName property: The built-in tool to configure.
+     *
+     * @return the toolName value.
+     */
+    @Generated
+    public GitHubCopilotBuiltInTool getToolName() {
+        return this.toolName;
     }
 }

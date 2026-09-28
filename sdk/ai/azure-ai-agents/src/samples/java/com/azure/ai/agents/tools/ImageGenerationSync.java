@@ -5,9 +5,7 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ImageGenTool;
 import com.azure.ai.agents.models.ImageGenToolModel;
@@ -16,6 +14,7 @@ import com.azure.ai.agents.models.ImageGenToolSize;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 
@@ -43,7 +42,6 @@ public class ImageGenerationSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         // BEGIN: com.azure.ai.agents.define_image_generation
         // Create image generation tool with model, quality, and size
@@ -63,13 +61,13 @@ public class ImageGenerationSync {
 
         try {
             // Create a response
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            SampleUtils.pinAgentVersion(agentsClient, agent);
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
+            Response response = openAIClient.responses().create(
                 ResponseCreateParams.builder()
-                    .input("Generate an image of a sunset over a mountain range"));
+                    .input("Generate an image of a sunset over a mountain range")
+                    .build());
 
             // The response output may include image_generation_call items with base64-encoded image data.
             // This sample prints the response status and the number of output items; image extraction

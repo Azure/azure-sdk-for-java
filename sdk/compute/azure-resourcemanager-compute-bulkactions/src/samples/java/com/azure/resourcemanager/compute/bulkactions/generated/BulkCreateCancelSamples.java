@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class BulkCreateCancelSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/BulkCreate_Cancel_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-06-preview/BulkCreate_Cancel_MaximumSet_Gen.json
      */
     /**
      * Sample code: BulkCreate_Cancel_MaximumSet.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class IpAllocationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/IpAllocationGet.json
+     * x-ms-original-file: 2026-01-01/IpAllocationGet.json
      */
     /**
      * Sample code: Get IpAllocation.

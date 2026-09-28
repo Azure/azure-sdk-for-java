@@ -10,6 +10,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ToolChoiceFunction;
+import com.openai.models.responses.ToolChoiceMcp;
+import com.openai.models.responses.ToolChoiceOptions;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -66,14 +70,14 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * model to author the opening response and may use configured tools.
      */
     @Generated
-    private VoiceAgentGreetingConfig greeting;
+    private VoiceAgentGreetingConfiguration greeting;
 
     /*
      * The audio configuration, including input and output formats, voice, turn detection, noise reduction, and
      * transcription. These values are session defaults; a client may override supported fields when connecting.
      */
     @Generated
-    private VoiceAgentAudioConfig audio;
+    private VoiceAgentAudioConfiguration audio;
 
     /*
      * The output modalities the agent produces. Defaults to `["audio"]`. `animation` and `avatar` are available
@@ -98,13 +102,13 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * Interim-response settings for latency and tool execution.
      */
     @Generated
-    private VoiceAgentInterimResponseConfig interimResponse;
+    private VoiceAgentInterimResponseConfiguration interimResponse;
 
     /*
      * Optional avatar configuration. These values are session defaults and may be overridden when connecting.
      */
     @Generated
-    private VoiceAgentAvatarConfig avatar;
+    private VoiceAgentAvatarConfiguration avatar;
 
     /*
      * The tools the voice agent may use. Supported tool kinds are `function` (executed by the client), `mcp`,
@@ -134,13 +138,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      */
     @Generated
     private Map<String, StructuredInputDefinition> structuredInputs;
-
-    /*
-     * Optional configuration for sibling Foundry text agents that this voice agent may consult as background
-     * specialists.
-     */
-    @Generated
-    private VoiceAgentSubagentConfig subagentConfig;
 
     /*
      * Whether conversations with this agent are persisted. A single, all-or-nothing persistence switch that defaults to
@@ -283,21 +280,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * @return the greeting value.
      */
     @Generated
-    public VoiceAgentGreetingConfig getGreeting() {
+    public VoiceAgentGreetingConfiguration getGreeting() {
         return this.greeting;
-    }
-
-    /**
-     * Set the greeting property: Optional session-start greeting. Template mode speaks exact rendered text;
-     * LLM-generated mode asks the session model to author the opening response and may use configured tools.
-     *
-     * @param greeting the greeting value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setGreeting(VoiceAgentGreetingConfig greeting) {
-        this.greeting = greeting;
-        return this;
     }
 
     /**
@@ -308,22 +292,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * @return the audio value.
      */
     @Generated
-    public VoiceAgentAudioConfig getAudio() {
+    public VoiceAgentAudioConfiguration getAudio() {
         return this.audio;
-    }
-
-    /**
-     * Set the audio property: The audio configuration, including input and output formats, voice, turn detection, noise
-     * reduction, and
-     * transcription. These values are session defaults; a client may override supported fields when connecting.
-     *
-     * @param audio the audio value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setAudio(VoiceAgentAudioConfig audio) {
-        this.audio = audio;
-        return this;
     }
 
     /**
@@ -357,8 +327,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      *
      * @return the maxOutputTokens value.
      */
-    @Generated
-    public BinaryData getMaxOutputTokens() {
+    BinaryData getMaxOutputTokens() {
+        // AI Tooling: union type
         return this.maxOutputTokens;
     }
 
@@ -368,8 +338,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * @param maxOutputTokens the maxOutputTokens value to set.
      * @return the VoiceAgentDefinition object itself.
      */
-    @Generated
-    public VoiceAgentDefinition setMaxOutputTokens(BinaryData maxOutputTokens) {
+    VoiceAgentDefinition setMaxOutputTokens(BinaryData maxOutputTokens) {
+        // AI Tooling: union type
         this.maxOutputTokens = maxOutputTokens;
         return this;
     }
@@ -402,20 +372,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * @return the interimResponse value.
      */
     @Generated
-    public VoiceAgentInterimResponseConfig getInterimResponse() {
+    public VoiceAgentInterimResponseConfiguration getInterimResponse() {
         return this.interimResponse;
-    }
-
-    /**
-     * Set the interimResponse property: Interim-response settings for latency and tool execution.
-     *
-     * @param interimResponse the interimResponse value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setInterimResponse(VoiceAgentInterimResponseConfig interimResponse) {
-        this.interimResponse = interimResponse;
-        return this;
     }
 
     /**
@@ -425,21 +383,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * @return the avatar value.
      */
     @Generated
-    public VoiceAgentAvatarConfig getAvatar() {
+    public VoiceAgentAvatarConfiguration getAvatar() {
         return this.avatar;
-    }
-
-    /**
-     * Set the avatar property: Optional avatar configuration. These values are session defaults and may be overridden
-     * when connecting.
-     *
-     * @param avatar the avatar value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setAvatar(VoiceAgentAvatarConfig avatar) {
-        this.avatar = avatar;
-        return this;
     }
 
     /**
@@ -478,8 +423,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      *
      * @return the toolChoice value.
      */
-    @Generated
-    public BinaryData getToolChoice() {
+    BinaryData getToolChoice() {
+        // AI Tooling: union type
         return this.toolChoice;
     }
 
@@ -492,8 +437,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
      * @param toolChoice the toolChoice value to set.
      * @return the VoiceAgentDefinition object itself.
      */
-    @Generated
-    public VoiceAgentDefinition setToolChoice(BinaryData toolChoice) {
+    VoiceAgentDefinition setToolChoice(BinaryData toolChoice) {
+        // AI Tooling: union type
         this.toolChoice = toolChoice;
         return this;
     }
@@ -541,30 +486,6 @@ public final class VoiceAgentDefinition extends AgentDefinition {
     @Generated
     public VoiceAgentDefinition setStructuredInputs(Map<String, StructuredInputDefinition> structuredInputs) {
         this.structuredInputs = structuredInputs;
-        return this;
-    }
-
-    /**
-     * Get the subagentConfig property: Optional configuration for sibling Foundry text agents that this voice agent may
-     * consult as background specialists.
-     *
-     * @return the subagentConfig value.
-     */
-    @Generated
-    public VoiceAgentSubagentConfig getSubagentConfig() {
-        return this.subagentConfig;
-    }
-
-    /**
-     * Set the subagentConfig property: Optional configuration for sibling Foundry text agents that this voice agent may
-     * consult as background specialists.
-     *
-     * @param subagentConfig the subagentConfig value to set.
-     * @return the VoiceAgentDefinition object itself.
-     */
-    @Generated
-    public VoiceAgentDefinition setSubagentConfig(VoiceAgentSubagentConfig subagentConfig) {
-        this.subagentConfig = subagentConfig;
         return this;
     }
 
@@ -647,7 +568,7 @@ public final class VoiceAgentDefinition extends AgentDefinition {
         jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
         jsonWriter.writeMapField("structured_inputs", this.structuredInputs,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("subagent_config", this.subagentConfig);
+        jsonWriter.writeJsonField("subagent_config", this.subagentConfiguration);
         jsonWriter.writeBooleanField("store", this.store);
         return jsonWriter.writeEndObject();
     }
@@ -680,9 +601,9 @@ public final class VoiceAgentDefinition extends AgentDefinition {
                 } else if ("instructions".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.instructions = reader.getString();
                 } else if ("greeting".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.greeting = VoiceAgentGreetingConfig.fromJson(reader);
+                    deserializedVoiceAgentDefinition.greeting = VoiceAgentGreetingConfiguration.fromJson(reader);
                 } else if ("audio".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.audio = VoiceAgentAudioConfig.fromJson(reader);
+                    deserializedVoiceAgentDefinition.audio = VoiceAgentAudioConfiguration.fromJson(reader);
                 } else if ("output_modalities".equals(fieldName)) {
                     List<VoiceOutputModality> outputModalities
                         = reader.readArray(reader1 -> VoiceOutputModality.fromString(reader1.getString()));
@@ -695,9 +616,10 @@ public final class VoiceAgentDefinition extends AgentDefinition {
                         = reader.readArray(reader1 -> VoiceAgentSessionIncludeOption.fromString(reader1.getString()));
                     deserializedVoiceAgentDefinition.include = include;
                 } else if ("interim_response".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.interimResponse = VoiceAgentInterimResponseConfig.fromJson(reader);
+                    deserializedVoiceAgentDefinition.interimResponse
+                        = VoiceAgentInterimResponseConfiguration.fromJson(reader);
                 } else if ("avatar".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.avatar = VoiceAgentAvatarConfig.fromJson(reader);
+                    deserializedVoiceAgentDefinition.avatar = VoiceAgentAvatarConfiguration.fromJson(reader);
                 } else if ("tools".equals(fieldName)) {
                     List<VoiceAgentTool> tools = reader.readArray(reader1 -> VoiceAgentTool.fromJson(reader1));
                     deserializedVoiceAgentDefinition.tools = tools;
@@ -711,7 +633,8 @@ public final class VoiceAgentDefinition extends AgentDefinition {
                         = reader.readMap(reader1 -> StructuredInputDefinition.fromJson(reader1));
                     deserializedVoiceAgentDefinition.structuredInputs = structuredInputs;
                 } else if ("subagent_config".equals(fieldName)) {
-                    deserializedVoiceAgentDefinition.subagentConfig = VoiceAgentSubagentConfig.fromJson(reader);
+                    deserializedVoiceAgentDefinition.subagentConfiguration
+                        = VoiceAgentSubagentConfiguration.fromJson(reader);
                 } else if ("store".equals(fieldName)) {
                     deserializedVoiceAgentDefinition.store = reader.getNullable(JsonReader::getBoolean);
                 } else {
@@ -720,5 +643,250 @@ public final class VoiceAgentDefinition extends AgentDefinition {
             }
             return deserializedVoiceAgentDefinition;
         });
+    }
+
+    /**
+     * Set the maxOutputTokens property: The maximum output-token count for one response.
+     *
+     * @param maxOutputTokens the maximum number of output tokens to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    public VoiceAgentDefinition setMaxOutputTokens(long maxOutputTokens) {
+        // AI Tooling: union type
+        this.maxOutputTokens = BinaryData.fromObject(maxOutputTokens);
+        return this;
+    }
+
+    /**
+     * Get the maxOutputTokens property: The maximum output-token count for one response.
+     *
+     * @return the maxOutputTokens value as a Long, or {@code null} when it is not set or holds another variant.
+     */
+    public Long getMaxOutputTokensAsLong() {
+        // AI Tooling: union type
+        if (this.maxOutputTokens == null) {
+            return null;
+        }
+        String json = this.maxOutputTokens.toString().trim();
+        if (!(!json.isEmpty() && (Character.isDigit(json.charAt(0)) || json.charAt(0) == '-'))) {
+            return null;
+        }
+        return this.maxOutputTokens.toObject(Long.class);
+    }
+
+    /**
+     * Set the maxOutputTokens property: The maximum output-token count for one response.
+     *
+     * @param maxOutputTokens the token-limit string to set, for example {@code "inf"} for an unlimited count.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    public VoiceAgentDefinition setMaxOutputTokens(String maxOutputTokens) {
+        // AI Tooling: union type
+        this.maxOutputTokens = maxOutputTokens == null ? null : BinaryData.fromObject(maxOutputTokens);
+        return this;
+    }
+
+    /**
+     * Get the maxOutputTokens property: The maximum output-token count for one response.
+     *
+     * @return the maxOutputTokens value as a String, or {@code null} when it is not set or holds another variant.
+     */
+    public String getMaxOutputTokensAsString() {
+        // AI Tooling: union type
+        if (this.maxOutputTokens == null) {
+            return null;
+        }
+        String json = this.maxOutputTokens.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return this.maxOutputTokens.toObject(String.class);
+    }
+
+    /**
+     * Set the toolChoice property: How the model chooses tools for generated responses.
+     *
+     * @param toolChoice the {@link ToolChoiceOptions} mode to set ({@code NONE}, {@code AUTO} or {@code REQUIRED}).
+     * @return the VoiceAgentDefinition object itself.
+     */
+    public VoiceAgentDefinition setToolChoice(ToolChoiceOptions toolChoice) {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
+        return this;
+    }
+
+    /**
+     * Set the toolChoice property to a specific function tool: How the model chooses tools for generated responses.
+     *
+     * @param toolChoice the openai-java {@link ToolChoiceFunction} to set, or null to clear.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    public VoiceAgentDefinition setToolChoice(ToolChoiceFunction toolChoice) {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
+        return this;
+    }
+
+    /**
+     * Get the toolChoice property as an openai-java {@link ToolChoiceFunction}: How the model chooses tools for
+     * generated responses.
+     *
+     * @return the toolChoice value as a ToolChoiceFunction, or {@code null} if it is not set or holds another variant.
+     */
+    public ToolChoiceFunction getToolChoiceAsToolChoiceFunction() {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
+        if (choice == null || !choice.isFunction()) {
+            return null;
+        }
+        return choice.asFunction();
+    }
+
+    /**
+     * Set the toolChoice property to a specific MCP tool: How the model chooses tools for generated responses.
+     *
+     * @param toolChoice the openai-java {@link ToolChoiceMcp} to set, or null to clear.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    public VoiceAgentDefinition setToolChoice(ToolChoiceMcp toolChoice) {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        this.toolChoice = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(toolChoice);
+        return this;
+    }
+
+    /**
+     * Get the toolChoice property as an openai-java {@link ToolChoiceMcp}: How the model chooses tools for generated
+     * responses.
+     *
+     * @return the toolChoice value as a ToolChoiceMcp, or {@code null} if it is not set or holds another variant.
+     */
+    public ToolChoiceMcp getToolChoiceAsToolChoiceMcp() {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        ResponseCreateParams.ToolChoice choice = getOpenAIToolChoice();
+        if (choice == null || !choice.isMcp()) {
+            return null;
+        }
+        return choice.asMcp();
+    }
+
+    private ResponseCreateParams.ToolChoice getOpenAIToolChoice() {
+        // AI Tooling: openai-java de-dup
+        if (this.toolChoice == null) {
+            return null;
+        }
+        String json = this.toolChoice.toString().trim();
+        if (!json.startsWith("{")) {
+            return null;
+        }
+        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
+            ResponseCreateParams.ToolChoice.class);
+    }
+
+    /**
+     * Get the toolChoice property: How the model chooses tools for generated responses.
+     *
+     * @return the toolChoice value as a {@link ToolChoiceOptions}, or {@code null} when it is not set or holds another
+     * variant.
+     */
+    public ToolChoiceOptions getToolChoiceAsToolChoiceOptions() {
+        // AI Tooling: union type
+        // AI Tooling: openai-java de-dup
+        if (this.toolChoice == null) {
+            return null;
+        }
+        String json = this.toolChoice.toString().trim();
+        if (!(json.startsWith("\""))) {
+            return null;
+        }
+        return com.azure.ai.agents.implementation.OpenAIJsonHelper.fromBinaryData(this.toolChoice,
+            ToolChoiceOptions.class);
+    }
+
+    /*
+     * Optional configuration for sibling Foundry text agents that this voice agent may consult as background
+     * specialists.
+     */
+    @Generated
+    private VoiceAgentSubagentConfiguration subagentConfiguration;
+
+    /**
+     * Set the greeting property: Optional session-start greeting. Template mode speaks exact rendered text;
+     * LLM-generated mode asks the session model to author the opening response and may use configured tools.
+     *
+     * @param greeting the greeting value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setGreeting(VoiceAgentGreetingConfiguration greeting) {
+        this.greeting = greeting;
+        return this;
+    }
+
+    /**
+     * Set the audio property: The audio configuration, including input and output formats, voice, turn detection, noise
+     * reduction, and
+     * transcription. These values are session defaults; a client may override supported fields when connecting.
+     *
+     * @param audio the audio value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setAudio(VoiceAgentAudioConfiguration audio) {
+        this.audio = audio;
+        return this;
+    }
+
+    /**
+     * Set the interimResponse property: Interim-response settings for latency and tool execution.
+     *
+     * @param interimResponse the interimResponse value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setInterimResponse(VoiceAgentInterimResponseConfiguration interimResponse) {
+        this.interimResponse = interimResponse;
+        return this;
+    }
+
+    /**
+     * Set the avatar property: Optional avatar configuration. These values are session defaults and may be overridden
+     * when connecting.
+     *
+     * @param avatar the avatar value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setAvatar(VoiceAgentAvatarConfiguration avatar) {
+        this.avatar = avatar;
+        return this;
+    }
+
+    /**
+     * Get the subagentConfiguration property: Optional configuration for sibling Foundry text agents that this voice
+     * agent may consult as background specialists.
+     *
+     * @return the subagentConfiguration value.
+     */
+    @Generated
+    public VoiceAgentSubagentConfiguration getSubagentConfiguration() {
+        return this.subagentConfiguration;
+    }
+
+    /**
+     * Set the subagentConfiguration property: Optional configuration for sibling Foundry text agents that this voice
+     * agent may consult as background specialists.
+     *
+     * @param subagentConfiguration the subagentConfiguration value to set.
+     * @return the VoiceAgentDefinition object itself.
+     */
+    @Generated
+    public VoiceAgentDefinition setSubagentConfiguration(VoiceAgentSubagentConfiguration subagentConfiguration) {
+        this.subagentConfiguration = subagentConfiguration;
+        return this;
     }
 }

@@ -29,7 +29,7 @@ public class VoiceConversationEngine implements JsonSerializable<VoiceConversati
      * Creates an instance of VoiceConversationEngine class.
      */
     @Generated
-    public VoiceConversationEngine() {
+    protected VoiceConversationEngine() {
     }
 
     /**

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class PublicIpPrefixesUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PublicIpPrefixUpdateTags.json
+     * x-ms-original-file: 2026-01-01/PublicIpPrefixUpdateTags.json
      */
     /**
      * Sample code: Update public IP prefix tags.

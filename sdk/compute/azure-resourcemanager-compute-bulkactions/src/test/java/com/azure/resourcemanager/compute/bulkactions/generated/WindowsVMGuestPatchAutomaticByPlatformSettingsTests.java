@@ -13,19 +13,19 @@ public final class WindowsVMGuestPatchAutomaticByPlatformSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WindowsVMGuestPatchAutomaticByPlatformSettings model = BinaryData
-            .fromString("{\"rebootSetting\":\"Unknown\",\"bypassPlatformSafetyChecksOnUserSchedule\":false}")
+            .fromString("{\"rebootSetting\":\"IfRequired\",\"bypassPlatformSafetyChecksOnUserSchedule\":true}")
             .toObject(WindowsVMGuestPatchAutomaticByPlatformSettings.class);
-        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN, model.rebootSetting());
-        Assertions.assertFalse(model.bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.IF_REQUIRED, model.rebootSetting());
+        Assertions.assertTrue(model.bypassPlatformSafetyChecksOnUserSchedule());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WindowsVMGuestPatchAutomaticByPlatformSettings model = new WindowsVMGuestPatchAutomaticByPlatformSettings()
-            .withRebootSetting(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
-            .withBypassPlatformSafetyChecksOnUserSchedule(false);
+            .withRebootSetting(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.IF_REQUIRED)
+            .withBypassPlatformSafetyChecksOnUserSchedule(true);
         model = BinaryData.fromObject(model).toObject(WindowsVMGuestPatchAutomaticByPlatformSettings.class);
-        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN, model.rebootSetting());
-        Assertions.assertFalse(model.bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.IF_REQUIRED, model.rebootSetting());
+        Assertions.assertTrue(model.bypassPlatformSafetyChecksOnUserSchedule());
     }
 }

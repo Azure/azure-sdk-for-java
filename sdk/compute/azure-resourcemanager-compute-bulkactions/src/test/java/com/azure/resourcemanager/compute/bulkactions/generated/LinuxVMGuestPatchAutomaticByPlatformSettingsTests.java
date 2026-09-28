@@ -12,20 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class LinuxVMGuestPatchAutomaticByPlatformSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinuxVMGuestPatchAutomaticByPlatformSettings model = BinaryData
-            .fromString("{\"rebootSetting\":\"Unknown\",\"bypassPlatformSafetyChecksOnUserSchedule\":false}")
-            .toObject(LinuxVMGuestPatchAutomaticByPlatformSettings.class);
-        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN, model.rebootSetting());
+        LinuxVMGuestPatchAutomaticByPlatformSettings model
+            = BinaryData.fromString("{\"rebootSetting\":\"Never\",\"bypassPlatformSafetyChecksOnUserSchedule\":false}")
+                .toObject(LinuxVMGuestPatchAutomaticByPlatformSettings.class);
+        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.NEVER, model.rebootSetting());
         Assertions.assertFalse(model.bypassPlatformSafetyChecksOnUserSchedule());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LinuxVMGuestPatchAutomaticByPlatformSettings model = new LinuxVMGuestPatchAutomaticByPlatformSettings()
-            .withRebootSetting(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
+            .withRebootSetting(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.NEVER)
             .withBypassPlatformSafetyChecksOnUserSchedule(false);
         model = BinaryData.fromObject(model).toObject(LinuxVMGuestPatchAutomaticByPlatformSettings.class);
-        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN, model.rebootSetting());
+        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.NEVER, model.rebootSetting());
         Assertions.assertFalse(model.bypassPlatformSafetyChecksOnUserSchedule());
     }
 }

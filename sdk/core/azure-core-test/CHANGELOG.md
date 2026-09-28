@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded Apache Ant from `1.10.15` to `1.10.18`.
+
 ## 1.27.0-beta.18 (2026-08-27)
 
 ### Other Changes

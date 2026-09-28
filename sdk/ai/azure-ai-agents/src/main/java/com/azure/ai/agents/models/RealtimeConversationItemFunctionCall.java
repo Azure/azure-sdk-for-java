@@ -9,7 +9,11 @@ import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.realtime.RealtimeConversationItemFunctionCall.Status;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 /**
  * Realtime function call item
@@ -36,13 +40,10 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
      * Identifier for the API object being returned - always `realtime.item`. Optional when creating a new item.
      */
     @Generated
-    private RealtimeConversationItemObject object;
+    private RealtimeConversationItemObjectType object;
 
-    /*
-     * The status of the item. Has no effect on the conversation.
-     */
-    @Generated
-    private RealtimeConversationItemFunctionCallStatus status;
+    // AI Tooling: openai-java de-dup
+    private Status status;
 
     /*
      * The ID of the function call.
@@ -127,21 +128,8 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
      * @return the object value.
      */
     @Generated
-    public RealtimeConversationItemObject getObject() {
+    public RealtimeConversationItemObjectType getObject() {
         return this.object;
-    }
-
-    /**
-     * Set the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
-     * creating a new item.
-     *
-     * @param object the object value to set.
-     * @return the RealtimeConversationItemFunctionCall object itself.
-     */
-    @Generated
-    public RealtimeConversationItemFunctionCall setObject(RealtimeConversationItemObject object) {
-        this.object = object;
-        return this;
     }
 
     /**
@@ -149,21 +137,9 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
      *
      * @return the status value.
      */
-    @Generated
-    public RealtimeConversationItemFunctionCallStatus getStatus() {
+    public Status getStatus() {
+        // AI Tooling: openai-java de-dup
         return this.status;
-    }
-
-    /**
-     * Set the status property: The status of the item. Has no effect on the conversation.
-     *
-     * @param status the status value to set.
-     * @return the RealtimeConversationItemFunctionCall object itself.
-     */
-    @Generated
-    public RealtimeConversationItemFunctionCall setStatus(RealtimeConversationItemFunctionCallStatus status) {
-        this.status = status;
-        return this;
     }
 
     /**
@@ -215,8 +191,11 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
      * @return the createdAt value.
      */
     @Generated
-    public Long getCreatedAt() {
-        return this.createdAt;
+    public OffsetDateTime getCreatedAt() {
+        if (this.createdAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.createdAt), ZoneOffset.UTC);
     }
 
     /**
@@ -232,17 +211,19 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        // AI Tooling: openai-java de-dup
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("arguments", this.arguments);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.asString());
         jsonWriter.writeStringField("call_id", this.callId);
+        jsonWriter.writeNumberField("created_at", this.createdAt);
+        jsonWriter.writeStringField("response_id", this.responseId);
         return jsonWriter.writeEndObject();
     }
 
@@ -255,15 +236,15 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RealtimeConversationItemFunctionCall.
      */
-    @Generated
     public static RealtimeConversationItemFunctionCall fromJson(JsonReader jsonReader) throws IOException {
+        // AI Tooling: openai-java de-dup
         return jsonReader.readObject(reader -> {
             String name = null;
             String arguments = null;
             RealtimeConversationItemType type = RealtimeConversationItemType.FUNCTION_CALL;
             String id = null;
-            RealtimeConversationItemObject object = null;
-            RealtimeConversationItemFunctionCallStatus status = null;
+            RealtimeConversationItemObjectType object = null;
+            Status status = null;
             String callId = null;
             Long createdAt = null;
             String responseId = null;
@@ -279,9 +260,9 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("object".equals(fieldName)) {
-                    object = RealtimeConversationItemObject.fromString(reader.getString());
+                    object = RealtimeConversationItemObjectType.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
-                    status = RealtimeConversationItemFunctionCallStatus.fromString(reader.getString());
+                    status = reader.getNullable(r -> Status.of(r.getString()));
                 } else if ("call_id".equals(fieldName)) {
                     callId = reader.getString();
                 } else if ("created_at".equals(fieldName)) {
@@ -303,5 +284,30 @@ public final class RealtimeConversationItemFunctionCall extends RealtimeConversa
             deserializedRealtimeConversationItemFunctionCall.responseId = responseId;
             return deserializedRealtimeConversationItemFunctionCall;
         });
+    }
+
+    /**
+     * Set the status property: The status of the item. Has no effect on the conversation.
+     *
+     * @param status the status value to set.
+     * @return the RealtimeConversationItemFunctionCall object itself.
+     */
+    public RealtimeConversationItemFunctionCall setStatus(Status status) {
+        // AI Tooling: openai-java de-dup
+        this.status = status;
+        return this;
+    }
+
+    /**
+     * Set the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
+     * creating a new item.
+     *
+     * @param object the object value to set.
+     * @return the RealtimeConversationItemFunctionCall object itself.
+     */
+    @Generated
+    public RealtimeConversationItemFunctionCall setObject(RealtimeConversationItemObjectType object) {
+        this.object = object;
+        return this;
     }
 }

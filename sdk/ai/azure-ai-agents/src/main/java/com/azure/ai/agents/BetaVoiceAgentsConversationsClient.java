@@ -7,10 +7,10 @@ import com.azure.ai.agents.implementation.BetaVoiceAgentsConversationsImpl;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.RealtimeConversationItem;
-import com.azure.ai.agents.models.VoiceAudioItemResponse;
+import com.azure.ai.agents.models.VoiceAudioItem;
 import com.azure.ai.agents.models.VoiceConversation;
-import com.azure.ai.agents.models.VoiceGeneratedAudioItemResponse;
-import com.azure.ai.agents.models.VoiceRecordingResponse;
+import com.azure.ai.agents.models.VoiceGeneratedAudioItem;
+import com.azure.ai.agents.models.VoiceRecording;
 import com.azure.ai.agents.models.VoiceResponse;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -109,6 +109,13 @@ public final class BetaVoiceAgentsConversationsClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -180,6 +187,13 @@ public final class BetaVoiceAgentsConversationsClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -268,7 +282,8 @@ public final class BetaVoiceAgentsConversationsClient {
      * {@code
      * {
      *     object: String(realtime.response) (Optional)
-     *     status: String(completed/cancelled/failed/incomplete/in_progress) (Optional)
+     *     status (Optional): {
+     *     }
      *     status_details (Optional): {
      *         type: String(completed/cancelled/failed/incomplete) (Optional)
      *         reason: String(turn_detected/client_cancelled/max_output_tokens/content_filter) (Optional)
@@ -298,7 +313,8 @@ public final class BetaVoiceAgentsConversationsClient {
      *         }
      *     }
      *     output_modalities (Optional): [
-     *         String(text/audio) (Optional)
+     *          (Optional){
+     *         }
      *     ]
      *     max_output_tokens: BinaryData (Optional)
      *     id: String (Required)
@@ -355,7 +371,8 @@ public final class BetaVoiceAgentsConversationsClient {
      * {@code
      * {
      *     object: String(realtime.response) (Optional)
-     *     status: String(completed/cancelled/failed/incomplete/in_progress) (Optional)
+     *     status (Optional): {
+     *     }
      *     status_details (Optional): {
      *         type: String(completed/cancelled/failed/incomplete) (Optional)
      *         reason: String(turn_detected/client_cancelled/max_output_tokens/content_filter) (Optional)
@@ -385,7 +402,8 @@ public final class BetaVoiceAgentsConversationsClient {
      *         }
      *     }
      *     output_modalities (Optional): [
-     *         String(text/audio) (Optional)
+     *          (Optional){
+     *         }
      *     ]
      *     max_output_tokens: BinaryData (Optional)
      *     id: String (Required)
@@ -1282,12 +1300,11 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoiceAudioItemResponse getAgentConversationAudioItem(String agentName, String conversationId,
-        String itemId) {
+    public VoiceAudioItem getAgentConversationAudioItem(String agentName, String conversationId, String itemId) {
         // Generated convenience method for getAgentConversationAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAgentConversationAudioItemWithResponse(agentName, conversationId, itemId, requestOptions).getValue()
-            .toObject(VoiceAudioItemResponse.class);
+            .toObject(VoiceAudioItem.class);
     }
 
     /**
@@ -1342,13 +1359,13 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoiceGeneratedAudioItemResponse getAgentConversationGeneratedAudioItem(String agentName,
-        String conversationId, String itemId) {
+    public VoiceGeneratedAudioItem getAgentConversationGeneratedAudioItem(String agentName, String conversationId,
+        String itemId) {
         // Generated convenience method for getAgentConversationGeneratedAudioItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAgentConversationGeneratedAudioItemWithResponse(agentName, conversationId, itemId, requestOptions)
             .getValue()
-            .toObject(VoiceGeneratedAudioItemResponse.class);
+            .toObject(VoiceGeneratedAudioItem.class);
     }
 
     /**
@@ -1411,11 +1428,11 @@ public final class BetaVoiceAgentsConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VoiceRecordingResponse getAgentConversationAudio(String agentName, String conversationId) {
+    public VoiceRecording getAgentConversationAudio(String agentName, String conversationId) {
         // Generated convenience method for getAgentConversationAudioWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAgentConversationAudioWithResponse(agentName, conversationId, requestOptions).getValue()
-            .toObject(VoiceRecordingResponse.class);
+            .toObject(VoiceRecording.class);
     }
 
     /**

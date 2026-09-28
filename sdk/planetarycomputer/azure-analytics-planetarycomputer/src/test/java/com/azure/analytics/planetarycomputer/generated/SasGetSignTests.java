@@ -17,7 +17,7 @@ public final class SasGetSignTests extends PlanetaryComputerProClientTestBase {
         // method invocation
         SharedAccessSignatureSignedLink response = sharedAccessSignatureClient.getUrl(
             "https://SANITIZED.blob.core.windows.net/naip-atl-00000000/collection-assets/thumbnail/thumbnail.png",
-            null);
+            (Integer) null);
 
         // response assertion
         Assertions.assertNotNull(response);

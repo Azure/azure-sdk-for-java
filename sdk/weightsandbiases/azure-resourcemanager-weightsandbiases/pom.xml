@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-weightsandbiases</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-weightsandbiases;current} -->
+  <version>1.0.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-weightsandbiases;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Weights And Biases Management</name>
-  <description>This package contains Microsoft Azure SDK for Weights And Biases Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package api-version 2024-09-18.</description>
+  <description>Please note, this package has been deprecated and will no longer be maintained after 2026-09-30. The Microsoft.WeightsAndBiases service will be permanently retired on 2026-09-30. No replacement package or migration path is available. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details. This package contains Microsoft Azure SDK for Weights And Biases Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package api-version 2024-09-18.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

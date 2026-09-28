@@ -117,7 +117,7 @@ public final class TeamsPhoneExtensionTelephonyBindingListItem extends Telephony
             String connectionName = null;
             TelephonyBindingStatus status = null;
             String incomingCallUrl = null;
-            String etag = null;
+            String eTag = null;
             String label = null;
             String resourceAccountObjectId = null;
             TelephonyProvider provider = TelephonyProvider.TEAMS_PHONE_EXTENSION;
@@ -134,7 +134,7 @@ public final class TeamsPhoneExtensionTelephonyBindingListItem extends Telephony
                 } else if ("incoming_call_url".equals(fieldName)) {
                     incomingCallUrl = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    etag = reader.getString();
+                    eTag = reader.getString();
                 } else if ("label".equals(fieldName)) {
                     label = reader.getString();
                 } else if ("resource_account_object_id".equals(fieldName)) {
@@ -150,7 +150,7 @@ public final class TeamsPhoneExtensionTelephonyBindingListItem extends Telephony
             TeamsPhoneExtensionTelephonyBindingListItem deserializedTeamsPhoneExtensionTelephonyBindingListItem
                 = new TeamsPhoneExtensionTelephonyBindingListItem(id, connectionName, status, incomingCallUrl,
                     resourceAccountObjectId);
-            deserializedTeamsPhoneExtensionTelephonyBindingListItem.setEtag(etag);
+            deserializedTeamsPhoneExtensionTelephonyBindingListItem.setETag(eTag);
             deserializedTeamsPhoneExtensionTelephonyBindingListItem.setLabel(label);
             deserializedTeamsPhoneExtensionTelephonyBindingListItem.provider = provider;
             deserializedTeamsPhoneExtensionTelephonyBindingListItem.phoneNumber = phoneNumber;

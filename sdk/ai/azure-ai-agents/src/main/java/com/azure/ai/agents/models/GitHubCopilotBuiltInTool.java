@@ -11,12 +11,12 @@ public enum GitHubCopilotBuiltInTool {
     /**
      * Read and search files in the harness workspace.
      */
-    FILESYSTEM_READ("filesystem_read"),
+    FILE_SYSTEM_READ("filesystem_read"),
 
     /**
      * Create and modify files in the harness workspace.
      */
-    FILESYSTEM_WRITE("filesystem_write"),
+    FILE_SYSTEM_WRITE("filesystem_write"),
 
     /**
      * Execute operating-system commands.

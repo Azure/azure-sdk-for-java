@@ -16,7 +16,7 @@ import com.azure.ai.agents.models.McpProtocolConfiguration;
 import com.azure.ai.agents.models.ProtocolConfiguration;
 import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
 import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.UpdateTelephonyBindingRequest;
+import com.azure.ai.agents.models.UpdateTelephonyBindingInput;
 import com.azure.ai.agents.models.VersionSelectionRule;
 import com.azure.ai.agents.models.VersionSelector;
 
@@ -24,21 +24,21 @@ import com.azure.ai.agents.models.VersionSelector;
  * This is the Helper class to enable json merge patch serialization for a model.
  */
 public class JsonMergePatchHelper {
-    private static UpdateTelephonyBindingRequestAccessor updateTelephonyBindingRequestAccessor;
+    private static UpdateTelephonyBindingInputAccessor updateTelephonyBindingInputAccessor;
 
-    public interface UpdateTelephonyBindingRequestAccessor {
-        UpdateTelephonyBindingRequest prepareModelForJsonMergePatch(
-            UpdateTelephonyBindingRequest updateTelephonyBindingRequest, boolean jsonMergePatchEnabled);
+    public interface UpdateTelephonyBindingInputAccessor {
+        UpdateTelephonyBindingInput prepareModelForJsonMergePatch(
+            UpdateTelephonyBindingInput updateTelephonyBindingInput, boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(UpdateTelephonyBindingRequest updateTelephonyBindingRequest);
+        boolean isJsonMergePatch(UpdateTelephonyBindingInput updateTelephonyBindingInput);
     }
 
-    public static void setUpdateTelephonyBindingRequestAccessor(UpdateTelephonyBindingRequestAccessor accessor) {
-        updateTelephonyBindingRequestAccessor = accessor;
+    public static void setUpdateTelephonyBindingInputAccessor(UpdateTelephonyBindingInputAccessor accessor) {
+        updateTelephonyBindingInputAccessor = accessor;
     }
 
-    public static UpdateTelephonyBindingRequestAccessor getUpdateTelephonyBindingRequestAccessor() {
-        return updateTelephonyBindingRequestAccessor;
+    public static UpdateTelephonyBindingInputAccessor getUpdateTelephonyBindingInputAccessor() {
+        return updateTelephonyBindingInputAccessor;
     }
 
     private static AgentEndpointConfigAccessor agentEndpointConfigAccessor;

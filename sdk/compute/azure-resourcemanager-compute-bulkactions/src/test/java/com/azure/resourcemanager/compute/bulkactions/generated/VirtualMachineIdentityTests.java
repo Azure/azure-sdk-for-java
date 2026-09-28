@@ -16,18 +16,20 @@ public final class VirtualMachineIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"rncsdtclu\",\"tenantId\":\"ypbsfgytguslfead\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"aehtwd\":{\"principalId\":\"yhejhzisxgfp\",\"clientId\":\"olppvksrpqvujz\"},\"acstwityk\":{\"principalId\":\"ftswibyrcdlbhsh\",\"clientId\":\"p\"},\"vnhltiugcx\":{\"principalId\":\"vxccedcp\",\"clientId\":\"dyodnwzxltj\"}}}")
+            "{\"principalId\":\"kayuhqlbjbs\",\"tenantId\":\"bqwrvtldgm\",\"type\":\"None\",\"userAssignedIdentities\":{\"drhneuyow\":{\"principalId\":\"ipaslthaqfxssmwu\",\"clientId\":\"bdsrez\"},\"sibircgpi\":{\"principalId\":\"d\",\"clientId\":\"t\"},\"i\":{\"principalId\":\"zimejzanlfzx\",\"clientId\":\"vrmbzono\"},\"frl\":{\"principalId\":\"jq\",\"clientId\":\"rgz\"}}}")
             .toObject(VirtualMachineIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachineIdentity model = new VirtualMachineIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("aehtwd", new UserAssignedIdentitiesValue(), "acstwityk",
-                new UserAssignedIdentitiesValue(), "vnhltiugcx", new UserAssignedIdentitiesValue()));
+        VirtualMachineIdentity model
+            = new VirtualMachineIdentity().withType(ResourceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("drhneuyow", new UserAssignedIdentitiesValue(), "sibircgpi",
+                    new UserAssignedIdentitiesValue(), "i", new UserAssignedIdentitiesValue(), "frl",
+                    new UserAssignedIdentitiesValue()));
         model = BinaryData.fromObject(model).toObject(VirtualMachineIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 
     // Use "Map.of" if available

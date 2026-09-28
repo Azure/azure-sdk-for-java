@@ -11,6 +11,7 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.IdentitySyncClient;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
@@ -99,6 +100,7 @@ public class OnBehalfOfCredential implements TokenCredential {
                 return token;
             }
         } catch (Exception e) {
+            IdentityUtil.rethrowIfShutdownSignal(e);
         }
 
         try {

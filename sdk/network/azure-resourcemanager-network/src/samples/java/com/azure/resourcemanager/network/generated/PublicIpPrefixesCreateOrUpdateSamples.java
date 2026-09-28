@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class PublicIpPrefixesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PublicIpPrefixCreateWithFirstPartyServiceTag.json
+     * x-ms-original-file: 2026-01-01/PublicIpPrefixCreateWithFirstPartyServiceTag.json
      */
     /**
      * Sample code: Create public IP prefix with first party service tag.
@@ -40,7 +40,7 @@ public final class PublicIpPrefixesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/PublicIpPrefixCreateDefaultsStandardV2Sku.json
+     * x-ms-original-file: 2026-01-01/PublicIpPrefixCreateDefaultsStandardV2Sku.json
      */
     /**
      * Sample code: Create public IP prefix defaults with StandardV2 Sku.
@@ -59,7 +59,7 @@ public final class PublicIpPrefixesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/PublicIpPrefixCreateDefaults.json
+     * x-ms-original-file: 2026-01-01/PublicIpPrefixCreateDefaults.json
      */
     /**
      * Sample code: Create public IP prefix defaults.
@@ -77,7 +77,7 @@ public final class PublicIpPrefixesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/PublicIpPrefixCreateCustomizedValues.json
+     * x-ms-original-file: 2026-01-01/PublicIpPrefixCreateCustomizedValues.json
      */
     /**
      * Sample code: Create public IP prefix allocation method.

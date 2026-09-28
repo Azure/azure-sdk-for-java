@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirstPartyServiceTagsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/FirstPartyServiceTagGet.json
+     * x-ms-original-file: 2026-01-01/FirstPartyServiceTagGet.json
      */
     /**
      * Sample code: Get first party service tag.
