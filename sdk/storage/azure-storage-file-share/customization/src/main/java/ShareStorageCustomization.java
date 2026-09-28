@@ -14,6 +14,7 @@ import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.CatchClause;
 import com.github.javaparser.ast.stmt.Statement;
@@ -26,6 +27,8 @@ import org.slf4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Customization class for File Share Storage.
@@ -87,6 +90,8 @@ public class ShareStorageCustomization extends Customization {
         retypeServiceVersionToShareServiceVersion(customization, logger);
 
         retypeUnexpectedResponseExceptions(customization, logger);
+
+        base64EncodeByteArrayHeaders(customization, logger);
 
         relocateDownloadHeadersToModels(customization, logger);
 
@@ -309,6 +314,55 @@ public class ShareStorageCustomization extends Customization {
                 });
                 logger.info("Retyped {} @UnexpectedResponseExceptionType -> ShareStorageExceptionInternal in {}",
                     retyped[0], implName);
+            });
+        }
+    }
+
+    /**
+     * Base64-encodes {@code byte[]} header values in the relocated convenience clients. The emitter serializes every
+     * header argument with {@code String.valueOf(...)}; for a {@code byte[]} value (Content-MD5 and the source-CRC64
+     * headers) that yields the array's identity string ({@code "[B@..."}), which the service rejects with
+     * {@code InvalidHeaderValue}. The old RestProxy {@code @HeaderParam byte[]} layer Base64-encoded these. For each
+     * method, the {@code byte[]} parameters are detected and their {@code String.valueOf(param)} usages rewritten to
+     * {@code Base64.getEncoder().encodeToString(param)}.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void base64EncodeByteArrayHeaders(LibraryCustomization customization, Logger logger) {
+        List<String> internalClients = Arrays.asList("ShareServiceClientInternal", "ShareServiceAsyncClientInternal",
+            "ShareClientInternal", "ShareAsyncClientInternal", "ShareDirectoryClientInternal",
+            "ShareDirectoryAsyncClientInternal", "ShareFileClientInternal", "ShareFileAsyncClientInternal");
+        for (String internalName : internalClients) {
+            customization.getClass("com.azure.storage.file.share.implementation", internalName).customizeAst(ast -> {
+                int[] fixed = { 0 };
+                ast.findAll(MethodDeclaration.class).forEach(method -> {
+                    Set<String> byteArrayParams = method.getParameters()
+                        .stream()
+                        .filter(p -> "byte[]".equals(p.getType().asString()))
+                        .map(Parameter::getNameAsString)
+                        .collect(Collectors.toSet());
+                    if (byteArrayParams.isEmpty()) {
+                        return;
+                    }
+                    List<MethodCallExpr> valueOfCalls = method.findAll(MethodCallExpr.class)
+                        .stream()
+                        .filter(mc -> "valueOf".equals(mc.getNameAsString())
+                            && mc.getScope().map(Object::toString).map("String"::equals).orElse(false)
+                            && mc.getArguments().size() == 1 && mc.getArgument(0).isNameExpr()
+                            && byteArrayParams.contains(mc.getArgument(0).asNameExpr().getNameAsString()))
+                        .collect(Collectors.toList());
+                    for (MethodCallExpr valueOf : valueOfCalls) {
+                        String param = valueOf.getArgument(0).asNameExpr().getNameAsString();
+                        valueOf.replace(
+                            StaticJavaParser.parseExpression("Base64.getEncoder().encodeToString(" + param + ")"));
+                        fixed[0]++;
+                    }
+                });
+                if (fixed[0] > 0) {
+                    ast.addImport("java.util.Base64");
+                }
+                logger.info("Base64-encoded {} byte[] header value(s) in {}", fixed[0], internalName);
             });
         }
     }
