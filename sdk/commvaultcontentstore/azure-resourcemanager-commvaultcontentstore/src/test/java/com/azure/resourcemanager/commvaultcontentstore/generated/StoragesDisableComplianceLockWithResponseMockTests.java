@@ -10,19 +10,21 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.commvaultcontentstore.CommvaultContentStoreManager;
-import com.azure.resourcemanager.commvaultcontentstore.models.CountProtectedItemsRequest;
-import com.azure.resourcemanager.commvaultcontentstore.models.CountProtectedItemsResponse;
+import com.azure.resourcemanager.commvaultcontentstore.models.Storage;
+import com.azure.resourcemanager.commvaultcontentstore.models.StorageClassType;
+import com.azure.resourcemanager.commvaultcontentstore.models.StorageType;
+import com.azure.resourcemanager.commvaultcontentstore.models.Vendor;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class ProtectedItemsOperationGroupsCountByProtectionGroupsWithResponseMockTests {
+public final class StoragesDisableComplianceLockWithResponseMockTests {
     @Test
-    public void testCountByProtectionGroupsWithResponse() throws Exception {
-        String responseStr = "{\"count\":\"ylbf\"}";
+    public void testDisableComplianceLockWithResponse() throws Exception {
+        String responseStr
+            = "{\"properties\":{\"location\":\"jabibsystawf\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"HOT\",\"provisioningState\":\"Failed\",\"complianceLockStatus\":\"Disabled\"},\"id\":\"jxbkzbzkdvn\",\"name\":\"jabudurgkakmo\",\"type\":\"zhjjklffhmouwq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +33,14 @@ public final class ProtectedItemsOperationGroupsCountByProtectionGroupsWithRespo
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        CountProtectedItemsResponse response = manager.protectedItemsOperationGroups()
-            .countByProtectionGroupsWithResponse(
-                new CountProtectedItemsRequest().withResourceIds(Arrays.asList("rpgogtqxep")),
+        Storage response = manager.storages()
+            .disableComplianceLockWithResponse("hvxndzwmkrefajpj", "rwkq", "yhgbijtjivfx",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ylbf", response.count());
+        Assertions.assertEquals("jabibsystawf", response.properties().location());
+        Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, response.properties().storageType());
+        Assertions.assertEquals(Vendor.AZURE_BLOB_STORAGE, response.properties().vendor());
+        Assertions.assertEquals(StorageClassType.HOT, response.properties().classProperty());
     }
 }

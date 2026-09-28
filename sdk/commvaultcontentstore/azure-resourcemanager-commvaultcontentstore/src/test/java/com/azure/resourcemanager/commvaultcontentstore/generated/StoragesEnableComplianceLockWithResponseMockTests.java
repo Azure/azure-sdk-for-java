@@ -12,7 +12,6 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.commvaultcontentstore.CommvaultContentStoreManager;
 import com.azure.resourcemanager.commvaultcontentstore.models.Storage;
 import com.azure.resourcemanager.commvaultcontentstore.models.StorageClassType;
-import com.azure.resourcemanager.commvaultcontentstore.models.StorageProperties;
 import com.azure.resourcemanager.commvaultcontentstore.models.StorageType;
 import com.azure.resourcemanager.commvaultcontentstore.models.Vendor;
 import java.nio.charset.StandardCharsets;
@@ -21,11 +20,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class StoragesCreateOrUpdateMockTests {
+public final class StoragesEnableComplianceLockWithResponseMockTests {
     @Test
-    public void testCreateOrUpdate() throws Exception {
+    public void testEnableComplianceLockWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"location\":\"ylwbtlhflsjcdhsz\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"HOT\",\"provisioningState\":\"Succeeded\",\"complianceLockStatus\":\"DisablementPending\"},\"id\":\"ljagrqmqhl\",\"name\":\"vriiio\",\"type\":\"nalghfkvtvsexso\"}";
+            = "{\"properties\":{\"location\":\"vwxqibyqunyo\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"HOT\",\"provisioningState\":\"Succeeded\",\"complianceLockStatus\":\"Enabled\"},\"id\":\"vfgbvfvpdboda\",\"name\":\"izsjqlhkrr\",\"type\":\"bdeibqipqk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,15 +34,10 @@ public final class StoragesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Storage response = manager.storages()
-            .define("ircgpikpz")
-            .withExistingCloudAccount("zpdrhneu", "owqkdwytisi")
-            .withProperties(new StorageProperties().withLocation("ejzanlfz")
-                .withStorageType(StorageType.AIR_GAP_PROTECT)
-                .withVendor(Vendor.AZURE_BLOB_STORAGE)
-                .withClassProperty(StorageClassType.COOL))
-            .create();
+            .enableComplianceLockWithResponse("edcpnmdyodnwzxl", "jc", "nhltiugcxn", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("ylwbtlhflsjcdhsz", response.properties().location());
+        Assertions.assertEquals("vwxqibyqunyo", response.properties().location());
         Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, response.properties().storageType());
         Assertions.assertEquals(Vendor.AZURE_BLOB_STORAGE, response.properties().vendor());
         Assertions.assertEquals(StorageClassType.HOT, response.properties().classProperty());

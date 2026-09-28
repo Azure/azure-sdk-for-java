@@ -27,7 +27,8 @@ public final class ProtectionGroupsResumeBackupWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.protectionGroups().resumeBackupWithResponse("m", "jw", "w", com.azure.core.util.Context.NONE);
+        manager.protectionGroups()
+            .resumeBackupWithResponse("mlkxtrqjfs", "lmbtxhwgfwsrt", "wcoezbrhub", com.azure.core.util.Context.NONE);
 
     }
 }

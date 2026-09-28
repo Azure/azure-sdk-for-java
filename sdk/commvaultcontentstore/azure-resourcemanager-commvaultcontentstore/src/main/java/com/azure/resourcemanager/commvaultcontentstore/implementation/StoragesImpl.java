@@ -65,6 +65,59 @@ public final class StoragesImpl implements Storages {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageImpl(inner1, this.manager()));
     }
 
+    public Response<Storage> enableComplianceLockWithResponse(String resourceGroupName, String cloudAccountName,
+        String storageName, Context context) {
+        Response<StorageInner> inner = this.serviceClient()
+            .enableComplianceLockWithResponse(resourceGroupName, cloudAccountName, storageName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StorageImpl(inner.getValue(), this.manager()));
+    }
+
+    public Storage enableComplianceLock(String resourceGroupName, String cloudAccountName, String storageName) {
+        StorageInner inner
+            = this.serviceClient().enableComplianceLock(resourceGroupName, cloudAccountName, storageName);
+        if (inner != null) {
+            return new StorageImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Storage> disableComplianceLockWithResponse(String resourceGroupName, String cloudAccountName,
+        String storageName, Context context) {
+        Response<StorageInner> inner = this.serviceClient()
+            .disableComplianceLockWithResponse(resourceGroupName, cloudAccountName, storageName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StorageImpl(inner.getValue(), this.manager()));
+    }
+
+    public Storage disableComplianceLock(String resourceGroupName, String cloudAccountName, String storageName) {
+        StorageInner inner
+            = this.serviceClient().disableComplianceLock(resourceGroupName, cloudAccountName, storageName);
+        if (inner != null) {
+            return new StorageImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Storage> refreshWithResponse(String resourceGroupName, String cloudAccountName, String storageName,
+        Context context) {
+        Response<StorageInner> inner
+            = this.serviceClient().refreshWithResponse(resourceGroupName, cloudAccountName, storageName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StorageImpl(inner.getValue(), this.manager()));
+    }
+
+    public Storage refresh(String resourceGroupName, String cloudAccountName, String storageName) {
+        StorageInner inner = this.serviceClient().refresh(resourceGroupName, cloudAccountName, storageName);
+        if (inner != null) {
+            return new StorageImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Storage getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

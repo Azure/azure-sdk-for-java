@@ -11,8 +11,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.commvaultcontentstore.fluent.models.CloudAccountInner;
 import com.azure.resourcemanager.commvaultcontentstore.models.CloudAccount;
 import com.azure.resourcemanager.commvaultcontentstore.models.CloudAccountProperties;
-import com.azure.resourcemanager.commvaultcontentstore.models.CloudAccountUpdate;
-import com.azure.resourcemanager.commvaultcontentstore.models.CloudAccountUpdateProperties;
 import com.azure.resourcemanager.commvaultcontentstore.models.LatestLinkedSaaSResponse;
 import com.azure.resourcemanager.commvaultcontentstore.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.commvaultcontentstore.models.SaaSData;
@@ -85,8 +83,6 @@ public final class CloudAccountImpl implements CloudAccount, CloudAccount.Defini
 
     private String cloudAccountName;
 
-    private CloudAccountUpdate updateProperties;
-
     public CloudAccountImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -114,21 +110,20 @@ public final class CloudAccountImpl implements CloudAccount, CloudAccount.Defini
     }
 
     public CloudAccountImpl update() {
-        this.updateProperties = new CloudAccountUpdate();
         return this;
     }
 
     public CloudAccount apply() {
         this.innerObject = serviceManager.serviceClient()
             .getCloudAccounts()
-            .update(resourceGroupName, cloudAccountName, updateProperties, Context.NONE);
+            .update(resourceGroupName, cloudAccountName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CloudAccount apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getCloudAccounts()
-            .update(resourceGroupName, cloudAccountName, updateProperties, context);
+            .update(resourceGroupName, cloudAccountName, this.innerModel(), context);
         return this;
     }
 
@@ -184,13 +179,8 @@ public final class CloudAccountImpl implements CloudAccount, CloudAccount.Defini
     }
 
     public CloudAccountImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateProperties.withTags(tags);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public CloudAccountImpl withProperties(CloudAccountProperties properties) {
@@ -199,21 +189,7 @@ public final class CloudAccountImpl implements CloudAccount, CloudAccount.Defini
     }
 
     public CloudAccountImpl withIdentity(ManagedServiceIdentity identity) {
-        if (isInCreateMode()) {
-            this.innerModel().withIdentity(identity);
-            return this;
-        } else {
-            this.updateProperties.withIdentity(identity);
-            return this;
-        }
-    }
-
-    public CloudAccountImpl withProperties(CloudAccountUpdateProperties properties) {
-        this.updateProperties.withProperties(properties);
+        this.innerModel().withIdentity(identity);
         return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

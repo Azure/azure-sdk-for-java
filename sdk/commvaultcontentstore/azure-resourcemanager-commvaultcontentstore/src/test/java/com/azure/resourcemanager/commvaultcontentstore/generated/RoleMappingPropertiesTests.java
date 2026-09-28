@@ -17,42 +17,35 @@ public final class RoleMappingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoleMappingProperties model = BinaryData.fromString(
-            "{\"roles\":[{\"roleName\":\"BackupAdmin\",\"entities\":[{\"id\":\"bpkkpwdre\",\"displayName\":\"ovvqfovljxywsu\",\"entityType\":\"User\"},{\"id\":\"s\",\"displayName\":\"sytgadgvraea\",\"entityType\":\"User\"}]},{\"roleName\":\"BackupOperator\",\"entities\":[{\"id\":\"rwlqu\",\"displayName\":\"jfqka\",\"entityType\":\"User\"},{\"id\":\"ipfpubji\",\"displayName\":\"wifto\",\"entityType\":\"Group\"}]},{\"roleName\":\"MultiPersonAuthorization\",\"entities\":[{\"id\":\"sgplsakn\",\"displayName\":\"fsynljphuop\",\"entityType\":\"Group\"},{\"id\":\"qiy\",\"displayName\":\"orzihle\",\"entityType\":\"Group\"},{\"id\":\"w\",\"displayName\":\"mslyzrpzbchckqqz\",\"entityType\":\"User\"},{\"id\":\"iysui\",\"displayName\":\"ynkedyatrwyhqmib\",\"entityType\":\"User\"}]},{\"roleName\":\"BackupOperator\",\"entities\":[{\"id\":\"ypyynpcdpumnzg\",\"displayName\":\"z\",\"entityType\":\"User\"},{\"id\":\"iknsorgjh\",\"displayName\":\"ldtlwwr\",\"entityType\":\"User\"},{\"id\":\"tncvokot\",\"displayName\":\"xdy\",\"entityType\":\"Group\"}]}],\"provisioningState\":\"Succeeded\"}")
+            "{\"roles\":[{\"roleName\":\"BackupUser\",\"entities\":[{\"id\":\"zoymibmrqyibahw\",\"displayName\":\"uszdtmhrkwof\",\"entityType\":\"Group\"}]},{\"roleName\":\"BackupOperator\",\"entities\":[{\"id\":\"cpi\",\"displayName\":\"pbtg\",\"entityType\":\"Group\"},{\"id\":\"oenwashr\",\"displayName\":\"tkcnqxwb\",\"entityType\":\"Group\"}]},{\"roleName\":\"BackupAdmin\",\"entities\":[{\"id\":\"iujwa\",\"displayName\":\"ipqiiobyuqerpq\",\"entityType\":\"User\"},{\"id\":\"cciuqgbdbutau\",\"displayName\":\"btkuwhh\",\"entityType\":\"Group\"}]}],\"provisioningState\":\"Canceled\"}")
             .toObject(RoleMappingProperties.class);
-        Assertions.assertEquals(RoleName.BACKUP_ADMIN, model.roles().get(0).roleName());
-        Assertions.assertEquals("bpkkpwdre", model.roles().get(0).entities().get(0).id());
-        Assertions.assertEquals("ovvqfovljxywsu", model.roles().get(0).entities().get(0).displayName());
-        Assertions.assertEquals(EntityType.USER, model.roles().get(0).entities().get(0).entityType());
+        Assertions.assertEquals(RoleName.BACKUP_USER, model.roles().get(0).roleName());
+        Assertions.assertEquals("zoymibmrqyibahw", model.roles().get(0).entities().get(0).id());
+        Assertions.assertEquals("uszdtmhrkwof", model.roles().get(0).entities().get(0).displayName());
+        Assertions.assertEquals(EntityType.GROUP, model.roles().get(0).entities().get(0).entityType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoleMappingProperties model = new RoleMappingProperties().withRoles(Arrays.asList(new RoleAssignment()
-            .withRoleName(RoleName.BACKUP_ADMIN)
-            .withEntities(Arrays.asList(
-                new EntityInfo().withId("bpkkpwdre").withDisplayName("ovvqfovljxywsu").withEntityType(EntityType.USER),
-                new EntityInfo().withId("s").withDisplayName("sytgadgvraea").withEntityType(EntityType.USER))),
+        RoleMappingProperties model = new RoleMappingProperties().withRoles(Arrays.asList(
+            new RoleAssignment().withRoleName(RoleName.BACKUP_USER)
+                .withEntities(Arrays.asList(new EntityInfo().withId("zoymibmrqyibahw")
+                    .withDisplayName("uszdtmhrkwof")
+                    .withEntityType(EntityType.GROUP))),
             new RoleAssignment().withRoleName(RoleName.BACKUP_OPERATOR)
                 .withEntities(Arrays.asList(
-                    new EntityInfo().withId("rwlqu").withDisplayName("jfqka").withEntityType(EntityType.USER),
-                    new EntityInfo().withId("ipfpubji").withDisplayName("wifto").withEntityType(EntityType.GROUP))),
-            new RoleAssignment().withRoleName(RoleName.MULTI_PERSON_AUTHORIZATION)
+                    new EntityInfo().withId("cpi").withDisplayName("pbtg").withEntityType(EntityType.GROUP),
+                    new EntityInfo().withId("oenwashr").withDisplayName("tkcnqxwb").withEntityType(EntityType.GROUP))),
+            new RoleAssignment().withRoleName(RoleName.BACKUP_ADMIN)
                 .withEntities(Arrays.asList(
-                    new EntityInfo().withId("sgplsakn").withDisplayName("fsynljphuop").withEntityType(EntityType.GROUP),
-                    new EntityInfo().withId("qiy").withDisplayName("orzihle").withEntityType(EntityType.GROUP),
-                    new EntityInfo().withId("w").withDisplayName("mslyzrpzbchckqqz").withEntityType(EntityType.USER),
-                    new EntityInfo().withId("iysui")
-                        .withDisplayName("ynkedyatrwyhqmib")
-                        .withEntityType(EntityType.USER))),
-            new RoleAssignment().withRoleName(RoleName.BACKUP_OPERATOR)
-                .withEntities(Arrays.asList(
-                    new EntityInfo().withId("ypyynpcdpumnzg").withDisplayName("z").withEntityType(EntityType.USER),
-                    new EntityInfo().withId("iknsorgjh").withDisplayName("ldtlwwr").withEntityType(EntityType.USER),
-                    new EntityInfo().withId("tncvokot").withDisplayName("xdy").withEntityType(EntityType.GROUP)))));
+                    new EntityInfo().withId("iujwa").withDisplayName("ipqiiobyuqerpq").withEntityType(EntityType.USER),
+                    new EntityInfo().withId("cciuqgbdbutau")
+                        .withDisplayName("btkuwhh")
+                        .withEntityType(EntityType.GROUP)))));
         model = BinaryData.fromObject(model).toObject(RoleMappingProperties.class);
-        Assertions.assertEquals(RoleName.BACKUP_ADMIN, model.roles().get(0).roleName());
-        Assertions.assertEquals("bpkkpwdre", model.roles().get(0).entities().get(0).id());
-        Assertions.assertEquals("ovvqfovljxywsu", model.roles().get(0).entities().get(0).displayName());
-        Assertions.assertEquals(EntityType.USER, model.roles().get(0).entities().get(0).entityType());
+        Assertions.assertEquals(RoleName.BACKUP_USER, model.roles().get(0).roleName());
+        Assertions.assertEquals("zoymibmrqyibahw", model.roles().get(0).entities().get(0).id());
+        Assertions.assertEquals("uszdtmhrkwof", model.roles().get(0).entities().get(0).displayName());
+        Assertions.assertEquals(EntityType.GROUP, model.roles().get(0).entities().get(0).entityType());
     }
 }

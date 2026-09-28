@@ -15,12 +15,12 @@ public final class StorageListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"location\":\"m\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"COLD\",\"provisioningState\":\"Failed\"},\"id\":\"lzevgbmqjqab\",\"name\":\"y\",\"type\":\"mivkwlzuvcc\"}],\"nextLink\":\"nfnbacfionlebxe\"}")
+            "{\"value\":[{\"properties\":{\"location\":\"cfvmmco\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"HOT\",\"provisioningState\":\"Succeeded\",\"complianceLockStatus\":\"DisablementPending\"},\"id\":\"bmqj\",\"name\":\"abcypmivk\",\"type\":\"lzu\"}],\"nextLink\":\"c\"}")
             .toObject(StorageListResult.class);
-        Assertions.assertEquals("m", model.value().get(0).properties().location());
+        Assertions.assertEquals("cfvmmco", model.value().get(0).properties().location());
         Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, model.value().get(0).properties().storageType());
         Assertions.assertEquals(Vendor.AZURE_BLOB_STORAGE, model.value().get(0).properties().vendor());
-        Assertions.assertEquals(StorageClassType.COOL, model.value().get(0).properties().classProperty());
-        Assertions.assertEquals("nfnbacfionlebxe", model.nextLink());
+        Assertions.assertEquals(StorageClassType.HOT, model.value().get(0).properties().classProperty());
+        Assertions.assertEquals("c", model.nextLink());
     }
 }
