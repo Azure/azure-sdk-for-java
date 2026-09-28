@@ -32,6 +32,7 @@ import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionT
 import com.azure.storage.file.share.implementation.models.KeyInfo;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareItem;
@@ -666,11 +667,10 @@ public final class ShareServiceAsyncClient {
             deleteSnapshots = DeleteSnapshotsOptionType.INCLUDE;
         }
         context = context == null ? Context.NONE : context;
-        return new ShareAsyncClientInternal(
-            ModelHelper.getFileStorageForUrl(azureFileStorageClient, azureFileStorageClient.getUrl() + "/" + shareName)
-                .getShares())
-                    .deleteWithResponse(snapshot, null, deleteSnapshots, null, new RequestOptions().setContext(context))
-                    .map(response -> (Response<Void>) response);
+        return new ShareAsyncClientInternal(azureFileStorageClient.getShares())
+            .deleteWithResponse(snapshot, null, deleteSnapshots, null,
+                RequestOptionsHelper.shareRequestOptions(context, azureFileStorageClient.getUrl(), shareName))
+            .map(response -> (Response<Void>) response);
     }
 
     /**
@@ -865,12 +865,10 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(String deletedShareName, String deletedShareVersion,
         Context context) {
-        return new ShareAsyncClientInternal(ModelHelper
-            .getFileStorageForUrl(azureFileStorageClient, azureFileStorageClient.getUrl() + "/" + deletedShareName)
-            .getShares())
-                .restoreWithResponse(null, deletedShareName, deletedShareVersion,
-                    new RequestOptions().setContext(context))
-                .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
+        return new ShareAsyncClientInternal(azureFileStorageClient.getShares())
+            .restoreWithResponse(null, deletedShareName, deletedShareVersion,
+                RequestOptionsHelper.shareRequestOptions(context, azureFileStorageClient.getUrl(), deletedShareName))
+            .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
     }
 
     /**

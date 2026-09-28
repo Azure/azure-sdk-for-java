@@ -36,6 +36,7 @@ import com.azure.storage.file.share.implementation.models.ServicesGetUserDelegat
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareItem;
@@ -614,10 +615,10 @@ public final class ShareServiceClient {
         Context finalContext = context == null ? Context.NONE : context;
         DeleteSnapshotsOptionType deleteSnapshots
             = CoreUtils.isNullOrEmpty(snapshot) ? DeleteSnapshotsOptionType.INCLUDE : null;
-        Callable<Response<Void>> operation = () -> new ShareClientInternal(
-            ModelHelper.getFileStorageForUrl(azureFileStorageClient, azureFileStorageClient.getUrl() + "/" + shareName)
-                .getShares()).deleteWithResponse(snapshot, null, deleteSnapshots, null,
-                    new RequestOptions().setContext(finalContext));
+        Callable<Response<Void>> operation
+            = () -> new ShareClientInternal(azureFileStorageClient.getShares()).deleteWithResponse(snapshot, null,
+                deleteSnapshots, null,
+                RequestOptionsHelper.shareRequestOptions(finalContext, azureFileStorageClient.getUrl(), shareName));
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
@@ -808,10 +809,9 @@ public final class ShareServiceClient {
     public Response<ShareClient> undeleteShareWithResponse(String deletedShareName, String deletedShareVersion,
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<Response<Void>> operation = () -> new ShareClientInternal(ModelHelper
-            .getFileStorageForUrl(azureFileStorageClient, azureFileStorageClient.getUrl() + "/" + deletedShareName)
-            .getShares()).restoreWithResponse(null, deletedShareName, deletedShareVersion,
-                new RequestOptions().setContext(finalContext));
+        Callable<Response<Void>> operation = () -> new ShareClientInternal(azureFileStorageClient.getShares())
+            .restoreWithResponse(null, deletedShareName, deletedShareVersion, RequestOptionsHelper
+                .shareRequestOptions(finalContext, azureFileStorageClient.getUrl(), deletedShareName));
 
         return new SimpleResponse<>(sendRequest(operation, timeout, ShareStorageException.class),
             getShareClient(deletedShareName));

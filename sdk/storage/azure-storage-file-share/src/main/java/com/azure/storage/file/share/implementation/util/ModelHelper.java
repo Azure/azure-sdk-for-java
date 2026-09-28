@@ -10,15 +10,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.FileSmbProperties;
-import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.MessageConstants;
 import com.azure.storage.file.share.implementation.accesshelpers.FilePosixPropertiesHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.FileSmbPropertiesHelper;
@@ -744,49 +741,6 @@ public class ModelHelper {
         String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
         return new ShareStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
             internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
-    }
-
-    /**
-     * Builds a resource-URL-scoped {@link AzureFileStorageImpl} that reuses the account client's HTTP pipeline,
-     * serializer, and storage-wide client parameters. Re-creating the operation groups is cheap; the pipeline carries
-     * the connection/auth state that is worth sharing.
-     *
-     * @param accountClient The account-scoped client to reuse the pipeline and parameters from.
-     * @param resourceUrl The resource URL the returned client should target.
-     * @return A new {@link AzureFileStorageImpl} targeting {@code resourceUrl}.
-     */
-    public static AzureFileStorageImpl getFileStorageForUrl(AzureFileStorageImpl accountClient, String resourceUrl) {
-        return new AzureFileStorageImpl(accountClient.getHttpPipeline(), accountClient.getSerializerAdapter(),
-            encodeResourceUrlPath(resourceUrl), accountClient.getFileRequestIntent(),
-            accountClient.isAllowTrailingDot(), accountClient.isAllowSourceTrailingDot(),
-            accountClient.getServiceVersion());
-    }
-
-    /**
-     * Percent-encodes each path segment of a resource URL, preserving the {@code /} separators. The share/directory/file
-     * names are concatenated into the URL raw; unlike the old RestProxy {@code @PathParam} layer they are not encoded on
-     * request, so names with reserved or non-ASCII characters would otherwise produce an illegal URI.
-     *
-     * @param resourceUrl The raw resource URL (account endpoint + unencoded name segments).
-     * @return The resource URL with its path segments percent-encoded.
-     */
-    private static String encodeResourceUrlPath(String resourceUrl) {
-        UrlBuilder builder = UrlBuilder.parse(resourceUrl);
-        String path = builder.getPath();
-        if (path == null || path.isEmpty()) {
-            return resourceUrl;
-        }
-        boolean leadingSlash = path.startsWith("/");
-        String[] segments = (leadingSlash ? path.substring(1) : path).split("/", -1);
-        StringBuilder encoded = new StringBuilder(leadingSlash ? "/" : "");
-        for (int i = 0; i < segments.length; i++) {
-            if (i > 0) {
-                encoded.append('/');
-            }
-            encoded.append(Utility.urlEncode(segments[i]));
-        }
-        builder.setPath(encoded.toString());
-        return builder.toString();
     }
 
     /**
