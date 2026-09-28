@@ -1,7 +1,7 @@
 # Key Vault issue investigation context
 
 This is advisory service context for agentic issue investigation, not a rule for automatically closing issues.
-Read [the Java troubleshooting guide](TROUBLESHOOTING.md), the affected package's README, CHANGELOG, and troubleshooting guide alongside it.
+Read [the Java troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/TROUBLESHOOTING.md), the affected package's README, CHANGELOG, and troubleshooting guide alongside it.
 Match the documented operation and conditions to the report; an HTTP status alone does not establish service ownership.
 Do not recommend weakening access controls, purging data, or changing key state merely to make an error disappear.
 
@@ -65,7 +65,7 @@ Authorization can fail when the credential selected a different identity or tena
 Consult Java credential-chain and multi-tenant guidance and ask only for sanitized diagnostics.
 
 - https://learn.microsoft.com/azure/developer/java/sdk/authentication/overview
-- [Azure Identity troubleshooting](../identity/azure-identity/TROUBLESHOOTING.md)
+- [Azure Identity troubleshooting](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md)
 
 ### Purge protection prevents immediate permanent deletion
 
