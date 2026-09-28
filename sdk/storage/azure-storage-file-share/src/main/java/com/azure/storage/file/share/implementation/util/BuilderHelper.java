@@ -117,6 +117,11 @@ public final class BuilderHelper {
         }
         policies.add(new MetadataValidationPolicy());
 
+        // The TypeSpec protocol layer carries the resource in the @HostParam URL with query-only routes, so azure-core
+        // inserts a '/' before the query that the service rejects for some ops (e.g. directory rename). Normalize it
+        // before the credential policies so the signed string-to-sign matches the wire.
+        policies.add(new ResourceUrlNormalizationPolicy());
+
         if (storageSharedKeyCredential != null) {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         }

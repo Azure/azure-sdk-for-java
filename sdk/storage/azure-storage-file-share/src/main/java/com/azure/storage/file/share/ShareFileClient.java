@@ -2568,12 +2568,14 @@ public class ShareFileClient {
             ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
                 = sendRequest(operation, timeout, ShareStorageException.class);
 
-            List<ShareFileRange> shareFileRangeList = response.getValue()
-                .getRanges()
-                .stream()
-                .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
-                .map(ShareFileRange::new)
-                .collect(Collectors.toList());
+            List<ShareFileRange> shareFileRangeList = response.getValue().getRanges() == null
+                ? Collections.emptyList()
+                : response.getValue()
+                    .getRanges()
+                    .stream()
+                    .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
+                    .map(ShareFileRange::new)
+                    .collect(Collectors.toList());
 
             Supplier<PagedResponse<ShareFileRange>> finalResponse
                 = () -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),

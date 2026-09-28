@@ -2946,12 +2946,14 @@ public class ShareFileAsyncClient {
                 this.listRangesWithResponse(range, requestConditions, null, null, null, null, Context.NONE), timeout)
             .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
-                response.getValue()
-                    .getRanges()
-                    .stream()
-                    .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
-                    .map(ShareFileRange::new)
-                    .collect(Collectors.toList()),
+                response.getValue().getRanges() == null
+                    ? Collections.<ShareFileRange>emptyList()
+                    : response.getValue()
+                        .getRanges()
+                        .stream()
+                        .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
+                        .map(ShareFileRange::new)
+                        .collect(Collectors.toList()),
                 null, response.getHeaders()));
 
         return new PagedFlux<>(() -> retriever.apply(null), retriever);

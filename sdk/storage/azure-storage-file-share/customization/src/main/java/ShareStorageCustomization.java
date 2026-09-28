@@ -86,6 +86,8 @@ public class ShareStorageCustomization extends Customization {
 
         retypeServiceVersionToShareServiceVersion(customization, logger);
 
+        retypeUnexpectedResponseExceptions(customization, logger);
+
         relocateDownloadHeadersToModels(customization, logger);
 
         restoreFluentModels(customization, logger);
@@ -273,6 +275,41 @@ public class ShareStorageCustomization extends Customization {
                 editor.replaceFile(path, content.replace("FileServiceVersion", "ShareServiceVersion"));
                 logger.info("Retyped FileServiceVersion -> ShareServiceVersion in {}", path);
             }
+        }
+    }
+
+    /**
+     * Restores the historical {@code default-http-exception-type: ShareStorageExceptionInternal} behavior that the
+     * TypeSpec emitter dropped. The emitter annotates every operation with generic azure-core exceptions
+     * (ClientAuthentication/ResourceNotFound/ResourceModified/HttpResponseException); their error bodies deserialize
+     * through Jackson's {@code XmlMapper}, which is absent (the package ships {@code azure-xml}, not
+     * {@code jackson-dataformat-xml}), so any service error throws a {@link LinkageError} instead of a
+     * {@code ShareStorageException}. Re-typing every {@code @UnexpectedResponseExceptionType} to the
+     * {@code XmlSerializable} {@code ShareStorageExceptionInternal} makes the error deserialize via azure-xml and lets
+     * {@link #updateImplToMapInternalException} map it to the public {@code ShareStorageException}. Imports are left in
+     * place; the generic exception names remain referenced by the methods' {@code @throws} javadoc.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void retypeUnexpectedResponseExceptions(LibraryCustomization customization, Logger logger) {
+        for (String implName : Arrays.asList("DirectoriesImpl", "FilesImpl", "ServicesImpl", "SharesImpl")) {
+            customization.getClass("com.azure.storage.file.share.implementation", implName).customizeAst(ast -> {
+                int[] retyped = { 0 };
+                ast.findAll(MethodDeclaration.class).forEach(method -> {
+                    boolean had = method.getAnnotations().stream()
+                        .anyMatch(a -> a.getNameAsString().equals("UnexpectedResponseExceptionType"));
+                    if (had) {
+                        method.getAnnotations()
+                            .removeIf(a -> a.getNameAsString().equals("UnexpectedResponseExceptionType"));
+                        method.addSingleMemberAnnotation("UnexpectedResponseExceptionType",
+                            "ShareStorageExceptionInternal.class");
+                        retyped[0]++;
+                    }
+                });
+                logger.info("Retyped {} @UnexpectedResponseExceptionType -> ShareStorageExceptionInternal in {}",
+                    retyped[0], implName);
+            });
         }
     }
 

@@ -10,9 +10,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.FileSmbProperties;
@@ -323,9 +325,12 @@ public class ModelHelper {
     public static List<HandleItem>
         transformHandleItems(List<com.azure.storage.file.share.implementation.models.HandleItem> handleItems) {
         List<HandleItem> result = new ArrayList<>();
-        handleItems.forEach(item -> {
-            result.add(transformHandleItem(item));
-        });
+        // The generated azure-xml model leaves the handle list null when the response has no Handle entries.
+        if (handleItems != null) {
+            handleItems.forEach(item -> {
+                result.add(transformHandleItem(item));
+            });
+        }
         return result;
     }
 
@@ -616,23 +621,28 @@ public class ModelHelper {
         convertResponseAndGetNumOfResults(Response<ListFilesAndDirectoriesSegmentResponse> res) {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
         if (res.getValue().getSegment() != null) {
+            // The generated azure-xml model leaves these lists null when the response has no Directory/File entries.
+            if (res.getValue().getSegment().getDirectoryItems() != null) {
+                res.getValue()
+                    .getSegment()
+                    .getDirectoryItems()
+                    .forEach(directoryItem -> shareFileItems
+                        .add(new ShareFileItem(ModelHelper.decodeName(directoryItem.getName()), true,
+                            directoryItem.getFileId(), ModelHelper.transformFileProperty(directoryItem.getProperties()),
+                            NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
+                            directoryItem.getPermissionKey(), null)));
+            }
 
-            res.getValue()
-                .getSegment()
-                .getDirectoryItems()
-                .forEach(directoryItem -> shareFileItems
-                    .add(new ShareFileItem(ModelHelper.decodeName(directoryItem.getName()), true,
-                        directoryItem.getFileId(), ModelHelper.transformFileProperty(directoryItem.getProperties()),
-                        NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
-                        directoryItem.getPermissionKey(), null)));
-
-            res.getValue()
-                .getSegment()
-                .getFileItems()
-                .forEach(fileItem -> shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(fileItem.getName()),
-                    false, fileItem.getFileId(), ModelHelper.transformFileProperty(fileItem.getProperties()),
-                    NtfsFileAttributes.toAttributes(fileItem.getAttributes()), fileItem.getPermissionKey(),
-                    fileItem.getProperties().getContentLength())));
+            if (res.getValue().getSegment().getFileItems() != null) {
+                res.getValue()
+                    .getSegment()
+                    .getFileItems()
+                    .forEach(
+                        fileItem -> shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(fileItem.getName()),
+                            false, fileItem.getFileId(), ModelHelper.transformFileProperty(fileItem.getProperties()),
+                            NtfsFileAttributes.toAttributes(fileItem.getAttributes()), fileItem.getPermissionKey(),
+                            fileItem.getProperties().getContentLength())));
+            }
         }
 
         return new ArrayList<>(shareFileItems);
@@ -747,8 +757,36 @@ public class ModelHelper {
      */
     public static AzureFileStorageImpl getFileStorageForUrl(AzureFileStorageImpl accountClient, String resourceUrl) {
         return new AzureFileStorageImpl(accountClient.getHttpPipeline(), accountClient.getSerializerAdapter(),
-            resourceUrl, accountClient.getFileRequestIntent(), accountClient.isAllowTrailingDot(),
-            accountClient.isAllowSourceTrailingDot(), accountClient.getServiceVersion());
+            encodeResourceUrlPath(resourceUrl), accountClient.getFileRequestIntent(),
+            accountClient.isAllowTrailingDot(), accountClient.isAllowSourceTrailingDot(),
+            accountClient.getServiceVersion());
+    }
+
+    /**
+     * Percent-encodes each path segment of a resource URL, preserving the {@code /} separators. The share/directory/file
+     * names are concatenated into the URL raw; unlike the old RestProxy {@code @PathParam} layer they are not encoded on
+     * request, so names with reserved or non-ASCII characters would otherwise produce an illegal URI.
+     *
+     * @param resourceUrl The raw resource URL (account endpoint + unencoded name segments).
+     * @return The resource URL with its path segments percent-encoded.
+     */
+    private static String encodeResourceUrlPath(String resourceUrl) {
+        UrlBuilder builder = UrlBuilder.parse(resourceUrl);
+        String path = builder.getPath();
+        if (path == null || path.isEmpty()) {
+            return resourceUrl;
+        }
+        boolean leadingSlash = path.startsWith("/");
+        String[] segments = (leadingSlash ? path.substring(1) : path).split("/", -1);
+        StringBuilder encoded = new StringBuilder(leadingSlash ? "/" : "");
+        for (int i = 0; i < segments.length; i++) {
+            if (i > 0) {
+                encoded.append('/');
+            }
+            encoded.append(Utility.urlEncode(segments[i]));
+        }
+        builder.setPath(encoded.toString());
+        return builder.toString();
     }
 
     /**

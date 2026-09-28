@@ -79,10 +79,7 @@ public final class ServicesImpl {
 
         @Put("/?restype=service&comp=properties")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> setProperties(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Content-Type") String contentType,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -91,10 +88,7 @@ public final class ServicesImpl {
 
         @Put("/?restype=service&comp=properties")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> setPropertiesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Content-Type") String contentType,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -103,10 +97,7 @@ public final class ServicesImpl {
 
         @Get("/?restype=service&comp=properties")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<BinaryData>> getProperties(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -114,10 +105,7 @@ public final class ServicesImpl {
 
         @Get("/?restype=service&comp=properties")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<BinaryData> getPropertiesSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -125,10 +113,7 @@ public final class ServicesImpl {
 
         @Get("/?comp=list")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<BinaryData>> listSharesSegment(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -136,10 +121,7 @@ public final class ServicesImpl {
 
         @Get("/?comp=list")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<BinaryData> listSharesSegmentSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
@@ -147,10 +129,7 @@ public final class ServicesImpl {
 
         @Post("/?restype=service&comp=userdelegationkey")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<BinaryData>> getUserDelegationKey(@HostParam("url") String url,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @BodyParam("application/xml") BinaryData keyInfo,
@@ -158,10 +137,7 @@ public final class ServicesImpl {
 
         @Post("/?restype=service&comp=userdelegationkey")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<BinaryData> getUserDelegationKeySync(@HostParam("url") String url,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Accept") String accept, @BodyParam("application/xml") BinaryData keyInfo,

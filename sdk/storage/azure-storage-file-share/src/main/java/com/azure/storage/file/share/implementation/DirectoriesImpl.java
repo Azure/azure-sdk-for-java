@@ -79,10 +79,7 @@ public final class DirectoriesImpl {
 
         @Put("?restype=directory")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> create(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, RequestOptions requestOptions,
@@ -90,10 +87,7 @@ public final class DirectoriesImpl {
 
         @Put("?restype=directory")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> createSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, RequestOptions requestOptions,
@@ -101,10 +95,7 @@ public final class DirectoriesImpl {
 
         @Get("?restype=directory")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> getProperties(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, RequestOptions requestOptions,
@@ -112,10 +103,7 @@ public final class DirectoriesImpl {
 
         @Get("?restype=directory")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> getPropertiesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, RequestOptions requestOptions,
@@ -123,10 +111,7 @@ public final class DirectoriesImpl {
 
         @Delete("?restype=directory")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> delete(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, RequestOptions requestOptions,
@@ -134,10 +119,7 @@ public final class DirectoriesImpl {
 
         @Delete("?restype=directory")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> deleteSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, RequestOptions requestOptions,
@@ -145,10 +127,7 @@ public final class DirectoriesImpl {
 
         @Put("?restype=directory&comp=properties")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> setProperties(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -156,10 +135,7 @@ public final class DirectoriesImpl {
 
         @Put("?restype=directory&comp=properties")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> setPropertiesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -167,10 +143,7 @@ public final class DirectoriesImpl {
 
         @Put("?restype=directory&comp=metadata")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> setMetadata(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -178,10 +151,7 @@ public final class DirectoriesImpl {
 
         @Put("?restype=directory&comp=metadata")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> setMetadataSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -189,10 +159,7 @@ public final class DirectoriesImpl {
 
         @Get("?restype=directory&comp=list")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<BinaryData>> listFilesAndDirectoriesSegment(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -201,10 +168,7 @@ public final class DirectoriesImpl {
 
         @Get("?restype=directory&comp=list")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<BinaryData> listFilesAndDirectoriesSegmentSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -213,10 +177,7 @@ public final class DirectoriesImpl {
 
         @Get("?comp=listhandles")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<BinaryData>> listHandles(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -225,10 +186,7 @@ public final class DirectoriesImpl {
 
         @Get("?comp=listhandles")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<BinaryData> listHandlesSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -237,10 +195,7 @@ public final class DirectoriesImpl {
 
         @Put("?comp=forceclosehandles")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> forceCloseHandles(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-handle-id") String handleId,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -249,10 +204,7 @@ public final class DirectoriesImpl {
 
         @Put("?comp=forceclosehandles")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> forceCloseHandlesSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-handle-id") String handleId,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -261,10 +213,7 @@ public final class DirectoriesImpl {
 
         @Put("?restype=directory&comp=rename")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> rename(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-rename-source") String renameSource,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -274,10 +223,7 @@ public final class DirectoriesImpl {
 
         @Put("?restype=directory&comp=rename")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> renameSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("x-ms-file-rename-source") String renameSource,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
