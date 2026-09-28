@@ -71,8 +71,144 @@ tools:
   web-fetch:
   github:
     toolsets: [issues, repos, labels]
+    # In this pinned native runtime, allowed pre-approves calls; the MCP server enforces read-only access.
     allowed: [issue_read, get_label, search_issues, get_file_contents]
     min-integrity: none
+
+mcp-scripts:
+  java_release_metadata:
+    description: "Read compact published GA and preview metadata for one exact Maven coordinate from the Azure SDK Java release catalog."
+    inputs:
+      groupId:
+        type: string
+        required: true
+        description: "Maven groupId identified from the issue and package POM."
+      artifactId:
+        type: string
+        required: true
+        description: "Maven artifactId identified from the issue and package POM."
+    script: |
+      if (typeof groupId !== "string" || !groupId.trim()
+          || typeof artifactId !== "string" || !artifactId.trim()) {
+        throw new Error("Both Maven coordinate components must be nonempty strings.");
+      }
+
+      // Inputs select a row only; they never select a URL, request header, or file path.
+      const source = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv";
+      const maxBytes = 2 * 1024 * 1024;
+      const response = await fetch(source, {
+        method: "GET",
+        redirect: "error",
+        credentials: "omit",
+        signal: AbortSignal.timeout(15000)
+      });
+      if (!response.ok) {
+        await response.body?.cancel();
+        throw new Error(`Java release metadata request failed: HTTP ${response.status}.`);
+      }
+      if (!response.body) {
+        throw new Error("Java release metadata response has no body.");
+      }
+      if (Number(response.headers.get("content-length")) > maxBytes) {
+        await response.body.cancel();
+        throw new Error("Java release metadata exceeds the 2 MiB response limit.");
+      }
+
+      const reader = response.body.getReader();
+      const chunks = [];
+      let size = 0;
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          size += value.byteLength;
+          if (size > maxBytes) {
+            await reader.cancel();
+            throw new Error("Java release metadata exceeds the 2 MiB response limit.");
+          }
+          chunks.push(value);
+        }
+      } finally {
+        reader.releaseLock();
+      }
+      const bytes = new Uint8Array(size);
+      let offset = 0;
+      for (const chunk of chunks) {
+        bytes.set(chunk, offset);
+        offset += chunk.byteLength;
+      }
+      const text = new TextDecoder("utf-8", { fatal: true }).decode(bytes).replace(/^\uFEFF/, "");
+
+      const rows = [];
+      let row = [];
+      let field = "";
+      let quoted = false;
+      let closedQuote = false;
+      const endField = () => {
+        row.push(field);
+        field = "";
+        closedQuote = false;
+      };
+      const endRow = () => {
+        endField();
+        if (row.some(value => value !== "")) rows.push(row);
+        row = [];
+      };
+      for (let i = 0; i < text.length; i++) {
+        const character = text[i];
+        if (quoted) {
+          if (character === '"') {
+            if (text[i + 1] === '"') {
+              field += '"';
+              i++;
+            } else {
+              quoted = false;
+              closedQuote = true;
+            }
+          } else {
+            field += character;
+          }
+        } else if (character === '"') {
+          if (field || closedQuote) throw new Error("Invalid quoted CSV field in Java release metadata.");
+          quoted = true;
+        } else if (character === ",") {
+          endField();
+        } else if (character === "\n" || character === "\r") {
+          endRow();
+          if (character === "\r" && text[i + 1] === "\n") i++;
+        } else {
+          if (closedQuote) throw new Error("Unexpected text after a quoted CSV field.");
+          field += character;
+        }
+      }
+      if (quoted) throw new Error("Unterminated quoted CSV field in Java release metadata.");
+      if (row.length || field || closedQuote) endRow();
+
+      const header = rows.shift() || [];
+      const columns = ["Package", "GroupId", "VersionGA", "VersionPreview"];
+      if (columns.some(column => header.filter(value => value === column).length !== 1)) {
+        throw new Error("Java release metadata is missing unique coordinate/version columns.");
+      }
+      const [packageIndex, groupIndex, stableIndex, previewIndex] = columns.map(column => header.indexOf(column));
+      const matches = rows.filter(values =>
+        values[packageIndex] === artifactId.trim() && values[groupIndex] === groupId.trim());
+      if (!matches.length) return { status: "not_found", source };
+      if (matches.some(values => values.length <= Math.max(stableIndex, previewIndex))) {
+        throw new Error("The matching Java release metadata row is incomplete.");
+      }
+      const version = value => !value || value.toUpperCase() === "NA" ? null : value;
+      const versions = matches.map(values => [version(values[stableIndex]), version(values[previewIndex])]);
+      if (new Set(versions.map(value => JSON.stringify(value))).size !== 1) {
+        throw new Error("Conflicting published versions for this Maven coordinate.");
+      }
+      return {
+        status: "found",
+        groupId: matches[0][groupIndex],
+        artifactId: matches[0][packageIndex],
+        stableVersion: versions[0][0],
+        previewVersion: versions[0][1],
+        source
+      };
 
 timeout-minutes: 10
 ---
@@ -145,11 +281,17 @@ Use bounded `search_issues` queries scoped to `repo:${{ github.repository }} is:
 
 Version currency is a mandatory investigation decision, not a declaration that older supported releases have reached end-of-life.
 
-For a known coordinate, determine the latest stable published version using:
+For an unambiguous coordinate, call `java_release_metadata` first. It returns only the matching coordinate's published `stableVersion` and `previewVersion` from the Azure SDK Java release catalog, with its source URL. Use `stableVersion` as the GA baseline; use `previewVersion` only when no stable release is recorded.
+
+Do not use GitHub code search to query release metadata or a CHANGELOG. If any tool spills a successful result to a local file, inspect the relevant part with the available `view` or `rg` tools before declaring that evidence unavailable. Do not fetch the full release CSV through GitHub tools when the compact lookup is available.
+
+Corroborating sources, when their read tools are available:
 
 - Maven Central metadata at `https://repo.maven.apache.org/maven2/<groupId-as-path>/<artifactId>/maven-metadata.xml`.
 - The matching `GroupId` and `Package` row in `https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv`, specifically `VersionGA`.
 - Published release context and package CHANGELOG entries as corroborating evidence.
+
+If `web_fetch` is not exposed in the runtime, do not treat that as a failed Maven request. Distinguish a missing tool, an actual fetch error, an absent catalog row, conflicting evidence, and an unread oversized result. Never claim metadata could not be verified when a successful result already establishes the matching published version.
 
 Maven `<latest>` and `<release>` can name a preview. Exclude prereleases such as alpha, beta, milestone, RC, preview, and SNAPSHOT when establishing the stable baseline; compare numeric version components rather than sorting version strings lexicographically.
 A repository POM version or an Unreleased CHANGELOG heading is not proof of publication.
