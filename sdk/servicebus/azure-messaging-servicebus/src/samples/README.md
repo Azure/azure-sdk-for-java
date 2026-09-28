@@ -61,8 +61,7 @@ connection string value can be obtained by:
 To run the topic filter-count sample, set `AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING` to a namespace connection
 string with Manage permission and `AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME` to an existing topic, then run
 `TopicFilterCountsSample.main` from your IDE. The sample reads runtime properties; it does not create or change rules.
-Counts require service API version `2024-05` and a region where the feature has been deployed. A zero count can also
-mean that the service did not supply the count, rather than that no filters exist.
+The sample uses service API version `2024-05` to read both filter counts.
 
 ### Generate Shared Access Signature
 - [Generate SAS and receive message][ReceiveMessageAsyncUsingSasSample]
@@ -110,5 +109,4 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [TopicFilterCountsSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/TopicFilterCountsSample.java
 [ReceiveMessageAsyncUsingSasSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageUsingSasSample.java
 [AdvancedConfigurationSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/AdvancedConfigurationSample.java
-
 

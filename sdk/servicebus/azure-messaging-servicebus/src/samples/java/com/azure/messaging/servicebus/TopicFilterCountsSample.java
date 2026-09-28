@@ -12,9 +12,8 @@ import java.io.PrintStream;
 /**
  * Reads the SQL and correlation filter counts across all subscriptions of an existing topic.
  *
- * <p>Requires a namespace connection string with Manage permission and the name of an existing topic. The
- * {@code 2024-05} service API supplies these counts only in regions where the feature has been deployed; an
- * unavailable count is reported as zero.</p>
+ * <p>Requires a namespace connection string with Manage permission and the name of an existing topic. Uses
+ * service API version {@code 2024-05} to read both filter counts.</p>
  */
 public class TopicFilterCountsSample {
     /**
