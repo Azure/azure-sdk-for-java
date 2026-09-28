@@ -19,6 +19,8 @@
 
 ### Other Changes
 
+- Upgraded Jackson from `2.18.9` to `2.18.11`.
+
 ## 1.59.1 (2026-08-27)
 
 ### Bugs Fixed
