@@ -48,7 +48,7 @@ To run the [processor drain-timeout sample][ServiceBusProcessorDrainTimeoutSampl
 queue. Run `ServiceBusProcessorDrainTimeoutSample.main`: it waits for a message handler to start, then calls `close()`
 from the main thread. The configured 10-second drain timeout lets the handler finish and settle its message before the
 receiver closes; if it expires, shutdown proceeds anyway. Without an available message, the sample closes after 30
-seconds. `stop()` pauses receiving but does not drain or dispose the processor.
+seconds. The sample uses `close()` to demonstrate the documented drain and resource-cleanup contract.
 
 ### Synchronous sending and receiving
 - [Send message batches synchronously][SendMessageBatchSyncSample]

@@ -54,7 +54,7 @@ public class ServiceBusProcessorDrainTimeoutSample {
                 System.out.println("No message arrived within 30 seconds.");
             }
         } finally {
-            // Unlike stop(), close() waits up to the configured drain timeout for active handlers.
+            // close() waits up to the configured drain timeout for active handlers.
             // If the timeout expires, shutdown proceeds even if a handler is still running.
             processor.close();
             System.out.println("Processor closed.");
