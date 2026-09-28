@@ -23,6 +23,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.ShareAsyncClientInternal;
+import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -113,8 +114,14 @@ public class ShareAsyncClient {
         this.azureFileStorageClient = client;
         this.serviceVersion = serviceVersion;
         this.sasToken = sasToken;
-        this.shareClientInternal = new ShareAsyncClientInternal(
-            ModelHelper.getFileStorageForUrl(client, client.getUrl() + "/" + shareName).getShares());
+        this.shareClientInternal = new ShareAsyncClientInternal(azureFileStorageClient.getShares());
+    }
+
+    /**
+     * Builds a {@link RequestOptions} that scopes an account-targeted protocol call to this share's resource path.
+     */
+    private RequestOptions scopedRequestOptions(Context context) {
+        return RequestOptionsHelper.shareRequestOptions(context, azureFileStorageClient.getUrl(), shareName);
     }
 
     /**
@@ -377,7 +384,7 @@ public class ShareAsyncClient {
                 enabledProtocol, options.getRootSquash(), options.isSnapshotVirtualDirectoryAccessEnabled(),
                 options.isPaidBurstingEnabled(), options.getPaidBurstingMaxIops(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getProvisionedMaxIops(),
-                options.getProvisionedMaxBandwidthMibps(), null, new RequestOptions().setContext(context))
+                options.getProvisionedMaxBandwidthMibps(), null, scopedRequestOptions(context))
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -526,7 +533,7 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return shareClientInternal.createSnapshotWithResponse(null, metadata, new RequestOptions().setContext(context))
+        return shareClientInternal.createSnapshotWithResponse(null, metadata, scopedRequestOptions(context))
             .map(ModelHelper::mapCreateSnapshotResponse);
     }
 
@@ -629,7 +636,7 @@ public class ShareAsyncClient {
         return shareClientInternal
             .deleteWithResponse(snapshot, null,
                 ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
-                requestConditions.getLeaseId(), new RequestOptions().setContext(context))
+                requestConditions.getLeaseId(), scopedRequestOptions(context))
             .map(response -> (Response<Void>) response);
     }
 
@@ -810,8 +817,7 @@ public class ShareAsyncClient {
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         return shareClientInternal
-            .getPropertiesWithResponse(snapshot, null, requestConditions.getLeaseId(),
-                new RequestOptions().setContext(context))
+            .getPropertiesWithResponse(snapshot, null, requestConditions.getLeaseId(), scopedRequestOptions(context))
             .map(ModelHelper::mapGetPropertiesResponse);
     }
 
@@ -946,7 +952,7 @@ public class ShareAsyncClient {
             requestConditions.getLeaseId(), options.getRootSquash(), options.isSnapshotVirtualDirectoryAccessEnabled(),
             options.isPaidBurstingEnabled(), options.getPaidBurstingMaxIops(),
             options.getPaidBurstingMaxBandwidthMibps(), options.getProvisionedMaxIops(),
-            options.getProvisionedMaxBandwidthMibps(), null, new RequestOptions().setContext(context))
+            options.getProvisionedMaxBandwidthMibps(), null, scopedRequestOptions(context))
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1071,7 +1077,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         return shareClientInternal
             .setMetadataWithResponse(null, options.getMetadata(), requestConditions.getLeaseId(),
-                new RequestOptions().setContext(context))
+                scopedRequestOptions(context))
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1134,7 +1140,7 @@ public class ShareAsyncClient {
             : finalOptions.getRequestConditions();
         try {
             Function<String, Mono<PagedResponse<ShareSignedIdentifier>>> retriever = marker -> shareClientInternal
-                .getAccessPolicyWithResponse(null, requestConditions.getLeaseId(), new RequestOptions())
+                .getAccessPolicyWithResponse(null, requestConditions.getLeaseId(), scopedRequestOptions(null))
                 .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), response.getValue().getItems(), null, response.getDeserializedHeaders()));
 
@@ -1261,7 +1267,7 @@ public class ShareAsyncClient {
 
         return shareClientInternal
             .setAccessPolicyWithResponse(null, requestConditions.getLeaseId(),
-                new ShareSignedIdentifierWrapper(permissions), new RequestOptions().setContext(context))
+                new ShareSignedIdentifierWrapper(permissions), scopedRequestOptions(context))
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1352,7 +1358,7 @@ public class ShareAsyncClient {
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         return shareClientInternal
-            .getStatisticsWithResponse(null, requestConditions.getLeaseId(), new RequestOptions().setContext(context))
+            .getStatisticsWithResponse(null, requestConditions.getLeaseId(), scopedRequestOptions(context))
             .map(ModelHelper::mapGetStatisticsResponse);
     }
 
@@ -2141,8 +2147,7 @@ public class ShareAsyncClient {
         FilePermissionFormat filePermissionFormat, Context context) {
         // NOTE: Should we check for null or empty?
         SharePermission sharePermission = new SharePermission(filePermission).setFormat(filePermissionFormat);
-        return shareClientInternal
-            .createPermissionWithResponse(sharePermission, null, new RequestOptions().setContext(context))
+        return shareClientInternal.createPermissionWithResponse(sharePermission, null, scopedRequestOptions(context))
             .map(response -> new SimpleResponse<>(response, response.getValue().getFilePermissionKey()));
     }
 
@@ -2248,8 +2253,7 @@ public class ShareAsyncClient {
     Mono<Response<String>> getPermissionWithResponse(String filePermissionKey,
         FilePermissionFormat filePermissionFormat, Context context) {
         return shareClientInternal
-            .getPermissionWithResponse(filePermissionKey, null, filePermissionFormat,
-                new RequestOptions().setContext(context))
+            .getPermissionWithResponse(filePermissionKey, null, filePermissionFormat, scopedRequestOptions(context))
             .map(response -> new SimpleResponse<>(response, response.getValue().getPermission()));
     }
 

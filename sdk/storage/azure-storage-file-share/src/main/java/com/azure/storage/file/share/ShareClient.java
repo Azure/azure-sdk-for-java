@@ -24,6 +24,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.ShareClientInternal;
+import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
 import com.azure.storage.file.share.implementation.models.ShareStats;
@@ -127,9 +128,14 @@ public class ShareClient {
             shareUrlString.append("?sharesnapshot=").append(snapshot);
         }
         this.shareUrlString = shareUrlString.toString();
-        this.shareClientInternal = new ShareClientInternal(
-            ModelHelper.getFileStorageForUrl(azureFileStorageClient, azureFileStorageClient.getUrl() + "/" + shareName)
-                .getShares());
+        this.shareClientInternal = new ShareClientInternal(azureFileStorageClient.getShares());
+    }
+
+    /**
+     * Builds a {@link RequestOptions} that scopes an account-targeted protocol call to this share's resource path.
+     */
+    private RequestOptions scopedRequestOptions(Context context) {
+        return RequestOptionsHelper.shareRequestOptions(context, azureFileStorageClient.getUrl(), shareName);
     }
 
     /**
@@ -374,7 +380,7 @@ public class ShareClient {
             finalOptions.getRootSquash(), finalOptions.isSnapshotVirtualDirectoryAccessEnabled(),
             finalOptions.isPaidBurstingEnabled(), finalOptions.getPaidBurstingMaxIops(),
             finalOptions.getPaidBurstingMaxBandwidthMibps(), finalOptions.getProvisionedMaxIops(),
-            finalOptions.getProvisionedMaxBandwidthMibps(), null, new RequestOptions().setContext(finalContext));
+            finalOptions.getProvisionedMaxBandwidthMibps(), null, scopedRequestOptions(finalContext));
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -511,7 +517,7 @@ public class ShareClient {
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Callable<Response<SharesCreateSnapshotHeaders>> operation = () -> this.shareClientInternal
-            .createSnapshotWithResponse(null, metadata, new RequestOptions().setContext(finalContext));
+            .createSnapshotWithResponse(null, metadata, scopedRequestOptions(finalContext));
 
         return ModelHelper.mapCreateSnapshotResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -606,7 +612,7 @@ public class ShareClient {
 
         Callable<Response<Void>> operation = () -> this.shareClientInternal.deleteWithResponse(snapshot, null,
             ModelHelper.toDeleteSnapshotsOptionType(finalOptions.getDeleteSnapshotsOptions()),
-            requestConditions.getLeaseId(), new RequestOptions().setContext(finalContext));
+            requestConditions.getLeaseId(), scopedRequestOptions(finalContext));
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
@@ -774,7 +780,7 @@ public class ShareClient {
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         Callable<Response<SharesGetPropertiesHeaders>> operation
             = () -> this.shareClientInternal.getPropertiesWithResponse(snapshot, null, requestConditions.getLeaseId(),
-                new RequestOptions().setContext(finalContext));
+                scopedRequestOptions(finalContext));
 
         return ModelHelper.mapGetPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -904,7 +910,7 @@ public class ShareClient {
             options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
             options.getPaidBurstingMaxIops(), options.getPaidBurstingMaxBandwidthMibps(),
             options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null,
-            new RequestOptions().setContext(finalContext));
+            scopedRequestOptions(finalContext));
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1021,7 +1027,7 @@ public class ShareClient {
         Context finalContext = context == null ? Context.NONE : context;
 
         Callable<Response<Void>> operation = () -> this.shareClientInternal.setMetadataWithResponse(null,
-            options.getMetadata(), requestConditions.getLeaseId(), new RequestOptions().setContext(finalContext));
+            options.getMetadata(), requestConditions.getLeaseId(), scopedRequestOptions(finalContext));
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1086,7 +1092,7 @@ public class ShareClient {
             : finalOptions.getRequestConditions();
 
         ResponseBase<SharesGetAccessPolicyHeaders, ShareSignedIdentifierWrapper> responseBase = this.shareClientInternal
-            .getAccessPolicyWithResponse(null, requestConditions.getLeaseId(), new RequestOptions());
+            .getAccessPolicyWithResponse(null, requestConditions.getLeaseId(), scopedRequestOptions(null));
 
         Supplier<PagedResponse<ShareSignedIdentifier>> response
             = () -> new PagedResponseBase<>(responseBase.getRequest(), responseBase.getStatusCode(),
@@ -1218,7 +1224,7 @@ public class ShareClient {
 
         Callable<Response<Void>> operation
             = () -> this.shareClientInternal.setAccessPolicyWithResponse(null, requestConditions.getLeaseId(),
-                new ShareSignedIdentifierWrapper(permissions), new RequestOptions().setContext(finalContext));
+                new ShareSignedIdentifierWrapper(permissions), scopedRequestOptions(finalContext));
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1311,7 +1317,7 @@ public class ShareClient {
         Context finalContext = context == null ? Context.NONE : context;
 
         Callable<Response<ShareStats>> operation = () -> this.shareClientInternal.getStatisticsWithResponse(null,
-            requestConditions.getLeaseId(), new RequestOptions().setContext(finalContext));
+            requestConditions.getLeaseId(), scopedRequestOptions(finalContext));
 
         return ModelHelper.mapGetStatisticsResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1982,7 +1988,7 @@ public class ShareClient {
         Context finalContext = context == null ? Context.NONE : context;
         SharePermission sharePermission = new SharePermission(filePermission);
         Response<SharesCreatePermissionHeaders> response = this.shareClientInternal
-            .createPermissionWithResponse(sharePermission, null, new RequestOptions().setContext(finalContext));
+            .createPermissionWithResponse(sharePermission, null, scopedRequestOptions(finalContext));
 
         return new SimpleResponse<>(response, response.getValue().getFilePermissionKey());
     }
@@ -2015,7 +2021,7 @@ public class ShareClient {
             = new SharePermission(filePermission.getPermission()).setFormat(filePermission.getPermissionFormat());
 
         Callable<Response<SharesCreatePermissionHeaders>> operation = () -> this.shareClientInternal
-            .createPermissionWithResponse(sharePermission, null, new RequestOptions().setContext(finalContext));
+            .createPermissionWithResponse(sharePermission, null, scopedRequestOptions(finalContext));
 
         Response<SharesCreatePermissionHeaders> response = sendRequest(operation, timeout, ShareStorageException.class);
 
@@ -2087,7 +2093,7 @@ public class ShareClient {
     public Response<String> getPermissionWithResponse(String filePermissionKey, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         ResponseBase<SharesGetPermissionHeaders, SharePermission> response = this.shareClientInternal
-            .getPermissionWithResponse(filePermissionKey, null, null, new RequestOptions().setContext(finalContext));
+            .getPermissionWithResponse(filePermissionKey, null, null, scopedRequestOptions(finalContext));
 
         return new SimpleResponse<>(response, response.getValue().getPermission());
     }
@@ -2122,7 +2128,7 @@ public class ShareClient {
 
         Callable<ResponseBase<SharesGetPermissionHeaders, SharePermission>> operation
             = () -> this.shareClientInternal.getPermissionWithResponse(filePermissionKey, null, filePermissionFormat,
-                new RequestOptions().setContext(finalContext));
+                scopedRequestOptions(finalContext));
 
         ResponseBase<SharesGetPermissionHeaders, SharePermission> response
             = sendRequest(operation, timeout, ShareStorageException.class);

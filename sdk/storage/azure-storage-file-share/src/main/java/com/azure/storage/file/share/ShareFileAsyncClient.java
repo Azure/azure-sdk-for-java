@@ -38,6 +38,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.ShareFileAsyncClientInternal;
+import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.implementation.models.FilesStartCopyHeaders;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteFromUrlType;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
@@ -174,11 +175,14 @@ public class ShareFileAsyncClient {
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.sasToken = sasToken;
-        this.fileClientInternal = new ShareFileAsyncClientInternal(
-            ModelHelper
-                .getFileStorageForUrl(azureFileStorageClient,
-                    azureFileStorageClient.getUrl() + "/" + shareName + "/" + filePath)
-                .getFiles());
+        this.fileClientInternal = new ShareFileAsyncClientInternal(azureFileStorageClient.getFiles());
+    }
+
+    /**
+     * Builds a {@link RequestOptions} that scopes an account-targeted protocol call to this file's resource path.
+     */
+    private RequestOptions scopedRequestOptions(Context context) {
+        return RequestOptionsHelper.fileRequestOptions(context, azureFileStorageClient.getUrl(), shareName, filePath);
     }
 
     ShareFileAsyncClient(ShareFileAsyncClient fileAsyncClient) {
@@ -490,7 +494,7 @@ public class ShareFileAsyncClient {
         }
 
         return contentMD5Mono.flatMap(fluxMD5wrapper -> {
-            RequestOptions requestOptions = new RequestOptions().setContext(contextLocal);
+            RequestOptions requestOptions = scopedRequestOptions(contextLocal);
             Mono<BinaryData> bodyMono = contentLength == null
                 ? Mono.just(BinaryData.fromBytes(new byte[0]))
                 : BinaryData.fromFlux(fluxMD5wrapper.getData(), contentLength, false);
@@ -743,7 +747,7 @@ public class ShareFileAsyncClient {
                     options.isIgnoreReadOnly(), fileAttributes, fileCreationTime, fileLastWriteTime, fileChangedOnTime,
                     options.isArchiveAttributeSet(), finalRequestConditions.getLeaseId(),
                     fileposixProperties.getOwner(), fileposixProperties.getGroup(), fileposixProperties.getFileMode(),
-                    options.getModeCopyMode(), options.getOwnerCopyMode(), new RequestOptions().setContext(context)))
+                    options.getModeCopyMode(), options.getOwnerCopyMode(), scopedRequestOptions(context)))
                         .map(response -> {
                             final FilesStartCopyHeaders headers = response.getValue();
                             copyId.set(headers.getCopyId());
@@ -889,8 +893,7 @@ public class ShareFileAsyncClient {
         Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         return fileClientInternal
-            .abortCopyWithResponse(copyId, null, requestConditions.getLeaseId(),
-                new RequestOptions().setContext(context))
+            .abortCopyWithResponse(copyId, null, requestConditions.getLeaseId(), scopedRequestOptions(context))
             .map(response -> (Response<Void>) response);
     }
 
@@ -1266,7 +1269,7 @@ public class ShareFileAsyncClient {
         Boolean rangeGetContentMD5, ShareRequestConditions requestConditions, Context context) {
         String rangeString = range == null ? null : range.toHeaderValue();
         return fileClientInternal.downloadWithResponse(null, rangeString, rangeGetContentMD5,
-            requestConditions.getLeaseId(), null, new RequestOptions().setContext(context));
+            requestConditions.getLeaseId(), null, scopedRequestOptions(context));
     }
 
     /**
@@ -1360,7 +1363,7 @@ public class ShareFileAsyncClient {
     Mono<Response<Void>> deleteWithResponse(ShareRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         return fileClientInternal
-            .deleteWithResponse(null, requestConditions.getLeaseId(), new RequestOptions().setContext(context))
+            .deleteWithResponse(null, requestConditions.getLeaseId(), scopedRequestOptions(context))
             .map(response -> (Response<Void>) response);
     }
 
@@ -1541,8 +1544,7 @@ public class ShareFileAsyncClient {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         context = context == null ? Context.NONE : context;
         return fileClientInternal
-            .getPropertiesWithResponse(snapshot, null, requestConditions.getLeaseId(),
-                new RequestOptions().setContext(context))
+            .getPropertiesWithResponse(snapshot, null, requestConditions.getLeaseId(), scopedRequestOptions(context))
             .map(ModelHelper::getPropertiesResponse);
     }
 
@@ -1808,7 +1810,7 @@ public class ShareFileAsyncClient {
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
                 smbProperties.getFileChangeTimeString(), filePermissionFormat, requestConditions.getLeaseId(),
                 fileposixProperties.getOwner(), fileposixProperties.getGroup(), fileposixProperties.getFileMode(),
-                new RequestOptions().setContext(context))
+                scopedRequestOptions(context))
             .map(ModelHelper::setPropertiesResponse);
     }
 
@@ -1942,8 +1944,7 @@ public class ShareFileAsyncClient {
         context = context == null ? Context.NONE : context;
         try {
             return fileClientInternal
-                .setMetadataWithResponse(null, metadata, requestConditions.getLeaseId(),
-                    new RequestOptions().setContext(context))
+                .setMetadataWithResponse(null, metadata, requestConditions.getLeaseId(), scopedRequestOptions(context))
                 .map(ModelHelper::setMetadataResponse);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -2328,7 +2329,7 @@ public class ShareFileAsyncClient {
                 (int) ModelHelper.FILE_DEFAULT_BLOCK_SIZE, true)
             : options.getDataFlux();
 
-        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        RequestOptions requestOptions = scopedRequestOptions(context);
         return BinaryData.fromFlux(data, options.getLength(), false)
             .flatMap(body -> fileClientInternal.uploadRangeWithResponse(range.toString(),
                 ShareFileRangeWriteType.UPDATE, options.getLength(), null, null, requestConditions.getLeaseId(),
@@ -2500,7 +2501,7 @@ public class ShareFileAsyncClient {
             .uploadRangeFromUrlWithResponse(destinationRange.toString(), copySource,
                 ShareFileRangeWriteFromUrlType.UPDATE, 0, sourceRange.toString(), null, null, null, null,
                 modifiedRequestConditions.getLeaseId(), sourceAuth, options.getLastWrittenMode(),
-                new RequestOptions().setContext(context))
+                scopedRequestOptions(context))
             .map(ModelHelper::mapUploadRangeFromUrlResponse);
     }
 
@@ -2611,7 +2612,7 @@ public class ShareFileAsyncClient {
         context = context == null ? Context.NONE : context;
         return fileClientInternal
             .uploadRangeWithResponse(range.toString(), ShareFileRangeWriteType.CLEAR, 0L, null, null,
-                requestConditions.getLeaseId(), null, null, null, null, new RequestOptions().setContext(context))
+                requestConditions.getLeaseId(), null, null, null, null, scopedRequestOptions(context))
             .map(ModelHelper::transformUploadResponse);
     }
 
@@ -2986,7 +2987,7 @@ public class ShareFileAsyncClient {
 
         return this.fileClientInternal
             .getRangeListWithResponse(snapshot, previousSnapshot, null, rangeString,
-                finalRequestConditions.getLeaseId(), supportRename, new RequestOptions().setContext(context))
+                finalRequestConditions.getLeaseId(), supportRename, scopedRequestOptions(context))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -3046,7 +3047,7 @@ public class ShareFileAsyncClient {
     PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultsPerPage, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever = marker -> StorageImplUtils
             .applyOptionalTimeout(fileClientInternal.listHandlesWithResponse(marker, maxResultsPerPage, null, snapshot,
-                new RequestOptions().setContext(context)), timeout)
+                scopedRequestOptions(context)), timeout)
             .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), ModelHelper.transformHandleItems(response.getValue().getHandleList()),
                 response.getValue().getNextMarker(), response.getDeserializedHeaders()));
@@ -3116,7 +3117,7 @@ public class ShareFileAsyncClient {
     Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId, Context context) {
         context = context == null ? Context.NONE : context;
         return fileClientInternal
-            .forceCloseHandlesWithResponse(handleId, null, null, snapshot, new RequestOptions().setContext(context))
+            .forceCloseHandlesWithResponse(handleId, null, null, snapshot, scopedRequestOptions(context))
             .map(response -> new SimpleResponse<>(response,
                 new CloseHandlesInfo(response.getValue().getNumberOfHandlesClosed(),
                     response.getValue().getNumberOfHandlesFailedToClose())));
@@ -3157,7 +3158,7 @@ public class ShareFileAsyncClient {
     PagedFlux<CloseHandlesInfo> forceCloseAllHandlesWithOptionalTimeout(Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<CloseHandlesInfo>>> retriever = marker -> StorageImplUtils
             .applyOptionalTimeout(fileClientInternal.forceCloseHandlesWithResponse("*", null, marker, snapshot,
-                new RequestOptions().setContext(context)), timeout)
+                scopedRequestOptions(context)), timeout)
             .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
                 Collections.singletonList(new CloseHandlesInfo(response.getValue().getNumberOfHandlesClosed(),
@@ -3272,7 +3273,7 @@ public class ShareFileAsyncClient {
                 options.isIgnoreReadOnly(), sourceRequestConditions.getLeaseId(),
                 destinationRequestConditions.getLeaseId(), fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, options.getFilePermission(), options.getFilePermissionFormat(), filePermissionKey,
-                options.getMetadata(), options.getContentType(), new RequestOptions().setContext(context))
+                options.getMetadata(), options.getContentType(), destinationFileClient.scopedRequestOptions(context))
             .map(response -> new SimpleResponse<>(response, destinationFileClient));
     }
 
@@ -3497,8 +3498,7 @@ public class ShareFileAsyncClient {
         context = context == null ? Context.NONE : context;
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         return fileClientInternal
-            .createHardLinkWithResponse(targetFile, null, requestConditions.getLeaseId(),
-                new RequestOptions().setContext(context))
+            .createHardLinkWithResponse(targetFile, null, requestConditions.getLeaseId(), scopedRequestOptions(context))
             .map(ModelHelper::createHardLinkResponse);
     }
 
@@ -3555,7 +3555,7 @@ public class ShareFileAsyncClient {
         String fileLastWriteTimeString = FileSmbProperties.parseFileSMBDate(fileLastWriteTime);
         return fileClientInternal
             .createSymbolicLinkWithResponse(linkText, null, metadata, fileCreationTimeString, fileLastWriteTimeString,
-                requestConditions.getLeaseId(), owner, group, new RequestOptions().setContext(context))
+                requestConditions.getLeaseId(), owner, group, scopedRequestOptions(context))
             .map(ModelHelper::createSymbolicLinkResponse);
     }
 
@@ -3601,7 +3601,7 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileSymbolicLinkInfo>> getSymbolicLinkWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return fileClientInternal.getSymbolicLinkWithResponse(null, snapshot, new RequestOptions().setContext(context))
+        return fileClientInternal.getSymbolicLinkWithResponse(null, snapshot, scopedRequestOptions(context))
             .map(ModelHelper::getSymbolicLinkResponse);
     }
 

@@ -25,6 +25,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.ShareDirectoryAsyncClientInternal;
+import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
@@ -119,11 +120,15 @@ public class ShareDirectoryAsyncClient {
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.sasToken = sasToken;
-        this.directoryClientInternal = new ShareDirectoryAsyncClientInternal(
-            ModelHelper
-                .getFileStorageForUrl(azureFileStorageClient,
-                    azureFileStorageClient.getUrl() + "/" + shareName + "/" + directoryPath)
-                .getDirectories());
+        this.directoryClientInternal = new ShareDirectoryAsyncClientInternal(azureFileStorageClient.getDirectories());
+    }
+
+    /**
+     * Builds a {@link RequestOptions} that scopes an account-targeted protocol call to this directory's resource path.
+     */
+    private RequestOptions scopedRequestOptions(Context context) {
+        return RequestOptionsHelper.directoryRequestOptions(context, azureFileStorageClient.getUrl(), shareName,
+            directoryPath);
     }
 
     ShareDirectoryAsyncClient(ShareDirectoryAsyncClient directoryAsyncClient) {
@@ -373,7 +378,7 @@ public class ShareDirectoryAsyncClient {
                 smbProperties.getNtfsFileAttributesString(), smbProperties.getFileCreationTimeString(),
                 smbProperties.getFileLastWriteTimeString(), smbProperties.getFileChangeTimeString(),
                 filePermissionFormat, posixProperties.getOwner(), posixProperties.getGroup(),
-                posixProperties.getFileMode(), filePropertySemantics, new RequestOptions().setContext(context))
+                posixProperties.getFileMode(), filePropertySemantics, scopedRequestOptions(context))
             .map(ModelHelper::mapShareDirectoryInfo);
     }
 
@@ -529,7 +534,7 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return directoryClientInternal.deleteWithResponse(null, new RequestOptions().setContext(context))
+        return directoryClientInternal.deleteWithResponse(null, scopedRequestOptions(context))
             .map(response -> (Response<Void>) response);
     }
 
@@ -666,8 +671,7 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<ShareDirectoryProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return directoryClientInternal
-            .getPropertiesWithResponse(snapshot, null, new RequestOptions().setContext(context))
+        return directoryClientInternal.getPropertiesWithResponse(snapshot, null, scopedRequestOptions(context))
             .map(ModelHelper::mapShareDirectoryPropertiesResponse);
     }
 
@@ -787,7 +791,7 @@ public class ShareDirectoryAsyncClient {
                 smbProperties.getNtfsFileAttributesString(), smbProperties.getFileCreationTimeString(),
                 smbProperties.getFileLastWriteTimeString(), smbProperties.getFileChangeTimeString(),
                 filePermissionFormat, posixProperties.getOwner(), posixProperties.getGroup(),
-                posixProperties.getFileMode(), new RequestOptions().setContext(context))
+                posixProperties.getFileMode(), scopedRequestOptions(context))
             .map(ModelHelper::mapSetPropertiesResponse);
     }
 
@@ -876,7 +880,7 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<ShareDirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata,
         Context context) {
         context = context == null ? Context.NONE : context;
-        return directoryClientInternal.setMetadataWithResponse(null, metadata, new RequestOptions().setContext(context))
+        return directoryClientInternal.setMetadataWithResponse(null, metadata, scopedRequestOptions(context))
             .map(ModelHelper::setShareDirectoryMetadataResponse);
     }
 
@@ -1003,10 +1007,11 @@ public class ShareDirectoryAsyncClient {
 
         BiFunction<String, Integer, Mono<PagedResponse<ShareFileItem>>> retriever
             = (marker, pageSize) -> StorageImplUtils
-                .applyOptionalTimeout(directoryClientInternal.listFilesAndDirectoriesSegmentWithResponse(
-                    modifiedOptions.getPrefix(), snapshot, marker,
-                    pageSize == null ? modifiedOptions.getMaxResultsPerPage() : pageSize, finalIncludeTypes, null,
-                    modifiedOptions.includeExtendedInfo(), new RequestOptions().setContext(context)), timeout)
+                .applyOptionalTimeout(
+                    directoryClientInternal.listFilesAndDirectoriesSegmentWithResponse(modifiedOptions.getPrefix(),
+                        snapshot, marker, pageSize == null ? modifiedOptions.getMaxResultsPerPage() : pageSize,
+                        finalIncludeTypes, null, modifiedOptions.includeExtendedInfo(), scopedRequestOptions(context)),
+                    timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), ModelHelper.convertResponseAndGetNumOfResults(response),
                     response.getValue().getNextMarker(), null));
@@ -1050,7 +1055,7 @@ public class ShareDirectoryAsyncClient {
         Context context) {
         Function<String, Mono<PagedResponse<HandleItem>>> retriever = marker -> StorageImplUtils
             .applyOptionalTimeout(directoryClientInternal.listHandlesWithResponse(marker, maxResultPerPage, null,
-                snapshot, recursive, new RequestOptions().setContext(context)), timeout)
+                snapshot, recursive, scopedRequestOptions(context)), timeout)
             .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), ModelHelper.transformHandleItems(response.getValue().getHandleList()),
                 response.getValue().getNextMarker(), response.getDeserializedHeaders()));
@@ -1119,8 +1124,7 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId, Context context) {
         return directoryClientInternal
-            .forceCloseHandlesWithResponse(handleId, null, null, snapshot, false,
-                new RequestOptions().setContext(context))
+            .forceCloseHandlesWithResponse(handleId, null, null, snapshot, false, scopedRequestOptions(context))
             .map(response -> new SimpleResponse<>(response,
                 new CloseHandlesInfo(response.getValue().getNumberOfHandlesClosed(),
                     response.getValue().getNumberOfHandlesFailedToClose())));
@@ -1163,7 +1167,7 @@ public class ShareDirectoryAsyncClient {
     PagedFlux<CloseHandlesInfo> forceCloseAllHandlesWithTimeout(boolean recursive, Duration timeout, Context context) {
         Function<String, Mono<PagedResponse<CloseHandlesInfo>>> retriever = marker -> StorageImplUtils
             .applyOptionalTimeout(directoryClientInternal.forceCloseHandlesWithResponse("*", null, marker, snapshot,
-                recursive, new RequestOptions().setContext(context)), timeout)
+                recursive, scopedRequestOptions(context)), timeout)
             .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
                 Collections.singletonList(new CloseHandlesInfo(response.getValue().getNumberOfHandlesClosed(),
@@ -1274,7 +1278,7 @@ public class ShareDirectoryAsyncClient {
                 options.isIgnoreReadOnly(), sourceRequestConditions.getLeaseId(),
                 destinationRequestConditions.getLeaseId(), fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, options.getFilePermission(), options.getFilePermissionFormat(), filePermissionKey,
-                options.getMetadata(), new RequestOptions().setContext(context))
+                options.getMetadata(), destinationDirectoryClient.scopedRequestOptions(context))
             .map(response -> new SimpleResponse<>(response, destinationDirectoryClient));
     }
 

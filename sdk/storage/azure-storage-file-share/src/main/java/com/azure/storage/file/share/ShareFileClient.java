@@ -35,6 +35,7 @@ import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.ShareFileClientInternal;
+import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.implementation.models.FilesCreateHardLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLinkHeaders;
@@ -183,11 +184,14 @@ public class ShareFileClient {
             fileUrlstring.append("?sharesnapshot=").append(snapshot);
         }
         this.fileUrlString = fileUrlstring.toString();
-        this.fileClientInternal = new ShareFileClientInternal(
-            ModelHelper
-                .getFileStorageForUrl(azureFileStorageClient,
-                    azureFileStorageClient.getUrl() + "/" + shareName + "/" + filePath)
-                .getFiles());
+        this.fileClientInternal = new ShareFileClientInternal(azureFileStorageClient.getFiles());
+    }
+
+    /**
+     * Builds a {@link RequestOptions} that scopes an account-targeted protocol call to this file's resource path.
+     */
+    private RequestOptions scopedRequestOptions(Context context) {
+        return RequestOptionsHelper.fileRequestOptions(context, azureFileStorageClient.getUrl(), shareName, filePath);
     }
 
     /**
@@ -575,7 +579,7 @@ public class ShareFileClient {
                 options.getFilePermissionFormat(), requestConditions.getLeaseId(), fileposixProperties.getOwner(),
                 fileposixProperties.getGroup(), fileposixProperties.getFileMode(), fileposixProperties.getFileType(),
                 contentMD5, options.getFilePropertySemantics(), contentLength, null, null, options.getData(),
-                new RequestOptions().setContext(finalContext));
+                scopedRequestOptions(finalContext));
 
         return ModelHelper.createFileInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -795,7 +799,7 @@ public class ShareFileClient {
                     options.isIgnoreReadOnly(), fileAttributes, fileCreationTime, fileLastWriteTime, fileChangedOnTime,
                     options.isArchiveAttributeSet(), finalRequestConditions.getLeaseId(),
                     fileposixProperties.getOwner(), fileposixProperties.getGroup(), fileposixProperties.getFileMode(),
-                    options.getModeCopyMode(), options.getOwnerCopyMode(), new RequestOptions());
+                    options.getModeCopyMode(), options.getOwnerCopyMode(), scopedRequestOptions(null));
 
                 FilesStartCopyHeaders headers = response.getValue();
                 copyId.set(headers.getCopyId());
@@ -944,7 +948,7 @@ public class ShareFileClient {
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         Callable<Response<Void>> operation = () -> this.fileClientInternal.abortCopyWithResponse(copyId, null,
-            finalRequestConditions.getLeaseId(), new RequestOptions().setContext(finalContext));
+            finalRequestConditions.getLeaseId(), scopedRequestOptions(finalContext));
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
@@ -1317,7 +1321,7 @@ public class ShareFileClient {
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         Callable<Response<Void>> operation = () -> this.fileClientInternal.deleteWithResponse(null,
-            finalRequestConditions.getLeaseId(), new RequestOptions().setContext(finalContext));
+            finalRequestConditions.getLeaseId(), scopedRequestOptions(finalContext));
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
@@ -1484,7 +1488,7 @@ public class ShareFileClient {
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         Callable<Response<FilesGetPropertiesHeaders>> operation
             = () -> this.fileClientInternal.getPropertiesWithResponse(snapshot, null,
-                finalRequestConditions.getLeaseId(), new RequestOptions().setContext(finalContext));
+                finalRequestConditions.getLeaseId(), scopedRequestOptions(finalContext));
 
         return ModelHelper.getPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1746,7 +1750,7 @@ public class ShareFileClient {
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
                 smbProperties.getFileChangeTimeString(), filePermission.getPermissionFormat(),
                 finalRequestConditions.getLeaseId(), fileposixProperties.getOwner(), fileposixProperties.getGroup(),
-                fileposixProperties.getFileMode(), new RequestOptions().setContext(finalContext));
+                fileposixProperties.getFileMode(), scopedRequestOptions(finalContext));
 
         return ModelHelper.setPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1882,7 +1886,7 @@ public class ShareFileClient {
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         Callable<Response<FilesSetMetadataHeaders>> operation
             = () -> this.fileClientInternal.setMetadataWithResponse(null, metadata, finalRequestConditions.getLeaseId(),
-                new RequestOptions().setContext(finalContext));
+                scopedRequestOptions(finalContext));
 
         return ModelHelper.setMetadataResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -2301,7 +2305,7 @@ public class ShareFileClient {
             = () -> this.fileClientInternal.uploadRangeFromUrlWithResponse(destinationRange.toString(), copySource,
                 ShareFileRangeWriteFromUrlType.UPDATE, 0, sourceRange.toString(), null, null, null, null,
                 finalRequestConditions.getLeaseId(), sourceAuth, options.getLastWrittenMode(),
-                new RequestOptions().setContext(finalContext));
+                scopedRequestOptions(finalContext));
 
         return ModelHelper.mapUploadRangeFromUrlResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -2406,7 +2410,7 @@ public class ShareFileClient {
         Callable<Response<FilesUploadRangeHeaders>> operation
             = () -> this.fileClientInternal.uploadRangeWithResponse(range.toString(), ShareFileRangeWriteType.CLEAR, 0L,
                 null, null, finalRequestConditions.getLeaseId(), null, null, null, null,
-                new RequestOptions().setContext(finalContext));
+                scopedRequestOptions(finalContext));
 
         return ModelHelper.transformUploadResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -2563,7 +2567,7 @@ public class ShareFileClient {
         try {
             Callable<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation
                 = () -> this.fileClientInternal.getRangeListWithResponse(snapshot, null, null, rangeString,
-                    finalRequestConditions.getLeaseId(), null, new RequestOptions().setContext(finalContext));
+                    finalRequestConditions.getLeaseId(), null, scopedRequestOptions(finalContext));
 
             ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response
                 = sendRequest(operation, timeout, ShareStorageException.class);
@@ -2753,7 +2757,7 @@ public class ShareFileClient {
         Callable<Response<ShareFileRangeList>> operation
             = () -> this.fileClientInternal.getRangeListWithResponse(snapshot, options.getPreviousSnapshot(), null,
                 rangeString, requestConditions.getLeaseId(), options.isRenameIncluded(),
-                new RequestOptions().setContext(finalContext));
+                scopedRequestOptions(finalContext));
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
@@ -2814,7 +2818,7 @@ public class ShareFileClient {
         try {
             Callable<ResponseBase<FilesListHandlesHeaders, ListHandlesResponse>> operation
                 = () -> this.fileClientInternal.listHandlesWithResponse(null, maxResultsPerPage, null, snapshot,
-                    new RequestOptions().setContext(finalContext));
+                    scopedRequestOptions(finalContext));
 
             ResponseBase<FilesListHandlesHeaders, ListHandlesResponse> response
                 = sendRequest(operation, timeout, ShareStorageException.class);
@@ -2888,9 +2892,8 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloseHandlesInfo> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<Response<FilesForceCloseHandlesHeaders>> operation
-            = () -> fileClientInternal.forceCloseHandlesWithResponse(handleId, null, null, snapshot,
-                new RequestOptions().setContext(finalContext));
+        Callable<Response<FilesForceCloseHandlesHeaders>> operation = () -> fileClientInternal
+            .forceCloseHandlesWithResponse(handleId, null, null, snapshot, scopedRequestOptions(finalContext));
 
         Response<FilesForceCloseHandlesHeaders> response = sendRequest(operation, timeout, ShareStorageException.class);
 
@@ -2925,9 +2928,8 @@ public class ShareFileClient {
     public CloseHandlesInfo forceCloseAllHandles(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         try {
-            Callable<Response<FilesForceCloseHandlesHeaders>> operation
-                = () -> this.fileClientInternal.forceCloseHandlesWithResponse("*", null, null, snapshot,
-                    new RequestOptions().setContext(finalContext));
+            Callable<Response<FilesForceCloseHandlesHeaders>> operation = () -> this.fileClientInternal
+                .forceCloseHandlesWithResponse("*", null, null, snapshot, scopedRequestOptions(finalContext));
 
             Response<FilesForceCloseHandlesHeaders> response
                 = sendRequest(operation, timeout, ShareStorageException.class);
@@ -3051,7 +3053,8 @@ public class ShareFileClient {
                 options.getReplaceIfExists(), options.isIgnoreReadOnly(), sourceRequestConditions.getLeaseId(),
                 destinationRequestConditions.getLeaseId(), fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, options.getFilePermission(), options.getFilePermissionFormat(), filePermissionKey,
-                options.getMetadata(), options.getContentType(), new RequestOptions().setContext(finalContext));
+                options.getMetadata(), options.getContentType(),
+                destinationFileClient.scopedRequestOptions(finalContext));
 
         return new SimpleResponse<>(sendRequest(operation, timeout, ShareStorageException.class),
             destinationFileClient);
@@ -3274,7 +3277,7 @@ public class ShareFileClient {
 
         Callable<Response<FilesCreateHardLinkHeaders>> operation
             = () -> this.fileClientInternal.createHardLinkWithResponse(options.getTargetFile(), null,
-                requestConditions.getLeaseId(), new RequestOptions().setContext(finalContext));
+                requestConditions.getLeaseId(), scopedRequestOptions(finalContext));
 
         return ModelHelper.createHardLinkResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -3327,7 +3330,7 @@ public class ShareFileClient {
         Callable<Response<FilesCreateSymbolicLinkHeaders>> operation
             = () -> this.fileClientInternal.createSymbolicLinkWithResponse(options.getLinkText(), null,
                 options.getMetadata(), fileCreationTimeString, fileLastWriteTimeString, requestConditions.getLeaseId(),
-                options.getOwner(), options.getGroup(), new RequestOptions().setContext(finalContext));
+                options.getOwner(), options.getGroup(), scopedRequestOptions(finalContext));
 
         return ModelHelper.createSymbolicLinkResponse(sendRequest(operation, timeout, ShareStorageException.class));
 
@@ -3369,7 +3372,7 @@ public class ShareFileClient {
         Context finalContext = context == null ? Context.NONE : context;
 
         Callable<Response<FilesGetSymbolicLinkHeaders>> operation = () -> this.fileClientInternal
-            .getSymbolicLinkWithResponse(null, snapshot, new RequestOptions().setContext(finalContext));
+            .getSymbolicLinkWithResponse(null, snapshot, scopedRequestOptions(finalContext));
 
         return ModelHelper.getSymbolicLinkResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -3415,7 +3418,7 @@ public class ShareFileClient {
 
         Callable<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation
             = () -> this.fileClientInternal.getRangeListWithResponse(snapshot, previousSnapshot, null, rangeString,
-                finalRequestConditions.getLeaseId(), supportRename, new RequestOptions().setContext(context));
+                finalRequestConditions.getLeaseId(), supportRename, scopedRequestOptions(context));
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
