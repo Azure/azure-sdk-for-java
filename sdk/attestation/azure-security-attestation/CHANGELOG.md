@@ -4,10 +4,12 @@
 
 ### Features Added
 
+- Added `attestTpm(BinaryData)` and `attestTpmWithResponse(BinaryData, ...)` overloads to `AttestationClient` and
+  `AttestationAsyncClient`. They treat the TPM attestation request and response as opaque binary data, consistent with
+  `attestOpenEnclave`, `attestSgxEnclave`, and the other Azure Attestation SDKs.
+- Added `TpmAttestationResult`, the result type returned by the new `BinaryData`-based TPM attestation overloads.
+
 ### Breaking Changes
-- Changed `attestTpm` to match `attestOpenEnclave` and `attestSgxEnclave`
-- Added `TpmAttestationResult.java` to make the attestTpm return type more consistency.
-- Changed `attestTpm` parameter from String to Binary Data
 
 ### Bugs Fixed
 
@@ -19,6 +21,9 @@
   matching the behavior of the other Azure Attestation SDKs.
 
 ### Other Changes
+
+- Deprecated the `String`-based `attestTpm(String)` and `attestTpmWithResponse(String, ...)` overloads on
+  `AttestationClient` and `AttestationAsyncClient`. Use the new `BinaryData`-based overloads instead.
 
 ## 1.1.41 (2026-08-18)
 

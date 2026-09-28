@@ -588,4 +588,55 @@ public final class AttestationAsyncClient {
             .map(response -> Utilities.generateResponseFromModelType(response,
                 new TpmAttestationResult(BinaryData.fromBytes(response.getValue().getData()))));
     }
+
+    /**
+     * Performs TPM attestation using a string-encoded request.
+     *
+     * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a>
+     *
+     * <p>The request is encoded as UTF-8 before it is sent to the service, and the service response is decoded as
+     * UTF-8.</p>
+     *
+     * @param request Attestation request for Trusted Platform Module (TPM) attestation.
+     * @return attestation response for Trusted Platform Module (TPM) attestation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @deprecated TPM attestation requests and responses are opaque binary data. Use
+     * {@link #attestTpmWithResponse(BinaryData)} instead.
+     */
+    @Deprecated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<String>> attestTpmWithResponse(String request) {
+        return withContext(context -> this.attestTpmWithResponse(request, context));
+    }
+
+    /**
+     * Performs TPM attestation using a string-encoded request.
+     *
+     * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a>
+     *
+     * <p>The request is encoded as UTF-8 before it is sent to the service, and the service response is decoded as
+     * UTF-8.</p>
+     *
+     * @param request Attestation request for Trusted Platform Module (TPM) attestation.
+     * @return attestation response for Trusted Platform Module (TPM) attestation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @deprecated TPM attestation requests and responses are opaque binary data. Use
+     * {@link #attestTpm(BinaryData)} instead.
+     */
+    @Deprecated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> attestTpm(String request) {
+        return attestTpmWithResponse(request).onErrorMap(Utilities::mapException).flatMap(FluxUtil::toMono);
+    }
+
+    @Deprecated
+    Mono<Response<String>> attestTpmWithResponse(String request, Context context) {
+        Objects.requireNonNull(request);
+        return attestTpmWithResponse(BinaryData.fromString(request), context).map(response -> Utilities
+            .generateResponseFromModelType(response, response.getValue().getTpmResult().toString()));
+    }
 }
