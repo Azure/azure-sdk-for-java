@@ -832,11 +832,11 @@ and
 ## 12.0.0-preview.5 (2019-10-31)
 - Renamed FileReference to StorageFileItem
 - Changed response of ShareClient.listFilesAndDirectories FileReference to StorageFileItem
-- FileUploadRangeFromUrlInfo eTag() changed to getETag() and lastModified() changed to getLastModidified()
+- FileUploadRangeFromUrlInfo eTag() changed to getETag() and lastModified() changed to getLastModified()
 - Changed response of FileAsyncClient.download() from Mono<FileDownloadInfo> to Flux<ByteBuffer>
 - Renamed FileAsyncClient.downloadWithPropertiesWithResponse to downloadLoadWithResponse
 - Removed FileAsyncClient.uploadWithResponse(Flux<ByteBuffer>, long, long)
-- Changed response of FileClient.download() from FileDownloadInfo to voif
+- Changed response of FileClient.download() from FileDownloadInfo to void
 - Renamed FileClient.downloadWithPropertiesWithResponse to downloadLoadWithResponse
 - Changed FileClient upload methods to take InputStreams instead of ByteBuffers
 - Removed FileClient.uploadWithResponse(ByteBuffer, long, long)

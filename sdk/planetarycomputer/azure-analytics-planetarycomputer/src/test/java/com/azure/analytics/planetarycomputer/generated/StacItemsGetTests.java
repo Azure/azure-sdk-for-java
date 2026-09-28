@@ -6,6 +6,7 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.models.GeoJsonGeometry;
 import com.azure.analytics.planetarycomputer.models.GeometryType;
+import com.azure.analytics.planetarycomputer.models.StacAssetUrlSigningMode;
 import com.azure.analytics.planetarycomputer.models.StacItem;
 import com.azure.analytics.planetarycomputer.models.StacItemProperties;
 import com.azure.analytics.planetarycomputer.models.StacModelType;
@@ -20,7 +21,8 @@ public final class StacItemsGetTests extends PlanetaryComputerProClientTestBase 
     @Disabled
     public void testStacItemsGetTests() {
         // method invocation
-        StacItem response = stacClient.getItem("naip-atl", "ga_m_3308421_se_16_060_20211114_test", null, null);
+        StacItem response = stacClient.getItem("naip-atl", "ga_m_3308421_se_16_060_20211114_test",
+            (StacAssetUrlSigningMode) null, (Integer) null);
 
         // response assertion
         Assertions.assertNotNull(response);

@@ -1,4 +1,4 @@
 directory: specification/compute/resource-manager/Microsoft.Compute/Bulkactions
-commit: 8681ba204905f0aad414f3a0e2e687cc5fcb2453
+commit: 11488a8210ca1213f01a9866d57f7408a5c9ff71
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

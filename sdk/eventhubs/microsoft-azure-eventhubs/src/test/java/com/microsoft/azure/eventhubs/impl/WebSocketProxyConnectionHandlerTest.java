@@ -6,10 +6,10 @@ package com.microsoft.azure.eventhubs.impl;
 import com.microsoft.azure.eventhubs.ProxyConfiguration;
 import com.microsoft.azure.eventhubs.ProxyConfiguration.ProxyAuthenticationType;
 import org.apache.qpid.proton.engine.SslDomain;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.net.InetSocketAddress;
@@ -39,7 +39,7 @@ public class WebSocketProxyConnectionHandlerTest {
     /**
      * Creates mocks of the proxy selector and authenticator and sets them as defaults.
      */
-    @Before
+    @BeforeEach
     public void setup() {
         originalProxySelector = ProxySelector.getDefault();
 
@@ -47,7 +47,7 @@ public class WebSocketProxyConnectionHandlerTest {
         ProxySelector.setDefault(proxySelector);
     }
 
-    @After
+    @AfterEach
     public void teardown() {
         ProxySelector.setDefault(originalProxySelector);
     }
@@ -69,8 +69,8 @@ public class WebSocketProxyConnectionHandlerTest {
             VERIFY_MODE, null);
 
         // Act and Assert
-        Assert.assertEquals(PROXY_ADDRESS.getHostName(), handler.getRemoteHostName());
-        Assert.assertEquals(PROXY_ADDRESS.getPort(), handler.getRemotePort());
+        Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getRemoteHostName());
+        Assertions.assertEquals(PROXY_ADDRESS.getPort(), handler.getRemotePort());
     }
 
     /**
@@ -90,8 +90,8 @@ public class WebSocketProxyConnectionHandlerTest {
             VERIFY_MODE, ProxyConfiguration.SYSTEM_DEFAULTS);
 
         // Act and Assert
-        Assert.assertEquals(PROXY_ADDRESS.getHostName(), handler.getRemoteHostName());
-        Assert.assertEquals(PROXY_ADDRESS.getPort(), handler.getRemotePort());
+        Assertions.assertEquals(PROXY_ADDRESS.getHostName(), handler.getRemoteHostName());
+        Assertions.assertEquals(PROXY_ADDRESS.getPort(), handler.getRemotePort());
 
         verify(proxySelector, times(2))
             .select(argThat(u -> u.getHost().equals(host)));
@@ -117,8 +117,8 @@ public class WebSocketProxyConnectionHandlerTest {
             VERIFY_MODE, configuration);
 
         // Act and Assert
-        Assert.assertEquals(address.getHostName(), handler.getRemoteHostName());
-        Assert.assertEquals(address.getPort(), handler.getRemotePort());
+        Assertions.assertEquals(address.getHostName(), handler.getRemoteHostName());
+        Assertions.assertEquals(address.getPort(), handler.getRemotePort());
 
         verifyNoInteractions(proxySelector);
     }
@@ -132,12 +132,13 @@ public class WebSocketProxyConnectionHandlerTest {
             .thenReturn(Collections.emptyList());
 
         // Act and Assert
-        Assert.assertFalse(WebSocketProxyConnectionHandler.shouldUseProxy(host));
+        Assertions.assertFalse(WebSocketProxyConnectionHandler.shouldUseProxy(host));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldUseProxyHostNull() {
-        WebSocketProxyConnectionHandler.shouldUseProxy(null);
+        Assertions.assertThrows(NullPointerException.class,
+            () -> WebSocketProxyConnectionHandler.shouldUseProxy(null));
     }
 
     @Test
@@ -147,6 +148,6 @@ public class WebSocketProxyConnectionHandlerTest {
         ProxySelector.setDefault(null);
 
         // Act and Assert
-        Assert.assertFalse(WebSocketProxyConnectionHandler.shouldUseProxy(host));
+        Assertions.assertFalse(WebSocketProxyConnectionHandler.shouldUseProxy(host));
     }
 }

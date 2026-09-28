@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public final class ServicesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceDisableLocalAuth.json
+     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceDisableLocalAuth.json
      */
     /**
      * Sample code: SearchUpdateServiceDisableLocalAuth.
@@ -50,7 +50,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceWithSku.json
+     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceWithSku.json
      */
     /**
      * Sample code: SearchUpdateServiceWithSku.
@@ -67,7 +67,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
+     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
      */
     /**
      * Sample code: SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.
@@ -90,7 +90,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceWithCmkEnforcement.json
+     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceWithCmkEnforcement.json
      */
     /**
      * Sample code: SearchUpdateServiceWithCmkEnforcement.
@@ -110,7 +110,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceWithDataExfiltration.json
+     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceWithDataExfiltration.json
      */
     /**
      * Sample code: SearchUpdateServiceWithDataExfiltration.
@@ -130,7 +130,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceToRemoveIdentity.json
+     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceToRemoveIdentity.json
      */
     /**
      * Sample code: SearchUpdateServiceToRemoveIdentity.
@@ -148,7 +148,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceWithSemanticSearch.json
+     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceWithSemanticSearch.json
      */
     /**
      * Sample code: SearchUpdateServiceWithSemanticSearch.
@@ -168,7 +168,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
+     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
      */
     /**
      * Sample code: SearchUpdateServiceToAllowAccessFromPrivateEndpoints.
@@ -187,7 +187,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
+     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
      */
     /**
      * Sample code: SearchUpdateServiceToAllowAccessFromPublicCustomIPs.
@@ -210,7 +210,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceAuthOptions.json
+     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceAuthOptions.json
      */
     /**
      * Sample code: SearchUpdateServiceAuthOptions.
@@ -230,7 +230,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchUpdateService.json
+     * x-ms-original-file: 2026-09-01-preview/SearchUpdateService.json
      */
     /**
      * Sample code: SearchUpdateService.
@@ -248,7 +248,7 @@ public final class ServicesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/SearchUpdateServiceWithKnowledgeRetrieval.json
+     * x-ms-original-file: 2026-09-01-preview/SearchUpdateServiceWithKnowledgeRetrieval.json
      */
     /**
      * Sample code: SearchUpdateServiceWithKnowledgeRetrieval.

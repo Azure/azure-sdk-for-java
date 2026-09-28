@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class VirtualMachinesRestartSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Restart.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Restart.json
      */
     /**
      * Sample code: Restart virtual machine.

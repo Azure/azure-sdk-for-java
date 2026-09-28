@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.datamap.generated;
 
 import com.azure.analytics.purview.datamap.models.AtlasTypeDefHeader;
+import com.azure.analytics.purview.datamap.models.TypeCategory;
 import java.util.List;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,6 @@ public final class TypeListHeadersTests extends DataMapClientTestBase {
     @Disabled
     public void testTypeListHeadersTests() {
         // method invocation
-        List<AtlasTypeDefHeader> response = typeDefinitionClient.getHeaders(true, null);
+        List<AtlasTypeDefHeader> response = typeDefinitionClient.getHeaders(true, (TypeCategory) null);
     }
 }

@@ -5,10 +5,8 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesAsyncClient;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AISearchIndexResource;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureAISearchQueryType;
 import com.azure.ai.agents.models.AzureAISearchTool;
@@ -16,6 +14,7 @@ import com.azure.ai.agents.models.AzureAISearchToolResource;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.models.responses.ResponseCreateParams;
 import java.time.Duration;
 import java.util.Arrays;
@@ -39,6 +38,7 @@ public class AzureAISearchAsync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
+        String agentName = "ai-search-agent";
         String connectionId = Configuration.getGlobalConfiguration().get("AZURE_AI_SEARCH_CONNECTION_ID");
         String indexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME");
 
@@ -47,7 +47,7 @@ public class AzureAISearchAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
@@ -66,18 +66,16 @@ public class AzureAISearchAsync {
                 + "Always provide citations for answers using the tool.")
             .setTools(Collections.singletonList(aiSearchTool));
 
-        agentsAsyncClient.createAgentVersion("ai-search-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
-
-                return responsesAsyncClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
-                    ResponseCreateParams.builder()
-                        .input("Search for information about Azure AI services"));
+                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
+                    .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                        ResponseCreateParams.builder()
+                            .input("Search for information about Azure AI services")
+                            .build())));
             })
             .doOnNext(response -> {
                 System.out.println("Response: " + response.output());

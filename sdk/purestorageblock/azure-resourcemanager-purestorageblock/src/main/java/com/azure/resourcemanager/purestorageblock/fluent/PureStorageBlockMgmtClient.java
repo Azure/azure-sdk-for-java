@@ -94,4 +94,39 @@ public interface PureStorageBlockMgmtClient {
      * @return the AvsVmVolumesClient object.
      */
     AvsVmVolumesClient getAvsVmVolumes();
+
+    /**
+     * Gets the VolumeGroupsClient object to access its operations.
+     * 
+     * @return the VolumeGroupsClient object.
+     */
+    VolumeGroupsClient getVolumeGroups();
+
+    /**
+     * Gets the VolumesClient object to access its operations.
+     * 
+     * @return the VolumesClient object.
+     */
+    VolumesClient getVolumes();
+
+    /**
+     * Gets the RecoverableVolumeGroupsClient object to access its operations.
+     * 
+     * @return the RecoverableVolumeGroupsClient object.
+     */
+    RecoverableVolumeGroupsClient getRecoverableVolumeGroups();
+
+    /**
+     * Gets the SaaSOperationGroupsClient object to access its operations.
+     * 
+     * @return the SaaSOperationGroupsClient object.
+     */
+    SaaSOperationGroupsClient getSaaSOperationGroups();
+
+    /**
+     * Gets the VolumeGroupSnapshotsClient object to access its operations.
+     * 
+     * @return the VolumeGroupSnapshotsClient object.
+     */
+    VolumeGroupSnapshotsClient getVolumeGroupSnapshots();
 }

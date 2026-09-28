@@ -63,7 +63,6 @@ public final class BetaDatasetsClient {
      *         ]
      *         options (Required): {
      *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -76,6 +75,7 @@ public final class BetaDatasetsClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -97,6 +97,13 @@ public final class BetaDatasetsClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -176,7 +183,6 @@ public final class BetaDatasetsClient {
      *         ]
      *         options (Required): {
      *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -189,6 +195,7 @@ public final class BetaDatasetsClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -210,6 +217,13 @@ public final class BetaDatasetsClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -259,7 +273,6 @@ public final class BetaDatasetsClient {
      *         ]
      *         options (Required): {
      *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -272,6 +285,7 @@ public final class BetaDatasetsClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -293,6 +307,13 @@ public final class BetaDatasetsClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -503,7 +524,6 @@ public final class BetaDatasetsClient {
      *         ]
      *         options (Required): {
      *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -516,6 +536,7 @@ public final class BetaDatasetsClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -537,6 +558,13 @@ public final class BetaDatasetsClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -569,7 +597,6 @@ public final class BetaDatasetsClient {
      *         ]
      *         options (Required): {
      *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             max_samples: int (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -582,6 +609,7 @@ public final class BetaDatasetsClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -603,6 +631,13 @@ public final class BetaDatasetsClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]

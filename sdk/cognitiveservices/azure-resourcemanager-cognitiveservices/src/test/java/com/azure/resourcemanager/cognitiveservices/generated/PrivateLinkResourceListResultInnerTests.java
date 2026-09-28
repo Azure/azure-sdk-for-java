@@ -12,8 +12,8 @@ public final class PrivateLinkResourceListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourceListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"zjd\",\"requiredMembers\":[\"jb\",\"xjeaoqaqbzgyh\",\"w\",\"v\"],\"requiredZoneNames\":[\"bwbqamt\",\"uliyslpkcv\",\"w\"],\"displayName\":\"uxx\"},\"id\":\"myw\",\"name\":\"ormcqmic\",\"type\":\"ijqpkzfbojxjmcs\"},{\"properties\":{\"groupId\":\"wixvcpwnkwywzw\",\"requiredMembers\":[\"lickduoi\",\"tamtyv\",\"kn\"],\"requiredZoneNames\":[\"zawnvsbcfhzag\",\"nvhycvdimwrz\",\"e\",\"zgyufutrwp\"],\"displayName\":\"ryekzkd\"},\"id\":\"eotta\",\"name\":\"jyosxwwh\",\"type\":\"h\"}]}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"rkuz\",\"requiredMembers\":[\"nndtsnxa\"],\"requiredZoneNames\":[\"tllh\",\"yzm\",\"ckze\"],\"displayName\":\"xak\"},\"id\":\"ywymxgaabj\",\"name\":\"dtfohfaog\",\"type\":\"vkiwrsiwdyjqu\"},{\"properties\":{\"groupId\":\"crraueekcsu\",\"requiredMembers\":[\"gdda\"],\"requiredZoneNames\":[\"bgydlqidywm\",\"mptyrilkfbnrqqxv\"],\"displayName\":\"pbnfnqtx\"},\"id\":\"omals\",\"name\":\"bnfddep\",\"type\":\"dwq\"},{\"properties\":{\"groupId\":\"f\",\"requiredMembers\":[\"leexahvmywh\"],\"requiredZoneNames\":[\"carycsjjzyvoaqa\",\"uvehzptd\",\"krrbhmpful\"],\"displayName\":\"efgybpmfbfununmp\"},\"id\":\"rvfyifkdsch\",\"name\":\"zvfictnk\",\"type\":\"jwg\"},{\"properties\":{\"groupId\":\"ph\",\"requiredMembers\":[\"fyrtogmhmjp\",\"scdfpdqw\",\"ygevgwmseharx\",\"fv\"],\"requiredZoneNames\":[\"x\",\"mbpjptnvwjh\",\"sidqpxlbtpakft\"],\"displayName\":\"atw\"},\"id\":\"kyutrymdwmfjhpyc\",\"name\":\"jqdvdwkqpldrlefg\",\"type\":\"aavuagntetaout\"}]}")
             .toObject(PrivateLinkResourceListResultInner.class);
-        Assertions.assertEquals("bwbqamt", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("tllh", model.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

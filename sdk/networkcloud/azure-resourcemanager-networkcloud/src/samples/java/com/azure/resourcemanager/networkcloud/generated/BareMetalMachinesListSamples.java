@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class BareMetalMachinesListSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_ListBySubscription.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_ListBySubscription.json
      */
     /**
      * Sample code: List bare metal machines for subscription.

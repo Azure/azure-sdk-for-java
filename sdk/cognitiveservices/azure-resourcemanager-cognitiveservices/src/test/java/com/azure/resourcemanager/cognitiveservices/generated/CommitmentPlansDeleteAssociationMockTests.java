@@ -28,7 +28,7 @@ public final class CommitmentPlansDeleteAssociationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.commitmentPlans()
-            .deleteAssociation("ukppdixqbo", "xvhhyqq", "gatxgrznmginmtsd", com.azure.core.util.Context.NONE);
+            .deleteAssociation("mjpequlr", "zaudgjtfbclakkuc", "dwnhczbutoucgjti", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cognitiveservices.implementation;
 
-import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ComputeInner;
@@ -39,10 +38,6 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
         return this.innerModel().etag();
     }
 
-    public String location() {
-        return this.innerModel().location();
-    }
-
     public Map<String, String> tags() {
         Map<String, String> inner = this.innerModel().tags();
         if (inner != null) {
@@ -62,14 +57,6 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
 
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public Region region() {
-        return Region.fromName(this.regionName());
-    }
-
-    public String regionName() {
-        return this.location();
     }
 
     public String resourceGroupName() {
@@ -123,14 +110,14 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
     public Compute apply() {
         this.innerObject = serviceManager.serviceClient()
             .getComputes()
-            .update(resourceGroupName, accountName, computeName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, accountName, computeName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Compute apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getComputes()
-            .update(resourceGroupName, accountName, computeName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, accountName, computeName, this.innerModel(), context);
         return this;
     }
 
@@ -185,16 +172,6 @@ public final class ComputeImpl implements Compute, Compute.Definition, Compute.U
 
     public ComputeImpl withProperties(ComputeProperties properties) {
         this.innerModel().withProperties(properties);
-        return this;
-    }
-
-    public ComputeImpl withRegion(Region location) {
-        this.innerModel().withLocation(location.toString());
-        return this;
-    }
-
-    public ComputeImpl withRegion(String location) {
-        this.innerModel().withLocation(location);
         return this;
     }
 

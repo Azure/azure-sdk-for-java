@@ -7,7 +7,6 @@ package com.azure.resourcemanager.cloudhealth.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
-import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalDefinitionProperties;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
@@ -20,7 +19,7 @@ public final class SignalDefinitionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SignalDefinitionProperties model = BinaryData.fromString(
-            "{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Deleting\",\"displayName\":\"big\",\"refreshInterval\":\"PT2H\",\"tags\":{\"nyktzlcuiy\":\"bowsk\",\"nhzgpphrcgyn\":\"gqywgndrv\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\"},\"dataUnit\":\"y\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":79.70230134472271,\"sensitivity\":\"High\",\"lookBackWindow\":\"PT15M\"},\"unhealthyRule\":{\"operator\":\"Dynamic\",\"threshold\":33.45020032856774,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT1H\"}}}")
+            "{\"signalKind\":\"SignalDefinitionProperties\",\"provisioningState\":\"Deleting\",\"displayName\":\"big\",\"refreshInterval\":\"PT2H\",\"tags\":{\"nyktzlcuiy\":\"bowsk\",\"nhzgpphrcgyn\":\"gqywgndrv\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\"},\"dataUnit\":\"y\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":79.70230134472271,\"sensitivity\":\"High\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":82.55484260490866,\"sensitivity\":\"Low\"}}}")
             .toObject(SignalDefinitionProperties.class);
         Assertions.assertEquals("big", model.displayName());
         Assertions.assertEquals(RefreshInterval.PT2H, model.refreshInterval());
@@ -29,11 +28,10 @@ public final class SignalDefinitionPropertiesTests {
         Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL, model.evaluationRules().degradedRule().operator());
         Assertions.assertEquals(79.70230134472271D, model.evaluationRules().degradedRule().threshold());
         Assertions.assertEquals(DynamicThresholdSensitivity.HIGH, model.evaluationRules().degradedRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT15M, model.evaluationRules().degradedRule().lookBackWindow());
-        Assertions.assertEquals(SignalOperator.DYNAMIC, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(33.45020032856774D, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
+            model.evaluationRules().unhealthyRule().operator());
+        Assertions.assertEquals(82.55484260490866D, model.evaluationRules().unhealthyRule().threshold());
         Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.evaluationRules().unhealthyRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT1H, model.evaluationRules().unhealthyRule().lookBackWindow());
     }
 
     @org.junit.jupiter.api.Test
@@ -45,12 +43,10 @@ public final class SignalDefinitionPropertiesTests {
             .withEvaluationRules(new EvaluationRule()
                 .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN_OR_EQUAL)
                     .withThreshold(79.70230134472271D)
-                    .withSensitivity(DynamicThresholdSensitivity.HIGH)
-                    .withLookBackWindow(LookBackWindow.PT15M))
-                .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.DYNAMIC)
-                    .withThreshold(33.45020032856774D)
-                    .withSensitivity(DynamicThresholdSensitivity.LOW)
-                    .withLookBackWindow(LookBackWindow.PT1H)));
+                    .withSensitivity(DynamicThresholdSensitivity.HIGH))
+                .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN_OR_EQUAL)
+                    .withThreshold(82.55484260490866D)
+                    .withSensitivity(DynamicThresholdSensitivity.LOW)));
         model = BinaryData.fromObject(model).toObject(SignalDefinitionProperties.class);
         Assertions.assertEquals("big", model.displayName());
         Assertions.assertEquals(RefreshInterval.PT2H, model.refreshInterval());
@@ -59,11 +55,10 @@ public final class SignalDefinitionPropertiesTests {
         Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL, model.evaluationRules().degradedRule().operator());
         Assertions.assertEquals(79.70230134472271D, model.evaluationRules().degradedRule().threshold());
         Assertions.assertEquals(DynamicThresholdSensitivity.HIGH, model.evaluationRules().degradedRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT15M, model.evaluationRules().degradedRule().lookBackWindow());
-        Assertions.assertEquals(SignalOperator.DYNAMIC, model.evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(33.45020032856774D, model.evaluationRules().unhealthyRule().threshold());
+        Assertions.assertEquals(SignalOperator.GREATER_THAN_OR_EQUAL,
+            model.evaluationRules().unhealthyRule().operator());
+        Assertions.assertEquals(82.55484260490866D, model.evaluationRules().unhealthyRule().threshold());
         Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.evaluationRules().unhealthyRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT1H, model.evaluationRules().unhealthyRule().lookBackWindow());
     }
 
     // Use "Map.of" if available

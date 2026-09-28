@@ -114,15 +114,15 @@ public final class HorizonDbPoolsClientImpl implements HorizonDbPoolsClient {
     }
 
     /**
-     * Gets information about a HorizonDb pool.
+     * Gets information about a HorizonDB pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb pool along with {@link Response} on successful completion of {@link Mono}.
+     * @return information about a HorizonDB pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HorizonDbPoolInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
@@ -135,15 +135,15 @@ public final class HorizonDbPoolsClientImpl implements HorizonDbPoolsClient {
     }
 
     /**
-     * Gets information about a HorizonDb pool.
+     * Gets information about a HorizonDB pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb pool on successful completion of {@link Mono}.
+     * @return information about a HorizonDB pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HorizonDbPoolInner> getAsync(String resourceGroupName, String clusterName, String poolName) {
@@ -152,16 +152,16 @@ public final class HorizonDbPoolsClientImpl implements HorizonDbPoolsClient {
     }
 
     /**
-     * Gets information about a HorizonDb pool.
+     * Gets information about a HorizonDB pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb pool along with {@link Response}.
+     * @return information about a HorizonDB pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HorizonDbPoolInner> getWithResponse(String resourceGroupName, String clusterName, String poolName,
@@ -172,15 +172,15 @@ public final class HorizonDbPoolsClientImpl implements HorizonDbPoolsClient {
     }
 
     /**
-     * Gets information about a HorizonDb pool.
+     * Gets information about a HorizonDB pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb pool.
+     * @return information about a HorizonDB pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HorizonDbPoolInner get(String resourceGroupName, String clusterName, String poolName) {
@@ -188,10 +188,10 @@ public final class HorizonDbPoolsClientImpl implements HorizonDbPoolsClient {
     }
 
     /**
-     * Lists all HorizonDb pools in a cluster.
+     * Lists all HorizonDB pools in a cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -210,10 +210,10 @@ public final class HorizonDbPoolsClientImpl implements HorizonDbPoolsClient {
     }
 
     /**
-     * Lists all HorizonDb pools in a cluster.
+     * Lists all HorizonDB pools in a cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -226,10 +226,10 @@ public final class HorizonDbPoolsClientImpl implements HorizonDbPoolsClient {
     }
 
     /**
-     * Lists all HorizonDb pools in a cluster.
+     * Lists all HorizonDB pools in a cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -245,10 +245,10 @@ public final class HorizonDbPoolsClientImpl implements HorizonDbPoolsClient {
     }
 
     /**
-     * Lists all HorizonDb pools in a cluster.
+     * Lists all HorizonDB pools in a cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -266,10 +266,10 @@ public final class HorizonDbPoolsClientImpl implements HorizonDbPoolsClient {
     }
 
     /**
-     * Lists all HorizonDb pools in a cluster.
+     * Lists all HorizonDB pools in a cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -282,10 +282,10 @@ public final class HorizonDbPoolsClientImpl implements HorizonDbPoolsClient {
     }
 
     /**
-     * Lists all HorizonDb pools in a cluster.
+     * Lists all HorizonDB pools in a cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
+     * @param clusterName The name of the HorizonDB cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

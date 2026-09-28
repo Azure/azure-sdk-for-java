@@ -11,7 +11,7 @@ public final class DeploymentSizeCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentSizeCapacity model = BinaryData.fromString(
-            "{\"modelInstanceAcceleratorCount\":1262406750,\"totalAvailableCapacity\":1282494344,\"largestDeploymentCapacity\":387452116}")
+            "{\"modelInstanceAcceleratorCount\":267543853,\"totalAvailableCapacity\":95279837,\"largestDeploymentCapacity\":2087712194}")
             .toObject(DeploymentSizeCapacity.class);
     }
 }

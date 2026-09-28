@@ -13,16 +13,16 @@ public final class CustomRolloutSpecificationCanaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomRolloutSpecificationCanary model
-            = BinaryData.fromString("{\"regions\":[\"wcluqovekqvgq\",\"uwifzmpjwyiv\"]}")
+            = BinaryData.fromString("{\"regions\":[\"ioknssxmoj\",\"sv\",\"kjprvk\"]}")
                 .toObject(CustomRolloutSpecificationCanary.class);
-        Assertions.assertEquals("wcluqovekqvgq", model.regions().get(0));
+        Assertions.assertEquals("ioknssxmoj", model.regions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomRolloutSpecificationCanary model
-            = new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("wcluqovekqvgq", "uwifzmpjwyiv"));
+            = new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("ioknssxmoj", "sv", "kjprvk"));
         model = BinaryData.fromObject(model).toObject(CustomRolloutSpecificationCanary.class);
-        Assertions.assertEquals("wcluqovekqvgq", model.regions().get(0));
+        Assertions.assertEquals("ioknssxmoj", model.regions().get(0));
     }
 }

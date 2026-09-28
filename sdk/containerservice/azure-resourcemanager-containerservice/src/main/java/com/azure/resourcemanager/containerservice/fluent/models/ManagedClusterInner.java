@@ -753,6 +753,37 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the enableNodeHardening property: Whether to enable node hardening at the cluster level. When enabled, AKS
+     * applies hardened defaults for soft eviction thresholds, kube-reserved, and system-reserved on all Linux node
+     * pools in the cluster. Per-node-pool kubeletConfig settings take precedence over hardening defaults. On agent
+     * pools running Kubernetes 1.37 or later, node hardening is enabled by default and cannot be disabled; setting this
+     * field to false has no effect on those pools.
+     * 
+     * @return the enableNodeHardening value.
+     */
+    public Boolean enableNodeHardening() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableNodeHardening();
+    }
+
+    /**
+     * Set the enableNodeHardening property: Whether to enable node hardening at the cluster level. When enabled, AKS
+     * applies hardened defaults for soft eviction thresholds, kube-reserved, and system-reserved on all Linux node
+     * pools in the cluster. Per-node-pool kubeletConfig settings take precedence over hardening defaults. On agent
+     * pools running Kubernetes 1.37 or later, node hardening is enabled by default and cannot be disabled; setting this
+     * field to false has no effect on those pools.
+     * 
+     * @param enableNodeHardening the enableNodeHardening value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withEnableNodeHardening(Boolean enableNodeHardening) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withEnableNodeHardening(enableNodeHardening);
+        return this;
+    }
+
+    /**
      * Get the enableNamespaceResources property: Enable namespace as Azure resource. The default value is false. It can
      * be enabled/disabled on creation and updating of the managed cluster. See
      * [https://aka.ms/NamespaceARMResource](https://aka.ms/NamespaceARMResource) for more details on Namespace as a ARM

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation;
 
+import com.azure.security.keyvault.jca.KeyVaultLoadStoreParameter;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
 import com.azure.security.keyvault.jca.implementation.model.CertificateItem;
@@ -106,6 +107,22 @@ public class KeyVaultClient {
     private final boolean disableChallengeResourceVerification;
 
     /**
+     * Stores a flag indicating whether Authority Information Access (AIA) certificate downloads are disabled.
+     */
+    private final boolean disableAiaDownload;
+
+    /**
+     * Creates a client using the specified Key Vault load-store configuration.
+     *
+     * @param parameter The Key Vault load-store configuration.
+     */
+    public KeyVaultClient(KeyVaultLoadStoreParameter parameter) {
+        this(parameter.getUri(), parameter.getTenantId(), parameter.getClientId(), parameter.getClientSecret(),
+            parameter.getManagedIdentity(), parameter.getAccessToken(),
+            parameter.isDisableChallengeResourceVerification(), parameter.isAiaDownloadDisabled());
+    }
+
+    /**
      * Constructor for authentication with user-assigned managed identity.
      *
      * @param keyVaultUri The Azure Key Vault URI.
@@ -156,6 +173,25 @@ public class KeyVaultClient {
      */
     public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret,
         String managedIdentity, String providedAccessToken, boolean disableChallengeResourceVerification) {
+        this(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, providedAccessToken,
+            disableChallengeResourceVerification, false);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param keyVaultUri The Azure Key Vault URI.
+     * @param tenantId The tenant ID.
+     * @param clientId The client ID.
+     * @param clientSecret The client secret.
+     * @param managedIdentity The user-assigned managed identity object ID.
+     * @param providedAccessToken The access token for authentication.
+     * @param disableChallengeResourceVerification Indicates if the challenge resource verification should be disabled.
+     * @param disableAiaDownload Indicates if AIA certificate downloads should be disabled.
+     */
+    public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret,
+        String managedIdentity, String providedAccessToken, boolean disableChallengeResourceVerification,
+        boolean disableAiaDownload) {
 
         LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
 
@@ -172,20 +208,11 @@ public class KeyVaultClient {
         this.managedIdentity = managedIdentity;
         this.providedAccessToken = providedAccessToken;
         this.disableChallengeResourceVerification = disableChallengeResourceVerification;
+        this.disableAiaDownload = disableAiaDownload;
     }
 
     public static KeyVaultClient createKeyVaultClientBySystemProperty() {
-        String keyVaultUri = System.getProperty("azure.keyvault.uri");
-        String tenantId = System.getProperty("azure.keyvault.tenant-id");
-        String clientId = System.getProperty("azure.keyvault.client-id");
-        String clientSecret = System.getProperty("azure.keyvault.client-secret");
-        String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-        String accessToken = System.getProperty("azure.keyvault.access-token");
-        boolean disableChallengeResourceVerification
-            = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
-
-        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
-            disableChallengeResourceVerification);
+        return new KeyVaultClient(KeyVaultLoadStoreParameter.fromSystemProperties());
     }
 
     /**
@@ -464,7 +491,7 @@ public class KeyVaultClient {
         }
 
         try {
-            Certificate[] certificates = loadCertificatesFromSecretBundleValue(secretValue);
+            Certificate[] certificates = loadCertificatesFromSecretBundleValue(secretValue, disableAiaDownload);
             LOGGER.exiting("KeyVaultClient", "getCertificateChainForVersion", alias);
             return certificates;
         } catch (IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException

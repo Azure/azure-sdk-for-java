@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class MaintenanceConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
+     * x-ms-original-file: 2026-06-02-preview/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
      */
     /**
      * Sample code: Create/Update Maintenance Configuration with Maintenance Window.
@@ -47,7 +47,7 @@ public final class MaintenanceConfigurationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-02-preview/MaintenanceConfigurationsCreate_LinkedMaintenanceWindow.json
+     * x-ms-original-file: 2026-06-02-preview/MaintenanceConfigurationsCreate_LinkedMaintenanceWindow.json
      */
     /**
      * Sample code: Create a Linked Maintenance Configuration.

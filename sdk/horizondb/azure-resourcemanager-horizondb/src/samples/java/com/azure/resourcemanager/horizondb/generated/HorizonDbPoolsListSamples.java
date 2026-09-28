@@ -9,14 +9,14 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class HorizonDbPoolsListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Pools_List.json
+     * x-ms-original-file: 2026-05-01-preview/Pools_List.json
      */
     /**
-     * Sample code: List HorizonDb pools in a cluster.
+     * Sample code: List HorizonDB pools in a cluster.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void listHorizonDbPoolsInACluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void listHorizonDBPoolsInACluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbPools().list("exampleresourcegroup", "examplecluster", com.azure.core.util.Context.NONE);
     }
 }

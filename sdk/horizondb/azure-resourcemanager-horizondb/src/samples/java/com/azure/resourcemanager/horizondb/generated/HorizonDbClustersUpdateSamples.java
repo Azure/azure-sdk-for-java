@@ -14,14 +14,14 @@ import java.util.Map;
  */
 public final class HorizonDbClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Clusters_Update.json
+     * x-ms-original-file: 2026-05-01-preview/Clusters_Update.json
      */
     /**
-     * Sample code: Update a HorizonDb cluster.
+     * Sample code: Update a HorizonDB cluster.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
-    public static void updateAHorizonDbCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+    public static void updateAHorizonDBCluster(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         HorizonDbCluster resource = manager.horizonDbClusters()
             .getByResourceGroupWithResponse("exampleresourcegroup", "examplecluster", com.azure.core.util.Context.NONE)
             .getValue();

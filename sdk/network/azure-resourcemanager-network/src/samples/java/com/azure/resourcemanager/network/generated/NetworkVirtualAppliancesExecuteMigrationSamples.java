@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.NetworkVirtualApplianceExecuteMi
  */
 public final class NetworkVirtualAppliancesExecuteMigrationSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceExecuteMigration.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceExecuteMigration.json
      */
     /**
      * Sample code: Execute migration of a NetworkVirtualAppliance to the new ILB architecture.
