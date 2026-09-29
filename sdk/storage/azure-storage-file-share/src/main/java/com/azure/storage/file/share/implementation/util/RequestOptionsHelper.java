@@ -124,13 +124,11 @@ public final class RequestOptionsHelper {
             path.append(accountPath.replaceAll("/+$", ""));
         }
         for (String segment : resourceSegments) {
-            if (segment == null || segment.isEmpty()) {
+            if (segment == null) {
                 continue;
             }
-            String normalized = segment.charAt(0) == '/' ? segment.substring(1) : segment;
-            if (normalized.isEmpty()) {
-                continue;
-            }
+            // An empty directory segment is the share root directory, addressed with a trailing slash ("share/").
+            String normalized = segment.startsWith("/") ? segment.substring(1) : segment;
             path.append('/').append(Utility.urlEncode(normalized));
         }
         return path.toString();
