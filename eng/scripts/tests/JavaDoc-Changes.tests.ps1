@@ -709,9 +709,29 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         Should -Invoke Invoke-JavaDocComparisons -Times 0
     }
 
-    It 'bounds source size without starting the parser' {
+    It 'accepts a source of exactly 2 MiB through the observer and parser' {
         $fixture = New-JavaDocFixture
-        Write-FixtureFile $fixture.Root $fixture.JavaPath ('/**' + ('a' * 1048576) + '*/ class Example {}')
+        $paddingLength = 2MB - [System.Text.Encoding]::UTF8.GetByteCount($script:BeforeSource) +
+            'Old description.'.Length
+        $source = $script:BeforeSource.Replace('Old description.', ('a' * $paddingLength))
+        [System.Text.Encoding]::UTF8.GetByteCount($source) | Should -Be 2MB
+        Write-FixtureFile $fixture.Root $fixture.JavaPath $source
+        Save-FixtureCommit $fixture.Root
+        Complete-JavaDocFixture $fixture
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'Eligible'
+        $result.ComparedFileCount | Should -Be 1
+        $result.Files[0].Reason | Should -BeExactly 'javadoc-only'
+        $result.SuppressionApplied | Should -BeFalse
+    }
+
+    It 'rejects a source one byte above 2 MiB without starting the parser' {
+        $fixture = New-JavaDocFixture
+        $paddingLength = 2MB + 1 - [System.Text.Encoding]::UTF8.GetByteCount($script:BeforeSource) +
+            'Old description.'.Length
+        $source = $script:BeforeSource.Replace('Old description.', ('a' * $paddingLength))
+        [System.Text.Encoding]::UTF8.GetByteCount($source) | Should -Be (2MB + 1)
+        Write-FixtureFile $fixture.Root $fixture.JavaPath $source
         Save-FixtureCommit $fixture.Root
         Complete-JavaDocFixture $fixture
         Mock Start-JavaDocProcess { throw 'Parser should not run.' } -ParameterFilter { $FilePath -eq 'java' }

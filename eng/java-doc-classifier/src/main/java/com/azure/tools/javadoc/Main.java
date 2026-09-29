@@ -19,6 +19,9 @@ import java.util.Base64;
  * Compares source pairs until one rules out test exclusion, without executing the compared classes.
  */
 public final class Main {
+    private static final int MAX_SOURCE_BYTES = 2 * 1024 * 1024;
+    private static final int MAX_ENCODED_SOURCE_LENGTH = ((MAX_SOURCE_BYTES + 2) / 3) * 4;
+
     private Main() {
     }
 
@@ -65,8 +68,8 @@ public final class Main {
     }
 
     private static String decode(String input) throws IOException {
-        if (input.length() > 1398104) {
-            throw new IOException("Source exceeds the one MiB limit.");
+        if (input.length() > MAX_ENCODED_SOURCE_LENGTH) {
+            throw new IOException("Source exceeds the 2 MiB limit.");
         }
         byte[] bytes;
         try {
@@ -74,8 +77,8 @@ public final class Main {
         } catch (IllegalArgumentException exception) {
             throw new IOException("Invalid Base64 source input.", exception);
         }
-        if (bytes.length > 1048576) {
-            throw new IOException("Source exceeds the one MiB limit.");
+        if (bytes.length > MAX_SOURCE_BYTES) {
+            throw new IOException("Source exceeds the 2 MiB limit.");
         }
         try {
             return StandardCharsets.UTF_8.newDecoder()

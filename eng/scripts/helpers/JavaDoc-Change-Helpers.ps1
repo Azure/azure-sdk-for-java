@@ -229,7 +229,7 @@ function Get-JavaDocSource {
     if ($size -cnotmatch '^\d+$') {
         throw 'Git returned an invalid source size.'
     }
-    if ([long]$size -gt 1048576) {
+    if ([long]$size -gt 2MB) {
         return $null
     }
     $bytes = Invoke-JavaDocProcess -FilePath 'git' -WorkingDirectory $RepositoryRoot -BinaryOutput `

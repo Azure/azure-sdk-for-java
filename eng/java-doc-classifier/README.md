@@ -64,7 +64,7 @@ Comparison is all-or-nothing, not package-level pruning. A POM change in the PR
 still prevents test exclusion; POM changes already in the target branch do not
 require updating this classifier.
 
-There is no candidate file-count limit. The one MiB limit per source blob and
+There is no candidate file-count limit. The 2 MiB limit per source blob and
 comparison timeout remain in place. Oversized sources do not qualify; timeouts,
 a missing or failed parser, incomplete output, invalid history, or invalid source
 produce an explicit inconclusive result.
@@ -172,8 +172,8 @@ Invoke-Pester -Path @(
 
 Java unit tests cover token preservation, formatting, ordinary-comment edits,
 stable Javadoc attachment, deprecation, tool directives, Unicode, comments versus
-literals, malformed source, per-pair flushing, more than 100 source pairs, and
-early termination.
+literals, malformed source, exact 2 MiB UTF-8 byte boundaries, per-pair flushing,
+more than 100 source pairs, and early termination.
 Pester uses disposable local Git repositories and the real parser to cover
 complete PR snapshots, target advancement, shallow history, sparse/dirty
 worktrees, automatic library detection, management/Track 1 exclusions, invalid

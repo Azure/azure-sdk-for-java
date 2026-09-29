@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,6 +39,33 @@ class MainTests {
             pair(0, "class Example {}", "class Example { }") + pair(0, "", ""), "0\t/w==\t/w==\n" }) {
             assertThrows(IOException.class, () -> Main.classify(
                 new BufferedReader(new StringReader(input)), new PrintWriter(new StringWriter())));
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void acceptsSourcesAtExactlyTwoMiB(boolean multibyte) throws IOException {
+        String before = sourceWithUtf8Size(2 * 1024 * 1024, multibyte);
+        String after = before.substring(0, 4) + "y" + before.substring(5);
+        assertEquals(2 * 1024 * 1024, before.getBytes(StandardCharsets.UTF_8).length);
+        assertEquals(2 * 1024 * 1024, after.getBytes(StandardCharsets.UTF_8).length);
+        StringWriter output = new StringWriter();
+        Main.classify(new BufferedReader(new StringReader(pair(0, before, after))), new PrintWriter(output));
+        assertEquals("0\tjavadoc-only\n", output.toString().replace("\r\n", "\n"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 1, 2 })
+    void rejectsSourcesAboveTwoMiB(int excessBytes) {
+        String oversized = sourceWithUtf8Size(2 * 1024 * 1024 + excessBytes, false);
+        for (String input : new String[] {
+            pair(0, oversized, "class Example {}"), pair(0, "class Example {}", oversized)
+        }) {
+            StringWriter output = new StringWriter();
+            IOException error = assertThrows(IOException.class, () -> Main.classify(
+                new BufferedReader(new StringReader(input)), new PrintWriter(output)));
+            assertEquals("Source exceeds the 2 MiB limit.", error.getMessage());
+            assertEquals("", output.toString());
         }
     }
 
@@ -115,5 +143,14 @@ class MainTests {
     private static String pair(int index, String before, String after) {
         return index + "\t" + Base64.getEncoder().encodeToString(before.getBytes(StandardCharsets.UTF_8))
             + "\t" + Base64.getEncoder().encodeToString(after.getBytes(StandardCharsets.UTF_8)) + "\n";
+    }
+
+    private static String sourceWithUtf8Size(int bytes, boolean multibyte) {
+        String prefix = "/** x";
+        String suffix = " */ class Example {}";
+        int paddingBytes = bytes - prefix.length() - suffix.length();
+        char[] padding = new char[multibyte ? paddingBytes / 2 : paddingBytes];
+        Arrays.fill(padding, multibyte ? '\u00e9' : 'a');
+        return prefix + new String(padding) + (multibyte && paddingBytes % 2 != 0 ? "a" : "") + suffix;
     }
 }
