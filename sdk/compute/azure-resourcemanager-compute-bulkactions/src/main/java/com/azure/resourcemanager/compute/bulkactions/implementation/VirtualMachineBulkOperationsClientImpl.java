@@ -6,7 +6,9 @@ package com.azure.resourcemanager.compute.bulkactions.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -16,6 +18,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -28,7 +34,9 @@ import com.azure.resourcemanager.compute.bulkactions.fluent.models.DeleteResourc
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.GetOperationStatusResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.HibernateResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.ReimageResourceOperationResponseInner;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.StartResourceOperationResponseInner;
+import com.azure.resourcemanager.compute.bulkactions.implementation.models.ListBulkOperationErrorsResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.CancelOperationsContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeallocateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeleteContent;
@@ -200,6 +208,42 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ExecuteReimageRequest requestBody, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/listBulkOperationErrors")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ListBulkOperationErrorsResponse>> bulkListOperationErrors(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @QueryParam("lookbackInMinutes") Integer lookbackInMinutes, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/listBulkOperationErrors")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ListBulkOperationErrorsResponse> bulkListOperationErrorsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @QueryParam("lookbackInMinutes") Integer lookbackInMinutes, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ListBulkOperationErrorsResponse>> bulkListOperationErrorsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ListBulkOperationErrorsResponse> bulkListOperationErrorsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -807,5 +851,214 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
     public ReimageResourceOperationResponseInner bulkReimageOperation(String resourceGroupName, String location,
         ExecuteReimageRequest requestBody) {
         return bulkReimageOperationWithResponse(resourceGroupName, location, requestBody, Context.NONE).getValue();
+    }
+
+    /**
+     * List recent errors for operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param lookbackInMinutes The number of minutes before the current time to include when listing bulk action
+     * errors.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged list of recent bulk action errors along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceOperationInner>> bulkListOperationErrorsSinglePageAsync(String resourceGroupName,
+        String location, Integer lookbackInMinutes) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.bulkListOperationErrors(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, location, lookbackInMinutes, accept, context))
+            .<PagedResponse<ResourceOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List recent errors for operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param lookbackInMinutes The number of minutes before the current time to include when listing bulk action
+     * errors.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged list of recent bulk action errors as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ResourceOperationInner> bulkListOperationErrorsAsync(String resourceGroupName, String location,
+        Integer lookbackInMinutes) {
+        return new PagedFlux<>(
+            () -> bulkListOperationErrorsSinglePageAsync(resourceGroupName, location, lookbackInMinutes),
+            nextLink -> bulkListOperationErrorsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List recent errors for operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged list of recent bulk action errors as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ResourceOperationInner> bulkListOperationErrorsAsync(String resourceGroupName, String location) {
+        final Integer lookbackInMinutes = null;
+        return new PagedFlux<>(
+            () -> bulkListOperationErrorsSinglePageAsync(resourceGroupName, location, lookbackInMinutes),
+            nextLink -> bulkListOperationErrorsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List recent errors for operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param lookbackInMinutes The number of minutes before the current time to include when listing bulk action
+     * errors.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged list of recent bulk action errors along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceOperationInner> bulkListOperationErrorsSinglePage(String resourceGroupName,
+        String location, Integer lookbackInMinutes) {
+        final String accept = "application/json";
+        Response<ListBulkOperationErrorsResponse> res
+            = service.bulkListOperationErrorsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, location, lookbackInMinutes, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List recent errors for operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param lookbackInMinutes The number of minutes before the current time to include when listing bulk action
+     * errors.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged list of recent bulk action errors along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceOperationInner> bulkListOperationErrorsSinglePage(String resourceGroupName,
+        String location, Integer lookbackInMinutes, Context context) {
+        final String accept = "application/json";
+        Response<ListBulkOperationErrorsResponse> res
+            = service.bulkListOperationErrorsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, location, lookbackInMinutes, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List recent errors for operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged list of recent bulk action errors as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceOperationInner> bulkListOperationErrors(String resourceGroupName, String location) {
+        final Integer lookbackInMinutes = null;
+        return new PagedIterable<>(
+            () -> bulkListOperationErrorsSinglePage(resourceGroupName, location, lookbackInMinutes),
+            nextLink -> bulkListOperationErrorsNextSinglePage(nextLink));
+    }
+
+    /**
+     * List recent errors for operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param lookbackInMinutes The number of minutes before the current time to include when listing bulk action
+     * errors.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged list of recent bulk action errors as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceOperationInner> bulkListOperationErrors(String resourceGroupName, String location,
+        Integer lookbackInMinutes, Context context) {
+        return new PagedIterable<>(
+            () -> bulkListOperationErrorsSinglePage(resourceGroupName, location, lookbackInMinutes, context),
+            nextLink -> bulkListOperationErrorsNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged list of recent bulk action errors along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceOperationInner>> bulkListOperationErrorsNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.bulkListOperationErrorsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ResourceOperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged list of recent bulk action errors along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceOperationInner> bulkListOperationErrorsNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<ListBulkOperationErrorsResponse> res
+            = service.bulkListOperationErrorsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged list of recent bulk action errors along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceOperationInner> bulkListOperationErrorsNextSinglePage(String nextLink,
+        Context context) {
+        final String accept = "application/json";
+        Response<ListBulkOperationErrorsResponse> res
+            = service.bulkListOperationErrorsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

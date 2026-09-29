@@ -13,16 +13,16 @@ public final class CancelOccurrenceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CancelOccurrenceRequest model
-            = BinaryData.fromString("{\"resourceIds\":[\"gkynscliqh\",\"vhxnk\",\"mtk\",\"bo\"]}")
+            = BinaryData.fromString("{\"resourceIds\":[\"zzp\",\"jazysdzhezwwvaiq\",\"uvvfonkp\"]}")
                 .toObject(CancelOccurrenceRequest.class);
-        Assertions.assertEquals("gkynscliqh", model.resourceIds().get(0));
+        Assertions.assertEquals("zzp", model.resourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CancelOccurrenceRequest model
-            = new CancelOccurrenceRequest().withResourceIds(Arrays.asList("gkynscliqh", "vhxnk", "mtk", "bo"));
+            = new CancelOccurrenceRequest().withResourceIds(Arrays.asList("zzp", "jazysdzhezwwvaiq", "uvvfonkp"));
         model = BinaryData.fromObject(model).toObject(CancelOccurrenceRequest.class);
-        Assertions.assertEquals("gkynscliqh", model.resourceIds().get(0));
+        Assertions.assertEquals("zzp", model.resourceIds().get(0));
     }
 }

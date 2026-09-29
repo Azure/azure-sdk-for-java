@@ -16,20 +16,18 @@ public final class VirtualMachineIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"kayuhqlbjbs\",\"tenantId\":\"bqwrvtldgm\",\"type\":\"None\",\"userAssignedIdentities\":{\"drhneuyow\":{\"principalId\":\"ipaslthaqfxssmwu\",\"clientId\":\"bdsrez\"},\"sibircgpi\":{\"principalId\":\"d\",\"clientId\":\"t\"},\"i\":{\"principalId\":\"zimejzanlfzx\",\"clientId\":\"vrmbzono\"},\"frl\":{\"principalId\":\"jq\",\"clientId\":\"rgz\"}}}")
+            "{\"principalId\":\"zkdvncja\",\"tenantId\":\"durgkakmokz\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"yebizikayuh\":{\"principalId\":\"fhmouwq\",\"clientId\":\"zrfze\"},\"t\":{\"principalId\":\"bjbsybb\",\"clientId\":\"r\"},\"thaqfxssmwu\":{\"principalId\":\"gmfpgvmp\",\"clientId\":\"as\"}}}")
             .toObject(VirtualMachineIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachineIdentity model
-            = new VirtualMachineIdentity().withType(ResourceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("drhneuyow", new UserAssignedIdentitiesValue(), "sibircgpi",
-                    new UserAssignedIdentitiesValue(), "i", new UserAssignedIdentitiesValue(), "frl",
-                    new UserAssignedIdentitiesValue()));
+        VirtualMachineIdentity model = new VirtualMachineIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("yebizikayuh", new UserAssignedIdentitiesValue(), "t",
+                new UserAssignedIdentitiesValue(), "thaqfxssmwu", new UserAssignedIdentitiesValue()));
         model = BinaryData.fromObject(model).toObject(VirtualMachineIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available
