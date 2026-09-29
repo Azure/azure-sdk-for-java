@@ -287,7 +287,7 @@ public final class BlockBlobsImpl {
         final String blobType = "BlockBlob";
         return FluxUtil
             .withContext(context -> service.upload(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                contentType, contentLength, blobType, body, requestOptions, context))
+                contentType, contentLength, blobType, body, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -413,7 +413,7 @@ public final class BlockBlobsImpl {
         final String blobType = "BlockBlob";
         try {
             return service.uploadSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), contentType,
-                contentLength, blobType, body, requestOptions, Context.NONE);
+                contentLength, blobType, body, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -547,7 +547,7 @@ public final class BlockBlobsImpl {
         return FluxUtil
             .withContext(
                 context -> service.uploadBlobFromUrl(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    copySource, contentLength, blobType, requestOptions, context))
+                    copySource, contentLength, blobType, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -677,7 +677,7 @@ public final class BlockBlobsImpl {
         final String blobType = "BlockBlob";
         try {
             return service.uploadBlobFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                copySource, contentLength, blobType, requestOptions, Context.NONE);
+                copySource, contentLength, blobType, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -772,7 +772,7 @@ public final class BlockBlobsImpl {
         return FluxUtil
             .withContext(
                 context -> service.stageBlock(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    contentType, blockId, contentLength, body, requestOptions, context))
+                    contentType, blockId, contentLength, body, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -864,7 +864,7 @@ public final class BlockBlobsImpl {
         final String contentType = "application/octet-stream";
         try {
             return service.stageBlockSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                contentType, blockId, contentLength, body, requestOptions, Context.NONE);
+                contentType, blockId, contentLength, body, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -963,7 +963,7 @@ public final class BlockBlobsImpl {
         return FluxUtil
             .withContext(
                 context -> service.stageBlockFromUrl(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    blockId, contentLength, sourceUrl, requestOptions, context))
+                    blockId, contentLength, sourceUrl, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1059,7 +1059,7 @@ public final class BlockBlobsImpl {
         RequestOptions requestOptions) {
         try {
             return service.stageBlockFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                blockId, contentLength, sourceUrl, requestOptions, Context.NONE);
+                blockId, contentLength, sourceUrl, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1186,8 +1186,9 @@ public final class BlockBlobsImpl {
         RequestOptions requestOptions) {
         final String contentType = "application/xml";
         return FluxUtil
-            .withContext(context -> service.commitBlockList(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), contentType, blocks, requestOptions, context))
+            .withContext(
+                context -> service.commitBlockList(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    contentType, blocks, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1312,7 +1313,7 @@ public final class BlockBlobsImpl {
         final String contentType = "application/xml";
         try {
             return service.commitBlockListSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                contentType, blocks, requestOptions, Context.NONE);
+                contentType, blocks, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }

@@ -6,6 +6,7 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
@@ -83,6 +84,24 @@ import javax.xml.stream.XMLStreamException;
  */
 public final class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
+
+    /**
+     * Attaches {@code Accept: application/xml} to the request options of an operation the generated layer left
+     * without an Accept header.
+     * <p>
+     * The shipped SDK sends {@code application/xml} on every operation, including those that return no body. The
+     * emitter only declares an Accept where the response has a media type to derive one from, so the rest would go
+     * out as the transport default. This is applied to the request options the operation already carries rather than
+     * through a pipeline policy, because consumers such as DataLake and Blob Batch build blob clients over their own
+     * pipelines and would not pick a blob-builder policy up.
+     *
+     * @param requestOptions The request options for the operation; may be {@code null}.
+     * @return The request options carrying the Accept header.
+     */
+    public static RequestOptions xmlAccept(RequestOptions requestOptions) {
+        RequestOptions options = requestOptions == null ? new RequestOptions() : requestOptions;
+        return options.setHeader(HttpHeaderName.ACCEPT, "application/xml");
+    }
 
     /**
      * Indicates the default size above which the upload will be broken into blocks and parallelized.

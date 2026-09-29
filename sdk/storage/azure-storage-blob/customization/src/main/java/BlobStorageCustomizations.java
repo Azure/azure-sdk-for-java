@@ -96,6 +96,7 @@ public class BlobStorageCustomizations extends Customization {
         restoreShippedEnumOrder(customization.getPackage(MODELS_PACKAGE), logger);
         useXMsRangeHeader(editor, logger);
         sendXmlAcceptOnStreamingOperations(editor, logger);
+        sendXmlAcceptHeader(editor, logger);
         restoreClearPagesEncryptionHeaders(editor, logger);
         allowNullBlockListType(editor, logger);
     }
@@ -646,6 +647,95 @@ public class BlobStorageCustomizations extends Customization {
     // The shipped SDK sends Accept: application/xml on download and query even though the response carries blob
     // content, and the recordings capture that. The emitter derives application/octet-stream from the response media
     // type. Operations that declare no Accept at all are handled by the pipeline policy in BuilderHelper.
+    // The shipped SDK sends Accept: application/xml on every operation, including those that return no body, and the
+    // recordings capture that. The emitter only declares an Accept where a response media type exists, so the rest
+    // would go out as */*. The header is attached to the request options the operation already carries rather than
+    // through a pipeline policy: consumers such as DataLake and Blob Batch construct blob clients over their own
+    // pipelines, and a policy registered on the blob builder never runs for those. Operations that negotiate
+    // something else -- the Apache Arrow listings and the batch operations -- already pass an accept argument and
+    // are left alone.
+    private static void sendXmlAcceptHeader(Editor editor, Logger logger) {
+        int updated = 0;
+        int calls = 0;
+        for (String path : new ArrayList<>(editor.getContents().keySet())) {
+            if (!path.startsWith(PKG_ROOT + "implementation/") || !path.endsWith("Impl.java")) {
+                continue;
+            }
+            String content = editor.getContents().get(path);
+            if (content == null) {
+                continue;
+            }
+            StringBuilder rewritten = new StringBuilder();
+            int from = 0;
+            int applied = 0;
+            while (true) {
+                int start = content.indexOf("service.", from);
+                if (start < 0) {
+                    break;
+                }
+                int open = content.indexOf('(', start);
+                if (open < 0) {
+                    break;
+                }
+                int depth = 0;
+                int close = -1;
+                for (int i = open; i < content.length(); i++) {
+                    char c = content.charAt(i);
+                    if (c == '(') {
+                        depth++;
+                    } else if (c == ')') {
+                        depth--;
+                        if (depth == 0) {
+                            close = i;
+                            break;
+                        }
+                    }
+                }
+                if (close < 0) {
+                    break;
+                }
+                String args = content.substring(open, close);
+                // Only the calls that carry no accept argument and end with the request options need the header.
+                boolean hasAccept = args.matches("(?s).*[(,]\\s*accept\\s*,.*");
+                // The async overloads pass the reactor context through, the sync ones pass Context.NONE, and the
+                // operations that carry a body pass a local copy of the request options rather than the parameter.
+                String contextArg = args.endsWith(", Context.NONE") ? "Context.NONE" : "context";
+                String optionsArg = args.endsWith("requestOptionsLocal, " + contextArg)
+                    ? "requestOptionsLocal"
+                    : "requestOptions";
+                String tail = optionsArg + ", " + contextArg;
+                if (!hasAccept && args.endsWith(tail)) {
+                    rewritten.append(content, from, close - tail.length());
+                    rewritten.append("ModelHelper.xmlAccept(").append(optionsArg).append("), ").append(contextArg);
+                    from = close;
+                    applied++;
+                    calls++;
+                } else {
+                    rewritten.append(content, from, close);
+                    from = close;
+                }
+            }
+            if (applied == 0) {
+                continue;
+            }
+            rewritten.append(content.substring(from));
+            String result = addImport(rewritten.toString(),
+                "import com.azure.storage.blob.implementation.util.ModelHelper;");
+            editor.replaceFile(path, result);
+            updated++;
+        }
+        if (calls == 0) {
+            throw new IllegalStateException(
+                "No operations found needing the xml Accept header; the emitter output changed.");
+        }
+        logger.info("Sent Accept: application/xml on {} operation(s) across {} file(s).", calls, updated);
+    }
+    private static final String XML_ACCEPT = "final String accept = \"application/xml\"";
+
+    // The shipped SDK sends Accept: application/xml on download, query and submitBatch, and the recordings capture
+    // that. The emitter derives the value from the response media type instead -- application/octet-stream for the
+    // streaming reads, multipart/mixed for the batch -- so those are put back. The Apache Arrow listings genuinely
+    // negotiate their own type and are left alone.
     private static void sendXmlAcceptOnStreamingOperations(Editor editor, Logger logger) {
         int updatedFiles = 0;
         for (String path : new ArrayList<>(editor.getContents().keySet())) {
@@ -653,18 +743,22 @@ public class BlobStorageCustomizations extends Customization {
                 continue;
             }
             String content = editor.getContents().get(path);
-            if (content == null || !content.contains("final String accept = \"application/octet-stream\"")) {
+            if (content == null) {
                 continue;
             }
-            editor.replaceFile(path, content.replace("final String accept = \"application/octet-stream\"",
-                "final String accept = \"application/xml\""));
+            String updated = content.replace("final String accept = \"application/octet-stream\"", XML_ACCEPT)
+                .replace("final String accept = \"multipart/mixed\"", XML_ACCEPT);
+            if (updated.equals(content)) {
+                continue;
+            }
+            editor.replaceFile(path, updated);
             updatedFiles++;
         }
         if (updatedFiles == 0) {
             throw new IllegalStateException(
-                "No application/octet-stream Accept headers found; the emitter output changed.");
+                "No derived Accept headers found to replace; the emitter output changed.");
         }
-        logger.info("Sent Accept: application/xml on the streaming operations in {} file(s).", updatedFiles);
+        logger.info("Sent Accept: application/xml on the streaming and batch operations in {} file(s).", updatedFiles);
     }
 
     // clearPages returns the encryption headers, but the spec does not model them on that response. The shipped

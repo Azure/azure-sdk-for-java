@@ -20,6 +20,7 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.UrlBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
@@ -55,12 +56,17 @@ public final class BlobBatchAsyncClient {
     private final AzureBlobStorageImpl client;
     private final boolean containerScoped;
     private final BlobServiceVersion serviceVersion;
+    // The container-scoped batch URL already names the container. The generated operation has an empty path
+    // template, so without scoping the request to that path it goes out as "/container/?restype=..." where the
+    // shipped client sent "/container?restype=...".
+    private final String containerPath;
 
     BlobBatchAsyncClient(String clientUrl, HttpPipeline pipeline, BlobServiceVersion version, boolean containerScoped) {
         this.serviceVersion = version;
         this.client
             = new AzureBlobStorageImplBuilder().url(clientUrl).pipeline(pipeline).version(version).buildClient();
         this.containerScoped = containerScoped;
+        this.containerPath = containerScoped ? UrlBuilder.parse(clientUrl).getPath() : null;
     }
 
     AzureBlobStorageImpl getClient() {
@@ -164,6 +170,9 @@ public final class BlobBatchAsyncClient {
             // built.
             RequestOptions requestOptions = RequestOptionsHelper.requestOptions(finalContext);
             requestOptions.setHeader(HttpHeaderName.CONTENT_TYPE, batchOperationInfo.getContentType());
+            if (containerScoped) {
+                RequestOptionsHelper.scopeRequestToResourcePath(requestOptions, containerPath);
+            }
 
             return BinaryData.fromFlux(Flux.fromIterable(batchOperationInfo.getBody()), contentLength, false)
                 .flatMap(body -> containerScoped

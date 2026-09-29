@@ -303,7 +303,7 @@ public final class PageBlobsImpl {
         final String blobType = "PageBlob";
         return FluxUtil
             .withContext(context -> service.create(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                size, contentLength, blobType, requestOptions, context))
+                size, contentLength, blobType, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -407,7 +407,7 @@ public final class PageBlobsImpl {
         final String blobType = "PageBlob";
         try {
             return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), size,
-                contentLength, blobType, requestOptions, Context.NONE);
+                contentLength, blobType, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -520,7 +520,7 @@ public final class PageBlobsImpl {
         return FluxUtil
             .withContext(
                 context -> service.uploadPages(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    contentType, contentLength, range, pageWrite, body, requestOptions, context))
+                    contentType, contentLength, range, pageWrite, body, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -630,7 +630,8 @@ public final class PageBlobsImpl {
         final String pageWrite = "update";
         try {
             return service.uploadPagesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                contentType, contentLength, range, pageWrite, body, requestOptions, Context.NONE);
+                contentType, contentLength, range, pageWrite, body, ModelHelper.xmlAccept(requestOptions),
+                Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -713,8 +714,9 @@ public final class PageBlobsImpl {
         final int contentLength = 0;
         final String pageWrite = "clear";
         return FluxUtil
-            .withContext(context -> service.clearPages(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), contentLength, range, pageWrite, requestOptions, context))
+            .withContext(
+                context -> service.clearPages(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    contentLength, range, pageWrite, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -796,7 +798,7 @@ public final class PageBlobsImpl {
         final String pageWrite = "clear";
         try {
             return service.clearPagesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                contentLength, range, pageWrite, requestOptions, Context.NONE);
+                contentLength, range, pageWrite, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -913,7 +915,7 @@ public final class PageBlobsImpl {
         return FluxUtil
             .withContext(context -> service.uploadPagesFromUrl(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), sourceUrl, sourceRange, contentLength, range, pageWrite,
-                requestOptions, context))
+                ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1027,7 +1029,8 @@ public final class PageBlobsImpl {
         final String pageWrite = "update";
         try {
             return service.uploadPagesFromUrlSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                sourceUrl, sourceRange, contentLength, range, pageWrite, requestOptions, Context.NONE);
+                sourceUrl, sourceRange, contentLength, range, pageWrite, ModelHelper.xmlAccept(requestOptions),
+                Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1480,7 +1483,7 @@ public final class PageBlobsImpl {
     public Mono<Response<Void>> resizeWithResponseInternalAsync(long size, RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.resize(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                size, requestOptions, context))
+                size, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1551,7 +1554,7 @@ public final class PageBlobsImpl {
     public Response<Void> resizeWithResponseInternal(long size, RequestOptions requestOptions) {
         try {
             return service.resizeSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), size,
-                requestOptions, Context.NONE);
+                ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1620,8 +1623,9 @@ public final class PageBlobsImpl {
     public Mono<Response<Void>> setSequenceNumberWithResponseInternalAsync(String sequenceNumberAction,
         RequestOptions requestOptions) {
         return FluxUtil
-            .withContext(context -> service.setSequenceNumber(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), sequenceNumberAction, requestOptions, context))
+            .withContext(
+                context -> service.setSequenceNumber(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    sequenceNumberAction, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1689,7 +1693,7 @@ public final class PageBlobsImpl {
         RequestOptions requestOptions) {
         try {
             return service.setSequenceNumberSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                sequenceNumberAction, requestOptions, Context.NONE);
+                sequenceNumberAction, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1755,8 +1759,9 @@ public final class PageBlobsImpl {
     public Mono<Response<Void>> copyIncrementalWithResponseInternalAsync(String copySource,
         RequestOptions requestOptions) {
         return FluxUtil
-            .withContext(context -> service.copyIncremental(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), copySource, requestOptions, context))
+            .withContext(
+                context -> service.copyIncremental(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    copySource, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1820,7 +1825,7 @@ public final class PageBlobsImpl {
     public Response<Void> copyIncrementalWithResponseInternal(String copySource, RequestOptions requestOptions) {
         try {
             return service.copyIncrementalSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                copySource, requestOptions, Context.NONE);
+                copySource, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }

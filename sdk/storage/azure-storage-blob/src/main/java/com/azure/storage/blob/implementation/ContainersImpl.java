@@ -396,7 +396,7 @@ public final class ContainersImpl {
     public Mono<Response<Void>> createWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.create(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                requestOptions, context))
+                ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -453,7 +453,7 @@ public final class ContainersImpl {
     public Response<Void> createWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.createSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                requestOptions, Context.NONE);
+                ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -521,7 +521,7 @@ public final class ContainersImpl {
     public Mono<Response<Void>> getPropertiesWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.getProperties(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), requestOptions, context))
+                this.client.getServiceVersion().getVersion(), ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -587,7 +587,7 @@ public final class ContainersImpl {
     public Response<Void> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.getPropertiesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                requestOptions, Context.NONE);
+                ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -642,7 +642,7 @@ public final class ContainersImpl {
     public Mono<Response<Void>> deleteWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                requestOptions, context))
+                ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -695,7 +695,7 @@ public final class ContainersImpl {
     public Response<Void> deleteWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.deleteSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                requestOptions, Context.NONE);
+                ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -751,7 +751,7 @@ public final class ContainersImpl {
     public Mono<Response<Void>> setMetadataWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.setMetadata(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), requestOptions, context))
+                this.client.getServiceVersion().getVersion(), ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -805,7 +805,7 @@ public final class ContainersImpl {
     public Response<Void> setMetadataWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.setMetadataSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                requestOptions, Context.NONE);
+                ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1038,7 +1038,7 @@ public final class ContainersImpl {
         });
         return FluxUtil
             .withContext(context -> service.setAccessPolicy(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), requestOptionsLocal, context))
+                this.client.getServiceVersion().getVersion(), ModelHelper.xmlAccept(requestOptionsLocal), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1122,7 +1122,7 @@ public final class ContainersImpl {
         });
         try {
             return service.setAccessPolicySync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                requestOptionsLocal, Context.NONE);
+                ModelHelper.xmlAccept(requestOptionsLocal), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1175,7 +1175,7 @@ public final class ContainersImpl {
     public Mono<Response<Void>> restoreWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.restore(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                requestOptions, context))
+                ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1226,7 +1226,7 @@ public final class ContainersImpl {
     public Response<Void> restoreWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.restoreSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                requestOptions, Context.NONE);
+                ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1279,7 +1279,7 @@ public final class ContainersImpl {
         RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.rename(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                sourceContainerName, requestOptions, context))
+                sourceContainerName, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1329,7 +1329,7 @@ public final class ContainersImpl {
     public Response<Void> renameWithResponseInternal(String sourceContainerName, RequestOptions requestOptions) {
         try {
             return service.renameSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                sourceContainerName, requestOptions, Context.NONE);
+                sourceContainerName, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1398,7 +1398,7 @@ public final class ContainersImpl {
     public Mono<Response<BinaryData>> submitBatchWithResponseInternalAsync(long contentLength, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "multipart/mixed";
-        final String accept = "multipart/mixed";
+        final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.submitBatch(this.client.getUrl(), contentType,
                 this.client.getServiceVersion().getVersion(), contentLength, accept, body, requestOptions, context))
@@ -1468,7 +1468,7 @@ public final class ContainersImpl {
     public Response<BinaryData> submitBatchWithResponseInternal(long contentLength, BinaryData body,
         RequestOptions requestOptions) {
         final String contentType = "multipart/mixed";
-        final String accept = "multipart/mixed";
+        final String accept = "application/xml";
         try {
             return service.submitBatchSync(this.client.getUrl(), contentType,
                 this.client.getServiceVersion().getVersion(), contentLength, accept, body, requestOptions,
@@ -1692,8 +1692,9 @@ public final class ContainersImpl {
     public Mono<Response<Void>> acquireLeaseWithResponseInternalAsync(int duration, RequestOptions requestOptions) {
         final String action = "acquire";
         return FluxUtil
-            .withContext(context -> service.acquireLease(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), duration, action, requestOptions, context))
+            .withContext(
+                context -> service.acquireLease(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    duration, action, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1751,7 +1752,7 @@ public final class ContainersImpl {
         final String action = "acquire";
         try {
             return service.acquireLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                duration, action, requestOptions, Context.NONE);
+                duration, action, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1808,8 +1809,9 @@ public final class ContainersImpl {
     public Mono<Response<Void>> releaseLeaseWithResponseInternalAsync(String leaseId, RequestOptions requestOptions) {
         final String action = "release";
         return FluxUtil
-            .withContext(context -> service.releaseLease(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), leaseId, action, requestOptions, context))
+            .withContext(
+                context -> service.releaseLease(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    leaseId, action, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1865,7 +1867,7 @@ public final class ContainersImpl {
         final String action = "release";
         try {
             return service.releaseLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
-                action, requestOptions, Context.NONE);
+                action, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -1922,8 +1924,9 @@ public final class ContainersImpl {
     public Mono<Response<Void>> renewLeaseWithResponseInternalAsync(String leaseId, RequestOptions requestOptions) {
         final String action = "renew";
         return FluxUtil
-            .withContext(context -> service.renewLease(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), leaseId, action, requestOptions, context))
+            .withContext(
+                context -> service.renewLease(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    leaseId, action, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1979,7 +1982,7 @@ public final class ContainersImpl {
         final String action = "renew";
         try {
             return service.renewLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
-                action, requestOptions, Context.NONE);
+                action, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -2040,7 +2043,7 @@ public final class ContainersImpl {
         final String action = "break";
         return FluxUtil
             .withContext(context -> service.breakLease(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), action, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), action, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2099,7 +2102,7 @@ public final class ContainersImpl {
         final String action = "break";
         try {
             return service.breakLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), action,
-                requestOptions, Context.NONE);
+                ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -2160,7 +2163,7 @@ public final class ContainersImpl {
         return FluxUtil
             .withContext(
                 context -> service.changeLease(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    leaseId, proposedLeaseId, action, requestOptions, context))
+                    leaseId, proposedLeaseId, action, ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2218,7 +2221,7 @@ public final class ContainersImpl {
         final String action = "change";
         try {
             return service.changeLeaseSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(), leaseId,
-                proposedLeaseId, action, requestOptions, Context.NONE);
+                proposedLeaseId, action, ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -3126,7 +3129,7 @@ public final class ContainersImpl {
     public Mono<Response<Void>> getAccountInfoWithResponseInternalAsync(RequestOptions requestOptions) {
         return FluxUtil
             .withContext(context -> service.getAccountInfo(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), requestOptions, context))
+                this.client.getServiceVersion().getVersion(), ModelHelper.xmlAccept(requestOptions), context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3171,7 +3174,7 @@ public final class ContainersImpl {
     public Response<Void> getAccountInfoWithResponseInternal(RequestOptions requestOptions) {
         try {
             return service.getAccountInfoSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                requestOptions, Context.NONE);
+                ModelHelper.xmlAccept(requestOptions), Context.NONE);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
