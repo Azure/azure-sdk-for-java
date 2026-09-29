@@ -38,6 +38,7 @@ import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLin
 import com.azure.storage.file.share.implementation.models.FilesDeleteHeaders;
 import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetHardLinksHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
@@ -49,6 +50,7 @@ import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeader
 import com.azure.storage.file.share.implementation.models.FilesStartCopyHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
+import com.azure.storage.file.share.implementation.models.HardLinkList;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
@@ -103,6 +105,54 @@ public final class FilesImpl {
     @Host("{url}")
     @ServiceInterface(name = "AzureFileStorageFiles")
     public interface FilesService {
+
+        @Get("/{shareName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Mono<ResponseBase<FilesGetHardLinksHeaders, HardLinkList>> getHardLinks(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
+            @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("fileid") String fileId,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{shareName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Mono<Response<HardLinkList>> getHardLinksNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
+            @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("fileid") String fileId,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{shareName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        ResponseBase<FilesGetHardLinksHeaders, HardLinkList> getHardLinksSync(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
+            @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("fileid") String fileId,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{shareName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Response<HardLinkList> getHardLinksNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("comp") String comp,
+            @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("fileid") String fileId,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
@@ -1511,6 +1561,281 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-target-file") String targetFile,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the file whose hard links are returned.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of hard links for a file along with {@link ResponseBase} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FilesGetHardLinksHeaders, HardLinkList>> getHardLinksWithResponseAsync(String shareName,
+        String fileId, String sharesnapshot, Integer timeout, String requestId, String leaseId) {
+        return FluxUtil
+            .withContext(context -> getHardLinksWithResponseAsync(shareName, fileId, sharesnapshot, timeout, requestId,
+                leaseId, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the file whose hard links are returned.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of hard links for a file along with {@link ResponseBase} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FilesGetHardLinksHeaders, HardLinkList>> getHardLinksWithResponseAsync(String shareName,
+        String fileId, String sharesnapshot, Integer timeout, String requestId, String leaseId, Context context) {
+        final String comp = "hardlinks";
+        final String accept = "application/xml";
+        return service
+            .getHardLinks(this.client.getUrl(), shareName, comp, sharesnapshot, fileId, timeout,
+                this.client.getVersion(), requestId, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the file whose hard links are returned.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of hard links for a file on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<HardLinkList> getHardLinksAsync(String shareName, String fileId, String sharesnapshot, Integer timeout,
+        String requestId, String leaseId) {
+        return getHardLinksWithResponseAsync(shareName, fileId, sharesnapshot, timeout, requestId, leaseId)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the file whose hard links are returned.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of hard links for a file on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<HardLinkList> getHardLinksAsync(String shareName, String fileId, String sharesnapshot, Integer timeout,
+        String requestId, String leaseId, Context context) {
+        return getHardLinksWithResponseAsync(shareName, fileId, sharesnapshot, timeout, requestId, leaseId, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the file whose hard links are returned.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of hard links for a file along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<HardLinkList>> getHardLinksNoCustomHeadersWithResponseAsync(String shareName, String fileId,
+        String sharesnapshot, Integer timeout, String requestId, String leaseId) {
+        return FluxUtil
+            .withContext(context -> getHardLinksNoCustomHeadersWithResponseAsync(shareName, fileId, sharesnapshot,
+                timeout, requestId, leaseId, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the file whose hard links are returned.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of hard links for a file along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<HardLinkList>> getHardLinksNoCustomHeadersWithResponseAsync(String shareName, String fileId,
+        String sharesnapshot, Integer timeout, String requestId, String leaseId, Context context) {
+        final String comp = "hardlinks";
+        final String accept = "application/xml";
+        return service
+            .getHardLinksNoCustomHeaders(this.client.getUrl(), shareName, comp, sharesnapshot, fileId, timeout,
+                this.client.getVersion(), requestId, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the file whose hard links are returned.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of hard links for a file along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<FilesGetHardLinksHeaders, HardLinkList> getHardLinksWithResponse(String shareName,
+        String fileId, String sharesnapshot, Integer timeout, String requestId, String leaseId, Context context) {
+        try {
+            final String comp = "hardlinks";
+            final String accept = "application/xml";
+            return service.getHardLinksSync(this.client.getUrl(), shareName, comp, sharesnapshot, fileId, timeout,
+                this.client.getVersion(), requestId, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, context);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the file whose hard links are returned.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of hard links for a file.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HardLinkList getHardLinks(String shareName, String fileId, String sharesnapshot, Integer timeout,
+        String requestId, String leaseId) {
+        try {
+            return getHardLinksWithResponse(shareName, fileId, sharesnapshot, timeout, requestId, leaseId, Context.NONE)
+                .getValue();
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
+     * for the file. NFS only.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the file whose hard links are returned.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of hard links for a file along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HardLinkList> getHardLinksNoCustomHeadersWithResponse(String shareName, String fileId,
+        String sharesnapshot, Integer timeout, String requestId, String leaseId, Context context) {
+        try {
+            final String comp = "hardlinks";
+            final String accept = "application/xml";
+            return service.getHardLinksNoCustomHeadersSync(this.client.getUrl(), shareName, comp, sharesnapshot, fileId,
+                timeout, this.client.getVersion(), requestId, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, context);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
     }
 
     /**
