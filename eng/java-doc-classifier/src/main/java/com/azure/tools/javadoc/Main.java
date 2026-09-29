@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.Base64;
 
 /**
- * Compares source pairs until one rules out test exclusion, without executing the compared classes.
+ * Compares source pairs without executing the compared classes.
  */
 public final class Main {
     private static final int MAX_SOURCE_BYTES = 2 * 1024 * 1024;
@@ -38,11 +38,15 @@ public final class Main {
         try (BufferedReader reader = "--stdio".equals(args[0])
             ? new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))
             : Files.newBufferedReader(Paths.get(args[0]), StandardCharsets.UTF_8)) {
-            classify(reader, new PrintWriter(System.out, true));
+            classify(reader, new PrintWriter(System.out, true), !"--stdio".equals(args[0]));
         }
     }
 
     static void classify(BufferedReader reader, PrintWriter writer) throws IOException {
+        classify(reader, writer, true);
+    }
+
+    static void classify(BufferedReader reader, PrintWriter writer, boolean stopOnRejection) throws IOException {
         DocumentationClassifier classifier = new DocumentationClassifier();
         int count = 0;
         String line;
@@ -58,7 +62,7 @@ public final class Main {
                 throw new IOException("Could not write comparison results.");
             }
             count++;
-            if (!DocumentationClassifier.isEligible(reason)) {
+            if (stopOnRejection && !DocumentationClassifier.isEligible(reason)) {
                 return;
             }
         }

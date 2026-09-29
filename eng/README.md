@@ -111,7 +111,9 @@ artifact metadata, or dependency download. Changelog format guidance is in the
 
 An opt-in [Java documentation classifier](java-doc-classifier/README.md) reads
 complete PR merge snapshots and reports supported Javadoc, ordinary-comment, and
-formatting changes without changed code tokens.
+formatting changes separately for each Maven library. A triggering change stops
+checks within that library, not unrelated libraries. Shared inputs remain
+conservative, and dependency impact is not evaluated.
 It detects Track 2 data-plane libraries from existing Maven metadata, without a
 per-library allowlist or POM hashes. Management and Track 1 libraries are excluded.
 It runs in the existing matrix-generation job when `JavaDocClassifierReportOnly=true`.

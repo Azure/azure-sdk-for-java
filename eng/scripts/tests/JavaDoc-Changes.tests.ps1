@@ -131,6 +131,95 @@ BeforeAll {
         $fixture | Add-Member -NotePropertyName SourcePaths -NotePropertyValue $paths
         return $fixture
     }
+
+    function New-LibraryFixture {
+        param(
+            [int]$TriggeringLibrary = -1,
+            [string]$Trigger = 'code',
+            [string]$SharedPath,
+            [switch]$SameService
+        )
+        $fixture = New-JavaDocFixture
+        $modules = if ($SameService) {
+            @('sdk/keyvault/azure-security-keyvault-keys', 'sdk/keyvault/azure-security-keyvault-secrets')
+        } else {
+            @('sdk/appconfiguration/azure-data-appconfiguration', 'sdk/keyvault/azure-security-keyvault-secrets')
+        }
+        $sourcePaths = @()
+        $null = Invoke-FixtureGit $fixture.Root @('checkout', '-q', 'main')
+        for ($libraryIndex = 0; $libraryIndex -lt $modules.Count; $libraryIndex++) {
+            $module = $modules[$libraryIndex]
+            $pom = $script:Track2Pom.Replace('azure-example', $module.Split('/')[-1])
+            if ($libraryIndex -eq $TriggeringLibrary -and $Trigger -eq 'management') {
+                $pom = $pom.Replace('<groupId>com.azure</groupId>', '<groupId>com.azure.resourcemanager</groupId>')
+            }
+            if ($libraryIndex -eq $TriggeringLibrary -and $Trigger -eq 'invalid-metadata') {
+                $pom = '<project>'
+            }
+            Write-FixtureFile $fixture.Root "$module/pom.xml" $pom
+            Write-FixtureFile $fixture.Root "$module/README.md" 'Documentation.'
+            Write-FixtureFile $fixture.Root "$module/src/test/resources/config.json" '{"value":1}'
+            for ($i = 0; $i -lt 2; $i++) {
+                $path = "$module/src/main/java/Example$i.java"
+                $sourcePaths += $path
+                Write-FixtureFile $fixture.Root $path $script:BeforeSource.Replace('Example', "Example${libraryIndex}_$i")
+            }
+        }
+        Save-FixtureCommit $fixture.Root
+        $null = Invoke-FixtureGit $fixture.Root @('checkout', '-q', '-B', 'feature', 'main')
+        for ($libraryIndex = 0; $libraryIndex -lt $modules.Count; $libraryIndex++) {
+            for ($i = 0; $i -lt 2; $i++) {
+                if ($libraryIndex -eq $TriggeringLibrary -and $Trigger -eq 'readme') {
+                    continue
+                }
+                $source = $script:AfterSource.Replace('Example', "Example${libraryIndex}_$i")
+                if ($libraryIndex -eq $TriggeringLibrary -and $i -eq 0) {
+                    switch ($Trigger) {
+                        'code' { $source = $source.Replace('"name"', '"other"') }
+                        'syntax' { $source = 'class Broken {' }
+                        'encoding' { $source = [string][char]0xfeff + $source }
+                        'oversized' { $source = '/**' + ('a' * 2MB) + '*/ class Example {}' }
+                    }
+                }
+                Write-FixtureFile $fixture.Root $sourcePaths[$libraryIndex * 2 + $i] $source
+            }
+            if ($libraryIndex -eq $TriggeringLibrary) {
+                switch ($Trigger) {
+                    'readme' { Write-FixtureFile $fixture.Root "$($modules[$libraryIndex])/README.md" 'Updated docs.' }
+                    'resource' {
+                        Write-FixtureFile $fixture.Root "$($modules[$libraryIndex])/src/test/resources/config.json" `
+                            '{"value":2}'
+                    }
+                    'pom' {
+                        Write-FixtureFile $fixture.Root "$($modules[$libraryIndex])/pom.xml" `
+                            $script:Track2Pom.Replace('1.0.0', '2.0.0')
+                    }
+                    'added-source' {
+                        Write-FixtureFile $fixture.Root "$($modules[$libraryIndex])/src/main/java/Added.java" `
+                            'class Added {}'
+                    }
+                    'deleted-source' {
+                        Remove-Item -LiteralPath (Join-Path $fixture.Root $sourcePaths[$libraryIndex * 2])
+                    }
+                    'test-source' {
+                        Write-FixtureFile $fixture.Root "$($modules[$libraryIndex])/src/test/java/ExampleTests.java" `
+                            'class ExampleTests {}'
+                    }
+                    'codegen' {
+                        Write-FixtureFile $fixture.Root "$($modules[$libraryIndex])/tsp-location.yaml" 'directory: example'
+                    }
+                }
+            }
+        }
+        if ($SharedPath) {
+            Write-FixtureFile $fixture.Root $SharedPath 'Shared build input.'
+        }
+        Save-FixtureCommit $fixture.Root
+        Complete-JavaDocFixture $fixture
+        $fixture | Add-Member -NotePropertyName Modules -NotePropertyValue $modules
+        $fixture | Add-Member -NotePropertyName SourcePaths -NotePropertyValue $sourcePaths
+        return $fixture
+    }
 }
 
 Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
@@ -167,10 +256,15 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         $result.Files[0].Compared | Should -BeTrue
         $result.Files[0].Reason | Should -BeExactly 'javadoc-only'
         $result.LibraryScope | Should -BeExactly 'track2-data-plane'
+        $result.SchemaVersion | Should -Be 2
+        $result.DependencyImpactEvaluated | Should -BeFalse
+        $result.Libraries.Count | Should -Be 1
+        $result.Libraries[0].Decision | Should -BeExactly 'Eligible'
+        $result.EligibleLibraryCount | Should -Be 1
         $result.Files[0].MavenCoordinates | Should -BeExactly 'com.azure:azure-example'
     }
 
-    It 'stops fetching and comparing sources after candidate <RejectAt> rejects the PR' -TestCases @(
+    It 'stops fetching and comparing within a library after candidate <RejectAt> rejects it' -TestCases @(
         @{ RejectAt = 0 }
         @{ RejectAt = 1 }
         @{ RejectAt = 2 }
@@ -197,6 +291,168 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
             $result.Files[$i].Compared | Should -BeFalse
         }
         Should -Invoke Start-JavaDocProcess -Times 1 -ParameterFilter { $FilePath -eq 'java' }
+    }
+
+    It 'reports two documentation-only libraries independently' {
+        $fixture = New-LibraryFixture
+        Mock Start-JavaDocProcess {
+            return & $script:OriginalStartJavaDocProcess -FilePath $FilePath -Arguments $Arguments `
+                -WorkingDirectory $WorkingDirectory -RedirectInput
+        } -ParameterFilter { $FilePath -eq 'java' }
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'Eligible'
+        $result.Libraries.Count | Should -Be 2
+        $result.EligibleLibraryCount | Should -Be 2
+        $result.ComparedFileCount | Should -Be 4
+        foreach ($library in $result.Libraries) {
+            $library.Decision | Should -BeExactly 'Eligible'
+            $library.ComparedFileCount | Should -Be 2
+            $library.CandidateFileCount | Should -Be 2
+        }
+        Should -Invoke Start-JavaDocProcess -Times 1 -ParameterFilter { $FilePath -eq 'java' }
+    }
+
+    It 'does not let triggering library <TriggeringLibrary> stop the other library' -TestCases @(
+        @{ TriggeringLibrary = 0 }
+        @{ TriggeringLibrary = 1 }
+    ) {
+        param($TriggeringLibrary)
+        $fixture = New-LibraryFixture -TriggeringLibrary $TriggeringLibrary
+        $script:ReadSourceBlobs = [System.Collections.Generic.List[string]]::new()
+        Mock Get-JavaDocSource {
+            $script:ReadSourceBlobs.Add($Blob)
+            return & $script:OriginalGetJavaDocSource $RepositoryRoot $Blob
+        }
+        Mock Start-JavaDocProcess {
+            return & $script:OriginalStartJavaDocProcess -FilePath $FilePath -Arguments $Arguments `
+                -WorkingDirectory $WorkingDirectory -RedirectInput
+        } -ParameterFilter { $FilePath -eq 'java' }
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'PartiallyEligible'
+        $result.WouldSuppressTests | Should -BeFalse
+        $result.SuppressionApplied | Should -BeFalse
+        $result.EligibleLibraryCount | Should -Be 1
+        $result.Libraries[$TriggeringLibrary].Decision | Should -BeExactly 'NotEligible'
+        $result.Libraries[$TriggeringLibrary].ComparedFileCount | Should -Be 1
+        $result.Libraries[$TriggeringLibrary].Files[1].Reason | Should -BeExactly 'not-evaluated'
+        $other = $result.Libraries[1 - $TriggeringLibrary]
+        $other.Decision | Should -BeExactly 'Eligible'
+        $other.ComparedFileCount | Should -Be 2
+        $result.ComparedFileCount | Should -Be 3
+        $script:ReadSourceBlobs.Count | Should -Be 6
+        Should -Invoke Start-JavaDocProcess -Times 1 -ParameterFilter { $FilePath -eq 'java' }
+    }
+
+    It 'evaluates sibling Maven libraries separately even within the same service' {
+        $fixture = New-LibraryFixture -SameService -TriggeringLibrary 0
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'PartiallyEligible'
+        $result.Libraries[0].Decision | Should -BeExactly 'NotEligible'
+        $result.Libraries[1].Decision | Should -BeExactly 'Eligible'
+        $result.Libraries[1].Module | Should -BeExactly 'sdk/keyvault/azure-security-keyvault-secrets'
+        $result.ComparedFileCount | Should -Be 3
+    }
+
+    It 'uses the existing path policy for a library with only consumer-documentation changes' {
+        $fixture = New-LibraryFixture -TriggeringLibrary 0 -Trigger 'readme'
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'Eligible'
+        $result.EligibleLibraryCount | Should -Be 2
+        $result.Libraries[0].Decision | Should -BeExactly 'Eligible'
+        $result.Libraries[0].Reason | Should -BeExactly 'existing-non-runtime-validation'
+        $result.Libraries[0].CandidateFileCount | Should -Be 0
+        $result.Libraries[0].ComparedFileCount | Should -Be 0
+        $result.Libraries[1].ComparedFileCount | Should -Be 2
+    }
+
+    It 'keeps <Trigger> failures or inputs local to their owning library' -TestCases @(
+        @{ Trigger = 'syntax'; Expected = 'Inconclusive'; Reason = 'source-parse-error' }
+        @{ Trigger = 'encoding'; Expected = 'Inconclusive'; Reason = 'source-read-error' }
+        @{ Trigger = 'oversized'; Expected = 'NotEligible'; Reason = 'source-size-limit-exceeded' }
+        @{ Trigger = 'resource'; Expected = 'NotEligible'; Reason = 'unsupported-or-mixed-changes' }
+        @{ Trigger = 'pom'; Expected = 'NotEligible'; Reason = 'unsupported-or-mixed-changes' }
+        @{ Trigger = 'added-source'; Expected = 'NotEligible'; Reason = 'unsupported-or-mixed-changes' }
+        @{ Trigger = 'deleted-source'; Expected = 'NotEligible'; Reason = 'unsupported-or-mixed-changes' }
+        @{ Trigger = 'test-source'; Expected = 'NotEligible'; Reason = 'unsupported-or-mixed-changes' }
+        @{ Trigger = 'codegen'; Expected = 'NotEligible'; Reason = 'unsupported-or-mixed-changes' }
+        @{ Trigger = 'management'; Expected = 'NotEligible'; Reason = 'unsupported-library-kind' }
+        @{ Trigger = 'invalid-metadata'; Expected = 'Inconclusive'; Reason = 'classifier-error' }
+    ) {
+        param($Trigger, $Expected, $Reason)
+        $fixture = New-LibraryFixture -TriggeringLibrary 0 -Trigger $Trigger
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'PartiallyEligible'
+        $result.Libraries[0].Decision | Should -BeExactly $Expected
+        $result.Libraries[0].Reason | Should -BeExactly $Reason
+        $result.Libraries[1].Decision | Should -BeExactly 'Eligible'
+        $result.Libraries[1].ComparedFileCount | Should -Be 2
+        $result.EligibleLibraryCount | Should -Be 1
+        $result.WouldSuppressTests | Should -BeFalse
+    }
+
+    It 'keeps repository-wide <Path> changes conservative for all libraries' -TestCases @(
+        @{ Path = 'pom.xml' }
+        @{ Path = 'eng/scripts/build.ps1' }
+        @{ Path = 'sdk/parents/azure-client-sdk-parent/pom.xml' }
+    ) {
+        param($Path)
+        $fixture = New-LibraryFixture -SharedPath $Path
+        Mock Invoke-JavaDocComparisons { throw 'Shared changes must not run Java comparisons.' }
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'NotEligible'
+        $result.SharedChanges.Path | Should -Contain $Path
+        $result.EligibleLibraryCount | Should -Be 0
+        foreach ($library in $result.Libraries) {
+            $library.Decision | Should -BeExactly 'NotEligible'
+            $library.Reason | Should -BeExactly 'shared-input-change'
+            $library.DecisionFile | Should -BeExactly $Path
+            $library.ComparedFileCount | Should -Be 0
+        }
+        Should -Invoke Invoke-JavaDocComparisons -Times 0
+    }
+
+    It 'keeps a shared service input local to its service: <Path>' -TestCases @(
+        @{ Path = 'sdk/keyvault/ci.yml' }
+        @{ Path = 'sdk/keyvault/test-resources/resources.json' }
+    ) {
+        param($Path)
+        $fixture = New-LibraryFixture -SharedPath $Path
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'PartiallyEligible'
+        $result.SharedChanges.Path | Should -Contain $Path
+        $result.SharedChanges[0].SharedScope | Should -BeExactly 'service'
+        $result.Libraries[0].Decision | Should -BeExactly 'Eligible'
+        $result.Libraries[0].ComparedFileCount | Should -Be 2
+        $result.Libraries[1].Decision | Should -BeExactly 'NotEligible'
+        $result.Libraries[1].Reason | Should -BeExactly 'shared-input-change'
+        $result.Libraries[1].DecisionFile | Should -BeExactly $Path
+        $result.Libraries[1].ComparedFileCount | Should -Be 0
+        $result.EligibleLibraryCount | Should -Be 1
+        $result.WouldSuppressTests | Should -BeFalse
+    }
+
+    It 'does not approve the whole PR when a shared service input has no directly changed library' {
+        $fixture = New-LibraryFixture -SharedPath 'sdk/another-service/ci.yml'
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'PartiallyEligible'
+        $result.EligibleLibraryCount | Should -Be 2
+        $result.ComparedFileCount | Should -Be 4
+        $result.WouldSuppressTests | Should -BeFalse
+        $result.SharedChanges.Path | Should -Contain 'sdk/another-service/ci.yml'
+    }
+
+    It 'treats a parser process failure as inconclusive rather than approving partial library results' {
+        $fixture = New-LibraryFixture
+        Mock Start-JavaDocProcess {
+            Start-FixtureParserProcess -Body '$null = [Console]::ReadLine(); [Console]::WriteLine("0`tjavadoc-only"); exit 7'
+        } -ParameterFilter { $FilePath -eq 'java' }
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'Inconclusive'
+        $result.EligibleLibraryCount | Should -Be 0
+        $result.WouldSuppressTests | Should -BeFalse
+        foreach ($library in $result.Libraries) {
+            $library.Decision | Should -BeExactly 'Inconclusive'
+        }
     }
 
     It 'uses one parser and checks every candidate before reporting eligibility' {
@@ -319,7 +575,12 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         $snapshot = Get-JavaDocMergeSnapshot $fixture.Root $fixture.Head $fixture.Source
         $candidate = [PSCustomObject]@{
             Change = $snapshot.Changes[0]
-            File = [PSCustomObject]@{ Reason = 'pending-source-comparison'; Compared = $false }
+            File = [PSCustomObject]@{
+                Module = 'sdk/example/example'
+                Reason = 'pending-source-comparison'
+                Compared = $false
+                Error = $null
+            }
         }
         Mock Start-JavaDocProcess {
             $body = if ($Phase -eq 'response') {
@@ -644,6 +905,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
                             NewBlob = '5' * 40
                             Status = 'M'
                         }
+                        Mock Get-JavaDocLibraryRoot { return $ModulePath }
                     }
                 )
             }
@@ -655,12 +917,18 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
                 ArtifactId = 'azure-example'
             }
         }
-        Mock Invoke-JavaDocComparisons { throw 'Parser should not run for mixed library kinds.' }
+        Mock Invoke-JavaDocComparisons {
+            $Candidates.Count | Should -Be 1
+            $Candidates[0].File.Reason = 'javadoc-only'
+            $Candidates[0].File.Compared = $true
+        }
         $result = Get-JavaDocChangeReport -RepositoryRoot $TestDrive -ExpectedHeadSha ('1' * 40) `
             -ParserJar $script:ParserJar
-        $result.Reason | Should -BeExactly 'unsupported-library-kind'
+        $result.Decision | Should -BeExactly 'PartiallyEligible'
+        $result.Libraries.Count | Should -Be 2
+        $result.Libraries[1].Reason | Should -BeExactly 'unsupported-library-kind'
         Should -Invoke Get-JavaDocModuleClassification -Times 2
-        Should -Invoke Invoke-JavaDocComparisons -Times 0
+        Should -Invoke Invoke-JavaDocComparisons -Times 1
     }
 
     It 'does not approve incomplete or unsafe POM metadata: <Kind>' -TestCases @(
@@ -961,6 +1229,7 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         ($output -join "`n") | Should -Match 'variable=JavaDocReportDecision;isOutput=true]Eligible'
         ($output -join "`n") | Should -Match 'variable=JavaDocReportReason;isOutput=true]supported-non-code-changes'
         ($output -join "`n") | Should -Match 'variable=JavaDocReportMilliseconds;isOutput=true]\d+'
+        ($output -join "`n") | Should -Match 'variable=JavaDocReportEligibleLibraryCount;isOutput=true]1'
         ($output -join "`n") | Should -Match 'task.uploadfile'
         ($output -join "`n") | Should -Not -Match 'JavaTestsSuppressed|variable=RunTests'
         foreach ($invalid in @(
@@ -979,6 +1248,30 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
             $result.Reason | Should -BeExactly 'unsupported-pipeline-context'
             [Environment]::SetEnvironmentVariable($invalid.Name, $previous)
         }
+    }
+
+    It 'publishes library counts without making a mixed PR eligible for full suppression' {
+        $fixture = New-LibraryFixture -TriggeringLibrary 0
+        $env:BUILD_REASON = 'PullRequest'
+        $env:SYSTEM_TEAMPROJECT = 'public'
+        $env:BUILD_REPOSITORY_NAME = 'Azure/azure-sdk-for-java'
+        $env:BUILD_SOURCEVERSION = $fixture.Head
+        $env:BUILD_SOURCEBRANCH = 'refs/pull/1/merge'
+        $env:SYSTEM_PULLREQUEST_TARGETBRANCH = 'refs/heads/main'
+        $env:SYSTEM_PULLREQUEST_SOURCECOMMITID = $fixture.Source
+        $reportPath = Join-Path $TestDrive 'mixed-library-report.json'
+        $output = & $script:Observer -RepositoryRoot $fixture.Root -ExpectedHeadSha $fixture.Head `
+            -ExpectedSourceSha $fixture.Source -ParserJar $script:ParserJar -OutputPath $reportPath -Pipeline 6>&1
+        ($output -join "`n") | Should -Match 'variable=JavaDocReportEligible;isOutput=true]false'
+        ($output -join "`n") | Should -Match 'variable=JavaDocReportDecision;isOutput=true]PartiallyEligible'
+        ($output -join "`n") | Should -Match 'variable=JavaDocReportEligibleLibraryCount;isOutput=true]1'
+        ($output -join "`n") | Should -Not -Match 'JavaTestsSuppressed|variable=RunTests'
+        $report = Get-Content -LiteralPath $reportPath -Raw | ConvertFrom-Json
+        $report.SchemaVersion | Should -Be 2
+        $report.Libraries[0].Decision | Should -BeExactly 'NotEligible'
+        $report.Libraries[1].Decision | Should -BeExactly 'Eligible'
+        $report.DependencyImpactEvaluated | Should -BeFalse
+        $report.SuppressionApplied | Should -BeFalse
     }
 }
 

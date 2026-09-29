@@ -140,6 +140,18 @@ class MainTests {
         }
     }
 
+    @Test
+    void interactiveModeAllowsTheCallerToContinueWithAnotherLibrary() throws IOException {
+        StringWriter output = new StringWriter();
+        Main.classify(new BufferedReader(new StringReader(
+            pair(0, "class First { int x; }", "class First { int y; }")
+                + pair(1, "/** Old. */ class Second {}", "/** New. */ class Second {}")
+                + pair(2, "class Broken {}", "class Broken {")
+                + pair(3, "class Last {}", "class Last { }"))), new PrintWriter(output), false);
+        assertEquals("0\tnon-documentation-change\n1\tjavadoc-only\n2\tparse-error\n3\twhitespace-only\n",
+            output.toString().replace("\r\n", "\n"));
+    }
+
     private static String pair(int index, String before, String after) {
         return index + "\t" + Base64.getEncoder().encodeToString(before.getBytes(StandardCharsets.UTF_8))
             + "\t" + Base64.getEncoder().encodeToString(after.getBytes(StandardCharsets.UTF_8)) + "\n";

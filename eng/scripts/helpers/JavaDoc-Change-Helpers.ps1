@@ -282,26 +282,43 @@ function Invoke-JavaDocComparisons {
 
     $process = $null
     $candidate = $null
-    $comparisonTimer = [System.Diagnostics.Stopwatch]::new()
+    $comparisonTimer = [System.Diagnostics.Stopwatch]::StartNew()
+    $blockedModules = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
+    $sequence = 0
     try {
-        for ($i = 0; $i -lt $Candidates.Count; $i++) {
-            $candidate = $Candidates[$i]
+        foreach ($candidate in $Candidates) {
+            $module = $candidate.File.Module
+            if ($blockedModules.Contains($module)) {
+                continue
+            }
             if ($comparisonTimer.IsRunning -and $comparisonTimer.Elapsed.TotalSeconds -ge $TimeoutSeconds) {
                 throw "Java documentation comparison exceeded the $TimeoutSeconds second timeout."
             }
-            $before = Get-JavaDocSource $RepositoryRoot $candidate.Change.OldBlob
-            if ($null -eq $before) {
-                $candidate.File.Reason = 'source-size-limit-exceeded'
-                break
+            try {
+                $before = Get-JavaDocSource $RepositoryRoot $candidate.Change.OldBlob
+                $after = if ($null -ne $before) {
+                    Get-JavaDocSource $RepositoryRoot $candidate.Change.NewBlob
+                } else {
+                    $null
+                }
+            } catch {
+                $candidate.File.Reason = 'source-read-error'
+                $candidate.File.Error = $_.Exception.Message
+                $null = $blockedModules.Add($module)
+                continue
             }
-            $after = Get-JavaDocSource $RepositoryRoot $candidate.Change.NewBlob
-            if ($null -eq $after) {
+            if ($null -eq $before -or $null -eq $after) {
                 $candidate.File.Reason = 'source-size-limit-exceeded'
-                break
+                $null = $blockedModules.Add($module)
+                continue
             }
             if (-not $process) {
-                $jar = Resolve-JavaDocParserJar -ParserJar $ParserJar
-                $comparisonTimer.Start()
+                $comparisonTimer.Stop()
+                try {
+                    $jar = Resolve-JavaDocParserJar -ParserJar $ParserJar
+                } finally {
+                    $comparisonTimer.Start()
+                }
                 $process = Start-JavaDocProcess -FilePath 'java' -Arguments @('-jar', $jar, '--stdio') `
                     -WorkingDirectory $RepositoryRoot -RedirectInput
                 $process.StandardInput.AutoFlush = $true
@@ -309,7 +326,8 @@ function Invoke-JavaDocComparisons {
             }
             $oldContent = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($before))
             $newContent = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($after))
-            $null = Wait-JavaDocComparisonOperation $process.StandardInput.WriteLineAsync("$i`t$oldContent`t$newContent") `
+            $null = Wait-JavaDocComparisonOperation `
+                $process.StandardInput.WriteLineAsync("$sequence`t$oldContent`t$newContent") `
                 $comparisonTimer $TimeoutSeconds
             $line = Wait-JavaDocComparisonOperation $process.StandardOutput.ReadLineAsync() `
                 $comparisonTimer $TimeoutSeconds
@@ -317,14 +335,15 @@ function Invoke-JavaDocComparisons {
                 throw 'The Java documentation parser returned an incomplete result set.'
             }
             $fields = $line.Split("`t")
-            if ($fields.Count -ne 2 -or $fields[0] -cne [string]$i -or
+            if ($fields.Count -ne 2 -or $fields[0] -cne [string]$sequence -or
                 $fields[1] -cnotin $script:JavaDocKnownReasons) {
                 throw 'The Java documentation parser returned an invalid result.'
             }
             $candidate.File.Reason = $fields[1]
             $candidate.File.Compared = $true
+            $sequence++
             if ($fields[1] -cnotin $script:JavaDocEligibleReasons) {
-                break
+                $null = $blockedModules.Add($module)
             }
         }
         if ($process) {
@@ -357,6 +376,91 @@ function Invoke-JavaDocComparisons {
     }
 }
 
+function Get-JavaDocLibraryRoot {
+    param([string]$RepositoryRoot, [string]$HeadSha, [string]$BaseSha, [string]$ModulePath)
+
+    if ($ModulePath -cmatch '^sdk/(parents|boms|tools)/') {
+        return $null
+    }
+    $pomPath = "$ModulePath/pom.xml"
+    foreach ($revision in @($HeadSha, $BaseSha)) {
+        $entry = Invoke-JavaDocGit $RepositoryRoot @('ls-tree', '--full-tree', '-z', $revision, '--', $pomPath)
+        if ($entry -cmatch '^100644 blob [0-9a-f]{40}\t([^\x00]+)\x00$' -and $Matches[1] -ceq $pomPath) {
+            return $ModulePath
+        }
+    }
+    return $null
+}
+
+function Write-JavaDocReportWarning {
+    param([string]$Message)
+
+    $logError = $Message.Replace("`r", ' ').Replace("`n", ' ').Replace('##vso[', '##vso%5B')
+    Write-Warning "Java documentation classification is inconclusive: $logError"
+}
+
+function Complete-JavaDocLibraryReport {
+    param($Library, [string]$ComparisonError)
+
+    $Library.ComparedFileCount = @($Library.Files | Where-Object Compared).Count
+    if ($Library.Decision -ceq 'Pending') {
+        $failedFile = $Library.Files | Where-Object {
+            $_.Reason -cnotin ($script:JavaDocEligibleReasons + @(
+                'pending-source-comparison', 'existing-non-runtime-validation'
+            ))
+        } | Select-Object -First 1
+        if ($ComparisonError) {
+            $Library.Decision = 'Inconclusive'
+            $Library.Reason = 'classifier-error'
+            $Library.Error = $ComparisonError
+        } elseif ($failedFile) {
+            $Library.DecisionFile = $failedFile.Path
+            switch -CaseSensitive ($failedFile.Reason) {
+                'parse-error' {
+                    $Library.Decision = 'Inconclusive'
+                    $Library.Reason = 'source-parse-error'
+                }
+                'source-read-error' {
+                    $Library.Decision = 'Inconclusive'
+                    $Library.Reason = 'source-read-error'
+                    $Library.Error = $failedFile.Error
+                    Write-JavaDocReportWarning $Library.Error
+                }
+                'source-size-limit-exceeded' {
+                    $Library.Decision = 'NotEligible'
+                    $Library.Reason = 'source-size-limit-exceeded'
+                }
+                default {
+                    $Library.Decision = 'NotEligible'
+                    $Library.Reason = 'source-comparison-rejected'
+                }
+            }
+        } elseif ($Library.ComparedFileCount -ne $Library.CandidateFileCount) {
+            $Library.Decision = 'Inconclusive'
+            $Library.Reason = 'classifier-error'
+            $Library.Error = 'The Java documentation parser returned an incomplete result set.'
+            Write-JavaDocReportWarning $Library.Error
+        } else {
+            $Library.Decision = 'Eligible'
+            $Library.Reason = if ($Library.CandidateFileCount -gt 0) {
+                'supported-non-code-changes'
+            } else {
+                'existing-non-runtime-validation'
+            }
+        }
+    }
+    if (-not $Library.DecisionFile) {
+        $decisionFile = $Library.Files | Where-Object {
+            $_.Reason -cnotin ($script:JavaDocEligibleReasons + @(
+                'pending-source-comparison', 'existing-non-runtime-validation'
+            ))
+        } | Select-Object -First 1
+        if ($decisionFile) {
+            $Library.DecisionFile = $decisionFile.Path
+        }
+    }
+}
+
 function Get-JavaDocChangeReport {
     [CmdletBinding()]
     param(
@@ -370,7 +474,7 @@ function Get-JavaDocChangeReport {
 
     $timer = [System.Diagnostics.Stopwatch]::StartNew()
     $result = [PSCustomObject][ordered]@{
-        SchemaVersion = 1
+        SchemaVersion = 2
         Mode = 'report-only'
         Decision = 'NotEligible'
         Reason = 'not-evaluated'
@@ -387,6 +491,10 @@ function Get-JavaDocChangeReport {
         DurationMilliseconds = 0
         Error = $null
         LibraryScope = 'track2-data-plane'
+        DependencyImpactEvaluated = $false
+        EligibleLibraryCount = 0
+        Libraries = @()
+        SharedChanges = @()
         Files = @()
     }
     try {
@@ -417,26 +525,58 @@ function Get-JavaDocChangeReport {
         $legacyClassifier = Join-Path $PSScriptRoot '..' 'Classify-PRChanges.ps1'
         $pathClassification = & $legacyClassifier -ChangedFiles $snapshot.Changes.Path -PassThru 6>$null
         $candidates = @()
+        $owners = [System.Collections.Generic.Dictionary[string, object]]::new([System.StringComparer]::Ordinal)
+        $libraries = [System.Collections.Generic.Dictionary[string, object]]::new([System.StringComparer]::Ordinal)
         foreach ($change in $snapshot.Changes) {
             $file = [PSCustomObject]@{
                 Path = $change.Path
                 Status = $change.Status
                 Module = $null
+                ServiceDirectory = $null
+                SharedScope = $null
                 MavenCoordinates = $null
                 Compared = $false
+                Error = $null
                 Reason = 'unsupported-path'
             }
             $result.Files += $file
+            if ($change.Path -cmatch '^sdk/([^/]+)/') {
+                $file.ServiceDirectory = $Matches[1]
+            }
+            if ($change.Path -cmatch '^(sdk/[^/]+/[^/]+)/') {
+                $module = $Matches[1]
+                if (-not $owners.ContainsKey($module)) {
+                    $owners[$module] = Get-JavaDocLibraryRoot $RepositoryRoot $snapshot.HeadSha `
+                        $snapshot.BaseSha $module
+                }
+                $file.Module = $owners[$module]
+            }
+            if ($file.Module) {
+                if (-not $libraries.ContainsKey($file.Module)) {
+                    $library = [PSCustomObject][ordered]@{
+                        Module = $file.Module
+                        MavenCoordinates = $null
+                        Decision = 'Pending'
+                        Reason = 'not-evaluated'
+                        CandidateFileCount = 0
+                        ComparedFileCount = 0
+                        DecisionFile = $null
+                        Error = $null
+                        Files = @()
+                    }
+                    $libraries[$file.Module] = $library
+                    $result.Libraries += $library
+                }
+                $libraries[$file.Module].Files += $file
+            }
             $pathResult = @($pathClassification.Paths | Where-Object { $_.Path -ceq $change.Path })
             if ($pathResult.Count -eq 1 -and -not $pathResult[0].RequiresJavaTests) {
                 $file.Reason = 'existing-non-runtime-validation'
                 continue
             }
-            if ($change.Path -cnotmatch '^(sdk/[^/]+/[^/]+)/src/main/java/.+\.java$') {
+            if (-not $file.Module -or $change.Path -cnotmatch '^sdk/[^/]+/[^/]+/src/main/java/.+\.java$') {
                 continue
             }
-            $module = $Matches[1]
-            $file.Module = $module
             if ($change.Status -cne 'M' -or $change.OldMode -cne '100644' -or $change.NewMode -cne '100644') {
                 $file.Reason = 'unsupported-source-status'
                 continue
@@ -446,72 +586,127 @@ function Get-JavaDocChangeReport {
                 continue
             }
             $file.Reason = 'pending-source-comparison'
+            $libraries[$file.Module].CandidateFileCount++
             $candidates += [PSCustomObject]@{ Change = $change; File = $file }
         }
         $result.CandidateFileCount = $candidates.Count
-        if (@($result.Files | Where-Object {
-            $_.Reason -cnotin @('pending-source-comparison', 'existing-non-runtime-validation')
-        }).Count -gt 0) {
+        $result.SharedChanges = @($result.Files | Where-Object {
+            -not $_.Module -and $_.Reason -cne 'existing-non-runtime-validation'
+        })
+        foreach ($sharedChange in $result.SharedChanges) {
+            $sharedChange.SharedScope = if ($sharedChange.ServiceDirectory -and
+                $sharedChange.ServiceDirectory -cnotin @('parents', 'boms', 'tools')) { 'service' } else { 'repository' }
+        }
+        $repositoryChanges = @($result.SharedChanges | Where-Object SharedScope -CEQ 'repository')
+        if ($repositoryChanges.Count -gt 0) {
+            foreach ($library in $result.Libraries) {
+                $library.Decision = 'NotEligible'
+                $library.Reason = 'shared-input-change'
+                $library.DecisionFile = $repositoryChanges[0].Path
+            }
             $result.Reason = 'unsupported-or-mixed-changes'
             return $result
         }
-        if ($candidates.Count -eq 0) {
-            $result.Reason = 'no-java-candidates'
+        if ($result.Libraries.Count -eq 0) {
+            $result.Reason = if ($result.SharedChanges.Count -gt 0) {
+                'unsupported-or-mixed-changes'
+            } else {
+                'no-java-candidates'
+            }
             return $result
         }
-        $modules = [System.Collections.Generic.Dictionary[string, object]]::new([System.StringComparer]::Ordinal)
-        foreach ($candidate in $candidates) {
-            $module = $candidate.File.Module
-            if (-not $modules.ContainsKey($module)) {
-                try {
-                    $modules[$module] = Get-JavaDocModuleClassification $RepositoryRoot $snapshot.HeadSha $module
-                } catch {
-                    $candidate.File.Reason = 'module-classification-error'
-                    throw
+        foreach ($library in $result.Libraries) {
+            $service = $library.Module.Split('/')[1]
+            $serviceChange = $result.SharedChanges | Where-Object {
+                $_.SharedScope -ceq 'service' -and $_.ServiceDirectory -ceq $service
+            } | Select-Object -First 1
+            if ($serviceChange) {
+                $library.Decision = 'NotEligible'
+                $library.Reason = 'shared-input-change'
+                $library.DecisionFile = $serviceChange.Path
+                continue
+            }
+            $triggeringFile = $library.Files | Where-Object {
+                $_.Reason -cnotin @('pending-source-comparison', 'existing-non-runtime-validation')
+            } | Select-Object -First 1
+            if ($triggeringFile) {
+                $library.Decision = 'NotEligible'
+                $library.Reason = 'unsupported-or-mixed-changes'
+                $library.DecisionFile = $triggeringFile.Path
+                continue
+            }
+            try {
+                $metadata = Get-JavaDocModuleClassification $RepositoryRoot $snapshot.HeadSha $library.Module
+                $library.MavenCoordinates = "$($metadata.GroupId):$($metadata.ArtifactId)"
+                foreach ($file in $library.Files) {
+                    $file.MavenCoordinates = $library.MavenCoordinates
+                }
+            } catch {
+                $library.Decision = 'Inconclusive'
+                $library.Reason = 'classifier-error'
+                $library.Error = $_.Exception.Message
+                Write-JavaDocReportWarning $library.Error
+                continue
+            }
+            if (-not $metadata.IsTrack2DataPlane) {
+                $library.Decision = 'NotEligible'
+                $library.Reason = 'unsupported-library-kind'
+                foreach ($file in $library.Files | Where-Object Reason -CEQ 'pending-source-comparison') {
+                    $file.Reason = 'not-track2-data-plane'
                 }
             }
-            $metadata = $modules[$module]
-            $candidate.File.MavenCoordinates = "$($metadata.GroupId):$($metadata.ArtifactId)"
-            if (-not $metadata.IsTrack2DataPlane) {
-                $candidate.File.Reason = 'not-track2-data-plane'
-                $result.Reason = 'unsupported-library-kind'
-                return $result
+        }
+        $readyCandidates = @($candidates | Where-Object { $libraries[$_.File.Module].Decision -ceq 'Pending' })
+        $comparisonError = $null
+        if ($readyCandidates.Count -gt 0) {
+            try {
+                Invoke-JavaDocComparisons -RepositoryRoot $RepositoryRoot -Candidates $readyCandidates -ParserJar $ParserJar
+            } catch {
+                $comparisonError = $_.Exception.Message
+                $result.Error = $comparisonError
+                Write-JavaDocReportWarning $comparisonError
             }
         }
-        Invoke-JavaDocComparisons -RepositoryRoot $RepositoryRoot -Candidates $candidates -ParserJar $ParserJar
-        $reasons = @($candidates | ForEach-Object { $_.File.Reason })
-        if ($reasons -ccontains 'source-size-limit-exceeded') {
-            $result.Reason = 'source-size-limit-exceeded'
-            return $result
+        foreach ($library in $result.Libraries) {
+            $errorForLibrary = if ($library.CandidateFileCount -gt 0) { $comparisonError } else { $null }
+            Complete-JavaDocLibraryReport $library $errorForLibrary
         }
-        if ($reasons -ccontains 'parse-error') {
+        $result.EligibleLibraryCount = @($result.Libraries | Where-Object Decision -CEQ 'Eligible').Count
+        if ($result.EligibleLibraryCount -eq $result.Libraries.Count -and $result.SharedChanges.Count -eq 0) {
+            $result.Decision = 'Eligible'
+            $result.Reason = 'supported-non-code-changes'
+            $result.WouldSuppressTests = $true
+        } elseif ($result.EligibleLibraryCount -gt 0) {
+            $result.Decision = 'PartiallyEligible'
+            $result.Reason = 'mixed-library-results'
+        } elseif ($result.Libraries.Count -eq 1) {
+            $result.Decision = $result.Libraries[0].Decision
+            $result.Reason = $result.Libraries[0].Reason
+            $result.Error = $result.Libraries[0].Error
+        } elseif (@($result.Libraries | Where-Object Decision -CEQ 'Inconclusive').Count -gt 0) {
             $result.Decision = 'Inconclusive'
-            $result.Reason = 'source-parse-error'
-            return $result
+            $result.Reason = 'library-evaluation-incomplete'
+        } else {
+            $result.Reason = 'no-eligible-libraries'
         }
-        if (@($reasons | Where-Object {
-            $_ -cnotin ($script:JavaDocEligibleReasons + @('pending-source-comparison'))
-        }).Count -gt 0) {
-            $result.Reason = 'source-comparison-rejected'
-            return $result
-        }
-        if (@($candidates | Where-Object { -not $_.File.Compared }).Count -gt 0) {
-            throw 'The Java documentation parser returned an incomplete result set.'
-        }
-        $result.Decision = 'Eligible'
-        $result.Reason = 'supported-non-code-changes'
-        $result.WouldSuppressTests = $true
         return $result
     } catch {
         # Reporting must not replace existing validation with a failed or partial comparison.
         $result.Decision = 'Inconclusive'
         $result.Reason = 'classifier-error'
         $result.Error = $_.Exception.Message
-        $logError = $result.Error.Replace("`r", ' ').Replace("`n", ' ').Replace('##vso[', '##vso%5B')
-        Write-Warning "Java documentation classification is inconclusive: $logError"
+        Write-JavaDocReportWarning $result.Error
         return $result
     } finally {
         $result.ComparedFileCount = @($result.Files | Where-Object Compared).Count
+        foreach ($library in $result.Libraries) {
+            if ($library.Decision -ceq 'Pending') {
+                $library.Decision = 'Inconclusive'
+                $library.Reason = 'classifier-error'
+                $library.Error = $result.Error
+            }
+            Complete-JavaDocLibraryReport $library
+        }
         $decisionFile = $result.Files | Where-Object {
             $_.Reason -cnotin ($script:JavaDocEligibleReasons + @(
                 'pending-source-comparison', 'existing-non-runtime-validation'
@@ -519,6 +714,11 @@ function Get-JavaDocChangeReport {
         } | Select-Object -First 1
         if ($decisionFile) {
             $result.DecisionFile = $decisionFile.Path
+        } else {
+            $libraryDecision = $result.Libraries | Where-Object DecisionFile | Select-Object -First 1
+            if ($libraryDecision) {
+                $result.DecisionFile = $libraryDecision.DecisionFile
+            }
         }
         foreach ($file in $result.Files) {
             if ($file.Reason -ceq 'pending-source-comparison') {

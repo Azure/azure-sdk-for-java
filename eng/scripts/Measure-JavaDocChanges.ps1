@@ -3,8 +3,8 @@
 
 <#
 .SYNOPSIS
-Reports whether a complete PR snapshot changes only supported Java documentation,
-ordinary comments, or formatting without changing code tokens.
+Reports each library's Java documentation, ordinary-comment, and formatting changes
+from a complete PR snapshot without changing test execution.
 
 .DESCRIPTION
 This classifier runs in report-only mode. It does not modify PackageInfo, RunTests, Build, Analyze,
@@ -13,7 +13,8 @@ reads source from Git objects, not from the working tree.
 Library scope is detected from each module's Maven coordinates and standard
 Track 2 client parent; no per-library allowlist or recorded POM hashes are used.
 Source pairs are compared one at a time in one Java process. A disqualifying
-result stops further source reads and leaves remaining candidates not evaluated.
+result stops further reads in that library, but other libraries are still evaluated.
+Library decisions describe their own changes; dependency impact is not evaluated.
 
 .PARAMETER RepositoryRoot
 The checkout containing the synthetic PR merge commit.
@@ -65,13 +66,14 @@ if ($OutputPath) {
         [System.Text.UTF8Encoding]::new($false))
 }
 
-Write-Host "Java documentation report: $($result.Decision); reason: $($result.Reason); tests unchanged."
+Write-Host "Java documentation report: $($result.Decision); reason: $($result.Reason); eligible libraries: $($result.EligibleLibraryCount)/$($result.Libraries.Count); tests unchanged."
 if ($Pipeline) {
     $eligible = ([string]$result.WouldSuppressTests).ToLowerInvariant()
     Write-Host "##vso[task.setvariable variable=JavaDocReportEligible;isOutput=true]$eligible"
     Write-Host "##vso[task.setvariable variable=JavaDocReportDecision;isOutput=true]$($result.Decision)"
     Write-Host "##vso[task.setvariable variable=JavaDocReportReason;isOutput=true]$($result.Reason)"
     Write-Host "##vso[task.setvariable variable=JavaDocReportMilliseconds;isOutput=true]$($result.DurationMilliseconds)"
+    Write-Host "##vso[task.setvariable variable=JavaDocReportEligibleLibraryCount;isOutput=true]$($result.EligibleLibraryCount)"
     if ($OutputPath) {
         $escapedPath = $fullOutputPath.Replace('%', '%AZP25').Replace("`r", '%0D').Replace("`n", '%0A')
         Write-Host "##vso[task.uploadfile]$escapedPath"

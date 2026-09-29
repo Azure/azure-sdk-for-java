@@ -1,8 +1,8 @@
 # Java documentation change classifier
 
-This classifier runs in **report-only mode**: it reports whether Java
-documentation, ordinary-comment, and formatting changes could qualify for
-skipping runtime tests, but never changes which tests run. The existing path
+This classifier runs in **report-only mode**: it evaluates documentation,
+ordinary-comment, and formatting changes separately for each Maven library,
+but never changes which tests run. The existing path
 classifier, PackageInfo files, Build, Analyze, and CHANGELOG-only routing stay
 unchanged.
 
@@ -58,24 +58,52 @@ documentation, and snippet synchronization.
 
 Additions, deletions, renames, mode changes, package-info, module-info, test/sample
 Java, libraries outside the Track 2 data-plane scope, and mixed functional changes
-do not qualify for exclusion from runtime test matrices. Other changed paths must
-already have a non-runtime validation route in `Classify-PRChanges.ps1`.
-Comparison is all-or-nothing, not package-level pruning. A POM change in the PR
-still prevents test exclusion; POM changes already in the target branch do not
-require updating this classifier.
+do not qualify for exclusion from runtime test matrices. These changes stop
+evaluation of their owning library, not unrelated libraries. Known consumer
+documents use the existing non-runtime path policy in `Classify-PRChanges.ps1`.
+A library's POM change still prevents its exclusion; POM changes already in the
+target branch do not require updating this classifier.
+
+## Library-level decisions
+
+A library is a Maven module under `sdk/<service>/<library>` with a regular
+`pom.xml` in the before or after snapshot. Different libraries within the same
+service are evaluated separately.
+
+| Changes | Library results |
+| --- | --- |
+| Key Vault Secrets Javadoc and App Configuration Javadoc | Both eligible |
+| Key Vault Secrets code and App Configuration Javadoc | Secrets not eligible; App Configuration still evaluated |
+| Key Vault Secrets test resources and App Configuration Javadoc | Secrets not eligible; App Configuration still evaluated |
+
+The first triggering or unsupported source change leaves the rest of that
+library's source candidates `not-evaluated`. A source parse/read failure is
+inconclusive for that library; evaluation continues for the other libraries.
+Every candidate in a library must pass before that library is eligible.
+
+Shared service inputs, such as `sdk/keyvault/ci.yml` or unowned test resources
+under that service, block exclusions for that service. Repository-level files,
+engineering inputs, and shared parents block exclusions for all changed
+libraries. Missing ownership is never interpreted as a harmless change.
+
+**A library result describes its own changes, not dependency impact.** A library
+with only Javadoc edits can still need tests when another changed library is one
+of its dependencies. The report sets `DependencyImpactEvaluated=false`; it does
+not remove packages from the existing test matrices or the From Source dependent
+test set.
 
 There is no candidate file-count limit. The 2 MiB limit per source blob and
 comparison timeout remain in place. Oversized sources do not qualify; timeouts,
 a missing or failed parser, incomplete output, invalid history, or invalid source
 produce an explicit inconclusive result.
 
-Java source is read one before/after pair at a time and sent to one Java process.
-The observer waits for that comparison's result before fetching another pair.
-As soon as a file prevents test exclusion, remaining source files are neither
-fetched nor parsed. Library detection also stops at the first unsupported module.
-The existing changed-path checks can rule out a PR before any Java comparison.
-The parser must return a result for every candidate before the PR can be eligible.
+Java source is read one before/after pair at a time and sent to one Java process
+reused across libraries. The observer waits for each result before fetching the
+next pair. Once a file prevents a library's exclusion, no later source candidates
+from that library are fetched or parsed, but other libraries continue.
 Larger PRs use the same streaming comparison without additional pipeline jobs.
+An unusable parser process or exhausted comparison timeout is a shared failure:
+results from that comparison session remain inconclusive, not eligible.
 
 Build and Analyze retain compilation, Javadoc, API, sample, snippet, and generator
 checks. Changes to executable samples are a separate future policy. Documentation
@@ -109,28 +137,33 @@ candidates. It never builds the SDK or the baseline revision.
 Use `-ForceFullValidation` or `FORCE_FULL_VALIDATION=true` to disable evaluation of
 whether runtime tests can be omitted.
 
-The result contains exact revision IDs, the `track2-data-plane` library scope,
-Maven coordinates, per-file reasons, elapsed time, and `SuppressionApplied=false`.
-Decisions are:
+Report schema version 2 contains exact revision IDs, the `track2-data-plane`
+library scope, per-library decisions in `Libraries`, shared inputs in
+`SharedChanges`, per-file reasons, and `SuppressionApplied=false`.
+Library decisions are `Eligible`, `NotEligible`, or `Inconclusive`. The PR summary
+also supports `PartiallyEligible`:
 
 | Decision | Meaning |
 | --- | --- |
-| `Eligible` | All changed paths satisfy the criteria for potential runtime-test exclusion. |
-| `NotEligible` | A supported check ruled out skipping runtime tests, or the scope is unsupported. |
+| `Eligible` | All changed libraries are eligible and no shared input blocks the PR. |
+| `PartiallyEligible` | Some libraries are eligible, while others or shared inputs still require validation. |
+| `NotEligible` | No library qualifies, or repository-wide input changes block exclusions. |
 | `Inconclusive` | Required setup, source parsing, snapshot data, or output was invalid. |
 
 Accepted per-file reasons distinguish `javadoc-only`, `ordinary-comment-only`,
 `whitespace-only`, and `non-code-only` (a combination of these changes).
-An unchanged source is not counted as an eligible edit. Every candidate must
-have an accepted result for the PR to qualify.
+An unchanged source is not counted as an eligible edit. A library with only known
+consumer-documentation changes uses `existing-non-runtime-validation` without
+starting the Java parser.
 
-`DecisionFile` identifies the file that prevented exclusion or could not be checked.
-`ComparedFileCount` records how many pairs received a well-formed parser response, and
-each file's `Compared` flag distinguishes compared sources from unexamined ones.
-Remaining candidates are marked `not-evaluated`, never assumed to be harmless.
-A failed parser exit, unexpected output, or missing response is inconclusive,
-even if earlier files received positive results. The parser is stopped and
-cleaned up on failures and timeouts.
+Each library has its own `DecisionFile`, candidate/compared counts, Maven
+coordinates, and files. The top-level `EligibleLibraryCount` reports how many
+libraries passed; the whole-PR `WouldSuppressTests` remains false for a mixed PR.
+`ComparedFileCount` counts well-formed parser responses, and each file's
+`Compared` flag distinguishes compared sources from unexamined ones.
+A failed parser exit, unexpected output, or missing response invalidates that
+comparison session even if earlier files received positive results. The parser
+is stopped and cleaned up on failures and timeouts.
 
 ## Pipeline reporting
 
@@ -145,7 +178,8 @@ source SHAs. Service, private, manual, scheduled, and release validation retain
 their existing behavior.
 
 The diagnostic output variables are `JavaDocReportEligible`,
-`JavaDocReportDecision`, `JavaDocReportReason`, and `JavaDocReportMilliseconds`.
+`JavaDocReportDecision`, `JavaDocReportReason`, `JavaDocReportMilliseconds`, and
+`JavaDocReportEligibleLibraryCount`.
 The JSON report is uploaded as a task attachment. No output controls a matrix,
 and the observer never emits `JavaTestsSuppressed`.
 
@@ -177,8 +211,8 @@ more than 100 source pairs, and early termination.
 Pester uses disposable local Git repositories and the real parser to cover
 complete PR snapshots, target advancement, shallow history, sparse/dirty
 worktrees, automatic library detection, management/Track 1 exclusions, invalid
-POM metadata, mixed per-file change categories, PRs above the former file limit,
-first/middle/last rejection,
+POM metadata, mixed libraries and per-file change categories, service/repository
+shared inputs, PRs above the former file limit, first/middle/last rejection,
 unread later source blobs, process cleanup, limits, force override, context
 guards, and incomplete-result handling.
 Parser setup is mandatory; missing dependencies are not reported as skipped or
