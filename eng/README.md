@@ -107,6 +107,22 @@ directory. On a failure, inspect the named step log and summary, then correct th
 artifact metadata, or dependency download. Changelog format guidance is in the
 [release policy's Change Logs section](https://azure.github.io/azure-sdk/policies_releases.html#change-logs).
 
+### Java documentation classifier (report only)
+
+An opt-in [Java documentation classifier](java-doc-classifier/README.md) reads
+complete PR merge snapshots and reports supported Javadoc, ordinary-comment, and
+formatting changes without changed code tokens.
+It detects Track 2 data-plane libraries from existing Maven metadata, without a
+per-library allowlist or POM hashes. Management and Track 1 libraries are excluded.
+It runs in the existing matrix-generation job when `JavaDocClassifierReportOnly=true`.
+The default is off, and even an eligible result does not suppress tests or change
+Build/Analyze. The current path-based classifier and its matrix controls remain
+unchanged.
+
+The standalone JavaParser tool has focused Java tests and temporary-Git/Pester
+integration fixtures. Build it before running `eng/scripts/tests/JavaDoc-Changes.tests.ps1`;
+the engineering script CI performs that prerequisite on both operating systems.
+
 ## Sparse Checkouts
 
 Java-owned pipeline jobs use the native Azure Pipelines
