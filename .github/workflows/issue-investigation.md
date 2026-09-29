@@ -349,14 +349,14 @@ If the available context is sufficient, continue to the next rule without reques
 Reach this outcome only when trusted service/package documentation together with the issue evidence establishes that the SDK follows the documented contract, or that the behavior is entirely controlled by the Azure service and cannot be corrected by the SDK.
 An HTTP status or a match to a known-behavior heading alone is insufficient.
 
-Add one comment that explains the behavior and why the SDK cannot change it, cites the specific documentation, and offers a safe mitigation when one is supported.
+Prepare one complete investigation comment that explains the behavior and why the SDK cannot change it, cites the specific documentation, and offers a safe mitigation when one is supported.
 Explain that service support is not handled through this SDK issue tracker and provide these approved destinations as plain URLs:
 
 - Azure support request: https://learn.microsoft.com/services-hub/unified/support/open-support-requests?pivots=existing
 - Microsoft Q&A: https://learn.microsoft.com/answers/questions/
 - Azure Feedback: https://feedback.azure.com/d365community
 
-State that the issue is being closed, and invite clarification if the report has been misunderstood. Then call `close_issue` with the issue number; the configured reason is `not_planned`.
+State that the issue is being closed, and invite clarification if the report has been misunderstood. Call `close_issue` once with the issue number and the complete investigation comment in `body`; this tool posts the comment and closes the issue with the configured reason `not_planned`. Do not call `add_comment` for this outcome: that would publish a second comment.
 If service versus SDK ownership is ambiguous, request the evidence that would resolve it or call `noop`; do not close.
 
 ### 5. Actionable SDK Issue
@@ -385,7 +385,7 @@ Do not use it to skip a concrete version-reproduction request, duplicate explana
 
 ## Output Requirements
 
-Use at most one visible comment, with this structure:
+Use at most one visible comment, with this structure. For **Service-side or by-design**, put the complete comment in `close_issue.body` only. For other commenting outcomes, use `add_comment`.
 
 ```markdown
 ## Agentic Issue Investigation

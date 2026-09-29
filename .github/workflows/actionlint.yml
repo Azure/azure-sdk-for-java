@@ -39,5 +39,5 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Test issue investigation metadata lookup
-        run: node --test .github/scripts/issue-investigation-metadata.test.cjs
+      - name: Test issue investigation
+        run: node --test .github/scripts/issue-investigation-*.test.cjs
