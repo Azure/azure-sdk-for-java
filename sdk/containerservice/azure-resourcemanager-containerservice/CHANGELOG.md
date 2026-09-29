@@ -1,14 +1,19 @@
 # Release History
 
-## 2.64.0-beta.2 (Unreleased)
+## 2.64.0 (2026-09-29)
+
+- Package api-version 2026-07-01.
 
 ### Features Added
 
-### Breaking Changes
+* `models.KubernetesResourceObjectEncryptionProfile` was added
 
-### Bugs Fixed
+* `models.InfrastructureEncryption` was added
 
-### Other Changes
+#### `models.ManagedClusterSecurityProfile` was modified
+
+* `withKubernetesResourceObjectEncryptionProfile(models.KubernetesResourceObjectEncryptionProfile)` was added
+* `kubernetesResourceObjectEncryptionProfile()` was added
 
 ## 2.64.0-beta.1 (2026-09-01)
 
