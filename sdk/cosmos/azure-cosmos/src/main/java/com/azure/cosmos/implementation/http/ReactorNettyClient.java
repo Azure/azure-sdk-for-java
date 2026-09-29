@@ -54,6 +54,9 @@ public class ReactorNettyClient implements HttpClient {
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final String REACTOR_NETTY_REQUEST_RECORD_KEY = "reactorNettyRequestRecordKey";
+    // If io.netty.allocator.type was configured, respect the configuration. Otherwise, fallback to the default setting
+    // from Netty 4.1 which was the pooled allocator. In the future, this should be validated for if this should use the
+    // new Netty 4.2 default which is an adaptive allocator.
     private static final ByteBufAllocator DEFAULT_ALLOCATOR = SystemPropertyUtil.contains("io.netty.allocator.type")
         ? ByteBufAllocator.DEFAULT : PooledByteBufAllocator.DEFAULT;
 

@@ -139,6 +139,9 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
         b.group(group)
             .channel(NioSocketChannel.class)
             .option(ChannelOption.ALLOCATOR,
+                // If io.netty.allocator.type was configured, respect the configuration. Otherwise, fallback to the
+                // default setting from Netty 4.1 which was the pooled allocator. In the future, this should be
+                // validated for if this should use the new Netty 4.2 default which is an adaptive allocator.
                 SystemPropertyUtil.contains("io.netty.allocator.type")
                     ? ByteBufAllocator.DEFAULT
                     : PooledByteBufAllocator.DEFAULT)

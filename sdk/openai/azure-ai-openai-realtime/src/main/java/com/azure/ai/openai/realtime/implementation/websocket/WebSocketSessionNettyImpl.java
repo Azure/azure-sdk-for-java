@@ -104,7 +104,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
         this.closeHandler = closeHandler;
     }
 
-    void connect() throws URISyntaxException, SSLException, InterruptedException, ExecutionException {
+    void connect() throws SSLException, InterruptedException, ExecutionException {
         String scheme = uri.getScheme() == null ? "ws" : uri.getScheme();
         final String host = uri.getHost() == null ? "127.0.0.1" : uri.getHost();
         final int port;
