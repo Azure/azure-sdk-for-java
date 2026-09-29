@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkInterfaceReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkInterfaceReference model
-            = BinaryData.fromString("{\"properties\":{\"primary\":true,\"deleteOption\":\"Delete\"},\"id\":\"nqpeh\"}")
-                .toObject(NetworkInterfaceReference.class);
-        Assertions.assertEquals("nqpeh", model.id());
-        Assertions.assertTrue(model.properties().primary());
-        Assertions.assertEquals(DeleteOptions.DELETE, model.properties().deleteOption());
+        NetworkInterfaceReference model = BinaryData
+            .fromString("{\"properties\":{\"primary\":false,\"deleteOption\":\"Detach\"},\"id\":\"qbuaceopzfqr\"}")
+            .toObject(NetworkInterfaceReference.class);
+        Assertions.assertEquals("qbuaceopzfqr", model.id());
+        Assertions.assertFalse(model.properties().primary());
+        Assertions.assertEquals(DeleteOptions.DETACH, model.properties().deleteOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInterfaceReference model = new NetworkInterfaceReference().withId("nqpeh")
+        NetworkInterfaceReference model = new NetworkInterfaceReference().withId("qbuaceopzfqr")
             .withProperties(
-                new NetworkInterfaceReferenceProperties().withPrimary(true).withDeleteOption(DeleteOptions.DELETE));
+                new NetworkInterfaceReferenceProperties().withPrimary(false).withDeleteOption(DeleteOptions.DETACH));
         model = BinaryData.fromObject(model).toObject(NetworkInterfaceReference.class);
-        Assertions.assertEquals("nqpeh", model.id());
-        Assertions.assertTrue(model.properties().primary());
-        Assertions.assertEquals(DeleteOptions.DELETE, model.properties().deleteOption());
+        Assertions.assertEquals("qbuaceopzfqr", model.id());
+        Assertions.assertFalse(model.properties().primary());
+        Assertions.assertEquals(DeleteOptions.DETACH, model.properties().deleteOption());
     }
 }

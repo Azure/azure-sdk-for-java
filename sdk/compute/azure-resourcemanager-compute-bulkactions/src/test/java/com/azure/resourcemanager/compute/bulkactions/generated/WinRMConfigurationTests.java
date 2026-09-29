@@ -14,19 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class WinRMConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WinRMConfiguration model
-            = BinaryData.fromString("{\"listeners\":[{\"protocol\":\"Http\",\"certificateUrl\":\"x\"}]}")
-                .toObject(WinRMConfiguration.class);
-        Assertions.assertEquals(ProtocolTypes.HTTP, model.listeners().get(0).protocol());
-        Assertions.assertEquals("x", model.listeners().get(0).certificateUrl());
+        WinRMConfiguration model = BinaryData.fromString(
+            "{\"listeners\":[{\"protocol\":\"Https\",\"certificateUrl\":\"sfwxosowzxc\"},{\"protocol\":\"Http\",\"certificateUrl\":\"jooxdjebw\"},{\"protocol\":\"Https\",\"certificateUrl\":\"wfvovbv\"}]}")
+            .toObject(WinRMConfiguration.class);
+        Assertions.assertEquals(ProtocolTypes.HTTPS, model.listeners().get(0).protocol());
+        Assertions.assertEquals("sfwxosowzxc", model.listeners().get(0).certificateUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WinRMConfiguration model = new WinRMConfiguration()
-            .withListeners(Arrays.asList(new WinRMListener().withProtocol(ProtocolTypes.HTTP).withCertificateUrl("x")));
+        WinRMConfiguration model = new WinRMConfiguration().withListeners(
+            Arrays.asList(new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("sfwxosowzxc"),
+                new WinRMListener().withProtocol(ProtocolTypes.HTTP).withCertificateUrl("jooxdjebw"),
+                new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("wfvovbv")));
         model = BinaryData.fromObject(model).toObject(WinRMConfiguration.class);
-        Assertions.assertEquals(ProtocolTypes.HTTP, model.listeners().get(0).protocol());
-        Assertions.assertEquals("x", model.listeners().get(0).certificateUrl());
+        Assertions.assertEquals(ProtocolTypes.HTTPS, model.listeners().get(0).protocol());
+        Assertions.assertEquals("sfwxosowzxc", model.listeners().get(0).certificateUrl());
     }
 }
