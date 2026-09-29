@@ -93,6 +93,8 @@ public class ShareStorageCustomization extends Customization {
 
         base64EncodeByteArrayHeaders(customization, logger);
 
+        retypeRangeHeaderToXmsRange(customization, logger);
+
         relocateDownloadHeadersToModels(customization, logger);
 
         restoreFluentModels(customization, logger);
@@ -364,6 +366,38 @@ public class ShareStorageCustomization extends Customization {
                 }
                 logger.info("Base64-encoded {} byte[] header value(s) in {}", fixed[0], internalName);
             });
+        }
+    }
+
+    /**
+     * Uses the File Service {@code x-ms-range} header for range operations instead of the standard {@code Range}
+     * header. The spec's {@code RangeHeader}/{@code RangeRequiredHeader} aliases model the range as
+     * {@code @header("Range")} (a swagger-to-TypeSpec conversion regression; the original swagger used
+     * {@code x-ms-range}), so the generated code sends {@code Range} while the service and the recorded requests use
+     * {@code x-ms-range}. {@code uploadRange}/{@code uploadRangeFromUrl} carry it on the protocol interface's
+     * {@code @HeaderParam}; download/list carry it via the relocated file clients' {@code setHeader}. Remove this once
+     * the spec restores {@code @header("x-ms-range")}.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void retypeRangeHeaderToXmsRange(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        String filesImplPath = PKG_ROOT + "implementation/FilesImpl.java";
+        String filesImpl = editor.getFileContent(filesImplPath);
+        if (filesImpl.contains("@HeaderParam(\"Range\")")) {
+            editor.replaceFile(filesImplPath,
+                filesImpl.replace("@HeaderParam(\"Range\")", "@HeaderParam(\"x-ms-range\")"));
+            logger.info("Retyped @HeaderParam(\"Range\") -> x-ms-range in FilesImpl");
+        }
+        for (String internalName : Arrays.asList("ShareFileClientInternal", "ShareFileAsyncClientInternal")) {
+            String path = PKG_ROOT + "implementation/" + internalName + ".java";
+            String content = editor.getFileContent(path);
+            if (content.contains("HttpHeaderName.RANGE,")) {
+                editor.replaceFile(path,
+                    content.replace("HttpHeaderName.RANGE,", "HttpHeaderName.fromString(\"x-ms-range\"),"));
+                logger.info("Retyped HttpHeaderName.RANGE -> x-ms-range in {}", internalName);
+            }
         }
     }
 

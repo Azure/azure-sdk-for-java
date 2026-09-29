@@ -255,7 +255,7 @@ public final class FilesImpl {
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> uploadRange(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Range") String range, @HeaderParam("x-ms-write") String fileRangeWrite,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-write") String fileRangeWrite,
             @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -265,7 +265,7 @@ public final class FilesImpl {
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> uploadRangeSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Range") String range, @HeaderParam("x-ms-write") String fileRangeWrite,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-write") String fileRangeWrite,
             @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent, RequestOptions requestOptions,
@@ -275,7 +275,7 @@ public final class FilesImpl {
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Mono<Response<Void>> uploadRangeFromUrl(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Range") String range,
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-copy-source") String copySource, @HeaderParam("x-ms-write") String fileRangeWriteFromUrl,
             @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
@@ -287,7 +287,7 @@ public final class FilesImpl {
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
         Response<Void> uploadRangeFromUrlSync(@HostParam("url") String url,
-            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("Range") String range,
+            @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-copy-source") String copySource, @HeaderParam("x-ms-write") String fileRangeWriteFromUrl,
             @HeaderParam("Content-Length") long contentLength,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,

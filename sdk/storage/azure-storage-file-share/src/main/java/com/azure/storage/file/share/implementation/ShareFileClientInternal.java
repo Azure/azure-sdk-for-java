@@ -1954,7 +1954,7 @@ public final class ShareFileClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (range != null) {
-            requestOptions.setHeader(HttpHeaderName.RANGE, range);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-range"), range);
         }
         if (rangeGetContentMD5 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-range-get-content-md5"),
@@ -2000,7 +2000,7 @@ public final class ShareFileClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (range != null) {
-            requestOptions.setHeader(HttpHeaderName.RANGE, range);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-range"), range);
         }
         if (rangeGetContentMD5 != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-range-get-content-md5"),
@@ -3198,7 +3198,7 @@ public final class ShareFileClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (range != null) {
-            requestOptions.setHeader(HttpHeaderName.RANGE, range);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-range"), range);
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
@@ -3249,7 +3249,7 @@ public final class ShareFileClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (range != null) {
-            requestOptions.setHeader(HttpHeaderName.RANGE, range);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-range"), range);
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
@@ -3321,7 +3321,7 @@ public final class ShareFileClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (range != null) {
-            requestOptions.setHeader(HttpHeaderName.RANGE, range);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-range"), range);
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
@@ -3381,7 +3381,7 @@ public final class ShareFileClientInternal {
             requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (range != null) {
-            requestOptions.setHeader(HttpHeaderName.RANGE, range);
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-range"), range);
         }
         if (leaseId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-lease-id"), leaseId);
