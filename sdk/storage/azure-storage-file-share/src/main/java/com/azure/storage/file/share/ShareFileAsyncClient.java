@@ -1220,8 +1220,8 @@ public class ShareFileAsyncClient {
                 finalEnd = range.getEnd();
             }
 
-            Flux<ByteBuffer> bufferFlux = FluxUtil
-                .createRetriableDownloadFlux(() -> response.getValue().toFluxByteBuffer(), (throwable, offset) -> {
+            Flux<ByteBuffer> bufferFlux
+                = FluxUtil.createRetriableDownloadFlux(() -> response.getValue(), (throwable, offset) -> {
                     if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
                         return Flux.error(throwable);
                     }
@@ -1246,7 +1246,7 @@ public class ShareFileAsyncClient {
                             requestConditions, context).flatMapMany(r -> {
                                 String receivedETag = ModelHelper.getETag(r.getHeaders());
                                 if (eTag != null && eTag.equals(receivedETag)) {
-                                    return r.getValue().toFluxByteBuffer();
+                                    return r.getValue();
                                 } else {
                                     return Flux.<ByteBuffer>error(new ConcurrentModificationException(String.format(
                                         "File has been modified "
@@ -1258,14 +1258,14 @@ public class ShareFileAsyncClient {
                         return Flux.error(e);
                     }
                 }, retryOptions.getMaxRetryRequests(), range.getStart())
-                .switchIfEmpty(Flux.defer(() -> Flux.just(ByteBuffer.wrap(new byte[0]))));
+                    .switchIfEmpty(Flux.defer(() -> Flux.just(ByteBuffer.wrap(new byte[0]))));
 
             return new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), bufferFlux, headers);
         });
     }
 
-    private Mono<ResponseBase<ShareFileDownloadHeaders, BinaryData>> downloadRange(ShareFileRange range,
+    private Mono<ResponseBase<ShareFileDownloadHeaders, Flux<ByteBuffer>>> downloadRange(ShareFileRange range,
         Boolean rangeGetContentMD5, ShareRequestConditions requestConditions, Context context) {
         String rangeString = range == null ? null : range.toHeaderValue();
         return fileClientInternal.downloadWithResponse(null, rangeString, rangeGetContentMD5,

@@ -52,8 +52,10 @@ import com.azure.storage.file.share.models.OwnerCopyMode;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileRangeList;
+import java.nio.ByteBuffer;
 import java.util.Base64;
 import java.util.Map;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -309,7 +311,7 @@ public final class ShareFileAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> downloadWithResponseInternal(RequestOptions requestOptions) {
+    Mono<Response<Flux<ByteBuffer>>> downloadWithResponseInternal(RequestOptions requestOptions) {
         return this.serviceClient.downloadWithResponseInternalAsync(requestOptions);
     }
 
@@ -1949,8 +1951,9 @@ public final class ShareFileAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<ShareFileDownloadHeaders, BinaryData>> downloadWithResponse(Integer timeout, String range,
-        Boolean rangeGetContentMD5, String leaseId, String structuredBodyType, RequestOptions requestOptions) {
+    public Mono<ResponseBase<ShareFileDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponse(Integer timeout,
+        String range, Boolean rangeGetContentMD5, String leaseId, String structuredBodyType,
+        RequestOptions requestOptions) {
         // Generated convenience method for downloadWithResponseInternal
         requestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
         if (timeout != null) {
@@ -1995,7 +1998,7 @@ public final class ShareFileAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> download(Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId,
+    public Mono<Flux<ByteBuffer>> download(Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId,
         String structuredBodyType) {
         // Generated convenience method for downloadWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
@@ -2030,7 +2033,7 @@ public final class ShareFileAsyncClientInternal {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> download() {
+    public Mono<Flux<ByteBuffer>> download() {
         // Generated convenience method for downloadWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         return downloadWithResponseInternal(requestOptions).flatMap(FluxUtil::toMono);

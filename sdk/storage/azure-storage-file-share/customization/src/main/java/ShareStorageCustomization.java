@@ -95,6 +95,8 @@ public class ShareStorageCustomization extends Customization {
 
         retypeRangeHeaderToXmsRange(customization, logger);
 
+        retypeDownloadResponseToStreaming(customization, logger);
+
         relocateDownloadHeadersToModels(customization, logger);
 
         restoreFluentModels(customization, logger);
@@ -399,6 +401,68 @@ public class ShareStorageCustomization extends Customization {
                 logger.info("Retyped HttpHeaderName.RANGE -> x-ms-range in {}", internalName);
             }
         }
+    }
+
+    /**
+     * Restores the streaming ({@code Flux<ByteBuffer>}) response body for the asynchronous file download so the
+     * reliable download retry works and large files are not buffered into memory.
+     * <p>
+     * The TypeSpec emitter generates the async {@code download} REST method returning {@code Response<BinaryData>}. For
+     * an {@code application/octet-stream} body azure-core's {@code RestProxy} materializes that {@code BinaryData} with
+     * {@code BinaryData.fromFlux(body)} (buffer content = true), which eagerly collects the entire response before the
+     * {@code Mono} completes. That defeats {@code createRetriableDownloadFlux} (a mid-stream error surfaces before the
+     * retriable flux is built, so no resume happens) and loads whole files into memory. The shipped (pre-migration)
+     * client returned a lazy {@code Flux<ByteBuffer>} body; this restores that shape. Only the async path is retyped --
+     * the sync client delegates to the async {@code downloadWithResponse}, so {@code downloadSync} is left untouched.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void retypeDownloadResponseToStreaming(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+
+        String filesImplPath = PKG_ROOT + "implementation/FilesImpl.java";
+        String filesImpl = editor.getFileContent(filesImplPath);
+        String newFilesImpl = addStreamingImports(filesImpl
+            .replace("Mono<Response<BinaryData>> download(@HostParam(\"url\") String url,",
+                "Mono<Response<Flux<ByteBuffer>>> download(@HostParam(\"url\") String url,")
+            .replace(
+                "public Mono<Response<BinaryData>> downloadWithResponseInternalAsync(RequestOptions requestOptions) {",
+                "public Mono<Response<Flux<ByteBuffer>>> downloadWithResponseInternalAsync(RequestOptions requestOptions) {"));
+        if (!newFilesImpl.equals(filesImpl)) {
+            editor.replaceFile(filesImplPath, newFilesImpl);
+            logger.info("Retyped async download body BinaryData -> Flux<ByteBuffer> in FilesImpl");
+        }
+
+        String asyncPath = PKG_ROOT + "implementation/ShareFileAsyncClientInternal.java";
+        String async = editor.getFileContent(asyncPath);
+        String newAsync = addStreamingImports(async
+            .replace("Mono<Response<BinaryData>> downloadWithResponseInternal(RequestOptions requestOptions) {",
+                "Mono<Response<Flux<ByteBuffer>>> downloadWithResponseInternal(RequestOptions requestOptions) {")
+            .replace(
+                "public Mono<ResponseBase<ShareFileDownloadHeaders, BinaryData>> downloadWithResponse(Integer timeout, String range,",
+                "public Mono<ResponseBase<ShareFileDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponse(Integer timeout, String range,")
+            .replace(
+                "public Mono<BinaryData> download(Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId,",
+                "public Mono<Flux<ByteBuffer>> download(Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId,")
+            .replace("public Mono<BinaryData> download() {", "public Mono<Flux<ByteBuffer>> download() {"));
+        if (!newAsync.equals(async)) {
+            editor.replaceFile(asyncPath, newAsync);
+            logger.info("Retyped async download body BinaryData -> Flux<ByteBuffer> in ShareFileAsyncClientInternal");
+        }
+    }
+
+    // Adds the reactor Flux and java.nio.ByteBuffer imports used by the streaming download retype, if absent.
+    private static String addStreamingImports(String content) {
+        if (!content.contains("import java.nio.ByteBuffer;")) {
+            content = content.replace("import com.azure.core.util.BinaryData;",
+                "import com.azure.core.util.BinaryData;\nimport java.nio.ByteBuffer;");
+        }
+        if (!content.contains("import reactor.core.publisher.Flux;")) {
+            content = content.replace("import reactor.core.publisher.Mono;",
+                "import reactor.core.publisher.Flux;\nimport reactor.core.publisher.Mono;");
+        }
+        return content;
     }
 
     /**
