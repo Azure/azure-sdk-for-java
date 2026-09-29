@@ -28,7 +28,7 @@ public class AgentOptimizationConfigurationBase implements JsonSerializable<Agen
      * Creates an instance of AgentOptimizationConfigurationBase class.
      */
     @Generated
-    public AgentOptimizationConfigurationBase() {
+    protected AgentOptimizationConfigurationBase() {
     }
 
     /**

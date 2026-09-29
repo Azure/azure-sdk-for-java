@@ -28,7 +28,7 @@ public class AgentOptimizationTargetConfiguration implements JsonSerializable<Ag
      * Creates an instance of AgentOptimizationTargetConfiguration class.
      */
     @Generated
-    public AgentOptimizationTargetConfiguration() {
+    protected AgentOptimizationTargetConfiguration() {
     }
 
     /**

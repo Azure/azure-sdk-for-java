@@ -168,7 +168,7 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
             JobStatus status = null;
             AgentOptimizationModelConfiguration optimizationModelConfiguration = null;
             AgentOptimizationConfigurationBase optimizationConfiguration = null;
-            long runDurationMs = 0L;
+            long runDuration = 0L;
             long createdAt = 0L;
             long updatedAt = 0L;
             AgentOptimizationJobResult result = null;
@@ -188,7 +188,7 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
                 } else if ("optimization_configuration".equals(fieldName)) {
                     optimizationConfiguration = AgentOptimizationConfigurationBase.fromJson(reader);
                 } else if ("run_duration_ms".equals(fieldName)) {
-                    runDurationMs = reader.getLong();
+                    runDuration = reader.getLong();
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = reader.getLong();
                 } else if ("updated_at".equals(fieldName)) {
@@ -211,7 +211,7 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
                 = new AgentOptimizationJob(optimizationModelConfiguration, optimizationConfiguration);
             deserializedAgentOptimizationJob.id = id;
             deserializedAgentOptimizationJob.status = status;
-            deserializedAgentOptimizationJob.runDurationMs = runDurationMs;
+            deserializedAgentOptimizationJob.runDuration = runDuration;
             deserializedAgentOptimizationJob.createdAt = createdAt;
             deserializedAgentOptimizationJob.updatedAt = updatedAt;
             deserializedAgentOptimizationJob.result = result;
@@ -247,12 +247,6 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
      */
     @Generated
     private final AgentOptimizationConfigurationBase optimizationConfiguration;
-
-    /*
-     * Duration for which the job has been running, in milliseconds.
-     */
-    @Generated
-    private long runDurationMs;
 
     /**
      * Creates an instance of AgentOptimizationJob class.
@@ -337,12 +331,18 @@ public final class AgentOptimizationJob implements JsonSerializable<AgentOptimiz
     }
 
     /**
-     * Get the runDurationMs property: Duration for which the job has been running, in milliseconds.
+     * Get the runDuration property: Duration for which the job has been running, in milliseconds.
      *
-     * @return the runDurationMs value.
+     * @return the runDuration value.
      */
     @Generated
-    public Duration getRunDurationMs() {
-        return Duration.ofMillis(this.runDurationMs);
+    public Duration getRunDuration() {
+        return Duration.ofMillis(this.runDuration);
     }
+
+    /*
+     * Duration for which the job has been running, in milliseconds.
+     */
+    @Generated
+    private long runDuration;
 }

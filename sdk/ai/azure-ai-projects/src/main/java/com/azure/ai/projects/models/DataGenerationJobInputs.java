@@ -136,7 +136,7 @@ public class DataGenerationJobInputs implements JsonSerializable<DataGenerationJ
      * @param generationConfiguration the generationConfiguration value to set.
      */
     @Generated
-    public DataGenerationJobInputs(String name, List<DataGenerationJobSource> sources,
+    protected DataGenerationJobInputs(String name, List<DataGenerationJobSource> sources,
         DataGenerationJobOptions generationConfiguration) {
         this.name = name;
         this.sources = sources;

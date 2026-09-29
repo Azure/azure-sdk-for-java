@@ -29,7 +29,7 @@ public class AgentOptimizationTargetCompletionDataSource
      * Creates an instance of AgentOptimizationTargetCompletionDataSource class.
      */
     @Generated
-    public AgentOptimizationTargetCompletionDataSource() {
+    protected AgentOptimizationTargetCompletionDataSource() {
     }
 
     /**

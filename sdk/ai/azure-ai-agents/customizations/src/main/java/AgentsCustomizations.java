@@ -106,12 +106,16 @@ public class AgentsCustomizations extends Customization {
      * @param customization the library customization
      */
     private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
-        List<String> classNames = Arrays.asList("AgentHarness", "CreateTelephonyBindingInput", "RealtimeAudioFormat",
-            "RealtimeClientEvent", "RealtimeConversationItem", "RealtimeConversationItemMessage", "RealtimeMcpError",
-            "RealtimeSessionConfigurationBase", "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy",
-            "TelephonyTransferDestination", "VoiceAgentGreetingConfiguration", "VoiceAgentInterimResponseConfiguration",
-            "VoiceAgentSystemTool", "VoiceAgentTool", "VoiceAgentTurnDetectionConfiguration",
-            "VoiceConversationEngine");
+        List<String> classNames = Arrays.asList("AgentHarness", "AgentOptimizationConfigurationBase",
+            "AgentOptimizationEvaluationSet", "AgentOptimizationTargetCompletionDataSource",
+            "AgentOptimizationTargetConfiguration", "AgentOptimizationUserConversationSimulationDataSource",
+            "CreateTelephonyBindingInput", "EvaluationVoiceModelConfiguration", "OptimizationContext",
+            "RealtimeAudioFormat", "RealtimeClientEvent", "RealtimeConversationItem",
+            "RealtimeConversationItemMessage", "RealtimeMcpError", "RealtimeSessionConfigurationBase",
+            "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy", "TelephonyTransferDestination",
+            "UserConversationSimulationInterruptionConfiguration", "VoiceAgentGreetingConfiguration",
+            "VoiceAgentInterimResponseConfiguration", "VoiceAgentSystemTool", "VoiceAgentTool",
+            "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
 
         for (String className : classNames) {
             ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);

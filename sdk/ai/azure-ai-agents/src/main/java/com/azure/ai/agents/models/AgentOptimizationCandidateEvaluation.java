@@ -35,12 +35,6 @@ public final class AgentOptimizationCandidateEvaluation
     private Double averageTokens;
 
     /*
-     * Average end-to-end latency per task, rounded to milliseconds.
-     */
-    @Generated
-    private Long avgLatencyMs;
-
-    /*
      * Foundry evaluation identifier used to score this candidate. Omitted when unavailable.
      */
     @Generated
@@ -88,16 +82,16 @@ public final class AgentOptimizationCandidateEvaluation
     }
 
     /**
-     * Get the avgLatencyMs property: Average end-to-end latency per task, rounded to milliseconds.
+     * Get the averageLatency property: Average end-to-end latency per task, rounded to milliseconds.
      *
-     * @return the avgLatencyMs value.
+     * @return the averageLatency value.
      */
     @Generated
-    public Duration getAvgLatencyMs() {
-        if (this.avgLatencyMs == null) {
+    public Duration getAverageLatency() {
+        if (this.averageLatency == null) {
             return null;
         }
-        return Duration.ofMillis(this.avgLatencyMs);
+        return Duration.ofMillis(this.averageLatency);
     }
 
     /**
@@ -145,7 +139,7 @@ public final class AgentOptimizationCandidateEvaluation
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("score", this.averageScore);
         jsonWriter.writeNumberField("avg_tokens", this.averageTokens);
-        jsonWriter.writeNumberField("avg_latency_ms", this.avgLatencyMs);
+        jsonWriter.writeNumberField("avg_latency_ms", this.averageLatency);
         jsonWriter.writeStringField("eval_id", this.evaluationId);
         jsonWriter.writeStringField("eval_run_id", this.evaluationRunId);
         jsonWriter.writeNumberField("completed_at", this.completedAt);
@@ -175,7 +169,7 @@ public final class AgentOptimizationCandidateEvaluation
                     deserializedAgentOptimizationCandidateEvaluation.averageTokens
                         = reader.getNullable(JsonReader::getDouble);
                 } else if ("avg_latency_ms".equals(fieldName)) {
-                    deserializedAgentOptimizationCandidateEvaluation.avgLatencyMs
+                    deserializedAgentOptimizationCandidateEvaluation.averageLatency
                         = reader.getNullable(JsonReader::getLong);
                 } else if ("eval_id".equals(fieldName)) {
                     deserializedAgentOptimizationCandidateEvaluation.evaluationId = reader.getString();
@@ -191,4 +185,10 @@ public final class AgentOptimizationCandidateEvaluation
             return deserializedAgentOptimizationCandidateEvaluation;
         });
     }
+
+    /*
+     * Average end-to-end latency per task, rounded to milliseconds.
+     */
+    @Generated
+    private Long averageLatency;
 }

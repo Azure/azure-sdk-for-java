@@ -31,12 +31,6 @@ public final class AgentOptimizationJobLatency implements JsonSerializable<Agent
     private String model;
 
     /*
-     * Average per-call latency, rounded to milliseconds.
-     */
-    @Generated
-    private final long avgLatencyMs;
-
-    /*
      * Total number of calls contributing to this entry.
      */
     @Generated
@@ -46,16 +40,16 @@ public final class AgentOptimizationJobLatency implements JsonSerializable<Agent
      * Creates an instance of AgentOptimizationJobLatency class.
      *
      * @param stage the stage value to set.
-     * @param avgLatencyMs the avgLatencyMs value to set.
+     * @param averageLatency the averageLatency value to set.
      * @param callCount the callCount value to set.
      */
     @Generated
-    private AgentOptimizationJobLatency(AgentOptimizationStage stage, Duration avgLatencyMs, long callCount) {
+    private AgentOptimizationJobLatency(AgentOptimizationStage stage, Duration averageLatency, long callCount) {
         this.stage = stage;
-        if (avgLatencyMs == null) {
-            this.avgLatencyMs = 0L;
+        if (averageLatency == null) {
+            this.averageLatency = 0L;
         } else {
-            this.avgLatencyMs = avgLatencyMs.toMillis();
+            this.averageLatency = averageLatency.toMillis();
         }
         this.callCount = callCount;
     }
@@ -81,13 +75,13 @@ public final class AgentOptimizationJobLatency implements JsonSerializable<Agent
     }
 
     /**
-     * Get the avgLatencyMs property: Average per-call latency, rounded to milliseconds.
+     * Get the averageLatency property: Average per-call latency, rounded to milliseconds.
      *
-     * @return the avgLatencyMs value.
+     * @return the averageLatency value.
      */
     @Generated
-    public Duration getAvgLatencyMs() {
-        return Duration.ofMillis(this.avgLatencyMs);
+    public Duration getAverageLatency() {
+        return Duration.ofMillis(this.averageLatency);
     }
 
     /**
@@ -108,7 +102,7 @@ public final class AgentOptimizationJobLatency implements JsonSerializable<Agent
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("stage", this.stage == null ? null : this.stage.toString());
-        jsonWriter.writeLongField("avg_latency_ms", this.avgLatencyMs);
+        jsonWriter.writeLongField("avg_latency_ms", this.averageLatency);
         jsonWriter.writeLongField("call_count", this.callCount);
         jsonWriter.writeStringField("model", this.model);
         return jsonWriter.writeEndObject();
@@ -127,7 +121,7 @@ public final class AgentOptimizationJobLatency implements JsonSerializable<Agent
     public static AgentOptimizationJobLatency fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AgentOptimizationStage stage = null;
-            Duration avgLatencyMs = null;
+            Duration averageLatency = null;
             long callCount = 0L;
             String model = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -136,7 +130,7 @@ public final class AgentOptimizationJobLatency implements JsonSerializable<Agent
                 if ("stage".equals(fieldName)) {
                     stage = AgentOptimizationStage.fromString(reader.getString());
                 } else if ("avg_latency_ms".equals(fieldName)) {
-                    avgLatencyMs = Duration.ofMillis(reader.getLong());
+                    averageLatency = Duration.ofMillis(reader.getLong());
                 } else if ("call_count".equals(fieldName)) {
                     callCount = reader.getLong();
                 } else if ("model".equals(fieldName)) {
@@ -146,9 +140,15 @@ public final class AgentOptimizationJobLatency implements JsonSerializable<Agent
                 }
             }
             AgentOptimizationJobLatency deserializedAgentOptimizationJobLatency
-                = new AgentOptimizationJobLatency(stage, avgLatencyMs, callCount);
+                = new AgentOptimizationJobLatency(stage, averageLatency, callCount);
             deserializedAgentOptimizationJobLatency.model = model;
             return deserializedAgentOptimizationJobLatency;
         });
     }
+
+    /*
+     * Average per-call latency, rounded to milliseconds.
+     */
+    @Generated
+    private final long averageLatency;
 }

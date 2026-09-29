@@ -28,7 +28,7 @@ public class UserConversationSimulationInterruptionConfiguration
      * Creates an instance of UserConversationSimulationInterruptionConfiguration class.
      */
     @Generated
-    public UserConversationSimulationInterruptionConfiguration() {
+    protected UserConversationSimulationInterruptionConfiguration() {
     }
 
     /**

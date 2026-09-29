@@ -27,7 +27,7 @@ public class EvaluationVoiceModelConfiguration implements JsonSerializable<Evalu
      * Creates an instance of EvaluationVoiceModelConfiguration class.
      */
     @Generated
-    public EvaluationVoiceModelConfiguration() {
+    protected EvaluationVoiceModelConfiguration() {
     }
 
     /**

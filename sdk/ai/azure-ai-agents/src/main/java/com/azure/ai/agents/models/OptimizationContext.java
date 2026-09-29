@@ -27,7 +27,7 @@ public class OptimizationContext implements JsonSerializable<OptimizationContext
      * Creates an instance of OptimizationContext class.
      */
     @Generated
-    public OptimizationContext() {
+    protected OptimizationContext() {
     }
 
     /**

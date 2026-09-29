@@ -28,7 +28,7 @@ public class AgentOptimizationEvaluationSet implements JsonSerializable<AgentOpt
      * Creates an instance of AgentOptimizationEvaluationSet class.
      */
     @Generated
-    public AgentOptimizationEvaluationSet() {
+    protected AgentOptimizationEvaluationSet() {
     }
 
     /**

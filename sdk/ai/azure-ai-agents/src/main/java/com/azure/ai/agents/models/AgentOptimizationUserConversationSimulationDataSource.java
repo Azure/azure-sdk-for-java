@@ -29,7 +29,7 @@ public class AgentOptimizationUserConversationSimulationDataSource
      * Creates an instance of AgentOptimizationUserConversationSimulationDataSource class.
      */
     @Generated
-    public AgentOptimizationUserConversationSimulationDataSource() {
+    protected AgentOptimizationUserConversationSimulationDataSource() {
     }
 
     /**

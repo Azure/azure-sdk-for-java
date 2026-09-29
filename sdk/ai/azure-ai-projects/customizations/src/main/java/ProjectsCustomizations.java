@@ -1,6 +1,7 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -25,8 +26,20 @@ public class ProjectsCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
+        protectPolymorphicBaseConstructors(libraryCustomization);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
+    }
+
+    private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
+        String className = "DataGenerationJobInputs";
+        customization.getClass("com.azure.ai.projects.models", className)
+            .customizeAst(ast -> ast.getClassByName(className)
+                .orElseThrow(() -> new IllegalStateException(className + " was not generated"))
+                .getConstructors()
+                .stream()
+                .filter(constructor -> constructor.isPublic())
+                .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED)));
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {
