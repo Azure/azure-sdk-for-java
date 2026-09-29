@@ -210,7 +210,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
         HttpMethod method = getHttpMethod(request);
         HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
-        if (!containsHeaderIgnoreCase(request.getHeaders(), HttpConstants.HttpHeaders.USER_AGENT)) {
+        if (Objects.equals(
+            httpHeaders.value(HttpConstants.HttpHeaders.USER_AGENT),
+            this.defaultHeaders.get(HttpConstants.HttpHeaders.USER_AGENT))) {
             httpHeaders.set(HttpConstants.HttpHeaders.USER_AGENT, this.getCurrentUserAgent());
         }
 
@@ -220,16 +222,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             requestUri.getPort(),
             httpHeaders,
             contentAsByteArray);
-    }
-
-    private static boolean containsHeaderIgnoreCase(Map<String, String> headers, String headerName) {
-        for (String name : headers.keySet()) {
-            if (headerName.equalsIgnoreCase(name)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Override
