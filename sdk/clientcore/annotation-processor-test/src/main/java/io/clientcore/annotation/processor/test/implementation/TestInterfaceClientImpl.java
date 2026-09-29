@@ -10,6 +10,7 @@ import io.clientcore.annotation.processor.test.implementation.models.ServiceErro
 import io.clientcore.annotation.processor.test.implementation.models.OperationError;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.FormParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
 import io.clientcore.core.http.annotations.HttpRequestInformation;
@@ -91,6 +92,9 @@ public final class TestInterfaceClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<List<Foo>> listNextFoo(@PathParam(value = "nextLink", encoded = true) String nextLink,
             RequestContext requestContext);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "foo-map", expectedStatusCodes = { 200 })
+        Response<Map<String, Foo>> getFooMap(@HostParam("uri") String uri);
 
         // HttpClientTests
         // Need to add RequestContext to specify ResponseBodyMode, which is otherwise provided by convenience methods
@@ -276,6 +280,14 @@ public final class TestInterfaceClientImpl {
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON put(@HostParam("uri") String uri, @HeaderParam("ABC") Map<String, String> headerCollection);
+
+        @HttpRequestInformation(method = HttpMethod.POST, path = "form", expectedStatusCodes = { 200 })
+        Response<Void> submitForm(@HostParam("uri") String uri, @FormParam("display name") String displayName,
+            @FormParam(value = "alreadyEncoded", encoded = true) String alreadyEncoded);
+
+        @HttpRequestInformation(method = HttpMethod.POST, path = "multipart", expectedStatusCodes = { 200 })
+        Response<Void> submitMultipart(@HostParam("uri") String uri,
+            @HeaderParam("Content-Type") String mediaType, @BodyParam("multipart/form-data") BinaryData body);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "voideagerreadoom", expectedStatusCodes = { 200 })
         void headvoid(@HostParam("uri") String uri);

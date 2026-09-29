@@ -21,6 +21,7 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.OffsetDateTime;
+import java.time.Duration;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -314,6 +315,16 @@ public class CoreUtilsTests {
         assertEquals(new Person().setName("A"), result);
     }
 
+    @Test
+    void decodeNetworkResponseMapType() {
+        BinaryData data = BinaryData.fromString("{\"first\":{\"name\":\"A\",\"age\":0}}");
+        ParameterizedType mapType = CoreUtils.createParameterizedType(Map.class, String.class, Person.class);
+
+        Map<String, Person> result = CoreUtils.decodeNetworkResponse(data, SERIALIZER, mapType);
+
+        assertEquals(new Person().setName("A"), result.get("first"));
+    }
+
     @SuppressWarnings("unchecked")
     @Test
     void decodeNetworkResponseThrowsCoreException() {
@@ -356,5 +367,11 @@ public class CoreUtilsTests {
                 "red,blue,yellow,green,orange,purple,brown,indigo,violet,black"),
             Arguments.of(",", Arrays.asList("red", "blue", "yellow", "green", "orange", "purple", "brown", "indigo",
                 "violet", "black", "white"), "red,blue,yellow,green,orange,purple,brown,indigo,violet,black,white"));
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "PT0S, PT0S", "PT48H, P2D", "P2DT3H4M5.006S, P2DT3H4M5.006S", "-PT48H, -P2D" })
+    void durationToStringWithDays(String value, String expected) {
+        assertEquals(expected, CoreUtils.durationToStringWithDays(Duration.parse(value)));
     }
 }

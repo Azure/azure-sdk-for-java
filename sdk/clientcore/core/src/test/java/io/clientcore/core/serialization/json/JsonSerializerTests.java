@@ -19,10 +19,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.time.Duration;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
@@ -348,6 +350,79 @@ public class JsonSerializerTests {
         if (models.get(0) instanceof LinkedHashMap) {
             LinkedHashMap<String, String> model = (LinkedHashMap<String, String>) models.get(0);
             assertEquals("value1", model.get("property"));
+        }
+    }
+
+    @Test
+    public void deserializeParameterizedMapOfJsonSerializableTypes() throws IOException {
+        byte[] bytes = "{\"first\":{\"property\":\"value1\"}}".getBytes(StandardCharsets.UTF_8);
+        ParameterizedType type = TypeUtil.createParameterizedType(Map.class, String.class, FooModel.class);
+
+        Map<String, FooModel> models = SERIALIZER.deserializeFromBytes(bytes, type);
+
+        assertEquals("value1", models.get("first").getProperty());
+    }
+
+    @Test
+    public void deserializeNestedParameterizedCollections() throws IOException {
+        byte[] bytes = "{\"first\":[{\"property\":\"value1\"}]}".getBytes(StandardCharsets.UTF_8);
+        ParameterizedType listType = TypeUtil.createParameterizedType(List.class, FooModel.class);
+        ParameterizedType mapType = TypeUtil.createParameterizedType(Map.class, String.class, listType);
+
+        Map<String, List<FooModel>> models = SERIALIZER.deserializeFromBytes(bytes, mapType);
+
+        assertEquals("value1", models.get("first").get(0).getProperty());
+    }
+
+    @Test
+    public void deserializeTypedScalarList() throws IOException {
+        ParameterizedType offsetDateTimeList = TypeUtil.createParameterizedType(List.class, OffsetDateTime.class);
+        ParameterizedType durationList = TypeUtil.createParameterizedType(List.class, Duration.class);
+
+        List<OffsetDateTime> dateTimes = SERIALIZER
+            .deserializeFromBytes("[\"2022-08-26T18:38:00Z\"]".getBytes(StandardCharsets.UTF_8), offsetDateTimeList);
+        List<Duration> durations
+            = SERIALIZER.deserializeFromBytes("[\"P2D\"]".getBytes(StandardCharsets.UTF_8), durationList);
+
+        assertEquals(OffsetDateTime.parse("2022-08-26T18:38:00Z"), dateTimes.get(0));
+        assertEquals(Duration.ofDays(2), durations.get(0));
+    }
+
+    @Test
+    public void deserializeGeneratedEnumValue() throws IOException {
+        WireEnum value = SERIALIZER.deserializeFromBytes("\"Monday\"".getBytes(StandardCharsets.UTF_8), WireEnum.class);
+
+        assertEquals(WireEnum.MONDAY, value);
+    }
+
+    @Test
+    public void serializesDurationCollectionsWithDays() throws IOException {
+        Map<String, Duration> durations = Collections.singletonMap("value", Duration.ofDays(2));
+
+        assertEquals("{\"value\":\"P2D\"}", new String(SERIALIZER.serializeToBytes(durations), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    public void serializesUntypedWireScalars() throws IOException {
+        Map<String, Object> values = new LinkedHashMap<>();
+        values.put("decimal", new BigDecimal("0.33333"));
+        values.put("dateTime", OffsetDateTime.parse("2022-08-26T18:38Z"));
+
+        assertEquals("{\"decimal\":0.33333,\"dateTime\":\"2022-08-26T18:38:00Z\"}",
+            new String(SERIALIZER.serializeToBytes(values), StandardCharsets.UTF_8));
+    }
+
+    private enum WireEnum {
+        MONDAY("Monday");
+
+        private final String value;
+
+        WireEnum(String value) {
+            this.value = value;
+        }
+
+        public static WireEnum fromString(String value) {
+            return MONDAY.value.equals(value) ? MONDAY : null;
         }
     }
 

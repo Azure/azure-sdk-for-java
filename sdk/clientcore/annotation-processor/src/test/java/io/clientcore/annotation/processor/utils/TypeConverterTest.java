@@ -80,6 +80,11 @@ public class TypeConverterTest {
     }
 
     @Test
+    public void getEntityTypeVoid() {
+        assertEquals(void.class, TypeConverter.getEntityType(mockPrimitiveType(TypeKind.VOID)));
+    }
+
+    @Test
     public void isResponseTypeResponseType() {
         DeclaredType responseType = new MockDeclaredType(TypeKind.DECLARED, "io.clientcore.core.http.models.Response");
         boolean result = TypeConverter.isResponseType(responseType);

@@ -10,6 +10,7 @@ import io.clientcore.annotation.processor.templating.TemplateProcessor;
 import io.clientcore.annotation.processor.utils.PathBuilder;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.FormParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HostParam;
 import io.clientcore.core.http.annotations.HttpRequestInformation;
@@ -223,6 +224,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             PathParam pathParam = param.getAnnotation(PathParam.class);
             HeaderParam headerParam = param.getAnnotation(HeaderParam.class);
             QueryParam queryParam = param.getAnnotation(QueryParam.class);
+            FormParam formParam = param.getAnnotation(FormParam.class);
             BodyParam bodyParam = param.getAnnotation(BodyParam.class);
 
             // Switch based on annotations
@@ -237,11 +239,7 @@ public class AnnotationProcessor extends AbstractProcessor {
                 method.addSubstitution(
                     new Substitution(pathParam.value(), param.getSimpleName().toString(), !pathParam.encoded()));
             } else if (headerParam != null) {
-                // Only add header param if the key is not already present (e.g., set by static header params)
-                String key = headerParam.value();
-                if (!method.getHeaders().containsKey(key)) {
-                    method.addHeader(headerParam.value(), param.getSimpleName().toString());
-                }
+                method.setHeader(headerParam.value(), param.getSimpleName().toString());
             } else if (queryParam != null) {
                 // Only add query param if the key is not already present (e.g., set by static query params)
                 String key = queryParam.value();
@@ -249,6 +247,9 @@ public class AnnotationProcessor extends AbstractProcessor {
                     method.addQueryParam(key, param.getSimpleName().toString(), queryParam.multipleQueryParams(),
                         !queryParam.encoded(), false);
                 }
+            } else if (formParam != null) {
+                method.addFormParameter(new HttpRequestContext.FormParameter(formParam.value(), param.asType(),
+                    param.getSimpleName().toString(), !formParam.encoded()));
             } else if (bodyParam != null) {
                 method.setBody(
                     new HttpRequestContext.Body(bodyParam.value(), param.asType(), param.getSimpleName().toString()));

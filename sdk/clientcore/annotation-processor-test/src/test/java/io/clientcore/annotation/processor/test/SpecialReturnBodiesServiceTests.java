@@ -19,6 +19,7 @@ import java.io.UncheckedIOException;
 import java.security.SecureRandom;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests {@link SpecialReturnBodiesService} APIs with a response payload that would've cause invalid deserialization if
@@ -81,6 +82,40 @@ public class SpecialReturnBodiesServiceTests {
         try (Response<InputStream> response = getService().getInputStreamWithResponse("https://localhost")) {
             assertArrayEquals(RESPONSE_BODY_BYTES, fullyReadInputStream(response.getValue()));
         }
+    }
+
+    @Test
+    public void getStandardBase64() {
+        SpecialReturnBodiesService service = SpecialReturnBodiesService.getNewInstance(new HttpPipelineBuilder()
+            .httpClient(request -> new Response<>(request, 200,
+                new HttpHeaders().add(HttpHeaderName.CONTENT_TYPE, "application/json"),
+                BinaryData.fromString("\"dGVzdA==\"")))
+            .build());
+
+        assertArrayEquals("test".getBytes(java.nio.charset.StandardCharsets.UTF_8),
+            service.base64("https://localhost").getValue());
+    }
+
+    @Test
+    public void quotedOctetStreamRemainsRawBytes() {
+        byte[] rawBytes = "\"dGVzdA==\"".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        SpecialReturnBodiesService service = SpecialReturnBodiesService.getNewInstance(new HttpPipelineBuilder()
+            .httpClient(request -> new Response<>(request, 200,
+                new HttpHeaders().add(HttpHeaderName.CONTENT_TYPE, "application/octet-stream"),
+                BinaryData.fromBytes(rawBytes)))
+            .build());
+
+        assertArrayEquals(rawBytes, service.getByteArray("https://localhost"));
+    }
+
+    @Test
+    public void getTextResponse() {
+        SpecialReturnBodiesService service = SpecialReturnBodiesService.getNewInstance(new HttpPipelineBuilder()
+            .httpClient(request -> new Response<>(request, 200,
+                new HttpHeaders().add(HttpHeaderName.CONTENT_TYPE, "text/plain"), BinaryData.fromString("{cat}")))
+            .build());
+
+        assertEquals("{cat}", service.getText("https://localhost").getValue());
     }
 
     private static byte[] fullyReadInputStream(InputStream inputStream) {
