@@ -10,6 +10,8 @@ import io.clientcore.core.models.CoreException;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Semaphore;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -30,7 +32,7 @@ import static com.azure.v2.core.implementation.polling.PollingUtils.validateTime
  * <p><strong>Code Sample: Using a SimplePoller to poll until the operation is successfully completed</strong></p>
  *
  * @param <T> The type of poll response value
- * @param <U> The type of the final result of the long running operation
+ * @param <U> The type of the final result of the long-running operation
  *
  * @see com.azure.v2.core.http.polling
  * @see Poller
@@ -45,6 +47,7 @@ final class SimplePoller<T, U> implements Poller<T, U> {
     private final PollResponse<T> activationResponse;
     private final PollingContext<T> pollingContext = new PollingContext<>();
     private final Semaphore pollingSemaphore = new Semaphore(1);
+    private final ScheduledExecutorService executor;
     private volatile PollingContext<T> terminalPollContext;
     private volatile Duration pollInterval;
 
@@ -64,11 +67,13 @@ final class SimplePoller<T, U> implements Poller<T, U> {
      * long-running operation if service support it, this parameter is required and operation will be called current
      * {@link PollingContext}, if service does not have an api to fetch final result and if final result is same as
      * final poll response value then implementer can choose to simply return value from provided final poll response.
+     * @param executor A {@link ScheduledExecutorService} that handles sending scheduled poll requests. If null, uses
+     * {@link Executors#newSingleThreadScheduledExecutor()}.
      */
     SimplePoller(Duration pollInterval, Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
         Function<PollingContext<T>, PollResponse<T>> pollOperation,
         BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
-        Function<PollingContext<T>, U> fetchResultOperation) {
+        Function<PollingContext<T>, U> fetchResultOperation, ScheduledExecutorService executor) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
             throw LOGGER.throwableAtWarning()
@@ -86,6 +91,7 @@ final class SimplePoller<T, U> implements Poller<T, U> {
         if (this.activationResponse.getStatus().isComplete()) {
             this.terminalPollContext = this.pollingContext;
         }
+        this.executor = executor == null ? Executors.newSingleThreadScheduledExecutor() : executor;
     }
 
     @Override
@@ -142,8 +148,8 @@ final class SimplePoller<T, U> implements Poller<T, U> {
             return currentTerminalPollContext.getLatestResponse();
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            PollResponse<T> pollResponse
-                = PollingUtils.pollingLoop(context, timeout, statusToWaitFor, pollOperation, pollInterval, true);
+            PollResponse<T> pollResponse = PollingUtils.pollingLoop(context, timeout, statusToWaitFor, pollOperation,
+                pollInterval, true, executor);
 
             if (pollResponse.getStatus().isComplete()) {
                 this.terminalPollContext = context;
@@ -161,7 +167,7 @@ final class SimplePoller<T, U> implements Poller<T, U> {
 
         PollingContext<T> context = this.pollingContext.copy();
         PollResponse<T> pollResponse
-            = PollingUtils.pollingLoop(context, timeout, null, pollOperation, pollInterval, false);
+            = PollingUtils.pollingLoop(context, timeout, null, pollOperation, pollInterval, false, executor);
         this.terminalPollContext = context;
         return pollResponse;
     }
@@ -184,7 +190,7 @@ final class SimplePoller<T, U> implements Poller<T, U> {
             return this.fetchResultOperation.apply(currentTerminalPollContext);
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            PollingUtils.pollingLoop(context, timeout, null, pollOperation, pollInterval, false);
+            PollingUtils.pollingLoop(context, timeout, null, pollOperation, pollInterval, false, executor);
             this.terminalPollContext = context;
             return getFinalResult();
         }
@@ -200,7 +206,7 @@ final class SimplePoller<T, U> implements Poller<T, U> {
                 this.cancelOperation.apply(null, this.activationResponse);
             } catch (PollContextRequiredException crp) {
                 PollingContext<T> context2 = this.pollingContext.copy();
-                PollingUtils.pollingLoop(pollingContext, null, null, pollOperation, pollInterval, false);
+                PollingUtils.pollingLoop(pollingContext, null, null, pollOperation, pollInterval, false, executor);
                 this.cancelOperation.apply(context2, this.activationResponse);
             }
         }
