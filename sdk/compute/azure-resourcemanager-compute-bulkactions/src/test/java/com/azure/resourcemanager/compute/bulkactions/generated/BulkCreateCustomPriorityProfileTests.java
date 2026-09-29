@@ -14,21 +14,21 @@ public final class BulkCreateCustomPriorityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BulkCreateCustomPriorityProfile model = BinaryData
-            .fromString("{\"type\":\"Spot\",\"maxPricePerVM\":95.63518440013925,\"evictionPolicy\":\"Delete\"}")
+            .fromString("{\"type\":\"Regular\",\"maxPricePerVM\":52.88253093916484,\"evictionPolicy\":\"Delete\"}")
             .toObject(BulkCreateCustomPriorityProfile.class);
-        Assertions.assertEquals(PriorityType.SPOT, model.type());
-        Assertions.assertEquals(95.63518440013925D, model.maxPricePerVM());
+        Assertions.assertEquals(PriorityType.REGULAR, model.type());
+        Assertions.assertEquals(52.88253093916484D, model.maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BulkCreateCustomPriorityProfile model = new BulkCreateCustomPriorityProfile().withType(PriorityType.SPOT)
-            .withMaxPricePerVM(95.63518440013925D)
+        BulkCreateCustomPriorityProfile model = new BulkCreateCustomPriorityProfile().withType(PriorityType.REGULAR)
+            .withMaxPricePerVM(52.88253093916484D)
             .withEvictionPolicy(EvictionPolicy.DELETE);
         model = BinaryData.fromObject(model).toObject(BulkCreateCustomPriorityProfile.class);
-        Assertions.assertEquals(PriorityType.SPOT, model.type());
-        Assertions.assertEquals(95.63518440013925D, model.maxPricePerVM());
+        Assertions.assertEquals(PriorityType.REGULAR, model.type());
+        Assertions.assertEquals(52.88253093916484D, model.maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DELETE, model.evictionPolicy());
     }
 }

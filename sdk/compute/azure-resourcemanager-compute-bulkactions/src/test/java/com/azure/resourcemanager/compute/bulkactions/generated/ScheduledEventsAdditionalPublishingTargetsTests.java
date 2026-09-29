@@ -13,19 +13,19 @@ public final class ScheduledEventsAdditionalPublishingTargetsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledEventsAdditionalPublishingTargets model = BinaryData
-            .fromString("{\"eventGridAndResourceGraph\":{\"enable\":false,\"scheduledEventsApiVersion\":\"yxczfclh\"}}")
+            .fromString("{\"eventGridAndResourceGraph\":{\"enable\":false,\"scheduledEventsApiVersion\":\"krdqmh\"}}")
             .toObject(ScheduledEventsAdditionalPublishingTargets.class);
         Assertions.assertFalse(model.eventGridAndResourceGraph().enable());
-        Assertions.assertEquals("yxczfclh", model.eventGridAndResourceGraph().scheduledEventsApiVersion());
+        Assertions.assertEquals("krdqmh", model.eventGridAndResourceGraph().scheduledEventsApiVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduledEventsAdditionalPublishingTargets model
             = new ScheduledEventsAdditionalPublishingTargets().withEventGridAndResourceGraph(
-                new EventGridAndResourceGraph().withEnable(false).withScheduledEventsApiVersion("yxczfclh"));
+                new EventGridAndResourceGraph().withEnable(false).withScheduledEventsApiVersion("krdqmh"));
         model = BinaryData.fromObject(model).toObject(ScheduledEventsAdditionalPublishingTargets.class);
         Assertions.assertFalse(model.eventGridAndResourceGraph().enable());
-        Assertions.assertEquals("yxczfclh", model.eventGridAndResourceGraph().scheduledEventsApiVersion());
+        Assertions.assertEquals("krdqmh", model.eventGridAndResourceGraph().scheduledEventsApiVersion());
     }
 }
