@@ -9,7 +9,6 @@ import java.text.Normalizer;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.regex.Pattern;
 
 /**
@@ -21,11 +20,9 @@ public class UserAgentContainer {
     private static final int MAX_USER_AGENT_LENGTH = 255;
     private final int maxSuffixLength;
     private final String baseUserAgent;
-    private final ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
-    private final ReentrantReadWriteLock.ReadLock readLock = reentrantReadWriteLock.readLock();
-    private final ReentrantReadWriteLock.WriteLock writeLock = reentrantReadWriteLock.writeLock();
-    private String suffix;
-    private String userAgent;
+    private final ReentrantLock writeLock = new ReentrantLock();
+    private volatile String suffix;
+    private volatile String userAgent;
     private String baseUserAgentWithSuffix;
     public final static String AZSDK_USERAGENT_PREFIX = "azsdk-java-";
 
@@ -45,12 +42,7 @@ public class UserAgentContainer {
     }
 
     public String getSuffix() {
-        readLock.lock();
-        try {
-            return this.suffix;
-        } finally {
-            readLock.unlock();
-        }
+        return this.suffix;
     }
 
     public void setFeatureEnabledFlagsAsSuffix(Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
@@ -68,8 +60,10 @@ public class UserAgentContainer {
                 value += userAgentFeatureFlag.getValue();
             }
 
-            this.userAgent = !Strings.isNullOrEmpty(this.baseUserAgentWithSuffix) ? this.baseUserAgentWithSuffix : this.baseUserAgent;
-            this.userAgent = this.userAgent + "|F" + Integer.toHexString(value).toUpperCase(Locale.ROOT);
+            String userAgentSnapshot = !Strings.isNullOrEmpty(this.baseUserAgentWithSuffix)
+                ? this.baseUserAgentWithSuffix
+                : this.baseUserAgent;
+            this.userAgent = userAgentSnapshot + "|F" + Integer.toHexString(value).toUpperCase(Locale.ROOT);
         } finally {
             writeLock.unlock();
         }
@@ -78,7 +72,7 @@ public class UserAgentContainer {
     public void setSuffix(String suffix) {
         writeLock.lock();
         try {
-            this.setSuffixInternal(suffix);
+            this.userAgent = this.setSuffixInternal(suffix);
         } finally {
             writeLock.unlock();
         }
@@ -106,23 +100,17 @@ public class UserAgentContainer {
             String appendedSuffix = Strings.isNullOrEmpty(this.suffix)
                 ? suffix
                 : this.suffix + " " + suffix;
-            this.setSuffixInternal(appendedSuffix);
-            this.userAgent += featureFlagsSuffix;
+            this.userAgent = this.setSuffixInternal(appendedSuffix) + featureFlagsSuffix;
         } finally {
             writeLock.unlock();
         }
     }
 
     public String getUserAgent() {
-        readLock.lock();
-        try {
-            return this.userAgent;
-        } finally {
-            readLock.unlock();
-        }
+        return this.userAgent;
     }
 
-    private void setSuffixInternal(String suffix) {
+    private String setSuffixInternal(String suffix) {
         if (suffix == null) {
             suffix = "";
         }
@@ -132,8 +120,8 @@ public class UserAgentContainer {
         }
 
         this.suffix = suffix;
-        this.userAgent = stripNonAsciiCharacters(baseUserAgent.concat(" ").concat(this.suffix));
-        this.baseUserAgentWithSuffix = this.userAgent;
+        this.baseUserAgentWithSuffix = stripNonAsciiCharacters(baseUserAgent.concat(" ").concat(this.suffix));
+        return this.baseUserAgentWithSuffix;
     }
 
     private static String stripNonAsciiCharacters(String input) {
