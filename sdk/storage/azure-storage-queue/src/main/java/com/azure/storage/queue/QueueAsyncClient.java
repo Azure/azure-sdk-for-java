@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -20,14 +21,20 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
+import com.azure.storage.queue.implementation.QueueMessageIdsAsyncClientInternal;
+import com.azure.storage.queue.implementation.QueueMessagesAsyncClientInternal;
+import com.azure.storage.queue.implementation.QueueAsyncClientInternal;
 import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
 import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
-import com.azure.storage.queue.implementation.models.PeekedMessageItemInternalWrapper;
+import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyHeaders;
+import com.azure.storage.queue.implementation.models.PeekedMessages;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
-import com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper;
+import com.azure.storage.queue.implementation.models.ReceivedMessages;
+import com.azure.storage.queue.implementation.models.SignedIdentifiers;
 import com.azure.storage.queue.implementation.util.ModelHelper;
+import com.azure.storage.queue.implementation.util.RequestOptionsHelper;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
@@ -86,6 +93,9 @@ public final class QueueAsyncClient {
 
     private static final ClientLogger LOGGER = new ClientLogger(QueueAsyncClient.class);
     private final AzureQueueStorageImpl client;
+    private final QueueAsyncClientInternal queueClientInternal;
+    private final QueueMessagesAsyncClientInternal messagesClientInternal;
+    private final QueueMessageIdsAsyncClientInternal messageIdsClientInternal;
     private final String queueName;
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
@@ -116,6 +126,9 @@ public final class QueueAsyncClient {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
+        this.queueClientInternal = new QueueAsyncClientInternal(client.getQueues());
+        this.messagesClientInternal = new QueueMessagesAsyncClientInternal(client.getMessages());
+        this.messageIdsClientInternal = new QueueMessageIdsAsyncClientInternal(client.getMessageIds());
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.messageEncoding = messageEncoding;
@@ -224,8 +237,9 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, Context context) {
-        context = context == null ? Context.NONE : context;
-        return client.getQueues().createNoCustomHeadersWithResponseAsync(queueName, null, metadata, null, context);
+        RequestOptions requestOptions = RequestOptionsHelper.queueRequestOptions(context, client.getUrl(), queueName);
+        return queueClientInternal.createWithResponse(null, metadata, requestOptions)
+            .map(response -> (Response<Void>) response);
     }
 
     /**
@@ -360,8 +374,9 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
-        return client.getQueues().deleteNoCustomHeadersWithResponseAsync(queueName, null, null, context);
+        return queueClientInternal
+            .deleteWithResponse(null, RequestOptionsHelper.queueRequestOptions(context, client.getUrl(), queueName))
+            .map(response -> (Response<Void>) response);
     }
 
     /**
@@ -493,10 +508,11 @@ public final class QueueAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueProperties>> getPropertiesWithResponse() {
         try {
-            return withContext(context -> client.getQueues()
-                .getPropertiesWithResponseAsync(queueName, null, null, context)
+            return withContext(context -> queueClientInternal
+                .getPropertiesWithResponse(null,
+                    RequestOptionsHelper.queueRequestOptions(context, client.getUrl(), queueName))
                 .map(response -> new SimpleResponse<>(response,
-                    ModelHelper.transformQueueProperties(response.getDeserializedHeaders()))));
+                    ModelHelper.transformQueueProperties(response.getValue()))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -576,8 +592,12 @@ public final class QueueAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata) {
         try {
-            return withContext(context -> client.getQueues()
-                .setMetadataNoCustomHeadersWithResponseAsync(queueName, null, metadata, null, context));
+            return withContext(context -> {
+                RequestOptions requestOptions
+                    = RequestOptionsHelper.queueRequestOptions(context, client.getUrl(), queueName);
+                return queueClientInternal.setMetadataWithResponse(null, metadata, requestOptions)
+                    .map(response -> (Response<Void>) response);
+            });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -607,10 +627,12 @@ public final class QueueAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueueSignedIdentifier> getAccessPolicy() {
         try {
-            Function<String, Mono<PagedResponse<QueueSignedIdentifier>>> retriever = marker -> this.client.getQueues()
-                .getAccessPolicyWithResponseAsync(queueName, null, null, Context.NONE)
-                .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), response.getValue().items(), null, response.getDeserializedHeaders()));
+            Function<String, Mono<PagedResponse<QueueSignedIdentifier>>> retriever = marker -> this.queueClientInternal
+                .getAccessPolicyWithResponse(null,
+                    RequestOptionsHelper.queueRequestOptions(Context.NONE, client.getUrl(), queueName))
+                .map(response -> new PagedResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifier>(
+                    response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    response.getValue().getItems(), null, response.getDeserializedHeaders()));
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
         } catch (RuntimeException ex) {
@@ -710,8 +732,10 @@ public final class QueueAsyncClient {
             .stream(permissions != null ? permissions.spliterator() : Spliterators.emptySpliterator(), false)
             .collect(Collectors.toList());
 
-        return client.getQueues()
-            .setAccessPolicyNoCustomHeadersWithResponseAsync(queueName, null, null, permissionsList, context);
+        return queueClientInternal
+            .setAccessPolicyWithResponse(null, new SignedIdentifiers(permissionsList),
+                RequestOptionsHelper.queueRequestOptions(context, client.getUrl(), queueName))
+            .map(response -> (Response<Void>) response);
     }
 
     /**
@@ -763,8 +787,10 @@ public final class QueueAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> clearMessagesWithResponse() {
         try {
-            return withContext(
-                context -> client.getMessages().clearNoCustomHeadersWithResponseAsync(queueName, null, null, context));
+            return withContext(context -> messagesClientInternal
+                .clearWithResponse(null,
+                    RequestOptionsHelper.messagesRequestOptions(context, client.getUrl(), queueName))
+                .map(response -> (Response<Void>) response));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -946,11 +972,11 @@ public final class QueueAsyncClient {
         try {
             return withContext(context -> Mono.fromCallable(() -> ModelHelper.encodeMessage(message, messageEncoding))
                 .flatMap(messageText -> {
-                    QueueMessage queueMessage = new QueueMessage().setMessageText(messageText);
-                    return client.getMessages()
-                        .enqueueWithResponseAsync(queueName, queueMessage, visibilityTimeoutInSeconds,
-                            timeToLiveInSeconds, null, null, context)
-                        .map(response -> new SimpleResponse<>(response, response.getValue().items().get(0)));
+                    QueueMessage queueMessage = new QueueMessage(messageText);
+                    return messagesClientInternal
+                        .enqueueWithResponse(queueMessage, visibilityTimeoutInSeconds, timeToLiveInSeconds, null,
+                            RequestOptionsHelper.messagesRequestOptions(context, client.getUrl(), queueName))
+                        .map(response -> new SimpleResponse<>(response, response.getValue().getItems().get(0)));
                 }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1064,9 +1090,10 @@ public final class QueueAsyncClient {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         try {
             Function<String, Mono<PagedResponse<QueueMessageItem>>> retriever
-                = marker -> withContext(context -> this.client.getMessages()
-                    .dequeueWithResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds, null, null, context))
-                        .flatMap(this::transformMessagesDequeueResponse);
+                = marker -> withContext(context -> this.messagesClientInternal
+                    .dequeueWithResponse(maxMessages, visibilityTimeoutInSeconds, null,
+                        RequestOptionsHelper.messagesRequestOptions(context, client.getUrl(), queueName))
+                    .flatMap(this::transformMessagesDequeueResponse));
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
         } catch (RuntimeException ex) {
@@ -1074,12 +1101,11 @@ public final class QueueAsyncClient {
         }
     }
 
-    private Mono<PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem>> transformMessagesDequeueResponse(
-        ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper> response) {
-        List<QueueMessageItemInternal> queueMessageInternalItems = response.getValue().items();
-        if (queueMessageInternalItems == null) {
-            queueMessageInternalItems = Collections.emptyList();
-        }
+    private Mono<PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem>>
+        transformMessagesDequeueResponse(ResponseBase<MessagesDequeueHeaders, ReceivedMessages> response) {
+        ReceivedMessages wrapper = response.getValue();
+        List<QueueMessageItemInternal> queueMessageInternalItems
+            = (wrapper == null || wrapper.getItems() == null) ? Collections.emptyList() : wrapper.getItems();
 
         return Flux.fromIterable(queueMessageInternalItems)
             .flatMapSequential(queueMessageItemInternal -> Mono
@@ -1109,7 +1135,7 @@ public final class QueueAsyncClient {
                 }))
             .collectList()
             .map(queueMessageItems -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), queueMessageItems, null, response.getDeserializedHeaders()));
+                response.getHeaders(), queueMessageItems, null, null));
     }
 
     /**
@@ -1178,8 +1204,9 @@ public final class QueueAsyncClient {
     public PagedFlux<PeekedMessageItem> peekMessages(Integer maxMessages) {
         try {
             Function<String, Mono<PagedResponse<PeekedMessageItem>>> retriever
-                = marker -> withContext(context -> this.client.getMessages()
-                    .peekWithResponseAsync(queueName, maxMessages, null, null, context)
+                = marker -> withContext(context -> this.messagesClientInternal
+                    .peekWithResponse(maxMessages, null,
+                        RequestOptionsHelper.messagesRequestOptions(context, client.getUrl(), queueName))
                     .flatMap(this::transformMessagesPeekResponse));
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
@@ -1189,11 +1216,10 @@ public final class QueueAsyncClient {
     }
 
     private Mono<PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>>
-        transformMessagesPeekResponse(ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> response) {
-        List<PeekedMessageItemInternal> peekedMessageInternalItems = response.getValue().items();
-        if (peekedMessageInternalItems == null) {
-            peekedMessageInternalItems = Collections.emptyList();
-        }
+        transformMessagesPeekResponse(ResponseBase<MessagesPeekHeaders, PeekedMessages> response) {
+        PeekedMessages wrapper = response.getValue();
+        List<PeekedMessageItemInternal> peekedMessageInternalItems
+            = (wrapper == null || wrapper.getItems() == null) ? Collections.emptyList() : wrapper.getItems();
 
         return Flux.fromIterable(peekedMessageInternalItems)
             .flatMapSequential(peekedMessageItemInternal -> Mono
@@ -1223,7 +1249,7 @@ public final class QueueAsyncClient {
                 }))
             .collectList()
             .map(peekedMessageItems -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), peekedMessageItems, null, response.getDeserializedHeaders()));
+                response.getHeaders(), peekedMessageItems, null, null));
     }
 
     /**
@@ -1318,18 +1344,19 @@ public final class QueueAsyncClient {
         QueueMessage message;
         if (messageText != null) {
             String finalMessage = ModelHelper.encodeMessage(BinaryData.fromString(messageText), messageEncoding);
-            message = new QueueMessage().setMessageText(finalMessage);
+            message = new QueueMessage(finalMessage);
         } else {
             message = null;
         }
         Duration visTimeout = visibilityTimeout == null ? Duration.ZERO : visibilityTimeout;
         try {
-            return withContext(context -> client.getMessageIds()
-                .updateWithResponseAsync(queueName, messageId, popReceipt, (int) visTimeout.getSeconds(), null, null,
-                    message, context)
-                .map(response -> new SimpleResponse<>(response,
-                    new UpdateMessageResult(response.getDeserializedHeaders().getXMsPopreceipt(),
-                        response.getDeserializedHeaders().getXMsTimeNextVisible()))));
+            return withContext(context -> {
+                return messageIdsClientInternal
+                    .updateWithResponse(messageId, popReceipt, (int) visTimeout.getSeconds(), null, message,
+                        RequestOptionsHelper.messageIdRequestOptions(context, client.getUrl(), queueName, messageId))
+                    .map(response -> new SimpleResponse<>(response,
+                        ModelHelper.transformUpdateMessageResult(response.getValue())));
+            });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1410,8 +1437,10 @@ public final class QueueAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt) {
         try {
-            return withContext(context -> client.getMessageIds()
-                .deleteNoCustomHeadersWithResponseAsync(queueName, messageId, popReceipt, null, null, context));
+            return withContext(context -> messageIdsClientInternal
+                .deleteWithResponse(messageId, popReceipt, null,
+                    RequestOptionsHelper.messageIdRequestOptions(context, client.getUrl(), queueName, messageId))
+                .map(response -> (Response<Void>) response));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
