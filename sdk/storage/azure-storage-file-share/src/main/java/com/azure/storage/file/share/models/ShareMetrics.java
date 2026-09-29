@@ -161,7 +161,7 @@ public final class ShareMetrics implements XmlSerializable<ShareMetrics> {
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Metrics" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "ShareMetrics" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Version", this.version);
         xmlWriter.writeBooleanElement("Enabled", this.enabled);
@@ -198,7 +198,7 @@ public final class ShareMetrics implements XmlSerializable<ShareMetrics> {
     @Generated
     public static ShareMetrics fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "Metrics" : rootElementName;
+            = rootElementName == null || rootElementName.isEmpty() ? "ShareMetrics" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             String version = null;
             boolean enabled = false;

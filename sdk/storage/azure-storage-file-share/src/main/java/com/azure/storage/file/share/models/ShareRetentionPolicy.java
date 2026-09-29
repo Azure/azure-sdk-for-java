@@ -108,7 +108,8 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "RetentionPolicy" : rootElementName;
+        rootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "ShareRetentionPolicy" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeBooleanElement("Enabled", this.enabled);
         xmlWriter.writeNumberElement("Days", this.days);
@@ -143,7 +144,7 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
     @Generated
     public static ShareRetentionPolicy fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "RetentionPolicy" : rootElementName;
+            = rootElementName == null || rootElementName.isEmpty() ? "ShareRetentionPolicy" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             boolean enabled = false;
             Integer days = null;

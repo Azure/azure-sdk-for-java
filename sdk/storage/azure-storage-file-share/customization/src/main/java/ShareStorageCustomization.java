@@ -103,6 +103,8 @@ public class ShareStorageCustomization extends Customization {
 
         restoreShareFileRangeListNextMarker(customization, logger);
 
+        restoreDefaultXmlRootNames(customization, logger);
+
         renameDownloadHeaderMethods(customization, logger);
 
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
@@ -511,6 +513,34 @@ public class ShareStorageCustomization extends Customization {
                 + "                } else {");
         editor.replaceFile(path, content);
         logger.info("Restored ShareFileRangeList.nextMarker (getter/setter + XML round-trip)");
+    }
+
+    /**
+     * Restores the GA default XML root element names for models that shipped with the {@code Share}-prefixed class name
+     * as the fallback root. The migrated emitter defaults the no-argument {@code toXml}/{@code fromXml} root to the wire
+     * element name ({@code AccessPolicy} / {@code RetentionPolicy}), which changes the serialization contract for callers
+     * that serialize/deserialize these public GA models directly. Nested service payloads already pass the wire name
+     * explicitly, so restoring the class-name fallback is safe and matches the shipped behavior.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void restoreDefaultXmlRootNames(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        restoreDefaultXmlRootName(editor, "ShareAccessPolicy", "AccessPolicy", logger);
+        restoreDefaultXmlRootName(editor, "ShareRetentionPolicy", "RetentionPolicy", logger);
+        restoreDefaultXmlRootName(editor, "ShareMetrics", "Metrics", logger);
+    }
+
+    private static void restoreDefaultXmlRootName(Editor editor, String className, String wireName, Logger logger) {
+        String path = PKG_ROOT + "models/" + className + ".java";
+        String content = editor.getFileContent(path);
+        String updated
+            = content.replace("? \"" + wireName + "\" : rootElementName", "? \"" + className + "\" : rootElementName");
+        if (!updated.equals(content)) {
+            editor.replaceFile(path, updated);
+            logger.info("Restored default XML root name {} on {}", className, className);
+        }
     }
 
     /**

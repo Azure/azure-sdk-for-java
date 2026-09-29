@@ -121,7 +121,7 @@ public final class ShareAccessPolicy implements XmlSerializable<ShareAccessPolic
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "AccessPolicy" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "ShareAccessPolicy" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Start",
             this.startsOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startsOn));
@@ -157,7 +157,7 @@ public final class ShareAccessPolicy implements XmlSerializable<ShareAccessPolic
     @Generated
     public static ShareAccessPolicy fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "AccessPolicy" : rootElementName;
+            = rootElementName == null || rootElementName.isEmpty() ? "ShareAccessPolicy" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ShareAccessPolicy deserializedShareAccessPolicy = new ShareAccessPolicy();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
