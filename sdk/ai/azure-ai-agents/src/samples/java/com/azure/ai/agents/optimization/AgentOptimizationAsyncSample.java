@@ -147,7 +147,7 @@ public class AgentOptimizationAsyncSample {
             System.out.printf("Best candidate: %s (score: %s)%n",
                 result.getCandidateSummary().getBestId(), result.getCandidateSummary().getBestScore());
         }
-        return agentsAsyncClient.listCandidates(jobId)
+        return agentsAsyncClient.listOptimizationCandidates(jobId)
             .doOnNext(candidate -> System.out.printf("  %s (id: %s, score: %s, tokens: %s)%n",
                 candidate.getName(), candidate.getCandidateId(),
                 candidate.getEvaluation() == null ? null : candidate.getEvaluation().getAverageScore(),

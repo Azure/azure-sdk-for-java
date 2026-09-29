@@ -128,7 +128,7 @@ public class AgentOptimizationSample {
                 summary.getBaselineId(), summary.getBaselineScore());
             System.out.printf("Best candidate: %s (score: %s)%n", summary.getBestId(), summary.getBestScore());
         }
-        for (AgentOptimizationCandidate candidate : agentsClient.listCandidates(jobId)) {
+        for (AgentOptimizationCandidate candidate : agentsClient.listOptimizationCandidates(jobId)) {
             System.out.printf("  %s (id: %s, score: %s, tokens: %s)%n",
                 candidate.getName(), candidate.getCandidateId(),
                 candidate.getEvaluation() == null ? null : candidate.getEvaluation().getAverageScore(),

@@ -829,7 +829,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> estimate(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> estimateOptimizationJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData inputs,
             RequestOptions requestOptions, Context context);
@@ -840,7 +840,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> estimateSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> estimateOptimizationJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData inputs,
             RequestOptions requestOptions, Context context);
@@ -931,7 +931,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listCandidates(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listOptimizationCandidates(@HostParam("endpoint") String endpoint,
             @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -941,7 +941,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listCandidatesSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listOptimizationCandidatesSync(@HostParam("endpoint") String endpoint,
             @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
@@ -951,7 +951,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCandidate(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> getOptimizationCandidate(@HostParam("endpoint") String endpoint,
             @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -962,17 +962,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getCandidateSync(@HostParam("endpoint") String endpoint, @PathParam("jobId") String jobId,
-            @PathParam("candidateId") String candidateId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Post("/agent_optimization_jobs/{jobId}/candidates/{candidateId}:promote")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> promoteCandidate(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getOptimizationCandidateSync(@HostParam("endpoint") String endpoint,
             @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -983,7 +973,18 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> promoteCandidateSync(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> promoteOptimizationCandidate(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/agent_optimization_jobs/{jobId}/candidates/{candidateId}:promote")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> promoteOptimizationCandidateSync(@HostParam("endpoint") String endpoint,
             @PathParam("jobId") String jobId, @PathParam("candidateId") String candidateId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -8721,10 +8722,11 @@ public final class AgentsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> estimateWithResponseAsync(BinaryData inputs, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> estimateOptimizationJobWithResponseAsync(BinaryData inputs,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.estimate(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.estimateOptimizationJob(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), contentType, accept, inputs, requestOptions, context));
     }
 
@@ -8852,11 +8854,11 @@ public final class AgentsImpl {
      * @return result returned when estimating an agent-optimization job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> estimateWithResponse(BinaryData inputs, RequestOptions requestOptions) {
+    public Response<BinaryData> estimateOptimizationJobWithResponse(BinaryData inputs, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.estimateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            contentType, accept, inputs, requestOptions, Context.NONE);
+        return service.estimateOptimizationJobSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), contentType, accept, inputs, requestOptions, Context.NONE);
     }
 
     /**
@@ -9918,10 +9920,11 @@ public final class AgentsImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listCandidatesSinglePageAsync(String jobId, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listOptimizationCandidatesSinglePageAsync(String jobId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCandidates(this.client.getEndpoint(), jobId,
+            .withContext(context -> service.listOptimizationCandidates(this.client.getEndpoint(), jobId,
                 this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
@@ -9995,8 +9998,8 @@ public final class AgentsImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listCandidatesAsync(String jobId, RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listCandidatesSinglePageAsync(jobId, requestOptions));
+    public PagedFlux<BinaryData> listOptimizationCandidatesAsync(String jobId, RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listOptimizationCandidatesSinglePageAsync(jobId, requestOptions));
     }
 
     /**
@@ -10067,9 +10070,10 @@ public final class AgentsImpl {
      * @return the response data for a requested list of items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listCandidatesSinglePage(String jobId, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listOptimizationCandidatesSinglePage(String jobId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listCandidatesSync(this.client.getEndpoint(), jobId,
+        Response<BinaryData> res = service.listOptimizationCandidatesSync(this.client.getEndpoint(), jobId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
@@ -10143,8 +10147,8 @@ public final class AgentsImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listCandidates(String jobId, RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listCandidatesSinglePage(jobId, requestOptions));
+    public PagedIterable<BinaryData> listOptimizationCandidates(String jobId, RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listOptimizationCandidatesSinglePage(jobId, requestOptions));
     }
 
     /**
@@ -10198,11 +10202,11 @@ public final class AgentsImpl {
      * Retrieves a single candidate along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCandidateWithResponseAsync(String jobId, String candidateId,
+    public Mono<Response<BinaryData>> getOptimizationCandidateWithResponseAsync(String jobId, String candidateId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCandidate(this.client.getEndpoint(), jobId, candidateId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getOptimizationCandidate(this.client.getEndpoint(), jobId,
+            candidateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -10256,10 +10260,10 @@ public final class AgentsImpl {
      * Retrieves a single candidate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCandidateWithResponse(String jobId, String candidateId,
+    public Response<BinaryData> getOptimizationCandidateWithResponse(String jobId, String candidateId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getCandidateSync(this.client.getEndpoint(), jobId, candidateId,
+        return service.getOptimizationCandidateSync(this.client.getEndpoint(), jobId, candidateId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
@@ -10315,11 +10319,11 @@ public final class AgentsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> promoteCandidateWithResponseAsync(String jobId, String candidateId,
+    public Mono<Response<BinaryData>> promoteOptimizationCandidateWithResponseAsync(String jobId, String candidateId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.promoteCandidate(this.client.getEndpoint(), jobId, candidateId,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.promoteOptimizationCandidate(this.client.getEndpoint(), jobId,
+            candidateId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -10373,10 +10377,10 @@ public final class AgentsImpl {
      * @return a candidate generated by an optimization job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> promoteCandidateWithResponse(String jobId, String candidateId,
+    public Response<BinaryData> promoteOptimizationCandidateWithResponse(String jobId, String candidateId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.promoteCandidateSync(this.client.getEndpoint(), jobId, candidateId,
+        return service.promoteOptimizationCandidateSync(this.client.getEndpoint(), jobId, candidateId,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 

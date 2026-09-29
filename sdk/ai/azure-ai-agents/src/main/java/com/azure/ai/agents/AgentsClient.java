@@ -5037,135 +5037,6 @@ public final class AgentsClient {
     }
 
     /**
-     * Estimate an agent optimization job
-     *
-     * Estimates validation-set rows, per-stage model call volumes, and cost bands without submitting the job.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     target_configuration (Optional): {
-     *         type: String(foundry_agent) (Required)
-     *     }
-     *     optimization_model_configuration (Required): {
-     *         model: String (Required)
-     *     }
-     *     optimization_configuration (Required): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
-     *         goal: String(improve_quality) (Optional)
-     *         evaluation_configuration (Required): {
-     *             training_set (Required): {
-     *                 type: String(target_completion/user_conversation_simulation) (Required)
-     *             }
-     *             validation_set (Optional): (recursive schema, see validation_set above)
-     *             evaluators (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     version: String (Optional)
-     *                     initialization_parameters (Optional): {
-     *                         String: BinaryData (Required)
-     *                     }
-     *                 }
-     *             ]
-     *             evaluation_model (Required): {
-     *                 model: String (Required)
-     *                 sampling_params (Optional): {
-     *                     temperature: Double (Optional)
-     *                     top_p: Double (Optional)
-     *                     seed: Integer (Optional)
-     *                     max_completion_tokens: Integer (Optional)
-     *                 }
-     *                 voice_model (Optional): {
-     *                     type: String (Required)
-     *                 }
-     *             }
-     *             max_concurrent_agent_runs: Integer (Optional)
-     *         }
-     *         candidate_search_configuration (Required): {
-     *             max_candidates: Integer (Optional)
-     *         }
-     *         baseline_agent_configuration (Optional): {
-     *             system_prompt: String (Optional)
-     *             current_model: String (Optional)
-     *             skills (Optional): [
-     *                  (Optional){
-     *                     name: String (Required)
-     *                     description: String (Required)
-     *                     body: String (Optional)
-     *                 }
-     *             ]
-     *             tools (Optional): [
-     *                  (Optional){
-     *                     type: String (Required)
-     *                     function (Required): {
-     *                         description: String (Optional)
-     *                         name: String (Required)
-     *                         parameters (Optional): {
-     *                              (Optional): {
-     *                                 String: BinaryData (Required)
-     *                             }
-     *                         }
-     *                         strict: Boolean (Optional)
-     *                     }
-     *                 }
-     *             ]
-     *         }
-     *         agent_optimization_space (Required): {
-     *             target_attributes (Optional): [
-     *                 String(instructions/model/skills/tools) (Optional)
-     *             ]
-     *             model_search_space (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     call_counts (Optional): {
-     *         agent (Optional): {
-     *             low: double (Required)
-     *             typical: double (Required)
-     *             ceiling: double (Required)
-     *         }
-     *         evaluation (Optional): (recursive schema, see evaluation above)
-     *         optimization (Optional): (recursive schema, see optimization above)
-     *     }
-     *     cost (Optional): {
-     *         currency: String (Required)
-     *         total (Optional): (recursive schema, see total above)
-     *         by_stage (Optional): (recursive schema, see by_stage above)
-     *         unpriced_stages (Optional): [
-     *             String(agent/evaluation/optimization) (Optional)
-     *         ]
-     *     }
-     *     prices_as_of: Long (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param inputs The inputs to estimate against.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result returned when estimating an agent-optimization job along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> estimateWithResponse(BinaryData inputs, RequestOptions requestOptions) {
-        return this.serviceClient.estimateWithResponse(inputs, requestOptions);
-    }
-
-    /**
      * Get an agent optimization job
      *
      * Retrieves an optimization job by its identifier.
@@ -5529,193 +5400,6 @@ public final class AgentsClient {
     }
 
     /**
-     * List candidates for an agent optimization job
-     *
-     * Lists candidates for the given optimization job with cursor pagination, including the original baseline and
-     * generated candidates. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
-     * fields are omitted unless the client passes `expand=mutations`.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>expand</td><td>List&lt;String&gt;</td><td>No</td><td>Comma-separated list of expand keys. Pass
-     * `mutations` to populate mutation `value` fields; omit to receive mutation items containing only `type`.
-     * Additional expand keys may be added in future previews. In the form of "," separated string.</td></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the candidate `started_at` timestamp. Allowed
-     * values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>Candidate-ID cursor identifying the last item from the previous
-     * page.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>Candidate-ID cursor identifying the first item from the
-     * following page.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     candidate_id: String (Required)
-     *     job_id: String (Required)
-     *     name: String (Required)
-     *     status: String(generating/evaluating/completed/failed) (Required)
-     *     started_at: long (Required)
-     *     output (Optional): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
-     *     }
-     *     rationale: String (Optional)
-     *     agent_version: String (Optional)
-     *     evaluation (Optional): {
-     *         score: Double (Optional)
-     *         avg_tokens: Double (Optional)
-     *         avg_latency_ms: Long (Optional)
-     *         eval_id: String (Optional)
-     *         eval_run_id: String (Optional)
-     *         completed_at: Long (Optional)
-     *     }
-     *     promotion (Optional): {
-     *         promoted_at: long (Required)
-     *         promoted_agent (Required): {
-     *             type: String (Required)
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param jobId The ID of the parent optimization job.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listCandidates(String jobId, RequestOptions requestOptions) {
-        return this.serviceClient.listCandidates(jobId, requestOptions);
-    }
-
-    /**
-     * Get a candidate for an agent optimization job
-     *
-     * Retrieves a single candidate. Mutation values are always included.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     candidate_id: String (Required)
-     *     job_id: String (Required)
-     *     name: String (Required)
-     *     status: String(generating/evaluating/completed/failed) (Required)
-     *     started_at: long (Required)
-     *     output (Optional): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
-     *     }
-     *     rationale: String (Optional)
-     *     agent_version: String (Optional)
-     *     evaluation (Optional): {
-     *         score: Double (Optional)
-     *         avg_tokens: Double (Optional)
-     *         avg_latency_ms: Long (Optional)
-     *         eval_id: String (Optional)
-     *         eval_run_id: String (Optional)
-     *         completed_at: Long (Optional)
-     *     }
-     *     promotion (Optional): {
-     *         promoted_at: long (Required)
-     *         promoted_agent (Required): {
-     *             type: String (Required)
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param jobId The ID of the parent optimization job.
-     * @param candidateId The candidate identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a candidate for an agent optimization job
-     *
-     * Retrieves a single candidate along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCandidateWithResponse(String jobId, String candidateId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getCandidateWithResponse(jobId, candidateId, requestOptions);
-    }
-
-    /**
-     * Promote a candidate for an agent optimization job
-     *
-     * Promotes a candidate to the Foundry agent stored in the parent job's target configuration. Promotion is
-     * unavailable when the job omitted target_configuration. Prompt-agent promotion creates a new agent version.
-     * Hosted-agent promotion currently records promotion metadata without deploying a new hosted-agent version.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     candidate_id: String (Required)
-     *     job_id: String (Required)
-     *     name: String (Required)
-     *     status: String(generating/evaluating/completed/failed) (Required)
-     *     started_at: long (Required)
-     *     output (Optional): {
-     *         type: String(agent_optimization/prompt_optimization) (Required)
-     *     }
-     *     rationale: String (Optional)
-     *     agent_version: String (Optional)
-     *     evaluation (Optional): {
-     *         score: Double (Optional)
-     *         avg_tokens: Double (Optional)
-     *         avg_latency_ms: Long (Optional)
-     *         eval_id: String (Optional)
-     *         eval_run_id: String (Optional)
-     *         completed_at: Long (Optional)
-     *     }
-     *     promotion (Optional): {
-     *         promoted_at: long (Required)
-     *         promoted_agent (Required): {
-     *             type: String (Required)
-     *             name: String (Required)
-     *             version: String (Optional)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param jobId The ID of the parent optimization job.
-     * @param candidateId The candidate identifier.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a candidate generated by an optimization job along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> promoteCandidateWithResponse(String jobId, String candidateId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.promoteCandidateWithResponse(jobId, candidateId, requestOptions);
-    }
-
-    /**
      * Create an agent optimization job
      *
      * Creates an optimization job and returns the queued job. Honors `Operation-Id` for idempotent retry. Clients poll
@@ -5768,29 +5452,6 @@ public final class AgentsClient {
         // Generated convenience method for beginCreateOptimizationJobWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCreateOptimizationJobWithModel(BinaryData.fromObject(job), requestOptions);
-    }
-
-    /**
-     * Estimate an agent optimization job
-     *
-     * Estimates validation-set rows, per-stage model call volumes, and cost bands without submitting the job.
-     *
-     * @param inputs The inputs to estimate against.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result returned when estimating an agent-optimization job.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentOptimizationEstimateResult estimate(AgentOptimizationEstimateInputs inputs) {
-        // Generated convenience method for estimateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return estimateWithResponse(BinaryData.fromObject(inputs), requestOptions).getValue()
-            .toObject(AgentOptimizationEstimateResult.class);
     }
 
     /**
@@ -5936,6 +5597,345 @@ public final class AgentsClient {
     }
 
     /**
+     * Estimate an agent optimization job
+     *
+     * Estimates validation-set rows, per-stage model call volumes, and cost bands without submitting the job.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     target_configuration (Optional): {
+     *         type: String(foundry_agent) (Required)
+     *     }
+     *     optimization_model_configuration (Required): {
+     *         model: String (Required)
+     *     }
+     *     optimization_configuration (Required): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *         goal: String(improve_quality) (Optional)
+     *         evaluation_configuration (Required): {
+     *             training_set (Required): {
+     *                 type: String(target_completion/user_conversation_simulation) (Required)
+     *             }
+     *             validation_set (Optional): (recursive schema, see validation_set above)
+     *             evaluators (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     version: String (Optional)
+     *                     initialization_parameters (Optional): {
+     *                         String: BinaryData (Required)
+     *                     }
+     *                 }
+     *             ]
+     *             evaluation_model (Required): {
+     *                 model: String (Required)
+     *                 sampling_params (Optional): {
+     *                     temperature: Double (Optional)
+     *                     top_p: Double (Optional)
+     *                     seed: Integer (Optional)
+     *                     max_completion_tokens: Integer (Optional)
+     *                 }
+     *                 voice_model (Optional): {
+     *                     type: String (Required)
+     *                 }
+     *             }
+     *             max_concurrent_agent_runs: Integer (Optional)
+     *         }
+     *         candidate_search_configuration (Required): {
+     *             max_candidates: Integer (Optional)
+     *         }
+     *         baseline_agent_configuration (Optional): {
+     *             system_prompt: String (Optional)
+     *             current_model: String (Optional)
+     *             skills (Optional): [
+     *                  (Optional){
+     *                     name: String (Required)
+     *                     description: String (Required)
+     *                     body: String (Optional)
+     *                 }
+     *             ]
+     *             tools (Optional): [
+     *                  (Optional){
+     *                     type: String (Required)
+     *                     function (Required): {
+     *                         description: String (Optional)
+     *                         name: String (Required)
+     *                         parameters (Optional): {
+     *                              (Optional): {
+     *                                 String: BinaryData (Required)
+     *                             }
+     *                         }
+     *                         strict: Boolean (Optional)
+     *                     }
+     *                 }
+     *             ]
+     *         }
+     *         agent_optimization_space (Required): {
+     *             target_attributes (Optional): [
+     *                 String(instructions/model/skills/tools) (Optional)
+     *             ]
+     *             model_search_space (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     call_counts (Optional): {
+     *         agent (Optional): {
+     *             low: double (Required)
+     *             typical: double (Required)
+     *             ceiling: double (Required)
+     *         }
+     *         evaluation (Optional): (recursive schema, see evaluation above)
+     *         optimization (Optional): (recursive schema, see optimization above)
+     *     }
+     *     cost (Optional): {
+     *         currency: String (Required)
+     *         total (Optional): (recursive schema, see total above)
+     *         by_stage (Optional): (recursive schema, see by_stage above)
+     *         unpriced_stages (Optional): [
+     *             String(agent/evaluation/optimization) (Optional)
+     *         ]
+     *     }
+     *     prices_as_of: Long (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param inputs The inputs to estimate against.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return result returned when estimating an agent-optimization job along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> estimateOptimizationJobWithResponse(BinaryData inputs, RequestOptions requestOptions) {
+        return this.serviceClient.estimateOptimizationJobWithResponse(inputs, requestOptions);
+    }
+
+    /**
+     * List candidates for an agent optimization job
+     *
+     * Lists candidates for the given optimization job with cursor pagination, including the original baseline and
+     * generated candidates. Each `output.mutations` item identifies a changed attribute by `type`; mutation `value`
+     * fields are omitted unless the client passes `expand=mutations`.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>expand</td><td>List&lt;String&gt;</td><td>No</td><td>Comma-separated list of expand keys. Pass
+     * `mutations` to populate mutation `value` fields; omit to receive mutation items containing only `type`.
+     * Additional expand keys may be added in future previews. In the form of "," separated string.</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the candidate `started_at` timestamp. Allowed
+     * values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>Candidate-ID cursor identifying the last item from the previous
+     * page.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>Candidate-ID cursor identifying the first item from the
+     * following page.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidate_id: String (Required)
+     *     job_id: String (Required)
+     *     name: String (Required)
+     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     started_at: long (Required)
+     *     output (Optional): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     rationale: String (Optional)
+     *     agent_version: String (Optional)
+     *     evaluation (Optional): {
+     *         score: Double (Optional)
+     *         avg_tokens: Double (Optional)
+     *         avg_latency_ms: Long (Optional)
+     *         eval_id: String (Optional)
+     *         eval_run_id: String (Optional)
+     *         completed_at: Long (Optional)
+     *     }
+     *     promotion (Optional): {
+     *         promoted_at: long (Required)
+     *         promoted_agent (Required): {
+     *             type: String (Required)
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param jobId The ID of the parent optimization job.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listOptimizationCandidates(String jobId, RequestOptions requestOptions) {
+        return this.serviceClient.listOptimizationCandidates(jobId, requestOptions);
+    }
+
+    /**
+     * Get a candidate for an agent optimization job
+     *
+     * Retrieves a single candidate. Mutation values are always included.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidate_id: String (Required)
+     *     job_id: String (Required)
+     *     name: String (Required)
+     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     started_at: long (Required)
+     *     output (Optional): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     rationale: String (Optional)
+     *     agent_version: String (Optional)
+     *     evaluation (Optional): {
+     *         score: Double (Optional)
+     *         avg_tokens: Double (Optional)
+     *         avg_latency_ms: Long (Optional)
+     *         eval_id: String (Optional)
+     *         eval_run_id: String (Optional)
+     *         completed_at: Long (Optional)
+     *     }
+     *     promotion (Optional): {
+     *         promoted_at: long (Required)
+     *         promoted_agent (Required): {
+     *             type: String (Required)
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param jobId The ID of the parent optimization job.
+     * @param candidateId The candidate identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a candidate for an agent optimization job
+     *
+     * Retrieves a single candidate along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getOptimizationCandidateWithResponse(String jobId, String candidateId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getOptimizationCandidateWithResponse(jobId, candidateId, requestOptions);
+    }
+
+    /**
+     * Promote a candidate for an agent optimization job
+     *
+     * Promotes a candidate to the Foundry agent stored in the parent job's target configuration. Promotion is
+     * unavailable when the job omitted target_configuration. Prompt-agent promotion creates a new agent version.
+     * Hosted-agent promotion currently records promotion metadata without deploying a new hosted-agent version.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     candidate_id: String (Required)
+     *     job_id: String (Required)
+     *     name: String (Required)
+     *     status: String(generating/evaluating/completed/failed) (Required)
+     *     started_at: long (Required)
+     *     output (Optional): {
+     *         type: String(agent_optimization/prompt_optimization) (Required)
+     *     }
+     *     rationale: String (Optional)
+     *     agent_version: String (Optional)
+     *     evaluation (Optional): {
+     *         score: Double (Optional)
+     *         avg_tokens: Double (Optional)
+     *         avg_latency_ms: Long (Optional)
+     *         eval_id: String (Optional)
+     *         eval_run_id: String (Optional)
+     *         completed_at: Long (Optional)
+     *     }
+     *     promotion (Optional): {
+     *         promoted_at: long (Required)
+     *         promoted_agent (Required): {
+     *             type: String (Required)
+     *             name: String (Required)
+     *             version: String (Optional)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param jobId The ID of the parent optimization job.
+     * @param candidateId The candidate identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a candidate generated by an optimization job along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> promoteOptimizationCandidateWithResponse(String jobId, String candidateId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.promoteOptimizationCandidateWithResponse(jobId, candidateId, requestOptions);
+    }
+
+    /**
+     * Estimate an agent optimization job
+     *
+     * Estimates validation-set rows, per-stage model call volumes, and cost bands without submitting the job.
+     *
+     * @param inputs The inputs to estimate against.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result returned when estimating an agent-optimization job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentOptimizationEstimateResult estimateOptimizationJob(AgentOptimizationEstimateInputs inputs) {
+        // Generated convenience method for estimateOptimizationJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return estimateOptimizationJobWithResponse(BinaryData.fromObject(inputs), requestOptions).getValue()
+            .toObject(AgentOptimizationEstimateResult.class);
+    }
+
+    /**
      * List candidates for an agent optimization job
      *
      * Lists candidates for the given optimization job with cursor pagination, including the original baseline and
@@ -5960,9 +5960,9 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentOptimizationCandidate> listCandidates(String jobId,
+    public PagedIterable<AgentOptimizationCandidate> listOptimizationCandidates(String jobId,
         List<AgentOptimizationCandidateExpand> expand, Integer limit, PageOrder order, String after, String before) {
-        // Generated convenience method for listCandidates
+        // Generated convenience method for listOptimizationCandidates
         RequestOptions requestOptions = new RequestOptions();
         if (expand != null) {
             requestOptions.addQueryParam("expand",
@@ -5983,7 +5983,7 @@ public final class AgentsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return serviceClient.listCandidates(jobId, requestOptions)
+        return serviceClient.listOptimizationCandidates(jobId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationCandidate.class));
     }
 
@@ -6005,10 +6005,10 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentOptimizationCandidate> listCandidates(String jobId) {
-        // Generated convenience method for listCandidates
+    public PagedIterable<AgentOptimizationCandidate> listOptimizationCandidates(String jobId) {
+        // Generated convenience method for listOptimizationCandidates
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listCandidates(jobId, requestOptions)
+        return serviceClient.listOptimizationCandidates(jobId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentOptimizationCandidate.class));
     }
 
@@ -6031,10 +6031,10 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentOptimizationCandidate getCandidate(String jobId, String candidateId) {
-        // Generated convenience method for getCandidateWithResponse
+    public AgentOptimizationCandidate getOptimizationCandidate(String jobId, String candidateId) {
+        // Generated convenience method for getOptimizationCandidateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCandidateWithResponse(jobId, candidateId, requestOptions).getValue()
+        return getOptimizationCandidateWithResponse(jobId, candidateId, requestOptions).getValue()
             .toObject(AgentOptimizationCandidate.class);
     }
 
@@ -6057,10 +6057,10 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentOptimizationCandidate promoteCandidate(String jobId, String candidateId) {
-        // Generated convenience method for promoteCandidateWithResponse
+    public AgentOptimizationCandidate promoteOptimizationCandidate(String jobId, String candidateId) {
+        // Generated convenience method for promoteOptimizationCandidateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return promoteCandidateWithResponse(jobId, candidateId, requestOptions).getValue()
+        return promoteOptimizationCandidateWithResponse(jobId, candidateId, requestOptions).getValue()
             .toObject(AgentOptimizationCandidate.class);
     }
 }
