@@ -36,9 +36,9 @@ public class AgentOptimizationDurationSerializationTests {
 
     @Test
     public void jobLatencyUsesMillisecondsOnWire() throws IOException {
-        AgentOptimizationJobLatency latency = deserialize(
-            "{\"stage\":\"evaluation\",\"avg_latency_ms\":2750,\"call_count\":3}",
-            AgentOptimizationJobLatency::fromJson);
+        AgentOptimizationJobLatency latency
+            = deserialize("{\"stage\":\"evaluation\",\"avg_latency_ms\":2750,\"call_count\":3}",
+                AgentOptimizationJobLatency::fromJson);
 
         assertEquals(Duration.ofMillis(2750), latency.getAverageLatency());
         assertWireName(latency, "avg_latency_ms", "average_latency");
