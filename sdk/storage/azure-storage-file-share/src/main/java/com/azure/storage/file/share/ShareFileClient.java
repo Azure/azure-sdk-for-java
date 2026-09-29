@@ -3416,9 +3416,17 @@ public class ShareFileClient {
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         String rangeString = range == null ? null : range.toString();
 
-        Callable<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation
-            = () -> this.fileClientInternal.getRangeListWithResponse(snapshot, previousSnapshot, null, rangeString,
-                finalRequestConditions.getLeaseId(), supportRename, scopedRequestOptions(context));
+        Callable<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation = () -> {
+            RequestOptions requestOptions = scopedRequestOptions(context);
+            if (marker != null) {
+                requestOptions.addQueryParam("marker", marker, false);
+            }
+            if (maxResultsPerPage != null) {
+                requestOptions.addQueryParam("maxresults", String.valueOf(maxResultsPerPage), false);
+            }
+            return this.fileClientInternal.getRangeListWithResponse(snapshot, previousSnapshot, null, rangeString,
+                finalRequestConditions.getLeaseId(), supportRename, requestOptions);
+        };
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }

@@ -2985,9 +2985,16 @@ public class ShareFileAsyncClient {
         String rangeString = range == null ? null : range.toString();
         context = context == null ? Context.NONE : context;
 
+        RequestOptions requestOptions = scopedRequestOptions(context);
+        if (marker != null) {
+            requestOptions.addQueryParam("marker", marker, false);
+        }
+        if (maxResultsPerPage != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxResultsPerPage), false);
+        }
         return this.fileClientInternal
             .getRangeListWithResponse(snapshot, previousSnapshot, null, rangeString,
-                finalRequestConditions.getLeaseId(), supportRename, scopedRequestOptions(context))
+                finalRequestConditions.getLeaseId(), supportRename, requestOptions)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
