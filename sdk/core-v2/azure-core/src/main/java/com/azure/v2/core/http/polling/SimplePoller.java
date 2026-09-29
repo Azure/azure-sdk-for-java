@@ -91,6 +91,7 @@ final class SimplePoller<T, U> implements Poller<T, U> {
         if (this.activationResponse.getStatus().isComplete()) {
             this.terminalPollContext = this.pollingContext;
         }
+        // TODO (alzimmer): Executor needs better handling before GA.
         this.executor = executor == null ? Executors.newSingleThreadScheduledExecutor() : executor;
     }
 

@@ -43,6 +43,7 @@ final class InputStreamTimeoutResponseSubscriber extends InputStream
     private volatile Iterator<ByteBuffer> currentListItr;
     private volatile ByteBuffer currentBuffer;
 
+    // TODO (alzimmer): This needs better handling before GA.
     private final Timer timer = new Timer(true);
     private final Semaphore semaphore = new Semaphore(1);
     private final long readTimeout;
@@ -53,7 +54,6 @@ final class InputStreamTimeoutResponseSubscriber extends InputStream
      * for each value emitted by the subscription.
      *
      * @param readTimeout The timeout for reading each value emitted by the subscription.
-     * timeout tracking InputStream to be constructed.
      */
     InputStreamTimeoutResponseSubscriber(long readTimeout) {
         // Use a queue size of 2 to allow for the in-process list of buffers and the sentinel value.

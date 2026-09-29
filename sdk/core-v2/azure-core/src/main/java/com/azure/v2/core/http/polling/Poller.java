@@ -17,7 +17,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * An interface that offers APIs that simplifies the task of executing long-running operations against an Azure service.
+ * An interface that offers APIs that simplify the task of executing long-running operations against an Azure service.
  *
  * <p>
  * It provides the following functionality:
@@ -273,6 +273,7 @@ public interface Poller<T, U> {
         BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
         Function<PollingContext<T>, U> fetchResultOperation, ScheduledExecutorService executor) {
         return new SimplePoller<>(pollInterval, syncActivationOperation, pollOperation, cancelOperation,
+            // TODO (alzimmer): Executor needs better handling before GA.
             fetchResultOperation, executor == null ? Executors.newSingleThreadScheduledExecutor() : executor);
     }
 }
