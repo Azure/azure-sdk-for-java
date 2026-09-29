@@ -15,15 +15,17 @@ import java.util.Collection;
 public final class DataGenerationJobOutputWriteMode extends ExpandableStringEnum<DataGenerationJobOutputWriteMode> {
 
     /**
-     * Default behavior. Create the next dataset version using only newly generated rows, replacing the previous
-     * version's rows in the new version.
+     * Default behavior. Write newly generated output without merging it with an existing output. For dataset outputs,
+     * creates the next dataset version using only newly generated rows.
      */
     @Generated
     public static final DataGenerationJobOutputWriteMode OVERWRITE = fromString("overwrite");
 
     /**
-     * Applicable only for trace data generation jobs that output evaluation datasets. Create the next dataset version
-     * by merging newly generated rows with the latest existing dataset version and de-duping trace rows.
+     * Merge newly generated output into an existing output. For trace data generation jobs that output evaluation
+     * datasets, creates the next dataset version by merging newly generated rows with the latest existing dataset
+     * version and de-duping trace rows. For fine-tuning file outputs, merges into the file identified by
+     * `merge_file_id`.
      */
     @Generated
     public static final DataGenerationJobOutputWriteMode MERGE = fromString("merge");
