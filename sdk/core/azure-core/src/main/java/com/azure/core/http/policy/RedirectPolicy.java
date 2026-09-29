@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -129,23 +128,23 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         // Clear authorization before invoking the redirect strategy to avoid exposing it to custom strategies.
         redirectResponse.getRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
 
+        String requestAuthority = getAuthority(redirectResponse.getRequest());
         HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(redirectResponse);
-        removeSensitiveHeaders(context, redirectRequestCopy);
+        removeSensitiveHeaders(context, requestAuthority, redirectRequestCopy);
         redirectResponse.close();
 
         return redirectRequestCopy;
     }
 
-    private static void removeSensitiveHeaders(HttpPipelineCallContext context, HttpRequest redirectRequest) {
+    private static void removeSensitiveHeaders(HttpPipelineCallContext context, String requestAuthority,
+        HttpRequest redirectRequest) {
         // Authorization has historically been removed on every redirect.
         redirectRequest.getHeaders().remove(HttpHeaderName.AUTHORIZATION);
 
         String redirectAuthority = getAuthority(redirectRequest);
-        if (!authority.equals(redirectAuthority)) {
-            getSensitiveHeaders(context).forEach((headerName, authority) -> {
-                redirectRequest.getHeaders().remove(headerName);
-            }
-        });
+        if (!requestAuthority.equalsIgnoreCase(redirectAuthority)) {
+            getSensitiveHeaders(context).keySet().forEach(redirectRequest.getHeaders()::remove);
+        }
     }
 
     static boolean shouldSetSensitiveHeader(HttpPipelineCallContext context, HttpHeaderName headerName) {
@@ -158,7 +157,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
             return true;
         }
 
-        return originalAuthority.equals(authority);
+        return originalAuthority.equalsIgnoreCase(authority);
     }
 
     @SuppressWarnings("unchecked")
@@ -171,7 +170,6 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         if (port == -1) {
             port = request.getUrl().getDefaultPort();
         }
-        return (request.getUrl().getProtocol() + "://" + request.getUrl().getHost() + ":" + port)
-            .toLowerCase(Locale.ROOT);
+        return request.getUrl().getProtocol() + "://" + request.getUrl().getHost() + ":" + port;
     }
 }

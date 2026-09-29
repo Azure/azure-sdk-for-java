@@ -35,6 +35,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class RedirectPolicyTest {
+    private static final HttpHeaderName API_KEY = HttpHeaderName.fromString("api-key");
+
     @SyncAsyncTest
     public void noRedirectPolicyTest() throws Exception {
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
@@ -361,7 +363,7 @@ public class RedirectPolicyTest {
         try (HttpResponse response = SyncAsyncExtension.execute(
             () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, createUrl("https://localhost/")), Context.NONE),
             () -> pipeline.send(new HttpRequest(HttpMethod.GET, createUrl("https://localhost/"))))) {
-            assertEquals("credential", response.getRequest().getHeaders().getValue("api-key"));
+            assertEquals("credential", response.getRequest().getHeaders().getValue(API_KEY));
         }
     }
 
@@ -379,7 +381,7 @@ public class RedirectPolicyTest {
         try (HttpResponse response = SyncAsyncExtension.execute(
             () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, createUrl("https://localhost/")), Context.NONE),
             () -> pipeline.send(new HttpRequest(HttpMethod.GET, createUrl("https://localhost/"))))) {
-            assertNull(response.getRequest().getHeaders().getValue("api-key"));
+            assertNull(response.getRequest().getHeaders().getValue(API_KEY));
         }
     }
 
