@@ -115,7 +115,12 @@ public class FileShareTestBase extends TestProxyTestBase {
                     "x-ms-encryption-key-sha256"))
                 .setQueryOrderingIgnored(true)
                 .setIgnoredQueryParameters(Arrays.asList("sv"))
-                .setExcludedHeaders(Collections.singletonList("x-ms-meta-testmetadata"))));
+                // The 'Accept' header is excluded from matching because the TypeSpec-generated protocol layer omits it
+                // (sending the default '*/*') on operations without a response body, whereas the AutoRest recordings
+                // captured 'application/xml'. This mirrors the .NET migration, which added Accept to its
+                // LegacyExcludedHeaders.
+                // TODO (alzimmer): Once all Storage libraries are migrated to test proxy move this into the common parent.
+                .setExcludedHeaders(Arrays.asList("x-ms-meta-testmetadata", "Accept"))));
 
         ShareServiceClientBuilder builder = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount());
         primaryFileServiceClient = builder.buildClient();

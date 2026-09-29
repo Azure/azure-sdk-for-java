@@ -8,7 +8,16 @@
 
 ### Bugs Fixed
 
+- Fixed a bug where `ShareProperties.isSmbDirectoryLeaseEnabled()` always returned `null` because the value returned by
+  the service was not mapped onto the public model.
+
 ### Other Changes
+
+- Deprecated `Range`; use `ShareFileRange` instead.
+- Deprecated `SourceModifiedAccessConditions`, which is unused and not referenced by any client method.
+- Deprecated the `toXml`/`fromXml` methods on `ShareItem` and `ShareProperties`. These are read-only public projections
+  of the wire model and are never serialized to or from the service directly; the methods are retained only for backward
+  compatibility.
 
 ## 12.31.1 (2026-08-18)
 
