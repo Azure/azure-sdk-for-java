@@ -275,7 +275,8 @@ public final class ShareServiceAsyncClient {
                             .collect(Collectors.toList());
 
                     return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), value, response.getValue().getNextMarker(),
+                        response.getHeaders(), value,
+                        response.getValue() == null ? null : response.getValue().getNextMarker(),
                         response.getDeserializedHeaders());
                 }), timeout);
         return new PagedFlux<>(pageSize -> retriever.apply(marker, pageSize), retriever);

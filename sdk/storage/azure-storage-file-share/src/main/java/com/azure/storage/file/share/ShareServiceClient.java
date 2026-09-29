@@ -251,7 +251,8 @@ public final class ShareServiceClient {
                     .collect(Collectors.toList());
 
             return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                value, response.getValue().getNextMarker(), response.getDeserializedHeaders());
+                value, response.getValue() == null ? null : response.getValue().getNextMarker(),
+                response.getDeserializedHeaders());
         };
 
         return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
