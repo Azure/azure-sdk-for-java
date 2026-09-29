@@ -141,8 +141,8 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         redirectRequest.getHeaders().remove(HttpHeaderName.AUTHORIZATION);
 
         String redirectAuthority = getAuthority(redirectRequest);
-        getSensitiveHeaders(context).forEach((headerName, authority) -> {
-            if (!authority.equals(redirectAuthority)) {
+        if (!authority.equals(redirectAuthority)) {
+            getSensitiveHeaders(context).forEach((headerName, authority) -> {
                 redirectRequest.getHeaders().remove(headerName);
             }
         });
