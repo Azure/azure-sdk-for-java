@@ -242,17 +242,15 @@ public final class ShareServiceClient {
             ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> response
                 = sendRequest(operation, timeout, ShareStorageException.class);
 
-            List<ShareItem> value = response.getValue() == null || response.getValue().getShareItems() == null
+            ListSharesResponse body = response.getValue();
+            List<ShareItem> value = body == null || body.getShareItems() == null
                 ? Collections.emptyList()
-                : response.getValue()
-                    .getShareItems()
-                    .stream()
-                    .map(ModelHelper::populateShareItem)
-                    .collect(Collectors.toList());
+                : body.getShareItems().stream().map(ModelHelper::populateShareItem).collect(Collectors.toList());
+            String nextMarkerValue = body == null ? null : body.getNextMarker();
+            String continuationToken = nextMarkerValue == null || nextMarkerValue.isEmpty() ? null : nextMarkerValue;
 
             return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                value, response.getValue() == null ? null : response.getValue().getNextMarker(),
-                response.getDeserializedHeaders());
+                value, continuationToken, response.getDeserializedHeaders());
         };
 
         return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);

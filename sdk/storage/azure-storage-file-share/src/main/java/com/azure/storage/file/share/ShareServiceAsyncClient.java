@@ -273,11 +273,12 @@ public final class ShareServiceAsyncClient {
                             .stream()
                             .map(ModelHelper::populateShareItem)
                             .collect(Collectors.toList());
+                    String nextMarkerValue = response.getValue() == null ? null : response.getValue().getNextMarker();
+                    String continuationToken
+                        = nextMarkerValue == null || nextMarkerValue.isEmpty() ? null : nextMarkerValue;
 
                     return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), value,
-                        response.getValue() == null ? null : response.getValue().getNextMarker(),
-                        response.getDeserializedHeaders());
+                        response.getHeaders(), value, continuationToken, response.getDeserializedHeaders());
                 }), timeout);
         return new PagedFlux<>(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
