@@ -77,6 +77,38 @@ public class RxGatewayStoreModelTest {
             .isEqualTo(userAgentContainer.getUserAgent());
     }
 
+    @Test(groups = "unit")
+    public void requestUserAgentOverrideIsPreservedCaseInsensitively() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        UserAgentContainer userAgentContainer = new UserAgentContainer();
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            Mockito.mock(ISessionContainer.class),
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            userAgentContainer,
+            Mockito.mock(GlobalEndpointManager.class),
+            Mockito.mock(HttpClient.class),
+            ApiType.SQL,
+            null);
+
+        userAgentContainer.setFeatureEnabledFlagsAsSuffix(
+            Collections.singleton(UserAgentFeatureFlags.PerPartitionCircuitBreaker));
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            clientContext,
+            OperationType.Read,
+            ResourceType.DatabaseAccount,
+            "",
+            Collections.singletonMap("user-agent", "request-user-agent"),
+            (Object) null);
+
+        HttpRequest httpRequest = storeModel.wrapInHttpRequest(request, new URI("https://localhost"));
+
+        assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.USER_AGENT))
+            .isEqualTo("request-user-agent");
+    }
+
     @DataProvider(name = "sessionTokenConfigProvider")
     public Object[][] sessionTokenConfigProvider() {
         return new Object[][]{
