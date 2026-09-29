@@ -10,7 +10,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -20,9 +22,14 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.BlobContainerAsyncClientInternal;
+import com.azure.storage.blob.implementation.BlobServiceAsyncClientInternal;
+import com.azure.storage.blob.implementation.models.BlobContainersSegment;
+import com.azure.storage.blob.implementation.models.FilterBlobSegment;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobCorsRule;
@@ -88,6 +95,10 @@ public final class BlobServiceAsyncClient {
 
     private final AzureBlobStorageImpl azureBlobStorage;
 
+    private final BlobServiceAsyncClientInternal serviceClientInternal;
+
+    private final BlobContainerAsyncClientInternal containerClientInternal;
+
     private final String accountName;
     private final BlobServiceVersion serviceVersion;
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
@@ -119,10 +130,10 @@ public final class BlobServiceAsyncClient {
         } catch (IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
-        this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(pipeline)
-            .url(url)
-            .version(serviceVersion.getVersion())
-            .buildClient();
+        this.azureBlobStorage
+            = new AzureBlobStorageImplBuilder().pipeline(pipeline).url(url).version(serviceVersion).buildClient();
+        this.serviceClientInternal = new BlobServiceAsyncClientInternal(this.azureBlobStorage.getServices());
+        this.containerClientInternal = new BlobContainerAsyncClientInternal(this.azureBlobStorage.getContainers());
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -545,10 +556,14 @@ public final class BlobServiceAsyncClient {
         ListBlobContainersOptions options, Duration timeout) {
         options = options == null ? new ListBlobContainersOptions() : options;
 
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getServices()
-            .listBlobContainersSegmentSinglePageAsync(options.getPrefix(), marker, options.getMaxResultsPerPage(),
-                ModelHelper.toIncludeTypes(options.getDetails()), null, null, Context.NONE),
-            timeout);
+        return StorageImplUtils.applyOptionalTimeout(this.serviceClientInternal
+            .listContainersSegmentWithResponse(options.getPrefix(), marker, options.getMaxResultsPerPage(), null,
+                ModelHelper.toIncludeTypes(options.getDetails()), RequestOptionsHelper.requestOptions(Context.NONE))
+            .map(response -> {
+                BlobContainersSegment segment = response.getValue();
+                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    segment.getContainerItems(), segment.getNextMarker(), null);
+            }), timeout);
     }
 
     /**
@@ -615,18 +630,18 @@ public final class BlobServiceAsyncClient {
         Duration timeout, Context context) {
         throwOnAnonymousAccess();
         StorageImplUtils.assertNotNull("options", options);
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getServices()
-            .filterBlobsWithResponseAsync(null, null, options.getQuery(), marker, options.getMaxResultsPerPage(), null,
-                context),
-            timeout).map(response -> {
-                List<TaggedBlobItem> value = response.getValue()
-                    .getBlobs()
+
+        return StorageImplUtils
+            .applyOptionalTimeout(this.serviceClientInternal.filterBlobsWithResponse(options.getQuery(), null, marker,
+                options.getMaxResultsPerPage(), null, RequestOptionsHelper.requestOptions(context)), timeout)
+            .map(response -> {
+                FilterBlobSegment segment = response.getValue();
+                List<TaggedBlobItem> value = segment.getBlobItems()
                     .stream()
                     .map(ModelHelper::populateTaggedBlobItem)
                     .collect(Collectors.toList());
-
                 return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    value, response.getValue().getNextMarker(), response.getDeserializedHeaders());
+                    value, segment.getNextMarker(), null);
             });
     }
 
@@ -682,8 +697,7 @@ public final class BlobServiceAsyncClient {
     Mono<Response<BlobServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.getServices()
-            .getPropertiesWithResponseAsync(null, null, context)
+        return this.serviceClientInternal.getPropertiesWithResponse(null, RequestOptionsHelper.requestOptions(context))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -831,8 +845,9 @@ public final class BlobServiceAsyncClient {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getServices()
-            .setPropertiesNoCustomHeadersWithResponseAsync(finalProperties, null, null, context);
+        return this.serviceClientInternal
+            .setPropertiesWithResponse(finalProperties, null, RequestOptionsHelper.requestOptions(context))
+            .map(rb -> (Response<Void>) rb);
     }
 
     /**
@@ -922,12 +937,12 @@ public final class BlobServiceAsyncClient {
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
 
-        return this.azureBlobStorage.getServices()
-            .getUserDelegationKeyWithResponseAsync(
+        return this.serviceClientInternal
+            .getUserDelegationKeyWithResponse(
                 new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
                     .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
                     .setDelegatedUserTenantId(delegatedUserTenantId),
-                null, null, context)
+                null, RequestOptionsHelper.requestOptions(context))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -984,8 +999,7 @@ public final class BlobServiceAsyncClient {
         throwOnAnonymousAccess();
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getServices()
-            .getStatisticsWithResponseAsync(null, null, context)
+        return this.serviceClientInternal.getStatisticsWithResponse(null, RequestOptionsHelper.requestOptions(context))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -1036,11 +1050,12 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.getServices().getAccountInfoWithResponseAsync(null, null, context).map(rb -> {
-            ServicesGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
-            return new SimpleResponse<>(rb,
-                new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind(), hd.isXMsIsHnsEnabled()));
-        });
+        return this.serviceClientInternal.getAccountInfoWithResponse(null, RequestOptionsHelper.requestOptions(context))
+            .map(rb -> {
+                ServicesGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
+                return new SimpleResponse<>(rb,
+                    new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind(), hd.isHierarchicalNamespaceEnabled()));
+            });
     }
 
     /**
@@ -1236,9 +1251,20 @@ public final class BlobServiceAsyncClient {
             ? options.getDestinationContainerName()
             : options.getDeletedContainerName();
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.getContainers()
-            .restoreWithResponseAsync(finalDestinationContainerName, null, null, options.getDeletedContainerName(),
-                options.getDeletedContainerVersion(), context)
+        RequestOptions requestOptions = RequestOptionsHelper.containerRequestOptions(context,
+            this.azureBlobStorage.getUrl(), finalDestinationContainerName);
+        if (options.getDeletedContainerName() != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-deleted-container-name"),
+                options.getDeletedContainerName());
+        }
+        if (options.getDeletedContainerVersion() != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-deleted-container-version"),
+                options.getDeletedContainerVersion());
+        }
+
+        return this.containerClientInternal
+            .restoreWithResponse(options.getDeletedContainerName(), options.getDeletedContainerVersion(), null,
+                requestOptions)
             .map(
                 response -> new SimpleResponse<>(response, getBlobContainerAsyncClient(finalDestinationContainerName)));
     }

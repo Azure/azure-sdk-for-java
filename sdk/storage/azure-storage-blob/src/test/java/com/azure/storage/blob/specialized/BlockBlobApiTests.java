@@ -18,7 +18,7 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders;
+import com.azure.storage.blob.implementation.models.BlockBlobsUploadBlobFromUrlHeaders;
 import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAudience;
@@ -1711,11 +1711,10 @@ public class BlockBlobApiTests extends BlobTestBase {
     @Test
     public void blockBlobItemNullHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        BlockBlobsPutBlobFromUrlHeaders hd = new BlockBlobsPutBlobFromUrlHeaders(headers);
+        BlockBlobsUploadBlobFromUrlHeaders hd = new BlockBlobsUploadBlobFromUrlHeaders(headers);
 
-        BlockBlobItem blockBlobItem = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-            hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-            hd.getXMsVersionId());
+        BlockBlobItem blockBlobItem = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMd5(),
+            hd.isServerEncrypted(), hd.getEncryptionKeySha256(), hd.getEncryptionScope(), hd.getVersionId());
 
         assertNull(blockBlobItem.getETag());
         assertNull(blockBlobItem.getLastModified());

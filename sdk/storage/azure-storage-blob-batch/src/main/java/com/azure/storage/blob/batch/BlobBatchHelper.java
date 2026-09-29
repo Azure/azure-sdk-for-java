@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -57,7 +58,7 @@ class BlobBatchHelper {
 
     // This method connects the batch response values to the individual batch operations based on their Content-Id
     static Mono<SimpleResponse<Void>> mapBatchResponse(BlobBatchOperationInfo batchOperationInfo,
-        Response<Flux<ByteBuffer>> rawResponse, boolean throwOnAnyFailure, ClientLogger logger) {
+        Response<BinaryData> rawResponse, boolean throwOnAnyFailure, ClientLogger logger) {
         /*
          * Content-Type will contain the boundary for each batch response. The expected format is:
          * "Content-Type: multipart/mixed; boundary=batchresponse_66925647-d0cb-4109-b6d3-28efe3e1e5ed"
@@ -73,7 +74,7 @@ class BlobBatchHelper {
 
         String boundary = boundaryPieces[1];
 
-        return FluxUtil.collectBytesInByteBufferStream(rawResponse.getValue())
+        return Mono.just(rawResponse.getValue().toBytes())
             /*
              * This has been changed from using 'Mono.fromRunnable' to 'Mono.create' to resolve an issue where iterating
              * the responses resulted in 0 responses being returned. The reason that this occurred is that
@@ -237,7 +238,7 @@ class BlobBatchHelper {
         };
     }
 
-    private static HttpResponse createHttpResponse(Response<Flux<ByteBuffer>> response) {
+    private static HttpResponse createHttpResponse(Response<BinaryData> response) {
         return new HttpResponse(response.getRequest()) {
             @Override
             public int getStatusCode() {
@@ -256,7 +257,7 @@ class BlobBatchHelper {
 
             @Override
             public Flux<ByteBuffer> getBody() {
-                return response.getValue();
+                return response.getValue().toFluxByteBuffer();
             }
 
             @Override

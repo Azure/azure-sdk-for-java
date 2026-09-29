@@ -15,7 +15,11 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.BlobContainerAsyncClientInternal;
+import com.azure.storage.blob.implementation.util.RequestOptionsHelper;
+import java.io.ByteArrayInputStream;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
+import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.*;
@@ -49,7 +53,6 @@ import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 
 import java.net.URL;
-import java.io.ByteArrayInputStream;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -2326,29 +2329,34 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(ccAsync.getHttpPipeline())
             .url(ccAsync.getAccountUrl())
-            .version(BlobServiceVersion.getLatest().getVersion())
+            .version(BlobServiceVersion.getLatest())
             .buildClient();
 
         List<ListBlobsIncludeItem> include = new ArrayList<>();
         include.add(ListBlobsIncludeItem.METADATA);
 
-        Mono<ArrowBlobListDeserializer.ArrowListBlobsResult> testMono
-            = bc.uploadWithResponse(DATA.getDefaultFlux(), 7, null, metadata, null, null, null)
-                .then(impl.getContainers()
-                    .listBlobFlatSegmentApacheArrowWithResponseAsync(containerName, null, null, null, include, null,
-                        null, null, null))
-                .flatMap(response -> {
-                    // Verify Content-Type is Arrow
-                    String contentType = response.getDeserializedHeaders().getContentType();
-                    assertTrue(
-                        StorageImplUtils.hasMatchingHeaderValue(contentType,
-                            Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
-                        "Expected Arrow content type but got: " + contentType);
+        Mono<ArrowBlobListDeserializer.ArrowListBlobsResult> testMono = bc
+            .uploadWithResponse(DATA.getDefaultFlux(), 7, null, metadata, null, null, null)
+            .then(new BlobContainerAsyncClientInternal(impl.getContainers()).listBlobFlatSegmentApacheArrowWithResponse(
+                null, null, null, include, null, null, null,
+                RequestOptionsHelper.containerRequestOptions(com.azure.core.util.Context.NONE, impl.getUrl(),
+                    containerName)))
+            .flatMap(response -> {
+                // Verify Content-Type is Arrow
+                // The typed header model is still generated for this operation, so the Content-Type is read through it
+                // rather than off the raw headers; the retype to StreamResponse is about the body, not the headers.
+                String contentType
+                    = new ContainersListBlobFlatSegmentApacheArrowHeaders(response.getHeaders()).getContentType()
+                        .toString();
+                assertTrue(
+                    StorageImplUtils.hasMatchingHeaderValue(contentType,
+                        Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
+                    "Expected Arrow content type but got: " + contentType);
 
-                    // Collect the Flux<ByteBuffer> body into a byte[] and feed it to the deserializer.
-                    return FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                        .map(bytes -> ArrowBlobListDeserializer.deserialize(new ByteArrayInputStream(bytes)));
-                });
+                // Collect the Flux<ByteBuffer> body into a byte[] and feed it to the deserializer.
+                return FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                    .map(bytes -> ArrowBlobListDeserializer.deserialize(new ByteArrayInputStream(bytes)));
+            });
 
         StepVerifier.create(testMono).assertNext(result -> {
             // Verify pagination — single blob, no next page

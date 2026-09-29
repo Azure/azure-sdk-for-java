@@ -37,7 +37,7 @@ public final class BlobPropertiesInternalGetProperties implements BlobProperties
 
     @Override
     public OffsetDateTime getCreationTime() {
-        return headers.getXMsCreationTime();
+        return headers.getCreationTime();
     }
 
     @Override
@@ -62,7 +62,7 @@ public final class BlobPropertiesInternalGetProperties implements BlobProperties
 
     @Override
     public byte[] getContentMd5() {
-        return headers.getContentMD5();
+        return headers.getContentMd5();
     }
 
     @Override
@@ -87,178 +87,178 @@ public final class BlobPropertiesInternalGetProperties implements BlobProperties
 
     @Override
     public Long getBlobSequenceNumber() {
-        return headers.getXMsBlobSequenceNumber();
+        return headers.getBlobSequenceNumber();
     }
 
     @Override
     public BlobType getBlobType() {
-        return headers.getXMsBlobType();
+        return headers.getBlobType();
     }
 
     @Override
     public LeaseStatusType getLeaseStatus() {
-        return headers.getXMsLeaseStatus();
+        return headers.getLeaseStatus();
     }
 
     @Override
     public LeaseStateType getLeaseState() {
-        return headers.getXMsLeaseState();
+        return headers.getLeaseState();
     }
 
     @Override
     public LeaseDurationType getLeaseDuration() {
-        return headers.getXMsLeaseDuration();
+        return headers.getDuration();
     }
 
     @Override
     public String getCopyId() {
-        return headers.getXMsCopyId();
+        return headers.getCopyId();
     }
 
     @Override
     public CopyStatusType getCopyStatus() {
-        return headers.getXMsCopyStatus();
+        return headers.getCopyStatus();
     }
 
     @Override
     public String getCopySource() {
-        return headers.getXMsCopySource();
+        return headers.getCopySource();
     }
 
     @Override
     public String getCopyProgress() {
-        return headers.getXMsCopyProgress();
+        return headers.getCopyProgress();
     }
 
     @Override
     public OffsetDateTime getCopyCompletionTime() {
-        return headers.getXMsCopyCompletionTime();
+        return headers.getCopyCompletionTime();
     }
 
     @Override
     public String getCopyStatusDescription() {
-        return headers.getXMsCopyStatusDescription();
+        return headers.getCopyStatusDescription();
     }
 
     @Override
     public Boolean isServerEncrypted() {
-        return headers.isXMsServerEncrypted();
+        return headers.isServerEncrypted();
     }
 
     @Override
     public Boolean isIncrementalCopy() {
-        return headers.isXMsIncrementalCopy();
+        return headers.isIncrementalCopy();
     }
 
     @Override
     public String getCopyDestinationSnapshot() {
-        return headers.getXMsCopyDestinationSnapshot();
+        return headers.getDestinationSnapshot();
     }
 
     @Override
     public AccessTier getAccessTier() {
-        return AccessTier.fromString(headers.getXMsAccessTier());
+        return AccessTier.fromString(headers.getAccessTier());
     }
 
     @Override
     public Boolean isAccessTierInferred() {
-        return headers.isXMsAccessTierInferred();
+        return headers.isAccessTierInferred();
     }
 
     @Override
     public AccessTier getSmartAccessTier() {
-        return AccessTier.fromString(headers.getXMsSmartAccessTier());
+        return AccessTier.fromString(headers.getSmartAccessTier());
     }
 
     @Override
     public ArchiveStatus getArchiveStatus() {
-        return ArchiveStatus.fromString(headers.getXMsArchiveStatus());
+        return headers.getArchiveStatus();
     }
 
     @Override
     public String getEncryptionKeySha256() {
-        return headers.getXMsEncryptionKeySha256();
+        return headers.getEncryptionKeySha256();
     }
 
     @Override
     public String getEncryptionScope() {
-        return headers.getXMsEncryptionScope();
+        return headers.getEncryptionScope();
     }
 
     @Override
     public OffsetDateTime getAccessTierChangeTime() {
-        return headers.getXMsAccessTierChangeTime();
+        return headers.getAccessTierChangeTime();
     }
 
     @Override
     public Map<String, String> getMetadata() {
-        return headers.getXMsMeta();
+        return headers.getMetadata();
     }
 
     @Override
     public Integer getCommittedBlockCount() {
-        return headers.getXMsBlobCommittedBlockCount();
+        return headers.getBlobCommittedBlockCount();
     }
 
     @Override
     public Long getTagCount() {
-        return headers.getXMsTagCount();
+        return headers.getTagCount();
     }
 
     @Override
     public String getVersionId() {
-        return headers.getXMsVersionId();
+        return headers.getVersionId();
     }
 
     @Override
     public Boolean isCurrentVersion() {
-        return headers.isXMsIsCurrentVersion();
+        return headers.isCurrentVersion();
     }
 
     @Override
     public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
-        return ModelHelper.getObjectReplicationSourcePolicies(headers.getXMsOr());
+        return ModelHelper.getObjectReplicationSourcePolicies(headers.getObjectReplicationRules());
     }
 
     @Override
     public String getObjectReplicationDestinationPolicyId() {
-        return ModelHelper.getObjectReplicationDestinationPolicyId(headers.getXMsOr());
+        return ModelHelper.getObjectReplicationDestinationPolicyId(headers.getObjectReplicationRules());
     }
 
     @Override
     public RehydratePriority getRehydratePriority() {
-        return RehydratePriority.fromString(headers.getXMsRehydratePriority());
+        return headers.getRehydratePriority();
     }
 
     @Override
     public Boolean isSealed() {
-        return headers.isXMsBlobSealed();
+        return headers.isSealed();
     }
 
     @Override
     public OffsetDateTime getLastAccessedTime() {
-        return headers.getXMsLastAccessTime();
+        return headers.getLastAccessed();
     }
 
     @Override
     public OffsetDateTime getExpiresOn() {
-        return headers.getXMsExpiryTime();
+        return headers.getExpiresOn();
     }
 
     @Override
     public BlobImmutabilityPolicy getImmutabilityPolicy() {
         // This could be cached but the returned object is mutable.
-        return new BlobImmutabilityPolicy().setExpiryTime(headers.getXMsImmutabilityPolicyUntilDate())
-            .setPolicyMode(headers.getXMsImmutabilityPolicyMode());
+        return new BlobImmutabilityPolicy().setExpiryTime(headers.getImmutabilityPolicyExpiresOn())
+            .setPolicyMode(headers.getImmutabilityPolicyMode());
     }
 
     @Override
     public Boolean hasLegalHold() {
-        return headers.isXMsLegalHold();
+        return headers.isLegalHold();
     }
 
     @Override
     public String getRequestId() {
-        return headers.getXMsRequestId();
+        return headers.getRequestId();
     }
 }
