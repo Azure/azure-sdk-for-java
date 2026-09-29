@@ -6,8 +6,14 @@ package com.azure.storage.file.share;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -51,6 +57,7 @@ import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileHandleAccessRights;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
+import com.azure.storage.file.share.models.ShareFileLinks;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFilePermission;
@@ -85,7 +92,9 @@ import com.azure.storage.file.share.specialized.ShareLeaseClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -121,6 +130,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicReference;
+import reactor.core.publisher.Mono;
 
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -148,7 +159,11 @@ class FileApiTests extends FileShareTestBase {
         = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
 
     @BeforeEach
-    public void setup() {
+    public void setup(TestInfo testInfo) {
+        if (testInfo.getTags().contains("file-id-mock")) {
+            return;
+        }
+
         shareName = generateShareName();
         filePath = generatePathName();
         shareClient = shareBuilderHelper(shareName).buildClient();
@@ -168,6 +183,229 @@ class FileApiTests extends FileShareTestBase {
 
         String fileURL = primaryFileClient.getFileUrl();
         assertEquals(expectURL, fileURL);
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void filePropertiesByIdUseFileIdQueryAndMapFileName() {
+        AtomicReference<String> requestUrl = new AtomicReference<>();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            Assertions.assertEquals(HttpMethod.HEAD, request.getHttpMethod());
+            requestUrl.set(request.getUrl().toString());
+            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("file.txt")));
+        }).build();
+
+        ShareClient testShareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildClient()
+            .getShareClient(FileIdTestHelper.SHARE_NAME);
+        ShareFileClient fileClient = testShareClient.getFileClientByFileId(FileIdTestHelper.FILE_ID);
+
+        Assertions.assertEquals(FileIdTestHelper.FILE_ID, fileClient.getFileId());
+        Assertions.assertEquals("", fileClient.getFilePath());
+        Assertions.assertEquals(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "?fileid="
+            + FileIdTestHelper.FILE_ID, fileClient.getFileUrl());
+        Assertions.assertEquals("file.txt", fileClient.getProperties().getFileName());
+        Assertions.assertEquals(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "?fileid="
+            + FileIdTestHelper.FILE_ID, requestUrl.get());
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void fileLinksMapPropertiesAndDecodeLinkNames() {
+        AtomicReference<String> requestUrl = new AtomicReference<>();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            Assertions.assertEquals(HttpMethod.GET, request.getHttpMethod());
+            requestUrl.set(request.getUrl().toString());
+            String body = "<HardLinks><HardLink><FileName Encoded=\"true\">file%20name.txt</FileName>"
+                + "<ParentId>parent-id</ParentId>" + "</HardLink></HardLinks>";
+            HttpHeaders headers = FileIdTestHelper.fileHeaders("file.txt")
+                .set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+            return Mono.just(new MockHttpResponse(request, 200, headers, body.getBytes(StandardCharsets.UTF_8)));
+        }).build();
+
+        ShareClient testShareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildClient()
+            .getShareClient(FileIdTestHelper.SHARE_NAME);
+        ShareFileLinks links = testShareClient.getFileClientByFileId(FileIdTestHelper.FILE_ID).getFileLinks();
+
+        Assertions.assertEquals("file.txt", links.getProperties().getFileName());
+        Assertions.assertEquals("en", links.getProperties().getContentLanguage());
+        Assertions.assertEquals("gzip", links.getProperties().getContentEncoding());
+        Assertions.assertEquals(1, links.getLinks().size());
+        Assertions.assertEquals("file name.txt", links.getLinks().get(0).getName());
+        Assertions.assertEquals("parent-id", links.getLinks().get(0).getParentId());
+        Assertions.assertTrue(requestUrl.get().contains("comp=hardlinks"));
+        Assertions.assertTrue(requestUrl.get().contains("fileid=" + FileIdTestHelper.FILE_ID));
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void fileIdClientsRejectPathOperations() {
+        AtomicReference<Boolean> requestSent = new AtomicReference<>(false);
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            requestSent.set(true);
+            return Mono.just(new MockHttpResponse(request, 200));
+        }).build();
+
+        ShareClient testShareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildClient()
+            .getShareClient(FileIdTestHelper.SHARE_NAME);
+        ShareFileClient fileClient = testShareClient.getFileClientByFileId(FileIdTestHelper.FILE_ID);
+
+        Assertions.assertThrows(IllegalStateException.class, fileClient::exists);
+        Assertions.assertThrows(IllegalStateException.class, () -> fileClient.create(1024));
+        Assertions.assertThrows(IllegalStateException.class, fileClient::delete);
+        Assertions.assertThrows(IllegalStateException.class, () -> fileClient.setMetadata(null));
+        Assertions.assertThrows(IllegalStateException.class, () -> fileClient.rename("destination"));
+        Assertions.assertThrows(IllegalStateException.class, fileClient::getFileOutputStream);
+        Assertions.assertThrows(IllegalStateException.class, () -> fileClient.generateSas(null));
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> testShareClient.getFileClient("path/file").getFileLinks());
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> testShareClient.getFileClientByFileId(" "));
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> testShareClient.getFileClientByFileId(null));
+        Assertions.assertFalse(requestSent.get());
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void fileClientBuilderParsesFileIdFromEndpointQuery() {
+        AtomicReference<String> requestUrl = new AtomicReference<>();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            Assertions.assertEquals(HttpMethod.HEAD, request.getHttpMethod());
+            requestUrl.set(request.getUrl().toString());
+            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("file.txt")));
+        }).build();
+
+        ShareFileClient fileClient
+            = new ShareFileClientBuilder().endpoint(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME
+                + "?fileid=" + FileIdTestHelper.FILE_ID)
+                .pipeline(pipeline)
+                .serviceVersion(ShareServiceVersion.V2027_03_07)
+                .buildFileClient();
+
+        Assertions.assertEquals(FileIdTestHelper.FILE_ID, fileClient.getFileId());
+        Assertions.assertEquals("file.txt", fileClient.getProperties().getFileName());
+        Assertions.assertEquals(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "?fileid="
+            + FileIdTestHelper.FILE_ID, requestUrl.get());
+
+        ShareFileClient pathClient = new ShareFileClientBuilder()
+            .endpoint(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/file.txt")
+            .pipeline(pipeline)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildFileClient();
+        Assertions.assertEquals("", pathClient.getFileId());
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void fileClientBuilderSetsFileId() {
+        AtomicReference<String> requestUrl = new AtomicReference<>();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            requestUrl.set(request.getUrl().toString());
+            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("file.txt")));
+        }).build();
+
+        ShareFileClient fileClient = new ShareFileClientBuilder()
+            .endpoint(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/previous/path")
+            .shareName(FileIdTestHelper.SHARE_NAME)
+            .fileId(FileIdTestHelper.FILE_ID)
+            .pipeline(pipeline)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildFileClient();
+
+        Assertions.assertEquals(FileIdTestHelper.FILE_ID, fileClient.getFileId());
+        Assertions.assertEquals("", fileClient.getFilePath());
+        Assertions.assertEquals("file.txt", fileClient.getProperties().getFileName());
+        Assertions.assertTrue(requestUrl.get().contains("fileid=" + FileIdTestHelper.FILE_ID));
+
+        ShareFileClient pathClient = new ShareFileClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .shareName(FileIdTestHelper.SHARE_NAME)
+            .fileId(FileIdTestHelper.FILE_ID)
+            .resourcePath("path/file.txt")
+            .pipeline(pipeline)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildFileClient();
+        Assertions.assertEquals("", pathClient.getFileId());
+        Assertions.assertEquals("path/file.txt", pathClient.getFilePath());
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new ShareFileClientBuilder().fileId(" "));
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new ShareFileClientBuilder().fileId(null));
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void fileClientBuilderParsesFileIdAndSnapshotFromEndpointQuery() {
+        AtomicReference<String> requestUrl = new AtomicReference<>();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            requestUrl.set(request.getUrl().toString());
+            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("file.txt")));
+        }).build();
+        String endpoint = FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "?sharesnapshot=snapshot-id"
+            + "&fileid=" + FileIdTestHelper.FILE_ID;
+
+        ShareFileClient fileClient = new ShareFileClientBuilder().endpoint(endpoint)
+            .pipeline(pipeline)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildFileClient();
+
+        Assertions.assertEquals(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME
+            + "?sharesnapshot=snapshot-id&fileid=" + FileIdTestHelper.FILE_ID, fileClient.getFileUrl());
+        fileClient.getProperties();
+        Assertions.assertTrue(requestUrl.get().contains("sharesnapshot=snapshot-id"));
+        Assertions.assertTrue(requestUrl.get().contains("fileid=" + FileIdTestHelper.FILE_ID));
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void fileClientBuilderParsesFileIdAndSasFromEndpointQuery() {
+        String endpoint = FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "?fileid="
+            + FileIdTestHelper.FILE_ID + "&sig=signature";
+
+        ShareFileClient fileClient = new ShareFileClientBuilder().endpoint(endpoint).buildFileClient();
+
+        Assertions.assertEquals(FileIdTestHelper.FILE_ID, fileClient.getFileId());
+        Assertions.assertTrue(fileClient.getSasToken().getSignature().contains("sig=signature"));
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void fileIdClientsPreserveShareSnapshot() {
+        AtomicReference<String> requestUrl = new AtomicReference<>();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            requestUrl.set(request.getUrl().toString());
+            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("file.txt")));
+        }).build();
+
+        ShareClient testShareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildClient()
+            .getShareClient(FileIdTestHelper.SHARE_NAME)
+            .getSnapshotClient("snapshot-id");
+        ShareFileClient fileClient = testShareClient.getFileClientByFileId(FileIdTestHelper.FILE_ID);
+
+        Assertions.assertEquals(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME
+            + "?sharesnapshot=snapshot-id&fileid=" + FileIdTestHelper.FILE_ID, fileClient.getFileUrl());
+        fileClient.getProperties();
+        Assertions.assertTrue(requestUrl.get().contains("sharesnapshot=snapshot-id"));
+        Assertions.assertTrue(requestUrl.get().contains("fileid=" + FileIdTestHelper.FILE_ID));
     }
 
     @Test

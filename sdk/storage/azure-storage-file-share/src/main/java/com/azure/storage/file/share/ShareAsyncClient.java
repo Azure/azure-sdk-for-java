@@ -21,6 +21,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.FileIdOperations;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
@@ -184,6 +185,32 @@ public class ShareAsyncClient {
      */
     public ShareFileAsyncClient getFileClient(String filePath) {
         return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot, accountName,
+            serviceVersion, sasToken);
+    }
+
+    /**
+     * Creates a file client that addresses a file by its file ID.
+     *
+     * @param fileId The file ID of the file.
+     * @return A client for interacting with the file by ID.
+     * @throws IllegalArgumentException If {@code fileId} is null or blank.
+     */
+    public ShareFileAsyncClient getFileClientByFileId(String fileId) {
+        FileIdOperations.validateFileId(fileId);
+        return new ShareFileAsyncClient(azureFileStorageClient, shareName, "", fileId, snapshot, accountName,
+            serviceVersion, sasToken);
+    }
+
+    /**
+     * Creates a directory client that addresses a directory by its file ID.
+     *
+     * @param fileId The file ID of the directory.
+     * @return A client for interacting with the directory by ID.
+     * @throws IllegalArgumentException If {@code fileId} is null or blank.
+     */
+    public ShareDirectoryAsyncClient getDirectoryClientByFileId(String fileId) {
+        FileIdOperations.validateFileId(fileId);
+        return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, "", fileId, snapshot, accountName,
             serviceVersion, sasToken);
     }
 
