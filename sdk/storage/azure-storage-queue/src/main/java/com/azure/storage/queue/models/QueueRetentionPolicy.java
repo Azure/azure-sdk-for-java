@@ -13,26 +13,25 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * the retention policy.
+ * The retention policy.
  */
 @Fluent
 public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentionPolicy> {
 
     /*
-     * Indicates whether a retention policy is enabled for the storage service.
+     * Whether to enable the retention policy.
      */
     @Generated
     private boolean enabled;
 
     /*
-     * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than
-     * this value will be deleted.
+     * The number of days to retain the logs.
      */
     @Generated
     private Integer days;
 
     /**
-     * Get the enabled property: Indicates whether a retention policy is enabled for the storage service.
+     * Get the enabled property: Whether to enable the retention policy.
      *
      * @return the enabled value.
      */
@@ -42,8 +41,7 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
     }
 
     /**
-     * Get the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
-     * retained. All data older than this value will be deleted.
+     * Get the days property: The number of days to retain the logs.
      *
      * @return the days value.
      */
@@ -53,8 +51,7 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
     }
 
     /**
-     * Set the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
-     * retained. All data older than this value will be deleted.
+     * Set the days property: The number of days to retain the logs.
      *
      * @param days the days value to set.
      * @return the QueueRetentionPolicy object itself.
@@ -138,7 +135,7 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
     }
 
     /**
-     * Set the enabled property: Indicates whether a retention policy is enabled for the storage service.
+     * Set the enabled property: Whether to enable the retention policy.
      *
      * @param enabled the enabled value to set.
      * @return the QueueRetentionPolicy object itself.

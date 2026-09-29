@@ -16,7 +16,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * The GeoReplication model.
+ * Geo replication information for the secondary storage location.
  */
 @Fluent
 public final class GeoReplication implements XmlSerializable<GeoReplication> {

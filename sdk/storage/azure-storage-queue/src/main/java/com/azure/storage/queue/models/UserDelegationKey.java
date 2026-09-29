@@ -22,13 +22,13 @@ import javax.xml.stream.XMLStreamException;
 public final class UserDelegationKey implements XmlSerializable<UserDelegationKey> {
 
     /*
-     * The Azure Active Directory object ID in GUID format.
+     * The Entra ID object ID in GUID format.
      */
     @Generated
     private String signedObjectId;
 
     /*
-     * The Azure Active Directory tenant ID in GUID format.
+     * The Entra ID tenant ID in GUID format.
      */
     @Generated
     private String signedTenantId;
@@ -46,19 +46,19 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     private OffsetDateTime signedExpiry;
 
     /*
-     * Abbreviation of the Azure Storage service that accepts the key.
+     * The service that created the key.
      */
     @Generated
     private String signedService;
 
     /*
-     * The service version that created the key.
+     * The service version used when creating the key.
      */
     @Generated
     private String signedVersion;
 
     /*
-     * The delegated user tenant id in Azure AD. Return if DelegatedUserTid is specified.
+     * The delegated user tenant ID in Entra ID. Return if DelegatedUserTid is specified.
      */
     @Generated
     private String signedDelegatedUserTenantId;
@@ -70,7 +70,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     private String value;
 
     /**
-     * Get the signedObjectId property: The Azure Active Directory object ID in GUID format.
+     * Get the signedObjectId property: The Entra ID object ID in GUID format.
      *
      * @return the signedObjectId value.
      */
@@ -80,7 +80,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Get the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
+     * Get the signedTenantId property: The Entra ID tenant ID in GUID format.
      *
      * @return the signedTenantId value.
      */
@@ -110,7 +110,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Get the signedService property: Abbreviation of the Azure Storage service that accepts the key.
+     * Get the signedService property: The service that created the key.
      *
      * @return the signedService value.
      */
@@ -120,7 +120,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Get the signedVersion property: The service version that created the key.
+     * Get the signedVersion property: The service version used when creating the key.
      *
      * @return the signedVersion value.
      */
@@ -130,7 +130,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Get the signedDelegatedUserTenantId property: The delegated user tenant id in Azure AD. Return if
+     * Get the signedDelegatedUserTenantId property: The delegated user tenant ID in Entra ID. Return if
      * DelegatedUserTid is specified.
      *
      * @return the signedDelegatedUserTenantId value.
@@ -257,7 +257,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Set the signedObjectId property: The Azure Active Directory object ID in GUID format.
+     * Set the signedObjectId property: The Entra ID object ID in GUID format.
      *
      * @param signedObjectId the signedObjectId value to set.
      * @return the UserDelegationKey object itself.
@@ -269,7 +269,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Set the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
+     * Set the signedTenantId property: The Entra ID tenant ID in GUID format.
      *
      * @param signedTenantId the signedTenantId value to set.
      * @return the UserDelegationKey object itself.
@@ -305,7 +305,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Set the signedService property: Abbreviation of the Azure Storage service that accepts the key.
+     * Set the signedService property: The service that created the key.
      *
      * @param signedService the signedService value to set.
      * @return the UserDelegationKey object itself.
@@ -317,7 +317,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Set the signedVersion property: The service version that created the key.
+     * Set the signedVersion property: The service version used when creating the key.
      *
      * @param signedVersion the signedVersion value to set.
      * @return the UserDelegationKey object itself.
@@ -329,7 +329,7 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
     }
 
     /**
-     * Set the signedDelegatedUserTenantId property: The delegated user tenant id in Azure AD. Return if
+     * Set the signedDelegatedUserTenantId property: The delegated user tenant ID in Entra ID. Return if
      * DelegatedUserTid is specified.
      *
      * @param signedDelegatedUserTenantId the signedDelegatedUserTenantId value to set.

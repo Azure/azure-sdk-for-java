@@ -196,7 +196,7 @@ public final class QueueServiceClientInternal {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return storage Service Properties along with {@link Response}.
+     * @return the service properties along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -250,7 +250,7 @@ public final class QueueServiceClientInternal {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return stats for the storage service along with {@link Response}.
+     * @return statistics for the storage queue service along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -501,7 +501,7 @@ public final class QueueServiceClientInternal {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Service Properties along with {@link ResponseBase}.
+     * @return the service properties along with {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -533,7 +533,7 @@ public final class QueueServiceClientInternal {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Service Properties.
+     * @return the service properties.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -556,7 +556,7 @@ public final class QueueServiceClientInternal {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage Service Properties.
+     * @return the service properties.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -582,7 +582,7 @@ public final class QueueServiceClientInternal {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return stats for the storage service along with {@link ResponseBase}.
+     * @return statistics for the storage queue service along with {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -614,7 +614,7 @@ public final class QueueServiceClientInternal {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return stats for the storage service.
+     * @return statistics for the storage queue service.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -637,7 +637,7 @@ public final class QueueServiceClientInternal {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return stats for the storage service.
+     * @return statistics for the storage queue service.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

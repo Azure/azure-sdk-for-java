@@ -13,37 +13,37 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * a summary of request statistics grouped by API in hour or minute aggregates for queues.
+ * The metrics properties.
  */
 @Fluent
 public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
 
     /*
-     * The version of Storage Analytics to configure.
+     * The version of the metrics properties.
      */
     @Generated
     private String version;
 
     /*
-     * Indicates whether metrics are enabled for the Queue service.
+     * Whether it is enabled.
      */
     @Generated
     private boolean enabled;
 
     /*
-     * Indicates whether metrics should generate summary statistics for called API operations.
+     * Whether to include API in the metrics.
      */
     @Generated
     private Boolean includeApis;
 
     /*
-     * the retention policy.
+     * The retention policy of the metrics.
      */
     @Generated
     private QueueRetentionPolicy retentionPolicy;
 
     /**
-     * Get the version property: The version of Storage Analytics to configure.
+     * Get the version property: The version of the metrics properties.
      *
      * @return the version value.
      */
@@ -53,7 +53,7 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     }
 
     /**
-     * Set the version property: The version of Storage Analytics to configure.
+     * Set the version property: The version of the metrics properties.
      *
      * @param version the version value to set.
      * @return the QueueMetrics object itself.
@@ -65,7 +65,7 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     }
 
     /**
-     * Get the enabled property: Indicates whether metrics are enabled for the Queue service.
+     * Get the enabled property: Whether it is enabled.
      *
      * @return the enabled value.
      */
@@ -75,8 +75,7 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     }
 
     /**
-     * Get the includeApis property: Indicates whether metrics should generate summary statistics for called API
-     * operations.
+     * Get the includeApis property: Whether to include API in the metrics.
      *
      * @return the includeApis value.
      */
@@ -86,8 +85,7 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     }
 
     /**
-     * Set the includeApis property: Indicates whether metrics should generate summary statistics for called API
-     * operations.
+     * Set the includeApis property: Whether to include API in the metrics.
      *
      * @param includeApis the includeApis value to set.
      * @return the QueueMetrics object itself.
@@ -99,7 +97,7 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     }
 
     /**
-     * Get the retentionPolicy property: the retention policy.
+     * Get the retentionPolicy property: The retention policy of the metrics.
      *
      * @return the retentionPolicy value.
      */
@@ -109,7 +107,7 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     }
 
     /**
-     * Set the retentionPolicy property: the retention policy.
+     * Set the retentionPolicy property: The retention policy of the metrics.
      *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the QueueMetrics object itself.
@@ -203,7 +201,7 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
     }
 
     /**
-     * Set the enabled property: Indicates whether metrics are enabled for the Queue service.
+     * Set the enabled property: Whether it is enabled.
      *
      * @param enabled the enabled value to set.
      * @return the QueueMetrics object itself.

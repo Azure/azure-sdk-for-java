@@ -383,7 +383,7 @@ public final class ServicesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return storage Service Properties along with {@link Response} on successful completion of {@link Mono}.
+     * @return the service properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getPropertiesWithResponseInternalAsync(RequestOptions requestOptions) {
@@ -462,7 +462,7 @@ public final class ServicesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return storage Service Properties along with {@link Response}.
+     * @return the service properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getPropertiesWithResponseInternal(RequestOptions requestOptions) {
@@ -521,7 +521,8 @@ public final class ServicesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return stats for the storage service along with {@link Response} on successful completion of {@link Mono}.
+     * @return statistics for the storage queue service along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStatisticsWithResponseInternalAsync(RequestOptions requestOptions) {
@@ -578,7 +579,7 @@ public final class ServicesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return stats for the storage service along with {@link Response}.
+     * @return statistics for the storage queue service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getStatisticsWithResponseInternal(RequestOptions requestOptions) {

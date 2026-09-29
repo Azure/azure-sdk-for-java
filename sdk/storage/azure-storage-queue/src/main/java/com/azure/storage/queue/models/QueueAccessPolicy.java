@@ -17,24 +17,24 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * An Access policy.
+ * The access policy.
  */
 @Fluent
 public final class QueueAccessPolicy implements XmlSerializable<QueueAccessPolicy> {
     /*
-     * the date-time the policy is active.
+     * The date-time the policy is active.
      */
     @Generated
     private OffsetDateTime startsOn;
 
     /*
-     * the date-time the policy expires.
+     * The date-time the policy expires.
      */
     @Generated
     private OffsetDateTime expiresOn;
 
     /*
-     * the permissions for the acl policy.
+     * The permissions for the policy.
      */
     @Generated
     private String permissions;
@@ -47,7 +47,7 @@ public final class QueueAccessPolicy implements XmlSerializable<QueueAccessPolic
     }
 
     /**
-     * Get the startsOn property: the date-time the policy is active.
+     * Get the startsOn property: The date-time the policy is active.
      * 
      * @return the startsOn value.
      */
@@ -57,7 +57,7 @@ public final class QueueAccessPolicy implements XmlSerializable<QueueAccessPolic
     }
 
     /**
-     * Set the startsOn property: the date-time the policy is active.
+     * Set the startsOn property: The date-time the policy is active.
      * 
      * @param startsOn the startsOn value to set.
      * @return the QueueAccessPolicy object itself.
@@ -69,7 +69,7 @@ public final class QueueAccessPolicy implements XmlSerializable<QueueAccessPolic
     }
 
     /**
-     * Get the expiresOn property: the date-time the policy expires.
+     * Get the expiresOn property: The date-time the policy expires.
      * 
      * @return the expiresOn value.
      */
@@ -79,7 +79,7 @@ public final class QueueAccessPolicy implements XmlSerializable<QueueAccessPolic
     }
 
     /**
-     * Set the expiresOn property: the date-time the policy expires.
+     * Set the expiresOn property: The date-time the policy expires.
      * 
      * @param expiresOn the expiresOn value to set.
      * @return the QueueAccessPolicy object itself.
@@ -91,7 +91,7 @@ public final class QueueAccessPolicy implements XmlSerializable<QueueAccessPolic
     }
 
     /**
-     * Get the permissions property: the permissions for the acl policy.
+     * Get the permissions property: The permissions for the policy.
      * 
      * @return the permissions value.
      */
@@ -101,7 +101,7 @@ public final class QueueAccessPolicy implements XmlSerializable<QueueAccessPolic
     }
 
     /**
-     * Set the permissions property: the permissions for the acl policy.
+     * Set the permissions property: The permissions for the policy.
      * 
      * @param permissions the permissions value to set.
      * @return the QueueAccessPolicy object itself.

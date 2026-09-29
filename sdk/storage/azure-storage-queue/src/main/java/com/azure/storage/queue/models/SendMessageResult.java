@@ -16,44 +16,44 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * The object returned in the QueueMessageList array when calling Put Message on a Queue.
+ * The sent queue message.
  */
 @Fluent
 public final class SendMessageResult implements XmlSerializable<SendMessageResult> {
 
     /*
-     * The Id of the Message.
+     * The ID of the message.
      */
     @Generated
     private String messageId;
 
     /*
-     * The time the Message was inserted into the Queue.
+     * The time the message was inserted into the queue.
      */
     @Generated
     private DateTimeRfc1123 insertionTime;
 
     /*
-     * The time that the Message will expire and be automatically deleted.
+     * The time that the message will expire and be automatically deleted.
      */
     @Generated
     private DateTimeRfc1123 expirationTime;
 
     /*
-     * This value is required to delete the Message. If deletion fails using this popreceipt then the message has been
-     * dequeued by another client.
+     * An opaque value required to delete the message. If deletion fails using this
+     * PopReceipt then the message has been dequeued by another client.
      */
     @Generated
     private String popReceipt;
 
     /*
-     * The time that the message will again become visible in the Queue.
+     * The time that the message will again become visible in the queue.
      */
     @Generated
     private DateTimeRfc1123 timeNextVisible;
 
     /**
-     * Get the messageId property: The Id of the Message.
+     * Get the messageId property: The ID of the message.
      *
      * @return the messageId value.
      */
@@ -63,7 +63,7 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     }
 
     /**
-     * Get the insertionTime property: The time the Message was inserted into the Queue.
+     * Get the insertionTime property: The time the message was inserted into the queue.
      *
      * @return the insertionTime value.
      */
@@ -76,7 +76,7 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     }
 
     /**
-     * Get the expirationTime property: The time that the Message will expire and be automatically deleted.
+     * Get the expirationTime property: The time that the message will expire and be automatically deleted.
      *
      * @return the expirationTime value.
      */
@@ -89,8 +89,8 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     }
 
     /**
-     * Get the popReceipt property: This value is required to delete the Message. If deletion fails using this
-     * popreceipt then the message has been dequeued by another client.
+     * Get the popReceipt property: An opaque value required to delete the message. If deletion fails using this
+     * PopReceipt then the message has been dequeued by another client.
      *
      * @return the popReceipt value.
      */
@@ -100,7 +100,7 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     }
 
     /**
-     * Get the timeNextVisible property: The time that the message will again become visible in the Queue.
+     * Get the timeNextVisible property: The time that the message will again become visible in the queue.
      *
      * @return the timeNextVisible value.
      */
@@ -212,7 +212,7 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     }
 
     /**
-     * Set the messageId property: The Id of the Message.
+     * Set the messageId property: The ID of the message.
      *
      * @param messageId the messageId value to set.
      * @return the SendMessageResult object itself.
@@ -224,7 +224,7 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     }
 
     /**
-     * Set the insertionTime property: The time the Message was inserted into the Queue.
+     * Set the insertionTime property: The time the message was inserted into the queue.
      *
      * @param insertionTime the insertionTime value to set.
      * @return the SendMessageResult object itself.
@@ -240,7 +240,7 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     }
 
     /**
-     * Set the expirationTime property: The time that the Message will expire and be automatically deleted.
+     * Set the expirationTime property: The time that the message will expire and be automatically deleted.
      *
      * @param expirationTime the expirationTime value to set.
      * @return the SendMessageResult object itself.
@@ -256,8 +256,8 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     }
 
     /**
-     * Set the popReceipt property: This value is required to delete the Message. If deletion fails using this
-     * popreceipt then the message has been dequeued by another client.
+     * Set the popReceipt property: An opaque value required to delete the message. If deletion fails using this
+     * PopReceipt then the message has been dequeued by another client.
      *
      * @param popReceipt the popReceipt value to set.
      * @return the SendMessageResult object itself.
@@ -269,7 +269,7 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
     }
 
     /**
-     * Set the timeNextVisible property: The time that the message will again become visible in the Queue.
+     * Set the timeNextVisible property: The time that the message will again become visible in the queue.
      *
      * @param timeNextVisible the timeNextVisible value to set.
      * @return the SendMessageResult object itself.

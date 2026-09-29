@@ -21,19 +21,19 @@ import javax.xml.stream.XMLStreamException;
 public final class QueueItem implements XmlSerializable<QueueItem> {
 
     /*
-     * The name of the Queue.
+     * The name of the queue.
      */
     @Generated
     private String name;
 
     /*
-     * Dictionary of <string>.
+     * The metadata of the queue.
      */
     @Generated
     private Map<String, String> metadata;
 
     /**
-     * Get the name property: The name of the Queue.
+     * Get the name property: The name of the queue.
      *
      * @return the name value.
      */
@@ -43,7 +43,7 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
     }
 
     /**
-     * Get the metadata property: Dictionary of &lt;string&gt;.
+     * Get the metadata property: The metadata of the queue.
      *
      * @return the metadata value.
      */
@@ -135,7 +135,7 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
     }
 
     /**
-     * Set the name property: The name of the Queue.
+     * Set the name property: The name of the queue.
      *
      * @param name the name value to set.
      * @return the QueueItem object itself.
@@ -147,7 +147,7 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
     }
 
     /**
-     * Set the metadata property: Dictionary of &lt;string&gt;.
+     * Set the metadata property: The metadata of the queue.
      *
      * @param metadata the metadata value to set.
      * @return the QueueItem object itself.

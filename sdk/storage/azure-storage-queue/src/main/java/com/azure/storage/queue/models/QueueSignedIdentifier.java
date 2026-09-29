@@ -13,25 +13,25 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * signed identifier.
+ * The signed identifier.
  */
 @Fluent
 public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedIdentifier> {
 
     /*
-     * a unique id.
+     * The unique ID for the signed identifier.
      */
     @Generated
     private String id;
 
     /*
-     * The access policy.
+     * The access policy for the signed identifier.
      */
     @Generated
     private QueueAccessPolicy accessPolicy;
 
     /**
-     * Get the id property: a unique id.
+     * Get the id property: The unique ID for the signed identifier.
      *
      * @return the id value.
      */
@@ -41,7 +41,7 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
     }
 
     /**
-     * Get the accessPolicy property: The access policy.
+     * Get the accessPolicy property: The access policy for the signed identifier.
      *
      * @return the accessPolicy value.
      */
@@ -123,7 +123,7 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
     }
 
     /**
-     * Set the id property: a unique id.
+     * Set the id property: The unique ID for the signed identifier.
      *
      * @param id the id value to set.
      * @return the QueueSignedIdentifier object itself.
@@ -135,7 +135,7 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
     }
 
     /**
-     * Set the accessPolicy property: The access policy.
+     * Set the accessPolicy property: The access policy for the signed identifier.
      *
      * @param accessPolicy the accessPolicy value to set.
      * @return the QueueSignedIdentifier object itself.

@@ -91,6 +91,7 @@ public class QueueStorageCustomizations extends Customization {
         removeGeneratedFiles(editor, logger);
         relocateConvenienceClientsToImplementation(customization, logger);
         fixXmlSerializerRedundantCast(editor, logger);
+        retargetServiceStatsXmlRootName(customization, logger);
         retargetServiceVersionReferences(editor, logger);
         restoreFluentModels(customization, logger);
         updateImplToMapInternalException(customization.getPackage(IMPL_PACKAGE), logger);
@@ -280,6 +281,45 @@ public class QueueStorageCustomizations extends Customization {
             editor.replaceFile(path, updated);
             logger.info("Retargeted QueuesServiceVersion -> QueueServiceVersion in {}.", fileName);
         }
+    }
+
+    /**
+     * Retargets the XML root element name on the generated {@code QueueServiceStatistics} to the name the service
+     * actually sends.
+     * <p>
+     * {@code Get Queue Service Stats} returns {@code <StorageServiceStats>} (the Storage service-level envelope,
+     * shared with Blob and File), but the TypeSpec model is named {@code QueueServiceStats}, so the emitter defaults
+     * the root element to {@code "QueueServiceStats"}. {@code azure-xml} enforces the root element name --
+     * {@code readObject("QueueServiceStats")} on the documented payload throws {@code IllegalStateException} rather
+     * than silently mis-parsing -- so {@code getStatistics} would fail without this.
+     * <p>
+     * This lives here rather than as an {@code @Xml.name} in the shared {@code models.tsp} because that file has no
+     * per-language scoping and would change every language's generated output. Both the {@code toXml} and
+     * {@code fromXml} defaults are retargeted so the model still round-trips against itself.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void retargetServiceStatsXmlRootName(LibraryCustomization customization, Logger logger) {
+        PackageCustomization models = customization.getPackage(MODELS_PACKAGE);
+        if (models.getClass("QueueServiceStatistics") == null) {
+            logger.info("QueueServiceStatistics not present; skipping XML root-element retarget.");
+            return;
+        }
+        Editor editor = customization.getRawEditor();
+        String path = PKG_ROOT + "models/QueueServiceStatistics.java";
+        String content = editor.getContents().get(path);
+        if (content == null) {
+            logger.info("QueueServiceStatistics not in the editor; skipping XML root-element retarget.");
+            return;
+        }
+        String updated = content.replace("\"QueueServiceStats\"", "\"StorageServiceStats\"");
+        if (updated.equals(content)) {
+            logger.info("QueueServiceStatistics already targets the wire root element; nothing to retarget.");
+            return;
+        }
+        editor.replaceFile(path, updated);
+        logger.info("Retargeted the QueueServiceStatistics XML root element to StorageServiceStats.");
     }
 
     /**

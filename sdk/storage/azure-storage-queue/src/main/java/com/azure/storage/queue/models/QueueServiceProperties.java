@@ -16,30 +16,30 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * Storage Service Properties.
+ * The service properties.
  */
 @Fluent
 public final class QueueServiceProperties implements XmlSerializable<QueueServiceProperties> {
     /*
-     * Azure Analytics Logging settings.
+     * The logging properties.
      */
     @Generated
     private QueueAnalyticsLogging analyticsLogging;
 
     /*
-     * A summary of request statistics grouped by API in hourly aggregates for queues.
+     * The hour metrics properties.
      */
     @Generated
     private QueueMetrics hourMetrics;
 
     /*
-     * a summary of request statistics grouped by API in minute aggregates for queues.
+     * The minute metrics properties.
      */
     @Generated
     private QueueMetrics minuteMetrics;
 
     /*
-     * The set of CORS rules.
+     * The CORS properties.
      */
     @Generated
     private List<QueueCorsRule> cors;
@@ -52,7 +52,7 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
     }
 
     /**
-     * Get the analyticsLogging property: Azure Analytics Logging settings.
+     * Get the analyticsLogging property: The logging properties.
      * 
      * @return the analyticsLogging value.
      */
@@ -62,7 +62,7 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
     }
 
     /**
-     * Set the analyticsLogging property: Azure Analytics Logging settings.
+     * Set the analyticsLogging property: The logging properties.
      * 
      * @param analyticsLogging the analyticsLogging value to set.
      * @return the QueueServiceProperties object itself.
@@ -74,7 +74,7 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
     }
 
     /**
-     * Get the hourMetrics property: A summary of request statistics grouped by API in hourly aggregates for queues.
+     * Get the hourMetrics property: The hour metrics properties.
      * 
      * @return the hourMetrics value.
      */
@@ -84,7 +84,7 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
     }
 
     /**
-     * Set the hourMetrics property: A summary of request statistics grouped by API in hourly aggregates for queues.
+     * Set the hourMetrics property: The hour metrics properties.
      * 
      * @param hourMetrics the hourMetrics value to set.
      * @return the QueueServiceProperties object itself.
@@ -96,7 +96,7 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
     }
 
     /**
-     * Get the minuteMetrics property: a summary of request statistics grouped by API in minute aggregates for queues.
+     * Get the minuteMetrics property: The minute metrics properties.
      * 
      * @return the minuteMetrics value.
      */
@@ -106,7 +106,7 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
     }
 
     /**
-     * Set the minuteMetrics property: a summary of request statistics grouped by API in minute aggregates for queues.
+     * Set the minuteMetrics property: The minute metrics properties.
      * 
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the QueueServiceProperties object itself.
@@ -118,7 +118,7 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
     }
 
     /**
-     * Get the cors property: The set of CORS rules.
+     * Get the cors property: The CORS properties.
      * 
      * @return the cors value.
      */
@@ -131,7 +131,7 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
     }
 
     /**
-     * Set the cors property: The set of CORS rules.
+     * Set the cors property: The CORS properties.
      * 
      * @param cors the cors value to set.
      * @return the QueueServiceProperties object itself.

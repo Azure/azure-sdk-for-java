@@ -19,37 +19,37 @@ import javax.xml.stream.XMLStreamException;
 public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyticsLogging> {
 
     /*
-     * The version of Storage Analytics to configure.
+     * The version of the logging properties.
      */
     @Generated
     private String version;
 
     /*
-     * Indicates whether all delete requests should be logged.
+     * Whether delete operation is logged.
      */
     @Generated
     private boolean delete;
 
     /*
-     * Indicates whether all read requests should be logged.
+     * Whether read operation is logged.
      */
     @Generated
     private boolean read;
 
     /*
-     * Indicates whether all write requests should be logged.
+     * Whether write operation is logged.
      */
     @Generated
     private boolean write;
 
     /*
-     * the retention policy.
+     * The retention policy of the logs.
      */
     @Generated
     private QueueRetentionPolicy retentionPolicy;
 
     /**
-     * Get the version property: The version of Storage Analytics to configure.
+     * Get the version property: The version of the logging properties.
      *
      * @return the version value.
      */
@@ -59,7 +59,7 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     }
 
     /**
-     * Get the delete property: Indicates whether all delete requests should be logged.
+     * Get the delete property: Whether delete operation is logged.
      *
      * @return the delete value.
      */
@@ -69,7 +69,7 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     }
 
     /**
-     * Get the read property: Indicates whether all read requests should be logged.
+     * Get the read property: Whether read operation is logged.
      *
      * @return the read value.
      */
@@ -79,7 +79,7 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     }
 
     /**
-     * Get the write property: Indicates whether all write requests should be logged.
+     * Get the write property: Whether write operation is logged.
      *
      * @return the write value.
      */
@@ -89,7 +89,7 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     }
 
     /**
-     * Get the retentionPolicy property: the retention policy.
+     * Get the retentionPolicy property: The retention policy of the logs.
      *
      * @return the retentionPolicy value.
      */
@@ -186,7 +186,7 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     }
 
     /**
-     * Set the version property: The version of Storage Analytics to configure.
+     * Set the version property: The version of the logging properties.
      *
      * @param version the version value to set.
      * @return the QueueAnalyticsLogging object itself.
@@ -198,7 +198,7 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     }
 
     /**
-     * Set the delete property: Indicates whether all delete requests should be logged.
+     * Set the delete property: Whether delete operation is logged.
      *
      * @param delete the delete value to set.
      * @return the QueueAnalyticsLogging object itself.
@@ -210,7 +210,7 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     }
 
     /**
-     * Set the read property: Indicates whether all read requests should be logged.
+     * Set the read property: Whether read operation is logged.
      *
      * @param read the read value to set.
      * @return the QueueAnalyticsLogging object itself.
@@ -222,7 +222,7 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     }
 
     /**
-     * Set the write property: Indicates whether all write requests should be logged.
+     * Set the write property: Whether write operation is logged.
      *
      * @param write the write value to set.
      * @return the QueueAnalyticsLogging object itself.
@@ -234,7 +234,7 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
     }
 
     /**
-     * Set the retentionPolicy property: the retention policy.
+     * Set the retentionPolicy property: The retention policy of the logs.
      *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the QueueAnalyticsLogging object itself.
