@@ -35,6 +35,7 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
+        internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization);
         protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
@@ -89,6 +90,13 @@ public class AgentsCustomizations extends Customization {
     private static final int V_STRING_ENUM_TYPE = 17;
 
     private static final int V_SIZE = 18;
+
+    private void internalizeUnusedVoiceAgentFunctionToolType(LibraryCustomization customization) {
+        customization.getClass(MODELS_PACKAGE, "VoiceAgentFunctionToolType1")
+            .customizeAst(ast -> ast.getEnumByName("VoiceAgentFunctionToolType1")
+                .orElseThrow(() -> new IllegalStateException("VoiceAgentFunctionToolType1 was not generated"))
+                .removeModifier(Modifier.Keyword.PUBLIC));
+    }
 
     /**
      * Prevents customers from directly constructing polymorphic base models that do not represent valid wire shapes.

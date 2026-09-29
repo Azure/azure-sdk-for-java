@@ -16,7 +16,7 @@ import java.io.IOException;
  * Represents a set of parameters used to control the sampling behavior of a language model during text generation.
  */
 @Fluent
-public final class ModelSamplingParams implements JsonSerializable<ModelSamplingParams> {
+public final class ModelSamplingParameters implements JsonSerializable<ModelSamplingParameters> {
     /*
      * The temperature parameter for sampling. Defaults to 1.0.
      */
@@ -42,10 +42,10 @@ public final class ModelSamplingParams implements JsonSerializable<ModelSampling
     private Integer maxCompletionTokens;
 
     /**
-     * Creates an instance of ModelSamplingParams class.
+     * Creates an instance of ModelSamplingParameters class.
      */
     @Generated
-    public ModelSamplingParams() {
+    public ModelSamplingParameters() {
     }
 
     /**
@@ -62,10 +62,10 @@ public final class ModelSamplingParams implements JsonSerializable<ModelSampling
      * Set the temperature property: The temperature parameter for sampling. Defaults to 1.0.
      * 
      * @param temperature the temperature value to set.
-     * @return the ModelSamplingParams object itself.
+     * @return the ModelSamplingParameters object itself.
      */
     @Generated
-    public ModelSamplingParams setTemperature(Double temperature) {
+    public ModelSamplingParameters setTemperature(Double temperature) {
         this.temperature = temperature;
         return this;
     }
@@ -84,10 +84,10 @@ public final class ModelSamplingParams implements JsonSerializable<ModelSampling
      * Set the topP property: The top-p parameter for nucleus sampling. Defaults to 1.0.
      * 
      * @param topP the topP value to set.
-     * @return the ModelSamplingParams object itself.
+     * @return the ModelSamplingParameters object itself.
      */
     @Generated
-    public ModelSamplingParams setTopP(Double topP) {
+    public ModelSamplingParameters setTopP(Double topP) {
         this.topP = topP;
         return this;
     }
@@ -106,10 +106,10 @@ public final class ModelSamplingParams implements JsonSerializable<ModelSampling
      * Set the seed property: The random seed for reproducibility. Defaults to 42.
      * 
      * @param seed the seed value to set.
-     * @return the ModelSamplingParams object itself.
+     * @return the ModelSamplingParameters object itself.
      */
     @Generated
-    public ModelSamplingParams setSeed(Integer seed) {
+    public ModelSamplingParameters setSeed(Integer seed) {
         this.seed = seed;
         return this;
     }
@@ -128,10 +128,10 @@ public final class ModelSamplingParams implements JsonSerializable<ModelSampling
      * Set the maxCompletionTokens property: The maximum number of tokens allowed in the completion.
      * 
      * @param maxCompletionTokens the maxCompletionTokens value to set.
-     * @return the ModelSamplingParams object itself.
+     * @return the ModelSamplingParameters object itself.
      */
     @Generated
-    public ModelSamplingParams setMaxCompletionTokens(Integer maxCompletionTokens) {
+    public ModelSamplingParameters setMaxCompletionTokens(Integer maxCompletionTokens) {
         this.maxCompletionTokens = maxCompletionTokens;
         return this;
     }
@@ -151,35 +151,35 @@ public final class ModelSamplingParams implements JsonSerializable<ModelSampling
     }
 
     /**
-     * Reads an instance of ModelSamplingParams from the JsonReader.
+     * Reads an instance of ModelSamplingParameters from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ModelSamplingParams if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ModelSamplingParams.
+     * @return An instance of ModelSamplingParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ModelSamplingParameters.
      */
     @Generated
-    public static ModelSamplingParams fromJson(JsonReader jsonReader) throws IOException {
+    public static ModelSamplingParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ModelSamplingParams deserializedModelSamplingParams = new ModelSamplingParams();
+            ModelSamplingParameters deserializedModelSamplingParameters = new ModelSamplingParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("temperature".equals(fieldName)) {
-                    deserializedModelSamplingParams.temperature = reader.getNullable(JsonReader::getDouble);
+                    deserializedModelSamplingParameters.temperature = reader.getNullable(JsonReader::getDouble);
                 } else if ("top_p".equals(fieldName)) {
-                    deserializedModelSamplingParams.topP = reader.getNullable(JsonReader::getDouble);
+                    deserializedModelSamplingParameters.topP = reader.getNullable(JsonReader::getDouble);
                 } else if ("seed".equals(fieldName)) {
-                    deserializedModelSamplingParams.seed = reader.getNullable(JsonReader::getInt);
+                    deserializedModelSamplingParameters.seed = reader.getNullable(JsonReader::getInt);
                 } else if ("max_completion_tokens".equals(fieldName)) {
-                    deserializedModelSamplingParams.maxCompletionTokens = reader.getNullable(JsonReader::getInt);
+                    deserializedModelSamplingParameters.maxCompletionTokens = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedModelSamplingParams;
+            return deserializedModelSamplingParameters;
         });
     }
 }

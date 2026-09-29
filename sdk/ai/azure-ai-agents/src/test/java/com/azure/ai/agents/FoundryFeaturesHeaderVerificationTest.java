@@ -43,8 +43,8 @@ public class FoundryFeaturesHeaderVerificationTest {
     private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
     private static final HttpHeaderName CUSTOM_PIPELINE_HEADER = HttpHeaderName.fromString("X-Custom-Pipeline");
     private static final String CUSTOM_PIPELINE_VALUE = "custom-pipeline";
-    private static final String AGENT_PREVIEW_FEATURES = Stream
-        .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString), Stream.of(""))
+    private static final String AGENT_PREVIEW_FEATURES = Arrays.stream(AgentDefinitionOptInKeys.values())
+        .map(AgentDefinitionOptInKeys::toString)
         .collect(Collectors.joining(","));
 
     @Test
