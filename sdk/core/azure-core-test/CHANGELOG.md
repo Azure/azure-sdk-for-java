@@ -1,17 +1,12 @@
 # Release History
 
-## 1.27.0-beta.19 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.27.0-beta.19 (2026-09-29)
 
 ### Other Changes
 
 #### Dependency Updates
 
+- Upgraded `azure-core` from `1.59.1` to `1.60.0`.
 - Upgraded Apache Ant from `1.10.15` to `1.10.18`.
 
 ## 1.27.0-beta.18 (2026-08-27)
