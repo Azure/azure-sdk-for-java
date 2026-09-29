@@ -522,7 +522,7 @@ public final class KeyClientImpl {
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyItem> getKeyVersionsSinglePage(String keyName, Integer maxresults) {
+    public PagedResponse<KeyItem, String> getKeyVersionsSinglePage(String keyName, Integer maxresults) {
         final String accept = "application/json";
         Response<KeyListResult> res = service.getKeyVersions(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), keyName, maxresults, accept, RequestContext.none());
@@ -546,7 +546,7 @@ public final class KeyClientImpl {
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyItem> getKeyVersionsSinglePage(String keyName, Integer maxresults,
+    public PagedResponse<KeyItem, String> getKeyVersionsSinglePage(String keyName, Integer maxresults,
         RequestContext requestContext) {
         final String accept = "application/json";
         Response<KeyListResult> res = service.getKeyVersions(this.getVaultBaseUrl(),
@@ -570,7 +570,7 @@ public final class KeyClientImpl {
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyItem> getKeyVersions(String keyName, Integer maxresults) {
+    public PagedIterable<KeyItem, String> getKeyVersions(String keyName, Integer maxresults) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
                 throw LOGGER.throwableAtError()
@@ -613,7 +613,7 @@ public final class KeyClientImpl {
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyItem> getKeyVersions(String keyName) {
+    public PagedIterable<KeyItem, String> getKeyVersions(String keyName) {
         final Integer maxresults = null;
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -660,7 +660,8 @@ public final class KeyClientImpl {
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyItem> getKeyVersions(String keyName, Integer maxresults, RequestContext requestContext) {
+    public PagedIterable<KeyItem, String> getKeyVersions(String keyName, Integer maxresults,
+        RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -707,7 +708,7 @@ public final class KeyClientImpl {
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyItem> getKeysSinglePage(Integer maxresults) {
+    public PagedResponse<KeyItem, String> getKeysSinglePage(Integer maxresults) {
         final String accept = "application/json";
         Response<KeyListResult> res = service.getKeys(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
             maxresults, accept, RequestContext.none());
@@ -732,7 +733,7 @@ public final class KeyClientImpl {
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyItem> getKeysSinglePage(Integer maxresults, RequestContext requestContext) {
+    public PagedResponse<KeyItem, String> getKeysSinglePage(Integer maxresults, RequestContext requestContext) {
         final String accept = "application/json";
         Response<KeyListResult> res = service.getKeys(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
             maxresults, accept, requestContext);
@@ -756,7 +757,7 @@ public final class KeyClientImpl {
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyItem> getKeys(Integer maxresults) {
+    public PagedIterable<KeyItem, String> getKeys(Integer maxresults) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
                 throw LOGGER.throwableAtError()
@@ -803,7 +804,7 @@ public final class KeyClientImpl {
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyItem> getKeys(Integer maxresults, RequestContext requestContext) {
+    public PagedIterable<KeyItem, String> getKeys(Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -1090,7 +1091,7 @@ public final class KeyClientImpl {
      * @return a list of keys that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedKeyItem> getDeletedKeysSinglePage(Integer maxresults) {
+    public PagedResponse<DeletedKeyItem, String> getDeletedKeysSinglePage(Integer maxresults) {
         final String accept = "application/json";
         Response<DeletedKeyListResult> res = service.getDeletedKeys(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, RequestContext.none());
@@ -1115,7 +1116,8 @@ public final class KeyClientImpl {
      * @return a list of keys that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedKeyItem> getDeletedKeysSinglePage(Integer maxresults, RequestContext requestContext) {
+    public PagedResponse<DeletedKeyItem, String> getDeletedKeysSinglePage(Integer maxresults,
+        RequestContext requestContext) {
         final String accept = "application/json";
         Response<DeletedKeyListResult> res = service.getDeletedKeys(this.getVaultBaseUrl(),
             this.getServiceVersion().getVersion(), maxresults, accept, requestContext);
@@ -1139,7 +1141,7 @@ public final class KeyClientImpl {
      * @return a list of keys that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedKeyItem> getDeletedKeys(Integer maxresults) {
+    public PagedIterable<DeletedKeyItem, String> getDeletedKeys(Integer maxresults) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
                 throw LOGGER.throwableAtError()
@@ -1186,7 +1188,7 @@ public final class KeyClientImpl {
      * @return a list of keys that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedKeyItem> getDeletedKeys(Integer maxresults, RequestContext requestContext) {
+    public PagedIterable<DeletedKeyItem, String> getDeletedKeys(Integer maxresults, RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -1361,7 +1363,7 @@ public final class KeyClientImpl {
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyItem> getKeyVersionsNextSinglePage(String nextLink) {
+    public PagedResponse<KeyItem, String> getKeyVersionsNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<KeyListResult> res
             = service.getKeyVersionsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
@@ -1382,7 +1384,7 @@ public final class KeyClientImpl {
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyItem> getKeyVersionsNextSinglePage(String nextLink, RequestContext requestContext) {
+    public PagedResponse<KeyItem, String> getKeyVersionsNextSinglePage(String nextLink, RequestContext requestContext) {
         final String accept = "application/json";
         Response<KeyListResult> res
             = service.getKeyVersionsNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
@@ -1402,7 +1404,7 @@ public final class KeyClientImpl {
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyItem> getKeysNextSinglePage(String nextLink) {
+    public PagedResponse<KeyItem, String> getKeysNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<KeyListResult> res
             = service.getKeysNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
@@ -1423,7 +1425,7 @@ public final class KeyClientImpl {
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyItem> getKeysNextSinglePage(String nextLink, RequestContext requestContext) {
+    public PagedResponse<KeyItem, String> getKeysNextSinglePage(String nextLink, RequestContext requestContext) {
         final String accept = "application/json";
         Response<KeyListResult> res = service.getKeysNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
@@ -1442,7 +1444,7 @@ public final class KeyClientImpl {
      * @return a list of keys that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedKeyItem> getDeletedKeysNextSinglePage(String nextLink) {
+    public PagedResponse<DeletedKeyItem, String> getDeletedKeysNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<DeletedKeyListResult> res
             = service.getDeletedKeysNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
@@ -1463,7 +1465,8 @@ public final class KeyClientImpl {
      * @return a list of keys that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedKeyItem> getDeletedKeysNextSinglePage(String nextLink, RequestContext requestContext) {
+    public PagedResponse<DeletedKeyItem, String> getDeletedKeysNextSinglePage(String nextLink,
+        RequestContext requestContext) {
         final String accept = "application/json";
         Response<DeletedKeyListResult> res
             = service.getDeletedKeysNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);

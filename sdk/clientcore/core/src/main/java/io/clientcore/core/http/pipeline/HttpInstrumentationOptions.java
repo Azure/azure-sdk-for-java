@@ -86,6 +86,8 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
     private boolean isRedactedHeaderNamesLoggingEnabled;
     private Set<HttpHeaderName> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
+    private HttpRequestLogger requestLogger;
+    private HttpResponseLogger responseLogger;
     private static final List<HttpHeaderName> DEFAULT_HEADERS_ALLOWLIST
         = Arrays.asList(HttpHeaderName.TRACEPARENT, HttpHeaderName.ACCEPT, HttpHeaderName.CACHE_CONTROL,
             HttpHeaderName.CONNECTION, HttpHeaderName.CONTENT_LENGTH, HttpHeaderName.CONTENT_TYPE, HttpHeaderName.DATE,
@@ -243,6 +245,46 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
      */
     public HttpInstrumentationOptions addAllowedQueryParamName(final String allowedQueryParamName) {
         this.allowedQueryParamNames.add(allowedQueryParamName);
+        return this;
+    }
+
+    /**
+     * Gets the custom request logger.
+     *
+     * @return The custom request logger, or {@code null} to use default logging.
+     */
+    public HttpRequestLogger getRequestLogger() {
+        return requestLogger;
+    }
+
+    /**
+     * Sets a custom request logger that replaces default HTTP request logging.
+     *
+     * @param requestLogger The custom request logger, or {@code null} to use default logging.
+     * @return The updated options.
+     */
+    public HttpInstrumentationOptions setRequestLogger(HttpRequestLogger requestLogger) {
+        this.requestLogger = requestLogger;
+        return this;
+    }
+
+    /**
+     * Gets the custom response logger.
+     *
+     * @return The custom response logger, or {@code null} to use default logging.
+     */
+    public HttpResponseLogger getResponseLogger() {
+        return responseLogger;
+    }
+
+    /**
+     * Sets a custom response logger that replaces default HTTP response logging.
+     *
+     * @param responseLogger The custom response logger, or {@code null} to use default logging.
+     * @return The updated options.
+     */
+    public HttpInstrumentationOptions setResponseLogger(HttpResponseLogger responseLogger) {
+        this.responseLogger = responseLogger;
         return this;
     }
 

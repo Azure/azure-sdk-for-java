@@ -133,6 +133,21 @@ public interface Meter {
     LongCounter createLongUpDownCounter(String name, String description, String unit);
 
     /**
+     * Creates an observable gauge used to report current values, such as queue depth or available connections.
+     *
+     * @param name The gauge name.
+     * @param description A description of the gauge.
+     * @param unit The unit of measurement.
+     * @return A new {@link LongGauge}.
+     * @throws NullPointerException If {@code name} or {@code description} is {@code null}.
+     */
+    default LongGauge createLongGauge(String name, String description, String unit) {
+        java.util.Objects.requireNonNull(name, "'name' cannot be null.");
+        java.util.Objects.requireNonNull(description, "'description' cannot be null.");
+        return NoopLongGauge.INSTANCE;
+    }
+
+    /**
      * Checks if Meter implementation was found, and it's enabled.
      *
      * @return true if Meter is enabled, false otherwise.

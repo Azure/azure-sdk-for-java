@@ -233,7 +233,7 @@ public final class KeyVaultAccessControlClient {
      * @throws NullPointerException If {@code roleScope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyVaultRoleDefinition> listRoleDefinitions(KeyVaultRoleScope roleScope) {
+    public PagedIterable<KeyVaultRoleDefinition, String> listRoleDefinitions(KeyVaultRoleScope roleScope) {
         return listRoleDefinitions(roleScope, RequestContext.none());
     }
 
@@ -275,7 +275,7 @@ public final class KeyVaultAccessControlClient {
      * @throws NullPointerException If {@code roleScope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyVaultRoleDefinition> listRoleDefinitions(KeyVaultRoleScope roleScope,
+    public PagedIterable<KeyVaultRoleDefinition, String> listRoleDefinitions(KeyVaultRoleScope roleScope,
         RequestContext requestContext) {
 
         Objects.requireNonNull(roleScope, "'roleScope' cannot be null.");
@@ -613,7 +613,7 @@ public final class KeyVaultAccessControlClient {
      * @throws NullPointerException If {@code roleScope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyVaultRoleAssignment> listRoleAssignments(KeyVaultRoleScope roleScope) {
+    public PagedIterable<KeyVaultRoleAssignment, String> listRoleAssignments(KeyVaultRoleScope roleScope) {
         return listRoleAssignments(roleScope, RequestContext.none());
     }
 
@@ -644,7 +644,7 @@ public final class KeyVaultAccessControlClient {
      * @throws NullPointerException If {@code roleScope} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyVaultRoleAssignment> listRoleAssignments(KeyVaultRoleScope roleScope,
+    public PagedIterable<KeyVaultRoleAssignment, String> listRoleAssignments(KeyVaultRoleScope roleScope,
         RequestContext requestContext) {
 
         Objects.requireNonNull(roleScope, "'roleScope' cannot be null.");

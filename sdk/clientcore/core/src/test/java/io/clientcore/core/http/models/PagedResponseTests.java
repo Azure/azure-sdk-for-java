@@ -25,7 +25,7 @@ public class PagedResponseTests {
         final String firstLink = "https://first_link";
         final String lastLink = "https://last_link";
 
-        try (PagedResponse<Object> pagedResponse
+        try (PagedResponse<Object, String> pagedResponse
             = new PagedResponse<>(mockHttpRequest, statusCode, mockHttpHeaders, mockValue)) {
             Assertions.assertEquals(mockHttpRequest, pagedResponse.getRequest());
             Assertions.assertEquals(statusCode, pagedResponse.getStatusCode());
@@ -33,8 +33,8 @@ public class PagedResponseTests {
             Assertions.assertEquals(mockValue, pagedResponse.getValue());
         }
 
-        try (PagedResponse<Object> pagedResponse = new PagedResponse<>(mockHttpRequest, statusCode, mockHttpHeaders,
-            mockValue, continuationToken, nextLink, previousLink, firstLink, lastLink)) {
+        try (PagedResponse<Object, String> pagedResponse = new PagedResponse<>(mockHttpRequest, statusCode,
+            mockHttpHeaders, mockValue, continuationToken, nextLink, previousLink, firstLink, lastLink)) {
             Assertions.assertEquals(mockHttpRequest, pagedResponse.getRequest());
             Assertions.assertEquals(statusCode, pagedResponse.getStatusCode());
             Assertions.assertEquals(mockHttpHeaders, pagedResponse.getHeaders());
@@ -45,6 +45,18 @@ public class PagedResponseTests {
             Assertions.assertEquals(previousLink, pagedResponse.getPreviousLink());
             Assertions.assertEquals(firstLink, pagedResponse.getFirstLink());
             Assertions.assertEquals(lastLink, pagedResponse.getLastLink());
+        }
+    }
+
+    @Test
+    public void supportsNonStringContinuationToken() {
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri("https://endpoint");
+        Object continuationToken = new Object();
+
+        try (PagedResponse<Object, Object> response = new PagedResponse<>(request, 200, new HttpHeaders(),
+            Collections.emptyList(), continuationToken, null, null, null, null)) {
+            Object actual = response.getContinuationToken();
+            Assertions.assertSame(continuationToken, actual);
         }
     }
 }

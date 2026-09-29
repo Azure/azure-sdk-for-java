@@ -62,7 +62,7 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Key> getKeys(String accept, String name, String after, String syncToken,
+    public PagedIterable<Key, String> getKeys(String accept, String name, String after, String syncToken,
         String acceptDatetime) {
         return this.serviceClient.getKeys(accept, name, after, syncToken, acceptDatetime);
     }
@@ -77,7 +77,7 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Key> getKeys(String accept) {
+    public PagedIterable<Key, String> getKeys(String accept) {
         return this.serviceClient.getKeys(accept);
     }
 
@@ -98,8 +98,8 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Key> getKeys(String accept, String name, String after, String syncToken, String acceptDatetime,
-        RequestContext requestContext) {
+    public PagedIterable<Key, String> getKeys(String accept, String name, String after, String syncToken,
+        String acceptDatetime, RequestContext requestContext) {
         return this.serviceClient.getKeys(accept, name, after, syncToken, acceptDatetime, requestContext);
     }
 
@@ -181,9 +181,9 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getKeyValues(String accept, String key, String label, String syncToken, String after,
-        String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch,
-        List<String> tags) {
+    public PagedIterable<KeyValue, String> getKeyValues(String accept, String key, String label, String syncToken,
+        String after, String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch,
+        String ifNoneMatch, List<String> tags) {
         return this.serviceClient.getKeyValues(accept, key, label, syncToken, after, acceptDatetime, select, snapshot,
             ifMatch, ifNoneMatch, tags);
     }
@@ -198,7 +198,7 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getKeyValues(String accept) {
+    public PagedIterable<KeyValue, String> getKeyValues(String accept) {
         return this.serviceClient.getKeyValues(accept);
     }
 
@@ -231,9 +231,9 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getKeyValues(String accept, String key, String label, String syncToken, String after,
-        String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch,
-        List<String> tags, RequestContext requestContext) {
+    public PagedIterable<KeyValue, String> getKeyValues(String accept, String key, String label, String syncToken,
+        String after, String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch,
+        String ifNoneMatch, List<String> tags, RequestContext requestContext) {
         return this.serviceClient.getKeyValues(accept, key, label, syncToken, after, acceptDatetime, select, snapshot,
             ifMatch, ifNoneMatch, tags, requestContext);
     }
@@ -587,7 +587,7 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSnapshot> getSnapshots(String accept, String name, String after,
+    public PagedIterable<ConfigurationSnapshot, String> getSnapshots(String accept, String name, String after,
         List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status, String syncToken) {
         return this.serviceClient.getSnapshots(accept, name, after, select, status, syncToken);
     }
@@ -602,7 +602,7 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSnapshot> getSnapshots(String accept) {
+    public PagedIterable<ConfigurationSnapshot, String> getSnapshots(String accept) {
         return this.serviceClient.getSnapshots(accept);
     }
 
@@ -623,7 +623,7 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSnapshot> getSnapshots(String accept, String name, String after,
+    public PagedIterable<ConfigurationSnapshot, String> getSnapshots(String accept, String name, String after,
         List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status, String syncToken,
         RequestContext requestContext) {
         return this.serviceClient.getSnapshots(accept, name, after, select, status, syncToken, requestContext);
@@ -876,7 +876,7 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SettingLabel> getLabels(String accept, String name, String syncToken, String after,
+    public PagedIterable<SettingLabel, String> getLabels(String accept, String name, String syncToken, String after,
         String acceptDatetime, List<SettingLabelFields> select) {
         return this.serviceClient.getLabels(accept, name, syncToken, after, acceptDatetime, select);
     }
@@ -891,7 +891,7 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SettingLabel> getLabels(String accept) {
+    public PagedIterable<SettingLabel, String> getLabels(String accept) {
         return this.serviceClient.getLabels(accept);
     }
 
@@ -913,7 +913,7 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SettingLabel> getLabels(String accept, String name, String syncToken, String after,
+    public PagedIterable<SettingLabel, String> getLabels(String accept, String name, String syncToken, String after,
         String acceptDatetime, List<SettingLabelFields> select, RequestContext requestContext) {
         return this.serviceClient.getLabels(accept, name, syncToken, after, acceptDatetime, select, requestContext);
     }
@@ -1116,8 +1116,8 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getRevisions(String accept, String key, String label, String syncToken, String after,
-        String acceptDatetime, List<SettingFields> select, List<String> tags) {
+    public PagedIterable<KeyValue, String> getRevisions(String accept, String key, String label, String syncToken,
+        String after, String acceptDatetime, List<SettingFields> select, List<String> tags) {
         return this.serviceClient.getRevisions(accept, key, label, syncToken, after, acceptDatetime, select, tags);
     }
 
@@ -1131,7 +1131,7 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getRevisions(String accept) {
+    public PagedIterable<KeyValue, String> getRevisions(String accept) {
         return this.serviceClient.getRevisions(accept);
     }
 
@@ -1158,8 +1158,9 @@ class AzureAppConfigurationClient {
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyValue> getRevisions(String accept, String key, String label, String syncToken, String after,
-        String acceptDatetime, List<SettingFields> select, List<String> tags, RequestContext requestContext) {
+    public PagedIterable<KeyValue, String> getRevisions(String accept, String key, String label, String syncToken,
+        String after, String acceptDatetime, List<SettingFields> select, List<String> tags,
+        RequestContext requestContext) {
         return this.serviceClient.getRevisions(accept, key, label, syncToken, after, acceptDatetime, select, tags,
             requestContext);
     }

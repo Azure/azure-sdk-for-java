@@ -227,15 +227,17 @@ class KeyVaultAdministrationUtil {
             mapper.apply(response.getValue()));
     }
 
-    static <T, S> PagedIterable<S> mapPages(Function<PagingOptions, PagedResponse<T>> firstPageRetriever,
-        BiFunction<PagingOptions, String, PagedResponse<T>> nextPageRetriever, Function<T, S> mapper) {
+    static <T, S> PagedIterable<S, String> mapPages(
+        Function<PagingOptions<String>, PagedResponse<T, String>> firstPageRetriever,
+        BiFunction<PagingOptions<String>, String, PagedResponse<T, String>> nextPageRetriever, Function<T, S> mapper) {
 
         return new PagedIterable<>(pageSize -> mapPagedResponse(firstPageRetriever.apply(pageSize), mapper),
             (continuationToken, pageSize) -> mapPagedResponse(nextPageRetriever.apply(continuationToken, pageSize),
                 mapper));
     }
 
-    static <T, S> PagedResponse<S> mapPagedResponse(PagedResponse<T> pagedResponse, Function<T, S> mapper) {
+    static <T, S> PagedResponse<S, String> mapPagedResponse(PagedResponse<T, String> pagedResponse,
+        Function<T, S> mapper) {
         if (pagedResponse == null) {
             return null;
         }

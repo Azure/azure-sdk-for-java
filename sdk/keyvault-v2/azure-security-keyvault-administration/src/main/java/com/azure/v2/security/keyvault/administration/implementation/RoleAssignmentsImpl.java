@@ -201,7 +201,7 @@ public final class RoleAssignmentsImpl {
      * @return role assignments for a scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RoleAssignment> listForScopeSinglePage(String scope, String filter) {
+    public PagedResponse<RoleAssignment, String> listForScopeSinglePage(String scope, String filter) {
         final String accept = "application/json";
         Response<RoleAssignmentListResult> res = service.listForScope(this.client.getVaultBaseUrl(),
             this.client.getServiceVersion().getVersion(), scope, filter, accept, RequestContext.none());
@@ -223,7 +223,7 @@ public final class RoleAssignmentsImpl {
      * @return role assignments for a scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RoleAssignment> listForScopeSinglePage(String scope, String filter,
+    public PagedResponse<RoleAssignment, String> listForScopeSinglePage(String scope, String filter,
         RequestContext requestContext) {
         final String accept = "application/json";
         Response<RoleAssignmentListResult> res = service.listForScope(this.client.getVaultBaseUrl(),
@@ -245,7 +245,7 @@ public final class RoleAssignmentsImpl {
      * @return role assignments for a scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleAssignment> listForScope(String scope, String filter) {
+    public PagedIterable<RoleAssignment, String> listForScope(String scope, String filter) {
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
                 throw LOGGER.throwableAtError()
@@ -285,7 +285,7 @@ public final class RoleAssignmentsImpl {
      * @return role assignments for a scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleAssignment> listForScope(String scope) {
+    public PagedIterable<RoleAssignment, String> listForScope(String scope) {
         final String filter = null;
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -330,7 +330,8 @@ public final class RoleAssignmentsImpl {
      * @return role assignments for a scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleAssignment> listForScope(String scope, String filter, RequestContext requestContext) {
+    public PagedIterable<RoleAssignment, String> listForScope(String scope, String filter,
+        RequestContext requestContext) {
         RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>((pagingOptions) -> {
             if (pagingOptions.getOffset() != null) {
@@ -371,7 +372,7 @@ public final class RoleAssignmentsImpl {
      * @return role assignment list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RoleAssignment> listForScopeNextSinglePage(String nextLink) {
+    public PagedResponse<RoleAssignment, String> listForScopeNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<RoleAssignmentListResult> res
             = service.listForScopeNext(nextLink, this.client.getVaultBaseUrl(), accept, RequestContext.none());
@@ -390,7 +391,8 @@ public final class RoleAssignmentsImpl {
      * @return role assignment list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RoleAssignment> listForScopeNextSinglePage(String nextLink, RequestContext requestContext) {
+    public PagedResponse<RoleAssignment, String> listForScopeNextSinglePage(String nextLink,
+        RequestContext requestContext) {
         final String accept = "application/json";
         Response<RoleAssignmentListResult> res
             = service.listForScopeNext(nextLink, this.client.getVaultBaseUrl(), accept, requestContext);

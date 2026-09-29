@@ -46,6 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -87,6 +88,50 @@ public class HttpInstrumentationLoggingTests {
             Arguments.of(LogLevel.WARNING, HttpInstrumentationOptions.HttpLogLevel.HEADERS),
             Arguments.of(LogLevel.WARNING, HttpInstrumentationOptions.HttpLogLevel.BODY),
             Arguments.of(LogLevel.WARNING, HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS));
+    }
+
+    @Test
+    public void customHttpLoggersReceiveRequestAndResponseContext() {
+        AtomicReference<HttpRequestLoggingContext> requestLoggingContext = new AtomicReference<>();
+        AtomicReference<HttpResponseLoggingContext> responseLoggingContext = new AtomicReference<>();
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions().setTracingEnabled(false)
+            .setMetricsEnabled(false)
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.NONE)
+            .setRequestLogger((logger, context) -> requestLoggingContext.set(context))
+            .setResponseLogger((logger, context) -> {
+                responseLoggingContext.set(context);
+                return context.getHttpResponse();
+            });
+        HttpPipeline pipeline = createPipeline(options);
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(URI);
+        RequestContext requestContext = RequestContext.builder().putMetadata("operation", "list").build();
+        request.setContext(requestContext);
+        HttpRequestAccessHelper.setTryCount(request, 2);
+
+        Response<BinaryData> response = pipeline.send(request);
+
+        assertSame(request, requestLoggingContext.get().getHttpRequest());
+        assertSame(request.getContext(), requestLoggingContext.get().getRequestContext());
+        assertEquals("list", requestLoggingContext.get().getRequestContext().getMetadata("operation"));
+        assertEquals(2, requestLoggingContext.get().getTryCount());
+        assertSame(response, responseLoggingContext.get().getHttpResponse());
+        assertSame(request.getContext(), responseLoggingContext.get().getRequestContext());
+        assertEquals("list", responseLoggingContext.get().getRequestContext().getMetadata("operation"));
+        assertEquals(2, responseLoggingContext.get().getTryCount());
+        assertFalse(responseLoggingContext.get().getResponseDuration().isNegative());
+        response.close();
+    }
+
+    @Test
+    public void customResponseLoggerMustReturnResponse() {
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions().setTracingEnabled(false)
+            .setMetricsEnabled(false)
+            .setResponseLogger((logger, context) -> null);
+        HttpPipeline pipeline = createPipeline(options);
+
+        NullPointerException exception = assertThrows(NullPointerException.class,
+            () -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(URI)));
+        assertEquals("HttpResponseLogger returned null.", exception.getMessage());
     }
 
     @ParameterizedTest

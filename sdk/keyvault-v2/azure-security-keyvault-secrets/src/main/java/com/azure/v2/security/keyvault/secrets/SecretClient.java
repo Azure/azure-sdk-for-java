@@ -991,7 +991,7 @@ public final class SecretClient {
      * contains all the information about the secret, except its value.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecretProperties> listPropertiesOfSecrets() {
+    public PagedIterable<SecretProperties, String> listPropertiesOfSecrets() {
         return listPropertiesOfSecrets(RequestContext.none());
     }
 
@@ -1048,7 +1048,7 @@ public final class SecretClient {
      * contains all the information about the secret, except its value.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecretProperties> listPropertiesOfSecrets(RequestContext requestContext) {
+    public PagedIterable<SecretProperties, String> listPropertiesOfSecrets(RequestContext requestContext) {
         return mapPages(pagingOptions -> clientImpl.getSecretsSinglePage(null, requestContext),
             (pagingOptions, nextLink) -> clientImpl.getSecretsNextSinglePage(nextLink, requestContext),
             SecretsModelsUtils::createSecretProperties);
@@ -1088,7 +1088,7 @@ public final class SecretClient {
      * @return A {@link PagedIterable} of deleted secrets in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedSecret> listDeletedSecrets() {
+    public PagedIterable<DeletedSecret, String> listDeletedSecrets() {
         return listDeletedSecrets(RequestContext.none());
     }
 
@@ -1135,7 +1135,7 @@ public final class SecretClient {
      * @return A {@link PagedIterable} deleted secrets in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedSecret> listDeletedSecrets(RequestContext requestContext) {
+    public PagedIterable<DeletedSecret, String> listDeletedSecrets(RequestContext requestContext) {
         return mapPages(pagingOptions -> clientImpl.getDeletedSecretsSinglePage(null, requestContext),
             (pagingOptions, nextLink) -> clientImpl.getDeletedSecretsNextSinglePage(nextLink, requestContext),
             SecretsModelsUtils::createDeletedSecret);
@@ -1190,7 +1190,7 @@ public final class SecretClient {
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecretProperties> listPropertiesOfSecretVersions(String name) {
+    public PagedIterable<SecretProperties, String> listPropertiesOfSecretVersions(String name) {
         return listPropertiesOfSecretVersions(name, RequestContext.none());
     }
 
@@ -1240,7 +1240,8 @@ public final class SecretClient {
      * @throws IllegalArgumentException If {@code name} is either {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecretProperties> listPropertiesOfSecretVersions(String name, RequestContext requestContext) {
+    public PagedIterable<SecretProperties, String> listPropertiesOfSecretVersions(String name,
+        RequestContext requestContext) {
         if (isNullOrEmpty(name)) {
             throw LOGGER.throwableAtError().log("'name' cannot be null or empty.", IllegalArgumentException::new);
         }
@@ -1259,15 +1260,17 @@ public final class SecretClient {
             mapper.apply(response.getValue()));
     }
 
-    private static <T, S> PagedIterable<S> mapPages(Function<PagingOptions, PagedResponse<T>> firstPageRetriever,
-        BiFunction<PagingOptions, String, PagedResponse<T>> nextPageRetriever, Function<T, S> mapper) {
+    private static <T, S> PagedIterable<S, String> mapPages(
+        Function<PagingOptions<String>, PagedResponse<T, String>> firstPageRetriever,
+        BiFunction<PagingOptions<String>, String, PagedResponse<T, String>> nextPageRetriever, Function<T, S> mapper) {
 
         return new PagedIterable<>(pageSize -> mapPagedResponse(firstPageRetriever.apply(pageSize), mapper),
             (continuationToken, pageSize) -> mapPagedResponse(nextPageRetriever.apply(continuationToken, pageSize),
                 mapper));
     }
 
-    private static <T, S> PagedResponse<S> mapPagedResponse(PagedResponse<T> pagedResponse, Function<T, S> mapper) {
+    private static <T, S> PagedResponse<S, String> mapPagedResponse(PagedResponse<T, String> pagedResponse,
+        Function<T, S> mapper) {
         if (pagedResponse == null) {
             return null;
         }

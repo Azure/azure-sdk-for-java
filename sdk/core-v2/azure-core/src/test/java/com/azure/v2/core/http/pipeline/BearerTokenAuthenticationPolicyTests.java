@@ -4,7 +4,9 @@
 package com.azure.v2.core.http.pipeline;
 
 import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.credentials.oauth.AccessToken;
+import io.clientcore.core.credentials.oauth.AccessTokenType;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -15,6 +17,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -24,9 +27,77 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BearerTokenAuthenticationPolicyTests {
+
+    @Test
+    public void proofOfPossessionChallengeRequestsBoundToken() {
+        AtomicInteger tokenRequests = new AtomicInteger();
+        AtomicReference<TokenRequestContext> popContext = new AtomicReference<>();
+        AtomicReference<String> authorization = new AtomicReference<>();
+        TokenCredential credential = context -> {
+            if (tokenRequests.getAndIncrement() == 0) {
+                return new AccessToken("bearer-token", OffsetDateTime.now().plusHours(1));
+            }
+            popContext.set(context);
+            return new AccessToken("pop-token", OffsetDateTime.now().plusHours(1), null, AccessTokenType.POP);
+        };
+        HttpClient client = request -> {
+            authorization.set(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            if (tokenRequests.get() == 1) {
+                return new Response<>(request, 401,
+                    new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, "PoP nonce=\"challenge-nonce\""), null);
+            }
+            return new Response<>(request, 200, new HttpHeaders(), null);
+        };
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().addPolicy(new BearerTokenAuthenticationPolicy(credential, "scope"))
+                .httpClient(client)
+                .build();
+
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST).setUri("https://localhost/resource");
+        try (Response<BinaryData> response = pipeline.send(request)) {
+            assertEquals(200, response.getStatusCode());
+        }
+
+        assertEquals("PoP pop-token", authorization.get());
+        assertNotNull(popContext.get().getProofOfPossessionOptions());
+        assertEquals("challenge-nonce", popContext.get().getProofOfPossessionOptions().getProofOfPossessionNonce());
+        assertEquals(request.getUri(), popContext.get().getProofOfPossessionOptions().getRequestUrl());
+        assertEquals(HttpMethod.POST, popContext.get().getProofOfPossessionOptions().getRequestMethod());
+    }
+
+    @Test
+    public void proofOfPossessionTokenIsNotReusedForNextBearerRequest() {
+        AtomicInteger tokenRequests = new AtomicInteger();
+        TokenCredential credential = context -> {
+            int request = tokenRequests.incrementAndGet();
+            return request == 2
+                ? new AccessToken("pop-token", OffsetDateTime.now().plusHours(1), null, AccessTokenType.POP)
+                : new AccessToken("bearer-token-" + request, OffsetDateTime.now().plusHours(1));
+        };
+        AtomicInteger serviceRequests = new AtomicInteger();
+        HttpClient client = request -> {
+            if (serviceRequests.getAndIncrement() == 0) {
+                return new Response<>(request, 401,
+                    new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, "PoP nonce=\"challenge-nonce\""), null);
+            }
+            return new Response<>(request, 200, new HttpHeaders(), null);
+        };
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().addPolicy(new BearerTokenAuthenticationPolicy(credential, "scope"))
+                .httpClient(client)
+                .build();
+
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/first")).close();
+        HttpRequest nextRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/second");
+        pipeline.send(nextRequest).close();
+
+        assertEquals(3, tokenRequests.get());
+        assertEquals("Bearer bearer-token-3", nextRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+    }
 
     @ParameterizedTest
     @MethodSource("caeTestArguments")

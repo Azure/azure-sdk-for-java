@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * This package contains classes for HTTP pagination.
+ * Classes for synchronous HTTP pagination using typed continuation tokens, next links, and configurable continuation
+ * predicates.
  */
 package io.clientcore.core.http.paging;

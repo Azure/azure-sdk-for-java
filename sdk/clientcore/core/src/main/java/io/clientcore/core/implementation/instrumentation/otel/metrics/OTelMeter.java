@@ -11,6 +11,7 @@ import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.LongCounter;
+import io.clientcore.core.instrumentation.metrics.LongGauge;
 import io.clientcore.core.instrumentation.metrics.Meter;
 
 import java.util.List;
@@ -110,6 +111,16 @@ public class OTelMeter implements Meter {
         Objects.requireNonNull(description, "'description' cannot be null.");
         Objects.requireNonNull(unit, "'unit' cannot be null.");
         return OTelLongUpDownCounter.create(otelMeter, name, description, unit);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LongGauge createLongGauge(String name, String description, String unit) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        Objects.requireNonNull(description, "'description' cannot be null.");
+        return OTelLongGauge.create(otelMeter, name, description, unit);
     }
 
     /**

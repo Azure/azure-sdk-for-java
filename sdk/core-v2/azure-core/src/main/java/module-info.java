@@ -8,6 +8,7 @@ module com.azure.v2.core {
     requires transitive io.clientcore.core;
 
     // public API surface area
+    exports com.azure.v2.core.cryptography;
     exports com.azure.v2.core.credentials;
     exports com.azure.v2.core.http.pipeline;
     exports com.azure.v2.core.http.polling;

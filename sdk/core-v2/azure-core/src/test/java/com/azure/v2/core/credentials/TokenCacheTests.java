@@ -3,7 +3,6 @@
 
 package com.azure.v2.core.credentials;
 
-import com.azure.v2.core.implementation.AccessTokenCache;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +15,7 @@ import java.util.stream.IntStream;
 
 import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TokenCacheTests {
 
@@ -82,6 +82,55 @@ public class TokenCacheTests {
 
         // Ensure refresh is made after refreshOn duration.
         assertEquals(2, refreshes.get());
+    }
+
+    @Test
+    public void tenantChangeRefreshesToken() {
+        AtomicLong refreshes = new AtomicLong();
+        TokenCredential credential = request -> {
+            refreshes.incrementAndGet();
+            return new Token(request.getTenantId(), 600000);
+        };
+        AccessTokenCache cache = new AccessTokenCache(credential);
+
+        cache.getToken(new TokenRequestContext().setTenantId("tenant-a"), true);
+        AccessToken token = cache.getToken(new TokenRequestContext().setTenantId("tenant-b"), true);
+
+        assertEquals(2, refreshes.get());
+        assertEquals("tenant-b", token.getToken());
+    }
+
+    @Test
+    public void contextRefreshFailureDoesNotReturnTokenForOldContext() {
+        AtomicInteger attempts = new AtomicInteger();
+        Token validToken = new Token("cached", 600000);
+        TokenCredential credential = request -> {
+            if (attempts.getAndIncrement() == 0) {
+                return validToken;
+            }
+            throw new IllegalStateException("refresh failed");
+        };
+        AccessTokenCache cache = new AccessTokenCache(credential);
+
+        cache.getToken(new TokenRequestContext().setTenantId("tenant-a"), true);
+
+        assertThrows(IllegalStateException.class,
+            () -> cache.getToken(new TokenRequestContext().setTenantId("tenant-b"), true));
+    }
+
+    @Test
+    public void expiredTokenIsNotReturnedWhenRefreshFails() {
+        AtomicInteger attempts = new AtomicInteger();
+        TokenCredential credential = request -> {
+            if (attempts.getAndIncrement() == 0) {
+                return new Token("expired", -1, -1);
+            }
+            throw new IllegalStateException("refresh failed");
+        };
+        AccessTokenCache cache = new AccessTokenCache(credential);
+        cache.getToken(new TokenRequestContext(), false);
+
+        assertThrows(IllegalStateException.class, () -> cache.getToken(new TokenRequestContext(), false));
     }
 
     // First token takes latency seconds, and adds 1 sec every subsequent call

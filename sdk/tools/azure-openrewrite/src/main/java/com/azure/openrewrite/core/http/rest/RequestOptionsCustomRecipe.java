@@ -61,6 +61,7 @@ public class RequestOptionsCustomRecipe extends Recipe {
             @Override
             public J.CompilationUnit visitCompilationUnit(J.CompilationUnit cu, ExecutionContext executionContext) {
                 doAfterVisit(new ConvertToImmutableVisitor());
+                doAfterVisit(new PagedTypesVisitor());
                 return super.visitCompilationUnit(cu, executionContext);
             }
 
