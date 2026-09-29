@@ -16,19 +16,18 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"grqmqhldvrii\",\"tenantId\":\"jnalghf\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"hmzk\":{\"principalId\":\"ex\",\"clientId\":\"wueluqhhahhxv\"},\"rjguufzdmsyqtf\":{\"principalId\":\"jgwwspughftq\",\"clientId\":\"hqxujxukndxdi\"},\"zqzudph\":{\"principalId\":\"whbotzingamv\",\"clientId\":\"ho\"}}}")
+            "{\"principalId\":\"nokixrjqcirgz\",\"tenantId\":\"rlazszrnw\",\"type\":\"None\",\"userAssignedIdentities\":{\"hszfjvfb\":{\"principalId\":\"fpwpjylwbt\",\"clientId\":\"flsjc\"},\"tvsexsowuel\":{\"principalId\":\"feljagrqm\",\"clientId\":\"ldvriiiojnalghfk\"}}}")
             .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model
-            = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("hmzk", new UserAssignedIdentity(), "rjguufzdmsyqtf",
-                    new UserAssignedIdentity(), "zqzudph", new UserAssignedIdentity()));
+        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+            .withUserAssignedIdentities(
+                mapOf("hszfjvfb", new UserAssignedIdentity(), "tvsexsowuel", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
     // Use "Map.of" if available
