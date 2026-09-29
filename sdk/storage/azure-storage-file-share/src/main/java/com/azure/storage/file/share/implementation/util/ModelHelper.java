@@ -290,6 +290,7 @@ public class ModelHelper {
             return null;
         }
 
+        headers.setContentType(rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE));
         return headers.setErrorCode(rawHeaders.getValue(X_MS_ERROR_CODE));
     }
 

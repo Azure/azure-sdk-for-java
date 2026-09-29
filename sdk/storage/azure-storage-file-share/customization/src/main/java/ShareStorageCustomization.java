@@ -101,6 +101,8 @@ public class ShareStorageCustomization extends Customization {
 
         restoreFluentModels(customization, logger);
 
+        restoreShareFileRangeListNextMarker(customization, logger);
+
         renameDownloadHeaderMethods(customization, logger);
 
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
@@ -463,6 +465,52 @@ public class ShareStorageCustomization extends Customization {
                 "import reactor.core.publisher.Flux;\nimport reactor.core.publisher.Mono;");
         }
         return content;
+    }
+
+    /**
+     * Restores the {@code nextMarker} property on {@code ShareFileRangeList} that shipped before the TypeSpec migration
+     * but is absent from the migrated spec model. Without it the {@code listAllRanges} / {@code listAllRangesDiff} paged
+     * iterables cannot read the continuation token (server-side range pagination, service version 2026-10-06) and always
+     * return a single page -- also a public API breaking change (the getter was removed). Field, getter, fluent setter,
+     * and XML round-trip (matching the shipped shape) are added here; {@code restoreFluentModels} skips the field because
+     * it already has a setter. Root fix belongs in the spec ({@code models.tsp} range-list model {@code NextMarker}).
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void restoreShareFileRangeListNextMarker(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        String path = PKG_ROOT + "models/ShareFileRangeList.java";
+        String content = editor.getFileContent(path);
+        if (content.contains("getNextMarker")) {
+            return;
+        }
+        content = content.replace(
+            "    @Generated\n    @Override\n    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {\n"
+                + "        return toXml(xmlWriter, null);\n    }\n",
+            "    private String nextMarker;\n\n"
+                + "    /**\n     * Get the nextMarker property: The NextMarker property.\n     *\n"
+                + "     * @return the nextMarker value.\n     */\n"
+                + "    public String getNextMarker() {\n        return this.nextMarker;\n    }\n\n"
+                + "    /**\n     * Set the nextMarker property: The NextMarker property.\n     *\n"
+                + "     * @param nextMarker the nextMarker value to set.\n"
+                + "     * @return the ShareFileRangeList object itself.\n     */\n"
+                + "    public ShareFileRangeList setNextMarker(String nextMarker) {\n"
+                + "        this.nextMarker = nextMarker;\n        return this;\n    }\n\n"
+                + "    @Generated\n    @Override\n    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {\n"
+                + "        return toXml(xmlWriter, null);\n    }\n");
+        content = content.replace("        }\n        return xmlWriter.writeEndElement();",
+            "        }\n        xmlWriter.writeStringElement(\"NextMarker\", this.nextMarker);\n"
+                + "        return xmlWriter.writeEndElement();");
+        content = content.replace(
+            "                    deserializedShareFileRangeList.clearRanges.add(ClearRange.fromXml(reader, \"ClearRange\"));\n"
+                + "                } else {",
+            "                    deserializedShareFileRangeList.clearRanges.add(ClearRange.fromXml(reader, \"ClearRange\"));\n"
+                + "                } else if (\"NextMarker\".equals(elementName.getLocalPart())) {\n"
+                + "                    deserializedShareFileRangeList.nextMarker = reader.getStringElement();\n"
+                + "                } else {");
+        editor.replaceFile(path, content);
+        logger.info("Restored ShareFileRangeList.nextMarker (getter/setter + XML round-trip)");
     }
 
     /**

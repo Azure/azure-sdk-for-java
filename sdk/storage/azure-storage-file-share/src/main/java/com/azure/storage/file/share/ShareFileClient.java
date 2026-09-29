@@ -2673,7 +2673,7 @@ public class ShareFileClient {
                 finalRequestConditions, previousSnapshot, supportRename, marker, pageSize, timeout, finalContext);
 
             return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                toShareFileRangeItems(response.getValue(), includeClearRanges), null,
+                toShareFileRangeItems(response.getValue(), includeClearRanges), response.getValue().getNextMarker(),
                 response.getDeserializedHeaders());
         };
         Function<Integer, PagedResponse<ShareFileRangeItem>> firstPageRetriever

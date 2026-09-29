@@ -2967,8 +2967,8 @@ public class ShareFileAsyncClient {
                 .applyOptionalTimeout(this.listRangesWithResponse(range, requestConditions, previousSnapshot,
                     supportRename, marker, pageSize, Context.NONE), timeout)
                 .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), toShareFileRangeItems(response.getValue(), includeClearRanges), null,
-                    response.getHeaders()));
+                    response.getHeaders(), toShareFileRangeItems(response.getValue(), includeClearRanges),
+                    response.getValue().getNextMarker(), response.getHeaders()));
 
         Function<Integer, Mono<PagedResponse<ShareFileRangeItem>>> firstPageRetriever
             = pageSize -> nextPageRetriever.apply(null, pageSize);
