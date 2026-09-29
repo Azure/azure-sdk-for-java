@@ -173,6 +173,22 @@ public class UserAgentContainerTest {
         assertThat(userAgentContainer.getUserAgent()).contains("azure-cosmos-encryption/2.28.0");
     }
 
+    @Test(groups = {"unit"})
+    public void appendSuffixAtomicallyPreservesFeatureFlags() {
+        UserAgentContainer userAgentContainer = new UserAgentContainer();
+        userAgentContainer.setSuffix("my-app");
+        userAgentContainer.setFeatureEnabledFlagsAsSuffix(
+            new HashSet<>(Arrays.asList(UserAgentFeatureFlags.PerPartitionCircuitBreaker)));
+
+        userAgentContainer.appendSuffix("azure-cosmos-encryption/2.28.0");
+        userAgentContainer.appendSuffix("azure-cosmos-encryption/2.28.0");
+
+        assertThat(userAgentContainer.getSuffix())
+            .isEqualTo("my-app azure-cosmos-encryption/2.28.0");
+        assertThat(userAgentContainer.getUserAgent())
+            .endsWith("my-app azure-cosmos-encryption/2.28.0|F2");
+    }
+
     private String getUserAgentFixedPart() {
         String osName = System.getProperty("os.name");
         if (osName == null) {

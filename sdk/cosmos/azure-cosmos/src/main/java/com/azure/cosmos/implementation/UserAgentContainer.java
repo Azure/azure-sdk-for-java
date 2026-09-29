@@ -45,7 +45,12 @@ public class UserAgentContainer {
     }
 
     public String getSuffix() {
-        return this.suffix;
+        readLock.lock();
+        try {
+            return this.suffix;
+        } finally {
+            readLock.unlock();
+        }
     }
 
     public void setFeatureEnabledFlagsAsSuffix(Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
@@ -73,17 +78,36 @@ public class UserAgentContainer {
     public void setSuffix(String suffix) {
         writeLock.lock();
         try {
-            if (suffix == null) {
-                suffix = "";
+            this.setSuffixInternal(suffix);
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    public void appendSuffix(String suffix) {
+        if (Strings.isNullOrEmpty(suffix)) {
+            return;
+        }
+
+        writeLock.lock();
+        try {
+            for (String token : this.suffix.split("\\s+")) {
+                if (suffix.equals(token)) {
+                    return;
+                }
             }
 
-            if (suffix.length() > maxSuffixLength) {
-                suffix = suffix.substring(0, maxSuffixLength);
+            String featureFlagsSuffix = "";
+            int featureFlagsIndex = this.userAgent.indexOf("|F");
+            if (featureFlagsIndex >= 0) {
+                featureFlagsSuffix = this.userAgent.substring(featureFlagsIndex);
             }
 
-            this.suffix = suffix;
-            this.userAgent = stripNonAsciiCharacters(baseUserAgent.concat(" ").concat(this.suffix));
-            this.baseUserAgentWithSuffix = this.userAgent;
+            String appendedSuffix = Strings.isNullOrEmpty(this.suffix)
+                ? suffix
+                : this.suffix + " " + suffix;
+            this.setSuffixInternal(appendedSuffix);
+            this.userAgent += featureFlagsSuffix;
         } finally {
             writeLock.unlock();
         }
@@ -96,6 +120,20 @@ public class UserAgentContainer {
         } finally {
             readLock.unlock();
         }
+    }
+
+    private void setSuffixInternal(String suffix) {
+        if (suffix == null) {
+            suffix = "";
+        }
+
+        if (suffix.length() > maxSuffixLength) {
+            suffix = suffix.substring(0, maxSuffixLength);
+        }
+
+        this.suffix = suffix;
+        this.userAgent = stripNonAsciiCharacters(baseUserAgent.concat(" ").concat(this.suffix));
+        this.baseUserAgentWithSuffix = this.userAgent;
     }
 
     private static String stripNonAsciiCharacters(String input) {
