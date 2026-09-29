@@ -7,9 +7,9 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
 
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Builds {@link RequestOptions} that scope an account-targeted protocol call to a specific share/directory/file
@@ -129,8 +129,30 @@ public final class RequestOptionsHelper {
             }
             // An empty directory segment is the share root directory, addressed with a trailing slash ("share/").
             String normalized = segment.startsWith("/") ? segment.substring(1) : segment;
-            path.append('/').append(Utility.urlEncode(normalized));
+            path.append('/').append(encodePathSegment(normalized));
         }
         return path.toString();
+    }
+
+    // Matches azure-core's RestProxy @PathParam encoding (UrlEscapers.PATH_ESCAPER): percent-encodes a path segment,
+    // keeping RFC 3986 pchars (unreserved + sub-delims + ':' + '@') and encoding everything else, notably '/' -> %2F.
+    // Utility.urlEncode (URLEncoder) over-encodes pchars such as ':' -> %3A, which diverges from the shipped recordings.
+    private static final char[] HEX = "0123456789ABCDEF".toCharArray();
+    private static final String PATH_SAFE_SYMBOLS = "-._~!$&'()*+,;=:@";
+
+    private static String encodePathSegment(String value) {
+        StringBuilder encoded = new StringBuilder(value.length());
+        for (byte rawByte : value.getBytes(StandardCharsets.UTF_8)) {
+            int b = rawByte & 0xFF;
+            if ((b >= 'a' && b <= 'z')
+                || (b >= 'A' && b <= 'Z')
+                || (b >= '0' && b <= '9')
+                || PATH_SAFE_SYMBOLS.indexOf(b) >= 0) {
+                encoded.append((char) b);
+            } else {
+                encoded.append('%').append(HEX[b >> 4]).append(HEX[b & 0xF]);
+            }
+        }
+        return encoded.toString();
     }
 }
