@@ -13,21 +13,61 @@ import java.util.Arrays;
  */
 public final class OccurrencesDelaySamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/Occurrences_Delay_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_Delay_PartialSuccess.json
      */
     /**
-     * Sample code: Delay resources in a scheduled action occurrence.
+     * Sample code: 03 - Response with partial success results when delaying operations in a recurring scheduled action
+     * occurrence.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void delayResourcesInAScheduledActionOccurrence(
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void
+        zeroThreeSpaceHyphenMinusSpaceResponseSpacewithSpacepartialSpacesuccessSpaceresultsSpacewhenSpacedelayingSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.occurrences()
-            .delay("rgcompute", "myScheduledAction", "67b5bada-4772-43fc-8dbb-402476d98a45", new DelayRequest()
-                .withDelay(OffsetDateTime.parse("2026-08-05T17:00:00.000-07:00"))
+            .delay("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", new DelayRequest()
+                .withDelay(OffsetDateTime.parse("2026-09-15T09:00:00-07:00"))
                 .withResourceIds(Arrays.asList(
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm",
-                    "/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVm2")),
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_Delay_BasicSuccess.json
+     */
+    /**
+     * Sample code: 01 - Delay operations in a recurring scheduled action occurrence.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroOneSpaceHyphenMinusSpaceDelaySpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.occurrences()
+            .delay("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777", new DelayRequest()
+                .withDelay(OffsetDateTime.parse("2026-09-15T09:00:00-07:00"))
+                .withResourceIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-01",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/web-vm-02")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/Occurrences_Delay_EntireOccurrenceSuccess.json
+     */
+    /**
+     * Sample code: 02 - Delay all operations in a recurring scheduled action occurrence.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceDelaySpaceallSpaceoperationsSpaceinSpaceaSpacerecurringSpacescheduledSpaceactionSpaceoccurrence(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.occurrences()
+            .delay("example-rg", "weekday-start", "77777777-7777-7777-7777-777777777777",
+                new DelayRequest().withDelay(OffsetDateTime.parse("2026-09-15T09:00:00-07:00"))
+                    .withResourceIds(Arrays.asList()),
                 com.azure.core.util.Context.NONE);
     }
 }

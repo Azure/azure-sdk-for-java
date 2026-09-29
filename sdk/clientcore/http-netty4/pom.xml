@@ -56,7 +56,11 @@
       io.clientcore.core.implementation*,io.clientcore.core.models,io.clientcore.core.util,io.clientcore.core.util*
     </javadoc.excludePackageNames>
 
+<<<<<<< HEAD
     <netty.version>4.2.18.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+=======
+    <netty.version>4.1.138.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+>>>>>>> 712f05ce16b48cd1d57d9131b8acbe502a379c6f
   </properties>
 
   <dependencies>
@@ -69,52 +73,93 @@
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-buffer</artifactId>
+<<<<<<< HEAD
       <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-base</artifactId>
       <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-codec-base;external_dependency} -->
+=======
+      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-codec</artifactId>
+      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-codec;external_dependency} -->
+>>>>>>> 712f05ce16b48cd1d57d9131b8acbe502a379c6f
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http</artifactId>
+<<<<<<< HEAD
       <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+=======
+      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+>>>>>>> 712f05ce16b48cd1d57d9131b8acbe502a379c6f
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http2</artifactId>
+<<<<<<< HEAD
       <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
+=======
+      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
+>>>>>>> 712f05ce16b48cd1d57d9131b8acbe502a379c6f
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-common</artifactId>
+<<<<<<< HEAD
       <version>4.2.18.Final</version>  <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+=======
+      <version>4.1.138.Final</version>  <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+>>>>>>> 712f05ce16b48cd1d57d9131b8acbe502a379c6f
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-handler</artifactId>
+<<<<<<< HEAD
       <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
+=======
+      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
+>>>>>>> 712f05ce16b48cd1d57d9131b8acbe502a379c6f
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-handler-proxy</artifactId>
+<<<<<<< HEAD
       <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
+=======
+      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
+>>>>>>> 712f05ce16b48cd1d57d9131b8acbe502a379c6f
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-resolver</artifactId>
+<<<<<<< HEAD
       <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-resolver;external_dependency} -->
+=======
+      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-resolver;external_dependency} -->
+>>>>>>> 712f05ce16b48cd1d57d9131b8acbe502a379c6f
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-resolver-dns</artifactId>
+<<<<<<< HEAD
       <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-resolver-dns;external_dependency} -->
+=======
+      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-resolver-dns;external_dependency} -->
+>>>>>>> 712f05ce16b48cd1d57d9131b8acbe502a379c6f
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport</artifactId>
+<<<<<<< HEAD
       <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-transport;external_dependency} -->
+=======
+      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-transport;external_dependency} -->
+>>>>>>> 712f05ce16b48cd1d57d9131b8acbe502a379c6f
     </dependency>
 
     <!-- Test dependencies on core, because we want to run tests inherited from this module using Netty -->
@@ -128,16 +173,40 @@
 
     <dependency>
       <groupId>io.netty</groupId>
+<<<<<<< HEAD
       <artifactId>netty-transport-native-epoll</artifactId>
       <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+=======
+      <artifactId>netty-transport-native-unix-common</artifactId>
+      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+      <classifier>linux-x86_64</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-epoll</artifactId>
+      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+>>>>>>> 712f05ce16b48cd1d57d9131b8acbe502a379c6f
       <classifier>linux-x86_64</classifier>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>io.netty</groupId>
+<<<<<<< HEAD
       <artifactId>netty-transport-native-kqueue</artifactId>
       <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+=======
+      <artifactId>netty-transport-native-unix-common</artifactId>
+      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+      <classifier>osx-x86_64</classifier>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-kqueue</artifactId>
+      <version>4.1.138.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+>>>>>>> 712f05ce16b48cd1d57d9131b8acbe502a379c6f
       <classifier>osx-x86_64</classifier>
       <scope>test</scope>
     </dependency>
@@ -209,6 +278,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+<<<<<<< HEAD
                 <include>io.netty:netty-buffer:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
                 <include>io.netty:netty-codec-base:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-codec-base;external_dependency} -->
                 <include>io.netty:netty-codec-http:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
@@ -219,6 +289,18 @@
                 <include>io.netty:netty-resolver:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-resolver;external_dependency} -->
                 <include>io.netty:netty-resolver-dns:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-resolver-dns;external_dependency} -->
                 <include>io.netty:netty-transport:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-transport;external_dependency} -->
+=======
+                <include>io.netty:netty-buffer:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
+                <include>io.netty:netty-codec:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-codec;external_dependency} -->
+                <include>io.netty:netty-codec-http:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
+                <include>io.netty:netty-codec-http2:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
+                <include>io.netty:netty-common:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
+                <include>io.netty:netty-handler:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
+                <include>io.netty:netty-handler-proxy:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
+                <include>io.netty:netty-resolver:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-resolver;external_dependency} -->
+                <include>io.netty:netty-resolver-dns:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-resolver-dns;external_dependency} -->
+                <include>io.netty:netty-transport:[4.1.138.Final]</include> <!-- {x-include-update;io.netty:netty-transport;external_dependency} -->
+>>>>>>> 712f05ce16b48cd1d57d9131b8acbe502a379c6f
               </includes>
             </bannedDependencies>
           </rules>

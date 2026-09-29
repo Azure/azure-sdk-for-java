@@ -13,20 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DelayRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DelayRequest model = BinaryData
-            .fromString(
-                "{\"delay\":\"2021-01-03T21:24:29Z\",\"resourceIds\":[\"mwmdxmebwjscjpa\",\"lxveabfqx\",\"mwmqtibx\"]}")
+        DelayRequest model = BinaryData.fromString("{\"delay\":\"2021-03-26T08:46:35Z\",\"resourceIds\":[\"ypoh\"]}")
             .toObject(DelayRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-03T21:24:29Z"), model.delay());
-        Assertions.assertEquals("mwmdxmebwjscjpa", model.resourceIds().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T08:46:35Z"), model.delay());
+        Assertions.assertEquals("ypoh", model.resourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelayRequest model = new DelayRequest().withDelay(OffsetDateTime.parse("2021-01-03T21:24:29Z"))
-            .withResourceIds(Arrays.asList("mwmdxmebwjscjpa", "lxveabfqx", "mwmqtibx"));
+        DelayRequest model = new DelayRequest().withDelay(OffsetDateTime.parse("2021-03-26T08:46:35Z"))
+            .withResourceIds(Arrays.asList("ypoh"));
         model = BinaryData.fromObject(model).toObject(DelayRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-03T21:24:29Z"), model.delay());
-        Assertions.assertEquals("mwmdxmebwjscjpa", model.resourceIds().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T08:46:35Z"), model.delay());
+        Assertions.assertEquals("ypoh", model.resourceIds().get(0));
     }
 }

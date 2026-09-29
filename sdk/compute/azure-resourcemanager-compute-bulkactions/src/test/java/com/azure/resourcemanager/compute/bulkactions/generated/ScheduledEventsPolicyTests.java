@@ -17,14 +17,14 @@ public final class ScheduledEventsPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledEventsPolicy model = BinaryData.fromString(
-            "{\"userInitiatedRedeploy\":{\"automaticallyApprove\":true},\"userInitiatedReboot\":{\"automaticallyApprove\":false},\"scheduledEventsAdditionalPublishingTargets\":{\"eventGridAndResourceGraph\":{\"enable\":true,\"scheduledEventsApiVersion\":\"xrhdwbavxbniwdjs\"}},\"allInstancesDown\":{\"automaticallyApprove\":false}}")
+            "{\"userInitiatedRedeploy\":{\"automaticallyApprove\":true},\"userInitiatedReboot\":{\"automaticallyApprove\":false},\"scheduledEventsAdditionalPublishingTargets\":{\"eventGridAndResourceGraph\":{\"enable\":false,\"scheduledEventsApiVersion\":\"y\"}},\"allInstancesDown\":{\"automaticallyApprove\":true}}")
             .toObject(ScheduledEventsPolicy.class);
         Assertions.assertTrue(model.userInitiatedRedeploy().userInitiatedRedeployAutomaticallyApprove());
         Assertions.assertFalse(model.userInitiatedReboot().userInitiatedRebootAutomaticallyApprove());
-        Assertions.assertTrue(model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().enable());
-        Assertions.assertEquals("xrhdwbavxbniwdjs",
+        Assertions.assertFalse(model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().enable());
+        Assertions.assertEquals("y",
             model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().scheduledEventsApiVersion());
-        Assertions.assertFalse(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
+        Assertions.assertTrue(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,14 +34,14 @@ public final class ScheduledEventsPolicyTests {
             .withUserInitiatedReboot(new UserInitiatedReboot().withUserInitiatedRebootAutomaticallyApprove(false))
             .withScheduledEventsAdditionalPublishingTargets(
                 new ScheduledEventsAdditionalPublishingTargets().withEventGridAndResourceGraph(
-                    new EventGridAndResourceGraph().withEnable(true).withScheduledEventsApiVersion("xrhdwbavxbniwdjs")))
-            .withAllInstancesDown(new AllInstancesDown().withAllInstancesDownAutomaticallyApprove(false));
+                    new EventGridAndResourceGraph().withEnable(false).withScheduledEventsApiVersion("y")))
+            .withAllInstancesDown(new AllInstancesDown().withAllInstancesDownAutomaticallyApprove(true));
         model = BinaryData.fromObject(model).toObject(ScheduledEventsPolicy.class);
         Assertions.assertTrue(model.userInitiatedRedeploy().userInitiatedRedeployAutomaticallyApprove());
         Assertions.assertFalse(model.userInitiatedReboot().userInitiatedRebootAutomaticallyApprove());
-        Assertions.assertTrue(model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().enable());
-        Assertions.assertEquals("xrhdwbavxbniwdjs",
+        Assertions.assertFalse(model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().enable());
+        Assertions.assertEquals("y",
             model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().scheduledEventsApiVersion());
-        Assertions.assertFalse(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
+        Assertions.assertTrue(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
     }
 }

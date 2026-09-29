@@ -13,21 +13,22 @@ public final class ScheduledActionsRetryPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionsRetryPolicy model = BinaryData
-            .fromString("{\"retryCount\":1803667290,\"retryWindowInMinutes\":946666624,\"onFailureAction\":\"Start\"}")
+            .fromString(
+                "{\"retryCount\":764858532,\"retryWindowInMinutes\":1053374921,\"onFailureAction\":\"Hibernate\"}")
             .toObject(ScheduledActionsRetryPolicy.class);
-        Assertions.assertEquals(1803667290, model.retryCount());
-        Assertions.assertEquals(946666624, model.retryWindowInMinutes());
-        Assertions.assertEquals(ScheduledActionsResourceOperationType.START, model.onFailureAction());
+        Assertions.assertEquals(764858532, model.retryCount());
+        Assertions.assertEquals(1053374921, model.retryWindowInMinutes());
+        Assertions.assertEquals(ScheduledActionsResourceOperationType.HIBERNATE, model.onFailureAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduledActionsRetryPolicy model = new ScheduledActionsRetryPolicy().withRetryCount(1803667290)
-            .withRetryWindowInMinutes(946666624)
-            .withOnFailureAction(ScheduledActionsResourceOperationType.START);
+        ScheduledActionsRetryPolicy model = new ScheduledActionsRetryPolicy().withRetryCount(764858532)
+            .withRetryWindowInMinutes(1053374921)
+            .withOnFailureAction(ScheduledActionsResourceOperationType.HIBERNATE);
         model = BinaryData.fromObject(model).toObject(ScheduledActionsRetryPolicy.class);
-        Assertions.assertEquals(1803667290, model.retryCount());
-        Assertions.assertEquals(946666624, model.retryWindowInMinutes());
-        Assertions.assertEquals(ScheduledActionsResourceOperationType.START, model.onFailureAction());
+        Assertions.assertEquals(764858532, model.retryCount());
+        Assertions.assertEquals(1053374921, model.retryWindowInMinutes());
+        Assertions.assertEquals(ScheduledActionsResourceOperationType.HIBERNATE, model.onFailureAction());
     }
 }
