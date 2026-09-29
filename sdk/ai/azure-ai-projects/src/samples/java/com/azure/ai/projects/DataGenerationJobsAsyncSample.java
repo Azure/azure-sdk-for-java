@@ -3,7 +3,6 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.agents.models.PageOrder;
-import com.azure.ai.projects.models.DataGenerationJob;
 import com.azure.ai.projects.models.DataGenerationJobInputs;
 import com.azure.ai.projects.models.DataGenerationModelOptions;
 import com.azure.ai.projects.models.EvaluationDataGenerationJobInputs;
