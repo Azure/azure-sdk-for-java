@@ -277,6 +277,14 @@ For example, Key Vault issues can use `sdk/keyvault/TROUBLESHOOTING.md` and `sdk
 
 Use bounded `search_issues` queries scoped to `repo:${{ github.repository }} is:issue` to look for a specific matching open or closed issue. Do not perform an exhaustive scan or treat shared exception names as proof of duplication.
 
+### Evidence Citations
+
+Repository-file citations must identify the same repository, ref, and path as the evidence actually read. For this checkout, those are `${{ github.repository }}` and `${{ github.event.repository.default_branch }}`, not necessarily the upstream repository or `main`.
+Use the `html_url` returned by a successful file read when available. Otherwise, construct the GitHub file URL from that read's confirmed owner, repository, ref, and path. Do not replace a fork or non-main ref with a canonical upstream URL.
+Before posting, match each repository-file citation to a successful `get_file_contents` read of that exact repository, ref, and path. Reuse an existing matching read; if the evidence was read only from the local checkout, confirm it with `get_file_contents` first. A file existing in the checkout does not prove it exists at another repository or ref.
+Use a line or heading fragment only when its location is verified. A failed read is not verified evidence: omit the unsupported citation and reassess whether the remaining evidence justifies the decision. If a required read fails because of a tool or infrastructure problem, use `report_incomplete` rather than inventing a source.
+Preserve the returned source URLs for trusted release metadata and service documentation; these sources need not belong to the issue repository.
+
 ## Version Evidence
 
 Version currency is a mandatory investigation decision, not a declaration that older supported releases have reached end-of-life.

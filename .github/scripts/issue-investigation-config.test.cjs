@@ -27,6 +27,19 @@ test("service-side guidance uses the closing tool for the entire comment", () =>
     assert.match(source, /For \*\*Service-side or by-design\*\*, put the complete comment in `close_issue\.body` only/);
 });
 
+test("citation guidance preserves the repository and ref of successful evidence reads", () => {
+    const section = /### Evidence Citations\n([\s\S]*?)\n## Version Evidence/.exec(source);
+    assert.ok(section, "Expected evidence citation guidance");
+    const guidance = section[1];
+    assert.ok(guidance.includes("`${{ github.repository }}`"));
+    assert.ok(guidance.includes("`${{ github.event.repository.default_branch }}`"));
+    assert.match(guidance, /`html_url` returned by a successful file read/);
+    assert.match(guidance, /Do not replace a fork or non-main ref with a canonical upstream URL/);
+    assert.match(guidance, /match each repository-file citation to a successful `get_file_contents` read/);
+    assert.match(guidance, /A failed read is not verified evidence/);
+    assert.match(guidance, /Preserve the returned source URLs for trusted release metadata and service documentation/);
+});
+
 for (const variable of ["GH_AW_SAFE_OUTPUTS_CONFIG", "GH_AW_SAFE_OUTPUTS_HANDLER_CONFIG"]) {
     test(`${variable} preserves bounded, issue-targeted outputs and the fixed closure reason`, () => {
         const config = outputConfig(variable);
