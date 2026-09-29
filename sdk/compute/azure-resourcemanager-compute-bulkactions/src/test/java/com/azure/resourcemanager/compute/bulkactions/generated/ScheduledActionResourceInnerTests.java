@@ -14,12 +14,12 @@ public final class ScheduledActionResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionResourceInner model = BinaryData.fromString(
-            "{\"name\":\"wk\",\"id\":\"ziycslevufuztck\",\"type\":\"h\",\"resourceId\":\"tqedcgzulwm\",\"notificationSettings\":[{\"destination\":\"z\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}")
+            "{\"name\":\"ogtqxepnylbf\",\"id\":\"ajlyjtlvofqzhv\",\"type\":\"ibyfmo\",\"resourceId\":\"uxrkjp\",\"notificationSettings\":[{\"destination\":\"xfzwi\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}")
             .toObject(ScheduledActionResourceInner.class);
-        Assertions.assertEquals("tqedcgzulwm", model.resourceId());
-        Assertions.assertEquals("z", model.notificationSettings().get(0).destination());
+        Assertions.assertEquals("uxrkjp", model.resourceId());
+        Assertions.assertEquals("xfzwi", model.notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.notificationSettings().get(0).language());
-        Assertions.assertFalse(model.notificationSettings().get(0).disabled());
+        Assertions.assertTrue(model.notificationSettings().get(0).disabled());
     }
 }
