@@ -9,6 +9,10 @@
 
 ### Breaking Changes
 
+- Replaced the preview agent-optimization request and result models with the new optimization configuration,
+  evaluation-set, candidate-summary, and metrics models. Optimization operations now use `AgentsClient` and
+  `AgentsAsyncClient` and no longer require a preview feature header.
+
 ### Bugs Fixed
 
 ### Other Changes
