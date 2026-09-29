@@ -66,7 +66,7 @@ public final class RequestOptionsHelper {
      */
     public static RequestOptions directoryRequestOptions(Context context, String accountUrl, String shareName,
         String directoryPath) {
-        return scopeRequestToResourcePath(requestOptions(context), accountUrl, joinResource(shareName, directoryPath));
+        return scopeRequestToResourcePath(requestOptions(context), accountUrl, shareName, directoryPath);
     }
 
     /**
@@ -80,7 +80,7 @@ public final class RequestOptionsHelper {
      */
     public static RequestOptions fileRequestOptions(Context context, String accountUrl, String shareName,
         String filePath) {
-        return scopeRequestToResourcePath(requestOptions(context), accountUrl, joinResource(shareName, filePath));
+        return scopeRequestToResourcePath(requestOptions(context), accountUrl, shareName, filePath);
     }
 
     /**
@@ -89,12 +89,14 @@ public final class RequestOptionsHelper {
      *
      * @param requestOptions The {@link RequestOptions} to scope.
      * @param accountUrl The client's account-scoped base URL.
-     * @param resource The unencoded resource path within the account (for example {@code "share/dir"}).
+     * @param resourceSegments The unencoded resource segments within the account (for example {@code shareName} then
+     * {@code directoryPath}). Each segment is encoded as a single unit, so a {@code '/'} inside a directory/file path
+     * becomes {@code %2F} (matching the shipped {@code @PathParam} URL shape).
      * @return The same {@link RequestOptions}, scoped.
      */
     public static RequestOptions scopeRequestToResourcePath(RequestOptions requestOptions, String accountUrl,
-        String resource) {
-        String path = resourcePath(accountUrl, resource);
+        String... resourceSegments) {
+        String path = resourcePath(accountUrl, resourceSegments);
         requestOptions.addRequestCallback(request -> {
             UrlBuilder urlBuilder = UrlBuilder.parse(request.getUrl());
             urlBuilder.setPath(path);
@@ -107,30 +109,29 @@ public final class RequestOptionsHelper {
         return requestOptions;
     }
 
-    private static String joinResource(String shareName, String childPath) {
-        if (childPath == null || childPath.isEmpty()) {
-            return shareName;
-        }
-        // Strip any leading slash so it is not treated as an empty first segment when encoding.
-        String normalizedChild = childPath.charAt(0) == '/' ? childPath.substring(1) : childPath;
-        return normalizedChild.isEmpty() ? shareName : shareName + "/" + normalizedChild;
-    }
-
     /**
      * Prefixes the resource path with the base URL's account path, which is present for path-style endpoints (such as
      * the Azurite emulator's {@code http://host/devstoreaccount1}) and empty for standard {@code account.file.*}
-     * endpoints where the account is the host. Each resource segment is percent-encoded because the share/directory/file
-     * names are supplied raw and, unlike the old RestProxy {@code @PathParam} layer, are not encoded on request.
+     * endpoints where the account is the host. Each share/directory/file segment is percent-encoded as a single unit;
+     * the share boundary stays a literal {@code '/'} while a {@code '/'} inside a directory/file path is encoded to
+     * {@code %2F}, reproducing the shipped {@code @PathParam} URL shape (the service treats {@code %2F} and {@code '/'}
+     * identically, but recorded requests match on the exact bytes).
      */
-    private static String resourcePath(String accountUrl, String resource) {
+    private static String resourcePath(String accountUrl, String... resourceSegments) {
         String accountPath = UrlBuilder.parse(accountUrl).getPath();
         StringBuilder path = new StringBuilder();
         if (accountPath != null && !accountPath.isEmpty() && !"/".equals(accountPath)) {
             path.append(accountPath.replaceAll("/+$", ""));
         }
-        String[] segments = resource.split("/", -1);
-        for (String segment : segments) {
-            path.append('/').append(Utility.urlEncode(segment));
+        for (String segment : resourceSegments) {
+            if (segment == null || segment.isEmpty()) {
+                continue;
+            }
+            String normalized = segment.charAt(0) == '/' ? segment.substring(1) : segment;
+            if (normalized.isEmpty()) {
+                continue;
+            }
+            path.append('/').append(Utility.urlEncode(normalized));
         }
         return path.toString();
     }
