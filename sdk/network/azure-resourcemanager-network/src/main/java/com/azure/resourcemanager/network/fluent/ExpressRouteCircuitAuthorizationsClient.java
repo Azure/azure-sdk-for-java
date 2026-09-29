@@ -13,6 +13,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteAuthorizationKeyInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitAuthorizationInner;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -351,4 +352,67 @@ public interface ExpressRouteCircuitAuthorizationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteCircuitAuthorizationInner> list(String resourceGroupName, String circuitName,
         Context context);
+
+    /**
+     * Gets the authorization key associated with the specified express route circuit authorization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization key associated with the specified express route circuit authorization along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ExpressRouteAuthorizationKeyInner>> listKeysWithResponseAsync(String resourceGroupName,
+        String circuitName, String authorizationName);
+
+    /**
+     * Gets the authorization key associated with the specified express route circuit authorization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization key associated with the specified express route circuit authorization on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ExpressRouteAuthorizationKeyInner> listKeysAsync(String resourceGroupName, String circuitName,
+        String authorizationName);
+
+    /**
+     * Gets the authorization key associated with the specified express route circuit authorization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization key associated with the specified express route circuit authorization along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ExpressRouteAuthorizationKeyInner> listKeysWithResponse(String resourceGroupName, String circuitName,
+        String authorizationName, Context context);
+
+    /**
+     * Gets the authorization key associated with the specified express route circuit authorization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param circuitName The name of express route circuit.
+     * @param authorizationName The name of the authorization.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization key associated with the specified express route circuit authorization.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExpressRouteAuthorizationKeyInner listKeys(String resourceGroupName, String circuitName, String authorizationName);
 }

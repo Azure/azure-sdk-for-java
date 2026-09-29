@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Paged collection of OccurrenceResource items.
+ * Paged list of resources included in a scheduled action occurrence.
  */
 @Immutable
 public final class OccurrenceResourceListResponse implements JsonSerializable<OccurrenceResourceListResponse> {

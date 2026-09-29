@@ -6,6 +6,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.implementation.models.GateListResult;
+import com.azure.resourcemanager.containerservicefleet.models.DayOfWeek;
 import com.azure.resourcemanager.containerservicefleet.models.GateState;
 import com.azure.resourcemanager.containerservicefleet.models.GateType;
 import com.azure.resourcemanager.containerservicefleet.models.Timing;
@@ -15,13 +16,16 @@ public final class GateListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GateListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"kyzxuutk\",\"gateType\":\"Approval\",\"target\":{\"id\":\"ws\",\"updateRunProperties\":{\"name\":\"svlxotogtwrup\",\"stage\":\"xvnmicykvceov\",\"group\":\"lo\",\"timing\":\"After\"}},\"state\":\"Pending\"},\"eTag\":\"yfjfcnjbkcn\",\"id\":\"hbttkphyw\",\"name\":\"nv\",\"type\":\"t\"},{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"mclfplphoxuscr\",\"gateType\":\"Approval\",\"target\":{\"id\":\"bgyepsbj\",\"updateRunProperties\":{\"name\":\"zq\",\"stage\":\"xywpmueefjzwfqkq\",\"group\":\"ids\",\"timing\":\"Before\"}},\"state\":\"Completed\"},\"eTag\":\"obglaocqxtcc\",\"id\":\"yudxytlmoy\",\"name\":\"xv\",\"type\":\"fudwpznt\"}],\"nextLink\":\"dzhlrq\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"cjwvn\",\"gateType\":\"Approval\",\"scheduledStartProperties\":{\"startDay\":\"Monday\",\"startTime\":\"wmgxcxrsl\",\"utcOffset\":\"mutwuoe\",\"absoluteStartTime\":\"2021-09-01T04:33:23Z\"},\"target\":{\"id\":\"khjwn\",\"updateRunProperties\":{\"name\":\"qsluicp\",\"stage\":\"gk\",\"group\":\"lvmbmpaxmodfvuef\",\"timing\":\"Before\"}},\"state\":\"Skipped\"},\"eTag\":\"pfvmwyhrfou\",\"id\":\"taakc\",\"name\":\"wiyzvqtmnubexkp\",\"type\":\"ksmond\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"vypomgkopkwho\",\"gateType\":\"Approval\",\"scheduledStartProperties\":{\"startDay\":\"Sunday\",\"startTime\":\"jqg\",\"utcOffset\":\"ysmocmbqfqvmkcxo\",\"absoluteStartTime\":\"2021-08-23T05:17:44Z\"},\"target\":{\"id\":\"vhelxprglyatdd\",\"updateRunProperties\":{\"name\":\"cbcuejrjxgciqi\",\"stage\":\"hos\",\"group\":\"dqrhzoymib\",\"timing\":\"Before\"}},\"state\":\"Completed\"},\"eTag\":\"ibahwflus\",\"id\":\"tmhrkwofyyvoqacp\",\"name\":\"expbtg\",\"type\":\"wbwo\"}],\"nextLink\":\"washr\"}")
             .toObject(GateListResult.class);
-        Assertions.assertEquals("kyzxuutk", model.value().get(0).displayName());
+        Assertions.assertEquals("cjwvn", model.value().get(0).displayName());
         Assertions.assertEquals(GateType.APPROVAL, model.value().get(0).gateType());
-        Assertions.assertEquals("ws", model.value().get(0).target().id());
-        Assertions.assertEquals(Timing.AFTER, model.value().get(0).target().updateRunProperties().timing());
-        Assertions.assertEquals(GateState.PENDING, model.value().get(0).state());
-        Assertions.assertEquals("dzhlrq", model.nextLink());
+        Assertions.assertEquals(DayOfWeek.MONDAY, model.value().get(0).scheduledStartProperties().startDay());
+        Assertions.assertEquals("wmgxcxrsl", model.value().get(0).scheduledStartProperties().startTime());
+        Assertions.assertEquals("mutwuoe", model.value().get(0).scheduledStartProperties().utcOffset());
+        Assertions.assertEquals("khjwn", model.value().get(0).target().id());
+        Assertions.assertEquals(Timing.BEFORE, model.value().get(0).target().updateRunProperties().timing());
+        Assertions.assertEquals(GateState.SKIPPED, model.value().get(0).state());
+        Assertions.assertEquals("washr", model.nextLink());
     }
 }

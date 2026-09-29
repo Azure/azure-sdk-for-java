@@ -31,6 +31,7 @@ import com.azure.resourcemanager.chaos.fluent.ActionsClient;
 import com.azure.resourcemanager.chaos.fluent.CapabilitiesClient;
 import com.azure.resourcemanager.chaos.fluent.CapabilityTypesClient;
 import com.azure.resourcemanager.chaos.fluent.ChaosManagementClient;
+import com.azure.resourcemanager.chaos.fluent.ConnectionsClient;
 import com.azure.resourcemanager.chaos.fluent.DiscoveredResourcesClient;
 import com.azure.resourcemanager.chaos.fluent.ExperimentsClient;
 import com.azure.resourcemanager.chaos.fluent.OperationStatusesClient;
@@ -351,6 +352,20 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
     }
 
     /**
+     * The ConnectionsClient object to access its operations.
+     */
+    private final ConnectionsClient connections;
+
+    /**
+     * Gets the ConnectionsClient object to access its operations.
+     * 
+     * @return the ConnectionsClient object.
+     */
+    public ConnectionsClient getConnections() {
+        return this.connections;
+    }
+
+    /**
      * Initializes an instance of ChaosManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -367,7 +382,7 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-05-01-preview";
+        this.apiVersion = "2026-08-01-preview";
         this.capabilities = new CapabilitiesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.targets = new TargetsClientImpl(this);
@@ -383,6 +398,7 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
         this.scenarios = new ScenariosClientImpl(this);
         this.scenarioConfigurations = new ScenarioConfigurationsClientImpl(this);
         this.scenarioRuns = new ScenarioRunsClientImpl(this);
+        this.connections = new ConnectionsClientImpl(this);
     }
 
     /**

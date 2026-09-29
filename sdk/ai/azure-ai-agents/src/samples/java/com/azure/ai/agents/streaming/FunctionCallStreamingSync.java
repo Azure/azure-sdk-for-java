@@ -5,16 +5,15 @@ package com.azure.ai.agents.streaming;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FunctionTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
+import com.openai.core.http.StreamResponse;
 import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
@@ -48,7 +47,6 @@ public class FunctionCallStreamingSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         AgentVersionDetails agent = null;
 
@@ -84,27 +82,27 @@ public class FunctionCallStreamingSync {
             agent = agentsClient.createAgentVersion("function-streaming-agent", agentDefinition);
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            SampleUtils.pinAgentVersion(agentsClient, agent);
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // BEGIN: com.azure.ai.agents.streaming.function_call_sync
             // Stream response with function tool - observe function call arguments and text as they arrive
             ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
-            IterableStream<ResponseStreamEvent> events =
-                responsesClient.createStreamingAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+            try (StreamResponse<ResponseStreamEvent> events = openAIClient.responses().createStreaming(
                     ResponseCreateParams.builder()
-                        .input("What's the weather like in Seattle?"));
+                        .input("What's the weather like in Seattle?")
+                        .build())) {
 
-            for (ResponseStreamEvent event : events) {
-                responseAccumulator.accumulate(event);
-                // Print text deltas as they stream in
-                event.outputTextDelta().ifPresent(textEvent ->
-                    System.out.print(textEvent.delta()));
-                // Print function call argument deltas as they stream in
-                event.functionCallArgumentsDelta().ifPresent(argEvent ->
-                    System.out.print(argEvent.delta()));
+                events.stream().forEach(event -> {
+                    responseAccumulator.accumulate(event);
+                    // Print text deltas as they stream in
+                    event.outputTextDelta().ifPresent(textEvent ->
+                        System.out.print(textEvent.delta()));
+                    // Print function call argument deltas as they stream in
+                    event.functionCallArgumentsDelta().ifPresent(argEvent ->
+                        System.out.print(argEvent.delta()));
+                });
             }
             System.out.println();
 

@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class ServiceGatewaysUpdateServicesSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ServiceGatewayUpdateServicesRequest.json
+     * x-ms-original-file: 2026-01-01/ServiceGatewayUpdateServicesRequest.json
      */
     /**
      * Sample code: Create or full update services in service gateway.

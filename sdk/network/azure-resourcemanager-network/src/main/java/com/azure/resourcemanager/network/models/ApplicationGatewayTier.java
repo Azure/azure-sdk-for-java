@@ -37,6 +37,16 @@ public final class ApplicationGatewayTier extends ExpandableStringEnum<Applicati
     public static final ApplicationGatewayTier BASIC = fromString("Basic");
 
     /**
+     * Basic tier Application Gateway.
+     */
+    public static final ApplicationGatewayTier BASIC_V2 = fromString("Basic_v2");
+
+    /**
+     * Basic tier Application Gateway with WAF enabled.
+     */
+    public static final ApplicationGatewayTier BASIC_WAF_V2 = fromString("Basic_WAF_v2");
+
+    /**
      * Creates a new instance of ApplicationGatewayTier value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

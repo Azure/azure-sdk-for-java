@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Alert model = BinaryData.fromString("{\"level\":\"warning\",\"message\":\"q\"}").toObject(Alert.class);
+        Alert model = BinaryData.fromString("{\"level\":\"warning\",\"message\":\"mzqa\"}").toObject(Alert.class);
         Assertions.assertEquals(AlertLevel.WARNING, model.level());
-        Assertions.assertEquals("q", model.message());
+        Assertions.assertEquals("mzqa", model.message());
     }
 }

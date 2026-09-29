@@ -134,8 +134,7 @@
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>${project.parent.relativePath}/${relative.path.to.eng.folder}/eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</excludeFilterFile>
-
+          <includeFilterFile>${spotbugs.sharedDirectory}${file.separator}spotbugs-include.xml</includeFilterFile>
           <!-- TODO soon - enable this failure mode -->
           <failOnError>false</failOnError>
         </configuration>
@@ -284,8 +283,7 @@
             <threshold>Low</threshold>
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-            <excludeFilterFile>${project.parent.relativePath}/${relative.path.to.eng.folder}/eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</excludeFilterFile>
-
+            <includeFilterFile>${spotbugs.sharedDirectory}${file.separator}spotbugs-include.xml</includeFilterFile>
             <!-- TODO soon - enable this failure mode -->
             <failOnError>false</failOnError>
           </configuration>

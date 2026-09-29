@@ -40,6 +40,27 @@ public final class UsageDetails implements JsonSerializable<UsageDetails> {
     private Integer documentPagesStandard;
 
     /*
+     * The number of document pages processed at the minimal level by an inline analyze operation.
+     * For documents without explicit pages (ex. txt, html), every 3000 UTF-16 characters is counted as one page.
+     */
+    @Generated
+    private Integer documentPagesMinimalInline;
+
+    /*
+     * The number of document pages processed at the basic level by an inline analyze operation.
+     * For documents without explicit pages (ex. txt, html), every 3000 UTF-16 characters is counted as one page.
+     */
+    @Generated
+    private Integer documentPagesBasicInline;
+
+    /*
+     * The number of document pages processed at the standard level by an inline analyze operation.
+     * For documents without explicit pages (ex. txt, html), every 3000 UTF-16 characters is counted as one page.
+     */
+    @Generated
+    private Integer documentPagesStandardInline;
+
+    /*
      * The hours of audio processed.
      */
     @Generated
@@ -57,6 +78,13 @@ public final class UsageDetails implements JsonSerializable<UsageDetails> {
      */
     @Generated
     private Integer contextualizationTokens;
+
+    /*
+     * The number of advanced contextualization tokens consumed for preparing context, generating confidence scores,
+     * source grounding, and output formatting.
+     */
+    @Generated
+    private Integer advancedContextualizationTokens;
 
     /*
      * The number of LLM and embedding tokens consumed, grouped by model (ex. GTP 4.1) and type (ex. input, cached
@@ -106,6 +134,42 @@ public final class UsageDetails implements JsonSerializable<UsageDetails> {
     }
 
     /**
+     * Get the documentPagesMinimalInline property: The number of document pages processed at the minimal level by an
+     * inline analyze operation.
+     * For documents without explicit pages (ex. txt, html), every 3000 UTF-16 characters is counted as one page.
+     * 
+     * @return the documentPagesMinimalInline value.
+     */
+    @Generated
+    public Integer getDocumentPagesMinimalInline() {
+        return this.documentPagesMinimalInline;
+    }
+
+    /**
+     * Get the documentPagesBasicInline property: The number of document pages processed at the basic level by an inline
+     * analyze operation.
+     * For documents without explicit pages (ex. txt, html), every 3000 UTF-16 characters is counted as one page.
+     * 
+     * @return the documentPagesBasicInline value.
+     */
+    @Generated
+    public Integer getDocumentPagesBasicInline() {
+        return this.documentPagesBasicInline;
+    }
+
+    /**
+     * Get the documentPagesStandardInline property: The number of document pages processed at the standard level by an
+     * inline analyze operation.
+     * For documents without explicit pages (ex. txt, html), every 3000 UTF-16 characters is counted as one page.
+     * 
+     * @return the documentPagesStandardInline value.
+     */
+    @Generated
+    public Integer getDocumentPagesStandardInline() {
+        return this.documentPagesStandardInline;
+    }
+
+    /**
      * Get the audioHours property: The hours of audio processed.
      * 
      * @return the audioHours value.
@@ -137,6 +201,17 @@ public final class UsageDetails implements JsonSerializable<UsageDetails> {
     }
 
     /**
+     * Get the advancedContextualizationTokens property: The number of advanced contextualization tokens consumed for
+     * preparing context, generating confidence scores, source grounding, and output formatting.
+     * 
+     * @return the advancedContextualizationTokens value.
+     */
+    @Generated
+    public Integer getAdvancedContextualizationTokens() {
+        return this.advancedContextualizationTokens;
+    }
+
+    /**
      * Get the tokens property: The number of LLM and embedding tokens consumed, grouped by model (ex. GTP 4.1) and type
      * (ex. input, cached input, output).
      * 
@@ -157,9 +232,13 @@ public final class UsageDetails implements JsonSerializable<UsageDetails> {
         jsonWriter.writeNumberField("documentPagesMinimal", this.documentPagesMinimal);
         jsonWriter.writeNumberField("documentPagesBasic", this.documentPagesBasic);
         jsonWriter.writeNumberField("documentPagesStandard", this.documentPagesStandard);
+        jsonWriter.writeNumberField("documentPagesMinimalInline", this.documentPagesMinimalInline);
+        jsonWriter.writeNumberField("documentPagesBasicInline", this.documentPagesBasicInline);
+        jsonWriter.writeNumberField("documentPagesStandardInline", this.documentPagesStandardInline);
         jsonWriter.writeNumberField("audioHours", this.audioHours);
         jsonWriter.writeNumberField("videoHours", this.videoHours);
         jsonWriter.writeNumberField("contextualizationTokens", this.contextualizationTokens);
+        jsonWriter.writeNumberField("advancedContextualizationTokens", this.advancedContextualizationTokens);
         jsonWriter.writeMapField("tokens", this.tokens, (writer, element) -> writer.writeInt(element));
         return jsonWriter.writeEndObject();
     }
@@ -186,12 +265,20 @@ public final class UsageDetails implements JsonSerializable<UsageDetails> {
                     deserializedUsageDetails.documentPagesBasic = reader.getNullable(JsonReader::getInt);
                 } else if ("documentPagesStandard".equals(fieldName)) {
                     deserializedUsageDetails.documentPagesStandard = reader.getNullable(JsonReader::getInt);
+                } else if ("documentPagesMinimalInline".equals(fieldName)) {
+                    deserializedUsageDetails.documentPagesMinimalInline = reader.getNullable(JsonReader::getInt);
+                } else if ("documentPagesBasicInline".equals(fieldName)) {
+                    deserializedUsageDetails.documentPagesBasicInline = reader.getNullable(JsonReader::getInt);
+                } else if ("documentPagesStandardInline".equals(fieldName)) {
+                    deserializedUsageDetails.documentPagesStandardInline = reader.getNullable(JsonReader::getInt);
                 } else if ("audioHours".equals(fieldName)) {
                     deserializedUsageDetails.audioHours = reader.getNullable(JsonReader::getDouble);
                 } else if ("videoHours".equals(fieldName)) {
                     deserializedUsageDetails.videoHours = reader.getNullable(JsonReader::getDouble);
                 } else if ("contextualizationTokens".equals(fieldName)) {
                     deserializedUsageDetails.contextualizationTokens = reader.getNullable(JsonReader::getInt);
+                } else if ("advancedContextualizationTokens".equals(fieldName)) {
+                    deserializedUsageDetails.advancedContextualizationTokens = reader.getNullable(JsonReader::getInt);
                 } else if ("tokens".equals(fieldName)) {
                     Map<String, Integer> tokens = reader.readMap(reader1 -> reader1.getInt());
                     deserializedUsageDetails.tokens = tokens;

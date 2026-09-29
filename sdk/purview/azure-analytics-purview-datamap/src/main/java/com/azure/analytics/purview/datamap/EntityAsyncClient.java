@@ -2230,10 +2230,11 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> importBusinessMetadataWithResponse(BinaryData body, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> importBusinessMetadataWithResponseInternal(BinaryData body,
+        RequestOptions requestOptions) {
         // Operation 'importBusinessMetadata' is of content-type 'multipart/form-data'. Protocol API is not usable and
         // hence not generated.
-        return this.serviceClient.importBusinessMetadataWithResponseAsync(body, requestOptions);
+        return this.serviceClient.importBusinessMetadataWithResponseInternalAsync(body, requestOptions);
     }
 
     /**
@@ -3745,9 +3746,9 @@ public final class EntityAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BulkImportResult> importBusinessMetadata(BusinessMetadataOptions body) {
-        // Generated convenience method for importBusinessMetadataWithResponse
+        // Generated convenience method for importBusinessMetadataWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
-        return importBusinessMetadataWithResponse(
+        return importBusinessMetadataWithResponseInternal(
             new MultipartFormDataHelper(requestOptions).serializeFileField("file", body.getFile().getContent(),
                 body.getFile().getContentType(), body.getFile().getFilename()).end().getRequestBody(),
             requestOptions).flatMap(FluxUtil::toMono)

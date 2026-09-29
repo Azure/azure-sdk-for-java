@@ -17,7 +17,7 @@ public final class IngestionSourcesListTests extends PlanetaryComputerProClientT
     @Disabled
     public void testIngestionSourcesListTests() {
         // method invocation
-        PagedIterable<IngestionSourceSummary> response = ingestionClient.listSources(null, null);
+        PagedIterable<IngestionSourceSummary> response = ingestionClient.listSources((Integer) null, (Integer) null);
 
         // response assertion
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());

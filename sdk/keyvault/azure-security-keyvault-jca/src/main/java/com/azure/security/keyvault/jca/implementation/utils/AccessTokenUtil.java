@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation.utils;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaPropertyNames;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 
@@ -469,8 +470,8 @@ public final class AccessTokenUtil {
         } else {
             if (!disableChallengeResourceVerification && !isChallengeResourceValid(resourceUri, scope)) {
                 throw new IllegalStateException("The challenge resource " + scope + " does not match the requested "
-                    + "domain. If you wish to disable this check, set the environment property "
-                    + "'azure.keyvault.disable-challenge-resource-verification' to 'true'. See "
+                    + "domain. If you wish to disable this check, set the environment property " + "'"
+                    + KeyVaultJcaPropertyNames.KEYVAULT_DISABLE_CHALLENGE_RESOURCE_VERIFICATION + "' to 'true'. See "
                     + "https://aka.ms/azsdk/blog/vault-uri for more information.");
             }
 

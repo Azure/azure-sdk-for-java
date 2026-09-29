@@ -71,6 +71,13 @@ public interface Gate {
     GateType gateType();
 
     /**
+     * Gets the scheduledStartProperties property: Details for ScheduledStart gate.
+     * 
+     * @return the scheduledStartProperties value.
+     */
+    ScheduledStartProperties scheduledStartProperties();
+
+    /**
      * Gets the target property: The target that the Gate is controlling, e.g. an Update Run.
      * 
      * @return the target value.

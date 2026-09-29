@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkWatchersConnectionAnalyzersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkWatcherConnectionAnalyzerDelete.json
+     * x-ms-original-file: 2026-01-01/NetworkWatcherConnectionAnalyzerDelete.json
      */
     /**
      * Sample code: Delete connection analyzer.

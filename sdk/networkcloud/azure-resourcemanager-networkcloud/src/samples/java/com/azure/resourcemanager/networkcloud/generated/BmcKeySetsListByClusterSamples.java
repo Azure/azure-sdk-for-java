@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class BmcKeySetsListByClusterSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BmcKeySets_ListByCluster.json
+     * x-ms-original-file: 2026-07-01/BmcKeySets_ListByCluster.json
      */
     /**
      * Sample code: List baseboard management controller key sets of the cluster.

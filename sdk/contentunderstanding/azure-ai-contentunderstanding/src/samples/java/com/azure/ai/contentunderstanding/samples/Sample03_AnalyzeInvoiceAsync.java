@@ -11,20 +11,22 @@ import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentArrayField;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.models.ContentSource;
 import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.ai.contentunderstanding.models.DocumentPage;
+import com.azure.ai.contentunderstanding.models.DocumentSource;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.ContentObjectField;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
 
 /**
  * Sample demonstrating how to analyze invoices using Content Understanding service.
@@ -34,10 +36,18 @@ import java.util.concurrent.TimeUnit;
  * 3. Accessing nested object fields (TotalAmount)
  * 4. Accessing array fields (LineItems)
  * 5. Working with field confidence and source information
+ *
+ * <p>{@code prebuilt-invoice} is a ready-to-use financial document analyzer for invoices and related documents such
+ * as utility bills, sales orders, and purchase orders. The fields shown here are examples; use
+ * {@link Sample06_GetAnalyzerAsync} to inspect the complete analyzer schema.</p>
+ *
+ * <p>Confidence indicates extraction certainty, sources identify locations in the original document, and spans
+ * identify values by offset and length in the returned Markdown. The document unit defines the coordinate system for
+ * source polygons and bounding boxes; for many US documents it is inches.</p>
  */
 public class Sample03_AnalyzeInvoiceAsync {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         // BEGIN: com.azure.ai.contentunderstanding.sample03Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -60,29 +70,36 @@ public class Sample03_AnalyzeInvoiceAsync {
         String invoiceUrl
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
 
-        AnalysisInput input = new AnalysisInput();
-        input.setUrl(invoiceUrl);
-
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
-            = client.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
-
-        CountDownLatch latch = new CountDownLatch(1);
-
-        operation.last()
-            .flatMap(pollResponse -> {
-                if (pollResponse.getStatus().isComplete()) {
-                    System.out.println("Polling completed successfully");
-                    return pollResponse.getFinalResult();
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+        ContentAnalyzerAnalyzeOperationStatus operationStatus = analyzeInvoice(client, invoiceUrl);
+        UsageDetails usage = operationStatus.getUsage();
+        if (usage != null) {
+            System.out.println("\nUsage Details:");
+            if (usage.getDocumentPagesMinimal() != null) {
+                System.out.println("  Document pages (minimal): " + usage.getDocumentPagesMinimal());
+            }
+            if (usage.getDocumentPagesBasic() != null) {
+                System.out.println("  Document pages (basic): " + usage.getDocumentPagesBasic());
+            }
+            if (usage.getDocumentPagesStandard() != null) {
+                System.out.println("  Document pages (standard): " + usage.getDocumentPagesStandard());
+            }
+            if (usage.getContextualizationTokens() != null) {
+                System.out.println("  Contextualization tokens: " + usage.getContextualizationTokens());
+            }
+            Map<String, Integer> tokens = usage.getTokens();
+            if (tokens != null && !tokens.isEmpty()) {
+                System.out.println("  Model tokens:");
+                for (Map.Entry<String, Integer> entry : tokens.entrySet()) {
+                    System.out.println("    " + entry.getKey() + ": " + entry.getValue());
                 }
-            })
-            .doOnNext(result -> {
-                System.out.println("Analysis operation completed");
-                System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
+            }
+        }
 
-                // BEGIN:ContentUnderstandingExtractInvoiceFieldsAsync
+        AnalysisResult result = operationStatus.getResult();
+        System.out.println("Analysis operation completed");
+        System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
+
+        // BEGIN:ContentUnderstandingExtractInvoiceFieldsAsync
                 // Get the document content (invoices are documents)
                 AnalysisContent firstContent = result.getContents().get(0);
                 if (firstContent instanceof DocumentContent) {
@@ -93,10 +110,18 @@ public class Sample03_AnalyzeInvoiceAsync {
                         + (documentContent.getUnit() != null ? documentContent.getUnit().toString() : "unknown"));
                     System.out.println("Pages: " + documentContent.getStartPageNumber() + " to "
                         + documentContent.getEndPageNumber());
+                    if (documentContent.getPages() != null && !documentContent.getPages().isEmpty()) {
+                        DocumentPage page = documentContent.getPages().get(0);
+                        String unit
+                            = documentContent.getUnit() != null ? documentContent.getUnit().toString() : "units";
+                        System.out
+                            .println("Page dimensions: " + page.getWidth() + " x " + page.getHeight() + " " + unit);
+                    }
                     System.out.println();
 
                     // Extract simple string fields using getValue() convenience method
-                    // getValue() returns the typed value regardless of field type (StringField, NumberField, DateField, etc.)
+                    // getValue() returns the typed value regardless of field type
+                    // (ContentStringField, ContentNumberField, ContentDateField, etc.)
                     ContentField customerNameField
                         = documentContent.getFields() != null ? documentContent.getFields().get("CustomerName") : null;
                     ContentField invoiceDateField
@@ -114,8 +139,17 @@ public class Sample03_AnalyzeInvoiceAsync {
                         System.out.println("  Confidence: " + (customerNameField.getConfidence() != null
                             ? String.format("%.2f", customerNameField.getConfidence())
                             : "N/A"));
-                        System.out.println("  Source: "
-                            + (customerNameField.getSources() != null ? customerNameField.getSources() : "N/A"));
+                        List<ContentSource> sources = customerNameField.getSources();
+                        if (sources != null) {
+                            for (ContentSource source : sources) {
+                                if (source instanceof DocumentSource) {
+                                    DocumentSource documentSource = (DocumentSource) source;
+                                    System.out.println("  Source: page " + documentSource.getPageNumber() + ", polygon "
+                                        + documentSource.getPolygon() + ", bounding box "
+                                        + documentSource.getBoundingBox());
+                                }
+                            }
+                        }
                         List<ContentSpan> spans = customerNameField.getSpans();
                         if (spans != null && !spans.isEmpty()) {
                             ContentSpan span = spans.get(0);
@@ -129,8 +163,16 @@ public class Sample03_AnalyzeInvoiceAsync {
                         System.out.println("  Confidence: " + (invoiceDateField.getConfidence() != null
                             ? String.format("%.2f", invoiceDateField.getConfidence())
                             : "N/A"));
-                        System.out.println("  Source: "
-                            + (invoiceDateField.getSources() != null ? invoiceDateField.getSources() : "N/A"));
+                        List<ContentSource> sources = invoiceDateField.getSources();
+                        if (sources != null) {
+                            for (ContentSource source : sources) {
+                                if (source instanceof DocumentSource) {
+                                    DocumentSource documentSource = (DocumentSource) source;
+                                    System.out.println("  Source: page " + documentSource.getPageNumber()
+                                        + ", bounding box " + documentSource.getBoundingBox());
+                                }
+                            }
+                        }
                         List<ContentSpan> spans = invoiceDateField.getSpans();
                         if (spans != null && !spans.isEmpty()) {
                             ContentSpan span = spans.get(0);
@@ -159,8 +201,15 @@ public class Sample03_AnalyzeInvoiceAsync {
                         if (totalAmountObj.getConfidence() != null) {
                             System.out.println("  Confidence: " + String.format("%.2f", totalAmountObj.getConfidence()));
                         }
-                        if (totalAmountObj.getSources() != null && !totalAmountObj.getSources().isEmpty()) {
-                            System.out.println("  Source: " + totalAmountObj.getSources());
+                        List<ContentSource> sources = totalAmountObj.getSources();
+                        if (sources != null) {
+                            for (ContentSource source : sources) {
+                                if (source instanceof DocumentSource) {
+                                    DocumentSource documentSource = (DocumentSource) source;
+                                    System.out.println("  Source: page " + documentSource.getPageNumber()
+                                        + ", bounding box " + documentSource.getBoundingBox());
+                                }
+                            }
                         }
                     }
 
@@ -189,48 +238,48 @@ public class Sample03_AnalyzeInvoiceAsync {
 
                                 System.out.println("  Item " + (i + 1) + ": " + (description != null ? description : "N/A"));
                                 System.out.println("    Quantity: " + (quantity != null ? quantity : "N/A"));
-                                if (qtyField != null && qtyField.getConfidence() != null) {
-                                    System.out.println("    Quantity Confidence: "
-                                        + String.format("%.2f", qtyField.getConfidence()));
-                                } else {
-                                    System.out.println("    Quantity Confidence: N/A");
-                                }
+                                System.out.println("    Confidence: " + (item.getConfidence() != null
+                                    ? String.format("%.2f", item.getConfidence())
+                                    : "N/A"));
                             }
                         }
                     }
                 }
-                // END:ContentUnderstandingExtractInvoiceFieldsAsync
+        // END:ContentUnderstandingExtractInvoiceFieldsAsync
 
-                // BEGIN:ContentUnderstandingInvoiceToLlmInputAsync
-                String llmText = LlmInputHelper.toLlmInput(result);
-                System.out.println("\n============================================================");
-                System.out.println("LLM-READY OUTPUT (fields + markdown)");
-                System.out.println("============================================================");
-                System.out.println(llmText);
-                // END:ContentUnderstandingInvoiceToLlmInputAsync
+        // BEGIN:ContentUnderstandingInvoiceToLlmInputAsync
+        String llmText = LlmInputHelper.toLlmInput(result);
+        System.out.println("\n============================================================");
+        System.out.println("LLM-READY OUTPUT (fields + markdown)");
+        System.out.println("============================================================");
+        System.out.println(llmText);
+        // END:ContentUnderstandingInvoiceToLlmInputAsync
 
-                System.out.println("\nInvoice analysis completed successfully");
-            })
-            .doOnError(error -> {
-                System.err.println("Error occurred: " + error.getMessage());
-                error.printStackTrace();
-            })
-            .subscribe(
-                result -> {
-                    // Success - operations completed
-                    latch.countDown();
-                },
-                error -> {
-                    // Error already handled in doOnError
-                    latch.countDown();
-                }
-            );
+        System.out.println("\nInvoice analysis completed successfully");
         // END:ContentUnderstandingAnalyzeInvoiceAsync
+    }
 
-        // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we use a CountDownLatch so the program does not end before the async operations complete.
-        if (!latch.await(2, TimeUnit.MINUTES)) {
-            System.err.println("Timed out waiting for async operations to complete.");
+    public static ContentAnalyzerAnalyzeOperationStatus analyzeInvoice(ContentUnderstandingAsyncClient client,
+        String invoiceUrl) {
+        AnalysisInput input = new AnalysisInput().setUrl(invoiceUrl);
+        ContentAnalyzerAnalyzeOperationStatus operationStatus = client.beginAnalyze("prebuilt-invoice",
+            Arrays.asList(input)).last().map(pollResponse -> {
+            if (pollResponse.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+                throw new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus());
+            }
+            System.out.println("Polling completed successfully");
+            ContentAnalyzerAnalyzeOperationStatus status = pollResponse.getValue();
+            if (status == null) {
+                throw new IllegalStateException("Analyze operation completed without an operation status.");
+            }
+            return status;
+        }).block();
+        if (operationStatus == null) {
+            throw new IllegalStateException("Analyze operation completed without a poll response.");
         }
+        if (operationStatus.getResult() == null) {
+            throw new IllegalStateException("Analyze operation completed without a result.");
+        }
+        return operationStatus;
     }
 }

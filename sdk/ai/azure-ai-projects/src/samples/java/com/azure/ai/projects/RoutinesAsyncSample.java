@@ -51,7 +51,7 @@ public class RoutinesAsyncSample {
         routinesAsyncClient.deleteRoutine(ROUTINE_NAME)
             .onErrorResume(ignored -> Mono.empty())
             .then(routinesAsyncClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Routine created by the azure-ai-projects sample.", true, triggers, action))
+                "Routine created by the azure-ai-projects sample.", true, triggers, action, null))
             .flatMap(created -> {
                 System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
                 return routinesAsyncClient.disableRoutine(ROUTINE_NAME)

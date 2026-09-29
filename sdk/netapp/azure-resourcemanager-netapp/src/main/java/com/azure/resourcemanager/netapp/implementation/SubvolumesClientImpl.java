@@ -360,7 +360,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+     * Deprecated. This operation will be removed in a future API version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -416,7 +417,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+     * Deprecated. This operation will be removed in a future API version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -476,7 +478,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+     * Deprecated. This operation will be removed in a future API version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -537,7 +540,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+     * Deprecated. This operation will be removed in a future API version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -561,7 +565,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+     * Deprecated. This operation will be removed in a future API version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -585,7 +590,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+     * Deprecated. This operation will be removed in a future API version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -611,7 +617,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+     * Deprecated. This operation will be removed in a future API version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -633,7 +640,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+     * Deprecated. This operation will be removed in a future API version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -654,7 +662,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     }
 
     /**
-     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath
+     * Deprecated. This operation will be removed in a future API version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.

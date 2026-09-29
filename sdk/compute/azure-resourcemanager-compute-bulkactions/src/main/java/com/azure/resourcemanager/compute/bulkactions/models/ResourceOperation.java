@@ -11,36 +11,35 @@ import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOpera
  */
 public interface ResourceOperation {
     /**
-     * Gets the resourceId property: Unique identifier for the resource involved in the operation, for example Azure
-     * resource ID.
+     * Gets the resourceId property: The virtual machine Azure resource ID.
      * 
      * @return the resourceId value.
      */
     String resourceId();
 
     /**
-     * Gets the errorCode property: Resource level error code if it exists.
+     * Gets the errorCode property: A code that identifies the error for the virtual machine operation.
      * 
      * @return the errorCode value.
      */
     String errorCode();
 
     /**
-     * Gets the errorDetails property: Resource level error details if they exist.
+     * Gets the errorDetails property: A message that describes the error for the virtual machine operation.
      * 
      * @return the errorDetails value.
      */
     String errorDetails();
 
     /**
-     * Gets the operation property: Details of the operation performed on a resource.
+     * Gets the operation property: The virtual machine operation details.
      * 
      * @return the operation value.
      */
     ResourceOperationDetails operation();
 
     /**
-     * Gets the virtualMachineInfo property: Information about the virtual machine.
+     * Gets the virtualMachineInfo property: Details of the virtual machine on which the operation is performed.
      * 
      * @return the virtualMachineInfo value.
      */

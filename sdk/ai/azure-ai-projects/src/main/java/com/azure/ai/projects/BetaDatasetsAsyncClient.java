@@ -68,8 +68,7 @@ public final class BetaDatasetsAsyncClient {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -82,6 +81,7 @@ public final class BetaDatasetsAsyncClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -103,6 +103,13 @@ public final class BetaDatasetsAsyncClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -118,6 +125,13 @@ public final class BetaDatasetsAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -175,8 +189,7 @@ public final class BetaDatasetsAsyncClient {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -189,6 +202,7 @@ public final class BetaDatasetsAsyncClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -210,6 +224,13 @@ public final class BetaDatasetsAsyncClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -258,8 +279,7 @@ public final class BetaDatasetsAsyncClient {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -272,6 +292,7 @@ public final class BetaDatasetsAsyncClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -293,6 +314,13 @@ public final class BetaDatasetsAsyncClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -527,8 +555,7 @@ public final class BetaDatasetsAsyncClient {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -541,6 +568,7 @@ public final class BetaDatasetsAsyncClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -562,6 +590,13 @@ public final class BetaDatasetsAsyncClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]
@@ -593,8 +628,7 @@ public final class BetaDatasetsAsyncClient {
      *             }
      *         ]
      *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/task_generation) (Required)
-     *             max_samples: int (Required)
+     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
      *             train_split: Double (Optional)
      *             model_options (Optional): {
      *                 model: String (Required)
@@ -607,6 +641,7 @@ public final class BetaDatasetsAsyncClient {
      *             tags (Optional): {
      *                 String: String (Required)
      *             }
+     *             write_mode: String(overwrite/merge) (Optional)
      *         }
      *     }
      *     result (Optional): {
@@ -628,6 +663,13 @@ public final class BetaDatasetsAsyncClient {
      *         message: String (Required)
      *         param: String (Optional)
      *         type: String (Optional)
+     *         misalignment (Optional): {
+     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
+     *             detailed_explanation: String (Optional)
+     *             steer (Optional): {
+     *                 message: String (Required)
+     *             }
+     *         }
      *         details (Optional): [
      *             (recursive schema, see above)
      *         ]

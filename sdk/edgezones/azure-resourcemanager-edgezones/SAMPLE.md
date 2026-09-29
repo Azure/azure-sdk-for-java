@@ -19,7 +19,7 @@
  */
 public final class ExtendedZonesGetSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/ExtendedZones_Get.json
+     * x-ms-original-file: 2026-10-01/ExtendedZones_Get.json
      */
     /**
      * Sample code: GetExtendedZone.
@@ -40,7 +40,7 @@ public final class ExtendedZonesGetSamples {
  */
 public final class ExtendedZonesListSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/ExtendedZones_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01/ExtendedZones_ListBySubscription.json
      */
     /**
      * Sample code: ListExtendedZones.
@@ -61,7 +61,7 @@ public final class ExtendedZonesListSamples {
  */
 public final class ExtendedZonesRegisterSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/ExtendedZones_Register.json
+     * x-ms-original-file: 2026-10-01/ExtendedZones_Register.json
      */
     /**
      * Sample code: RegisterExtendedZone.
@@ -82,7 +82,7 @@ public final class ExtendedZonesRegisterSamples {
  */
 public final class ExtendedZonesUnregisterSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/ExtendedZones_Unregister.json
+     * x-ms-original-file: 2026-10-01/ExtendedZones_Unregister.json
      */
     /**
      * Sample code: UnregisterExtendedZone.
@@ -103,7 +103,7 @@ public final class ExtendedZonesUnregisterSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-10-01/Operations_List.json
      */
     /**
      * Sample code: ListOperations.

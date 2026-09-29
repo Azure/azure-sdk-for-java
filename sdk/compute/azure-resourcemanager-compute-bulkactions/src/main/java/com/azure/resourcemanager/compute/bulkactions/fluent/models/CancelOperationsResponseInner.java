@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * This is the response from a cancel operations request.
+ * The results of the cancellation requests.
  */
 @Immutable
 public final class CancelOperationsResponseInner implements JsonSerializable<CancelOperationsResponseInner> {
     /*
-     * An array of resource operations that were successfully cancelled
+     * The current result for each operation submitted for cancellation.
      */
     private List<ResourceOperationInner> results;
 
@@ -29,7 +29,7 @@ public final class CancelOperationsResponseInner implements JsonSerializable<Can
     }
 
     /**
-     * Get the results property: An array of resource operations that were successfully cancelled.
+     * Get the results property: The current result for each operation submitted for cancellation.
      * 
      * @return the results value.
      */

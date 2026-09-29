@@ -143,16 +143,43 @@ The JCA library supports configuring the following options:
 * `azure.keyvault.jca.certificates-refresh-interval-in-ms`: The refresh interval time.
 * `azure.keyvault.jca.certificate-alias-filter-pattern`: A regex that filters which Key Vault certificate aliases are eligible for lazy loading. Append a suffix to the property name to configure more than one filter, for example `azure.keyvault.jca.certificate-alias-filter-pattern.1` or `azure.keyvault.jca.certificate-alias-filter-pattern.prod`. If no such property is configured, all discovered Key Vault aliases are eligible for lazy loading. See "Filtering Key Vault certificate aliases" below.
 * `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
-* `azure.keyvault.jca.disable-aia-download`: Set to `true` to disable automatic AIA (Authority Information Access) certificate chain completion. Chain completion is only attempted when the chain returned by Azure Key Vault is incomplete, meaning it holds a single certificate or is missing an intermediate CA. When disabled, the provider will return certificate chains as provided by Azure Key Vault without downloading missing intermediate CA certificates. Use this in locked-down environments or when processing untrusted certificates to prevent outbound HTTP(S) requests to URLs embedded in certificate extensions. Defaults to `false` for backward compatibility.
+* `azure.keyvault.jca.disable-aia-download`: Set to `true` to disable automatic AIA (Authority Information Access) certificate chain completion. Chain completion is only attempted when the chain returned by Azure Key Vault is incomplete, meaning it holds a single certificate or is missing an intermediate CA. When disabled, the provider will return certificate chains as provided by Azure Key Vault without downloading missing intermediate CA certificates. Use this in locked-down environments or when processing untrusted certificates to prevent outbound HTTP(S) requests to URLs embedded in certificate extensions. Defaults to `false` for backward compatibility. The value is captured when a Key Vault keystore and its client are initialized.
 
-You can configure these properties using:
+The supported system property names are available from `KeyVaultJcaPropertyNames`. You can configure them using:
 ```java
-System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, "<your-azure-keyvault-uri>");
 ```
 or as a JVM argument:
 ```shell
 -Dazure.keyvault.uri=<your-azure-keyvault-uri>
 ```
+
+#### Programmatic configuration
+
+Use `KeyVaultLoadStoreParameter` when each key store needs an explicit configuration instead of global system
+properties:
+
+```java
+KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+    "<your-azure-keyvault-uri>",
+    "<your-tenant-id>",
+    "<your-client-id>",
+    "<your-client-secret>")
+    .setCertificatesRefreshIntervalInMs(60_000)
+    .setCertificateAliasFilterPatterns(Collections.singleton("^prod-.*"));
+parameter.disableAiaDownload();
+
+Security.addProvider(new KeyVaultJcaProvider());
+KeyStore keyStore = KeyStore.getInstance(
+    KeyVaultKeyStore.KEY_STORE_TYPE,
+    KeyVaultJcaProvider.PROVIDER_NAME);
+keyStore.load(parameter);
+```
+
+When `load(parameter)` is used, the values and defaults in that parameter replace the complete configuration captured
+from system properties. This prevents separate key stores from overwriting one another's configuration. Use
+`KeyVaultLoadStoreParameter.fromSystemProperties()` when a programmatic caller needs the same system-property
+snapshot used by the default key store initialization.
 
 #### Filtering Key Vault certificate aliases
 

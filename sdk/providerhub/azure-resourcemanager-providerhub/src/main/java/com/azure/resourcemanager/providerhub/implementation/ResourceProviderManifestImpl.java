@@ -21,6 +21,7 @@ import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestRequ
 import com.azure.resourcemanager.providerhub.models.ResourceProviderService;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderType;
 import com.azure.resourcemanager.providerhub.models.ResourceType;
+import com.azure.resourcemanager.providerhub.models.TokenAuthConfiguration;
 import java.util.Collections;
 import java.util.List;
 
@@ -157,6 +158,10 @@ public final class ResourceProviderManifestImpl implements ResourceProviderManif
 
     public ResourceProviderAuthorizationRules resourceProviderAuthorizationRules() {
         return this.innerModel().resourceProviderAuthorizationRules();
+    }
+
+    public TokenAuthConfiguration tokenAuthConfiguration() {
+        return this.innerModel().tokenAuthConfiguration();
     }
 
     public ResourceProviderManifestInner innerModel() {

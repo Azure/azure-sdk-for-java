@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.relationships.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -58,6 +59,31 @@ public interface DependencyOfRelationships {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String resourceUri, String name, Context context);
+
+    /**
+     * List DependencyOfRelationship resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<DependencyOfRelationship> listByParent(String resourceUri);
+
+    /**
+     * List DependencyOfRelationship resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a DependencyOfRelationship list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<DependencyOfRelationship> listByParent(String resourceUri, Context context);
 
     /**
      * Get a DependencyOfRelationship.

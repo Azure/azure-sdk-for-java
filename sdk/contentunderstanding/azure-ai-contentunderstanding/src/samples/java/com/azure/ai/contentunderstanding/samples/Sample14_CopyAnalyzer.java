@@ -8,21 +8,31 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
 import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
 import com.azure.ai.contentunderstanding.models.ContentFieldType;
 import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 /**
- * Sample demonstrates how to copy an analyzer within the same resource.
- * For cross-resource copying, see Sample15_GrantCopyAuth.
+ * Sample demonstrates how to copy an analyzer within the same resource, update the copied analyzer for production,
+ * and verify that its configuration is preserved.
+ *
+ * <p>Use same-resource copies for testing, staging, or production deployment. For cross-resource copying, see
+ * {@link Sample15_GrantCopyAuth}.</p>
+ *
+ * <p>Before running this sample, configure the model deployment defaults as shown in
+ * {@link Sample00_UpdateDefaults}.</p>
  */
 public class Sample14_CopyAnalyzer {
 
@@ -86,7 +96,7 @@ public class Sample14_CopyAnalyzer {
             sourceAnalyzer.setFieldSchema(sourceFieldSchema);
 
             Map<String, String> models = new HashMap<>();
-            models.put("completion", "gpt-4.1");
+            models.put("completion", SampleModelConfiguration.getCompletionModel());
             sourceAnalyzer.setModels(models);
 
             Map<String, String> tags = new HashMap<>();
@@ -94,16 +104,22 @@ public class Sample14_CopyAnalyzer {
             sourceAnalyzer.setTags(tags);
 
             // Create source analyzer
-            SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
+            SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
                 = client.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer, true);
-            ContentAnalyzer sourceResult = createPoller.getFinalResult();
+            ContentAnalyzer sourceResult
+                = requireSuccessfulResult(createPoller.waitForCompletion().getStatus(), createPoller::getFinalResult,
+                    "Source analyzer creation");
+            verifyAnalyzerProperties(sourceAnalyzer, sourceResult);
+            verifyMatchingTags(sourceAnalyzer, sourceResult);
             System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
 
             // Step 2: Copy the source analyzer to target
             // Note: This copies within the same resource
-            SyncPoller<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
+            SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
                 = client.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId);
-            ContentAnalyzer copiedAnalyzer = copyPoller.getFinalResult();
+            ContentAnalyzer copiedAnalyzer
+                = requireSuccessfulResult(copyPoller.waitForCompletion().getStatus(), copyPoller::getFinalResult,
+                    "Analyzer copy");
             System.out.println("Analyzer copied to '" + targetAnalyzerId + "' successfully!");
             // END: com.azure.ai.contentunderstanding.copyAnalyzer
 
@@ -132,6 +148,8 @@ public class Sample14_CopyAnalyzer {
 
             // Get the source analyzer to verify retrieval
             ContentAnalyzer sourceAnalyzerInfo = client.getAnalyzer(sourceAnalyzerId);
+            verifyAnalyzerProperties(sourceResult, sourceAnalyzerInfo);
+            verifyMatchingTags(sourceResult, sourceAnalyzerInfo);
 
             System.out.println("\n📋 Source Analyzer Retrieval Verification:");
             System.out.println("  ✓ Source analyzer retrieved successfully");
@@ -144,6 +162,8 @@ public class Sample14_CopyAnalyzer {
                     .toArray(String[]::new)));
 
             // ========== VERIFICATION: Analyzer Copy Operation ==========
+            verifyAnalyzerProperties(sourceAnalyzerInfo, copiedAnalyzer);
+            verifyMatchingTags(sourceAnalyzerInfo, copiedAnalyzer);
             System.out.println("\n📋 Analyzer Copy Verification:");
             System.out.println("  ✓ Copy operation completed");
             System.out.println("  ✓ Base properties preserved");
@@ -175,9 +195,33 @@ public class Sample14_CopyAnalyzer {
 
             // Verify the copied analyzer via Get operation
             ContentAnalyzer verifiedCopy = client.getAnalyzer(targetAnalyzerId);
+            verifyAnalyzerProperties(copiedAnalyzer, verifiedCopy);
+            verifyMatchingTags(copiedAnalyzer, verifiedCopy);
 
             System.out.println("\n📋 Copied Analyzer Retrieval Verification:");
             System.out.println("  ✓ Copied analyzer verified via retrieval");
+
+            // BEGIN: com.azure.ai.contentunderstanding.updateAndVerifyCopiedAnalyzer
+            // Step 3: Update the target analyzer with a production tag
+            Map<String, String> updatedTags = new HashMap<>();
+            updatedTags.put("modelType", "model_in_production");
+            ContentAnalyzer analyzerUpdate
+                = new ContentAnalyzer().setBaseAnalyzerId(verifiedCopy.getBaseAnalyzerId()).setTags(updatedTags);
+            ContentAnalyzer updateResult = client.updateAnalyzer(targetAnalyzerId, analyzerUpdate);
+            if (updateResult == null) {
+                throw new IllegalStateException("Analyzer update completed without a result.");
+            }
+
+            // Step 4: Retrieve the target analyzer and verify preserved properties
+            ContentAnalyzer updatedTargetAnalyzer = client.getAnalyzer(targetAnalyzerId);
+            verifyAnalyzerProperties(sourceAnalyzerInfo, updatedTargetAnalyzer);
+            Map<String, String> actualUpdatedTags
+                = requireNotNull(updatedTargetAnalyzer.getTags(), "updated analyzer tags");
+            requireEqual("model_in_production", actualUpdatedTags.get("modelType"), "updated modelType tag");
+            System.out.println("\n📋 Copied Analyzer Update Verification:");
+            System.out.println("  ✓ Description, field schema, config, and models preserved");
+            System.out.println("  ✓ modelType tag updated to model_in_production");
+            // END: com.azure.ai.contentunderstanding.updateAndVerifyCopiedAnalyzer
 
             // Summary
             String separator = new String(new char[60]).replace("\0", "═");
@@ -193,32 +237,102 @@ public class Sample14_CopyAnalyzer {
             System.out.println("  Models:      " + sourceResult.getModels().size());
             System.out.println("\nTarget Analyzer (Copied):");
             System.out.println("  ID:          " + targetAnalyzerId);
-            System.out.println("  Base:        " + copiedAnalyzer.getBaseAnalyzerId());
-            System.out.println("  Description: " + copiedAnalyzer.getDescription());
-            System.out.println("  Fields:      " + copiedAnalyzer.getFieldSchema().getFields().size());
-            System.out.println("  Tags:        " + copiedAnalyzer.getTags().size());
-            System.out.println("  Models:      " + copiedAnalyzer.getModels().size());
-            System.out.println("\n✅ All properties successfully copied and verified!");
+            System.out.println("  Base:        " + updatedTargetAnalyzer.getBaseAnalyzerId());
+            System.out.println("  Description: " + updatedTargetAnalyzer.getDescription());
+            System.out.println("  Fields:      " + updatedTargetAnalyzer.getFieldSchema().getFields().size());
+            System.out.println("  Tags:        " + updatedTargetAnalyzer.getTags().size());
+            System.out.println("  Models:      " + updatedTargetAnalyzer.getModels().size());
+            System.out.println("  modelType:   " + updatedTargetAnalyzer.getTags().get("modelType"));
+            System.out.println("\n✅ All properties successfully copied, updated, and verified!");
             System.out.println(separator);
 
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
         } finally {
             // Cleanup: Delete the analyzers
             try {
                 client.deleteAnalyzer(sourceAnalyzerId);
                 System.out.println("\nSource analyzer deleted: " + sourceAnalyzerId);
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 System.out.println("Note: Failed to delete source analyzer (may not exist): " + e.getMessage());
             }
 
             try {
                 client.deleteAnalyzer(targetAnalyzerId);
                 System.out.println("Target analyzer deleted: " + targetAnalyzerId);
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 System.out.println("Note: Failed to delete target analyzer (may not exist): " + e.getMessage());
             }
+        }
+    }
+
+    static <T> T requireSuccessfulResult(LongRunningOperationStatus status, Supplier<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            throw new IllegalStateException(operationName + " completed unsuccessfully with status: " + status);
+        }
+        T result = finalResult.get();
+        if (result == null) {
+            throw new IllegalStateException(operationName + " completed without a final result.");
+        }
+        return result;
+    }
+
+    private static void verifyAnalyzerProperties(ContentAnalyzer expected, ContentAnalyzer actual) {
+        requireNotNull(expected, "expected analyzer");
+        requireNotNull(actual, "actual analyzer");
+        requireEqual(expected.getBaseAnalyzerId(), actual.getBaseAnalyzerId(), "base analyzer ID");
+        requireEqual(expected.getDescription(), actual.getDescription(), "description");
+
+        ContentFieldSchema expectedSchema = requireNotNull(expected.getFieldSchema(), "expected field schema");
+        ContentFieldSchema actualSchema = requireNotNull(actual.getFieldSchema(), "actual field schema");
+        requireEqual(expectedSchema.getName(), actualSchema.getName(), "field schema name");
+        requireEqual(expectedSchema.getDescription(), actualSchema.getDescription(), "field schema description");
+        Map<String, ContentFieldDefinition> expectedFields
+            = requireNotNull(expectedSchema.getFields(), "expected fields");
+        Map<String, ContentFieldDefinition> actualFields = requireNotNull(actualSchema.getFields(), "actual fields");
+        requireEqual(expectedFields.size(), actualFields.size(), "field count");
+        for (Map.Entry<String, ContentFieldDefinition> expectedField : expectedFields.entrySet()) {
+            ContentFieldDefinition actualField
+                = requireNotNull(actualFields.get(expectedField.getKey()), expectedField.getKey());
+            requireEqual(expectedField.getValue().getType(), actualField.getType(),
+                expectedField.getKey() + " field type");
+            requireEqual(expectedField.getValue().getMethod(), actualField.getMethod(),
+                expectedField.getKey() + " generation method");
+            requireEqual(expectedField.getValue().getDescription(), actualField.getDescription(),
+                expectedField.getKey() + " description");
+        }
+
+        ContentAnalyzerConfig expectedConfig = requireNotNull(expected.getConfig(), "expected analyzer config");
+        ContentAnalyzerConfig actualConfig = requireNotNull(actual.getConfig(), "actual analyzer config");
+        requireEqual(expectedConfig.isFormulaEnabled(), actualConfig.isFormulaEnabled(), "formula setting");
+        requireEqual(expectedConfig.isLayoutEnabled(), actualConfig.isLayoutEnabled(), "layout setting");
+        requireEqual(expectedConfig.isOcrEnabled(), actualConfig.isOcrEnabled(), "OCR setting");
+        requireEqual(expectedConfig.isEstimateFieldSourceAndConfidence(),
+            actualConfig.isEstimateFieldSourceAndConfidence(), "field source and confidence setting");
+        requireEqual(expectedConfig.isReturnDetails(), actualConfig.isReturnDetails(), "return details setting");
+
+        Map<String, String> expectedModels = requireNotNull(expected.getModels(), "expected models");
+        Map<String, String> actualModels = requireNotNull(actual.getModels(), "actual models");
+        for (Map.Entry<String, String> expectedModel : expectedModels.entrySet()) {
+            requireEqual(expectedModel.getValue(), actualModels.get(expectedModel.getKey()),
+                expectedModel.getKey() + " model");
+        }
+    }
+
+    private static void verifyMatchingTags(ContentAnalyzer expected, ContentAnalyzer actual) {
+        requireEqual(expected.getTags(), actual.getTags(), "tags");
+    }
+
+    private static <T> T requireNotNull(T value, String property) {
+        if (value == null) {
+            throw new IllegalStateException(property + " was not returned.");
+        }
+        return value;
+    }
+
+    private static void requireEqual(Object expected, Object actual, String property) {
+        if (!Objects.equals(expected, actual)) {
+            throw new IllegalStateException(property + " did not match. Expected '" + expected + "' but got '"
+                + actual + "'.");
         }
     }
 }

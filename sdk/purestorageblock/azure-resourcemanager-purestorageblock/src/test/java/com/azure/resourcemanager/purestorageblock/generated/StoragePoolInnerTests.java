@@ -8,9 +8,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.purestorageblock.fluent.models.StoragePoolInner;
 import com.azure.resourcemanager.purestorageblock.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.purestorageblock.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAccessSettings;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleSettings;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleSubnet;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolProperties;
 import com.azure.resourcemanager.purestorageblock.models.UserAssignedIdentity;
 import com.azure.resourcemanager.purestorageblock.models.VnetInjection;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -19,36 +23,53 @@ public final class StoragePoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StoragePoolInner model = BinaryData.fromString(
-            "{\"properties\":{\"storagePoolInternalId\":\"blmpewww\",\"availabilityZone\":\"bkrvrnsvshqj\",\"vnetInjection\":{\"subnetId\":\"hxcr\",\"vnetId\":\"bfovasrruvwbhsq\"},\"dataRetentionPeriod\":1327647524081799749,\"provisionedBandwidthMbPerSec\":915934839325229453,\"provisionedIops\":4263658870464562119,\"avs\":{\"avsEnabled\":false,\"sddcResourceId\":\"pybsrfbjfdtw\"},\"provisioningState\":\"Failed\",\"reservationResourceId\":\"t\"},\"identity\":{\"principalId\":\"vjz\",\"tenantId\":\"xilzznf\",\"type\":\"None\",\"userAssignedIdentities\":{\"ybn\":{\"principalId\":\"pmqtaru\",\"clientId\":\"jmkcjhwqytj\"}}},\"location\":\"ewgdrjervn\",\"tags\":{\"hin\":\"qp\",\"nzdndslgna\":\"oygmift\"},\"id\":\"qig\",\"name\":\"nduhavhqlkthum\",\"type\":\"qolbgyc\"}")
+            "{\"properties\":{\"storagePoolInternalId\":\"t\",\"availabilityZone\":\"twwrqp\",\"vnetInjection\":{\"subnetId\":\"edckzywbiexzfey\",\"vnetId\":\"eaxib\"},\"dataRetentionPeriod\":3158755380595328806,\"provisionedBandwidthMbPerSec\":5504260917336517154,\"provisionedIops\":3923542166316348185,\"avs\":{\"avsEnabled\":true,\"sddcResourceId\":\"zyoxaepdkzjan\"},\"provisioningState\":\"Succeeded\",\"reservationResourceId\":\"rhdwbavxbniw\",\"platformConsoleSettings\":{\"enabled\":false,\"gui\":{\"enabled\":false},\"api\":{\"enabled\":true},\"cli\":{\"enabled\":false},\"subnets\":[{\"id\":\"xytxhpzxbz\",\"managementIpAddress\":\"zabglcuhxwt\",\"serviceBackendIps\":[\"qik\",\"bbovplwzbhvgyugu\",\"svmkfssxquk\",\"fpl\"]},{\"id\":\"mg\",\"managementIpAddress\":\"nkjzkdeslpvlop\",\"serviceBackendIps\":[\"ighxpk\",\"wzbaiue\"]}],\"defaultUsername\":\"a\"}},\"identity\":{\"principalId\":\"yqupedeojnabckh\",\"tenantId\":\"txp\",\"type\":\"None\",\"userAssignedIdentities\":{\"jdhtldwkyzxu\":{\"principalId\":\"fhvpesaps\",\"clientId\":\"dqmh\"},\"xotogtwrupqsxv\":{\"principalId\":\"kn\",\"clientId\":\"scwsv\"},\"fcnj\":{\"principalId\":\"i\",\"clientId\":\"kvceoveilovnotyf\"}}},\"location\":\"cn\",\"tags\":{\"h\":\"bttk\",\"jtoqne\":\"wpn\",\"abgy\":\"mclfplphoxuscr\"},\"id\":\"psbjta\",\"name\":\"qugxywpmueefjzwf\",\"type\":\"kqujidsuyono\"}")
             .toObject(StoragePoolInner.class);
-        Assertions.assertEquals("ewgdrjervn", model.location());
-        Assertions.assertEquals("qp", model.tags().get("hin"));
-        Assertions.assertEquals("bkrvrnsvshqj", model.properties().availabilityZone());
-        Assertions.assertEquals("hxcr", model.properties().vnetInjection().subnetId());
-        Assertions.assertEquals("bfovasrruvwbhsq", model.properties().vnetInjection().vnetId());
-        Assertions.assertEquals(915934839325229453L, model.properties().provisionedBandwidthMbPerSec());
-        Assertions.assertEquals("t", model.properties().reservationResourceId());
+        Assertions.assertEquals("cn", model.location());
+        Assertions.assertEquals("bttk", model.tags().get("h"));
+        Assertions.assertEquals("twwrqp", model.properties().availabilityZone());
+        Assertions.assertEquals("edckzywbiexzfey", model.properties().vnetInjection().subnetId());
+        Assertions.assertEquals("eaxib", model.properties().vnetInjection().vnetId());
+        Assertions.assertEquals(5504260917336517154L, model.properties().provisionedBandwidthMbPerSec());
+        Assertions.assertEquals("rhdwbavxbniw", model.properties().reservationResourceId());
+        Assertions.assertFalse(model.properties().platformConsoleSettings().enabled());
+        Assertions.assertFalse(model.properties().platformConsoleSettings().gui().enabled());
+        Assertions.assertTrue(model.properties().platformConsoleSettings().api().enabled());
+        Assertions.assertFalse(model.properties().platformConsoleSettings().cli().enabled());
+        Assertions.assertEquals("xytxhpzxbz", model.properties().platformConsoleSettings().subnets().get(0).id());
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoragePoolInner model = new StoragePoolInner().withLocation("ewgdrjervn")
-            .withTags(mapOf("hin", "qp", "nzdndslgna", "oygmift"))
-            .withProperties(new StoragePoolProperties().withAvailabilityZone("bkrvrnsvshqj")
-                .withVnetInjection(new VnetInjection().withSubnetId("hxcr").withVnetId("bfovasrruvwbhsq"))
-                .withProvisionedBandwidthMbPerSec(915934839325229453L)
-                .withReservationResourceId("t"))
+        StoragePoolInner model = new StoragePoolInner().withLocation("cn")
+            .withTags(mapOf("h", "bttk", "jtoqne", "wpn", "abgy", "mclfplphoxuscr"))
+            .withProperties(new StoragePoolProperties().withAvailabilityZone("twwrqp")
+                .withVnetInjection(new VnetInjection().withSubnetId("edckzywbiexzfey").withVnetId("eaxib"))
+                .withProvisionedBandwidthMbPerSec(5504260917336517154L)
+                .withReservationResourceId("rhdwbavxbniw")
+                .withPlatformConsoleSettings(new PlatformConsoleSettings().withEnabled(false)
+                    .withGui(new PlatformConsoleAccessSettings().withEnabled(false))
+                    .withApi(new PlatformConsoleAccessSettings().withEnabled(true))
+                    .withCli(new PlatformConsoleAccessSettings().withEnabled(false))
+                    .withSubnets(Arrays.asList(new PlatformConsoleSubnet().withId("xytxhpzxbz"),
+                        new PlatformConsoleSubnet().withId("mg")))))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("ybn", new UserAssignedIdentity())));
+                .withUserAssignedIdentities(mapOf("jdhtldwkyzxu", new UserAssignedIdentity(), "xotogtwrupqsxv",
+                    new UserAssignedIdentity(), "fcnj", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(StoragePoolInner.class);
-        Assertions.assertEquals("ewgdrjervn", model.location());
-        Assertions.assertEquals("qp", model.tags().get("hin"));
-        Assertions.assertEquals("bkrvrnsvshqj", model.properties().availabilityZone());
-        Assertions.assertEquals("hxcr", model.properties().vnetInjection().subnetId());
-        Assertions.assertEquals("bfovasrruvwbhsq", model.properties().vnetInjection().vnetId());
-        Assertions.assertEquals(915934839325229453L, model.properties().provisionedBandwidthMbPerSec());
-        Assertions.assertEquals("t", model.properties().reservationResourceId());
+        Assertions.assertEquals("cn", model.location());
+        Assertions.assertEquals("bttk", model.tags().get("h"));
+        Assertions.assertEquals("twwrqp", model.properties().availabilityZone());
+        Assertions.assertEquals("edckzywbiexzfey", model.properties().vnetInjection().subnetId());
+        Assertions.assertEquals("eaxib", model.properties().vnetInjection().vnetId());
+        Assertions.assertEquals(5504260917336517154L, model.properties().provisionedBandwidthMbPerSec());
+        Assertions.assertEquals("rhdwbavxbniw", model.properties().reservationResourceId());
+        Assertions.assertFalse(model.properties().platformConsoleSettings().enabled());
+        Assertions.assertFalse(model.properties().platformConsoleSettings().gui().enabled());
+        Assertions.assertTrue(model.properties().platformConsoleSettings().api().enabled());
+        Assertions.assertFalse(model.properties().platformConsoleSettings().cli().enabled());
+        Assertions.assertEquals("xytxhpzxbz", model.properties().platformConsoleSettings().subnets().get(0).id());
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
     }
 
