@@ -852,13 +852,27 @@ public class EventHubClientBuilder
     }
 
     /**
-     * Sets the scheduler for the created Event Hub client.
+     * Sets the {@link Scheduler} that clients built from this builder use to publish downstream signals, such as
+     * delivering received events to subscribers.
      *
-     * @param scheduler Scheduler to set.
+     * <p><strong>Scheduler lifetime</strong></p>
+     *
+     * <p>The supplied scheduler is <strong>not</strong> owned by the clients built from this builder. Clients retain a
+     * reference to it, but never call {@link Scheduler#dispose()} on it. Callers that supply a dedicated scheduler are
+     * therefore responsible for disposing it themselves once it is no longer needed, otherwise its threads are leaked.
+     * Conversely, the scheduler must remain usable for as long as any client built from this builder is in use;
+     * disposing it earlier causes operations that publish on it to fail with a rejected execution error.</p>
+     *
+     * <p>If this method is not called, or {@code scheduler} is {@code null}, clients fall back to the shared
+     * {@link Schedulers#boundedElastic()} scheduler, which is managed by Reactor and must not be disposed by
+     * callers.</p>
+     *
+     * @param scheduler The scheduler to publish downstream signals on, or {@code null} to use
+     * {@link Schedulers#boundedElastic()}.
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    EventHubClientBuilder scheduler(Scheduler scheduler) {
+    public EventHubClientBuilder scheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
         return this;
     }
@@ -866,7 +880,7 @@ public class EventHubClientBuilder
     /**
      * Gets the scheduler used to subscribe Event Hub operations on.
      *
-     * @return The scheduler.
+     * @return The scheduler, or {@code null} if none was set.
      */
     Scheduler getScheduler() {
         return this.scheduler;
