@@ -19,6 +19,8 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
@@ -52,7 +54,7 @@ public class FoundryFeaturesHeaderVerificationTest {
 
         builder.beta()
             .buildBetaEvaluatorsClient()
-            .getEvaluatorVersionWithResponse("evaluator", "1", new RequestOptions());
+            .getCredentialsWithResponse("evaluator", "1", BinaryData.fromString("{}"), new RequestOptions());
         assertEquals("Evaluations=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaInsightsClient().getInsightWithResponse("insight", new RequestOptions());
@@ -67,7 +69,7 @@ public class FoundryFeaturesHeaderVerificationTest {
         builder.beta().buildBetaSkillsClient().getSkillWithResponse("skill", new RequestOptions());
         assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
 
-        builder.beta().buildBetaDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
+        builder.buildDataGenerationJobsClient().getGenerationJobWithResponse("job", new RequestOptions());
         assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
 
         builder.buildEvaluationRulesClient()
@@ -93,7 +95,7 @@ public class FoundryFeaturesHeaderVerificationTest {
 
         builder.beta()
             .buildBetaEvaluatorsClient()
-            .getEvaluatorVersionWithResponse("evaluator", "1", new RequestOptions());
+            .getCredentialsWithResponse("evaluator", "1", BinaryData.fromString("{}"), new RequestOptions());
         assertEquals("Evaluations=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaInsightsClient().getInsightWithResponse("insight", new RequestOptions());
@@ -108,9 +110,6 @@ public class FoundryFeaturesHeaderVerificationTest {
         builder.beta().buildBetaSkillsClient().getSkillWithResponse("skill", new RequestOptions());
         assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
 
-        builder.beta().buildBetaDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
-        assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
-
         builder.beta()
             .buildBetaAgentInsightMonitorsClient()
             .getAgentInsightMonitorWithResponse("monitor", new RequestOptions());
@@ -122,14 +121,22 @@ public class FoundryFeaturesHeaderVerificationTest {
         RecordingHttpClient httpClient = new RecordingHttpClient();
         AIProjectClientBuilder builder = createBuilder(httpClient);
 
-        builder.beta().buildBetaDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
-        assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
+        builder.beta().buildBetaModelsClient().getModelVersionWithResponse("model", "1", new RequestOptions());
+        assertEquals("Models=V1Preview", foundryFeatures(httpClient));
 
         // Beta clients temporarily add their required Foundry-Features policy while their pipeline is being built.
         // The policy must not remain on the reusable builder, otherwise a later non-beta client built from the same
         // builder would silently inherit a beta opt-in header despite allowPreview defaulting to false for GA clients.
         builder.buildEvaluationRulesClient()
             .createOrUpdateEvaluationRuleWithResponse("rule", BinaryData.fromString("{}"), new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+
+        builder.buildDataGenerationJobsClient().getGenerationJobWithResponse("job", new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+
+        builder.buildDataGenerationJobsAsyncClient()
+            .getGenerationJobWithResponse("job", new RequestOptions())
+            .block();
         assertNull(foundryFeatures(httpClient));
     }
 
@@ -139,10 +146,12 @@ public class FoundryFeaturesHeaderVerificationTest {
         String explicitHeader = "Insights=V1Preview";
         RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
 
-        createBuilder(httpClient).allowPreview(true)
-            .beta()
-            .buildBetaDatasetsClient()
-            .getGenerationJobWithResponse("job", requestOptions);
+        AIProjectClientBuilder builder = createBuilder(httpClient).allowPreview(true);
+        builder.buildDataGenerationJobsClient().getGenerationJobWithResponse("job", requestOptions);
+
+        assertEquals(explicitHeader, foundryFeatures(httpClient));
+
+        builder.buildDataGenerationJobsAsyncClient().getGenerationJobWithResponse("job", requestOptions).block();
 
         assertEquals(explicitHeader, foundryFeatures(httpClient));
     }
@@ -159,12 +168,51 @@ public class FoundryFeaturesHeaderVerificationTest {
     }
 
     @Test
+    public void dataGenerationClientsDoNotAddPreviewHeadersByDefault() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        AIProjectClientBuilder builder = createBuilder(httpClient);
+
+        builder.buildDataGenerationJobsClient().getGenerationJobWithResponse("job", new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+
+        builder.buildDataGenerationJobsAsyncClient()
+            .getGenerationJobWithResponse("job", new RequestOptions())
+            .block();
+        assertNull(foundryFeatures(httpClient));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void dataGenerationPreviewOptInPreservesCustomPipeline(boolean allowPreview) {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        HttpPipeline customPipeline = createCustomPipeline(httpClient);
+        int originalPolicyCount = customPipeline.getPolicyCount();
+        AIProjectClientBuilder builder = createBuilder(customPipeline).allowPreview(allowPreview);
+        String expectedHeader = allowPreview ? "DataGenerationJobs=V1Preview" : null;
+
+        builder.buildDataGenerationJobsClient().getGenerationJobWithResponse("job", new RequestOptions());
+        assertEquals(expectedHeader, foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+
+        builder.buildDataGenerationJobsAsyncClient()
+            .getGenerationJobWithResponse("job", new RequestOptions())
+            .block();
+        assertEquals(expectedHeader, foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+        assertEquals(originalPolicyCount, customPipeline.getPolicyCount());
+
+        builder.buildConnectionsClient().getConnectionWithResponse("connection", false, new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+    }
+
+    @Test
     public void allowPreviewUsesBuiltClientFeatureHeaderWithoutPathMatching() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
 
         createBuilder(httpClient).endpoint("https://localhost:8080/api/projects/project/evaluations/evaluation")
-            .beta()
-            .buildBetaDatasetsClient()
+            .allowPreview(true)
+            .buildDataGenerationJobsClient()
             .getGenerationJobWithResponse("job", new RequestOptions());
 
         assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
@@ -210,9 +258,13 @@ public class FoundryFeaturesHeaderVerificationTest {
         String explicitHeader = "Insights=V1Preview";
         RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
 
-        createBuilder(createCustomPipeline(httpClient)).beta()
-            .buildBetaDatasetsClient()
-            .getGenerationJobWithResponse("job", requestOptions);
+        AIProjectClientBuilder builder = createBuilder(createCustomPipeline(httpClient)).allowPreview(true);
+        builder.buildDataGenerationJobsClient().getGenerationJobWithResponse("job", requestOptions);
+
+        assertEquals(explicitHeader, foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+
+        builder.buildDataGenerationJobsAsyncClient().getGenerationJobWithResponse("job", requestOptions).block();
 
         assertEquals(explicitHeader, foundryFeatures(httpClient));
         assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));

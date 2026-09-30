@@ -23,7 +23,7 @@ public final class SupervisedFineTuningDataGenerationJobInputs extends DataGener
      * The scenario of the data generation job. Either for fine-tuning or evaluation.
      */
     @Generated
-    private DataGenerationJobScenario scenario = DataGenerationJobScenario.SUPERVISED_FINETUNING;
+    private DataGenerationJobScenario scenario = DataGenerationJobScenario.SUPERVISED_FINETUNING_PREVIEW;
 
     /*
      * Optional file output configuration for the generated supervised fine-tuning data.
@@ -110,7 +110,7 @@ public final class SupervisedFineTuningDataGenerationJobInputs extends DataGener
             String name = null;
             List<DataGenerationJobSource> sources = null;
             DataGenerationJobOptions generationConfiguration = null;
-            DataGenerationJobScenario scenario = DataGenerationJobScenario.SUPERVISED_FINETUNING;
+            DataGenerationJobScenario scenario = DataGenerationJobScenario.SUPERVISED_FINETUNING_PREVIEW;
             SupervisedFineTuningDataGenerationJobOutputTarget outputConfiguration = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();

@@ -165,9 +165,9 @@ public class DataGenerationJob implements JsonSerializable<DataGenerationJob> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("evaluation".equals(discriminatorValue)) {
                     return EvaluationDataGenerationJob.fromJson(readerToUse.reset());
-                } else if ("supervised_finetuning".equals(discriminatorValue)) {
+                } else if ("supervised_finetuning_preview".equals(discriminatorValue)) {
                     return SupervisedFineTuningDataGenerationJob.fromJson(readerToUse.reset());
-                } else if ("reinforcement_finetuning".equals(discriminatorValue)) {
+                } else if ("reinforcement_finetuning_preview".equals(discriminatorValue)) {
                     return ReinforcementFineTuningDataGenerationJob.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());

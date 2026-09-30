@@ -63,12 +63,13 @@ import java.util.Objects;
         BetaSchedulesClient.class,
         BetaRoutinesClient.class,
         BetaSkillsClient.class,
-        BetaDatasetsClient.class,
         ConnectionsClient.class,
         DatasetsClient.class,
         IndexesClient.class,
         DeploymentsClient.class,
         EvaluationRulesClient.class,
+        EvaluatorsClient.class,
+        DataGenerationJobsClient.class,
         BetaAgentInsightMonitorsAsyncClient.class,
         BetaModelsAsyncClient.class,
         BetaRedTeamsAsyncClient.class,
@@ -78,12 +79,13 @@ import java.util.Objects;
         BetaSchedulesAsyncClient.class,
         BetaRoutinesAsyncClient.class,
         BetaSkillsAsyncClient.class,
-        BetaDatasetsAsyncClient.class,
         ConnectionsAsyncClient.class,
         DatasetsAsyncClient.class,
         IndexesAsyncClient.class,
         DeploymentsAsyncClient.class,
-        EvaluationRulesAsyncClient.class })
+        EvaluationRulesAsyncClient.class,
+        EvaluatorsAsyncClient.class,
+        DataGenerationJobsAsyncClient.class })
 public final class AIProjectClientBuilder
     implements HttpTrait<AIProjectClientBuilder>, ConfigurationTrait<AIProjectClientBuilder>,
     TokenCredentialTrait<AIProjectClientBuilder>, EndpointTrait<AIProjectClientBuilder> {
@@ -670,15 +672,6 @@ public final class AIProjectClientBuilder
     }
 
     /**
-     * Builds an instance of BetaDatasetsAsyncClient class.
-     *
-     * @return an instance of BetaDatasetsAsyncClient.
-     */
-    private BetaDatasetsAsyncClient buildBetaDatasetsAsyncClient() {
-        return new BetaDatasetsAsyncClient(buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
-    }
-
-    /**
      * Builds an instance of BetaModelsClient class.
      *
      * @return an instance of BetaModelsClient.
@@ -752,15 +745,6 @@ public final class AIProjectClientBuilder
     }
 
     /**
-     * Builds an instance of BetaDatasetsClient class.
-     *
-     * @return an instance of BetaDatasetsClient.
-     */
-    private BetaDatasetsClient buildBetaDatasetsClient() {
-        return new BetaDatasetsClient(buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
-    }
-
-    /**
      * Builds an instance of BetaAgentInsightMonitorsAsyncClient class.
      *
      * @return an instance of BetaAgentInsightMonitorsAsyncClient.
@@ -786,7 +770,7 @@ public final class AIProjectClientBuilder
      * The returned builder uses the configuration set on this builder, including endpoint, credential, HTTP pipeline,
      * policies, retry settings, logging options, client options, and service version. Use this method
      * when you want to build a client whose type is prefixed with {@code Beta}, such as {@link BetaModelsClient},
-     * {@link BetaRedTeamsClient}, {@link BetaDatasetsClient}, or their async counterparts.
+     * {@link BetaRedTeamsClient}, {@link BetaSkillsClient}, or their async counterparts.
      * <p>
      * Clients created by this sub-builder automatically opt in to the preview service area they target by adding the
      * required {@code Foundry-Features} header. Calling {@link #allowPreview(boolean)} is not required for these
@@ -816,7 +800,6 @@ public final class AIProjectClientBuilder
             BetaSchedulesAsyncClient.class,
             BetaRoutinesAsyncClient.class,
             BetaSkillsAsyncClient.class,
-            BetaDatasetsAsyncClient.class,
             BetaAgentInsightMonitorsAsyncClient.class,
             BetaModelsClient.class,
             BetaRedTeamsClient.class,
@@ -826,7 +809,6 @@ public final class AIProjectClientBuilder
             BetaSchedulesClient.class,
             BetaRoutinesClient.class,
             BetaSkillsClient.class,
-            BetaDatasetsClient.class,
             BetaAgentInsightMonitorsClient.class })
     public final class BetaAIProjectClientBuilder {
 
@@ -959,22 +941,6 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds an asynchronous beta Datasets client for preview data generation job operations.
-         * <p>
-         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
-         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
-         * {@code Foundry-Features} header required for data generation jobs preview operations, so
-         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
-         *
-         * @return an instance of BetaDatasetsAsyncClient.
-         */
-        @Beta
-        public BetaDatasetsAsyncClient buildBetaDatasetsAsyncClient() {
-            return new BetaDatasetsAsyncClient(
-                buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
-        }
-
-        /**
          * Builds a synchronous beta Models client for preview model operations.
          * <p>
          * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
@@ -1096,21 +1062,6 @@ public final class AIProjectClientBuilder
         }
 
         /**
-         * Builds a synchronous beta Datasets client for preview data generation job operations.
-         * <p>
-         * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
-         * enclosing {@link AIProjectClientBuilder}. Requests made by the client automatically include the
-         * {@code Foundry-Features} header required for data generation jobs preview operations, so
-         * {@link AIProjectClientBuilder#allowPreview(boolean)} does not need to be enabled.
-         *
-         * @return an instance of BetaDatasetsClient.
-         */
-        @Beta
-        public BetaDatasetsClient buildBetaDatasetsClient() {
-            return new BetaDatasetsClient(buildInnerClient(DATA_GENERATION_JOBS_PREVIEW_FEATURES).getBetaDatasets());
-        }
-
-        /**
          * Builds an asynchronous beta Agent Insight Monitors client for preview agent insights operations.
          * <p>
          * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
@@ -1141,5 +1092,51 @@ public final class AIProjectClientBuilder
             return new BetaAgentInsightMonitorsClient(
                 buildInnerClient(AGENT_INSIGHTS_PREVIEW_FEATURES).getBetaAgentInsightMonitors());
         }
+    }
+
+    /**
+     * Builds an instance of EvaluatorsAsyncClient class.
+     *
+     * @return an instance of EvaluatorsAsyncClient.
+     */
+    @Generated
+    public EvaluatorsAsyncClient buildEvaluatorsAsyncClient() {
+        return new EvaluatorsAsyncClient(buildInnerClient().getEvaluators());
+    }
+
+    /**
+     * Builds an instance of DataGenerationJobsAsyncClient class.
+     * <p>
+     * Preview features require {@link #allowPreview(boolean) allowPreview(true)}. By default, the client does not
+     * add a {@code Foundry-Features} header.
+     *
+     * @return an instance of DataGenerationJobsAsyncClient.
+     */
+    public DataGenerationJobsAsyncClient buildDataGenerationJobsAsyncClient() {
+        return new DataGenerationJobsAsyncClient(
+            buildInnerClient(allowPreview ? DATA_GENERATION_JOBS_PREVIEW_FEATURES : null).getDataGenerationJobs());
+    }
+
+    /**
+     * Builds an instance of EvaluatorsClient class.
+     *
+     * @return an instance of EvaluatorsClient.
+     */
+    @Generated
+    public EvaluatorsClient buildEvaluatorsClient() {
+        return new EvaluatorsClient(buildInnerClient().getEvaluators());
+    }
+
+    /**
+     * Builds an instance of DataGenerationJobsClient class.
+     * <p>
+     * Preview features require {@link #allowPreview(boolean) allowPreview(true)}. By default, the client does not
+     * add a {@code Foundry-Features} header.
+     *
+     * @return an instance of DataGenerationJobsClient.
+     */
+    public DataGenerationJobsClient buildDataGenerationJobsClient() {
+        return new DataGenerationJobsClient(
+            buildInnerClient(allowPreview ? DATA_GENERATION_JOBS_PREVIEW_FEATURES : null).getDataGenerationJobs());
     }
 }

@@ -36,8 +36,8 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        BetaDatasetsClient dataGenerationJobsClient
-            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsClient();
+        DataGenerationJobsClient dataGenerationJobsClient
+            = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsClient();
 
         Iterable<DataGenerationJob> jobs = dataGenerationJobsClient.listGenerationJobs(5, PageOrder.DESC, null, null);
         Assertions.assertNotNull(jobs);
@@ -60,7 +60,7 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
     public void dataGenerationJobWithEvaluationSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion)
         throws InterruptedException {
         AIProjectClientBuilder projectClientBuilder = getClientBuilder(httpClient, serviceVersion);
-        BetaDatasetsClient dataGenerationJobsClient = projectClientBuilder.beta().buildBetaDatasetsClient();
+        DataGenerationJobsClient dataGenerationJobsClient = projectClientBuilder.buildDataGenerationJobsClient();
         DatasetsClient datasetsClient = projectClientBuilder.buildDatasetsClient();
         OpenAIClient openAIClient = projectClientBuilder.buildOpenAIClient();
 
@@ -116,7 +116,7 @@ public class DataGenerationJobsClientTests extends ClientTestBase {
         dataGenerationJobsClient.deleteGenerationJob(job.getId());
     }
 
-    private DataGenerationJob waitForDataGenerationJob(BetaDatasetsClient dataGenerationJobsClient, String jobId,
+    private DataGenerationJob waitForDataGenerationJob(DataGenerationJobsClient dataGenerationJobsClient, String jobId,
         int pollIntervalSeconds, int maxAttempts) throws InterruptedException {
         DataGenerationJob job;
         int attempts = 0;

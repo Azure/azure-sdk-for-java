@@ -6,7 +6,7 @@ The AI Projects client library is part of the Azure AI Foundry SDK and provides 
 * **Enumerate AI Models** deployed to your Foundry Project using the `Deployments` operations.
 * **Enumerate connected Azure resources** in your Foundry project using the `Connections` operations.
 * **Upload documents and create Datasets** to reference them using the `Datasets` operations.
-* **Generate datasets** for model, agent, evaluator, and traces scenarios using the preview `BetaDatasetsClient`.
+* **Generate datasets** for model, agent, evaluator, and traces scenarios using `DataGenerationJobsClient`.
 * **Register and manage model weights** as Foundry `ModelVersion` resources using the preview `BetaModelsClient`.
 * **Create and dispatch routines** using the preview `BetaRoutinesClient`.
 * **Monitor deployed agents for issues** and review the resulting insights using the preview `BetaAgentInsightMonitorsClient`.
@@ -18,7 +18,7 @@ The client library uses a single service version `v1` of the AI Foundry [data pl
 > [!IMPORTANT]
 > **Preview and beta features**
 > - Build `Beta*Client` and `Beta*AsyncClient` instances through `AIProjectClientBuilder.beta()`. These clients automatically opt in to their preview service area; you do not need `allowPreview(true)` for them.
-> - Use `AIProjectClientBuilder.allowPreview(true)` only when calling preview APIs on non-Beta clients, such as preview response types on `EvaluationRulesClient` / `EvaluationRulesAsyncClient`.
+> - Use `AIProjectClientBuilder.allowPreview(true)` only when calling preview APIs on non-Beta clients, such as preview response types on `EvaluationRulesClient` / `EvaluationRulesAsyncClient` or preview scenarios on `DataGenerationJobsClient` / `DataGenerationJobsAsyncClient`.
 > - Classes and methods annotated with `@Beta` are preview API surface and may change in future releases. See [Preview operation groups and beta clients](#preview-operation-groups-and-beta-clients) for details.
 
 ## Documentation
@@ -63,7 +63,7 @@ ConnectionsClient connectionsClient = builder.buildConnectionsClient();
 // Beta* clients automatically opt in to their preview service area.
 BetaAgentInsightMonitorsClient agentInsightMonitorsClient
     = builder.beta().buildBetaAgentInsightMonitorsClient();
-BetaDatasetsClient dataGenerationJobsClient = builder.beta().buildBetaDatasetsClient();
+DataGenerationJobsClient dataGenerationJobsClient = builder.buildDataGenerationJobsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
@@ -136,12 +136,13 @@ AIProjectClientBuilder builder = new AIProjectClientBuilder()
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
 ```
 
+Build `DataGenerationJobsClient` and `DataGenerationJobsAsyncClient` directly from `AIProjectClientBuilder` as well. Their default requests do not opt in to preview features. For preview scenarios such as supervised and reinforcement fine-tuning, use `allowPreview(true)` to add `Foundry-Features: DataGenerationJobs=V1Preview` to their requests.
+
 Build clients whose names start with `Beta` from `AIProjectClientBuilder.beta()`. These clients always opt in to their corresponding preview service area. Requests sent by these clients automatically include the appropriate `Foundry-Features` header, and their APIs can send or return preview/beta request and response types. You do not need to call `allowPreview(true)` to use a `Beta*Client`.
 
 | Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
 | `BetaAgentInsightMonitorsClient` | `AgentInsights=V1Preview` |
-| `BetaDatasetsClient` | `DataGenerationJobs=V1Preview` |
 | `BetaEvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
 | `BetaEvaluatorsClient` | `Evaluations=V1Preview` |
 | `BetaInsightsClient` | `Insights=V1Preview` |
@@ -155,7 +156,7 @@ The async `Beta*AsyncClient` counterparts follow the same behavior.
 
 ## Examples
 
-The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples]. Additional preview samples are available for data generation jobs (`DataGenerationJobsSample`, `DataGenerationJobsAsyncSample`, and `DataGenerationJobWithEvaluationSample`), model management (`ModelsSample` and `ModelsAsyncSample`), routines (`RoutinesSample`, `RoutinesAsyncSample`, `RoutinesManualDispatchSample`, `RoutinesManualDispatchAsyncSample`, and related trigger samples), and packaged skills (`SkillsPackageSample` and `SkillsPackageAsyncSample`).
+The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples]. Additional samples are available for data generation jobs (`DataGenerationJobsSample`, `DataGenerationJobsAsyncSample`, and `DataGenerationJobWithEvaluationSample`), model management (`ModelsSample` and `ModelsAsyncSample`), routines (`RoutinesSample`, `RoutinesAsyncSample`, `RoutinesManualDispatchSample`, `RoutinesManualDispatchAsyncSample`, and related trigger samples), and packaged skills (`SkillsPackageSample` and `SkillsPackageAsyncSample`).
 
 ### Connections operations
 
