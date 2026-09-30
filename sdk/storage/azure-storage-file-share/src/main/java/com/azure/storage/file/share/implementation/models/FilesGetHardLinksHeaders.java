@@ -143,19 +143,19 @@ public final class FilesGetHardLinksHeaders {
      * The x-ms-file-creation-time property.
      */
     @Generated
-    private DateTimeRfc1123 xMsFileCreationTime;
+    private OffsetDateTime xMsFileCreationTime;
 
     /*
      * The x-ms-file-last-write-time property.
      */
     @Generated
-    private DateTimeRfc1123 xMsFileLastWriteTime;
+    private OffsetDateTime xMsFileLastWriteTime;
 
     /*
      * The x-ms-file-change-time property.
      */
     @Generated
-    private DateTimeRfc1123 xMsFileChangeTime;
+    private OffsetDateTime xMsFileChangeTime;
 
     /*
      * The x-ms-file-permission-key property.
@@ -379,19 +379,19 @@ public final class FilesGetHardLinksHeaders {
         this.xMsFileAttributes = rawHeaders.getValue(X_MS_FILE_ATTRIBUTES);
         String xMsFileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
         if (xMsFileCreationTime != null) {
-            this.xMsFileCreationTime = new DateTimeRfc1123(xMsFileCreationTime);
+            this.xMsFileCreationTime = OffsetDateTime.parse(xMsFileCreationTime);
         } else {
             this.xMsFileCreationTime = null;
         }
         String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
         if (xMsFileLastWriteTime != null) {
-            this.xMsFileLastWriteTime = new DateTimeRfc1123(xMsFileLastWriteTime);
+            this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
         } else {
             this.xMsFileLastWriteTime = null;
         }
         String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
         if (xMsFileChangeTime != null) {
-            this.xMsFileChangeTime = new DateTimeRfc1123(xMsFileChangeTime);
+            this.xMsFileChangeTime = OffsetDateTime.parse(xMsFileChangeTime);
         } else {
             this.xMsFileChangeTime = null;
         }
@@ -891,10 +891,7 @@ public final class FilesGetHardLinksHeaders {
      */
     @Generated
     public OffsetDateTime getXMsFileCreationTime() {
-        if (this.xMsFileCreationTime == null) {
-            return null;
-        }
-        return this.xMsFileCreationTime.getDateTime();
+        return this.xMsFileCreationTime;
     }
 
     /**
@@ -905,11 +902,7 @@ public final class FilesGetHardLinksHeaders {
      */
     @Generated
     public FilesGetHardLinksHeaders setXMsFileCreationTime(OffsetDateTime xMsFileCreationTime) {
-        if (xMsFileCreationTime == null) {
-            this.xMsFileCreationTime = null;
-        } else {
-            this.xMsFileCreationTime = new DateTimeRfc1123(xMsFileCreationTime);
-        }
+        this.xMsFileCreationTime = xMsFileCreationTime;
         return this;
     }
 
@@ -920,10 +913,7 @@ public final class FilesGetHardLinksHeaders {
      */
     @Generated
     public OffsetDateTime getXMsFileLastWriteTime() {
-        if (this.xMsFileLastWriteTime == null) {
-            return null;
-        }
-        return this.xMsFileLastWriteTime.getDateTime();
+        return this.xMsFileLastWriteTime;
     }
 
     /**
@@ -934,11 +924,7 @@ public final class FilesGetHardLinksHeaders {
      */
     @Generated
     public FilesGetHardLinksHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
-        if (xMsFileLastWriteTime == null) {
-            this.xMsFileLastWriteTime = null;
-        } else {
-            this.xMsFileLastWriteTime = new DateTimeRfc1123(xMsFileLastWriteTime);
-        }
+        this.xMsFileLastWriteTime = xMsFileLastWriteTime;
         return this;
     }
 
@@ -949,10 +935,7 @@ public final class FilesGetHardLinksHeaders {
      */
     @Generated
     public OffsetDateTime getXMsFileChangeTime() {
-        if (this.xMsFileChangeTime == null) {
-            return null;
-        }
-        return this.xMsFileChangeTime.getDateTime();
+        return this.xMsFileChangeTime;
     }
 
     /**
@@ -963,11 +946,7 @@ public final class FilesGetHardLinksHeaders {
      */
     @Generated
     public FilesGetHardLinksHeaders setXMsFileChangeTime(OffsetDateTime xMsFileChangeTime) {
-        if (xMsFileChangeTime == null) {
-            this.xMsFileChangeTime = null;
-        } else {
-            this.xMsFileChangeTime = new DateTimeRfc1123(xMsFileChangeTime);
-        }
+        this.xMsFileChangeTime = xMsFileChangeTime;
         return this;
     }
 
