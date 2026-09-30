@@ -28,6 +28,19 @@ public final class Storage implements JsonSerializable<Storage> {
     private StorageAutoGrow autoGrow;
 
     /*
+     * Maximum allocated storage size to which storage autogrow may grow, in MB. This value is not a disk-utilization
+     * trigger threshold and must be at least the effective current or requested storage size. Storage conversion uses 1
+     * GB = 1,024 MB.
+     */
+    private Integer autoGrowMaxThresholdMb;
+
+    /*
+     * Storage autogrow increment as a percentage of the current allocated storage size. This value is not an absolute
+     * size increment or a utilization threshold.
+     */
+    private Integer autoGrowIncrementPercent;
+
+    /*
      * Storage tier of a server.
      */
     private AzureManagedDiskPerformanceTier tier;
@@ -93,6 +106,52 @@ public final class Storage implements JsonSerializable<Storage> {
      */
     public Storage withAutoGrow(StorageAutoGrow autoGrow) {
         this.autoGrow = autoGrow;
+        return this;
+    }
+
+    /**
+     * Get the autoGrowMaxThresholdMb property: Maximum allocated storage size to which storage autogrow may grow, in
+     * MB. This value is not a disk-utilization trigger threshold and must be at least the effective current or
+     * requested storage size. Storage conversion uses 1 GB = 1,024 MB.
+     * 
+     * @return the autoGrowMaxThresholdMb value.
+     */
+    public Integer autoGrowMaxThresholdMb() {
+        return this.autoGrowMaxThresholdMb;
+    }
+
+    /**
+     * Set the autoGrowMaxThresholdMb property: Maximum allocated storage size to which storage autogrow may grow, in
+     * MB. This value is not a disk-utilization trigger threshold and must be at least the effective current or
+     * requested storage size. Storage conversion uses 1 GB = 1,024 MB.
+     * 
+     * @param autoGrowMaxThresholdMb the autoGrowMaxThresholdMb value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withAutoGrowMaxThresholdMb(Integer autoGrowMaxThresholdMb) {
+        this.autoGrowMaxThresholdMb = autoGrowMaxThresholdMb;
+        return this;
+    }
+
+    /**
+     * Get the autoGrowIncrementPercent property: Storage autogrow increment as a percentage of the current allocated
+     * storage size. This value is not an absolute size increment or a utilization threshold.
+     * 
+     * @return the autoGrowIncrementPercent value.
+     */
+    public Integer autoGrowIncrementPercent() {
+        return this.autoGrowIncrementPercent;
+    }
+
+    /**
+     * Set the autoGrowIncrementPercent property: Storage autogrow increment as a percentage of the current allocated
+     * storage size. This value is not an absolute size increment or a utilization threshold.
+     * 
+     * @param autoGrowIncrementPercent the autoGrowIncrementPercent value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withAutoGrowIncrementPercent(Integer autoGrowIncrementPercent) {
+        this.autoGrowIncrementPercent = autoGrowIncrementPercent;
         return this;
     }
 
@@ -190,6 +249,8 @@ public final class Storage implements JsonSerializable<Storage> {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("storageSizeGB", this.storageSizeGB);
         jsonWriter.writeStringField("autoGrow", this.autoGrow == null ? null : this.autoGrow.toString());
+        jsonWriter.writeNumberField("autoGrowMaxThresholdMb", this.autoGrowMaxThresholdMb);
+        jsonWriter.writeNumberField("autoGrowIncrementPercent", this.autoGrowIncrementPercent);
         jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
         jsonWriter.writeNumberField("iops", this.iops);
         jsonWriter.writeNumberField("throughput", this.throughput);
@@ -216,6 +277,10 @@ public final class Storage implements JsonSerializable<Storage> {
                     deserializedStorage.storageSizeGB = reader.getNullable(JsonReader::getInt);
                 } else if ("autoGrow".equals(fieldName)) {
                     deserializedStorage.autoGrow = StorageAutoGrow.fromString(reader.getString());
+                } else if ("autoGrowMaxThresholdMb".equals(fieldName)) {
+                    deserializedStorage.autoGrowMaxThresholdMb = reader.getNullable(JsonReader::getInt);
+                } else if ("autoGrowIncrementPercent".equals(fieldName)) {
+                    deserializedStorage.autoGrowIncrementPercent = reader.getNullable(JsonReader::getInt);
                 } else if ("tier".equals(fieldName)) {
                     deserializedStorage.tier = AzureManagedDiskPerformanceTier.fromString(reader.getString());
                 } else if ("iops".equals(fieldName)) {

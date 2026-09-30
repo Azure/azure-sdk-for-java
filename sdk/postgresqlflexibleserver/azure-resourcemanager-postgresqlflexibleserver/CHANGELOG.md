@@ -1,14 +1,75 @@
 # Release History
 
-## 2.1.0-beta.3 (Unreleased)
+## 2.1.0-beta.3 (2026-09-29)
+
+- Azure Resource Manager PostgreSql client library for Java. This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Azure Database for PostgreSQL management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, network configuration, security alert policies, log files and configurations with new business model. Package api-version 2026-07-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.FipsMode` was added
 
-### Bugs Fixed
+* `models.DbAgentForUpdateState` was added
 
-### Other Changes
+* `models.DbAgentProperties` was added
+
+* `models.DbAgentForUpdateProperties` was added
+
+* `models.DbAgentState` was added
+
+* `models.ImmutableBackup` was added
+
+* `models.DbAgent` was added
+
+* `models.DbAgents` was added
+
+* `models.DbAgentProvisioningState` was added
+
+* `models.DbAgentForUpdate` was added
+
+#### `models.Backup` was modified
+
+* `withImmutableBackup(models.ImmutableBackup)` was added
+* `immutableBackup()` was added
+
+#### `models.Storage` was modified
+
+* `autoGrowIncrementPercent()` was added
+* `autoGrowMaxThresholdMb()` was added
+* `withAutoGrowMaxThresholdMb(java.lang.Integer)` was added
+* `withAutoGrowIncrementPercent(java.lang.Integer)` was added
+
+#### `models.BackupForPatch` was modified
+
+* `immutableBackup()` was added
+* `withImmutableBackup(models.ImmutableBackup)` was added
+
+#### `models.ServerForPatch` was modified
+
+* `sourceServerResourceId()` was added
+* `fipsMode()` was added
+* `withSourceServerResourceId(java.lang.String)` was added
+* `withFipsMode(models.FipsMode)` was added
+
+#### `models.PostgresMajorVersion` was modified
+
+* `ONE_NINE` was added
+
+#### `models.Server$Update` was modified
+
+* `withFipsMode(models.FipsMode)` was added
+* `withSourceServerResourceId(java.lang.String)` was added
+
+#### `models.Server` was modified
+
+* `fipsMode()` was added
+
+#### `models.Server$Definition` was modified
+
+* `withFipsMode(models.FipsMode)` was added
+
+#### `PostgreSqlManager` was modified
+
+* `dbAgents()` was added
 
 ## 2.1.0-beta.2 (2026-06-03)
 
