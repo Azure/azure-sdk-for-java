@@ -1,4 +1,6 @@
 parameters:
+  - name: OSName
+    type: string
   - name: LatestJdkFeatureVersion
     type: string
     default: $(LatestJdkFeatureVersion)
@@ -32,12 +34,14 @@ steps:
     displayName: 'Verify Latest JDK Install'
     condition: eq(variables['IsLatestNonLtsJdk'], 'true')
 
-  - task: PowerShell@2
-    displayName: 'Install JDK 8 on macOS'
-    inputs:
-      pwsh: true
-      arguments: >
-        -JdkFeatureVersion 8
-      workingDirectory: $(Agent.BuildDirectory)
-      filePath: eng/scripts/Install-Latest-JDK.ps1
-    condition: eq(variables['Agent.OS'], 'Darwin')
+  - ${{ if eq(parameters.OSName, 'macOS') }}:
+    - task: PowerShell@2
+      displayName: 'Install JDK 8 on macOS'
+      inputs:
+        pwsh: true
+        arguments: >
+          -JdkFeatureVersion 8
+        workingDirectory: $(Agent.BuildDirectory)
+        filePath: eng/scripts/Install-Latest-JDK.ps1
+      # Retain the runtime guard to preserve failure and cancellation behavior.
+      condition: eq(variables['Agent.OS'], 'Darwin')

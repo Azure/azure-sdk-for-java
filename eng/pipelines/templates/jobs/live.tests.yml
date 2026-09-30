@@ -90,6 +90,7 @@ jobs:
       # Java 24), then install the latest Java version and use that to run tests.
       - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
         parameters:
+          OSName: ${{ parameters.OSName }}
           LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:

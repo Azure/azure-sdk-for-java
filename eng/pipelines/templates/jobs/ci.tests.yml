@@ -136,6 +136,7 @@ jobs:
       # Otherwise, run a normal test run.
       - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
         parameters:
+          OSName: ${{ parameters.OSName }}
           LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
 
       - ${{ parameters.PreBuildSteps }}
