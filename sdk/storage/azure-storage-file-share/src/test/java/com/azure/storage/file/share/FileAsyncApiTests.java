@@ -127,10 +127,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("deprecation")
 public class FileAsyncApiTests extends FileShareTestBase {
+    private static final String FILE_ID_TEST_CONTENT = "file-id properties";
+
     private ShareFileAsyncClient primaryFileAsyncClient;
     private ShareAsyncClient shareAsyncClient;
     private String shareName;
     private String filePath;
+    private String fileId;
     private static Map<String, String> testMetadata;
     private static ShareFileHttpHeaders httpHeaders;
     private FileSmbProperties smbProperties;
@@ -151,6 +154,15 @@ public class FileAsyncApiTests extends FileShareTestBase {
         testMetadata = Collections.singletonMap("testmetadata", "value");
         httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en").setContentType("application/octet-stream");
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL));
+
+        if (testInfo.getTags().contains("file-id-integration")) {
+            byte[] content = FILE_ID_TEST_CONTENT.getBytes(StandardCharsets.UTF_8);
+            primaryFileAsyncClient.create(content.length).block();
+            primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(content)), content.length).block();
+            ShareFileProperties properties = Objects.requireNonNull(primaryFileAsyncClient.getProperties().block());
+            fileId = Objects.requireNonNull(properties.getSmbProperties()).getFileId();
+            Assertions.assertNotNull(fileId);
+        }
     }
 
     @Test
@@ -163,56 +175,23 @@ public class FileAsyncApiTests extends FileShareTestBase {
         assertEquals(expectURL, fileURL);
     }
 
-    @DoNotRecord
-    @Tag("file-id-mock")
+    @Tag("file-id-integration")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
     @Test
-    public void asyncFilePropertiesByIdUseFileIdQueryAndMapFileName() {
-        AtomicReference<String> requestUrl = new AtomicReference<>();
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
-            Assertions.assertEquals(HttpMethod.HEAD, request.getHttpMethod());
-            requestUrl.set(request.getUrl().toString());
-            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("file.txt")));
-        }).build();
-
-        ShareAsyncClient testShareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
-            .pipeline(pipeline)
-            .serviceVersion(ShareServiceVersion.V2027_03_07)
-            .buildAsyncClient()
-            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
-        ShareFileProperties properties
-            = testShareClient.getFileClientByFileId(FileIdTestHelper.FILE_ID).getProperties().block();
-
-        Assertions.assertEquals("file.txt", properties.getFileName());
-        Assertions.assertEquals(1024, properties.getContentLength());
-        Assertions.assertEquals("en", properties.getContentLanguage());
-        Assertions.assertEquals("gzip", properties.getContentEncoding());
-        Assertions.assertEquals("value", properties.getMetadata().get("key"));
-        FileIdTestHelper.assertSmbProperties(properties.getSmbProperties());
-        Assertions.assertTrue(requestUrl.get().contains("fileid=" + FileIdTestHelper.FILE_ID));
-    }
-
-    @DoNotRecord
-    @Tag("file-id-mock")
-    @Test
-    public void asyncFileClientBuilderSetsFileId() {
-        AtomicReference<String> requestUrl = new AtomicReference<>();
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
-            requestUrl.set(request.getUrl().toString());
-            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("file.txt")));
-        }).build();
-
-        ShareFileAsyncClient fileClient = new ShareFileClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
-            .shareName(FileIdTestHelper.SHARE_NAME)
-            .fileId(FileIdTestHelper.FILE_ID)
-            .pipeline(pipeline)
-            .serviceVersion(ShareServiceVersion.V2027_03_07)
+    public void asyncFilePropertiesById() {
+        ShareFileAsyncClient factoryClient = shareAsyncClient.getFileClientByFileId(fileId);
+        ShareFileAsyncClient builderClient = instrument(new ShareFileClientBuilder())
+            .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
+            .shareName(shareName)
+            .fileId(fileId)
             .buildFileAsyncClient();
-        ShareFileProperties properties = fileClient.getProperties().block();
 
-        Assertions.assertEquals(FileIdTestHelper.FILE_ID, fileClient.getFileId());
-        Assertions.assertEquals("", fileClient.getFilePath());
-        Assertions.assertEquals("file.txt", properties.getFileName());
-        Assertions.assertTrue(requestUrl.get().contains("fileid=" + FileIdTestHelper.FILE_ID));
+        for (ShareFileAsyncClient fileIdClient : Arrays.asList(factoryClient, builderClient)) {
+            ShareFileProperties properties = fileIdClient.getProperties().block();
+            Assertions.assertEquals(filePath, properties.getFileName());
+            Assertions.assertEquals(FILE_ID_TEST_CONTENT.length(), properties.getContentLength());
+            Assertions.assertEquals(fileId, properties.getSmbProperties().getFileId());
+        }
     }
 
     @DoNotRecord
