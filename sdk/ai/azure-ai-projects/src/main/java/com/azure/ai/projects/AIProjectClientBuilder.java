@@ -1103,9 +1103,8 @@ public final class AIProjectClientBuilder
      *
      * @return an instance of EvaluatorsAsyncClient.
      */
-    @Generated
     public EvaluatorsAsyncClient buildEvaluatorsAsyncClient() {
-        return new EvaluatorsAsyncClient(buildInnerClient().getEvaluators());
+        return new EvaluatorsAsyncClient(buildInnerClient(allowPreview ? EVALUATIONS_PREVIEW_FEATURES : null).getEvaluators());
     }
 
     /**
@@ -1113,8 +1112,7 @@ public final class AIProjectClientBuilder
      *
      * @return an instance of EvaluatorsClient.
      */
-    @Generated
     public EvaluatorsClient buildEvaluatorsClient() {
-        return new EvaluatorsClient(buildInnerClient().getEvaluators());
+        return new EvaluatorsClient(buildInnerClient(allowPreview ? EVALUATIONS_PREVIEW_FEATURES : null).getEvaluators());
     }
 }
