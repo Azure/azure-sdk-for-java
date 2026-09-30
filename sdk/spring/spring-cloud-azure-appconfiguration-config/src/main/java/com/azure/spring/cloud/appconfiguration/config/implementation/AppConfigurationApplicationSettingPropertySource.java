@@ -23,7 +23,9 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
-import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -48,6 +50,10 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
     protected List<ConfigurationSetting> featureFlagsList = new ArrayList<>();
 
     private static final String SNAPSHOT_REF_CONTENT_TYPE = "application/json; profile=\"https://azconfig.io/mime-profiles/snapshot-ref\"; charset=utf-8";
+
+    private static final String SNAPSHOT_NAME_PROPERTY = "snapshot_name";
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     protected final FeatureFlagClient featureFlagClient;
 
@@ -95,14 +101,13 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
                 settingSelector.getKeyFilter(),
                 keyPrefixTrimValues, context);
         }
+
+        featureFlagClient.processFeatureFlags(featureFlagsList, replicaClient.getEndpoint());
     }
 
     protected void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter,
         List<String> keyPrefixTrimValues, Context context)
         throws InvalidConfigurationPropertyValueException {
-        // Reset per-label state so flags from a previous label aren't re-processed.
-        featureFlagsList.clear();
-
         // First resolve snapshot references
         settings = resolveSnapshotReferences(settings, context);
 
@@ -126,20 +131,20 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
                 properties.put(key, setting.getValue());
             }
         }
-
-        WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, featureFlagsList);
-        featureFlagClient.processFeatureFlags(featureFlags, replicaClient.getEndpoint());
     }
 
-    private List<ConfigurationSetting> resolveSnapshotReferences(List<ConfigurationSetting> settings, Context context) {
+    private List<ConfigurationSetting> resolveSnapshotReferences(List<ConfigurationSetting> settings, Context context)
+        throws InvalidConfigurationPropertyValueException {
         List<ConfigurationSetting> resolvedSettings = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
             if (SNAPSHOT_REF_CONTENT_TYPE.equals(setting.getContentType())) {
-                // Handle snapshot reference
+                String snapshotName = parseSnapshotName(setting);
                 replicaClient.getTracingInfo().setUsesSnapshotReference();
-                List<ConfigurationSetting> snapshotSettings = replicaClient.listSettingSnapshot(setting.getValue(),
-                    context);
-                resolvedSettings.addAll(snapshotSettings);
+                try {
+                    resolvedSettings.addAll(replicaClient.listSettingSnapshot(snapshotName, context));
+                } finally {
+                    replicaClient.getTracingInfo().resetUsesSnapshotReference();
+                }
             } else if (setting instanceof FeatureFlagConfigurationSetting) {
                 // We need to strip feature flags as we only support feature flags from snapshots, and if they are in a
                 // snapshot reference we won't be able to resolve them.
@@ -150,6 +155,30 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             }
         }
         return resolvedSettings;
+    }
+
+    private static String parseSnapshotName(ConfigurationSetting setting)
+        throws InvalidConfigurationPropertyValueException {
+        if (!StringUtils.hasText(setting.getValue())) {
+            throw invalidSnapshotReference(setting);
+        }
+        try {
+            JsonNode snapshotReference = MAPPER.readTree(setting.getValue());
+            JsonNode snapshotName = snapshotReference == null ? null : snapshotReference.get(SNAPSHOT_NAME_PROPERTY);
+            if (snapshotName == null || !snapshotName.isString()
+                || !StringUtils.hasText(snapshotName.stringValue())) {
+                throw invalidSnapshotReference(setting);
+            }
+            return snapshotName.stringValue();
+        } catch (JacksonException e) {
+            throw invalidSnapshotReference(setting);
+        }
+    }
+
+    private static InvalidConfigurationPropertyValueException invalidSnapshotReference(
+        ConfigurationSetting setting) {
+        return new InvalidConfigurationPropertyValueException(setting.getKey(), "<Redacted>",
+            "Expected a JSON object containing a non-empty string property named 'snapshot_name'.");
     }
 
     /**

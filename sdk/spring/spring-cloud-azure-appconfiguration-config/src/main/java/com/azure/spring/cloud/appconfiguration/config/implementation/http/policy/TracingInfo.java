@@ -69,6 +69,13 @@ public class TracingInfo {
     }
 
     /**
+     * Marks snapshot reference requests as complete.
+     */
+    public void resetUsesSnapshotReference() {
+        this.usesSnapshotReference = false;
+    }
+
+    /**
      * Resets AI configuration tracing flags.
      */
     public void resetAiConfigurationTracing() {

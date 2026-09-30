@@ -79,6 +79,8 @@ public class TracingInfoTest {
         tracingInfo.setUsesSnapshotReference();
         String value = tracingInfo.getValue(false, false, null);
         assertTrue(value.contains("Features=SnapshotRef"));
+        tracingInfo.resetUsesSnapshotReference();
+        assertEquals("RequestType=Startup", tracingInfo.getValue(false, false, null));
     }
 
     @Test

@@ -12,7 +12,6 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
-import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -63,9 +62,7 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
                 properties.put(key, setting.getValue());
             }
         }
-
-        WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, featureFlagsList);
-        featureFlagClient.processFeatureFlags(featureFlags, replicaClient.getEndpoint());
+        featureFlagClient.processFeatureFlags(featureFlagsList, replicaClient.getEndpoint());
     }
 
     @Override

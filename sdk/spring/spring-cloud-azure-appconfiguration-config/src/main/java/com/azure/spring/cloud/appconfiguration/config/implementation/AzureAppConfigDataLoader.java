@@ -364,7 +364,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         List<String> profiles = resource.getProfiles().getActive();
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
-            AppConfigurationPropertySource propertySource;
+            AppConfigurationApplicationSettingPropertySource propertySource;
 
             if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
                 propertySource = new AppConfigurationSnapshotPropertySource(

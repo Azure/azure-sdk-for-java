@@ -76,7 +76,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     
     @Mock
     private Context contextMock;
-    
+
     @Mock
     private FeatureFlagClient featureFlagClientMock;
 
