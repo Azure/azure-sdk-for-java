@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 
@@ -32,14 +33,17 @@ public class ProjectsCustomizations extends Customization {
     }
 
     private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
-        String className = "DataGenerationJobInputs";
-        customization.getClass("com.azure.ai.projects.models", className)
-            .customizeAst(ast -> ast.getClassByName(className)
-                .orElseThrow(() -> new IllegalStateException(className + " was not generated"))
-                .getConstructors()
-                .stream()
-                .filter(constructor -> constructor.isPublic())
-                .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED)));
+        List<String> classNames = Arrays.asList("DataGenerationJobInputs", "DataGenerationJobOptions",
+            "DataGenerationJobSource", "EvaluatorDefinition", "EvaluatorGenerationJobSource");
+        for (String className : classNames) {
+            customization.getClass("com.azure.ai.projects.models", className)
+                .customizeAst(ast -> ast.getClassByName(className)
+                    .orElseThrow(() -> new IllegalStateException(className + " was not generated"))
+                    .getConstructors()
+                    .stream()
+                    .filter(constructor -> constructor.isPublic())
+                    .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED)));
+        }
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {

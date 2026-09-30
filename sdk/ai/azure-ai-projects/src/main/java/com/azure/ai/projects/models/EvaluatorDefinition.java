@@ -42,7 +42,7 @@ public class EvaluatorDefinition implements JsonSerializable<EvaluatorDefinition
      * Creates an instance of EvaluatorDefinition class.
      */
     @Generated
-    public EvaluatorDefinition() {
+    protected EvaluatorDefinition() {
     }
 
     /**

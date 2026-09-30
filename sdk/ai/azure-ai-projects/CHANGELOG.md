@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Changed the constructors of `DataGenerationJobOptions`, `DataGenerationJobSource`, `EvaluatorDefinition`, and `EvaluatorGenerationJobSource` from public to protected. Construct their concrete subtypes instead. Deserialization of unknown discriminator values remains supported.
+
 ### Bugs Fixed
 
 ### Other Changes

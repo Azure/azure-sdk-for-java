@@ -171,6 +171,6 @@ public class DataGenerationJobOptions implements JsonSerializable<DataGeneration
      * Creates an instance of DataGenerationJobOptions class.
      */
     @Generated
-    public DataGenerationJobOptions() {
+    protected DataGenerationJobOptions() {
     }
 }

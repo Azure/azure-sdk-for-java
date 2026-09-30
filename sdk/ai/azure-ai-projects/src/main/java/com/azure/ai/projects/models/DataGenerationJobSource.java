@@ -34,7 +34,7 @@ public class DataGenerationJobSource implements JsonSerializable<DataGenerationJ
      * Creates an instance of DataGenerationJobSource class.
      */
     @Generated
-    public DataGenerationJobSource() {
+    protected DataGenerationJobSource() {
     }
 
     /**
