@@ -601,11 +601,10 @@ public class ModelHelper {
 
     public static Response<ShareDirectoryProperties>
         mapShareDirectoryPropertiesResponse(ResponseBase<DirectoriesGetPropertiesHeaders, Void> response) {
-        DirectoriesGetPropertiesHeaders headers = response.getDeserializedHeaders();
-        Map<String, String> metadata = headers.getXMsMeta();
-        String eTag = headers.getETag();
-        OffsetDateTime offsetDateTime = headers.getLastModified();
-        boolean isServerEncrypted = headers.isXMsServerEncrypted();
+        Map<String, String> metadata = response.getDeserializedHeaders().getXMsMeta();
+        String eTag = response.getDeserializedHeaders().getETag();
+        OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareDirectoryProperties shareDirectoryProperties = ShareDirectoryPropertiesHelper.create(metadata, eTag,
