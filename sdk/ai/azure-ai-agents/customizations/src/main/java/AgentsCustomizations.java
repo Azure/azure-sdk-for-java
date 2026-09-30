@@ -35,6 +35,8 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
+        deprecateEvaluationLevel(libraryCustomization);
+        internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization);
         protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
@@ -90,6 +92,27 @@ public class AgentsCustomizations extends Customization {
 
     private static final int V_SIZE = 18;
 
+    private void deprecateEvaluationLevel(LibraryCustomization customization) {
+        customization.getClass(MODELS_PACKAGE, "EvaluationLevel").customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName("EvaluationLevel")
+                .orElseThrow(() -> new IllegalStateException("EvaluationLevel was not generated"));
+            clazz.addMarkerAnnotation(Deprecated.class);
+            clazz.getJavadocComment()
+                .orElseThrow(() -> new IllegalStateException("EvaluationLevel JavaDoc was not generated"))
+                .setContent(clazz.getJavadocComment().get().getContent()
+                    + "\n * @deprecated Use {@link AgentOptimizationTargetCompletionEvaluationSet} for single-turn"
+                    + " evaluation or {@link AgentOptimizationUserConversationSimulationEvaluationSet} for"
+                    + " conversation evaluation.");
+        });
+    }
+
+    private void internalizeUnusedVoiceAgentFunctionToolType(LibraryCustomization customization) {
+        customization.getClass(MODELS_PACKAGE, "VoiceAgentFunctionToolType1")
+            .customizeAst(ast -> ast.getEnumByName("VoiceAgentFunctionToolType1")
+                .orElseThrow(() -> new IllegalStateException("VoiceAgentFunctionToolType1 was not generated"))
+                .removeModifier(Modifier.Keyword.PUBLIC));
+    }
+
     /**
      * Prevents customers from directly constructing polymorphic base models that do not represent valid wire shapes.
      * The classes remain concrete so their generated {@code fromJson} methods can deserialize unknown future
@@ -98,12 +121,16 @@ public class AgentsCustomizations extends Customization {
      * @param customization the library customization
      */
     private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
-        List<String> classNames = Arrays.asList("AgentHarness", "CreateTelephonyBindingInput", "RealtimeAudioFormat",
-            "RealtimeClientEvent", "RealtimeConversationItem", "RealtimeConversationItemMessage", "RealtimeMcpError",
-            "RealtimeSessionConfigurationBase", "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy",
-            "TelephonyTransferDestination", "VoiceAgentGreetingConfiguration", "VoiceAgentInterimResponseConfiguration",
-            "VoiceAgentSystemTool", "VoiceAgentTool", "VoiceAgentTurnDetectionConfiguration",
-            "VoiceConversationEngine");
+        List<String> classNames = Arrays.asList("AgentHarness", "AgentOptimizationConfigurationBase",
+            "AgentOptimizationEvaluationSet", "AgentOptimizationTargetCompletionDataSource",
+            "AgentOptimizationTargetConfiguration", "AgentOptimizationUserConversationSimulationDataSource",
+            "CreateTelephonyBindingInput", "EvaluationVoiceModelConfiguration", "OptimizationContext",
+            "RealtimeAudioFormat", "RealtimeClientEvent", "RealtimeConversationItem",
+            "RealtimeConversationItemMessage", "RealtimeMcpError", "RealtimeSessionConfigurationBase",
+            "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy", "TelephonyTransferDestination",
+            "UserConversationSimulationInterruptionConfiguration", "VoiceAgentGreetingConfiguration",
+            "VoiceAgentInterimResponseConfiguration", "VoiceAgentSystemTool", "VoiceAgentTool",
+            "VoiceAgentTurnDetectionConfiguration", "VoiceConversationEngine");
 
         for (String className : classNames) {
             ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);

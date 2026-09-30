@@ -9,7 +9,11 @@ import java.util.Collection;
 
 /**
  * The level at which evaluation is performed.
+ *
+ * @deprecated Use {@link AgentOptimizationTargetCompletionEvaluationSet} for single-turn evaluation or
+ * {@link AgentOptimizationUserConversationSimulationEvaluationSet} for conversation evaluation.
  */
+@Deprecated
 public final class EvaluationLevel extends ExpandableStringEnum<EvaluationLevel> {
 
     /**

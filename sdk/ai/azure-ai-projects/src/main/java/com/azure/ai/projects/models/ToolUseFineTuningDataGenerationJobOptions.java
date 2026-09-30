@@ -12,7 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The options for a data generation job with ToolUse type. Used only for fine-tuning scenarios.
+ * The options for a data generation job with ToolUse type. This is a preview feature used only for fine-tuning
+ * scenarios.
  */
 @Fluent
 @Beta(warningText = "Preview API. DataGenerationJobs=V1Preview")

@@ -9,7 +9,17 @@
 
 ### Breaking Changes
 
+- Replaced the preview agent-optimization request and result models with the new optimization configuration,
+  evaluation-set, candidate-summary, and metrics models. Optimization operations now use `AgentsClient` and
+  `AgentsAsyncClient` and no longer require a preview feature header.
+- Renamed the agent-optimization methods `estimate`, `listCandidates`, `getCandidate`, and `promoteCandidate` to
+  `estimateOptimizationJob`, `listOptimizationCandidates`, `getOptimizationCandidate`, and
+  `promoteOptimizationCandidate`, respectively.
+
 ### Bugs Fixed
+
+- Restored the deprecated `EvaluationLevel` type as a compatibility shim. Evaluation granularity is now selected with
+  `AgentOptimizationTargetCompletionEvaluationSet` or `AgentOptimizationUserConversationSimulationEvaluationSet`.
 
 ### Other Changes
 

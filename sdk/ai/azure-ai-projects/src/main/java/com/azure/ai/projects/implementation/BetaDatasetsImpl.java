@@ -197,32 +197,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -257,6 +233,20 @@ public final class BetaDatasetsImpl {
      *         }
      *         debugInfo (Optional): {
      *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
      *     created_at: long (Required)
@@ -299,32 +289,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -359,6 +325,20 @@ public final class BetaDatasetsImpl {
      *         }
      *         debugInfo (Optional): {
      *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
      *     created_at: long (Required)
@@ -420,32 +400,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -480,6 +436,20 @@ public final class BetaDatasetsImpl {
      *         }
      *         debugInfo (Optional): {
      *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
      *     created_at: long (Required)
@@ -535,32 +505,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -595,6 +541,20 @@ public final class BetaDatasetsImpl {
      *         }
      *         debugInfo (Optional): {
      *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
      *     created_at: long (Required)
@@ -644,32 +604,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -704,6 +640,20 @@ public final class BetaDatasetsImpl {
      *         }
      *         debugInfo (Optional): {
      *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
      *     created_at: long (Required)
@@ -757,32 +707,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -817,6 +743,20 @@ public final class BetaDatasetsImpl {
      *         }
      *         debugInfo (Optional): {
      *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
      *     created_at: long (Required)
@@ -854,70 +794,21 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
      *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
-     *     result (Optional): {
-     *         outputs (Optional): [
-     *              (Optional){
-     *                 type: String(file/dataset) (Required)
-     *             }
-     *         ]
-     *         generated_samples: int (Required)
-     *         token_usage (Optional): {
-     *             prompt_tokens: long (Required)
-     *             completion_tokens: long (Required)
-     *             total_tokens: long (Required)
-     *         }
-     *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         misalignment (Optional): {
-     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
-     *             detailed_explanation: String (Optional)
-     *             steer (Optional): {
-     *                 message: String (Required)
-     *             }
-     *         }
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     created_at: long (Required)
-     *     finished_at: Long (Optional)
      * }
      * }
      * </pre>
@@ -927,32 +818,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -989,13 +856,27 @@ public final class BetaDatasetsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      * }
      * }
      * </pre>
      * 
-     * @param job The job to create.
+     * @param job The data generation job inputs to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1029,70 +910,21 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
      *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
-     *     result (Optional): {
-     *         outputs (Optional): [
-     *              (Optional){
-     *                 type: String(file/dataset) (Required)
-     *             }
-     *         ]
-     *         generated_samples: int (Required)
-     *         token_usage (Optional): {
-     *             prompt_tokens: long (Required)
-     *             completion_tokens: long (Required)
-     *             total_tokens: long (Required)
-     *         }
-     *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         misalignment (Optional): {
-     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
-     *             detailed_explanation: String (Optional)
-     *             steer (Optional): {
-     *                 message: String (Required)
-     *             }
-     *         }
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     created_at: long (Required)
-     *     finished_at: Long (Optional)
      * }
      * }
      * </pre>
@@ -1102,32 +934,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -1164,13 +972,27 @@ public final class BetaDatasetsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      * }
      * }
      * </pre>
      * 
-     * @param job The job to create.
+     * @param job The data generation job inputs to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1203,70 +1025,21 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
      *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
-     *     result (Optional): {
-     *         outputs (Optional): [
-     *              (Optional){
-     *                 type: String(file/dataset) (Required)
-     *             }
-     *         ]
-     *         generated_samples: int (Required)
-     *         token_usage (Optional): {
-     *             prompt_tokens: long (Required)
-     *             completion_tokens: long (Required)
-     *             total_tokens: long (Required)
-     *         }
-     *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         misalignment (Optional): {
-     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
-     *             detailed_explanation: String (Optional)
-     *             steer (Optional): {
-     *                 message: String (Required)
-     *             }
-     *         }
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     created_at: long (Required)
-     *     finished_at: Long (Optional)
      * }
      * }
      * </pre>
@@ -1276,32 +1049,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -1338,13 +1087,27 @@ public final class BetaDatasetsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      * }
      * }
      * </pre>
      * 
-     * @param job The job to create.
+     * @param job The data generation job inputs to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1386,70 +1149,21 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
      *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
-     *     result (Optional): {
-     *         outputs (Optional): [
-     *              (Optional){
-     *                 type: String(file/dataset) (Required)
-     *             }
-     *         ]
-     *         generated_samples: int (Required)
-     *         token_usage (Optional): {
-     *             prompt_tokens: long (Required)
-     *             completion_tokens: long (Required)
-     *             total_tokens: long (Required)
-     *         }
-     *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         misalignment (Optional): {
-     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
-     *             detailed_explanation: String (Optional)
-     *             steer (Optional): {
-     *                 message: String (Required)
-     *             }
-     *         }
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     created_at: long (Required)
-     *     finished_at: Long (Optional)
      * }
      * }
      * </pre>
@@ -1459,32 +1173,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -1521,13 +1211,27 @@ public final class BetaDatasetsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      * }
      * }
      * </pre>
      * 
-     * @param job The job to create.
+     * @param job The data generation job inputs to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1569,70 +1273,21 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
      *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
-     *     result (Optional): {
-     *         outputs (Optional): [
-     *              (Optional){
-     *                 type: String(file/dataset) (Required)
-     *             }
-     *         ]
-     *         generated_samples: int (Required)
-     *         token_usage (Optional): {
-     *             prompt_tokens: long (Required)
-     *             completion_tokens: long (Required)
-     *             total_tokens: long (Required)
-     *         }
-     *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         misalignment (Optional): {
-     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
-     *             detailed_explanation: String (Optional)
-     *             steer (Optional): {
-     *                 message: String (Required)
-     *             }
-     *         }
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     created_at: long (Required)
-     *     finished_at: Long (Optional)
      * }
      * }
      * </pre>
@@ -1642,32 +1297,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -1704,13 +1335,27 @@ public final class BetaDatasetsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      * }
      * }
      * </pre>
      * 
-     * @param job The job to create.
+     * @param job The data generation job inputs to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1751,70 +1396,21 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
      *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
-     *     result (Optional): {
-     *         outputs (Optional): [
-     *              (Optional){
-     *                 type: String(file/dataset) (Required)
-     *             }
-     *         ]
-     *         generated_samples: int (Required)
-     *         token_usage (Optional): {
-     *             prompt_tokens: long (Required)
-     *             completion_tokens: long (Required)
-     *             total_tokens: long (Required)
-     *         }
-     *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         misalignment (Optional): {
-     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
-     *             detailed_explanation: String (Optional)
-     *             steer (Optional): {
-     *                 message: String (Required)
-     *             }
-     *         }
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     created_at: long (Required)
-     *     finished_at: Long (Optional)
      * }
      * }
      * </pre>
@@ -1824,32 +1420,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -1886,13 +1458,27 @@ public final class BetaDatasetsImpl {
      *             String: BinaryData (Required)
      *         }
      *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
+     *         }
+     *     }
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      * }
      * }
      * </pre>
      * 
-     * @param job The job to create.
+     * @param job The data generation job inputs to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1924,32 +1510,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -1984,6 +1546,20 @@ public final class BetaDatasetsImpl {
      *         }
      *         debugInfo (Optional): {
      *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
      *     created_at: long (Required)
@@ -2017,32 +1593,8 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
+     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         name: String (Required)
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/file) (Required)
-     *                 description: String (Optional)
-     *             }
-     *         ]
-     *         options (Required): {
-     *             type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
-     *             train_split: Double (Optional)
-     *             model_options (Optional): {
-     *                 model: String (Required)
-     *             }
-     *         }
-     *         scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
-     *         output_options (Optional): {
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             write_mode: String(overwrite/merge) (Optional)
-     *         }
-     *     }
      *     result (Optional): {
      *         outputs (Optional): [
      *              (Optional){
@@ -2077,6 +1629,20 @@ public final class BetaDatasetsImpl {
      *         }
      *         debugInfo (Optional): {
      *             String: BinaryData (Required)
+     *         }
+     *     }
+     *     name: String (Required)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/file) (Required)
+     *             description: String (Optional)
+     *         }
+     *     ]
+     *     generation_configuration (Required): {
+     *         type: String(simple_qna/traces/tool_use/simulation_seed) (Required)
+     *         train_split: Double (Optional)
+     *         model_options (Optional): {
+     *             model: String (Required)
      *         }
      *     }
      *     created_at: long (Required)

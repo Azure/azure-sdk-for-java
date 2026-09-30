@@ -32,7 +32,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -43,8 +42,8 @@ public class FoundryFeaturesHeaderVerificationTest {
     private static final HttpHeaderName FOUNDRY_FEATURES = HttpHeaderName.fromString("Foundry-Features");
     private static final HttpHeaderName CUSTOM_PIPELINE_HEADER = HttpHeaderName.fromString("X-Custom-Pipeline");
     private static final String CUSTOM_PIPELINE_VALUE = "custom-pipeline";
-    private static final String AGENT_PREVIEW_FEATURES = Stream
-        .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString), Stream.of(""))
+    private static final String AGENT_PREVIEW_FEATURES = Arrays.stream(AgentDefinitionOptInKeys.values())
+        .map(AgentDefinitionOptInKeys::toString)
         .collect(Collectors.joining(","));
 
     @Test
@@ -114,7 +113,8 @@ public class FoundryFeaturesHeaderVerificationTest {
         RecordingHttpClient httpClient = new RecordingHttpClient();
         AgentsClientBuilder builder = createBuilder(httpClient).allowPreview(true);
 
-        builder.beta().buildBetaAgentsClient().getOptimizationJobWithResponse("job", new RequestOptions());
+        builder.buildAgentsClient()
+            .createAgentVersionWithResponse("agent", BinaryData.fromString("{}"), new RequestOptions());
         assertEquals(AGENT_PREVIEW_FEATURES, foundryFeatures(httpClient));
 
         builder.beta().buildBetaMemoryStoresClient().getMemoryStoreWithResponse("store", new RequestOptions());
@@ -140,7 +140,9 @@ public class FoundryFeaturesHeaderVerificationTest {
         RecordingHttpClient httpClient = new RecordingHttpClient();
         AgentsClientBuilder builder = createBuilder(httpClient);
 
-        builder.beta().buildBetaAgentsClient().getOptimizationJobWithResponse("job", new RequestOptions());
+        builder.beta()
+            .buildBetaAgentsClient()
+            .createAgentFromPromptWithResponse(BinaryData.fromString("{}"), new RequestOptions());
         assertEquals(AGENT_PREVIEW_FEATURES, foundryFeatures(httpClient));
 
         builder.beta().buildBetaMemoryStoresClient().getMemoryStoreWithResponse("store", new RequestOptions());
@@ -162,7 +164,10 @@ public class FoundryFeaturesHeaderVerificationTest {
         RecordingHttpClient httpClient = new RecordingHttpClient();
         AgentsClientBuilder builder = createBuilder(httpClient);
 
-        builder.beta().buildBetaAgentsAsyncClient().getOptimizationJobWithResponse("job", new RequestOptions()).block();
+        builder.beta()
+            .buildBetaAgentsAsyncClient()
+            .createAgentFromPromptWithResponse(BinaryData.fromString("{}"), new RequestOptions())
+            .block();
         assertEquals(AGENT_PREVIEW_FEATURES, foundryFeatures(httpClient));
 
         builder.beta()
@@ -202,20 +207,6 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertNull(foundryFeatures(httpClient));
     }
 
-    // @Test
-    // public void allowPreviewDoesNotOverrideExplicitHeader() {
-    //     RecordingHttpClient httpClient = new RecordingHttpClient();
-    //     String explicitHeader = FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString();
-    //     RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
-
-    //     createBuilder(httpClient).allowPreview(true)
-    //         .beta()
-    //         .buildBetaAgentsClient()
-    //         .getOptimizationJobWithResponse("job", requestOptions);
-
-    //     assertEquals(explicitHeader, foundryFeatures(httpClient));
-    // }
-
     @Test
     public void allowPreviewFalseDoesNotAddGaAgentHeader() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
@@ -228,14 +219,26 @@ public class FoundryFeaturesHeaderVerificationTest {
     }
 
     @Test
+    public void allowPreviewDoesNotOverrideExplicitHeader() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        String explicitHeader = "ArbitraryFeature=Test";
+        RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
+
+        createBuilder(httpClient).allowPreview(true)
+            .buildAgentsClient()
+            .createAgentVersionWithResponse("agent", BinaryData.fromString("{}"), requestOptions);
+
+        assertEquals(explicitHeader, foundryFeatures(httpClient));
+    }
+
+    @Test
     public void allowPreviewUsesBuiltClientFeatureHeaderWithoutPathMatching() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
 
         createBuilder(httpClient).endpoint("https://localhost:8080/api/projects/project/evaluations/evaluation")
             .allowPreview(true)
-            .beta()
-            .buildBetaAgentsClient()
-            .getOptimizationJobWithResponse("job", new RequestOptions());
+            .buildAgentsClient()
+            .createAgentVersionWithResponse("agent", BinaryData.fromString("{}"), new RequestOptions());
 
         assertEquals(AGENT_PREVIEW_FEATURES, foundryFeatures(httpClient));
     }
@@ -290,19 +293,20 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
     }
 
-    // @Test
-    // public void customPipelineDoesNotOverrideExplicitFoundryHeader() {
-    //     RecordingHttpClient httpClient = new RecordingHttpClient();
-    //     String explicitHeader = FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString();
-    //     RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
+    @Test
+    public void customPipelineDoesNotOverrideExplicitFoundryHeader() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        HttpPipeline customPipeline = createCustomPipeline(httpClient);
+        String explicitHeader = "ArbitraryFeature=Test";
+        RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
 
-    //     createBuilder(createCustomPipeline(httpClient)).beta()
-    //         .buildBetaAgentsClient()
-    //         .getOptimizationJobWithResponse("job", requestOptions);
+        createBuilder(customPipeline).allowPreview(true)
+            .buildAgentsClient()
+            .createAgentVersionWithResponse("agent", BinaryData.fromString("{}"), requestOptions);
 
-    //     assertEquals(explicitHeader, foundryFeatures(httpClient));
-    //     assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
-    // }
+        assertEquals(explicitHeader, foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+    }
 
     @Test
     public void openAIAndResponsesClientsUseCustomPipeline() {

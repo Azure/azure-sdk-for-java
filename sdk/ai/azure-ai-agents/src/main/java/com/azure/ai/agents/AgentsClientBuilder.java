@@ -57,7 +57,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * A builder for creating a new instance of the AgentsClient type.
@@ -92,8 +91,8 @@ public final class AgentsClientBuilder
     @Generated
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-ai-agents.properties");
 
-    private static final String AGENT_PREVIEW_FEATURES = Stream
-        .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString), Stream.of(""))
+    private static final String AGENT_PREVIEW_FEATURES = Arrays.stream(AgentDefinitionOptInKeys.values())
+        .map(AgentDefinitionOptInKeys::toString)
         .collect(Collectors.joining(","));
 
     private static final String MEMORY_STORES_PREVIEW_FEATURES

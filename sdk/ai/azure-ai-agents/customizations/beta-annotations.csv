@@ -7,20 +7,6 @@ field;com.azure.ai.agents.models.AgentDetails;Preview API. DigitalWorker=V1Previ
 field;com.azure.ai.agents.models.AgentEndpointProtocol;Preview API.;VOICE
 class;com.azure.ai.agents.models.AgentHarness;Preview API. GitHubCopilot=V1Preview;
 field;com.azure.ai.agents.models.AgentKind;Preview API.;VOICE
-class;com.azure.ai.agents.models.AgentOptimizationCandidate;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationDatasetCriterion;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationDatasetInput;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationDatasetInputType;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationDatasetItem;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationEvaluatorReference;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationInlineDatasetInput;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationJob;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationJobInputs;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationJobListItem;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationJobProgress;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationJobResult;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationOptions;Preview API. AgentsOptimization=V2Preview;
-class;com.azure.ai.agents.models.AgentOptimizationReferenceDatasetInput;Preview API. AgentsOptimization=V2Preview;
 field;com.azure.ai.agents.models.AgentVersionDetails;Preview API. DraftAgents=V1Preview;draft
 class;com.azure.ai.agents.models.AudioTranscription;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.AudioTranscriptionModel;Preview API.;
@@ -33,8 +19,6 @@ class;com.azure.ai.agents.models.BingCustomSearchToolCallOutput;Preview API. pre
 class;com.azure.ai.agents.models.BingCustomSearchToolParameters;Preview API. preview_tool;
 class;com.azure.ai.agents.models.BrowserAutomationPreviewTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.BrowserAutomationPreviewToolboxTool;Preview API. preview_tool;
-class;com.azure.ai.agents.models.BrowserAutomationToolCall;Preview API. preview_tool;
-class;com.azure.ai.agents.models.BrowserAutomationToolCallOutput;Preview API. preview_tool;
 class;com.azure.ai.agents.models.ChatSummaryMemoryItem;Preview API. MemoryStores=V1Preview;
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview, DraftAgents=V1Preview, ExternalAgents=V1Preview, GitHubCopilot=V1Preview, Skills=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview;definition
 field;com.azure.ai.agents.models.CreateAgentVersionInput;Preview API. DigitalWorker=V1Preview;digital_worker_type
@@ -85,9 +69,7 @@ class;com.azure.ai.agents.models.ModelRouterDetails;Preview API. ModelRouterCont
 class;com.azure.ai.agents.models.ModelRouterMode;Preview API. ModelRouterControls=V1Preview;
 class;com.azure.ai.agents.models.ModelRouterResponseHeaderValue;Preview API. ModelRouterControls=V1Preview;
 class;com.azure.ai.agents.models.ModelSelectionDetails;Preview API. ModelRouterControls=V1Preview;
-class;com.azure.ai.agents.models.OptimizedAgentIdentifier;Preview API. AgentsOptimization=V2Preview;
 class;com.azure.ai.agents.models.ProceduralMemoryItem;Preview API. MemoryStores=V1Preview;
-class;com.azure.ai.agents.models.PromotionInfo;Preview API. AgentsOptimization=V2Preview;
 field;com.azure.ai.agents.models.PromptAgentDefinition;Preview API. GitHubCopilot=V1Preview;harness
 field;com.azure.ai.agents.models.PromptAgentDefinition;Preview API. Skills=V1Preview;skills
 class;com.azure.ai.agents.models.PstnTelephonyTransferDestination;Preview API. VoiceAgents=V1Preview;
@@ -284,7 +266,6 @@ class;com.azure.ai.agents.models.VoiceAgentEndOfUtteranceDetection;Preview API. 
 class;com.azure.ai.agents.models.VoiceAgentEndOfUtteranceDetectionModel;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentEndOfUtteranceThresholdLevel;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentFunctionTool;Preview API. VoiceAgents=V1Preview;
-class;com.azure.ai.agents.models.VoiceAgentFunctionToolType;Preview API.;
 class;com.azure.ai.agents.models.VoiceAgentGreetingConfiguration;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentInputTranscription;Preview API. VoiceAgents=V1Preview;
 class;com.azure.ai.agents.models.VoiceAgentInputTranscriptionModel;Preview API. VoiceAgents=V1Preview;

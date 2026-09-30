@@ -3,10 +3,9 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.agents.models.PageOrder;
-import com.azure.ai.projects.models.DataGenerationJob;
 import com.azure.ai.projects.models.DataGenerationJobInputs;
-import com.azure.ai.projects.models.DataGenerationJobScenario;
 import com.azure.ai.projects.models.DataGenerationModelOptions;
+import com.azure.ai.projects.models.EvaluationDataGenerationJobInputs;
 import com.azure.ai.projects.models.PromptDataGenerationJobSource;
 import com.azure.ai.projects.models.SimpleQnADataGenerationJobOptions;
 import com.azure.core.util.Configuration;
@@ -54,9 +53,7 @@ public class DataGenerationJobsAsyncSample {
                 found.set(true);
                 System.out.printf("Data generation job ID: %s%n", job.getId());
                 System.out.printf("Status: %s%n", job.getStatus());
-                if (job.getInputs() != null) {
-                    System.out.printf("Input name: %s%n", job.getInputs().getName());
-                }
+                System.out.printf("Input name: %s%n", job.getName());
                 System.out.println("-------------------------------------------------");
             })
             .then(Mono.fromRunnable(() -> {
@@ -100,7 +97,7 @@ public class DataGenerationJobsAsyncSample {
         // END:com.azure.ai.projects.DataGenerationJobsAsyncSample.getCancelDeleteGenerationJob
     }
 
-    private static DataGenerationJob createSampleDataGenerationJob(String model) {
+    private static DataGenerationJobInputs createSampleDataGenerationJob(String model) {
         PromptDataGenerationJobSource source = new PromptDataGenerationJobSource(
             "Contoso TrailGear sells hiking backpacks and tents. Customer support should answer questions about "
                 + "warranty coverage, product care, returns, and trail safety in a concise, friendly tone.")
@@ -109,12 +106,9 @@ public class DataGenerationJobsAsyncSample {
         SimpleQnADataGenerationJobOptions options = new SimpleQnADataGenerationJobOptions(15)
             .setModelOptions(new DataGenerationModelOptions(model));
 
-        DataGenerationJobInputs inputs = new DataGenerationJobInputs(
+        return new EvaluationDataGenerationJobInputs(
             "java-sample-data-generation-job",
             Collections.singletonList(source),
-            options,
-            DataGenerationJobScenario.EVALUATION);
-
-        return new DataGenerationJob().setInputs(inputs);
+            options);
     }
 }

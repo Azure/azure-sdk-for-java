@@ -6,11 +6,11 @@ import com.azure.ai.projects.models.ApiError;
 import com.azure.ai.projects.models.DataGenerationJob;
 import com.azure.ai.projects.models.DataGenerationJobInputs;
 import com.azure.ai.projects.models.DataGenerationJobOutput;
-import com.azure.ai.projects.models.DataGenerationJobOutputOptions;
-import com.azure.ai.projects.models.DataGenerationJobScenario;
 import com.azure.ai.projects.models.DataGenerationModelOptions;
 import com.azure.ai.projects.models.DatasetDataGenerationJobOutput;
 import com.azure.ai.projects.models.DatasetVersion;
+import com.azure.ai.projects.models.EvaluationDataGenerationJobInputs;
+import com.azure.ai.projects.models.EvaluationDataGenerationJobOutputTarget;
 import com.azure.ai.projects.models.JobStatus;
 import com.azure.ai.projects.models.PromptDataGenerationJobSource;
 import com.azure.ai.projects.models.SimpleQnADataGenerationJobOptions;
@@ -131,7 +131,7 @@ public class DataGenerationJobWithEvaluationSample {
         }
     }
 
-    static DataGenerationJob createDataGenerationJob(String modelName, String datasetName) {
+    static DataGenerationJobInputs createDataGenerationJob(String modelName, String datasetName) {
         PromptDataGenerationJobSource source = new PromptDataGenerationJobSource(
             "Contoso offers a full refund within 30 days of purchase for any product returned in its original "
                 + "condition. After 30 days, store credit may be issued at the discretion of customer support. "
@@ -141,16 +141,14 @@ public class DataGenerationJobWithEvaluationSample {
         SimpleQnADataGenerationJobOptions options = new SimpleQnADataGenerationJobOptions(15)
             .setModelOptions(new DataGenerationModelOptions(modelName));
 
-        DataGenerationJobOutputOptions outputOptions = new DataGenerationJobOutputOptions()
+        EvaluationDataGenerationJobOutputTarget outputConfiguration
+            = new EvaluationDataGenerationJobOutputTarget()
             .setName(datasetName)
             .setDescription("QnA pairs generated from the Contoso refund policy prompt.")
             .setTags(Collections.singletonMap("sample", "dataset-generation-with-evaluation"));
 
-        DataGenerationJobInputs inputs = new DataGenerationJobInputs("qna-from-policy-prompt",
-            Collections.singletonList(source), options, DataGenerationJobScenario.EVALUATION)
-            .setOutputOptions(outputOptions);
-
-        return new DataGenerationJob().setInputs(inputs);
+        return new EvaluationDataGenerationJobInputs("qna-from-policy-prompt", Collections.singletonList(source),
+            options).setOutputConfiguration(outputConfiguration);
     }
 
     private static DataGenerationJob waitForDataGenerationJob(BetaDatasetsClient dataGenerationJobsClient,
