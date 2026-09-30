@@ -944,8 +944,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             });
 
             this.globalEndpointManager.setPerPartitionAutomaticFailoverConfigModifier(this.perPartitionFailoverConfigModifier);
-            // Include configuration-known flags on the bootstrap account request; account-derived flags are reevaluated later.
-            this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
             this.globalEndpointManager.init();
             this.initializePerPartitionCircuitBreaker();
 
