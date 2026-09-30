@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded Reactor from `3.7.19` to `3.8.7`.
+
 ## 1.60.0 (2026-09-29)
 
 ### Features Added
@@ -29,7 +33,6 @@
 
 #### Dependency Updates
 
-- Upgraded Reactor from `3.7.19` to `3.8.7`.
 - Upgraded Jackson from `2.18.9` to `2.18.11`.
 
 ## 1.59.1 (2026-08-27)
