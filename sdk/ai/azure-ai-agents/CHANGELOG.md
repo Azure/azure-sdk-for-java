@@ -19,11 +19,7 @@
   `getDesiredNumTurns()` / `setDesiredNumTurns(...)` to `getMaximumNumberOfTurns()` /
   `setMaximumNumberOfTurns(...)` and `getDesiredNumberOfTurns()` / `setDesiredNumberOfTurns(...)`, respectively.
 - Changed `ModelSamplingParameters.getMaxCompletionTokens()` and `setMaxCompletionTokens(...)` to use `Long`.
-
-### Bugs Fixed
-
-- Restored the deprecated `EvaluationLevel` type as a compatibility shim. Evaluation granularity is now selected with
-  `AgentOptimizationTargetCompletionEvaluationSet` or `AgentOptimizationUserConversationSimulationEvaluationSet`.
+- Removed the unused `EvaluationLevel` type.
 
 ### Other Changes
 
