@@ -599,8 +599,9 @@ public class ModelHelper {
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
-    public static Response<ShareDirectoryProperties> mapShareDirectoryPropertiesResponse(Response<Void> response) {
-        DirectoriesGetPropertiesHeaders headers = new DirectoriesGetPropertiesHeaders(response.getHeaders());
+    public static Response<ShareDirectoryProperties>
+        mapShareDirectoryPropertiesResponse(ResponseBase<DirectoriesGetPropertiesHeaders, Void> response) {
+        DirectoriesGetPropertiesHeaders headers = response.getDeserializedHeaders();
         Map<String, String> metadata = headers.getXMsMeta();
         String eTag = headers.getETag();
         OffsetDateTime offsetDateTime = headers.getLastModified();
@@ -608,7 +609,7 @@ public class ModelHelper {
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareDirectoryProperties shareDirectoryProperties = ShareDirectoryPropertiesHelper.create(metadata, eTag,
-            offsetDateTime, isServerEncrypted, smbProperties, posixProperties, headers.getXMsFileName());
+            offsetDateTime, isServerEncrypted, smbProperties, posixProperties);
         return new SimpleResponse<>(response, shareDirectoryProperties);
     }
 

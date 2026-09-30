@@ -250,9 +250,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @DoNotRecord
     @Tag("file-id-mock")
-    @ParameterizedTest
-    @ValueSource(booleans = { false, true })
-    public void asyncPropertiesByIdMapServiceErrors(boolean directory) {
+    @Test
+    public void asyncPropertiesByIdMapServiceErrors() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request,
             404, new HttpHeaders().set(HttpHeaderName.fromString("x-ms-error-code"), "ResourceNotFound")))).build();
         ShareAsyncClient client = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
@@ -260,13 +259,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .buildAsyncClient()
             .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
 
-        ShareStorageException exception = Assertions.assertThrows(ShareStorageException.class, () -> {
-            if (directory) {
-                client.getDirectoryClientByFileId(FileIdTestHelper.FILE_ID).getProperties().block();
-            } else {
-                client.getFileClientByFileId(FileIdTestHelper.FILE_ID).getProperties().block();
-            }
-        });
+        ShareStorageException exception = Assertions.assertThrows(ShareStorageException.class,
+            () -> client.getFileClientByFileId(FileIdTestHelper.FILE_ID).getProperties().block());
         Assertions.assertEquals(404, exception.getStatusCode());
         Assertions.assertEquals(ShareErrorCode.RESOURCE_NOT_FOUND, exception.getErrorCode());
     }

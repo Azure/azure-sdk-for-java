@@ -34,12 +34,10 @@ public final class ShareDirectoryPropertiesHelper {
          * encrypted using the specified algorithm. Otherwise, the value is set to false.
          * @param smbProperties The SMB properties of the directory.
          * @param posixProperties the NFS properties of the directory.
-         * @param fileName The name of the directory when returned by a file-ID request.
          * @return A new instance of {@link ShareDirectoryProperties}.
          */
         ShareDirectoryProperties create(Map<String, String> metadata, String eTag, OffsetDateTime lastModified,
-            boolean isServerEncrypted, FileSmbProperties smbProperties, FilePosixProperties posixProperties,
-            String fileName);
+            boolean isServerEncrypted, FileSmbProperties smbProperties, FilePosixProperties posixProperties);
     }
 
     /**
@@ -61,12 +59,11 @@ public final class ShareDirectoryPropertiesHelper {
      * encrypted using the specified algorithm. Otherwise, the value is set to false.
      * @param smbProperties The SMB properties of the directory.
      * @param posixProperties the NFS properties of the directory.
-     * @param fileName The name of the directory when returned by a file-ID request.
      * @return A new instance of {@link ShareDirectoryProperties}.
      */
     public static ShareDirectoryProperties create(Map<String, String> metadata, String eTag,
         OffsetDateTime lastModified, boolean isServerEncrypted, FileSmbProperties smbProperties,
-        FilePosixProperties posixProperties, String fileName) {
+        FilePosixProperties posixProperties) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses ShareDirectoryProperties which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
@@ -75,7 +72,6 @@ public final class ShareDirectoryPropertiesHelper {
         }
 
         assert accessor != null;
-        return accessor.create(metadata, eTag, lastModified, isServerEncrypted, smbProperties, posixProperties,
-            fileName);
+        return accessor.create(metadata, eTag, lastModified, isServerEncrypted, smbProperties, posixProperties);
     }
 }

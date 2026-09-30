@@ -21,7 +21,6 @@ public final class ShareDirectoryProperties {
     private final boolean isServerEncrypted;
     private final FileSmbProperties smbProperties;
     private final FilePosixProperties posixProperties;
-    private final String fileName;
 
     /**
      * Creates an instance of properties information about a specific Directory.
@@ -41,20 +40,17 @@ public final class ShareDirectoryProperties {
         this.isServerEncrypted = isServerEncrypted;
         this.smbProperties = smbProperties;
         this.posixProperties = null;
-        this.fileName = null;
     }
 
     //Internal constructor to support FilePosixProperties class.
     private ShareDirectoryProperties(Map<String, String> metadata, String eTag, OffsetDateTime lastModified,
-        boolean isServerEncrypted, FileSmbProperties smbProperties, FilePosixProperties posixProperties,
-        String fileName) {
+        boolean isServerEncrypted, FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;
         this.smbProperties = smbProperties;
         this.posixProperties = posixProperties;
-        this.fileName = fileName;
     }
 
     static {
@@ -118,12 +114,4 @@ public final class ShareDirectoryProperties {
         return posixProperties;
     }
 
-    /**
-     * Gets the name of the directory returned by a request addressed by file ID.
-     *
-     * @return The directory name, or {@code null} when the service did not return it.
-     */
-    public String getFileName() {
-        return fileName;
-    }
 }

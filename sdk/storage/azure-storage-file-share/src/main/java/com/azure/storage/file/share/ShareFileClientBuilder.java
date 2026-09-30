@@ -228,11 +228,12 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
      * @throws NullPointerException If {@code shareName} is {@code null} or {@code shareName} is {@code null}.
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
-     * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If multiple credentials have been specified, or a file ID is configured.
      */
     public ShareDirectoryAsyncClient buildDirectoryAsyncClient() {
+        ShareErrors.assertNotFileIdAddressed(fileId, "buildDirectoryAsyncClient");
         ShareServiceVersion serviceVersion = getServiceVersion();
-        return new ShareDirectoryAsyncClient(constructImpl(), shareName, resourcePath, fileId, shareSnapshot,
+        return new ShareDirectoryAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot,
             accountName, serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
@@ -250,11 +251,12 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
      * @throws NullPointerException If {@code endpoint}, {@code shareName} or {@code directoryPath} is {@code null}.
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
-     * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If multiple credentials have been specified, or a file ID is configured.
      */
     public ShareDirectoryClient buildDirectoryClient() {
+        ShareErrors.assertNotFileIdAddressed(fileId, "buildDirectoryClient");
         ShareServiceVersion serviceVersion = getServiceVersion();
-        return new ShareDirectoryClient(constructImpl(), shareName, resourcePath, fileId, shareSnapshot, accountName,
+        return new ShareDirectoryClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName,
             serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
@@ -379,12 +381,14 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
     }
 
     /**
-     * Sets the file ID used to address a file or directory.
+     * Sets the file ID used to address a file.
      *
      * <p>Setting a file ID clears the resource path. The file ID can also be read from the {@code fileid} query
-     * parameter when supplied in the endpoint.</p>
+     * parameter when supplied in the endpoint. File IDs are supported only for file clients; building a directory
+     * client with a file ID configured throws {@link IllegalStateException}. Use {@link #resourcePath(String)} to
+     * clear the file ID and address a directory by path.</p>
      *
-     * @param fileId The file ID of the file or directory.
+     * @param fileId The file ID of the file.
      * @return the updated ShareFileClientBuilder object
      * @throws IllegalArgumentException If {@code fileId} is null or blank.
      */
