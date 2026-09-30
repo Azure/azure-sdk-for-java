@@ -220,6 +220,7 @@ public class ThinClientStoreModelTest {
             .thenReturn(Mono.error(new ConnectTimeoutException()));
 
         UserAgentContainer userAgentContainer = new UserAgentContainer();
+        userAgentContainer.setSuffix("test-application");
         ThinClientStoreModel storeModel = new ThinClientStoreModel(
             clientContext,
             sessionContainer,
@@ -255,7 +256,8 @@ public class ThinClientStoreModelTest {
         HttpHeaders httpHeaders = ReflectionUtils.getHttpHeaders(requestCaptor.getValue());
         assertThat(httpHeaders.value(HttpConstants.HttpHeaders.USER_AGENT))
             .as("ThinClient HTTP framing headers should use the latest evaluated user agent")
-            .isEqualTo(userAgentContainer.getUserAgent());
+            .isEqualTo(userAgentContainer.getUserAgent())
+            .endsWith("test-application|F4");
         assertThat(httpHeaders.toMap().get(HttpConstants.HttpHeaders.NO_RETRY_449))
             .as("ThinClient HTTP framing headers should not include the Gateway V1 no-retry-449 header")
             .isNull();

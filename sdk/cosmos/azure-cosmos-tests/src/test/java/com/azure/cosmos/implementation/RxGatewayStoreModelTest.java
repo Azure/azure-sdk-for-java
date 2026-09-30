@@ -49,6 +49,7 @@ public class RxGatewayStoreModelTest {
     public void latestUserAgentIsAppliedToDatabaseAccountRequest() throws Exception {
         DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
         UserAgentContainer userAgentContainer = new UserAgentContainer();
+        userAgentContainer.setSuffix("test-application");
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
             clientContext,
             Mockito.mock(ISessionContainer.class),
@@ -74,7 +75,8 @@ public class RxGatewayStoreModelTest {
         HttpRequest httpRequest = storeModel.wrapInHttpRequest(request, new URI("https://localhost"));
 
         assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.USER_AGENT))
-            .isEqualTo(userAgentContainer.getUserAgent());
+            .isEqualTo(userAgentContainer.getUserAgent())
+            .endsWith("test-application|F4");
     }
 
     @Test(groups = "unit")
