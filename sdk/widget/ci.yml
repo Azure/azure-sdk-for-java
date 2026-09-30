@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/widget/ci.yml
+      - sdk/widget/azure-resourcemanager-widget/
+    exclude:
+      - sdk/widget/pom.xml
+      - sdk/widget/azure-resourcemanager-widget/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/widget/ci.yml
+      - sdk/widget/azure-resourcemanager-widget/
+    exclude:
+      - sdk/widget/pom.xml
+      - sdk/widget/azure-resourcemanager-widget/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerwidget
+    displayName: azure-resourcemanager-widget
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: widget
+    Artifacts:
+      - name: azure-resourcemanager-widget
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerwidget
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerwidget }}
