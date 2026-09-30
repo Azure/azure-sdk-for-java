@@ -15,6 +15,10 @@
 - Renamed the agent-optimization methods `estimate`, `listCandidates`, `getCandidate`, and `promoteCandidate` to
   `estimateOptimizationJob`, `listOptimizationCandidates`, `getOptimizationCandidate`, and
   `promoteOptimizationCandidate`, respectively.
+- Renamed `UserConversationSimulationConfiguration.getMaxNumTurns()` / `setMaxNumTurns(...)` and
+  `getDesiredNumTurns()` / `setDesiredNumTurns(...)` to `getMaximumNumberOfTurns()` /
+  `setMaximumNumberOfTurns(...)` and `getDesiredNumberOfTurns()` / `setDesiredNumberOfTurns(...)`, respectively.
+- Changed `ModelSamplingParameters.getMaxCompletionTokens()` and `setMaxCompletionTokens(...)` to use `Long`.
 
 ### Bugs Fixed
 
