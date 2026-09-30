@@ -1,14 +1,14 @@
 # Release History
 
-## 1.17.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.16.8 (2026-09-29)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.1` to `1.60.0`.
+- Upgraded Netty dependencies from `4.1.137.Final` to `4.1.138.Final`.
+- Upgraded Netty TcNative dependencies from `2.0.81.Final` to `2.0.84.Final`.
 
 ## 1.16.7 (2026-08-27)
 
@@ -809,4 +809,3 @@ This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-http-netty_1.0.0/sdk/core/azure-core-http-netty/README.md)
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/azure-core-http-netty_1.0.0/sdk/core/azure-core-http-netty/src/samples/java/com/azure/core/http/netty)
-

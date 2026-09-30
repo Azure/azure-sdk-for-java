@@ -15,7 +15,9 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.Metri
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryEventData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
@@ -125,6 +127,14 @@ public final class TestUtils {
         }
     }
 
+    public static RequestData toRequestData(MonitorDomain baseData) {
+        try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
+            return RequestData.fromJson(jsonReader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to MetricsData
     public static MetricsData toMetricsData(MonitorDomain baseData) {
         try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
@@ -147,6 +157,14 @@ public final class TestUtils {
     public static TelemetryEventData toTelemetryEventData(MonitorDomain baseData) {
         try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
             return TelemetryEventData.fromJson(jsonReader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static TelemetryExceptionData toTelemetryExceptionData(MonitorDomain baseData) {
+        try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
+            return TelemetryExceptionData.fromJson(jsonReader);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

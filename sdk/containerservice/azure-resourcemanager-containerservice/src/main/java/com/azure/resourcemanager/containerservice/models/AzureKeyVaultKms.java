@@ -22,10 +22,13 @@ public final class AzureKeyVaultKms implements JsonSerializable<AzureKeyVaultKms
     private Boolean enabled;
 
     /*
-     * Identifier of Azure Key Vault key. See [key identifier
-     * format](https://docs.microsoft.com/en-us/azure/key-vault/general/about-keys-secrets-certificates#vault-name-and-
-     * object-name) for more details. When Azure Key Vault key management service is enabled, this field is required and
-     * must be a valid key identifier. When Azure Key Vault key management service is disabled, leave the field empty.
+     * The identifier of the Azure Key Vault key. For more information, see [Azure Key Vault key
+     * identifiers](https://docs.microsoft.com/en-us/azure/key-vault/general/about-keys-secrets-certificates#vault-name-
+     * and-object-name). This property is required when Azure Key Vault key management service is enabled and must be
+     * omitted when the service is disabled. Starting with API versions 2026-07-01 and 2026-07-02-preview, a versioned
+     * key identifier uses the legacy KMS experience, while an unversioned key identifier uses the new KMS experience.
+     * For more information, see [KMS data encryption
+     * concepts](https://learn.microsoft.com/en-us/azure/aks/kms-data-encryption-concepts).
      */
     private String keyId;
 
@@ -69,10 +72,13 @@ public final class AzureKeyVaultKms implements JsonSerializable<AzureKeyVaultKms
     }
 
     /**
-     * Get the keyId property: Identifier of Azure Key Vault key. See [key identifier
-     * format](https://docs.microsoft.com/en-us/azure/key-vault/general/about-keys-secrets-certificates#vault-name-and-object-name)
-     * for more details. When Azure Key Vault key management service is enabled, this field is required and must be a
-     * valid key identifier. When Azure Key Vault key management service is disabled, leave the field empty.
+     * Get the keyId property: The identifier of the Azure Key Vault key. For more information, see [Azure Key Vault key
+     * identifiers](https://docs.microsoft.com/en-us/azure/key-vault/general/about-keys-secrets-certificates#vault-name-and-object-name).
+     * This property is required when Azure Key Vault key management service is enabled and must be omitted when the
+     * service is disabled. Starting with API versions 2026-07-01 and 2026-07-02-preview, a versioned key identifier
+     * uses the legacy KMS experience, while an unversioned key identifier uses the new KMS experience. For more
+     * information, see [KMS data encryption
+     * concepts](https://learn.microsoft.com/en-us/azure/aks/kms-data-encryption-concepts).
      * 
      * @return the keyId value.
      */
@@ -81,10 +87,13 @@ public final class AzureKeyVaultKms implements JsonSerializable<AzureKeyVaultKms
     }
 
     /**
-     * Set the keyId property: Identifier of Azure Key Vault key. See [key identifier
-     * format](https://docs.microsoft.com/en-us/azure/key-vault/general/about-keys-secrets-certificates#vault-name-and-object-name)
-     * for more details. When Azure Key Vault key management service is enabled, this field is required and must be a
-     * valid key identifier. When Azure Key Vault key management service is disabled, leave the field empty.
+     * Set the keyId property: The identifier of the Azure Key Vault key. For more information, see [Azure Key Vault key
+     * identifiers](https://docs.microsoft.com/en-us/azure/key-vault/general/about-keys-secrets-certificates#vault-name-and-object-name).
+     * This property is required when Azure Key Vault key management service is enabled and must be omitted when the
+     * service is disabled. Starting with API versions 2026-07-01 and 2026-07-02-preview, a versioned key identifier
+     * uses the legacy KMS experience, while an unversioned key identifier uses the new KMS experience. For more
+     * information, see [KMS data encryption
+     * concepts](https://learn.microsoft.com/en-us/azure/aks/kms-data-encryption-concepts).
      * 
      * @param keyId the keyId value to set.
      * @return the AzureKeyVaultKms object itself.

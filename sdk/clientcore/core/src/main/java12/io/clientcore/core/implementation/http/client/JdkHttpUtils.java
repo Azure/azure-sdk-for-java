@@ -4,16 +4,10 @@ package io.clientcore.core.implementation.http.client;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.SharedExecutorService;
-import io.clientcore.core.utils.configuration.Configuration;
 
 import java.nio.ByteBuffer;
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Utility class for JDK HttpClient.
@@ -59,17 +53,6 @@ public final class JdkHttpUtils {
         }
 
         return (int) size;
-    }
-
-    /**
-     * Schedules a timeout task to be executed after the given timeout.
-     *
-     * @param task The task to be executed.
-     * @param timeoutMillis The timeout in milliseconds.
-     * @return The scheduled future for the task.
-     */
-    static ScheduledFuture<?> scheduleTimeoutTask(Runnable task, long timeoutMillis) {
-        return SharedExecutorService.getInstance().schedule(task, timeoutMillis, TimeUnit.MILLISECONDS);
     }
 
     private JdkHttpUtils() {

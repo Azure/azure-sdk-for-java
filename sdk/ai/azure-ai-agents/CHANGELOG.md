@@ -1,5 +1,19 @@
 # Release History
 
+## 2.7.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Netty dependencies from `4.1.137.Final` to `4.1.138.Final`.
+
 ## 2.6.0 (2026-09-22)
 
 ### Features Added
