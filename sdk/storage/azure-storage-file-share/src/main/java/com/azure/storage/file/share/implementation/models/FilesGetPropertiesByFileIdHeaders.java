@@ -161,19 +161,19 @@ public final class FilesGetPropertiesByFileIdHeaders {
      * The x-ms-file-creation-time property.
      */
     @Generated
-    private OffsetDateTime xMsFileCreationTime;
+    private DateTimeRfc1123 xMsFileCreationTime;
 
     /*
      * The x-ms-file-last-write-time property.
      */
     @Generated
-    private OffsetDateTime xMsFileLastWriteTime;
+    private DateTimeRfc1123 xMsFileLastWriteTime;
 
     /*
      * The x-ms-file-change-time property.
      */
     @Generated
-    private OffsetDateTime xMsFileChangeTime;
+    private DateTimeRfc1123 xMsFileChangeTime;
 
     /*
      * The x-ms-file-permission-key property.
@@ -366,19 +366,19 @@ public final class FilesGetPropertiesByFileIdHeaders {
         this.xMsFileAttributes = rawHeaders.getValue(X_MS_FILE_ATTRIBUTES);
         String xMsFileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
         if (xMsFileCreationTime != null) {
-            this.xMsFileCreationTime = OffsetDateTime.parse(xMsFileCreationTime);
+            this.xMsFileCreationTime = new DateTimeRfc1123(xMsFileCreationTime);
         } else {
             this.xMsFileCreationTime = null;
         }
         String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
         if (xMsFileLastWriteTime != null) {
-            this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
+            this.xMsFileLastWriteTime = new DateTimeRfc1123(xMsFileLastWriteTime);
         } else {
             this.xMsFileLastWriteTime = null;
         }
         String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
         if (xMsFileChangeTime != null) {
-            this.xMsFileChangeTime = OffsetDateTime.parse(xMsFileChangeTime);
+            this.xMsFileChangeTime = new DateTimeRfc1123(xMsFileChangeTime);
         } else {
             this.xMsFileChangeTime = null;
         }
@@ -942,7 +942,10 @@ public final class FilesGetPropertiesByFileIdHeaders {
      */
     @Generated
     public OffsetDateTime getXMsFileCreationTime() {
-        return this.xMsFileCreationTime;
+        if (this.xMsFileCreationTime == null) {
+            return null;
+        }
+        return this.xMsFileCreationTime.getDateTime();
     }
 
     /**
@@ -953,7 +956,11 @@ public final class FilesGetPropertiesByFileIdHeaders {
      */
     @Generated
     public FilesGetPropertiesByFileIdHeaders setXMsFileCreationTime(OffsetDateTime xMsFileCreationTime) {
-        this.xMsFileCreationTime = xMsFileCreationTime;
+        if (xMsFileCreationTime == null) {
+            this.xMsFileCreationTime = null;
+        } else {
+            this.xMsFileCreationTime = new DateTimeRfc1123(xMsFileCreationTime);
+        }
         return this;
     }
 
@@ -964,7 +971,10 @@ public final class FilesGetPropertiesByFileIdHeaders {
      */
     @Generated
     public OffsetDateTime getXMsFileLastWriteTime() {
-        return this.xMsFileLastWriteTime;
+        if (this.xMsFileLastWriteTime == null) {
+            return null;
+        }
+        return this.xMsFileLastWriteTime.getDateTime();
     }
 
     /**
@@ -975,7 +985,11 @@ public final class FilesGetPropertiesByFileIdHeaders {
      */
     @Generated
     public FilesGetPropertiesByFileIdHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
-        this.xMsFileLastWriteTime = xMsFileLastWriteTime;
+        if (xMsFileLastWriteTime == null) {
+            this.xMsFileLastWriteTime = null;
+        } else {
+            this.xMsFileLastWriteTime = new DateTimeRfc1123(xMsFileLastWriteTime);
+        }
         return this;
     }
 
@@ -986,7 +1000,10 @@ public final class FilesGetPropertiesByFileIdHeaders {
      */
     @Generated
     public OffsetDateTime getXMsFileChangeTime() {
-        return this.xMsFileChangeTime;
+        if (this.xMsFileChangeTime == null) {
+            return null;
+        }
+        return this.xMsFileChangeTime.getDateTime();
     }
 
     /**
@@ -997,7 +1014,11 @@ public final class FilesGetPropertiesByFileIdHeaders {
      */
     @Generated
     public FilesGetPropertiesByFileIdHeaders setXMsFileChangeTime(OffsetDateTime xMsFileChangeTime) {
-        this.xMsFileChangeTime = xMsFileChangeTime;
+        if (xMsFileChangeTime == null) {
+            this.xMsFileChangeTime = null;
+        } else {
+            this.xMsFileChangeTime = new DateTimeRfc1123(xMsFileChangeTime);
+        }
         return this;
     }
 
