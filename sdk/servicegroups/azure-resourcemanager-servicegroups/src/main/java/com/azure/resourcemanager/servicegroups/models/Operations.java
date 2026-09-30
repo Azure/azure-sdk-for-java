@@ -4,33 +4,32 @@
 
 package com.azure.resourcemanager.servicegroups.models;
 
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
 /**
- * Resource collection API of ServiceGroups.
+ * Resource collection API of Operations.
  */
-public interface ServiceGroups {
+public interface Operations {
     /**
-     * Get the details of the serviceGroup.
+     * Lists all available REST API operations for the Microsoft.Management resource provider.
      * 
-     * @param serviceGroupName ServiceGroup Name.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<Operation> list();
+
+    /**
+     * Lists all available REST API operations for the Microsoft.Management resource provider.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the serviceGroup along with {@link Response}.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
-    Response<ServiceGroup> getWithResponse(String serviceGroupName, Context context);
-
-    /**
-     * Get the details of the serviceGroup.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the serviceGroup.
-     */
-    ServiceGroup get(String serviceGroupName);
+    PagedIterable<Operation> list(Context context);
 }

@@ -1,14 +1,40 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0 (2026-08-18)
 
-### Features Added
+- Azure Resource Manager Service Groups client library for Java. This package contains Microsoft Azure SDK for Service Groups Management SDK.  Package api-version 2026-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ServiceGroupCollectionResponse` was removed
 
-### Other Changes
+#### `models.ServiceGroups` was modified
+
+* `listAncestorsWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `listAncestors(java.lang.String)` was removed
+
+### Features Added
+
+* `models.OperationDisplay` was added
+
+* `models.ActionType` was added
+
+* `models.Operation` was added
+
+* `models.Operations` was added
+
+* `models.Origin` was added
+
+* `models.ServiceGroupAttributes` was added
+
+#### `ServiceGroupsManager` was modified
+
+* `operations()` was added
+
+#### `models.ServiceGroupProperties` was modified
+
+* `withAttributes(models.ServiceGroupAttributes)` was added
+* `attributes()` was added
 
 ## 1.0.0-beta.2 (2026-03-27)
 
