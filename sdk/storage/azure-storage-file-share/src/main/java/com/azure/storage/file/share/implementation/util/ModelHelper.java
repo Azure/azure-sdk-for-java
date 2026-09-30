@@ -408,9 +408,9 @@ public class ModelHelper {
         return new SimpleResponse<>(response, shareFileInfo);
     }
 
-    public static Response<ShareFileProperties> getPropertiesResponse(final Response<Void> response) {
-        // Path and file-ID operations return the same headers using different generated model types.
-        FilesGetPropertiesHeaders headers = new FilesGetPropertiesHeaders(response.getHeaders());
+    public static Response<ShareFileProperties>
+        getPropertiesResponse(final ResponseBase<FilesGetPropertiesHeaders, Void> response) {
+        FilesGetPropertiesHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
         Map<String, String> metadata = headers.getXMsMeta();

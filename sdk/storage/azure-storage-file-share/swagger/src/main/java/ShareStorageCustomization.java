@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ParseProblemException;
@@ -41,6 +42,35 @@ public class ShareStorageCustomization extends Customization {
                     + "@see ShareFileItem#getFileType()")));
 
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
+        reusePropertyHeaders(customization.getRawEditor(), "Files");
+    }
+
+    private static void reusePropertyHeaders(Editor editor, String operationGroup) {
+        String implementationPath = "src/main/java/com/azure/storage/file/share/implementation/";
+        String headersName = operationGroup + "GetPropertiesHeaders";
+        String fileIdHeadersName = operationGroup + "GetPropertiesByFileIdHeaders";
+        String headersPath = implementationPath + "models/" + headersName + ".java";
+        String fileIdHeadersPath = implementationPath + "models/" + fileIdHeadersName + ".java";
+        String clientPath = implementationPath + operationGroup + "Impl.java";
+        String headers = editor.getFileContent(headersPath);
+        String fileIdHeaders = editor.getFileContent(fileIdHeadersPath);
+        String client = editor.getFileContent(clientPath);
+        if (headers == null || fileIdHeaders == null || client == null) {
+            throw new IllegalStateException("Missing generated sources for " + operationGroup + " property headers.");
+        }
+
+        // Compare the entire model, including parsing, before discarding the operation-specific copy.
+        if (!headers.replace("\r\n", "\n")
+            .equals(fileIdHeaders.replace(fileIdHeadersName, headersName).replace("\r\n", "\n"))) {
+            throw new IllegalStateException(fileIdHeadersName + " differs from " + headersName
+                + ". Review the response headers before reusing the existing model.");
+        }
+        if (!client.contains(fileIdHeadersName)) {
+            throw new IllegalStateException(clientPath + " no longer references " + fileIdHeadersName + ".");
+        }
+
+        editor.replaceFile(clientPath, client.replace(fileIdHeadersName, headersName));
+        editor.removeFile(fileIdHeadersPath);
     }
 
     /**

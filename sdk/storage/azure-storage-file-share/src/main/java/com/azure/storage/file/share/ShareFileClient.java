@@ -41,6 +41,7 @@ import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetHardLinksHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.HardLinkList;
@@ -1576,7 +1577,7 @@ public class ShareFileClient {
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        Callable<Response<Void>> operation = fileId.isEmpty()
+        Callable<ResponseBase<FilesGetPropertiesHeaders, Void>> operation = fileId.isEmpty()
             ? () -> this.azureFileStorageClient.getFiles()
                 .getPropertiesWithResponse(shareName, filePath, snapshot, null, finalRequestConditions.getLeaseId(),
                     finalContext)

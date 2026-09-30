@@ -39,7 +39,6 @@ import com.azure.storage.file.share.implementation.models.FilesDeleteHeaders;
 import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetHardLinksHeaders;
-import com.azure.storage.file.share.implementation.models.FilesGetPropertiesByFileIdHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
@@ -158,7 +157,7 @@ public final class FilesImpl {
         @Head("/{shareName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
-        Mono<ResponseBase<FilesGetPropertiesByFileIdHeaders, Void>> getPropertiesByFileId(@HostParam("url") String url,
+        Mono<ResponseBase<FilesGetPropertiesHeaders, Void>> getPropertiesByFileId(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("fileid") String fileId,
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
@@ -182,7 +181,7 @@ public final class FilesImpl {
         @Head("/{shareName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
-        ResponseBase<FilesGetPropertiesByFileIdHeaders, Void> getPropertiesByFileIdSync(@HostParam("url") String url,
+        ResponseBase<FilesGetPropertiesHeaders, Void> getPropertiesByFileIdSync(@HostParam("url") String url,
             @PathParam("shareName") String shareName, @QueryParam("fileid") String fileId,
             @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
@@ -1907,8 +1906,8 @@ public final class FilesImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<FilesGetPropertiesByFileIdHeaders, Void>> getPropertiesByFileIdWithResponseAsync(
-        String shareName, String fileId, String sharesnapshot, Integer timeout, String requestId, String leaseId) {
+    public Mono<ResponseBase<FilesGetPropertiesHeaders, Void>> getPropertiesByFileIdWithResponseAsync(String shareName,
+        String fileId, String sharesnapshot, Integer timeout, String requestId, String leaseId) {
         return FluxUtil
             .withContext(context -> getPropertiesByFileIdWithResponseAsync(shareName, fileId, sharesnapshot, timeout,
                 requestId, leaseId, context))
@@ -1936,9 +1935,8 @@ public final class FilesImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<FilesGetPropertiesByFileIdHeaders, Void>> getPropertiesByFileIdWithResponseAsync(
-        String shareName, String fileId, String sharesnapshot, Integer timeout, String requestId, String leaseId,
-        Context context) {
+    public Mono<ResponseBase<FilesGetPropertiesHeaders, Void>> getPropertiesByFileIdWithResponseAsync(String shareName,
+        String fileId, String sharesnapshot, Integer timeout, String requestId, String leaseId, Context context) {
         final String accept = "application/xml";
         return service
             .getPropertiesByFileId(this.client.getUrl(), shareName, fileId, sharesnapshot, timeout,
@@ -2082,7 +2080,7 @@ public final class FilesImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<FilesGetPropertiesByFileIdHeaders, Void> getPropertiesByFileIdWithResponse(String shareName,
+    public ResponseBase<FilesGetPropertiesHeaders, Void> getPropertiesByFileIdWithResponse(String shareName,
         String fileId, String sharesnapshot, Integer timeout, String requestId, String leaseId, Context context) {
         try {
             final String accept = "application/xml";
