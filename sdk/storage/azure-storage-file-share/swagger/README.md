@@ -126,15 +126,6 @@ directive:
         op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
 ```
 
-### Keep file attribute documentation ASCII
-``` yaml
-directive:
-- from: swagger-document
-  where: $.parameters.FileAttributes
-  transform: >
-    $.description = $.description.replace(/[\u2018\u2019]/g, "'");
-```
-
 ### /{shareName}/{directory}?restype=directory&comp=rename
 ``` yaml
 directive:
