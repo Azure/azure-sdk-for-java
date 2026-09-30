@@ -102,18 +102,28 @@ directive:
         op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
 ```
 
-### File-ID property and hard-link response timestamps
+### /{shareName}
 ``` yaml
 directive:
 - from: swagger-document
   where: $["x-ms-paths"]
   transform: >
-    for (const [path, method] of [["/{shareName}?restype=directory", "get"], ["/{shareName}", "head"], ["/{shareName}?comp=hardlinks", "get"]]) {
-        const headers = $[path][method].responses["200"].headers;
-        for (const name of ["x-ms-file-creation-time", "x-ms-file-last-write-time", "x-ms-file-change-time"]) {
-            headers[name].format = "date-time";
-        }
-    }
+        const op = $["/{shareName}"];
+        op.head.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.head.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.head.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+```
+
+### /{shareName}?comp=hardlinks
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+        const op = $["/{shareName}?comp=hardlinks"];
+        op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
+        op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
 ```
 
 ### Keep file attribute documentation ASCII
