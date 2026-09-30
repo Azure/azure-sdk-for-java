@@ -104,7 +104,7 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
             DataGenerationJobResult result = null;
             ApiError error = null;
             OffsetDateTime finishedAt = null;
-            DataGenerationJobScenario scenario = DataGenerationJobScenario.SUPERVISED_FINETUNING;
+            DataGenerationJobScenario scenario = DataGenerationJobScenario.SUPERVISED_FINETUNING_PREVIEW;
             SupervisedFineTuningDataGenerationJobOutputTarget outputConfiguration = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();

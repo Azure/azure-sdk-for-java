@@ -104,7 +104,7 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
             DataGenerationJobResult result = null;
             ApiError error = null;
             OffsetDateTime finishedAt = null;
-            DataGenerationJobScenario scenario = DataGenerationJobScenario.REINFORCEMENT_FINETUNING;
+            DataGenerationJobScenario scenario = DataGenerationJobScenario.REINFORCEMENT_FINETUNING_PREVIEW;
             ReinforcementFineTuningDataGenerationJobOutputTarget outputConfiguration = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();

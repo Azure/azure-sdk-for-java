@@ -30,20 +30,22 @@ class DataGenerationJobSerializationTests {
 
     @Test
     void supervisedFineTuningJobDeserializesUnixTimestamps() throws IOException {
-        try (JsonReader reader = JsonProviders.createReader(json("supervised_finetuning", true))) {
+        try (JsonReader reader = JsonProviders.createReader(json("supervised_finetuning_preview", true))) {
             DataGenerationJob job = DataGenerationJob.fromJson(reader);
 
             assertEquals(SupervisedFineTuningDataGenerationJob.class, job.getClass());
+            assertEquals(DataGenerationJobScenario.SUPERVISED_FINETUNING_PREVIEW, job.getScenario());
             assertTimestamps(job);
         }
     }
 
     @Test
     void reinforcementFineTuningJobDeserializesUnixTimestamps() throws IOException {
-        try (JsonReader reader = JsonProviders.createReader(json("reinforcement_finetuning", true))) {
+        try (JsonReader reader = JsonProviders.createReader(json("reinforcement_finetuning_preview", true))) {
             DataGenerationJob job = DataGenerationJob.fromJson(reader);
 
             assertEquals(ReinforcementFineTuningDataGenerationJob.class, job.getClass());
+            assertEquals(DataGenerationJobScenario.REINFORCEMENT_FINETUNING_PREVIEW, job.getScenario());
             assertTimestamps(job);
         }
     }

@@ -71,7 +71,7 @@ public class DataGenerationJobWithEvaluationSample {
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build());
 
-        BetaDatasetsClient dataGenerationJobsClient = projectClientBuilder.beta().buildBetaDatasetsClient();
+        DataGenerationJobsClient dataGenerationJobsClient = projectClientBuilder.buildDataGenerationJobsClient();
         DatasetsClient datasetsClient = projectClientBuilder.buildDatasetsClient();
         OpenAIClient openAIClient = projectClientBuilder.buildOpenAIClient();
 
@@ -151,7 +151,7 @@ public class DataGenerationJobWithEvaluationSample {
             options).setOutputConfiguration(outputConfiguration);
     }
 
-    private static DataGenerationJob waitForDataGenerationJob(BetaDatasetsClient dataGenerationJobsClient,
+    private static DataGenerationJob waitForDataGenerationJob(DataGenerationJobsClient dataGenerationJobsClient,
         String jobId, int pollIntervalSeconds) throws InterruptedException {
         System.out.printf("Poll job `%s` until it reaches a terminal state.", jobId);
         DataGenerationJob job;

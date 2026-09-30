@@ -98,8 +98,8 @@ public class SamplesTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        BetaDatasetsClient dataGenerationJobsClient
-            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsClient();
+        DataGenerationJobsClient dataGenerationJobsClient
+            = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsClient();
 
         Iterable<DataGenerationJob> jobs = dataGenerationJobsClient.listGenerationJobs(5, PageOrder.DESC, null, null);
         Assertions.assertNotNull(jobs);
@@ -119,8 +119,8 @@ public class SamplesTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        BetaDatasetsAsyncClient dataGenerationJobsAsyncClient
-            = getClientBuilder(httpClient, serviceVersion).beta().buildBetaDatasetsAsyncClient();
+        DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient
+            = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsAsyncClient();
 
         StepVerifier.create(
             dataGenerationJobsAsyncClient.listGenerationJobs(5, PageOrder.DESC, null, null).take(5).doOnNext(job -> {
@@ -169,7 +169,7 @@ public class SamplesTests extends ClientTestBase {
     }
 
     @Disabled("Data generation live validation is blocked by 400: API operation not supported for token "
-        + "authentication; the create flow is also a long-running preview operation.")
+        + "authentication; the create flow is also a long-running operation.")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationCreateGetCancelDeleteSample(HttpClient httpClient,

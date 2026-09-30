@@ -6,6 +6,7 @@
 
 ### Breaking Changes
 
+- Replaced `BetaDatasetsClient` and `BetaDatasetsAsyncClient` with `DataGenerationJobsClient` and `DataGenerationJobsAsyncClient`, built directly from `AIProjectClientBuilder` through `buildDataGenerationJobsClient()` and `buildDataGenerationJobsAsyncClient()`. Preview data generation scenarios now require `allowPreview(true)`; GA scenarios do not.
 - Changed the constructors of `DataGenerationJobOptions`, `DataGenerationJobSource`, `EvaluatorDefinition`, and `EvaluatorGenerationJobSource` from public to protected. Construct their concrete subtypes instead. Deserialization of unknown discriminator values remains supported.
 
 ### Bugs Fixed
