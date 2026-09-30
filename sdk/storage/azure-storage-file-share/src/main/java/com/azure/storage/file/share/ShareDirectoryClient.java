@@ -23,12 +23,11 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
-import com.azure.storage.file.share.implementation.FileIdOperations;
+import com.azure.storage.file.share.implementation.ShareErrors;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesForceCloseHandlesHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesListHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesHeaders;
@@ -189,7 +188,7 @@ public class ShareDirectoryClient {
      * @return a ShareFileClient that interacts with the specified share
      */
     public ShareFileClient getFileClient(String fileName) {
-        FileIdOperations.ensurePathAddressed(fileId, "getFileClient");
+        ShareErrors.assertNotFileIdAddressed(fileId, "getFileClient");
         String filePath = directoryPath + "/" + fileName;
         // Support for root directory
         if (directoryPath.isEmpty()) {
@@ -210,7 +209,7 @@ public class ShareDirectoryClient {
      * @return a ShareDirectoryClient that interacts with the specified directory
      */
     public ShareDirectoryClient getSubdirectoryClient(String subdirectoryName) {
-        FileIdOperations.ensurePathAddressed(fileId, "getSubdirectoryClient");
+        ShareErrors.assertNotFileIdAddressed(fileId, "getSubdirectoryClient");
         boolean needPathDelimiter = !this.directoryPath.isEmpty() && !this.directoryPath.endsWith("/");
         String subDirectoryPath = this.directoryPath + (needPathDelimiter ? "/" : "") + subdirectoryName;
         return new ShareDirectoryClient(azureFileStorageClient, shareName, subDirectoryPath, snapshot, accountName,
@@ -253,7 +252,7 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
-        FileIdOperations.ensurePathAddressed(fileId, "exists");
+        ShareErrors.assertNotFileIdAddressed(fileId, "exists");
         try {
             Response<ShareDirectoryProperties> response = getPropertiesWithResponse(timeout, context);
             return new SimpleResponse<>(response, true);
@@ -368,7 +367,7 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryInfo> createWithResponse(ShareDirectoryCreateOptions options, Duration timeout,
         Context context) {
-        FileIdOperations.ensurePathAddressed(fileId, "create");
+        ShareErrors.assertNotFileIdAddressed(fileId, "create");
         Context finalContext = context == null ? Context.NONE : context;
         ShareDirectoryCreateOptions finalOptions = options == null ? new ShareDirectoryCreateOptions() : options;
 
@@ -521,7 +520,7 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
-        FileIdOperations.ensurePathAddressed(fileId, "delete");
+        ShareErrors.assertNotFileIdAddressed(fileId, "delete");
         Context finalContext = context == null ? Context.NONE : context;
         Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getDirectories()
             .deleteNoCustomHeadersWithResponse(shareName, directoryPath, null, finalContext);
@@ -651,11 +650,11 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<DirectoriesGetPropertiesHeaders, Void>> operation = fileId.isEmpty()
+        Callable<Response<Void>> operation = fileId.isEmpty()
             ? () -> this.azureFileStorageClient.getDirectories()
                 .getPropertiesWithResponse(shareName, directoryPath, snapshot, null, finalContext)
-            : () -> this.azureFileStorageClient.getFileIdOperations()
-                .getDirectoryProperties(shareName, fileId, snapshot, null, finalContext);
+            : () -> this.azureFileStorageClient.getDirectories()
+                .getPropertiesByFileIdWithResponse(shareName, fileId, snapshot, null, null, finalContext);
 
         return ModelHelper
             .mapShareDirectoryPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
@@ -754,7 +753,7 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryInfo> setPropertiesWithResponse(ShareDirectorySetPropertiesOptions options,
         Duration timeout, Context context) {
-        FileIdOperations.ensurePathAddressed(fileId, "setProperties");
+        ShareErrors.assertNotFileIdAddressed(fileId, "setProperties");
         Context finalContext = context == null ? Context.NONE : context;
         ShareDirectorySetPropertiesOptions finalOptions
             = options == null ? new ShareDirectorySetPropertiesOptions() : options;
@@ -862,7 +861,7 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectorySetMetadataInfo> setMetadataWithResponse(Map<String, String> metadata,
         Duration timeout, Context context) {
-        FileIdOperations.ensurePathAddressed(fileId, "setMetadata");
+        ShareErrors.assertNotFileIdAddressed(fileId, "setMetadata");
         Context finalContext = context == null ? Context.NONE : context;
         Callable<ResponseBase<DirectoriesSetMetadataHeaders, Void>> operation
             = () -> this.azureFileStorageClient.getDirectories()
@@ -973,7 +972,7 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileItem> listFilesAndDirectories(ShareListFilesAndDirectoriesOptions options,
         Duration timeout, Context context) {
-        FileIdOperations.ensurePathAddressed(fileId, "listFilesAndDirectories");
+        ShareErrors.assertNotFileIdAddressed(fileId, "listFilesAndDirectories");
         Context finalContext = context == null ? Context.NONE : context;
 
         final ShareListFilesAndDirectoriesOptions modifiedOptions
@@ -1034,7 +1033,7 @@ public class ShareDirectoryClient {
 
     PagedIterable<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultPerPage, boolean recursive,
         Duration timeout, Context context) {
-        FileIdOperations.ensurePathAddressed(fileId, "listHandles");
+        ShareErrors.assertNotFileIdAddressed(fileId, "listHandles");
         Context finalContext = context == null ? Context.NONE : context;
         Function<String, PagedResponse<HandleItem>> retriever = (marker) -> {
             Callable<ResponseBase<DirectoriesListHandlesHeaders, ListHandlesResponse>> operation
@@ -1111,7 +1110,7 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloseHandlesInfo> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
-        FileIdOperations.ensurePathAddressed(fileId, "forceCloseHandle");
+        ShareErrors.assertNotFileIdAddressed(fileId, "forceCloseHandle");
         Context finalContext = context == null ? Context.NONE : context;
 
         Callable<ResponseBase<DirectoriesForceCloseHandlesHeaders, Void>> operation
@@ -1155,7 +1154,7 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloseHandlesInfo forceCloseAllHandles(boolean recursive, Duration timeout, Context context) {
-        FileIdOperations.ensurePathAddressed(fileId, "forceCloseAllHandles");
+        ShareErrors.assertNotFileIdAddressed(fileId, "forceCloseAllHandles");
         Context finalContext = context == null ? Context.NONE : context;
 
         Function<String, PagedResponse<CloseHandlesInfo>> retriever = (marker) -> {
@@ -1242,7 +1241,7 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryClient> renameWithResponse(ShareFileRenameOptions options, Duration timeout,
         Context context) {
-        FileIdOperations.ensurePathAddressed(fileId, "rename");
+        ShareErrors.assertNotFileIdAddressed(fileId, "rename");
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
 
@@ -2078,7 +2077,7 @@ public class ShareDirectoryClient {
     @Deprecated
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
         Consumer<String> stringToSignHandler, Context context) {
-        FileIdOperations.ensurePathAddressed(fileId, "generateSas");
+        ShareErrors.assertNotFileIdAddressed(fileId, "generateSas");
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getDirectoryPath())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }

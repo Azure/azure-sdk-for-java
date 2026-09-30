@@ -21,7 +21,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
-import com.azure.storage.file.share.implementation.FileIdOperations;
+import com.azure.storage.file.share.implementation.ShareErrors;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
@@ -196,7 +196,7 @@ public class ShareAsyncClient {
      * @throws IllegalArgumentException If {@code fileId} is null or blank.
      */
     public ShareFileAsyncClient getFileClientByFileId(String fileId) {
-        FileIdOperations.validateFileId(fileId);
+        ShareErrors.validateFileId(fileId);
         return new ShareFileAsyncClient(azureFileStorageClient, shareName, "", fileId, snapshot, accountName,
             serviceVersion, sasToken);
     }
@@ -209,7 +209,7 @@ public class ShareAsyncClient {
      * @throws IllegalArgumentException If {@code fileId} is null or blank.
      */
     public ShareDirectoryAsyncClient getDirectoryClientByFileId(String fileId) {
-        FileIdOperations.validateFileId(fileId);
+        ShareErrors.validateFileId(fileId);
         return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, "", fileId, snapshot, accountName,
             serviceVersion, sasToken);
     }

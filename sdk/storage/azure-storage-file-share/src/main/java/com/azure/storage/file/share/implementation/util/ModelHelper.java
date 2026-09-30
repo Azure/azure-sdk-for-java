@@ -408,9 +408,9 @@ public class ModelHelper {
         return new SimpleResponse<>(response, shareFileInfo);
     }
 
-    public static Response<ShareFileProperties>
-        getPropertiesResponse(final ResponseBase<FilesGetPropertiesHeaders, Void> response) {
-        FilesGetPropertiesHeaders headers = response.getDeserializedHeaders();
+    public static Response<ShareFileProperties> getPropertiesResponse(final Response<Void> response) {
+        // Path and file-ID operations return the same headers using different generated model types.
+        FilesGetPropertiesHeaders headers = new FilesGetPropertiesHeaders(response.getHeaders());
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
         Map<String, String> metadata = headers.getXMsMeta();
@@ -599,17 +599,16 @@ public class ModelHelper {
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
-    public static Response<ShareDirectoryProperties>
-        mapShareDirectoryPropertiesResponse(ResponseBase<DirectoriesGetPropertiesHeaders, Void> response) {
-        Map<String, String> metadata = response.getDeserializedHeaders().getXMsMeta();
-        String eTag = response.getDeserializedHeaders().getETag();
-        OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsServerEncrypted();
+    public static Response<ShareDirectoryProperties> mapShareDirectoryPropertiesResponse(Response<Void> response) {
+        DirectoriesGetPropertiesHeaders headers = new DirectoriesGetPropertiesHeaders(response.getHeaders());
+        Map<String, String> metadata = headers.getXMsMeta();
+        String eTag = headers.getETag();
+        OffsetDateTime offsetDateTime = headers.getLastModified();
+        boolean isServerEncrypted = headers.isXMsServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
-        ShareDirectoryProperties shareDirectoryProperties
-            = ShareDirectoryPropertiesHelper.create(metadata, eTag, offsetDateTime, isServerEncrypted, smbProperties,
-                posixProperties, response.getDeserializedHeaders().getXMsFileName());
+        ShareDirectoryProperties shareDirectoryProperties = ShareDirectoryPropertiesHelper.create(metadata, eTag,
+            offsetDateTime, isServerEncrypted, smbProperties, posixProperties, headers.getXMsFileName());
         return new SimpleResponse<>(response, shareDirectoryProperties);
     }
 

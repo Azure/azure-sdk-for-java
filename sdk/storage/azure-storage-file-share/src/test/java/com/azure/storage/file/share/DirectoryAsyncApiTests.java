@@ -129,6 +129,8 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             = testShareClient.getDirectoryClientByFileId(FileIdTestHelper.FILE_ID).getProperties().block();
 
         Assertions.assertEquals("directory", properties.getFileName());
+        Assertions.assertEquals("value", properties.getMetadata().get("key"));
+        FileIdTestHelper.assertSmbProperties(properties.getSmbProperties());
         Assertions.assertTrue(requestUrl.get().contains("restype=directory"));
         Assertions.assertTrue(requestUrl.get().contains("fileid=" + FileIdTestHelper.FILE_ID));
     }
@@ -143,8 +145,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("directory")));
         }).build();
 
-        ShareDirectoryAsyncClient directoryClient = new ShareFileClientBuilder()
-            .endpoint(FileIdTestHelper.ENDPOINT)
+        ShareDirectoryAsyncClient directoryClient = new ShareFileClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
             .shareName(FileIdTestHelper.SHARE_NAME)
             .fileId(FileIdTestHelper.FILE_ID)
             .pipeline(pipeline)
@@ -177,14 +178,17 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         ShareDirectoryAsyncClient directoryClient
             = testShareClient.getDirectoryClientByFileId(FileIdTestHelper.FILE_ID);
 
-        Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.create().block());
+        IllegalStateException createException
+            = Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.create().block());
+        Assertions.assertEquals("create is not supported for a file-ID-addressed client.",
+            createException.getMessage());
         Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.delete().block());
         Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.exists().block());
         Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.setMetadata(null).block());
         Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.rename("destination").block());
-        Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.listFilesAndDirectories().blockFirst());
         Assertions.assertThrows(IllegalStateException.class,
-            () -> directoryClient.forceCloseAllHandles(false).block());
+            () -> directoryClient.listFilesAndDirectories().blockFirst());
+        Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.forceCloseAllHandles(false).block());
         Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.generateSas(null));
         Assertions.assertFalse(requestSent.get());
     }

@@ -35,7 +35,7 @@ import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
-import com.azure.storage.file.share.implementation.FileIdOperations;
+import com.azure.storage.file.share.implementation.ShareErrors;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
 import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareTokenIntent;
@@ -389,7 +389,7 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
      * @throws IllegalArgumentException If {@code fileId} is null or blank.
      */
     public ShareFileClientBuilder fileId(String fileId) {
-        FileIdOperations.validateFileId(fileId);
+        ShareErrors.validateFileId(fileId);
         this.fileId = fileId;
         this.resourcePath = "";
         return this;

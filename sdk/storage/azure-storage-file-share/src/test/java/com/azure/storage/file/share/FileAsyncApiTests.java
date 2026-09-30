@@ -183,6 +183,11 @@ public class FileAsyncApiTests extends FileShareTestBase {
             = testShareClient.getFileClientByFileId(FileIdTestHelper.FILE_ID).getProperties().block();
 
         Assertions.assertEquals("file.txt", properties.getFileName());
+        Assertions.assertEquals(1024, properties.getContentLength());
+        Assertions.assertEquals("en", properties.getContentLanguage());
+        Assertions.assertEquals("gzip", properties.getContentEncoding());
+        Assertions.assertEquals("value", properties.getMetadata().get("key"));
+        FileIdTestHelper.assertSmbProperties(properties.getSmbProperties());
         Assertions.assertTrue(requestUrl.get().contains("fileid=" + FileIdTestHelper.FILE_ID));
     }
 
@@ -220,8 +225,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             requestUrl.set(request.getUrl().toString());
             String body = "<HardLinks><HardLink><FileName Encoded=\"true\">file%20name.txt</FileName>"
                 + "<ParentId>parent-id</ParentId>" + "</HardLink></HardLinks>";
-            HttpHeaders headers = FileIdTestHelper.fileHeaders("file.txt")
-                .set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+            HttpHeaders headers
+                = FileIdTestHelper.fileHeaders("file.txt").set(HttpHeaderName.CONTENT_TYPE, "application/xml");
             return Mono.just(new MockHttpResponse(request, 200, headers, body.getBytes(StandardCharsets.UTF_8)));
         }).build();
 
@@ -230,17 +235,67 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .serviceVersion(ShareServiceVersion.V2027_03_07)
             .buildAsyncClient()
             .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
-        ShareFileLinks links
-            = testShareClient.getFileClientByFileId(FileIdTestHelper.FILE_ID).getFileLinks().block();
+        ShareFileLinks links = testShareClient.getFileClientByFileId(FileIdTestHelper.FILE_ID).getFileLinks().block();
 
         Assertions.assertEquals("file.txt", links.getProperties().getFileName());
         Assertions.assertEquals("en", links.getProperties().getContentLanguage());
         Assertions.assertEquals("gzip", links.getProperties().getContentEncoding());
+        FileIdTestHelper.assertSmbProperties(links.getProperties().getSmbProperties());
         Assertions.assertEquals(1, links.getLinks().size());
         Assertions.assertEquals("file name.txt", links.getLinks().get(0).getName());
         Assertions.assertEquals("parent-id", links.getLinks().get(0).getParentId());
         Assertions.assertTrue(requestUrl.get().contains("comp=hardlinks"));
         Assertions.assertTrue(requestUrl.get().contains("fileid=" + FileIdTestHelper.FILE_ID));
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void asyncPropertiesByIdMapServiceErrors(boolean directory) {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request,
+            404, new HttpHeaders().set(HttpHeaderName.fromString("x-ms-error-code"), "ResourceNotFound")))).build();
+        ShareAsyncClient client = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
+
+        ShareStorageException exception = Assertions.assertThrows(ShareStorageException.class, () -> {
+            if (directory) {
+                client.getDirectoryClientByFileId(FileIdTestHelper.FILE_ID).getProperties().block();
+            } else {
+                client.getFileClientByFileId(FileIdTestHelper.FILE_ID).getProperties().block();
+            }
+        });
+        Assertions.assertEquals(404, exception.getStatusCode());
+        Assertions.assertEquals(ShareErrorCode.RESOURCE_NOT_FOUND, exception.getErrorCode());
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void asyncPathPropertiesRetainTimestampMapping(boolean directory) {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            Assertions.assertEquals("/share/item", request.getUrl().getPath());
+            Assertions.assertFalse(request.getUrl().toString().contains("fileid="));
+            Assertions.assertEquals(directory ? HttpMethod.GET : HttpMethod.HEAD, request.getHttpMethod());
+            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("item")));
+        }).build();
+        ShareAsyncClient client = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
+
+        if (directory) {
+            FileIdTestHelper
+                .assertSmbProperties(client.getDirectoryClient("item").getProperties().block().getSmbProperties());
+        } else {
+            ShareFileProperties properties = client.getFileClient("item").getProperties().block();
+            FileIdTestHelper.assertSmbProperties(properties.getSmbProperties());
+            Assertions.assertEquals(1024, properties.getContentLength());
+            Assertions.assertEquals("value", properties.getMetadata().get("key"));
+        }
     }
 
     @DoNotRecord
@@ -260,7 +315,10 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
         ShareFileAsyncClient fileClient = testShareClient.getFileClientByFileId(FileIdTestHelper.FILE_ID);
 
-        Assertions.assertThrows(IllegalStateException.class, () -> fileClient.create(1024).block());
+        IllegalStateException createException
+            = Assertions.assertThrows(IllegalStateException.class, () -> fileClient.create(1024).block());
+        Assertions.assertEquals("create is not supported for a file-ID-addressed client.",
+            createException.getMessage());
         Assertions.assertThrows(IllegalStateException.class, () -> fileClient.delete().block());
         Assertions.assertThrows(IllegalStateException.class, () -> fileClient.exists().block());
         Assertions.assertThrows(IllegalStateException.class, () -> fileClient.download().blockFirst());
@@ -268,8 +326,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
         Assertions.assertThrows(IllegalStateException.class, () -> fileClient.setMetadata(null).block());
         Assertions.assertThrows(IllegalStateException.class, () -> fileClient.rename("destination").block());
         Assertions.assertThrows(IllegalStateException.class, () -> fileClient.forceCloseAllHandles().block());
-        Assertions.assertThrows(IllegalStateException.class,
+        IllegalStateException linksException = Assertions.assertThrows(IllegalStateException.class,
             () -> testShareClient.getFileClient("path/file").getFileLinks().block());
+        Assertions.assertEquals("getFileLinks requires a file-ID-addressed client.", linksException.getMessage());
         Assertions.assertFalse(requestSent.get());
     }
 

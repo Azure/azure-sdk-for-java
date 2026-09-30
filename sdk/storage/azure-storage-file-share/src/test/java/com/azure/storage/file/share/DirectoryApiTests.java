@@ -141,11 +141,15 @@ public class DirectoryApiTests extends FileShareTestBase {
 
         Assertions.assertEquals(FileIdTestHelper.FILE_ID, directoryClient.getFileId());
         Assertions.assertEquals("", directoryClient.getDirectoryPath());
-        Assertions.assertEquals(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "?fileid="
-            + FileIdTestHelper.FILE_ID, directoryClient.getDirectoryUrl());
-        Assertions.assertEquals("directory", directoryClient.getProperties().getFileName());
-        Assertions.assertTrue(requestUrl.get().startsWith(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME
-            + "?restype=directory"));
+        Assertions.assertEquals(
+            FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "?fileid=" + FileIdTestHelper.FILE_ID,
+            directoryClient.getDirectoryUrl());
+        ShareDirectoryProperties properties = directoryClient.getProperties();
+        Assertions.assertEquals("directory", properties.getFileName());
+        Assertions.assertEquals("value", properties.getMetadata().get("key"));
+        FileIdTestHelper.assertSmbProperties(properties.getSmbProperties());
+        Assertions.assertTrue(requestUrl.get()
+            .startsWith(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "?restype=directory"));
         Assertions.assertTrue(requestUrl.get().contains("fileid=" + FileIdTestHelper.FILE_ID));
     }
 
@@ -191,17 +195,18 @@ public class DirectoryApiTests extends FileShareTestBase {
         ShareDirectoryClient directoryClient = testShareClient.getDirectoryClientByFileId(FileIdTestHelper.FILE_ID);
 
         Assertions.assertThrows(IllegalStateException.class, directoryClient::exists);
-        Assertions.assertThrows(IllegalStateException.class, directoryClient::create);
+        IllegalStateException createException
+            = Assertions.assertThrows(IllegalStateException.class, directoryClient::create);
+        Assertions.assertEquals("create is not supported for a file-ID-addressed client.",
+            createException.getMessage());
         Assertions.assertThrows(IllegalStateException.class, directoryClient::delete);
         Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.setMetadata(null));
         Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.rename("destination"));
         Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.getFileClient("file.txt"));
         Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.getSubdirectoryClient("directory"));
         Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.generateSas(null));
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> testShareClient.getDirectoryClientByFileId(""));
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> testShareClient.getDirectoryClientByFileId(null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testShareClient.getDirectoryClientByFileId(""));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> testShareClient.getDirectoryClientByFileId(null));
         Assertions.assertFalse(requestSent.get());
     }
 
