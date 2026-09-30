@@ -46,7 +46,7 @@ public class RxGatewayStoreModelTest {
     private final static int TIMEOUT = 10000;
 
     @Test(groups = "unit")
-    public void latestUserAgentIsAppliedToDatabaseAccountRequest() throws Exception {
+    public void latestUserAgentIsAppliedToGatewayRequest() throws Exception {
         DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         userAgentContainer.setSuffix("test-application");
@@ -67,8 +67,8 @@ public class RxGatewayStoreModelTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             clientContext,
             OperationType.Read,
-            ResourceType.DatabaseAccount,
-            "",
+            ResourceType.Document,
+            "/dbs/db/colls/col/docs/doc",
             null,
             (Object) null);
 
