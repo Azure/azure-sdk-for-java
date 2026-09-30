@@ -210,11 +210,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
         HttpMethod method = getHttpMethod(request);
         HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
-        if (Objects.equals(
-            httpHeaders.value(HttpConstants.HttpHeaders.USER_AGENT),
-            this.defaultHeaders.get(HttpConstants.HttpHeaders.USER_AGENT))) {
-            httpHeaders.set(HttpConstants.HttpHeaders.USER_AGENT, this.getCurrentUserAgent());
-        }
 
         Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
         return new HttpRequest(method,
@@ -504,6 +499,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 }
             }
         }
+
+        httpHeaders.set(HttpConstants.HttpHeaders.USER_AGENT, this.getCurrentUserAgent());
 
         // Add override headers.
         if (headers != null) {

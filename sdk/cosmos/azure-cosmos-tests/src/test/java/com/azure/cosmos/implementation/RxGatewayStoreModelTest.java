@@ -92,6 +92,7 @@ public class RxGatewayStoreModelTest {
             ApiType.SQL,
             null);
 
+        String requestUserAgent = userAgentContainer.getUserAgent();
         userAgentContainer.setFeatureEnabledFlagsAsSuffix(
             Collections.singleton(UserAgentFeatureFlags.PerPartitionCircuitBreaker));
 
@@ -100,13 +101,13 @@ public class RxGatewayStoreModelTest {
             OperationType.Read,
             ResourceType.DatabaseAccount,
             "",
-            Collections.singletonMap("user-agent", "request-user-agent"),
+            Collections.singletonMap("user-agent", requestUserAgent),
             (Object) null);
 
         HttpRequest httpRequest = storeModel.wrapInHttpRequest(request, new URI("https://localhost"));
 
         assertThat(httpRequest.headers().value(HttpConstants.HttpHeaders.USER_AGENT))
-            .isEqualTo("request-user-agent");
+            .isEqualTo(requestUserAgent);
     }
 
     @DataProvider(name = "sessionTokenConfigProvider")
