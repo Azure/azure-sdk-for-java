@@ -83,7 +83,12 @@ jobs:
       container: $[ variables['Container'] ]
 
     variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
+      # Inherit static globals from the stage instead of duplicating them in every matrix job.
+      # Keep runtime expressions job-scoped so matrix overrides are respected.
+      - name: IsDebug
+        value: $[coalesce(variables['System.Debug'], 'false')]
+      - name: MavenLogLevel
+        value: $[coalesce(variables['LogLevel'], 'warn')]
 
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
