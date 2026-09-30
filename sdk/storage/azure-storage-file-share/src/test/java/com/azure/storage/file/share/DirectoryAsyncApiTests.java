@@ -163,13 +163,13 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             .shareName(FileIdTestHelper.SHARE_NAME)
             .pipeline(pipeline);
         if (fromEndpoint) {
-            builder.endpoint(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME
-                + "/directory?fileid=" + FileIdTestHelper.FILE_ID);
+            builder.endpoint(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/directory?fileid="
+                + FileIdTestHelper.FILE_ID);
         } else {
             builder.resourcePath("directory").fileId(FileIdTestHelper.FILE_ID);
         }
-        IllegalStateException exception = Assertions.assertThrows(IllegalStateException.class,
-            builder::buildDirectoryAsyncClient);
+        IllegalStateException exception
+            = Assertions.assertThrows(IllegalStateException.class, builder::buildDirectoryAsyncClient);
         Assertions.assertEquals("buildDirectoryAsyncClient is not supported for a file-ID-addressed client.",
             exception.getMessage());
         Assertions.assertEquals(FileIdTestHelper.FILE_ID, builder.buildFileAsyncClient().getFileId());
@@ -199,7 +199,10 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         Assertions.assertEquals(expectedUrl + (path.isEmpty() ? "" : "/") + "file.txt",
             directoryClient.getFileClient("file.txt").getFileUrl());
         Assertions.assertEquals(expectedUrl,
-            builder.fileId(FileIdTestHelper.FILE_ID).endpoint(expectedUrl).buildDirectoryAsyncClient().getDirectoryUrl());
+            builder.fileId(FileIdTestHelper.FILE_ID)
+                .endpoint(expectedUrl)
+                .buildDirectoryAsyncClient()
+                .getDirectoryUrl());
     }
 
     @Test

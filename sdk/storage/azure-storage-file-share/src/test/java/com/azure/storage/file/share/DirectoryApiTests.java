@@ -173,13 +173,13 @@ public class DirectoryApiTests extends FileShareTestBase {
             .shareName(FileIdTestHelper.SHARE_NAME)
             .pipeline(pipeline);
         if (fromEndpoint) {
-            builder.endpoint(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME
-                + "/directory?fileid=" + FileIdTestHelper.FILE_ID);
+            builder.endpoint(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/directory?fileid="
+                + FileIdTestHelper.FILE_ID);
         } else {
             builder.resourcePath("directory").fileId(FileIdTestHelper.FILE_ID);
         }
-        IllegalStateException exception = Assertions.assertThrows(IllegalStateException.class,
-            builder::buildDirectoryClient);
+        IllegalStateException exception
+            = Assertions.assertThrows(IllegalStateException.class, builder::buildDirectoryClient);
         Assertions.assertEquals("buildDirectoryClient is not supported for a file-ID-addressed client.",
             exception.getMessage());
         Assertions.assertEquals(FileIdTestHelper.FILE_ID, builder.buildFileClient().getFileId());

@@ -123,8 +123,7 @@ public class ShareDirectoryAsyncClient {
     ShareDirectoryAsyncClient(ShareDirectoryAsyncClient directoryAsyncClient) {
         this(directoryAsyncClient.azureFileStorageClient, directoryAsyncClient.shareName,
             Utility.urlEncode(directoryAsyncClient.directoryPath), directoryAsyncClient.snapshot,
-            directoryAsyncClient.accountName, directoryAsyncClient.serviceVersion,
-            directoryAsyncClient.sasToken);
+            directoryAsyncClient.accountName, directoryAsyncClient.serviceVersion, directoryAsyncClient.sasToken);
     }
 
     /**

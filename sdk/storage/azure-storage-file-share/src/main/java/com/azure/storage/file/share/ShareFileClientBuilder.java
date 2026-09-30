@@ -233,8 +233,8 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
     public ShareDirectoryAsyncClient buildDirectoryAsyncClient() {
         ShareErrors.assertNotFileIdAddressed(fileId, "buildDirectoryAsyncClient");
         ShareServiceVersion serviceVersion = getServiceVersion();
-        return new ShareDirectoryAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot,
-            accountName, serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
+        return new ShareDirectoryAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName,
+            serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
     /**

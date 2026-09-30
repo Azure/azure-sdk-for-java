@@ -113,5 +113,4 @@ public final class ShareDirectoryProperties {
     public FilePosixProperties getPosixProperties() {
         return posixProperties;
     }
-
 }
