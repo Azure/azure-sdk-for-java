@@ -146,7 +146,6 @@ public final class AzureFileStorageImpl {
      * The DirectoriesImpl object to access its operations.
      */
     private final DirectoriesImpl directories;
-    private final FileIdOperations fileIdOperations;
 
     /**
      * Gets the DirectoriesImpl object to access its operations.
@@ -169,15 +168,6 @@ public final class AzureFileStorageImpl {
      */
     public FilesImpl getFiles() {
         return this.files;
-    }
-
-    /**
-     * Gets the REST operations that address files and directories by ID.
-     *
-     * @return The file-ID REST operations.
-     */
-    public FileIdOperations getFileIdOperations() {
-        return this.fileIdOperations;
     }
 
     /**
@@ -236,6 +226,5 @@ public final class AzureFileStorageImpl {
         this.shares = new SharesImpl(this);
         this.directories = new DirectoriesImpl(this);
         this.files = new FilesImpl(this);
-        this.fileIdOperations = new FileIdOperations(this);
     }
 }

@@ -39,6 +39,7 @@ import com.azure.storage.file.share.implementation.models.FilesDeleteHeaders;
 import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetHardLinksHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetPropertiesByFileIdHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
@@ -105,6 +106,54 @@ public final class FilesImpl {
     @Host("{url}")
     @ServiceInterface(name = "AzureFileStorageFiles")
     public interface FilesService {
+
+        @Head("/{shareName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Mono<ResponseBase<FilesGetPropertiesByFileIdHeaders, Void>> getPropertiesByFileId(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("fileid") String fileId,
+            @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Head("/{shareName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Mono<Response<Void>> getPropertiesByFileIdNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("fileid") String fileId,
+            @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Head("/{shareName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        ResponseBase<FilesGetPropertiesByFileIdHeaders, Void> getPropertiesByFileIdSync(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("fileid") String fileId,
+            @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Head("/{shareName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Response<Void> getPropertiesByFileIdNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("fileid") String fileId,
+            @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -1564,6 +1613,270 @@ public final class FilesImpl {
     }
 
     /**
+     * Returns all user-defined metadata, standard HTTP properties, and system properties for the file identified by its
+     * file ID. It does not return the content of the file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FilesGetPropertiesByFileIdHeaders, Void>> getPropertiesByFileIdWithResponseAsync(
+        String shareName, String fileId, String sharesnapshot, Integer timeout, String requestId, String leaseId) {
+        return FluxUtil
+            .withContext(context -> getPropertiesByFileIdWithResponseAsync(shareName, fileId, sharesnapshot, timeout,
+                requestId, leaseId, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Returns all user-defined metadata, standard HTTP properties, and system properties for the file identified by its
+     * file ID. It does not return the content of the file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FilesGetPropertiesByFileIdHeaders, Void>> getPropertiesByFileIdWithResponseAsync(
+        String shareName, String fileId, String sharesnapshot, Integer timeout, String requestId, String leaseId,
+        Context context) {
+        final String accept = "application/xml";
+        return service
+            .getPropertiesByFileId(this.client.getUrl(), shareName, fileId, sharesnapshot, timeout,
+                this.client.getVersion(), requestId, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Returns all user-defined metadata, standard HTTP properties, and system properties for the file identified by its
+     * file ID. It does not return the content of the file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getPropertiesByFileIdAsync(String shareName, String fileId, String sharesnapshot, Integer timeout,
+        String requestId, String leaseId) {
+        return getPropertiesByFileIdWithResponseAsync(shareName, fileId, sharesnapshot, timeout, requestId, leaseId)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Returns all user-defined metadata, standard HTTP properties, and system properties for the file identified by its
+     * file ID. It does not return the content of the file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getPropertiesByFileIdAsync(String shareName, String fileId, String sharesnapshot, Integer timeout,
+        String requestId, String leaseId, Context context) {
+        return getPropertiesByFileIdWithResponseAsync(shareName, fileId, sharesnapshot, timeout, requestId, leaseId,
+            context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Returns all user-defined metadata, standard HTTP properties, and system properties for the file identified by its
+     * file ID. It does not return the content of the file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getPropertiesByFileIdNoCustomHeadersWithResponseAsync(String shareName, String fileId,
+        String sharesnapshot, Integer timeout, String requestId, String leaseId) {
+        return FluxUtil
+            .withContext(context -> getPropertiesByFileIdNoCustomHeadersWithResponseAsync(shareName, fileId,
+                sharesnapshot, timeout, requestId, leaseId, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Returns all user-defined metadata, standard HTTP properties, and system properties for the file identified by its
+     * file ID. It does not return the content of the file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getPropertiesByFileIdNoCustomHeadersWithResponseAsync(String shareName, String fileId,
+        String sharesnapshot, Integer timeout, String requestId, String leaseId, Context context) {
+        final String accept = "application/xml";
+        return service
+            .getPropertiesByFileIdNoCustomHeaders(this.client.getUrl(), shareName, fileId, sharesnapshot, timeout,
+                this.client.getVersion(), requestId, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Returns all user-defined metadata, standard HTTP properties, and system properties for the file identified by its
+     * file ID. It does not return the content of the file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<FilesGetPropertiesByFileIdHeaders, Void> getPropertiesByFileIdWithResponse(String shareName,
+        String fileId, String sharesnapshot, Integer timeout, String requestId, String leaseId, Context context) {
+        try {
+            final String accept = "application/xml";
+            return service.getPropertiesByFileIdSync(this.client.getUrl(), shareName, fileId, sharesnapshot, timeout,
+                this.client.getVersion(), requestId, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, context);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Returns all user-defined metadata, standard HTTP properties, and system properties for the file identified by its
+     * file ID. It does not return the content of the file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getPropertiesByFileId(String shareName, String fileId, String sharesnapshot, Integer timeout,
+        String requestId, String leaseId) {
+        getPropertiesByFileIdWithResponse(shareName, fileId, sharesnapshot, timeout, requestId, leaseId, Context.NONE);
+    }
+
+    /**
+     * Returns all user-defined metadata, standard HTTP properties, and system properties for the file identified by its
+     * file ID. It does not return the content of the file.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> getPropertiesByFileIdNoCustomHeadersWithResponse(String shareName, String fileId,
+        String sharesnapshot, Integer timeout, String requestId, String leaseId, Context context) {
+        try {
+            final String accept = "application/xml";
+            return service.getPropertiesByFileIdNoCustomHeadersSync(this.client.getUrl(), shareName, fileId,
+                sharesnapshot, timeout, this.client.getVersion(), requestId, leaseId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, context);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
      * Returns the hard links of a file, along with all user-defined metadata, content properties, and system properties
      * for the file. NFS only.
      *
@@ -1859,8 +2172,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1927,8 +2240,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2033,8 +2346,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2099,8 +2412,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2167,8 +2480,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2235,8 +2548,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2341,8 +2654,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2409,8 +2722,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2515,8 +2828,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2581,8 +2894,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2649,8 +2962,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2717,8 +3030,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2823,8 +3136,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2931,8 +3244,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2995,8 +3308,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -3828,8 +4141,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -3877,8 +4190,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -3962,8 +4275,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -4010,8 +4323,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -4059,8 +4372,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -4109,8 +4422,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -4195,8 +4508,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -4283,8 +4596,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -4328,8 +4641,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: 'Archive' for file
+     * and 'Directory' for directory. 'None' can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.

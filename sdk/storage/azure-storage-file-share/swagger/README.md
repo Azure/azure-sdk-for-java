@@ -16,7 +16,7 @@ autorest
 ### Code generation settings
 ``` yaml
 use: '@autorest/java@4.1.63'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/eca1da9f213c2bc8e38aee5dcf4e10e4b009992d/specification/storage/data-plane/Microsoft.FileStorage/stable/2027-03-07/file.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5bdba2451c9c437df1779566e424b11d4ae429f8/specification/storage/data-plane/Microsoft.FileStorage/stable/2027-03-07/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -100,6 +100,29 @@ directive:
         op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
+```
+
+### File-ID property response timestamps
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    for (const [path, method] of [["/{shareName}?restype=directory", "get"], ["/{shareName}", "head"]]) {
+        const headers = $[path][method].responses["200"].headers;
+        for (const name of ["x-ms-file-creation-time", "x-ms-file-last-write-time", "x-ms-file-change-time"]) {
+            headers[name].format = "date-time";
+        }
+    }
+```
+
+### Keep file attribute documentation ASCII
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.FileAttributes
+  transform: >
+    $.description = $.description.replace(/[\u2018\u2019]/g, "'");
 ```
 
 ### /{shareName}/{directory}?restype=directory&comp=rename
