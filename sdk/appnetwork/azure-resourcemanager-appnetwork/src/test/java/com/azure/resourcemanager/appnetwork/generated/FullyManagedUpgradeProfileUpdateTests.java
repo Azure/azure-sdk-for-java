@@ -5,23 +5,23 @@
 package com.azure.resourcemanager.appnetwork.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.appnetwork.models.FullyManagedUpgradeProfile;
+import com.azure.resourcemanager.appnetwork.models.FullyManagedUpgradeProfileUpdate;
 import com.azure.resourcemanager.appnetwork.models.UpgradeReleaseChannel;
 import org.junit.jupiter.api.Assertions;
 
-public final class FullyManagedUpgradeProfileTests {
+public final class FullyManagedUpgradeProfileUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FullyManagedUpgradeProfile model
-            = BinaryData.fromString("{\"releaseChannel\":\"Rapid\"}").toObject(FullyManagedUpgradeProfile.class);
+        FullyManagedUpgradeProfileUpdate model
+            = BinaryData.fromString("{\"releaseChannel\":\"Rapid\"}").toObject(FullyManagedUpgradeProfileUpdate.class);
         Assertions.assertEquals(UpgradeReleaseChannel.RAPID, model.releaseChannel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FullyManagedUpgradeProfile model
-            = new FullyManagedUpgradeProfile().withReleaseChannel(UpgradeReleaseChannel.RAPID);
-        model = BinaryData.fromObject(model).toObject(FullyManagedUpgradeProfile.class);
+        FullyManagedUpgradeProfileUpdate model
+            = new FullyManagedUpgradeProfileUpdate().withReleaseChannel(UpgradeReleaseChannel.RAPID);
+        model = BinaryData.fromObject(model).toObject(FullyManagedUpgradeProfileUpdate.class);
         Assertions.assertEquals(UpgradeReleaseChannel.RAPID, model.releaseChannel());
     }
 }

@@ -12,19 +12,14 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * AppLinkMember connectivity profile.
+ * The updatable AppLinkMember connectivity profile.
  */
 @Fluent
-public final class ConnectivityProfile implements JsonSerializable<ConnectivityProfile> {
+public final class ConnectivityProfileUpdate implements JsonSerializable<ConnectivityProfileUpdate> {
     /*
      * East-West gateway profile.
      */
-    private EastWestGatewayProfile eastWestGateway;
-
-    /*
-     * Private connect profile.
-     */
-    private PrivateConnectProfile privateConnect;
+    private EastWestGatewayProfileUpdate eastWestGateway;
 
     /*
      * The network name for an Azure Kubernetes Application Network member.
@@ -32,9 +27,9 @@ public final class ConnectivityProfile implements JsonSerializable<ConnectivityP
     private String network;
 
     /**
-     * Creates an instance of ConnectivityProfile class.
+     * Creates an instance of ConnectivityProfileUpdate class.
      */
-    public ConnectivityProfile() {
+    public ConnectivityProfileUpdate() {
     }
 
     /**
@@ -42,7 +37,7 @@ public final class ConnectivityProfile implements JsonSerializable<ConnectivityP
      * 
      * @return the eastWestGateway value.
      */
-    public EastWestGatewayProfile eastWestGateway() {
+    public EastWestGatewayProfileUpdate eastWestGateway() {
         return this.eastWestGateway;
     }
 
@@ -50,30 +45,10 @@ public final class ConnectivityProfile implements JsonSerializable<ConnectivityP
      * Set the eastWestGateway property: East-West gateway profile.
      * 
      * @param eastWestGateway the eastWestGateway value to set.
-     * @return the ConnectivityProfile object itself.
+     * @return the ConnectivityProfileUpdate object itself.
      */
-    public ConnectivityProfile withEastWestGateway(EastWestGatewayProfile eastWestGateway) {
+    public ConnectivityProfileUpdate withEastWestGateway(EastWestGatewayProfileUpdate eastWestGateway) {
         this.eastWestGateway = eastWestGateway;
-        return this;
-    }
-
-    /**
-     * Get the privateConnect property: Private connect profile.
-     * 
-     * @return the privateConnect value.
-     */
-    public PrivateConnectProfile privateConnect() {
-        return this.privateConnect;
-    }
-
-    /**
-     * Set the privateConnect property: Private connect profile.
-     * 
-     * @param privateConnect the privateConnect value to set.
-     * @return the ConnectivityProfile object itself.
-     */
-    public ConnectivityProfile withPrivateConnect(PrivateConnectProfile privateConnect) {
-        this.privateConnect = privateConnect;
         return this;
     }
 
@@ -90,9 +65,9 @@ public final class ConnectivityProfile implements JsonSerializable<ConnectivityP
      * Set the network property: The network name for an Azure Kubernetes Application Network member.
      * 
      * @param network the network value to set.
-     * @return the ConnectivityProfile object itself.
+     * @return the ConnectivityProfileUpdate object itself.
      */
-    public ConnectivityProfile withNetwork(String network) {
+    public ConnectivityProfileUpdate withNetwork(String network) {
         this.network = network;
         return this;
     }
@@ -104,38 +79,36 @@ public final class ConnectivityProfile implements JsonSerializable<ConnectivityP
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("eastWestGateway", this.eastWestGateway);
-        jsonWriter.writeJsonField("privateConnect", this.privateConnect);
         jsonWriter.writeStringField("network", this.network);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ConnectivityProfile from the JsonReader.
+     * Reads an instance of ConnectivityProfileUpdate from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ConnectivityProfile if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ConnectivityProfile.
+     * @return An instance of ConnectivityProfileUpdate if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectivityProfileUpdate.
      */
-    public static ConnectivityProfile fromJson(JsonReader jsonReader) throws IOException {
+    public static ConnectivityProfileUpdate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ConnectivityProfile deserializedConnectivityProfile = new ConnectivityProfile();
+            ConnectivityProfileUpdate deserializedConnectivityProfileUpdate = new ConnectivityProfileUpdate();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("eastWestGateway".equals(fieldName)) {
-                    deserializedConnectivityProfile.eastWestGateway = EastWestGatewayProfile.fromJson(reader);
-                } else if ("privateConnect".equals(fieldName)) {
-                    deserializedConnectivityProfile.privateConnect = PrivateConnectProfile.fromJson(reader);
+                    deserializedConnectivityProfileUpdate.eastWestGateway
+                        = EastWestGatewayProfileUpdate.fromJson(reader);
                 } else if ("network".equals(fieldName)) {
-                    deserializedConnectivityProfile.network = reader.getString();
+                    deserializedConnectivityProfileUpdate.network = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedConnectivityProfile;
+            return deserializedConnectivityProfileUpdate;
         });
     }
 }
