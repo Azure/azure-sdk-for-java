@@ -15,13 +15,13 @@ public final class AdditionalUnattendContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdditionalUnattendContent model = BinaryData.fromString(
-            "{\"passName\":\"OobeSystem\",\"componentName\":\"Microsoft-Windows-Shell-Setup\",\"settingName\":\"AutoLogon\",\"content\":\"zlfmisgwbnbbeld\"}")
+            "{\"passName\":\"OobeSystem\",\"componentName\":\"Microsoft-Windows-Shell-Setup\",\"settingName\":\"FirstLogonCommands\",\"content\":\"wwaloayqcgwrt\"}")
             .toObject(AdditionalUnattendContent.class);
         Assertions.assertEquals(AdditionalUnattendContentPassName.OOBE_SYSTEM, model.passName());
         Assertions.assertEquals(AdditionalUnattendContentComponentName.MICROSOFT_WINDOWS_SHELL_SETUP,
             model.componentName());
-        Assertions.assertEquals(SettingNames.AUTO_LOGON, model.settingName());
-        Assertions.assertEquals("zlfmisgwbnbbeld", model.content());
+        Assertions.assertEquals(SettingNames.FIRST_LOGON_COMMANDS, model.settingName());
+        Assertions.assertEquals("wwaloayqcgwrt", model.content());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,13 +29,13 @@ public final class AdditionalUnattendContentTests {
         AdditionalUnattendContent model
             = new AdditionalUnattendContent().withPassName(AdditionalUnattendContentPassName.OOBE_SYSTEM)
                 .withComponentName(AdditionalUnattendContentComponentName.MICROSOFT_WINDOWS_SHELL_SETUP)
-                .withSettingName(SettingNames.AUTO_LOGON)
-                .withContent("zlfmisgwbnbbeld");
+                .withSettingName(SettingNames.FIRST_LOGON_COMMANDS)
+                .withContent("wwaloayqcgwrt");
         model = BinaryData.fromObject(model).toObject(AdditionalUnattendContent.class);
         Assertions.assertEquals(AdditionalUnattendContentPassName.OOBE_SYSTEM, model.passName());
         Assertions.assertEquals(AdditionalUnattendContentComponentName.MICROSOFT_WINDOWS_SHELL_SETUP,
             model.componentName());
-        Assertions.assertEquals(SettingNames.AUTO_LOGON, model.settingName());
-        Assertions.assertEquals("zlfmisgwbnbbeld", model.content());
+        Assertions.assertEquals(SettingNames.FIRST_LOGON_COMMANDS, model.settingName());
+        Assertions.assertEquals("wwaloayqcgwrt", model.content());
     }
 }

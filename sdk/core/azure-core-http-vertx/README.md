@@ -53,7 +53,7 @@ add the direct dependency to your project as follows.
   <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-vertx</artifactId>
-    <version>1.1.7</version>
+    <version>1.2.0</version>
   </dependency>
 </dependencies>
 ```

@@ -1,12 +1,20 @@
 # Release History
 
-## 1.60.0-beta.1 (Unreleased)
+## 1.61.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.60.0 (2026-09-29)
 
 ### Features Added
 
 - Added `CloseableIterableStream<T>` for resource-backed iteration with deterministic cleanup.
-
-### Breaking Changes
 
 ### Bugs Fixed
 
