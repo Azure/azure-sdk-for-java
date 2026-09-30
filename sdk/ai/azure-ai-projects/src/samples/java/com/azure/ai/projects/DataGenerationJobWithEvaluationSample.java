@@ -71,7 +71,6 @@ public class DataGenerationJobWithEvaluationSample {
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build());
 
-        DataGenerationJobsClient dataGenerationJobsClient = projectClientBuilder.buildDataGenerationJobsClient();
         DatasetsClient datasetsClient = projectClientBuilder.buildDatasetsClient();
         OpenAIClient openAIClient = projectClientBuilder.buildOpenAIClient();
 
@@ -80,11 +79,11 @@ public class DataGenerationJobWithEvaluationSample {
 
         try {
             System.out.println("Create a data generation job.");
-            job = dataGenerationJobsClient.beginCreateGenerationJob(createDataGenerationJob(modelName, datasetName),
+            job = datasetsClient.beginCreateGenerationJob(createDataGenerationJob(modelName, datasetName),
                 UUID.randomUUID().toString()).poll().getValue();
             System.out.printf("Created data generation job `%s` (status: `%s`).%n", job.getId(), job.getStatus());
 
-            job = waitForDataGenerationJob(dataGenerationJobsClient, job.getId(), pollIntervalSeconds);
+            job = waitForDataGenerationJob(datasetsClient, job.getId(), pollIntervalSeconds);
             System.out.printf("Final job status: `%s`.%n", job.getStatus());
 
             if (!JobStatus.SUCCEEDED.equals(job.getStatus())) {
@@ -126,7 +125,7 @@ public class DataGenerationJobWithEvaluationSample {
             }
             if (job != null) {
                 System.out.printf("Delete the data generation job `%s`.%n", job.getId());
-                dataGenerationJobsClient.deleteGenerationJob(job.getId());
+                datasetsClient.deleteGenerationJob(job.getId());
             }
         }
     }
@@ -151,14 +150,14 @@ public class DataGenerationJobWithEvaluationSample {
             options).setOutputConfiguration(outputConfiguration);
     }
 
-    private static DataGenerationJob waitForDataGenerationJob(DataGenerationJobsClient dataGenerationJobsClient,
+    private static DataGenerationJob waitForDataGenerationJob(DatasetsClient datasetsClient,
         String jobId, int pollIntervalSeconds) throws InterruptedException {
         System.out.printf("Poll job `%s` until it reaches a terminal state.", jobId);
         DataGenerationJob job;
         do {
             Thread.sleep(pollIntervalSeconds * 1000L);
             System.out.print(".");
-            job = dataGenerationJobsClient.getGenerationJob(jobId);
+            job = datasetsClient.getGenerationJob(jobId);
         } while (!isTerminalStatus(job.getStatus()));
         System.out.println();
         return job;

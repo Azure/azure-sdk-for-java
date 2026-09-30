@@ -98,10 +98,9 @@ public class SamplesTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        DataGenerationJobsClient dataGenerationJobsClient
-            = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsClient();
+        DatasetsClient datasetsClient = getClientBuilder(httpClient, serviceVersion).buildDatasetsClient();
 
-        Iterable<DataGenerationJob> jobs = dataGenerationJobsClient.listGenerationJobs(5, PageOrder.DESC, null, null);
+        Iterable<DataGenerationJob> jobs = datasetsClient.listGenerationJobs(5, PageOrder.DESC, null, null);
         Assertions.assertNotNull(jobs);
 
         int count = 0;
@@ -119,14 +118,15 @@ public class SamplesTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void dataGenerationJobsListAsyncSample(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        DataGenerationJobsAsyncClient dataGenerationJobsAsyncClient
-            = getClientBuilder(httpClient, serviceVersion).buildDataGenerationJobsAsyncClient();
+        DatasetsAsyncClient datasetsAsyncClient
+            = getClientBuilder(httpClient, serviceVersion).buildDatasetsAsyncClient();
 
-        StepVerifier.create(
-            dataGenerationJobsAsyncClient.listGenerationJobs(5, PageOrder.DESC, null, null).take(5).doOnNext(job -> {
+        StepVerifier
+            .create(datasetsAsyncClient.listGenerationJobs(5, PageOrder.DESC, null, null).take(5).doOnNext(job -> {
                 Assertions.assertNotNull(job);
                 Assertions.assertNotNull(job.getId());
-            }).then()).verifyComplete();
+            }).then())
+            .verifyComplete();
     }
 
     @LiveOnly

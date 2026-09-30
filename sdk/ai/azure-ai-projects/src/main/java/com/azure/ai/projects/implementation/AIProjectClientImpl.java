@@ -291,20 +291,6 @@ public final class AIProjectClientImpl {
     }
 
     /**
-     * The DataGenerationJobsImpl object to access its operations.
-     */
-    private final DataGenerationJobsImpl dataGenerationJobs;
-
-    /**
-     * Gets the DataGenerationJobsImpl object to access its operations.
-     * 
-     * @return the DataGenerationJobsImpl object.
-     */
-    public DataGenerationJobsImpl getDataGenerationJobs() {
-        return this.dataGenerationJobs;
-    }
-
-    /**
      * Initializes an instance of AIProjectClient client.
      * 
      * @param endpoint Foundry Project endpoint in the form
@@ -367,6 +353,5 @@ public final class AIProjectClientImpl {
         this.deployments = new DeploymentsImpl(this);
         this.evaluationRules = new EvaluationRulesImpl(this);
         this.evaluators = new EvaluatorsImpl(this);
-        this.dataGenerationJobs = new DataGenerationJobsImpl(this);
     }
 }

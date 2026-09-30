@@ -69,7 +69,7 @@ public class FoundryFeaturesHeaderVerificationTest {
         builder.beta().buildBetaSkillsClient().getSkillWithResponse("skill", new RequestOptions());
         assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
 
-        builder.buildDataGenerationJobsClient().getGenerationJobWithResponse("job", new RequestOptions());
+        builder.buildDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
         assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
 
         builder.buildEvaluationRulesClient()
@@ -131,12 +131,10 @@ public class FoundryFeaturesHeaderVerificationTest {
             .createOrUpdateEvaluationRuleWithResponse("rule", BinaryData.fromString("{}"), new RequestOptions());
         assertNull(foundryFeatures(httpClient));
 
-        builder.buildDataGenerationJobsClient().getGenerationJobWithResponse("job", new RequestOptions());
+        builder.buildDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
         assertNull(foundryFeatures(httpClient));
 
-        builder.buildDataGenerationJobsAsyncClient()
-            .getGenerationJobWithResponse("job", new RequestOptions())
-            .block();
+        builder.buildDatasetsAsyncClient().getGenerationJobWithResponse("job", new RequestOptions()).block();
         assertNull(foundryFeatures(httpClient));
     }
 
@@ -147,11 +145,11 @@ public class FoundryFeaturesHeaderVerificationTest {
         RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
 
         AIProjectClientBuilder builder = createBuilder(httpClient).allowPreview(true);
-        builder.buildDataGenerationJobsClient().getGenerationJobWithResponse("job", requestOptions);
+        builder.buildDatasetsClient().getGenerationJobWithResponse("job", requestOptions);
 
         assertEquals(explicitHeader, foundryFeatures(httpClient));
 
-        builder.buildDataGenerationJobsAsyncClient().getGenerationJobWithResponse("job", requestOptions).block();
+        builder.buildDatasetsAsyncClient().getGenerationJobWithResponse("job", requestOptions).block();
 
         assertEquals(explicitHeader, foundryFeatures(httpClient));
     }
@@ -168,16 +166,22 @@ public class FoundryFeaturesHeaderVerificationTest {
     }
 
     @Test
-    public void dataGenerationClientsDoNotAddPreviewHeadersByDefault() {
+    public void datasetClientsDoNotAddPreviewHeadersByDefault() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
         AIProjectClientBuilder builder = createBuilder(httpClient);
+        DatasetsClient datasetsClient = builder.buildDatasetsClient();
+        DatasetsAsyncClient datasetsAsyncClient = builder.buildDatasetsAsyncClient();
 
-        builder.buildDataGenerationJobsClient().getGenerationJobWithResponse("job", new RequestOptions());
+        datasetsClient.getGenerationJobWithResponse("job", new RequestOptions());
         assertNull(foundryFeatures(httpClient));
 
-        builder.buildDataGenerationJobsAsyncClient()
-            .getGenerationJobWithResponse("job", new RequestOptions())
-            .block();
+        datasetsAsyncClient.getGenerationJobWithResponse("job", new RequestOptions()).block();
+        assertNull(foundryFeatures(httpClient));
+
+        datasetsClient.getDatasetVersionWithResponse("dataset", "1", new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+
+        datasetsAsyncClient.getDatasetVersionWithResponse("dataset", "1", new RequestOptions()).block();
         assertNull(foundryFeatures(httpClient));
     }
 
@@ -190,13 +194,11 @@ public class FoundryFeaturesHeaderVerificationTest {
         AIProjectClientBuilder builder = createBuilder(customPipeline).allowPreview(allowPreview);
         String expectedHeader = allowPreview ? "DataGenerationJobs=V1Preview" : null;
 
-        builder.buildDataGenerationJobsClient().getGenerationJobWithResponse("job", new RequestOptions());
+        builder.buildDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
         assertEquals(expectedHeader, foundryFeatures(httpClient));
         assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
 
-        builder.buildDataGenerationJobsAsyncClient()
-            .getGenerationJobWithResponse("job", new RequestOptions())
-            .block();
+        builder.buildDatasetsAsyncClient().getGenerationJobWithResponse("job", new RequestOptions()).block();
         assertEquals(expectedHeader, foundryFeatures(httpClient));
         assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
         assertEquals(originalPolicyCount, customPipeline.getPolicyCount());
@@ -212,7 +214,7 @@ public class FoundryFeaturesHeaderVerificationTest {
 
         createBuilder(httpClient).endpoint("https://localhost:8080/api/projects/project/evaluations/evaluation")
             .allowPreview(true)
-            .buildDataGenerationJobsClient()
+            .buildDatasetsClient()
             .getGenerationJobWithResponse("job", new RequestOptions());
 
         assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
@@ -259,12 +261,12 @@ public class FoundryFeaturesHeaderVerificationTest {
         RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
 
         AIProjectClientBuilder builder = createBuilder(createCustomPipeline(httpClient)).allowPreview(true);
-        builder.buildDataGenerationJobsClient().getGenerationJobWithResponse("job", requestOptions);
+        builder.buildDatasetsClient().getGenerationJobWithResponse("job", requestOptions);
 
         assertEquals(explicitHeader, foundryFeatures(httpClient));
         assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
 
-        builder.buildDataGenerationJobsAsyncClient().getGenerationJobWithResponse("job", requestOptions).block();
+        builder.buildDatasetsAsyncClient().getGenerationJobWithResponse("job", requestOptions).block();
 
         assertEquals(explicitHeader, foundryFeatures(httpClient));
         assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));

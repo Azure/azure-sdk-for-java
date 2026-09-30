@@ -69,7 +69,6 @@ import java.util.Objects;
         DeploymentsClient.class,
         EvaluationRulesClient.class,
         EvaluatorsClient.class,
-        DataGenerationJobsClient.class,
         BetaAgentInsightMonitorsAsyncClient.class,
         BetaModelsAsyncClient.class,
         BetaRedTeamsAsyncClient.class,
@@ -84,8 +83,7 @@ import java.util.Objects;
         IndexesAsyncClient.class,
         DeploymentsAsyncClient.class,
         EvaluationRulesAsyncClient.class,
-        EvaluatorsAsyncClient.class,
-        DataGenerationJobsAsyncClient.class })
+        EvaluatorsAsyncClient.class })
 public final class AIProjectClientBuilder
     implements HttpTrait<AIProjectClientBuilder>, ConfigurationTrait<AIProjectClientBuilder>,
     TokenCredentialTrait<AIProjectClientBuilder>, EndpointTrait<AIProjectClientBuilder> {
@@ -424,12 +422,15 @@ public final class AIProjectClientBuilder
 
     /**
      * Builds an instance of DatasetsAsyncClient class.
+     * <p>
+     * Preview data generation features require {@link #allowPreview(boolean) allowPreview(true)}. By default, the
+     * client does not add a {@code Foundry-Features} header.
      *
      * @return an instance of DatasetsAsyncClient.
      */
-    @Generated
     public DatasetsAsyncClient buildDatasetsAsyncClient() {
-        return new DatasetsAsyncClient(buildInnerClient().getDatasets());
+        return new DatasetsAsyncClient(
+            buildInnerClient(allowPreview ? DATA_GENERATION_JOBS_PREVIEW_FEATURES : null).getDatasets());
     }
 
     /**
@@ -474,12 +475,15 @@ public final class AIProjectClientBuilder
 
     /**
      * Builds an instance of DatasetsClient class.
+     * <p>
+     * Preview data generation features require {@link #allowPreview(boolean) allowPreview(true)}. By default, the
+     * client does not add a {@code Foundry-Features} header.
      *
      * @return an instance of DatasetsClient.
      */
-    @Generated
     public DatasetsClient buildDatasetsClient() {
-        return new DatasetsClient(buildInnerClient().getDatasets());
+        return new DatasetsClient(
+            buildInnerClient(allowPreview ? DATA_GENERATION_JOBS_PREVIEW_FEATURES : null).getDatasets());
     }
 
     /**
@@ -1105,19 +1109,6 @@ public final class AIProjectClientBuilder
     }
 
     /**
-     * Builds an instance of DataGenerationJobsAsyncClient class.
-     * <p>
-     * Preview features require {@link #allowPreview(boolean) allowPreview(true)}. By default, the client does not
-     * add a {@code Foundry-Features} header.
-     *
-     * @return an instance of DataGenerationJobsAsyncClient.
-     */
-    public DataGenerationJobsAsyncClient buildDataGenerationJobsAsyncClient() {
-        return new DataGenerationJobsAsyncClient(
-            buildInnerClient(allowPreview ? DATA_GENERATION_JOBS_PREVIEW_FEATURES : null).getDataGenerationJobs());
-    }
-
-    /**
      * Builds an instance of EvaluatorsClient class.
      *
      * @return an instance of EvaluatorsClient.
@@ -1127,16 +1118,4 @@ public final class AIProjectClientBuilder
         return new EvaluatorsClient(buildInnerClient().getEvaluators());
     }
 
-    /**
-     * Builds an instance of DataGenerationJobsClient class.
-     * <p>
-     * Preview features require {@link #allowPreview(boolean) allowPreview(true)}. By default, the client does not
-     * add a {@code Foundry-Features} header.
-     *
-     * @return an instance of DataGenerationJobsClient.
-     */
-    public DataGenerationJobsClient buildDataGenerationJobsClient() {
-        return new DataGenerationJobsClient(
-            buildInnerClient(allowPreview ? DATA_GENERATION_JOBS_PREVIEW_FEATURES : null).getDataGenerationJobs());
-    }
 }

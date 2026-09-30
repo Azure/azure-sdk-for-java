@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 /**
- * Sample demonstrating data generation job operations using the synchronous DataGenerationJobsClient.
+ * Sample demonstrating data generation job operations using the synchronous DatasetsClient.
  *
  * <p>Before running, set the following environment variables:</p>
  * <ul>
@@ -26,10 +26,10 @@ import java.util.UUID;
  */
 public class DataGenerationJobsSample {
 
-    private static final DataGenerationJobsClient DATA_GENERATION_JOBS_CLIENT = new AIProjectClientBuilder()
+    private static final DatasetsClient DATA_GENERATION_JOBS_CLIENT = new AIProjectClientBuilder()
         .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
-        .buildDataGenerationJobsClient();
+        .buildDatasetsClient();
 
     public static void main(String[] args) {
         listGenerationJobs();
