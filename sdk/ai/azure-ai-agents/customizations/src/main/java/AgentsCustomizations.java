@@ -125,6 +125,7 @@ public class AgentsCustomizations extends Customization {
             "AgentOptimizationEvaluationSet", "AgentOptimizationTargetCompletionDataSource",
             "AgentOptimizationTargetConfiguration", "AgentOptimizationUserConversationSimulationDataSource",
             "CreateTelephonyBindingInput", "EvaluationVoiceModelConfiguration", "OptimizationContext",
+            "MemoryItem", "MemoryStoreDefinition",
             "RealtimeAudioFormat", "RealtimeClientEvent", "RealtimeConversationItem",
             "RealtimeConversationItemMessage", "RealtimeMcpError", "RealtimeSessionConfigurationBase",
             "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy", "TelephonyTransferDestination",
