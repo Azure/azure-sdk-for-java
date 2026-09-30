@@ -60,10 +60,9 @@ public class UserAgentContainer {
                 value += userAgentFeatureFlag.getValue();
             }
 
-            String userAgentSnapshot = !Strings.isNullOrEmpty(this.baseUserAgentWithSuffix)
+            this.userAgent = (!Strings.isNullOrEmpty(this.baseUserAgentWithSuffix)
                 ? this.baseUserAgentWithSuffix
-                : this.baseUserAgent;
-            this.userAgent = userAgentSnapshot + "|F" + Integer.toHexString(value).toUpperCase(Locale.ROOT);
+                : this.baseUserAgent) + "|F" + Integer.toHexString(value).toUpperCase(Locale.ROOT);
         } finally {
             writeLock.unlock();
         }
