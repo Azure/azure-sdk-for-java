@@ -102,7 +102,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
                 keyPrefixTrimValues, context);
         }
 
-        featureFlagClient.processFeatureFlags(featureFlagsList, replicaClient.getEndpoint());
+        featureFlagClient.processFeatureFlags(featureFlagsList, replicaClient.getOriginClient());
     }
 
     protected void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter,
@@ -140,8 +140,12 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             if (SNAPSHOT_REF_CONTENT_TYPE.equals(setting.getContentType())) {
                 String snapshotName = parseSnapshotName(setting);
                 replicaClient.getTracingInfo().setUsesSnapshotReference();
-                try {
+try {
                     resolvedSettings.addAll(replicaClient.listSettingSnapshot(snapshotName, context));
+                } catch (com.azure.core.exception.HttpResponseException e) {
+                    if (e.getResponse() == null || e.getResponse().getStatusCode() != 404) {
+                        throw e;
+                    }
                 } finally {
                     replicaClient.getTracingInfo().resetUsesSnapshotReference();
                 }
