@@ -194,6 +194,19 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }
     }
 
+    @Tag("file-id-integration")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void asyncFileLinksById() {
+        ShareFileLinks links = shareAsyncClient.getFileClientByFileId(fileId).getFileLinks().block();
+
+        assertEquals(FILE_ID_TEST_CONTENT.length(), links.getProperties().getContentLength());
+        assertEquals(fileId, links.getProperties().getSmbProperties().getFileId());
+        assertEquals(1, links.getLinks().size());
+        assertEquals(filePath, links.getLinks().get(0).getName());
+        assertEquals(links.getProperties().getSmbProperties().getParentId(), links.getLinks().get(0).getParentId());
+    }
+
     @DoNotRecord
     @Tag("file-id-mock")
     @Test
@@ -227,21 +240,13 @@ public class FileAsyncApiTests extends FileShareTestBase {
         Assertions.assertTrue(requestUrl.get().contains("fileid=" + FileIdTestHelper.FILE_ID));
     }
 
-    @DoNotRecord
-    @Tag("file-id-mock")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
     @Test
     public void asyncPropertiesByIdMapServiceErrors() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request,
-            404, new HttpHeaders().set(HttpHeaderName.fromString("x-ms-error-code"), "ResourceNotFound")))).build();
-        ShareAsyncClient client = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
-            .pipeline(pipeline)
-            .buildAsyncClient()
-            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
-
         ShareStorageException exception = Assertions.assertThrows(ShareStorageException.class,
-            () -> client.getFileClientByFileId(FileIdTestHelper.FILE_ID).getProperties().block());
-        Assertions.assertEquals(404, exception.getStatusCode());
-        Assertions.assertEquals(ShareErrorCode.RESOURCE_NOT_FOUND, exception.getErrorCode());
+            () -> shareAsyncClient.getFileClientByFileId("invalid-file-id").getProperties().block());
+        assertEquals(400, exception.getStatusCode());
+        assertEquals(ShareErrorCode.INVALID_QUERY_PARAMETER_VALUE, exception.getErrorCode());
     }
 
     @DoNotRecord

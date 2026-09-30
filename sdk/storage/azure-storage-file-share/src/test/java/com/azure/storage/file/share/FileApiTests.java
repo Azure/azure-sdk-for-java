@@ -215,6 +215,19 @@ class FileApiTests extends FileShareTestBase {
         }
     }
 
+    @Tag("file-id-integration")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void fileLinksById() {
+        ShareFileLinks links = shareClient.getFileClientByFileId(fileId).getFileLinks();
+
+        assertEquals(FILE_ID_TEST_CONTENT.length(), links.getProperties().getContentLength());
+        assertEquals(fileId, links.getProperties().getSmbProperties().getFileId());
+        assertEquals(1, links.getLinks().size());
+        assertEquals(filePath, links.getLinks().get(0).getName());
+        assertEquals(links.getProperties().getSmbProperties().getParentId(), links.getLinks().get(0).getParentId());
+    }
+
     @DoNotRecord
     @Tag("file-id-mock")
     @Test
@@ -248,21 +261,13 @@ class FileApiTests extends FileShareTestBase {
         Assertions.assertTrue(requestUrl.get().contains("fileid=" + FileIdTestHelper.FILE_ID));
     }
 
-    @DoNotRecord
-    @Tag("file-id-mock")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
     @Test
     public void propertiesByIdMapServiceErrors() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request,
-            404, new HttpHeaders().set(HttpHeaderName.fromString("x-ms-error-code"), "ResourceNotFound")))).build();
-        ShareClient client = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
-            .pipeline(pipeline)
-            .buildClient()
-            .getShareClient(FileIdTestHelper.SHARE_NAME);
-
-        ShareStorageException exception = Assertions.assertThrows(ShareStorageException.class,
-            () -> client.getFileClientByFileId(FileIdTestHelper.FILE_ID).getProperties());
-        Assertions.assertEquals(404, exception.getStatusCode());
-        Assertions.assertEquals(ShareErrorCode.RESOURCE_NOT_FOUND, exception.getErrorCode());
+        ShareStorageException exception = assertThrows(ShareStorageException.class,
+            () -> shareClient.getFileClientByFileId("invalid-file-id").getProperties());
+        assertEquals(400, exception.getStatusCode());
+        assertEquals(ShareErrorCode.INVALID_QUERY_PARAMETER_VALUE, exception.getErrorCode());
     }
 
     @DoNotRecord
@@ -341,17 +346,16 @@ class FileApiTests extends FileShareTestBase {
             FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "?fileid=" + FileIdTestHelper.FILE_ID,
             fileClient.getFileUrl());
 
-        ShareFileClient configuredFileIdClient = new ShareFileClientBuilder()
-            .endpoint(FileIdTestHelper.ENDPOINT)
+        ShareFileClient configuredFileIdClient = new ShareFileClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
             .shareName(FileIdTestHelper.SHARE_NAME)
             .fileId(FileIdTestHelper.FILE_ID)
             .buildFileClient();
         Assertions.assertEquals(FileIdTestHelper.FILE_ID, configuredFileIdClient.getFileId());
         Assertions.assertEquals("", configuredFileIdClient.getFilePath());
 
-        ShareFileClient pathClient
-            = new ShareFileClientBuilder().endpoint(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME
-                + "/file.txt").buildFileClient();
+        ShareFileClient pathClient = new ShareFileClientBuilder()
+            .endpoint(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/file.txt")
+            .buildFileClient();
         Assertions.assertEquals("", pathClient.getFileId());
         Assertions.assertEquals("file.txt", pathClient.getFilePath());
         Assertions.assertThrows(IllegalArgumentException.class, () -> new ShareFileClientBuilder().fileId(" "));
