@@ -119,14 +119,147 @@ Describe 'Compile-time macOS JDK installation' {
     ) {
         param($Template)
 
+        $condition = '${{ if or(eq(parameters.OSName, ''macOS''), and(parameters.IsLatestNonLtsJdk, eq(parameters.OSName, ''linux''))) }}'
         $caller = Get-Content (
             Join-Path $script:EngineeringRoot "pipelines/templates/jobs/$Template"
         ) -Raw | ConvertFrom-Yaml -Ordered
         $invocations = @(
             $caller.jobs[0].steps |
-                Where-Object { $_.template -eq '/eng/pipelines/templates/steps/install-latest-jdk.yml' }
+                Where-Object { $_.Contains($condition) } |
+                ForEach-Object {
+                    $_[$condition] | Where-Object {
+                        $_.template -eq '/eng/pipelines/templates/steps/install-latest-jdk.yml'
+                    }
+                }
         )
         $invocations.Count | Should -Be 1
         $invocations[0].parameters.OSName | Should -BeExactly '${{ parameters.OSName }}'
+        $invocations[0].parameters.IsLatestNonLtsJdk |
+            Should -BeExactly '${{ parameters.IsLatestNonLtsJdk }}'
+    }
+}
+
+Describe 'Compile-time latest non-LTS JDK configuration' {
+    BeforeAll {
+        $script:LinuxLatestJdkCondition = '${{ if and(parameters.IsLatestNonLtsJdk, eq(parameters.OSName, ''linux'')) }}'
+        $script:JdkTemplate = Get-Content (
+            Join-Path $script:EngineeringRoot 'pipelines/templates/steps/install-latest-jdk.yml'
+        ) -Raw | ConvertFrom-Yaml -Ordered
+    }
+
+    It 'defaults to disabled in <Template>' -TestCases @(
+        @{ Template = 'pullrequest.yml' }
+        @{ Template = 'templates/stages/archetype-sdk-client.yml' }
+        @{ Template = 'templates/stages/cosmos-sdk-client.yml' }
+        @{ Template = 'templates/stages/archetype-sdk-tests.yml' }
+        @{ Template = 'templates/stages/archetype-sdk-tests-isolated.yml' }
+        @{ Template = 'templates/jobs/ci.yml' }
+        @{ Template = 'templates/jobs/ci.tests.yml' }
+        @{ Template = 'templates/jobs/live.tests.yml' }
+        @{ Template = 'templates/steps/install-latest-jdk.yml' }
+        @{ Template = 'templates/steps/run-and-validate-linting.yml' }
+    ) {
+        param($Template)
+
+        $yaml = Get-Content (
+            Join-Path $script:EngineeringRoot "pipelines/$Template"
+        ) -Raw | ConvertFrom-Yaml -Ordered
+        if ($yaml.parameters -is [System.Collections.IDictionary]) {
+            $yaml.parameters.IsLatestNonLtsJdk | Should -BeFalse
+        } else {
+            $parameter = @($yaml.parameters | Where-Object { $_.name -eq 'IsLatestNonLtsJdk' })
+            $parameter.Count | Should -Be 1
+            $parameter[0].type | Should -BeExactly 'boolean'
+            $parameter[0].default | Should -BeFalse
+        }
+    }
+
+    It 'includes all three latest-JDK tasks only in the Linux opt-in branch' {
+        $branches = @(
+            $script:JdkTemplate.steps | Where-Object { $_.Contains($script:LinuxLatestJdkCondition) }
+        )
+        $branches.Count | Should -Be 1
+        $steps = @($branches[0][$script:LinuxLatestJdkCondition])
+        $steps.Count | Should -Be 3
+        $steps.displayName | Should -Contain 'Cache Latest JDK'
+        $steps.displayName | Should -Contain 'Install Latest JDK'
+        $steps.displayName | Should -Contain 'Verify Latest JDK Install'
+        foreach ($step in $steps) {
+            $step.condition | Should -BeExactly 'always()'
+        }
+        @($script:JdkTemplate.steps | Where-Object { $_.displayName -in $steps.displayName }) |
+            Should -BeNullOrEmpty
+    }
+
+    It 'only inserts linting into opted-in Linux test jobs' {
+        $branches = @(
+            $script:TestJob.steps | Where-Object { $_.Contains($script:LinuxLatestJdkCondition) }
+        )
+        $branches.Count | Should -Be 1
+        $lint = @(
+            $branches[0][$script:LinuxLatestJdkCondition] |
+                Where-Object { $_.template -eq '/eng/pipelines/templates/steps/run-and-validate-linting.yml' }
+        )
+        $lint.Count | Should -Be 1
+        $lint[0].parameters.IsLatestNonLtsJdk | Should -BeTrue
+        @(
+            $script:TestJob.steps |
+                Where-Object { $_.template -eq '/eng/pipelines/templates/steps/run-and-validate-linting.yml' }
+        ) | Should -BeNullOrEmpty
+    }
+
+    It 'keeps Build and Analyze linting while removing the runtime variable' {
+        $lintTemplate = Get-Content (
+            Join-Path $script:EngineeringRoot 'pipelines/templates/steps/run-and-validate-linting.yml'
+        ) -Raw | ConvertFrom-Yaml -Ordered
+        foreach ($step in $lintTemplate.steps) {
+            $step.condition |
+                Should -BeExactly 'or(${{ parameters.IsLatestNonLtsJdk }}, and(${{ parameters.RunLinting }}, succeeded()))'
+        }
+        $script:GlobalVariables.Contains('IsLatestNonLtsJdk') | Should -BeFalse
+
+        $ci = Get-Content (
+            Join-Path $script:EngineeringRoot 'pipelines/templates/jobs/ci.yml'
+        ) -Raw | ConvertFrom-Yaml -Ordered
+        $analyze = $ci.jobs | Where-Object { $_.job -eq 'Analyze' }
+        $lintCall = $analyze.steps |
+            Where-Object { $_.template -eq '/eng/pipelines/templates/steps/run-and-validate-linting.yml' }
+        $lintCall.parameters.RunLinting | Should -BeTrue
+    }
+
+    It 'forwards the parameter through PR, CI, and isolated live tests' {
+        $pr = Get-Content (
+            Join-Path $script:EngineeringRoot 'pipelines/pullrequest.yml'
+        ) -Raw | ConvertFrom-Yaml -Ordered
+        $pr.extends.parameters.IsLatestNonLtsJdk | Should -BeExactly '${{ parameters.IsLatestNonLtsJdk }}'
+
+        $client = Get-Content (
+            Join-Path $script:EngineeringRoot 'pipelines/templates/stages/archetype-sdk-client.yml'
+        ) -Raw | ConvertFrom-Yaml -Ordered
+        $buildStage = $client.extends.parameters.stages | Where-Object { $_.stage -eq 'Build' }
+        $ciCall = $buildStage.jobs | Where-Object { $_.template -eq '/eng/pipelines/templates/jobs/ci.yml' }
+        $ciCall.parameters.IsLatestNonLtsJdk | Should -BeExactly '${{ parameters.IsLatestNonLtsJdk }}'
+
+        $ci = Get-Content (
+            Join-Path $script:EngineeringRoot 'pipelines/templates/jobs/ci.yml'
+        ) -Raw | ConvertFrom-Yaml -Ordered
+        $generator = $ci.jobs |
+            Where-Object { $_.template -eq '/eng/common/pipelines/templates/jobs/generate-job-matrix.yml' }
+        $generator.parameters.AdditionalParameters.IsLatestNonLtsJdk |
+            Should -BeExactly '${{ parameters.IsLatestNonLtsJdk }}'
+
+        $isolated = Get-Content (
+            Join-Path $script:EngineeringRoot 'pipelines/templates/stages/archetype-sdk-tests-isolated.yml'
+        ) -Raw
+        $isolated | Should -Match 'IsLatestNonLtsJdk: \$\{\{ parameters\.IsLatestNonLtsJdk \}\}'
+    }
+
+    It 'forwards the parameter through Cosmos CI and both emulator jobs' {
+        $cosmos = Get-Content (
+            Join-Path $script:EngineeringRoot 'pipelines/templates/stages/cosmos-sdk-client.yml'
+        ) -Raw
+        ([regex]::Matches(
+            $cosmos, '(?m)^\s+IsLatestNonLtsJdk: \$\{\{ parameters\.IsLatestNonLtsJdk \}\}\s*$'
+        )).Count | Should -Be 3
     }
 }

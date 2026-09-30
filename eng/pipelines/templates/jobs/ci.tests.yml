@@ -48,6 +48,9 @@ parameters:
     default: ''
   - name: OSName
     type: string
+  - name: IsLatestNonLtsJdk
+    type: boolean
+    default: false
   - name: TimeoutInMinutes
     type: number
     default: 60
@@ -134,10 +137,12 @@ jobs:
       # Java 24), then install the latest Java version and use that to run a full build for validation of the latest
       # Java version.
       # Otherwise, run a normal test run.
-      - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
-        parameters:
-          OSName: ${{ parameters.OSName }}
-          LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
+      - ${{ if or(eq(parameters.OSName, 'macOS'), and(parameters.IsLatestNonLtsJdk, eq(parameters.OSName, 'linux'))) }}:
+        - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
+          parameters:
+            OSName: ${{ parameters.OSName }}
+            IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
+            LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
 
       - ${{ parameters.PreBuildSteps }}
 
@@ -146,13 +151,15 @@ jobs:
       # Authenticate with Azure Artifacts
       - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
-      - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
-        parameters:
-          JavaBuildVersion: $(JavaTestVersion)
-          AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
-          BuildParallelization: ${{ parameters.BuildParallelization }}
-          ContinueOnError: true
-          SDKType: ${{ parameters.SDKType }}
+      - ${{ if and(parameters.IsLatestNonLtsJdk, eq(parameters.OSName, 'linux')) }}:
+        - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
+          parameters:
+            JavaBuildVersion: $(JavaTestVersion)
+            AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+            BuildParallelization: ${{ parameters.BuildParallelization }}
+            ContinueOnError: true
+            SDKType: ${{ parameters.SDKType }}
+            IsLatestNonLtsJdk: true
 
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
