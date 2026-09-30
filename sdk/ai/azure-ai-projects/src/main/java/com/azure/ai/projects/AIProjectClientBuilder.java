@@ -63,12 +63,13 @@ import java.util.Objects;
         BetaSchedulesClient.class,
         BetaRoutinesClient.class,
         BetaSkillsClient.class,
-        BetaDatasetsClient.class,
         ConnectionsClient.class,
         DatasetsClient.class,
         IndexesClient.class,
         DeploymentsClient.class,
         EvaluationRulesClient.class,
+        EvaluatorsClient.class,
+        DataGenerationJobsClient.class,
         BetaAgentInsightMonitorsAsyncClient.class,
         BetaModelsAsyncClient.class,
         BetaRedTeamsAsyncClient.class,
@@ -78,12 +79,13 @@ import java.util.Objects;
         BetaSchedulesAsyncClient.class,
         BetaRoutinesAsyncClient.class,
         BetaSkillsAsyncClient.class,
-        BetaDatasetsAsyncClient.class,
         ConnectionsAsyncClient.class,
         DatasetsAsyncClient.class,
         IndexesAsyncClient.class,
         DeploymentsAsyncClient.class,
-        EvaluationRulesAsyncClient.class })
+        EvaluationRulesAsyncClient.class,
+        EvaluatorsAsyncClient.class,
+        DataGenerationJobsAsyncClient.class })
 public final class AIProjectClientBuilder
     implements HttpTrait<AIProjectClientBuilder>, ConfigurationTrait<AIProjectClientBuilder>,
     TokenCredentialTrait<AIProjectClientBuilder>, EndpointTrait<AIProjectClientBuilder> {
@@ -1141,5 +1143,45 @@ public final class AIProjectClientBuilder
             return new BetaAgentInsightMonitorsClient(
                 buildInnerClient(AGENT_INSIGHTS_PREVIEW_FEATURES).getBetaAgentInsightMonitors());
         }
+    }
+
+    /**
+     * Builds an instance of EvaluatorsAsyncClient class.
+     *
+     * @return an instance of EvaluatorsAsyncClient.
+     */
+    @Generated
+    public EvaluatorsAsyncClient buildEvaluatorsAsyncClient() {
+        return new EvaluatorsAsyncClient(buildInnerClient().getEvaluators());
+    }
+
+    /**
+     * Builds an instance of DataGenerationJobsAsyncClient class.
+     *
+     * @return an instance of DataGenerationJobsAsyncClient.
+     */
+    @Generated
+    public DataGenerationJobsAsyncClient buildDataGenerationJobsAsyncClient() {
+        return new DataGenerationJobsAsyncClient(buildInnerClient().getDataGenerationJobs());
+    }
+
+    /**
+     * Builds an instance of EvaluatorsClient class.
+     *
+     * @return an instance of EvaluatorsClient.
+     */
+    @Generated
+    public EvaluatorsClient buildEvaluatorsClient() {
+        return new EvaluatorsClient(buildInnerClient().getEvaluators());
+    }
+
+    /**
+     * Builds an instance of DataGenerationJobsClient class.
+     *
+     * @return an instance of DataGenerationJobsClient.
+     */
+    @Generated
+    public DataGenerationJobsClient buildDataGenerationJobsClient() {
+        return new DataGenerationJobsClient(buildInnerClient().getDataGenerationJobs());
     }
 }

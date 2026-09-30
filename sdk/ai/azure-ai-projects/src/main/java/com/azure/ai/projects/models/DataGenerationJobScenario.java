@@ -13,18 +13,6 @@ import java.util.Collection;
 public final class DataGenerationJobScenario extends ExpandableStringEnum<DataGenerationJobScenario> {
 
     /**
-     * Supervised Fine-tuning scenario.
-     */
-    @Generated
-    public static final DataGenerationJobScenario SUPERVISED_FINETUNING = fromString("supervised_finetuning");
-
-    /**
-     * Reinforcement Fine-tuning scenario.
-     */
-    @Generated
-    public static final DataGenerationJobScenario REINFORCEMENT_FINETUNING = fromString("reinforcement_finetuning");
-
-    /**
      * Evaluation scenario.
      */
     @Generated
@@ -60,4 +48,18 @@ public final class DataGenerationJobScenario extends ExpandableStringEnum<DataGe
     public static Collection<DataGenerationJobScenario> values() {
         return values(DataGenerationJobScenario.class);
     }
+
+    /**
+     * Supervised Fine-tuning preview scenario.
+     */
+    @Generated
+    public static final DataGenerationJobScenario SUPERVISED_FINETUNING_PREVIEW
+        = fromString("supervised_finetuning_preview");
+
+    /**
+     * Reinforcement Fine-tuning preview scenario.
+     */
+    @Generated
+    public static final DataGenerationJobScenario REINFORCEMENT_FINETUNING_PREVIEW
+        = fromString("reinforcement_finetuning_preview");
 }

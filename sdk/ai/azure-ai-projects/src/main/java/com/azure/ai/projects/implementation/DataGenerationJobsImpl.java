@@ -46,13 +46,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in BetaDatasets.
+ * An instance of this class provides access to all the operations defined in DataGenerationJobs.
  */
-public final class BetaDatasetsImpl {
+public final class DataGenerationJobsImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final BetaDatasetsService service;
+    private final DataGenerationJobsService service;
 
     /**
      * The service client containing this operation class.
@@ -60,13 +60,13 @@ public final class BetaDatasetsImpl {
     private final AIProjectClientImpl client;
 
     /**
-     * Initializes an instance of BetaDatasetsImpl.
+     * Initializes an instance of DataGenerationJobsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    BetaDatasetsImpl(AIProjectClientImpl client) {
-        this.service
-            = RestProxy.create(BetaDatasetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    DataGenerationJobsImpl(AIProjectClientImpl client) {
+        this.service = RestProxy.create(DataGenerationJobsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -80,12 +80,12 @@ public final class BetaDatasetsImpl {
     }
 
     /**
-     * The interface defining all the services for AIProjectClientBetaDatasets to be used by the proxy service to
+     * The interface defining all the services for AIProjectClientDataGenerationJobs to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AIProjectClientBetaDatasets")
-    public interface BetaDatasetsService {
+    @ServiceInterface(name = "AIProjectClientDataGenerationJobs")
+    public interface DataGenerationJobsService {
         @Get("/data_generation_jobs/{jobId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -197,7 +197,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [
@@ -289,7 +289,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [
@@ -400,7 +400,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [
@@ -505,7 +505,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [
@@ -604,7 +604,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [
@@ -707,7 +707,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [
@@ -794,7 +794,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     name: String (Required)
      *     sources (Required): [
      *          (Required){
@@ -818,7 +818,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [
@@ -910,7 +910,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     name: String (Required)
      *     sources (Required): [
      *          (Required){
@@ -934,7 +934,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [
@@ -1025,7 +1025,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     name: String (Required)
      *     sources (Required): [
      *          (Required){
@@ -1049,7 +1049,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [
@@ -1149,7 +1149,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     name: String (Required)
      *     sources (Required): [
      *          (Required){
@@ -1173,7 +1173,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [
@@ -1273,7 +1273,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     name: String (Required)
      *     sources (Required): [
      *          (Required){
@@ -1297,7 +1297,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [
@@ -1396,7 +1396,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     name: String (Required)
      *     sources (Required): [
      *          (Required){
@@ -1420,7 +1420,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [
@@ -1510,7 +1510,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [
@@ -1593,7 +1593,7 @@ public final class BetaDatasetsImpl {
      * <pre>
      * {@code
      * {
-     *     scenario: String(supervised_finetuning/reinforcement_finetuning/evaluation) (Required)
+     *     scenario: String(supervised_finetuning_preview/reinforcement_finetuning_preview/evaluation) (Required)
      *     id: String (Required)
      *     result (Optional): {
      *         outputs (Optional): [

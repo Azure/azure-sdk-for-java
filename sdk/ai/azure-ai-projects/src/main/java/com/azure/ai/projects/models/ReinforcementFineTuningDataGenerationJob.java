@@ -26,7 +26,7 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
      * The scenario of the data generation job. Either for fine-tuning or evaluation.
      */
     @Generated
-    private DataGenerationJobScenario scenario = DataGenerationJobScenario.REINFORCEMENT_FINETUNING;
+    private DataGenerationJobScenario scenario = DataGenerationJobScenario.REINFORCEMENT_FINETUNING_PREVIEW;
 
     /*
      * Optional file output configuration for the generated reinforcement fine-tuning data.

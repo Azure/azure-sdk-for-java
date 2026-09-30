@@ -26,7 +26,7 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
      * The scenario of the data generation job. Either for fine-tuning or evaluation.
      */
     @Generated
-    private DataGenerationJobScenario scenario = DataGenerationJobScenario.SUPERVISED_FINETUNING;
+    private DataGenerationJobScenario scenario = DataGenerationJobScenario.SUPERVISED_FINETUNING_PREVIEW;
 
     /*
      * Optional file output configuration for the generated supervised fine-tuning data.

@@ -23,7 +23,7 @@ public final class ReinforcementFineTuningDataGenerationJobInputs extends DataGe
      * The scenario of the data generation job. Either for fine-tuning or evaluation.
      */
     @Generated
-    private DataGenerationJobScenario scenario = DataGenerationJobScenario.REINFORCEMENT_FINETUNING;
+    private DataGenerationJobScenario scenario = DataGenerationJobScenario.REINFORCEMENT_FINETUNING_PREVIEW;
 
     /*
      * Optional file output configuration for the generated reinforcement fine-tuning data.
@@ -110,7 +110,7 @@ public final class ReinforcementFineTuningDataGenerationJobInputs extends DataGe
             String name = null;
             List<DataGenerationJobSource> sources = null;
             DataGenerationJobOptions generationConfiguration = null;
-            DataGenerationJobScenario scenario = DataGenerationJobScenario.REINFORCEMENT_FINETUNING;
+            DataGenerationJobScenario scenario = DataGenerationJobScenario.REINFORCEMENT_FINETUNING_PREVIEW;
             ReinforcementFineTuningDataGenerationJobOutputTarget outputConfiguration = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
