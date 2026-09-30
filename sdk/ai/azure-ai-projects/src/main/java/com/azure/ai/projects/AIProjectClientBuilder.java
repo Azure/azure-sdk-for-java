@@ -1117,5 +1117,4 @@ public final class AIProjectClientBuilder
     public EvaluatorsClient buildEvaluatorsClient() {
         return new EvaluatorsClient(buildInnerClient().getEvaluators());
     }
-
 }
