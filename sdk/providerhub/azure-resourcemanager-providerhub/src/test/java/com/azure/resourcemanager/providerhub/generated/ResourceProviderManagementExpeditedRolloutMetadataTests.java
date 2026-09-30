@@ -13,19 +13,19 @@ public final class ResourceProviderManagementExpeditedRolloutMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProviderManagementExpeditedRolloutMetadata model
-            = BinaryData.fromString("{\"enabled\":false,\"expeditedRolloutIntent\":\"NotSpecified\"}")
+            = BinaryData.fromString("{\"enabled\":true,\"expeditedRolloutIntent\":\"Hotfix\"}")
                 .toObject(ResourceProviderManagementExpeditedRolloutMetadata.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(ExpeditedRolloutIntent.NOT_SPECIFIED, model.expeditedRolloutIntent());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals(ExpeditedRolloutIntent.HOTFIX, model.expeditedRolloutIntent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProviderManagementExpeditedRolloutMetadata model
-            = new ResourceProviderManagementExpeditedRolloutMetadata().withEnabled(false)
-                .withExpeditedRolloutIntent(ExpeditedRolloutIntent.NOT_SPECIFIED);
+            = new ResourceProviderManagementExpeditedRolloutMetadata().withEnabled(true)
+                .withExpeditedRolloutIntent(ExpeditedRolloutIntent.HOTFIX);
         model = BinaryData.fromObject(model).toObject(ResourceProviderManagementExpeditedRolloutMetadata.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(ExpeditedRolloutIntent.NOT_SPECIFIED, model.expeditedRolloutIntent());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals(ExpeditedRolloutIntent.HOTFIX, model.expeditedRolloutIntent());
     }
 }

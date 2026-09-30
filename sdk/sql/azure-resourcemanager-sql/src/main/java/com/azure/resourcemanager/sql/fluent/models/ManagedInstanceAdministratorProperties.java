@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorPrincipalType;
 import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorType;
 import java.io.IOException;
 import java.util.Objects;
@@ -40,6 +41,11 @@ public final class ManagedInstanceAdministratorProperties
      * Tenant ID of the managed instance administrator.
      */
     private UUID tenantId;
+
+    /*
+     * Principal type of the managed instance administrator.
+     */
+    private ManagedInstanceAdministratorPrincipalType principalType;
 
     /**
      * Creates an instance of ManagedInstanceAdministratorProperties class.
@@ -129,6 +135,27 @@ public final class ManagedInstanceAdministratorProperties
     }
 
     /**
+     * Get the principalType property: Principal type of the managed instance administrator.
+     * 
+     * @return the principalType value.
+     */
+    public ManagedInstanceAdministratorPrincipalType principalType() {
+        return this.principalType;
+    }
+
+    /**
+     * Set the principalType property: Principal type of the managed instance administrator.
+     * 
+     * @param principalType the principalType value to set.
+     * @return the ManagedInstanceAdministratorProperties object itself.
+     */
+    public ManagedInstanceAdministratorProperties
+        withPrincipalType(ManagedInstanceAdministratorPrincipalType principalType) {
+        this.principalType = principalType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -164,6 +191,7 @@ public final class ManagedInstanceAdministratorProperties
         jsonWriter.writeStringField("login", this.login);
         jsonWriter.writeStringField("sid", Objects.toString(this.sid, null));
         jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        jsonWriter.writeStringField("principalType", this.principalType == null ? null : this.principalType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -195,6 +223,9 @@ public final class ManagedInstanceAdministratorProperties
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedManagedInstanceAdministratorProperties.tenantId
                         = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("principalType".equals(fieldName)) {
+                    deserializedManagedInstanceAdministratorProperties.principalType
+                        = ManagedInstanceAdministratorPrincipalType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

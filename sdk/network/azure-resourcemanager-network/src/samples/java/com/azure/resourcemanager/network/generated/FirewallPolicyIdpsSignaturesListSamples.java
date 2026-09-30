@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class FirewallPolicyIdpsSignaturesListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/FirewallPolicyQuerySignatureOverrides.json
+     * x-ms-original-file: 2026-01-01/FirewallPolicyQuerySignatureOverrides.json
      */
     /**
      * Sample code: query signature overrides.

@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class ExpressRouteLagsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExpressRouteLagPatch.json
+     * x-ms-original-file: 2026-01-01/ExpressRouteLagPatch.json
      */
     /**
      * Sample code: Update express route lag tags or identity.

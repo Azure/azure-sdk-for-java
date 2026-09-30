@@ -1,14 +1,23 @@
 # Release History
 
-## 1.60.0-beta.1 (Unreleased)
+## 1.60.0 (2026-09-29)
 
 ### Features Added
 
-### Breaking Changes
+- Added `CloseableIterableStream<T>` for resource-backed iteration with deterministic cleanup.
 
 ### Bugs Fixed
 
+- Fixed retention of unused shared executors and shutdown hooks by serializing executor initialization.
+- Registering or removing the shutdown hook that closes the shared executor service no longer fails when the JVM is
+  already shutting down. `Runtime.addShutdownHook` throws `IllegalStateException` once shutdown has begun, which
+  surfaced to callers of `SharedExecutorService` as `IllegalStateException: Shutdown in progress` when work, such as
+  an in-flight request draining during shutdown, needed the executor after it had been closed. A hook registered at
+  that point could never run, so this case is now logged and the work continues.
+
 ### Other Changes
+
+- Upgraded Jackson from `2.18.9` to `2.18.11`.
 
 ## 1.59.1 (2026-08-27)
 
@@ -20,6 +29,7 @@
 
 ### Features Added
 
+- Added `azure-deprecating` to the default allowed (unsanitized) HTTP request and response header list so it is logged without redaction. ([#49946](https://github.com/Azure/azure-sdk-for-java/pull/49946))
 - Promoted `AccessTokenCache` to a public API in the `com.azure.core.credential` package. This class provides a thread-safe, proactively refreshing token cache that wraps a `TokenCredential`, supporting both synchronous and asynchronous token retrieval.
 
 ### Bugs Fixed

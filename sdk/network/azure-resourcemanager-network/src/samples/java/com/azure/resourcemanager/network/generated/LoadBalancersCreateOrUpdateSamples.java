@@ -37,7 +37,7 @@ import java.util.Arrays;
  */
 public final class LoadBalancersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/LoadBalancerCreateWithSyncModePropertyOnPool.json
+     * x-ms-original-file: 2026-01-01/LoadBalancerCreateWithSyncModePropertyOnPool.json
      */
     /**
      * Sample code: Create load balancer with Sync Mode Property on Pool.
@@ -90,7 +90,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
+     * x-ms-original-file: 2026-01-01/LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
      */
     /**
      * Sample code: Create load balancer with Gateway Load Balancer Provider configured with two Backend Pool.
@@ -136,7 +136,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/LoadBalancerCreateWithInboundNatPool.json
+     * x-ms-original-file: 2026-01-01/LoadBalancerCreateWithInboundNatPool.json
      */
     /**
      * Sample code: Create load balancer with inbound nat pool.
@@ -175,7 +175,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/LoadBalancerCreateWithOutboundRules.json
+     * x-ms-original-file: 2026-01-01/LoadBalancerCreateWithOutboundRules.json
      */
     /**
      * Sample code: Create load balancer with outbound rules.
@@ -231,7 +231,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/LoadBalancerCreateWithZones.json
+     * x-ms-original-file: 2026-01-01/LoadBalancerCreateWithZones.json
      */
     /**
      * Sample code: Create load balancer with Frontend IP in Zone 1.
@@ -282,7 +282,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
+     * x-ms-original-file: 2026-01-01/LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
      */
     /**
      * Sample code: Create load balancer with Gateway Load Balancer Provider configured with one Backend Pool.
@@ -333,7 +333,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/LoadBalancerCreate.json
+     * x-ms-original-file: 2026-01-01/LoadBalancerCreate.json
      */
     /**
      * Sample code: Create load balancer.
@@ -383,7 +383,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/LoadBalancerCreateGlobalTier.json
+     * x-ms-original-file: 2026-01-01/LoadBalancerCreateGlobalTier.json
      */
     /**
      * Sample code: Create load balancer with Global Tier and one regional load balancer in its backend pool.
@@ -429,7 +429,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/LoadBalancerCreateGatewayLoadBalancerConsumer.json
+     * x-ms-original-file: 2026-01-01/LoadBalancerCreateGatewayLoadBalancerConsumer.json
      */
     /**
      * Sample code: Create load balancer with Gateway Load Balancer Consumer configured.
@@ -481,7 +481,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/LoadBalancerCreateStandardSku.json
+     * x-ms-original-file: 2026-01-01/LoadBalancerCreateStandardSku.json
      */
     /**
      * Sample code: Create load balancer with Standard SKU.
@@ -530,7 +530,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/LoadBalancerCreateWithAdvancedMode.json
+     * x-ms-original-file: 2026-01-01/LoadBalancerCreateWithAdvancedMode.json
      */
     /**
      * Sample code: Create load balancer with advanced mode.

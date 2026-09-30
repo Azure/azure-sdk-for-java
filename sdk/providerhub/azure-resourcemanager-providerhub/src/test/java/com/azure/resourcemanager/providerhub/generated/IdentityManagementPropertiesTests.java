@@ -14,25 +14,24 @@ public final class IdentityManagementPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IdentityManagementProperties model = BinaryData.fromString(
-            "{\"type\":\"DelegatedResourceIdentity\",\"applicationId\":\"k\",\"applicationIds\":[\"ljeamu\",\"vzmlovuanashcxl\",\"mjerbdk\",\"lvidizozs\"],\"delegationAppIds\":[\"cxjmonfdgnwncyp\",\"uwwltvuqjctz\"]}")
+            "{\"type\":\"Actor\",\"applicationId\":\"kqo\",\"applicationIds\":[\"kvgtrdcn\",\"fmzzsdymbrny\",\"u\",\"m\"],\"delegationAppIds\":[\"fwgckhocxvdfffw\"]}")
             .toObject(IdentityManagementProperties.class);
-        Assertions.assertEquals(IdentityManagementTypes.DELEGATED_RESOURCE_IDENTITY, model.type());
-        Assertions.assertEquals("k", model.applicationId());
-        Assertions.assertEquals("ljeamu", model.applicationIds().get(0));
-        Assertions.assertEquals("cxjmonfdgnwncyp", model.delegationAppIds().get(0));
+        Assertions.assertEquals(IdentityManagementTypes.ACTOR, model.type());
+        Assertions.assertEquals("kqo", model.applicationId());
+        Assertions.assertEquals("kvgtrdcn", model.applicationIds().get(0));
+        Assertions.assertEquals("fwgckhocxvdfffw", model.delegationAppIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityManagementProperties model
-            = new IdentityManagementProperties().withType(IdentityManagementTypes.DELEGATED_RESOURCE_IDENTITY)
-                .withApplicationId("k")
-                .withApplicationIds(Arrays.asList("ljeamu", "vzmlovuanashcxl", "mjerbdk", "lvidizozs"))
-                .withDelegationAppIds(Arrays.asList("cxjmonfdgnwncyp", "uwwltvuqjctz"));
+        IdentityManagementProperties model = new IdentityManagementProperties().withType(IdentityManagementTypes.ACTOR)
+            .withApplicationId("kqo")
+            .withApplicationIds(Arrays.asList("kvgtrdcn", "fmzzsdymbrny", "u", "m"))
+            .withDelegationAppIds(Arrays.asList("fwgckhocxvdfffw"));
         model = BinaryData.fromObject(model).toObject(IdentityManagementProperties.class);
-        Assertions.assertEquals(IdentityManagementTypes.DELEGATED_RESOURCE_IDENTITY, model.type());
-        Assertions.assertEquals("k", model.applicationId());
-        Assertions.assertEquals("ljeamu", model.applicationIds().get(0));
-        Assertions.assertEquals("cxjmonfdgnwncyp", model.delegationAppIds().get(0));
+        Assertions.assertEquals(IdentityManagementTypes.ACTOR, model.type());
+        Assertions.assertEquals("kqo", model.applicationId());
+        Assertions.assertEquals("kvgtrdcn", model.applicationIds().get(0));
+        Assertions.assertEquals("fwgckhocxvdfffw", model.delegationAppIds().get(0));
     }
 }

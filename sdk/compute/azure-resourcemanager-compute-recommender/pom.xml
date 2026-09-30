@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute-recommender</artifactId>
-  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-compute-recommender;current} -->
+  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-compute-recommender;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Compute Recommender Management</name>
-  <description>This package contains Microsoft Azure SDK for Compute Recommender Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The Compute Recommender Resource Provider Client. Package api-version 2026-05-05-preview.</description>
+  <description>This package contains Microsoft Azure SDK for Compute Recommender Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The Compute Recommender Resource Provider Client. Package api-version 2026-09-05-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.18.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

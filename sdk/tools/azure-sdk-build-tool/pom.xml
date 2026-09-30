@@ -5,6 +5,13 @@
 
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-sdk-parent</artifactId>
+    <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
+    <relativePath>../../parents/azure-sdk-parent/pom.xml</relativePath>
+  </parent>
+
   <groupId>com.azure.tools</groupId>
   <artifactId>azure-sdk-build-tool</artifactId>
   <packaging>maven-plugin</packaging>
@@ -143,6 +150,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.6</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <!-- Preserve the tool's Surefire defaults rather than inheriting client-library JVM settings. -->
+        <configuration combine.self="override"/>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -273,7 +282,6 @@
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>${project.parent.relativePath}/../../../eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</excludeFilterFile>
           <fork>true</fork>
         </configuration>
       </plugin>

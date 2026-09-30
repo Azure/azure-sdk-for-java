@@ -1,14 +1,19 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2026-09-29)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Requests carrying the `Expect: 100-continue` header now perform the handshake: the headers are sent with
+  `sendHead()` and the request body is written from `continueHandler()`, rather than sending headers and body
+  together.
+  If the service does not answer the expectation the body is sent after a one second fallback, so the request does
+  not stall.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.1` to `1.60.0`.
 
 ## 1.1.7 (2026-08-27)
 

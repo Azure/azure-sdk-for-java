@@ -15,9 +15,9 @@ import com.azure.resourcemanager.compute.bulkactions.fluent.models.ScheduledActi
  */
 public interface ScheduledActionExtensionsClient {
     /**
-     * List ScheduledActionResources resources by parent.
+     * Lists scheduled actions associated with the specified VM.
      * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param resourceUri The fully qualified Azure resource ID of the compute resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -28,9 +28,9 @@ public interface ScheduledActionExtensionsClient {
     PagedIterable<ScheduledActionResourcesInner> listByVms(String resourceUri);
 
     /**
-     * List ScheduledActionResources resources by parent.
+     * Lists scheduled actions associated with the specified VM.
      * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param resourceUri The fully qualified Azure resource ID of the compute resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

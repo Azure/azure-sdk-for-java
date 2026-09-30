@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRoutePortsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExpressRoutePortListByResourceGroup.json
+     * x-ms-original-file: 2026-01-01/ExpressRoutePortListByResourceGroup.json
      */
     /**
      * Sample code: ExpressRoutePortListByResourceGroup.

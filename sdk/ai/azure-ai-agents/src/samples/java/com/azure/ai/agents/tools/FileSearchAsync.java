@@ -5,9 +5,7 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FileSearchTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -15,6 +13,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.models.files.FileCreateParams;
 import com.openai.models.files.FileObject;
 import com.openai.models.files.FilePurpose;
@@ -58,10 +57,9 @@ public class FileSearchAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
         ConversationServiceAsync conversationServiceAsync = builder.buildOpenAIAsyncClient().conversations();
         // Vector store and file operations use the sync OpenAI client for setup
-        OpenAIClient openAIClient = builder.buildOpenAIClient();
+        OpenAIClient projectOpenAIClient = builder.buildOpenAIClient();
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
         AtomicReference<String> conversationIdRef = new AtomicReference<>();
@@ -75,13 +73,13 @@ public class FileSearchAsync {
         Path tempFile = Files.createTempFile("sample_document", ".txt");
         Files.write(tempFile, sampleContent.getBytes(StandardCharsets.UTF_8));
 
-        FileObject uploadedFile = openAIClient.files().create(FileCreateParams.builder()
+        FileObject uploadedFile = projectOpenAIClient.files().create(FileCreateParams.builder()
             .file(tempFile)
             .purpose(FilePurpose.ASSISTANTS)
             .build());
         System.out.println("Uploaded file: " + uploadedFile.id());
 
-        VectorStore vectorStore = openAIClient.vectorStores().create(VectorStoreCreateParams.builder()
+        VectorStore vectorStore = projectOpenAIClient.vectorStores().create(VectorStoreCreateParams.builder()
             .name("SampleVectorStore")
             .fileIds(Collections.singletonList(uploadedFile.id()))
             .build());
@@ -100,19 +98,20 @@ public class FileSearchAsync {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
+                OpenAIClientAsync agentOpenAIAsyncClient
+                    = builder.buildAgentScopedOpenAIAsyncClient(agent.getName());
 
-                return Mono.fromFuture(conversationServiceAsync.create())
+                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
+                    .then(Mono.fromFuture(conversationServiceAsync.create()))
                     .<Response>flatMap(conversation -> {
                         conversationIdRef.set(conversation.id());
                         System.out.println("Created conversation: " + conversation.id());
 
-                        return responsesAsyncClient.createAzureResponse(
-                            new AzureCreateResponseOptions().setAgentReference(agentReference),
+                        return Mono.fromFuture(() -> agentOpenAIAsyncClient.responses().create(
                             ResponseCreateParams.builder()
                                 .conversation(conversation.id())
-                                .input("What is the largest planet in the Solar System?"));
+                                .input("What is the largest planet in the Solar System?")
+                                .build()));
                     });
             })
             .doOnNext(response -> {
@@ -159,8 +158,8 @@ public class FileSearchAsync {
                 return Mono.empty();
             }))
             .doFinally(signal -> {
-                openAIClient.vectorStores().delete(vectorStore.id());
-                openAIClient.files().delete(uploadedFile.id());
+                projectOpenAIClient.vectorStores().delete(vectorStore.id());
+                projectOpenAIClient.files().delete(uploadedFile.id());
                 try {
                     Files.deleteIfExists(tempFile);
                 } catch (Exception ignored) {

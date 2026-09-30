@@ -29,7 +29,7 @@ public final class SecurityPoliciesInterfacesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"policyType\":\"waf\",\"wafPolicy\":{\"id\":\"tpvjzbexilzznfqq\"},\"ipAccessRulesPolicy\":{\"rules\":[{\"name\":\"mqtaruoujmkcjh\",\"priority\":1589023977,\"sourceAddressPrefixes\":[\"tjrybnwjewgdr\",\"ervnaenqpehi\",\"doy\",\"mifthnzdnd\"],\"action\":\"allow\"},{\"name\":\"gnayqigynduh\",\"priority\":924939472,\"sourceAddressPrefixes\":[\"qlkth\",\"maqolbgycduie\",\"tgccymvaolpss\"],\"action\":\"deny\"}]},\"provisioningState\":\"Succeeded\"},\"location\":\"mdnbbglzpswiy\",\"tags\":{\"sadbz\":\"wyhzdx\",\"dvxzbncblylpst\":\"nvdfznuda\",\"rsc\":\"bhhxsrzdzuc\"},\"id\":\"ntnev\",\"name\":\"iwjmygtdssls\",\"type\":\"tmweriofzpyq\"}";
+            = "{\"properties\":{\"policyType\":\"ipAccessRules\",\"wafPolicy\":{\"id\":\"ohgwxrtfudxepxg\"},\"ipAccessRulesPolicy\":{\"rules\":[{\"name\":\"vrvmnpkukghim\",\"priority\":2068705398,\"sourceAddressPrefixes\":[\"xgwim\",\"njhf\",\"xw\"],\"action\":\"deny\"}]},\"provisioningState\":\"Succeeded\"},\"location\":\"foqreyfkzik\",\"tags\":{\"wczelpci\":\"wneaiv\"},\"id\":\"elsfeaen\",\"name\":\"abfatkl\",\"type\":\"dxbjhwuaanozj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,27 +38,43 @@ public final class SecurityPoliciesInterfacesCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        SecurityPolicy response = manager.securityPoliciesInterfaces()
-            .define("qzvszjf")
-            .withRegion("wwfbkrvrnsvshq")
-            .withExistingTrafficController("xjyngudivk", "tswb")
-            .withTags(mapOf("sbfov", "xc"))
-            .withProperties(new SecurityPolicyProperties().withWafPolicy(new WafPolicy().withId("dxxiv"))
-                .withIpAccessRulesPolicy(
-                    new IpAccessRulesPolicy().withRules(Arrays.asList(new IpAccessRule().withName("cqaqtdoqmcbx")
-                        .withPriority(1486848471)
-                        .withSourceAddressPrefixes(Arrays.asList("xyslqbh", "fxoblytkb"))
-                        .withAction(IpAccessRuleAction.ALLOW)))))
-            .create();
+        SecurityPolicy response
+            = manager.securityPoliciesInterfaces()
+                .define("e")
+                .withRegion("lla")
+                .withExistingTrafficController("arrwlquu", "jfqka")
+                .withTags(mapOf("ccjzkzivgvv", "lwuip", "rdvstkwqqtch", "nayrhyrnxxmueedn"))
+                .withProperties(
+                    new SecurityPolicyProperties().withWafPolicy(new WafPolicy().withId("pubjibw"))
+                        .withIpAccessRulesPolicy(new IpAccessRulesPolicy().withRules(Arrays.asList(
+                            new IpAccessRule().withName("ohqkvpuvksgpls")
+                                .withPriority(452950889)
+                                .withSourceAddressPrefixes(
+                                    Arrays.asList("ynfs", "n", "jphuopxodlqi", "ntorzihleosjswsr"))
+                                .withAction(IpAccessRuleAction.DENY),
+                            new IpAccessRule().withName("lyzrpzbchckqqzqi")
+                                .withPriority(671328296)
+                                .withSourceAddressPrefixes(Arrays.asList("ysuiizynkedya", "rwyhqmibzyhwitsm"))
+                                .withAction(IpAccessRuleAction.ALLOW),
+                            new IpAccessRule().withName("yynpcdpumnzgmwz")
+                                .withPriority(1443914942)
+                                .withSourceAddressPrefixes(Arrays.asList("biknsorgjhxbld", "lwwrl"))
+                                .withAction(IpAccessRuleAction.ALLOW),
+                            new IpAccessRule().withName("m")
+                                .withPriority(1488672187)
+                                .withSourceAddressPrefixes(
+                                    Arrays.asList("vokotllxdyh", "syocogjltdtbnnha", "oocrkvcikhnv", "amqgxqquezikyw"))
+                                .withAction(IpAccessRuleAction.ALLOW)))))
+                .create();
 
-        Assertions.assertEquals("mdnbbglzpswiy", response.location());
-        Assertions.assertEquals("wyhzdx", response.tags().get("sadbz"));
-        Assertions.assertEquals("tpvjzbexilzznfqq", response.properties().wafPolicy().id());
-        Assertions.assertEquals("mqtaruoujmkcjh", response.properties().ipAccessRulesPolicy().rules().get(0).name());
-        Assertions.assertEquals(1589023977, response.properties().ipAccessRulesPolicy().rules().get(0).priority());
-        Assertions.assertEquals("tjrybnwjewgdr",
+        Assertions.assertEquals("foqreyfkzik", response.location());
+        Assertions.assertEquals("wneaiv", response.tags().get("wczelpci"));
+        Assertions.assertEquals("ohgwxrtfudxepxg", response.properties().wafPolicy().id());
+        Assertions.assertEquals("vrvmnpkukghim", response.properties().ipAccessRulesPolicy().rules().get(0).name());
+        Assertions.assertEquals(2068705398, response.properties().ipAccessRulesPolicy().rules().get(0).priority());
+        Assertions.assertEquals("xgwim",
             response.properties().ipAccessRulesPolicy().rules().get(0).sourceAddressPrefixes().get(0));
-        Assertions.assertEquals(IpAccessRuleAction.ALLOW,
+        Assertions.assertEquals(IpAccessRuleAction.DENY,
             response.properties().ipAccessRulesPolicy().rules().get(0).action());
     }
 

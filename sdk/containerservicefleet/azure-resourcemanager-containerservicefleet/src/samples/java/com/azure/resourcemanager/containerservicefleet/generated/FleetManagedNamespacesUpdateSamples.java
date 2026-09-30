@@ -4,14 +4,23 @@
 
 package com.azure.resourcemanager.containerservicefleet.generated;
 
+import com.azure.resourcemanager.containerservicefleet.models.ClusterResourcePlacementSpecPatch;
+import com.azure.resourcemanager.containerservicefleet.models.ClusterUpdateStrategyReference;
 import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespace;
+import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespacePropertiesPatch;
+import com.azure.resourcemanager.containerservicefleet.models.PlacementProfilePatch;
+import com.azure.resourcemanager.containerservicefleet.models.PropagationPolicyPatch;
+import com.azure.resourcemanager.containerservicefleet.models.RolloutStrategy;
+import com.azure.resourcemanager.containerservicefleet.models.RolloutStrategyType;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for FleetManagedNamespaces Update.
  */
 public final class FleetManagedNamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FleetManagedNamespaces_Update.json
+     * x-ms-original-file: 2026-06-02-preview/FleetManagedNamespaces_Update.json
      */
     /**
      * Sample code: FleetManagedNamespaces_Update.
@@ -23,6 +32,29 @@ public final class FleetManagedNamespacesUpdateSamples {
         FleetManagedNamespace resource = manager.fleetManagedNamespaces()
             .getWithResponse("rgfleets", "fleet1", "namespace1", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().apply();
+        resource.update()
+            .withTags(mapOf("tag2", "tagValue2"))
+            .withProperties(
+                new FleetManagedNamespacePropertiesPatch()
+                    .withPropagationPolicy(
+                        new PropagationPolicyPatch()
+                            .withPlacementProfile(new PlacementProfilePatch()
+                                .withDefaultClusterResourcePlacement(new ClusterResourcePlacementSpecPatch()
+                                    .withRolloutStrategy(new RolloutStrategy().withType(RolloutStrategyType.EXTERNAL)
+                                        .withClusterUpdateStrategy(new ClusterUpdateStrategyReference()
+                                            .withName("my-staged-update-strategy")))))))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

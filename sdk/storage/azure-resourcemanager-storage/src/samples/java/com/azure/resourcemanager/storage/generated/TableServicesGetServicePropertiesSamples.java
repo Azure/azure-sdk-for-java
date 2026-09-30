@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class TableServicesGetServicePropertiesSamples {
     /*
-     * x-ms-original-file: 2026-04-01/TableServicesGet.json
+     * x-ms-original-file: 2026-06-01/TableServicesGet.json
      */
     /**
      * Sample code: TableServicesGet.

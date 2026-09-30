@@ -13,16 +13,16 @@ public final class ResourceGuardTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuard model = BinaryData.fromString(
-            "{\"provisioningState\":\"Updating\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"tshhszhedp\",\"requestResourceType\":\"wiwubm\"}],\"vaultCriticalOperationExclusionList\":[\"esl\",\"nkww\",\"pp\",\"flcxoga\"],\"description\":\"onz\"}")
+            "{\"provisioningState\":\"Succeeded\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"qfqvmkc\",\"requestResourceType\":\"zapvhelx\"},{\"vaultCriticalOperation\":\"glyatddckcbcuej\",\"requestResourceType\":\"xgc\"}],\"vaultCriticalOperationExclusionList\":[\"brh\",\"sxsdqrhzoymibm\",\"qyib\"],\"description\":\"wfluszdt\"}")
             .toObject(ResourceGuard.class);
-        Assertions.assertEquals("esl", model.vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("brh", model.vaultCriticalOperationExclusionList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceGuard model = new ResourceGuard()
-            .withVaultCriticalOperationExclusionList(Arrays.asList("esl", "nkww", "pp", "flcxoga"));
+            .withVaultCriticalOperationExclusionList(Arrays.asList("brh", "sxsdqrhzoymibm", "qyib"));
         model = BinaryData.fromObject(model).toObject(ResourceGuard.class);
-        Assertions.assertEquals("esl", model.vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("brh", model.vaultCriticalOperationExclusionList().get(0));
     }
 }

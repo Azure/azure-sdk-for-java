@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public final class NetworkWatchersConnectionAnalyzersCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkWatcherConnectionAnalyzerCreate.json
+     * x-ms-original-file: 2026-01-01/NetworkWatcherConnectionAnalyzerCreate.json
      */
     /**
      * Sample code: Create connection analyzer.

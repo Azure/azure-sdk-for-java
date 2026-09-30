@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class ConnectionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ConnectionPolicyPut.json
+     * x-ms-original-file: 2026-01-01/ConnectionPolicyPut.json
      */
     /**
      * Sample code: ConnectionPolicyPut.
