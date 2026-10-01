@@ -149,6 +149,12 @@ public final class SharesGetPropertiesHeaders {
     private Boolean xMsEnableSnapshotVirtualDirectoryAccess;
 
     /*
+     * The x-ms-share-creation-time property.
+     */
+    @Generated
+    private DateTimeRfc1123 xMsShareCreationTime;
+
+    /*
      * The x-ms-share-paid-bursting-enabled property.
      */
     @Generated
@@ -235,6 +241,9 @@ public final class SharesGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_ENABLE_SNAPSHOT_VIRTUAL_DIRECTORY_ACCESS
         = HttpHeaderName.fromString("x-ms-enable-snapshot-virtual-directory-access");
+
+    private static final HttpHeaderName X_MS_SHARE_CREATION_TIME
+        = HttpHeaderName.fromString("x-ms-share-creation-time");
 
     private static final HttpHeaderName X_MS_SHARE_PAID_BURSTING_ENABLED
         = HttpHeaderName.fromString("x-ms-share-paid-bursting-enabled");
@@ -359,6 +368,12 @@ public final class SharesGetPropertiesHeaders {
                 = Boolean.parseBoolean(xMsEnableSnapshotVirtualDirectoryAccess);
         } else {
             this.xMsEnableSnapshotVirtualDirectoryAccess = null;
+        }
+        String xMsShareCreationTime = rawHeaders.getValue(X_MS_SHARE_CREATION_TIME);
+        if (xMsShareCreationTime != null) {
+            this.xMsShareCreationTime = new DateTimeRfc1123(xMsShareCreationTime);
+        } else {
+            this.xMsShareCreationTime = null;
         }
         String xMsSharePaidBurstingEnabled = rawHeaders.getValue(X_MS_SHARE_PAID_BURSTING_ENABLED);
         if (xMsSharePaidBurstingEnabled != null) {
@@ -917,6 +932,35 @@ public final class SharesGetPropertiesHeaders {
     public SharesGetPropertiesHeaders
         setXMsEnableSnapshotVirtualDirectoryAccess(Boolean xMsEnableSnapshotVirtualDirectoryAccess) {
         this.xMsEnableSnapshotVirtualDirectoryAccess = xMsEnableSnapshotVirtualDirectoryAccess;
+        return this;
+    }
+
+    /**
+     * Get the xMsShareCreationTime property: The x-ms-share-creation-time property.
+     * 
+     * @return the xMsShareCreationTime value.
+     */
+    @Generated
+    public OffsetDateTime getXMsShareCreationTime() {
+        if (this.xMsShareCreationTime == null) {
+            return null;
+        }
+        return this.xMsShareCreationTime.getDateTime();
+    }
+
+    /**
+     * Set the xMsShareCreationTime property: The x-ms-share-creation-time property.
+     * 
+     * @param xMsShareCreationTime the xMsShareCreationTime value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public SharesGetPropertiesHeaders setXMsShareCreationTime(OffsetDateTime xMsShareCreationTime) {
+        if (xMsShareCreationTime == null) {
+            this.xMsShareCreationTime = null;
+        } else {
+            this.xMsShareCreationTime = new DateTimeRfc1123(xMsShareCreationTime);
+        }
         return this;
     }
 
