@@ -339,7 +339,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<Boolean>> existsWithResponse(Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "exists");
+        ShareErrors.validatePathOperation(fileId, "exists");
         return this.getPropertiesWithResponse(null, context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
             .onErrorResume(ModelHelper::checkDoesNotExistStatusCode, t -> {
@@ -543,7 +543,7 @@ public class ShareFileAsyncClient {
         FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
         FilePosixProperties filePosixProperties, Map<String, String> metadata, ShareRequestConditions requestConditions,
         FilePropertySemantics filePropertySemantics, BinaryData binaryData, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "create");
+        ShareErrors.validatePathOperation(fileId, "create");
         final Context contextLocal = context == null ? Context.NONE : context;
         final ShareRequestConditions requestConditionsLocal
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
@@ -732,7 +732,7 @@ public class ShareFileAsyncClient {
      */
     public PollerFlux<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, ShareFileCopyOptions options,
         Duration pollInterval) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "beginCopy");
+        ShareErrors.validatePathOperation(fileId, "beginCopy");
 
         final ShareRequestConditions finalRequestConditions = options.getDestinationRequestConditions() == null
             ? new ShareRequestConditions()
@@ -959,7 +959,7 @@ public class ShareFileAsyncClient {
 
     Mono<Response<Void>> abortCopyWithResponse(String copyId, ShareRequestConditions requestConditions,
         Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "abortCopy");
+        ShareErrors.validatePathOperation(fileId, "abortCopy");
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         return azureFileStorageClient.getFiles()
             .abortCopyNoCustomHeadersWithResponseAsync(shareName, filePath, copyId, null,
@@ -1089,7 +1089,7 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileProperties>> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range,
         ShareRequestConditions requestConditions, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "downloadToFile");
+        ShareErrors.validatePathOperation(fileId, "downloadToFile");
         return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
             channel -> getPropertiesWithResponse(requestConditions, context)
                 .flatMap(response -> downloadResponseInChunk(response, channel, range, requestConditions, context)),
@@ -1268,7 +1268,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<ShareFileDownloadAsyncResponse> downloadWithResponse(ShareFileDownloadOptions options, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "download");
+        ShareErrors.validatePathOperation(fileId, "download");
         options = options == null ? new ShareFileDownloadOptions() : options;
         ShareFileRange range = options.getRange() == null ? new ShareFileRange(0) : options.getRange();
         ShareRequestConditions requestConditions
@@ -1433,7 +1433,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(ShareRequestConditions requestConditions, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "delete");
+        ShareErrors.validatePathOperation(fileId, "delete");
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         return azureFileStorageClient.getFiles()
             .deleteNoCustomHeadersWithResponseAsync(shareName, filePath, null, requestConditions.getLeaseId(), context);
@@ -1870,7 +1870,7 @@ public class ShareFileAsyncClient {
     Mono<Response<ShareFileInfo>> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
         FilePosixProperties fileposixProperties, ShareRequestConditions requestConditions, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "setProperties");
+        ShareErrors.validatePathOperation(fileId, "setProperties");
         context = context == null ? Context.NONE : context;
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
@@ -2014,7 +2014,7 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata,
         ShareRequestConditions requestConditions, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "setMetadata");
+        ShareErrors.validatePathOperation(fileId, "setMetadata");
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         context = context == null ? Context.NONE : context;
         try {
@@ -2225,7 +2225,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<ShareFileUploadInfo>> uploadWithResponse(ShareFileUploadOptions options, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "upload");
+        ShareErrors.validatePathOperation(fileId, "upload");
         try {
             StorageImplUtils.assertNotNull("options", options);
             ShareRequestConditions validatedRequestConditions = options.getRequestConditions() == null
@@ -2395,7 +2395,7 @@ public class ShareFileAsyncClient {
      * One-shot upload range.
      */
     Mono<Response<ShareFileUploadInfo>> uploadRangeWithResponse(ShareFileUploadRangeOptions options, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "uploadRange");
+        ShareErrors.validatePathOperation(fileId, "uploadRange");
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
         long rangeOffset = (options.getOffset() == null) ? 0L : options.getOffset();
@@ -2560,7 +2560,7 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileUploadRangeFromUrlInfo>>
         uploadRangeFromUrlWithResponse(ShareFileUploadRangeFromUrlOptions options, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "uploadRangeFromUrl");
+        ShareErrors.validatePathOperation(fileId, "uploadRangeFromUrl");
         ShareRequestConditions modifiedRequestConditions = options.getDestinationRequestConditions() == null
             ? new ShareRequestConditions()
             : options.getDestinationRequestConditions();
@@ -2684,7 +2684,7 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileUploadInfo>> clearRangeWithResponse(long length, long offset,
         ShareRequestConditions requestConditions, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "clearRange");
+        ShareErrors.validatePathOperation(fileId, "clearRange");
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         ShareFileRange range = new ShareFileRange(offset, offset + length - 1);
         context = context == null ? Context.NONE : context;
@@ -3055,7 +3055,7 @@ public class ShareFileAsyncClient {
     Mono<Response<ShareFileRangeList>> listRangesWithResponse(ShareFileRange range,
         ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, String marker,
         Integer maxResultsPerPage, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "listRanges");
+        ShareErrors.validatePathOperation(fileId, "listRanges");
 
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
@@ -3122,7 +3122,7 @@ public class ShareFileAsyncClient {
     }
 
     PagedFlux<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultsPerPage, Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "listHandles");
+        ShareErrors.validatePathOperation(fileId, "listHandles");
         Function<String, Mono<PagedResponse<HandleItem>>> retriever = marker -> StorageImplUtils
             .applyOptionalTimeout(this.azureFileStorageClient.getFiles()
                 .listHandlesWithResponseAsync(shareName, filePath, marker, maxResultsPerPage, null, snapshot, context),
@@ -3194,7 +3194,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "forceCloseHandle");
+        ShareErrors.validatePathOperation(fileId, "forceCloseHandle");
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getFiles()
             .forceCloseHandlesWithResponseAsync(shareName, filePath, handleId, null, null, snapshot, context)
@@ -3236,7 +3236,7 @@ public class ShareFileAsyncClient {
     }
 
     PagedFlux<CloseHandlesInfo> forceCloseAllHandlesWithOptionalTimeout(Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "forceCloseAllHandles");
+        ShareErrors.validatePathOperation(fileId, "forceCloseAllHandles");
         Function<String, Mono<PagedResponse<CloseHandlesInfo>>> retriever = marker -> StorageImplUtils
             .applyOptionalTimeout(
                 this.azureFileStorageClient.getFiles()
@@ -3322,7 +3322,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<ShareFileAsyncClient>> renameWithResponse(ShareFileRenameOptions options, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "rename");
+        ShareErrors.validatePathOperation(fileId, "rename");
         StorageImplUtils.assertNotNull("options", options);
         context = context == null ? Context.NONE : context;
 
@@ -3541,7 +3541,7 @@ public class ShareFileAsyncClient {
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
         Consumer<String> stringToSignHandler, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "generateSas");
+        ShareErrors.validatePathOperation(fileId, "generateSas");
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
@@ -3593,7 +3593,7 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileInfo>> createHardLinkWithResponse(String targetFile,
         ShareRequestConditions requestConditions, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "createHardLink");
+        ShareErrors.validatePathOperation(fileId, "createHardLink");
         context = context == null ? Context.NONE : context;
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         return this.azureFileStorageClient.getFiles()
@@ -3649,7 +3649,7 @@ public class ShareFileAsyncClient {
     Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(String linkText, Map<String, String> metadata,
         OffsetDateTime fileCreationTime, OffsetDateTime fileLastWriteTime, String owner, String group,
         ShareRequestConditions requestConditions, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "createSymbolicLink");
+        ShareErrors.validatePathOperation(fileId, "createSymbolicLink");
         context = context == null ? Context.NONE : context;
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         String fileCreationTimeString = FileSmbProperties.parseFileSMBDate(fileCreationTime);
@@ -3701,7 +3701,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<ShareFileSymbolicLinkInfo>> getSymbolicLinkWithResponse(Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "getSymbolicLink");
+        ShareErrors.validatePathOperation(fileId, "getSymbolicLink");
         context = context == null ? Context.NONE : context;
         return this.azureFileStorageClient.getFiles()
             .getSymbolicLinkWithResponseAsync(shareName, filePath, null, snapshot, null, context)
@@ -3736,7 +3736,7 @@ public class ShareFileAsyncClient {
      */
     public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "generateUserDelegationSas");
+        ShareErrors.validatePathOperation(fileId, "generateUserDelegationSas");
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }

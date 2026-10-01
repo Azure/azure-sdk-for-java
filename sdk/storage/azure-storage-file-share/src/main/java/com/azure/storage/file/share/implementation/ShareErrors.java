@@ -44,6 +44,17 @@ public final class ShareErrors {
     }
 
     /**
+     * Validates that the client can perform a path-based operation.
+     *
+     * @param fileId The client's file ID.
+     * @param operationName The operation name to report on failure.
+     * @throws IllegalStateException If the client is file-ID-addressed.
+     */
+    public static void validatePathOperation(String fileId, String operationName) {
+        assertNotFileIdAddressed(fileId, operationName);
+    }
+
+    /**
      * Throws if the client addresses its resource by file ID.
      *
      * @param fileId The client's file ID.

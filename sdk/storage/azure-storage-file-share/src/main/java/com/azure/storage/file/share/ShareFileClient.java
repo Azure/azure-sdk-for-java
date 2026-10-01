@@ -317,7 +317,7 @@ public class ShareFileClient {
      * @throws ShareStorageException If a storage service error occurred.
      */
     public final StorageFileInputStream openInputStream(ShareFileRange range) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "openInputStream");
+        ShareErrors.validatePathOperation(fileId, "openInputStream");
         return new StorageFileInputStream(shareFileAsyncClient, range.getStart(),
             range.getEnd() == null ? null : (range.getEnd() - range.getStart() + 1));
     }
@@ -342,7 +342,7 @@ public class ShareFileClient {
      * @throws ShareStorageException If a storage service error occurred.
      */
     public final StorageFileOutputStream getFileOutputStream(long offset) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "getFileOutputStream");
+        ShareErrors.validatePathOperation(fileId, "getFileOutputStream");
         return new StorageFileOutputStream(shareFileAsyncClient, offset);
     }
 
@@ -352,7 +352,7 @@ public class ShareFileClient {
      * @return The opened channel.
      */
     public SeekableByteChannel getFileSeekableByteChannelWrite(ShareFileSeekableByteChannelWriteOptions options) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "getFileSeekableByteChannelWrite");
+        ShareErrors.validatePathOperation(fileId, "getFileSeekableByteChannelWrite");
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         if (options.isOverwriteMode()) {
@@ -373,7 +373,7 @@ public class ShareFileClient {
      * @return The opened channel.
      */
     public SeekableByteChannel getFileSeekableByteChannelRead(ShareFileSeekableByteChannelReadOptions options) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "getFileSeekableByteChannelRead");
+        ShareErrors.validatePathOperation(fileId, "getFileSeekableByteChannelRead");
         ShareRequestConditions conditions = options != null ? options.getRequestConditions() : null;
         Long configuredChunkSize = options != null ? options.getChunkSizeInBytes() : null;
         int chunkSize
@@ -418,7 +418,7 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "exists");
+        ShareErrors.validatePathOperation(fileId, "exists");
         try {
             Response<ShareFileProperties> response = getPropertiesWithResponse(timeout, context);
             return new SimpleResponse<>(response, true);
@@ -624,7 +624,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileInfo> createWithResponse(ShareFileCreateOptions options, Duration timeout,
         Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "create");
+        ShareErrors.validatePathOperation(fileId, "create");
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions requestConditions
@@ -815,7 +815,7 @@ public class ShareFileClient {
      */
     public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, ShareFileCopyOptions options,
         Duration pollInterval) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "beginCopy");
+        ShareErrors.validatePathOperation(fileId, "beginCopy");
         final ShareRequestConditions finalRequestConditions = options.getDestinationRequestConditions() == null
             ? new ShareRequestConditions()
             : options.getDestinationRequestConditions();
@@ -1031,7 +1031,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> abortCopyWithResponse(String copyId, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "abortCopy");
+        ShareErrors.validatePathOperation(fileId, "abortCopy");
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
@@ -1406,7 +1406,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(ShareRequestConditions requestConditions, Duration timeout,
         Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "delete");
+        ShareErrors.validatePathOperation(fileId, "delete");
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
@@ -1817,7 +1817,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileInfo> setPropertiesWithResponse(ShareFileSetPropertiesOptions options, Duration timeout,
         Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "setProperties");
+        ShareErrors.validatePathOperation(fileId, "setProperties");
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions finalRequestConditions
@@ -1971,7 +1971,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileMetadataInfo> setMetadataWithResponse(Map<String, String> metadata,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "setMetadata");
+        ShareErrors.validatePathOperation(fileId, "setMetadata");
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
@@ -2379,7 +2379,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadRangeFromUrlInfo>
         uploadRangeFromUrlWithResponse(ShareFileUploadRangeFromUrlOptions options, Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "uploadRangeFromUrl");
+        ShareErrors.validatePathOperation(fileId, "uploadRangeFromUrl");
         ShareRequestConditions finalRequestConditions = options.getDestinationRequestConditions() == null
             ? new ShareRequestConditions()
             : options.getDestinationRequestConditions();
@@ -2494,7 +2494,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileUploadInfo> clearRangeWithResponse(long length, long offset,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "clearRange");
+        ShareErrors.validatePathOperation(fileId, "clearRange");
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         ShareFileRange range = new ShareFileRange(offset, offset + length - 1);
@@ -2651,7 +2651,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "listRanges");
+        ShareErrors.validatePathOperation(fileId, "listRanges");
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
@@ -2841,7 +2841,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileRangeList> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options,
         Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "listRangesDiff");
+        ShareErrors.validatePathOperation(fileId, "listRangesDiff");
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions requestConditions
             = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
@@ -2905,7 +2905,7 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HandleItem> listHandles(Integer maxResultsPerPage, Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "listHandles");
+        ShareErrors.validatePathOperation(fileId, "listHandles");
         Context finalContext = context == null ? Context.NONE : context;
         try {
             Callable<ResponseBase<FilesListHandlesHeaders, ListHandlesResponse>> operation
@@ -2984,7 +2984,7 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloseHandlesInfo> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "forceCloseHandle");
+        ShareErrors.validatePathOperation(fileId, "forceCloseHandle");
         Context finalContext = context == null ? Context.NONE : context;
         Callable<ResponseBase<FilesForceCloseHandlesHeaders, Void>> operation = () -> azureFileStorageClient.getFiles()
             .forceCloseHandlesWithResponse(shareName, filePath, handleId, null, null, snapshot, finalContext);
@@ -3022,7 +3022,7 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloseHandlesInfo forceCloseAllHandles(Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "forceCloseAllHandles");
+        ShareErrors.validatePathOperation(fileId, "forceCloseAllHandles");
         Context finalContext = context == null ? Context.NONE : context;
         try {
             Callable<ResponseBase<FilesForceCloseHandlesHeaders, Void>> operation
@@ -3111,7 +3111,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileClient> renameWithResponse(ShareFileRenameOptions options, Duration timeout,
         Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "rename");
+        ShareErrors.validatePathOperation(fileId, "rename");
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions sourceRequestConditions = options.getSourceRequestConditions() == null
@@ -3334,7 +3334,7 @@ public class ShareFileClient {
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
         Consumer<String> stringToSignHandler, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "generateSas");
+        ShareErrors.validatePathOperation(fileId, "generateSas");
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
@@ -3379,7 +3379,7 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileInfo> createHardLinkWithResponse(ShareFileCreateHardLinkOptions options, Duration timeout,
         Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "createHardLink");
+        ShareErrors.validatePathOperation(fileId, "createHardLink");
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions requestConditions
@@ -3431,7 +3431,7 @@ public class ShareFileClient {
      */
     public Response<ShareFileInfo> createSymbolicLinkWithResponse(ShareFileCreateSymbolicLinkOptions options,
         Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "createSymbolicLink");
+        ShareErrors.validatePathOperation(fileId, "createSymbolicLink");
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions requestConditions
@@ -3482,7 +3482,7 @@ public class ShareFileClient {
      * describing the symbolic link.
      */
     public Response<ShareFileSymbolicLinkInfo> getSymbolicLinkWithResponse(Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "getSymbolicLink");
+        ShareErrors.validatePathOperation(fileId, "getSymbolicLink");
         Context finalContext = context == null ? Context.NONE : context;
 
         Callable<ResponseBase<FilesGetSymbolicLinkHeaders, Void>> operation
@@ -3520,7 +3520,7 @@ public class ShareFileClient {
      */
     public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "generateUserDelegationSas");
+        ShareErrors.validatePathOperation(fileId, "generateUserDelegationSas");
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
@@ -3528,7 +3528,7 @@ public class ShareFileClient {
     ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> listRangesWithResponse(ShareFileRange range,
         ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, String marker,
         Integer maxResultsPerPage, Duration timeout, Context context) {
-        ShareErrors.assertNotFileIdAddressed(fileId, "listRanges");
+        ShareErrors.validatePathOperation(fileId, "listRanges");
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         String rangeString = range == null ? null : range.toString();
