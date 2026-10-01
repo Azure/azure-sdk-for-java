@@ -187,7 +187,6 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
         jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("intents", this.intents, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("maxRuntimeInSeconds", this.maxRuntimeInSeconds);
-        jsonWriter.writeNumberField("maxOutputSize", this.maxOutputSize);
         jsonWriter.writeNumberField("maxOutputDocuments", this.maxOutputDocuments);
         jsonWriter.writeNumberField("maxOutputSizeInTokens", this.maxOutputSizeInTokens);
         jsonWriter.writeJsonField("retrievalReasoningEffort", this.retrievalReasoningEffort);
@@ -225,8 +224,6 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
                 } else if ("maxRuntimeInSeconds".equals(fieldName)) {
                     deserializedKnowledgeBaseRetrievalOptions.maxRuntimeInSeconds
                         = reader.getNullable(JsonReader::getInt);
-                } else if ("maxOutputSize".equals(fieldName)) {
-                    deserializedKnowledgeBaseRetrievalOptions.maxOutputSize = reader.getNullable(JsonReader::getInt);
                 } else if ("maxOutputDocuments".equals(fieldName)) {
                     deserializedKnowledgeBaseRetrievalOptions.maxOutputDocuments
                         = reader.getNullable(JsonReader::getInt);
@@ -259,12 +256,6 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
      */
     @Generated
     private List<KnowledgeBaseMessage> messages;
-
-    /*
-     * Limits the maximum size of the content in the output.
-     */
-    @Generated
-    private Integer maxOutputSize;
 
     /*
      * Limits the maximum number of documents in the output.
@@ -303,28 +294,6 @@ public final class KnowledgeBaseRetrievalOptions implements JsonSerializable<Kno
     @Generated
     public KnowledgeBaseRetrievalOptions setMessages(List<KnowledgeBaseMessage> messages) {
         this.messages = messages;
-        return this;
-    }
-
-    /**
-     * Get the maxOutputSize property: Limits the maximum size of the content in the output.
-     *
-     * @return the maxOutputSize value.
-     */
-    @Generated
-    public Integer getMaxOutputSize() {
-        return this.maxOutputSize;
-    }
-
-    /**
-     * Set the maxOutputSize property: Limits the maximum size of the content in the output.
-     *
-     * @param maxOutputSize the maxOutputSize value to set.
-     * @return the KnowledgeBaseRetrievalOptions object itself.
-     */
-    @Generated
-    public KnowledgeBaseRetrievalOptions setMaxOutputSize(Integer maxOutputSize) {
-        this.maxOutputSize = maxOutputSize;
         return this;
     }
 

@@ -39,7 +39,7 @@ import java.util.UUID;
  * {@code SEARCH_OPENAI_EMBEDDING_MODEL_NAME} before running this sample. If the Search service uses a user-assigned
  * managed identity for the embedding deployment, also set {@code SEARCH_USER_ASSIGNED_IDENTITY}.</p>
  */
-public class KnowledgeSourceFilePreviewExample {
+public class KnowledgeSourceFileExample {
     public static void main(String[] args) {
         String endpoint = System.getenv("SEARCH_ENDPOINT");
         String apiKey = System.getenv("SEARCH_API_KEY");
@@ -80,24 +80,24 @@ public class KnowledgeSourceFilePreviewExample {
 
             Map<String, String> metadata = new LinkedHashMap<>();
             metadata.put("team", "search");
-            metadata.put("release", "2026-08-01-preview");
+            metadata.put("release", "2026-10-01");
 
             KnowledgeSourceFile firstFile = searchIndexClient.uploadKnowledgeSourceFileMultipart(knowledgeSourceName,
-                createUploadRequest("release-notes/august/features.md",
-                    "# August features\n\nFile knowledge source lifecycle improvements.", metadata));
-            verifyUploadedFile(firstFile, "release-notes/august/features.md", "release-notes/august/", metadata);
+                createUploadRequest("release-notes/october/features.md",
+                    "# October features\n\nFile knowledge source lifecycle improvements.", metadata));
+            verifyUploadedFile(firstFile, "release-notes/october/features.md", "release-notes/october/", metadata);
             uploadedFileIds.add(firstFile.getFileId());
 
             KnowledgeSourceFile secondFile = searchIndexClient.uploadKnowledgeSourceFileMultipart(knowledgeSourceName,
-                createUploadRequest("release-notes/august/migration.md",
-                    "# Migration\n\nSteps for adopting the August preview.", Collections.singletonMap("type", "guide")));
-            verifyUploadedFile(secondFile, "release-notes/august/migration.md", "release-notes/august/",
+                createUploadRequest("release-notes/october/migration.md",
+                    "# Migration\n\nSteps for adopting the October GA API.", Collections.singletonMap("type", "guide")));
+            verifyUploadedFile(secondFile, "release-notes/october/migration.md", "release-notes/october/",
                 Collections.singletonMap("type", "guide"));
             uploadedFileIds.add(secondFile.getFileId());
 
             List<PagedResponse<KnowledgeSourceFile>> pages = new ArrayList<>();
             searchIndexClient
-                .listKnowledgeSourceFiles(knowledgeSourceName, "release-notes/august/", null, 1,
+                .listKnowledgeSourceFiles(knowledgeSourceName, "release-notes/october/", null, 1,
                     ListingSearchType.PREFIX)
                 .iterableByPage()
                 .forEach(pages::add);
@@ -109,7 +109,7 @@ public class KnowledgeSourceFilePreviewExample {
                 knowledgeSourceName,
                 new UpdateKnowledgeSourceFileRequest(
                     new FileUploadMetadata().setFileName(firstFile.getFileName()).setMetadata(updatedMetadata),
-                    createFileContent("# August features\n\nUpdated and reviewed.", "features.md")));
+                    createFileContent("# October features\n\nUpdated and reviewed.", "features.md")));
             if (!firstFile.getFileId().equals(updatedFile.getFileId())
                 || !updatedMetadata.equals(updatedFile.getMetadata())) {
                 throw new IllegalStateException("The file wasn't updated in place.");

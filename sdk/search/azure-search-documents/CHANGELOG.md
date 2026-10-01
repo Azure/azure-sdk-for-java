@@ -1,10 +1,29 @@
 # Release History
 
-## 12.1.0-beta.3 (Unreleased)
+## 12.1.0 (Unreleased)
 
 ### Features Added
 
+- Added support for the `2026-10-01` GA service version, which is now the default service version.
+- Retained the knowledge base, knowledge retrieval, and file knowledge source APIs promoted to GA, including typed
+  retrieval streaming, low and medium reasoning effort, model activity, and knowledge base CORS configuration.
+- Added `KnowledgeSourceFileCapacity` for file knowledge source capacity information.
+- Added `modelName` and `modelDeployment` configuration to `ContentUnderstandingSkill`.
+
 ### Breaking Changes
+
+The following changes apply when upgrading from the preceding `12.1.0` beta releases:
+
+- Removed preview-only Fabric data agent, Fabric ontology, MCP server, remote SharePoint, and Work IQ knowledge sources.
+- Removed preview-only query hints and boosts, knowledge source freshness and image-serving configuration,
+  sensitivity-label configuration, and knowledge-resource service-statistics counters.
+- Removed knowledge base tags, `KnowledgeBaseRetrieveDefaults`, `KnowledgeRetrievalAutoReasoningEffort`,
+  `KnowledgeSourceResultsProcessing`, and the `neverQuerySource` setting.
+- Renamed `KnowledgeBaseRetrievalOptions.getMaxOutputSize` and `setMaxOutputSize` to `getMaxOutputSizeInTokens` and
+  `setMaxOutputSizeInTokens` to match the GA request property.
+- Removed the Work IQ source authorization argument from knowledge retrieval and typed streaming overloads.
+  The query source authorization argument remains supported.
+- Removed the `SearchServiceVersion.V2026_08_01_PREVIEW` enum value.
 
 ### Bugs Fixed
 

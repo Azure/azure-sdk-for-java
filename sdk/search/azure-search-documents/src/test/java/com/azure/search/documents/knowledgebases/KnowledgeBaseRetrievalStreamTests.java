@@ -23,6 +23,7 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalSt
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStartedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseStreamErrorEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalLowReasoningEffort;
 import com.azure.search.documents.knowledgebases.models.UnknownKnowledgeBaseRetrievalStreamEvent;
 import com.azure.search.documents.models.ServerSentEvent;
 import com.azure.search.documents.models.ServerSentEventListener;
@@ -49,10 +50,9 @@ public class KnowledgeBaseRetrievalStreamTests {
     private static final HttpHeaderName QUERY_WORK_IQ_SOURCE_AUTHORIZATION
         = HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization");
     private static final String QUERY_SOURCE_TOKEN = "query-source-token";
-    private static final String QUERY_WORK_IQ_SOURCE_TOKEN = "query-work-iq-source-token";
     private static final String RETRIEVAL_STARTED_JSON
         = "{\"requestId\":\"request\",\"knowledgeBaseName\":\"kb\",\"outputMode\":\"answerSynthesis\","
-            + "\"reasoningEffort\":{\"kind\":\"auto\"}}";
+            + "\"reasoningEffort\":{\"kind\":\"low\"}}";
     private static final String RESPONSE_COMPLETED_JSON = "{\"statusCode\":200,\"response\":{}}";
 
     @Test
@@ -62,6 +62,8 @@ public class KnowledgeBaseRetrievalStreamTests {
         assertInstanceOf(KnowledgeBaseRetrievalStartedStreamEvent.class, retrievalStarted);
         assertInstanceOf(KnowledgeBaseRetrievalStartedEvent.class,
             ((KnowledgeBaseRetrievalStartedStreamEvent) retrievalStarted).getValue());
+        assertInstanceOf(KnowledgeRetrievalLowReasoningEffort.class,
+            ((KnowledgeBaseRetrievalStartedStreamEvent) retrievalStarted).getValue().getReasoningEffort());
         assertEvent(retrievalStarted, "retrieval.started", false);
 
         KnowledgeBaseRetrievalStreamEvent activityStarted = KnowledgeBaseRetrievalStreamEventConverter
@@ -122,13 +124,10 @@ public class KnowledgeBaseRetrievalStreamTests {
     @Test
     public void asyncClientForwardsAuthorizationHeadersAndEmitsTerminalEvent() {
         KnowledgeBaseRetrievalAsyncClient client
-            = createBuilder(streamWithUnknownEvent(), QUERY_SOURCE_TOKEN, QUERY_WORK_IQ_SOURCE_TOKEN)
-                .buildAsyncClient();
+            = createBuilder(streamWithUnknownEvent(), QUERY_SOURCE_TOKEN).buildAsyncClient();
 
         List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events
-            = client.retrieveStream(new KnowledgeBaseRetrievalOptions(), QUERY_SOURCE_TOKEN, QUERY_WORK_IQ_SOURCE_TOKEN)
-                .collectList()
-                .block();
+            = client.retrieveStream(new KnowledgeBaseRetrievalOptions(), QUERY_SOURCE_TOKEN).collectList().block();
 
         assertNotNull(events);
         assertEquals(3, events.size());
@@ -146,13 +145,12 @@ public class KnowledgeBaseRetrievalStreamTests {
 
     @Test
     public void syncClientForwardsAuthorizationHeadersAndDeliversTerminalEvent() {
-        KnowledgeBaseRetrievalClient client
-            = createBuilder(streamWithUnknownEvent(), QUERY_SOURCE_TOKEN, QUERY_WORK_IQ_SOURCE_TOKEN).buildClient();
+        KnowledgeBaseRetrievalClient client = createBuilder(streamWithUnknownEvent(), QUERY_SOURCE_TOKEN).buildClient();
         List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events = new ArrayList<>();
         AtomicReference<Throwable> error = new AtomicReference<>();
         AtomicBoolean closed = new AtomicBoolean();
 
-        client.retrieveStream(new KnowledgeBaseRetrievalOptions(), QUERY_SOURCE_TOKEN, QUERY_WORK_IQ_SOURCE_TOKEN,
+        client.retrieveStream(new KnowledgeBaseRetrievalOptions(), QUERY_SOURCE_TOKEN,
             new ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent>() {
                 @Override
                 public void onEvent(ServerSentEvent<KnowledgeBaseRetrievalStreamEvent> event) {
@@ -181,8 +179,7 @@ public class KnowledgeBaseRetrievalStreamTests {
 
     @Test
     public void asyncClientMinimalOverloadOmitsAuthorizationHeaders() {
-        KnowledgeBaseRetrievalAsyncClient client
-            = createBuilder(streamWithUnknownEvent(), null, null).buildAsyncClient();
+        KnowledgeBaseRetrievalAsyncClient client = createBuilder(streamWithUnknownEvent(), null).buildAsyncClient();
 
         List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events
             = client.retrieveStream(new KnowledgeBaseRetrievalOptions()).collectList().block();
@@ -193,7 +190,7 @@ public class KnowledgeBaseRetrievalStreamTests {
 
     @Test
     public void syncClientMinimalOverloadOmitsAuthorizationHeaders() {
-        KnowledgeBaseRetrievalClient client = createBuilder(streamWithUnknownEvent(), null, null).buildClient();
+        KnowledgeBaseRetrievalClient client = createBuilder(streamWithUnknownEvent(), null).buildClient();
         List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events = new ArrayList<>();
         AtomicReference<Throwable> error = new AtomicReference<>();
         AtomicBoolean closed = new AtomicBoolean();
@@ -221,16 +218,16 @@ public class KnowledgeBaseRetrievalStreamTests {
         assertTrue(closed.get());
     }
 
-    private static KnowledgeBaseRetrievalClientBuilder createBuilder(String responseBody, String querySourceToken,
-        String queryWorkIQSourceToken) {
+    private static KnowledgeBaseRetrievalClientBuilder createBuilder(String responseBody, String querySourceToken) {
         HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/event-stream");
         return new KnowledgeBaseRetrievalClientBuilder().endpoint("https://example.search.windows.net")
             .knowledgeBaseName("kb")
             .credential(new AzureKeyCredential("key"))
             .httpClient(request -> {
+                assertEquals("api-version=2026-10-01", request.getUrl().getQuery());
                 assertEquals("text/event-stream", request.getHeaders().getValue(HttpHeaderName.ACCEPT));
                 assertEquals(querySourceToken, request.getHeaders().getValue(QUERY_SOURCE_AUTHORIZATION));
-                assertEquals(queryWorkIQSourceToken, request.getHeaders().getValue(QUERY_WORK_IQ_SOURCE_AUTHORIZATION));
+                assertNull(request.getHeaders().getValue(QUERY_WORK_IQ_SOURCE_AUTHORIZATION));
                 return Mono
                     .just(new MockHttpResponse(request, 200, headers, responseBody.getBytes(StandardCharsets.UTF_8)));
             });

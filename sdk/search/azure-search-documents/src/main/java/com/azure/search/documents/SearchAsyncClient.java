@@ -384,6 +384,7 @@ public final class SearchAsyncClient {
      *     highlightPostTag: String (Optional)
      *     highlightPreTag: String (Optional)
      *     minimumCoverage: Double (Optional)
+     *     moreLikeThis: String (Optional)
      *     orderby (Optional): [
      *         String (Optional)
      *     ]
@@ -400,8 +401,6 @@ public final class SearchAsyncClient {
      *         String (Optional)
      *     ]
      *     searchMode: String(any/all) (Optional)
-     *     queryLanguage: String(none/en-us/en-gb/en-in/en-ca/en-au/fr-fr/fr-ca/de-de/es-es/es-mx/zh-cn/zh-tw/pt-br/pt-pt/it-it/ja-jp/ko-kr/ru-ru/cs-cz/nl-be/nl-nl/hu-hu/pl-pl/sv-se/tr-tr/hi-in/ar-sa/ar-eg/ar-ma/ar-kw/ar-jo/da-dk/no-no/bg-bg/hr-hr/hr-ba/ms-my/ms-bn/sl-sl/ta-in/vi-vn/el-gr/ro-ro/is-is/id-id/th-th/lt-lt/uk-ua/lv-lv/et-ee/ca-es/fi-fi/sr-ba/sr-me/sr-rs/sk-sk/nb-no/hy-am/bn-in/eu-es/gl-es/gu-in/he-il/ga-ie/kn-in/ml-in/mr-in/fa-ae/pa-in/te-in/ur-pk) (Optional)
-     *     speller: String(none/lexicon) (Optional)
      *     select (Optional): [
      *         String (Optional)
      *     ]
@@ -413,10 +412,6 @@ public final class SearchAsyncClient {
      *     semanticQuery: String (Optional)
      *     answers: String(none/extractive) (Optional)
      *     captions: String(none/extractive) (Optional)
-     *     queryRewrites: String(none/generative) (Optional)
-     *     semanticFields (Optional): [
-     *         String (Optional)
-     *     ]
      *     vectorQueries (Optional): [
      *          (Optional){
      *             kind: String(vector/text/imageUrl/imageBinary) (Required)
@@ -425,18 +420,9 @@ public final class SearchAsyncClient {
      *             exhaustive: Boolean (Optional)
      *             oversampling: Double (Optional)
      *             weight: Float (Optional)
-     *             threshold (Optional): {
-     *                 kind: String(vectorSimilarity/searchScore) (Required)
-     *             }
-     *             filterOverride: String (Optional)
-     *             perDocumentVectorLimit: Integer (Optional)
      *         }
      *     ]
      *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
-     *     hybridSearch (Optional): {
-     *         maxTextRecallSize: Integer (Optional)
-     *         countAndFacetMode: String(countRetrievableResults/countAllResults) (Optional)
-     *     }
      * }
      * }
      * </pre>
@@ -452,16 +438,6 @@ public final class SearchAsyncClient {
      *         String (Required): [
      *              (Required){
      *                 count: Long (Optional)
-     *                 avg: Double (Optional)
-     *                 min: Double (Optional)
-     *                 max: Double (Optional)
-     *                 sum: Double (Optional)
-     *                 cardinality: Long (Optional)
-     *                 &#64;search.facets (Optional): {
-     *                     String (Required): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
      *                  (Optional): {
      *                     String: Object (Required)
      *                 }
@@ -479,19 +455,6 @@ public final class SearchAsyncClient {
      *             }
      *         }
      *     ]
-     *     &#64;search.debug (Optional): {
-     *         queryRewrites (Optional): {
-     *             text (Optional): {
-     *                 inputQuery: String (Optional)
-     *                 rewrites (Optional): [
-     *                     String (Optional)
-     *                 ]
-     *             }
-     *             vectors (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     }
      *     &#64;search.nextPageParameters (Optional): {
      *         count: Boolean (Optional)
      *         facets (Optional): [
@@ -504,6 +467,7 @@ public final class SearchAsyncClient {
      *         highlightPostTag: String (Optional)
      *         highlightPreTag: String (Optional)
      *         minimumCoverage: Double (Optional)
+     *         moreLikeThis: String (Optional)
      *         orderby (Optional): [
      *             String (Optional)
      *         ]
@@ -520,8 +484,6 @@ public final class SearchAsyncClient {
      *             String (Optional)
      *         ]
      *         searchMode: String(any/all) (Optional)
-     *         queryLanguage: String(none/en-us/en-gb/en-in/en-ca/en-au/fr-fr/fr-ca/de-de/es-es/es-mx/zh-cn/zh-tw/pt-br/pt-pt/it-it/ja-jp/ko-kr/ru-ru/cs-cz/nl-be/nl-nl/hu-hu/pl-pl/sv-se/tr-tr/hi-in/ar-sa/ar-eg/ar-ma/ar-kw/ar-jo/da-dk/no-no/bg-bg/hr-hr/hr-ba/ms-my/ms-bn/sl-sl/ta-in/vi-vn/el-gr/ro-ro/is-is/id-id/th-th/lt-lt/uk-ua/lv-lv/et-ee/ca-es/fi-fi/sr-ba/sr-me/sr-rs/sk-sk/nb-no/hy-am/bn-in/eu-es/gl-es/gu-in/he-il/ga-ie/kn-in/ml-in/mr-in/fa-ae/pa-in/te-in/ur-pk) (Optional)
-     *         speller: String(none/lexicon) (Optional)
      *         select (Optional): [
      *             String (Optional)
      *         ]
@@ -533,10 +495,6 @@ public final class SearchAsyncClient {
      *         semanticQuery: String (Optional)
      *         answers: String(none/extractive) (Optional)
      *         captions: String(none/extractive) (Optional)
-     *         queryRewrites: String(none/generative) (Optional)
-     *         semanticFields (Optional): [
-     *             String (Optional)
-     *         ]
      *         vectorQueries (Optional): [
      *              (Optional){
      *                 kind: String(vector/text/imageUrl/imageBinary) (Required)
@@ -545,18 +503,9 @@ public final class SearchAsyncClient {
      *                 exhaustive: Boolean (Optional)
      *                 oversampling: Double (Optional)
      *                 weight: Float (Optional)
-     *                 threshold (Optional): {
-     *                     kind: String(vectorSimilarity/searchScore) (Required)
-     *                 }
-     *                 filterOverride: String (Optional)
-     *                 perDocumentVectorLimit: Integer (Optional)
      *             }
      *         ]
      *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
-     *         hybridSearch (Optional): {
-     *             maxTextRecallSize: Integer (Optional)
-     *             countAndFacetMode: String(countRetrievableResults/countAllResults) (Optional)
-     *         }
      *     }
      *     value (Required): [
      *          (Required){
@@ -578,23 +527,6 @@ public final class SearchAsyncClient {
      *                 }
      *             ]
      *             &#64;search.documentDebugInfo (Optional): {
-     *                 semantic (Optional): {
-     *                     titleField (Optional): {
-     *                         name: String (Optional)
-     *                         state: String(used/unused/partial) (Optional)
-     *                     }
-     *                     contentFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     keywordFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     rerankerInput (Optional): {
-     *                         title: String (Optional)
-     *                         content: String (Optional)
-     *                         keywords: String (Optional)
-     *                     }
-     *                 }
      *                 vectors (Optional): {
      *                     subscores (Optional): {
      *                         text (Optional): {
@@ -611,18 +543,6 @@ public final class SearchAsyncClient {
      *                         documentBoost: Double (Optional)
      *                     }
      *                 }
-     *                 innerHits (Optional): {
-     *                     String (Required): [
-     *                          (Required){
-     *                             ordinal: Long (Optional)
-     *                             vectors (Optional): [
-     *                                  (Optional){
-     *                                     String (Required): (recursive schema, see String above)
-     *                                 }
-     *                             ]
-     *                         }
-     *                     ]
-     *                 }
      *             }
      *              (Optional): {
      *                 String: Object (Required)
@@ -632,7 +552,6 @@ public final class SearchAsyncClient {
      *     &#64;odata.nextLink: String (Optional)
      *     &#64;search.semanticPartialResponseReason: String(maxWaitExceeded/capacityOverloaded/transient) (Optional)
      *     &#64;search.semanticPartialResponseType: String(baseResults/rerankedResults) (Optional)
-     *     &#64;search.semanticQueryRewritesResultType: String(originalQueryOnly) (Optional)
      * }
      * }
      * </pre>

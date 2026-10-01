@@ -39,7 +39,7 @@ public class SearchCustomizations extends Customization {
 
         ClassCustomization serviceVersion = documents.getClass("SearchServiceVersion");
         includeOldApiVersions(serviceVersion);
-        removeOldPreviewApiVersions(serviceVersion);
+        removePreviewApiVersions(serviceVersion);
 
         ClassCustomization searchClient = documents.getClass("SearchClient");
         ClassCustomization searchAsyncClient = documents.getClass("SearchAsyncClient");
@@ -99,7 +99,7 @@ public class SearchCustomizations extends Customization {
         }
     }
 
-    // The TypeSpec Java emitter compiles and loads only this configured customization class. Keep the premature
+    // The TypeSpec Java emitter compiles and loads only this configured customization class. Keep the
     // retrieval stream API customizations isolated so they can be removed when native support is available.
     private static final String MODELS_PATH = "src/main/java/com/azure/search/documents/knowledgebases/models/";
 
@@ -205,18 +205,12 @@ public class SearchCustomizations extends Customization {
                     = StaticJavaParser
                         .parseBodyDeclaration("@Generated\n"
                             + "public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> retrieveStream("
-                                + "KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization,\n"
-                                + "    String queryWorkIQSourceAuthorization) {\n"
+                                + "KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization) {\n"
                                 + "    RequestOptions requestOptions = new RequestOptions();\n"
                                 + "    if (querySourceAuthorization != null) {\n"
                                 + "        requestOptions.setHeader(\n"
                                 + "            HttpHeaderName.fromString(\"x-ms-query-source-authorization\"),\n"
                                 + "            querySourceAuthorization);\n"
-                                + "    }\n"
-                                + "    if (queryWorkIQSourceAuthorization != null) {\n"
-                                + "        requestOptions.setHeader(\n"
-                                + "            HttpHeaderName.fromString(\"x-ms-query-work-iq-source-authorization\"),\n"
-                                + "            queryWorkIQSourceAuthorization);\n"
                                 + "    }\n"
                                 + "    return hiddenGeneratedRetrieveStreamWithResponse("
                                 + "BinaryData.fromObject(retrievalRequest), requestOptions)\n"
@@ -234,9 +228,6 @@ public class SearchCustomizations extends Customization {
                         + "@param retrievalRequest The retrieval request to process.\n"
                         + "@param querySourceAuthorization Token identifying the user for which the query is being "
                         + "executed. This token is used to enforce security restrictions on documents.\n"
-                        + "@param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app "
-                        + "registration configured on a Work IQ knowledge source. Used for on-behalf-of "
-                        + "authentication to the Work IQ API.\n"
                         + "@return A stream of typed knowledge base retrieval events.");
                 clazz.addMember(methodWithAuthorizationHeaders);
             }));
@@ -280,18 +271,13 @@ public class SearchCustomizations extends Customization {
                     = StaticJavaParser
                         .parseBodyDeclaration("@Generated\n"
                             + "public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,\n"
-                                + "    String querySourceAuthorization, String queryWorkIQSourceAuthorization,\n"
+                                + "    String querySourceAuthorization,\n"
                                 + "    ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {\n"
                                 + "    RequestOptions requestOptions = new RequestOptions();\n"
                                 + "    if (querySourceAuthorization != null) {\n"
                                 + "        requestOptions.setHeader(\n"
                                 + "            HttpHeaderName.fromString(\"x-ms-query-source-authorization\"),\n"
                                 + "            querySourceAuthorization);\n"
-                                + "    }\n"
-                                + "    if (queryWorkIQSourceAuthorization != null) {\n"
-                                + "        requestOptions.setHeader(\n"
-                                + "            HttpHeaderName.fromString(\"x-ms-query-work-iq-source-authorization\"),\n"
-                                + "            queryWorkIQSourceAuthorization);\n"
                                 + "    }\n"
                                 + "    ServerSentEventStreams.listen(hiddenGeneratedRetrieveStreamWithResponse(\n"
                                 + "        BinaryData.fromObject(retrievalRequest), requestOptions),\n"
@@ -309,9 +295,6 @@ public class SearchCustomizations extends Customization {
                         + "@param retrievalRequest The retrieval request to process.\n"
                         + "@param querySourceAuthorization Token identifying the user for which the query is being "
                         + "executed. This token is used to enforce security restrictions on documents.\n"
-                        + "@param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app "
-                        + "registration configured on a Work IQ knowledge source. Used for on-behalf-of "
-                        + "authentication to the Work IQ API.\n"
                         + "@param listener The listener that receives events and lifecycle notifications.");
                 clazz.addMember(methodWithAuthorizationHeaders);
             }));
@@ -439,19 +422,20 @@ public class SearchCustomizations extends Customization {
             NodeList<EnumConstantDeclaration> entries = enumDeclaration.getEntries();
             for (String version : Arrays.asList("2025-09-01", "2024-07-01", "2023-11-01", "2020-06-30")) {
                 String enumName = ("V" + version.replace("-", "_"));
-                entries.add(0, new EnumConstantDeclaration(enumName).addArgument(new StringLiteralExpr(version))
-                    .setJavadocComment("Enum value " + version + "."));
+                if (entries.stream().noneMatch(entry -> enumName.equals(entry.getNameAsString()))) {
+                    entries.add(0, new EnumConstantDeclaration(enumName).addArgument(new StringLiteralExpr(version))
+                        .setJavadocComment("Enum value " + version + "."));
+                }
             }
 
             enumDeclaration.setEntries(entries);
         }));
     }
 
-    private static void removeOldPreviewApiVersions(ClassCustomization customization) {
+    private static void removePreviewApiVersions(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getEnumByName(customization.getClassName())
             .ifPresent(enumDeclaration -> enumDeclaration.getEntries()
-                .removeIf(entry -> Arrays.asList("V2025_11_01_PREVIEW", "V2026_05_01_PREVIEW")
-                    .contains(entry.getNameAsString()))));
+                .removeIf(entry -> entry.getNameAsString().endsWith("_PREVIEW"))));
     }
 
     // At the time this was added, Java TypeSpec for Azure-type generation doesn't use 'T' in WithResponse APIs, which
@@ -551,9 +535,27 @@ public class SearchCustomizations extends Customization {
     // only has package-private generated convenience methods after hideWithResponseBinaryDataApis runs.
     private static void addAsyncKnowledgeBaseConvenienceMethods(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
+            clazz.getMethodsByName("createOrUpdateKnowledgeBase")
+                .stream()
+                .filter(method -> method.getParameters().size() == 1
+                    && "KnowledgeBase".equals(method.getParameter(0).getTypeAsString()))
+                .forEach(MethodDeclaration::remove);
+            clazz.getMethodsByName("createOrUpdateKnowledgeBaseWithResponse")
+                .stream()
+                .filter(method -> method.getParameters().size() == 2
+                    && "KnowledgeBase".equals(method.getParameter(0).getTypeAsString())
+                    && "RequestOptions".equals(method.getParameter(1).getTypeAsString()))
+                .forEach(MethodDeclaration::remove);
+            clazz.getMethodsByName("createOrUpdateKnowledgeSourceWithResponse")
+                .stream()
+                .filter(method -> method.getParameters().size() == 2
+                    && "KnowledgeSource".equals(method.getParameter(0).getTypeAsString())
+                    && "RequestOptions".equals(method.getParameter(1).getTypeAsString()))
+                .forEach(MethodDeclaration::remove);
+
             // Add: public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase)
             MethodDeclaration createOrUpdateKB = StaticJavaParser
-                .parseBodyDeclaration("@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                .parseBodyDeclaration("@Generated\n@ServiceMethod(returns = ReturnType.SINGLE)\n"
                     + "public Mono<KnowledgeBase> createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase) {\n"
                     + "    return createOrUpdateKnowledgeBase(knowledgeBase.getName(), knowledgeBase);\n" + "}\n")
                 .asMethodDeclaration();
@@ -566,7 +568,7 @@ public class SearchCustomizations extends Customization {
             // Add: public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse(
             //          KnowledgeBase knowledgeBase, RequestOptions requestOptions)
             MethodDeclaration createOrUpdateKBWithResponse
-                = StaticJavaParser.parseBodyDeclaration("@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                = StaticJavaParser.parseBodyDeclaration("@Generated\n@ServiceMethod(returns = ReturnType.SINGLE)\n"
                     + "public Mono<Response<KnowledgeBase>> createOrUpdateKnowledgeBaseWithResponse("
                     + "KnowledgeBase knowledgeBase, RequestOptions requestOptions) {\n"
                     + "    return mapResponse(this.serviceClient.createOrUpdateKnowledgeBaseWithResponseAsync("
@@ -582,7 +584,7 @@ public class SearchCustomizations extends Customization {
             // Add: public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse(
             //          KnowledgeSource knowledgeSource, RequestOptions requestOptions)
             MethodDeclaration createOrUpdateKSWithResponse
-                = StaticJavaParser.parseBodyDeclaration("@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                = StaticJavaParser.parseBodyDeclaration("@Generated\n@ServiceMethod(returns = ReturnType.SINGLE)\n"
                     + "public Mono<Response<KnowledgeSource>> createOrUpdateKnowledgeSourceWithResponse("
                     + "KnowledgeSource knowledgeSource, RequestOptions requestOptions) {\n"
                     + "    return mapResponse(this.serviceClient.createOrUpdateKnowledgeSourceWithResponseAsync("

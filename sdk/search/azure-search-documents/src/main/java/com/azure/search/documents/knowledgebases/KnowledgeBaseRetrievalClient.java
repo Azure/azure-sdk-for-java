@@ -107,9 +107,6 @@ public final class KnowledgeBaseRetrievalClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
      * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * <tr><td>x-ms-query-work-iq-source-authorization</td><td>String</td><td>No</td><td>User assertion token for a
-     * customer-owned Entra app registration configured on a Work IQ knowledge source. Used for on-behalf-of
-     * authentication to the Work IQ API.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -133,27 +130,23 @@ public final class KnowledgeBaseRetrievalClient {
      *         }
      *     ]
      *     maxRuntimeInSeconds: Integer (Optional)
-     *     maxOutputSize: Integer (Optional)
      *     maxOutputDocuments: Integer (Optional)
      *     maxOutputSizeInTokens: Integer (Optional)
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
+     *         kind: String(minimal/low/medium) (Required)
      *     }
      *     includeActivity: Boolean (Optional)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     knowledgeSourceParams (Optional): [
      *          (Optional){
-     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
+     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/file) (Required)
      *             knowledgeSourceName: String (Required)
      *             includeReferences: Boolean (Optional)
      *             includeReferenceSourceData: Boolean (Optional)
      *             alwaysQuerySource: Boolean (Optional)
-     *             neverQuerySource: Boolean (Optional)
      *             failOnError: Boolean (Optional)
      *             rerankerThreshold: Float (Optional)
-     *             resultsProcessing: String(rerank/none) (Optional)
      *             maxOutputDocuments: Integer (Optional)
-     *             enableImageServing: Boolean (Optional)
      *         }
      *     ]
      * }
@@ -177,7 +170,7 @@ public final class KnowledgeBaseRetrievalClient {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql/modelQueryPlanning/modelAnswerSynthesis/modelWebSummarization/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/file/indexedSql/modelQueryPlanning/modelAnswerSynthesis/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
      *             startedAt: OffsetDateTime (Optional)
      *             completedAt: OffsetDateTime (Optional)
@@ -203,7 +196,7 @@ public final class KnowledgeBaseRetrievalClient {
      *     ]
      *     references (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql) (Required)
+     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/file/indexedSql) (Required)
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {
@@ -212,14 +205,6 @@ public final class KnowledgeBaseRetrievalClient {
      *             rerankerScore: Float (Optional)
      *         }
      *     ]
-     *     responseSensitivityLabelInfo (Optional): {
-     *         displayName: String (Optional)
-     *         sensitivityLabelId: String (Optional)
-     *         toolTip: String (Optional)
-     *         priority: Integer (Optional)
-     *         color: String (Optional)
-     *         isEncrypted: Boolean (Optional)
-     *     }
      * }
      * }
      * </pre>
@@ -275,9 +260,6 @@ public final class KnowledgeBaseRetrievalClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
      * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * <tr><td>x-ms-query-work-iq-source-authorization</td><td>String</td><td>No</td><td>User assertion token for a
-     * customer-owned Entra app registration configured on a Work IQ knowledge source. Used for on-behalf-of
-     * authentication to the Work IQ API.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -301,27 +283,23 @@ public final class KnowledgeBaseRetrievalClient {
      *         }
      *     ]
      *     maxRuntimeInSeconds: Integer (Optional)
-     *     maxOutputSize: Integer (Optional)
      *     maxOutputDocuments: Integer (Optional)
      *     maxOutputSizeInTokens: Integer (Optional)
      *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium/auto) (Required)
+     *         kind: String(minimal/low/medium) (Required)
      *     }
      *     includeActivity: Boolean (Optional)
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     knowledgeSourceParams (Optional): [
      *          (Optional){
-     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
+     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/file) (Required)
      *             knowledgeSourceName: String (Required)
      *             includeReferences: Boolean (Optional)
      *             includeReferenceSourceData: Boolean (Optional)
      *             alwaysQuerySource: Boolean (Optional)
-     *             neverQuerySource: Boolean (Optional)
      *             failOnError: Boolean (Optional)
      *             rerankerThreshold: Float (Optional)
-     *             resultsProcessing: String(rerank/none) (Optional)
      *             maxOutputDocuments: Integer (Optional)
-     *             enableImageServing: Boolean (Optional)
      *         }
      *     ]
      * }
@@ -349,81 +327,6 @@ public final class KnowledgeBaseRetrievalClient {
     Response<BinaryData> hiddenGeneratedRetrieveStreamWithResponse(BinaryData retrievalRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.retrieveStreamWithResponse(retrievalRequest, requestOptions);
-    }
-
-    /**
-     * KnowledgeBase retrieves relevant data from backing stores.
-     *
-     * @param retrievalRequest The retrieval request to process.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
-     * @param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app registration configured
-     * on a Work IQ knowledge source. Used for on-behalf-of authentication to the Work IQ API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the output contract for the retrieval response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeBaseRetrievalResult retrieve(KnowledgeBaseRetrievalOptions retrievalRequest,
-        String querySourceAuthorization, String queryWorkIQSourceAuthorization) {
-        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
-        if (queryWorkIQSourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization"),
-                queryWorkIQSourceAuthorization);
-        }
-        return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions).getValue()
-            .toObject(KnowledgeBaseRetrievalResult.class);
-    }
-
-    /**
-     * Retrieves relevant data from backing stores and streams progress and results as server-sent
-     * events.
-     *
-     * Process the response incrementally using server-sent event framing. Each event contains an
-     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
-     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
-     * clients may expose the raw response without typed event parsing. Do not deserialize the
-     * complete response body as a single JSON document.
-     *
-     * @param retrievalRequest The retrieval request to process.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
-     * @param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app registration configured
-     * on a Work IQ knowledge source. Used for on-behalf-of authentication to the Work IQ API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BinaryData hiddenGeneratedRetrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,
-        String querySourceAuthorization, String queryWorkIQSourceAuthorization) {
-        // Generated convenience method for hiddenGeneratedRetrieveStreamWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
-        if (queryWorkIQSourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization"),
-                queryWorkIQSourceAuthorization);
-        }
-        return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
-            .getValue();
     }
 
     /**
@@ -475,6 +378,69 @@ public final class KnowledgeBaseRetrievalClient {
     }
 
     /**
+     * KnowledgeBase retrieves relevant data from backing stores.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the output contract for the retrieval response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeBaseRetrievalResult retrieve(KnowledgeBaseRetrievalOptions retrievalRequest,
+        String querySourceAuthorization) {
+        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions).getValue()
+            .toObject(KnowledgeBaseRetrievalResult.class);
+    }
+
+    /**
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent
+     * events.
+     *
+     * Process the response incrementally using server-sent event framing. Each event contains an
+     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
+     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
+     * clients may expose the raw response without typed event parsing. Do not deserialize the
+     * complete response body as a single JSON document.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BinaryData hiddenGeneratedRetrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,
+        String querySourceAuthorization) {
+        // Generated convenience method for hiddenGeneratedRetrieveStreamWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
+            .getValue();
+    }
+
+    /**
      * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
      *
      * If received, the terminal {@code error} or {@code response.completed} event is delivered before
@@ -485,21 +451,15 @@ public final class KnowledgeBaseRetrievalClient {
      * @param retrievalRequest The retrieval request to process.
      * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
      * used to enforce security restrictions on documents.
-     * @param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app registration configured
-     * on a Work IQ knowledge source. Used for on-behalf-of authentication to the Work IQ API.
      * @param listener The listener that receives events and lifecycle notifications.
      */
     @Generated
     public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization,
-        String queryWorkIQSourceAuthorization, ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {
+        ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {
         RequestOptions requestOptions = new RequestOptions();
         if (querySourceAuthorization != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
                 querySourceAuthorization);
-        }
-        if (queryWorkIQSourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization"),
-                queryWorkIQSourceAuthorization);
         }
         ServerSentEventStreams.listen(
             hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
