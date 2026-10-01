@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
-import generate_scopred_pom as generator
+import generate_scoped_pom as generator
 from pom_helper import Project, maven_xml_namespace
 
 
@@ -131,7 +131,7 @@ class GenerateBuildPomTests(unittest.TestCase):
     def test_cli_accepts_pipeline_boolean_values(self):
         for from_source in ['true', 'false', 'True', 'False']:
             with self.subTest(from_source=from_source):
-                with patch('sys.argv', ['generate_scopred_pom.py', '--al', 'com.azure:requested',
+                with patch('sys.argv', ['generate_scoped_pom.py', '--al', 'com.azure:requested',
                                         '--from-source', from_source]):
                     with contextlib.redirect_stdout(self.output):
                         generator.main()

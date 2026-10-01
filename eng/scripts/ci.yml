@@ -38,5 +38,5 @@ extends:
         displayName: 'Use Python $(PythonVersion)'
         inputs:
           versionSpec: $(PythonVersion)
-      - script: python -m unittest discover -s eng/scripts -p test_generate_scopred_pom.py -v
+      - script: python -m unittest discover -s eng/scripts -p test_generate_scoped_pom.py -v
         displayName: Test aggregate build POM generation

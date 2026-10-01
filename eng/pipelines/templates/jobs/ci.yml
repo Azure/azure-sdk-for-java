@@ -139,7 +139,7 @@ jobs:
       - task: PythonScript@0
         displayName: Generate build POM and directories for sparse checkout
         inputs:
-          scriptPath: eng/scripts/generate_scopred_pom.py
+          scriptPath: eng/scripts/generate_scoped_pom.py
           arguments: '--artifacts-list $(ArtifactsList) --from-source false --additional-modules-list $(AdditionalModulesList)'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
@@ -349,7 +349,7 @@ jobs:
       - task: PythonScript@0
         displayName: Generate build POM for analysis and cleanup
         inputs:
-          scriptPath: eng/scripts/generate_scopred_pom.py
+          scriptPath: eng/scripts/generate_scoped_pom.py
           arguments: '--artifacts-list $(ArtifactsList) --from-source false --additional-modules-list $(AdditionalModulesList)'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 

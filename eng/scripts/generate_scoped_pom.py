@@ -17,10 +17,10 @@
 # 3. ServiceDirectories - A list of ServiceDirectories.
 #
 # For example: To create an aggregate POM for Azure Storage
-#    python eng/scripts/generate_scopred_pom.py --al com.azure:azure-storage-blob,com.azure:azure-storage-common,...
+#    python eng/scripts/generate_scoped_pom.py --al com.azure:azure-storage-blob,com.azure:azure-storage-common,...
 #
 # For example: To create an aggregate POM without including dependent projects
-#    python eng/scripts/generate_scopred_pom.py --al com.azure:azure-core --from-source false
+#    python eng/scripts/generate_scoped_pom.py --al com.azure:azure-core --from-source false
 #
 # The script must be run at the root of azure-sdk-for-java.
 

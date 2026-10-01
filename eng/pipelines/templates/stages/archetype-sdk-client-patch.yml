@@ -87,7 +87,7 @@ extends:
             - task: PythonScript@0
               displayName: 'Generate build POM and directories for sparse checkout'
               inputs:
-                scriptPath: 'eng/scripts/generate_scopred_pom.py'
+                scriptPath: 'eng/scripts/generate_scoped_pom.py'
                 arguments: '--artifacts-list $(ArtifactsList) --from-source false --additional-modules-list $(AdditionalModulesList)'
                 workingDirectory: '$(System.DefaultWorkingDirectory)'
 
@@ -110,7 +110,7 @@ extends:
             # Save the Package Properties
             #
             # ServiceDirectories variable is a plain, comma separated list of ServiceDirectories that is output by the
-            # generate_scopred_pom script above.
+            # generate_scoped_pom script above.
             - pwsh: |
                 $ServiceDirs = '$(ServiceDirectories)'
                 $ArtifactList = @('${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}' `
@@ -245,7 +245,7 @@ extends:
             - task: PythonScript@0
               displayName: 'Generate build POM and directories for sparse checkout'
               inputs:
-                scriptPath: 'eng/scripts/generate_scopred_pom.py'
+                scriptPath: 'eng/scripts/generate_scoped_pom.py'
                 arguments: '--artifacts-list $(ArtifactsList) --from-source false --additional-modules-list $(AdditionalModulesList)'
                 workingDirectory: '$(System.DefaultWorkingDirectory)'
 

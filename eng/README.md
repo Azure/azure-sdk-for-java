@@ -12,11 +12,11 @@ All the tools/utilities used in Microsoft Azure Java SDK's build config are defi
 
 ## Aggregate Build POMs
 
-[generate_scopred_pom.py](scripts/generate_scopred_pom.py) writes `ClientPom.xml` at the repository root for
+[generate_scoped_pom.py](scripts/generate_scoped_pom.py) writes `ClientPom.xml` at the repository root for
 both regular and source builds. Run it from the repository root:
 
 ```powershell
-python eng/scripts/generate_scopred_pom.py --artifacts-list com.azure:azure-core --from-source false
+python eng/scripts/generate_scoped_pom.py --artifacts-list com.azure:azure-core --from-source false
 mvn -f ClientPom.xml install -DskipTests
 ```
 
@@ -32,7 +32,7 @@ selection, not a separate build/test path.
 Run the generator regression tests with:
 
 ```powershell
-python -m unittest discover -s eng/scripts -p test_generate_scopred_pom.py -v
+python -m unittest discover -s eng/scripts -p test_generate_scoped_pom.py -v
 ```
 
 ## PR Documentation Validation
