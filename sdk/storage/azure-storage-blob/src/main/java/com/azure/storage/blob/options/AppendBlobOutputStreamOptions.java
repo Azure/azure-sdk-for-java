@@ -6,12 +6,13 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.ValidatableContent;
 
 /**
  * Extended options that may be passed when opening an output stream to an append blob.
  */
 @Fluent
-public final class AppendBlobOutputStreamOptions {
+public final class AppendBlobOutputStreamOptions implements ValidatableContent {
     private AppendBlobRequestConditions requestConditions;
     private ContentValidationAlgorithm contentValidationAlgorithm;
 
@@ -46,6 +47,7 @@ public final class AppendBlobOutputStreamOptions {
      *
      * @return The transfer validation checksum algorithm.
      */
+    @Override
     public ContentValidationAlgorithm getContentValidationAlgorithm() {
         return contentValidationAlgorithm;
     }
@@ -56,6 +58,7 @@ public final class AppendBlobOutputStreamOptions {
      * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
+    @Override
     public AppendBlobOutputStreamOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;
