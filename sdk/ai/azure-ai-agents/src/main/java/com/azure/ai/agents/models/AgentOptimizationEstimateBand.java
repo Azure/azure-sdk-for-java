@@ -12,26 +12,26 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * A low/typical/ceiling range for an estimated quantity. Expected values may be fractional, including estimated
- * model-call counts.
+ * A low/typical/ceiling range for an estimated quantity. Cost values apply average per-call usage assumptions to each
+ * call-count scenario. Expected values may be fractional, including estimated model-call counts.
  */
 @Immutable
 public final class AgentOptimizationEstimateBand implements JsonSerializable<AgentOptimizationEstimateBand> {
 
     /*
-     * Lower bound.
+     * Lower estimate based on model calls required for every run.
      */
     @Generated
     private final double low;
 
     /*
-     * Central estimate.
+     * Expected estimate based on model calls consumed by a typical run.
      */
     @Generated
     private final double typical;
 
     /*
-     * Upper bound.
+     * Upper bound calculated from the maximum number of model calls.
      */
     @Generated
     private final double ceiling;
@@ -51,7 +51,7 @@ public final class AgentOptimizationEstimateBand implements JsonSerializable<Age
     }
 
     /**
-     * Get the low property: Lower bound.
+     * Get the low property: Lower estimate based on model calls required for every run.
      *
      * @return the low value.
      */
@@ -61,7 +61,7 @@ public final class AgentOptimizationEstimateBand implements JsonSerializable<Age
     }
 
     /**
-     * Get the typical property: Central estimate.
+     * Get the typical property: Expected estimate based on model calls consumed by a typical run.
      *
      * @return the typical value.
      */
@@ -71,7 +71,7 @@ public final class AgentOptimizationEstimateBand implements JsonSerializable<Age
     }
 
     /**
-     * Get the ceiling property: Upper bound.
+     * Get the ceiling property: Upper bound calculated from the maximum number of model calls.
      *
      * @return the ceiling value.
      */
