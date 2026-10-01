@@ -1,14 +1,180 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (2026-10-01)
 
-### Features Added
+- Azure Resource Manager ElasticSan client library for Java. This package contains Microsoft Azure SDK for ElasticSan Management SDK. Elastic SAN is a fully integrated solution that simplifies deploying, scaling, managing, and configuring a storage area network (SAN). It also offers built-in cloud capabilities like high availability. Elastic SAN works with many types of compute resources, such as Azure Virtual Machines, Azure VMware Solution, and Azure Kubernetes Service. Package api-version 2026-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ManagedByInfo` was removed
 
-### Other Changes
+#### `models.VolumeUpdate` was modified
+
+* `withManagedBy(models.ManagedByInfo)` was removed
+* `models.ManagedByInfo managedBy()` -> `java.util.List managedBy()`
+
+#### `models.VolumeGroups` was modified
+
+* `listByElasticSan(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ElasticSan` was modified
+
+* `long baseSizeTiB()` -> `java.lang.Long baseSizeTiB()`
+* `long extendedCapacitySizeTiB()` -> `java.lang.Long extendedCapacitySizeTiB()`
+
+#### `models.Volume` was modified
+
+* `models.ManagedByInfo managedBy()` -> `java.util.List managedBy()`
+
+#### `models.Volumes` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,com.azure.core.util.Context)` was removed
+* `listByVolumeGroup(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Volume$Update` was modified
+
+* `withManagedBy(models.ManagedByInfo)` was removed
+
+#### `models.Volume$Definition` was modified
+
+* `withManagedBy(models.ManagedByInfo)` was removed
+
+#### `models.ElasticSan$Definition` was modified
+
+* `withBaseSizeTiB(long)` was removed
+* `withExtendedCapacitySizeTiB(long)` was removed
+
+### Features Added
+
+* `models.PolicyState` was added
+
+* `models.ElasticSanVersion` was added
+
+* `models.QualityOfService` was added
+
+* `models.SnapshotAccessState` was added
+
+* `models.XMsAccessSoftDeletedResources` was added
+
+* `models.SkuZoneDetails` was added
+
+* `models.DeleteRetentionPolicy` was added
+
+* `models.ManagedByResources` was added
+
+* `models.DeleteType` was added
+
+* `models.ResourceProviders` was added
+
+#### `models.ElasticSanUpdate` was modified
+
+* `totalIops()` was added
+* `withTotalSizeTiB(java.lang.Long)` was added
+* `withTotalIops(java.lang.Long)` was added
+* `totalMBps()` was added
+* `totalSizeTiB()` was added
+* `withTotalMBps(java.lang.Long)` was added
+
+#### `models.StorageTargetType` was modified
+
+* `DIRECT_ATTACH` was added
+
+#### `models.VolumeUpdate` was modified
+
+* `withManagedBy(java.util.List)` was added
+
+#### `models.VolumeGroup$Update` was modified
+
+* `withDeleteRetentionPolicy(models.DeleteRetentionPolicy)` was added
+* `withReservedMBps(java.lang.Integer)` was added
+* `withReservedIops(java.lang.Integer)` was added
+
+#### `models.VolumeGroups` was modified
+
+* `listByElasticSan(java.lang.String,java.lang.String,models.XMsAccessSoftDeletedResources,com.azure.core.util.Context)` was added
+
+#### `models.ElasticSan` was modified
+
+* `totalReservedMBps()` was added
+* `totalReservedIops()` was added
+* `version()` was added
+* `usedCapacityGiB()` was added
+
+#### `models.VolumeGroupUpdate` was modified
+
+* `withReservedIops(java.lang.Integer)` was added
+* `withDeleteRetentionPolicy(models.DeleteRetentionPolicy)` was added
+* `reservedMBps()` was added
+* `withReservedMBps(java.lang.Integer)` was added
+* `reservedIops()` was added
+* `deleteRetentionPolicy()` was added
+
+#### `models.SkuLocationInfo` was modified
+
+* `zoneDetails()` was added
+
+#### `models.Volumes` was modified
+
+* `listByVolumeGroup(java.lang.String,java.lang.String,java.lang.String,models.XMsAccessSoftDeletedResources,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,models.DeleteType,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,models.DeleteType,com.azure.core.util.Context)` was added
+
+#### `ElasticSanManager` was modified
+
+* `resourceProviders()` was added
+
+#### `models.ProvisioningStates` was modified
+
+* `SOFT_DELETING` was added
+
+#### `models.Volume$Update` was modified
+
+* `withManagedBy(java.util.List)` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withManagedBy(java.util.List)` was added
+
+#### `models.ElasticSan$Definition` was modified
+
+* `withExtendedCapacitySizeTiB(java.lang.Long)` was added
+* `withTotalSizeTiB(java.lang.Long)` was added
+* `withVersion(models.ElasticSanVersion)` was added
+* `withTotalIops(java.lang.Long)` was added
+* `withBaseSizeTiB(java.lang.Long)` was added
+* `withTotalMBps(java.lang.Long)` was added
+
+#### `models.ElasticSan$Update` was modified
+
+* `withTotalSizeTiB(java.lang.Long)` was added
+* `withTotalIops(java.lang.Long)` was added
+* `withTotalMBps(java.lang.Long)` was added
+
+#### `models.VolumeGroup$Definition` was modified
+
+* `withReservedIops(java.lang.Integer)` was added
+* `withQualityOfService(models.QualityOfService)` was added
+* `withEncryptionInTransit(java.lang.Boolean)` was added
+* `withDeleteRetentionPolicy(models.DeleteRetentionPolicy)` was added
+* `withReservedMBps(java.lang.Integer)` was added
+
+#### `models.VolumeGroup` was modified
+
+* `deleteRetentionPolicy()` was added
+* `qualityOfService()` was added
+* `reservedIops()` was added
+* `encryptionInTransit()` was added
+* `reservedMBps()` was added
+
+#### `models.Snapshot` was modified
+
+* `completionPercent()` was added
+* `snapshotAccessState()` was added
+
+#### `models.SkuName` was modified
+
+* `ELASTIC_SAN_LRS` was added
 
 ## 1.2.0 (2026-02-06)
 
