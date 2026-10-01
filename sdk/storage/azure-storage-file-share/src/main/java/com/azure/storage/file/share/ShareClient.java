@@ -182,6 +182,19 @@ public class ShareClient {
     }
 
     /**
+     * Creates a directory client that addresses a directory by its file ID.
+     *
+     * @param fileId The file ID of the directory.
+     * @return A client for interacting with the directory by ID.
+     * @throws IllegalArgumentException If {@code fileId} is null or blank.
+     */
+    public ShareDirectoryClient getDirectoryClientByFileId(String fileId) {
+        ShareErrors.validateFileId(fileId);
+        return new ShareDirectoryClient(azureFileStorageClient, shareName, "", fileId, snapshot, accountName,
+            serviceVersion, sasToken);
+    }
+
+    /**
      * Constructs a {@link ShareFileClient} that interacts with the specified file.
      *
      * <p>If the file doesn't exist in the share {@link ShareFileClient#create(long)} ) create} in the client will

@@ -42,10 +42,11 @@ public class ShareStorageCustomization extends Customization {
                     + "@see ShareFileItem#getFileType()")));
 
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
-        reusePropertyHeaders(customization.getRawEditor(), "Files");
+        reusePropertyHeaders(customization.getRawEditor(), "Directories", logger);
+        reusePropertyHeaders(customization.getRawEditor(), "Files", logger);
     }
 
-    private static void reusePropertyHeaders(Editor editor, String operationGroup) {
+    private static void reusePropertyHeaders(Editor editor, String operationGroup, Logger logger) {
         String implementationPath = "src/main/java/com/azure/storage/file/share/implementation/";
         String headersName = operationGroup + "GetPropertiesHeaders";
         String fileIdHeadersName = operationGroup + "GetPropertiesByFileIdHeaders";
@@ -58,15 +59,16 @@ public class ShareStorageCustomization extends Customization {
         if (headers == null || fileIdHeaders == null || client == null) {
             throw new IllegalStateException("Missing generated sources for " + operationGroup + " property headers.");
         }
+        if (!client.contains(fileIdHeadersName)) {
+            throw new IllegalStateException(clientPath + " no longer references " + fileIdHeadersName + ".");
+        }
 
         // Compare the entire model, including parsing, before discarding the operation-specific copy.
         if (!headers.replace("\r\n", "\n")
             .equals(fileIdHeaders.replace(fileIdHeadersName, headersName).replace("\r\n", "\n"))) {
-            throw new IllegalStateException(fileIdHeadersName + " differs from " + headersName
-                + ". Review the response headers before reusing the existing model.");
-        }
-        if (!client.contains(fileIdHeadersName)) {
-            throw new IllegalStateException(clientPath + " no longer references " + fileIdHeadersName + ".");
+            logger.warn("{} differs from {}; preserving both generated response header models.",
+                fileIdHeadersName, headersName);
+            return;
         }
 
         editor.replaceFile(clientPath, client.replace(fileIdHeadersName, headersName));
