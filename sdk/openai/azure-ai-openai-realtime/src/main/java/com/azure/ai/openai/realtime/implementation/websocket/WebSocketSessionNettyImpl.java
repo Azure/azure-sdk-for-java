@@ -35,7 +35,6 @@ import io.netty.handler.timeout.IdleStateHandler;
 
 import javax.net.ssl.SSLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
