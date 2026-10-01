@@ -1,5 +1,5 @@
 ---
-applyTo: "sdk/**/README.md,sdk/**/CHANGELOG.md,sdk/**/TROUBLESHOOTING.md,sdk/**/src/samples/**/*.java,sdk/**/src/main/java/**/*.java"
+applyTo: "sdk/**/README.md,sdk/**/CHANGELOG.md,sdk/**/TROUBLESHOOTING.md,sdk/**/src/samples/**/*.java,sdk/**/src/main/java/**/*.java,sdk/**/customizations/**/*.java"
 description: "Review Azure Java SDK JavaDoc, README, CHANGELOG, samples, and generated snippet references for user-visible inaccuracies."
 ---
 

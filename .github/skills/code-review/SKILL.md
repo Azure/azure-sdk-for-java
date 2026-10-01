@@ -3,6 +3,8 @@ name: code-review
 description: "Review pull requests in Azure SDK for Java. USE FOR: GitHub Copilot code review; CCR; review PR; review diff; find introduced SDK, Spring, build, documentation, or test regressions. DO NOT USE FOR: implementing fixes; running CI; releases; APIView feedback."
 ---
 
+<!-- cspell:ignore autopr -->
+
 # Azure SDK for Java code review
 
 Use this skill for broad pull request reviews. A narrower assigned reviewer

@@ -1,5 +1,5 @@
 ---
-applyTo: "sdk/**/src/test/**,sdk/**/src/main/java/**/*.java"
+applyTo: "sdk/**/src/test/**,sdk/**/src/main/java/**/*.java,sdk/**/customizations/**/*.java"
 description: "Review SDK test changes and the coverage implications of changed Java behavior."
 ---
 
