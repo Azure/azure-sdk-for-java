@@ -650,8 +650,8 @@ public class ShareDirectoryClient {
             : () -> this.azureFileStorageClient.getDirectories()
                 .getPropertiesByFileIdWithResponse(shareName, fileId, snapshot, null, null, finalContext);
 
-        return ModelHelper.mapShareDirectoryPropertiesResponse(
-            sendRequest(operation, timeout, ShareStorageException.class));
+        return ModelHelper
+            .mapShareDirectoryPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
 
     /**
