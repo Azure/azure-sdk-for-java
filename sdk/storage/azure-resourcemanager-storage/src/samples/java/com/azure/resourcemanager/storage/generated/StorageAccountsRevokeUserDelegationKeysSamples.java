@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class StorageAccountsRevokeUserDelegationKeysSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountRevokeUserDelegationKeys.json
+     * x-ms-original-file: 2026-09-01/StorageAccountRevokeUserDelegationKeys.json
      */
     /**
      * Sample code: StorageAccountRevokeUserDelegationKeys.

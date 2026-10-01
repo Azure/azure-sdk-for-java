@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.models.BlobInventoryPolicyName;
  */
 public final class BlobInventoryPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountGetBlobInventoryPolicy.json
+     * x-ms-original-file: 2026-09-01/StorageAccountGetBlobInventoryPolicy.json
      */
     /**
      * Sample code: StorageAccountGetBlobInventoryPolicy.

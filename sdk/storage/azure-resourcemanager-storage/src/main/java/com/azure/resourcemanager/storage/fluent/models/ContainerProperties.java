@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.storage.models.BlobAccessPointConfigurationConnection;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyProperties;
 import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
 import com.azure.resourcemanager.storage.models.LeaseDuration;
@@ -125,6 +126,13 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
      * Enable NFSv3 all squash on blob container.
      */
     private Boolean enableNfsV3AllSquash;
+
+    /*
+     * Configuration that attaches this container to a Blob Access Point. If set, the container is a read-only virtual
+     * container whose read/list requests are forwarded to the connected backing data store. Cannot be changed, removed,
+     * or added after container creation.
+     */
+    private BlobAccessPointConfigurationConnection blobAccessPointConfiguration;
 
     /**
      * Creates an instance of ContainerProperties class.
@@ -393,6 +401,31 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
     }
 
     /**
+     * Get the blobAccessPointConfiguration property: Configuration that attaches this container to a Blob Access Point.
+     * If set, the container is a read-only virtual container whose read/list requests are forwarded to the connected
+     * backing data store. Cannot be changed, removed, or added after container creation.
+     * 
+     * @return the blobAccessPointConfiguration value.
+     */
+    public BlobAccessPointConfigurationConnection blobAccessPointConfiguration() {
+        return this.blobAccessPointConfiguration;
+    }
+
+    /**
+     * Set the blobAccessPointConfiguration property: Configuration that attaches this container to a Blob Access Point.
+     * If set, the container is a read-only virtual container whose read/list requests are forwarded to the connected
+     * backing data store. Cannot be changed, removed, or added after container creation.
+     * 
+     * @param blobAccessPointConfiguration the blobAccessPointConfiguration value to set.
+     * @return the ContainerProperties object itself.
+     */
+    public ContainerProperties
+        withBlobAccessPointConfiguration(BlobAccessPointConfigurationConnection blobAccessPointConfiguration) {
+        this.blobAccessPointConfiguration = blobAccessPointConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -406,6 +439,9 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
         }
         if (immutableStorageWithVersioning() != null) {
             immutableStorageWithVersioning().validate();
+        }
+        if (blobAccessPointConfiguration() != null) {
+            blobAccessPointConfiguration().validate();
         }
     }
 
@@ -422,6 +458,7 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
         jsonWriter.writeJsonField("immutableStorageWithVersioning", this.immutableStorageWithVersioning);
         jsonWriter.writeBooleanField("enableNfsV3RootSquash", this.enableNfsV3RootSquash);
         jsonWriter.writeBooleanField("enableNfsV3AllSquash", this.enableNfsV3AllSquash);
+        jsonWriter.writeJsonField("blobAccessPointConfiguration", this.blobAccessPointConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -483,6 +520,9 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
                     deserializedContainerProperties.enableNfsV3RootSquash = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableNfsV3AllSquash".equals(fieldName)) {
                     deserializedContainerProperties.enableNfsV3AllSquash = reader.getNullable(JsonReader::getBoolean);
+                } else if ("blobAccessPointConfiguration".equals(fieldName)) {
+                    deserializedContainerProperties.blobAccessPointConfiguration
+                        = BlobAccessPointConfigurationConnection.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

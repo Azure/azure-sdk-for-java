@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class ContextCacheContainersListByContextCacheSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageContextCacheContainerCRUD/ContextCacheContainers_ListByContextCache.json
+     * x-ms-original-file: 2026-09-01/StorageContextCacheContainerCRUD/ContextCacheContainers_ListByContextCache.json
      */
     /**
      * Sample code: List Context Cache Containers in a Context Cache.

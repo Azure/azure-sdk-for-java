@@ -13,7 +13,7 @@ import com.azure.resourcemanager.storage.models.ContextCacheContainerProperties;
  */
 public final class ContextCacheContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageContextCacheContainerCRUD/ContextCacheContainers_CreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01/StorageContextCacheContainerCRUD/ContextCacheContainers_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a Context Cache Container.

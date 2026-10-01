@@ -13,7 +13,7 @@ import com.azure.resourcemanager.storage.models.EncryptionScopeSource;
  */
 public final class EncryptionScopesPatchSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountPatchEncryptionScope.json
+     * x-ms-original-file: 2026-09-01/StorageAccountPatchEncryptionScope.json
      */
     /**
      * Sample code: StorageAccountPatchEncryptionScope.
