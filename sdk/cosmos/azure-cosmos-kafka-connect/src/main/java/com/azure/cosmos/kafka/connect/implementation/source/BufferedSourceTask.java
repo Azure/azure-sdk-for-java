@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class BufferedSourceTask extends SourceTask {
     private static final long POLL_WAIT_MS = 1_000;
-    private static final long THREAD_SHUTDOWN_WAIT_MS = 1_000;
 
     private final BlockingQueue<Object> pollResults = new SynchronousQueue<>();
     private volatile boolean stopping;
@@ -59,9 +58,15 @@ public abstract class BufferedSourceTask extends SourceTask {
         } finally {
             if (this.pollingThread != null) {
                 this.pollingThread.interrupt();
-                try {
-                    this.pollingThread.join(THREAD_SHUTDOWN_WAIT_MS);
-                } catch (InterruptedException error) {
+                boolean interrupted = false;
+                while (this.pollingThread.isAlive()) {
+                    try {
+                        this.pollingThread.join();
+                    } catch (InterruptedException error) {
+                        interrupted = true;
+                    }
+                }
+                if (interrupted) {
                     Thread.currentThread().interrupt();
                 }
                 this.pollingThread = null;
@@ -71,6 +76,9 @@ public abstract class BufferedSourceTask extends SourceTask {
 
     protected abstract List<SourceRecord> pollTask();
 
+    /**
+     * Releases resources used by {@link #pollTask()} so an in-flight poll can exit.
+     */
     protected abstract void stopTask();
 
     private synchronized void startPollingThread() {
