@@ -1,14 +1,29 @@
 # Release History
 
-## 2.56.0-beta.1 (Unreleased)
+## 2.56.0 (2026-10-01)
 
-### Features Added
+- Package api-version 2026-05-15.
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ManagedHsmSkuName` was removed
 
-### Other Changes
+#### `models.ManagedHsmSku` was modified
+
+* `withName(models.ManagedHsmSkuName)` was removed
+* `models.ManagedHsmSkuName name()` -> `models.ManagedHsmSkuNameV2 name()`
+
+### Features Added
+
+* `models.ManagedHsmSkuNameV2` was added
+
+#### `models.JsonWebKeyType` was modified
+
+* `OCT_HSM` was added
+
+#### `models.ManagedHsmSku` was modified
+
+* `withName(models.ManagedHsmSkuNameV2)` was added
 
 ## 2.55.4 (2026-08-18)
 
