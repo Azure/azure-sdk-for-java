@@ -4,6 +4,9 @@
 
 ### Features Added
 - Added support for service version 2026-10-06.
+- Added the `ValidatableContent` interface, implemented by the various upload and download option types that support
+  transfer content validation. This allows `ContentValidationAlgorithm` to be configured and inspected agnostically
+  across many different upload and download operations.
 
 ### Bugs Fixed
 - Fixed an async retry hang that could occur when draining a retryable response body after the response was closed.
