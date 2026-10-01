@@ -29,8 +29,9 @@ public final class PageBlobUploadPagesOptions implements ValidatableContent {
      * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
      * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      * are 0-511, 512-1023, etc.
-     * @param body The data to write to the page. Note that this {@code BinaryData} must have defined length
-     * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
+     * @param body The data to write to the page. This {@code BinaryData} must have a defined length equal to the
+     * specified page range and must be replayable if retries are enabled (the default), see
+     * {@link BinaryData#isReplayable()}.
      * @throws NullPointerException If {@code pageRange} or {@code body} is null, or if {@code body} does not have a
      * defined length.
      */

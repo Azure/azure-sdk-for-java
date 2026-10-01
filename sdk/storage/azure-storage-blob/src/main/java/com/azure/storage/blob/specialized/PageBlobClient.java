@@ -573,6 +573,24 @@ public final class PageBlobClient extends BlobClientBase {
      * Writes one or more pages to the page blob with options.
      * <p>Note that the data passed must be replayable if retries are enabled (the default),
      * see {@link BinaryData#isReplayable()}.
+     * The length of the data must match the length of the specified page range.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageBlobUploadPagesOptions-Duration-Context -->
+     * <pre>
+     * PageRange pageRange = new PageRange&#40;&#41;
+     *     .setStart&#40;0&#41;
+     *     .setEnd&#40;511&#41;;
+     * BinaryData data = BinaryData.fromBytes&#40;new byte[512]&#41;;
+     * PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions&#40;pageRange, data&#41;
+     *     .setContentValidationAlgorithm&#40;ContentValidationAlgorithm.CRC64&#41;;
+     * Context context = new Context&#40;key, value&#41;;
+     *
+     * PageBlobItem item = client.uploadPagesWithResponse&#40;options, timeout, context&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Uploaded page blob with sequence number %s%n&quot;, item.getBlobSequenceNumber&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobClient.uploadPagesWithResponse#PageBlobUploadPagesOptions-Duration-Context -->
      *
      * @param options {@link PageBlobUploadPagesOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

@@ -523,6 +523,24 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * Writes one or more pages to the page blob with options.
      * <p>Note that the data passed must be replayable if retries are enabled (the default),
      * see {@link BinaryData#isReplayable()}.
+     * The length of the data must match the length of the specified page range.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageBlobUploadPagesOptions -->
+     * <pre>
+     * PageRange pageRange = new PageRange&#40;&#41;
+     *     .setStart&#40;0&#41;
+     *     .setEnd&#40;511&#41;;
+     * BinaryData data = BinaryData.fromBytes&#40;new byte[512]&#41;;
+     * PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions&#40;pageRange, data&#41;
+     *     .setContentValidationAlgorithm&#40;ContentValidationAlgorithm.CRC64&#41;;
+     *
+     * client.uploadPagesWithResponse&#40;options&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Uploaded page blob with sequence number %s%n&quot;,
+     *         response.getValue&#40;&#41;.getBlobSequenceNumber&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageBlobUploadPagesOptions -->
      *
      * @param options {@link PageBlobUploadPagesOptions}
      * @return A reactive response containing the information of the uploaded pages.
@@ -536,23 +554,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
-    }
-
-    Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body, byte[] contentMd5,
-        PageBlobRequestConditions pageBlobRequestConditions, Context context) {
-        // Prevents revapi visibility increased error
-        if (pageRange == null) {
-            return monoError(LOGGER, new NullPointerException("'pageRange' cannot be null."));
-        }
-        if (body == null) {
-            return monoError(LOGGER, new NullPointerException("'body' cannot be null."));
-        }
-        long length = pageRange.getEnd() - pageRange.getStart() + 1;
-        return BinaryData.fromFlux(body, length, false)
-            .flatMap(binaryData -> uploadPagesWithResponseInternal(
-                new PageBlobUploadPagesOptions(pageRange, binaryData).setContentMd5(contentMd5)
-                    .setRequestConditions(pageBlobRequestConditions),
-                context));
     }
 
     Mono<Response<PageBlobItem>> uploadPagesWithResponseInternal(PageBlobUploadPagesOptions options, Context context) {
@@ -586,6 +587,23 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                     hd.getXMsEncryptionScope(), hd.getXMsBlobSequenceNumber(), null, hd.getXMsContentCrc64());
                 return new SimpleResponse<>(rb, item);
             });
+    }
+
+    Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body, byte[] contentMd5,
+        PageBlobRequestConditions pageBlobRequestConditions, Context context) {
+        // Prevents revapi visibility increased error
+        if (pageRange == null) {
+            return monoError(LOGGER, new NullPointerException("'pageRange' cannot be null."));
+        }
+        if (body == null) {
+            return monoError(LOGGER, new NullPointerException("'body' cannot be null."));
+        }
+        long length = pageRange.getEnd() - pageRange.getStart() + 1;
+        return BinaryData.fromFlux(body, length, false)
+            .flatMap(binaryData -> uploadPagesWithResponseInternal(
+                new PageBlobUploadPagesOptions(pageRange, binaryData).setContentMd5(contentMd5)
+                    .setRequestConditions(pageBlobRequestConditions),
+                context));
     }
 
     /**

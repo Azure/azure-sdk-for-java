@@ -524,8 +524,6 @@ public final class AppendBlobClient extends BlobClientBase {
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
 
-        // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service versions
-        // support up to 4MB
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, getMaxAppendBlockBytes(), true);
 
         Mono<Response<AppendBlobItem>> response = BinaryData.fromFlux(fbb, length, false)
@@ -539,6 +537,23 @@ public final class AppendBlobClient extends BlobClientBase {
      * Commits a new block of data to the end of the existing append blob with options.
      * <p>Note that the data passed must be replayable if retries are enabled (the default),
      * see {@link BinaryData#isReplayable()}.
+     * <p>For service versions 2022-11-02 and later, the maximum block size is 100 MB. For earlier service versions,
+     * the maximum block size is 4 MB. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#AppendBlobAppendBlockOptions-Duration-Context -->
+     * <pre>
+     * BinaryData data = BinaryData.fromString&#40;&quot;data&quot;&#41;;
+     * AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions&#40;data&#41;
+     *     .setContentValidationAlgorithm&#40;ContentValidationAlgorithm.CRC64&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * AppendBlobItem item = client.appendBlockWithResponse&#40;options, timeout, context&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;, item.getBlobCommittedBlockCount&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#AppendBlobAppendBlockOptions-Duration-Context -->
      *
      * @param options {@link AppendBlobAppendBlockOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
