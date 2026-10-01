@@ -69,7 +69,7 @@ class DataGenerationJobSerializationTests {
             assertEquals("job", job.getName());
             assertEquals(JobStatus.SUCCEEDED, job.getStatus());
             assertEquals(DataGenerationJobScenario.EVALUATION, job.getScenario());
-            assertEquals(3, job.getResult().getGeneratedSamples());
+            assertEquals(3, job.getResult().getGeneratedSampleCount());
             DatasetDataGenerationJobOutput output
                 = (DatasetDataGenerationJobOutput) job.getResult().getOutputs().get(0);
             assertEquals("dataset-id", output.getId());
