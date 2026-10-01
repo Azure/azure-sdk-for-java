@@ -29,6 +29,11 @@ public final class BackupForPatch implements JsonSerializable<BackupForPatch> {
     private GeographicallyRedundantBackup geoRedundantBackup;
 
     /*
+     * Indicates if the server is configured to create immutable backups.
+     */
+    private ImmutableBackup immutableBackup;
+
+    /*
      * Earliest restore point time (ISO8601 format) for a server.
      */
     private OffsetDateTime earliestRestoreDate;
@@ -70,6 +75,26 @@ public final class BackupForPatch implements JsonSerializable<BackupForPatch> {
     }
 
     /**
+     * Get the immutableBackup property: Indicates if the server is configured to create immutable backups.
+     * 
+     * @return the immutableBackup value.
+     */
+    public ImmutableBackup immutableBackup() {
+        return this.immutableBackup;
+    }
+
+    /**
+     * Set the immutableBackup property: Indicates if the server is configured to create immutable backups.
+     * 
+     * @param immutableBackup the immutableBackup value to set.
+     * @return the BackupForPatch object itself.
+     */
+    public BackupForPatch withImmutableBackup(ImmutableBackup immutableBackup) {
+        this.immutableBackup = immutableBackup;
+        return this;
+    }
+
+    /**
      * Get the earliestRestoreDate property: Earliest restore point time (ISO8601 format) for a server.
      * 
      * @return the earliestRestoreDate value.
@@ -85,6 +110,8 @@ public final class BackupForPatch implements JsonSerializable<BackupForPatch> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("backupRetentionDays", this.backupRetentionDays);
+        jsonWriter.writeStringField("immutableBackup",
+            this.immutableBackup == null ? null : this.immutableBackup.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -108,6 +135,8 @@ public final class BackupForPatch implements JsonSerializable<BackupForPatch> {
                 } else if ("geoRedundantBackup".equals(fieldName)) {
                     deserializedBackupForPatch.geoRedundantBackup
                         = GeographicallyRedundantBackup.fromString(reader.getString());
+                } else if ("immutableBackup".equals(fieldName)) {
+                    deserializedBackupForPatch.immutableBackup = ImmutableBackup.fromString(reader.getString());
                 } else if ("earliestRestoreDate".equals(fieldName)) {
                     deserializedBackupForPatch.earliestRestoreDate = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
