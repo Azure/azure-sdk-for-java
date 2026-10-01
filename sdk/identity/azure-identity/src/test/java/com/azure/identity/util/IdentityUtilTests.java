@@ -237,18 +237,4 @@ public class IdentityUtilTests {
         }
     }
 
-    @Test
-    public void testShouldProbeImdsWhenChainedAndNotImdsReturnsFalse() {
-        IdentityClientOptions options = new IdentityClientOptions()
-            .setConfiguration(TestUtils.createTestConfiguration(new TestConfigurationSource()))
-            .setChained(true);
-        try (
-            MockedStatic<ManagedIdentityApplication> mockedApp = Mockito.mockStatic(ManagedIdentityApplication.class)) {
-            mockedApp.when(ManagedIdentityApplication::getManagedIdentitySource)
-                .thenReturn(ManagedIdentitySourceType.APP_SERVICE);
-
-            assertFalse(IdentityUtil.shouldProbeImds(options));
-        }
-    }
-
 }

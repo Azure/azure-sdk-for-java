@@ -12,7 +12,6 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.IdentitySyncClient;
-import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
@@ -122,8 +121,7 @@ public class ClientAssertionCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception e) {
-            IdentityUtil.rethrowIfShutdownSignal(e);
+        } catch (Exception ignored) {
         }
 
         try {
@@ -132,8 +130,6 @@ public class ClientAssertionCredential implements TokenCredential {
             return token;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
-            // A cancellation was logged at verbose level above and must not also be logged as an error.
-            IdentityUtil.rethrowIfShutdownSignal(e);
             // wrap the exception in a RuntimeException to avoid checked exception problems.
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }

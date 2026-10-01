@@ -8,7 +8,6 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.IdentityUtil;
@@ -49,8 +48,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class IdentitySyncClient extends IdentityClientBase {
-    private static final String INTERRUPTED_MESSAGE = "The token request was interrupted before it completed.";
-    private static final String SHUTDOWN_MESSAGE = "The token request was cancelled because the JVM is shutting down.";
 
     private final SynchronousAccessor<PublicClientApplication> publicClientApplicationAccessor;
     private final SynchronousAccessor<PublicClientApplication> publicClientApplicationAccessorWithCae;
@@ -135,8 +132,8 @@ public class IdentitySyncClient extends IdentityClientBase {
                 .createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(getPipeline())));
         }
         try {
-            return new MsalToken(awaitTokenResult(confidentialClient.acquireToken(builder.build())));
-        } catch (ExecutionException e) {
+            return new MsalToken(confidentialClient.acquireToken(builder.build()).get());
+        } catch (InterruptedException | ExecutionException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
@@ -173,7 +170,7 @@ public class IdentitySyncClient extends IdentityClientBase {
 
         try {
             IAuthenticationResult authenticationResult
-                = awaitTokenResult(confidentialClientApplication.acquireTokenSilently(parametersBuilder.build()));
+                = confidentialClientApplication.acquireTokenSilently(parametersBuilder.build()).get();
             AccessToken accessToken = new MsalToken(authenticationResult);
             if (OffsetDateTime.now().isBefore(accessToken.getExpiresAt().minus(REFRESH_OFFSET))) {
                 return accessToken;
@@ -182,9 +179,9 @@ public class IdentitySyncClient extends IdentityClientBase {
             }
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage(), e));
-        } catch (ExecutionException e) {
+        } catch (ExecutionException | InterruptedException e) {
             // Cache misses should not throw an exception, but should log.
-            if (e.getMessage() != null && e.getMessage().contains("Token not found in the cache")) {
+            if (e.getMessage().contains("Token not found in the cache")) {
                 LOGGER.verbose("Token not found in the MSAL cache.");
                 return null;
             } else {
@@ -230,12 +227,12 @@ public class IdentitySyncClient extends IdentityClientBase {
         }
         parametersBuilder.tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
         try {
-            return new MsalToken(awaitTokenResult(pc.acquireTokenSilently(parametersBuilder.build())));
+            return new MsalToken(pc.acquireTokenSilently(parametersBuilder.build()).get());
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage(), e));
-        } catch (ExecutionException e) {
+        } catch (ExecutionException | InterruptedException e) {
             // Cache misses should not throw an exception, but should log.
-            if (e.getMessage() != null && e.getMessage().contains("Token not found in the cache")) {
+            if (e.getMessage().contains("Token not found in the cache")) {
                 LOGGER.verbose("Token not found in the MSAL cache.");
                 return null;
             } else {
@@ -257,12 +254,14 @@ public class IdentitySyncClient extends IdentityClientBase {
         UserNamePasswordParameters.UserNamePasswordParametersBuilder userNamePasswordParametersBuilder
             = buildUsernamePasswordFlowParameters(request, username, password);
         try {
-            return new MsalToken(awaitTokenResult(pc.acquireToken(userNamePasswordParametersBuilder.build())));
+            return new MsalToken(pc.acquireToken(userNamePasswordParametersBuilder.build()).get());
         } catch (Exception e) {
-            throw wrapAuthenticationFailure(e,
-                "Failed to acquire token with username and "
-                    + "password. To mitigate this issue, please refer to the troubleshooting guidelines "
-                    + "here at https://aka.ms/azsdk/java/identity/usernamepasswordcredential/troubleshoot");
+            throw LOGGER
+                .logExceptionAsError(new ClientAuthenticationException(
+                    "Failed to acquire token with username and "
+                        + "password. To mitigate this issue, please refer to the troubleshooting guidelines "
+                        + "here at https://aka.ms/azsdk/java/identity/usernamepasswordcredential/troubleshoot",
+                    null, e));
         }
     }
 
@@ -283,9 +282,10 @@ public class IdentitySyncClient extends IdentityClientBase {
             = buildDeviceCodeFlowParameters(request, deviceCodeConsumer);
 
         try {
-            return new MsalToken(awaitTokenResult(pc.acquireToken(parametersBuilder.build())));
+            return new MsalToken(pc.acquireToken(parametersBuilder.build()).get());
         } catch (Exception e) {
-            throw wrapAuthenticationFailure(e, "Failed to acquire token with device code.");
+            throw LOGGER.logExceptionAsError(
+                new ClientAuthenticationException("Failed to acquire token with device code.", null, e));
         }
     }
 
@@ -328,9 +328,6 @@ public class IdentitySyncClient extends IdentityClientBase {
             try {
                 token = acquireTokenFromPublicClientSilently(request, pc, null, false);
             } catch (Exception e) {
-                if (IdentityUtil.isShutdownSignal(e)) {
-                    throw e;
-                }
                 // The error case here represents the silent acquisition failing. There's nothing actionable and
                 // in this case the fallback path of showing the dialog will capture any meaningful error and share it.
             }
@@ -340,9 +337,10 @@ public class IdentitySyncClient extends IdentityClientBase {
                 = buildInteractiveRequestParameters(request, loginHint, redirectUri);
 
             try {
-                return new MsalToken(awaitTokenResult(pc.acquireToken(builder.build())));
+                return new MsalToken(pc.acquireToken(builder.build()).get());
             } catch (Exception e) {
-                throw wrapAuthenticationFailure(e, "Failed to acquire token with Interactive Browser Authentication.");
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
+                    "Failed to acquire token with Interactive Browser Authentication.", null, e));
             }
         }
         return token;
@@ -455,9 +453,10 @@ public class IdentitySyncClient extends IdentityClientBase {
     public AccessToken authenticateWithOBO(TokenRequestContext request) {
         ConfidentialClientApplication cc = getConfidentialClientInstance(request).getValue();
         try {
-            return new MsalToken(awaitTokenResult(cc.acquireToken(buildOBOFlowParameters(request))));
+            return new MsalToken(cc.acquireToken(buildOBOFlowParameters(request)).get());
         } catch (Exception e) {
-            throw wrapAuthenticationFailure(e, "Failed to acquire token with On Behalf Of Authentication.");
+            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
+                "Failed to acquire token with On Behalf Of Authentication.", null, e));
         }
     }
 
@@ -497,62 +496,10 @@ public class IdentitySyncClient extends IdentityClientBase {
             ClientCredentialParameters.ClientCredentialParametersBuilder builder
                 = ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
                     .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
-            return new MsalToken(awaitTokenResult(confidentialClient.acquireToken(builder.build())));
+            return new MsalToken(confidentialClient.acquireToken(builder.build()).get());
         } catch (Exception e) {
-            if (e instanceof RuntimeException && IdentityUtil.isShutdownSignal(e)) {
-                throw (RuntimeException) e;
-            }
             throw new CredentialUnavailableException("Managed Identity authentication is not available.", e);
         }
-    }
-
-    /**
-     * Waits for an MSAL token request to complete.
-     * <p>
-     * If the calling thread is interrupted while waiting, the interrupt status is restored and the interruption is
-     * rethrown as a {@link RuntimeException} whose cause is the {@link InterruptedException}. It is logged at verbose
-     * level only: an interrupt is a cooperative cancellation signal from the caller, for example a Reactor scheduler
-     * disposing the worker that made the call, not an authentication failure. A token request that failed because
-     * MSAL's own worker was interrupted, or because the JVM is shutting down (azure-core's shared executor cannot
-     * register its shutdown hook any more), is surfaced the same way, but without touching the calling thread's
-     * interrupt status.
-     *
-     * @param tokenResult The pending token request.
-     * @return The authentication result.
-     * @throws ExecutionException If the token request failed.
-     */
-    private static IAuthenticationResult awaitTokenResult(CompletableFuture<IAuthenticationResult> tokenResult)
-        throws ExecutionException {
-        try {
-            return tokenResult.get();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            LOGGER.log(LogLevel.VERBOSE, () -> INTERRUPTED_MESSAGE, e);
-            throw new RuntimeException(INTERRUPTED_MESSAGE, e);
-        } catch (ExecutionException e) {
-            if (IdentityUtil.isShutdownSignal(e)) {
-                String message = IdentityUtil.isInterruption(e) ? INTERRUPTED_MESSAGE : SHUTDOWN_MESSAGE;
-                LOGGER.log(LogLevel.VERBOSE, () -> message, e);
-                throw new RuntimeException(message, e);
-            }
-            throw e;
-        }
-    }
-
-    /**
-     * Wraps a token acquisition failure as a {@link ClientAuthenticationException} and logs it as an error, unless
-     * the failure is a shutdown signal (an interruption of the calling thread or the JVM shutting down), which is
-     * rethrown as is.
-     *
-     * @param failure The failure raised while acquiring the token.
-     * @param message The authentication failure message.
-     * @return The exception to throw.
-     */
-    private static RuntimeException wrapAuthenticationFailure(Exception failure, String message) {
-        if (failure instanceof RuntimeException && IdentityUtil.isShutdownSignal(failure)) {
-            return (RuntimeException) failure;
-        }
-        return LOGGER.logExceptionAsError(new ClientAuthenticationException(message, null, failure));
     }
 
     /**

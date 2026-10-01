@@ -1,27 +1,5 @@
 # Release History
 
-## 1.19.0-beta.3 (Unreleased)
-
-### Features Added
-
-- Added support for user-assigned managed identities on Azure Arc in `ManagedIdentityCredential` and `DefaultAzureCredential`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixed IMDS discovery in `DefaultAzureCredential` to wait for HTTP response headers with a read timeout, allowing the credential chain to continue when a local endpoint accepts connections but does not respond, while preserving fallback on probe setup failures.
-- Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications.
-- Token requests that fail because of a shutdown signal are no longer reported as authentication errors. When the calling thread is interrupted while waiting for a token (for example by a Reactor scheduler disposing its worker on cancellation), the interrupt status is now restored, the interruption is logged at verbose level instead of error level, and it is rethrown as a `RuntimeException` caused by the `InterruptedException` instead of being wrapped in a `ClientAuthenticationException` or `CredentialUnavailableException`. A token request that runs into the JVM shutting down (`IllegalStateException: Shutdown in progress` from the shared executor) is logged at verbose level as well, on both the synchronous and the asynchronous paths. `ChainedTokenCredential` and `DefaultAzureCredential` surface such a signal unchanged instead of reporting the credential as failed. The credentials no longer treat a cancellation raised during their token-cache lookup as a cache miss, which previously let a cancelled request fall through to a full acquisition and, for the interactive credentials, prompt the user for a request that was already cancelled. ([#49239](https://github.com/Azure/azure-sdk-for-java/issues/49239))
-
-### Other Changes
-
-- Improved `AzureDeveloperCliCredential` error handling to extract meaningful messages from `azd auth token` JSON output, providing cleaner error messages to users.
-
-#### Dependency Updates
-
-- Upgraded `msal4j` from `1.23.1` to `1.26.0`.
-
 ## 1.18.6 (2026-08-31)
 
 ### Other Changes
@@ -58,17 +36,6 @@
 - Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 - Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
 
-## 1.19.0-beta.2 (2026-02-25)
-
-### Breaking Changes
-
-- Renamed `enableAzureTokenProxy()` method in `WorkloadIdentityCredentialBuilder` to `enableAzureProxy()`. These changes only affect code written against beta version 1.19.0-beta.1.
-
-### Bugs Fixed
-
-- Fixed `NullPointerException` in `IdentityClientOptions` when running in GraalVM native images (e.g., Quarkus applications). Replaced reflection-dependent `AzureIdentityEnvVars` enum usage with direct string literal to ensure compatibility with native compilation.
-- Fixed logging for token authentication errors to include full stack traces with inner exceptions. Previously, error logs referenced "inner exceptions" but only logged the error message, making debugging difficult.
-
 ## 1.18.2 (2026-01-20)
 
 ### Other Changes
@@ -80,16 +47,6 @@
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 - Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
 - Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
-
-## 1.19.0-beta.1 (2025-11-14)
-
-### Features Added
-
-- Added `enableAzureTokenProxy()` method to `WorkloadIdentityCredentialBuilder` to enable custom token proxy support for Azure Kubernetes clusters. When enabled, the credential attempts to use a custom token proxy configured through environment variables (`AZURE_KUBERNETES_TOKEN_PROXY`, `AZURE_KUBERNETES_CA_FILE`, `AZURE_KUBERNETES_CA_DATA`, `AZURE_KUBERNETES_SNI_NAME`).
-
-### Other Changes
-
-- Ported the authentication flow of WorkloadIdentityCredential to use Msal4j.
 
 ## 1.18.1 (2025-10-13)
 

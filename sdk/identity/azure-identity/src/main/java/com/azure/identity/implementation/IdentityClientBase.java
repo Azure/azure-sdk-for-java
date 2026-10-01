@@ -259,7 +259,7 @@ public abstract class IdentityClientBase {
         initializeHttpPipelineAdapter();
 
         if (httpPipelineAdapter != null) {
-            applicationBuilder.disableInternalRetries().httpClient(httpPipelineAdapter);
+            applicationBuilder.httpClient(httpPipelineAdapter);
         } else {
             applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
         }
@@ -322,7 +322,7 @@ public abstract class IdentityClientBase {
 
         initializeHttpPipelineAdapter();
         if (httpPipelineAdapter != null) {
-            builder.disableInternalRetries().httpClient(httpPipelineAdapter);
+            builder.httpClient(httpPipelineAdapter);
         } else {
             builder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
         }
@@ -419,7 +419,7 @@ public abstract class IdentityClientBase {
 
         initializeHttpPipelineAdapter();
         if (httpPipelineAdapter != null) {
-            miBuilder.disableInternalRetries().httpClient(httpPipelineAdapter);
+            miBuilder.httpClient(httpPipelineAdapter);
         } else {
             miBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
         }
@@ -746,14 +746,17 @@ public abstract class IdentityClientBase {
 
                     if (redactedOutput.contains("azd auth login") || redactedOutput.contains("not logged in")) {
                         if (azdCommand.toString().contains("claims")) {
-                            throw LOGGER.logExceptionAsError(
-                                new ClientAuthenticationException(getAzdErrorMessage(redactedOutput), null));
+                            String userFriendlyError = extractUserFriendlyErrorFromAzdOutput(redactedOutput);
+                            if (userFriendlyError != null) {
+                                throw LOGGER
+                                    .logExceptionAsError(new ClientAuthenticationException(userFriendlyError, null));
+                            }
                         }
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                            new CredentialUnavailableException(getAzdErrorMessage(redactedOutput)));
+                            new CredentialUnavailableException("AzureDeveloperCliCredential authentication unavailable."
+                                + " Please run 'azd auth login' to set up account."));
                     }
-                    throw LOGGER.logExceptionAsError(
-                        new ClientAuthenticationException(getAzdErrorMessage(redactedOutput), null));
+                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {
                     throw LOGGER.logExceptionAsError(
                         new ClientAuthenticationException("Failed to invoke Azure Developer CLI ", null));
@@ -866,12 +869,6 @@ public abstract class IdentityClientBase {
         }
 
         return redactInfo(messages.get(0));
-    }
-
-    // Gets a user-friendly error message from azd output, with fallback to the raw output
-    String getAzdErrorMessage(String output) {
-        String extracted = extractUserFriendlyErrorFromAzdOutput(output);
-        return extracted != null ? extracted : output;
     }
 
     AccessToken authenticateWithExchangeTokenHelper(TokenRequestContext request, String assertionToken)

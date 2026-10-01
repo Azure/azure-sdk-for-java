@@ -125,8 +125,7 @@ public class AzurePipelinesCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception e) {
-            IdentityUtil.rethrowIfShutdownSignal(e);
+        } catch (Exception ignored) {
         }
 
         try {
@@ -135,8 +134,6 @@ public class AzurePipelinesCredential implements TokenCredential {
             return token;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
-            // A cancellation was logged at verbose level above and must not also be logged as an error.
-            IdentityUtil.rethrowIfShutdownSignal(e);
             // wrap the exception in a RuntimeException to avoid checked exception problems.
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }

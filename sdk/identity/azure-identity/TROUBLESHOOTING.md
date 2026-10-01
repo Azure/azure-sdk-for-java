@@ -82,14 +82,6 @@ The underlying MSAL library, MSAL4J, also has detailed logging. It is highly ver
 
 ## Troubleshoot `DefaultAzureCredential` authentication issues
 
-During local development, `DefaultAzureCredential` probes the IMDS endpoint before attempting managed identity authentication. The probe uses separate one-second connection and read timeouts. If the probe fails during setup, the endpoint cannot be reached, or a read times out while waiting for HTTP response headers, managed identity is unavailable and the chain continues to the next credential. A successful TCP connection alone does not establish that IMDS is available.
-
-The read timeout limits how long a blocking read waits for data, not the total time to receive all response headers. An endpoint that keeps sending partial headers can prolong the probe. These timeouts do not guarantee a two-second total discovery limit or impose a deadline on the entire authentication operation.
-
-When the endpoint responds, managed identity token acquisition retains its normal retry behavior. Standalone `ManagedIdentityCredential` and `DefaultAzureCredential` configured with `AZURE_TOKEN_CREDENTIALS=ManagedIdentityCredential` skip the probe.
-
-To intentionally use only developer-tool credentials locally, set `AZURE_TOKEN_CREDENTIALS=dev`. This excludes deployed-service credentials, including managed identity, rather than changing their timeout or retry settings.
-
 | Error | Description | Mitigation |
 |---|---|---|
 | `CredentialUnavailableException` raised with message. "DefaultAzureCredential failed to retrieve a token from the included credentials." |All credentials in the `DefaultAzureCredential` chain failed to retrieve a token, each throwing a `CredentialUnavailableException`| <ul><li>[Enable logging](#enable-and-configure-logging) to verify the credentials being tried, and get further diagnostic information.</li><li>Consult the troubleshooting guide for underlying credential types for more information.</li><ul><li>[EnvironmentCredential](#troubleshoot-environmentcredential-authentication-issues)</li><li>[ManagedIdentityCredential](#troubleshoot-managedidentitycredential-authentication-issues)</li><li>[AzureCLICredential](#troubleshoot-azureclicredential-authentication-issues)</li><li>[AzurePowerShellCredential](#troubleshoot-azurepowershellcredential-authentication-issues)</li></ul> |
@@ -214,19 +206,11 @@ az account get-access-token --output json --resource https://management.core.win
 
 #### Verify the Azure Developer CLI can obtain tokens
 
-You can manually verify that the Azure Developer CLI is properly authenticated and can obtain tokens. Execute the command corresponding to your CLI version to verify the account currently logged in.
+You can manually verify that the Azure Developer CLI is properly authenticated and can obtain tokens. First use the `config` command to verify the account which is currently logged in to the Azure Developer CLI.
 
-- In Azure Developer CLI versions >= 1.23.0:
-
-    ```bash
-    azd auth status
-    ```
-
-- In Azure Developer CLI versions < 1.23.0:
-
-    ```bash
-    azd config list
-    ```
+```bash
+azd config list
+```
 
 Once you've verified the Azure Developer CLI is using the correct account, you can validate that it's able to obtain tokens for this account.
 
@@ -271,7 +255,6 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 |---|-------------------------------------------------------------------------------------------------------------------------------|---|  
 |`CredentialUnavailableException` raised with message. "WorkloadIdentityCredential authentication unavailable. The workload options are not fully configured."| The `WorkloadIdentityCredential` requires `clientId`, `tenantId` and `tokenFilePath` to authenticate with Microsoft Entra ID. | <ul><li>If using `DefaultAzureCredential` then:</li><ul><li>Ensure client ID is specified via `workloadIdentityClientId` setter or `AZURE_CLIENT_ID` env variable.</li><li>Ensure tenant ID is specified via `AZURE_TENANT_ID` env variable.</li><li>Ensure token file path is specified via `AZURE_FEDERATED_TOKEN_FILE` env variable.</li><li>Ensure authority host is specified via `AZURE_AUTHORITY_HOST` env variable.</ul><li>If using `WorkloadIdentityCredential` then:</li><ul><li>Ensure tenant ID is specified via `tenantId` setter on credential builder or `AZURE_TENANT_ID` env variable.</li><li>Ensure client ID is specified via `clientId` setter on the credential builder or `AZURE_CLIENT_ID` env variable.</li><li>Ensure token file path is specified via `tokenFilePath` setter on the credential builder or `AZURE_FEDERATED_TOKEN_FILE` environment variable. </li></ul></li><li>Consult the [product troubleshooting guide](https://azure.github.io/azure-workload-identity/docs/troubleshooting.html) for other issues.</li></ul>
 |`CredentialUnavailableException` raised with message. "WorkloadIdentityCredential authentication unavailable. The request to the authority host was invalid."| The configured properties for workload identity are invalid.                                                                  | Ensure the properties for workload identity are correctly configured on the credential builder and right permissions are assigned to the workload identity.
-|In an application using [Azure Kubernetes Service identity bindings](https://learn.microsoft.com/azure/aks/identity-bindings-concepts): <ul><li>AADSTS700211: No matching federated identity record found for presented assertion issuer ...</li><li>AADSTS700212: No matching federated identity record found for presented assertion audience 'api://AKSIdentityBinding'.</li></ul> |`WorkloadIdentityCredential` isn't configured to use the identity binding proxy|Call `WorkloadIdentityCredentialBuilder.enableAzureProxy()` while building the credential.
 
 ## Troubleshoot `IntelliJCredential` authentication issues
 
@@ -394,3 +377,4 @@ You may also log in another MSA account by selecting "Microsoft account":
 ## Get additional help
 
 Additional information on ways to reach out for support can be found in the [SUPPORT.md](https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md) at the root of the repo.
+
