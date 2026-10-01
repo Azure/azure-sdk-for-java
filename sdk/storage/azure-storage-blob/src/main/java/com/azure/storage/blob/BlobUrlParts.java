@@ -16,7 +16,10 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -453,8 +456,9 @@ public final class BlobUrlParts {
         parts.setHost(host);
 
         // Parse host to get account name. Prefer known blob/dfs subdomains; fall back to first label otherwise.
-        boolean isBlobEndpoint = host != null && host.contains("." + Constants.UrlConstants.BLOB_URI_SUBDOMAIN + ".");
-        boolean isDfsEndpoint = host != null && host.contains("." + Constants.UrlConstants.DFS_URI_SUBDOMAIN + ".");
+        List<String> hostLabels = host == null ? Collections.emptyList() : Arrays.asList(host.split("\\."));
+        boolean isBlobEndpoint = hostLabels.contains(Constants.UrlConstants.BLOB_URI_SUBDOMAIN);
+        boolean isDfsEndpoint = hostLabels.contains(Constants.UrlConstants.DFS_URI_SUBDOMAIN);
 
         if (isBlobEndpoint) {
             parts.setAccountName(
