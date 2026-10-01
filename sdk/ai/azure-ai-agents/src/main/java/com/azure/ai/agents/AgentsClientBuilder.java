@@ -582,7 +582,7 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds an asynchronous beta Agents client for preview agent optimization operations.
+         * Builds an asynchronous beta Agents client for preview agent generation operations.
          * <p>
          * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
          * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
@@ -645,7 +645,7 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds a synchronous beta Agents client for preview agent optimization operations.
+         * Builds a synchronous beta Agents client for preview agent generation operations.
          * <p>
          * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
          * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the

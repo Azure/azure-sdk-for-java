@@ -39,7 +39,7 @@ public final class ModelSamplingParameters implements JsonSerializable<ModelSamp
      * The maximum number of tokens allowed in the completion.
      */
     @Generated
-    private Integer maxCompletionTokens;
+    private Long maxCompletionTokens;
 
     /**
      * Creates an instance of ModelSamplingParameters class.
@@ -120,20 +120,8 @@ public final class ModelSamplingParameters implements JsonSerializable<ModelSamp
      * @return the maxCompletionTokens value.
      */
     @Generated
-    public Integer getMaxCompletionTokens() {
+    public Long getMaxCompletionTokens() {
         return this.maxCompletionTokens;
-    }
-
-    /**
-     * Set the maxCompletionTokens property: The maximum number of tokens allowed in the completion.
-     *
-     * @param maxCompletionTokens the maxCompletionTokens value to set.
-     * @return the ModelSamplingParameters object itself.
-     */
-    @Generated
-    public ModelSamplingParameters setMaxCompletionTokens(Integer maxCompletionTokens) {
-        this.maxCompletionTokens = maxCompletionTokens;
-        return this;
     }
 
     /**
@@ -172,12 +160,24 @@ public final class ModelSamplingParameters implements JsonSerializable<ModelSamp
                 } else if ("seed".equals(fieldName)) {
                     deserializedModelSamplingParameters.seed = reader.getNullable(JsonReader::getInt);
                 } else if ("max_completion_tokens".equals(fieldName)) {
-                    deserializedModelSamplingParameters.maxCompletionTokens = reader.getNullable(JsonReader::getInt);
+                    deserializedModelSamplingParameters.maxCompletionTokens = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedModelSamplingParameters;
         });
+    }
+
+    /**
+     * Set the maxCompletionTokens property: The maximum number of tokens allowed in the completion.
+     *
+     * @param maxCompletionTokens the maxCompletionTokens value to set.
+     * @return the ModelSamplingParameters object itself.
+     */
+    @Generated
+    public ModelSamplingParameters setMaxCompletionTokens(Long maxCompletionTokens) {
+        this.maxCompletionTokens = maxCompletionTokens;
+        return this;
     }
 }

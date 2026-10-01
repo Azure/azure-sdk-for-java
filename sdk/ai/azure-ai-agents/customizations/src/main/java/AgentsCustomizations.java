@@ -35,7 +35,6 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
-        deprecateEvaluationLevel(libraryCustomization);
         internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization);
         protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
@@ -91,20 +90,6 @@ public class AgentsCustomizations extends Customization {
     private static final int V_STRING_ENUM_TYPE = 17;
 
     private static final int V_SIZE = 18;
-
-    private void deprecateEvaluationLevel(LibraryCustomization customization) {
-        customization.getClass(MODELS_PACKAGE, "EvaluationLevel").customizeAst(ast -> {
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName("EvaluationLevel")
-                .orElseThrow(() -> new IllegalStateException("EvaluationLevel was not generated"));
-            clazz.addMarkerAnnotation(Deprecated.class);
-            clazz.getJavadocComment()
-                .orElseThrow(() -> new IllegalStateException("EvaluationLevel JavaDoc was not generated"))
-                .setContent(clazz.getJavadocComment().get().getContent()
-                    + "\n * @deprecated Use {@link AgentOptimizationTargetCompletionEvaluationSet} for single-turn"
-                    + " evaluation or {@link AgentOptimizationUserConversationSimulationEvaluationSet} for"
-                    + " conversation evaluation.");
-        });
-    }
 
     private void internalizeUnusedVoiceAgentFunctionToolType(LibraryCustomization customization) {
         customization.getClass(MODELS_PACKAGE, "VoiceAgentFunctionToolType1")

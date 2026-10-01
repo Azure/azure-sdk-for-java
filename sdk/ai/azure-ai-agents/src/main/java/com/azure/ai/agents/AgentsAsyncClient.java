@@ -5829,7 +5829,7 @@ public final class AgentsAsyncClient {
      *                     temperature: Double (Optional)
      *                     top_p: Double (Optional)
      *                     seed: Integer (Optional)
-     *                     max_completion_tokens: Integer (Optional)
+     *                     max_completion_tokens: Long (Optional)
      *                 }
      *                 voice_model (Optional): {
      *                     type: String (Required)

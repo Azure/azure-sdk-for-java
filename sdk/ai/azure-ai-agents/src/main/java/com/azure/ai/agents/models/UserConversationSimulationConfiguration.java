@@ -19,25 +19,11 @@ public final class UserConversationSimulationConfiguration
     implements JsonSerializable<UserConversationSimulationConfiguration> {
 
     /*
-     * Hard limit on turns in each conversation. When omitted, the service defaults to 20.
-     */
-    @Generated
-    private Integer maxNumTurns;
-
-    /*
      * Number of independent conversation repetitions for each test case. Defaults to 1 when not specified at either the
      * data-source or test-case level.
      */
     @Generated
     private Integer conversationRepetitions;
-
-    /*
-     * Target number of turns in each conversation. The effective value cannot exceed the effective `max_num_turns`.
-     * When omitted, no target is set and the simulation model determines the conversation length dynamically from the
-     * scenario.
-     */
-    @Generated
-    private Integer desiredNumTurns;
 
     /*
      * Audio effects applied to voice conversation simulations. This property is ignored for text-only simulations.
@@ -56,28 +42,6 @@ public final class UserConversationSimulationConfiguration
      */
     @Generated
     public UserConversationSimulationConfiguration() {
-    }
-
-    /**
-     * Get the maxNumTurns property: Hard limit on turns in each conversation. When omitted, the service defaults to 20.
-     *
-     * @return the maxNumTurns value.
-     */
-    @Generated
-    public Integer getMaxNumTurns() {
-        return this.maxNumTurns;
-    }
-
-    /**
-     * Set the maxNumTurns property: Hard limit on turns in each conversation. When omitted, the service defaults to 20.
-     *
-     * @param maxNumTurns the maxNumTurns value to set.
-     * @return the UserConversationSimulationConfiguration object itself.
-     */
-    @Generated
-    public UserConversationSimulationConfiguration setMaxNumTurns(Integer maxNumTurns) {
-        this.maxNumTurns = maxNumTurns;
-        return this;
     }
 
     /**
@@ -101,32 +65,6 @@ public final class UserConversationSimulationConfiguration
     @Generated
     public UserConversationSimulationConfiguration setConversationRepetitions(Integer conversationRepetitions) {
         this.conversationRepetitions = conversationRepetitions;
-        return this;
-    }
-
-    /**
-     * Get the desiredNumTurns property: Target number of turns in each conversation. The effective value cannot exceed
-     * the effective `max_num_turns`. When omitted, no target is set and the simulation model determines the
-     * conversation length dynamically from the scenario.
-     *
-     * @return the desiredNumTurns value.
-     */
-    @Generated
-    public Integer getDesiredNumTurns() {
-        return this.desiredNumTurns;
-    }
-
-    /**
-     * Set the desiredNumTurns property: Target number of turns in each conversation. The effective value cannot exceed
-     * the effective `max_num_turns`. When omitted, no target is set and the simulation model determines the
-     * conversation length dynamically from the scenario.
-     *
-     * @param desiredNumTurns the desiredNumTurns value to set.
-     * @return the UserConversationSimulationConfiguration object itself.
-     */
-    @Generated
-    public UserConversationSimulationConfiguration setDesiredNumTurns(Integer desiredNumTurns) {
-        this.desiredNumTurns = desiredNumTurns;
         return this;
     }
 
@@ -185,9 +123,9 @@ public final class UserConversationSimulationConfiguration
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("max_num_turns", this.maxNumTurns);
+        jsonWriter.writeNumberField("max_num_turns", this.maximumNumberOfTurns);
         jsonWriter.writeNumberField("conversation_repetitions", this.conversationRepetitions);
-        jsonWriter.writeNumberField("desired_num_turns", this.desiredNumTurns);
+        jsonWriter.writeNumberField("desired_num_turns", this.desiredNumberOfTurns);
         jsonWriter.writeJsonField("audio_effects", this.audioEffects);
         jsonWriter.writeJsonField("user_behavior", this.userBehavior);
         return jsonWriter.writeEndObject();
@@ -210,13 +148,13 @@ public final class UserConversationSimulationConfiguration
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("max_num_turns".equals(fieldName)) {
-                    deserializedUserConversationSimulationConfiguration.maxNumTurns
+                    deserializedUserConversationSimulationConfiguration.maximumNumberOfTurns
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("conversation_repetitions".equals(fieldName)) {
                     deserializedUserConversationSimulationConfiguration.conversationRepetitions
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("desired_num_turns".equals(fieldName)) {
-                    deserializedUserConversationSimulationConfiguration.desiredNumTurns
+                    deserializedUserConversationSimulationConfiguration.desiredNumberOfTurns
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("audio_effects".equals(fieldName)) {
                     deserializedUserConversationSimulationConfiguration.audioEffects
@@ -230,5 +168,69 @@ public final class UserConversationSimulationConfiguration
             }
             return deserializedUserConversationSimulationConfiguration;
         });
+    }
+
+    /*
+     * Hard limit on turns in each conversation. When omitted, the service defaults to 20.
+     */
+    @Generated
+    private Integer maximumNumberOfTurns;
+
+    /*
+     * Target number of turns in each conversation. The effective value cannot exceed the effective `max_num_turns`.
+     * When omitted, no target is set and the simulation model determines the conversation length dynamically from the
+     * scenario.
+     */
+    @Generated
+    private Integer desiredNumberOfTurns;
+
+    /**
+     * Get the maximumNumberOfTurns property: Hard limit on turns in each conversation. When omitted, the service
+     * defaults to 20.
+     *
+     * @return the maximumNumberOfTurns value.
+     */
+    @Generated
+    public Integer getMaximumNumberOfTurns() {
+        return this.maximumNumberOfTurns;
+    }
+
+    /**
+     * Set the maximumNumberOfTurns property: Hard limit on turns in each conversation. When omitted, the service
+     * defaults to 20.
+     *
+     * @param maximumNumberOfTurns the maximumNumberOfTurns value to set.
+     * @return the UserConversationSimulationConfiguration object itself.
+     */
+    @Generated
+    public UserConversationSimulationConfiguration setMaximumNumberOfTurns(Integer maximumNumberOfTurns) {
+        this.maximumNumberOfTurns = maximumNumberOfTurns;
+        return this;
+    }
+
+    /**
+     * Get the desiredNumberOfTurns property: Target number of turns in each conversation. The effective value cannot
+     * exceed the effective `max_num_turns`. When omitted, no target is set and the simulation model determines the
+     * conversation length dynamically from the scenario.
+     *
+     * @return the desiredNumberOfTurns value.
+     */
+    @Generated
+    public Integer getDesiredNumberOfTurns() {
+        return this.desiredNumberOfTurns;
+    }
+
+    /**
+     * Set the desiredNumberOfTurns property: Target number of turns in each conversation. The effective value cannot
+     * exceed the effective `max_num_turns`. When omitted, no target is set and the simulation model determines the
+     * conversation length dynamically from the scenario.
+     *
+     * @param desiredNumberOfTurns the desiredNumberOfTurns value to set.
+     * @return the UserConversationSimulationConfiguration object itself.
+     */
+    @Generated
+    public UserConversationSimulationConfiguration setDesiredNumberOfTurns(Integer desiredNumberOfTurns) {
+        this.desiredNumberOfTurns = desiredNumberOfTurns;
+        return this;
     }
 }
