@@ -35,6 +35,7 @@ import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.ShareErrors;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
 import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareTokenIntent;
@@ -162,6 +163,7 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
     private String shareName;
     private String shareSnapshot;
     private String resourcePath;
+    private String fileId = "";
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private AzureSasCredential azureSasCredential;
@@ -226,9 +228,10 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
      * @throws NullPointerException If {@code shareName} is {@code null} or {@code shareName} is {@code null}.
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
-     * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If multiple credentials have been specified, or a file ID is configured.
      */
     public ShareDirectoryAsyncClient buildDirectoryAsyncClient() {
+        ShareErrors.assertNotFileIdAddressed(fileId, "buildDirectoryAsyncClient");
         ShareServiceVersion serviceVersion = getServiceVersion();
         return new ShareDirectoryAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName,
             serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
@@ -248,9 +251,10 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
      * @throws NullPointerException If {@code endpoint}, {@code shareName} or {@code directoryPath} is {@code null}.
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
-     * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If multiple credentials have been specified, or a file ID is configured.
      */
     public ShareDirectoryClient buildDirectoryClient() {
+        ShareErrors.assertNotFileIdAddressed(fileId, "buildDirectoryClient");
         ShareServiceVersion serviceVersion = getServiceVersion();
         return new ShareDirectoryClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName,
             serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
@@ -274,7 +278,7 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
      */
     public ShareFileAsyncClient buildFileAsyncClient() {
         ShareServiceVersion serviceVersion = getServiceVersion();
-        return new ShareFileAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName,
+        return new ShareFileAsyncClient(constructImpl(), shareName, resourcePath, fileId, shareSnapshot, accountName,
             serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
@@ -297,9 +301,9 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
     public ShareFileClient buildFileClient() {
         ShareServiceVersion serviceVersion = getServiceVersion();
         return new ShareFileClient(
-            new ShareFileAsyncClient(constructImpl(), shareName, resourcePath, shareSnapshot, accountName,
+            new ShareFileAsyncClient(constructImpl(), shareName, resourcePath, fileId, shareSnapshot, accountName,
                 serviceVersion, sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential),
-            constructImpl(), shareName, resourcePath, shareSnapshot, accountName, serviceVersion,
+            constructImpl(), shareName, resourcePath, fileId, shareSnapshot, accountName, serviceVersion,
             sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
@@ -310,8 +314,8 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
      * that the client will interact with. Rest of the path segments should be the path of the file. It mush end up with
      * the file name if more segments exist.</p>
      *
-     * <p>Query parameters of the endpoint will be parsed in an attempt to generate a SAS token to authenticate
-     * requests sent to the service.</p>
+     * <p>The {@code sharesnapshot} and {@code fileid} query parameters are parsed from the endpoint. Other query
+     * parameters are parsed in an attempt to generate a SAS token to authenticate requests sent to the service.</p>
      *
      * @param endpoint The URL of the Azure Storage File instance to send service requests to and receive responses
      * from.
@@ -340,10 +344,19 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
                 this.shareSnapshot = snapshotArray[0];
             }
 
+            this.fileId = "";
+            String[] fileIdArray = queryParamsMap.remove("fileid");
+            if (fileIdArray != null) {
+                if (CoreUtils.isNullOrEmpty(fileIdArray[0])) {
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("'fileId' cannot be empty."));
+                }
+                this.fileId = fileIdArray[0];
+                this.resourcePath = "";
+            }
+
             // TODO (gapra): What happens if a user has custom queries?
             // Attempt to get the SAS token from the URL passed
-            String sasToken
-                = new CommonSasQueryParameters(SasImplUtils.parseQueryString(fullUrl.getQuery()), false).encode();
+            String sasToken = new CommonSasQueryParameters(queryParamsMap, false).encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 sasToken(sasToken);
             }
@@ -368,6 +381,25 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
     }
 
     /**
+     * Sets the file ID used to address a file.
+     *
+     * <p>Setting a file ID clears the resource path. The file ID can also be read from the {@code fileid} query
+     * parameter when supplied in the endpoint. File IDs are supported only for file clients; building a directory
+     * client with a file ID configured throws {@link IllegalStateException}. Use {@link #resourcePath(String)} to
+     * clear the file ID and address a directory by path.</p>
+     *
+     * @param fileId The file ID of the file.
+     * @return the updated ShareFileClientBuilder object
+     * @throws IllegalArgumentException If {@code fileId} is null or blank.
+     */
+    public ShareFileClientBuilder fileId(String fileId) {
+        ShareErrors.validateFileId(fileId);
+        this.fileId = fileId;
+        this.resourcePath = "";
+        return this;
+    }
+
+    /**
      * Sets the shareSnapshot that the constructed clients will interact with. This shareSnapshot must be linked to the
      * share that has been specified in the builder.
      *
@@ -381,7 +413,8 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
     }
 
     /**
-     * Sets the file that the constructed clients will interact with
+     * Sets the file or directory path that the constructed clients will interact with. Calling this method clears any
+     * file ID previously set with {@link #fileId(String)}.
      *
      * @param resourcePath Path of the file (or directory).
      * @return the updated ShareFileClientBuilder object
@@ -389,6 +422,7 @@ public class ShareFileClientBuilder implements TokenCredentialTrait<ShareFileCli
      */
     public ShareFileClientBuilder resourcePath(String resourcePath) {
         this.resourcePath = resourcePath;
+        this.fileId = "";
         return this;
     }
 

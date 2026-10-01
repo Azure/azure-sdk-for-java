@@ -27,7 +27,6 @@ import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesForceCloseHandlesHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesListHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesHeaders;
@@ -99,6 +98,7 @@ public class ShareDirectoryClient {
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
     private final String directoryPath;
+    private final String fileId;
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
@@ -117,22 +117,35 @@ public class ShareDirectoryClient {
      */
     ShareDirectoryClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
         String snapshot, String accountName, ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
+        this(azureFileStorageClient, shareName, directoryPath, "", snapshot, accountName, serviceVersion, sasToken);
+    }
+
+    ShareDirectoryClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
+        String fileId, String snapshot, String accountName, ShareServiceVersion serviceVersion,
+        AzureSasCredential sasToken) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
         this.directoryPath = directoryPath;
+        this.fileId = fileId;
         this.snapshot = snapshot;
         this.azureFileStorageClient = azureFileStorageClient;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.sasToken = sasToken;
 
-        StringBuilder directoryUrlString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
-            .append(shareName)
-            .append("/")
-            .append(directoryPath);
+        StringBuilder directoryUrlString
+            = new StringBuilder(azureFileStorageClient.getUrl()).append("/").append(shareName);
+        if (fileId.isEmpty()) {
+            directoryUrlString.append("/").append(directoryPath);
+        }
         if (snapshot != null) {
             directoryUrlString.append("?sharesnapshot=").append(snapshot);
+            if (!fileId.isEmpty()) {
+                directoryUrlString.append("&fileid=").append(fileId);
+            }
+        } else if (!fileId.isEmpty()) {
+            directoryUrlString.append("?fileid=").append(fileId);
         }
         this.directoryUrl = directoryUrlString.toString();
     }
@@ -144,6 +157,15 @@ public class ShareDirectoryClient {
      */
     public String getDirectoryUrl() {
         return this.directoryUrl;
+    }
+
+    /**
+     * Gets the file ID used to address the directory, or an empty string when the client is path-addressed.
+     *
+     * @return The file ID.
+     */
+    public String getFileId() {
+        return fileId;
     }
 
     /**
@@ -622,9 +644,11 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<DirectoriesGetPropertiesHeaders, Void>> operation
-            = () -> this.azureFileStorageClient.getDirectories()
-                .getPropertiesWithResponse(shareName, directoryPath, snapshot, null, finalContext);
+        Callable<Response<Void>> operation = fileId.isEmpty()
+            ? () -> this.azureFileStorageClient.getDirectories()
+                .getPropertiesWithResponse(shareName, directoryPath, snapshot, null, finalContext)
+            : () -> this.azureFileStorageClient.getDirectories()
+                .getPropertiesByFileIdWithResponse(shareName, fileId, snapshot, null, null, finalContext);
 
         return ModelHelper
             .mapShareDirectoryPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
