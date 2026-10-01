@@ -41,6 +41,15 @@ def should_remove_generated_source_code(module: str) -> bool:
     return module not in GENERATED_SOURCE_CLEANUP_EXCLUDED_MODULES
 
 
+def parse_boolean(value: str) -> bool:
+    normalized_value = value.lower()
+    if normalized_value == "true":
+        return True
+    if normalized_value == "false":
+        return False
+    raise argparse.ArgumentTypeError("Expected 'true' or 'false'.")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -65,10 +74,19 @@ def parse_args() -> argparse.Namespace:
         help="published @azure-tools/typespec-java version to regenerate with. When empty, the "
         "emitter is built from source (dev route) instead.",
     )
+    parser.add_argument(
+        "--upgrade-designated-libraries",
+        type=parse_boolean,
+        required=False,
+        default=True,
+        help="whether to update designated TypeSpec libraries from their configured sources. "
+        "Defaults to true.",
+    )
     return parser.parse_args()
 
 
 EMITTER_PACKAGE_NAME = "@azure-tools/typespec-java"
+OPENAI_TYPESPEC_PACKAGE_NAME = "@azure-tools/openai-typespec"
 
 # Prefixes of the TypeSpec dependency entries in emitter-package.json whose versions we resolve to
 # the latest published npm version (see resolve_dependency_versions_to_latest).
@@ -85,7 +103,7 @@ TYPESPEC_DEPENDENCY_PREFIXES = ("@azure-tools/", "@typespec/")
 # libraries, so their specs-pinned version does not have to move in lockstep with the emitter's
 # other dependencies.
 DESIGNATED_LIBRARIES_FROM_SPECS = [
-    "@azure-tools/openai-typespec",
+    OPENAI_TYPESPEC_PACKAGE_NAME,
     "@azure-tools/typespec-liftr-base",
 ]
 
@@ -124,7 +142,11 @@ def extract_package_json_from_tgz(tgz_path: str, dest_path: str) -> None:
                 f.write(member.read())
 
 
-def generate_config_files(emitter_package_json: str, use_npm_pinning: bool, overrides_path: str = "") -> None:
+def generate_config_files(
+    emitter_package_json: str,
+    use_npm_pinning: bool,
+    overrides_path: str = "",
+) -> dict:
     # tsp-client generate-config-files seeds eng/emitter-package.json from an emitter package.json
     # (its peerDependencies) and then generates the lock file (via "npm install"). Used by both
     # routes:
@@ -146,7 +168,7 @@ def generate_config_files(emitter_package_json: str, use_npm_pinning: bool, over
     # seeded entirely from scratch. That is more robust against non-designated orphans (e.g. an
     # emitter peer that was dropped), but it regenerates the key order from the emitter manifest,
     # producing noisier diffs. We remove only the designated entries to keep the existing key order.
-    remove_designated_libraries()
+    designated_library_versions = remove_designated_libraries()
 
     command = [
         "tsp-client",
@@ -161,6 +183,7 @@ def generate_config_files(emitter_package_json: str, use_npm_pinning: bool, over
     if overrides_path:
         command.extend(["--overrides", overrides_path])
     subprocess.check_call(command, cwd=sdk_root)
+    return designated_library_versions
 
 
 def npm_view_version(package_ref: str) -> str:
@@ -183,23 +206,25 @@ def save_emitter_package_json(package_json: dict) -> None:
         json.dump(package_json, json_file, indent=2)
 
 
-def remove_designated_libraries() -> None:
+def remove_designated_libraries() -> dict:
     # Remove the designated libraries from an existing eng/emitter-package.json before seeding.
     # generate-config-files merges into that file and only overwrites emitter-peer entries, so a
     # designated library carried over from a previous run (e.g. @typespec/openapi3) would keep its
-    # stale version and conflict with the freshly pinned peers. They are added back afterward by
-    # add_designated_libraries. The skipped designated libraries (still emitter peers) are re-added
-    # by generate-config-files itself from the emitter's peerDependencies.
+    # stale version and conflict with the freshly pinned peers. Cache their current versions before
+    # removing them so add_designated_libraries can restore the pins when upgrades are disabled.
     path = emitter_package_json_path()
     if not os.path.exists(path):
-        return
+        return {}
     package_json = load_emitter_package_json()
     dev_dependencies = package_json.get("devDependencies", {})
+    designated_library_versions = {}
     for library in DESIGNATED_LIBRARIES:
         if library in dev_dependencies:
+            designated_library_versions[library] = dev_dependencies[library]
             logging.info(f"Remove designated library {library} before seeding")
             del dev_dependencies[library]
     save_emitter_package_json(package_json)
+    return designated_library_versions
 
 
 def resolve_dependency_versions_to_latest() -> None:
@@ -228,17 +253,33 @@ def fetch_specs_dev_dependencies() -> dict:
     return specs_package_json.get("devDependencies", {})
 
 
-def add_designated_libraries() -> None:
+def add_designated_libraries(upgrade_designated_libraries: bool, cached_versions: dict) -> None:
     # Add the designated libraries (not declared by the emitter) to emitter-package.json. Two
     # groups, versioned from different sources:
     #   - DESIGNATED_LIBRARIES_FROM_SPECS: pinned to the exact version declared in the specs repo
     #     package.json (the version the specs actually use). If a library is missing there (the
     #     specs repo may not have updated yet), fall back to its latest published npm version.
     #   - DESIGNATED_LIBRARIES_FROM_NPM_LATEST: pinned to the latest published npm version.
-    specs_dev_dependencies = fetch_specs_dev_dependencies()
+    # When upgrades are disabled, restore every designated library to the version cached before
+    # generate-config-files seeded the emitter dependencies.
     package_json = load_emitter_package_json()
     dev_dependencies = package_json.setdefault("devDependencies", {})
 
+    if not upgrade_designated_libraries:
+        missing_libraries = [library for library in DESIGNATED_LIBRARIES if library not in cached_versions]
+        if missing_libraries:
+            raise ValueError(
+                "Cannot preserve designated library versions because these entries are missing from "
+                f"eng/emitter-package.json: {', '.join(missing_libraries)}"
+            )
+        for library in DESIGNATED_LIBRARIES:
+            version = cached_versions[library]
+            logging.info(f"Restore designated library {library}@{version}")
+            dev_dependencies[library] = version
+        save_emitter_package_json(package_json)
+        return
+
+    specs_dev_dependencies = fetch_specs_dev_dependencies()
     for library in DESIGNATED_LIBRARIES_FROM_SPECS:
         version = specs_dev_dependencies.get(library)
         if version:
@@ -256,7 +297,7 @@ def add_designated_libraries() -> None:
     save_emitter_package_json(package_json)
 
 
-def update_emitter(package_json_path: str, emitter_version: str):
+def update_emitter(package_json_path: str, emitter_version: str, upgrade_designated_libraries: bool):
     # 'none' is the pipeline sentinel for "not specified" (Azure DevOps string parameters
     # cannot be left truly empty in the run UI), so normalize it to empty here.
     if emitter_version.lower() == "none":
@@ -279,7 +320,10 @@ def update_emitter(package_json_path: str, emitter_version: str):
                 f.write(manifest)
 
             logging.info("Update emitter-package.json")
-            generate_config_files(published_package_json_path, use_npm_pinning=True)
+            cached_designated_library_versions = generate_config_files(
+                published_package_json_path,
+                use_npm_pinning=True,
+            )
     else:
         # Dev route: build the emitter from source, then seed emitter-package.json from the local
         # dev package. The dev emitter version is unpublished, so generate-config-files consumes
@@ -314,13 +358,17 @@ def update_emitter(package_json_path: str, emitter_version: str):
                 json.dump({EMITTER_PACKAGE_NAME: dev_package_path}, f)
 
             logging.info("Update emitter-package.json")
-            generate_config_files(resolved_package_json_path, use_npm_pinning=False, overrides_path=overrides_path)
+            cached_designated_library_versions = generate_config_files(
+                resolved_package_json_path,
+                use_npm_pinning=False,
+                overrides_path=overrides_path,
+            )
 
     # Both routes: pin the emitter's TypeSpec dependencies to their latest published versions and
-    # add the designated libraries from the specs repo, then (re)generate the lock file so it
-    # reflects the final dependency set.
+    # add the designated libraries from their configured sources (or restore their cached versions),
+    # then (re)generate the lock file so it reflects the final dependency set.
     resolve_dependency_versions_to_latest()
-    add_designated_libraries()
+    add_designated_libraries(upgrade_designated_libraries, cached_designated_library_versions)
 
     logging.info("Update emitter-package-lock.json")
     generate_lock_file()
@@ -485,6 +533,7 @@ def main():
     update_emitter(
         args["package_json_path"],
         args["emitter_version"],
+        args["upgrade_designated_libraries"],
     )
 
     update_sdks()

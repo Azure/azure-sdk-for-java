@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerserviceaimanager.implementation;
 
-import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -31,7 +30,6 @@ import com.azure.resourcemanager.containerserviceaimanager.fluent.AIModelsClient
 import com.azure.resourcemanager.containerserviceaimanager.fluent.models.AIModelInner;
 import com.azure.resourcemanager.containerserviceaimanager.fluent.models.CalculateCostResponseInner;
 import com.azure.resourcemanager.containerserviceaimanager.implementation.models.AIModelListResult;
-import com.azure.resourcemanager.containerserviceaimanager.models.CalculateCostRequest;
 import reactor.core.publisher.Mono;
 
 /**
@@ -99,23 +97,23 @@ public final class AIModelsClientImpl implements AIModelsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/aiModels/{aiModelName}/calculateCost")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CalculateCostResponseInner>> calculateCost(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("aiModelName") String aiModelName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") CalculateCostRequest body, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/aiModels/{aiModelName}/calculateCost")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<CalculateCostResponseInner> calculateCostSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("aiModelName") String aiModelName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") CalculateCostRequest body, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -328,7 +326,6 @@ public final class AIModelsClientImpl implements AIModelsClient {
      * `microsoft/Phi-4-mini-instruct` produces `9806f0c862fdd920`). Callers should treat the name as opaque and use the
      * `modelId` property as the human-readable reference. The encoding is a permanent contract of this resource
      * provider and does not depend on any upstream naming policy.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -337,12 +334,11 @@ public final class AIModelsClientImpl implements AIModelsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CalculateCostResponseInner>> calculateCostWithResponseAsync(String location,
-        String aiModelName, CalculateCostRequest body) {
-        final String contentType = "application/json";
+        String aiModelName) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.calculateCost(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, aiModelName, contentType, accept, body, context))
+                this.client.getSubscriptionId(), location, aiModelName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -357,17 +353,14 @@ public final class AIModelsClientImpl implements AIModelsClient {
      * `microsoft/Phi-4-mini-instruct` produces `9806f0c862fdd920`). Callers should treat the name as opaque and use the
      * `modelId` property as the human-readable reference. The encoding is a permanent contract of this resource
      * provider and does not depend on any upstream naming policy.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for the AI model `calculateCost` action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CalculateCostResponseInner> calculateCostAsync(String location, String aiModelName,
-        CalculateCostRequest body) {
-        return calculateCostWithResponseAsync(location, aiModelName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<CalculateCostResponseInner> calculateCostAsync(String location, String aiModelName) {
+        return calculateCostWithResponseAsync(location, aiModelName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -381,7 +374,6 @@ public final class AIModelsClientImpl implements AIModelsClient {
      * `microsoft/Phi-4-mini-instruct` produces `9806f0c862fdd920`). Callers should treat the name as opaque and use the
      * `modelId` property as the human-readable reference. The encoding is a permanent contract of this resource
      * provider and does not depend on any upstream naming policy.
-     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -390,11 +382,10 @@ public final class AIModelsClientImpl implements AIModelsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CalculateCostResponseInner> calculateCostWithResponse(String location, String aiModelName,
-        CalculateCostRequest body, Context context) {
-        final String contentType = "application/json";
+        Context context) {
         final String accept = "application/json";
         return service.calculateCostSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, aiModelName, contentType, accept, body, context);
+            this.client.getSubscriptionId(), location, aiModelName, accept, context);
     }
 
     /**
@@ -408,15 +399,14 @@ public final class AIModelsClientImpl implements AIModelsClient {
      * `microsoft/Phi-4-mini-instruct` produces `9806f0c862fdd920`). Callers should treat the name as opaque and use the
      * `modelId` property as the human-readable reference. The encoding is a permanent contract of this resource
      * provider and does not depend on any upstream naming policy.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for the AI model `calculateCost` action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CalculateCostResponseInner calculateCost(String location, String aiModelName, CalculateCostRequest body) {
-        return calculateCostWithResponse(location, aiModelName, body, Context.NONE).getValue();
+    public CalculateCostResponseInner calculateCost(String location, String aiModelName) {
+        return calculateCostWithResponse(location, aiModelName, Context.NONE).getValue();
     }
 
     /**

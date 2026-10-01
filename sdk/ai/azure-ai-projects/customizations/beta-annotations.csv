@@ -47,6 +47,7 @@ class;com.azure.ai.projects.models.DataGenerationJobOptions;Preview API. DataGen
 class;com.azure.ai.projects.models.DataGenerationJobOutput;Preview API. DataGenerationJobs=V1Preview;
 class;com.azure.ai.projects.models.DataGenerationJobOutputOptions;Preview API. DataGenerationJobs=V1Preview;
 class;com.azure.ai.projects.models.DataGenerationJobOutputType;Preview API. DataGenerationJobs=V1Preview;
+class;com.azure.ai.projects.models.DataGenerationJobOutputWriteMode;Preview API. DataGenerationJobs=V1Preview;
 class;com.azure.ai.projects.models.DataGenerationJobResult;Preview API. DataGenerationJobs=V1Preview;
 class;com.azure.ai.projects.models.DataGenerationJobScenario;Preview API. DataGenerationJobs=V1Preview;
 class;com.azure.ai.projects.models.DataGenerationJobSource;Preview API. DataGenerationJobs=V1Preview;

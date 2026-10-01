@@ -4,6 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.StacItemBounds;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -16,8 +17,8 @@ public final class MosaicItemsBoundsGetAllTests extends PlanetaryComputerProClie
     @Disabled
     public void testMosaicItemsBoundsGetAllTests() {
         // method invocation
-        StacItemBounds response = dataClient.getItemBounds("naip-atl", "ga_m_3308421_se_16_060_20211114", null, null,
-            null, null, null, null);
+        StacItemBounds response = dataClient.getItemBounds("naip-atl", "ga_m_3308421_se_16_060_20211114", (String) null,
+            (List<Integer>) null, (String) null, (String) null, (List<String>) null, (SelMethod) null);
 
         // response assertion
         Assertions.assertNotNull(response);

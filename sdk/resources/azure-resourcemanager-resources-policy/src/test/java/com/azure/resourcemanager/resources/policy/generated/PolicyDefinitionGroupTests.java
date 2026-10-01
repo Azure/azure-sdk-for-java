@@ -12,27 +12,27 @@ public final class PolicyDefinitionGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyDefinitionGroup model = BinaryData.fromString(
-            "{\"name\":\"wjksghudgzhxo\",\"displayName\":\"ggsvoujkxibdaf\",\"category\":\"kmdyomkxfbvfbh\",\"description\":\"i\",\"additionalMetadataId\":\"pwpgddei\"}")
+            "{\"name\":\"jibabxvititvtze\",\"displayName\":\"avoxtfg\",\"category\":\"cd\",\"description\":\"qbw\",\"additionalMetadataId\":\"pqtgsfjac\"}")
             .toObject(PolicyDefinitionGroup.class);
-        Assertions.assertEquals("wjksghudgzhxo", model.name());
-        Assertions.assertEquals("ggsvoujkxibdaf", model.displayName());
-        Assertions.assertEquals("kmdyomkxfbvfbh", model.category());
-        Assertions.assertEquals("i", model.description());
-        Assertions.assertEquals("pwpgddei", model.additionalMetadataId());
+        Assertions.assertEquals("jibabxvititvtze", model.name());
+        Assertions.assertEquals("avoxtfg", model.displayName());
+        Assertions.assertEquals("cd", model.category());
+        Assertions.assertEquals("qbw", model.description());
+        Assertions.assertEquals("pqtgsfjac", model.additionalMetadataId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyDefinitionGroup model = new PolicyDefinitionGroup().withName("wjksghudgzhxo")
-            .withDisplayName("ggsvoujkxibdaf")
-            .withCategory("kmdyomkxfbvfbh")
-            .withDescription("i")
-            .withAdditionalMetadataId("pwpgddei");
+        PolicyDefinitionGroup model = new PolicyDefinitionGroup().withName("jibabxvititvtze")
+            .withDisplayName("avoxtfg")
+            .withCategory("cd")
+            .withDescription("qbw")
+            .withAdditionalMetadataId("pqtgsfjac");
         model = BinaryData.fromObject(model).toObject(PolicyDefinitionGroup.class);
-        Assertions.assertEquals("wjksghudgzhxo", model.name());
-        Assertions.assertEquals("ggsvoujkxibdaf", model.displayName());
-        Assertions.assertEquals("kmdyomkxfbvfbh", model.category());
-        Assertions.assertEquals("i", model.description());
-        Assertions.assertEquals("pwpgddei", model.additionalMetadataId());
+        Assertions.assertEquals("jibabxvititvtze", model.name());
+        Assertions.assertEquals("avoxtfg", model.displayName());
+        Assertions.assertEquals("cd", model.category());
+        Assertions.assertEquals("qbw", model.description());
+        Assertions.assertEquals("pqtgsfjac", model.additionalMetadataId());
     }
 }

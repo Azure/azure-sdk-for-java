@@ -86,6 +86,7 @@ public final class AgentsAsyncClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
      *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
@@ -99,9 +100,26 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
      *                 }
      *             }
      *             draft: Boolean (Optional)
@@ -208,9 +226,26 @@ public final class AgentsAsyncClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
+     *             invocations_moderation (Optional): {
+     *                 input_content_type: String(json/text) (Optional)
+     *                 output_content_type: String(json/text) (Optional)
+     *                 response_mode: String(non_streaming/streaming/both) (Required)
+     *                 input_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 output_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 stream_selectors (Optional): [
+     *                      (Optional){
+     *                         event_type: String (Required)
+     *                         text_field: String (Optional)
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
      *     blueprint_reference (Optional): {
@@ -237,9 +272,26 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
+     *             invocations_moderation (Optional): {
+     *                 input_content_type: String(json/text) (Optional)
+     *                 output_content_type: String(json/text) (Optional)
+     *                 response_mode: String(non_streaming/streaming/both) (Required)
+     *                 input_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 output_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 stream_selectors (Optional): [
+     *                      (Optional){
+     *                         event_type: String (Required)
+     *                         text_field: String (Optional)
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
      *     draft: Boolean (Optional)
@@ -369,9 +421,26 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
+     *             invocations_moderation (Optional): {
+     *                 input_content_type: String(json/text) (Optional)
+     *                 output_content_type: String(json/text) (Optional)
+     *                 response_mode: String(non_streaming/streaming/both) (Required)
+     *                 input_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 output_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 stream_selectors (Optional): [
+     *                      (Optional){
+     *                         event_type: String (Required)
+     *                         text_field: String (Optional)
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
      *     draft: Boolean (Optional)
@@ -512,9 +581,26 @@ public final class AgentsAsyncClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
+     *             invocations_moderation (Optional): {
+     *                 input_content_type: String(json/text) (Optional)
+     *                 output_content_type: String(json/text) (Optional)
+     *                 response_mode: String(non_streaming/streaming/both) (Required)
+     *                 input_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 output_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 stream_selectors (Optional): [
+     *                      (Optional){
+     *                         event_type: String (Required)
+     *                         text_field: String (Optional)
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
      *     blueprint_reference (Optional): {
@@ -586,6 +672,7 @@ public final class AgentsAsyncClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
      *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
@@ -599,9 +686,26 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
      *                 }
      *             }
      *             draft: Boolean (Optional)
@@ -706,9 +810,26 @@ public final class AgentsAsyncClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
+     *             invocations_moderation (Optional): {
+     *                 input_content_type: String(json/text) (Optional)
+     *                 output_content_type: String(json/text) (Optional)
+     *                 response_mode: String(non_streaming/streaming/both) (Required)
+     *                 input_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 output_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 stream_selectors (Optional): [
+     *                      (Optional){
+     *                         event_type: String (Required)
+     *                         text_field: String (Optional)
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
      *     blueprint_reference (Optional): {
@@ -727,6 +848,7 @@ public final class AgentsAsyncClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
      *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
@@ -740,9 +862,26 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
      *                 }
      *             }
      *             draft: Boolean (Optional)
@@ -903,6 +1042,7 @@ public final class AgentsAsyncClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
      *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
@@ -916,9 +1056,26 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
      *                 }
      *             }
      *             draft: Boolean (Optional)
@@ -1041,6 +1198,7 @@ public final class AgentsAsyncClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
      *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
@@ -1054,9 +1212,26 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
      *                 }
      *             }
      *             draft: Boolean (Optional)
@@ -1185,9 +1360,26 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
+     *             invocations_moderation (Optional): {
+     *                 input_content_type: String(json/text) (Optional)
+     *                 output_content_type: String(json/text) (Optional)
+     *                 response_mode: String(non_streaming/streaming/both) (Required)
+     *                 input_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 output_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 stream_selectors (Optional): [
+     *                      (Optional){
+     *                         event_type: String (Required)
+     *                         text_field: String (Optional)
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
      *     draft: Boolean (Optional)
@@ -1424,9 +1616,26 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
+     *             invocations_moderation (Optional): {
+     *                 input_content_type: String(json/text) (Optional)
+     *                 output_content_type: String(json/text) (Optional)
+     *                 response_mode: String(non_streaming/streaming/both) (Required)
+     *                 input_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 output_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 stream_selectors (Optional): [
+     *                      (Optional){
+     *                         event_type: String (Required)
+     *                         text_field: String (Optional)
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
      *     draft: Boolean (Optional)
@@ -1560,7 +1769,7 @@ public final class AgentsAsyncClient {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>kind</td><td>String</td><td>No</td><td>Filter agents by kind. If not provided, all agents are returned.
-     * Allowed values: "prompt", "hosted", "workflow", "external".</td></tr>
+     * Allowed values: "prompt", "hosted", "workflow", "external", "voice".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -1586,6 +1795,7 @@ public final class AgentsAsyncClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
      *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
@@ -1599,9 +1809,26 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
      *                 }
      *             }
      *             draft: Boolean (Optional)
@@ -1776,9 +2003,7 @@ public final class AgentsAsyncClient {
      *     id: String (Required)
      *     object: String (Required)
      *     metadata (Required): {
-     *          (Optional): {
-     *             String: String (Required)
-     *         }
+     *         String: String (Required)
      *     }
      *     created_at: long (Required)
      * }
@@ -2333,6 +2558,7 @@ public final class AgentsAsyncClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
      *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
@@ -2346,9 +2572,26 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
      *                 }
      *             }
      *             draft: Boolean (Optional)
@@ -2592,6 +2835,7 @@ public final class AgentsAsyncClient {
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
+     *     stopped_at: Long (Optional)
      * }
      * }
      * </pre>
@@ -2630,6 +2874,7 @@ public final class AgentsAsyncClient {
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
+     *     stopped_at: Long (Optional)
      * }
      * }
      * </pre>
@@ -2733,6 +2978,7 @@ public final class AgentsAsyncClient {
      *     created_at: long (Required)
      *     last_accessed_at: long (Required)
      *     expires_at: long (Required)
+     *     stopped_at: Long (Optional)
      * }
      * }
      * </pre>
@@ -4379,6 +4625,7 @@ public final class AgentsAsyncClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
      *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
@@ -4392,9 +4639,26 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
      *                 }
      *             }
      *             draft: Boolean (Optional)
@@ -4509,6 +4773,7 @@ public final class AgentsAsyncClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     configuration_state: String(enabled/disabled) (Required)
      *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
@@ -4522,9 +4787,26 @@ public final class AgentsAsyncClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/workflow/external) (Required)
+     *                 kind: String(prompt/hosted/workflow/external/voice) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
+     *                     invocations_moderation (Optional): {
+     *                         input_content_type: String(json/text) (Optional)
+     *                         output_content_type: String(json/text) (Optional)
+     *                         response_mode: String(non_streaming/streaming/both) (Required)
+     *                         input_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         output_paths (Optional): [
+     *                             String (Optional)
+     *                         ]
+     *                         stream_selectors (Optional): [
+     *                              (Optional){
+     *                                 event_type: String (Required)
+     *                                 text_field: String (Optional)
+     *                             }
+     *                         ]
+     *                     }
      *                 }
      *             }
      *             draft: Boolean (Optional)
@@ -4648,9 +4930,26 @@ public final class AgentsAsyncClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/workflow/external) (Required)
+     *         kind: String(prompt/hosted/workflow/external/voice) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
+     *             invocations_moderation (Optional): {
+     *                 input_content_type: String(json/text) (Optional)
+     *                 output_content_type: String(json/text) (Optional)
+     *                 response_mode: String(non_streaming/streaming/both) (Required)
+     *                 input_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 output_paths (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 stream_selectors (Optional): [
+     *                      (Optional){
+     *                         event_type: String (Required)
+     *                         text_field: String (Optional)
+     *                     }
+     *                 ]
+     *             }
      *         }
      *     }
      *     draft: Boolean (Optional)

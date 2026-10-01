@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class QueueDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01/QueueOperationDelete.json
+     * x-ms-original-file: 2026-06-01/QueueOperationDelete.json
      */
     /**
      * Sample code: QueueOperationDelete.

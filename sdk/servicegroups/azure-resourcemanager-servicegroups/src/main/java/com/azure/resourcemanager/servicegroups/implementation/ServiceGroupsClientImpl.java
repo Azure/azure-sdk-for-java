@@ -11,7 +11,6 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -23,7 +22,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.servicegroups.fluent.ServiceGroupsClient;
-import com.azure.resourcemanager.servicegroups.fluent.models.ServiceGroupCollectionResponseInner;
 import com.azure.resourcemanager.servicegroups.fluent.models.ServiceGroupInner;
 import reactor.core.publisher.Mono;
 
@@ -72,22 +70,6 @@ public final class ServiceGroupsClientImpl implements ServiceGroupsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<ServiceGroupInner> getSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("serviceGroupName") String serviceGroupName,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Post("/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/listAncestors")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceGroupCollectionResponseInner>> listAncestors(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("serviceGroupName") String serviceGroupName,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Post("/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/listAncestors")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ServiceGroupCollectionResponseInner> listAncestorsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("serviceGroupName") String serviceGroupName,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -153,71 +135,5 @@ public final class ServiceGroupsClientImpl implements ServiceGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceGroupInner get(String serviceGroupName) {
         return getWithResponse(serviceGroupName, Context.NONE).getValue();
-    }
-
-    /**
-     * Get the details of the serviceGroup's ancestors.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the serviceGroup's ancestors along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServiceGroupCollectionResponseInner>>
-        listAncestorsWithResponseAsync(String serviceGroupName) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listAncestors(this.client.getEndpoint(), this.client.getApiVersion(),
-                serviceGroupName, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the details of the serviceGroup's ancestors.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the serviceGroup's ancestors on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServiceGroupCollectionResponseInner> listAncestorsAsync(String serviceGroupName) {
-        return listAncestorsWithResponseAsync(serviceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get the details of the serviceGroup's ancestors.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the serviceGroup's ancestors along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceGroupCollectionResponseInner> listAncestorsWithResponse(String serviceGroupName,
-        Context context) {
-        final String accept = "application/json";
-        return service.listAncestorsSync(this.client.getEndpoint(), this.client.getApiVersion(), serviceGroupName,
-            accept, context);
-    }
-
-    /**
-     * Get the details of the serviceGroup's ancestors.
-     * 
-     * @param serviceGroupName ServiceGroup Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the serviceGroup's ancestors.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceGroupCollectionResponseInner listAncestors(String serviceGroupName) {
-        return listAncestorsWithResponse(serviceGroupName, Context.NONE).getValue();
     }
 }

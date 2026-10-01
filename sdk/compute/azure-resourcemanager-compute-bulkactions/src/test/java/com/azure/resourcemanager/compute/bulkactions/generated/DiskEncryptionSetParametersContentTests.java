@@ -12,14 +12,14 @@ public final class DiskEncryptionSetParametersContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiskEncryptionSetParametersContent model
-            = BinaryData.fromString("{\"id\":\"ywpmueefjzwfqkq\"}").toObject(DiskEncryptionSetParametersContent.class);
-        Assertions.assertEquals("ywpmueefjzwfqkq", model.id());
+            = BinaryData.fromString("{\"id\":\"xqpvfadmw\"}").toObject(DiskEncryptionSetParametersContent.class);
+        Assertions.assertEquals("xqpvfadmw", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskEncryptionSetParametersContent model = new DiskEncryptionSetParametersContent().withId("ywpmueefjzwfqkq");
+        DiskEncryptionSetParametersContent model = new DiskEncryptionSetParametersContent().withId("xqpvfadmw");
         model = BinaryData.fromObject(model).toObject(DiskEncryptionSetParametersContent.class);
-        Assertions.assertEquals("ywpmueefjzwfqkq", model.id());
+        Assertions.assertEquals("xqpvfadmw", model.id());
     }
 }

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.compute.models.GalleryImageVersionState;
 import com.azure.resourcemanager.compute.models.PirCommunityGalleryResource;
 import com.azure.resourcemanager.compute.models.SharedGalleryImageVersionStorageProfile;
 import java.io.IOException;
@@ -162,6 +163,26 @@ public final class CommunityGalleryImageVersionInner extends PirCommunityGallery
      */
     public Map<String, String> artifactTags() {
         return this.innerProperties() == null ? null : this.innerProperties().artifactTags();
+    }
+
+    /**
+     * Get the consumptionEndTime property: The timestamp after which a soft-deleted gallery image version is no longer
+     * consumable for VM/VMSS creation or VMSS scale out. It is calculated from the soft-deleted time plus the retention
+     * period, and is not present for active gallery image versions. In dateTime offset format.
+     * 
+     * @return the consumptionEndTime value.
+     */
+    public OffsetDateTime consumptionEndTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().consumptionEndTime();
+    }
+
+    /**
+     * Get the imageState property: The state of the gallery image version, derived from its soft-delete status.
+     * 
+     * @return the imageState value.
+     */
+    public GalleryImageVersionState imageState() {
+        return this.innerProperties() == null ? null : this.innerProperties().imageState();
     }
 
     /**

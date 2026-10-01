@@ -52,6 +52,16 @@ public final class ApplicationGatewaySkuName extends ExpandableStringEnum<Applic
     public static final ApplicationGatewaySkuName BASIC = fromString("Basic");
 
     /**
+     * Basic tier Application Gateway.
+     */
+    public static final ApplicationGatewaySkuName BASIC_V2 = fromString("Basic_v2");
+
+    /**
+     * Basic tier Application Gateway with WAF enabled.
+     */
+    public static final ApplicationGatewaySkuName BASIC_WAF_V2 = fromString("Basic_WAF_v2");
+
+    /**
      * Creates a new instance of ApplicationGatewaySkuName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

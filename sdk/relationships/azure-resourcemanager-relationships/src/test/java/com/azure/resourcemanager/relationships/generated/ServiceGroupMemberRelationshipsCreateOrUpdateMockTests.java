@@ -11,7 +11,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.relationships.RelationshipsManager;
 import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationship;
-import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationshipProperties;
+import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationshipPropertiesV2;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +22,7 @@ public final class ServiceGroupMemberRelationshipsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sourceId\":\"kcprbnw\",\"targetId\":\"xgjvtbv\",\"targetTenant\":\"sszdnru\",\"originInformation\":{\"relationshipOriginType\":\"SystemDiscoveredByRule\",\"discoveryEngine\":\"uhmuouqfprwzwbn\"},\"metadata\":{\"sourceType\":\"uitnwuiz\",\"targetType\":\"a\"},\"provisioningState\":\"Succeeded\"},\"id\":\"izuckyfihrfidfvz\",\"name\":\"dzuhtymwi\",\"type\":\"dkfthwxmnt\"}";
+            = "{\"properties\":{\"sourceId\":\"cxgod\",\"targetId\":\"fqkkr\",\"sourceTenant\":\"pukgriwflzlfb\",\"originInformation\":{\"relationshipOriginType\":\"ServiceExplicitlyCreated\",\"discoveryEngine\":\"zycispn\"},\"metadata\":{\"sourceType\":\"ahmgkbrp\",\"targetType\":\"y\"},\"provisioningState\":\"Succeeded\"},\"id\":\"nuqqkpikadrgvt\",\"name\":\"agnb\",\"type\":\"ynhijggme\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,13 @@ public final class ServiceGroupMemberRelationshipsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServiceGroupMemberRelationship response = manager.serviceGroupMemberRelationships()
-            .define("bjf")
-            .withExistingResourceUri("bmdg")
-            .withProperties(new ServiceGroupMemberRelationshipProperties().withTargetId("q").withTargetTenant("ol"))
+            .define("ctq")
+            .withExistingResourceUri("fcivfsnkym")
+            .withProperties(new ServiceGroupMemberRelationshipPropertiesV2().withSourceId("fbebrjcxer")
+                .withSourceTenant("hxepcyvahfnlj"))
             .create();
 
-        Assertions.assertEquals("xgjvtbv", response.properties().targetId());
-        Assertions.assertEquals("sszdnru", response.properties().targetTenant());
+        Assertions.assertEquals("cxgod", response.properties().sourceId());
+        Assertions.assertEquals("pukgriwflzlfb", response.properties().sourceTenant());
     }
 }

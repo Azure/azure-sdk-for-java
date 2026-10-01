@@ -13,58 +13,79 @@ import com.azure.resourcemanager.compute.bulkactions.models.ResourceWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.Resources;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourcesWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class ExecuteStartContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteStartContent model = BinaryData.fromString(
-            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":1786606148,\"retryWindowInMinutes\":177005491,\"onFailureAction\":\"Start\"},\"verifyVmAgentHealth\":true,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"bdxkqpxokaj\",\"onpimexgstxg\"],\"desiredSizes\":[\"dg\",\"aajrm\",\"djwzrlov\",\"clwhijcoejctbz\"],\"availabilityZones\":false}},\"resources\":{\"ids\":[\"y\",\"bkbfkgukdkex\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"ofmx\",\"resourceContext\":\"x\"}]}}")
+            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":623997191,\"retryWindowInMinutes\":1234306466,\"onFailureAction\":\"Deallocate\"},\"verifyVmAgentHealth\":true,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"gqexzlocxs\",\"paierh\"],\"desiredSizes\":[\"sglumma\",\"tjaodxobnb\"],\"availabilityZones\":false},\"additionalCreateParameters\":{\"ajionpimexgstxg\":\"\\\"dataxo\\\"\",\"gmaajrm\":\"\\\"datapo\\\"\",\"clwhijcoejctbz\":\"\\\"datadjwzrlov\\\"\"}},\"resources\":{\"ids\":[\"qsycbkbfkgu\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"exxppofmxaxcfjp\",\"resourceContext\":\"ddtocjjxhvp\"},{\"resourceId\":\"o\",\"resourceContext\":\"exhd\"}]}}")
             .toObject(ExecuteStartContent.class);
-        Assertions.assertEquals(1786606148, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(177005491, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.START,
+        Assertions.assertEquals(623997191, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1234306466, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DEALLOCATE,
             model.executionParameters().retryPolicy().onFailureAction());
         Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
-        Assertions.assertEquals("bdxkqpxokaj",
+        Assertions.assertEquals("gqexzlocxs",
             model.executionParameters().capacityRecommendationParameters().desiredLocations().get(0));
-        Assertions.assertEquals("dg",
+        Assertions.assertEquals("sglumma",
             model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
         Assertions.assertFalse(model.executionParameters().capacityRecommendationParameters().availabilityZones());
-        Assertions.assertEquals("y", model.resources().ids().get(0));
-        Assertions.assertEquals("ofmx", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("x", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertEquals("qsycbkbfkgu", model.resources().ids().get(0));
+        Assertions.assertEquals("exxppofmxaxcfjp", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("ddtocjjxhvp", model.resourcesWithContext().resources().get(0).resourceContext());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecuteStartContent model = new ExecuteStartContent()
-            .withExecutionParameters(new ExecutionParameters()
-                .withRetryPolicy(new RetryPolicy().withRetryCount(1786606148)
-                    .withRetryWindowInMinutes(177005491)
-                    .withOnFailureAction(ResourceOperationType.START))
-                .withVerifyVmAgentHealth(true)
-                .withCapacityRecommendationParameters(new CapacityRecommendationParameters()
-                    .withDesiredLocations(Arrays.asList("bdxkqpxokaj", "onpimexgstxg"))
-                    .withDesiredSizes(Arrays.asList("dg", "aajrm", "djwzrlov", "clwhijcoejctbz"))
-                    .withAvailabilityZones(false)))
-            .withResources(new Resources().withIds(Arrays.asList("y", "bkbfkgukdkex")))
-            .withResourcesWithContext(new ResourcesWithContext().withResources(
-                Arrays.asList(new ResourceWithContext().withResourceId("ofmx").withResourceContext("x"))));
+        ExecuteStartContent model
+            = new ExecuteStartContent()
+                .withExecutionParameters(new ExecutionParameters()
+                    .withRetryPolicy(new RetryPolicy().withRetryCount(623997191)
+                        .withRetryWindowInMinutes(1234306466)
+                        .withOnFailureAction(ResourceOperationType.DEALLOCATE))
+                    .withVerifyVmAgentHealth(true)
+                    .withCapacityRecommendationParameters(new CapacityRecommendationParameters()
+                        .withDesiredLocations(Arrays.asList("gqexzlocxs", "paierh"))
+                        .withDesiredSizes(Arrays.asList("sglumma", "tjaodxobnb"))
+                        .withAvailabilityZones(false))
+                    .withAdditionalCreateParameters(mapOf("ajionpimexgstxg",
+                        BinaryData.fromBytes("\"dataxo\"".getBytes(StandardCharsets.UTF_8)), "gmaajrm",
+                        BinaryData.fromBytes("\"datapo\"".getBytes(StandardCharsets.UTF_8)), "clwhijcoejctbz",
+                        BinaryData.fromBytes("\"datadjwzrlov\"".getBytes(StandardCharsets.UTF_8)))))
+                .withResources(new Resources().withIds(Arrays.asList("qsycbkbfkgu")))
+                .withResourcesWithContext(new ResourcesWithContext().withResources(Arrays.asList(
+                    new ResourceWithContext().withResourceId("exxppofmxaxcfjp").withResourceContext("ddtocjjxhvp"),
+                    new ResourceWithContext().withResourceId("o").withResourceContext("exhd"))));
         model = BinaryData.fromObject(model).toObject(ExecuteStartContent.class);
-        Assertions.assertEquals(1786606148, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(177005491, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.START,
+        Assertions.assertEquals(623997191, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1234306466, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DEALLOCATE,
             model.executionParameters().retryPolicy().onFailureAction());
         Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
-        Assertions.assertEquals("bdxkqpxokaj",
+        Assertions.assertEquals("gqexzlocxs",
             model.executionParameters().capacityRecommendationParameters().desiredLocations().get(0));
-        Assertions.assertEquals("dg",
+        Assertions.assertEquals("sglumma",
             model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
         Assertions.assertFalse(model.executionParameters().capacityRecommendationParameters().availabilityZones());
-        Assertions.assertEquals("y", model.resources().ids().get(0));
-        Assertions.assertEquals("ofmx", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("x", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertEquals("qsycbkbfkgu", model.resources().ids().get(0));
+        Assertions.assertEquals("exxppofmxaxcfjp", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("ddtocjjxhvp", model.resourcesWithContext().resources().get(0).resourceContext());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
