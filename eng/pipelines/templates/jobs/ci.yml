@@ -136,14 +136,12 @@ jobs:
 
       # This step needs to run before we update to using dev versions otherwise dependency
       # check in the script will not fully work because the versions will mismatch
-      - task: PowerShell@2
-        displayName: Generate directories variable for sparse checkout
+      - task: PythonScript@0
+        displayName: Generate build POM and directories for sparse checkout
         inputs:
-          pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
-          arguments: >
-            -SourcesDirectory $(Build.SourcesDirectory)
-            -ProjectList $(ProjectList)
+          scriptPath: eng/scripts/generate_scopred_pom.py
+          arguments: '--artifacts-list $(ArtifactsList) --from-source false --additional-modules-list $(AdditionalModulesList)'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
 
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
@@ -220,9 +218,9 @@ jobs:
       - task: Maven@4
         displayName: 'Build and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
         inputs:
-          mavenPomFile: pom.xml
+          mavenPomFile: ClientPom.xml
           goals: 'deploy'
-          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dspotless.apply.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dspotless.apply.skip=true -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: ${{ parameters.JavaBuildVersion }}
@@ -347,6 +345,13 @@ jobs:
           JobType: 'Analyze'
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           ExcludePaths: ${{parameters.ExcludePaths}}
+
+      - task: PythonScript@0
+        displayName: Generate build POM for analysis and cleanup
+        inputs:
+          scriptPath: eng/scripts/generate_scopred_pom.py
+          arguments: '--artifacts-list $(ArtifactsList) --from-source false --additional-modules-list $(AdditionalModulesList)'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
 
       - task: PowerShell@2
         displayName: Generate directories variable for sparse checkout

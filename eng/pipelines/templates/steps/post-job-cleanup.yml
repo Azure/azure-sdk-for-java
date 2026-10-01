@@ -13,28 +13,14 @@ steps:
   - task: Maven@4
     displayName: 'Clean after tests'
     inputs:
-      mavenPomFile: pom.xml
-      options: '$(DefaultTestOptions) -T 1C'
+      mavenPomFile: ClientPom.xml
+      options: '$(DefaultOptions) $(DefaultSkipOptions) -T 1C'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'clean'
-    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
-
-  - task: Maven@4
-    displayName: 'Clean after tests for From Source run'
-    inputs:
-      mavenPomFile: ClientFromSourcePom.xml
-      options: $(DefaultTestOptions) -amd -T 1C
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaTestVersion)
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-      goals: 'clean'
-    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   # Clean up .assets folder to reduce scope of what may be scanned. .assets come another repository with scanning and
   # don't need to waste time during scanning.

@@ -38,51 +38,33 @@ steps:
   - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
   - task: Maven@4
-    displayName: 'Build for non-From Source run'
+    displayName: 'Build'
     inputs:
-      mavenPomFile: pom.xml
-      options: $(DefaultOptions) $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am -Pnative
+      mavenPomFile: ClientPom.xml
+      options: $(DefaultOptions) $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -Pnative
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'Path'
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       publishJUnitResults: false
       goals: 'install'
     env: ${{ parameters.TestEnvVars }}
-    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
-
-  - task: Maven@4
-    displayName: 'Build for From Source run'
-    inputs:
-      mavenPomFile: ClientFromSourcePom.xml
-      goals: 'install'
-      # Build and install every track 2, client, library. The purpose is to have all the libraries installed on the
-      # machine, so we can simply run tests with the -amd switch and we can remove the SNAFU of dependencies that
-      # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
-      # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
-      # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
-      options: '$(DefaultOptions) $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -Pnative'
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'Path'
-      jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
-      publishJUnitResults: false
-    env: ${{ parameters.TestEnvVars }}
-    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - ${{ parameters.PreTestRunSteps }}
 
   - task: Maven@4
     displayName: 'Run tests'
     inputs:
-      mavenPomFile: pom.xml
-      options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} -Pnative'
+      mavenPomFile: ClientPom.xml
+      ${{ if eq(parameters.IsLiveTest, 'true') }}:
+        options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} -Pnative'
+      ${{ else }}:
+        options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }} -Pnative'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'Path'
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       publishJUnitResults: false
       goals: ${{ parameters.TestGoals }}
     env: ${{ parameters.TestEnvVars }}
-    # we want to run this when TestFromSource isn't true
-    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
@@ -103,28 +85,6 @@ steps:
       javaHomeOption: 'Path'
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       goals: jacoco:report-aggregate
-
-  - task: Maven@4
-    displayName: 'Run tests for From Source run'
-    inputs:
-      mavenPomFile: ClientFromSourcePom.xml
-      # For the "From Source" runs we don't want the -am switch as we don't care about running tests for our
-      # dependencies, but we do want the -amd switch because we want to run tests on things that depend on us.
-      ${{ if eq(parameters.IsLiveTest, 'true') }}:
-        options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} -Pnative'
-      ${{ else }}:
-        options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }} -Pnative'
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'Path'
-      jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
-      publishJUnitResults: false
-      # The "From Source" runs only care about running tests for libraries within an SDK/area
-      # as well as libraries which depend on them and not the other stages in the Maven
-      # lifecycle that test or verify targets would execute. The libraries were already
-      # compiled and installed in the previous task, this tasks only runs tests.
-      goals: ${{ parameters.TestGoals }}
-    env: ${{ parameters.TestEnvVars }}
-    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - template: /eng/pipelines/templates/steps/retain-test-logs.yml
 

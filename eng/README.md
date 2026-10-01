@@ -10,6 +10,31 @@ All the tools/utilities used in Microsoft Azure Java SDK's build config are defi
 
 - `lintingconfigs` - CheckStyle and SpotBugs rule configurations.
 
+## Aggregate Build POMs
+
+[generate_scopred_pom.py](scripts/generate_scopred_pom.py) writes `ClientPom.xml` at the repository root for
+both regular and source builds. Run it from the repository root:
+
+```powershell
+python eng/scripts/generate_scopred_pom.py --artifacts-list com.azure:azure-core --from-source false
+mvn -f ClientPom.xml install -DskipTests
+```
+
+Both modes include the requested artifacts, any `--additional-modules-list` artifacts, their required source-version
+dependencies, and local parent POMs. `--from-source true` also includes transitively dependent projects; this is the
+default. Source-testing pipelines prepare dependency versions before generating the POM.
+
+CI packaging, linting, standard tests, native tests, federated-auth tests, and cleanup use the generated POM rather
+than separate source and non-source Maven tasks. Test project selectors remain in place so live tests run only for
+packages whose resources were provisioned. `TestFromSource` controls version preparation and dependent-project
+selection, not a separate build/test path.
+
+Run the generator regression tests with:
+
+```powershell
+python -m unittest discover -s eng/scripts -p test_generate_scopred_pom.py -v
+```
+
 ## PR Documentation Validation
 
 The unified Java PR pipeline excludes `docs/**`, shared `.github/skills/azsdk-common-*/**` content, and exactly

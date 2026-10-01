@@ -33,3 +33,10 @@ extends:
   parameters:
     TargetDirectory: eng/scripts/
     TargetTags: 'UnitTest'
+    PreTestSteps:
+      - task: UsePythonVersion@0
+        displayName: 'Use Python $(PythonVersion)'
+        inputs:
+          versionSpec: $(PythonVersion)
+      - script: python -m unittest discover -s eng/scripts -p test_generate_scopred_pom.py -v
+        displayName: Test aggregate build POM generation

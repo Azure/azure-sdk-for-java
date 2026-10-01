@@ -81,7 +81,7 @@ Describe 'Native sparse checkout expansion' -Tag 'UnitTest' {
         New-Item -ItemType Directory -Path $repositoryPath | Out-Null
         $files = @(
             'pom.xml'
-            'ClientFromSourcePom.xml'
+            'ClientPom.xml'
             'eng/build.ps1'
             '.config/settings.yml'
             '.config/data.bin'
@@ -113,8 +113,8 @@ Describe 'Native sparse checkout expansion' -Tag 'UnitTest' {
         Test-Path (Join-Path $repositoryPath 'sdk/selected/src/Main.java') | Should -BeFalse
         $pomPath = Join-Path $repositoryPath 'pom.xml'
         Set-Content -LiteralPath $pomPath -Value 'updated version' -NoNewline
-        $sourcePomPath = Join-Path $repositoryPath 'ClientFromSourcePom.xml'
-        Set-Content -LiteralPath $sourcePomPath -Value 'source build modules' -NoNewline
+        $buildPomPath = Join-Path $repositoryPath 'ClientPom.xml'
+        Set-Content -LiteralPath $buildPomPath -Value 'build modules' -NoNewline
         $generatedPath = Join-Path $repositoryPath 'generated-pom.xml'
         Set-Content -LiteralPath $generatedPath -Value 'generated POM' -NoNewline
         $originalHead = Invoke-TestGit $repositoryPath @('rev-parse', 'HEAD')
@@ -130,7 +130,7 @@ Describe 'Native sparse checkout expansion' -Tag 'UnitTest' {
         Restore-CheckoutState $repositoryPath
 
         Get-Content -LiteralPath $pomPath -Raw | Should -BeExactly 'updated version'
-        Get-Content -LiteralPath $sourcePomPath -Raw | Should -BeExactly 'source build modules'
+        Get-Content -LiteralPath $buildPomPath -Raw | Should -BeExactly 'build modules'
         Get-Content -LiteralPath $generatedPath -Raw | Should -BeExactly 'generated POM'
         Test-Path (Join-Path $repositoryPath 'sdk/selected/src/Main.java') | Should -BeTrue
         Test-Path (Join-Path $repositoryPath 'sdk/unselected/src/Other.java') | Should -BeFalse

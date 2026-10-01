@@ -6,13 +6,14 @@ $additionalModulesList = @()
 
 # If ProjectListOverride is set (e.g., from matrix variables), use it directly
 # to avoid building unnecessary modules in jobs that only test a subset.
-# Do not honor ProjectListOverride for FromSource runs — FromSource builds use
-# ClientFromSourcePom.xml which builds all libraries and the project list must
+# Do not honor ProjectListOverride for FromSource runs, which include dependent
+# libraries in ClientPom.xml, and the project list must
 # be computed from the artifacts, not overridden.
 if ($env:PROJECTLISTOVERRIDE -and $env:PROJECTLISTOVERRIDE -notlike '*ProjectListOverride*') {
   if ($env:TESTFROMSOURCE -eq 'true') {
     Write-Host "Ignoring ProjectListOverride for FromSource run (TestFromSource=true)"
-  } else {
+  }
+  else {
     $projects = $env:PROJECTLISTOVERRIDE
     Write-Host "Using ProjectListOverride = $projects"
     Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
@@ -65,22 +66,23 @@ if ($projectList.Length -eq 0 -and $ENV:PACKAGEINFODIR) {
       [array]$pkgInfoFiles = Get-ChildItem -Path $ENV:PACKAGEINFODIR "$($artifactPackageName).json"
       if ($pkgInfoFiles) {
         $packageInfoFiles += $pkgInfoFiles
-      } else {
+      }
+      else {
         LogError "No PackageInfo file found for $artifactPackageName"
       }
     }
-  } else {
+  }
+  else {
     $packageInfoFiles = Get-ChildItem -Path $ENV:PACKAGEINFODIR "*.json"
   }
-  foreach($packageInfoFile in $packageInfoFiles) {
+  foreach ($packageInfoFile in $packageInfoFiles) {
     $packageInfoJson = Get-Content $packageInfoFile -Raw
     $packageInfo = ConvertFrom-Json $packageInfoJson
     $fullArtifactName = "$($packageInfo.Group):$($packageInfo.ArtifactName)"
     $projectList += $fullArtifactName
     $artifactsList += $fullArtifactName
     # The AdditionalValidationPackages are stored as <group>:<artifact>
-    foreach($additionalModule in $packageInfo.AdditionalValidationPackages)
-    {
+    foreach ($additionalModule in $packageInfo.AdditionalValidationPackages) {
       $projectList += $additionalModule
       $additionalModulesList += $additionalModule
     }
@@ -90,7 +92,7 @@ if ($projectList.Length -eq 0 -and $ENV:PACKAGEINFODIR) {
 $projectList = $projectList | Select-Object -Unique
 $projects = $projectList -join ','
 if (!$projects) {
-    throw "parameters.Artifacts cannot be empty"
+  throw "parameters.Artifacts cannot be empty"
 }
 
 $artifactsList = $artifactsList | Select-Object -Unique
