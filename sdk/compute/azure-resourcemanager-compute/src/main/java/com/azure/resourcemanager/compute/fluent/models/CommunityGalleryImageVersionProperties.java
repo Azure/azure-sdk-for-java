@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.compute.models.GalleryImageVersionState;
 import com.azure.resourcemanager.compute.models.SharedGalleryImageVersionStorageProfile;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -54,6 +55,18 @@ public final class CommunityGalleryImageVersionProperties
      * The artifact tags of a community gallery resource.
      */
     private Map<String, String> artifactTags;
+
+    /*
+     * The timestamp after which a soft-deleted gallery image version is no longer consumable for VM/VMSS creation or
+     * VMSS scale out. It is calculated from the soft-deleted time plus the retention period, and is not present for
+     * active gallery image versions. In dateTime offset format.
+     */
+    private OffsetDateTime consumptionEndTime;
+
+    /*
+     * The state of the gallery image version, derived from its soft-delete status.
+     */
+    private GalleryImageVersionState imageState;
 
     /**
      * Creates an instance of CommunityGalleryImageVersionProperties class.
@@ -119,6 +132,26 @@ public final class CommunityGalleryImageVersionProperties
     }
 
     /**
+     * Get the consumptionEndTime property: The timestamp after which a soft-deleted gallery image version is no longer
+     * consumable for VM/VMSS creation or VMSS scale out. It is calculated from the soft-deleted time plus the retention
+     * period, and is not present for active gallery image versions. In dateTime offset format.
+     * 
+     * @return the consumptionEndTime value.
+     */
+    public OffsetDateTime consumptionEndTime() {
+        return this.consumptionEndTime;
+    }
+
+    /**
+     * Get the imageState property: The state of the gallery image version, derived from its soft-delete status.
+     * 
+     * @return the imageState value.
+     */
+    public GalleryImageVersionState imageState() {
+        return this.imageState;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -179,6 +212,12 @@ public final class CommunityGalleryImageVersionProperties
                 } else if ("artifactTags".equals(fieldName)) {
                     Map<String, String> artifactTags = reader.readMap(reader1 -> reader1.getString());
                     deserializedCommunityGalleryImageVersionProperties.artifactTags = artifactTags;
+                } else if ("consumptionEndTime".equals(fieldName)) {
+                    deserializedCommunityGalleryImageVersionProperties.consumptionEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("imageState".equals(fieldName)) {
+                    deserializedCommunityGalleryImageVersionProperties.imageState
+                        = GalleryImageVersionState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

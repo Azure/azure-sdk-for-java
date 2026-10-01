@@ -79,10 +79,10 @@ public class RealtimeSessionConfigurationBase implements JsonSerializable<Realti
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("transcription".equals(discriminatorValue)) {
-                    return RealtimeTranscriptionSessionConfiguration.fromJson(readerToUse.reset());
-                } else if ("realtime".equals(discriminatorValue)) {
+                if ("realtime".equals(discriminatorValue)) {
                     return RealtimeSessionConfiguration.fromJson(readerToUse.reset());
+                } else if ("transcription".equals(discriminatorValue)) {
+                    return RealtimeTranscriptionSessionConfiguration.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

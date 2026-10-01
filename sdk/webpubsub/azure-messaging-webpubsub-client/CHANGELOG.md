@@ -14,7 +14,7 @@
 
 #### Dependency Updates
 
-- Upgraded `netty-codec-http` from `4.1.135.Final` to version `4.1.136.Final`.
+- Upgraded `netty-codec-http` from `4.1.137.Final` to version `4.1.138.Final`.
 
 ## 1.1.10 (2026-08-18)
 
