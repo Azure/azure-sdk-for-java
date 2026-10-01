@@ -7,12 +7,6 @@ import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -23,7 +17,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -54,23 +47,13 @@ public class SessionLogStreamAsyncSample {
             .flatMap(resources -> {
                 resourcesRef.set(resources);
 
-                AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100)
-                            .setAgentVersion(resources.getAgent().getVersion()))))
-                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
-
                 OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
-                return agentsAsyncClient.updateAgentDetails(agentName,
-                    new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig))
-                    .doOnNext(updated -> System.out.printf("Agent endpoint configured for agent: %s%n",
-                        updated.getName()))
-                    .then(Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
+                return Mono.fromFuture(() -> openAIAsyncClient.responses().create(ResponseCreateParams.builder()
                         .input("Say hello in one short sentence.")
                         .putAdditionalBodyProperty("agent_session_id",
                             JsonValue.from(resources.getSession().getAgentSessionId()))
-                        .build())))
+                        .build()))
                     .doOnNext(HostedAgentsSampleUtils::printResponseOutput)
                     .then(agentsAsyncClient.getSessionLogStreamWithResponse(agentName, resources.getAgent().getVersion(),
                         resources.getSession().getAgentSessionId(), new RequestOptions()))

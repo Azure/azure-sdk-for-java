@@ -7,12 +7,6 @@ import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
-import com.azure.ai.agents.models.AgentEndpointConfig;
-import com.azure.ai.agents.models.FixedRatioVersionSelectionRule;
-import com.azure.ai.agents.models.ProtocolConfiguration;
-import com.azure.ai.agents.models.ResponsesProtocolConfiguration;
-import com.azure.ai.agents.models.UpdateAgentDetailsOptions;
-import com.azure.ai.agents.models.VersionSelector;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
@@ -21,13 +15,12 @@ import com.openai.models.responses.ResponseCreateParams;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * This sample demonstrates configuring a hosted agent endpoint and invoking it using the async OpenAI client.
+ * This sample demonstrates invoking a hosted agent's default endpoint using the async OpenAI client.
  *
- * <p>Agent endpoints and sessions are currently preview features and only work with hosted agents.</p>
+ * <p>Hosted-agent sessions are currently a preview feature.</p>
  *
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
@@ -53,23 +46,13 @@ public class AgentEndpointAsyncSample {
             .flatMap(resources -> {
                 resourcesRef.set(resources);
 
-                AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-                    .setVersionSelector(new VersionSelector().setVersionSelectionRules(Collections.singletonList(
-                        new FixedRatioVersionSelectionRule(100)
-                            .setAgentVersion(resources.getAgent().getVersion()))))
-                    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
-
                 OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
-                return agentsAsyncClient.updateAgentDetails(agentName,
-                    new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig))
-                    .doOnNext(updated -> System.out.printf("Agent endpoint configured for agent: %s%n",
-                        updated.getName()))
-                    .then(Mono.fromFuture(openAIAsyncClient.responses().create(ResponseCreateParams.builder()
+                return Mono.fromFuture(() -> openAIAsyncClient.responses().create(ResponseCreateParams.builder()
                         .input("What is the size of France in square miles?")
                         .putAdditionalBodyProperty("agent_session_id",
                             JsonValue.from(resources.getSession().getAgentSessionId()))
-                        .build())))
+                        .build()))
                     .doOnNext(HostedAgentsSampleUtils::printResponseOutput)
                     .then();
             });

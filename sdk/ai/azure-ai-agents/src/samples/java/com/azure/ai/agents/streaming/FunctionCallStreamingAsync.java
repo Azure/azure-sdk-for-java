@@ -5,7 +5,6 @@ package com.azure.ai.agents.streaming;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FunctionTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -91,11 +90,10 @@ public class FunctionCallStreamingAsync {
                 // Stream response asynchronously with function tool
                 ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
-                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
-                    .flatMapMany(ignored -> StreamingResponseUtils.toFlux(
-                        openAIAsyncClient.responses().createStreaming(ResponseCreateParams.builder()
-                            .input("What's the weather like in Seattle?")
-                            .build())))
+                return StreamingResponseUtils.toFlux(
+                    openAIAsyncClient.responses().createStreaming(ResponseCreateParams.builder()
+                        .input("What's the weather like in Seattle?")
+                        .build()))
                     .doOnNext(event -> {
                         responseAccumulator.accumulate(event);
                         // Print text deltas as they arrive

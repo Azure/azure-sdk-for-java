@@ -67,7 +67,7 @@ The Agents client library has the following sub-clients which group the differen
   optimization does not require a preview feature header. When `allowPreview(true)` is configured, these clients can
   also use preview definitions, hosted-agent sessions, session files, and code package operations.
 - `BetaAgentsClient` / `BetaAgentsAsyncClient` **(preview)**: Generate and create agents from high-level prompts.
-- `ResponsesClient` / `ResponsesAsyncClient`: Create responses that require Azure-specific request fields, such as an explicit `AgentReference` or structured inputs. For standard OpenAI Responses API calls through a configured agent endpoint, use an agent-scoped OpenAI client. See the [OpenAI Responses API documentation][openai_responses_api_docs] for more information.
+- `ResponsesClient` / `ResponsesAsyncClient`: Create responses that require Azure-specific request fields, such as an explicit `AgentReference` or structured inputs. For standard OpenAI Responses API calls through an agent endpoint, use an agent-scoped OpenAI client. See the [OpenAI Responses API documentation][openai_responses_api_docs] for more information.
 - `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
 - `ToolboxesClient` / `ToolboxesAsyncClient`: Manage toolboxes and toolbox versions.
 - `BetaVoiceAgentWebSocketClient` / `BetaVoiceAgentWebSocketAsyncClient` **(preview)**: Open typed realtime WebSocket sessions with voice agents.
@@ -109,7 +109,7 @@ The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can
 OpenAIClient openAIClient = builder.buildOpenAIClient();
 OpenAIClientAsync openAIAsyncClient = builder.buildOpenAIAsyncClient();
 
-// Agent-scoped OpenAI clients for invoking a configured agent endpoint.
+// Agent-scoped OpenAI clients for invoking an agent endpoint.
 OpenAIClient agentScopedOpenAIClient = builder.buildAgentScopedOpenAIClient(agentName);
 OpenAIClientAsync agentScopedOpenAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
@@ -118,7 +118,7 @@ ResponsesClient responsesClient = builder.buildResponsesClient();
 ResponseService responseService = responsesClient.getResponseService();
 
 // OpenAI SDK ConversationService accessed from OpenAIClient
-ConversationService conversationService = openAIClient.conversations();
+ConversationService conversationService = agentScopedOpenAIClient.conversations();
 ```
 
 ### Agent version drafts
@@ -271,7 +271,7 @@ For this direct setup, ensure that the AI Foundry project `endpoint` path ends w
 
 ### Prompt Agent
 
-This example shows how to create and invoke a `PromptAgent` with conversation context that can be shared across multiple agents.
+This example creates a prompt agent and uses a conversation to retain context across requests.
 
 #### Create an Agent
 
@@ -282,17 +282,21 @@ PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition("gpt-4o"
 AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", promptAgentDefinition);
 ```
 
-This returns an `AgentVersionDetails` containing the name and version used to configure the agent endpoint. The following steps also create a `Conversation` to provide centralized context that can be shared across agents.
+This returns an `AgentVersionDetails` containing the agent's name and version. By default, the agent endpoint serves the latest version through the Responses protocol using Microsoft Entra authentication.
+
+To pin the endpoint to a specific version, see [ConfigureAgentEndpoint.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/ConfigureAgentEndpoint.java) and [ConfigureAgentEndpointAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/ConfigureAgentEndpointAsync.java).
 
 #### Create conversation
 
-First we need to create our `Conversation` object so we can attach items to it:
+Use the same agent-scoped OpenAI client for conversations and responses:
 
 ```java com.azure.ai.agents.create_conversation
+OpenAIClient agentScopedClient = builder.buildAgentScopedOpenAIClient(agent.getName());
+ConversationService conversationsClient = agentScopedClient.conversations();
 Conversation conversation = conversationsClient.create();
 ```
 
-The value returned by `conversation.id()` identifies the conversation when appending messages. `Conversation` objects can be used by multiple agents as a centralized source of context. To add items:
+Use `conversation.id()` to add messages and create subsequent responses for the same agent:
 
 ```java com.azure.ai.agents.add_message_to_conversation
 conversationsClient.items().create(
@@ -312,27 +316,11 @@ conversationsClient.items().create(
 
 To scope conversation operations to a delegated end user, set `FOUNDRY_USER_IDENTITY` to an opaque application-generated value and apply it as the `x-ms-user-identity` header. The caller must have the `agents/endpoints/UserIdentityImpersonation/action` RBAC permission. See the sync [UserIdentityConversation.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/conversations/UserIdentityConversation.java) and async [UserIdentityConversationAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/conversations/UserIdentityConversationAsync.java) samples.
 
-#### Configure the agent endpoint
-
-An agent can have multiple versions. Before invoking it through the OpenAI Responses API, configure its endpoint with a version-selection rule and enable the Responses protocol. This example sends all endpoint traffic to the version just created; the endpoint configuration remains in effect until it is updated again:
-
-```java com.azure.ai.agents.configure_agent_endpoint
-AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-    .setVersionSelector(new VersionSelector().setVersionSelectionRule(
-        new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion())))
-    .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
-
-agentsClient.updateAgentDetails(agent.getName(),
-    new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
-```
-
 #### Text generation with Responses
 
-With the agent endpoint configured, build an agent-scoped OpenAI client and invoke the OpenAI Responses API:
+Invoke the OpenAI Responses API through the same client:
 
 ```java com.azure.ai.agents.create_response
-OpenAIClient agentScopedClient = builder.buildAgentScopedOpenAIClient(agent.getName());
-
 Response response = agentScopedClient.responses().create(ResponseCreateParams.builder()
     .conversation(conversation.id())
     .build());
@@ -716,17 +704,17 @@ See the full sample in [McpWithConnectionSync.java](https://github.com/Azure/azu
 
 ##### **OpenAPI with Project Connection** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/openapi?pivots=java))
 
-Call external APIs defined by OpenAPI specifications using project connection authentication:
+This example calls TripAdvisor using `tripadvisor_openapi.json`. Set `OPENAPI_PROJECT_CONNECTION_ID` to a Custom Keys connection containing your TripAdvisor API key under `key`.
 
 ```java com.azure.ai.agents.define_openapi_with_connection
 // Create OpenAPI tool with project connection authentication
 OpenApiTool openApiTool = new OpenApiTool(
     new OpenApiFunctionDefinition(
-        "httpbin_get",
+        "tripadvisor",
         spec,
         new OpenApiProjectConnectionAuthDetails(
             new OpenApiProjectConnectionSecurityScheme(connectionId)))
-        .setDescription("Get request metadata from an OpenAPI endpoint."));
+        .setDescription("TripAdvisor API to get travel information."));
 ```
 
 See the full sample in [OpenApiWithConnectionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/OpenApiWithConnectionSync.java).
