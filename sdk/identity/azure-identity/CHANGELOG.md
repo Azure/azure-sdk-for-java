@@ -1,5 +1,15 @@
 # Release History
 
+## 1.18.7 (2026-09-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.1` to version `1.60.0`.
+- Upgraded `azure-core-http-netty` from `1.16.7` to version `1.16.8`.
+- Upgraded `msal4j` from `1.23.1` to version `1.26.0`.
+
 ## 1.18.6 (2026-08-31)
 
 ### Other Changes
