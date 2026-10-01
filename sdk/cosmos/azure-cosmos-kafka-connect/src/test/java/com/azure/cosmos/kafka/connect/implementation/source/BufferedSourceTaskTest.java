@@ -69,6 +69,37 @@ public class BufferedSourceTaskTest {
         }
     }
 
+    @Test(groups = "unit", timeOut = 30_000)
+    public void stopWaitsForReaderToExit() throws InterruptedException {
+        TestTask task = new TestTask();
+        CountDownLatch requestStarted = new CountDownLatch(1);
+        CountDownLatch releaseRequest = new CountDownLatch(1);
+        task.pollAction = () -> {
+            requestStarted.countDown();
+            while (releaseRequest.getCount() > 0) {
+                try {
+                    releaseRequest.await();
+                } catch (InterruptedException ignored) {
+                    // Simulate a read that does not terminate on thread interruption alone.
+                }
+            }
+            return Collections.emptyList();
+        };
+
+        task.start(Collections.emptyMap());
+        assertThat(task.poll()).isEmpty();
+        assertThat(requestStarted.await(5, TimeUnit.SECONDS)).isTrue();
+
+        Thread stopThread = new Thread(task::stop);
+        stopThread.start();
+        stopThread.join(1_500);
+        assertThat(stopThread.isAlive()).isTrue();
+
+        releaseRequest.countDown();
+        stopThread.join(5_000);
+        assertThat(stopThread.isAlive()).isFalse();
+    }
+
     private static final class TestTask extends BufferedSourceTask {
         private PollAction pollAction = Collections::emptyList;
         private Runnable stopAction = () -> { };
