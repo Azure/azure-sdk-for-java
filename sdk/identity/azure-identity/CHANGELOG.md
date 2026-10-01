@@ -8,6 +8,8 @@
 
 ### Breaking Changes
 
+- `AzureDeveloperCliCredential` now reports structured AAD authentication failures as `ClientAuthenticationException` instead of `CredentialUnavailableException`. In a manually constructed `ChainedTokenCredential`, these failures now stop the chain instead of trying the next credential. `DefaultAzureCredential` retains its developer-credential continuation behavior. ([#49271](https://github.com/Azure/azure-sdk-for-java/pull/49271))
+
 ### Bugs Fixed
 
 - Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications. ([#48472](https://github.com/Azure/azure-sdk-for-java/pull/48472))
@@ -15,7 +17,6 @@
 - Fixed IMDS discovery in `DefaultAzureCredential` to wait for HTTP response headers with a read timeout, allowing the credential chain to continue when a local endpoint accepts connections but does not respond, while preserving fallback on probe setup failures. ([#50517](https://github.com/Azure/azure-sdk-for-java/pull/50517))
 - Fixed `OnBehalfOfCredential` token cache lookup to remain bound to the configured user assertion, preventing a cached token acquired for one user from being returned for another user with matching scopes. ([#50618](https://github.com/Azure/azure-sdk-for-java/pull/50618))
 - Fixed `AzureDeveloperCliCredential` error parsing for Azure Developer CLI v1.23.7 and later, which previously surfaced the friendly wrapper "Authentication with Azure failed." instead of the underlying error text. The parser now prefers the structured top-level `error` field while preserving fallback behavior for older `consoleMessage` output. ([#49271](https://github.com/Azure/azure-sdk-for-java/pull/49271))
-- Structured AAD failures from `azd` (e.g. `invalid_tenant`, `AADSTS*`) now surface as `ClientAuthenticationException` rather than being misclassified as `CredentialUnavailableException`. ([#49271](https://github.com/Azure/azure-sdk-for-java/pull/49271))
 
 ### Other Changes
 
