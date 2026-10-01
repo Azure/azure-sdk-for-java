@@ -39,7 +39,6 @@
       --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
       --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer.documentanalysis=ALL-UNNAMED
       --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer.documentanalysis.administration=ALL-UNNAMED
-      --add-reads com.azure.ai.formrecognizer=io.netty.codec.http
     </javaModulesSurefireArgLine>
 
     <spotbugs.skip>false</spotbugs.skip>

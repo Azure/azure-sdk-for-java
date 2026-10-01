@@ -34,7 +34,6 @@ import java.util.List;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.MODEL_ID_NOT_FOUND_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
-import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -670,7 +669,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             StepVerifier.create(client.beginCreateComposedModel(modelIdList, new CreateComposedModelOptions())
                 .setPollInterval(durationTestMode)).thenAwait().expectErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
-                    assertEquals(BAD_REQUEST.code(), ((HttpResponseException) throwable).getResponse().getStatusCode());
+                    assertEquals(400, ((HttpResponseException) throwable).getResponse().getStatusCode());
                 }).verify(DEFAULT_TIMEOUT);
 
             client.deleteModel(model1.getModelId()).block();
@@ -700,7 +699,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                     .setPollInterval(durationTestMode)
                     .getSyncPoller()
                     .waitForCompletion());
-            assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
+            assertEquals(400, httpResponseException.getResponse().getStatusCode());
 
             client.deleteModel(model1.getModelId()).block();
         });

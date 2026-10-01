@@ -10,7 +10,6 @@
 
 #### Other Changes
 
-* Aligned the connector's Netty dependencies with Netty `4.2.18.Final` and `azure-core-http-netty` `1.17.0-beta.1`.
 * Upgraded Jackson from `2.18.9` to `2.18.11`.
 
 ### 4.50.0 (2026-09-22)

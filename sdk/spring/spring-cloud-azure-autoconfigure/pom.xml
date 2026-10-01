@@ -37,15 +37,6 @@
     <compiler.failondeprecatedstatus/>
     <spotless.skip>true</spotless.skip>
   </properties>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>io.projectreactor</groupId>
-        <artifactId>reactor-core</artifactId>
-        <version>3.8.7</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -111,6 +102,12 @@
       <artifactId>lettuce-core</artifactId>
       <version>7.5.2.RELEASE</version> <!-- {x-version-update;springboot4_io.lettuce:lettuce-core;external_dependency} -->
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>io.projectreactor</groupId>
+          <artifactId>reactor-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -202,7 +199,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.60.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.61.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>

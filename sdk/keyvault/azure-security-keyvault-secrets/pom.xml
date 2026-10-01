@@ -39,7 +39,6 @@
       --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets=ALL-UNNAMED
       --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets.implementation=ALL-UNNAMED
       --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets.models=ALL-UNNAMED
-      --add-reads com.azure.security.keyvault.secrets=io.netty.codec.http
     </javaModulesSurefireArgLine>
 
     <spotbugs.skip>false</spotbugs.skip>

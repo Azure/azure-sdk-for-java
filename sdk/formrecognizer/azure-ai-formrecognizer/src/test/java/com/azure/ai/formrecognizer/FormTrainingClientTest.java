@@ -32,7 +32,6 @@ import java.util.List;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.MODEL_ID_NOT_FOUND_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -572,7 +571,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginCreateComposedModel(modelIdList, new CreateComposedModelOptions(), Context.NONE)
                     .setPollInterval(durationTestMode));
-            assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
+            assertEquals(400, httpResponseException.getResponse().getStatusCode());
 
             client.deleteModel(model1.getModelId());
             client.deleteModel(model2.getModelId());
@@ -598,7 +597,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 () -> client.beginCreateComposedModel(modelIdList, new CreateComposedModelOptions(), Context.NONE)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
-            assertEquals(BAD_REQUEST.code(), httpResponseException.getResponse().getStatusCode());
+            assertEquals(400, httpResponseException.getResponse().getStatusCode());
 
             client.deleteModel(model1.getModelId());
         });
