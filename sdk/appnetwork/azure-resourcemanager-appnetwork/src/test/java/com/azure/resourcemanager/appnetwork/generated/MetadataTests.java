@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class MetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Metadata model = BinaryData.fromString("{\"resourceId\":\"lwhijcoejctbzaq\"}").toObject(Metadata.class);
-        Assertions.assertEquals("lwhijcoejctbzaq", model.resourceId());
+        Metadata model = BinaryData.fromString("{\"resourceId\":\"xkqpxo\"}").toObject(Metadata.class);
+        Assertions.assertEquals("xkqpxo", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Metadata model = new Metadata().withResourceId("lwhijcoejctbzaq");
+        Metadata model = new Metadata().withResourceId("xkqpxo");
         model = BinaryData.fromObject(model).toObject(Metadata.class);
-        Assertions.assertEquals("lwhijcoejctbzaq", model.resourceId());
+        Assertions.assertEquals("xkqpxo", model.resourceId());
     }
 }

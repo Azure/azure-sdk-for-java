@@ -8,19 +8,24 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.NoopTracer;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryEventData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.ExceptionAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TestUtils;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.common.Value;
 import io.opentelemetry.api.logs.Logger;
 import io.opentelemetry.api.metrics.LongCounter;
 import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
@@ -30,6 +35,7 @@ import reactor.util.annotation.Nullable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -45,6 +51,8 @@ public class AzureMonitorExportersEndToEndTest {
         + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
 
     private static final String INSTRUMENTATION_KEY = "00000000-0000-0000-0000-000000000000";
+    private static final AttributeKey<Value<?>> CUSTOM_MEASUREMENTS
+        = AttributeKey.valueKey("microsoft.custom_measurements");
 
     @Test
     public void testBuildTraceExporter() throws Exception {
@@ -57,7 +65,7 @@ public class AzureMonitorExportersEndToEndTest {
 
         // generate spans
         for (int i = 0; i < numberOfSpans; i++) {
-            generateSpan(openTelemetry);
+            generateSpan(openTelemetry, i % 2 == 0 ? SpanKind.CLIENT : SpanKind.SERVER);
         }
 
         // wait for export
@@ -74,6 +82,13 @@ public class AzureMonitorExportersEndToEndTest {
             .findFirst()
             .get();
         validateSpan(spanTelemetryItem);
+
+        TelemetryItem requestTelemetryItem = customValidationPolicy.getActualTelemetryItems()
+            .stream()
+            .filter(item -> item.getName().equals("Request"))
+            .findFirst()
+            .get();
+        validateRequest(requestTelemetryItem);
     }
 
     HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy, HttpClient httpClient) {
@@ -168,6 +183,20 @@ public class AzureMonitorExportersEndToEndTest {
     }
 
     @Test
+    public void testBuildLogExporterWithException() throws Exception {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
+        OpenTelemetry openTelemetry
+            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy), getConfiguration());
+
+        generateExceptionLog(openTelemetry);
+
+        countDownLatch.await(10, SECONDS);
+        assertThat(customValidationPolicy.getActualTelemetryItems()).hasSize(1);
+        validateException(customValidationPolicy.getActualTelemetryItems().get(0));
+    }
+
+    @Test
     public void testBuildTraceMetricLogExportersConsecutively() throws Exception {
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(3);
@@ -214,11 +243,17 @@ public class AzureMonitorExportersEndToEndTest {
 
     @SuppressWarnings("try")
     private static void generateSpan(OpenTelemetry openTelemetry) {
+        generateSpan(openTelemetry, SpanKind.INTERNAL);
+    }
+
+    @SuppressWarnings("try")
+    private static void generateSpan(OpenTelemetry openTelemetry, SpanKind spanKind) {
         Tracer tracer = openTelemetry.getTracer("Sample");
-        Span span = tracer.spanBuilder("test").startSpan();
+        Span span = tracer.spanBuilder("test").setSpanKind(spanKind).startSpan();
         try (Scope ignored = span.makeCurrent()) {
             span.setAttribute("name", "apple");
             span.setAttribute("color", "red");
+            span.setAttribute(CUSTOM_MEASUREMENTS, customMeasurements());
         } finally {
             span.end();
         }
@@ -236,6 +271,7 @@ public class AzureMonitorExportersEndToEndTest {
             .setBody("test body")
             .setAttribute(AttributeKey.stringKey("name"), "apple")
             .setAttribute(AttributeKey.stringKey("color"), "red")
+            .setAttribute(CUSTOM_MEASUREMENTS, customMeasurements())
             .emit();
     }
 
@@ -245,7 +281,24 @@ public class AzureMonitorExportersEndToEndTest {
             .setBody("TestEventBody")
             .setAttribute(AttributeKey.stringKey("microsoft.custom_event.name"), "TestEvent")
             .setAttribute(AttributeKey.stringKey("name"), "apple")
+            .setAttribute(CUSTOM_MEASUREMENTS, customMeasurements())
             .emit();
+    }
+
+    private static void generateExceptionLog(OpenTelemetry openTelemetry) {
+        Logger logger = openTelemetry.getLogsBridge().get("Sample");
+        logger.logRecordBuilder()
+            .setBody("exception body")
+            .setAttribute(ExceptionAttributes.EXCEPTION_STACKTRACE, "java.lang.IllegalStateException: test")
+            .setAttribute(CUSTOM_MEASUREMENTS, customMeasurements())
+            .emit();
+    }
+
+    private static Value<?> customMeasurements() {
+        Map<String, Value<?>> measurements = new LinkedHashMap<>();
+        measurements.put("itemsProcessed", Value.of(42.0));
+        measurements.put("queueDepth", Value.of(7.0));
+        return Value.of(measurements);
     }
 
     private static void validateSpan(TelemetryItem telemetryItem) {
@@ -259,6 +312,13 @@ public class AzureMonitorExportersEndToEndTest {
         RemoteDependencyData actualData = TestUtils.toRemoteDependencyData(telemetryItem.getData().getBaseData());
         assertThat(actualData.getName()).isEqualTo("test");
         assertThat(actualData.getProperties()).containsExactly(entry("color", "red"), entry("name", "apple"));
+        assertCustomMeasurements(actualData.getMeasurements(), actualData.getProperties());
+    }
+
+    private static void validateRequest(TelemetryItem telemetryItem) {
+        assertThat(telemetryItem.getData().getBaseType()).isEqualTo("RequestData");
+        RequestData requestData = TestUtils.toRequestData(telemetryItem.getData().getBaseData());
+        assertCustomMeasurements(requestData.getMeasurements(), requestData.getProperties());
     }
 
     private static void validateMetric(TelemetryItem telemetryItem) {
@@ -287,6 +347,7 @@ public class AzureMonitorExportersEndToEndTest {
         assertThat(messageData.getMessage()).isEqualTo("test body");
         assertThat(messageData.getProperties()).containsOnly(entry("LoggerName", "Sample"),
             entry("SourceType", "Logger"), entry("color", "red"), entry("name", "apple"));
+        assertCustomMeasurements(messageData.getMeasurements(), messageData.getProperties());
     }
 
     private static void validateEvent(TelemetryItem telemetryItem) {
@@ -302,6 +363,19 @@ public class AzureMonitorExportersEndToEndTest {
         assertThat(eventData.getName()).isEqualTo("TestEvent");
         assertThat(eventData.getProperties()).containsOnly(entry("name", "apple"),
             entry("microsoft.custom_event.name", "TestEvent"));
+        assertCustomMeasurements(eventData.getMeasurements(), eventData.getProperties());
+    }
+
+    private static void validateException(TelemetryItem telemetryItem) {
+        assertThat(telemetryItem.getData().getBaseType()).isEqualTo("ExceptionData");
+        TelemetryExceptionData exceptionData
+            = TestUtils.toTelemetryExceptionData(telemetryItem.getData().getBaseData());
+        assertCustomMeasurements(exceptionData.getMeasurements(), exceptionData.getProperties());
+    }
+
+    private static void assertCustomMeasurements(Map<String, Double> measurements, Map<String, String> properties) {
+        assertThat(measurements).containsOnly(entry("itemsProcessed", 42.0), entry("queueDepth", 7.0));
+        assertThat(properties).doesNotContainKey("microsoft.custom_measurements");
     }
 
     private static Map<String, String> getConfiguration() {

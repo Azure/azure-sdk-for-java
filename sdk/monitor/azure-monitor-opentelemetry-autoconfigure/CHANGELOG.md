@@ -1,12 +1,20 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 1.8.0 (2026-09-28)
+
+### Features Added
+
+- Add custom measurements support ([#50578](https://github.com/Azure/azure-sdk-for-java/pull/50578))
 
 ### Other Changes
 

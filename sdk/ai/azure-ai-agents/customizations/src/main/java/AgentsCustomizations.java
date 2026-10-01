@@ -159,12 +159,6 @@ public class AgentsCustomizations extends Customization {
             stringEnumUnionVariant("VoiceIds", "the {@link VoiceIds} built-in voice to set"),
             modelUnionVariant("RealtimeSessionCreateRequestGAAudioOutputVoice",
                 "the {@link RealtimeSessionCreateRequestGAAudioOutputVoice} custom voice to set"));
-        List<String[]> sessionUpdate = Arrays.asList(
-            discriminatedModelUnionVariant("RealtimeSessionConfiguration", "RealtimeSessionConfigurationBase",
-                "the {@link RealtimeSessionConfiguration} session to set"),
-            discriminatedModelUnionVariant("RealtimeTranscriptionSessionConfiguration",
-                "RealtimeSessionConfigurationBase",
-                "the {@link RealtimeTranscriptionSessionConfiguration} session to set"));
         List<String[]> transcriptionUsage = Arrays.asList(
             discriminatedModelUnionVariant("TranscriptTextUsageTokens", "TranscriptTextUsage",
                 "the {@link TranscriptTextUsageTokens} usage to set"),
@@ -174,9 +168,6 @@ public class AgentsCustomizations extends Customization {
             modelUnionVariant("VoiceAgentSessionResponseConfiguration",
                 "the {@link VoiceAgentSessionResponseConfiguration} session to set"));
 
-        customizeImmutableUnionProperty(customization, "RealtimeSessionUpdateEvent", "session",
-            "Update the Realtime session. Choose either a realtime session or a transcription session.", sessionUpdate,
-            logger);
         customizeImmutableUnionProperty(customization,
             "RealtimeConversationItemInputAudioTranscriptionCompletedEvent", "usage",
             "Usage statistics for the transcription.", transcriptionUsage, logger);

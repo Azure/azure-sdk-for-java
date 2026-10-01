@@ -14,22 +14,22 @@ public final class ScheduledActionsExecutionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionsExecutionParameters model = BinaryData.fromString(
-            "{\"retryPolicy\":{\"retryCount\":1128961825,\"retryWindowInMinutes\":1820797792,\"onFailureAction\":\"Create\"}}")
+            "{\"retryPolicy\":{\"retryCount\":1044112339,\"retryWindowInMinutes\":1187169893,\"onFailureAction\":\"Start\"}}")
             .toObject(ScheduledActionsExecutionParameters.class);
-        Assertions.assertEquals(1128961825, model.retryPolicy().retryCount());
-        Assertions.assertEquals(1820797792, model.retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ScheduledActionsResourceOperationType.CREATE, model.retryPolicy().onFailureAction());
+        Assertions.assertEquals(1044112339, model.retryPolicy().retryCount());
+        Assertions.assertEquals(1187169893, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ScheduledActionsResourceOperationType.START, model.retryPolicy().onFailureAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduledActionsExecutionParameters model = new ScheduledActionsExecutionParameters()
-            .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(1128961825)
-                .withRetryWindowInMinutes(1820797792)
-                .withOnFailureAction(ScheduledActionsResourceOperationType.CREATE));
+            .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(1044112339)
+                .withRetryWindowInMinutes(1187169893)
+                .withOnFailureAction(ScheduledActionsResourceOperationType.START));
         model = BinaryData.fromObject(model).toObject(ScheduledActionsExecutionParameters.class);
-        Assertions.assertEquals(1128961825, model.retryPolicy().retryCount());
-        Assertions.assertEquals(1820797792, model.retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ScheduledActionsResourceOperationType.CREATE, model.retryPolicy().onFailureAction());
+        Assertions.assertEquals(1044112339, model.retryPolicy().retryCount());
+        Assertions.assertEquals(1187169893, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ScheduledActionsResourceOperationType.START, model.retryPolicy().onFailureAction());
     }
 }

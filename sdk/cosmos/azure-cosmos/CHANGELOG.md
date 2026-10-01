@@ -10,6 +10,8 @@
 
 #### Other Changes
 * Added support for the account-level `disableCrossRegionalHedging` flag at client initialization and on account refresh. This flag suppresses explicit availability strategies as well as the SDK-default PPAF strategy. - See [PR 50425](https://github.com/Azure/azure-sdk-for-java/pull/50425)
+* Added a compact `ppaf` bookmark to each data-plane attempt in `CosmosDiagnostics`, containing the current per-partition write region, failed regions, and the time it was designated, or an empty object when no override is active.
+* Upgraded Jackson from `2.18.9` to `2.18.11`.
 
 ### 4.83.0 (2026-09-22)
 

@@ -6,7 +6,6 @@ package com.azure.ai.agents.models;
 import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -45,15 +44,15 @@ public final class RealtimeSessionUpdateEvent extends RealtimeClientEvent {
      * session or a transcription session.
      */
     @Generated
-    private final BinaryData session;
+    private final RealtimeSessionConfigurationBase session;
 
     /**
      * Creates an instance of RealtimeSessionUpdateEvent class.
      *
      * @param session the session value to set.
      */
-    RealtimeSessionUpdateEvent(BinaryData session) {
-        // AI Tooling: union type
+    @Generated
+    public RealtimeSessionUpdateEvent(RealtimeSessionConfigurationBase session) {
         this.session = session;
     }
 
@@ -100,8 +99,8 @@ public final class RealtimeSessionUpdateEvent extends RealtimeClientEvent {
      *
      * @return the session value.
      */
-    BinaryData getSession() {
-        // AI Tooling: union type
+    @Generated
+    public RealtimeSessionConfigurationBase getSession() {
         return this.session;
     }
 
@@ -112,8 +111,7 @@ public final class RealtimeSessionUpdateEvent extends RealtimeClientEvent {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeFieldName("session");
-        this.session.writeTo(jsonWriter);
+        jsonWriter.writeJsonField("session", this.session);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("event_id", this.eventId);
         return jsonWriter.writeEndObject();
@@ -131,14 +129,14 @@ public final class RealtimeSessionUpdateEvent extends RealtimeClientEvent {
     @Generated
     public static RealtimeSessionUpdateEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BinaryData session = null;
+            RealtimeSessionConfigurationBase session = null;
             RealtimeClientEventType type = RealtimeClientEventType.SESSION_UPDATE;
             String eventId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("session".equals(fieldName)) {
-                    session = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    session = RealtimeSessionConfigurationBase.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeClientEventType.fromString(reader.getString());
                 } else if ("event_id".equals(fieldName)) {
@@ -152,63 +150,5 @@ public final class RealtimeSessionUpdateEvent extends RealtimeClientEvent {
             deserializedRealtimeSessionUpdateEvent.eventId = eventId;
             return deserializedRealtimeSessionUpdateEvent;
         });
-    }
-
-    /**
-     * Get the session property: Update the Realtime session. Choose either a realtime session or a transcription
-     * session.
-     *
-     * @return the session value as a {@link RealtimeSessionConfiguration}, or {@code null} when it is not set or holds
-     * another variant.
-     */
-    public RealtimeSessionConfiguration getSessionAsRealtimeSessionConfiguration() {
-        // AI Tooling: union type
-        if (this.session == null) {
-            return null;
-        }
-        RealtimeSessionConfigurationBase unionValue = this.session.toObject(RealtimeSessionConfigurationBase.class);
-        if (!(unionValue instanceof RealtimeSessionConfiguration)) {
-            return null;
-        }
-        return (RealtimeSessionConfiguration) unionValue;
-    }
-
-    /**
-     * Get the session property: Update the Realtime session. Choose either a realtime session or a transcription
-     * session.
-     *
-     * @return the session value as a {@link RealtimeTranscriptionSessionConfiguration}, or {@code null} when it is not
-     * set or holds another variant.
-     */
-    public RealtimeTranscriptionSessionConfiguration getSessionAsRealtimeTranscriptionSessionConfiguration() {
-        // AI Tooling: union type
-        if (this.session == null) {
-            return null;
-        }
-        RealtimeSessionConfigurationBase unionValue = this.session.toObject(RealtimeSessionConfigurationBase.class);
-        if (!(unionValue instanceof RealtimeTranscriptionSessionConfiguration)) {
-            return null;
-        }
-        return (RealtimeTranscriptionSessionConfiguration) unionValue;
-    }
-
-    /**
-     * Creates an instance of RealtimeSessionUpdateEvent class.
-     *
-     * @param session the {@link RealtimeSessionConfiguration} session to set.
-     */
-    public RealtimeSessionUpdateEvent(RealtimeSessionConfiguration session) {
-        // AI Tooling: union type
-        this.session = session == null ? null : BinaryData.fromObject(session);
-    }
-
-    /**
-     * Creates an instance of RealtimeSessionUpdateEvent class.
-     *
-     * @param session the {@link RealtimeTranscriptionSessionConfiguration} session to set.
-     */
-    public RealtimeSessionUpdateEvent(RealtimeTranscriptionSessionConfiguration session) {
-        // AI Tooling: union type
-        this.session = session == null ? null : BinaryData.fromObject(session);
     }
 }
