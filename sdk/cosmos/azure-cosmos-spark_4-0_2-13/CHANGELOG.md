@@ -10,6 +10,8 @@
 
 #### Other Changes
 
+* Aligned the connector's Netty dependencies with Netty `4.2.18.Final` and `azure-core-http-netty` `1.17.0-beta.1`.
+
 ### 4.50.0 (2026-09-22)
 
 #### Other Changes

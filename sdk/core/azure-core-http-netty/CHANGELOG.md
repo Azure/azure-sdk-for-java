@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 - Preserved asynchronous file downloads when Netty uses scoped direct buffers on newer JDKs.
+- Declared the Netty transport dependency directly to prevent older transitive transports from being selected.
 
 ### Other Changes
 

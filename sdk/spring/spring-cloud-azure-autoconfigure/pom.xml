@@ -37,6 +37,15 @@
     <compiler.failondeprecatedstatus/>
     <spotless.skip>true</spotless.skip>
   </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-core</artifactId>
+        <version>3.8.7</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -417,6 +426,13 @@
     </dependency>
 
     <!-- TEST-->
+    <!-- Keep the test transport aligned with source builds instead of older transitive clients. -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.17.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-http-netty;dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>

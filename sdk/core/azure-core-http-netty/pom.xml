@@ -99,6 +99,11 @@
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
+      <artifactId>netty-transport</artifactId>
+      <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-transport;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
       <artifactId>netty-codec-base</artifactId>
       <version>4.2.18.Final</version> <!-- {x-version-update;io.netty:netty-codec-base;external_dependency} -->
     </dependency>
@@ -227,6 +232,7 @@
                 <include>io.netty:netty-tcnative-boringssl-static:[2.0.84.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty-http:[1.3.7]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
                 <include>io.netty:netty-buffer:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
+                <include>io.netty:netty-transport:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-transport;external_dependency} -->
                 <include>io.netty:netty-common:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
                 <include>io.netty:netty-codec-base:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-codec-base;external_dependency} -->
                 <include>io.netty:netty-codec-http:[4.2.18.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->

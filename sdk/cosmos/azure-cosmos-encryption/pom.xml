@@ -51,6 +51,9 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
       --add-modules java.management
       --add-reads com.azure.cosmos.encryption=java.management
+      --add-reads com.azure.cosmos.encryption=io.netty.common
+      --add-reads com.azure.cosmos.encryption=io.netty.buffer
+      --add-reads com.azure.cosmos.encryption=io.netty.codec.http
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>
     <spotless.skip>true</spotless.skip>

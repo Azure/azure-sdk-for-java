@@ -38,6 +38,7 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.ai.documentintelligence/com.azure.ai.documentintelligence=ALL-UNNAMED
+      --add-reads com.azure.ai.documentintelligence=io.netty.codec.http
     </javaModulesSurefireArgLine>
     <graalvm.disable>false</graalvm.disable>
 
