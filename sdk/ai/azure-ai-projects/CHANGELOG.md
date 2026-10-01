@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed skill file uploads to omit an unset `default` flag instead of sending the literal text `null`.
+
 ### Other Changes
 
 ## 2.7.0 (2026-10-06)
