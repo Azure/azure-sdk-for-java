@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager;
+import com.azure.resourcemanager.hybridconnectivity.models.HostType;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionTypeResource;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -21,7 +22,7 @@ public final class SolutionTypesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"solutionType\":\"rkvfgbvfvpdbo\",\"description\":\"cizsjqlhkrribdei\",\"supportedAzureRegions\":[\"p\",\"kghv\",\"ndzwmkrefa\",\"pjorwkqnyhg\"],\"solutionSettings\":[{\"name\":\"tjivfxzsjabib\",\"displayName\":\"ystawfsdjpvkvp\",\"type\":\"jxbkzbzkdvn\",\"description\":\"jabudurgkakmo\",\"allowedValues\":[\"hjjklff\",\"mouwqlgzrfzeey\",\"bizikayuhq\",\"bjbsybb\"],\"defaultValue\":\"wrv\"}]},\"id\":\"dgmfpgvmpipasl\",\"name\":\"haq\",\"type\":\"x\"}";
+            = "{\"properties\":{\"solutionType\":\"h\",\"description\":\"usps\",\"supportedAzureRegions\":[\"dvlmfwdgzxul\",\"cvpa\",\"rsre\",\"zvxurisjnhny\"],\"hostTypes\":[\"AWS\",\"GCP\"],\"solutionSettings\":[{\"name\":\"gxmrhublwp\",\"displayName\":\"esutrgjupauutpw\",\"type\":\"qhih\",\"description\":\"jqgwzp\",\"allowedValues\":[\"qntcypsxjvfoimwk\",\"lirc\"],\"hostTypes\":[\"AWS\",\"GCP\",\"GCP\"],\"defaultValue\":\"ydfce\"},{\"name\":\"cvlhv\",\"displayName\":\"gdyftumrtwna\",\"type\":\"jslb\",\"description\":\"wkojgcyztsfmzn\",\"allowedValues\":[\"eqphchqnrnr\",\"x\",\"huwrykqgaifm\"],\"hostTypes\":[\"AWS\",\"AWS\",\"GCP\"],\"defaultValue\":\"ydv\"}]},\"id\":\"bejdznxcv\",\"name\":\"srhnjivo\",\"type\":\"v\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,17 +32,20 @@ public final class SolutionTypesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SolutionTypeResource response = manager.solutionTypes()
-            .getByResourceGroupWithResponse("y", "unyowxwl", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("hirctymoxoftpipi", "yczuhxacpq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rkvfgbvfvpdbo", response.properties().solutionType());
-        Assertions.assertEquals("cizsjqlhkrribdei", response.properties().description());
-        Assertions.assertEquals("p", response.properties().supportedAzureRegions().get(0));
-        Assertions.assertEquals("tjivfxzsjabib", response.properties().solutionSettings().get(0).name());
-        Assertions.assertEquals("ystawfsdjpvkvp", response.properties().solutionSettings().get(0).displayName());
-        Assertions.assertEquals("jxbkzbzkdvn", response.properties().solutionSettings().get(0).type());
-        Assertions.assertEquals("jabudurgkakmo", response.properties().solutionSettings().get(0).description());
-        Assertions.assertEquals("hjjklff", response.properties().solutionSettings().get(0).allowedValues().get(0));
-        Assertions.assertEquals("wrv", response.properties().solutionSettings().get(0).defaultValue());
+        Assertions.assertEquals("h", response.properties().solutionType());
+        Assertions.assertEquals("usps", response.properties().description());
+        Assertions.assertEquals("dvlmfwdgzxul", response.properties().supportedAzureRegions().get(0));
+        Assertions.assertEquals(HostType.AWS, response.properties().hostTypes().get(0));
+        Assertions.assertEquals("gxmrhublwp", response.properties().solutionSettings().get(0).name());
+        Assertions.assertEquals("esutrgjupauutpw", response.properties().solutionSettings().get(0).displayName());
+        Assertions.assertEquals("qhih", response.properties().solutionSettings().get(0).type());
+        Assertions.assertEquals("jqgwzp", response.properties().solutionSettings().get(0).description());
+        Assertions.assertEquals("qntcypsxjvfoimwk",
+            response.properties().solutionSettings().get(0).allowedValues().get(0));
+        Assertions.assertEquals(HostType.AWS, response.properties().solutionSettings().get(0).hostTypes().get(0));
+        Assertions.assertEquals("ydfce", response.properties().solutionSettings().get(0).defaultValue());
     }
 }

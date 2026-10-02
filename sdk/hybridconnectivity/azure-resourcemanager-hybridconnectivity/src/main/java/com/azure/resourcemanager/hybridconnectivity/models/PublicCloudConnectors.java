@@ -107,7 +107,7 @@ public interface PublicCloudConnectors {
     PagedIterable<PublicCloudConnector> list(Context context);
 
     /**
-     * The testPermissions operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.
@@ -119,7 +119,7 @@ public interface PublicCloudConnectors {
     OperationStatusResult testPermissions(String resourceGroupName, String publicCloudConnector);
 
     /**
-     * The testPermissions operation.
+     * A long-running resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param publicCloudConnector Represent public cloud connectors resource.

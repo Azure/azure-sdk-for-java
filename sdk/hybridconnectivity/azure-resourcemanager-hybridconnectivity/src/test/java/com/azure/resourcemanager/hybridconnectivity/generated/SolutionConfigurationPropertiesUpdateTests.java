@@ -15,20 +15,21 @@ public final class SolutionConfigurationPropertiesUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionConfigurationPropertiesUpdate model = BinaryData.fromString(
-            "{\"solutionType\":\"ys\",\"solutionSettings\":{\"yudxorrqnbp\":\"uxh\",\"vkd\":\"czvyifq\",\"d\":\"jsllrmv\"}}")
+            "{\"solutionType\":\"xnehmpvec\",\"solutionSettings\":{\"ukgri\":\"ebfqkkrbm\",\"fbxzpuzycisp\":\"flz\",\"y\":\"qzahmgkbrp\",\"rgvtqag\":\"hibnuqqkpika\"}}")
             .toObject(SolutionConfigurationPropertiesUpdate.class);
-        Assertions.assertEquals("ys", model.solutionType());
-        Assertions.assertEquals("uxh", model.solutionSettings().additionalProperties().get("yudxorrqnbp"));
+        Assertions.assertEquals("xnehmpvec", model.solutionType());
+        Assertions.assertEquals("flz", model.solutionSettings().additionalProperties().get("fbxzpuzycisp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionConfigurationPropertiesUpdate model = new SolutionConfigurationPropertiesUpdate().withSolutionType("ys")
-            .withSolutionSettings(new SolutionSettings()
-                .withAdditionalProperties(mapOf("yudxorrqnbp", "uxh", "d", "jsllrmv", "vkd", "czvyifq")));
+        SolutionConfigurationPropertiesUpdate model
+            = new SolutionConfigurationPropertiesUpdate().withSolutionType("xnehmpvec")
+                .withSolutionSettings(new SolutionSettings().withAdditionalProperties(
+                    mapOf("fbxzpuzycisp", "flz", "y", "qzahmgkbrp", "ukgri", "ebfqkkrbm", "rgvtqag", "hibnuqqkpika")));
         model = BinaryData.fromObject(model).toObject(SolutionConfigurationPropertiesUpdate.class);
-        Assertions.assertEquals("ys", model.solutionType());
-        Assertions.assertEquals("uxh", model.solutionSettings().additionalProperties().get("yudxorrqnbp"));
+        Assertions.assertEquals("xnehmpvec", model.solutionType());
+        Assertions.assertEquals("flz", model.solutionSettings().additionalProperties().get("fbxzpuzycisp"));
     }
 
     // Use "Map.of" if available

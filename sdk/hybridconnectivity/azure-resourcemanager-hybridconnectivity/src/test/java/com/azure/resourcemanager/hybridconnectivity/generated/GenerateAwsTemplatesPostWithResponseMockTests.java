@@ -35,10 +35,9 @@ public final class GenerateAwsTemplatesPostWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GenerateAwsTemplateResponse response = manager.generateAwsTemplates()
-            .postWithResponse(new GenerateAwsTemplateRequest().withConnectorId("ld")
-                .withSolutionTypes(Arrays.asList(new SolutionTypeSettings().withSolutionType("xcxrsl")
-                    .withSolutionSettings(new SolutionSettings().withAdditionalProperties(mapOf("yzvqt",
-                        "yhrfouyftaakcpw", "luicpdggkzzlvmbm", "iyq", "jw", "wuoegrpk", "wsbpfvm", "axmodfvuef"))))),
+            .postWithResponse(new GenerateAwsTemplateRequest().withConnectorId("rey")
+                .withSolutionTypes(Arrays.asList(new SolutionTypeSettings().withSolutionType("ikf")
+                    .withSolutionSettings(new SolutionSettings().withAdditionalProperties(mapOf("c", "eaivxwczel"))))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
