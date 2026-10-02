@@ -10,8 +10,11 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
+import com.azure.resourcemanager.deviceregistry.models.InboundCallerIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.deviceregistry.models.Namespace;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.ProvisioningEndpointType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +25,7 @@ public final class NamespacesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"zkzobgopxlhslnel\",\"messaging\":{\"endpoints\":{\"orq\":{\"endpointType\":\"ynllxe\",\"address\":\"wcrojphslhcaw\",\"resourceId\":\"tifdwfmvi\"},\"tyjedex\":{\"endpointType\":\"ttzhra\",\"address\":\"lkafhonqjuje\",\"resourceId\":\"kpzvcpopmxelnwc\"},\"aivmxyasflvgs\":{\"endpointType\":\"lfmk\",\"address\":\"scazuawxtzxpu\",\"resourceId\":\"wabzxrvxcushsp\"},\"ljhlnymzotq\":{\"endpointType\":\"wywa\",\"address\":\"oi\",\"resourceId\":\"nsmjbl\"}}},\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"cbm\",\"tenantId\":\"vxmvw\",\"type\":\"SystemAssigned\"},\"location\":\"ayxonsupeujl\",\"tags\":{\"gsxgnxfyqon\":\"hcvsqltnzoi\"},\"id\":\"p\",\"name\":\"ox\",\"type\":\"dofdbxiqx\"}";
+            = "{\"properties\":{\"uuid\":\"slwkojpl\",\"messaging\":{\"endpoints\":{\"ionszonwp\":{\"endpointType\":\"dwrpqafgfugsnn\",\"address\":\"yetefyp\",\"resourceId\":\"octfjgtixrjvzuyt\",\"deviceAddress\":\"mlmuowol\",\"inboundCallerIdentity\":{\"type\":\"SystemAssigned\"},\"linkingState\":\"InProgress\",\"linkingError\":{},\"provisioning\":{}},\"vyjtcvu\":{\"endpointType\":\"ajinnixjawrtmjfj\",\"address\":\"ccxlzhcoxovnek\",\"resourceId\":\"nlusfnrd\",\"deviceAddress\":\"xtxrdcqtjvidt\",\"inboundCallerIdentity\":{\"type\":\"SystemAssigned\"},\"linkingState\":\"Failed\",\"linkingError\":{},\"provisioning\":{}}}},\"management\":{\"endpoints\":{\"pusxjb\":{\"endpointType\":\"iziesfuughtuq\",\"address\":\"ecjxe\",\"scopeId\":\"gtuhxuicbu\",\"resourceId\":\"wmrswnjlxuzrh\"}}},\"provisioning\":{\"endpoints\":{\"tu\":{\"endpointType\":\"Microsoft.Devices/provisioningServices\",\"resourceId\":\"pdo\",\"inboundCallerIdentity\":{\"type\":\"UserAssigned\"},\"linkingState\":\"InProgress\",\"linkingError\":{}},\"xjg\":{\"endpointType\":\"Microsoft.Devices/provisioningServices\",\"resourceId\":\"igebxncnwfepb\",\"inboundCallerIdentity\":{\"type\":\"SystemAssigned\"},\"linkingState\":\"Failed\",\"linkingError\":{}}}},\"outboundIdentity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"bgdlfgtdysna\"},\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"bctqhamzjrwd\",\"tenantId\":\"zeqyjleziun\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"jvpilguooqja\":{\"principalId\":\"antkwcegyamlbns\",\"clientId\":\"ac\"}}},\"location\":\"d\",\"tags\":{\"kjbsah\":\"ueio\",\"oebn\":\"tdtpdelqacslmo\",\"dirazf\":\"xofvcjk\",\"bmdujtmvcopexc\":\"xejw\"},\"id\":\"jurbuhhlkyqltqsr\",\"name\":\"gtuwkff\",\"type\":\"jk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +35,31 @@ public final class NamespacesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Namespace response = manager.namespaces()
-            .getByResourceGroupWithResponse("dsxwaab", "mifrygznmma", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("obkauxofsh", "phwpnulaiywzej", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ayxonsupeujl", response.location());
-        Assertions.assertEquals("hcvsqltnzoi", response.tags().get("gsxgnxfyqon"));
-        Assertions.assertEquals("ynllxe", response.properties().messaging().endpoints().get("orq").endpointType());
-        Assertions.assertEquals("wcrojphslhcaw", response.properties().messaging().endpoints().get("orq").address());
-        Assertions.assertEquals("tifdwfmvi", response.properties().messaging().endpoints().get("orq").resourceId());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("d", response.location());
+        Assertions.assertEquals("ueio", response.tags().get("kjbsah"));
+        Assertions.assertEquals("dwrpqafgfugsnn",
+            response.properties().messaging().endpoints().get("ionszonwp").endpointType());
+        Assertions.assertEquals("yetefyp", response.properties().messaging().endpoints().get("ionszonwp").address());
+        Assertions.assertEquals("octfjgtixrjvzuyt",
+            response.properties().messaging().endpoints().get("ionszonwp").resourceId());
+        Assertions.assertEquals(InboundCallerIdentityType.SYSTEM_ASSIGNED,
+            response.properties().messaging().endpoints().get("ionszonwp").inboundCallerIdentity().type());
+        Assertions.assertEquals("iziesfuughtuq",
+            response.properties().management().endpoints().get("pusxjb").endpointType());
+        Assertions.assertEquals("ecjxe", response.properties().management().endpoints().get("pusxjb").address());
+        Assertions.assertEquals("gtuhxuicbu", response.properties().management().endpoints().get("pusxjb").scopeId());
+        Assertions.assertEquals("wmrswnjlxuzrh",
+            response.properties().management().endpoints().get("pusxjb").resourceId());
+        Assertions.assertEquals(ProvisioningEndpointType.DPS,
+            response.properties().provisioning().endpoints().get("tu").endpointType());
+        Assertions.assertEquals("pdo", response.properties().provisioning().endpoints().get("tu").resourceId());
+        Assertions.assertEquals(InboundCallerIdentityType.USER_ASSIGNED,
+            response.properties().provisioning().endpoints().get("tu").inboundCallerIdentity().type());
+        Assertions.assertEquals(OutboundIdentityType.SYSTEM_ASSIGNED, response.properties().outboundIdentity().type());
+        Assertions.assertEquals("bgdlfgtdysna", response.properties().outboundIdentity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
     }
 }

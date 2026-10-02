@@ -6,9 +6,12 @@ package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceregistry.fluent.models.SchemaRegistryInner;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentity;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentityType;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistryProperties;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentity;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -17,35 +20,42 @@ public final class SchemaRegistryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryInner model = BinaryData.fromString(
-            "{\"properties\":{\"uuid\":\"njdgkynscliq\",\"namespace\":\"zvhxnk\",\"displayName\":\"tkubotppn\",\"description\":\"xz\",\"storageAccountContainerUrl\":\"hihfrbbcevqagtlt\",\"provisioningState\":\"Accepted\"},\"identity\":{\"principalId\":\"qojpy\",\"tenantId\":\"gtrd\",\"type\":\"SystemAssigned\"},\"location\":\"fmzzsdymbrny\",\"tags\":{\"rafwgckhocxvdf\":\"m\",\"pavehhr\":\"fwafqrouda\"},\"id\":\"kbunzoz\",\"name\":\"dhcxgkmoy\",\"type\":\"cdyuibhmfdnbzyd\"}")
+            "{\"properties\":{\"uuid\":\"njdgkynscliq\",\"namespace\":\"zvhxnk\",\"displayName\":\"tkubotppn\",\"description\":\"xz\",\"storageAccountContainerUrl\":\"hihfrbbcevqagtlt\",\"outboundIdentity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"kqo\"},\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"gtrd\",\"tenantId\":\"ifmzzsd\",\"type\":\"None\",\"userAssignedIdentities\":{\"pavehhr\":{\"principalId\":\"ysuxmprafwgck\",\"clientId\":\"cxvdfffwafqrouda\"},\"bzydvfvfcj\":{\"principalId\":\"bunzozudh\",\"clientId\":\"gkmoyxcdyuibhmfd\"}}},\"location\":\"eoisrvhmgor\",\"tags\":{\"faxvxil\":\"kiscvwmzhwpl\",\"nzeyqxtjj\":\"btgn\",\"vodggxdbee\":\"zqlqhyc\"},\"id\":\"mieknlraria\",\"name\":\"wiuagydwqf\",\"type\":\"ylyrfgiagtco\"}")
             .toObject(SchemaRegistryInner.class);
-        Assertions.assertEquals("fmzzsdymbrny", model.location());
-        Assertions.assertEquals("m", model.tags().get("rafwgckhocxvdf"));
+        Assertions.assertEquals("eoisrvhmgor", model.location());
+        Assertions.assertEquals("kiscvwmzhwpl", model.tags().get("faxvxil"));
         Assertions.assertEquals("zvhxnk", model.properties().namespace());
         Assertions.assertEquals("tkubotppn", model.properties().displayName());
         Assertions.assertEquals("xz", model.properties().description());
         Assertions.assertEquals("hihfrbbcevqagtlt", model.properties().storageAccountContainerUrl());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(OutboundIdentityType.SYSTEM_ASSIGNED, model.properties().outboundIdentity().type());
+        Assertions.assertEquals("kqo", model.properties().outboundIdentity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaRegistryInner model = new SchemaRegistryInner().withLocation("fmzzsdymbrny")
-            .withTags(mapOf("rafwgckhocxvdf", "m", "pavehhr", "fwafqrouda"))
+        SchemaRegistryInner model = new SchemaRegistryInner().withLocation("eoisrvhmgor")
+            .withTags(mapOf("faxvxil", "kiscvwmzhwpl", "nzeyqxtjj", "btgn", "vodggxdbee", "zqlqhyc"))
             .withProperties(new SchemaRegistryProperties().withNamespace("zvhxnk")
                 .withDisplayName("tkubotppn")
                 .withDescription("xz")
-                .withStorageAccountContainerUrl("hihfrbbcevqagtlt"))
-            .withIdentity(
-                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED));
+                .withStorageAccountContainerUrl("hihfrbbcevqagtlt")
+                .withOutboundIdentity(new OutboundIdentity().withType(OutboundIdentityType.SYSTEM_ASSIGNED)
+                    .withUserAssignedIdentity("kqo")))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(
+                    mapOf("pavehhr", new UserAssignedIdentity(), "bzydvfvfcj", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(SchemaRegistryInner.class);
-        Assertions.assertEquals("fmzzsdymbrny", model.location());
-        Assertions.assertEquals("m", model.tags().get("rafwgckhocxvdf"));
+        Assertions.assertEquals("eoisrvhmgor", model.location());
+        Assertions.assertEquals("kiscvwmzhwpl", model.tags().get("faxvxil"));
         Assertions.assertEquals("zvhxnk", model.properties().namespace());
         Assertions.assertEquals("tkubotppn", model.properties().displayName());
         Assertions.assertEquals("xz", model.properties().description());
         Assertions.assertEquals("hihfrbbcevqagtlt", model.properties().storageAccountContainerUrl());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(OutboundIdentityType.SYSTEM_ASSIGNED, model.properties().outboundIdentity().type());
+        Assertions.assertEquals("kqo", model.properties().outboundIdentity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
     }
 
     // Use "Map.of" if available

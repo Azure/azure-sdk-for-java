@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DeviceRefTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeviceRef model = BinaryData.fromString("{\"deviceName\":\"bkpyc\",\"endpointName\":\"klwndnhjdauwhv\"}")
+        DeviceRef model = BinaryData.fromString("{\"deviceName\":\"sapskr\",\"endpointName\":\"qmhjjdhtld\"}")
             .toObject(DeviceRef.class);
-        Assertions.assertEquals("bkpyc", model.deviceName());
-        Assertions.assertEquals("klwndnhjdauwhv", model.endpointName());
+        Assertions.assertEquals("sapskr", model.deviceName());
+        Assertions.assertEquals("qmhjjdhtld", model.endpointName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceRef model = new DeviceRef().withDeviceName("bkpyc").withEndpointName("klwndnhjdauwhv");
+        DeviceRef model = new DeviceRef().withDeviceName("sapskr").withEndpointName("qmhjjdhtld");
         model = BinaryData.fromObject(model).toObject(DeviceRef.class);
-        Assertions.assertEquals("bkpyc", model.deviceName());
-        Assertions.assertEquals("klwndnhjdauwhv", model.endpointName());
+        Assertions.assertEquals("sapskr", model.deviceName());
+        Assertions.assertEquals("qmhjjdhtld", model.endpointName());
     }
 }
