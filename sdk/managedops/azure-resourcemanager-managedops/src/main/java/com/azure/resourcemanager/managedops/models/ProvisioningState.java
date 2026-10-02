@@ -37,6 +37,11 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     public static final ProvisioningState DELETING = fromString("Deleting");
 
     /**
+     * The resource has been accepted for provisioning.
+     */
+    public static final ProvisioningState ACCEPTED = fromString("Accepted");
+
+    /**
      * Creates a new instance of ProvisioningState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -172,7 +172,7 @@ public final class ManagedOpsManagementClientImpl implements ManagedOpsManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-07-28-preview";
+        this.apiVersion = "2026-01-06-preview";
         this.operations = new OperationsClientImpl(this);
         this.managedOps = new ManagedOpsClientImpl(this);
     }

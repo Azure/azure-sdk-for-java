@@ -9,7 +9,7 @@ package com.azure.resourcemanager.managedops.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-07-28-preview/Operations_List.json
+     * x-ms-original-file: 2026-01-06-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.managedops.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,22 +14,22 @@ import java.io.IOException;
 /**
  * Specifies the service plan for this resource.
  */
-@Immutable
+@Fluent
 public final class Sku implements JsonSerializable<Sku> {
     /*
      * Name of the SKU.
      */
-    private String name;
+    private SkuName name;
 
     /*
      * Pricing tier of the SKU.
      */
-    private String tier;
+    private SkuTier tier;
 
     /**
      * Creates an instance of Sku class.
      */
-    private Sku() {
+    public Sku() {
     }
 
     /**
@@ -37,8 +37,19 @@ public final class Sku implements JsonSerializable<Sku> {
      * 
      * @return the name value.
      */
-    public String name() {
+    public SkuName name() {
         return this.name;
+    }
+
+    /**
+     * Set the name property: Name of the SKU.
+     * 
+     * @param name the name value to set.
+     * @return the Sku object itself.
+     */
+    public Sku withName(SkuName name) {
+        this.name = name;
+        return this;
     }
 
     /**
@@ -46,8 +57,19 @@ public final class Sku implements JsonSerializable<Sku> {
      * 
      * @return the tier value.
      */
-    public String tier() {
+    public SkuTier tier() {
         return this.tier;
+    }
+
+    /**
+     * Set the tier property: Pricing tier of the SKU.
+     * 
+     * @param tier the tier value to set.
+     * @return the Sku object itself.
+     */
+    public Sku withTier(SkuTier tier) {
+        this.tier = tier;
+        return this;
     }
 
     /**
@@ -56,8 +78,8 @@ public final class Sku implements JsonSerializable<Sku> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -78,9 +100,9 @@ public final class Sku implements JsonSerializable<Sku> {
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    deserializedSku.name = reader.getString();
+                    deserializedSku.name = SkuName.fromString(reader.getString());
                 } else if ("tier".equals(fieldName)) {
-                    deserializedSku.tier = reader.getString();
+                    deserializedSku.tier = SkuTier.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
