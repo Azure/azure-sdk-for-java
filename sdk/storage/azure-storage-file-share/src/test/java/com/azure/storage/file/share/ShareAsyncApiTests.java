@@ -345,7 +345,10 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     @Test
     public void getPropertiesIncludesCreationTime() {
         StepVerifier.create(primaryShareAsyncClient.create().then(primaryShareAsyncClient.getProperties()))
-            .assertNext(properties -> assertNotNull(properties.getCreationTime()))
+            .assertNext(properties -> {
+                assertNotNull(properties.getCreationTime());
+                assertNotNull(properties.getETag());
+            })
             .verifyComplete();
     }
 

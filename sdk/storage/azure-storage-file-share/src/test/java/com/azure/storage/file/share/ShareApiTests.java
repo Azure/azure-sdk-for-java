@@ -542,7 +542,9 @@ public class ShareApiTests extends FileShareTestBase {
     public void getPropertiesIncludesCreationTime() {
         primaryShareClient.create();
 
-        assertNotNull(primaryShareClient.getProperties().getCreationTime());
+        ShareProperties properties = primaryShareClient.getProperties();
+        assertNotNull(properties.getCreationTime());
+        assertNotNull(properties.getETag());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")

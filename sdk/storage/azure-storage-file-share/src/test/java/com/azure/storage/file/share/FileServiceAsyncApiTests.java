@@ -173,6 +173,18 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
         assertTrue(testShares.isEmpty());
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void listSharesIncludesCreationTime() {
+        StepVerifier.create(primaryFileServiceAsyncClient.createShare(shareName)
+            .thenMany(primaryFileServiceAsyncClient.listShares(new ListSharesOptions().setPrefix(shareName))))
+            .assertNext(firstShare -> {
+                assertEquals(shareName, firstShare.getName());
+                assertNotNull(firstShare.getProperties().getCreationTime());
+            })
+            .verifyComplete();
+    }
+
     protected static Stream<Arguments> listSharesWithFilterSupplier() {
         return Stream.of(Arguments.of(new ListSharesOptions(), 3, false, true, false),
             Arguments.of(new ListSharesOptions().setIncludeMetadata(true), 3, true, true, false),

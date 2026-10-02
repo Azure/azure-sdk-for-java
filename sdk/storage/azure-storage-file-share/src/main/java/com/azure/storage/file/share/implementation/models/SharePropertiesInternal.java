@@ -948,7 +948,7 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
         xmlWriter.writeStringElement("NextAllowedProvisionedBandwidthDowngradeTime",
             Objects.toString(this.nextAllowedProvisionedBandwidthDowngradeTime, null));
         xmlWriter.writeBooleanElement("EnableSmbDirectoryLease", this.enableSmbDirectoryLease);
-        xmlWriter.writeStringElement("CreationTime", Objects.toString(this.creationTime, null));
+        xmlWriter.writeStringElement("Creation-Time", Objects.toString(this.creationTime, null));
         if (this.metadata != null) {
             xmlWriter.writeStartElement("Metadata");
             for (Map.Entry<String, String> entry : this.metadata.entrySet()) {
@@ -1064,7 +1064,7 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
                 } else if ("EnableSmbDirectoryLease".equals(elementName.getLocalPart())) {
                     deserializedSharePropertiesInternal.enableSmbDirectoryLease
                         = reader.getNullableElement(Boolean::parseBoolean);
-                } else if ("CreationTime".equals(elementName.getLocalPart())) {
+                } else if ("Creation-Time".equals(elementName.getLocalPart())) {
                     deserializedSharePropertiesInternal.creationTime = reader.getNullableElement(DateTimeRfc1123::new);
                 } else if ("Metadata".equals(elementName.getLocalPart())) {
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
