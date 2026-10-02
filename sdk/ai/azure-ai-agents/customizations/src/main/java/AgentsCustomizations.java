@@ -36,7 +36,7 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
-        customizeOptimizationPollingStrategies(libraryCustomization);
+        customizeOptimizationPollingStrategies(libraryCustomization, logger);
         internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization);
         protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
@@ -695,18 +695,43 @@ public class AgentsCustomizations extends Customization {
             }));
     }
 
-    private void customizeOptimizationPollingStrategies(LibraryCustomization customization) {
-        customization.getClass("com.azure.ai.agents.implementation", "AgentsImpl")
-            .customizeAst(ast -> ast.getClassByName("AgentsImpl").ifPresent(clazz -> clazz.getMethods().stream()
-                .filter(method -> method.getNameAsString().startsWith("beginCreateOptimizationJob"))
-                .forEach(method -> method.findAll(ObjectCreationExpr.class).stream()
-                    .filter(creation -> creation.getTypeAsString().endsWith("OperationLocationPollingStrategy"))
-                    .forEach(creation -> {
-                        String strategy = creation.getTypeAsString().contains("SyncOperation")
-                            ? "com.azure.ai.agents.implementation.SyncAgentOptimizationOperationLocationPollingStrategy"
-                            : "com.azure.ai.agents.implementation.AgentOptimizationOperationLocationPollingStrategy";
-                        creation.setType(StaticJavaParser.parseClassOrInterfaceType(strategy));
-                    }))));
+    private void customizeOptimizationPollingStrategies(LibraryCustomization customization, Logger logger) {
+        customization.getClass("com.azure.ai.agents.implementation", "AgentsImpl").customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName("AgentsImpl")
+                .orElseThrow(() -> new IllegalStateException("AgentsImpl was not generated."));
+            int replacementCount = 0;
+
+            for (MethodDeclaration method : clazz.getMethods()) {
+                if (!method.getNameAsString().startsWith("beginCreateOptimizationJob")) {
+                    continue;
+                }
+
+                List<ObjectCreationExpr> pollingStrategies = method.findAll(ObjectCreationExpr.class);
+                pollingStrategies.removeIf(creation -> {
+                    String typeName = creation.getType().getNameAsString();
+                    return !"OperationLocationPollingStrategy".equals(typeName)
+                        && !"SyncOperationLocationPollingStrategy".equals(typeName);
+                });
+                if (pollingStrategies.size() != 1) {
+                    throw new IllegalStateException("Expected one operation-location polling strategy in "
+                        + method.getNameAsString() + " but found " + pollingStrategies.size() + ".");
+                }
+
+                ObjectCreationExpr creation = pollingStrategies.get(0);
+                String strategy = creation.getType().getNameAsString().startsWith("Sync")
+                    ? "com.azure.ai.agents.implementation.SyncAgentOptimizationOperationLocationPollingStrategy"
+                    : "com.azure.ai.agents.implementation.AgentOptimizationOperationLocationPollingStrategy";
+                creation.setType(StaticJavaParser.parseClassOrInterfaceType(strategy + "<>"));
+                replacementCount++;
+            }
+
+            if (replacementCount != 4) {
+                throw new IllegalStateException(
+                    "Expected to customize four optimization polling strategies but customized " + replacementCount
+                        + ".");
+            }
+            logger.info("Customized {} agent optimization polling strategies.", replacementCount);
+        });
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {

@@ -32,20 +32,7 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
      * Optional file output configuration for the generated supervised fine-tuning data.
      */
     @Generated
-    private SupervisedFineTuningDataGenerationJobOutputTarget outputConfiguration;
-
-    /**
-     * Creates an instance of SupervisedFineTuningDataGenerationJob class.
-     *
-     * @param name the name value to set.
-     * @param sources the sources value to set.
-     * @param generationConfiguration the generationConfiguration value to set.
-     */
-    @Generated
-    private SupervisedFineTuningDataGenerationJob(String name, List<DataGenerationJobSource> sources,
-        DataGenerationJobOptions generationConfiguration) {
-        super(name, sources, generationConfiguration);
-    }
+    private SupervisedFineTuningDataGenerationJobOutputConfiguration outputConfiguration;
 
     /**
      * Get the scenario property: The scenario of the data generation job. Either for fine-tuning or evaluation.
@@ -65,7 +52,7 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
      * @return the outputConfiguration value.
      */
     @Generated
-    public SupervisedFineTuningDataGenerationJobOutputTarget getOutputConfiguration() {
+    public SupervisedFineTuningDataGenerationJobOutputConfiguration getOutputConfiguration() {
         return this.outputConfiguration;
     }
 
@@ -99,13 +86,13 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
             JobStatus status = null;
             String name = null;
             List<DataGenerationJobSource> sources = null;
-            DataGenerationJobOptions generationConfiguration = null;
+            DataGenerationJobConfiguration generationConfiguration = null;
             OffsetDateTime createdAt = null;
             DataGenerationJobResult result = null;
             ApiError error = null;
             OffsetDateTime finishedAt = null;
             DataGenerationJobScenario scenario = DataGenerationJobScenario.SUPERVISED_FINETUNING_PREVIEW;
-            SupervisedFineTuningDataGenerationJobOutputTarget outputConfiguration = null;
+            SupervisedFineTuningDataGenerationJobOutputConfiguration outputConfiguration = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -118,7 +105,7 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
                 } else if ("sources".equals(fieldName)) {
                     sources = reader.readArray(reader1 -> DataGenerationJobSource.fromJson(reader1));
                 } else if ("generation_configuration".equals(fieldName)) {
-                    generationConfiguration = DataGenerationJobOptions.fromJson(reader);
+                    generationConfiguration = DataGenerationJobConfiguration.fromJson(reader);
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("result".equals(fieldName)) {
@@ -131,7 +118,7 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
                 } else if ("scenario".equals(fieldName)) {
                     scenario = DataGenerationJobScenario.fromString(reader.getString());
                 } else if ("output_configuration".equals(fieldName)) {
-                    outputConfiguration = SupervisedFineTuningDataGenerationJobOutputTarget.fromJson(reader);
+                    outputConfiguration = SupervisedFineTuningDataGenerationJobOutputConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -148,5 +135,18 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
             deserializedSupervisedFineTuningDataGenerationJob.outputConfiguration = outputConfiguration;
             return deserializedSupervisedFineTuningDataGenerationJob;
         });
+    }
+
+    /**
+     * Creates an instance of SupervisedFineTuningDataGenerationJob class.
+     *
+     * @param name the name value to set.
+     * @param sources the sources value to set.
+     * @param generationConfiguration the generationConfiguration value to set.
+     */
+    @Generated
+    private SupervisedFineTuningDataGenerationJob(String name, List<DataGenerationJobSource> sources,
+        DataGenerationJobConfiguration generationConfiguration) {
+        super(name, sources, generationConfiguration);
     }
 }

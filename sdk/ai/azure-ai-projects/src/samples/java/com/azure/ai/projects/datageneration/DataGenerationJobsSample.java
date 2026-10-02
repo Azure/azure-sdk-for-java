@@ -10,7 +10,7 @@ import com.azure.ai.projects.models.DataGenerationJobInputs;
 import com.azure.ai.projects.models.DataGenerationModelOptions;
 import com.azure.ai.projects.models.EvaluationDataGenerationJobInputs;
 import com.azure.ai.projects.models.PromptDataGenerationJobSource;
-import com.azure.ai.projects.models.SimpleQnADataGenerationJobOptions;
+import com.azure.ai.projects.models.SimpleQnADataGenerationJobConfiguration;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -97,12 +97,12 @@ public class DataGenerationJobsSample {
                 + "warranty coverage, product care, returns, and trail safety in a concise, friendly tone.")
             .setDescription("Contoso TrailGear support policy and product guidance.");
 
-        SimpleQnADataGenerationJobOptions options = new SimpleQnADataGenerationJobOptions(15)
+        SimpleQnADataGenerationJobConfiguration configuration = new SimpleQnADataGenerationJobConfiguration(15)
             .setModelOptions(new DataGenerationModelOptions(model));
 
         return new EvaluationDataGenerationJobInputs(
             "java-sample-data-generation-job",
             Collections.singletonList(source),
-            options);
+            configuration);
     }
 }

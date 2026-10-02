@@ -13,10 +13,10 @@ import com.azure.ai.projects.models.DataGenerationModelOptions;
 import com.azure.ai.projects.models.DatasetDataGenerationJobOutput;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.EvaluationDataGenerationJobInputs;
-import com.azure.ai.projects.models.EvaluationDataGenerationJobOutputTarget;
+import com.azure.ai.projects.models.EvaluationDataGenerationJobOutputConfiguration;
 import com.azure.ai.projects.models.JobStatus;
 import com.azure.ai.projects.models.PromptDataGenerationJobSource;
-import com.azure.ai.projects.models.SimpleQnADataGenerationJobOptions;
+import com.azure.ai.projects.models.SimpleQnADataGenerationJobConfiguration;
 import com.azure.ai.projects.models.TestingCriterionAzureAIEvaluator;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.BinaryData;
@@ -146,17 +146,17 @@ public class DataGenerationJobWithEvaluationSample {
                 + "Digital goods are non-refundable once downloaded.")
             .setDescription("Contoso refund policy");
 
-        SimpleQnADataGenerationJobOptions options = new SimpleQnADataGenerationJobOptions(15)
+        SimpleQnADataGenerationJobConfiguration configuration = new SimpleQnADataGenerationJobConfiguration(15)
             .setModelOptions(new DataGenerationModelOptions(modelName));
 
-        EvaluationDataGenerationJobOutputTarget outputConfiguration
-            = new EvaluationDataGenerationJobOutputTarget()
+        EvaluationDataGenerationJobOutputConfiguration outputConfiguration
+            = new EvaluationDataGenerationJobOutputConfiguration()
             .setName(datasetName)
             .setDescription("QnA pairs generated from the Contoso refund policy prompt.")
             .setTags(Collections.singletonMap("sample", "dataset-generation-with-evaluation"));
 
         return new EvaluationDataGenerationJobInputs("qna-from-policy-prompt", Collections.singletonList(source),
-            options).setOutputConfiguration(outputConfiguration);
+            configuration).setOutputConfiguration(outputConfiguration);
     }
 
     private static DataGenerationJob waitForDataGenerationJob(DatasetsClient datasetsClient,

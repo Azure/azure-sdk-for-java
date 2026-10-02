@@ -13,12 +13,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * File output target for a reinforcement fine-tuning data generation job. This is a preview feature.
+ * File output configuration for a supervised fine-tuning data generation job. This is a preview feature.
  */
 @Fluent
 @Beta(warningText = "Preview API. DataGenerationJobs=V1Preview")
-public final class ReinforcementFineTuningDataGenerationJobOutputTarget
-    implements JsonSerializable<ReinforcementFineTuningDataGenerationJobOutputTarget> {
+public final class SupervisedFineTuningDataGenerationJobOutputConfiguration
+    implements JsonSerializable<SupervisedFineTuningDataGenerationJobOutputConfiguration> {
 
     /*
      * Filename to assign to the generated fine-tuning file.
@@ -40,12 +40,12 @@ public final class ReinforcementFineTuningDataGenerationJobOutputTarget
     private String mergeFileId;
 
     /**
-     * Creates an instance of ReinforcementFineTuningDataGenerationJobOutputTarget class.
+     * Creates an instance of SupervisedFineTuningDataGenerationJobOutputConfiguration class.
      *
      * @param name the name value to set.
      */
     @Generated
-    public ReinforcementFineTuningDataGenerationJobOutputTarget(String name) {
+    public SupervisedFineTuningDataGenerationJobOutputConfiguration(String name) {
         this.name = name;
     }
 
@@ -75,10 +75,10 @@ public final class ReinforcementFineTuningDataGenerationJobOutputTarget
      * only the newly generated fine-tuning file content.
      *
      * @param writeMode the writeMode value to set.
-     * @return the ReinforcementFineTuningDataGenerationJobOutputTarget object itself.
+     * @return the SupervisedFineTuningDataGenerationJobOutputConfiguration object itself.
      */
     @Generated
-    public ReinforcementFineTuningDataGenerationJobOutputTarget
+    public SupervisedFineTuningDataGenerationJobOutputConfiguration
         setWriteMode(DataGenerationJobOutputWriteMode writeMode) {
         this.writeMode = writeMode;
         return this;
@@ -98,10 +98,10 @@ public final class ReinforcementFineTuningDataGenerationJobOutputTarget
      * Set the mergeFileId property: File ID to merge into when `write_mode` is `merge`.
      *
      * @param mergeFileId the mergeFileId value to set.
-     * @return the ReinforcementFineTuningDataGenerationJobOutputTarget object itself.
+     * @return the SupervisedFineTuningDataGenerationJobOutputConfiguration object itself.
      */
     @Generated
-    public ReinforcementFineTuningDataGenerationJobOutputTarget setMergeFileId(String mergeFileId) {
+    public SupervisedFineTuningDataGenerationJobOutputConfiguration setMergeFileId(String mergeFileId) {
         this.mergeFileId = mergeFileId;
         return this;
     }
@@ -120,16 +120,17 @@ public final class ReinforcementFineTuningDataGenerationJobOutputTarget
     }
 
     /**
-     * Reads an instance of ReinforcementFineTuningDataGenerationJobOutputTarget from the JsonReader.
+     * Reads an instance of SupervisedFineTuningDataGenerationJobOutputConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ReinforcementFineTuningDataGenerationJobOutputTarget if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
+     * @return An instance of SupervisedFineTuningDataGenerationJobOutputConfiguration if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ReinforcementFineTuningDataGenerationJobOutputTarget.
+     * @throws IOException If an error occurs while reading the
+     * SupervisedFineTuningDataGenerationJobOutputConfiguration.
      */
     @Generated
-    public static ReinforcementFineTuningDataGenerationJobOutputTarget fromJson(JsonReader jsonReader)
+    public static SupervisedFineTuningDataGenerationJobOutputConfiguration fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
@@ -148,11 +149,11 @@ public final class ReinforcementFineTuningDataGenerationJobOutputTarget
                     reader.skipChildren();
                 }
             }
-            ReinforcementFineTuningDataGenerationJobOutputTarget deserializedReinforcementFineTuningDataGenerationJobOutputTarget
-                = new ReinforcementFineTuningDataGenerationJobOutputTarget(name);
-            deserializedReinforcementFineTuningDataGenerationJobOutputTarget.writeMode = writeMode;
-            deserializedReinforcementFineTuningDataGenerationJobOutputTarget.mergeFileId = mergeFileId;
-            return deserializedReinforcementFineTuningDataGenerationJobOutputTarget;
+            SupervisedFineTuningDataGenerationJobOutputConfiguration deserializedSupervisedFineTuningDataGenerationJobOutputConfiguration
+                = new SupervisedFineTuningDataGenerationJobOutputConfiguration(name);
+            deserializedSupervisedFineTuningDataGenerationJobOutputConfiguration.writeMode = writeMode;
+            deserializedSupervisedFineTuningDataGenerationJobOutputConfiguration.mergeFileId = mergeFileId;
+            return deserializedSupervisedFineTuningDataGenerationJobOutputConfiguration;
         });
     }
 }

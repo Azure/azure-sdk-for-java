@@ -198,22 +198,7 @@ public class DataGenerationJob implements JsonSerializable<DataGenerationJob> {
      * The generation configuration for the data generation job.
      */
     @Generated
-    private final DataGenerationJobOptions generationConfiguration;
-
-    /**
-     * Creates an instance of DataGenerationJob class.
-     *
-     * @param name the name value to set.
-     * @param sources the sources value to set.
-     * @param generationConfiguration the generationConfiguration value to set.
-     */
-    @Generated
-    protected DataGenerationJob(String name, List<DataGenerationJobSource> sources,
-        DataGenerationJobOptions generationConfiguration) {
-        this.name = name;
-        this.sources = sources;
-        this.generationConfiguration = generationConfiguration;
-    }
+    private final DataGenerationJobConfiguration generationConfiguration;
 
     /**
      * Get the scenario property: The scenario of the data generation job. Either for fine-tuning or evaluation.
@@ -299,7 +284,7 @@ public class DataGenerationJob implements JsonSerializable<DataGenerationJob> {
      * @return the generationConfiguration value.
      */
     @Generated
-    public DataGenerationJobOptions getGenerationConfiguration() {
+    public DataGenerationJobConfiguration getGenerationConfiguration() {
         return this.generationConfiguration;
     }
 
@@ -344,7 +329,7 @@ public class DataGenerationJob implements JsonSerializable<DataGenerationJob> {
             JobStatus status = null;
             String name = null;
             List<DataGenerationJobSource> sources = null;
-            DataGenerationJobOptions generationConfiguration = null;
+            DataGenerationJobConfiguration generationConfiguration = null;
             long createdAt = 0L;
             DataGenerationJobScenario scenario = null;
             DataGenerationJobResult result = null;
@@ -362,7 +347,7 @@ public class DataGenerationJob implements JsonSerializable<DataGenerationJob> {
                 } else if ("sources".equals(fieldName)) {
                     sources = reader.readArray(reader1 -> DataGenerationJobSource.fromJson(reader1));
                 } else if ("generation_configuration".equals(fieldName)) {
-                    generationConfiguration = DataGenerationJobOptions.fromJson(reader);
+                    generationConfiguration = DataGenerationJobConfiguration.fromJson(reader);
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = reader.getLong();
                 } else if ("scenario".equals(fieldName)) {
@@ -388,5 +373,20 @@ public class DataGenerationJob implements JsonSerializable<DataGenerationJob> {
             deserializedDataGenerationJob.finishedAt = finishedAt;
             return deserializedDataGenerationJob;
         });
+    }
+
+    /**
+     * Creates an instance of DataGenerationJob class.
+     *
+     * @param name the name value to set.
+     * @param sources the sources value to set.
+     * @param generationConfiguration the generationConfiguration value to set.
+     */
+    @Generated
+    protected DataGenerationJob(String name, List<DataGenerationJobSource> sources,
+        DataGenerationJobConfiguration generationConfiguration) {
+        this.name = name;
+        this.sources = sources;
+        this.generationConfiguration = generationConfiguration;
     }
 }

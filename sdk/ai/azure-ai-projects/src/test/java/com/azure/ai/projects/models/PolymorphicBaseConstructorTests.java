@@ -48,7 +48,8 @@ class PolymorphicBaseConstructorTests {
 
     private static Stream<Arguments> polymorphicModels() {
         return Stream.of(
-            Arguments.of(DataGenerationJobOptions.class, new SimpleQnADataGenerationJobOptions(3).setTrainSplit(0.75)),
+            Arguments.of(DataGenerationJobConfiguration.class,
+                new SimpleQnADataGenerationJobConfiguration(3).setTrainSplit(0.75)),
             Arguments.of(DataGenerationJobSource.class,
                 new PromptDataGenerationJobSource("Generate questions.").setDescription("Example source")),
             Arguments.of(EvaluatorDefinition.class, new PromptBasedEvaluatorDefinition("Score the response.")),

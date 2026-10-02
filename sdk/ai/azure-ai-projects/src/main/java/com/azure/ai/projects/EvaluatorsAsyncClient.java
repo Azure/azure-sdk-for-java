@@ -5,6 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.projects.implementation.EvaluatorsImpl;
+import com.azure.ai.projects.models.EvaluatorGenerationInputs;
 import com.azure.ai.projects.models.EvaluatorGenerationJob;
 import com.azure.ai.projects.models.EvaluatorVersion;
 import com.azure.ai.projects.models.ListVersionsRequestType;
@@ -641,112 +642,15 @@ public final class EvaluatorsAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Required)
-     *     inputs (Optional): {
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/dataset) (Required)
-     *             }
-     *         ]
-     *         model: String (Required)
-     *         evaluator_name: String (Required)
-     *         evaluator_display_name: String (Optional)
-     *         evaluator_description: String (Optional)
-     *     }
-     *     result (Optional): {
-     *         display_name: String (Optional)
-     *         metadata (Optional): {
-     *             String: String (Required)
-     *         }
-     *         evaluator_type: String(builtin/custom) (Required)
-     *         categories (Required): [
-     *             String(quality/safety/agents) (Required)
-     *         ]
-     *         supported_evaluation_levels (Optional): [
-     *             String(turn/conversation) (Optional)
-     *         ]
-     *         definition (Required): {
-     *             type: String(prompt/code/prompt_and_code/service/openai_graders/rubric/endpoint) (Required)
-     *             init_parameters (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             data_schema (Optional): {
-     *                 String: BinaryData (Required)
-     *             }
-     *             metrics (Optional): {
-     *                 String (Required): {
-     *                     type: String(ordinal/continuous/boolean) (Optional)
-     *                     desirable_direction: String(increase/decrease/neutral) (Optional)
-     *                     min_value: Double (Optional)
-     *                     max_value: Double (Optional)
-     *                     threshold: Double (Optional)
-     *                     is_primary: Boolean (Optional)
-     *                 }
-     *             }
-     *         }
-     *         generation_artifacts (Optional): {
-     *             dataset (Required): {
-     *                 name: String (Required)
-     *                 version: String (Required)
-     *             }
-     *             kinds (Required): [
-     *                 String (Required)
-     *             ]
-     *         }
-     *         generation_job_id: String (Optional)
-     *         warnings (Optional): [
-     *             String(input_quality) (Optional)
-     *         ]
-     *         created_by: String (Required)
-     *         created_at: OffsetDateTime (Required)
-     *         modified_at: OffsetDateTime (Required)
-     *         id: String (Optional)
-     *         name: String (Required)
-     *         version: String (Required)
-     *         description: String (Optional)
-     *         tags (Optional): {
-     *             String: String (Required)
-     *         }
-     *     }
-     *     status: String(queued/in_progress/succeeded/failed/cancelled) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         param: String (Optional)
-     *         type: String (Optional)
-     *         misalignment (Optional): {
-     *             error_type: String(potentially_unintended_data_transfer/potentially_unintended_data_access/potentially_unintended_destructive_activity/other) (Optional)
-     *             detailed_explanation: String (Optional)
-     *             steer (Optional): {
-     *                 message: String (Required)
-     *             }
-     *         }
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         additionalInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *         debugInfo (Optional): {
-     *             String: BinaryData (Required)
-     *         }
-     *     }
-     *     created_at: long (Required)
-     *     finished_at: Long (Optional)
-     *     usage (Optional): {
-     *         input_tokens: long (Required)
-     *         output_tokens: long (Required)
-     *         total_tokens: long (Required)
-     *     }
-     *     input_quality_warnings (Optional): [
-     *          (Optional){
-     *             code: String(empty_prompt/short_prompt/empty_agent_instructions/short_agent_instructions/empty_dataset_content/short_dataset_content/low_trace_count/insufficient_total_input) (Required)
-     *             severity: String(warning) (Required)
-     *             message: String (Required)
-     *             source: String(prompt/agent/dataset/aggregate) (Required)
-     *             source_index: Integer (Optional)
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
      *         }
      *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
      * }
      * }
      * </pre>
@@ -757,17 +661,6 @@ public final class EvaluatorsAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/dataset) (Required)
-     *             }
-     *         ]
-     *         model: String (Required)
-     *         evaluator_name: String (Required)
-     *         evaluator_display_name: String (Optional)
-     *         evaluator_description: String (Optional)
-     *     }
      *     result (Optional): {
      *         display_name: String (Optional)
      *         metadata (Optional): {
@@ -846,6 +739,15 @@ public final class EvaluatorsAsyncClient {
      *             String: BinaryData (Required)
      *         }
      *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      *     usage (Optional): {
@@ -866,7 +768,7 @@ public final class EvaluatorsAsyncClient {
      * }
      * </pre>
      *
-     * @param job The job to create.
+     * @param job The evaluator generation job inputs to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -892,17 +794,6 @@ public final class EvaluatorsAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/dataset) (Required)
-     *             }
-     *         ]
-     *         model: String (Required)
-     *         evaluator_name: String (Required)
-     *         evaluator_display_name: String (Optional)
-     *         evaluator_description: String (Optional)
-     *     }
      *     result (Optional): {
      *         display_name: String (Optional)
      *         metadata (Optional): {
@@ -981,6 +872,15 @@ public final class EvaluatorsAsyncClient {
      *             String: BinaryData (Required)
      *         }
      *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      *     usage (Optional): {
@@ -1059,17 +959,6 @@ public final class EvaluatorsAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/dataset) (Required)
-     *             }
-     *         ]
-     *         model: String (Required)
-     *         evaluator_name: String (Required)
-     *         evaluator_display_name: String (Optional)
-     *         evaluator_description: String (Optional)
-     *     }
      *     result (Optional): {
      *         display_name: String (Optional)
      *         metadata (Optional): {
@@ -1148,6 +1037,15 @@ public final class EvaluatorsAsyncClient {
      *             String: BinaryData (Required)
      *         }
      *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      *     usage (Optional): {
@@ -1191,17 +1089,6 @@ public final class EvaluatorsAsyncClient {
      * {@code
      * {
      *     id: String (Required)
-     *     inputs (Optional): {
-     *         sources (Required): [
-     *              (Required){
-     *                 type: String(prompt/agent/traces/dataset) (Required)
-     *             }
-     *         ]
-     *         model: String (Required)
-     *         evaluator_name: String (Required)
-     *         evaluator_display_name: String (Optional)
-     *         evaluator_description: String (Optional)
-     *     }
      *     result (Optional): {
      *         display_name: String (Optional)
      *         metadata (Optional): {
@@ -1280,6 +1167,15 @@ public final class EvaluatorsAsyncClient {
      *             String: BinaryData (Required)
      *         }
      *     }
+     *     sources (Required): [
+     *          (Required){
+     *             type: String(prompt/agent/traces/dataset) (Required)
+     *         }
+     *     ]
+     *     model: String (Required)
+     *     evaluator_name: String (Required)
+     *     evaluator_display_name: String (Optional)
+     *     evaluator_description: String (Optional)
      *     created_at: long (Required)
      *     finished_at: Long (Optional)
      *     usage (Optional): {
@@ -1590,63 +1486,6 @@ public final class EvaluatorsAsyncClient {
     }
 
     /**
-     * Create an evaluator generation job
-     *
-     * Creates an evaluator generation job. The service generates rubric-based evaluator
-     * definitions from the provided source materials asynchronously.
-     *
-     * @param job The job to create.
-     * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
-     * unconditionally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of evaluator Generation Job resource — a long-running job that
-     * generates rubric-based evaluator definitions from source materials.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<EvaluatorGenerationJob, EvaluatorVersion>
-        beginCreateEvaluatorGenerationJob(EvaluatorGenerationJob job, String operationId) {
-        // Generated convenience method for beginCreateEvaluatorGenerationJobWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        if (operationId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
-        }
-        return serviceClient.beginCreateEvaluatorGenerationJobWithModelAsync(BinaryData.fromObject(job),
-            requestOptions);
-    }
-
-    /**
-     * Create an evaluator generation job
-     *
-     * Creates an evaluator generation job. The service generates rubric-based evaluator
-     * definitions from the provided source materials asynchronously.
-     *
-     * @param job The job to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of evaluator Generation Job resource — a long-running job that
-     * generates rubric-based evaluator definitions from source materials.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<EvaluatorGenerationJob, EvaluatorVersion>
-        beginCreateEvaluatorGenerationJob(EvaluatorGenerationJob job) {
-        // Generated convenience method for beginCreateEvaluatorGenerationJobWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCreateEvaluatorGenerationJobWithModelAsync(BinaryData.fromObject(job),
-            requestOptions);
-    }
-
-    /**
      * Get an evaluator generation job
      *
      * Gets the details of an evaluator generation job by its ID.
@@ -1812,5 +1651,62 @@ public final class EvaluatorsAsyncClient {
         // Generated convenience method for deleteEvaluatorGenerationJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteEvaluatorGenerationJobWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Create an evaluator generation job
+     *
+     * Creates an evaluator generation job. The service generates rubric-based evaluator
+     * definitions from the provided source materials asynchronously.
+     *
+     * @param job The evaluator generation job inputs to create.
+     * @param operationId Client-generated unique ID for idempotent retries. When absent, the server creates the job
+     * unconditionally.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of evaluator Generation Job resource — a long-running job that
+     * generates rubric-based evaluator definitions from source materials.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<EvaluatorGenerationJob, EvaluatorVersion>
+        beginCreateEvaluatorGenerationJob(EvaluatorGenerationInputs job, String operationId) {
+        // Generated convenience method for beginCreateEvaluatorGenerationJobWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        if (operationId != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Operation-Id"), operationId);
+        }
+        return serviceClient.beginCreateEvaluatorGenerationJobWithModelAsync(BinaryData.fromObject(job),
+            requestOptions);
+    }
+
+    /**
+     * Create an evaluator generation job
+     *
+     * Creates an evaluator generation job. The service generates rubric-based evaluator
+     * definitions from the provided source materials asynchronously.
+     *
+     * @param job The evaluator generation job inputs to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of evaluator Generation Job resource — a long-running job that
+     * generates rubric-based evaluator definitions from source materials.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<EvaluatorGenerationJob, EvaluatorVersion>
+        beginCreateEvaluatorGenerationJob(EvaluatorGenerationInputs job) {
+        // Generated convenience method for beginCreateEvaluatorGenerationJobWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginCreateEvaluatorGenerationJobWithModelAsync(BinaryData.fromObject(job),
+            requestOptions);
     }
 }

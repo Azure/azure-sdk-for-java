@@ -32,20 +32,7 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
      * Optional file output configuration for the generated reinforcement fine-tuning data.
      */
     @Generated
-    private ReinforcementFineTuningDataGenerationJobOutputTarget outputConfiguration;
-
-    /**
-     * Creates an instance of ReinforcementFineTuningDataGenerationJob class.
-     *
-     * @param name the name value to set.
-     * @param sources the sources value to set.
-     * @param generationConfiguration the generationConfiguration value to set.
-     */
-    @Generated
-    private ReinforcementFineTuningDataGenerationJob(String name, List<DataGenerationJobSource> sources,
-        DataGenerationJobOptions generationConfiguration) {
-        super(name, sources, generationConfiguration);
-    }
+    private ReinforcementFineTuningDataGenerationJobOutputConfiguration outputConfiguration;
 
     /**
      * Get the scenario property: The scenario of the data generation job. Either for fine-tuning or evaluation.
@@ -65,7 +52,7 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
      * @return the outputConfiguration value.
      */
     @Generated
-    public ReinforcementFineTuningDataGenerationJobOutputTarget getOutputConfiguration() {
+    public ReinforcementFineTuningDataGenerationJobOutputConfiguration getOutputConfiguration() {
         return this.outputConfiguration;
     }
 
@@ -99,13 +86,13 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
             JobStatus status = null;
             String name = null;
             List<DataGenerationJobSource> sources = null;
-            DataGenerationJobOptions generationConfiguration = null;
+            DataGenerationJobConfiguration generationConfiguration = null;
             OffsetDateTime createdAt = null;
             DataGenerationJobResult result = null;
             ApiError error = null;
             OffsetDateTime finishedAt = null;
             DataGenerationJobScenario scenario = DataGenerationJobScenario.REINFORCEMENT_FINETUNING_PREVIEW;
-            ReinforcementFineTuningDataGenerationJobOutputTarget outputConfiguration = null;
+            ReinforcementFineTuningDataGenerationJobOutputConfiguration outputConfiguration = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -118,7 +105,7 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
                 } else if ("sources".equals(fieldName)) {
                     sources = reader.readArray(reader1 -> DataGenerationJobSource.fromJson(reader1));
                 } else if ("generation_configuration".equals(fieldName)) {
-                    generationConfiguration = DataGenerationJobOptions.fromJson(reader);
+                    generationConfiguration = DataGenerationJobConfiguration.fromJson(reader);
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("result".equals(fieldName)) {
@@ -131,7 +118,7 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
                 } else if ("scenario".equals(fieldName)) {
                     scenario = DataGenerationJobScenario.fromString(reader.getString());
                 } else if ("output_configuration".equals(fieldName)) {
-                    outputConfiguration = ReinforcementFineTuningDataGenerationJobOutputTarget.fromJson(reader);
+                    outputConfiguration = ReinforcementFineTuningDataGenerationJobOutputConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -148,5 +135,18 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
             deserializedReinforcementFineTuningDataGenerationJob.outputConfiguration = outputConfiguration;
             return deserializedReinforcementFineTuningDataGenerationJob;
         });
+    }
+
+    /**
+     * Creates an instance of ReinforcementFineTuningDataGenerationJob class.
+     *
+     * @param name the name value to set.
+     * @param sources the sources value to set.
+     * @param generationConfiguration the generationConfiguration value to set.
+     */
+    @Generated
+    private ReinforcementFineTuningDataGenerationJob(String name, List<DataGenerationJobSource> sources,
+        DataGenerationJobConfiguration generationConfiguration) {
+        super(name, sources, generationConfiguration);
     }
 }

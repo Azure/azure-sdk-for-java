@@ -12,12 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The options for a data generation job with ToolUse type. This is a preview feature used only for fine-tuning
+ * The configuration for a data generation job with ToolUse type. This is a preview feature used only for fine-tuning
  * scenarios.
  */
 @Fluent
 @Beta(warningText = "Preview API. DataGenerationJobs=V1Preview")
-public final class ToolUseFineTuningDataGenerationJobOptions extends DataGenerationJobOptions {
+public final class ToolUseFineTuningDataGenerationJobConfiguration extends DataGenerationJobConfiguration {
 
     /*
      * The data generation job type.
@@ -25,13 +25,19 @@ public final class ToolUseFineTuningDataGenerationJobOptions extends DataGenerat
     @Generated
     private DataGenerationJobType type = DataGenerationJobType.TOOL_USE;
 
+    /*
+     * Maximum number of samples to generate, up to service-defined limits.
+     */
+    @Generated
+    private final int maxSamples;
+
     /**
-     * Creates an instance of ToolUseFineTuningDataGenerationJobOptions class.
+     * Creates an instance of ToolUseFineTuningDataGenerationJobConfiguration class.
      *
      * @param maxSamples the maxSamples value to set.
      */
     @Generated
-    public ToolUseFineTuningDataGenerationJobOptions(int maxSamples) {
+    public ToolUseFineTuningDataGenerationJobConfiguration(int maxSamples) {
         this.maxSamples = maxSamples;
     }
 
@@ -47,11 +53,21 @@ public final class ToolUseFineTuningDataGenerationJobOptions extends DataGenerat
     }
 
     /**
+     * Get the maxSamples property: Maximum number of samples to generate, up to service-defined limits.
+     *
+     * @return the maxSamples value.
+     */
+    @Generated
+    public int getMaxSamples() {
+        return this.maxSamples;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
-    public ToolUseFineTuningDataGenerationJobOptions setTrainSplit(Double trainSplit) {
+    public ToolUseFineTuningDataGenerationJobConfiguration setTrainSplit(Double trainSplit) {
         super.setTrainSplit(trainSplit);
         return this;
     }
@@ -61,7 +77,7 @@ public final class ToolUseFineTuningDataGenerationJobOptions extends DataGenerat
      */
     @Generated
     @Override
-    public ToolUseFineTuningDataGenerationJobOptions setModelOptions(DataGenerationModelOptions modelOptions) {
+    public ToolUseFineTuningDataGenerationJobConfiguration setModelOptions(DataGenerationModelOptions modelOptions) {
         super.setModelOptions(modelOptions);
         return this;
     }
@@ -81,16 +97,16 @@ public final class ToolUseFineTuningDataGenerationJobOptions extends DataGenerat
     }
 
     /**
-     * Reads an instance of ToolUseFineTuningDataGenerationJobOptions from the JsonReader.
+     * Reads an instance of ToolUseFineTuningDataGenerationJobConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ToolUseFineTuningDataGenerationJobOptions if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of ToolUseFineTuningDataGenerationJobConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ToolUseFineTuningDataGenerationJobOptions.
+     * @throws IOException If an error occurs while reading the ToolUseFineTuningDataGenerationJobConfiguration.
      */
     @Generated
-    public static ToolUseFineTuningDataGenerationJobOptions fromJson(JsonReader jsonReader) throws IOException {
+    public static ToolUseFineTuningDataGenerationJobConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Double trainSplit = null;
             DataGenerationModelOptions modelOptions = null;
@@ -111,28 +127,12 @@ public final class ToolUseFineTuningDataGenerationJobOptions extends DataGenerat
                     reader.skipChildren();
                 }
             }
-            ToolUseFineTuningDataGenerationJobOptions deserializedToolUseFineTuningDataGenerationJobOptions
-                = new ToolUseFineTuningDataGenerationJobOptions(maxSamples);
-            deserializedToolUseFineTuningDataGenerationJobOptions.setTrainSplit(trainSplit);
-            deserializedToolUseFineTuningDataGenerationJobOptions.setModelOptions(modelOptions);
-            deserializedToolUseFineTuningDataGenerationJobOptions.type = type;
-            return deserializedToolUseFineTuningDataGenerationJobOptions;
+            ToolUseFineTuningDataGenerationJobConfiguration deserializedToolUseFineTuningDataGenerationJobConfiguration
+                = new ToolUseFineTuningDataGenerationJobConfiguration(maxSamples);
+            deserializedToolUseFineTuningDataGenerationJobConfiguration.setTrainSplit(trainSplit);
+            deserializedToolUseFineTuningDataGenerationJobConfiguration.setModelOptions(modelOptions);
+            deserializedToolUseFineTuningDataGenerationJobConfiguration.type = type;
+            return deserializedToolUseFineTuningDataGenerationJobConfiguration;
         });
-    }
-
-    /*
-     * Maximum number of samples to generate, up to service-defined limits.
-     */
-    @Generated
-    private final int maxSamples;
-
-    /**
-     * Get the maxSamples property: Maximum number of samples to generate, up to service-defined limits.
-     *
-     * @return the maxSamples value.
-     */
-    @Generated
-    public int getMaxSamples() {
-        return this.maxSamples;
     }
 }

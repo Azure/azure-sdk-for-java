@@ -12,6 +12,7 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.core.JsonValue;
+import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -49,7 +50,8 @@ public class SessionLogStreamAsyncSample {
 
                 OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
-                return Mono.fromFuture(() -> openAIAsyncClient.responses().create(ResponseCreateParams.builder()
+                return Mono.<Response>fromFuture(
+                    () -> openAIAsyncClient.responses().create(ResponseCreateParams.builder()
                         .input("Say hello in one short sentence.")
                         .putAdditionalBodyProperty("agent_session_id",
                             JsonValue.from(resources.getSession().getAgentSessionId()))
