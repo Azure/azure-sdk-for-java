@@ -13,19 +13,19 @@ public final class IdentitySelectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IdentitySelector model = BinaryData
-            .fromString("{\"identityType\":\"UserAssignedIdentity\",\"userAssignedIdentityResourceId\":\"ehtwdwrft\"}")
+            .fromString("{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"a\"}")
             .toObject(IdentitySelector.class);
-        Assertions.assertEquals(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY, model.identityType());
-        Assertions.assertEquals("ehtwdwrft", model.userAssignedIdentityResourceId());
+        Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY, model.identityType());
+        Assertions.assertEquals("a", model.userAssignedIdentityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IdentitySelector model
-            = new IdentitySelector().withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
-                .withUserAssignedIdentityResourceId("ehtwdwrft");
+            = new IdentitySelector().withIdentityType(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY)
+                .withUserAssignedIdentityResourceId("a");
         model = BinaryData.fromObject(model).toObject(IdentitySelector.class);
-        Assertions.assertEquals(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY, model.identityType());
-        Assertions.assertEquals("ehtwdwrft", model.userAssignedIdentityResourceId());
+        Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY, model.identityType());
+        Assertions.assertEquals("a", model.userAssignedIdentityResourceId());
     }
 }

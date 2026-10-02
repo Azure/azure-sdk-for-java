@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class ClusterManagersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/ClusterManagers_Create.json
+     * x-ms-original-file: 2026-08-01-preview/ClusterManagers_Create.json
      */
     /**
      * Sample code: Create or update cluster manager.
@@ -39,11 +39,12 @@ public final class ClusterManagersCreateOrUpdateSamples {
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName")
             .withManagedResourceGroupConfiguration(
                 new ManagedResourceGroupConfiguration().withLocation("East US").withName("my-managed-rg"))
+            .withRolloutRing(1)
             .create();
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/ClusterManagers_Create_Uami.json
+     * x-ms-original-file: 2026-08-01-preview/ClusterManagers_Create_Uami.json
      */
     /**
      * Sample code: Create or update cluster manager with user assigned identity.
@@ -68,6 +69,7 @@ public final class ClusterManagersCreateOrUpdateSamples {
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName")
             .withManagedResourceGroupConfiguration(
                 new ManagedResourceGroupConfiguration().withLocation("East US").withName("my-managed-rg"))
+            .withRolloutRing(2)
             .create();
     }
 
