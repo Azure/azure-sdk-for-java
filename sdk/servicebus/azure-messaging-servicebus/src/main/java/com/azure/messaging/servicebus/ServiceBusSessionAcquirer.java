@@ -333,6 +333,16 @@ final class ServiceBusSessionAcquirer {
         }
 
         /**
+         * Gets the Mono that resolves the management node used for session-scoped operations such as session state
+         * get/set and session lock renewal.
+         *
+         * @return the Mono to obtain the management node for this session.
+         */
+        Mono<ServiceBusManagementNode> getSessionManagement() {
+            return sessionManagement;
+        }
+
+        /**
          * Begin the recurring lock renewal for the session.
          *
          * @param tracer the tracer.
