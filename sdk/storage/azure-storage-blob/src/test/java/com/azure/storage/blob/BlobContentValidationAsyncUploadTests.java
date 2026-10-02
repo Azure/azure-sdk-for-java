@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.storage.blob.ContentValidationTestUtils.RecordedRequest;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.PageRange;
@@ -42,13 +43,23 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
+import static com.azure.storage.blob.ContentValidationTestUtils.allUploadsUseCrc64Header;
+import static com.azure.storage.blob.ContentValidationTestUtils.allUploadsUseStructuredMessage;
+import static com.azure.storage.blob.ContentValidationTestUtils.assertCrc64HeaderMatches;
+import static com.azure.storage.blob.ContentValidationTestUtils.assertStructuredMessageLengths;
+import static com.azure.storage.blob.ContentValidationTestUtils.contentBearingUploadRequests;
+import static com.azure.storage.blob.ContentValidationTestUtils.hasCommitBlockListRequest;
+import static com.azure.storage.blob.ContentValidationTestUtils.noUploadUsesContentValidation;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -1026,12 +1037,16 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
 
     private static byte[] createDefaultMd5() {
         try {
-            return Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes()));
+            // setContentMd5 expects the raw 16-byte MD5 digest; the SDK Base64-encodes it into the Content-MD5
+            // header. Pre-encoding here would produce an invalid digest and let conflict tests pass for the wrong
+            // reason, so the fixture must stay raw.
+            return MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes());
         } catch (NoSuchAlgorithmException ex) {
             throw LOGGER.logExceptionAsError(new RuntimeException("MD5 algorithm unavailable.", ex));
         }
     }
 
+    @LiveOnly // Server-side MD5/CRC64 conflict; fixture is now a valid raw digest (point #2); run live.
     @ParameterizedTest
     @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
     public void blockBlobUploadWithCustomerProvidedMd5AndCrc64Header(ContentValidationAlgorithm algorithm) {
@@ -1049,6 +1064,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         });
     }
 
+    @LiveOnly // Server-side MD5/CRC64 conflict; fixture is now a valid raw digest (point #2); run live.
     @ParameterizedTest
     @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
     public void stageBlockWithCustomerProvidedMd5AndCrc64Header(ContentValidationAlgorithm algorithm) {
@@ -1066,6 +1082,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         });
     }
 
+    @LiveOnly // Server-side MD5/CRC64 conflict; fixture is now a valid raw digest (point #2); run live.
     @ParameterizedTest
     @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
     public void appendBlockWithCustomerProvidedMd5AndCrc64Header(ContentValidationAlgorithm algorithm) {
@@ -1104,5 +1121,161 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
                 assertEquals(400, e.getStatusCode());
                 assertTrue(e.getMessage().contains(MESSAGE));
             });
+    }
+
+    // ===========================================================================================
+    // Request-shape verification (async): exact header mode, checksum value, and per-request content length.
+    // Requests are captured with a pass-through sniffer and sent to the service.
+    // ===========================================================================================
+
+    @Test
+    public void putBlobRequestBelow4MbUsesCrc64HeaderWithExactValue() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        BlockBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getBlockBlobAsyncClient();
+        byte[] data = getRandomByteArray(UNDER_4MB);
+
+        StepVerifier.create(client.uploadWithResponse(new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(data))
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))).expectNextCount(1).verifyComplete();
+
+        assertTrue(allUploadsUseCrc64Header(recorded));
+        assertCrc64HeaderMatches(contentBearingUploadRequests(recorded).get(0).getHeaders(), data);
+    }
+
+    @Test
+    public void putBlobRequestAbove4MbUsesStructuredMessageWithExactLengths() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        BlockBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getBlockBlobAsyncClient();
+
+        StepVerifier
+            .create(client
+                .uploadWithResponse(new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(getRandomByteArray(FIVE_MB)))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        assertTrue(allUploadsUseStructuredMessage(recorded));
+        assertStructuredMessageLengths(contentBearingUploadRequests(recorded).get(0).getHeaders(), FIVE_MB);
+    }
+
+    @Test
+    public void putBlobRequestWithNoneAlgorithmHasNoValidation() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        BlockBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getBlockBlobAsyncClient();
+
+        StepVerifier
+            .create(client
+                .uploadWithResponse(new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(getRandomByteArray(FIVE_MB)))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE)))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        assertTrue(noUploadUsesContentValidation(recorded));
+    }
+
+    @Test
+    public void appendBlockRequestBelow4MbUsesCrc64HeaderWithExactValue() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        AppendBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getAppendBlobAsyncClient();
+        byte[] data = getRandomByteArray(UNDER_4MB);
+
+        StepVerifier
+            .create(client.create()
+                .then(client.appendBlockWithResponse(new AppendBlobAppendBlockOptions(BinaryData.fromBytes(data))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        assertTrue(allUploadsUseCrc64Header(recorded));
+        assertCrc64HeaderMatches(contentBearingUploadRequests(recorded).get(0).getHeaders(), data);
+    }
+
+    @Test
+    public void uploadPagesRequestBelow4MbUsesCrc64HeaderWithExactValue() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        PageBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getPageBlobAsyncClient();
+        byte[] data = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
+        PageRange range = new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1);
+
+        StepVerifier
+            .create(client.create(UNDER_4MB_PAGE_ALIGNED)
+                .then(client.uploadPagesWithResponse(new PageBlobUploadPagesOptions(range, BinaryData.fromBytes(data))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        assertTrue(allUploadsUseCrc64Header(recorded));
+        assertCrc64HeaderMatches(contentBearingUploadRequests(recorded).get(0).getHeaders(), data);
+    }
+
+    @Test
+    public void uploadPagesRequestAbove4MbUsesStructuredMessageWithExactLengths() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        PageBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getPageBlobAsyncClient();
+        byte[] data = getRandomByteArray(FOUR_MB_PAGE_ALIGNED);
+        PageRange range = new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1);
+
+        StepVerifier
+            .create(client.create(FOUR_MB_PAGE_ALIGNED)
+                .then(client.uploadPagesWithResponse(new PageBlobUploadPagesOptions(range, BinaryData.fromBytes(data))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        assertTrue(allUploadsUseStructuredMessage(recorded));
+        assertStructuredMessageLengths(contentBearingUploadRequests(recorded).get(0).getHeaders(),
+            FOUR_MB_PAGE_ALIGNED);
+    }
+
+    @LiveOnly // Parallel staging uses SDK-generated (random) block IDs in the Put Block URLs; not replayable.
+    @Test
+    public void chunkedParallelUploadRequestValidatesEveryBlockIncludingFinalPartialBlock() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        BlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded);
+        long blockSize = 2L * Constants.MB;
+        byte[] data = getRandomByteArray(FIVE_MB);
+
+        StepVerifier.create(client.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(ByteBuffer.wrap(data)))
+            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
+                .setMaxSingleUploadSizeLong(blockSize)
+                .setMaxConcurrency(1))
+            .setRequestConditions(new BlobRequestConditions())
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))).expectNextCount(1).verifyComplete();
+
+        List<RecordedRequest> uploads = contentBearingUploadRequests(recorded);
+        assertEquals(3, uploads.size(), "A 5 MiB payload with a 2 MiB block size must stage exactly three blocks");
+        assertTrue(allUploadsUseStructuredMessage(recorded));
+
+        List<Long> perBlockLengths = uploads.stream()
+            .map(r -> Long
+                .parseLong(r.getHeaders().getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME)))
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(Arrays.asList((long) Constants.MB, 2L * Constants.MB, 2L * Constants.MB), perBlockLengths);
+    }
+
+    @LiveOnly // Cancellation + parallel staging; validated live.
+    @Test
+    public void cancelledMultipartUploadDoesNotCommit() {
+        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
+        BlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded);
+
+        long blockSize = 2L * Constants.MB;
+        // A body that emits one block then never completes keeps the upload pending until it is cancelled.
+        Flux<ByteBuffer> neverCompleting
+            = Flux.concat(Flux.just(ByteBuffer.wrap(getRandomByteArray(2 * Constants.MB))), Flux.never());
+
+        StepVerifier
+            .create(client.uploadWithResponse(new BlobParallelUploadOptions(neverCompleting)
+                .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
+                    .setMaxSingleUploadSizeLong(blockSize)
+                    .setMaxConcurrency(1))
+                .setRequestConditions(new BlobRequestConditions())
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)))
+            .thenAwait(Duration.ofMillis(200))
+            .thenCancel()
+            .verify();
+
+        assertFalse(hasCommitBlockListRequest(recorded),
+            "A cancelled multipart upload must not commit a block list of incomplete data");
     }
 }
