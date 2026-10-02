@@ -63,7 +63,7 @@ public final class MicrosoftDataEncryptionExceptionResource extends ListResource
             {"R_UnexpectedSourceType", "Unexpected source data type: {0}."},
             {"R_UnexpectedTargetType", "Unexpected target data type: {0}."},
             {"R_InvalidTemporalValue", "Invalid temporal value provided."},
-            {"R_KeystoreProviderError", "An error has occured while getting keystore provider."},
+            {"R_KeystoreProviderError", "An error has occurred while getting keystore provider."},
             {"R_CannotBeNull", "{0} cannot be null."}, {"R_CannotBeNullOrWhiteSpace", "{0} cannot be null or empty or consist of only whitespace. "},
             {"R_InvalidPSLength",
                     "Value ''{0}'' of type {1} is invalid for the expected precision of {2} and scale of {3}."},

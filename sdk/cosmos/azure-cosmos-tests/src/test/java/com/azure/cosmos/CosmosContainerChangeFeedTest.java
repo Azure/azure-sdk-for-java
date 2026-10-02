@@ -813,7 +813,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         // there are no more change for any of the sub-ranges, but a split is happening on the first sub-range after
         // the sub-range where we saw a 304 the first time.
         // This effectively results in an endless-loop because we identify whether all sub-ranges are drained by
-        // capturing teh first subrange we see a 304 on and then loop through sub-ranges until we hit the same
+        // capturing the first subrange we see a 304 on and then loop through sub-ranges until we hit the same
         // subrange without seeing anything but 304. When there is an even number of sub-ranges and a to-be-split
         // sub-range is the last one - we never exit the loop after the split.
         // This test is reproducing this edge case - and used both to validate the hotfix and to protect against
