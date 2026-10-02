@@ -9,6 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionWithUpdateTypeInner;
@@ -17,7 +18,6 @@ import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateVers
 import com.azure.resourcemanager.workloadorchestration.models.UpdateType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -25,7 +25,7 @@ public final class ConfigTemplatesCreateVersionMockTests {
     @Test
     public void testCreateVersion() throws Exception {
         String responseStr
-            = "{\"properties\":{\"configurations\":\"lutixmq\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"izcbfzmcrunfhiuc\",\"id\":\"fbcpaqktkrumzu\",\"name\":\"dkyzbfvxov\",\"type\":\"kxiuxqggvqr\"}";
+            = "{\"properties\":{\"configurations\":\"\\\"datawcspimtcvvf\\\"\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"tzfslxizhqikmgo\",\"id\":\"iqemcdiiisklbon\",\"name\":\"xu\",\"type\":\"jxvtrkfkgenjqnnp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,13 +35,13 @@ public final class ConfigTemplatesCreateVersionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConfigTemplateVersion response = manager.configTemplates()
-            .createVersion("agynoi", "rnzcalinc",
-                new ConfigTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.PATCH)
-                    .withVersion("zxaqzibm")
+            .createVersion("yo", "aadcndazabundt",
+                new ConfigTemplateVersionWithUpdateTypeInner().withUpdateType(UpdateType.MINOR)
+                    .withVersion("aupwhlzyckrem")
                     .withConfigTemplateVersion(new ConfigTemplateVersionInner()
-                        .withProperties(new ConfigTemplateVersionProperties().withConfigurations("miymqruqguhfupet"))),
+                        .withProperties(new ConfigTemplateVersionProperties().withConfigurations(
+                            BinaryData.fromBytes("\"datalmsvdo\"".getBytes(StandardCharsets.UTF_8))))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lutixmq", response.properties().configurations());
     }
 }

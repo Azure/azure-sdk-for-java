@@ -195,6 +195,27 @@ public final class TargetsImpl implements Targets {
         }
     }
 
+    public SolutionVersion unstageSolutionVersion(String resourceGroupName, String targetName,
+        SolutionVersionParameter body) {
+        SolutionVersionInner inner = this.serviceClient().unstageSolutionVersion(resourceGroupName, targetName, body);
+        if (inner != null) {
+            return new SolutionVersionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public SolutionVersion unstageSolutionVersion(String resourceGroupName, String targetName,
+        SolutionVersionParameter body, Context context) {
+        SolutionVersionInner inner
+            = this.serviceClient().unstageSolutionVersion(resourceGroupName, targetName, body, context);
+        if (inner != null) {
+            return new SolutionVersionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Target getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

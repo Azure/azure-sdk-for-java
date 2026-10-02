@@ -25,6 +25,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloadorchestration.fluent.WorkloadOrchestrationManagementClient;
+import com.azure.resourcemanager.workloadorchestration.implementation.ConfigTemplateMetadatasImpl;
+import com.azure.resourcemanager.workloadorchestration.implementation.ConfigTemplateSchemasImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.ConfigTemplateVersionsImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.ConfigTemplatesImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.ContextsImpl;
@@ -32,6 +34,8 @@ import com.azure.resourcemanager.workloadorchestration.implementation.Diagnostic
 import com.azure.resourcemanager.workloadorchestration.implementation.DynamicSchemaVersionsImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.DynamicSchemasImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.ExecutionsImpl;
+import com.azure.resourcemanager.workloadorchestration.implementation.HierarchyConfigurationMetadataVersionsImpl;
+import com.azure.resourcemanager.workloadorchestration.implementation.HierarchyConfigurationMetadatasImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.InstanceHistoriesImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.InstancesImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.JobsImpl;
@@ -39,6 +43,10 @@ import com.azure.resourcemanager.workloadorchestration.implementation.SchemaRefe
 import com.azure.resourcemanager.workloadorchestration.implementation.SchemaVersionsImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.SchemasImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.SiteReferencesImpl;
+import com.azure.resourcemanager.workloadorchestration.implementation.SolutionDeploymentsImpl;
+import com.azure.resourcemanager.workloadorchestration.implementation.SolutionMetadataVersionsImpl;
+import com.azure.resourcemanager.workloadorchestration.implementation.SolutionMetadatasImpl;
+import com.azure.resourcemanager.workloadorchestration.implementation.SolutionSchemasImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.SolutionTemplateVersionsImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.SolutionTemplatesImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.SolutionVersionsImpl;
@@ -47,6 +55,8 @@ import com.azure.resourcemanager.workloadorchestration.implementation.TargetsImp
 import com.azure.resourcemanager.workloadorchestration.implementation.WorkflowVersionsImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.WorkflowsImpl;
 import com.azure.resourcemanager.workloadorchestration.implementation.WorkloadOrchestrationManagementClientBuilder;
+import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateMetadatas;
+import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateSchemas;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateVersions;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplates;
 import com.azure.resourcemanager.workloadorchestration.models.Contexts;
@@ -54,6 +64,8 @@ import com.azure.resourcemanager.workloadorchestration.models.Diagnostics;
 import com.azure.resourcemanager.workloadorchestration.models.DynamicSchemaVersions;
 import com.azure.resourcemanager.workloadorchestration.models.DynamicSchemas;
 import com.azure.resourcemanager.workloadorchestration.models.Executions;
+import com.azure.resourcemanager.workloadorchestration.models.HierarchyConfigurationMetadataVersions;
+import com.azure.resourcemanager.workloadorchestration.models.HierarchyConfigurationMetadatas;
 import com.azure.resourcemanager.workloadorchestration.models.InstanceHistories;
 import com.azure.resourcemanager.workloadorchestration.models.Instances;
 import com.azure.resourcemanager.workloadorchestration.models.Jobs;
@@ -61,6 +73,10 @@ import com.azure.resourcemanager.workloadorchestration.models.SchemaReferences;
 import com.azure.resourcemanager.workloadorchestration.models.SchemaVersions;
 import com.azure.resourcemanager.workloadorchestration.models.Schemas;
 import com.azure.resourcemanager.workloadorchestration.models.SiteReferences;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionDeployments;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionMetadataVersions;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionMetadatas;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionSchemas;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateVersions;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplates;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionVersions;
@@ -99,6 +115,10 @@ public final class WorkloadOrchestrationManager {
 
     private Solutions solutions;
 
+    private SolutionMetadatas solutionMetadatas;
+
+    private SolutionMetadataVersions solutionMetadataVersions;
+
     private SolutionTemplateVersions solutionTemplateVersions;
 
     private SolutionTemplates solutionTemplates;
@@ -122,6 +142,18 @@ public final class WorkloadOrchestrationManager {
     private Contexts contexts;
 
     private SiteReferences siteReferences;
+
+    private SolutionSchemas solutionSchemas;
+
+    private ConfigTemplateSchemas configTemplateSchemas;
+
+    private ConfigTemplateMetadatas configTemplateMetadatas;
+
+    private HierarchyConfigurationMetadatas hierarchyConfigurationMetadatas;
+
+    private HierarchyConfigurationMetadataVersions hierarchyConfigurationMetadataVersions;
+
+    private SolutionDeployments solutionDeployments;
 
     private final WorkloadOrchestrationManagementClient clientObject;
 
@@ -424,7 +456,7 @@ public final class WorkloadOrchestrationManager {
     }
 
     /**
-     * Gets the resource collection API of SchemaReferences.
+     * Gets the resource collection API of SchemaReferences. It manages SchemaReference.
      * 
      * @return Resource collection API of SchemaReferences.
      */
@@ -448,7 +480,32 @@ public final class WorkloadOrchestrationManager {
     }
 
     /**
-     * Gets the resource collection API of SolutionTemplateVersions.
+     * Gets the resource collection API of SolutionMetadatas.
+     * 
+     * @return Resource collection API of SolutionMetadatas.
+     */
+    public SolutionMetadatas solutionMetadatas() {
+        if (this.solutionMetadatas == null) {
+            this.solutionMetadatas = new SolutionMetadatasImpl(clientObject.getSolutionMetadatas(), this);
+        }
+        return solutionMetadatas;
+    }
+
+    /**
+     * Gets the resource collection API of SolutionMetadataVersions.
+     * 
+     * @return Resource collection API of SolutionMetadataVersions.
+     */
+    public SolutionMetadataVersions solutionMetadataVersions() {
+        if (this.solutionMetadataVersions == null) {
+            this.solutionMetadataVersions
+                = new SolutionMetadataVersionsImpl(clientObject.getSolutionMetadataVersions(), this);
+        }
+        return solutionMetadataVersions;
+    }
+
+    /**
+     * Gets the resource collection API of SolutionTemplateVersions. It manages SolutionTemplateVersion.
      * 
      * @return Resource collection API of SolutionTemplateVersions.
      */
@@ -509,7 +566,7 @@ public final class WorkloadOrchestrationManager {
     }
 
     /**
-     * Gets the resource collection API of ConfigTemplateVersions.
+     * Gets the resource collection API of ConfigTemplateVersions. It manages ConfigTemplateVersion.
      * 
      * @return Resource collection API of ConfigTemplateVersions.
      */
@@ -591,6 +648,81 @@ public final class WorkloadOrchestrationManager {
             this.siteReferences = new SiteReferencesImpl(clientObject.getSiteReferences(), this);
         }
         return siteReferences;
+    }
+
+    /**
+     * Gets the resource collection API of SolutionSchemas.
+     * 
+     * @return Resource collection API of SolutionSchemas.
+     */
+    public SolutionSchemas solutionSchemas() {
+        if (this.solutionSchemas == null) {
+            this.solutionSchemas = new SolutionSchemasImpl(clientObject.getSolutionSchemas(), this);
+        }
+        return solutionSchemas;
+    }
+
+    /**
+     * Gets the resource collection API of ConfigTemplateSchemas.
+     * 
+     * @return Resource collection API of ConfigTemplateSchemas.
+     */
+    public ConfigTemplateSchemas configTemplateSchemas() {
+        if (this.configTemplateSchemas == null) {
+            this.configTemplateSchemas = new ConfigTemplateSchemasImpl(clientObject.getConfigTemplateSchemas(), this);
+        }
+        return configTemplateSchemas;
+    }
+
+    /**
+     * Gets the resource collection API of ConfigTemplateMetadatas. It manages ConfigTemplateMetadata.
+     * 
+     * @return Resource collection API of ConfigTemplateMetadatas.
+     */
+    public ConfigTemplateMetadatas configTemplateMetadatas() {
+        if (this.configTemplateMetadatas == null) {
+            this.configTemplateMetadatas
+                = new ConfigTemplateMetadatasImpl(clientObject.getConfigTemplateMetadatas(), this);
+        }
+        return configTemplateMetadatas;
+    }
+
+    /**
+     * Gets the resource collection API of HierarchyConfigurationMetadatas.
+     * 
+     * @return Resource collection API of HierarchyConfigurationMetadatas.
+     */
+    public HierarchyConfigurationMetadatas hierarchyConfigurationMetadatas() {
+        if (this.hierarchyConfigurationMetadatas == null) {
+            this.hierarchyConfigurationMetadatas
+                = new HierarchyConfigurationMetadatasImpl(clientObject.getHierarchyConfigurationMetadatas(), this);
+        }
+        return hierarchyConfigurationMetadatas;
+    }
+
+    /**
+     * Gets the resource collection API of HierarchyConfigurationMetadataVersions.
+     * 
+     * @return Resource collection API of HierarchyConfigurationMetadataVersions.
+     */
+    public HierarchyConfigurationMetadataVersions hierarchyConfigurationMetadataVersions() {
+        if (this.hierarchyConfigurationMetadataVersions == null) {
+            this.hierarchyConfigurationMetadataVersions = new HierarchyConfigurationMetadataVersionsImpl(
+                clientObject.getHierarchyConfigurationMetadataVersions(), this);
+        }
+        return hierarchyConfigurationMetadataVersions;
+    }
+
+    /**
+     * Gets the resource collection API of SolutionDeployments. It manages SolutionDeployment.
+     * 
+     * @return Resource collection API of SolutionDeployments.
+     */
+    public SolutionDeployments solutionDeployments() {
+        if (this.solutionDeployments == null) {
+            this.solutionDeployments = new SolutionDeploymentsImpl(clientObject.getSolutionDeployments(), this);
+        }
+        return solutionDeployments;
     }
 
     /**

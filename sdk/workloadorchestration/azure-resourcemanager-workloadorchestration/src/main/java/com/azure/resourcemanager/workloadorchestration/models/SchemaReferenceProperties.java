@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.workloadorchestration.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Schema Reference Properties.
  */
-@Immutable
+@Fluent
 public final class SchemaReferenceProperties implements JsonSerializable<SchemaReferenceProperties> {
     /*
      * Schema Id of schema reference
@@ -29,7 +29,7 @@ public final class SchemaReferenceProperties implements JsonSerializable<SchemaR
     /**
      * Creates an instance of SchemaReferenceProperties class.
      */
-    private SchemaReferenceProperties() {
+    public SchemaReferenceProperties() {
     }
 
     /**
@@ -39,6 +39,17 @@ public final class SchemaReferenceProperties implements JsonSerializable<SchemaR
      */
     public String schemaId() {
         return this.schemaId;
+    }
+
+    /**
+     * Set the schemaId property: Schema Id of schema reference.
+     * 
+     * @param schemaId the schemaId value to set.
+     * @return the SchemaReferenceProperties object itself.
+     */
+    public SchemaReferenceProperties withSchemaId(String schemaId) {
+        this.schemaId = schemaId;
+        return this;
     }
 
     /**

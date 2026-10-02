@@ -110,6 +110,20 @@ public interface WorkloadOrchestrationManagementClient {
     SolutionsClient getSolutions();
 
     /**
+     * Gets the SolutionMetadatasClient object to access its operations.
+     * 
+     * @return the SolutionMetadatasClient object.
+     */
+    SolutionMetadatasClient getSolutionMetadatas();
+
+    /**
+     * Gets the SolutionMetadataVersionsClient object to access its operations.
+     * 
+     * @return the SolutionMetadataVersionsClient object.
+     */
+    SolutionMetadataVersionsClient getSolutionMetadataVersions();
+
+    /**
      * Gets the SolutionTemplateVersionsClient object to access its operations.
      * 
      * @return the SolutionTemplateVersionsClient object.
@@ -192,4 +206,46 @@ public interface WorkloadOrchestrationManagementClient {
      * @return the SiteReferencesClient object.
      */
     SiteReferencesClient getSiteReferences();
+
+    /**
+     * Gets the SolutionSchemasClient object to access its operations.
+     * 
+     * @return the SolutionSchemasClient object.
+     */
+    SolutionSchemasClient getSolutionSchemas();
+
+    /**
+     * Gets the ConfigTemplateSchemasClient object to access its operations.
+     * 
+     * @return the ConfigTemplateSchemasClient object.
+     */
+    ConfigTemplateSchemasClient getConfigTemplateSchemas();
+
+    /**
+     * Gets the ConfigTemplateMetadatasClient object to access its operations.
+     * 
+     * @return the ConfigTemplateMetadatasClient object.
+     */
+    ConfigTemplateMetadatasClient getConfigTemplateMetadatas();
+
+    /**
+     * Gets the HierarchyConfigurationMetadatasClient object to access its operations.
+     * 
+     * @return the HierarchyConfigurationMetadatasClient object.
+     */
+    HierarchyConfigurationMetadatasClient getHierarchyConfigurationMetadatas();
+
+    /**
+     * Gets the HierarchyConfigurationMetadataVersionsClient object to access its operations.
+     * 
+     * @return the HierarchyConfigurationMetadataVersionsClient object.
+     */
+    HierarchyConfigurationMetadataVersionsClient getHierarchyConfigurationMetadataVersions();
+
+    /**
+     * Gets the SolutionDeploymentsClient object to access its operations.
+     * 
+     * @return the SolutionDeploymentsClient object.
+     */
+    SolutionDeploymentsClient getSolutionDeployments();
 }

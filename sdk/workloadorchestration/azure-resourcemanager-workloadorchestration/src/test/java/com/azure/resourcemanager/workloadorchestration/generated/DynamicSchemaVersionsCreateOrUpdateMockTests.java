@@ -9,12 +9,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationManager;
 import com.azure.resourcemanager.workloadorchestration.models.DynamicSchemaVersion;
 import com.azure.resourcemanager.workloadorchestration.models.SchemaVersionProperties;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -22,7 +22,7 @@ public final class DynamicSchemaVersionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"bewreswmowegmmut\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"yguqigijiitns\",\"id\":\"lz\",\"name\":\"es\",\"type\":\"grijwaiufanrayb\"}";
+            = "{\"properties\":{\"value\":\"\\\"dataoamfmxtllfltymqc\\\"\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"ijhggabqbg\",\"id\":\"klilirwdv\",\"name\":\"fhsdpzouhkt\",\"type\":\"rxqwqnjxrd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class DynamicSchemaVersionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DynamicSchemaVersion response = manager.dynamicSchemaVersions()
-            .define("fwbeqrkuorh")
-            .withExistingDynamicSchema("saeuzanhsfnhsenw", "hpzfngqj", "lidftujwjj")
-            .withProperties(new SchemaVersionProperties().withValue("sruqnmdvha"))
+            .define("pjyyqmkwlhvc")
+            .withExistingDynamicSchema("qumjdjxhzghgod", "ynrceqavfdbdf", "mxjdnaju")
+            .withProperties(new SchemaVersionProperties()
+                .withValue(BinaryData.fromBytes("\"dataoqdejkluxxr\"".getBytes(StandardCharsets.UTF_8))))
             .create();
 
-        Assertions.assertEquals("bewreswmowegmmut", response.properties().value());
     }
 }

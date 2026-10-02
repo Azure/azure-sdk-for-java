@@ -17,6 +17,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.RemoveVersi
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplate;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateVersion;
 import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplates;
+import com.azure.resourcemanager.workloadorchestration.models.HierarchySelector;
 import com.azure.resourcemanager.workloadorchestration.models.RemoveVersionResponse;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 
@@ -48,6 +49,24 @@ public final class ConfigTemplatesImpl implements ConfigTemplates {
         } else {
             return null;
         }
+    }
+
+    public void linkToHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body) {
+        this.serviceClient().linkToHierarchies(resourceGroupName, configTemplateName, body);
+    }
+
+    public void linkToHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body,
+        Context context) {
+        this.serviceClient().linkToHierarchies(resourceGroupName, configTemplateName, body, context);
+    }
+
+    public void unLinkFromHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body) {
+        this.serviceClient().unLinkFromHierarchies(resourceGroupName, configTemplateName, body);
+    }
+
+    public void unLinkFromHierarchies(String resourceGroupName, String configTemplateName, HierarchySelector body,
+        Context context) {
+        this.serviceClient().unLinkFromHierarchies(resourceGroupName, configTemplateName, body, context);
     }
 
     public ConfigTemplateVersion createVersion(String resourceGroupName, String configTemplateName,

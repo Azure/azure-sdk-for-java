@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadorchestration.models;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionInner;
 
 /**
@@ -57,9 +58,142 @@ public interface ConfigTemplateVersion {
     SystemData systemData();
 
     /**
+     * Gets the name of the resource group.
+     * 
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionInner object.
      * 
      * @return the inner object.
      */
     ConfigTemplateVersionInner innerModel();
+
+    /**
+     * The entirety of the ConfigTemplateVersion definition.
+     */
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    }
+
+    /**
+     * The ConfigTemplateVersion definition stages.
+     */
+    interface DefinitionStages {
+        /**
+         * The first stage of the ConfigTemplateVersion definition.
+         */
+        interface Blank extends WithParentResource {
+        }
+
+        /**
+         * The stage of the ConfigTemplateVersion definition allowing to specify parent resource.
+         */
+        interface WithParentResource {
+            /**
+             * Specifies resourceGroupName, configTemplateName.
+             * 
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param configTemplateName The name of the ConfigTemplate.
+             * @return the next definition stage.
+             */
+            WithCreate withExistingConfigTemplate(String resourceGroupName, String configTemplateName);
+        }
+
+        /**
+         * The stage of the ConfigTemplateVersion definition which contains all the minimum required properties for the
+         * resource to be created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate extends DefinitionStages.WithProperties {
+            /**
+             * Executes the create request.
+             * 
+             * @return the created resource.
+             */
+            ConfigTemplateVersion create();
+
+            /**
+             * Executes the create request.
+             * 
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            ConfigTemplateVersion create(Context context);
+        }
+
+        /**
+         * The stage of the ConfigTemplateVersion definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(ConfigTemplateVersionProperties properties);
+        }
+    }
+
+    /**
+     * Begins update for the ConfigTemplateVersion resource.
+     * 
+     * @return the stage of resource update.
+     */
+    ConfigTemplateVersion.Update update();
+
+    /**
+     * The template for ConfigTemplateVersion update.
+     */
+    interface Update extends UpdateStages.WithProperties {
+        /**
+         * Executes the update request.
+         * 
+         * @return the updated resource.
+         */
+        ConfigTemplateVersion apply();
+
+        /**
+         * Executes the update request.
+         * 
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        ConfigTemplateVersion apply(Context context);
+    }
+
+    /**
+     * The ConfigTemplateVersion update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the ConfigTemplateVersion update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            Update withProperties(ConfigTemplateVersionProperties properties);
+        }
+    }
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @return the refreshed resource.
+     */
+    ConfigTemplateVersion refresh();
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @param context The context to associate with this operation.
+     * @return the refreshed resource.
+     */
+    ConfigTemplateVersion refresh(Context context);
 }

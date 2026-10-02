@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadorchestration.models;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaReferenceInner;
 
 /**
@@ -62,4 +63,128 @@ public interface SchemaReference {
      * @return the inner object.
      */
     SchemaReferenceInner innerModel();
+
+    /**
+     * The entirety of the SchemaReference definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
+    }
+
+    /**
+     * The SchemaReference definition stages.
+     */
+    interface DefinitionStages {
+        /**
+         * The first stage of the SchemaReference definition.
+         */
+        interface Blank extends WithScope {
+        }
+
+        /**
+         * The stage of the SchemaReference definition allowing to specify parent resource.
+         */
+        interface WithScope {
+            /**
+             * Specifies resourceUri.
+             * 
+             * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withExistingResourceUri(String resourceUri);
+        }
+
+        /**
+         * The stage of the SchemaReference definition which contains all the minimum required properties for the
+         * resource to be created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate extends DefinitionStages.WithProperties {
+            /**
+             * Executes the create request.
+             * 
+             * @return the created resource.
+             */
+            SchemaReference create();
+
+            /**
+             * Executes the create request.
+             * 
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            SchemaReference create(Context context);
+        }
+
+        /**
+         * The stage of the SchemaReference definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(SchemaReferenceProperties properties);
+        }
+    }
+
+    /**
+     * Begins update for the SchemaReference resource.
+     * 
+     * @return the stage of resource update.
+     */
+    SchemaReference.Update update();
+
+    /**
+     * The template for SchemaReference update.
+     */
+    interface Update extends UpdateStages.WithProperties {
+        /**
+         * Executes the update request.
+         * 
+         * @return the updated resource.
+         */
+        SchemaReference apply();
+
+        /**
+         * Executes the update request.
+         * 
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        SchemaReference apply(Context context);
+    }
+
+    /**
+     * The SchemaReference update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the SchemaReference update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            Update withProperties(SchemaReferenceProperties properties);
+        }
+    }
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @return the refreshed resource.
+     */
+    SchemaReference refresh();
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @param context The context to associate with this operation.
+     * @return the refreshed resource.
+     */
+    SchemaReference refresh(Context context);
 }

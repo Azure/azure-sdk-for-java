@@ -14,7 +14,6 @@ import com.azure.resourcemanager.workloadorchestration.WorkloadOrchestrationMana
 import com.azure.resourcemanager.workloadorchestration.models.DynamicSchemaVersion;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -22,7 +21,7 @@ public final class DynamicSchemaVersionsListByDynamicSchemaMockTests {
     @Test
     public void testListByDynamicSchema() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"value\":\"mktp\",\"provisioningState\":\"InProgress\"},\"eTag\":\"csehchkhufm\",\"id\":\"umqy\",\"name\":\"gy\",\"type\":\"zulo\"}]}";
+            = "{\"value\":[{\"properties\":{\"value\":\"\\\"datapfqpgaixw\\\"\",\"provisioningState\":\"InProgress\"},\"eTag\":\"kderf\",\"id\":\"wqikwepwogggic\",\"name\":\"nxhtf\",\"type\":\"cqbsudzpgchzpg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +31,7 @@ public final class DynamicSchemaVersionsListByDynamicSchemaMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DynamicSchemaVersion> response = manager.dynamicSchemaVersions()
-            .listByDynamicSchema("minict", "eajohiyg", "pnbonhpcz", com.azure.core.util.Context.NONE);
+            .listByDynamicSchema("okyfoz", "bn", "x", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mktp", response.iterator().next().properties().value());
     }
 }
