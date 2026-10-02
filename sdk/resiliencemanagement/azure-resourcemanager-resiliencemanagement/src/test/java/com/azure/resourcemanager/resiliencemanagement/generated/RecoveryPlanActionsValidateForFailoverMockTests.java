@@ -16,6 +16,8 @@ import com.azure.resourcemanager.resiliencemanagement.models.FailoverRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.FailoverRequestProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.resiliencemanagement.models.QualificationState;
+import com.azure.resourcemanager.resiliencemanagement.models.ResourceFeasibilityReviewStatus;
+import com.azure.resourcemanager.resiliencemanagement.models.ResourceFeasibilityReviewType;
 import com.azure.resourcemanager.resiliencemanagement.models.ResourceInclusionState;
 import com.azure.resourcemanager.resiliencemanagement.models.ResourceProtectionSolutionType;
 import com.azure.resourcemanager.resiliencemanagement.models.UserConsent;
@@ -31,7 +33,7 @@ public final class RecoveryPlanActionsValidateForFailoverMockTests {
     @Test
     public void testValidateForFailover() throws Exception {
         String responseStr
-            = "{\"recoveryResourceQualifications\":[{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"jgl\",\"provisioningState\":\"Deleting\",\"resourceId\":\"yzlwh\",\"resourceLocation\":\"emhooclutnpq\",\"resourcePhysicalZones\":[\"czj\",\"mmyky\"],\"inclusionState\":\"Included\",\"needsAttention\":false,\"attentionReasons\":[\"srrryejylmbkzu\",\"nigrfihotjewl\",\"xuzzjgnrefq\",\"hqo\"],\"protectionStatus\":\"NotProtected\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":false},{\"isAutoFailover\":true},{\"isAutoFailover\":false}],\"selectedProtectionSolutionType\":\"AzureSiteRecovery\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"fb\",\"associatedIdentity\":{\"type\":\"UserAssigned\"},\"errorDetails\":{}},\"id\":\"dqtvhcsp\",\"name\":\"daqaxsi\",\"type\":\"ietgbebjfu\"},\"operationQualificationDetails\":{\"qualificationState\":\"Qualified\",\"notQualifiedReasons\":[\"ichdlpn\",\"pubntnbatz\",\"iqsowsaaelc\",\"ttcjuhplrvkmjc\"]}}]}";
+            = "{\"recoveryResourceQualifications\":[{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"jgl\",\"provisioningState\":\"NeedsAttention\",\"resourceId\":\"yzlwh\",\"resourceLocation\":\"emhooclutnpq\",\"resourcePhysicalZones\":[\"czj\",\"mmyky\"],\"inclusionState\":\"Included\",\"needsAttention\":false,\"attentionReasons\":[\"srrryejylmbkzu\",\"nigrfihotjewl\",\"xuzzjgnrefq\",\"hqo\"],\"protectionStatus\":\"NotProtected\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":false},{\"isAutoFailover\":true},{\"isAutoFailover\":false}],\"selectedProtectionSolutionType\":\"AzureSiteRecovery\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"fb\",\"associatedIdentity\":{\"type\":\"UserAssigned\"},\"errorDetails\":{}},\"id\":\"dqtvhcsp\",\"name\":\"daqaxsi\",\"type\":\"ietgbebjfu\"},\"operationQualificationDetails\":{\"qualificationState\":\"Qualified\",\"notQualifiedReasons\":[\"ichdlpn\",\"pubntnbatz\",\"iqsowsaaelc\",\"ttcjuhplrvkmjc\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"lgfggcvk\",\"status\":\"Unavailable\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"izrzb\",\"status\":\"Passed\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"fxsfuztlvtmv\",\"status\":\"Flagged\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"w\",\"status\":\"Flagged\"}]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -81,5 +83,26 @@ public final class RecoveryPlanActionsValidateForFailoverMockTests {
                 .operationQualificationDetails()
                 .notQualifiedReasons()
                 .get(0));
+        Assertions.assertEquals(ResourceFeasibilityReviewType.SKU_CAPACITY,
+            response.recoveryResourceQualifications()
+                .get(0)
+                .operationQualificationDetails()
+                .resourceFeasibilityReviews()
+                .get(0)
+                .feasibilityType());
+        Assertions.assertEquals("lgfggcvk",
+            response.recoveryResourceQualifications()
+                .get(0)
+                .operationQualificationDetails()
+                .resourceFeasibilityReviews()
+                .get(0)
+                .resourceType());
+        Assertions.assertEquals(ResourceFeasibilityReviewStatus.UNAVAILABLE,
+            response.recoveryResourceQualifications()
+                .get(0)
+                .operationQualificationDetails()
+                .resourceFeasibilityReviews()
+                .get(0)
+                .status());
     }
 }
