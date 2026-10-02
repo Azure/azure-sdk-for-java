@@ -3,23 +3,24 @@
 
 # Python version 3.4 or higher is required to run this script.
 
-# Use case: Creates an aggregate POM which contains all modules that will be required in a "From Source" run for the passed
-# project list.
+# Use case: Creates an aggregate build POM for the passed artifact list, optionally including all modules required for
+# a From Source run.
 #
 # Flags
-#   --project-list/--pl: List of project included in the From Source run.
+#   --artifacts-list/--al: List of projects included in the build.
+#   --from-source: Whether to also include projects dependent on the artifact list (true by default).
 #
 # Output:
-# 1. ClientFromSourcePom.xml which is the aggregate pom required by the From Source run
+# 1. ClientPom.xml which is the aggregate POM required by the build
 # Set following environment variables in JSON format:
 # 2. SparseCheckoutDirectories - This the list of sparse checkout paths that will be used by sparse-checkout.yml
 # 3. ServiceDirectories - A list of ServiceDirectories.
 #
 # For example: To create an aggregate POM for Azure Storage
-#    python eng/scripts/generate_from_source_pom.py --pl com.azure:azure-storage-blob,com.azure:azure-storage-common,...
+#    python eng/scripts/generate_scoped_pom.py --al com.azure:azure-storage-blob,com.azure:azure-storage-common,...
 #
-# For example: To create an aggregate POM for Azure Core
-#    python eng/scripts/generate_from_source_pom.py --pl com.azure:azure-core,com.azure:azure-core-amqp,com.azure:azure-core-test,...
+# For example: To create an aggregate POM without including dependent projects
+#    python eng/scripts/generate_scoped_pom.py --al com.azure:azure-core --from-source false
 #
 # The script must be run at the root of azure-sdk-for-java.
 
@@ -49,7 +50,7 @@ root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
 client_versions_path = os.path.normpath(root_path + '/eng/versioning/version_client.txt')
 
 # File path where the aggregate POM will be written.
-client_from_source_pom_path = os.path.join(root_path, 'ClientFromSourcePom.xml')
+client_pom_path = os.path.join(root_path, 'ClientPom.xml')
 
 sdk_string = "/sdk/"
 
@@ -63,11 +64,11 @@ def proj_path_has_yml(proj_path):
     return False
 
 # Function that creates the aggregate POM.
-def create_from_source_pom(artifacts_list: str, additional_modules_list: str, set_skip_linting_projects: str, match_any_version: bool):
+def create_pom(artifacts_list: str, additional_modules_list: str, set_skip_linting_projects: str, match_any_version: bool, from_source: bool = True):
     artifacts_list_identifiers = artifacts_list.split(',')
 
     additional_modules_identifiers = []
-    if additional_modules_list is not None:
+    if additional_modules_list:
         additional_modules_identifiers = additional_modules_list.split(',')
         # Combine the lists so dependencies are calculated correctly. While there
         # should be no duplicates between the artifacts list and additional modules,
@@ -82,9 +83,10 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
 
     dependent_modules: Set[str] = set()
 
-    # Resolve all projects, including transitively, that are dependent on the projects in the project list.
-    for project_identifier in artifacts_list_identifiers:
-        dependent_modules = resolve_dependent_project(project_identifier, dependent_modules, projects)
+    if from_source:
+        # Resolve all projects, including transitively, that are dependent on the projects in the project list.
+        for project_identifier in artifacts_list_identifiers:
+            dependent_modules = resolve_dependent_project(project_identifier, dependent_modules, projects)
 
     dependency_modules: Set[str] = set()
 
@@ -102,15 +104,15 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
     add_source_projects(source_projects, dependency_modules, projects)
 
     modules = sorted(list(set([p.module_path for p in source_projects])))
-    with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
-        fromSourcePom.write(pom_file_start.format('azure-sdk-from-source'))
-        fromSourcePom.write(start_modules)
+    with open(file=client_pom_path, mode='w') as clientPom:
+        clientPom.write(pom_file_start.format('azure-sdk-build'))
+        clientPom.write(start_modules)
 
         for module in modules:
-            fromSourcePom.write('    <module>{}</module>\n'.format(module))
+            clientPom.write('    <module>{}</module>\n'.format(module))
 
-        fromSourcePom.write(end_modules)
-        fromSourcePom.write(pom_file_end)
+        clientPom.write(end_modules)
+        clientPom.write(pom_file_end)
 
     # The directory_path is too granular. There are build rules for some libraries that
     # create empty sources/javadocs jars using the README.md. Not every library
@@ -345,21 +347,22 @@ def project_uses_client_parent(project: Project, projects: Dict[str, Project]) -
     return False
 
 def main():
-    parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
+    parser = argparse.ArgumentParser(description='Generate an aggregate build POM, optionally including dependent projects.')
     parser.add_argument('--artifacts-list', '--al', type=str)
     parser.add_argument('--additional-modules-list', '--aml', type=str, required=False, default=None, nargs='?')
     parser.add_argument('--set-skip-linting-projects', type=str)
     parser.add_argument('--match-any-version', action='store_true')
+    parser.add_argument('--from-source', type=str.lower, choices=['true', 'false'], default='true')
     args = parser.parse_args()
     if args.artifacts_list == None:
         raise ValueError('Missing artifacts list.')
     start_time = time.time()
-    create_from_source_pom(args.artifacts_list, args.additional_modules_list, args.set_skip_linting_projects, args.match_any_version)
+    create_pom(args.artifacts_list, args.additional_modules_list, args.set_skip_linting_projects, args.match_any_version, args.from_source == 'true')
     elapsed_time = time.time() - start_time
 
-    print('Effective From Source POM File')
-    with open(file=client_from_source_pom_path, mode='r') as fromSourcePom:
-        print(fromSourcePom.read())
+    print('Effective Build POM File')
+    with open(file=client_pom_path, mode='r') as clientPom:
+        print(clientPom.read())
 
     print('elapsed_time={}'.format(elapsed_time))
     print('Total time for replacement: {} seconds'.format(str(timedelta(seconds=elapsed_time))))

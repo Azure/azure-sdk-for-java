@@ -25,7 +25,7 @@ steps:
     ${{ else }}:
       displayName: 'Build and Run SpotBugs, Checkstyle, and RevApi'
     inputs:
-      mavenPomFile: pom.xml
+      mavenPomFile: ClientPom.xml
       ${{ if ne(parameters.SDKType, 'client') }}:
         options: '$(DefaultOptions) --no-transfer-progress -T ${{parameters.BuildParallelization}} -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotless.apply.skip=true -Dshade.skip=true -Dmaven.antrun.skip=true -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.skip=true -pl $(ProjectList) -am'
       ${{ else }}:
@@ -55,7 +55,7 @@ steps:
     ${{ else }}:
       displayName: 'Run Javadoc and Spotless'
     inputs:
-      mavenPomFile: pom.xml
+      mavenPomFile: ClientPom.xml
       options: '$(DefaultOptions) --no-transfer-progress ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
       mavenOptions: '$(MemoryOptions)'
       javaHomeOption: 'JDKVersion'
