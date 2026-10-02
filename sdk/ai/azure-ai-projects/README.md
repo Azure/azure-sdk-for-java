@@ -164,7 +164,7 @@ The examples below show common operations for core AI Projects sub-clients. For 
 | [datageneration](src/samples/java/com/azure/ai/projects/datageneration) | Create data generation jobs and evaluate generated datasets. |
 | [datasets](src/samples/java/com/azure/ai/projects/datasets) | Upload files and manage datasets and versions. |
 | [deployments](src/samples/java/com/azure/ai/projects/deployments) | List and retrieve model deployments. |
-| [evaluations](src/samples/java/com/azure/ai/projects/evaluations) | Evaluate inline or uploaded JSONL data using built-in evaluators and native OpenAI graders. |
+| [evaluations](src/samples/java/com/azure/ai/projects/evaluations) | Evaluate inline or uploaded JSONL data using built-in evaluators, native graders, and custom rubrics; manage and generate evaluator versions. |
 | [indexes](src/samples/java/com/azure/ai/projects/indexes) | Create, list, retrieve, and delete indexes. |
 | [models](src/samples/java/com/azure/ai/projects/models) | Register model weights and manage model versions. |
 | [routines](src/samples/java/com/azure/ai/projects/routines) | Manage routines, dispatch manually, and use schedule and timer triggers. |

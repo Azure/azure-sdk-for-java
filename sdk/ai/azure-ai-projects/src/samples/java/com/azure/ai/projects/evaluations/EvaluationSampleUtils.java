@@ -3,6 +3,10 @@
 
 package com.azure.ai.projects.evaluations;
 
+import com.azure.ai.projects.EvaluationsHelper;
+import com.azure.ai.projects.models.EvaluatorVersion;
+import com.azure.ai.projects.models.TestingCriterionAzureAIEvaluator;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -72,6 +76,20 @@ final class EvaluationSampleUtils {
                 row("What is the capital of Japan?", "The capital of Japan is Osaka.",
                     "The capital of Japan is Tokyo.")))
             .build();
+    }
+
+    static EvalCreateParams rubricEvaluation(EvaluatorVersion evaluator, String model) {
+        Map<String, String> mapping = new LinkedHashMap<>();
+        mapping.put("query", "{{item.query}}");
+        mapping.put("response", "{{item.response}}");
+        TestingCriterionAzureAIEvaluator criterion
+            = new TestingCriterionAzureAIEvaluator(evaluator.getName(), evaluator.getName())
+                .setEvaluatorVersion(evaluator.getVersion())
+                .setInitializationParameters(Collections.singletonMap("deployment_name", BinaryData.fromObject(model)))
+                .setDataMapping(mapping);
+        return EvalCreateParams.builder().name("java-rubric-evaluation")
+            .dataSourceConfig(dataSourceConfig())
+            .addTestingCriterion(EvaluationsHelper.toTestingCriterion(criterion)).build();
     }
 
     private static Content row(String query, String response, String groundTruth) {
