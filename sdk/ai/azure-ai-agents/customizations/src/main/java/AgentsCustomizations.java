@@ -12,6 +12,7 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.ExpressionStmt;
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
+        customizeOptimizationPollingStrategies(libraryCustomization);
         internalizeUnusedVoiceAgentFunctionToolType(libraryCustomization);
         protectPolymorphicBaseConstructors(libraryCustomization);
         makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
@@ -681,12 +683,30 @@ public class AgentsCustomizations extends Customization {
 
     private void modifyPollingStrategies(LibraryCustomization customization, Logger logger) {
         customization.getClass("com.azure.ai.agents.implementation", "OperationLocationPollingStrategy")
-            .customizeAst(ast -> ast.getClassByName("OperationLocationPollingStrategy")
-                .ifPresent(clazz -> clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return super.poll(pollingContext, pollResponseType).map(AgentsServicePollUtils::remapStatus); }"))));
+            .customizeAst(ast -> ast.getClassByName("OperationLocationPollingStrategy").ifPresent(clazz -> {
+                clazz.getModifiers().removeIf(modifier -> modifier.getKeyword() == Modifier.Keyword.FINAL);
+                clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return super.poll(pollingContext, pollResponseType).map(AgentsServicePollUtils::remapStatus); }"));
+            }));
 
         customization.getClass("com.azure.ai.agents.implementation", "SyncOperationLocationPollingStrategy")
-            .customizeAst(ast -> ast.getClassByName("SyncOperationLocationPollingStrategy")
-                .ifPresent(clazz -> clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"))));
+            .customizeAst(ast -> ast.getClassByName("SyncOperationLocationPollingStrategy").ifPresent(clazz -> {
+                clazz.getModifiers().removeIf(modifier -> modifier.getKeyword() == Modifier.Keyword.FINAL);
+                clazz.addMember(StaticJavaParser.parseMethodDeclaration("@Override public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) { return AgentsServicePollUtils.remapStatus(super.poll(pollingContext, pollResponseType)); }"));
+            }));
+    }
+
+    private void customizeOptimizationPollingStrategies(LibraryCustomization customization) {
+        customization.getClass("com.azure.ai.agents.implementation", "AgentsImpl")
+            .customizeAst(ast -> ast.getClassByName("AgentsImpl").ifPresent(clazz -> clazz.getMethods().stream()
+                .filter(method -> method.getNameAsString().startsWith("beginCreateOptimizationJob"))
+                .forEach(method -> method.findAll(ObjectCreationExpr.class).stream()
+                    .filter(creation -> creation.getTypeAsString().endsWith("OperationLocationPollingStrategy"))
+                    .forEach(creation -> {
+                        String strategy = creation.getTypeAsString().contains("SyncOperation")
+                            ? "com.azure.ai.agents.implementation.SyncAgentOptimizationOperationLocationPollingStrategy"
+                            : "com.azure.ai.agents.implementation.AgentOptimizationOperationLocationPollingStrategy";
+                        creation.setType(StaticJavaParser.parseClassOrInterfaceType(strategy));
+                    }))));
     }
 
     private void annotateBetaClients(LibraryCustomization customization, Logger logger) {

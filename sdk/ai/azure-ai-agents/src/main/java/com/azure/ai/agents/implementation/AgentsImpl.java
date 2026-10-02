@@ -7954,7 +7954,7 @@ public final class AgentsImpl {
         beginCreateOptimizationJobWithModelAsync(BinaryData job, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.createOptimizationJobWithResponseAsync(job, requestOptions),
-            new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
+            new com.azure.ai.agents.implementation.AgentOptimizationOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -8165,7 +8165,7 @@ public final class AgentsImpl {
         beginCreateOptimizationJobWithModel(BinaryData job, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.createOptimizationJobWithResponse(job, requestOptions),
-            new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
+            new com.azure.ai.agents.implementation.SyncAgentOptimizationOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -8376,7 +8376,7 @@ public final class AgentsImpl {
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.createOptimizationJobWithResponseAsync(job, requestOptions),
-            new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
+            new com.azure.ai.agents.implementation.AgentOptimizationOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null
@@ -8586,7 +8586,7 @@ public final class AgentsImpl {
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.createOptimizationJobWithResponse(job, requestOptions),
-            new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
+            new com.azure.ai.agents.implementation.SyncAgentOptimizationOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
                     .setContext(requestOptions != null && requestOptions.getContext() != null

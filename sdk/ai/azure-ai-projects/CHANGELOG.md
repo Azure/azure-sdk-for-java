@@ -15,6 +15,10 @@
 
 ### Other Changes
 
+- Organized Java samples into feature-specific folders, with synchronous and asynchronous samples together.
+- Added synchronous and asynchronous evaluation samples for inline data, uploaded JSONL datasets, and native OpenAI graders.
+- Added synchronous and asynchronous evaluator catalog and rubric generation samples, including metadata updates, version review, evaluation runs, and cleanup.
+
 ## 2.6.1 (2026-09-23)
 
 ### Bugs Fixed
