@@ -168,6 +168,25 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      */
     private Boolean enableSmbDirectoryLease;
 
+    /*
+     * Optional. Supported in version 2026-02-01 and above.
+     * Specifies whether change feed is enabled on the share.
+     */
+    private boolean enableChangeFeed;
+
+    /*
+     * Optional. Supported in version 2026-02-01 and above.
+     * The number of days that change feed reocrds are retrained on the share. Valid values are between 1 and 365
+     * inclusive. Default if not specified is 7 days.
+     */
+    private int changeFeedRetentionInDays;
+
+    /*
+     * Optional. Supported in version 2026-02-01 and above. The name of the blob container where teh change feed
+     * records are stored. The name of the blob container is in the format "$fileschangefeed-<guid>".
+     */
+    private String changeFeedBlobContainerName;
+
     /**
      * Creates a new instance of {@link ShareProperties}.
      */
@@ -823,6 +842,68 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      */
     public ShareProperties setSmbDirectoryLeaseEnabled(Boolean enableSmbDirectoryLease) {
         this.enableSmbDirectoryLease = enableSmbDirectoryLease;
+        return this;
+    }
+
+    /**
+     * Optional. Supported in version 2026-02-01 and above.
+     * Specifies whether change feed is enabled on the share.
+     * @return the enableChangeFeed value.
+     */
+    public boolean isChangeFeedEnabled() {
+        return enableChangeFeed;
+    }
+
+    /**
+     * Optional. Supported in version 2026-02-01 and above.
+     * Specifies whether change feed is enabled on the share.
+     * @param enableChangeFeed the enableChangeFeed value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setChangeFeedEnabled(boolean enableChangeFeed) {
+        this.enableChangeFeed = enableChangeFeed;
+        return this;
+    }
+
+    /**
+     * Optional. Supported in version 2026-02-01 and above.
+     * The number of days that change feed records are retained on the share. Valid values are between 1 and 365
+     * inclusive. Default if not specified is 7 days.
+     * @return the changeFeedRetentionInDays value.
+     */
+    public int getChangeFeedRetentionInDays() {
+        return changeFeedRetentionInDays;
+    }
+
+    /**
+     * Optional. Supported in version 2026-02-01 and above.
+     * The number of days that change feed records are retained on the share. Valid values are between 1 and 365
+     * inclusive. Default if not specified is 7 days.
+     * @param changeFeedRetentionInDays the changeFeedRetentionInDays value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setChangeFeedRetentionInDays(int changeFeedRetentionInDays) {
+        this.changeFeedRetentionInDays = changeFeedRetentionInDays;
+        return this;
+    }
+
+    /**
+     * Optional. Supported in version 2026-02-01 and above. The name of the blob container where the change feed
+     * records are stored. The name of the blob container is in the format "$fileschangefeed-<guid>".
+     * @return the blobContainerForChangeFeed value.
+     */
+    public String getChangeFeedBlobContainerName() {
+        return changeFeedBlobContainerName;
+    }
+
+    /**
+     * Optional. Supported in version 2026-02-01 and above. The name of the blob container where the change feed
+     * records are stored. The name of the blob container is in the format "$fileschangefeed-<guid>".
+     * @param changeFeedBlobContainerName the blobContainerForChangeFeed value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setChangeFeedBlobContainerName(String changeFeedBlobContainerName) {
+        this.changeFeedBlobContainerName = changeFeedBlobContainerName;
         return this;
     }
 

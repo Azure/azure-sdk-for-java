@@ -371,7 +371,9 @@ public class ShareAsyncClient {
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null, context)
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null,
+                options.isChangeFeedEnabled(), options.getChangeFeedRetentionInDays(),
+                context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -940,7 +942,7 @@ public class ShareAsyncClient {
                 options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null, context)
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null, options.isChangeFeedEnabled(), options.getChangeFeedRetentionInDays(), context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
