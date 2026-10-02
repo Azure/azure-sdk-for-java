@@ -9,11 +9,14 @@ displayName: Migrate from azure.core.http to next generation stack
 description: This recipe migrates the azure.core.http package to the next generation stack.
 recipeList:
 
+  - com.azure.openrewrite.core.http.HttpHeadersCustomRecipe
+
   # --------------------------------------------------------------------
   # HttpRequest
   # --------------------------------------------------------------------
 
   - com.azure.openrewrite.core.http.HttpRequestCustomRecipe
+
 
   - org.openrewrite.java.ChangeMethodName:
       methodPattern: 'com.azure.core.http.HttpRequest getUrl()'
@@ -107,7 +110,10 @@ recipeList:
   # HttpHeaders
   # --------------------------------------------------------------------
 
-  - com.azure.openrewrite.core.http.HttpHeadersCustomRecipe
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: com.azure.core.http.HttpHeaders setAllHttpHeaders(..)
+      newMethodName: setAll
+
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.HttpHeaders
