@@ -26,7 +26,6 @@ public class ShareSetPropertiesOptions {
     private Boolean enableChangeFeed;
     private Integer changeFeedRetentionInDays;
 
-
     /**
      * Creates a new instance of {@link ShareSetPropertiesOptions}.
      */
@@ -259,7 +258,6 @@ public class ShareSetPropertiesOptions {
         this.provisionedMaxBandwidthMibps = provisionedMaxBandwidthMibps;
         return this;
     }
-
 
     /**
      * Get the enableChangeFeed property:

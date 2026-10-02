@@ -302,8 +302,6 @@ public class ShareCreateOptions {
         return this;
     }
 
-
-
     /**
      * Get the changeFeedRetentionInDays property:
      * Optional. Supported in version 2027-03-07 and above. Only applicable for premium file storage accounts.
