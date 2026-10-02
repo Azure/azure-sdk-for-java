@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.fluent.models.GetSignalRecommendationsResponseInner;
 import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
-import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
+import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,44 +15,42 @@ public final class GetSignalRecommendationsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetSignalRecommendationsResponseInner model = BinaryData.fromString(
-            "{\"recommendedSignals\":[{\"signalId\":\"zivj\",\"metricNamespace\":\"rqttbajlkatnw\",\"metricName\":\"iopid\",\"aggregationType\":\"Maximum\",\"unit\":\"kuvscxkdm\",\"timeGrain\":\"govibrxkpmloazu\",\"dimensionFilter\":\"ocbgoorbteoyb\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":94.24029215995002,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":94.29850569183385,\"sensitivity\":\"Low\"}}},{\"signalId\":\"il\",\"metricNamespace\":\"wwtkg\",\"metricName\":\"nye\",\"aggregationType\":\"Count\",\"unit\":\"yvudtjuewbci\",\"timeGrain\":\"uuwhcjyxcc\",\"dimensionFilter\":\"vpayakkudzpx\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":16.411699648967215,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":98.8252906927025,\"sensitivity\":\"Medium\"}}},{\"signalId\":\"fkyrk\",\"metricNamespace\":\"dg\",\"metricName\":\"gsj\",\"aggregationType\":\"Count\",\"unit\":\"qjnobaiyhddviac\",\"timeGrain\":\"fnmntfpmvmemfn\",\"dimensionFilter\":\"dwvvba\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThan\",\"threshold\":15.777579665359697,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":77.99745293298962,\"sensitivity\":\"Low\"}}},{\"signalId\":\"rdnhfuku\",\"metricNamespace\":\"jcswsmys\",\"metricName\":\"luqypfcvlerch\",\"aggregationType\":\"Maximum\",\"unit\":\"f\",\"timeGrain\":\"babwidfcxss\",\"dimensionFilter\":\"unnoxyhk\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":48.13591398474999,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"NotEqual\",\"threshold\":80.76145919049176,\"sensitivity\":\"Medium\"}}}],\"recommendedConfigurations\":[{\"signalId\":\"ewda\",\"metricNamespace\":\"djvlpj\",\"metricName\":\"kzbrmsgeivsiy\",\"aggregationType\":\"Average\",\"unit\":\"ncj\",\"timeGrain\":\"onbzoggculapzwy\",\"dimensionFilter\":\"gogtqxepnylbf\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":87.99665917910454,\"sensitivity\":\"Low\"},\"unhealthyRule\":{\"operator\":\"LessThan\",\"threshold\":19.535648644305248,\"sensitivity\":\"Medium\"}}}]}")
+            "{\"recommendedSignals\":[{\"signalId\":\"zivj\",\"displayName\":\"rqttbajlkatnw\",\"description\":\"iopid\",\"applicableResourceTypes\":[\"fku\",\"s\",\"xkdmligo\",\"ibrxkp\"],\"refreshInterval\":\"PT5M\",\"dataUnit\":\"zuruocbgo\",\"configuration\":{\"signalKind\":\"SignalRecommendationConfiguration\"},\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Dynamic\",\"threshold\":73.9554500997287,\"sensitivity\":\"High\"},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":66.89542933806553,\"sensitivity\":\"Medium\"}}},{\"signalId\":\"vjgsl\",\"displayName\":\"dilmyww\",\"description\":\"gkxnyedabg\",\"applicableResourceTypes\":[\"dtj\",\"ewbcihxuuw\",\"c\"],\"refreshInterval\":\"PT30M\",\"dataUnit\":\"cybvpayakkudzpxg\",\"configuration\":{\"signalKind\":\"SignalRecommendationConfiguration\"},\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Dynamic\",\"threshold\":19.75138863759205,\"sensitivity\":\"High\"},\"unhealthyRule\":{\"operator\":\"LessThan\",\"threshold\":92.85703858621595,\"sensitivity\":\"High\"}}},{\"signalId\":\"kyrk\",\"displayName\":\"dg\",\"description\":\"gsj\",\"applicableResourceTypes\":[\"wqjnob\",\"iyhddvi\"],\"refreshInterval\":\"PT10M\",\"dataUnit\":\"fnmntfpmvmemfn\",\"configuration\":{\"signalKind\":\"SignalRecommendationConfiguration\"},\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThan\",\"threshold\":52.27458484023575,\"sensitivity\":\"High\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":5.462299016923233,\"sensitivity\":\"High\"}}},{\"signalId\":\"podbzevwrdnh\",\"displayName\":\"kuvsjcswsm\",\"description\":\"tuluq\",\"applicableResourceTypes\":[\"cvlerchpqbmfpjba\",\"widf\"],\"refreshInterval\":\"PT30M\",\"dataUnit\":\"puunnoxyhkxgqd\",\"configuration\":{\"signalKind\":\"SignalRecommendationConfiguration\"},\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":31.478687092348178,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"GreaterThan\",\"threshold\":5.481106402811964,\"sensitivity\":\"Medium\"}}}],\"recommendedConfigurations\":[{\"signalId\":\"omdjvlpjxxkzbrm\",\"displayName\":\"eivsiykzkdnc\",\"description\":\"xonbzoggculapz\",\"applicableResourceTypes\":[\"pgogtqxepny\",\"b\",\"uajlyj\"],\"refreshInterval\":\"PT1M\",\"dataUnit\":\"fqzhv\",\"configuration\":{\"signalKind\":\"SignalRecommendationConfiguration\"},\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\",\"threshold\":13.140682023988093,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"LessThan\",\"threshold\":75.72936487613786,\"sensitivity\":\"Medium\"}}},{\"signalId\":\"vdwxfzwi\",\"displayName\":\"wzjbh\",\"description\":\"sxjrk\",\"applicableResourceTypes\":[\"trnegvmnvuqeqvld\",\"pa\"],\"refreshInterval\":\"PT10M\",\"dataUnit\":\"kkdmfl\",\"configuration\":{\"signalKind\":\"SignalRecommendationConfiguration\"},\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":20.24513643760253,\"sensitivity\":\"Medium\"},\"unhealthyRule\":{\"operator\":\"NotEqual\",\"threshold\":85.26994794444605,\"sensitivity\":\"Medium\"}}},{\"signalId\":\"peewchpxlkt\",\"displayName\":\"uziycsl\",\"description\":\"ufuztcktyhjtq\",\"applicableResourceTypes\":[\"gzulwmmrqzzr\",\"jvpglydzgk\",\"vqeevtoep\",\"yutnwytpzdmov\"],\"refreshInterval\":\"PT15M\",\"dataUnit\":\"aawzqadfl\",\"configuration\":{\"signalKind\":\"SignalRecommendationConfiguration\"},\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Dynamic\",\"threshold\":24.852266513668518,\"sensitivity\":\"Low\"},\"unhealthyRule\":{\"operator\":\"Dynamic\",\"threshold\":27.780158269102774,\"sensitivity\":\"High\"}}}]}")
             .toObject(GetSignalRecommendationsResponseInner.class);
         Assertions.assertEquals("zivj", model.recommendedSignals().get(0).signalId());
-        Assertions.assertEquals("rqttbajlkatnw", model.recommendedSignals().get(0).metricNamespace());
-        Assertions.assertEquals("iopid", model.recommendedSignals().get(0).metricName());
-        Assertions.assertEquals(MetricAggregationType.MAXIMUM, model.recommendedSignals().get(0).aggregationType());
-        Assertions.assertEquals("kuvscxkdm", model.recommendedSignals().get(0).unit());
-        Assertions.assertEquals("govibrxkpmloazu", model.recommendedSignals().get(0).timeGrain());
-        Assertions.assertEquals("ocbgoorbteoyb", model.recommendedSignals().get(0).dimensionFilter());
-        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL,
+        Assertions.assertEquals("rqttbajlkatnw", model.recommendedSignals().get(0).displayName());
+        Assertions.assertEquals("iopid", model.recommendedSignals().get(0).description());
+        Assertions.assertEquals("fku", model.recommendedSignals().get(0).applicableResourceTypes().get(0));
+        Assertions.assertEquals(RefreshInterval.PT5M, model.recommendedSignals().get(0).refreshInterval());
+        Assertions.assertEquals("zuruocbgo", model.recommendedSignals().get(0).dataUnit());
+        Assertions.assertEquals(SignalOperator.DYNAMIC,
             model.recommendedSignals().get(0).evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(94.24029215995002D,
+        Assertions.assertEquals(73.9554500997287D,
             model.recommendedSignals().get(0).evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
             model.recommendedSignals().get(0).evaluationRules().degradedRule().sensitivity());
         Assertions.assertEquals(SignalOperator.EQUAL,
             model.recommendedSignals().get(0).evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(94.29850569183385D,
+        Assertions.assertEquals(66.89542933806553D,
             model.recommendedSignals().get(0).evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
             model.recommendedSignals().get(0).evaluationRules().unhealthyRule().sensitivity());
-        Assertions.assertEquals("ewda", model.recommendedConfigurations().get(0).signalId());
-        Assertions.assertEquals("djvlpj", model.recommendedConfigurations().get(0).metricNamespace());
-        Assertions.assertEquals("kzbrmsgeivsiy", model.recommendedConfigurations().get(0).metricName());
-        Assertions.assertEquals(MetricAggregationType.AVERAGE,
-            model.recommendedConfigurations().get(0).aggregationType());
-        Assertions.assertEquals("ncj", model.recommendedConfigurations().get(0).unit());
-        Assertions.assertEquals("onbzoggculapzwy", model.recommendedConfigurations().get(0).timeGrain());
-        Assertions.assertEquals("gogtqxepnylbf", model.recommendedConfigurations().get(0).dimensionFilter());
+        Assertions.assertEquals("omdjvlpjxxkzbrm", model.recommendedConfigurations().get(0).signalId());
+        Assertions.assertEquals("eivsiykzkdnc", model.recommendedConfigurations().get(0).displayName());
+        Assertions.assertEquals("xonbzoggculapz", model.recommendedConfigurations().get(0).description());
+        Assertions.assertEquals("pgogtqxepny",
+            model.recommendedConfigurations().get(0).applicableResourceTypes().get(0));
+        Assertions.assertEquals(RefreshInterval.PT1M, model.recommendedConfigurations().get(0).refreshInterval());
+        Assertions.assertEquals("fqzhv", model.recommendedConfigurations().get(0).dataUnit());
         Assertions.assertEquals(SignalOperator.NOT_EQUAL,
             model.recommendedConfigurations().get(0).evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(87.99665917910454D,
+        Assertions.assertEquals(13.140682023988093D,
             model.recommendedConfigurations().get(0).evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
+        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
             model.recommendedConfigurations().get(0).evaluationRules().degradedRule().sensitivity());
         Assertions.assertEquals(SignalOperator.LESS_THAN,
             model.recommendedConfigurations().get(0).evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(19.535648644305248D,
+        Assertions.assertEquals(75.72936487613786D,
             model.recommendedConfigurations().get(0).evaluationRules().unhealthyRule().threshold());
         Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
             model.recommendedConfigurations().get(0).evaluationRules().unhealthyRule().sensitivity());
