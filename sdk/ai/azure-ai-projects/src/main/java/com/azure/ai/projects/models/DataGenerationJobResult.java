@@ -33,11 +33,11 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
     /**
      * Creates an instance of DataGenerationJobResult class.
      *
-     * @param generatedSamples the generatedSamples value to set.
+     * @param generatedSampleCount the generatedSampleCount value to set.
      */
     @Generated
-    private DataGenerationJobResult(int generatedSamples) {
-        this.generatedSamples = generatedSamples;
+    private DataGenerationJobResult(int generatedSampleCount) {
+        this.generatedSampleCount = generatedSampleCount;
     }
 
     /**
@@ -67,7 +67,7 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("generated_samples", this.generatedSamples);
+        jsonWriter.writeIntField("generated_samples", this.generatedSampleCount);
         jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("token_usage", this.tokenUsage);
         return jsonWriter.writeEndObject();
@@ -85,14 +85,14 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
     @Generated
     public static DataGenerationJobResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int generatedSamples = 0;
+            int generatedSampleCount = 0;
             List<DataGenerationJobOutput> outputs = null;
             DataGenerationTokenUsage tokenUsage = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("generated_samples".equals(fieldName)) {
-                    generatedSamples = reader.getInt();
+                    generatedSampleCount = reader.getInt();
                 } else if ("outputs".equals(fieldName)) {
                     outputs = reader.readArray(reader1 -> DataGenerationJobOutput.fromJson(reader1));
                 } else if ("token_usage".equals(fieldName)) {
@@ -101,7 +101,8 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
                     reader.skipChildren();
                 }
             }
-            DataGenerationJobResult deserializedDataGenerationJobResult = new DataGenerationJobResult(generatedSamples);
+            DataGenerationJobResult deserializedDataGenerationJobResult
+                = new DataGenerationJobResult(generatedSampleCount);
             deserializedDataGenerationJobResult.outputs = outputs;
             deserializedDataGenerationJobResult.tokenUsage = tokenUsage;
             return deserializedDataGenerationJobResult;
@@ -112,15 +113,15 @@ public final class DataGenerationJobResult implements JsonSerializable<DataGener
      * The number of samples actually generated.
      */
     @Generated
-    private final int generatedSamples;
+    private final int generatedSampleCount;
 
     /**
-     * Get the generatedSamples property: The number of samples actually generated.
+     * Get the generatedSampleCount property: The number of samples actually generated.
      *
-     * @return the generatedSamples value.
+     * @return the generatedSampleCount value.
      */
     @Generated
-    public int getGeneratedSamples() {
-        return this.generatedSamples;
+    public int getGeneratedSampleCount() {
+        return this.generatedSampleCount;
     }
 }
