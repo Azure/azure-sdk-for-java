@@ -4,6 +4,11 @@
 
 package com.azure.resourcemanager.storagediscovery.generated;
 
+import com.azure.resourcemanager.storagediscovery.models.AzureBlobStorageCapability;
+import com.azure.resourcemanager.storagediscovery.models.CapabilityStatus;
+import com.azure.resourcemanager.storagediscovery.models.CapacityDetails;
+import com.azure.resourcemanager.storagediscovery.models.PrefixConfiguration;
+import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryCapabilities;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryResourceType;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryScope;
 import com.azure.resourcemanager.storagediscovery.models.StorageDiscoveryWorkspaceProperties;
@@ -16,7 +21,7 @@ import java.util.Map;
  */
 public final class StorageDiscoveryWorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/StorageDiscoveryWorkspaces_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/StorageDiscoveryWorkspaces_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a StorageDiscoveryWorkspace.
@@ -30,19 +35,35 @@ public final class StorageDiscoveryWorkspacesCreateOrUpdateSamples {
             .withRegion("westeurope")
             .withExistingResourceGroup("sample-rg")
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
-            .withProperties(new StorageDiscoveryWorkspaceProperties()
-                .withDescription("Sample Storage Discovery Workspace")
-                .withWorkspaceRoots(Arrays.asList("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"))
-                .withScopes(Arrays.asList(new StorageDiscoveryScope().withDisplayName("Sample-Collection")
-                    .withResourceTypes(Arrays.asList(StorageDiscoveryResourceType.fromString(
-                        "/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09/resourceGroups/sample-rg/providers/Microsoft.Storage/storageAccounts/sample-storageAccount")))
-                    .withTagKeysOnly(Arrays.asList("filterTag1", "filterTag2"))
-                    .withTags(mapOf("filterTag3", "value3", "filterTag4", "value4")),
-                    new StorageDiscoveryScope().withDisplayName("Sample-Collection-2")
+            .withProperties(
+                new StorageDiscoveryWorkspaceProperties().withDescription("Sample Storage Discovery Workspace")
+                    .withCapabilities(
+                        new StorageDiscoveryCapabilities().withAzureBlobStorage(new AzureBlobStorageCapability()
+                            .withCapacityDetails(new CapacityDetails().withStatus(CapabilityStatus.ENABLED))
+                            .withPrefixConfigurations(
+                                Arrays.asList(
+                                    new PrefixConfiguration().withStorageAccountName("firstsa")
+                                        .withContainerName("samplecontainer")
+                                        .withPrefix("sampleDir"),
+                                    new PrefixConfiguration().withStorageAccountName("secondsa")
+                                        .withContainerName("samplecontainer")
+                                        .withPrefix("sampleDir/sampleSubDir"),
+                                    new PrefixConfiguration()
+                                        .withStorageAccountName("thirdsa")
+                                        .withContainerName("anothersamplecontainer")
+                                        .withPrefix("anotherSampleDir")))))
+                    .withWorkspaceRoots(Arrays.asList("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09"))
+                    .withScopes(Arrays.asList(new StorageDiscoveryScope()
+                        .withDisplayName("Sample-Collection")
                         .withResourceTypes(Arrays.asList(StorageDiscoveryResourceType.fromString(
                             "/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09/resourceGroups/sample-rg/providers/Microsoft.Storage/storageAccounts/sample-storageAccount")))
-                        .withTagKeysOnly(Arrays.asList("filterTag5"))
-                        .withTags(mapOf("filterTag6", "value6")))))
+                        .withTagKeysOnly(Arrays.asList("filterTag1", "filterTag2"))
+                        .withTags(mapOf("filterTag3", "value3", "filterTag4", "value4")),
+                        new StorageDiscoveryScope().withDisplayName("Sample-Collection-2")
+                            .withResourceTypes(Arrays.asList(StorageDiscoveryResourceType.fromString(
+                                "/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09/resourceGroups/sample-rg/providers/Microsoft.Storage/storageAccounts/sample-storageAccount")))
+                            .withTagKeysOnly(Arrays.asList("filterTag5"))
+                            .withTags(mapOf("filterTag6", "value6")))))
             .create();
     }
 
