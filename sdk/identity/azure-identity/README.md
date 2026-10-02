@@ -204,9 +204,24 @@ Not all credentials honor this configuration. Credentials that authenticate thro
 | Credential                              | Usage                                                             | Example                     | Reference                                  |
 |-----------------------------------------|-------------------------------------------------------------------|-----------------------------|--------------------------------------------|
 | [AzurePipelinesCredential][cred_apc]    | Authenticates with a service connection in Azure Pipelines.       |                             | [Manage service connections][cred_apc_ref] |
+| [GitHubActionsCredential][cred_ghac]    | Authenticates a service principal using GitHub Actions OIDC federation. | [example](#authenticate-in-github-actions) | [Configuring OpenID Connect in Azure][cred_ghac_ref] |
 | [ClientAssertionCredential][cred_cac]   | Authenticates a service principal using a signed client assertion |                             |                                            |
 | [ClientCertificateCredential][cred_ccc] | Authenticates a service principal using a certificate             | [example][cred_ccc_example] | [Service principal authentication][sp]     |
 | [ClientSecretCredential][cred_csc]      | Authenticates a service principal using a secret                  | [example][cred_csc_example] | [Service principal authentication][sp]     |
+
+#### Authenticate in GitHub Actions
+
+Configure the workflow with `id-token: write` permission and set `AZURE_TENANT_ID` and `AZURE_CLIENT_ID`. GitHub Actions supplies `ACTIONS_ID_TOKEN_REQUEST_URL` and `ACTIONS_ID_TOKEN_REQUEST_TOKEN` automatically.
+
+```yaml
+permissions:
+  id-token: write
+  contents: read
+```
+
+```java
+GitHubActionsCredential credential = new GitHubActionsCredentialBuilder().build();
+```
 
 ### Authenticate users
 
@@ -329,6 +344,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_dcc_example]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md#device-code-flow-iot--headless
 [cred_dcc_ref]: https://learn.microsoft.com/entra/identity-platform/v2-oauth2-device-code
 [cred_ec]: https://learn.microsoft.com/java/api/com.azure.identity.environmentcredential?view=azure-java-stable
+[cred_ghac]: https://learn.microsoft.com/java/api/com.azure.identity.githubactionscredential?view=azure-java-stable
+[cred_ghac_ref]: https://docs.github.com/actions/security-for-github-actions/security-hardening-your-deployments/configuring-openid-connect-in-azure
 [cred_ibc]: https://learn.microsoft.com/java/api/com.azure.identity.interactivebrowsercredential?view=azure-java-stable
 [cred_ibc_example]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/identity-examples.md#interactive-browser
 [cred_ij]: https://learn.microsoft.com/java/api/com.azure.identity.intellijcredential?view=azure-java-stable
