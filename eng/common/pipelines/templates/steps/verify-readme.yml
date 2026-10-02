@@ -22,7 +22,7 @@ parameters:
 steps:
 - task: PowerShell@2
   displayName: "Verify Readmes"
-  condition: ${{ parameters.Condition }}
+  condition: and(succeededOrFailed(), ${{ parameters.Condition }})
   inputs:
     filePath: "eng/common/scripts/Verify-Readme.ps1"
     arguments: >

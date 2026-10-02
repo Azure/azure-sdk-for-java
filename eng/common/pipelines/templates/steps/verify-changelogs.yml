@@ -17,4 +17,4 @@ steps:
         -ForRelease $${{ parameters.ForRelease }}
       pwsh: true
     displayName: Verify ChangeLogEntries
-    condition: ${{ parameters.Condition }}
+    condition: and(succeededOrFailed(), ${{ parameters.Condition }})

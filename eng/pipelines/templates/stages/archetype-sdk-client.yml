@@ -101,7 +101,7 @@ extends:
                   displayName: Skip PR validation
 
       - stage: Build
-        condition: not(and(eq(${{ parameters.SkipPrValidation }}, true), eq(variables['Build.Reason'], 'Manual')))
+        condition: and(succeeded(), not(and(eq(${{ parameters.SkipPrValidation }}, true), eq(variables['Build.Reason'], 'Manual'))))
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
           - template: /eng/pipelines/templates/variables/image.yml
@@ -208,4 +208,3 @@ extends:
               TestPipeline: ${{ parameters.TestPipeline }}
               PublicFeedUrl: ${{ parameters.PublicFeedUrl }}
               PublicPublishEnvironment: ${{ parameters.PublicPublishEnvironment }}
-

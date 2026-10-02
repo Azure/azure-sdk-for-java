@@ -7,7 +7,7 @@ parameters:
 steps:
   - task: PythonScript@0
     displayName: Analyze Path Lengths
-    condition: ${{ parameters.Condition }}
+    condition: and(succeededOrFailed(), ${{ parameters.Condition }})
     inputs:
       scriptSource: inline
       script: |
