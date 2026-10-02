@@ -7,7 +7,6 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.models.AgentOptimizationCandidate;
 import com.azure.ai.agents.models.AgentOptimizationJob;
-import com.azure.ai.agents.models.JobStatus;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
