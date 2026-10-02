@@ -14,16 +14,16 @@ public final class AdhocBasedTriggerContextTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdhocBasedTriggerContext model = BinaryData.fromString(
-            "{\"objectType\":\"AdhocBasedTriggerContext\",\"taggingCriteria\":{\"tagInfo\":{\"eTag\":\"qal\",\"id\":\"mnjijpxacqqudf\",\"tagName\":\"byxbaaabjy\"}}}")
+            "{\"objectType\":\"AdhocBasedTriggerContext\",\"taggingCriteria\":{\"tagInfo\":{\"eTag\":\"xbvtvudu\",\"id\":\"cormr\",\"tagName\":\"xqtvcofu\"}}}")
             .toObject(AdhocBasedTriggerContext.class);
-        Assertions.assertEquals("byxbaaabjy", model.taggingCriteria().tagInfo().tagName());
+        Assertions.assertEquals("xqtvcofu", model.taggingCriteria().tagInfo().tagName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdhocBasedTriggerContext model = new AdhocBasedTriggerContext().withTaggingCriteria(
-            new AdhocBasedTaggingCriteria().withTagInfo(new RetentionTag().withTagName("byxbaaabjy")));
+            new AdhocBasedTaggingCriteria().withTagInfo(new RetentionTag().withTagName("xqtvcofu")));
         model = BinaryData.fromObject(model).toObject(AdhocBasedTriggerContext.class);
-        Assertions.assertEquals("byxbaaabjy", model.taggingCriteria().tagInfo().tagName());
+        Assertions.assertEquals("xqtvcofu", model.taggingCriteria().tagInfo().tagName());
     }
 }

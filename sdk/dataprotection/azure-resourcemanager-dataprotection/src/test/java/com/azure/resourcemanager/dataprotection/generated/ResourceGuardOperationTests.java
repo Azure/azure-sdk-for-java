@@ -11,7 +11,7 @@ public final class ResourceGuardOperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuardOperation model = BinaryData
-            .fromString("{\"vaultCriticalOperation\":\"rkwofyyvoqa\",\"requestResourceType\":\"iexpbtgiwbwo\"}")
+            .fromString("{\"vaultCriticalOperation\":\"lpichk\",\"requestResourceType\":\"mkcdyhbpkkpwdre\"}")
             .toObject(ResourceGuardOperation.class);
     }
 }
