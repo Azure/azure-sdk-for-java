@@ -12,11 +12,11 @@ public final class SecurityServicesResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityServicesResponseInner model = BinaryData.fromString(
-            "{\"value\":{\"type\":\"civfsnkymuctq\",\"entry\":[{\"name\":\"fbebrjcxer\",\"description\":\"wutttxfvjrbi\"}]},\"nextLink\":\"hxepcyvahfnlj\"}")
+            "{\"value\":{\"type\":\"ytxhp\",\"entry\":[{\"name\":\"bzpfzab\",\"description\":\"cuh\"},{\"name\":\"wtctyqi\",\"description\":\"bbovplwzbhvgyugu\"}]},\"nextLink\":\"vmkfssxqu\"}")
             .toObject(SecurityServicesResponseInner.class);
-        Assertions.assertEquals("civfsnkymuctq", model.value().type());
-        Assertions.assertEquals("fbebrjcxer", model.value().entry().get(0).name());
-        Assertions.assertEquals("wutttxfvjrbi", model.value().entry().get(0).description());
-        Assertions.assertEquals("hxepcyvahfnlj", model.nextLink());
+        Assertions.assertEquals("ytxhp", model.value().type());
+        Assertions.assertEquals("bzpfzab", model.value().entry().get(0).name());
+        Assertions.assertEquals("cuh", model.value().entry().get(0).description());
+        Assertions.assertEquals("vmkfssxqu", model.nextLink());
     }
 }

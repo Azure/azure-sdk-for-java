@@ -12,10 +12,10 @@ public final class AdvSecurityObjectModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdvSecurityObjectModel model = BinaryData.fromString(
-            "{\"type\":\"gkpocipazyxoe\",\"entry\":[{\"name\":\"kgjn\",\"description\":\"ucgygevqz\"},{\"name\":\"typmrbpizcdrqjsd\",\"description\":\"dnfyhxdeoejzicwi\"},{\"name\":\"sjttgzfbish\",\"description\":\"khaj\"},{\"name\":\"eyeam\",\"description\":\"hagalpbuxwgipwh\"}]}")
+            "{\"type\":\"riwflzlfb\",\"entry\":[{\"name\":\"puz\",\"description\":\"ispnqzahmgkbrp\"},{\"name\":\"y\",\"description\":\"ibnuqqkpik\"},{\"name\":\"drgvtqagn\",\"description\":\"ynhijggme\"}]}")
             .toObject(AdvSecurityObjectModel.class);
-        Assertions.assertEquals("gkpocipazyxoe", model.type());
-        Assertions.assertEquals("kgjn", model.entry().get(0).name());
-        Assertions.assertEquals("ucgygevqz", model.entry().get(0).description());
+        Assertions.assertEquals("riwflzlfb", model.type());
+        Assertions.assertEquals("puz", model.entry().get(0).name());
+        Assertions.assertEquals("ispnqzahmgkbrp", model.entry().get(0).description());
     }
 }

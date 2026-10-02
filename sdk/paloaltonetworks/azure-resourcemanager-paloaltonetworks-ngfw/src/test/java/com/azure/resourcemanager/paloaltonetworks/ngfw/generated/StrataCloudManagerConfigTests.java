@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class StrataCloudManagerConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StrataCloudManagerConfig model
-            = BinaryData.fromString("{\"cloudManagerName\":\"gdyftumrtwna\"}").toObject(StrataCloudManagerConfig.class);
-        Assertions.assertEquals("gdyftumrtwna", model.cloudManagerName());
+        StrataCloudManagerConfig model = BinaryData.fromString("{\"cloudManagerName\":\"tgseinqfiufxqkn\"}")
+            .toObject(StrataCloudManagerConfig.class);
+        Assertions.assertEquals("tgseinqfiufxqkn", model.cloudManagerName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StrataCloudManagerConfig model = new StrataCloudManagerConfig().withCloudManagerName("gdyftumrtwna");
+        StrataCloudManagerConfig model = new StrataCloudManagerConfig().withCloudManagerName("tgseinqfiufxqkn");
         model = BinaryData.fromObject(model).toObject(StrataCloudManagerConfig.class);
-        Assertions.assertEquals("gdyftumrtwna", model.cloudManagerName());
+        Assertions.assertEquals("tgseinqfiufxqkn", model.cloudManagerName());
     }
 }

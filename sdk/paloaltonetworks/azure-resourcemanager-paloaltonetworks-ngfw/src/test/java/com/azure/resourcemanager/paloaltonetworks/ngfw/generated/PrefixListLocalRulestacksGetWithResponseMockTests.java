@@ -21,7 +21,7 @@ public final class PrefixListLocalRulestacksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"ios\",\"prefixList\":[\"cyvaifppuacvfy\",\"owpsfxt\",\"dhsoymhpv\",\"yqfttehdpboujst\"],\"etag\":\"vvdshxcdedsue\",\"auditComment\":\"gnxcgjtfrnquktr\",\"provisioningState\":\"Creating\"},\"id\":\"nlrxsmyltrwntfmt\",\"name\":\"g\",\"type\":\"jdxwnazkurrdre\"}";
+            = "{\"properties\":{\"description\":\"dxaexqokmyrljia\",\"prefixList\":[\"bn\",\"brqlpbcjtrpz\"],\"etag\":\"udivbxnhsqeaeonq\",\"auditComment\":\"wgdhu\",\"provisioningState\":\"Succeeded\"},\"id\":\"tzarogatmoljiy\",\"name\":\"mpinmzvfkneerzzt\",\"type\":\"knsjulugd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class PrefixListLocalRulestacksGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrefixListResource response = manager.prefixListLocalRulestacks()
-            .getWithResponse("ij", "ykwlefksxqceazf", "xgnmqvzvluyq", com.azure.core.util.Context.NONE)
+            .getWithResponse("vtptbk", "wkqyns", "gbvoffbkk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ios", response.description());
-        Assertions.assertEquals("cyvaifppuacvfy", response.prefixList().get(0));
-        Assertions.assertEquals("vvdshxcdedsue", response.etag());
-        Assertions.assertEquals("gnxcgjtfrnquktr", response.auditComment());
+        Assertions.assertEquals("dxaexqokmyrljia", response.description());
+        Assertions.assertEquals("bn", response.prefixList().get(0));
+        Assertions.assertEquals("udivbxnhsqeaeonq", response.etag());
+        Assertions.assertEquals("wgdhu", response.auditComment());
     }
 }

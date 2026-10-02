@@ -13,24 +13,24 @@ public final class RuleCounterInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuleCounterInner model = BinaryData.fromString(
-            "{\"priority\":\"plsaknynfsynljph\",\"ruleStackName\":\"pxodlqiyntorzih\",\"ruleListName\":\"osjswsr\",\"firewallName\":\"lyzrpzbchckqqzqi\",\"ruleName\":\"xiy\",\"hitCount\":1721034864,\"appSeen\":{\"count\":1896138936,\"appSeenList\":[{\"title\":\"nkedyatrwyhqmib\",\"category\":\"yhwitsmypyynpcdp\",\"subCategory\":\"mnzgmwznmabi\",\"risk\":\"nsorgjhxbldt\",\"tag\":\"wwrlkdmtncv\",\"technology\":\"kotl\",\"standardPorts\":\"xdy\"},{\"title\":\"gsyocogj\",\"category\":\"tdtbnnhadooc\",\"subCategory\":\"kvci\",\"risk\":\"hnvpamqgxq\",\"tag\":\"u\",\"technology\":\"zikywgg\",\"standardPorts\":\"kallatmel\"},{\"title\":\"uipiccjzk\",\"category\":\"ivgvvcna\",\"subCategory\":\"rhyrnxxmueed\",\"risk\":\"drd\",\"tag\":\"stkwqqtch\",\"technology\":\"alm\",\"standardPorts\":\"mtdaa\"},{\"title\":\"gdv\",\"category\":\"vgpiohgwxrt\",\"subCategory\":\"udxepxgyqagv\",\"risk\":\"vmnpkukghimdblx\",\"tag\":\"wi\",\"technology\":\"fnjhfjxwmszkkfo\",\"standardPorts\":\"rey\"}]},\"timestamp\":\"2021-05-31T03:25:20Z\",\"requestTimestamp\":\"2021-03-26T08:18:16Z\",\"lastUpdatedTimestamp\":\"2021-01-04T11:20:29Z\"}")
+            "{\"priority\":\"ajqgxy\",\"ruleStackName\":\"ocmbqfqvmkcxoza\",\"ruleListName\":\"helxprglya\",\"firewallName\":\"dckcbc\",\"ruleName\":\"ejrjxgciqibrho\",\"hitCount\":1487162894,\"appSeen\":{\"count\":1655789286,\"appSeenList\":[{\"title\":\"hzoymibmrqy\",\"category\":\"bahwfl\",\"subCategory\":\"szdtmhrkwof\",\"risk\":\"yvoqa\",\"tag\":\"piexpbtgiw\",\"technology\":\"wo\",\"standardPorts\":\"nwashrtd\"}]},\"timestamp\":\"2021-10-17T07:53:24Z\",\"requestTimestamp\":\"2021-03-26T12:56:23Z\",\"lastUpdatedTimestamp\":\"2021-03-19T14:05:07Z\"}")
             .toObject(RuleCounterInner.class);
-        Assertions.assertEquals("plsaknynfsynljph", model.priority());
-        Assertions.assertEquals("pxodlqiyntorzih", model.ruleStackName());
-        Assertions.assertEquals("osjswsr", model.ruleListName());
-        Assertions.assertEquals("lyzrpzbchckqqzqi", model.firewallName());
-        Assertions.assertEquals("xiy", model.ruleName());
-        Assertions.assertEquals(1721034864, model.hitCount());
-        Assertions.assertEquals(1896138936, model.appSeen().count());
-        Assertions.assertEquals("nkedyatrwyhqmib", model.appSeen().appSeenList().get(0).title());
-        Assertions.assertEquals("yhwitsmypyynpcdp", model.appSeen().appSeenList().get(0).category());
-        Assertions.assertEquals("mnzgmwznmabi", model.appSeen().appSeenList().get(0).subCategory());
-        Assertions.assertEquals("nsorgjhxbldt", model.appSeen().appSeenList().get(0).risk());
-        Assertions.assertEquals("wwrlkdmtncv", model.appSeen().appSeenList().get(0).tag());
-        Assertions.assertEquals("kotl", model.appSeen().appSeenList().get(0).technology());
-        Assertions.assertEquals("xdy", model.appSeen().appSeenList().get(0).standardPorts());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-31T03:25:20Z"), model.timestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T08:18:16Z"), model.requestTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-04T11:20:29Z"), model.lastUpdatedTimestamp());
+        Assertions.assertEquals("ajqgxy", model.priority());
+        Assertions.assertEquals("ocmbqfqvmkcxoza", model.ruleStackName());
+        Assertions.assertEquals("helxprglya", model.ruleListName());
+        Assertions.assertEquals("dckcbc", model.firewallName());
+        Assertions.assertEquals("ejrjxgciqibrho", model.ruleName());
+        Assertions.assertEquals(1487162894, model.hitCount());
+        Assertions.assertEquals(1655789286, model.appSeen().count());
+        Assertions.assertEquals("hzoymibmrqy", model.appSeen().appSeenList().get(0).title());
+        Assertions.assertEquals("bahwfl", model.appSeen().appSeenList().get(0).category());
+        Assertions.assertEquals("szdtmhrkwof", model.appSeen().appSeenList().get(0).subCategory());
+        Assertions.assertEquals("yvoqa", model.appSeen().appSeenList().get(0).risk());
+        Assertions.assertEquals("piexpbtgiw", model.appSeen().appSeenList().get(0).tag());
+        Assertions.assertEquals("wo", model.appSeen().appSeenList().get(0).technology());
+        Assertions.assertEquals("nwashrtd", model.appSeen().appSeenList().get(0).standardPorts());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T07:53:24Z"), model.timestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T12:56:23Z"), model.requestTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-19T14:05:07Z"), model.lastUpdatedTimestamp());
     }
 }

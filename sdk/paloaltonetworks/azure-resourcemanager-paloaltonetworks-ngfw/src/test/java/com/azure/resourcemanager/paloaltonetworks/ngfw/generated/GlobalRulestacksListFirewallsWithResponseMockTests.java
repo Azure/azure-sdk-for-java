@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class GlobalRulestacksListFirewallsWithResponseMockTests {
     @Test
     public void testListFirewallsWithResponse() throws Exception {
-        String responseStr = "{\"value\":[\"wnlaxpu\",\"jqi\"],\"nextLink\":\"zvvitacgxmfcs\"}";
+        String responseStr = "{\"value\":[\"t\"],\"nextLink\":\"wxvgpiudeugfsxze\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,10 +29,11 @@ public final class GlobalRulestacksListFirewallsWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ListFirewallsResponse response
-            = manager.globalRulestacks().listFirewallsWithResponse("f", com.azure.core.util.Context.NONE).getValue();
+        ListFirewallsResponse response = manager.globalRulestacks()
+            .listFirewallsWithResponse("oewbid", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("wnlaxpu", response.value().get(0));
-        Assertions.assertEquals("zvvitacgxmfcs", response.nextLink());
+        Assertions.assertEquals("t", response.value().get(0));
+        Assertions.assertEquals("wxvgpiudeugfsxze", response.nextLink());
     }
 }

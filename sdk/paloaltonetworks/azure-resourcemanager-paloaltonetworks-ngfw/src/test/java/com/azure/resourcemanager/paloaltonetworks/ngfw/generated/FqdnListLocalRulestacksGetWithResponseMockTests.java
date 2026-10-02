@@ -21,7 +21,7 @@ public final class FqdnListLocalRulestacksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"sjhbtq\",\"fqdnList\":[\"yfscyrfwbivqvo\",\"fuy\",\"wvbhlimbyq\"],\"etag\":\"r\",\"auditComment\":\"dlikcdrdaasa\",\"provisioningState\":\"Accepted\"},\"id\":\"sm\",\"name\":\"kwiy\",\"type\":\"v\"}";
+            = "{\"properties\":{\"description\":\"abdsr\",\"fqdnList\":[\"ajglzrsubklr\",\"hjnlt\",\"etjdvqydieqqkwa\",\"uwdxvqzxoebwgj\"],\"etag\":\"ibanb\",\"auditComment\":\"pwtzvpakloz\",\"provisioningState\":\"Failed\"},\"id\":\"rpejp\",\"name\":\"ssanbtttkgsuxun\",\"type\":\"swgkpjhboyikebh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class FqdnListLocalRulestacksGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FqdnListLocalRulestackResource response = manager.fqdnListLocalRulestacks()
-            .getWithResponse("ksqmudmfcoibi", "ziuswsw", "rk", com.azure.core.util.Context.NONE)
+            .getWithResponse("wwnbafoctohz", "aquvwsxbgnvkervq", "hoadhrsxqvzv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("sjhbtq", response.description());
-        Assertions.assertEquals("yfscyrfwbivqvo", response.fqdnList().get(0));
-        Assertions.assertEquals("r", response.etag());
-        Assertions.assertEquals("dlikcdrdaasa", response.auditComment());
+        Assertions.assertEquals("abdsr", response.description());
+        Assertions.assertEquals("ajglzrsubklr", response.fqdnList().get(0));
+        Assertions.assertEquals("ibanb", response.etag());
+        Assertions.assertEquals("pwtzvpakloz", response.auditComment());
     }
 }

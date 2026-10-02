@@ -9,7 +9,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
  */
 public final class FirewallsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_Get_MaximumSet_Gen.
@@ -23,7 +23,7 @@ public final class FirewallsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-08/Firewalls_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-07-29-preview/Firewalls_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: Firewalls_Get_MinimumSet_Gen.
