@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PartialFulfillmentPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartialFulfillmentPolicy model
-            = BinaryData.fromString("{\"fulfilledCapacity\":1366383257,\"mode\":\"Enabled\",\"reason\":\"None\"}")
-                .toObject(PartialFulfillmentPolicy.class);
-        Assertions.assertEquals(PartialFulfillmentMode.ENABLED, model.mode());
+        PartialFulfillmentPolicy model = BinaryData
+            .fromString("{\"fulfilledCapacity\":1045715770,\"mode\":\"Disabled\",\"reason\":\"InsufficientCapacity\"}")
+            .toObject(PartialFulfillmentPolicy.class);
+        Assertions.assertEquals(PartialFulfillmentMode.DISABLED, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartialFulfillmentPolicy model = new PartialFulfillmentPolicy().withMode(PartialFulfillmentMode.ENABLED);
+        PartialFulfillmentPolicy model = new PartialFulfillmentPolicy().withMode(PartialFulfillmentMode.DISABLED);
         model = BinaryData.fromObject(model).toObject(PartialFulfillmentPolicy.class);
-        Assertions.assertEquals(PartialFulfillmentMode.ENABLED, model.mode());
+        Assertions.assertEquals(PartialFulfillmentMode.DISABLED, model.mode());
     }
 }
