@@ -118,7 +118,7 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
                 return Mono.error(new IllegalStateException("The voice-agent session has already been started."));
             }
 
-            TokenRequestContext tokenContext = VoiceAgentWebSocketUtils.createTokenRequestContext(options);
+            TokenRequestContext tokenContext = VoiceAgentWebSocketUtils.createTokenRequestContext();
             return configuration.getCredential().getToken(tokenContext).map(AccessToken::getToken).flatMap(token -> {
                 Disposable connection = openWebSocket(token).subscribe(unused -> {
                 }, this::terminateWithError, this::terminateNormally);
@@ -135,8 +135,8 @@ public final class BetaVoiceAgentWebSocketSessionAsyncClient implements AsyncClo
      *
      * @return the WebSocket endpoint.
      */
-    public URI getEndpoint() {
-        return websocketUri;
+    public String getEndpoint() {
+        return websocketUri.toString();
     }
 
     /**

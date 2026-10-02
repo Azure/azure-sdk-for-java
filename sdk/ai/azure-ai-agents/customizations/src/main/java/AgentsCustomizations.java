@@ -35,7 +35,8 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
-        // makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
+        protectPolymorphicBaseConstructors(libraryCustomization);
+        makeRealtimeMessageDiscriminatorsFinal(libraryCustomization);
         applyUnionTypeWrappers(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
@@ -90,6 +91,31 @@ public class AgentsCustomizations extends Customization {
     private static final int V_SIZE = 18;
 
     /**
+     * Prevents customers from directly constructing polymorphic base models that do not represent valid wire shapes.
+     * The classes remain concrete so their generated {@code fromJson} methods can deserialize unknown future
+     * discriminator values.
+     *
+     * @param customization the library customization
+     */
+    private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
+        List<String> classNames = Arrays.asList("AgentHarness", "CreateTelephonyBindingInput", "RealtimeAudioFormat",
+            "RealtimeClientEvent", "RealtimeConversationItem", "RealtimeConversationItemMessage", "RealtimeMcpError",
+            "RealtimeSessionConfigurationBase", "RealtimeTurnDetection", "TelephonyOutboundRetryPolicy",
+            "TelephonyTransferDestination", "VoiceAgentGreetingConfiguration", "VoiceAgentInterimResponseConfiguration",
+            "VoiceAgentSystemTool", "VoiceAgentTool", "VoiceAgentTurnDetectionConfiguration",
+            "VoiceConversationEngine");
+
+        for (String className : classNames) {
+            ClassCustomization classCustomization = customization.getClass(MODELS_PACKAGE, className);
+            classCustomization.customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> clazz
+                .getConstructors()
+                .stream()
+                .filter(constructor -> constructor.isPublic())
+                .forEach(constructor -> constructor.setModifiers(Modifier.Keyword.PROTECTED))));
+        }
+    }
+
+    /**
      * Re-applies the typed union accessors on the generated models whose TypeSpec union properties are emitted as
      * {@code BinaryData}. The generated {@code BinaryData} accessors are hidden from the public API surface (kept
      * package-private for {@code fromJson}/{@code toJson} and tests) and one typed setter/getter pair is added per
@@ -133,12 +159,6 @@ public class AgentsCustomizations extends Customization {
             stringEnumUnionVariant("VoiceIds", "the {@link VoiceIds} built-in voice to set"),
             modelUnionVariant("RealtimeSessionCreateRequestGAAudioOutputVoice",
                 "the {@link RealtimeSessionCreateRequestGAAudioOutputVoice} custom voice to set"));
-        List<String[]> sessionUpdate = Arrays.asList(
-            discriminatedModelUnionVariant("RealtimeSessionConfiguration", "RealtimeSessionConfigurationBase",
-                "the {@link RealtimeSessionConfiguration} session to set"),
-            discriminatedModelUnionVariant("RealtimeTranscriptionSessionConfiguration",
-                "RealtimeSessionConfigurationBase",
-                "the {@link RealtimeTranscriptionSessionConfiguration} session to set"));
         List<String[]> transcriptionUsage = Arrays.asList(
             discriminatedModelUnionVariant("TranscriptTextUsageTokens", "TranscriptTextUsage",
                 "the {@link TranscriptTextUsageTokens} usage to set"),
@@ -148,9 +168,6 @@ public class AgentsCustomizations extends Customization {
             modelUnionVariant("VoiceAgentSessionResponseConfiguration",
                 "the {@link VoiceAgentSessionResponseConfiguration} session to set"));
 
-        customizeImmutableUnionProperty(customization, "RealtimeSessionUpdateEvent", "session",
-            "Update the Realtime session. Choose either a realtime session or a transcription session.", sessionUpdate,
-            logger);
         customizeImmutableUnionProperty(customization,
             "RealtimeConversationItemInputAudioTranscriptionCompletedEvent", "usage",
             "Usage statistics for the transcription.", transcriptionUsage, logger);

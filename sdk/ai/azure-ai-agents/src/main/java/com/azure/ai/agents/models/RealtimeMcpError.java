@@ -29,7 +29,7 @@ public class RealtimeMcpError implements JsonSerializable<RealtimeMcpError> {
      * Creates an instance of RealtimeMcpError class.
      */
     @Generated
-    public RealtimeMcpError() {
+    protected RealtimeMcpError() {
     }
 
     /**

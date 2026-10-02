@@ -13,18 +13,18 @@ public final class HostEndpointSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HostEndpointSettings model
-            = BinaryData.fromString("{\"mode\":\"Disabled\",\"inVMAccessControlProfileReferenceId\":\"xsdszuempsb\"}")
+            = BinaryData.fromString("{\"mode\":\"Enforce\",\"inVMAccessControlProfileReferenceId\":\"r\"}")
                 .toObject(HostEndpointSettings.class);
-        Assertions.assertEquals(Modes.DISABLED, model.mode());
-        Assertions.assertEquals("xsdszuempsb", model.inVMAccessControlProfileReferenceId());
+        Assertions.assertEquals(Modes.ENFORCE, model.mode());
+        Assertions.assertEquals("r", model.inVMAccessControlProfileReferenceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HostEndpointSettings model = new HostEndpointSettings().withMode(Modes.DISABLED)
-            .withInVMAccessControlProfileReferenceId("xsdszuempsb");
+        HostEndpointSettings model
+            = new HostEndpointSettings().withMode(Modes.ENFORCE).withInVMAccessControlProfileReferenceId("r");
         model = BinaryData.fromObject(model).toObject(HostEndpointSettings.class);
-        Assertions.assertEquals(Modes.DISABLED, model.mode());
-        Assertions.assertEquals("xsdszuempsb", model.inVMAccessControlProfileReferenceId());
+        Assertions.assertEquals(Modes.ENFORCE, model.mode());
+        Assertions.assertEquals("r", model.inVMAccessControlProfileReferenceId());
     }
 }

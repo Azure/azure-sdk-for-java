@@ -40,7 +40,7 @@ public class RealtimeTurnDetection implements JsonSerializable<RealtimeTurnDetec
      * Creates an instance of RealtimeTurnDetection class.
      */
     @Generated
-    public RealtimeTurnDetection() {
+    protected RealtimeTurnDetection() {
     }
 
     /**

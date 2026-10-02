@@ -32,6 +32,8 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import java.io.IOException;
 import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.SocketAddress;
 import java.net.URI;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.StandardCharsets;
@@ -39,6 +41,7 @@ import java.time.Duration;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -48,6 +51,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -87,7 +91,7 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
         this.events = new ArrayBlockingQueue<>(receiveBufferCapacity + 1);
         this.websocketUri = VoiceAgentWebSocketUtils.buildWebSocketUri(configuration, agentName, options);
         String token = configuration.getCredential()
-            .getTokenSync(VoiceAgentWebSocketUtils.createTokenRequestContext(options))
+            .getTokenSync(VoiceAgentWebSocketUtils.createTokenRequestContext())
             .getToken();
         this.httpClient = createHttpClient(configuration, options);
         Request.Builder request = new Request.Builder().url(websocketUri.toString())
@@ -117,8 +121,8 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
      *
      * @return the WebSocket endpoint.
      */
-    public URI getEndpoint() {
-        return websocketUri;
+    public String getEndpoint() {
+        return websocketUri.toString();
     }
 
     /**
@@ -173,7 +177,14 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Only one receiveEvents iterator is supported per session."));
         }
-        return IterableStream.of(() -> new EventIterator(events, timeout));
+        AtomicBoolean iteratorCreated = new AtomicBoolean();
+        return IterableStream.of(() -> {
+            if (!iteratorCreated.compareAndSet(false, true)) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("The receiveEvents stream may only be iterated once."));
+            }
+            return new EventIterator(events, timeout);
+        });
     }
 
     /**
@@ -445,7 +456,7 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
         }
     }
 
-    private static OkHttpClient createHttpClient(VoiceAgentWebSocketClientConfiguration configuration,
+    static OkHttpClient createHttpClient(VoiceAgentWebSocketClientConfiguration configuration,
         VoiceAgentWebSocketConnectionOptions options) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.connectTimeout(options.getHandshakeTimeout().toMillis(), TimeUnit.MILLISECONDS)
@@ -455,7 +466,29 @@ public final class BetaVoiceAgentWebSocketSessionClient implements AutoCloseable
         if (proxyOptions != null) {
             Proxy.Type proxyType = proxyOptions.getType() == ProxyOptions.Type.SOCKS4
                 || proxyOptions.getType() == ProxyOptions.Type.SOCKS5 ? Proxy.Type.SOCKS : Proxy.Type.HTTP;
-            builder.proxy(new Proxy(proxyType, proxyOptions.getAddress()));
+            Proxy proxy = new Proxy(proxyType, proxyOptions.getAddress());
+            if (proxyOptions.getNonProxyHosts() == null) {
+                builder.proxy(proxy);
+            } else {
+                Pattern nonProxyHosts = Pattern.compile(proxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
+                builder.proxySelector(new ProxySelector() {
+                    @Override
+                    public List<Proxy> select(URI uri) {
+                        return Collections
+                            .singletonList(uri.getHost() != null && nonProxyHosts.matcher(uri.getHost()).matches()
+                                ? Proxy.NO_PROXY
+                                : proxy);
+                    }
+
+                    @Override
+                    public void connectFailed(URI uri, SocketAddress address, IOException error) {
+                        LOGGER.atVerbose()
+                            .addKeyValue("uri", uri)
+                            .addKeyValue("proxyAddress", address)
+                            .log("Failed to connect through the configured proxy.");
+                    }
+                });
+            }
             if (proxyOptions.getUsername() != null) {
                 builder.proxyAuthenticator((route, response) -> response.request()
                     .newBuilder()

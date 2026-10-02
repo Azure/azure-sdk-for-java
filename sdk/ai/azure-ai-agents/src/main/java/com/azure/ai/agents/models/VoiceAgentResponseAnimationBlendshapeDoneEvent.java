@@ -46,7 +46,7 @@ public final class VoiceAgentResponseAnimationBlendshapeDoneEvent extends Realti
      * The output_index property.
      */
     @Generated
-    private final int outputIndex;
+    private final long outputIndex;
 
     /**
      * Creates an instance of VoiceAgentResponseAnimationBlendshapeDoneEvent class.
@@ -58,7 +58,7 @@ public final class VoiceAgentResponseAnimationBlendshapeDoneEvent extends Realti
      */
     @Generated
     private VoiceAgentResponseAnimationBlendshapeDoneEvent(String eventId, String responseId, String itemId,
-        int outputIndex) {
+        long outputIndex) {
         this.eventId = eventId;
         this.responseId = responseId;
         this.itemId = itemId;
@@ -112,7 +112,7 @@ public final class VoiceAgentResponseAnimationBlendshapeDoneEvent extends Realti
      * @return the outputIndex value.
      */
     @Generated
-    public int getOutputIndex() {
+    public long getOutputIndex() {
         return this.outputIndex;
     }
 
@@ -126,7 +126,7 @@ public final class VoiceAgentResponseAnimationBlendshapeDoneEvent extends Realti
         jsonWriter.writeStringField("event_id", this.eventId);
         jsonWriter.writeStringField("response_id", this.responseId);
         jsonWriter.writeStringField("item_id", this.itemId);
-        jsonWriter.writeIntField("output_index", this.outputIndex);
+        jsonWriter.writeLongField("output_index", this.outputIndex);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -146,7 +146,7 @@ public final class VoiceAgentResponseAnimationBlendshapeDoneEvent extends Realti
             String eventId = null;
             String responseId = null;
             String itemId = null;
-            int outputIndex = 0;
+            long outputIndex = 0L;
             RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_ANIMATION_BLENDSHAPES_DONE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -158,7 +158,7 @@ public final class VoiceAgentResponseAnimationBlendshapeDoneEvent extends Realti
                 } else if ("item_id".equals(fieldName)) {
                     itemId = reader.getString();
                 } else if ("output_index".equals(fieldName)) {
-                    outputIndex = reader.getInt();
+                    outputIndex = reader.getLong();
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeServerEventType.fromString(reader.getString());
                 } else {

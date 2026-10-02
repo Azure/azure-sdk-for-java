@@ -29,7 +29,7 @@ public class RealtimeConversationItem implements JsonSerializable<RealtimeConver
      * Creates an instance of RealtimeConversationItem class.
      */
     @Generated
-    public RealtimeConversationItem() {
+    protected RealtimeConversationItem() {
     }
 
     /**

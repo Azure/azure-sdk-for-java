@@ -10,6 +10,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 /**
  * **SIP Only:** Returned when an DTMF event is received. A DTMF event is a message that
@@ -40,18 +43,6 @@ public final class RealtimeInputAudioBufferDtmfReceivedEvent extends RealtimeSer
     private final long receivedAt;
 
     /**
-     * Creates an instance of RealtimeInputAudioBufferDtmfReceivedEvent class.
-     *
-     * @param event the event value to set.
-     * @param receivedAt the receivedAt value to set.
-     */
-    @Generated
-    private RealtimeInputAudioBufferDtmfReceivedEvent(String event, long receivedAt) {
-        this.event = event;
-        this.receivedAt = receivedAt;
-    }
-
-    /**
      * Get the type property: The type property.
      *
      * @return the type value.
@@ -78,8 +69,8 @@ public final class RealtimeInputAudioBufferDtmfReceivedEvent extends RealtimeSer
      * @return the receivedAt value.
      */
     @Generated
-    public long getReceivedAt() {
-        return this.receivedAt;
+    public OffsetDateTime getReceivedAt() {
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.receivedAt), ZoneOffset.UTC);
     }
 
     /**
@@ -108,7 +99,7 @@ public final class RealtimeInputAudioBufferDtmfReceivedEvent extends RealtimeSer
     public static RealtimeInputAudioBufferDtmfReceivedEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String event = null;
-            long receivedAt = 0L;
+            OffsetDateTime receivedAt = null;
             RealtimeServerEventType type = RealtimeServerEventType.INPUT_AUDIO_BUFFER_DTMF_EVENT_RECEIVED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -116,7 +107,7 @@ public final class RealtimeInputAudioBufferDtmfReceivedEvent extends RealtimeSer
                 if ("event".equals(fieldName)) {
                     event = reader.getString();
                 } else if ("received_at".equals(fieldName)) {
-                    receivedAt = reader.getLong();
+                    receivedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("type".equals(fieldName)) {
                     type = RealtimeServerEventType.fromString(reader.getString());
                 } else {
@@ -128,5 +119,21 @@ public final class RealtimeInputAudioBufferDtmfReceivedEvent extends RealtimeSer
             deserializedRealtimeInputAudioBufferDtmfReceivedEvent.type = type;
             return deserializedRealtimeInputAudioBufferDtmfReceivedEvent;
         });
+    }
+
+    /**
+     * Creates an instance of RealtimeInputAudioBufferDtmfReceivedEvent class.
+     *
+     * @param event the event value to set.
+     * @param receivedAt the receivedAt value to set.
+     */
+    @Generated
+    private RealtimeInputAudioBufferDtmfReceivedEvent(String event, OffsetDateTime receivedAt) {
+        this.event = event;
+        if (receivedAt == null) {
+            this.receivedAt = 0L;
+        } else {
+            this.receivedAt = receivedAt.toEpochSecond();
+        }
     }
 }

@@ -249,6 +249,20 @@ public class RealtimeStandaloneOpenAIDedupSerializationTests {
     }
 
     @Test
+    public void testBlendshapeDoneOutputIndexUsesLong() throws IOException {
+        long outputIndex = 3_000_000_000L;
+        String json = "{\"type\":\"response.animation_blendshapes.done\",\"event_id\":\"evt-5\","
+            + "\"response_id\":\"resp-1\",\"item_id\":\"item-1\",\"output_index\":" + outputIndex + "}";
+
+        VoiceAgentResponseAnimationBlendshapeDoneEvent event
+            = deserialize(json, VoiceAgentResponseAnimationBlendshapeDoneEvent::fromJson);
+        assertEquals(outputIndex, event.getOutputIndex());
+        assertTrue(serialize(event).contains("\"output_index\":" + outputIndex));
+        assertEquals(outputIndex,
+            deserialize(serialize(event), VoiceAgentResponseAnimationBlendshapeDoneEvent::fromJson).getOutputIndex());
+    }
+
+    @Test
     public void testContentPartTypesRoundTripPolymorphically() throws IOException {
         for (Part.Type type : new Part.Type[] { Part.Type.TEXT, Part.Type.AUDIO }) {
             String json = "{\"type\":\"response.content_part.added\",\"event_id\":\"evt-5\","

@@ -36,7 +36,7 @@ public class VoiceAgentTurnDetectionConfiguration implements JsonSerializable<Vo
      * Creates an instance of VoiceAgentTurnDetectionConfiguration class.
      */
     @Generated
-    public VoiceAgentTurnDetectionConfiguration() {
+    protected VoiceAgentTurnDetectionConfiguration() {
     }
 
     /**

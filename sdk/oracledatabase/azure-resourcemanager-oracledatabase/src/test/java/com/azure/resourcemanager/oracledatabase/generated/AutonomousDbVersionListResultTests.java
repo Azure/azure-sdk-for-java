@@ -13,14 +13,14 @@ public final class AutonomousDbVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDbVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"pnylb\",\"dbWorkload\":\"APEX\",\"isDefaultForFree\":false,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":true,\"isPaidEnabled\":false},\"id\":\"qzhv\",\"name\":\"cib\",\"type\":\"fmo\"},{\"properties\":{\"version\":\"xrkjpvdw\",\"dbWorkload\":\"APEX\",\"isDefaultForFree\":true,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":false,\"isPaidEnabled\":false},\"id\":\"yzsxjrkambtrne\",\"name\":\"vmnvu\",\"type\":\"eqvldspast\"}],\"nextLink\":\"kkdmfl\"}")
+            "{\"value\":[{\"properties\":{\"version\":\"wpijrajci\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":false,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":false,\"isPaidEnabled\":false},\"id\":\"gkn\",\"name\":\"uvyinzqodfvpgs\",\"type\":\"oxgsgbpfgzdjtx\"},{\"properties\":{\"version\":\"flbqvgaq\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":false,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":false,\"isPaidEnabled\":false},\"id\":\"etnwsdtutnw\",\"name\":\"duy\",\"type\":\"vuzhyr\"}],\"nextLink\":\"wipmvekdxuk\"}")
             .toObject(AutonomousDbVersionListResult.class);
-        Assertions.assertEquals("pnylb", model.value().get(0).properties().version());
-        Assertions.assertEquals(WorkloadType.APEX, model.value().get(0).properties().dbWorkload());
+        Assertions.assertEquals("wpijrajci", model.value().get(0).properties().version());
+        Assertions.assertEquals(WorkloadType.DW, model.value().get(0).properties().dbWorkload());
         Assertions.assertFalse(model.value().get(0).properties().isDefaultForFree());
-        Assertions.assertTrue(model.value().get(0).properties().isDefaultForPaid());
-        Assertions.assertTrue(model.value().get(0).properties().isFreeTierEnabled());
+        Assertions.assertFalse(model.value().get(0).properties().isDefaultForPaid());
+        Assertions.assertFalse(model.value().get(0).properties().isFreeTierEnabled());
         Assertions.assertFalse(model.value().get(0).properties().isPaidEnabled());
-        Assertions.assertEquals("kkdmfl", model.nextLink());
+        Assertions.assertEquals("wipmvekdxuk", model.nextLink());
     }
 }
