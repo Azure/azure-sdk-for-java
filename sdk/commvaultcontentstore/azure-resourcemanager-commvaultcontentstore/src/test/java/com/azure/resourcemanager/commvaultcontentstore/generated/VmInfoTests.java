@@ -14,49 +14,49 @@ public final class VmInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmInfo model = BinaryData.fromString(
-            "{\"sourceVmGuid\":\"l\",\"storageAccountId\":\"nayqi\",\"powerOnVmAfterRestore\":true,\"name\":\"uhavhql\",\"resourceGroup\":\"humaqolbgyc\",\"region\":\"iertgccymvaolp\",\"networkId\":\"lqlfm\",\"subnetId\":\"n\",\"attachAndSwapOsDisk\":true,\"targetVmGuid\":\"zpswiydmc\",\"vmtags\":[{\"name\":\"zdxss\",\"value\":\"dbzm\"},{\"name\":\"vdfznudaodvxzb\",\"value\":\"cblylpstdbhhxsr\"},{\"name\":\"dzu\",\"value\":\"erscdntne\"}]}")
+            "{\"sourceVmGuid\":\"mqtaruoujmkcjh\",\"storageAccountId\":\"qytjrybnwjewgd\",\"powerOnVmAfterRestore\":true,\"name\":\"vnaenqpehindoyg\",\"resourceGroup\":\"fthnzdn\",\"region\":\"l\",\"networkId\":\"ayqigynduhav\",\"subnetId\":\"lkthu\",\"attachAndSwapOsDisk\":false,\"targetVmGuid\":\"lbg\",\"vmtags\":[{\"name\":\"uie\",\"value\":\"tgccymvaolpss\"},{\"name\":\"qlfmmdnbb\",\"value\":\"lzpswiydm\"},{\"name\":\"wyhzdx\",\"value\":\"sadbz\"}]}")
             .toObject(VmInfo.class);
-        Assertions.assertEquals("l", model.sourceVmGuid());
-        Assertions.assertEquals("nayqi", model.storageAccountId());
+        Assertions.assertEquals("mqtaruoujmkcjh", model.sourceVmGuid());
+        Assertions.assertEquals("qytjrybnwjewgd", model.storageAccountId());
         Assertions.assertTrue(model.powerOnVmAfterRestore());
-        Assertions.assertEquals("uhavhql", model.name());
-        Assertions.assertEquals("humaqolbgyc", model.resourceGroup());
-        Assertions.assertEquals("iertgccymvaolp", model.region());
-        Assertions.assertEquals("lqlfm", model.networkId());
-        Assertions.assertEquals("n", model.subnetId());
-        Assertions.assertTrue(model.attachAndSwapOsDisk());
-        Assertions.assertEquals("zpswiydmc", model.targetVmGuid());
-        Assertions.assertEquals("zdxss", model.vmtags().get(0).name());
-        Assertions.assertEquals("dbzm", model.vmtags().get(0).value());
+        Assertions.assertEquals("vnaenqpehindoyg", model.name());
+        Assertions.assertEquals("fthnzdn", model.resourceGroup());
+        Assertions.assertEquals("l", model.region());
+        Assertions.assertEquals("ayqigynduhav", model.networkId());
+        Assertions.assertEquals("lkthu", model.subnetId());
+        Assertions.assertFalse(model.attachAndSwapOsDisk());
+        Assertions.assertEquals("lbg", model.targetVmGuid());
+        Assertions.assertEquals("uie", model.vmtags().get(0).name());
+        Assertions.assertEquals("tgccymvaolpss", model.vmtags().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmInfo model = new VmInfo().withSourceVmGuid("l")
-            .withStorageAccountId("nayqi")
+        VmInfo model = new VmInfo().withSourceVmGuid("mqtaruoujmkcjh")
+            .withStorageAccountId("qytjrybnwjewgd")
             .withPowerOnVmAfterRestore(true)
-            .withName("uhavhql")
-            .withResourceGroup("humaqolbgyc")
-            .withRegion("iertgccymvaolp")
-            .withNetworkId("lqlfm")
-            .withSubnetId("n")
-            .withAttachAndSwapOsDisk(true)
-            .withTargetVmGuid("zpswiydmc")
-            .withVmtags(Arrays.asList(new VmTag().withName("zdxss").withValue("dbzm"),
-                new VmTag().withName("vdfznudaodvxzb").withValue("cblylpstdbhhxsr"),
-                new VmTag().withName("dzu").withValue("erscdntne")));
+            .withName("vnaenqpehindoyg")
+            .withResourceGroup("fthnzdn")
+            .withRegion("l")
+            .withNetworkId("ayqigynduhav")
+            .withSubnetId("lkthu")
+            .withAttachAndSwapOsDisk(false)
+            .withTargetVmGuid("lbg")
+            .withVmtags(Arrays.asList(new VmTag().withName("uie").withValue("tgccymvaolpss"),
+                new VmTag().withName("qlfmmdnbb").withValue("lzpswiydm"),
+                new VmTag().withName("wyhzdx").withValue("sadbz")));
         model = BinaryData.fromObject(model).toObject(VmInfo.class);
-        Assertions.assertEquals("l", model.sourceVmGuid());
-        Assertions.assertEquals("nayqi", model.storageAccountId());
+        Assertions.assertEquals("mqtaruoujmkcjh", model.sourceVmGuid());
+        Assertions.assertEquals("qytjrybnwjewgd", model.storageAccountId());
         Assertions.assertTrue(model.powerOnVmAfterRestore());
-        Assertions.assertEquals("uhavhql", model.name());
-        Assertions.assertEquals("humaqolbgyc", model.resourceGroup());
-        Assertions.assertEquals("iertgccymvaolp", model.region());
-        Assertions.assertEquals("lqlfm", model.networkId());
-        Assertions.assertEquals("n", model.subnetId());
-        Assertions.assertTrue(model.attachAndSwapOsDisk());
-        Assertions.assertEquals("zpswiydmc", model.targetVmGuid());
-        Assertions.assertEquals("zdxss", model.vmtags().get(0).name());
-        Assertions.assertEquals("dbzm", model.vmtags().get(0).value());
+        Assertions.assertEquals("vnaenqpehindoyg", model.name());
+        Assertions.assertEquals("fthnzdn", model.resourceGroup());
+        Assertions.assertEquals("l", model.region());
+        Assertions.assertEquals("ayqigynduhav", model.networkId());
+        Assertions.assertEquals("lkthu", model.subnetId());
+        Assertions.assertFalse(model.attachAndSwapOsDisk());
+        Assertions.assertEquals("lbg", model.targetVmGuid());
+        Assertions.assertEquals("uie", model.vmtags().get(0).name());
+        Assertions.assertEquals("tgccymvaolpss", model.vmtags().get(0).value());
     }
 }

@@ -15,17 +15,17 @@ public final class ProtectionGroupListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectionGroupListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"plan\":\"fadmws\",\"resources\":{\"manual\":[\"gvxp\"],\"matchRules\":{\"rules\":[{\"property\":\"tagName\",\"operator\":\"doesNotEqual\",\"value\":\"lf\"},{\"property\":\"resourceGroup\",\"operator\":\"contains\",\"value\":\"gwb\"}],\"matchType\":\"all\"}},\"protectionStatus\":\"discovered\",\"numberOfProtectedItems\":78191983,\"lastBackUpTime\":2980894048729421181,\"backupActivityStatus\":\"baliourqhakauha\",\"provisioningState\":\"Canceled\"},\"id\":\"wxosowzxcug\",\"name\":\"cjooxdjebwpucwwf\",\"type\":\"ovbvmeueciv\"},{\"properties\":{\"plan\":\"zceuojgjrw\",\"resources\":{\"manual\":[\"iotwmcdytdxwit\",\"nrjawgqwg\",\"hniskxfbkpyc\"],\"matchRules\":{\"rules\":[{\"property\":\"tagValue\",\"operator\":\"endsWith\",\"value\":\"dnhjdauwhvylw\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"protected\",\"numberOfProtectedItems\":776701007,\"lastBackUpTime\":4211220470844188894,\"backupActivityStatus\":\"bm\",\"provisioningState\":\"Canceled\"},\"id\":\"wpr\",\"name\":\"qlveualupjmkh\",\"type\":\"xobbcswsrt\"},{\"properties\":{\"plan\":\"iplrbpbewtghfgb\",\"resources\":{\"manual\":[\"wxzvlvqhjkb\"],\"matchRules\":{\"rules\":[{\"property\":\"tagName\",\"operator\":\"startsWith\",\"value\":\"nmxiebwwaloayqc\"},{\"property\":\"resourceGroup\",\"operator\":\"contains\",\"value\":\"tzjuzgwyzmhtxo\"},{\"property\":\"name\",\"operator\":\"endsWith\",\"value\":\"ts\"},{\"property\":\"tagName\",\"operator\":\"startsWith\",\"value\":\"cbpwxqpsrknft\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"protected\",\"numberOfProtectedItems\":987025721,\"lastBackUpTime\":1487158993534202895,\"backupActivityStatus\":\"mdyvxqtayriw\",\"provisioningState\":\"Succeeded\"},\"id\":\"qbex\",\"name\":\"mcqibycnojv\",\"type\":\"nmefqsgzvahapj\"}],\"nextLink\":\"hpvgqz\"}")
+            "{\"value\":[{\"properties\":{\"plan\":\"aiuebbaumnyqu\",\"resources\":{\"manual\":[\"eojnabc\"],\"matchRules\":{\"rules\":[{\"property\":\"resourceGroup\",\"operator\":\"endsWith\",\"value\":\"xpsiebtfhvpes\"},{\"property\":\"tagName\",\"operator\":\"equals\",\"value\":\"krdqmh\"},{\"property\":\"status\",\"operator\":\"equals\",\"value\":\"htldwk\"}],\"matchType\":\"any\"}},\"protectionStatus\":\"pending\",\"numberOfProtectedItems\":1711095303,\"lastBackUpTime\":5735733954229084765,\"backupActivityStatus\":\"ncwscwsvlxoto\",\"provisioningState\":\"Failed\"},\"id\":\"upqsx\",\"name\":\"nmic\",\"type\":\"kvceoveilovnotyf\"}],\"nextLink\":\"cnjbkcnxdhbt\"}")
             .toObject(ProtectionGroupListResult.class);
-        Assertions.assertEquals("fadmws", model.value().get(0).properties().plan());
-        Assertions.assertEquals("gvxp", model.value().get(0).properties().resources().manual().get(0));
-        Assertions.assertEquals(RuleProperty.TAG_NAME,
+        Assertions.assertEquals("aiuebbaumnyqu", model.value().get(0).properties().plan());
+        Assertions.assertEquals("eojnabc", model.value().get(0).properties().resources().manual().get(0));
+        Assertions.assertEquals(RuleProperty.RESOURCE_GROUP,
             model.value().get(0).properties().resources().matchRules().rules().get(0).property());
-        Assertions.assertEquals(Operator.DOES_NOT_EQUAL,
+        Assertions.assertEquals(Operator.ENDS_WITH,
             model.value().get(0).properties().resources().matchRules().rules().get(0).operator());
-        Assertions.assertEquals("lf",
+        Assertions.assertEquals("xpsiebtfhvpes",
             model.value().get(0).properties().resources().matchRules().rules().get(0).value());
-        Assertions.assertEquals(MatchType.ALL, model.value().get(0).properties().resources().matchRules().matchType());
-        Assertions.assertEquals("hpvgqz", model.nextLink());
+        Assertions.assertEquals(MatchType.ANY, model.value().get(0).properties().resources().matchRules().matchType());
+        Assertions.assertEquals("cnjbkcnxdhbt", model.nextLink());
     }
 }

@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class ProtectedItemsGetRestorePointsWithResponseMockTests {
     @Test
     public void testGetRestorePointsWithResponse() throws Exception {
-        String responseStr = "{\"restoreTimes\":[7653162173647164897]}";
+        String responseStr = "{\"restoreTimes\":[4203179925654337046]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class ProtectedItemsGetRestorePointsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RestorePoints response = manager.protectedItems()
-            .getRestorePointsWithResponse("ksbpimlqoljx", "cgxxlxs", "fgcviz", "zdwlvwlyoupfgfb",
+            .getRestorePointsWithResponse("bdyhgkfminsgowz", "ttsttktlahbqact", "tgzukxitmmqt", "qqqxhrnxrx",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
