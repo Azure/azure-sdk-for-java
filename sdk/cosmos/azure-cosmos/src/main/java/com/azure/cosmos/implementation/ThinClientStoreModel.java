@@ -324,6 +324,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             httpHeaders.set(header.getKey(), header.getValue());
         }
 
+        httpHeaders.set(HttpConstants.HttpHeaders.USER_AGENT, this.getCurrentUserAgent());
         return httpHeaders;
     }
 }

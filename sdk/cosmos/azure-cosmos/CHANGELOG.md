@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Updated Gateway and thin-client request headers to include user-agent feature flags. - See PR [50580](https://github.com/Azure/azure-sdk-for-java/pull/50580).
 * Added a compact `ppaf` bookmark to each data-plane attempt in `CosmosDiagnostics`, containing the current per-partition write region, failed regions, and the time it was designated, or an empty object when no override is active.
 * Upgraded Jackson from `2.18.9` to `2.18.11`.
 
