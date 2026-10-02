@@ -368,6 +368,31 @@ public final class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
+     * Get the expressRouteLag property: The reference to the ExpressRouteLag resource when the circuit is provisioned
+     * on an ExpressRouteLag resource.
+     * 
+     * @return the expressRouteLag value.
+     */
+    public SubResource expressRouteLag() {
+        return this.innerProperties() == null ? null : this.innerProperties().expressRouteLag();
+    }
+
+    /**
+     * Set the expressRouteLag property: The reference to the ExpressRouteLag resource when the circuit is provisioned
+     * on an ExpressRouteLag resource.
+     * 
+     * @param expressRouteLag the expressRouteLag value to set.
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withExpressRouteLag(SubResource expressRouteLag) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitPropertiesFormat();
+        }
+        this.innerProperties().withExpressRouteLag(expressRouteLag);
+        return this;
+    }
+
+    /**
      * Get the bandwidthInGbps property: The bandwidth of the circuit when the circuit is provisioned on an
      * ExpressRoutePort resource.
      * 

@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteLagPropertiesFormat;
  */
 public final class ExpressRouteLagsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExpressRouteLagCreate.json
+     * x-ms-original-file: 2026-01-01/ExpressRouteLagCreate.json
      */
     /**
      * Sample code: Create express route lag.

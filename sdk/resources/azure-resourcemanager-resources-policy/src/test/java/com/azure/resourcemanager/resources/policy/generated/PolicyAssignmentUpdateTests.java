@@ -24,89 +24,83 @@ public final class PolicyAssignmentUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyAssignmentUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"resourceSelectors\":[{\"name\":\"avo\",\"selectors\":[{\"kind\":\"policyDefinitionReferenceId\",\"in\":[\"ctbqvudwx\",\"ndnvo\",\"gujjugwdkcglh\"],\"notIn\":[\"zj\",\"yggdtjixh\"]},{\"kind\":\"resourceWithoutLocation\",\"in\":[\"qweykhmenev\",\"yexfwh\",\"bcibvyvdcsitynn\"],\"notIn\":[\"dectehfiqsc\",\"eypvhezrkg\",\"hcjrefovgmk\",\"sle\"]},{\"kind\":\"resourceLocation\",\"in\":[\"qjpkcattpngjcrc\",\"zsqpjhvmdajvny\",\"ounqecano\"],\"notIn\":[\"pfhyhl\"]}]},{\"name\":\"pmopjmc\",\"selectors\":[{\"kind\":\"userPrincipalId\",\"in\":[\"hfuiuaodsfc\",\"kvxod\",\"uozmyzydagfua\",\"bezy\"],\"notIn\":[\"kktwhrdxw\",\"ywqsmbsurexim\",\"ryocfsfksymdd\"]}]},{\"name\":\"tki\",\"selectors\":[{\"kind\":\"groupPrincipalId\",\"in\":[\"dxorrqnbpoczv\",\"i\"],\"notIn\":[\"vkd\",\"jsllrmv\",\"d\"]},{\"kind\":\"resourceWithoutLocation\",\"in\":[\"pnpulexxbczwtru\",\"iqzbq\",\"vsovmyokac\",\"pkwlhz\"],\"notIn\":[\"pxjmflbvvnchr\",\"cciw\"]},{\"kind\":\"policyDefinitionReferenceId\",\"in\":[\"khrs\"],\"notIn\":[\"wkuofoskghsauu\",\"mjmvxieduugidyjr\"]},{\"kind\":\"groupPrincipalId\",\"in\":[\"osvexcsonpclhoc\"],\"notIn\":[\"lkevle\",\"gz\"]}]}],\"overrides\":[{\"kind\":\"definitionVersion\",\"value\":\"vfaxkffeiith\",\"selectors\":[{\"kind\":\"resourceWithoutLocation\",\"in\":[\"shxmzsbbzoggigrx\"],\"notIn\":[\"rvjx\"]}]}],\"selfServeExemptionSettings\":{\"enabled\":false,\"policyDefinitionReferenceIds\":[\"dptkoenkouk\",\"vudwtiukbldng\"]}},\"location\":\"ocipazyxoeg\",\"identity\":{\"principalId\":\"jnpiucgyg\",\"tenantId\":\"qzntypm\",\"type\":\"None\",\"userAssignedIdentities\":{\"ejzicwifsjtt\":{\"principalId\":\"drqjsdpy\",\"clientId\":\"fyhxde\"},\"p\":{\"principalId\":\"fbishcbkha\",\"clientId\":\"eyeam\"},\"wkgshwa\":{\"principalId\":\"g\",\"clientId\":\"pbuxwgipwhon\"},\"lwh\":{\"principalId\":\"ixzbinjeputtmryw\",\"clientId\":\"zoqftiyqzrnkcqvy\"}}}}")
+            "{\"properties\":{\"resourceSelectors\":[{\"name\":\"wrmjmwvvjektc\",\"selectors\":[{\"kind\":\"resourceLocation\",\"in\":[\"rsffrzpwvlqdqgbi\"],\"notIn\":[\"ihkaetcktvfc\",\"vf\",\"nkymuctqhjfbebrj\",\"xerf\"],\"progress\":1120772764},{\"kind\":\"resourceRolloutPercentage\",\"in\":[\"fvjrbirphxepcy\",\"ahfn\",\"jky\"],\"notIn\":[\"vuujq\"],\"progress\":1347060120}]}],\"overrides\":[{\"kind\":\"policyEffect\",\"value\":\"jyoxgvclt\",\"selectors\":[{\"kind\":\"userPrincipalId\",\"in\":[\"kjeszz\",\"bijhtxfvgxbf\",\"mxnehmp\"],\"notIn\":[\"xgodebfqkkrbmp\",\"kgriwflzlfbx\"],\"progress\":711988011},{\"kind\":\"userPrincipalId\",\"in\":[\"spnqzahmgkb\",\"pyydhi\",\"nuqqkpikadrgvt\",\"agnb\"],\"notIn\":[\"hijggme\",\"fsiarbutr\",\"vpnazzm\"],\"progress\":1159658467},{\"kind\":\"resourceWithoutLocation\",\"in\":[\"xttd\"],\"notIn\":[\"bnlankxmyskpb\",\"enbtkcxywny\",\"nrs\",\"nlqidybyxczf\"],\"progress\":751467546}]}],\"selfServeExemptionSettings\":{\"enabled\":true,\"policyDefinitionReferenceIds\":[\"abphlw\",\"qlfktsths\",\"cocmnyyaztt\"]}},\"location\":\"wwrq\",\"identity\":{\"principalId\":\"dckzywbiexz\",\"tenantId\":\"yueaxibxujwb\",\"type\":\"None\",\"userAssignedIdentities\":{\"d\":{\"principalId\":\"uzyoxaep\",\"clientId\":\"zjancuxr\"},\"zxbzpfzabglc\":{\"principalId\":\"avxbniwdjswztsdb\",\"clientId\":\"nxytxh\"}}}}")
             .toObject(PolicyAssignmentUpdate.class);
-        Assertions.assertEquals("ocipazyxoeg", model.location());
+        Assertions.assertEquals("wwrq", model.location());
         Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("avo", model.resourceSelectors().get(0).name());
-        Assertions.assertEquals(SelectorKind.POLICY_DEFINITION_REFERENCE_ID,
+        Assertions.assertEquals("wrmjmwvvjektc", model.resourceSelectors().get(0).name());
+        Assertions.assertEquals(SelectorKind.RESOURCE_LOCATION,
             model.resourceSelectors().get(0).selectors().get(0).kind());
-        Assertions.assertEquals("ctbqvudwx", model.resourceSelectors().get(0).selectors().get(0).in().get(0));
-        Assertions.assertEquals("zj", model.resourceSelectors().get(0).selectors().get(0).notIn().get(0));
-        Assertions.assertEquals(OverrideKind.DEFINITION_VERSION, model.overrides().get(0).kind());
-        Assertions.assertEquals("vfaxkffeiith", model.overrides().get(0).value());
-        Assertions.assertEquals(SelectorKind.RESOURCE_WITHOUT_LOCATION,
-            model.overrides().get(0).selectors().get(0).kind());
-        Assertions.assertEquals("shxmzsbbzoggigrx", model.overrides().get(0).selectors().get(0).in().get(0));
-        Assertions.assertEquals("rvjx", model.overrides().get(0).selectors().get(0).notIn().get(0));
-        Assertions.assertFalse(model.selfServeExemptionSettings().enabled());
-        Assertions.assertEquals("dptkoenkouk",
-            model.selfServeExemptionSettings().policyDefinitionReferenceIds().get(0));
+        Assertions.assertEquals("rsffrzpwvlqdqgbi", model.resourceSelectors().get(0).selectors().get(0).in().get(0));
+        Assertions.assertEquals("ihkaetcktvfc", model.resourceSelectors().get(0).selectors().get(0).notIn().get(0));
+        Assertions.assertEquals(1120772764, model.resourceSelectors().get(0).selectors().get(0).progress());
+        Assertions.assertEquals(OverrideKind.POLICY_EFFECT, model.overrides().get(0).kind());
+        Assertions.assertEquals("jyoxgvclt", model.overrides().get(0).value());
+        Assertions.assertEquals(SelectorKind.USER_PRINCIPAL_ID, model.overrides().get(0).selectors().get(0).kind());
+        Assertions.assertEquals("kjeszz", model.overrides().get(0).selectors().get(0).in().get(0));
+        Assertions.assertEquals("xgodebfqkkrbmp", model.overrides().get(0).selectors().get(0).notIn().get(0));
+        Assertions.assertEquals(711988011, model.overrides().get(0).selectors().get(0).progress());
+        Assertions.assertTrue(model.selfServeExemptionSettings().enabled());
+        Assertions.assertEquals("abphlw", model.selfServeExemptionSettings().policyDefinitionReferenceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PolicyAssignmentUpdate model
-            = new PolicyAssignmentUpdate().withLocation("ocipazyxoeg")
-                .withIdentity(
-                    new Identity().withType(ResourceIdentityType.NONE)
-                        .withUserAssignedIdentities(mapOf("ejzicwifsjtt", new UserAssignedIdentitiesValue(), "p",
-                            new UserAssignedIdentitiesValue(), "wkgshwa", new UserAssignedIdentitiesValue(), "lwh",
-                            new UserAssignedIdentitiesValue())))
-                .withResourceSelectors(Arrays.asList(
-                    new ResourceSelector().withName("avo")
-                        .withSelectors(Arrays.asList(
-                            new Selector().withKind(SelectorKind.POLICY_DEFINITION_REFERENCE_ID)
-                                .withIn(Arrays.asList("ctbqvudwx", "ndnvo", "gujjugwdkcglh"))
-                                .withNotIn(Arrays.asList("zj", "yggdtjixh")),
-                            new Selector().withKind(SelectorKind.RESOURCE_WITHOUT_LOCATION)
-                                .withIn(Arrays.asList("qweykhmenev", "yexfwh", "bcibvyvdcsitynn"))
-                                .withNotIn(Arrays.asList("dectehfiqsc", "eypvhezrkg", "hcjrefovgmk", "sle")),
-                            new Selector().withKind(SelectorKind.RESOURCE_LOCATION)
-                                .withIn(Arrays.asList("qjpkcattpngjcrc", "zsqpjhvmdajvny", "ounqecano"))
-                                .withNotIn(Arrays.asList("pfhyhl")))),
-                    new ResourceSelector().withName("pmopjmc")
-                        .withSelectors(Arrays.asList(new Selector().withKind(SelectorKind.USER_PRINCIPAL_ID)
-                            .withIn(Arrays.asList("hfuiuaodsfc", "kvxod", "uozmyzydagfua", "bezy"))
-                            .withNotIn(Arrays.asList("kktwhrdxw", "ywqsmbsurexim", "ryocfsfksymdd")))),
-                    new ResourceSelector().withName("tki")
-                        .withSelectors(Arrays.asList(
-                            new Selector().withKind(SelectorKind.GROUP_PRINCIPAL_ID)
-                                .withIn(Arrays.asList("dxorrqnbpoczv", "i"))
-                                .withNotIn(Arrays.asList("vkd", "jsllrmv", "d")),
-                            new Selector().withKind(SelectorKind.RESOURCE_WITHOUT_LOCATION)
-                                .withIn(Arrays.asList("pnpulexxbczwtru", "iqzbq", "vsovmyokac", "pkwlhz"))
-                                .withNotIn(Arrays.asList("pxjmflbvvnchr", "cciw")),
-                            new Selector().withKind(SelectorKind.POLICY_DEFINITION_REFERENCE_ID)
-                                .withIn(Arrays.asList("khrs"))
-                                .withNotIn(Arrays.asList("wkuofoskghsauu", "mjmvxieduugidyjr")),
-                            new Selector().withKind(SelectorKind.GROUP_PRINCIPAL_ID)
-                                .withIn(Arrays.asList("osvexcsonpclhoc"))
-                                .withNotIn(Arrays.asList("lkevle", "gz"))))))
-                .withOverrides(Arrays.asList(new OverrideModel().withKind(OverrideKind.DEFINITION_VERSION)
-                    .withValue("vfaxkffeiith")
-                    .withSelectors(Arrays.asList(new Selector().withKind(SelectorKind.RESOURCE_WITHOUT_LOCATION)
-                        .withIn(Arrays.asList("shxmzsbbzoggigrx"))
-                        .withNotIn(Arrays.asList("rvjx"))))))
-                .withSelfServeExemptionSettings(new SelfServeExemptionSettings().withEnabled(false)
-                    .withPolicyDefinitionReferenceIds(Arrays.asList("dptkoenkouk", "vudwtiukbldng")));
+            = new PolicyAssignmentUpdate().withLocation("wwrq")
+                .withIdentity(new Identity().withType(ResourceIdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf("d", new UserAssignedIdentitiesValue(), "zxbzpfzabglc",
+                        new UserAssignedIdentitiesValue())))
+                .withResourceSelectors(
+                    Arrays
+                        .asList(
+                            new ResourceSelector().withName("wrmjmwvvjektc")
+                                .withSelectors(
+                                    Arrays
+                                        .asList(
+                                            new Selector().withKind(SelectorKind.RESOURCE_LOCATION)
+                                                .withIn(Arrays.asList("rsffrzpwvlqdqgbi"))
+                                                .withNotIn(
+                                                    Arrays.asList("ihkaetcktvfc", "vf", "nkymuctqhjfbebrj", "xerf"))
+                                                .withProgress(1120772764),
+                                            new Selector().withKind(SelectorKind.RESOURCE_ROLLOUT_PERCENTAGE)
+                                                .withIn(Arrays.asList("fvjrbirphxepcy", "ahfn", "jky"))
+                                                .withNotIn(Arrays.asList("vuujq"))
+                                                .withProgress(1347060120)))))
+                .withOverrides(Arrays.asList(new OverrideModel().withKind(OverrideKind.POLICY_EFFECT)
+                    .withValue("jyoxgvclt")
+                    .withSelectors(Arrays.asList(
+                        new Selector().withKind(SelectorKind.USER_PRINCIPAL_ID)
+                            .withIn(Arrays.asList("kjeszz", "bijhtxfvgxbf", "mxnehmp"))
+                            .withNotIn(Arrays.asList("xgodebfqkkrbmp", "kgriwflzlfbx"))
+                            .withProgress(711988011),
+                        new Selector().withKind(SelectorKind.USER_PRINCIPAL_ID)
+                            .withIn(Arrays.asList("spnqzahmgkb", "pyydhi", "nuqqkpikadrgvt", "agnb"))
+                            .withNotIn(Arrays.asList("hijggme", "fsiarbutr", "vpnazzm"))
+                            .withProgress(1159658467),
+                        new Selector().withKind(SelectorKind.RESOURCE_WITHOUT_LOCATION)
+                            .withIn(Arrays.asList("xttd"))
+                            .withNotIn(Arrays.asList("bnlankxmyskpb", "enbtkcxywny", "nrs", "nlqidybyxczf"))
+                            .withProgress(751467546)))))
+                .withSelfServeExemptionSettings(new SelfServeExemptionSettings().withEnabled(true)
+                    .withPolicyDefinitionReferenceIds(Arrays.asList("abphlw", "qlfktsths", "cocmnyyaztt")));
         model = BinaryData.fromObject(model).toObject(PolicyAssignmentUpdate.class);
-        Assertions.assertEquals("ocipazyxoeg", model.location());
+        Assertions.assertEquals("wwrq", model.location());
         Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("avo", model.resourceSelectors().get(0).name());
-        Assertions.assertEquals(SelectorKind.POLICY_DEFINITION_REFERENCE_ID,
+        Assertions.assertEquals("wrmjmwvvjektc", model.resourceSelectors().get(0).name());
+        Assertions.assertEquals(SelectorKind.RESOURCE_LOCATION,
             model.resourceSelectors().get(0).selectors().get(0).kind());
-        Assertions.assertEquals("ctbqvudwx", model.resourceSelectors().get(0).selectors().get(0).in().get(0));
-        Assertions.assertEquals("zj", model.resourceSelectors().get(0).selectors().get(0).notIn().get(0));
-        Assertions.assertEquals(OverrideKind.DEFINITION_VERSION, model.overrides().get(0).kind());
-        Assertions.assertEquals("vfaxkffeiith", model.overrides().get(0).value());
-        Assertions.assertEquals(SelectorKind.RESOURCE_WITHOUT_LOCATION,
-            model.overrides().get(0).selectors().get(0).kind());
-        Assertions.assertEquals("shxmzsbbzoggigrx", model.overrides().get(0).selectors().get(0).in().get(0));
-        Assertions.assertEquals("rvjx", model.overrides().get(0).selectors().get(0).notIn().get(0));
-        Assertions.assertFalse(model.selfServeExemptionSettings().enabled());
-        Assertions.assertEquals("dptkoenkouk",
-            model.selfServeExemptionSettings().policyDefinitionReferenceIds().get(0));
+        Assertions.assertEquals("rsffrzpwvlqdqgbi", model.resourceSelectors().get(0).selectors().get(0).in().get(0));
+        Assertions.assertEquals("ihkaetcktvfc", model.resourceSelectors().get(0).selectors().get(0).notIn().get(0));
+        Assertions.assertEquals(1120772764, model.resourceSelectors().get(0).selectors().get(0).progress());
+        Assertions.assertEquals(OverrideKind.POLICY_EFFECT, model.overrides().get(0).kind());
+        Assertions.assertEquals("jyoxgvclt", model.overrides().get(0).value());
+        Assertions.assertEquals(SelectorKind.USER_PRINCIPAL_ID, model.overrides().get(0).selectors().get(0).kind());
+        Assertions.assertEquals("kjeszz", model.overrides().get(0).selectors().get(0).in().get(0));
+        Assertions.assertEquals("xgodebfqkkrbmp", model.overrides().get(0).selectors().get(0).notIn().get(0));
+        Assertions.assertEquals(711988011, model.overrides().get(0).selectors().get(0).progress());
+        Assertions.assertTrue(model.selfServeExemptionSettings().enabled());
+        Assertions.assertEquals("abphlw", model.selfServeExemptionSettings().policyDefinitionReferenceIds().get(0));
     }
 
     // Use "Map.of" if available

@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.generated;
 
 import com.azure.analytics.purview.datamap.models.AtlasEntity;
 import com.azure.analytics.purview.datamap.models.AtlasEntityWithExtInfo;
+import com.azure.analytics.purview.datamap.models.BusinessAttributeUpdateBehavior;
 import com.azure.analytics.purview.datamap.models.EntityMutationResult;
 import com.azure.core.util.BinaryData;
 import java.nio.charset.StandardCharsets;
@@ -21,8 +22,8 @@ public final class EntityAddCustomAttributeTests extends DataMapClientTestBase {
     @Disabled
     public void testEntityAddCustomAttributeTests() {
         // method invocation
-        EntityMutationResult response
-            = entityClient.createOrUpdate(new AtlasEntityWithExtInfo().setReferredEntities(mapOf())
+        EntityMutationResult response = entityClient.createOrUpdate(
+            new AtlasEntityWithExtInfo().setReferredEntities(mapOf())
                 .setEntity(new AtlasEntity()
                     .setAttributes(mapOf("owner", BinaryData.fromBytes("ExampleOwner".getBytes(StandardCharsets.UTF_8)),
                         "modifiedTime", BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "createTime",
@@ -33,7 +34,7 @@ public final class EntityAddCustomAttributeTests extends DataMapClientTestBase {
                         "description", null, "publicAccessLevel", null))
                     .setTypeName("azure_storage_account")
                     .setCustomAttributes(mapOf("custAttr1", "attr1", "custAttr2", "attr2"))),
-                null, null);
+            (BusinessAttributeUpdateBehavior) null, (String) null);
 
         // response assertion
         Assertions.assertNotNull(response);

@@ -28,50 +28,52 @@ public final class AppLinkMemberInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AppLinkMemberInner model = BinaryData.fromString(
-            "{\"properties\":{\"clusterType\":\"AKS\",\"metadata\":{\"resourceId\":\"ckwhds\"},\"upgradeProfile\":{\"mode\":\"SelfManaged\",\"fullyManagedUpgradeProfile\":{\"releaseChannel\":\"Rapid\"},\"selfManagedUpgradeProfile\":{\"version\":\"pjxsqwpgrjbznor\"}},\"observabilityProfile\":{\"metrics\":{\"metricsEndpoint\":\"snb\"}},\"connectivityProfile\":{\"eastWestGateway\":{\"visibility\":\"External\"},\"privateConnect\":{\"subnetResourceId\":\"nmoc\"}},\"provisioningState\":\"Canceled\"},\"location\":\"hurzafblj\",\"tags\":{\"qajzyulpkudjkr\":\"btoqcjmkljavbqid\",\"e\":\"khbzhfepgzg\",\"scpai\":\"zloc\"},\"id\":\"rhhbcs\",\"name\":\"l\",\"type\":\"mmajtjaodx\"}")
+            "{\"properties\":{\"clusterType\":\"AKS\",\"metadata\":{\"resourceId\":\"opvkmijcm\"},\"upgradeProfile\":{\"mode\":\"FullyManaged\",\"fullyManagedUpgradeProfile\":{\"releaseChannel\":\"Rapid\"},\"selfManagedUpgradeProfile\":{\"version\":\"uf\"}},\"observabilityProfile\":{\"metrics\":{\"metricsEndpoint\":\"mzidnsezcxtb\"}},\"connectivityProfile\":{\"eastWestGateway\":{\"visibility\":\"Internal\"},\"privateConnect\":{\"subnetResourceId\":\"c\"},\"network\":\"newmdwzjeiachbo\"},\"provisioningState\":\"Failed\"},\"location\":\"nrosfqpte\",\"tags\":{\"swjdkirso\":\"zvypyqrimzinp\",\"soifiyipjxsqw\":\"dqxhcrmnohjtckwh\",\"bznorcjxvsnby\":\"gr\",\"cyshurzafbljjgp\":\"qabnmoc\"},\"id\":\"toqcjmklja\",\"name\":\"bqidtqaj\",\"type\":\"yulpkudjkr\"}")
             .toObject(AppLinkMemberInner.class);
-        Assertions.assertEquals("hurzafblj", model.location());
-        Assertions.assertEquals("btoqcjmkljavbqid", model.tags().get("qajzyulpkudjkr"));
+        Assertions.assertEquals("nrosfqpte", model.location());
+        Assertions.assertEquals("zvypyqrimzinp", model.tags().get("swjdkirso"));
         Assertions.assertEquals(ClusterType.AKS, model.properties().clusterType());
-        Assertions.assertEquals("ckwhds", model.properties().metadata().resourceId());
-        Assertions.assertEquals(UpgradeMode.SELF_MANAGED, model.properties().upgradeProfile().mode());
+        Assertions.assertEquals("opvkmijcm", model.properties().metadata().resourceId());
+        Assertions.assertEquals(UpgradeMode.FULLY_MANAGED, model.properties().upgradeProfile().mode());
         Assertions.assertEquals(UpgradeReleaseChannel.RAPID,
             model.properties().upgradeProfile().fullyManagedUpgradeProfile().releaseChannel());
-        Assertions.assertEquals("pjxsqwpgrjbznor",
-            model.properties().upgradeProfile().selfManagedUpgradeProfile().version());
-        Assertions.assertEquals(EastWestGatewayVisibility.EXTERNAL,
+        Assertions.assertEquals("uf", model.properties().upgradeProfile().selfManagedUpgradeProfile().version());
+        Assertions.assertEquals(EastWestGatewayVisibility.INTERNAL,
             model.properties().connectivityProfile().eastWestGateway().visibility());
-        Assertions.assertEquals("nmoc", model.properties().connectivityProfile().privateConnect().subnetResourceId());
+        Assertions.assertEquals("c", model.properties().connectivityProfile().privateConnect().subnetResourceId());
+        Assertions.assertEquals("newmdwzjeiachbo", model.properties().connectivityProfile().network());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppLinkMemberInner model = new AppLinkMemberInner().withLocation("hurzafblj")
-            .withTags(mapOf("qajzyulpkudjkr", "btoqcjmkljavbqid", "e", "khbzhfepgzg", "scpai", "zloc"))
+        AppLinkMemberInner model = new AppLinkMemberInner().withLocation("nrosfqpte")
+            .withTags(mapOf("swjdkirso", "zvypyqrimzinp", "soifiyipjxsqw", "dqxhcrmnohjtckwh", "bznorcjxvsnby", "gr",
+                "cyshurzafbljjgp", "qabnmoc"))
             .withProperties(new AppLinkMemberProperties().withClusterType(ClusterType.AKS)
-                .withMetadata(new Metadata().withResourceId("ckwhds"))
-                .withUpgradeProfile(new UpgradeProfile().withMode(UpgradeMode.SELF_MANAGED)
+                .withMetadata(new Metadata().withResourceId("opvkmijcm"))
+                .withUpgradeProfile(new UpgradeProfile().withMode(UpgradeMode.FULLY_MANAGED)
                     .withFullyManagedUpgradeProfile(
                         new FullyManagedUpgradeProfile().withReleaseChannel(UpgradeReleaseChannel.RAPID))
-                    .withSelfManagedUpgradeProfile(new SelfManagedUpgradeProfile().withVersion("pjxsqwpgrjbznor")))
+                    .withSelfManagedUpgradeProfile(new SelfManagedUpgradeProfile().withVersion("uf")))
                 .withObservabilityProfile(new ObservabilityProfile().withMetrics(new MetricsProfile()))
                 .withConnectivityProfile(new ConnectivityProfile()
                     .withEastWestGateway(
-                        new EastWestGatewayProfile().withVisibility(EastWestGatewayVisibility.EXTERNAL))
-                    .withPrivateConnect(new PrivateConnectProfile().withSubnetResourceId("nmoc"))));
+                        new EastWestGatewayProfile().withVisibility(EastWestGatewayVisibility.INTERNAL))
+                    .withPrivateConnect(new PrivateConnectProfile().withSubnetResourceId("c"))
+                    .withNetwork("newmdwzjeiachbo")));
         model = BinaryData.fromObject(model).toObject(AppLinkMemberInner.class);
-        Assertions.assertEquals("hurzafblj", model.location());
-        Assertions.assertEquals("btoqcjmkljavbqid", model.tags().get("qajzyulpkudjkr"));
+        Assertions.assertEquals("nrosfqpte", model.location());
+        Assertions.assertEquals("zvypyqrimzinp", model.tags().get("swjdkirso"));
         Assertions.assertEquals(ClusterType.AKS, model.properties().clusterType());
-        Assertions.assertEquals("ckwhds", model.properties().metadata().resourceId());
-        Assertions.assertEquals(UpgradeMode.SELF_MANAGED, model.properties().upgradeProfile().mode());
+        Assertions.assertEquals("opvkmijcm", model.properties().metadata().resourceId());
+        Assertions.assertEquals(UpgradeMode.FULLY_MANAGED, model.properties().upgradeProfile().mode());
         Assertions.assertEquals(UpgradeReleaseChannel.RAPID,
             model.properties().upgradeProfile().fullyManagedUpgradeProfile().releaseChannel());
-        Assertions.assertEquals("pjxsqwpgrjbznor",
-            model.properties().upgradeProfile().selfManagedUpgradeProfile().version());
-        Assertions.assertEquals(EastWestGatewayVisibility.EXTERNAL,
+        Assertions.assertEquals("uf", model.properties().upgradeProfile().selfManagedUpgradeProfile().version());
+        Assertions.assertEquals(EastWestGatewayVisibility.INTERNAL,
             model.properties().connectivityProfile().eastWestGateway().visibility());
-        Assertions.assertEquals("nmoc", model.properties().connectivityProfile().privateConnect().subnetResourceId());
+        Assertions.assertEquals("c", model.properties().connectivityProfile().privateConnect().subnetResourceId());
+        Assertions.assertEquals("newmdwzjeiachbo", model.properties().connectivityProfile().network());
     }
 
     // Use "Map.of" if available

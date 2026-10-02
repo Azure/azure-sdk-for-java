@@ -28,7 +28,7 @@ public final class IotDpsResourcesDeletePrivateEndpointConnectionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.iotDpsResources()
-            .deletePrivateEndpointConnection("fbtkuwhhmhyk", "joxafnndlpi", "hkoymkcdyhbp",
+            .deletePrivateEndpointConnection("vwpm", "taruoujmkcj", "wqytjrybnwjewgdr",
                 com.azure.core.util.Context.NONE);
 
     }

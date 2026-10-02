@@ -25,7 +25,7 @@ public final class ProtectionContainersRegisterMockTests {
     @Test
     public void testRegister() throws Exception {
         String responseStr
-            = "{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"repdqhqyhwq\",\"backupManagementType\":\"AzureSql\",\"registrationStatus\":\"xqabckmzeoxi\",\"healthStatus\":\"greohtwhlpuzjp\",\"protectableObjectType\":\"eznzangprbfaxyxz\",\"sourceLocation\":\"ciphmsexr\"},\"tags\":{\"nfee\":\"ndktxfv\",\"bgnixxoww\":\"gpkrie\"},\"location\":\"yfwnw\",\"eTag\":\"wxeiicrmpepk\",\"id\":\"maxxijvskwsdgkjg\",\"name\":\"acwras\",\"type\":\"kwefc\"}";
+            = "{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"inymmqgwokmikp\",\"backupManagementType\":\"AzureBackupServer\",\"registrationStatus\":\"mjxuvjipfdvhaxd\",\"healthStatus\":\"zaehpphthd\",\"protectableObjectType\":\"mvetatlakfq\",\"sourceLocation\":\"xwgiks\"},\"tags\":{\"phchgjtnhtukfaci\":\"tooxrpog\",\"tumeezbxvqxb\":\"mbf\"},\"location\":\"vwcga\",\"eTag\":\"omtmjzwxuqgov\",\"id\":\"pwwztjfmkkhtgf\",\"name\":\"edmls\",\"type\":\"grllcc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,27 +35,26 @@ public final class ProtectionContainersRegisterMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectionContainerResource response = manager.protectionContainers()
-            .define("wcpjqduqgi")
-            .withExistingBackupFabric("x", "qvfqepdxc", "tuubwyvpjb")
-            .withRegion("wtjoxz")
-            .withTags(
-                mapOf("nzjotvmr", "ajclyzgsnorbjg", "ayfluiyuosnu", "khlobvvjbhvhdi", "hbuubpy", "dtelvhyibdrqrs"))
-            .withProperties(new ProtectionContainer().withFriendlyName("kydfbwljavhuerkj")
-                .withBackupManagementType(BackupManagementType.AZURE_SQL)
-                .withRegistrationStatus("gliegftcvbiif")
-                .withHealthStatus("sdwgdnkefgmwd")
-                .withProtectableObjectType("eb"))
-            .withEtag("wfqchvcz")
+            .define("klzmijajw")
+            .withExistingBackupFabric("nkfscjfn", "jwvuag", "qwtltngvmreupt")
+            .withRegion("vnjobfelhldiuhzz")
+            .withTags(mapOf("xgcbdsvalpnpt", "zslp", "x", "trkxgpazwu"))
+            .withProperties(new ProtectionContainer().withFriendlyName("fsvagh")
+                .withBackupManagementType(BackupManagementType.AZURE_IAAS_VM)
+                .withRegistrationStatus("wl")
+                .withHealthStatus("rcigtzjcvbxq")
+                .withProtectableObjectType("psnssovyxp"))
+            .withEtag("lmfaewzgiudjp")
             .create();
 
-        Assertions.assertEquals("repdqhqyhwq", response.properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_SQL, response.properties().backupManagementType());
-        Assertions.assertEquals("xqabckmzeoxi", response.properties().registrationStatus());
-        Assertions.assertEquals("greohtwhlpuzjp", response.properties().healthStatus());
-        Assertions.assertEquals("eznzangprbfaxyxz", response.properties().protectableObjectType());
-        Assertions.assertEquals("ndktxfv", response.tags().get("nfee"));
-        Assertions.assertEquals("yfwnw", response.location());
-        Assertions.assertEquals("wxeiicrmpepk", response.etag());
+        Assertions.assertEquals("inymmqgwokmikp", response.properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, response.properties().backupManagementType());
+        Assertions.assertEquals("mjxuvjipfdvhaxd", response.properties().registrationStatus());
+        Assertions.assertEquals("zaehpphthd", response.properties().healthStatus());
+        Assertions.assertEquals("mvetatlakfq", response.properties().protectableObjectType());
+        Assertions.assertEquals("tooxrpog", response.tags().get("phchgjtnhtukfaci"));
+        Assertions.assertEquals("vwcga", response.location());
+        Assertions.assertEquals("omtmjzwxuqgov", response.etag());
     }
 
     // Use "Map.of" if available

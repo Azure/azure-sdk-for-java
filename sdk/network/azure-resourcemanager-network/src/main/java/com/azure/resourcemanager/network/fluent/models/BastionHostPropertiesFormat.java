@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
 import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
+import com.azure.resourcemanager.network.models.BastionSessionRecordingConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -90,6 +91,11 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
      * Enable/Disable Private Only feature of the Bastion Host resource.
      */
     private Boolean enablePrivateOnlyBastion;
+
+    /*
+     * The storage account and identity to use for session recording
+     */
+    private BastionSessionRecordingConfiguration sessionRecordingConfiguration;
 
     /**
      * Creates an instance of BastionHostPropertiesFormat class.
@@ -369,6 +375,27 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
     }
 
     /**
+     * Get the sessionRecordingConfiguration property: The storage account and identity to use for session recording.
+     * 
+     * @return the sessionRecordingConfiguration value.
+     */
+    public BastionSessionRecordingConfiguration sessionRecordingConfiguration() {
+        return this.sessionRecordingConfiguration;
+    }
+
+    /**
+     * Set the sessionRecordingConfiguration property: The storage account and identity to use for session recording.
+     * 
+     * @param sessionRecordingConfiguration the sessionRecordingConfiguration value to set.
+     * @return the BastionHostPropertiesFormat object itself.
+     */
+    public BastionHostPropertiesFormat
+        withSessionRecordingConfiguration(BastionSessionRecordingConfiguration sessionRecordingConfiguration) {
+        this.sessionRecordingConfiguration = sessionRecordingConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -379,6 +406,9 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
         }
         if (networkAcls() != null) {
             networkAcls().validate();
+        }
+        if (sessionRecordingConfiguration() != null) {
+            sessionRecordingConfiguration().validate();
         }
     }
 
@@ -402,6 +432,7 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
         jsonWriter.writeBooleanField("enableKerberos", this.enableKerberos);
         jsonWriter.writeBooleanField("enableSessionRecording", this.enableSessionRecording);
         jsonWriter.writeBooleanField("enablePrivateOnlyBastion", this.enablePrivateOnlyBastion);
+        jsonWriter.writeJsonField("sessionRecordingConfiguration", this.sessionRecordingConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -458,6 +489,9 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
                 } else if ("enablePrivateOnlyBastion".equals(fieldName)) {
                     deserializedBastionHostPropertiesFormat.enablePrivateOnlyBastion
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sessionRecordingConfiguration".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.sessionRecordingConfiguration
+                        = BastionSessionRecordingConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

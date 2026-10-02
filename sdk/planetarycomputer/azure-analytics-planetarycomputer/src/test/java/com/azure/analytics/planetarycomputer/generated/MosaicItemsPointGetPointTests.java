@@ -4,7 +4,10 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.TilerCoreModelsResponsesPoint;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -17,9 +20,11 @@ public final class MosaicItemsPointGetPointTests extends PlanetaryComputerProCli
     @Disabled
     public void testMosaicItemsPointGetPointTests() {
         // method invocation
-        TilerCoreModelsResponsesPoint response = dataClient.getItemPoint("naip-atl", "ga_m_3308421_se_16_060_20211114",
-            -84.386, 33.676, null, Arrays.asList("image"), null, null, null, null, null, null, null, null, null, null,
-            null, null, null, null);
+        TilerCoreModelsResponsesPoint response
+            = dataClient.getItemPoint("naip-atl", "ga_m_3308421_se_16_060_20211114", -84.386, 33.676,
+                (List<Integer>) null, Arrays.asList("image"), (String) null, (List<String>) null, (Boolean) null,
+                (String) null, (Boolean) null, (WarpKernelResampling) null, (String) null, (List<Integer>) null,
+                (String) null, (String) null, (List<String>) null, (SelMethod) null, (String) null, (Resampling) null);
 
         // response assertion
         Assertions.assertNotNull(response);

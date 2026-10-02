@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkWatchersConnectionAnalyzersGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkWatcherConnectionAnalyzerGet.json
+     * x-ms-original-file: 2026-01-01/NetworkWatcherConnectionAnalyzerGet.json
      */
     /**
      * Sample code: Get connection analyzer.
