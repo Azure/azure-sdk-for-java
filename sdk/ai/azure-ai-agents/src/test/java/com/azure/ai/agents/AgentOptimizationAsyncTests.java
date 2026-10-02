@@ -6,7 +6,6 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.models.AgentOptimizationCandidate;
 import com.azure.ai.agents.models.AgentOptimizationCandidateExpand;
 import com.azure.ai.agents.models.AgentOptimizationCandidateStatus;
-import com.azure.ai.agents.models.AgentOptimizationJob;
 import com.azure.ai.agents.models.JobStatus;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.ai.agents.models.PromptAgentDefinition;
