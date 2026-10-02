@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elastic.generated;
  */
 public final class TrafficFiltersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01/TrafficFilters_Delete.json
+     * x-ms-original-file: 2026-03-15-preview/TrafficFilters_Delete.json
      */
     /**
      * Sample code: TrafficFilters_Delete.
