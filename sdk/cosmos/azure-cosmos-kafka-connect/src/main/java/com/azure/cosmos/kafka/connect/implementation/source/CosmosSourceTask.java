@@ -334,7 +334,7 @@ public class CosmosSourceTask extends BufferedSourceTask {
                 changeFeedRequestOptions,
                 this.taskConfig.getThroughputControlConfig());
 
-        return container.queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
+        return this.blockPoll(container.queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
             .byPage(this.taskConfig.getChangeFeedConfig().getMaxItemCountHint())
             .next()
             .map(feedResponse -> {
@@ -346,10 +346,8 @@ public class CosmosSourceTask extends BufferedSourceTask {
                     return this.handleFeedRangeGone(feedRangeTaskUnit)
                         .map(shouldRemoveOriginalTaskUnit -> Pair.of(new ArrayList<>(), shouldRemoveOriginalTaskUnit));
                 }
-
                 return Mono.error(throwable);
-            })
-            .block();
+            }));
     }
 
     private List<SourceRecord> handleSuccessfulResponse(
