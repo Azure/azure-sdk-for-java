@@ -86,13 +86,13 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
             JobStatus status = null;
             String name = null;
             List<DataGenerationJobSource> sources = null;
-            DataGenerationJobOptions generationConfiguration = null;
+            DataGenerationJobConfiguration generationConfiguration = null;
             OffsetDateTime createdAt = null;
             DataGenerationJobResult result = null;
             ApiError error = null;
             OffsetDateTime finishedAt = null;
             DataGenerationJobScenario scenario = DataGenerationJobScenario.REINFORCEMENT_FINETUNING_PREVIEW;
-            ReinforcementFineTuningDataGenerationJobOutputTarget outputConfiguration = null;
+            ReinforcementFineTuningDataGenerationJobOutputConfiguration outputConfiguration = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -105,7 +105,7 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
                 } else if ("sources".equals(fieldName)) {
                     sources = reader.readArray(reader1 -> DataGenerationJobSource.fromJson(reader1));
                 } else if ("generation_configuration".equals(fieldName)) {
-                    generationConfiguration = DataGenerationJobOptions.fromJson(reader);
+                    generationConfiguration = DataGenerationJobConfiguration.fromJson(reader);
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("result".equals(fieldName)) {
@@ -118,7 +118,7 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
                 } else if ("scenario".equals(fieldName)) {
                     scenario = DataGenerationJobScenario.fromString(reader.getString());
                 } else if ("output_configuration".equals(fieldName)) {
-                    outputConfiguration = ReinforcementFineTuningDataGenerationJobOutputTarget.fromJson(reader);
+                    outputConfiguration = ReinforcementFineTuningDataGenerationJobOutputConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

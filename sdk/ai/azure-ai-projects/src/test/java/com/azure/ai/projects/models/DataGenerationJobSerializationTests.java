@@ -3,13 +3,19 @@
 
 package com.azure.ai.projects.models;
 
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Collections;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -76,6 +82,37 @@ class DataGenerationJobSerializationTests {
             assertEquals("dataset", output.getName());
             assertEquals("1", output.getVersion());
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("configuredJobs")
+    void generationAndOutputConfigurationsRoundTrip(DataGenerationJobInputs inputs, Class<?> expectedJobType) {
+        BinaryData serialized = BinaryData.fromObject(inputs);
+        DataGenerationJob job = serialized.toObject(DataGenerationJob.class);
+
+        assertEquals(expectedJobType, job.getClass());
+        assertEquals(SimpleQnADataGenerationJobConfiguration.class, job.getGenerationConfiguration().getClass());
+        assertEquals(3, ((SimpleQnADataGenerationJobConfiguration) job.getGenerationConfiguration()).getMaxSamples());
+        assertEquals(serialized.toString(), BinaryData.fromObject(job).toString());
+    }
+
+    private static Stream<Arguments> configuredJobs() {
+        return Stream.of(
+            Arguments.of(
+                new EvaluationDataGenerationJobInputs("job", Collections.emptyList(),
+                    new SimpleQnADataGenerationJobConfiguration(3)).setOutputConfiguration(
+                        new EvaluationDataGenerationJobOutputConfiguration().setName("dataset")),
+                EvaluationDataGenerationJob.class),
+            Arguments.of(
+                new SupervisedFineTuningDataGenerationJobInputs("job", Collections.emptyList(),
+                    new SimpleQnADataGenerationJobConfiguration(3)).setOutputConfiguration(
+                        new SupervisedFineTuningDataGenerationJobOutputConfiguration("training")),
+                SupervisedFineTuningDataGenerationJob.class),
+            Arguments.of(
+                new ReinforcementFineTuningDataGenerationJobInputs("job", Collections.emptyList(),
+                    new SimpleQnADataGenerationJobConfiguration(3)).setOutputConfiguration(
+                        new ReinforcementFineTuningDataGenerationJobOutputConfiguration("training")),
+                ReinforcementFineTuningDataGenerationJob.class));
     }
 
     private static String json(String scenario, boolean includeFinishedAt) {

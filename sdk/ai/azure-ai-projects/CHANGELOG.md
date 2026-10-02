@@ -7,11 +7,12 @@
 ### Breaking Changes
 
 - Moved data generation job operations from `BetaDatasetsClient` and `BetaDatasetsAsyncClient` onto `DatasetsClient` and `DatasetsAsyncClient`, built directly from `AIProjectClientBuilder` through `buildDatasetsClient()` and `buildDatasetsAsyncClient()`. Preview data generation scenarios now require `allowPreview(true)`; GA scenarios do not.
-- Changed the constructors of `DataGenerationJobOptions`, `DataGenerationJobSource`, `EvaluatorDefinition`, and `EvaluatorGenerationJobSource` from public to protected. Construct their concrete subtypes instead. Deserialization of unknown discriminator values remains supported.
+- Changed the constructors of `DataGenerationJobConfiguration`, `DataGenerationJobSource`, `EvaluatorDefinition`, and `EvaluatorGenerationJobSource` from public to protected. Construct their concrete subtypes instead. Deserialization of unknown discriminator values remains supported.
 
 ### Bugs Fixed
 
 - Fixed skill file uploads to omit an unset `default` flag instead of sending the literal text `null`.
+- Updated preserved data generation deserializers and samples to use the renamed configuration models and evaluator generation inputs.
 
 ### Other Changes
 

@@ -40,7 +40,7 @@ public class DataGenerationJobConfiguration implements JsonSerializable<DataGene
      * Creates an instance of DataGenerationJobConfiguration class.
      */
     @Generated
-    public DataGenerationJobConfiguration() {
+    protected DataGenerationJobConfiguration() {
     }
 
     /**

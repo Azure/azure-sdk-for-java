@@ -76,14 +76,14 @@ public class RubricEvaluatorGenerationSample {
         }
     }
 
-    static EvaluatorGenerationJob createJob(String model, String name) {
-        return new EvaluatorGenerationJob().setInputs(new EvaluatorGenerationInputs(
+    static EvaluatorGenerationInputs createJob(String model, String name) {
+        return new EvaluatorGenerationInputs(
             Collections.singletonList(new PromptEvaluatorGenerationJobSource(
                 "Evaluate a factual question-answering assistant. It should answer geography and everyday knowledge "
                     + "questions accurately, address the complete question, and use concise, clear language. "
                     + "It must acknowledge uncertainty instead of inventing facts.")), model, name)
             .setEvaluatorDisplayName("Generated Java answer quality rubric")
-            .setEvaluatorDescription("Rubric generated from a description of a factual question-answering assistant."));
+            .setEvaluatorDescription("Rubric generated from a description of a factual question-answering assistant.");
     }
 
     static EvaluatorVersion reviewRubric(EvaluatorVersion generated) {
