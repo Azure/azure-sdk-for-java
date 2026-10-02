@@ -869,7 +869,7 @@ public class RxDocumentClientImplTest {
     }
 
     @Test(groups = "unit")
-    public void accountDisabledHedgingPreservesPointOperationTimeout() throws Exception {
+    public void accountDisabledHedgingRemovesPpafTimeoutButPreservesExplicitTimeout() throws Exception {
         AtomicReference<DatabaseAccount> account = new AtomicReference<>(hedgingAccount(true, true));
         try (MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class)) {
             httpClientMock.when(() -> HttpClient.createFixed(Mockito.any(HttpClientConfig.class)))
@@ -877,11 +877,26 @@ public class RxDocumentClientImplTest {
             RxDocumentClientImpl client = createClientWithAccount(account);
             try {
                 client.init(null, null);
+                Method effectivePolicy = RxDocumentClientImpl.class.getDeclaredMethod(
+                    "getEffectiveEndToEndOperationLatencyPolicyConfig",
+                    CosmosEndToEndOperationLatencyPolicyConfig.class, ResourceType.class, OperationType.class);
+                effectivePolicy.setAccessible(true);
+                assertThat(effectivePolicy.invoke(client, null, ResourceType.Document, OperationType.Read)).isNull();
+
+                account.set(hedgingAccount(true, false));
+                client.getGlobalEndpointManager().refreshLocationAsync(null, true).block(Duration.ofSeconds(5));
+                assertThat(effectivePolicy.invoke(client, null, ResourceType.Document, OperationType.Read))
+                    .isNotNull();
+
+                account.set(hedgingAccount(true, true));
+                client.getGlobalEndpointManager().refreshLocationAsync(null, true).block(Duration.ofSeconds(5));
                 Duration timeout = Duration.ofSeconds(5);
                 CosmosEndToEndOperationLatencyPolicyConfig policy =
                     new CosmosEndToEndOperationLatencyPolicyConfigBuilder(timeout)
                         .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
                         .build();
+                assertThat(effectivePolicy.invoke(client, policy, ResourceType.Document, OperationType.Read))
+                    .isSameAs(policy);
                 RequestOptions options = new RequestOptions();
                 options.setCosmosEndToEndLatencyPolicyConfig(policy);
                 AtomicInteger attempts = new AtomicInteger();

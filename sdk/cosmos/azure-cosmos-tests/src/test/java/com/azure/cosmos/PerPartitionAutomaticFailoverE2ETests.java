@@ -246,6 +246,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
     private static final Set<ConnectionMode> ONLY_GATEWAY_MODE = new HashSet<>();
 
     private static final CosmosEndToEndOperationLatencyPolicyConfig THREE_SEC_E2E_TIMEOUT_POLICY = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(3)).build();
+    private static final Duration ACCOUNT_HEDGING_PRIMARY_DELAY = Duration.ofSeconds(8);
 
     BiConsumer<ResponseWrapper<?>, ExpectedResponseCharacteristics> validateExpectedResponseCharacteristics = (responseWrapper, expectedResponseCharacteristics) -> {
         assertThat(responseWrapper).isNotNull();
@@ -2173,8 +2174,9 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      * starting with true also proves OFF -> ON -> OFF. PPAF itself never changes.
      *
         * These phases must finish before PPCB failover: hedging ON has a successful attempt marked as
-        * hedged; hedging OFF reaches the E2E deadline and contacts only the delayed primary.
-     * Only after those assertions do we accumulate failures and separately verify PPCB recovery.
+        * hedged; hedging OFF contacts only the delayed primary. PPAF's implicit timeout is removed while
+        * the account disables hedging, but an explicit customer timeout remains active.
+        * Only after those assertions do we separately verify PPCB recovery when the account allows hedging.
      */
     @Test(groups = {"multi-region", "fi-thinclient-multi-region"},
         dataProvider = "accountControlledHedgingScenarios", timeOut = 240_000)
@@ -2272,7 +2274,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                         .operationType(faultOperation).region(failingRegion)
                         .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forFullRange()).build()).build())
                     .result(FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-                        .delay(Duration.ofSeconds(30)).suppressServiceRequests(false).build())
+                        .delay(ACCOUNT_HEDGING_PRIMARY_DELAY).suppressServiceRequests(false).build())
                     .build());
             }
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, rules).block();
@@ -2300,7 +2302,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     queryFlavor == QueryFlavor.NONE || queryFlavor == QueryFlavor.READ_MANY
                         ? OperationType.Read : OperationType.Query);
             }
-            if (!ppafEnabled) {
+            if (!ppafEnabled || effectivelyDisabled) {
                 return;
             }
 
@@ -2427,7 +2429,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         List<FaultInjectionRule> rules,
         OperationType expectedRequestOperation) throws JsonProcessingException {
 
-        boolean expectHedging = !ppafEnabled || !accountDisablesHedging;
+        boolean expectHedging = !accountDisablesHedging;
+        boolean expectPpafPolicySuppressed = ppafEnabled && accountDisablesHedging;
         assertThat(primaryUnavailable.get()).as("%s: primary must be available before the operation", phase).isFalse();
         long hitsBefore = rules.stream().mapToLong(FaultInjectionRule::getHitCount).sum();
         long started = System.nanoTime();
@@ -2448,8 +2451,13 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         assertThat(injectedHits).as("%s: the primary-region delay must actually be injected", phase).isPositive();
         assertThat(primaryUnavailable.get()).as("%s: result must not be explained by PPCB failover", phase).isFalse();
-        assertThat(elapsed).as("%s: must finish before the primary's 30-second response delay", phase)
-            .isLessThan(Duration.ofSeconds(30));
+        if (expectPpafPolicySuppressed) {
+            assertThat(elapsed).as("%s: the delayed primary must be allowed to complete without a PPAF timeout", phase)
+                .isGreaterThanOrEqualTo(ACCOUNT_HEDGING_PRIMARY_DELAY.minusSeconds(1));
+        } else {
+            assertThat(elapsed).as("%s: hedging or an explicit timeout must finish before the primary delay", phase)
+                .isLessThan(ACCOUNT_HEDGING_PRIMARY_DELAY);
+        }
 
         // Read the per-attempt marker propagated from RxDocumentClientImpl, not the account enablement flag.
         JsonNode diagnosticContext = OBJECT_MAPPER.readTree(diagnostics.toString());
@@ -2493,8 +2501,15 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             assertThat(contactedRegions).as("%s: both primary and hedge must be contacted", phase).hasSize(2);
             assertThat(contactedRegions.stream().anyMatch(failingRegion::equalsIgnoreCase)).isTrue();
             assertThat(contactedRegions.stream().anyMatch(healthyRegion::equalsIgnoreCase)).isTrue();
+        } else if (expectPpafPolicySuppressed) {
+            assertThat(response.cosmosException)
+                .as("%s: removing the PPAF policy must allow the delayed primary to complete", phase).isNull();
+            assertThat(diagnostics.getDiagnosticsContext().getStatusCode()).isBetween(200, 299);
+            assertThat(contactedRegions).as("%s: no secondary request may be sent", phase).hasSize(1);
+            assertThat(contactedRegions.iterator().next()).isEqualToIgnoringCase(failingRegion);
         } else {
-            assertThat(response.cosmosException).as("%s: no hedge can rescue the blocked primary", phase).isNotNull();
+            assertThat(response.cosmosException).as("%s: the explicit timeout must cancel the blocked primary", phase)
+                .isNotNull();
             assertThat(response.cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
             assertThat(response.cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
             assertThat(contactedRegions).as("%s: no secondary request may be sent", phase).hasSize(1);

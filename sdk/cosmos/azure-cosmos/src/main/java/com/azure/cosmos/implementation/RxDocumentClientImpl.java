@@ -3740,9 +3740,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return this.cosmosEndToEndOperationLatencyPolicyConfig;
         }
 
-        // If request options level and client-level e2e latency policy config,
-        // rely on PPAF enforced defaults
-        if (operationType.isReadOnlyOperation()) {
+        // If request options level and client-level e2e latency policy config are absent,
+        // rely on PPAF enforced defaults only while the account allows hedging.
+        if (operationType.isReadOnlyOperation()
+            && !this.globalEndpointManager.getCrossRegionalHedgingDisabledByAccount().get()) {
             return this.ppafEnforcedE2ELatencyPolicyConfigForReads;
         }
 
