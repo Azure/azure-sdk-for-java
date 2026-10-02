@@ -30,20 +30,7 @@ public final class EvaluationDataGenerationJob extends DataGenerationJob {
      * Optional dataset output configuration for the generated evaluation data.
      */
     @Generated
-    private EvaluationDataGenerationJobOutputTarget outputConfiguration;
-
-    /**
-     * Creates an instance of EvaluationDataGenerationJob class.
-     *
-     * @param name the name value to set.
-     * @param sources the sources value to set.
-     * @param generationConfiguration the generationConfiguration value to set.
-     */
-    @Generated
-    private EvaluationDataGenerationJob(String name, List<DataGenerationJobSource> sources,
-        DataGenerationJobOptions generationConfiguration) {
-        super(name, sources, generationConfiguration);
-    }
+    private EvaluationDataGenerationJobOutputConfiguration outputConfiguration;
 
     /**
      * Get the scenario property: The scenario of the data generation job. Either for fine-tuning or evaluation.
@@ -62,7 +49,7 @@ public final class EvaluationDataGenerationJob extends DataGenerationJob {
      * @return the outputConfiguration value.
      */
     @Generated
-    public EvaluationDataGenerationJobOutputTarget getOutputConfiguration() {
+    public EvaluationDataGenerationJobOutputConfiguration getOutputConfiguration() {
         return this.outputConfiguration;
     }
 
@@ -145,5 +132,18 @@ public final class EvaluationDataGenerationJob extends DataGenerationJob {
             deserializedEvaluationDataGenerationJob.outputConfiguration = outputConfiguration;
             return deserializedEvaluationDataGenerationJob;
         });
+    }
+
+    /**
+     * Creates an instance of EvaluationDataGenerationJob class.
+     *
+     * @param name the name value to set.
+     * @param sources the sources value to set.
+     * @param generationConfiguration the generationConfiguration value to set.
+     */
+    @Generated
+    private EvaluationDataGenerationJob(String name, List<DataGenerationJobSource> sources,
+        DataGenerationJobConfiguration generationConfiguration) {
+        super(name, sources, generationConfiguration);
     }
 }

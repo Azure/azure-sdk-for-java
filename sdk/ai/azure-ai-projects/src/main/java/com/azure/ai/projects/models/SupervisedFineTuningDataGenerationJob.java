@@ -32,20 +32,7 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
      * Optional file output configuration for the generated supervised fine-tuning data.
      */
     @Generated
-    private SupervisedFineTuningDataGenerationJobOutputTarget outputConfiguration;
-
-    /**
-     * Creates an instance of SupervisedFineTuningDataGenerationJob class.
-     *
-     * @param name the name value to set.
-     * @param sources the sources value to set.
-     * @param generationConfiguration the generationConfiguration value to set.
-     */
-    @Generated
-    private SupervisedFineTuningDataGenerationJob(String name, List<DataGenerationJobSource> sources,
-        DataGenerationJobOptions generationConfiguration) {
-        super(name, sources, generationConfiguration);
-    }
+    private SupervisedFineTuningDataGenerationJobOutputConfiguration outputConfiguration;
 
     /**
      * Get the scenario property: The scenario of the data generation job. Either for fine-tuning or evaluation.
@@ -65,7 +52,7 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
      * @return the outputConfiguration value.
      */
     @Generated
-    public SupervisedFineTuningDataGenerationJobOutputTarget getOutputConfiguration() {
+    public SupervisedFineTuningDataGenerationJobOutputConfiguration getOutputConfiguration() {
         return this.outputConfiguration;
     }
 
@@ -148,5 +135,18 @@ public final class SupervisedFineTuningDataGenerationJob extends DataGenerationJ
             deserializedSupervisedFineTuningDataGenerationJob.outputConfiguration = outputConfiguration;
             return deserializedSupervisedFineTuningDataGenerationJob;
         });
+    }
+
+    /**
+     * Creates an instance of SupervisedFineTuningDataGenerationJob class.
+     *
+     * @param name the name value to set.
+     * @param sources the sources value to set.
+     * @param generationConfiguration the generationConfiguration value to set.
+     */
+    @Generated
+    private SupervisedFineTuningDataGenerationJob(String name, List<DataGenerationJobSource> sources,
+        DataGenerationJobConfiguration generationConfiguration) {
+        super(name, sources, generationConfiguration);
     }
 }

@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The options for a data generation job with SimpleQnA type.
+ * The configuration for a data generation job with SimpleQnA type.
  */
 @Fluent
-public final class SimpleQnADataGenerationJobOptions extends DataGenerationJobOptions {
+public final class SimpleQnADataGenerationJobConfiguration extends DataGenerationJobConfiguration {
 
     /*
      * The data generation job type.
@@ -24,18 +24,24 @@ public final class SimpleQnADataGenerationJobOptions extends DataGenerationJobOp
     private DataGenerationJobType type = DataGenerationJobType.SIMPLE_QNA;
 
     /*
+     * Maximum number of samples to generate, up to service-defined limits.
+     */
+    @Generated
+    private final int maxSamples;
+
+    /*
      * The question types to generate. Used only for fine-tuning scenarios.
      */
     @Generated
     private List<SimpleQnAFineTuningQuestionType> questionTypes;
 
     /**
-     * Creates an instance of SimpleQnADataGenerationJobOptions class.
+     * Creates an instance of SimpleQnADataGenerationJobConfiguration class.
      *
      * @param maxSamples the maxSamples value to set.
      */
     @Generated
-    public SimpleQnADataGenerationJobOptions(int maxSamples) {
+    public SimpleQnADataGenerationJobConfiguration(int maxSamples) {
         this.maxSamples = maxSamples;
     }
 
@@ -48,6 +54,16 @@ public final class SimpleQnADataGenerationJobOptions extends DataGenerationJobOp
     @Override
     public DataGenerationJobType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the maxSamples property: Maximum number of samples to generate, up to service-defined limits.
+     *
+     * @return the maxSamples value.
+     */
+    @Generated
+    public int getMaxSamples() {
+        return this.maxSamples;
     }
 
     /**
@@ -64,10 +80,11 @@ public final class SimpleQnADataGenerationJobOptions extends DataGenerationJobOp
      * Set the questionTypes property: The question types to generate. Used only for fine-tuning scenarios.
      *
      * @param questionTypes the questionTypes value to set.
-     * @return the SimpleQnADataGenerationJobOptions object itself.
+     * @return the SimpleQnADataGenerationJobConfiguration object itself.
      */
     @Generated
-    public SimpleQnADataGenerationJobOptions setQuestionTypes(List<SimpleQnAFineTuningQuestionType> questionTypes) {
+    public SimpleQnADataGenerationJobConfiguration
+        setQuestionTypes(List<SimpleQnAFineTuningQuestionType> questionTypes) {
         this.questionTypes = questionTypes;
         return this;
     }
@@ -77,7 +94,7 @@ public final class SimpleQnADataGenerationJobOptions extends DataGenerationJobOp
      */
     @Generated
     @Override
-    public SimpleQnADataGenerationJobOptions setTrainSplit(Double trainSplit) {
+    public SimpleQnADataGenerationJobConfiguration setTrainSplit(Double trainSplit) {
         super.setTrainSplit(trainSplit);
         return this;
     }
@@ -87,7 +104,7 @@ public final class SimpleQnADataGenerationJobOptions extends DataGenerationJobOp
      */
     @Generated
     @Override
-    public SimpleQnADataGenerationJobOptions setModelOptions(DataGenerationModelOptions modelOptions) {
+    public SimpleQnADataGenerationJobConfiguration setModelOptions(DataGenerationModelOptions modelOptions) {
         super.setModelOptions(modelOptions);
         return this;
     }
@@ -109,16 +126,16 @@ public final class SimpleQnADataGenerationJobOptions extends DataGenerationJobOp
     }
 
     /**
-     * Reads an instance of SimpleQnADataGenerationJobOptions from the JsonReader.
+     * Reads an instance of SimpleQnADataGenerationJobConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SimpleQnADataGenerationJobOptions if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of SimpleQnADataGenerationJobConfiguration if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SimpleQnADataGenerationJobOptions.
+     * @throws IOException If an error occurs while reading the SimpleQnADataGenerationJobConfiguration.
      */
     @Generated
-    public static SimpleQnADataGenerationJobOptions fromJson(JsonReader jsonReader) throws IOException {
+    public static SimpleQnADataGenerationJobConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Double trainSplit = null;
             DataGenerationModelOptions modelOptions = null;
@@ -143,29 +160,13 @@ public final class SimpleQnADataGenerationJobOptions extends DataGenerationJobOp
                     reader.skipChildren();
                 }
             }
-            SimpleQnADataGenerationJobOptions deserializedSimpleQnADataGenerationJobOptions
-                = new SimpleQnADataGenerationJobOptions(maxSamples);
-            deserializedSimpleQnADataGenerationJobOptions.setTrainSplit(trainSplit);
-            deserializedSimpleQnADataGenerationJobOptions.setModelOptions(modelOptions);
-            deserializedSimpleQnADataGenerationJobOptions.type = type;
-            deserializedSimpleQnADataGenerationJobOptions.questionTypes = questionTypes;
-            return deserializedSimpleQnADataGenerationJobOptions;
+            SimpleQnADataGenerationJobConfiguration deserializedSimpleQnADataGenerationJobConfiguration
+                = new SimpleQnADataGenerationJobConfiguration(maxSamples);
+            deserializedSimpleQnADataGenerationJobConfiguration.setTrainSplit(trainSplit);
+            deserializedSimpleQnADataGenerationJobConfiguration.setModelOptions(modelOptions);
+            deserializedSimpleQnADataGenerationJobConfiguration.type = type;
+            deserializedSimpleQnADataGenerationJobConfiguration.questionTypes = questionTypes;
+            return deserializedSimpleQnADataGenerationJobConfiguration;
         });
-    }
-
-    /*
-     * Maximum number of samples to generate, up to service-defined limits.
-     */
-    @Generated
-    private final int maxSamples;
-
-    /**
-     * Get the maxSamples property: Maximum number of samples to generate, up to service-defined limits.
-     *
-     * @return the maxSamples value.
-     */
-    @Generated
-    public int getMaxSamples() {
-        return this.maxSamples;
     }
 }

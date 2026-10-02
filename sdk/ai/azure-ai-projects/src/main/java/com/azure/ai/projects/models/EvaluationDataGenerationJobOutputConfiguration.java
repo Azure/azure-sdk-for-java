@@ -13,11 +13,11 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Dataset output target for an evaluation data generation job.
+ * Dataset output configuration for an evaluation data generation job.
  */
 @Fluent
-public final class EvaluationDataGenerationJobOutputTarget
-    implements JsonSerializable<EvaluationDataGenerationJobOutputTarget> {
+public final class EvaluationDataGenerationJobOutputConfiguration
+    implements JsonSerializable<EvaluationDataGenerationJobOutputConfiguration> {
 
     /*
      * Dataset name to assign to the output.
@@ -45,10 +45,10 @@ public final class EvaluationDataGenerationJobOutputTarget
     private DataGenerationJobOutputWriteMode writeMode;
 
     /**
-     * Creates an instance of EvaluationDataGenerationJobOutputTarget class.
+     * Creates an instance of EvaluationDataGenerationJobOutputConfiguration class.
      */
     @Generated
-    public EvaluationDataGenerationJobOutputTarget() {
+    public EvaluationDataGenerationJobOutputConfiguration() {
     }
 
     /**
@@ -65,10 +65,10 @@ public final class EvaluationDataGenerationJobOutputTarget
      * Set the name property: Dataset name to assign to the output.
      *
      * @param name the name value to set.
-     * @return the EvaluationDataGenerationJobOutputTarget object itself.
+     * @return the EvaluationDataGenerationJobOutputConfiguration object itself.
      */
     @Generated
-    public EvaluationDataGenerationJobOutputTarget setName(String name) {
+    public EvaluationDataGenerationJobOutputConfiguration setName(String name) {
         this.name = name;
         return this;
     }
@@ -87,10 +87,10 @@ public final class EvaluationDataGenerationJobOutputTarget
      * Set the description property: Description to assign to the output dataset.
      *
      * @param description the description value to set.
-     * @return the EvaluationDataGenerationJobOutputTarget object itself.
+     * @return the EvaluationDataGenerationJobOutputConfiguration object itself.
      */
     @Generated
-    public EvaluationDataGenerationJobOutputTarget setDescription(String description) {
+    public EvaluationDataGenerationJobOutputConfiguration setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -109,10 +109,10 @@ public final class EvaluationDataGenerationJobOutputTarget
      * Set the tags property: Tags to assign to the output dataset.
      *
      * @param tags the tags value to set.
-     * @return the EvaluationDataGenerationJobOutputTarget object itself.
+     * @return the EvaluationDataGenerationJobOutputConfiguration object itself.
      */
     @Generated
-    public EvaluationDataGenerationJobOutputTarget setTags(Map<String, String> tags) {
+    public EvaluationDataGenerationJobOutputConfiguration setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -133,10 +133,10 @@ public final class EvaluationDataGenerationJobOutputTarget
      * creates the next dataset version using only newly generated rows.
      *
      * @param writeMode the writeMode value to set.
-     * @return the EvaluationDataGenerationJobOutputTarget object itself.
+     * @return the EvaluationDataGenerationJobOutputConfiguration object itself.
      */
     @Generated
-    public EvaluationDataGenerationJobOutputTarget setWriteMode(DataGenerationJobOutputWriteMode writeMode) {
+    public EvaluationDataGenerationJobOutputConfiguration setWriteMode(DataGenerationJobOutputWriteMode writeMode) {
         this.writeMode = writeMode;
         return this;
     }
@@ -156,36 +156,36 @@ public final class EvaluationDataGenerationJobOutputTarget
     }
 
     /**
-     * Reads an instance of EvaluationDataGenerationJobOutputTarget from the JsonReader.
+     * Reads an instance of EvaluationDataGenerationJobOutputConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of EvaluationDataGenerationJobOutputTarget if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the EvaluationDataGenerationJobOutputTarget.
+     * @return An instance of EvaluationDataGenerationJobOutputConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EvaluationDataGenerationJobOutputConfiguration.
      */
     @Generated
-    public static EvaluationDataGenerationJobOutputTarget fromJson(JsonReader jsonReader) throws IOException {
+    public static EvaluationDataGenerationJobOutputConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            EvaluationDataGenerationJobOutputTarget deserializedEvaluationDataGenerationJobOutputTarget
-                = new EvaluationDataGenerationJobOutputTarget();
+            EvaluationDataGenerationJobOutputConfiguration deserializedEvaluationDataGenerationJobOutputConfiguration
+                = new EvaluationDataGenerationJobOutputConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
-                    deserializedEvaluationDataGenerationJobOutputTarget.name = reader.getString();
+                    deserializedEvaluationDataGenerationJobOutputConfiguration.name = reader.getString();
                 } else if ("description".equals(fieldName)) {
-                    deserializedEvaluationDataGenerationJobOutputTarget.description = reader.getString();
+                    deserializedEvaluationDataGenerationJobOutputConfiguration.description = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedEvaluationDataGenerationJobOutputTarget.tags = tags;
+                    deserializedEvaluationDataGenerationJobOutputConfiguration.tags = tags;
                 } else if ("write_mode".equals(fieldName)) {
-                    deserializedEvaluationDataGenerationJobOutputTarget.writeMode
+                    deserializedEvaluationDataGenerationJobOutputConfiguration.writeMode
                         = DataGenerationJobOutputWriteMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedEvaluationDataGenerationJobOutputTarget;
+            return deserializedEvaluationDataGenerationJobOutputConfiguration;
         });
     }
 }

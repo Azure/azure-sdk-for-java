@@ -27,20 +27,7 @@ public final class EvaluationDataGenerationJobInputs extends DataGenerationJobIn
      * Optional dataset output configuration for the generated evaluation data.
      */
     @Generated
-    private EvaluationDataGenerationJobOutputTarget outputConfiguration;
-
-    /**
-     * Creates an instance of EvaluationDataGenerationJobInputs class.
-     *
-     * @param name the name value to set.
-     * @param sources the sources value to set.
-     * @param generationConfiguration the generationConfiguration value to set.
-     */
-    @Generated
-    public EvaluationDataGenerationJobInputs(String name, List<DataGenerationJobSource> sources,
-        DataGenerationJobOptions generationConfiguration) {
-        super(name, sources, generationConfiguration);
-    }
+    private EvaluationDataGenerationJobOutputConfiguration outputConfiguration;
 
     /**
      * Get the scenario property: The scenario of the data generation job. Either for fine-tuning or evaluation.
@@ -59,21 +46,8 @@ public final class EvaluationDataGenerationJobInputs extends DataGenerationJobIn
      * @return the outputConfiguration value.
      */
     @Generated
-    public EvaluationDataGenerationJobOutputTarget getOutputConfiguration() {
+    public EvaluationDataGenerationJobOutputConfiguration getOutputConfiguration() {
         return this.outputConfiguration;
-    }
-
-    /**
-     * Set the outputConfiguration property: Optional dataset output configuration for the generated evaluation data.
-     *
-     * @param outputConfiguration the outputConfiguration value to set.
-     * @return the EvaluationDataGenerationJobInputs object itself.
-     */
-    @Generated
-    public EvaluationDataGenerationJobInputs
-        setOutputConfiguration(EvaluationDataGenerationJobOutputTarget outputConfiguration) {
-        this.outputConfiguration = outputConfiguration;
-        return this;
     }
 
     /**
@@ -105,9 +79,9 @@ public final class EvaluationDataGenerationJobInputs extends DataGenerationJobIn
         return jsonReader.readObject(reader -> {
             String name = null;
             List<DataGenerationJobSource> sources = null;
-            DataGenerationJobOptions generationConfiguration = null;
+            DataGenerationJobConfiguration generationConfiguration = null;
             DataGenerationJobScenario scenario = DataGenerationJobScenario.EVALUATION;
-            EvaluationDataGenerationJobOutputTarget outputConfiguration = null;
+            EvaluationDataGenerationJobOutputConfiguration outputConfiguration = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -116,11 +90,11 @@ public final class EvaluationDataGenerationJobInputs extends DataGenerationJobIn
                 } else if ("sources".equals(fieldName)) {
                     sources = reader.readArray(reader1 -> DataGenerationJobSource.fromJson(reader1));
                 } else if ("generation_configuration".equals(fieldName)) {
-                    generationConfiguration = DataGenerationJobOptions.fromJson(reader);
+                    generationConfiguration = DataGenerationJobConfiguration.fromJson(reader);
                 } else if ("scenario".equals(fieldName)) {
                     scenario = DataGenerationJobScenario.fromString(reader.getString());
                 } else if ("output_configuration".equals(fieldName)) {
-                    outputConfiguration = EvaluationDataGenerationJobOutputTarget.fromJson(reader);
+                    outputConfiguration = EvaluationDataGenerationJobOutputConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -131,5 +105,31 @@ public final class EvaluationDataGenerationJobInputs extends DataGenerationJobIn
             deserializedEvaluationDataGenerationJobInputs.outputConfiguration = outputConfiguration;
             return deserializedEvaluationDataGenerationJobInputs;
         });
+    }
+
+    /**
+     * Creates an instance of EvaluationDataGenerationJobInputs class.
+     *
+     * @param name the name value to set.
+     * @param sources the sources value to set.
+     * @param generationConfiguration the generationConfiguration value to set.
+     */
+    @Generated
+    public EvaluationDataGenerationJobInputs(String name, List<DataGenerationJobSource> sources,
+        DataGenerationJobConfiguration generationConfiguration) {
+        super(name, sources, generationConfiguration);
+    }
+
+    /**
+     * Set the outputConfiguration property: Optional dataset output configuration for the generated evaluation data.
+     *
+     * @param outputConfiguration the outputConfiguration value to set.
+     * @return the EvaluationDataGenerationJobInputs object itself.
+     */
+    @Generated
+    public EvaluationDataGenerationJobInputs
+        setOutputConfiguration(EvaluationDataGenerationJobOutputConfiguration outputConfiguration) {
+        this.outputConfiguration = outputConfiguration;
+        return this;
     }
 }

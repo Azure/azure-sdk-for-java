@@ -11,18 +11,25 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The options for a task generation data generation job. Use with multiturn evaluation scenarios and with prompt, file,
- * or agent sources. Generated dataset rows include fields such as `id`, `category`, `test_case_description`, and
+ * The configuration for a task generation data generation job. Use with multiturn evaluation scenarios and with prompt,
+ * file, or agent sources. Generated dataset rows include fields such as `id`, `category`, `test_case_description`, and
  * `desired_num_turns`.
  */
 @Fluent
-public final class SimulationSeedDataGenerationJobOptions extends DataGenerationJobOptions {
+public final class SimulationSeedDataGenerationJobConfiguration extends DataGenerationJobConfiguration {
 
     /*
      * The data generation job type.
      */
     @Generated
     private DataGenerationJobType type = DataGenerationJobType.SIMULATION_SEED;
+
+    /**
+     * Creates an instance of SimulationSeedDataGenerationJobConfiguration class.
+     */
+    @Generated
+    public SimulationSeedDataGenerationJobConfiguration() {
+    }
 
     /**
      * Get the type property: The data generation job type.
@@ -40,7 +47,7 @@ public final class SimulationSeedDataGenerationJobOptions extends DataGeneration
      */
     @Generated
     @Override
-    public SimulationSeedDataGenerationJobOptions setTrainSplit(Double trainSplit) {
+    public SimulationSeedDataGenerationJobConfiguration setTrainSplit(Double trainSplit) {
         super.setTrainSplit(trainSplit);
         return this;
     }
@@ -50,7 +57,7 @@ public final class SimulationSeedDataGenerationJobOptions extends DataGeneration
      */
     @Generated
     @Override
-    public SimulationSeedDataGenerationJobOptions setModelOptions(DataGenerationModelOptions modelOptions) {
+    public SimulationSeedDataGenerationJobConfiguration setModelOptions(DataGenerationModelOptions modelOptions) {
         super.setModelOptions(modelOptions);
         return this;
     }
@@ -69,42 +76,35 @@ public final class SimulationSeedDataGenerationJobOptions extends DataGeneration
     }
 
     /**
-     * Reads an instance of SimulationSeedDataGenerationJobOptions from the JsonReader.
+     * Reads an instance of SimulationSeedDataGenerationJobConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SimulationSeedDataGenerationJobOptions if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SimulationSeedDataGenerationJobOptions.
+     * @return An instance of SimulationSeedDataGenerationJobConfiguration if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SimulationSeedDataGenerationJobConfiguration.
      */
     @Generated
-    public static SimulationSeedDataGenerationJobOptions fromJson(JsonReader jsonReader) throws IOException {
+    public static SimulationSeedDataGenerationJobConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SimulationSeedDataGenerationJobOptions deserializedSimulationSeedDataGenerationJobOptions
-                = new SimulationSeedDataGenerationJobOptions();
+            SimulationSeedDataGenerationJobConfiguration deserializedSimulationSeedDataGenerationJobConfiguration
+                = new SimulationSeedDataGenerationJobConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("train_split".equals(fieldName)) {
-                    deserializedSimulationSeedDataGenerationJobOptions
+                    deserializedSimulationSeedDataGenerationJobConfiguration
                         .setTrainSplit(reader.getNullable(JsonReader::getDouble));
                 } else if ("model_options".equals(fieldName)) {
-                    deserializedSimulationSeedDataGenerationJobOptions
+                    deserializedSimulationSeedDataGenerationJobConfiguration
                         .setModelOptions(DataGenerationModelOptions.fromJson(reader));
                 } else if ("type".equals(fieldName)) {
-                    deserializedSimulationSeedDataGenerationJobOptions.type
+                    deserializedSimulationSeedDataGenerationJobConfiguration.type
                         = DataGenerationJobType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedSimulationSeedDataGenerationJobOptions;
+            return deserializedSimulationSeedDataGenerationJobConfiguration;
         });
-    }
-
-    /**
-     * Creates an instance of SimulationSeedDataGenerationJobOptions class.
-     */
-    @Generated
-    public SimulationSeedDataGenerationJobOptions() {
     }
 }

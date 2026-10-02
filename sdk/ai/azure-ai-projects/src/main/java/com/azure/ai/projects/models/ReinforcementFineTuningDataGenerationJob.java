@@ -32,20 +32,7 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
      * Optional file output configuration for the generated reinforcement fine-tuning data.
      */
     @Generated
-    private ReinforcementFineTuningDataGenerationJobOutputTarget outputConfiguration;
-
-    /**
-     * Creates an instance of ReinforcementFineTuningDataGenerationJob class.
-     *
-     * @param name the name value to set.
-     * @param sources the sources value to set.
-     * @param generationConfiguration the generationConfiguration value to set.
-     */
-    @Generated
-    private ReinforcementFineTuningDataGenerationJob(String name, List<DataGenerationJobSource> sources,
-        DataGenerationJobOptions generationConfiguration) {
-        super(name, sources, generationConfiguration);
-    }
+    private ReinforcementFineTuningDataGenerationJobOutputConfiguration outputConfiguration;
 
     /**
      * Get the scenario property: The scenario of the data generation job. Either for fine-tuning or evaluation.
@@ -65,7 +52,7 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
      * @return the outputConfiguration value.
      */
     @Generated
-    public ReinforcementFineTuningDataGenerationJobOutputTarget getOutputConfiguration() {
+    public ReinforcementFineTuningDataGenerationJobOutputConfiguration getOutputConfiguration() {
         return this.outputConfiguration;
     }
 
@@ -148,5 +135,18 @@ public final class ReinforcementFineTuningDataGenerationJob extends DataGenerati
             deserializedReinforcementFineTuningDataGenerationJob.outputConfiguration = outputConfiguration;
             return deserializedReinforcementFineTuningDataGenerationJob;
         });
+    }
+
+    /**
+     * Creates an instance of ReinforcementFineTuningDataGenerationJob class.
+     *
+     * @param name the name value to set.
+     * @param sources the sources value to set.
+     * @param generationConfiguration the generationConfiguration value to set.
+     */
+    @Generated
+    private ReinforcementFineTuningDataGenerationJob(String name, List<DataGenerationJobSource> sources,
+        DataGenerationJobConfiguration generationConfiguration) {
+        super(name, sources, generationConfiguration);
     }
 }

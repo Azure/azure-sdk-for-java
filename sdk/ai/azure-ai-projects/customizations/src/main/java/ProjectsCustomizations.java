@@ -33,8 +33,7 @@ public class ProjectsCustomizations extends Customization {
     }
 
     private void protectPolymorphicBaseConstructors(LibraryCustomization customization) {
-        List<String> classNames = Arrays.asList("DataGenerationJobInputs", "DataGenerationJobOptions",
-            "DataGenerationJobSource", "EvaluationTaxonomyInput", "EvaluatorDefinition",
+        List<String> classNames = Arrays.asList("DataGenerationJobInputs", "DataGenerationJobSource", "EvaluationTaxonomyInput", "EvaluatorDefinition",
             "EvaluatorGenerationJobSource", "InsightRequest", "RecurrenceSchedule", "RoutineAction",
             "RoutineDispatchPayload", "RoutineTrigger", "ScheduleTask", "TargetConfig", "Trigger");
         for (String className : classNames) {

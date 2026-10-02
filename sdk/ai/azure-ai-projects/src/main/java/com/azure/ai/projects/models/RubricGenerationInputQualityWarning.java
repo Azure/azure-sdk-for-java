@@ -46,8 +46,8 @@ public final class RubricGenerationInputQualityWarning
     private final RubricGenerationInputQualityWarningSource source;
 
     /*
-     * Zero-based index into `EvaluatorGenerationJob.inputs.sources` when the warning applies to a specific source.
-     * Omitted for aggregate warnings and for warnings not tied to one source.
+     * Zero-based index into `EvaluatorGenerationJob.sources` when the warning applies to a specific source. Omitted for
+     * aggregate warnings and for warnings not tied to one source.
      */
     @Generated
     private Integer sourceIndex;
@@ -113,8 +113,8 @@ public final class RubricGenerationInputQualityWarning
     }
 
     /**
-     * Get the sourceIndex property: Zero-based index into `EvaluatorGenerationJob.inputs.sources` when the warning
-     * applies to a specific source. Omitted for aggregate warnings and for warnings not tied to one source.
+     * Get the sourceIndex property: Zero-based index into `EvaluatorGenerationJob.sources` when the warning applies to
+     * a specific source. Omitted for aggregate warnings and for warnings not tied to one source.
      *
      * @return the sourceIndex value.
      */

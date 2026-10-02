@@ -12,16 +12,16 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Options for managing data generation jobs.
+ * Configuration for managing data generation jobs.
  */
 @Fluent
-public class DataGenerationJobOptions implements JsonSerializable<DataGenerationJobOptions> {
+public class DataGenerationJobConfiguration implements JsonSerializable<DataGenerationJobConfiguration> {
 
     /*
      * The data generation job type.
      */
     @Generated
-    private DataGenerationJobType type = DataGenerationJobType.fromString("DataGenerationJobOptions");
+    private DataGenerationJobType type = DataGenerationJobType.fromString("DataGenerationJobConfiguration");
 
     /*
      * The proportion of the generated data to be used for training when the data is used for fine-tuning. The rest will
@@ -35,6 +35,13 @@ public class DataGenerationJobOptions implements JsonSerializable<DataGeneration
      */
     @Generated
     private DataGenerationModelOptions modelOptions;
+
+    /**
+     * Creates an instance of DataGenerationJobConfiguration class.
+     */
+    @Generated
+    public DataGenerationJobConfiguration() {
+    }
 
     /**
      * Get the type property: The data generation job type.
@@ -62,10 +69,10 @@ public class DataGenerationJobOptions implements JsonSerializable<DataGeneration
      * for fine-tuning. The rest will be used for validation. Value should be between 0 and 1.
      *
      * @param trainSplit the trainSplit value to set.
-     * @return the DataGenerationJobOptions object itself.
+     * @return the DataGenerationJobConfiguration object itself.
      */
     @Generated
-    public DataGenerationJobOptions setTrainSplit(Double trainSplit) {
+    public DataGenerationJobConfiguration setTrainSplit(Double trainSplit) {
         this.trainSplit = trainSplit;
         return this;
     }
@@ -84,10 +91,10 @@ public class DataGenerationJobOptions implements JsonSerializable<DataGeneration
      * Set the modelOptions property: The LLM model options.
      *
      * @param modelOptions the modelOptions value to set.
-     * @return the DataGenerationJobOptions object itself.
+     * @return the DataGenerationJobConfiguration object itself.
      */
     @Generated
-    public DataGenerationJobOptions setModelOptions(DataGenerationModelOptions modelOptions) {
+    public DataGenerationJobConfiguration setModelOptions(DataGenerationModelOptions modelOptions) {
         this.modelOptions = modelOptions;
         return this;
     }
@@ -106,15 +113,15 @@ public class DataGenerationJobOptions implements JsonSerializable<DataGeneration
     }
 
     /**
-     * Reads an instance of DataGenerationJobOptions from the JsonReader.
+     * Reads an instance of DataGenerationJobConfiguration from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DataGenerationJobOptions if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DataGenerationJobOptions.
+     * @return An instance of DataGenerationJobConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataGenerationJobConfiguration.
      */
     @Generated
-    public static DataGenerationJobOptions fromJson(JsonReader jsonReader) throws IOException {
+    public static DataGenerationJobConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -132,13 +139,13 @@ public class DataGenerationJobOptions implements JsonSerializable<DataGeneration
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("simple_qna".equals(discriminatorValue)) {
-                    return SimpleQnADataGenerationJobOptions.fromJson(readerToUse.reset());
+                    return SimpleQnADataGenerationJobConfiguration.fromJson(readerToUse.reset());
                 } else if ("traces".equals(discriminatorValue)) {
-                    return TracesDataGenerationJobOptions.fromJson(readerToUse.reset());
+                    return TracesDataGenerationJobConfiguration.fromJson(readerToUse.reset());
                 } else if ("simulation_seed".equals(discriminatorValue)) {
-                    return SimulationSeedDataGenerationJobOptions.fromJson(readerToUse.reset());
+                    return SimulationSeedDataGenerationJobConfiguration.fromJson(readerToUse.reset());
                 } else if ("tool_use".equals(discriminatorValue)) {
-                    return ToolUseFineTuningDataGenerationJobOptions.fromJson(readerToUse.reset());
+                    return ToolUseFineTuningDataGenerationJobConfiguration.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -147,30 +154,26 @@ public class DataGenerationJobOptions implements JsonSerializable<DataGeneration
     }
 
     @Generated
-    static DataGenerationJobOptions fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static DataGenerationJobConfiguration fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DataGenerationJobOptions deserializedDataGenerationJobOptions = new DataGenerationJobOptions();
+            DataGenerationJobConfiguration deserializedDataGenerationJobConfiguration
+                = new DataGenerationJobConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedDataGenerationJobOptions.type = DataGenerationJobType.fromString(reader.getString());
+                    deserializedDataGenerationJobConfiguration.type
+                        = DataGenerationJobType.fromString(reader.getString());
                 } else if ("train_split".equals(fieldName)) {
-                    deserializedDataGenerationJobOptions.trainSplit = reader.getNullable(JsonReader::getDouble);
+                    deserializedDataGenerationJobConfiguration.trainSplit = reader.getNullable(JsonReader::getDouble);
                 } else if ("model_options".equals(fieldName)) {
-                    deserializedDataGenerationJobOptions.modelOptions = DataGenerationModelOptions.fromJson(reader);
+                    deserializedDataGenerationJobConfiguration.modelOptions
+                        = DataGenerationModelOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedDataGenerationJobOptions;
+            return deserializedDataGenerationJobConfiguration;
         });
-    }
-
-    /**
-     * Creates an instance of DataGenerationJobOptions class.
-     */
-    @Generated
-    protected DataGenerationJobOptions() {
     }
 }
