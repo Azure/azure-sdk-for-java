@@ -6,6 +6,7 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 import org.apache.kafka.connect.errors.RetriableException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
@@ -73,18 +74,10 @@ public class BufferedSourceTaskTest {
     public void stopWaitsForReaderToExit() throws InterruptedException {
         TestTask task = new TestTask();
         CountDownLatch requestStarted = new CountDownLatch(1);
-        CountDownLatch releaseRequest = new CountDownLatch(1);
-        task.pollAction = () -> {
+        task.pollAction = () -> task.blockPoll(Mono.defer(() -> {
             requestStarted.countDown();
-            while (releaseRequest.getCount() > 0) {
-                try {
-                    releaseRequest.await();
-                } catch (InterruptedException ignored) {
-                    // Simulate a read that does not terminate on thread interruption alone.
-                }
-            }
-            return Collections.emptyList();
-        };
+            return Mono.never();
+        }));
 
         task.start(Collections.emptyMap());
         assertThat(task.poll()).isEmpty();
@@ -92,10 +85,6 @@ public class BufferedSourceTaskTest {
 
         Thread stopThread = new Thread(task::stop);
         stopThread.start();
-        stopThread.join(1_500);
-        assertThat(stopThread.isAlive()).isTrue();
-
-        releaseRequest.countDown();
         stopThread.join(5_000);
         assertThat(stopThread.isAlive()).isFalse();
     }

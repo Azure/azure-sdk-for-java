@@ -5,9 +5,15 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 
 import org.apache.kafka.connect.source.SourceRecord;
 import org.apache.kafka.connect.source.SourceTask;
+import reactor.core.Disposable;
+import reactor.core.Disposables;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +25,7 @@ public abstract class BufferedSourceTask extends SourceTask {
     private static final long POLL_WAIT_MS = 1_000;
 
     private final BlockingQueue<Object> pollResults = new SynchronousQueue<>();
+    private final Disposable.Swap pollingSubscription = Disposables.swap();
     private volatile boolean stopping;
     private Thread pollingThread;
 
@@ -53,6 +60,7 @@ public abstract class BufferedSourceTask extends SourceTask {
             return;
         }
         this.stopping = true;
+        this.pollingSubscription.dispose();
         try {
             this.stopTask();
         } finally {
@@ -75,6 +83,19 @@ public abstract class BufferedSourceTask extends SourceTask {
     }
 
     protected abstract List<SourceRecord> pollTask();
+
+    /**
+     * Blocks for one source poll while allowing {@link #stop()} to cancel it.
+     */
+    protected final <T> T blockPoll(Mono<T> poll) {
+        CompletableFuture<T> future = poll.toFuture();
+        this.pollingSubscription.update(() -> future.cancel(true));
+        try {
+            return future.join();
+        } catch (CompletionException error) {
+            throw Exceptions.propagate(error.getCause());
+        }
+    }
 
     /**
      * Releases resources used by {@link #pollTask()} so an in-flight poll can exit.
