@@ -267,4 +267,33 @@ public interface VirtualMachineBulkOperations {
      */
     PagedIterable<ResourceOperation> bulkListOperationErrors(String resourceGroupName, String location,
         Integer lookbackInMinutes, Context context);
+
+    /**
+     * Acknowledge errors for specified operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param body The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of acknowledging errors for specified operations along with {@link Response}.
+     */
+    Response<AcknowledgeBulkOperationErrorsResponse> bulkAcknowledgeOperationErrorsWithResponse(
+        String resourceGroupName, String location, AcknowledgeBulkOperationErrorsRequest body, Context context);
+
+    /**
+     * Acknowledge errors for specified operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param body The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of acknowledging errors for specified operations.
+     */
+    AcknowledgeBulkOperationErrorsResponse bulkAcknowledgeOperationErrors(String resourceGroupName, String location,
+        AcknowledgeBulkOperationErrorsRequest body);
 }
