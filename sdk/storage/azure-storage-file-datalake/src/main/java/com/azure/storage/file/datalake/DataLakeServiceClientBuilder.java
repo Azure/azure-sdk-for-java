@@ -70,6 +70,7 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
     private final BlobServiceClientBuilder blobServiceClientBuilder;
 
     private String endpoint;
+    private String blobEndpoint;
     private String accountName;
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
@@ -160,7 +161,9 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
     public DataLakeServiceClientBuilder endpoint(String endpoint) {
         // Ensure endpoint provided is dfs endpoint
         endpoint = DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "dfs", "blob");
-        blobServiceClientBuilder.endpoint(DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "blob", "dfs"));
+        if (blobEndpoint == null) {
+            blobServiceClientBuilder.endpoint(DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "blob", "dfs"));
+        }
         try {
             BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint));
 
@@ -176,6 +179,24 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
                 .logExceptionAsError(new IllegalArgumentException("The Azure Storage endpoint url is malformed.", ex));
         }
 
+        return this;
+    }
+
+    /**
+     * Sets the Blob service endpoint used for operations that are routed through the Blob service. If this is not set,
+     * the Blob service endpoint is derived from the endpoint set by {@link #endpoint(String)}.
+     *
+     * @param blobEndpoint URL of the Blob service.
+     * @return the updated DataLakeServiceClientBuilder object.
+     * @throws IllegalArgumentException If {@code blobEndpoint} is {@code null} or is a malformed URL.
+     */
+    public DataLakeServiceClientBuilder blobEndpoint(String blobEndpoint) {
+        if (blobEndpoint == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'blobEndpoint' cannot be null."));
+        }
+        blobEndpoint = DataLakeImplUtils.endpointToDesiredEndpoint(blobEndpoint, "blob", "dfs");
+        blobServiceClientBuilder.endpoint(blobEndpoint);
+        this.blobEndpoint = blobEndpoint;
         return this;
     }
 
