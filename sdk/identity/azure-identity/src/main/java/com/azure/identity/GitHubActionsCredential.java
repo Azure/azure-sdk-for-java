@@ -279,7 +279,7 @@ public final class GitHubActionsCredential implements TokenCredential {
         } catch (Exception e) {
             String message = "GitHubActionsCredential: Authentication Failed. Failed to parse OIDC response."
                 + " See the troubleshooting guide for more information: " + TROUBLESHOOTING_GUIDE;
-            throw logger.logExceptionAsError(new ClientAuthenticationException(message, response));
+            throw logger.logExceptionAsError(new ClientAuthenticationException(message, response, e));
         }
 
         if (CoreUtils.isNullOrEmpty(tokenValue)) {
