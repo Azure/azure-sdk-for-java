@@ -20,9 +20,11 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOp
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalOutputMode;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
-import com.azure.search.documents.knowledgebases.models.PurviewSensitivityLabelInfo;
 
-public class KnowledgeRetrievalPreviewResponseExample {
+/**
+ * Demonstrates reading messages, model activity, and references from a GA knowledge retrieval response.
+ */
+public class KnowledgeRetrievalResponseExample {
     private static final String ENDPOINT = System.getenv("SEARCH_ENDPOINT");
     private static final String API_KEY = System.getenv("SEARCH_API_KEY");
     private static final String KB_NAME = "my-knowledge-base";
@@ -33,9 +35,7 @@ public class KnowledgeRetrievalPreviewResponseExample {
             .endpoint(ENDPOINT)
             .buildClient();
         try {
-            KnowledgeSourceReference knowledgeSource = new KnowledgeSourceReference("my-knowledge-source")
-                .setEnableImageServing(true)
-                .setEnableFreshness(true);
+            KnowledgeSourceReference knowledgeSource = new KnowledgeSourceReference("my-knowledge-source");
 
             KnowledgeBase knowledgeBase = new KnowledgeBase(KB_NAME, knowledgeSource);
             searchIndexClient.createOrUpdateKnowledgeBase(knowledgeBase);
@@ -47,7 +47,7 @@ public class KnowledgeRetrievalPreviewResponseExample {
                 .knowledgeBaseName(KB_NAME)
                 .buildClient();
 
-            //build retrieval request with preview options
+            //build retrieval request
             KnowledgeBaseRetrievalOptions options = new KnowledgeBaseRetrievalOptions()
                 .setMaxOutputDocuments(5)
                 .setIncludeActivity(true)
@@ -88,14 +88,6 @@ public class KnowledgeRetrievalPreviewResponseExample {
                 if (ref.getSourceData() != null) {
                     System.out.println("  Source data: " + ref.getSourceData().toString());
                 }
-            }
-
-            PurviewSensitivityLabelInfo labelInfo = result.getResponseSensitivityLabelInfo();
-            if (labelInfo != null) {
-                System.out.println("Sensitivity Label " + labelInfo.getDisplayName());
-                System.out.println("  Label ID: " + labelInfo.getSensitivityLabelId());
-                System.out.println("  Priority: " + labelInfo.getPriority());
-                System.out.println("  Color: " + labelInfo.getColor());
             }
 
         } finally {

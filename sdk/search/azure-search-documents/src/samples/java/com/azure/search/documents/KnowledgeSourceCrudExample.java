@@ -19,10 +19,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
-import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceFieldValueBoost;
-import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceFilterHint;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
-import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceQueryHints;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.knowledgebases.models.AiServices;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceAzureOpenAIVectorizer;
@@ -36,7 +33,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Demonstrates preview Knowledge Source configuration and generated-resource inspection.
+ * Demonstrates GA knowledge source configuration and generated-resource inspection.
  *
  * <p>The supported-language Blob folder should contain English content; the fallback folder should contain content in
  * a language without a dedicated Microsoft analyzer.</p>
@@ -58,8 +55,8 @@ public class KnowledgeSourceCrudExample {
             = new SearchIndexerClientBuilder().credential(credential).endpoint(endpoint).buildClient();
 
         String suffix = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
-        String indexName = "query-hints-index-" + suffix;
-        String searchIndexSourceName = "query-hints-" + suffix;
+        String indexName = "knowledge-source-index-" + suffix;
+        String searchIndexSourceName = "search-index-source-" + suffix;
         String privateBlobSourceName = "private-blob-" + suffix;
         String fallbackBlobSourceName = "fallback-blob-" + suffix;
         List<String> createdSources = new ArrayList<>();
@@ -71,11 +68,14 @@ public class KnowledgeSourceCrudExample {
                     new SearchField("Category", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true))));
             indexCreated = true;
 
-            SearchIndexKnowledgeSource queryHintSource = createQueryHintSource(searchIndexSourceName, indexName);
-            SearchIndexKnowledgeSource createdQueryHintSource = (SearchIndexKnowledgeSource) searchIndexClient
-                .createKnowledgeSource(queryHintSource);
+            SearchIndexKnowledgeSource searchIndexSource = new SearchIndexKnowledgeSource(searchIndexSourceName,
+                new SearchIndexKnowledgeSourceParameters(indexName).setBaseFilter("Category eq 'Luxury'"));
+            SearchIndexKnowledgeSource createdSearchIndexSource = (SearchIndexKnowledgeSource) searchIndexClient
+                .createKnowledgeSource(searchIndexSource);
             createdSources.add(searchIndexSourceName);
-            verifyQueryHints(createdQueryHintSource);
+            if (!"Category eq 'Luxury'".equals(createdSearchIndexSource.getSearchIndexParameters().getBaseFilter())) {
+                throw new IllegalStateException("The base filter wasn't persisted on the knowledge source.");
+            }
 
             AzureBlobKnowledgeSource privateBlobSource = createBlobSource(privateBlobSourceName,
                 System.getenv("SEARCH_SUPPORTED_LANGUAGE_FOLDER_PATH"), KnowledgeSourceNetworkAccessMode.PRIVATE);
@@ -93,8 +93,8 @@ public class KnowledgeSourceCrudExample {
             inspectGeneratedResources(searchIndexClient, searchIndexerClient, createdFallbackBlobSource,
                 KnowledgeSourceNetworkAccessMode.PUBLIC, "snippet_default", LexicalAnalyzerName.STANDARD_LUCENE);
 
-            createdQueryHintSource.setDescription("Search-index source with persisted query hints.");
-            searchIndexClient.createOrUpdateKnowledgeSource(createdQueryHintSource);
+            createdSearchIndexSource.setDescription("Search-index source with a persisted base filter.");
+            searchIndexClient.createOrUpdateKnowledgeSource(createdSearchIndexSource);
             searchIndexClient.listKnowledgeSources()
                 .stream()
                 .filter(source -> createdSources.contains(source.getName()))
@@ -105,29 +105,6 @@ public class KnowledgeSourceCrudExample {
             if (indexCreated) {
                 searchIndexClient.deleteIndex(indexName);
             }
-        }
-    }
-
-    private static SearchIndexKnowledgeSource createQueryHintSource(String name, String indexName) {
-        SearchIndexKnowledgeSourceFilterHint filterHint
-            = new SearchIndexKnowledgeSourceFilterHint("Category", Collections.singletonList("Luxury"))
-                .setFilterInstructions("Use Category when the user requests a specific hotel category.");
-        SearchIndexKnowledgeSourceFieldValueBoost boost
-            = new SearchIndexKnowledgeSourceFieldValueBoost("Category", 2.0)
-                .setFieldValues(Collections.singletonList("Luxury"))
-                .setBoostInstructions("Prefer luxury hotels when luxury amenities are requested.");
-        SearchIndexKnowledgeSourceQueryHints queryHints = new SearchIndexKnowledgeSourceQueryHints()
-            .setFilters(Collections.singletonList(filterHint))
-            .setBoosts(Collections.singletonList(boost));
-        return new SearchIndexKnowledgeSource(name,
-            new SearchIndexKnowledgeSourceParameters(indexName).setQueryHints(queryHints));
-    }
-
-    private static void verifyQueryHints(SearchIndexKnowledgeSource source) {
-        SearchIndexKnowledgeSourceQueryHints queryHints = source.getSearchIndexParameters().getQueryHints();
-        if (queryHints == null || queryHints.getFilters() == null || queryHints.getFilters().size() != 1
-            || queryHints.getBoosts() == null || queryHints.getBoosts().size() != 1) {
-            throw new IllegalStateException("The query hints weren't persisted on the knowledge source.");
         }
     }
 
