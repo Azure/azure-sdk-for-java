@@ -26,6 +26,11 @@ import java.util.Objects;
 @Fluent
 public final class ShareProperties implements XmlSerializable<ShareProperties> {
     /*
+     * The creationTime property.
+     */
+    private DateTimeRfc1123 creationTime;
+
+    /*
      * The lastModified property.
      */
     private DateTimeRfc1123 lastModified;
@@ -172,6 +177,33 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      * Creates a new instance of {@link ShareProperties}.
      */
     public ShareProperties() {
+    }
+
+    /**
+     * Get the creationTime property: The creation time of the share.
+     *
+     * @return the creationTime value.
+     */
+    public OffsetDateTime getCreationTime() {
+        if (this.creationTime == null) {
+            return null;
+        }
+        return this.creationTime.getDateTime();
+    }
+
+    /**
+     * Set the creationTime property: The creation time of the share.
+     *
+     * @param creationTime the creationTime value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setCreationTime(OffsetDateTime creationTime) {
+        if (creationTime == null) {
+            this.creationTime = null;
+        } else {
+            this.creationTime = new DateTimeRfc1123(creationTime);
+        }
+        return this;
     }
 
     /**
@@ -836,6 +868,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareProperties" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
 
+        xmlWriter.writeStringElement("CreationTime", Objects.toString(this.creationTime, null));
         xmlWriter.writeStringElement("Last-Modified", Objects.toString(this.lastModified, null));
         xmlWriter.writeStringElement("Etag", this.eTag);
         xmlWriter.writeIntElement("Quota", this.quota);
@@ -897,7 +930,9 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 
-                if ("Last-Modified".equals(elementName.getLocalPart())) {
+                if ("CreationTime".equals(elementName.getLocalPart())) {
+                    deserializedShareProperties.creationTime = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("Last-Modified".equals(elementName.getLocalPart())) {
                     deserializedShareProperties.lastModified = reader.getNullableElement(DateTimeRfc1123::new);
                 } else if ("Etag".equals(elementName.getLocalPart())) {
                     deserializedShareProperties.eTag = reader.getStringElement();

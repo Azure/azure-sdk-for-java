@@ -537,6 +537,14 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(1, getPropertiesResponse.getValue().getQuota());
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getPropertiesIncludesCreationTime() {
+        primaryShareClient.create();
+
+        assertNotNull(primaryShareClient.getProperties().getCreationTime());
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void getPropertiesOAuth() {

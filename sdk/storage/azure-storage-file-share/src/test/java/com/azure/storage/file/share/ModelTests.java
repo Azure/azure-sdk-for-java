@@ -3,11 +3,18 @@
 
 package com.azure.storage.file.share;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
+import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
+import com.azure.storage.file.share.models.ShareProperties;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
+import java.time.OffsetDateTime;
 import java.util.EnumSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -60,5 +67,20 @@ public class ModelTests {
     void uploadZeroLengthFails() {
         assertThrows(IllegalArgumentException.class,
             () -> new ShareFileUploadRangeOptions(new ByteArrayInputStream(new byte[0]), 0));
+    }
+
+    @Test
+    void shareCreationTimeIsMappedFromResponses() {
+        OffsetDateTime creationTime = OffsetDateTime.parse("2026-10-01T12:00:00Z");
+        ShareProperties shareProperties = new ShareProperties().setCreationTime(creationTime);
+
+        assertEquals(creationTime, shareProperties.getCreationTime());
+        assertEquals(creationTime, ModelHelper.populateShareProperties(
+            new SharePropertiesInternal().setCreationTime(creationTime)).getCreationTime());
+
+        ResponseBase<SharesGetPropertiesHeaders, Void> response = new ResponseBase<>(null, 200, new HttpHeaders(), null,
+            new SharesGetPropertiesHeaders(new HttpHeaders()).setXMsShareCreationTime(creationTime)
+                .setXMsShareQuota(1));
+        assertEquals(creationTime, ModelHelper.mapGetPropertiesResponse(response).getValue().getCreationTime());
     }
 }

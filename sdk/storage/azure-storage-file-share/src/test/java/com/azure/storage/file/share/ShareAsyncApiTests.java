@@ -341,6 +341,14 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             }).verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getPropertiesIncludesCreationTime() {
+        StepVerifier.create(primaryShareAsyncClient.create().then(primaryShareAsyncClient.getProperties()))
+            .assertNext(properties -> assertNotNull(properties.getCreationTime()))
+            .verifyComplete();
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void getPropertiesOAuth() {
