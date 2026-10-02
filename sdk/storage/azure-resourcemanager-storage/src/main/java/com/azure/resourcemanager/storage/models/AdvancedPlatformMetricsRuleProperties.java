@@ -37,6 +37,12 @@ public final class AdvancedPlatformMetricsRuleProperties
     private OffsetDateTime lastModifiedTime;
 
     /*
+     * The metrics requested by the caller. If omitted in a create or update request, the service enables all metrics
+     * supported by the selected rule type.
+     */
+    private List<MetricsEmitted> metricsToEmit;
+
+    /*
      * The metrics emitted by the rule. Metrics are mapped according to the rule type from RuleTypeProperty. Rule type
      * to metrics mapping: ContainerLevelCapacityMetrics => {ContainerUsedSize, ContainerBlobCount}.
      */
@@ -91,6 +97,28 @@ public final class AdvancedPlatformMetricsRuleProperties
      */
     public OffsetDateTime lastModifiedTime() {
         return this.lastModifiedTime;
+    }
+
+    /**
+     * Get the metricsToEmit property: The metrics requested by the caller. If omitted in a create or update request,
+     * the service enables all metrics supported by the selected rule type.
+     * 
+     * @return the metricsToEmit value.
+     */
+    public List<MetricsEmitted> metricsToEmit() {
+        return this.metricsToEmit;
+    }
+
+    /**
+     * Set the metricsToEmit property: The metrics requested by the caller. If omitted in a create or update request,
+     * the service enables all metrics supported by the selected rule type.
+     * 
+     * @param metricsToEmit the metricsToEmit value to set.
+     * @return the AdvancedPlatformMetricsRuleProperties object itself.
+     */
+    public AdvancedPlatformMetricsRuleProperties withMetricsToEmit(List<MetricsEmitted> metricsToEmit) {
+        this.metricsToEmit = metricsToEmit;
+        return this;
     }
 
     /**
@@ -149,6 +177,8 @@ public final class AdvancedPlatformMetricsRuleProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeJsonField("ruleConfig", this.ruleConfig);
+        jsonWriter.writeArrayField("metricsToEmit", this.metricsToEmit,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -180,6 +210,10 @@ public final class AdvancedPlatformMetricsRuleProperties
                 } else if ("lastModifiedTime".equals(fieldName)) {
                     deserializedAdvancedPlatformMetricsRuleProperties.lastModifiedTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("metricsToEmit".equals(fieldName)) {
+                    List<MetricsEmitted> metricsToEmit
+                        = reader.readArray(reader1 -> MetricsEmitted.fromString(reader1.getString()));
+                    deserializedAdvancedPlatformMetricsRuleProperties.metricsToEmit = metricsToEmit;
                 } else if ("metricsEmitted".equals(fieldName)) {
                     List<MetricsEmitted> metricsEmitted
                         = reader.readArray(reader1 -> MetricsEmitted.fromString(reader1.getString()));

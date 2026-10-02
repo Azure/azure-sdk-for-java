@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class ContextCacheContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageContextCacheContainerCRUD/ContextCacheContainers_Delete.json
+     * x-ms-original-file: 2026-09-01/StorageContextCacheContainerCRUD/ContextCacheContainers_Delete.json
      */
     /**
      * Sample code: Delete a Context Cache Container.
