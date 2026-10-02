@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 - Fixed skill file uploads to omit an unset `default` flag instead of sending the literal text `null`.
+- Updated preserved data generation deserializers and samples to use the renamed configuration models and evaluator generation inputs.
 
 ### Other Changes
 
