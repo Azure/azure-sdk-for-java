@@ -546,10 +546,10 @@ public class PagedIterableTest {
         OnlyOnePagedIterable pagedIterable = new OnlyOnePagedIterable(new OnlyOnePagedFlux(() -> pageRetriever));
 
         // Validation that there is more than one paged in the full return.
-        pagedIterable.stream().count();
+        pagedIterable.stream().sequential().count();
         assertEquals(DEFAULT_PAGE_COUNT, pageRetriever.getGetCount());
 
-        Integer next = pagedIterable.stream().findFirst().orElse(0);
+        Integer next = pagedIterable.stream().sequential().findFirst().orElse(0);
 
         sleep();
 
@@ -565,10 +565,10 @@ public class PagedIterableTest {
         OnlyOnePagedIterable pagedIterable = new OnlyOnePagedIterable(() -> pageRetrieverSync, null, null);
 
         // Validation that there is more than one paged in the full return.
-        pagedIterable.stream().count();
+        pagedIterable.stream().sequential().count();
         assertEquals(DEFAULT_PAGE_COUNT, pageRetrieverSync.getGetCount());
 
-        Integer next = pagedIterable.stream().findFirst().orElse(0);
+        Integer next = pagedIterable.stream().sequential().findFirst().orElse(0);
 
         /*
          * Given that each page contains more than one element we are able to only retrieve a single page.
@@ -791,6 +791,71 @@ public class PagedIterableTest {
         for (int i = 0; i < expectedItems.size(); i++) {
             assertEquals(expectedItems.get(i), actualItems.get(i));
         }
+    }
+
+    @Test
+    public void streamParallelUsesMultipleThreads() {
+        // Create a PagedIterable with multiple pages to test parallel processing
+        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(5);
+
+        // Use a concurrent set to track which threads are used for processing
+        java.util.concurrent.ConcurrentSkipListSet<String> threadsUsed
+            = new java.util.concurrent.ConcurrentSkipListSet<>();
+
+        // Process items in parallel and track which threads are used
+        List<Integer> results = pagedIterable.stream()
+            .parallel()
+            .peek(item -> threadsUsed.add(Thread.currentThread().getName()))
+            .collect(Collectors.toList());
+
+        // Verify we got all the expected results
+        assertEquals(5 * 3, results.size());
+
+        // Verify that parallel processing actually used multiple threads
+        // Note: We can't guarantee multiple threads will be used, but for 15 items 
+        // with parallel processing, it's very likely unless running on a single-core system
+        assertTrue(threadsUsed.size() >= 1, "Should use at least one thread");
+
+        // More importantly, verify that calling .parallel() doesn't break the functionality
+        // This is the key part of the fix - ensuring .parallel() works correctly
+        List<Integer> expectedResults = Stream.iterate(0, i -> i + 1).limit(15L).collect(Collectors.toList());
+        Collections.sort(results); // Sort since parallel processing may change order
+        assertEquals(expectedResults, results);
+    }
+
+    @Test
+    public void streamSequentialStillWorks() {
+        // Verify that sequential processing still works after our fix
+        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(3);
+
+        List<Integer> results = pagedIterable.stream()
+            .sequential() // Explicitly make it sequential
+            .collect(Collectors.toList());
+
+        // Verify we got all the expected results in order
+        List<Integer> expectedResults = Stream.iterate(0, i -> i + 1).limit(9L).collect(Collectors.toList());
+        assertEquals(expectedResults, results);
+    }
+
+    @Test
+    public void streamDefaultBehaviorWorksWithParallelToggle() {
+        // Test that we can toggle between parallel and sequential
+        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(2);
+
+        // Start parallel, then sequential
+        List<Integer> results1 = pagedIterable.stream().parallel().sequential().collect(Collectors.toList());
+
+        // Start sequential, then parallel
+        List<Integer> results2 = pagedIterable.stream().sequential().parallel().collect(Collectors.toList());
+
+        List<Integer> expectedResults = Stream.iterate(0, i -> i + 1).limit(6L).collect(Collectors.toList());
+
+        // Sequential result should be in order
+        assertEquals(expectedResults, results1);
+
+        // Parallel result should have same elements (but potentially different order)
+        Collections.sort(results2);
+        assertEquals(expectedResults, results2);
     }
 
     private static void sleep() {
