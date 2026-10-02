@@ -39,7 +39,6 @@ import com.azure.identity.DeviceCodeCredential;
 import com.azure.identity.DeviceCodeCredentialBuilder;
 import com.azure.identity.EnvironmentCredential;
 import com.azure.identity.EnvironmentCredentialBuilder;
-import com.azure.identity.GitHubActionsCredential;
 import com.azure.identity.GitHubActionsCredentialBuilder;
 import com.azure.identity.IntelliJCredential;
 import com.azure.identity.IntelliJCredentialBuilder;

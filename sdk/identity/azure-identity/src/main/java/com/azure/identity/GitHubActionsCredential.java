@@ -160,7 +160,8 @@ public final class GitHubActionsCredential implements TokenCredential {
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(
-                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error));
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error))
+            .subscribeOn(reactor.core.scheduler.Schedulers.boundedElastic());
     }
 
     @Override
@@ -278,7 +279,7 @@ public final class GitHubActionsCredential implements TokenCredential {
         } catch (Exception e) {
             String message = "GitHubActionsCredential: Authentication Failed. Failed to parse OIDC response."
                 + " See the troubleshooting guide for more information: " + TROUBLESHOOTING_GUIDE;
-            throw logger.logExceptionAsError(new ClientAuthenticationException(message, response, e));
+            throw logger.logExceptionAsError(new ClientAuthenticationException(message, response));
         }
 
         if (CoreUtils.isNullOrEmpty(tokenValue)) {
