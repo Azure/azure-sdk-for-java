@@ -3,6 +3,9 @@
 
 package com.azure.ai.projects;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -24,6 +27,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -286,6 +290,37 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertNull(foundryFeatures(httpClient));
     }
 
+    @Test
+    public void openAIAsyncClientUsesAsyncTokenAcquisition() {
+        RecordingHttpClient httpClient = newOpenAIRecordingHttpClient();
+        new AIProjectClientBuilder().endpoint("https://localhost:8080/api/projects/project")
+            .credential(new PathVerifyingCredential(false))
+            .httpClient(httpClient)
+            .serviceVersion(AIProjectsServiceVersion.V1)
+            .buildOpenAIAsyncClient()
+            .models()
+            .list()
+            .join();
+
+        assertEquals("Bearer async-token",
+            httpClient.getLastRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+    }
+
+    @Test
+    public void openAIClientUsesSynchronousTokenAcquisition() {
+        RecordingHttpClient httpClient = newOpenAIRecordingHttpClient();
+        new AIProjectClientBuilder().endpoint("https://localhost:8080/api/projects/project")
+            .credential(new PathVerifyingCredential(true))
+            .httpClient(httpClient)
+            .serviceVersion(AIProjectsServiceVersion.V1)
+            .buildOpenAIClient()
+            .models()
+            .list();
+
+        assertEquals("Bearer sync-token",
+            httpClient.getLastRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+    }
+
     private static RecordingHttpClient newOpenAIRecordingHttpClient() {
         return new RecordingHttpClient(FoundryFeaturesHeaderVerificationTest::openAIResponse);
     }
@@ -333,6 +368,30 @@ public class FoundryFeaturesHeaderVerificationTest {
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             context.getHttpRequest().getHeaders().set(CUSTOM_PIPELINE_HEADER, CUSTOM_PIPELINE_VALUE);
             return next.process();
+        }
+    }
+
+    private static final class PathVerifyingCredential implements TokenCredential {
+        private final boolean synchronous;
+
+        private PathVerifyingCredential(boolean synchronous) {
+            this.synchronous = synchronous;
+        }
+
+        @Override
+        public Mono<AccessToken> getToken(TokenRequestContext request) {
+            if (synchronous) {
+                return Mono.error(new AssertionError("The asynchronous token API must not be called."));
+            }
+            return Mono.just(new AccessToken("async-token", OffsetDateTime.now().plusHours(1)));
+        }
+
+        @Override
+        public AccessToken getTokenSync(TokenRequestContext request) {
+            if (!synchronous) {
+                throw new AssertionError("The synchronous token API must not be called.");
+            }
+            return new AccessToken("sync-token", OffsetDateTime.now().plusHours(1));
         }
     }
 
