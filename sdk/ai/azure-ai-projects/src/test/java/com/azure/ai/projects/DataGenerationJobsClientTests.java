@@ -3,6 +3,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.agents.models.PageOrder;
+import com.azure.ai.projects.datageneration.DataGenerationJobWithEvaluationSample;
 import com.azure.ai.projects.models.ApiError;
 import com.azure.ai.projects.models.DataGenerationJob;
 import com.azure.ai.projects.models.DatasetDataGenerationJobOutput;

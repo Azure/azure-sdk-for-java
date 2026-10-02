@@ -155,7 +155,19 @@ The async `Beta*AsyncClient` counterparts follow the same behavior.
 
 ## Examples
 
-The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples]. Additional samples are available for data generation jobs (`DataGenerationJobsSample`, `DataGenerationJobsAsyncSample`, and `DataGenerationJobWithEvaluationSample`), model management (`ModelsSample` and `ModelsAsyncSample`), routines (`RoutinesSample`, `RoutinesAsyncSample`, `RoutinesManualDispatchSample`, `RoutinesManualDispatchAsyncSample`, and related trigger samples), and packaged skills (`SkillsPackageSample` and `SkillsPackageAsyncSample`).
+The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples].
+
+| Folder | Scenarios |
+| --- | --- |
+| [agents](src/samples/java/com/azure/ai/projects/agents) | Create and delete agents using the Agents client library. |
+| [connections](src/samples/java/com/azure/ai/projects/connections) | List connections and retrieve connection details. |
+| [datageneration](src/samples/java/com/azure/ai/projects/datageneration) | Create data generation jobs and evaluate generated datasets. |
+| [datasets](src/samples/java/com/azure/ai/projects/datasets) | Upload files and manage datasets and versions. |
+| [deployments](src/samples/java/com/azure/ai/projects/deployments) | List and retrieve model deployments. |
+| [indexes](src/samples/java/com/azure/ai/projects/indexes) | Create, list, retrieve, and delete indexes. |
+| [models](src/samples/java/com/azure/ai/projects/models) | Register model weights and manage model versions. |
+| [routines](src/samples/java/com/azure/ai/projects/routines) | Manage routines, dispatch manually, and use schedule and timer triggers. |
+| [skills](src/samples/java/com/azure/ai/projects/skills) | Manage skills and upload or download skill packages. |
 
 ### Connections operations
 
@@ -178,7 +190,7 @@ for (Connection connection : connections) {
 ```java com.azure.ai.projects.ConnectionsSample.getConnectionWithoutCredentials
 
 String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-Connection connection = connectionsClient.getConnection(connectionName);
+Connection connection = connectionsClient.getConnection(connectionName, false);
 
 System.out.printf("Connection name: %s%n", connection.getName());
 
@@ -189,7 +201,7 @@ System.out.printf("Connection name: %s%n", connection.getName());
 ```java com.azure.ai.projects.ConnectionsSample.getConnectionWithCredentials
 
 String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-Connection connection = connectionsClient.getConnectionWithCredentials(connectionName);
+Connection connection = connectionsClient.getConnection(connectionName, true);
 
 System.out.printf("Connection name: %s%n", connection.getName());
 System.out.printf("Connection credentials: %s%n", connection.getCredential().getType());
@@ -208,7 +220,7 @@ return connectionsAsyncClient.listConnections()
 ```java com.azure.ai.projects.ConnectionsAsyncSample.getConnectionWithoutCredentials
 
 String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-return connectionsAsyncClient.getConnection(connectionName)
+return connectionsAsyncClient.getConnection(connectionName, false)
     .doOnNext(connection -> System.out.printf("Connection name: %s%n", connection.getName()));
 
 ```
@@ -216,7 +228,7 @@ return connectionsAsyncClient.getConnection(connectionName)
 ```java com.azure.ai.projects.ConnectionsAsyncSample.getConnectionWithCredentials
 
 String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-return connectionsAsyncClient.getConnectionWithCredentials(connectionName)
+return connectionsAsyncClient.getConnection(connectionName, true)
     .doOnNext(connection -> {
         System.out.printf("Connection name: %s%n", connection.getName());
         System.out.printf("Connection credentials: %s%n", connection.getCredential().getType());

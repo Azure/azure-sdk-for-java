@@ -15,6 +15,8 @@
 
 ### Other Changes
 
+- Organized Java samples into feature-specific folders, with synchronous and asynchronous samples together.
+
 ## 2.6.1 (2026-09-23)
 
 ### Bugs Fixed
