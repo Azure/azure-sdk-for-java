@@ -1552,6 +1552,45 @@ public class BlobTestBase extends TestProxyTestBase {
         return serviceClient.getBlobContainerAsyncClient(containerName).getBlobAsyncClient(generateBlobName());
     }
 
+    /**
+     * Creates a BlobClient that records every outgoing request (method, URL, and a snapshot of its headers taken
+     * after the content-validation encoding policy has run) and passes the request through to the service. Extra
+     * policies (e.g. fault injection) run closer to the wire than the recorder. Used by content-validation tests
+     * that must assert which requests carried validation headers and with what values.
+     */
+    protected BlobClient createBlobClientWithFullRequestSniffer(
+        List<ContentValidationTestUtils.RecordedRequest> recorded, HttpPipelinePolicy... extraPolicies) {
+        return getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), fullSnifferPolicies(recorded, extraPolicies))
+                .getBlobContainerClient(containerName)
+                .getBlobClient(generateBlobName());
+    }
+
+    /**
+     * Async counterpart of {@link #createBlobClientWithFullRequestSniffer(List, HttpPipelinePolicy...)}.
+     */
+    protected BlobAsyncClient createBlobAsyncClientWithFullRequestSniffer(
+        List<ContentValidationTestUtils.RecordedRequest> recorded, HttpPipelinePolicy... extraPolicies) {
+        return getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), fullSnifferPolicies(recorded, extraPolicies))
+                .getBlobContainerAsyncClient(containerName)
+                .getBlobAsyncClient(generateBlobName());
+    }
+
+    private static HttpPipelinePolicy[] fullSnifferPolicies(List<ContentValidationTestUtils.RecordedRequest> recorded,
+        HttpPipelinePolicy... extraPolicies) {
+        HttpPipelinePolicy sniffPolicy = (context, next) -> {
+            HttpRequest request = context.getHttpRequest();
+            recorded.add(new ContentValidationTestUtils.RecordedRequest(request.getHttpMethod(),
+                request.getUrl().toString(), new HttpHeaders().setAllHttpHeaders(request.getHeaders())));
+            return next.process();
+        };
+        HttpPipelinePolicy[] policies = new HttpPipelinePolicy[extraPolicies.length + 1];
+        policies[0] = sniffPolicy;
+        System.arraycopy(extraPolicies, 0, policies, 1, extraPolicies.length);
+        return policies;
+    }
+
     protected static long expectedStructuredMessageEncodedLength(int unencodedContentBytes) {
         return new StructuredMessageEncoder(unencodedContentBytes,
             StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64)
