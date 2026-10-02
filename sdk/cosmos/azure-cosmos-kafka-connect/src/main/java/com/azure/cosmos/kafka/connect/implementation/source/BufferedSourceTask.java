@@ -103,7 +103,8 @@ public abstract class BufferedSourceTask extends SourceTask {
     protected abstract void stopTask();
 
     private synchronized void startPollingThread() {
-        if (this.stopping || this.pollingThread != null) {
+        if (this.stopping
+            || (this.pollingThread != null && this.pollingThread.isAlive())) {
             return;
         }
         this.pollingThread = new Thread(this::pollContinuously);
@@ -114,10 +115,12 @@ public abstract class BufferedSourceTask extends SourceTask {
     private void pollContinuously() {
         while (!this.stopping) {
             Object result;
+            boolean failed = false;
             try {
                 result = this.pollTask();
             } catch (RuntimeException | Error error) {
                 result = error;
+                failed = true;
             }
 
             if (this.stopping) {
@@ -127,6 +130,10 @@ public abstract class BufferedSourceTask extends SourceTask {
                 this.pollResults.put(result);
             } catch (InterruptedException error) {
                 Thread.currentThread().interrupt();
+                return;
+            }
+
+            if (failed) {
                 return;
             }
         }

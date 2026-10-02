@@ -64,7 +64,31 @@ public class BufferedSourceTaskTest {
         try {
             task.start(Collections.emptyMap());
             assertThatThrownBy(task::poll).isSameAs(transientFailure);
-            assertThat(task.poll()).containsExactly(expected);
+            List<SourceRecord> records;
+            do {
+                records = task.poll();
+            } while (records.isEmpty());
+            assertThat(records).containsExactly(expected);
+        } finally {
+            task.stop();
+        }
+    }
+
+    @Test(groups = "unit", timeOut = 30_000)
+    public void readerStopsAfterNonRetriableFailure() throws InterruptedException {
+        TestTask task = new TestTask();
+        AtomicInteger attempts = new AtomicInteger();
+        RuntimeException terminalFailure = new RuntimeException("terminal");
+        task.pollAction = () -> {
+            attempts.incrementAndGet();
+            throw terminalFailure;
+        };
+
+        try {
+            task.start(Collections.emptyMap());
+            assertThatThrownBy(task::poll).isSameAs(terminalFailure);
+            Thread.sleep(200);
+            assertThat(attempts.get()).isEqualTo(1);
         } finally {
             task.stop();
         }
