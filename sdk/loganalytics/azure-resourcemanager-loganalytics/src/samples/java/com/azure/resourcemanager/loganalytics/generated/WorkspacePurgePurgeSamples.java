@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class WorkspacePurgePurgeSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesPurgeResourceId.json
+     * x-ms-original-file: 2026-03-01/WorkspacesPurgeResourceId.json
      */
     /**
      * Sample code: WorkspacePurgeResourceId.
@@ -31,7 +31,7 @@ public final class WorkspacePurgePurgeSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesPurge.json
+     * x-ms-original-file: 2026-03-01/WorkspacesPurge.json
      */
     /**
      * Sample code: WorkspacePurge.

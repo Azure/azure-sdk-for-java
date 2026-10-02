@@ -14,38 +14,39 @@ public final class SavedSearchInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SavedSearchInner model = BinaryData.fromString(
-            "{\"properties\":{\"category\":\"amrsreuzv\",\"displayName\":\"urisjnhnytxifqj\",\"query\":\"gxmrhublwp\",\"functionAlias\":\"sutrgjup\",\"functionParameters\":\"utpwoqhihejqgw\",\"version\":4031354256714886930,\"tags\":[{\"name\":\"tcypsxjvfoim\",\"value\":\"kslircizjxvydfc\"}]},\"etag\":\"cvlhv\",\"id\":\"dyftumrtwna\",\"name\":\"jslb\",\"type\":\"wkojgcyztsfmzn\"}")
+            "{\"properties\":{\"category\":\"v\",\"displayName\":\"jjxd\",\"query\":\"rbuukzclewyhmlwp\",\"functionAlias\":\"tzpofncckwyfzq\",\"functionParameters\":\"xxbuyq\",\"version\":1881000145918379423,\"tags\":[{\"name\":\"ztppriolxorjalto\",\"value\":\"mncwsobqwcsdb\"},{\"name\":\"wdcfhucqdpfuv\",\"value\":\"lsbjjcanvxbv\"}]},\"etag\":\"udutnco\",\"id\":\"r\",\"name\":\"xqtvcofu\",\"type\":\"f\"}")
             .toObject(SavedSearchInner.class);
-        Assertions.assertEquals("cvlhv", model.etag());
-        Assertions.assertEquals("amrsreuzv", model.category());
-        Assertions.assertEquals("urisjnhnytxifqj", model.displayName());
-        Assertions.assertEquals("gxmrhublwp", model.query());
-        Assertions.assertEquals("sutrgjup", model.functionAlias());
-        Assertions.assertEquals("utpwoqhihejqgw", model.functionParameters());
-        Assertions.assertEquals(4031354256714886930L, model.version());
-        Assertions.assertEquals("tcypsxjvfoim", model.tags().get(0).name());
-        Assertions.assertEquals("kslircizjxvydfc", model.tags().get(0).value());
+        Assertions.assertEquals("udutnco", model.etag());
+        Assertions.assertEquals("v", model.category());
+        Assertions.assertEquals("jjxd", model.displayName());
+        Assertions.assertEquals("rbuukzclewyhmlwp", model.query());
+        Assertions.assertEquals("tzpofncckwyfzq", model.functionAlias());
+        Assertions.assertEquals("xxbuyq", model.functionParameters());
+        Assertions.assertEquals(1881000145918379423L, model.version());
+        Assertions.assertEquals("ztppriolxorjalto", model.tags().get(0).name());
+        Assertions.assertEquals("mncwsobqwcsdb", model.tags().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SavedSearchInner model = new SavedSearchInner().withEtag("cvlhv")
-            .withCategory("amrsreuzv")
-            .withDisplayName("urisjnhnytxifqj")
-            .withQuery("gxmrhublwp")
-            .withFunctionAlias("sutrgjup")
-            .withFunctionParameters("utpwoqhihejqgw")
-            .withVersion(4031354256714886930L)
-            .withTags(Arrays.asList(new Tag().withName("tcypsxjvfoim").withValue("kslircizjxvydfc")));
+        SavedSearchInner model = new SavedSearchInner().withEtag("udutnco")
+            .withCategory("v")
+            .withDisplayName("jjxd")
+            .withQuery("rbuukzclewyhmlwp")
+            .withFunctionAlias("tzpofncckwyfzq")
+            .withFunctionParameters("xxbuyq")
+            .withVersion(1881000145918379423L)
+            .withTags(Arrays.asList(new Tag().withName("ztppriolxorjalto").withValue("mncwsobqwcsdb"),
+                new Tag().withName("wdcfhucqdpfuv").withValue("lsbjjcanvxbv")));
         model = BinaryData.fromObject(model).toObject(SavedSearchInner.class);
-        Assertions.assertEquals("cvlhv", model.etag());
-        Assertions.assertEquals("amrsreuzv", model.category());
-        Assertions.assertEquals("urisjnhnytxifqj", model.displayName());
-        Assertions.assertEquals("gxmrhublwp", model.query());
-        Assertions.assertEquals("sutrgjup", model.functionAlias());
-        Assertions.assertEquals("utpwoqhihejqgw", model.functionParameters());
-        Assertions.assertEquals(4031354256714886930L, model.version());
-        Assertions.assertEquals("tcypsxjvfoim", model.tags().get(0).name());
-        Assertions.assertEquals("kslircizjxvydfc", model.tags().get(0).value());
+        Assertions.assertEquals("udutnco", model.etag());
+        Assertions.assertEquals("v", model.category());
+        Assertions.assertEquals("jjxd", model.displayName());
+        Assertions.assertEquals("rbuukzclewyhmlwp", model.query());
+        Assertions.assertEquals("tzpofncckwyfzq", model.functionAlias());
+        Assertions.assertEquals("xxbuyq", model.functionParameters());
+        Assertions.assertEquals(1881000145918379423L, model.version());
+        Assertions.assertEquals("ztppriolxorjalto", model.tags().get(0).name());
+        Assertions.assertEquals("mncwsobqwcsdb", model.tags().get(0).value());
     }
 }

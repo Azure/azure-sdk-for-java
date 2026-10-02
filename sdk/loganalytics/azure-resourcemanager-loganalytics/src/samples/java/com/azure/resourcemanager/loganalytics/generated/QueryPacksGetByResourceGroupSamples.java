@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class QueryPacksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/QueryPacksGet.json
+     * x-ms-original-file: 2026-03-01/QueryPacksGet.json
      */
     /**
      * Sample code: QueryPackGet.

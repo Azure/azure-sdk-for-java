@@ -12,7 +12,7 @@ public final class WorkspacePurgeResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspacePurgeResponseInner model
-            = BinaryData.fromString("{\"operationId\":\"evy\"}").toObject(WorkspacePurgeResponseInner.class);
-        Assertions.assertEquals("evy", model.operationId());
+            = BinaryData.fromString("{\"operationId\":\"lcplc\"}").toObject(WorkspacePurgeResponseInner.class);
+        Assertions.assertEquals("lcplc", model.operationId());
     }
 }

@@ -21,7 +21,7 @@ public final class AvailableServiceTiersListByWorkspaceWithResponseMockTests {
     @Test
     public void testListByWorkspaceWithResponse() throws Exception {
         String responseStr
-            = "[{\"serviceTier\":\"Premium\",\"enabled\":false,\"minimumRetention\":4143113396233203378,\"maximumRetention\":8427058469053871541,\"defaultRetention\":7193504537103100788,\"capacityReservationLevel\":57717437431682031,\"lastSkuUpdate\":\"tfmhklbnldpvcb\"},{\"serviceTier\":\"Free\",\"enabled\":false,\"minimumRetention\":260638395047239156,\"maximumRetention\":5858060139563890420,\"defaultRetention\":6385248212428342981,\"capacityReservationLevel\":7683743280200844431,\"lastSkuUpdate\":\"r\"},{\"serviceTier\":\"PerGB2018\",\"enabled\":true,\"minimumRetention\":3319548105007639179,\"maximumRetention\":854996633065956163,\"defaultRetention\":8746837650376040837,\"capacityReservationLevel\":198472802196573806,\"lastSkuUpdate\":\"lbnwtpcpahp\"}]";
+            = "[{\"serviceTier\":\"Standard\",\"enabled\":true,\"minimumRetention\":6971905808635311445,\"maximumRetention\":7123131574907504822,\"defaultRetention\":8562330729590351027,\"capacityReservationLevel\":7858346495832854851,\"lastSkuUpdate\":\"fg\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class AvailableServiceTiersListByWorkspaceWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<AvailableServiceTier> response = manager.availableServiceTiers()
-            .listByWorkspaceWithResponse("xdazv", "hctmmkosz", com.azure.core.util.Context.NONE)
+            .listByWorkspaceWithResponse("yuttdiygbpvnwswm", "xkyctwwgzwx", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

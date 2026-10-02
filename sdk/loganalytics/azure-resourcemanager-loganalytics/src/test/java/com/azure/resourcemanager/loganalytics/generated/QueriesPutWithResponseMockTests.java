@@ -25,7 +25,7 @@ public final class QueriesPutWithResponseMockTests {
     @Test
     public void testPutWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"id\":\"ww\",\"displayName\":\"cknrzda\",\"timeCreated\":\"2021-05-07T04:36:17Z\",\"timeModified\":\"2021-03-04T20:06:42Z\",\"author\":\"tjxul\",\"description\":\"ucyrt\",\"body\":\"xqlehmc\",\"related\":{\"categories\":[\"inue\",\"oka\",\"vfejvqnttmbqda\"],\"resourceTypes\":[\"ivfokpysthhzagj\"],\"solutions\":[\"yrl\",\"g\",\"nuzejgvkveb\"]},\"tags\":{\"xtminklogxsvtzar\":[\"llrzlsmmdqgmihz\",\"imcqrh\"],\"mqbmfuvqarwz\":[\"vqnsqk\",\"cmbjwzzo\",\"lpky\",\"tglwkzpgajsqjc\"],\"vlyttaaknwfrke\":[\"qreblui\",\"mbwxsfg\",\"dmbvxekraok\",\"kbudbtwaokb\"],\"dig\":[\"mhpdu\"]},\"properties\":\"\\\"dataolekscbctnanqim\\\"\"},\"id\":\"zxpdcldpkawnsnl\",\"name\":\"imouxwksqmudmfco\",\"type\":\"bicziuswswj\"}";
+            = "{\"properties\":{\"id\":\"qnzmnhiil\",\"displayName\":\"alwcjgckbb\",\"timeCreated\":\"2021-06-06T13:08:46Z\",\"timeModified\":\"2020-12-30T16:06:38Z\",\"author\":\"raoxnyuff\",\"description\":\"sgftipwc\",\"body\":\"byubhiqdxyurnpn\",\"related\":{\"categories\":[\"fccnuhiigb\"],\"resourceTypes\":[\"ui\"],\"solutions\":[\"vatvcrkd\",\"b\"]},\"tags\":{\"vurex\":[\"vhcs\",\"hzlwxaea\"],\"zmwntopagt\":[\"d\",\"bdweade\"],\"tkrlgjmtbd\":[\"v\",\"magoaqylkjz\",\"jiuazjc\",\"mxitpfinzcpd\"],\"oumpcky\":[\"cqguef\",\"hompheqdurelyu\",\"lf\"]},\"properties\":\"\\\"datalcdi\\\"\"},\"id\":\"tajbrz\",\"name\":\"qxucycijoc\",\"type\":\"xiutgjcyzyzj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,27 +35,27 @@ public final class QueriesPutWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LogAnalyticsQueryPackQuery response = manager.queries()
-            .define("qrs")
-            .withExistingQueryPack("s", "cw")
-            .withTags(mapOf("djxyxgbkkqvjcteo", Arrays.asList("kayspthz", "dubtlmj", "gblioskkfmkm"), "xv",
-                Arrays.asList("l", "slskkz")))
-            .withDisplayName("zbcyksiv")
-            .withDescription("ftsjcwj")
-            .withBody("xsgm")
+            .define("phlkksnm")
+            .withExistingQueryPack("akfqfrkemyildud", "jascowvfdjkpd")
+            .withTags(mapOf("dsxzakuejkmvb", Arrays.asList("qraswugyxpqitwei", "l", "vskbuhzacaq", "yltcoqcuj"), "e",
+                Arrays.asList("tjo", "qcvov", "uf", "csjml")))
+            .withDisplayName("thuqolyahluq")
+            .withDescription("vqqugdrftbcv")
+            .withBody("xreuquowtlj")
             .withRelated(new LogAnalyticsQueryPackQueryPropertiesRelated()
-                .withCategories(Arrays.asList("ifdxkecifhocjxw", "loozrvt", "vcmuf", "nlcpxxviry"))
-                .withResourceTypes(Arrays.asList("gjgvr", "uvp", "gglpmcrdcuelj"))
-                .withSolutions(Arrays.asList("hxmfqryarvsxzqb")))
-            .withProperties("\"datazdpv\"")
+                .withCategories(Arrays.asList("reagkhyxvrqt", "bczsulmdgglmepjp"))
+                .withResourceTypes(Arrays.asList("ykgsangpszng", "fpgylkve", "jujcngoad", "edmzrgjfoknub"))
+                .withSolutions(Arrays.asList("tp", "pz", "rgdg")))
+            .withProperties("\"dataej\"")
             .create();
 
-        Assertions.assertEquals("cknrzda", response.displayName());
-        Assertions.assertEquals("ucyrt", response.description());
-        Assertions.assertEquals("xqlehmc", response.body());
-        Assertions.assertEquals("inue", response.related().categories().get(0));
-        Assertions.assertEquals("ivfokpysthhzagj", response.related().resourceTypes().get(0));
-        Assertions.assertEquals("yrl", response.related().solutions().get(0));
-        Assertions.assertEquals("llrzlsmmdqgmihz", response.tags().get("xtminklogxsvtzar").get(0));
+        Assertions.assertEquals("alwcjgckbb", response.displayName());
+        Assertions.assertEquals("sgftipwc", response.description());
+        Assertions.assertEquals("byubhiqdxyurnpn", response.body());
+        Assertions.assertEquals("fccnuhiigb", response.related().categories().get(0));
+        Assertions.assertEquals("ui", response.related().resourceTypes().get(0));
+        Assertions.assertEquals("vatvcrkd", response.related().solutions().get(0));
+        Assertions.assertEquals("vhcs", response.tags().get("vurex").get(0));
     }
 
     // Use "Map.of" if available
