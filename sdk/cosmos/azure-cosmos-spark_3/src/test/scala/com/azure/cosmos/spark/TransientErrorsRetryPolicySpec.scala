@@ -81,6 +81,22 @@ class TransientErrorsRetryPolicySpec extends UnitSpec with BasicLoggingTrait {
     thrownException.get.getStatusCode shouldEqual new DummyTransientCosmosException().getStatusCode
   }
 
+  "TransientErrorsRetryPolicy" should "preserve the interrupt status when retry backoff is interrupted" in {
+    Thread.currentThread().interrupt()
+
+    try {
+      intercept[InterruptedException] {
+        TransientErrorsRetryPolicy.executeWithRetry(
+          () => throw new DummyTransientCosmosException(),
+          initialMaxRetryIntervalInMs = 1,
+          maxRetryIntervalInMs = 1)
+      }
+      Thread.currentThread().isInterrupted shouldBe true
+    } finally {
+      Thread.interrupted()
+    }
+  }
+
   private class DummyTransientCosmosException
     extends CosmosException(500, "Dummy Internal Server Error")
 
