@@ -15,21 +15,21 @@ public final class ReplicaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Replica model = BinaryData.fromString(
-            "{\"role\":\"GeoAsyncReplica\",\"capacity\":1152020606,\"replicationState\":\"Provisioning\",\"promoteMode\":\"Switchover\",\"promoteOption\":\"Planned\"}")
+            "{\"role\":\"AsyncReplica\",\"capacity\":977455104,\"replicationState\":\"Updating\",\"promoteMode\":\"Standalone\",\"promoteOption\":\"Planned\"}")
             .toObject(Replica.class);
-        Assertions.assertEquals(ReplicationRole.GEO_ASYNC_REPLICA, model.role());
-        Assertions.assertEquals(ReadReplicaPromoteMode.SWITCHOVER, model.promoteMode());
+        Assertions.assertEquals(ReplicationRole.ASYNC_REPLICA, model.role());
+        Assertions.assertEquals(ReadReplicaPromoteMode.STANDALONE, model.promoteMode());
         Assertions.assertEquals(ReadReplicaPromoteOption.PLANNED, model.promoteOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Replica model = new Replica().withRole(ReplicationRole.GEO_ASYNC_REPLICA)
-            .withPromoteMode(ReadReplicaPromoteMode.SWITCHOVER)
+        Replica model = new Replica().withRole(ReplicationRole.ASYNC_REPLICA)
+            .withPromoteMode(ReadReplicaPromoteMode.STANDALONE)
             .withPromoteOption(ReadReplicaPromoteOption.PLANNED);
         model = BinaryData.fromObject(model).toObject(Replica.class);
-        Assertions.assertEquals(ReplicationRole.GEO_ASYNC_REPLICA, model.role());
-        Assertions.assertEquals(ReadReplicaPromoteMode.SWITCHOVER, model.promoteMode());
+        Assertions.assertEquals(ReplicationRole.ASYNC_REPLICA, model.role());
+        Assertions.assertEquals(ReadReplicaPromoteMode.STANDALONE, model.promoteMode());
         Assertions.assertEquals(ReadReplicaPromoteOption.PLANNED, model.promoteOption());
     }
 }

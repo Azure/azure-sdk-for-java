@@ -14,14 +14,14 @@ public final class MaintenanceEventActionResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceEventActionResponseInner model = BinaryData.fromString(
-            "{\"maintenanceEventId\":\"ivwitqscywugg\",\"serverId\":\"luhczbw\",\"status\":\"Planned\",\"plannedStartTime\":\"2021-04-14T11:53:46Z\",\"plannedEndTime\":\"2021-04-14T21:32:09Z\",\"appliedNow\":true,\"lastUpdatedTime\":\"2021-02-28T06:47:58Z\"}")
+            "{\"maintenanceEventId\":\"hvxndzwmkrefajpj\",\"serverId\":\"wkqnyhg\",\"status\":\"Canceled\",\"plannedStartTime\":\"2021-01-15T16:41:59Z\",\"plannedEndTime\":\"2021-03-13T11:40:42Z\",\"appliedNow\":false,\"lastUpdatedTime\":\"2021-10-05T15:06:51Z\"}")
             .toObject(MaintenanceEventActionResponseInner.class);
-        Assertions.assertEquals("ivwitqscywugg", model.maintenanceEventId());
-        Assertions.assertEquals("luhczbw", model.serverId());
-        Assertions.assertEquals(MaintenanceEventStatus.PLANNED, model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T11:53:46Z"), model.plannedStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T21:32:09Z"), model.plannedEndTime());
-        Assertions.assertTrue(model.appliedNow());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T06:47:58Z"), model.lastUpdatedTime());
+        Assertions.assertEquals("hvxndzwmkrefajpj", model.maintenanceEventId());
+        Assertions.assertEquals("wkqnyhg", model.serverId());
+        Assertions.assertEquals(MaintenanceEventStatus.CANCELED, model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-15T16:41:59Z"), model.plannedStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-13T11:40:42Z"), model.plannedEndTime());
+        Assertions.assertFalse(model.appliedNow());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-05T15:06:51Z"), model.lastUpdatedTime());
     }
 }

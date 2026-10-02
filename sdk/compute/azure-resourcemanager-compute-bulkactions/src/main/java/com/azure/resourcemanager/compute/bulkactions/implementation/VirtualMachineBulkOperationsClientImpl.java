@@ -28,6 +28,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.compute.bulkactions.fluent.VirtualMachineBulkOperationsClient;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.AcknowledgeBulkOperationErrorsResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.CancelOperationsResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.DeallocateResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.DeleteResourceOperationResponseInner;
@@ -37,6 +38,7 @@ import com.azure.resourcemanager.compute.bulkactions.fluent.models.ReimageResour
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.StartResourceOperationResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.implementation.models.ListBulkOperationErrorsResponse;
+import com.azure.resourcemanager.compute.bulkactions.models.AcknowledgeBulkOperationErrorsRequest;
 import com.azure.resourcemanager.compute.bulkactions.models.CancelOperationsContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeallocateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeleteContent;
@@ -228,6 +230,26 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
             @QueryParam("lookbackInMinutes") Integer lookbackInMinutes, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/acknowledgeBulkOperationErrors")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AcknowledgeBulkOperationErrorsResponseInner>> bulkAcknowledgeOperationErrors(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AcknowledgeBulkOperationErrorsRequest body, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/acknowledgeBulkOperationErrors")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AcknowledgeBulkOperationErrorsResponseInner> bulkAcknowledgeOperationErrorsSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AcknowledgeBulkOperationErrorsRequest body, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1001,6 +1023,86 @@ public final class VirtualMachineBulkOperationsClientImpl implements VirtualMach
         return new PagedIterable<>(
             () -> bulkListOperationErrorsSinglePage(resourceGroupName, location, lookbackInMinutes, context),
             nextLink -> bulkListOperationErrorsNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Acknowledge errors for specified operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param body The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of acknowledging errors for specified operations along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AcknowledgeBulkOperationErrorsResponseInner>> bulkAcknowledgeOperationErrorsWithResponseAsync(
+        String resourceGroupName, String location, AcknowledgeBulkOperationErrorsRequest body) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.bulkAcknowledgeOperationErrors(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, location, contentType,
+                accept, body, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Acknowledge errors for specified operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param body The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of acknowledging errors for specified operations on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AcknowledgeBulkOperationErrorsResponseInner> bulkAcknowledgeOperationErrorsAsync(
+        String resourceGroupName, String location, AcknowledgeBulkOperationErrorsRequest body) {
+        return bulkAcknowledgeOperationErrorsWithResponseAsync(resourceGroupName, location, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Acknowledge errors for specified operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param body The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of acknowledging errors for specified operations along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AcknowledgeBulkOperationErrorsResponseInner> bulkAcknowledgeOperationErrorsWithResponse(
+        String resourceGroupName, String location, AcknowledgeBulkOperationErrorsRequest body, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.bulkAcknowledgeOperationErrorsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, location, contentType, accept, body, context);
+    }
+
+    /**
+     * Acknowledge errors for specified operations in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param body The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of acknowledging errors for specified operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AcknowledgeBulkOperationErrorsResponseInner bulkAcknowledgeOperationErrors(String resourceGroupName,
+        String location, AcknowledgeBulkOperationErrorsRequest body) {
+        return bulkAcknowledgeOperationErrorsWithResponse(resourceGroupName, location, body, Context.NONE).getValue();
     }
 
     /**
