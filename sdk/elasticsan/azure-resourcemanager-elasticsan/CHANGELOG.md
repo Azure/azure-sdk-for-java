@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (2026-10-01)
+## 1.3.0-beta.1 (2026-10-02)
 
 - Azure Resource Manager ElasticSan client library for Java. This package contains Microsoft Azure SDK for ElasticSan Management SDK. Elastic SAN is a fully integrated solution that simplifies deploying, scaling, managing, and configuring a storage area network (SAN). It also offers built-in cloud capabilities like high availability. Elastic SAN works with many types of compute resources, such as Azure Virtual Machines, Azure VMware Solution, and Azure Kubernetes Service. Package api-version 2026-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -28,9 +28,9 @@
 
 #### `models.Volumes` was modified
 
-* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,com.azure.core.util.Context)` was removed
-* `deleteByIdWithResponse(java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,com.azure.core.util.Context)` was removed
 * `listByVolumeGroup(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,com.azure.core.util.Context)` was removed
 
 #### `models.Volume$Update` was modified
 
@@ -69,12 +69,12 @@
 
 #### `models.ElasticSanUpdate` was modified
 
-* `totalIops()` was added
 * `withTotalSizeTiB(java.lang.Long)` was added
-* `withTotalIops(java.lang.Long)` was added
-* `totalMBps()` was added
-* `totalSizeTiB()` was added
 * `withTotalMBps(java.lang.Long)` was added
+* `totalMBps()` was added
+* `totalIops()` was added
+* `totalSizeTiB()` was added
+* `withTotalIops(java.lang.Long)` was added
 
 #### `models.StorageTargetType` was modified
 
@@ -86,9 +86,9 @@
 
 #### `models.VolumeGroup$Update` was modified
 
-* `withDeleteRetentionPolicy(models.DeleteRetentionPolicy)` was added
 * `withReservedMBps(java.lang.Integer)` was added
 * `withReservedIops(java.lang.Integer)` was added
+* `withDeleteRetentionPolicy(models.DeleteRetentionPolicy)` was added
 
 #### `models.VolumeGroups` was modified
 
@@ -97,18 +97,18 @@
 #### `models.ElasticSan` was modified
 
 * `totalReservedMBps()` was added
+* `usedCapacityGiB()` was added
 * `totalReservedIops()` was added
 * `version()` was added
-* `usedCapacityGiB()` was added
 
 #### `models.VolumeGroupUpdate` was modified
 
+* `withReservedMBps(java.lang.Integer)` was added
 * `withReservedIops(java.lang.Integer)` was added
 * `withDeleteRetentionPolicy(models.DeleteRetentionPolicy)` was added
-* `reservedMBps()` was added
-* `withReservedMBps(java.lang.Integer)` was added
-* `reservedIops()` was added
 * `deleteRetentionPolicy()` was added
+* `reservedIops()` was added
+* `reservedMBps()` was added
 
 #### `models.SkuLocationInfo` was modified
 
@@ -116,9 +116,9 @@
 
 #### `models.Volumes` was modified
 
-* `listByVolumeGroup(java.lang.String,java.lang.String,java.lang.String,models.XMsAccessSoftDeletedResources,com.azure.core.util.Context)` was added
 * `deleteByIdWithResponse(java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,models.DeleteType,com.azure.core.util.Context)` was added
 * `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.XMsDeleteSnapshots,models.XMsForceDelete,models.DeleteType,com.azure.core.util.Context)` was added
+* `listByVolumeGroup(java.lang.String,java.lang.String,java.lang.String,models.XMsAccessSoftDeletedResources,com.azure.core.util.Context)` was added
 
 #### `ElasticSanManager` was modified
 
@@ -138,11 +138,11 @@
 
 #### `models.ElasticSan$Definition` was modified
 
+* `withBaseSizeTiB(java.lang.Long)` was added
+* `withTotalIops(java.lang.Long)` was added
 * `withExtendedCapacitySizeTiB(java.lang.Long)` was added
 * `withTotalSizeTiB(java.lang.Long)` was added
 * `withVersion(models.ElasticSanVersion)` was added
-* `withTotalIops(java.lang.Long)` was added
-* `withBaseSizeTiB(java.lang.Long)` was added
 * `withTotalMBps(java.lang.Long)` was added
 
 #### `models.ElasticSan$Update` was modified
@@ -153,19 +153,19 @@
 
 #### `models.VolumeGroup$Definition` was modified
 
-* `withReservedIops(java.lang.Integer)` was added
-* `withQualityOfService(models.QualityOfService)` was added
-* `withEncryptionInTransit(java.lang.Boolean)` was added
-* `withDeleteRetentionPolicy(models.DeleteRetentionPolicy)` was added
 * `withReservedMBps(java.lang.Integer)` was added
+* `withDeleteRetentionPolicy(models.DeleteRetentionPolicy)` was added
+* `withEncryptionInTransit(java.lang.Boolean)` was added
+* `withQualityOfService(models.QualityOfService)` was added
+* `withReservedIops(java.lang.Integer)` was added
 
 #### `models.VolumeGroup` was modified
 
-* `deleteRetentionPolicy()` was added
-* `qualityOfService()` was added
 * `reservedIops()` was added
 * `encryptionInTransit()` was added
 * `reservedMBps()` was added
+* `deleteRetentionPolicy()` was added
+* `qualityOfService()` was added
 
 #### `models.Snapshot` was modified
 
