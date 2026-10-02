@@ -6,8 +6,14 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.handler.ssl.SslContext;
+import io.netty.util.ReferenceCountUtil;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import javax.net.ssl.SSLEngine;
 import java.net.URI;
 import java.time.Duration;
 import java.util.EnumSet;
@@ -15,6 +21,39 @@ import java.util.EnumSet;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConfigsTests {
+
+    @DataProvider(name = "sslValidationSettings")
+    public Object[][] sslValidationSettings() {
+        return new Object[][] {
+            { false, false, false }, { false, false, true },
+            { false, true, false }, { false, true, true },
+            { true, false, false }, { true, false, true },
+            { true, true, false }, { true, true, true }
+        };
+    }
+
+    @Test(groups = { "unit" }, dataProvider = "sslValidationSettings")
+    public void sslContextPreservesHostnameValidationSettings(
+        boolean serverCertValidationDisabled, boolean hostnameValidationDisabled, boolean http2Enabled)
+        throws IllegalAccessException {
+
+        Object original = FieldUtils.readStaticField(Configs.class, "cachedIsHostnameValidationDisabled", true);
+        SslContext sslContext = null;
+        SSLEngine engine = null;
+        try {
+            FieldUtils.writeStaticField(Configs.class, "cachedIsHostnameValidationDisabled",
+                hostnameValidationDisabled, true);
+            sslContext = new Configs().getSslContext(serverCertValidationDisabled, http2Enabled);
+            engine = sslContext.newEngine(ByteBufAllocator.DEFAULT, "localhost", 443);
+
+            assertThat(engine.getSSLParameters().getEndpointIdentificationAlgorithm())
+                .isEqualTo(serverCertValidationDisabled || hostnameValidationDisabled ? null : "HTTPS");
+        } finally {
+            ReferenceCountUtil.release(engine);
+            ReferenceCountUtil.release(sslContext);
+            FieldUtils.writeStaticField(Configs.class, "cachedIsHostnameValidationDisabled", original, true);
+        }
+    }
 
     @Test(groups = { "unit" })
     public void maxHttpHeaderSize() {

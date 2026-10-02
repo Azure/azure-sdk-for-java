@@ -95,6 +95,24 @@ A Cosmos DB account contains zero or more databases, a database (DB) contains ze
 You may read more about databases, containers and items [here](https://learn.microsoft.com/azure/cosmos-db/databases-containers-items).
 A few important properties defined at the level of the container, among them are provisioned throughput and partition key.
 
+### Direct-mode epoll on the Java module path
+
+When a named-module application uses Cosmos DB direct mode on JDK 11 or later, the
+`com.azure.cosmos` module already requires Netty's `io.netty.transport.classes.epoll` module.
+Netty 4.2 places the Linux JNI library in a **separate** explicit module, so including its JAR
+on the module path is not enough to make the bundled library visible. On Linux x86_64,
+retain or add the matching `io.netty:netty-transport-native-epoll` dependency with the
+`linux-x86_64` classifier and add `--add-modules=io.netty.transport.epoll.linux.x86_64`
+when launching the application. For another architecture, use its matching classifier
+and module name (check with `jar --describe-module --file <native-JAR> --release 11`).
+
+If the native module is not resolved, the bundled JNI library is unavailable to Netty and
+Cosmos DB direct mode falls back to JDK NIO unless a native library is supplied another way.
+These JPMS launch options do not apply to Java 8 or to classpath applications. Resolving
+the module does not by itself prove epoll is usable on the current OS. The
+[Netty HTTP plugin's module-path guidance](../../core/azure-core-http-netty/README.md#native-transports-on-the-module-path)
+also covers gateway HTTP and macOS kqueue.
+
 ### Global Distribution
 - Azure Cosmos DB is a globally distributed database service that's designed to provide low latency, elastic scalability of throughput, well-defined semantics for data consistency, and high availability.
 In short, if your application needs guaranteed fast response time anywhere in the world, if it's required to be always online, and needs unlimited and elastic scalability of throughput and storage, you should build your application on Azure Cosmos DB.

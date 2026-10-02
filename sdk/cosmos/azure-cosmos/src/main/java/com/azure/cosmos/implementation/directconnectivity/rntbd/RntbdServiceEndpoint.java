@@ -202,7 +202,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .option(ChannelOption.ALLOCATOR, config.allocator())
             .option(ChannelOption.AUTO_READ, true)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectTimeoutInMillis())
-            .option(ChannelOption.RCVBUF_ALLOCATOR, receiveBufferAllocator)
+            .option(ChannelOption.RECVBUF_ALLOCATOR, receiveBufferAllocator)
             .option(ChannelOption.SO_KEEPALIVE, true)
             .remoteAddress(this.serverKey.getHost(), this.serverKey.getPort());
 

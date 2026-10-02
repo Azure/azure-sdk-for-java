@@ -36,8 +36,9 @@ public final class NettyUtility {
     // List of Netty artifacts that should match the 'netty.version' property in the pom.xml file.
     // Non-native dependencies are required while native dependencies are optional. Without the native dependencies
     // the SDK will fall back to using the JDK implementations.
-    private static final List<String> REQUIRED_NETTY_VERSION_ARTIFACTS = Arrays.asList("netty-common", "netty-handler",
-        "netty-handler-proxy", "netty-buffer", "netty-codec", "netty-codec-http", "netty-codec-http2");
+    private static final List<String> REQUIRED_NETTY_VERSION_ARTIFACTS
+        = Arrays.asList("netty-common", "netty-handler", "netty-handler-proxy", "netty-buffer", "netty-codec-base",
+            "netty-codec-compression", "netty-codec-http", "netty-codec-http2", "netty-codec-socks");
     private static final List<String> OPTIONAL_NETTY_VERSION_ARTIFACTS = Arrays
         .asList("netty-transport-native-unix-common", "netty-transport-native-epoll", "netty-transport-native-kqueue");
 
