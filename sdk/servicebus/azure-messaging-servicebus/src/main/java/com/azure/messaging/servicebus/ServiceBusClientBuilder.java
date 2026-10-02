@@ -75,6 +75,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
@@ -915,6 +916,26 @@ public final class ServiceBusClientBuilder
      */
     public ServiceBusSessionProcessorClientBuilder sessionProcessor() {
         return new ServiceBusSessionProcessorClientBuilder();
+    }
+
+    /**
+     * A new instance of {@link ServiceBusProcessorAsyncClientBuilder} used to configure a
+     * {@link ServiceBusProcessorAsyncClient} instance that processes messages with reactive, non-blocking handlers.
+     *
+     * @return A new instance of {@link ServiceBusProcessorAsyncClientBuilder}.
+     */
+    public ServiceBusProcessorAsyncClientBuilder processorAsync() {
+        return new ServiceBusProcessorAsyncClientBuilder();
+    }
+
+    /**
+     * A new instance of {@link ServiceBusSessionProcessorAsyncClientBuilder} used to configure a
+     * {@link ServiceBusProcessorAsyncClient} instance that processes sessions with reactive, non-blocking handlers.
+     *
+     * @return A new instance of {@link ServiceBusSessionProcessorAsyncClientBuilder}.
+     */
+    public ServiceBusSessionProcessorAsyncClientBuilder sessionProcessorAsync() {
+        return new ServiceBusSessionProcessorAsyncClientBuilder();
     }
 
     /**
@@ -1896,6 +1917,261 @@ public final class ServiceBusClientBuilder
     }
 
     /**
+     * Builder for creating {@link ServiceBusProcessorAsyncClient} to process sessions with reactive, non-blocking
+     * message handlers from a session-enabled Service Bus entity.
+     *
+     * @see ServiceBusProcessorAsyncClient
+     */
+    @ServiceClientBuilder(serviceClients = { ServiceBusProcessorAsyncClient.class })
+    public final class ServiceBusSessionProcessorAsyncClientBuilder {
+        private final ServiceBusProcessorClientOptions processorClientOptions;
+        private final ServiceBusSessionReceiverClientBuilder sessionReceiverClientBuilder;
+        private Function<ServiceBusReceivedMessageContext, Mono<Void>> processMessage;
+        private Function<ServiceBusErrorContext, Mono<Void>> processError;
+
+        private ServiceBusSessionProcessorAsyncClientBuilder() {
+            sessionReceiverClientBuilder = new ServiceBusSessionReceiverClientBuilder();
+            processorClientOptions = new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1);
+            sessionReceiverClientBuilder.maxConcurrentSessions(1);
+        }
+
+        /**
+         * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
+         * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
+         * auto-renewal is disabled.
+         *
+         * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
+         * or {@code null} indicates that auto-renewal is disabled.
+         * @return The updated {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         * @throws IllegalArgumentException If {@code maxAutoLockRenewDuration} is negative.
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder
+            maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
+            sessionReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
+            return this;
+        }
+
+        /**
+         * Sets the maximum amount of time to wait for a message to be received for the currently active session.
+         * After this time has elapsed, the processor will close the session and attempt to process another session.
+         *
+         * <p>If not specified, the {@link AmqpRetryOptions#getTryTimeout()} will be used.</p>
+         * @param sessionIdleTimeout Session idle timeout.
+         * @return The updated {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         * @throws IllegalArgumentException If {@code sessionIdleTimeout} is negative.
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
+            validateAndThrow(sessionIdleTimeout, "sessionIdleTimeout");
+            sessionReceiverClientBuilder.sessionIdleTimeout(sessionIdleTimeout);
+            return this;
+        }
+
+        /**
+         * Enables session processing roll-over by processing at most {@code maxConcurrentSessions}.
+         *
+         * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         * @throws IllegalArgumentException if {@code maxConcurrentSessions} is less than 1.
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
+            if (maxConcurrentSessions < 1) {
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'maxConcurrentSessions' cannot be less than 1"));
+            }
+            sessionReceiverClientBuilder.maxConcurrentSessions(maxConcurrentSessions);
+            return this;
+        }
+
+        /**
+         * Sets the prefetch count of the processor. For both {@link ServiceBusReceiveMode#PEEK_LOCK PEEK_LOCK} and
+         * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 0.
+         *
+         * @param prefetchCount The prefetch count.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder prefetchCount(int prefetchCount) {
+            sessionReceiverClientBuilder.prefetchCount(prefetchCount);
+            return this;
+        }
+
+        /**
+         * Sets the name of the queue to create a processor for.
+         * @param queueName Name of the queue.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder queueName(String queueName) {
+            sessionReceiverClientBuilder.queueName(queueName);
+            return this;
+        }
+
+        /**
+         * Sets the receive mode for the processor.
+         * @param receiveMode Mode for receiving messages.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder receiveMode(ServiceBusReceiveMode receiveMode) {
+            sessionReceiverClientBuilder.receiveMode(receiveMode);
+            return this;
+        }
+
+        /**
+         * Sets the type of the {@link SubQueue} to connect to. A {@link #queueName(String) queueName} or
+         * {@link #topicName(String) topicName} must also be set.
+         *
+         * @param subQueue The type of the sub queue.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         * @see SubQueue
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder subQueue(SubQueue subQueue) {
+            this.sessionReceiverClientBuilder.subQueue(subQueue);
+            return this;
+        }
+
+        /**
+         * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
+         * </b>
+         * @param subscriptionName Name of the subscription.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder subscriptionName(String subscriptionName) {
+            sessionReceiverClientBuilder.subscriptionName(subscriptionName);
+            return this;
+        }
+
+        /**
+         * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
+         * @param topicName Name of the topic.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder topicName(String topicName) {
+            sessionReceiverClientBuilder.topicName(topicName);
+            return this;
+        }
+
+        /**
+         * The async message processing callback for the processor that will be executed when a message is received.
+         * The returned {@link Mono} represents the asynchronous processing of the message.
+         *
+         * @param processMessage The async message processing function invoked when a message is received.
+         *
+         * @return The updated {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder
+            processMessage(Function<ServiceBusReceivedMessageContext, Mono<Void>> processMessage) {
+            this.processMessage = processMessage;
+            return this;
+        }
+
+        /**
+         * The async error handler for the processor which will be invoked in the event of an error while receiving
+         * messages.
+         *
+         * @param processError The async error handler invoked when an error occurs.
+         *
+         * @return The updated {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder
+            processError(Function<ServiceBusErrorContext, Mono<Void>> processError) {
+            this.processError = processError;
+            return this;
+        }
+
+        /**
+         * The maximum number of messages processed concurrently. For the async session processor this bounds the
+         * total number of in-flight handlers across all active sessions (the processor rolls through up to
+         * {@code maxConcurrentSessions} sessions); it is not a per-session limit.
+         *
+         * @param maxConcurrentCalls the maximum number of messages processed concurrently across all sessions.
+         *
+         * @return The updated {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         * @throws IllegalArgumentException if {@code maxConcurrentCalls} is less than 1.
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
+            if (maxConcurrentCalls < 1) {
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'maxConcurrentCalls' cannot be less than 1"));
+            }
+            processorClientOptions.setMaxConcurrentCalls(maxConcurrentCalls);
+            return this;
+        }
+
+        /**
+         * Sets the maximum time to wait for in-flight message handlers to complete when the processor is closed.
+         *
+         * <p>If not specified, defaults to 30 seconds.</p>
+         *
+         * @param drainTimeout The maximum time to wait for in-flight handlers. Must be positive.
+         * @return The updated {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         * @throws NullPointerException if {@code drainTimeout} is null.
+         * @throws IllegalArgumentException if {@code drainTimeout} is zero or negative.
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder drainTimeout(Duration drainTimeout) {
+            processorClientOptions.setDrainTimeout(drainTimeout);
+            return this;
+        }
+
+        /**
+         * Disables auto-complete and auto-abandon of received messages. By default, a message whose handler
+         * {@link Mono} completes successfully is {@link ServiceBusReceivedMessageContext#complete() completed}, and a
+         * message whose handler {@link Mono} signals an error is {@link ServiceBusReceivedMessageContext#abandon()
+         * abandoned}.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusSessionProcessorAsyncClientBuilder disableAutoComplete() {
+            processorClientOptions.setDisableAutoComplete(true);
+            return this;
+        }
+
+        /**
+         * Creates a <b>session-aware</b> async Service Bus processor responsible for reading
+         * {@link ServiceBusReceivedMessage messages} from a specific queue or subscription with reactive,
+         * non-blocking handlers.
+         *
+         * @return A new {@link ServiceBusProcessorAsyncClient} that receives messages from a queue or subscription.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
+         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
+         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
+         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
+         * @throws NullPointerException if the {@link #processMessage(Function)} or {@link #processError(Function)}
+         *     callbacks are not set.
+         */
+        public ServiceBusProcessorAsyncClient buildProcessorAsyncClient() {
+            // Validate entity/connection inputs eagerly so a misconfiguration fails at build time (matching the
+            // documented exceptions) rather than being deferred to start().
+            validateInputs();
+            // The async processor manages message settlement explicitly in its reactive pipeline, so the underlying
+            // receiver must never auto-settle. The user's auto-complete preference is carried in
+            // processorClientOptions and applied by the processor itself.
+            sessionReceiverClientBuilder.disableAutoComplete();
+            return new ServiceBusProcessorAsyncClient(sessionReceiverClientBuilder,
+                sessionReceiverClientBuilder.queueName, sessionReceiverClientBuilder.topicName,
+                sessionReceiverClientBuilder.subscriptionName,
+                Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
+                Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
+        }
+
+        private void validateInputs() {
+            final ServiceBusSessionReceiverClientBuilder builder = sessionReceiverClientBuilder;
+            final MessagingEntityType entityType
+                = validateEntityPaths(connectionStringEntityName, builder.topicName, builder.queueName);
+            getEntityPath(entityType, builder.queueName, builder.topicName, builder.subscriptionName, builder.subQueue);
+            getConnectionOptions();
+        }
+    }
+
+    /**
      * Builder for creating {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to consume
      * messages from a <b>session aware</b> Service Bus entity.
      *
@@ -2643,6 +2919,230 @@ public final class ServiceBusClientBuilder
          * the processor will be built lazily, i.e., when the application calls {@link ServiceBusProcessorClient#start()},
          * This is a helper method in v2 for input validations at build time.
          */
+        private void validateInputs() {
+            final ServiceBusReceiverClientBuilder builder = serviceBusReceiverClientBuilder;
+            final MessagingEntityType entityType
+                = validateEntityPaths(connectionStringEntityName, builder.topicName, builder.queueName);
+            getEntityPath(entityType, builder.queueName, builder.topicName, builder.subscriptionName, builder.subQueue);
+            getConnectionOptions();
+        }
+    }
+
+    /**
+     * Builder for creating {@link ServiceBusProcessorAsyncClient} to process messages with reactive, non-blocking
+     * message handlers from a non-session-enabled Service Bus entity.
+     *
+     * @see ServiceBusProcessorAsyncClient
+     */
+    @ServiceClientBuilder(serviceClients = { ServiceBusProcessorAsyncClient.class })
+    public final class ServiceBusProcessorAsyncClientBuilder {
+        private final ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder;
+        private final ServiceBusProcessorClientOptions processorClientOptions;
+        private Function<ServiceBusReceivedMessageContext, Mono<Void>> processMessage;
+        private Function<ServiceBusErrorContext, Mono<Void>> processError;
+
+        private ServiceBusProcessorAsyncClientBuilder() {
+            serviceBusReceiverClientBuilder = new ServiceBusReceiverClientBuilder();
+            processorClientOptions = new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1);
+        }
+
+        /**
+         * Sets the prefetch count of the processor. For both {@link ServiceBusReceiveMode#PEEK_LOCK PEEK_LOCK} and
+         * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 0.
+         *
+         * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
+         * and before the application starts the processor.
+         * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
+         *
+         * @param prefetchCount The prefetch count.
+         *
+         * @return The modified {@link ServiceBusProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusProcessorAsyncClientBuilder prefetchCount(int prefetchCount) {
+            serviceBusReceiverClientBuilder.prefetchCount(prefetchCount);
+            return this;
+        }
+
+        /**
+         * Sets the name of the queue to create a processor for.
+         * @param queueName Name of the queue.
+         *
+         * @return The modified {@link ServiceBusProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusProcessorAsyncClientBuilder queueName(String queueName) {
+            serviceBusReceiverClientBuilder.queueName(queueName);
+            return this;
+        }
+
+        /**
+         * Sets the receive mode for the processor.
+         * @param receiveMode Mode for receiving messages.
+         *
+         * @return The modified {@link ServiceBusProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusProcessorAsyncClientBuilder receiveMode(ServiceBusReceiveMode receiveMode) {
+            serviceBusReceiverClientBuilder.receiveMode(receiveMode);
+            return this;
+        }
+
+        /**
+         * Sets the type of the {@link SubQueue} to connect to. A {@link #queueName(String) queueName} or
+         * {@link #topicName(String) topicName} must also be set.
+         *
+         * @param subQueue The type of the sub queue.
+         *
+         * @return The modified {@link ServiceBusProcessorAsyncClientBuilder} object.
+         * @see SubQueue
+         */
+        public ServiceBusProcessorAsyncClientBuilder subQueue(SubQueue subQueue) {
+            serviceBusReceiverClientBuilder.subQueue(subQueue);
+            return this;
+        }
+
+        /**
+         * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
+         * </b>
+         * @param subscriptionName Name of the subscription.
+         *
+         * @return The modified {@link ServiceBusProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusProcessorAsyncClientBuilder subscriptionName(String subscriptionName) {
+            serviceBusReceiverClientBuilder.subscriptionName(subscriptionName);
+            return this;
+        }
+
+        /**
+         * Sets the name of the topic. <b>{@link #subscriptionName(String)} must also be set.</b>
+         * @param topicName Name of the topic.
+         *
+         * @return The modified {@link ServiceBusProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusProcessorAsyncClientBuilder topicName(String topicName) {
+            serviceBusReceiverClientBuilder.topicName(topicName);
+            return this;
+        }
+
+        /**
+         * The async message processing callback for the processor which will be executed when a message is received.
+         * The returned {@link Mono} represents the asynchronous processing of the message. Up to
+         * {@code maxConcurrentCalls} messages are processed concurrently; a new message is requested from the broker as
+         * each in-flight handler's {@link Mono} terminates.
+         *
+         * @param processMessage The async message processing function invoked when a message is received.
+         *
+         * @return The updated {@link ServiceBusProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusProcessorAsyncClientBuilder
+            processMessage(Function<ServiceBusReceivedMessageContext, Mono<Void>> processMessage) {
+            this.processMessage = processMessage;
+            return this;
+        }
+
+        /**
+         * The async error handler for the processor which will be invoked in the event of an error while receiving
+         * messages.
+         *
+         * @param processError The async error handler invoked when an error occurs.
+         *
+         * @return The updated {@link ServiceBusProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusProcessorAsyncClientBuilder
+            processError(Function<ServiceBusErrorContext, Mono<Void>> processError) {
+            this.processError = processError;
+            return this;
+        }
+
+        /**
+         * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
+         * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
+         * auto-renewal is disabled.
+         *
+         * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
+         * or {@code null} indicates that auto-renewal is disabled.
+         *
+         * @return The updated {@link ServiceBusProcessorAsyncClientBuilder} object.
+         * @throws IllegalArgumentException If {@code maxAutoLockRenewDuration} is negative.
+         */
+        public ServiceBusProcessorAsyncClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            validateAndThrow(maxAutoLockRenewDuration, "maxAutoLockRenewDuration");
+            serviceBusReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
+            return this;
+        }
+
+        /**
+         * Max concurrent messages that this processor should process. By default, this is set to 1.
+         *
+         * @param maxConcurrentCalls max concurrent messages that this processor should process.
+         * @return The updated {@link ServiceBusProcessorAsyncClientBuilder} object.
+         * @throws IllegalArgumentException if the {@code maxConcurrentCalls} is set to a value less than 1.
+         */
+        public ServiceBusProcessorAsyncClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
+            if (maxConcurrentCalls < 1) {
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'maxConcurrentCalls' cannot be less than 1"));
+            }
+            processorClientOptions.setMaxConcurrentCalls(maxConcurrentCalls);
+            return this;
+        }
+
+        /**
+         * Sets the maximum time to wait for in-flight message handlers to complete when the processor is closed.
+         *
+         * <p>If not specified, defaults to 30 seconds.</p>
+         *
+         * @param drainTimeout The maximum time to wait for in-flight handlers. Must be positive.
+         * @return The updated {@link ServiceBusProcessorAsyncClientBuilder} object.
+         * @throws NullPointerException if {@code drainTimeout} is null.
+         * @throws IllegalArgumentException if {@code drainTimeout} is zero or negative.
+         */
+        public ServiceBusProcessorAsyncClientBuilder drainTimeout(Duration drainTimeout) {
+            processorClientOptions.setDrainTimeout(drainTimeout);
+            return this;
+        }
+
+        /**
+         * Disables auto-complete and auto-abandon of received messages. By default, a message whose handler
+         * {@link Mono} completes successfully is {@link ServiceBusReceivedMessageContext#complete() completed}, and a
+         * message whose handler {@link Mono} signals an error is {@link ServiceBusReceivedMessageContext#abandon()
+         * abandoned}.
+         *
+         * @return The modified {@link ServiceBusProcessorAsyncClientBuilder} object.
+         */
+        public ServiceBusProcessorAsyncClientBuilder disableAutoComplete() {
+            processorClientOptions.setDisableAutoComplete(true);
+            return this;
+        }
+
+        /**
+         * Creates an async Service Bus message processor responsible for reading {@link ServiceBusReceivedMessage
+         * messages} from a specific queue or subscription with reactive, non-blocking handlers.
+         *
+         * @return A new {@link ServiceBusProcessorAsyncClient} that processes messages from a queue or subscription.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
+         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
+         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
+         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
+         * @throws NullPointerException if the {@link #processMessage(Function)} or {@link #processError(Function)}
+         *     callbacks are not set.
+         */
+        public ServiceBusProcessorAsyncClient buildProcessorAsyncClient() {
+            // Validate entity/connection inputs eagerly so a misconfiguration fails at build time (matching the
+            // documented exceptions) rather than being deferred to start().
+            validateInputs();
+            // The async processor manages message settlement explicitly in its reactive pipeline, so the underlying
+            // receiver must never auto-settle. The user's auto-complete preference is carried in
+            // processorClientOptions and applied by the processor itself.
+            serviceBusReceiverClientBuilder.disableAutoComplete();
+            return new ServiceBusProcessorAsyncClient(serviceBusReceiverClientBuilder,
+                serviceBusReceiverClientBuilder.queueName, serviceBusReceiverClientBuilder.topicName,
+                serviceBusReceiverClientBuilder.subscriptionName,
+                Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
+                Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
+        }
+
         private void validateInputs() {
             final ServiceBusReceiverClientBuilder builder = serviceBusReceiverClientBuilder;
             final MessagingEntityType entityType
