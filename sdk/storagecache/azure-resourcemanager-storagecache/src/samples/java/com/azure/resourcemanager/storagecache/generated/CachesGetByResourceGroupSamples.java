@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storagecache.generated;
  */
 public final class CachesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Caches_Get.json
+     * x-ms-original-file: 2026-08-01/Caches_Get.json
      */
     /**
      * Sample code: Caches_Get.

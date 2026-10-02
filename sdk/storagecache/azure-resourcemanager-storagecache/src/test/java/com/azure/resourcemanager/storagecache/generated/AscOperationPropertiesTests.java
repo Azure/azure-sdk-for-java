@@ -11,7 +11,7 @@ public final class AscOperationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AscOperationProperties model = BinaryData.fromString(
-            "{\"output\":{\"inrfdwoyu\":\"\\\"datazkopb\\\"\",\"l\":\"\\\"datahziuiefozbhdms\\\"\",\"rmaequ\":\"\\\"datazqhof\\\"\"}}")
+            "{\"output\":{\"uzhlhkjoqrv\":\"\\\"datakdgszywkbirr\\\"\",\"oupmfii\":\"\\\"dataqaatjinrv\\\"\",\"x\":\"\\\"datafggjioolvr\\\"\"}}")
             .toObject(AscOperationProperties.class);
     }
 }

@@ -36,6 +36,17 @@ public final class ExpansionJobProperties implements JsonSerializable<ExpansionJ
      */
     private ExpansionJobPropertiesStatus innerStatus;
 
+    /*
+     * When true, expansion creates a RebalanceJob after completing. Optional, defaults to true.
+     */
+    private Boolean runRebalanceJob;
+
+    /*
+     * Fully qualified ARM resource ID of the child rebalance job created by this expansion. Populated after
+     * RebalanceJob is created.
+     */
+    private String rebalanceJobId;
+
     /**
      * Creates an instance of ExpansionJobProperties class.
      */
@@ -83,6 +94,38 @@ public final class ExpansionJobProperties implements JsonSerializable<ExpansionJ
      */
     private ExpansionJobPropertiesStatus innerStatus() {
         return this.innerStatus;
+    }
+
+    /**
+     * Get the runRebalanceJob property: When true, expansion creates a RebalanceJob after completing. Optional,
+     * defaults to true.
+     * 
+     * @return the runRebalanceJob value.
+     */
+    public Boolean runRebalanceJob() {
+        return this.runRebalanceJob;
+    }
+
+    /**
+     * Set the runRebalanceJob property: When true, expansion creates a RebalanceJob after completing. Optional,
+     * defaults to true.
+     * 
+     * @param runRebalanceJob the runRebalanceJob value to set.
+     * @return the ExpansionJobProperties object itself.
+     */
+    public ExpansionJobProperties withRunRebalanceJob(Boolean runRebalanceJob) {
+        this.runRebalanceJob = runRebalanceJob;
+        return this;
+    }
+
+    /**
+     * Get the rebalanceJobId property: Fully qualified ARM resource ID of the child rebalance job created by this
+     * expansion. Populated after RebalanceJob is created.
+     * 
+     * @return the rebalanceJobId value.
+     */
+    public String rebalanceJobId() {
+        return this.rebalanceJobId;
     }
 
     /**
@@ -149,6 +192,7 @@ public final class ExpansionJobProperties implements JsonSerializable<ExpansionJ
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("newStorageCapacityTiB", this.newStorageCapacityTiB);
+        jsonWriter.writeBooleanField("runRebalanceJob", this.runRebalanceJob);
         return jsonWriter.writeEndObject();
     }
 
@@ -174,6 +218,10 @@ public final class ExpansionJobProperties implements JsonSerializable<ExpansionJ
                     deserializedExpansionJobProperties.newStorageCapacityTiB = reader.getNullable(JsonReader::getFloat);
                 } else if ("status".equals(fieldName)) {
                     deserializedExpansionJobProperties.innerStatus = ExpansionJobPropertiesStatus.fromJson(reader);
+                } else if ("runRebalanceJob".equals(fieldName)) {
+                    deserializedExpansionJobProperties.runRebalanceJob = reader.getNullable(JsonReader::getBoolean);
+                } else if ("rebalanceJobId".equals(fieldName)) {
+                    deserializedExpansionJobProperties.rebalanceJobId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

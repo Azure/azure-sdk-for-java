@@ -11,7 +11,7 @@ public final class AmlFilesystemContainerStorageInterfaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmlFilesystemContainerStorageInterface model = BinaryData.fromString(
-            "{\"persistentVolumeClaim\":\"mkcjhwqytjrybn\",\"persistentVolume\":\"ewgdrjervn\",\"storageClass\":\"nqpeh\"}")
+            "{\"persistentVolumeClaim\":\"bncblylpstdbhhx\",\"persistentVolume\":\"zdzucerscdntnevf\",\"storageClass\":\"jmygtdsslswtmwer\"}")
             .toObject(AmlFilesystemContainerStorageInterface.class);
     }
 }

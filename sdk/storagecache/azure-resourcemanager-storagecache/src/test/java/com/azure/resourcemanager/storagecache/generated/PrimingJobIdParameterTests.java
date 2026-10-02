@@ -12,14 +12,14 @@ public final class PrimingJobIdParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrimingJobIdParameter model
-            = BinaryData.fromString("{\"primingJobId\":\"wwrq\"}").toObject(PrimingJobIdParameter.class);
-        Assertions.assertEquals("wwrq", model.primingJobId());
+            = BinaryData.fromString("{\"primingJobId\":\"zmhjrunmp\"}").toObject(PrimingJobIdParameter.class);
+        Assertions.assertEquals("zmhjrunmp", model.primingJobId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrimingJobIdParameter model = new PrimingJobIdParameter().withPrimingJobId("wwrq");
+        PrimingJobIdParameter model = new PrimingJobIdParameter().withPrimingJobId("zmhjrunmp");
         model = BinaryData.fromObject(model).toObject(PrimingJobIdParameter.class);
-        Assertions.assertEquals("wwrq", model.primingJobId());
+        Assertions.assertEquals("zmhjrunmp", model.primingJobId());
     }
 }
