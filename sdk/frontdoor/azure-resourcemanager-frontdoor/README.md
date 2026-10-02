@@ -1,8 +1,8 @@
-# Azure Resource Manager FrontDoor client library for Java
+# Azure Resource Manager Front Door client library for Java
 
-Azure Resource Manager FrontDoor client library for Java.
+Azure Resource Manager Front Door client library for Java.
 
-This package contains Microsoft Azure SDK for FrontDoor Management SDK. FrontDoor Client. Package tag package-2024-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Front Door Management SDK. APIs to manage web application firewall rules. Package api-version 2026-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-frontdoor</artifactId>
-    <version>1.2.0-beta.1</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,7 +52,7 @@ Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment 
 Assuming the use of the `DefaultAzureCredential` credential class, the client can be authenticated using the following code:
 
 ```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
@@ -60,7 +60,7 @@ FrontDoorManager manager = FrontDoorManager
     .authenticate(credential, profile);
 ```
 
-The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
+The sample code assumes global Azure. Please change the `AzureCloud.AZURE_PUBLIC_CLOUD` variable if otherwise.
 
 See [Authentication][authenticate] for more options.
 
@@ -70,71 +70,6 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
-```java
-StorageAccount storageAccount = storageManager.storageAccounts()
-    .define(saName)
-    .withRegion(REGION)
-    .withExistingResourceGroup(resourceGroupName)
-    .create();
-
-String backendAddress = fdName + ".blob.core.windows.net";
-String frontendName = "frontend1";
-String loadBalancingName = "loadbalancing1";
-String healthProbeName = "healthprobe1";
-String routingRuleName = "rule1";
-String backendPoolName = "backend1";
-subscriptionId = ResourceId.fromString(storageAccount.id()).subscriptionId();
-String frontendEndpointsId = getResourceId("frontendEndpoints", frontendName);
-String loadBalancingSettingsId = getResourceId("loadBalancingSettings", loadBalancingName);
-String healthProbeSettingsId = getResourceId("healthProbeSettings", healthProbeName);
-String backendPoolsId = getResourceId("backendPools", backendPoolName);
-
-FrontDoor frontDoor = manager.frontDoors()
-    .define(fdName)
-    .withRegion("global")
-    .withExistingResourceGroup(resourceGroupName)
-    .withFrontendEndpoints(Collections.singletonList(new FrontendEndpointInner().withName(frontendName)
-        .withHostname(fdName + ".azurefd.net")
-        .withSessionAffinityEnabledState(SessionAffinityEnabledState.DISABLED)))
-    .withBackendPools(Collections.singletonList(new BackendPool().withName(backendPoolName)
-        .withBackends(Collections.singletonList(new Backend().withAddress(backendAddress)
-            .withEnabledState(BackendEnabledState.ENABLED)
-            .withBackendHostHeader(backendAddress)
-            .withHttpPort(80)
-            .withHttpsPort(443)
-            .withPriority(1)
-            .withWeight(50)))
-        .withLoadBalancingSettings(new SubResource().withId(loadBalancingSettingsId))
-        .withHealthProbeSettings(new SubResource().withId(healthProbeSettingsId))))
-    .withLoadBalancingSettings(
-        Collections.singletonList(new LoadBalancingSettingsModel().withName(loadBalancingName)
-            .withSampleSize(4)
-            .withSuccessfulSamplesRequired(2)
-            .withAdditionalLatencyMilliseconds(0)))
-    .withHealthProbeSettings(
-        Collections.singletonList(new HealthProbeSettingsModel().withName(healthProbeName)
-            .withEnabledState(HealthProbeEnabled.ENABLED)
-            .withPath("/")
-            .withProtocol(FrontDoorProtocol.HTTPS)
-            .withHealthProbeMethod(FrontDoorHealthProbeMethod.HEAD)
-            .withIntervalInSeconds(30)))
-    .withRoutingRules(Collections.singletonList(new RoutingRule().withName(routingRuleName)
-        .withEnabledState(RoutingRuleEnabledState.ENABLED)
-        .withFrontendEndpoints(Collections.singletonList(new SubResource().withId(frontendEndpointsId)))
-        .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTP, FrontDoorProtocol.HTTPS))
-        .withPatternsToMatch(Collections.singletonList("/*"))
-        .withRouteConfiguration(
-            new ForwardingConfiguration().withForwardingProtocol(FrontDoorForwardingProtocol.HTTPS_ONLY)
-                .withBackendPool(new SubResource().withId(backendPoolsId)))))
-    .create();
-```
-```java
-policy = frontDoorManager.policies()
-    .define(policyName)
-    .withRegion(REGION)
-    .withExistingResourceGroup(resourceGroupName)
-    .create();
-```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/frontdoor/azure-resourcemanager-frontdoor/SAMPLE.md)
 
 
@@ -165,5 +100,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [cg]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
-
-
