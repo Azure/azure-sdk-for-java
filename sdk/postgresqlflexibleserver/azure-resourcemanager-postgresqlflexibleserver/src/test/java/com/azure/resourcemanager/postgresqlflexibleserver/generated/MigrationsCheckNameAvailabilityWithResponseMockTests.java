@@ -22,7 +22,7 @@ public final class MigrationsCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"igkxkbsazga\",\"type\":\"gacyrcmjdmspo\",\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"rylniofrzg\"}";
+            = "{\"name\":\"aosrxuz\",\"type\":\"oamktcq\",\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"zah\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class MigrationsCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MigrationNameAvailability response = manager.migrations()
-            .checkNameAvailabilityWithResponse("bcblemb", "kbwvqvxkdiv",
-                new MigrationNameAvailabilityInner().withName("ihebwtsw").withType("zuwfmdur"),
+            .checkNameAvailabilityWithResponse("xxpkyjcxc", "xgrytfmp",
+                new MigrationNameAvailabilityInner().withName("ycilrmcaykggnox").withType("ztrksxwpndf"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("igkxkbsazga", response.name());
-        Assertions.assertEquals("gacyrcmjdmspo", response.type());
+        Assertions.assertEquals("aosrxuz", response.name());
+        Assertions.assertEquals("oamktcq", response.type());
     }
 }

@@ -21,27 +21,27 @@ public final class ScheduledActionsExtensionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionsExtensionProperties model = BinaryData.fromString(
-            "{\"resourceType\":\"VirtualMachineScaleSet\",\"actionType\":\"Start\",\"startTime\":\"2021-10-30T00:34:42Z\",\"endTime\":\"2021-11-13T05:04:42Z\",\"schedule\":{\"scheduledTime\":\"l\",\"timeZone\":\"eazulcs\",\"requestedWeekDays\":[\"Wednesday\"],\"requestedMonths\":[\"January\",\"March\",\"October\",\"August\"],\"requestedDaysOfTheMonth\":[1543797087,2083074901],\"executionParameters\":{\"retryPolicy\":{\"retryCount\":2048199859,\"retryWindowInMinutes\":1551351908,\"onFailureAction\":\"Delete\"}},\"deadlineType\":\"CompleteBy\"},\"notificationSettings\":[{\"destination\":\"nfepgf\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"l\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"xykxhdj\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"bcxf\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}],\"disabled\":false,\"provisioningState\":\"Updating\",\"resourceNotificationSettings\":[{\"destination\":\"zhqizxf\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}")
+            "{\"resourceType\":\"VirtualMachineScaleSet\",\"actionType\":\"Deallocate\",\"startTime\":\"2021-03-07T00:28:37Z\",\"endTime\":\"2021-11-13T08:37:26Z\",\"schedule\":{\"scheduledTime\":\"xvmhf\",\"timeZone\":\"uzjyihsasbhudypo\",\"requestedWeekDays\":[\"Saturday\",\"Monday\"],\"requestedMonths\":[\"December\",\"December\",\"January\"],\"requestedDaysOfTheMonth\":[1817961545,1531822118,663139263,481123486],\"executionParameters\":{\"retryPolicy\":{\"retryCount\":2084317491,\"retryWindowInMinutes\":1019229263,\"onFailureAction\":\"Deallocate\"}},\"deadlineType\":\"InitiateAt\"},\"notificationSettings\":[{\"destination\":\"ygqdnfwqzdz\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}],\"disabled\":true,\"provisioningState\":\"Succeeded\",\"resourceNotificationSettings\":[{\"destination\":\"lyvijouwiv\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"un\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}")
             .toObject(ScheduledActionsExtensionProperties.class);
         Assertions.assertEquals(ResourceType.VIRTUAL_MACHINE_SCALE_SET, model.resourceType());
-        Assertions.assertEquals(ScheduledActionType.START, model.actionType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T00:34:42Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T05:04:42Z"), model.endTime());
-        Assertions.assertEquals("l", model.schedule().scheduledTime());
-        Assertions.assertEquals("eazulcs", model.schedule().timeZone());
-        Assertions.assertEquals(WeekDay.WEDNESDAY, model.schedule().requestedWeekDays().get(0));
-        Assertions.assertEquals(Month.JANUARY, model.schedule().requestedMonths().get(0));
-        Assertions.assertEquals(1543797087, model.schedule().requestedDaysOfTheMonth().get(0));
-        Assertions.assertEquals(2048199859, model.schedule().executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(1551351908,
+        Assertions.assertEquals(ScheduledActionType.DEALLOCATE, model.actionType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-07T00:28:37Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T08:37:26Z"), model.endTime());
+        Assertions.assertEquals("xvmhf", model.schedule().scheduledTime());
+        Assertions.assertEquals("uzjyihsasbhudypo", model.schedule().timeZone());
+        Assertions.assertEquals(WeekDay.SATURDAY, model.schedule().requestedWeekDays().get(0));
+        Assertions.assertEquals(Month.DECEMBER, model.schedule().requestedMonths().get(0));
+        Assertions.assertEquals(1817961545, model.schedule().requestedDaysOfTheMonth().get(0));
+        Assertions.assertEquals(2084317491, model.schedule().executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1019229263,
             model.schedule().executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ScheduledActionsResourceOperationType.DELETE,
+        Assertions.assertEquals(ScheduledActionsResourceOperationType.DEALLOCATE,
             model.schedule().executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals(ScheduledActionsDeadlineType.COMPLETE_BY, model.schedule().deadlineType());
-        Assertions.assertEquals("nfepgf", model.notificationSettings().get(0).destination());
+        Assertions.assertEquals(ScheduledActionsDeadlineType.INITIATE_AT, model.schedule().deadlineType());
+        Assertions.assertEquals("ygqdnfwqzdz", model.notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.notificationSettings().get(0).language());
-        Assertions.assertTrue(model.notificationSettings().get(0).disabled());
-        Assertions.assertFalse(model.disabled());
+        Assertions.assertFalse(model.notificationSettings().get(0).disabled());
+        Assertions.assertTrue(model.disabled());
     }
 }

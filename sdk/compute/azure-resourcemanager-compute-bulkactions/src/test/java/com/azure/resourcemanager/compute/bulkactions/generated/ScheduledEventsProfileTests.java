@@ -14,25 +14,25 @@ public final class ScheduledEventsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledEventsProfile model = BinaryData.fromString(
-            "{\"terminateNotificationProfile\":{\"notBeforeTimeout\":\"beyvpnqicvinvkjj\",\"enable\":true},\"osImageNotificationProfile\":{\"notBeforeTimeout\":\"uukzclewyhmlw\",\"enable\":false}}")
+            "{\"terminateNotificationProfile\":{\"notBeforeTimeout\":\"sgsahmkycgr\",\"enable\":false},\"osImageNotificationProfile\":{\"notBeforeTimeout\":\"etaebu\",\"enable\":true}}")
             .toObject(ScheduledEventsProfile.class);
-        Assertions.assertEquals("beyvpnqicvinvkjj", model.terminateNotificationProfile().notBeforeTimeout());
-        Assertions.assertTrue(model.terminateNotificationProfile().enable());
-        Assertions.assertEquals("uukzclewyhmlw", model.osImageNotificationProfile().notBeforeTimeout());
-        Assertions.assertFalse(model.osImageNotificationProfile().enable());
+        Assertions.assertEquals("sgsahmkycgr", model.terminateNotificationProfile().notBeforeTimeout());
+        Assertions.assertFalse(model.terminateNotificationProfile().enable());
+        Assertions.assertEquals("etaebu", model.osImageNotificationProfile().notBeforeTimeout());
+        Assertions.assertTrue(model.osImageNotificationProfile().enable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduledEventsProfile model = new ScheduledEventsProfile()
             .withTerminateNotificationProfile(
-                new TerminateNotificationProfile().withNotBeforeTimeout("beyvpnqicvinvkjj").withEnable(true))
+                new TerminateNotificationProfile().withNotBeforeTimeout("sgsahmkycgr").withEnable(false))
             .withOsImageNotificationProfile(
-                new OSImageNotificationProfile().withNotBeforeTimeout("uukzclewyhmlw").withEnable(false));
+                new OSImageNotificationProfile().withNotBeforeTimeout("etaebu").withEnable(true));
         model = BinaryData.fromObject(model).toObject(ScheduledEventsProfile.class);
-        Assertions.assertEquals("beyvpnqicvinvkjj", model.terminateNotificationProfile().notBeforeTimeout());
-        Assertions.assertTrue(model.terminateNotificationProfile().enable());
-        Assertions.assertEquals("uukzclewyhmlw", model.osImageNotificationProfile().notBeforeTimeout());
-        Assertions.assertFalse(model.osImageNotificationProfile().enable());
+        Assertions.assertEquals("sgsahmkycgr", model.terminateNotificationProfile().notBeforeTimeout());
+        Assertions.assertFalse(model.terminateNotificationProfile().enable());
+        Assertions.assertEquals("etaebu", model.osImageNotificationProfile().notBeforeTimeout());
+        Assertions.assertTrue(model.osImageNotificationProfile().enable());
     }
 }

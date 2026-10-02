@@ -4,6 +4,10 @@
 
 ### Features Added
 
+- Added the `ValidatableContent` interface, implemented by the various upload and download option types that support
+  transfer content validation. This allows `ContentValidationAlgorithm` to be configured and inspected agnostically
+  across many different upload and download operations.
+
 ### Breaking Changes
 
 ### Bugs Fixed
