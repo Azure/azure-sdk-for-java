@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicebus.generated;
  */
 public final class NamespacesListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/SBNameSpaceList.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/SBNameSpaceList.json
      */
     /**
      * Sample code: NameSpaceList.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicebus.fluent.models.SBQueueInner;
  */
 public final class QueuesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Queues/SBQueueCreate.json
+     * x-ms-original-file: 2026-07-01-preview/Queues/SBQueueCreate.json
      */
     /**
      * Sample code: QueueCreate.
