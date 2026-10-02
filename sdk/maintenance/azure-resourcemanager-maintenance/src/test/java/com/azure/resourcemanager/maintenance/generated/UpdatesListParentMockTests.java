@@ -25,7 +25,7 @@ public final class UpdatesListParentMockTests {
     @Test
     public void testListParent() throws Exception {
         String responseStr
-            = "{\"value\":[{\"maintenanceScope\":\"Extension\",\"impactType\":\"Freeze\",\"status\":\"RetryNow\",\"impactDurationInSec\":1454570926,\"notBefore\":\"2021-06-27T02:38:30Z\",\"properties\":{\"resourceId\":\"drizetpwbr\"}}]}";
+            = "{\"value\":[{\"maintenanceScope\":\"OSImage\",\"impactType\":\"Redeploy\",\"status\":\"InProgress\",\"impactDurationInSec\":197015788,\"notBefore\":\"2021-07-01T10:55:59Z\",\"properties\":{\"resourceId\":\"xoafgaoqltfae\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,14 +35,14 @@ public final class UpdatesListParentMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Update> response = manager.updates()
-            .listParent("f", "oajvgcxtxjcs", "eafidltugsresm", "ssjhoiftxfkf", "egprhptil", "ucb",
+            .listParent("yhsgz", "czbgomfgbeg", "qgleohibetnluank", "rfxeeebtij", "acvbmqz", "qqxlajr",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(MaintenanceScope.EXTENSION, response.iterator().next().maintenanceScope());
-        Assertions.assertEquals(ImpactType.FREEZE, response.iterator().next().impactType());
-        Assertions.assertEquals(UpdateStatus.RETRY_NOW, response.iterator().next().status());
-        Assertions.assertEquals(1454570926, response.iterator().next().impactDurationInSec());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-27T02:38:30Z"), response.iterator().next().notBefore());
-        Assertions.assertEquals("drizetpwbr", response.iterator().next().resourceId());
+        Assertions.assertEquals(MaintenanceScope.OSIMAGE, response.iterator().next().maintenanceScope());
+        Assertions.assertEquals(ImpactType.REDEPLOY, response.iterator().next().impactType());
+        Assertions.assertEquals(UpdateStatus.IN_PROGRESS, response.iterator().next().status());
+        Assertions.assertEquals(197015788, response.iterator().next().impactDurationInSec());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-01T10:55:59Z"), response.iterator().next().notBefore());
+        Assertions.assertEquals("xoafgaoqltfae", response.iterator().next().resourceId());
     }
 }

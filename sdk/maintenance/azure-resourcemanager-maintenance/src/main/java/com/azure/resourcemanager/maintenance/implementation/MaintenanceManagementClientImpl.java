@@ -322,7 +322,7 @@ public final class MaintenanceManagementClientImpl implements MaintenanceManagem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2023-10-01-preview";
+        this.apiVersion = "2025-10-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
         this.applyUpdates = new ApplyUpdatesClientImpl(this);

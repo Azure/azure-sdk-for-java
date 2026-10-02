@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.maintenance.models;
 
-import com.azure.resourcemanager.maintenance.fluent.models.ScheduledEventApproveResponseInner;
+import com.azure.resourcemanager.maintenance.fluent.models.ScheduledEventsApproveResponseInner;
 
 /**
- * An immutable client-side representation of ScheduledEventApproveResponse.
+ * An immutable client-side representation of ScheduledEventsApproveResponse.
  */
-public interface ScheduledEventApproveResponse {
+public interface ScheduledEventsApproveResponse {
     /**
      * Gets the value property: Successfully Approved.
      * 
@@ -18,9 +18,9 @@ public interface ScheduledEventApproveResponse {
     String value();
 
     /**
-     * Gets the inner com.azure.resourcemanager.maintenance.fluent.models.ScheduledEventApproveResponseInner object.
+     * Gets the inner com.azure.resourcemanager.maintenance.fluent.models.ScheduledEventsApproveResponseInner object.
      * 
      * @return the inner object.
      */
-    ScheduledEventApproveResponseInner innerModel();
+    ScheduledEventsApproveResponseInner innerModel();
 }

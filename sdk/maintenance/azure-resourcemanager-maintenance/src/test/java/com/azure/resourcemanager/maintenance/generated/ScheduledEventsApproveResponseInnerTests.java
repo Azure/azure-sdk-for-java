@@ -5,13 +5,14 @@
 package com.azure.resourcemanager.maintenance.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.maintenance.fluent.models.UpdateProperties;
+import com.azure.resourcemanager.maintenance.fluent.models.ScheduledEventsApproveResponseInner;
 import org.junit.jupiter.api.Assertions;
 
-public final class UpdatePropertiesTests {
+public final class ScheduledEventsApproveResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateProperties model = BinaryData.fromString("{\"resourceId\":\"u\"}").toObject(UpdateProperties.class);
-        Assertions.assertEquals("u", model.resourceId());
+        ScheduledEventsApproveResponseInner model
+            = BinaryData.fromString("{\"value\":\"axibxujw\"}").toObject(ScheduledEventsApproveResponseInner.class);
+        Assertions.assertEquals("axibxujw", model.value());
     }
 }
