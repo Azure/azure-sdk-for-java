@@ -58,6 +58,10 @@ final class AiaCertificateChainUtil {
     private static final AiaResponseCache AIA_CACHE
         = new AiaResponseCache(AIA_CACHE_MAX_SIZE, System::currentTimeMillis, (message, parameters) -> LOGGER.logp(FINE,
             AiaResponseCache.class.getName(), "diagnostic", message, parameters));
+    // A default HTTP-based response loader for AIA requests.
+    private static final AiaResponseLoader DEFAULT_RESPONSE_LOADER = HttpUtil::getAiaBytesWithMetadata;
+    // The currently configured response loader, which can be overridden for tests.
+    private static volatile AiaResponseLoader responseLoader = DEFAULT_RESPONSE_LOADER;
 
     /**
      * Determines whether a certificate chain should be completed with issuer certificates resolved via AIA.
@@ -450,7 +454,7 @@ final class AiaCertificateChainUtil {
     private static AiaResponseCache.Entry loadAiaResponse(String url) {
         LOGGER.log(FINE, "Downloading issuer certificate from AIA URL: {0}", url);
         long now = System.currentTimeMillis();
-        HttpUtil.BinaryHttpResponse response = HttpUtil.getBytesWithMetadata(url);
+        HttpUtil.BinaryHttpResponse response = responseLoader.load(url);
         byte[] certBytes = response.getBody();
         if (certBytes == null) {
             LOGGER.log(FINE, "Failed to download issuer certificate from AIA URL: {0}", url);
@@ -593,6 +597,36 @@ final class AiaCertificateChainUtil {
      */
     static void clearAiaCache() {
         AIA_CACHE.clear();
+    }
+
+    /**
+     * Sets the response loader for AIA requests.
+     *
+     * <p>Introduced to be used for testing purposes, allowing the HTTP response loading behavior to be mocked or
+     * overridden.
+     *
+     * @param loader the response loader to use
+     */
+    static synchronized void setResponseLoader(AiaResponseLoader loader) {
+        responseLoader = Objects.requireNonNull(loader, "'loader' cannot be null.");
+    }
+
+    /**
+     * Resets the response loader for AIA requests to the default HTTP-based loader.
+     *
+     * <p>Introduced to be used for testing purposes, allowing the HTTP response loading behavior to be reset to the
+     * default.
+     */
+    static synchronized void resetResponseLoader() {
+        responseLoader = DEFAULT_RESPONSE_LOADER;
+    }
+
+    /**
+        * Loads AIA responses. This test seam allows the HTTP GET behavior to be replaced.
+     */
+    @FunctionalInterface
+    interface AiaResponseLoader {
+        HttpUtil.BinaryHttpResponse load(String url);
     }
 
     /**
