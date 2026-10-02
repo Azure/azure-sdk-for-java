@@ -12,6 +12,7 @@ import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
 import com.azure.resourcemanager.iotoperations.models.InstancePatchModel;
 import com.azure.resourcemanager.iotoperations.models.InstanceProperties;
 import com.azure.resourcemanager.iotoperations.models.InstanceResource;
+import com.azure.resourcemanager.iotoperations.models.InstanceSku;
 import com.azure.resourcemanager.iotoperations.models.ManagedServiceIdentity;
 import java.util.Collections;
 import java.util.Map;
@@ -57,6 +58,10 @@ public final class InstanceResourceImpl
 
     public ManagedServiceIdentity identity() {
         return this.innerModel().identity();
+    }
+
+    public InstanceSku sku() {
+        return this.innerModel().sku();
     }
 
     public SystemData systemData() {
@@ -197,6 +202,11 @@ public final class InstanceResourceImpl
             this.updateProperties.withIdentity(identity);
             return this;
         }
+    }
+
+    public InstanceResourceImpl withSku(InstanceSku sku) {
+        this.innerModel().withSku(sku);
+        return this;
     }
 
     private boolean isInCreateMode() {

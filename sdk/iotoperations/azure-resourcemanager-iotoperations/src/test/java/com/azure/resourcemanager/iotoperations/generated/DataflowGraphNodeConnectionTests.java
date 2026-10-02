@@ -16,28 +16,28 @@ public final class DataflowGraphNodeConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphNodeConnection model = BinaryData.fromString(
-            "{\"from\":{\"name\":\"lxorjaltolmncws\",\"schema\":{\"serializationFormat\":\"Avro\",\"schemaRef\":\"sdbnwdcfhucqdpf\"}},\"to\":{\"name\":\"vglsbjjca\"}}")
+            "{\"from\":{\"name\":\"q\",\"schema\":{\"serializationFormat\":\"Delta\",\"schemaRef\":\"frvtpuqu\"}},\"to\":{\"name\":\"mqlgk\"}}")
             .toObject(DataflowGraphNodeConnection.class);
-        Assertions.assertEquals("lxorjaltolmncws", model.from().name());
-        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.AVRO,
+        Assertions.assertEquals("q", model.from().name());
+        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.DELTA,
             model.from().schema().serializationFormat());
-        Assertions.assertEquals("sdbnwdcfhucqdpf", model.from().schema().schemaRef());
-        Assertions.assertEquals("vglsbjjca", model.to().name());
+        Assertions.assertEquals("frvtpuqu", model.from().schema().schemaRef());
+        Assertions.assertEquals("mqlgk", model.to().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphNodeConnection model = new DataflowGraphNodeConnection()
-            .withFrom(new DataflowGraphConnectionInput().withName("lxorjaltolmncws")
+        DataflowGraphNodeConnection model
+            = new DataflowGraphNodeConnection().withFrom(new DataflowGraphConnectionInput().withName("q")
                 .withSchema(new DataflowGraphConnectionSchemaSettings()
-                    .withSerializationFormat(DataflowGraphConnectionSchemaSerializationFormat.AVRO)
-                    .withSchemaRef("sdbnwdcfhucqdpf")))
-            .withTo(new DataflowGraphConnectionOutput().withName("vglsbjjca"));
+                    .withSerializationFormat(DataflowGraphConnectionSchemaSerializationFormat.DELTA)
+                    .withSchemaRef("frvtpuqu")))
+                .withTo(new DataflowGraphConnectionOutput().withName("mqlgk"));
         model = BinaryData.fromObject(model).toObject(DataflowGraphNodeConnection.class);
-        Assertions.assertEquals("lxorjaltolmncws", model.from().name());
-        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.AVRO,
+        Assertions.assertEquals("q", model.from().name());
+        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.DELTA,
             model.from().schema().serializationFormat());
-        Assertions.assertEquals("sdbnwdcfhucqdpf", model.from().schema().schemaRef());
-        Assertions.assertEquals("vglsbjjca", model.to().name());
+        Assertions.assertEquals("frvtpuqu", model.from().schema().schemaRef());
+        Assertions.assertEquals("mqlgk", model.to().name());
     }
 }

@@ -12,16 +12,16 @@ public final class AkriConnectorsRegistryEndpointRefTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorsRegistryEndpointRef model = BinaryData
-            .fromString("{\"registrySettingsType\":\"RegistryEndpointRef\",\"registryEndpointRef\":\"ibreb\"}")
+            .fromString("{\"registrySettingsType\":\"RegistryEndpointRef\",\"registryEndpointRef\":\"nsxkmcwaekrrjr\"}")
             .toObject(AkriConnectorsRegistryEndpointRef.class);
-        Assertions.assertEquals("ibreb", model.registryEndpointRef());
+        Assertions.assertEquals("nsxkmcwaekrrjr", model.registryEndpointRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AkriConnectorsRegistryEndpointRef model
-            = new AkriConnectorsRegistryEndpointRef().withRegistryEndpointRef("ibreb");
+            = new AkriConnectorsRegistryEndpointRef().withRegistryEndpointRef("nsxkmcwaekrrjr");
         model = BinaryData.fromObject(model).toObject(AkriConnectorsRegistryEndpointRef.class);
-        Assertions.assertEquals("ibreb", model.registryEndpointRef());
+        Assertions.assertEquals("nsxkmcwaekrrjr", model.registryEndpointRef());
     }
 }
