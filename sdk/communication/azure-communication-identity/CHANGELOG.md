@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for service version `2026-09-23`, which is now the default.
+
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -514,4 +516,3 @@ Updated `azure-communication-identity` version
 - Added CommunicationIdentityClient and CommunicationIdentityAsyncClient (originally was part of the azure-communication-aministration package).
 - Added support for Azure Active Directory Authentication.
 - Added ability to create a user and issue token for it at the same time.
-
