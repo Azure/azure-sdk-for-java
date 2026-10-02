@@ -13,21 +13,21 @@ public final class ScheduledActionsRetryPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionsRetryPolicy model = BinaryData
-            .fromString("{\"retryCount\":859286849,\"retryWindowInMinutes\":456255387,\"onFailureAction\":\"Create\"}")
+            .fromString("{\"retryCount\":75081100,\"retryWindowInMinutes\":133601107,\"onFailureAction\":\"Create\"}")
             .toObject(ScheduledActionsRetryPolicy.class);
-        Assertions.assertEquals(859286849, model.retryCount());
-        Assertions.assertEquals(456255387, model.retryWindowInMinutes());
+        Assertions.assertEquals(75081100, model.retryCount());
+        Assertions.assertEquals(133601107, model.retryWindowInMinutes());
         Assertions.assertEquals(ScheduledActionsResourceOperationType.CREATE, model.onFailureAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduledActionsRetryPolicy model = new ScheduledActionsRetryPolicy().withRetryCount(859286849)
-            .withRetryWindowInMinutes(456255387)
+        ScheduledActionsRetryPolicy model = new ScheduledActionsRetryPolicy().withRetryCount(75081100)
+            .withRetryWindowInMinutes(133601107)
             .withOnFailureAction(ScheduledActionsResourceOperationType.CREATE);
         model = BinaryData.fromObject(model).toObject(ScheduledActionsRetryPolicy.class);
-        Assertions.assertEquals(859286849, model.retryCount());
-        Assertions.assertEquals(456255387, model.retryWindowInMinutes());
+        Assertions.assertEquals(75081100, model.retryCount());
+        Assertions.assertEquals(133601107, model.retryWindowInMinutes());
         Assertions.assertEquals(ScheduledActionsResourceOperationType.CREATE, model.onFailureAction());
     }
 }
