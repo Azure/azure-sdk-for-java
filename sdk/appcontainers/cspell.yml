@@ -7,3 +7,7 @@ version: "0.2"
 import:
   - ../../.vscode/cspell.json
 words:
+  - rootfs
+ignorePaths:
+  - "azure-containers-apps-sandbox/src/samples/java/**/generated/**"
+  - "azure-containers-apps-sandbox/src/test/java/**/generated/**"
