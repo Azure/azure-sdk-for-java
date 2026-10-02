@@ -28,7 +28,7 @@ public final class EndpointsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"xkhnzbonlwnto\",\"endpointKind\":\"Source\",\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"whkszzcmrvexztvb\",\"tenantId\":\"gsfraoyzkoow\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ldsyuuximerqfob\":{\"principalId\":\"ux\",\"clientId\":\"q\"},\"dlmkkzevdl\":{\"principalId\":\"znkbykutwpfhpagm\",\"clientId\":\"skdsnfdsdoakg\"},\"m\":{\"principalId\":\"wpusdsttwvogv\",\"clientId\":\"ejdcngqqmoakuf\"}}},\"id\":\"rwr\",\"name\":\"grtwae\",\"type\":\"u\"}";
+            = "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"kayuhqlbjbs\",\"endpointKind\":\"Target\",\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"t\",\"tenantId\":\"gmfpgvmp\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"drhneuyow\":{\"principalId\":\"thaqfxssmwu\",\"clientId\":\"bdsrez\"},\"sibircgpi\":{\"principalId\":\"d\",\"clientId\":\"t\"}}},\"id\":\"zimejzanlfzx\",\"name\":\"av\",\"type\":\"mbzonokix\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,16 +38,19 @@ public final class EndpointsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Endpoint response = manager.endpoints()
-            .define("aeburuvdmo")
-            .withExistingStorageMover("mkycgra", "wjue")
-            .withProperties(new EndpointBaseProperties().withDescription("mz").withEndpointKind(EndpointKind.SOURCE))
+            .define("hfwpracstwit")
+            .withExistingStorageMover("cdl", "h")
+            .withProperties(
+                new EndpointBaseProperties().withDescription("hevxcced").withEndpointKind(EndpointKind.TARGET))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("ezkojvdcp", new UserAssignedIdentity())))
+                .withUserAssignedIdentities(
+                    mapOf("acizsjqlhkrr", new UserAssignedIdentity(), "pjorwkqnyhg", new UserAssignedIdentity(),
+                        "wfsdjpvkvpbj", new UserAssignedIdentity(), "jk", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("xkhnzbonlwnto", response.properties().description());
-        Assertions.assertEquals(EndpointKind.SOURCE, response.properties().endpointKind());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("kayuhqlbjbs", response.properties().description());
+        Assertions.assertEquals(EndpointKind.TARGET, response.properties().endpointKind());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

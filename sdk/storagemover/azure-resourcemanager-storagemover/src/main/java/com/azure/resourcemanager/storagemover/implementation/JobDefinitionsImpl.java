@@ -109,6 +109,25 @@ public final class JobDefinitionsImpl implements JobDefinitions {
         }
     }
 
+    public Response<JobRunResourceId> reconcileJobWithResponse(String resourceGroupName, String storageMoverName,
+        String projectName, String jobDefinitionName, Context context) {
+        Response<JobRunResourceIdInner> inner = this.serviceClient()
+            .reconcileJobWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new JobRunResourceIdImpl(inner.getValue(), this.manager()));
+    }
+
+    public JobRunResourceId reconcileJob(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName) {
+        JobRunResourceIdInner inner
+            = this.serviceClient().reconcileJob(resourceGroupName, storageMoverName, projectName, jobDefinitionName);
+        if (inner != null) {
+            return new JobRunResourceIdImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public JobDefinition getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
