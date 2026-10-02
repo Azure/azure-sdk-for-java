@@ -300,6 +300,10 @@ public final class DatabaseAccount extends Resource {
         return null;
     }
 
+    public boolean isCrossRegionalHedgingDisabled() {
+        return Boolean.TRUE.equals(super.getBoolean(Constants.Properties.DISABLE_CROSS_REGIONAL_HEDGING));
+    }
+
     /**
      * Returns true if the account supports N region synchronous commit,
      * false otherwise
