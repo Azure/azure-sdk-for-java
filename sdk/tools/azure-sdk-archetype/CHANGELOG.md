@@ -4,9 +4,14 @@
 
 ### Features Added
 
+- Added opt-in JUnit 6 support through `junitVersion=6`, requiring JDK 17 or later to build and run tests. JUnit 5 remains the default.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Configured Maven Surefire for generated JUnit Jupiter projects so `mvn test` discovers and runs their tests.
+- Fixed post-generation status output on Windows, where `echo` cannot be launched as an executable.
 
 ### Other Changes
 
