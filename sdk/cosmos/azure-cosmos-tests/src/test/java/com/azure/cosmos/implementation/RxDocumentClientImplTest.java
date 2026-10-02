@@ -604,6 +604,7 @@ public class RxDocumentClientImplTest {
                 "connectionMode",
                 "numberOfClients",
                 "isPpafEnabled",
+                "isHedgingDisabledByAccount",
                 "isFalseProgSessionTokenMergeEnabled",
                 "excrgns",
                 "clientEndpoints",
@@ -622,7 +623,7 @@ public class RxDocumentClientImplTest {
                     .isTrue();
             }
             assertThat(clientCfgs.has("isPpafBasedAvailabilityStrategyEnabled")).isFalse();
-            assertThat(clientCfgs.has("isHedgingDisabledByAccount")).isFalse();
+            assertThat(clientCfgs.get("isHedgingDisabledByAccount").asBoolean()).isFalse();
 
             for (Boolean ppafEnabled : new Boolean[] {null, false, true}) {
                 rxDocumentClient.getConfig().withIsPerPartitionAutomaticFailoverEnabled(ppafEnabled);
@@ -630,7 +631,8 @@ public class RxDocumentClientImplTest {
                     rxDocumentClient.getConfig().withCrossRegionalHedgingDisabledByAccount(disabledByAccount);
                     ObjectNode serializedConfig = serializeClientConfig(rxDocumentClient);
                     assertThat(serializedConfig.path("isPpafEnabled").asBoolean()).isEqualTo(Boolean.TRUE.equals(ppafEnabled));
-                    assertThat(serializedConfig.has("isHedgingDisabledByAccount")).isFalse();
+                    assertThat(serializedConfig.get("isHedgingDisabledByAccount").asBoolean())
+                        .isEqualTo(disabledByAccount != null && disabledByAccount.get());
                     assertThat(serializedConfig.has("isPpafBasedAvailabilityStrategyEnabled")).isEqualTo(Boolean.TRUE.equals(ppafEnabled));
                     if (Boolean.TRUE.equals(ppafEnabled)) {
                         assertThat(serializedConfig.get("isPpafBasedAvailabilityStrategyEnabled").isBoolean()).isTrue();
@@ -729,7 +731,8 @@ public class RxDocumentClientImplTest {
                     }
                     ObjectNode clientCfg = serializeClientConfig(client);
                     assertThat(clientCfg.get("isPpafEnabled").asBoolean()).isTrue();
-                    assertThat(clientCfg.has("isHedgingDisabledByAccount")).isFalse();
+                    assertThat(clientCfg.get("isHedgingDisabledByAccount").asBoolean())
+                        .isEqualTo(Boolean.TRUE.equals(disabled));
                     assertThat(clientCfg.get("isPpafBasedAvailabilityStrategyEnabled").asBoolean())
                         .isEqualTo(!Boolean.TRUE.equals(disabled));
                     assertThat(clientCfg.get("partitionLevelCircuitBreakerCfg").asText()).isNotEmpty();
@@ -742,7 +745,9 @@ public class RxDocumentClientImplTest {
 
                 account.set(hedgingAccount(false, true));
                 endpointManager.refreshLocationAsync(null, true).block(Duration.ofSeconds(5));
-                assertThat(serializeClientConfig(client).has("isPpafBasedAvailabilityStrategyEnabled")).isFalse();
+                ObjectNode nonPpafClientConfig = serializeClientConfig(client);
+                assertThat(nonPpafClientConfig.get("isHedgingDisabledByAccount").asBoolean()).isTrue();
+                assertThat(nonPpafClientConfig.has("isPpafBasedAvailabilityStrategyEnabled")).isFalse();
                 assertThat((List<?>) applicableRegions.invoke(client, policy, ResourceType.Document,
                     OperationType.Read, false, Collections.emptyList())).isEmpty();
 
