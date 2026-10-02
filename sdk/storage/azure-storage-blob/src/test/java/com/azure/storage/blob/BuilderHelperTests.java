@@ -565,7 +565,9 @@ public class BuilderHelperTests {
             Arguments.of("https://myblobstorage.dfs.core.windows.net/", "myblobstorage"),
             Arguments.of("https://blobtest.blob.core.windows.net/", "blobtest"),
             Arguments.of("https://account.blob.core.usgovcloudapi.net/", "account"),
-            Arguments.of("https://blobtest.dfs.core.usgovcloudapi.net/", "blobtest"));
+            Arguments.of("https://blobtest.dfs.core.usgovcloudapi.net/", "blobtest"),
+            Arguments.of("https://blob.dfs.core.windows.net/", "blob"),
+            Arguments.of("https://dfs.blob.core.windows.net/", "dfs"));
     }
 
     @ParameterizedTest
