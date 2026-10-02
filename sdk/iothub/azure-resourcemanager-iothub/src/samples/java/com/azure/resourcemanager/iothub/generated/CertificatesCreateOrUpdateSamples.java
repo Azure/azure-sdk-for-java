@@ -11,7 +11,24 @@ import com.azure.resourcemanager.iothub.models.CertificateProperties;
  */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/iothub_certificatescreateorupdate.json
+     * x-ms-original-file: 2026-10-01-preview/CreateOrReplace_Certificates_With_CertificateAuthorityResourceId.json
+     */
+    /**
+     * Sample code: CreateOrReplace_Certificates_With_CertificateAuthorityResourceId.
+     * 
+     * @param manager Entry point to IotHubManager.
+     */
+    public static void createOrReplaceCertificatesWithCertificateAuthorityResourceId(
+        com.azure.resourcemanager.iothub.IotHubManager manager) {
+        manager.certificates()
+            .define("cert")
+            .withExistingIotHub("myResourceGroup", "testHub")
+            .withProperties(new CertificateProperties().withCertificate("############################################"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/iothub_certificatescreateorupdate.json
      */
     /**
      * Sample code: Certificates_CreateOrUpdate.
@@ -22,23 +39,6 @@ public final class CertificatesCreateOrUpdateSamples {
         manager.certificates()
             .define("cert")
             .withExistingIotHub("myResourceGroup", "iothub")
-            .withProperties(new CertificateProperties().withCertificate("############################################"))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2026-05-01-preview/CreateOrReplace_Certificates_With_DeviceRegistryPolicy.json
-     */
-    /**
-     * Sample code: CreateOrReplace_Certificates_With_DeviceRegistryPolicy.
-     * 
-     * @param manager Entry point to IotHubManager.
-     */
-    public static void
-        createOrReplaceCertificatesWithDeviceRegistryPolicy(com.azure.resourcemanager.iothub.IotHubManager manager) {
-        manager.certificates()
-            .define("cert")
-            .withExistingIotHub("myResourceGroup", "testHub")
             .withProperties(new CertificateProperties().withCertificate("############################################"))
             .create();
     }

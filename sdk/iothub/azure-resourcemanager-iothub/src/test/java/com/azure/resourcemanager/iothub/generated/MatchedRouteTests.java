@@ -13,12 +13,13 @@ public final class MatchedRouteTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MatchedRoute model = BinaryData.fromString(
-            "{\"properties\":{\"name\":\"dahzxctobg\",\"source\":\"TwinChangeEvents\",\"condition\":\"moizpos\",\"endpointNames\":[\"grcfb\",\"nrmfqjhhk\"],\"isEnabled\":true}}")
+            "{\"properties\":{\"name\":\"oievseotgqrlltm\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"auwzizxbmpgc\",\"dataSchema\":\"fuzmuvpbtt\",\"endpointNames\":[\"morppxebmnzbtbh\"],\"isEnabled\":false}}")
             .toObject(MatchedRoute.class);
-        Assertions.assertEquals("dahzxctobg", model.properties().name());
-        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.properties().source());
-        Assertions.assertEquals("moizpos", model.properties().condition());
-        Assertions.assertEquals("grcfb", model.properties().endpointNames().get(0));
-        Assertions.assertTrue(model.properties().isEnabled());
+        Assertions.assertEquals("oievseotgqrlltm", model.properties().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.properties().source());
+        Assertions.assertEquals("auwzizxbmpgc", model.properties().condition());
+        Assertions.assertEquals("fuzmuvpbtt", model.properties().dataSchema());
+        Assertions.assertEquals("morppxebmnzbtbh", model.properties().endpointNames().get(0));
+        Assertions.assertFalse(model.properties().isEnabled());
     }
 }

@@ -178,6 +178,17 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
     private IpVersion ipVersion;
 
     /*
+     * The connection profile that the IoT hub uses for device connections. Defaults to 'Classic'.
+     */
+    private ConnectionProfile connectionProfile;
+
+    /*
+     * The custom topic configuration for an Event Grid-backed MQTT v5 IoT hub. This property is valid only when
+     * connectionProfile is 'MqttV5'.
+     */
+    private MqttV5Settings mqttV5Settings;
+
+    /*
      * Represents properties related to the Azure Device Registry (ADR).
      */
     private DeviceRegistry deviceRegistry;
@@ -754,23 +765,56 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
     }
 
     /**
+     * Get the connectionProfile property: The connection profile that the IoT hub uses for device connections. Defaults
+     * to 'Classic'.
+     * 
+     * @return the connectionProfile value.
+     */
+    public ConnectionProfile connectionProfile() {
+        return this.connectionProfile;
+    }
+
+    /**
+     * Set the connectionProfile property: The connection profile that the IoT hub uses for device connections. Defaults
+     * to 'Classic'.
+     * 
+     * @param connectionProfile the connectionProfile value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withConnectionProfile(ConnectionProfile connectionProfile) {
+        this.connectionProfile = connectionProfile;
+        return this;
+    }
+
+    /**
+     * Get the mqttV5Settings property: The custom topic configuration for an Event Grid-backed MQTT v5 IoT hub. This
+     * property is valid only when connectionProfile is 'MqttV5'.
+     * 
+     * @return the mqttV5Settings value.
+     */
+    public MqttV5Settings mqttV5Settings() {
+        return this.mqttV5Settings;
+    }
+
+    /**
+     * Set the mqttV5Settings property: The custom topic configuration for an Event Grid-backed MQTT v5 IoT hub. This
+     * property is valid only when connectionProfile is 'MqttV5'.
+     * 
+     * @param mqttV5Settings the mqttV5Settings value to set.
+     * @return the IotHubProperties object itself.
+     */
+    public IotHubProperties withMqttV5Settings(MqttV5Settings mqttV5Settings) {
+        this.mqttV5Settings = mqttV5Settings;
+        return this;
+    }
+
+    /**
      * Get the deviceRegistry property: Represents properties related to the Azure Device Registry (ADR).
      * 
      * @return the deviceRegistry value.
      */
     public DeviceRegistry deviceRegistry() {
         return this.deviceRegistry;
-    }
-
-    /**
-     * Set the deviceRegistry property: Represents properties related to the Azure Device Registry (ADR).
-     * 
-     * @param deviceRegistry the deviceRegistry value to set.
-     * @return the IotHubProperties object itself.
-     */
-    public IotHubProperties withDeviceRegistry(DeviceRegistry deviceRegistry) {
-        this.deviceRegistry = deviceRegistry;
-        return this;
     }
 
     /**
@@ -819,7 +863,9 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
         jsonWriter.writeBooleanField("enableDataResidency", this.enableDataResidency);
         jsonWriter.writeJsonField("rootCertificate", this.rootCertificate);
         jsonWriter.writeStringField("ipVersion", this.ipVersion == null ? null : this.ipVersion.toString());
-        jsonWriter.writeJsonField("deviceRegistry", this.deviceRegistry);
+        jsonWriter.writeStringField("connectionProfile",
+            this.connectionProfile == null ? null : this.connectionProfile.toString());
+        jsonWriter.writeJsonField("mqttV5Settings", this.mqttV5Settings);
         return jsonWriter.writeEndObject();
     }
 
@@ -915,6 +961,10 @@ public final class IotHubProperties implements JsonSerializable<IotHubProperties
                     deserializedIotHubProperties.rootCertificate = RootCertificateProperties.fromJson(reader);
                 } else if ("ipVersion".equals(fieldName)) {
                     deserializedIotHubProperties.ipVersion = IpVersion.fromString(reader.getString());
+                } else if ("connectionProfile".equals(fieldName)) {
+                    deserializedIotHubProperties.connectionProfile = ConnectionProfile.fromString(reader.getString());
+                } else if ("mqttV5Settings".equals(fieldName)) {
+                    deserializedIotHubProperties.mqttV5Settings = MqttV5Settings.fromJson(reader);
                 } else if ("deviceRegistry".equals(fieldName)) {
                     deserializedIotHubProperties.deviceRegistry = DeviceRegistry.fromJson(reader);
                 } else if ("iotHubDetails".equals(fieldName)) {

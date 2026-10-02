@@ -16,17 +16,18 @@ public final class ArmIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArmIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"kzywbiex\",\"tenantId\":\"eyueaxibxujwb\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"d\":{\"principalId\":\"uzyoxaep\",\"clientId\":\"zjancuxr\"},\"zxbzpfzabglc\":{\"principalId\":\"avxbniwdjswztsdb\",\"clientId\":\"nxytxh\"}}}")
+            "{\"principalId\":\"vbvmeu\",\"tenantId\":\"ivyhzceuojgjrwju\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"wgqwgxhn\":{\"principalId\":\"cdytdxw\",\"clientId\":\"xnrj\"},\"xujznbmpowu\":{\"principalId\":\"kxfbkpycgklwndn\",\"clientId\":\"dauwhvylwzbtd\"},\"hfxobbcswsrtj\":{\"principalId\":\"rzqlveu\",\"clientId\":\"upjm\"}}}")
             .toObject(ArmIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmIdentity model = new ArmIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("d", new ArmUserIdentity(), "zxbzpfzabglc", new ArmUserIdentity()));
+        ArmIdentity model = new ArmIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("wgqwgxhn", new ArmUserIdentity(), "xujznbmpowu", new ArmUserIdentity(),
+                "hfxobbcswsrtj", new ArmUserIdentity()));
         model = BinaryData.fromObject(model).toObject(ArmIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

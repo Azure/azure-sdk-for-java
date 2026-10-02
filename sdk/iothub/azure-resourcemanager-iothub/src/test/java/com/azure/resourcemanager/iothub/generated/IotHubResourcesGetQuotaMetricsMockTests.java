@@ -21,7 +21,7 @@ public final class IotHubResourcesGetQuotaMetricsMockTests {
     @Test
     public void testGetQuotaMetrics() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"brgz\",\"currentValue\":7817013656792013173,\"maxValue\":6841623833142002976}]}";
+            = "{\"value\":[{\"name\":\"tbvkayhmtnvyq\",\"currentValue\":2949816427464265295,\"maxValue\":1497619530378227200}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class IotHubResourcesGetQuotaMetricsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<IotHubQuotaMetricInfo> response
-            = manager.iotHubResources().getQuotaMetrics("zbwemh", "i", com.azure.core.util.Context.NONE);
+            = manager.iotHubResources().getQuotaMetrics("szqzudphqamv", "kfwynw", com.azure.core.util.Context.NONE);
 
     }
 }
