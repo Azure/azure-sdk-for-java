@@ -13,10 +13,10 @@ public final class CancellationRecordTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CancellationRecord model = BinaryData
-            .fromString("{\"reason\":\"zgcwrw\",\"actor\":\"lxxwrljdouskc\",\"occurredAt\":\"2021-02-01T10:32:52Z\"}")
+            .fromString("{\"reason\":\"vkocrcjdkwtn\",\"actor\":\"xbnjbiksq\",\"occurredAt\":\"2021-10-08T17:19:33Z\"}")
             .toObject(CancellationRecord.class);
-        Assertions.assertEquals("zgcwrw", model.reason());
-        Assertions.assertEquals("lxxwrljdouskc", model.actor());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-01T10:32:52Z"), model.occurredAt());
+        Assertions.assertEquals("vkocrcjdkwtn", model.reason());
+        Assertions.assertEquals("xbnjbiksq", model.actor());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-08T17:19:33Z"), model.occurredAt());
     }
 }

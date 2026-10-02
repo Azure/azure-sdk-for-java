@@ -21,7 +21,7 @@ public final class IncomingQuotaTransfersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"transferStatus\":\"Rejected\",\"transferId\":\"bzkdvn\",\"transferRef\":\"abudurgk\",\"sourceSubscriptionId\":\"mokzhjjklf\",\"sourceTenantId\":\"mouwqlgzrfzeey\",\"billingAccountId\":\"izikayuhq\",\"resourceName\":\"jbsybbqw\",\"amount\":629489002910902814,\"sourceEtag\":\"gmfpgvmp\",\"approval\":{\"comment\":\"slthaq\",\"actor\":\"x\",\"occurredAt\":\"2021-09-03T05:44:20Z\"},\"rejection\":{\"reason\":\"u\",\"actor\":\"wbdsr\",\"occurredAt\":\"2021-06-17T07:53:40Z\"}},\"etag\":\"drhneuyow\",\"id\":\"d\",\"name\":\"ytisibir\",\"type\":\"gpikpzimejza\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"transferStatus\":\"Accepted\",\"transferId\":\"ttwvogvbbe\",\"transferRef\":\"cngqqmoakufgmjz\",\"sourceSubscriptionId\":\"rdgrtw\",\"sourceTenantId\":\"nuuzkopbm\",\"billingAccountId\":\"rfdwoyu\",\"resourceName\":\"ziuiefozbhdm\",\"amount\":41888991515235103,\"sourceEtag\":\"qhoftrmaequiah\",\"approval\":{\"comment\":\"slfaoqzpiyyl\",\"actor\":\"alnswhccsphk\",\"occurredAt\":\"2021-07-06T09:04:22Z\"},\"rejection\":{\"reason\":\"itqscywuggwoluhc\",\"actor\":\"bwemhairs\",\"occurredAt\":\"2021-08-12T10:49:45Z\"}},\"etag\":\"z\",\"id\":\"msweypqwdxggicc\",\"name\":\"n\",\"type\":\"qhuexm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class IncomingQuotaTransfersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<IncomingQuotaTransfer> response
-            = manager.incomingQuotaTransfers().list("sjabibs", "stawfsdjpvkv", com.azure.core.util.Context.NONE);
+            = manager.incomingQuotaTransfers().list("sd", "akgtdlmkkzevdlh", com.azure.core.util.Context.NONE);
 
     }
 }

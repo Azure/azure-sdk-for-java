@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class IncomingQuotaTransferRejectRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IncomingQuotaTransferRejectRequest model = BinaryData.fromString("{\"reason\":\"kpnpulexxbczwtr\"}")
-            .toObject(IncomingQuotaTransferRejectRequest.class);
-        Assertions.assertEquals("kpnpulexxbczwtr", model.reason());
+        IncomingQuotaTransferRejectRequest model
+            = BinaryData.fromString("{\"reason\":\"gual\"}").toObject(IncomingQuotaTransferRejectRequest.class);
+        Assertions.assertEquals("gual", model.reason());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IncomingQuotaTransferRejectRequest model
-            = new IncomingQuotaTransferRejectRequest().withReason("kpnpulexxbczwtr");
+        IncomingQuotaTransferRejectRequest model = new IncomingQuotaTransferRejectRequest().withReason("gual");
         model = BinaryData.fromObject(model).toObject(IncomingQuotaTransferRejectRequest.class);
-        Assertions.assertEquals("kpnpulexxbczwtr", model.reason());
+        Assertions.assertEquals("gual", model.reason());
     }
 }
