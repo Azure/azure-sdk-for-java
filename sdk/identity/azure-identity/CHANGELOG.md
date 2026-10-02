@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Added `GitHubActionsCredential` and `GitHubActionsCredentialBuilder` for authenticating to Microsoft Entra ID using GitHub Actions OIDC federated identity credentials. ([#50642](https://github.com/Azure/azure-sdk-for-java/issues/50642))
 - Added support for user-assigned managed identities on Azure Arc in `ManagedIdentityCredential` and `DefaultAzureCredential`.
 
 ### Breaking Changes

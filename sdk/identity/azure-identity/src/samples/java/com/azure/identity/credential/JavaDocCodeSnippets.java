@@ -39,6 +39,7 @@ import com.azure.identity.DeviceCodeCredential;
 import com.azure.identity.DeviceCodeCredentialBuilder;
 import com.azure.identity.EnvironmentCredential;
 import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.GitHubActionsCredentialBuilder;
 import com.azure.identity.IntelliJCredential;
 import com.azure.identity.IntelliJCredentialBuilder;
 import com.azure.identity.InteractiveBrowserCredential;
@@ -300,6 +301,12 @@ public final class JavaDocCodeSnippets {
             .systemAccessToken(systemAccessToken)
             .build();
         // END: com.azure.identity.credential.azurepipelinescredential.construct
+    }
+
+    public void gitHubActionsCredentialCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.githubactionscredential.construct
+        TokenCredential credential = new GitHubActionsCredentialBuilder().build();
+        // END: com.azure.identity.credential.githubactionscredential.construct
     }
 
     public void silentAuthenticationSnippets() {
