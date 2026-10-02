@@ -4,9 +4,22 @@
 
 ### Features Added
 
+- Added a transport option to `VoiceAgentWebSocketConnectionOptions` for selecting between the `websocket` (default)
+  and `webrtc` realtime connection transports.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- Replaced the preview agent-optimization request and result models with the new optimization configuration,
+  evaluation-set, candidate-summary, and metrics models. Optimization operations now use `AgentsClient` and
+  `AgentsAsyncClient` and no longer require a preview feature header.
+- Renamed the agent-optimization methods `estimate`, `listCandidates`, `getCandidate`, and `promoteCandidate` to
+  `estimateOptimizationJob`, `listOptimizationCandidates`, `getOptimizationCandidate`, and
+  `promoteOptimizationCandidate`, respectively.
+- Renamed `UserConversationSimulationConfiguration.getMaxNumTurns()` / `setMaxNumTurns(...)` and
+  `getDesiredNumTurns()` / `setDesiredNumTurns(...)` to `getMaximumNumberOfTurns()` /
+  `setMaximumNumberOfTurns(...)` and `getDesiredNumberOfTurns()` / `setDesiredNumberOfTurns(...)`, respectively.
+- Changed `ModelSamplingParameters.getMaxCompletionTokens()` and `setMaxCompletionTokens(...)` to use `Long`.
+- Removed the unused `EvaluationLevel` type.
 
 ### Other Changes
 

@@ -6,7 +6,7 @@ The AI Projects client library is part of the Azure AI Foundry SDK and provides 
 * **Enumerate AI Models** deployed to your Foundry Project using the `Deployments` operations.
 * **Enumerate connected Azure resources** in your Foundry project using the `Connections` operations.
 * **Upload documents and create Datasets** to reference them using the `Datasets` operations.
-* **Generate datasets** for model, agent, evaluator, and traces scenarios using the preview `BetaDatasetsClient`.
+* **Generate datasets** for model, agent, evaluator, and traces scenarios using `DatasetsClient`.
 * **Register and manage model weights** as Foundry `ModelVersion` resources using the preview `BetaModelsClient`.
 * **Create and dispatch routines** using the preview `BetaRoutinesClient`.
 * **Monitor deployed agents for issues** and review the resulting insights using the preview `BetaAgentInsightMonitorsClient`.
@@ -18,7 +18,7 @@ The client library uses a single service version `v1` of the AI Foundry [data pl
 > [!IMPORTANT]
 > **Preview and beta features**
 > - Build `Beta*Client` and `Beta*AsyncClient` instances through `AIProjectClientBuilder.beta()`. These clients automatically opt in to their preview service area; you do not need `allowPreview(true)` for them.
-> - Use `AIProjectClientBuilder.allowPreview(true)` only when calling preview APIs on non-Beta clients, such as preview response types on `EvaluationRulesClient` / `EvaluationRulesAsyncClient`.
+> - Use `AIProjectClientBuilder.allowPreview(true)` only when calling preview APIs on non-Beta clients, such as preview response types on `EvaluationRulesClient` / `EvaluationRulesAsyncClient` or preview data generation scenarios on `DatasetsClient` / `DatasetsAsyncClient`.
 > - Classes and methods annotated with `@Beta` are preview API surface and may change in future releases. See [Preview operation groups and beta clients](#preview-operation-groups-and-beta-clients) for details.
 
 ## Documentation
@@ -63,7 +63,6 @@ ConnectionsClient connectionsClient = builder.buildConnectionsClient();
 // Beta* clients automatically opt in to their preview service area.
 BetaAgentInsightMonitorsClient agentInsightMonitorsClient
     = builder.beta().buildBetaAgentInsightMonitorsClient();
-BetaDatasetsClient dataGenerationJobsClient = builder.beta().buildBetaDatasetsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
@@ -136,12 +135,13 @@ AIProjectClientBuilder builder = new AIProjectClientBuilder()
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
 ```
 
+`DatasetsClient` and `DatasetsAsyncClient` support both dataset management and data generation jobs. Build them directly from `AIProjectClientBuilder`. Their default requests do not opt in to preview features. For preview data generation scenarios such as supervised and reinforcement fine-tuning, use `allowPreview(true)` to add `Foundry-Features: DataGenerationJobs=V1Preview` to their requests.
+
 Build clients whose names start with `Beta` from `AIProjectClientBuilder.beta()`. These clients always opt in to their corresponding preview service area. Requests sent by these clients automatically include the appropriate `Foundry-Features` header, and their APIs can send or return preview/beta request and response types. You do not need to call `allowPreview(true)` to use a `Beta*Client`.
 
 | Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
 | `BetaAgentInsightMonitorsClient` | `AgentInsights=V1Preview` |
-| `BetaDatasetsClient` | `DataGenerationJobs=V1Preview` |
 | `BetaEvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
 | `BetaEvaluatorsClient` | `Evaluations=V1Preview` |
 | `BetaInsightsClient` | `Insights=V1Preview` |
@@ -155,7 +155,20 @@ The async `Beta*AsyncClient` counterparts follow the same behavior.
 
 ## Examples
 
-The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples]. Additional preview samples are available for data generation jobs (`DataGenerationJobsSample`, `DataGenerationJobsAsyncSample`, and `DataGenerationJobWithEvaluationSample`), model management (`ModelsSample` and `ModelsAsyncSample`), routines (`RoutinesSample`, `RoutinesAsyncSample`, `RoutinesManualDispatchSample`, `RoutinesManualDispatchAsyncSample`, and related trigger samples), and packaged skills (`SkillsPackageSample` and `SkillsPackageAsyncSample`).
+The examples below show common operations for core AI Projects sub-clients. For complete runnable samples, see the [package samples][package_samples].
+
+| Folder | Scenarios |
+| --- | --- |
+| [agents](src/samples/java/com/azure/ai/projects/agents) | Create and delete agents using the Agents client library. |
+| [connections](src/samples/java/com/azure/ai/projects/connections) | List connections and retrieve connection details. |
+| [datageneration](src/samples/java/com/azure/ai/projects/datageneration) | Create data generation jobs and evaluate generated datasets. |
+| [datasets](src/samples/java/com/azure/ai/projects/datasets) | Upload files and manage datasets and versions. |
+| [deployments](src/samples/java/com/azure/ai/projects/deployments) | List and retrieve model deployments. |
+| [evaluations](src/samples/java/com/azure/ai/projects/evaluations) | Evaluate inline or uploaded JSONL data using built-in evaluators, native graders, and custom rubrics; manage and generate evaluator versions. |
+| [indexes](src/samples/java/com/azure/ai/projects/indexes) | Create, list, retrieve, and delete indexes. |
+| [models](src/samples/java/com/azure/ai/projects/models) | Register model weights and manage model versions. |
+| [routines](src/samples/java/com/azure/ai/projects/routines) | Manage routines, dispatch manually, and use schedule and timer triggers. |
+| [skills](src/samples/java/com/azure/ai/projects/skills) | Manage skills and upload or download skill packages. |
 
 ### Connections operations
 
@@ -178,7 +191,7 @@ for (Connection connection : connections) {
 ```java com.azure.ai.projects.ConnectionsSample.getConnectionWithoutCredentials
 
 String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-Connection connection = connectionsClient.getConnection(connectionName);
+Connection connection = connectionsClient.getConnection(connectionName, false);
 
 System.out.printf("Connection name: %s%n", connection.getName());
 
@@ -189,7 +202,7 @@ System.out.printf("Connection name: %s%n", connection.getName());
 ```java com.azure.ai.projects.ConnectionsSample.getConnectionWithCredentials
 
 String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-Connection connection = connectionsClient.getConnectionWithCredentials(connectionName);
+Connection connection = connectionsClient.getConnection(connectionName, true);
 
 System.out.printf("Connection name: %s%n", connection.getName());
 System.out.printf("Connection credentials: %s%n", connection.getCredential().getType());
@@ -208,7 +221,7 @@ return connectionsAsyncClient.listConnections()
 ```java com.azure.ai.projects.ConnectionsAsyncSample.getConnectionWithoutCredentials
 
 String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-return connectionsAsyncClient.getConnection(connectionName)
+return connectionsAsyncClient.getConnection(connectionName, false)
     .doOnNext(connection -> System.out.printf("Connection name: %s%n", connection.getName()));
 
 ```
@@ -216,7 +229,7 @@ return connectionsAsyncClient.getConnection(connectionName)
 ```java com.azure.ai.projects.ConnectionsAsyncSample.getConnectionWithCredentials
 
 String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "");
-return connectionsAsyncClient.getConnectionWithCredentials(connectionName)
+return connectionsAsyncClient.getConnection(connectionName, true)
     .doOnNext(connection -> {
         System.out.printf("Connection name: %s%n", connection.getName());
         System.out.printf("Connection credentials: %s%n", connection.getCredential().getType());

@@ -669,10 +669,8 @@ public final class BetaSkillsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific version of a skill.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SkillVersion createSkillVersionFromFiles(String name, CreateSkillVersionFromFilesBody content) {
-        // Generated convenience method for createSkillVersionFromFilesWithResponseInternal
         RequestOptions requestOptions = new RequestOptions();
         return createSkillVersionFromFilesWithResponseInternal(name,
             new MultipartFormDataHelper(requestOptions)
@@ -680,7 +678,7 @@ public final class BetaSkillsClient {
                     content.getFiles().stream().map(SkillFileDetails::getContent).collect(Collectors.toList()),
                     content.getFiles().stream().map(SkillFileDetails::getContentType).collect(Collectors.toList()),
                     content.getFiles().stream().map(SkillFileDetails::getFilename).collect(Collectors.toList()))
-                .serializeTextField("default", Objects.toString(content.isDefaultProperty()))
+                .serializeTextField("default", Objects.toString(content.isDefaultProperty(), null))
                 .end()
                 .getRequestBody(),
             requestOptions).getValue().toObject(SkillVersion.class);
