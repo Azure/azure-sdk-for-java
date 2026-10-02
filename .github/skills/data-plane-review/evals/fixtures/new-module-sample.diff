@@ -1,0 +1,14 @@
+diff --git a/sdk/contoso/azure-contoso-widgets/src/samples/java/com/azure/contoso/widgets/ReadmeSamples.java b/sdk/contoso/azure-contoso-widgets/src/samples/java/com/azure/contoso/widgets/ReadmeSamples.java
+new file mode 100644
+index 0000000..3333333
+--- /dev/null
++++ b/sdk/contoso/azure-contoso-widgets/src/samples/java/com/azure/contoso/widgets/ReadmeSamples.java
+@@ -0,0 +1,10 @@
++package com.azure.contoso.widgets;
++
++public final class ReadmeSamples {
++    public void readmeSamples() {
++        // BEGIN: com.azure.contoso.widgets.readme
++        // END: com.azure.contoso.widgets.readme
++    }
++}

@@ -1,0 +1,270 @@
+name: data-plane-reviewer-findings
+description: Detection tests for source-backed Java data-plane SDK concerns.
+
+tags:
+  area: data-plane-reviewer
+
+defaults:
+  runs: 1
+  timeout: "300s"
+  model: gpt-5.6-terra
+  judge_model: gpt-5.6-terra
+
+scoring:
+  threshold: 0.8
+
+stimuli:
+  - name: incomplete-new-module-package
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/new-module-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/new-module-tree.txt"
+          dest: "github-responses/package-tree.txt"
+        - src: "fixtures/new-module-pom.diff"
+          dest: "pr-diff/001-pom.xml.diff"
+        - src: "fixtures/new-module-readme.diff"
+          dest: "pr-diff/002-README.md.diff"
+        - src: "fixtures/new-module-sample.diff"
+          dest: "pr-diff/003-ReadmeSamples.java.diff"
+        - src: "fixtures/new-module-changelog.diff"
+          dest: "pr-diff/004-CHANGELOG.md.diff"
+    prompt: >
+      Use the data-plane-review skill to review the synthetic PR. GitHub
+      responses are materialized under github-responses, per-file patches
+      under pr-diff, and the complete pinned-head package inventory in
+      github-responses/package-tree.txt. Produce the source-backed candidate
+      review; this findings eval does not run the workflow critic.
+    constraints:
+      expect_skills:
+        - data-plane-review
+    graders:
+      - type: output-matches
+        name: "incomplete README detected"
+        config:
+          pattern: "\\[DP-DOC-01\\]"
+      - type: output-matches
+        name: "empty README sample detected"
+        config:
+          pattern: "\\[DP-DOC-02\\]"
+      - type: output-matches
+        name: "missing maintained tests detected"
+        config:
+          pattern: "\\[DP-TEST-01\\]"
+      - type: output-matches
+        name: "invalid changelog detected"
+        config:
+          pattern: "\\[DP-VERSION-04\\]"
+      - type: output-matches
+        name: "changelog finding is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[DP-VERSION-04\\]"
+      - type: output-matches
+        name: "documentation findings are suggestions"
+        config:
+          pattern: "(?s)### Suggestion.*\\[DP-DOC-01\\].*\\[DP-DOC-02\\].*\\[DP-TEST-01\\]"
+      - type: prompt
+    rubric:
+      - The new package README has empty Key concepts and Troubleshooting sections, requiring DP-DOC-01.
+      - Its Examples directive points to an empty maintained Java snippet region, requiring DP-DOC-02.
+      - The complete package tree has no src/test files, requiring DP-TEST-01.
+      - The changed changelog has duplicate and empty standard sections, requiring DP-VERSION-04.
+      - Each finding must cite changed evidence and give a concrete correct form.
+
+  - name: too-many-service-parameters
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/api-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/method-options.diff"
+          dest: "pr-diff/011-WidgetClient.java.diff"
+    prompt: >
+      Use the data-plane-review skill to review the synthetic PR. GitHub
+      responses are materialized under github-responses and per-file patches
+      under pr-diff. Produce the source-backed candidate review; this findings
+      eval does not run the workflow critic.
+    constraints:
+      expect_skills:
+        - data-plane-review
+    graders:
+      - type: output-matches
+        name: "options bag violation detected"
+        config:
+          pattern: "\\[DP-METHOD-02\\]"
+      - type: output-matches
+        name: "options bag finding is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[DP-METHOD-02\\]"
+      - type: output-matches
+        name: "options bag remediation supplied"
+        config:
+          pattern: "(?is)DP-METHOD-02.*CreateWidgetOptions"
+      - type: prompt
+    rubric:
+      - The newly added public service method has seven service parameters; Context is not counted.
+      - DP-METHOD-02 must require a CreateWidgetOptions bag and remain a Warning.
+
+  - name: async-method-name-has-suffix
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/api-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/method-naming.diff"
+          dest: "pr-diff/012-WidgetAsyncClient.java.diff"
+    prompt: >
+      Use the data-plane-review skill to review the synthetic PR. GitHub
+      responses are materialized under github-responses and per-file patches
+      under pr-diff. Produce the source-backed candidate review; this findings
+      eval does not run the workflow critic.
+    constraints:
+      expect_skills:
+        - data-plane-review
+    graders:
+      - type: output-matches
+        name: "async suffix violation detected"
+        config:
+          pattern: "\\[DP-METHOD-01\\]"
+      - type: output-matches
+        name: "correct async name supplied"
+        config:
+          pattern: "(?is)DP-METHOD-01.*createWidget\\("
+      - type: prompt
+    rubric:
+      - Async service methods must not use an Async suffix.
+      - DP-METHOD-01 should recommend createWidget while preserving Mono as the return type.
+
+  - name: collection-return-is-not-pageable
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/api-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/paging-return.diff"
+          dest: "pr-diff/013-WidgetClient.java.diff"
+    prompt: >
+      Use the data-plane-review skill to review the synthetic PR. GitHub
+      responses are materialized under github-responses and per-file patches
+      under pr-diff. Produce the source-backed candidate review; this findings
+      eval does not run the workflow critic.
+    constraints:
+      expect_skills:
+        - data-plane-review
+    graders:
+      - type: output-matches
+        name: "paging violation detected"
+        config:
+          pattern: "\\[DP-PAGING-01\\]"
+      - type: output-matches
+        name: "paged iterable remediation supplied"
+        config:
+          pattern: "(?is)DP-PAGING-01.*PagedIterable<Widget>"
+      - type: prompt
+    rubric:
+      - The user-facing listWidgets operation returns List<Widget> for a service collection.
+      - DP-PAGING-01 must require PagedIterable<Widget> and remain a Warning.
+
+  - name: long-running-operation-is-not-poller
+    tags:
+      rule: lro
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/api-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/lro-return.diff"
+          dest: "pr-diff/014-WidgetClient.java.diff"
+    prompt: >
+      Use the data-plane-review skill to review the synthetic PR. GitHub
+      responses are materialized under github-responses and per-file patches
+      under pr-diff. Produce the source-backed candidate review; this findings
+      eval does not run the workflow critic.
+    constraints:
+      expect_skills:
+        - data-plane-review
+    graders:
+      - type: output-matches
+        name: "LRO violation detected"
+        config:
+          pattern: "\\[DP-LRO-01\\]"
+      - type: output-matches
+        name: "poller remediation supplied"
+        config:
+          pattern: "(?is)DP-LRO-01.*(?:beginCreateWidget.*SyncPoller|SyncPoller.*beginCreateWidget)"
+      - type: prompt
+    rubric:
+      - The ServiceMethod annotation explicitly identifies a long-running operation.
+      - DP-LRO-01 must require a begin-prefixed method returning SyncPoller and remain a Warning.
+
+  - name: stable-package-targets-preview-service
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/version-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/stable-preview-pom.diff"
+          dest: "pr-diff/021-pom.xml.diff"
+        - src: "fixtures/stable-preview-service-version.diff"
+          dest: "pr-diff/022-WidgetServiceVersion.java.diff"
+    prompt: >
+      Use the data-plane-review skill to review the synthetic PR. GitHub
+      responses are materialized under github-responses and per-file patches
+      under pr-diff. Produce the source-backed candidate review; this findings
+      eval does not run the workflow critic.
+    constraints:
+      expect_skills:
+        - data-plane-review
+    graders:
+      - type: output-matches
+        name: "stable preview mismatch detected"
+        config:
+          pattern: "\\[DP-VERSION-02\\]"
+      - type: output-matches
+        name: "version mismatch is blocking"
+        config:
+          pattern: "(?s)### Blocking.*\\[DP-VERSION-02\\]"
+      - type: prompt
+    rubric:
+      - The stable 1.0.0 package defaults exclusively to a preview service API.
+      - DP-VERSION-02 must appear under Blocking and recommend a beta package version or GA default API.
+
+  - name: ga-return-type-break
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/version-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/ga-break-pom.diff"
+          dest: "pr-diff/023-pom.xml.diff"
+        - src: "fixtures/ga-break-return.diff"
+          dest: "pr-diff/024-WidgetClient.java.diff"
+    prompt: >
+      Use the data-plane-review skill to review the synthetic PR. GitHub
+      responses are materialized under github-responses and per-file patches
+      under pr-diff. Produce the source-backed candidate review; this findings
+      eval does not run the workflow critic.
+    constraints:
+      expect_skills:
+        - data-plane-review
+    graders:
+      - type: output-matches
+        name: "GA compatibility break detected"
+        config:
+          pattern: "\\[DP-VERSION-01\\]"
+      - type: output-matches
+        name: "GA break is blocking"
+        config:
+          pattern: "(?s)### Blocking.*\\[DP-VERSION-01\\]"
+      - type: prompt
+    rubric:
+      - The GA package changes getWidget from Widget to BinaryData.
+      - DP-VERSION-01 must appear under Blocking and preserve the existing public method additively.
