@@ -75,8 +75,9 @@ public class ModelTests {
         ShareProperties shareProperties = new ShareProperties().setCreationTime(creationTime);
 
         assertEquals(creationTime, shareProperties.getCreationTime());
-        assertEquals(creationTime, ModelHelper.populateShareProperties(
-            new SharePropertiesInternal().setCreationTime(creationTime)).getCreationTime());
+        assertEquals(creationTime,
+            ModelHelper.populateShareProperties(new SharePropertiesInternal().setCreationTime(creationTime))
+                .getCreationTime());
 
         ResponseBase<SharesGetPropertiesHeaders, Void> response = new ResponseBase<>(null, 200, new HttpHeaders(), null,
             new SharesGetPropertiesHeaders(new HttpHeaders()).setXMsShareCreationTime(creationTime)
