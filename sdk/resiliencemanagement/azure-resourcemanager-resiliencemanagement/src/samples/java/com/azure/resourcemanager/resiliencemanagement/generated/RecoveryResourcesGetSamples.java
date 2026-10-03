@@ -9,7 +9,22 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class RecoveryResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RecoveryResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/RecoveryResources_Get_CrossZoneVMRecovery.json
+     */
+    /**
+     * Sample code: RecoveryResources_Get_CrossZoneVMRecovery.
+     * 
+     * @param manager Entry point to ResilienceManagementManager.
+     */
+    public static void recoveryResourcesGetCrossZoneVMRecovery(
+        com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
+        manager.recoveryResources()
+            .getWithResponse("sampleServiceGroupName", "samplePlanName", "12345678-9012-3456-7890-123456789012",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-08-31-preview/RecoveryResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryResources_Get_MaximumSet.

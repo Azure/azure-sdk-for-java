@@ -95,6 +95,16 @@ public class DrillProperties implements JsonSerializable<DrillProperties> {
     private MonitoringPropertiesOfDrill monitoringProperties;
 
     /*
+     * Azure Health Model monitoring properties of the Drill.
+     */
+    private HealthModelMonitoringProperties healthModelMonitoringProperties;
+
+    /*
+     * SLI monitoring properties of the Drill.
+     */
+    private SliMonitoringProperties sliMonitoringProperties;
+
+    /*
      * Error details associated with the resource.
      */
     private ManagementError errorDetails;
@@ -395,6 +405,47 @@ public class DrillProperties implements JsonSerializable<DrillProperties> {
     }
 
     /**
+     * Get the healthModelMonitoringProperties property: Azure Health Model monitoring properties of the Drill.
+     * 
+     * @return the healthModelMonitoringProperties value.
+     */
+    public HealthModelMonitoringProperties healthModelMonitoringProperties() {
+        return this.healthModelMonitoringProperties;
+    }
+
+    /**
+     * Set the healthModelMonitoringProperties property: Azure Health Model monitoring properties of the Drill.
+     * 
+     * @param healthModelMonitoringProperties the healthModelMonitoringProperties value to set.
+     * @return the DrillProperties object itself.
+     */
+    public DrillProperties
+        withHealthModelMonitoringProperties(HealthModelMonitoringProperties healthModelMonitoringProperties) {
+        this.healthModelMonitoringProperties = healthModelMonitoringProperties;
+        return this;
+    }
+
+    /**
+     * Get the sliMonitoringProperties property: SLI monitoring properties of the Drill.
+     * 
+     * @return the sliMonitoringProperties value.
+     */
+    public SliMonitoringProperties sliMonitoringProperties() {
+        return this.sliMonitoringProperties;
+    }
+
+    /**
+     * Set the sliMonitoringProperties property: SLI monitoring properties of the Drill.
+     * 
+     * @param sliMonitoringProperties the sliMonitoringProperties value to set.
+     * @return the DrillProperties object itself.
+     */
+    public DrillProperties withSliMonitoringProperties(SliMonitoringProperties sliMonitoringProperties) {
+        this.sliMonitoringProperties = sliMonitoringProperties;
+        return this;
+    }
+
+    /**
      * Get the errorDetails property: Error details associated with the resource.
      * 
      * @return the errorDetails value.
@@ -426,6 +477,8 @@ public class DrillProperties implements JsonSerializable<DrillProperties> {
         jsonWriter.writeJsonField("chaosResourceProperties", this.chaosResourceProperties);
         jsonWriter.writeStringField("rbacSetupMode", this.rbacSetupMode == null ? null : this.rbacSetupMode.toString());
         jsonWriter.writeJsonField("monitoringProperties", this.monitoringProperties);
+        jsonWriter.writeJsonField("healthModelMonitoringProperties", this.healthModelMonitoringProperties);
+        jsonWriter.writeJsonField("sliMonitoringProperties", this.sliMonitoringProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -505,6 +558,11 @@ public class DrillProperties implements JsonSerializable<DrillProperties> {
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("monitoringProperties".equals(fieldName)) {
                     deserializedDrillProperties.monitoringProperties = MonitoringPropertiesOfDrill.fromJson(reader);
+                } else if ("healthModelMonitoringProperties".equals(fieldName)) {
+                    deserializedDrillProperties.healthModelMonitoringProperties
+                        = HealthModelMonitoringProperties.fromJson(reader);
+                } else if ("sliMonitoringProperties".equals(fieldName)) {
+                    deserializedDrillProperties.sliMonitoringProperties = SliMonitoringProperties.fromJson(reader);
                 } else if ("errorDetails".equals(fieldName)) {
                     deserializedDrillProperties.errorDetails = ManagementError.fromJson(reader);
                 } else {

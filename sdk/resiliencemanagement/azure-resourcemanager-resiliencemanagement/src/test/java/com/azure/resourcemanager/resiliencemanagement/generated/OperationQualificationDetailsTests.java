@@ -7,15 +7,40 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resiliencemanagement.models.OperationQualificationDetails;
 import com.azure.resourcemanager.resiliencemanagement.models.QualificationState;
+import com.azure.resourcemanager.resiliencemanagement.models.ResourceFeasibilityReviewStatus;
+import com.azure.resourcemanager.resiliencemanagement.models.ResourceFeasibilityReviewType;
 import org.junit.jupiter.api.Assertions;
 
 public final class OperationQualificationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationQualificationDetails model = BinaryData.fromString(
-            "{\"qualificationState\":\"Qualified\",\"notQualifiedReasons\":[\"pfrxtrthzvay\",\"dwkqbrq\",\"bpaxhexiilivpdt\",\"irqtdqoa\"]}")
+            "{\"qualificationState\":\"Unknown\",\"notQualifiedReasons\":[\"dmsmlm\",\"qhoftrmaequiah\",\"icslfaoq\",\"piyylhalnswhccsp\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"vwitqscyw\",\"currentTargetSku\":{\"sku\":\"gwol\",\"vCpu\":1226562367,\"ram\":219242582,\"monthlyPrice\":17.418692894379674,\"currency\":\"ai\",\"offeringId\":\"brgz\"},\"status\":\"Flagged\",\"recommendedTargetSkus\":[{\"sku\":\"weyp\",\"vCpu\":2076786264,\"ram\":840450646,\"monthlyPrice\":30.45805226644529,\"currency\":\"cnxqhuexmkttlst\",\"offeringId\":\"zywemhzrncsdtclu\"}]},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"ypbsfgytguslfead\",\"currentTargetSku\":{\"sku\":\"gq\",\"vCpu\":860507177,\"ram\":2033561570,\"monthlyPrice\":3.4251781400468584,\"currency\":\"sx\",\"offeringId\":\"pelol\"},\"status\":\"Unavailable\",\"recommendedTargetSkus\":[{\"sku\":\"srp\",\"vCpu\":1097425723,\"ram\":2128211402,\"monthlyPrice\":33.19401521907267,\"currency\":\"twdw\",\"offeringId\":\"tswiby\"},{\"sku\":\"cdl\",\"vCpu\":1538697515,\"ram\":523065183,\"monthlyPrice\":4.802215876490735,\"currency\":\"cstwity\",\"offeringId\":\"evxccedcp\"}]},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"dyodnwzxltj\",\"currentTargetSku\":{\"sku\":\"nhltiugcxn\",\"vCpu\":1032415559,\"ram\":625256157,\"monthlyPrice\":92.90322280680466,\"currency\":\"qunyowxwlmdjr\",\"offeringId\":\"fgbvfvpdbo\"},\"status\":\"Flagged\",\"recommendedTargetSkus\":[{\"sku\":\"zsjqlh\",\"vCpu\":218475539,\"ram\":268834532,\"monthlyPrice\":23.08054185815841,\"currency\":\"qipqkghvxndz\",\"offeringId\":\"krefajpjo\"},{\"sku\":\"wkqnyhg\",\"vCpu\":132694968,\"ram\":809935790,\"monthlyPrice\":44.73718071010649,\"currency\":\"zs\",\"offeringId\":\"bibsystawfsdjpvk\"},{\"sku\":\"p\",\"vCpu\":911357247,\"ram\":1795251983,\"monthlyPrice\":37.18508107629012,\"currency\":\"dvncjabudurgk\",\"offeringId\":\"mokzhjjklf\"}]}]}")
             .toObject(OperationQualificationDetails.class);
-        Assertions.assertEquals(QualificationState.QUALIFIED, model.qualificationState());
-        Assertions.assertEquals("pfrxtrthzvay", model.notQualifiedReasons().get(0));
+        Assertions.assertEquals(QualificationState.UNKNOWN, model.qualificationState());
+        Assertions.assertEquals("dmsmlm", model.notQualifiedReasons().get(0));
+        Assertions.assertEquals(ResourceFeasibilityReviewType.SKU_CAPACITY,
+            model.resourceFeasibilityReviews().get(0).feasibilityType());
+        Assertions.assertEquals("vwitqscyw", model.resourceFeasibilityReviews().get(0).resourceType());
+        Assertions.assertEquals("gwol", model.resourceFeasibilityReviews().get(0).currentTargetSku().sku());
+        Assertions.assertEquals(1226562367, model.resourceFeasibilityReviews().get(0).currentTargetSku().vCpu());
+        Assertions.assertEquals(219242582, model.resourceFeasibilityReviews().get(0).currentTargetSku().ram());
+        Assertions.assertEquals(17.418692894379674D,
+            model.resourceFeasibilityReviews().get(0).currentTargetSku().monthlyPrice());
+        Assertions.assertEquals("ai", model.resourceFeasibilityReviews().get(0).currentTargetSku().currency());
+        Assertions.assertEquals("brgz", model.resourceFeasibilityReviews().get(0).currentTargetSku().offeringId());
+        Assertions.assertEquals(ResourceFeasibilityReviewStatus.FLAGGED,
+            model.resourceFeasibilityReviews().get(0).status());
+        Assertions.assertEquals("weyp", model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).sku());
+        Assertions.assertEquals(2076786264,
+            model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).vCpu());
+        Assertions.assertEquals(840450646,
+            model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).ram());
+        Assertions.assertEquals(30.45805226644529D,
+            model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).monthlyPrice());
+        Assertions.assertEquals("cnxqhuexmkttlst",
+            model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).currency());
+        Assertions.assertEquals("zywemhzrncsdtclu",
+            model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).offeringId());
     }
 }
