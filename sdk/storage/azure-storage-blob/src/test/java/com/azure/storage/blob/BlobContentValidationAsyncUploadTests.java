@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.ContentValidationTestUtils.RecordedRequest;
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -43,11 +45,12 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.azure.storage.blob.ContentValidationTestUtils.allUploadsUseCrc64Header;
@@ -1255,25 +1258,39 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
 
     @LiveOnly // Cancellation + parallel staging; validated live.
     @Test
-    public void cancelledMultipartUploadDoesNotCommit() {
+    public void cancelledMultipartUploadDoesNotCommit() throws InterruptedException {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded);
+        CountDownLatch blockStaged = new CountDownLatch(1);
+        // Signal as soon as a Put Block request begins, so we only cancel AFTER staging has actually started.
+        HttpPipelinePolicy stagingObserver = (context, next) -> {
+            String url = context.getHttpRequest().getUrl().toString();
+            if (url.contains("comp=block") && !url.contains("comp=blocklist")) {
+                blockStaged.countDown();
+            }
+            return next.process();
+        };
+        BlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded, stagingObserver);
 
         long blockSize = 2L * Constants.MB;
-        // A body that emits one block then never completes keeps the upload pending until it is cancelled.
-        Flux<ByteBuffer> neverCompleting
-            = Flux.concat(Flux.just(ByteBuffer.wrap(getRandomByteArray(2 * Constants.MB))), Flux.never());
+        // Emit several blocks (well over the single-shot threshold, so the gate actually switches to chunked staging)
+        // then never complete, keeping the upload pending until it is cancelled.
+        Flux<ByteBuffer> neverCompleting = Flux
+            .concat(Flux.range(0, 4).map(i -> ByteBuffer.wrap(getRandomByteArray(2 * Constants.MB))), Flux.never());
 
-        StepVerifier
-            .create(client.uploadWithResponse(new BlobParallelUploadOptions(neverCompleting)
-                .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
-                    .setMaxSingleUploadSizeLong(blockSize)
-                    .setMaxConcurrency(1))
-                .setRequestConditions(new BlobRequestConditions())
-                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)))
-            .thenAwait(Duration.ofMillis(200))
-            .thenCancel()
-            .verify();
+        Disposable subscription = client.uploadWithResponse(new BlobParallelUploadOptions(neverCompleting)
+            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
+                .setMaxSingleUploadSizeLong(blockSize)
+                .setMaxConcurrency(1))
+            .setRequestConditions(new BlobRequestConditions())
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)).subscribe();
+
+        try {
+            // Staging must actually begin; otherwise the no-commit assertion below would pass vacuously.
+            assertTrue(blockStaged.await(60, TimeUnit.SECONDS), "Staging must begin before the upload is cancelled");
+            assertFalse(contentBearingUploadRequests(recorded).isEmpty(), "At least one block must have been staged");
+        } finally {
+            subscription.dispose(); // cancel mid-flight
+        }
 
         assertFalse(hasCommitBlockListRequest(recorded),
             "A cancelled multipart upload must not commit a block list of incomplete data");

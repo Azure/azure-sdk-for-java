@@ -34,8 +34,16 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.storage.blob.ContentValidationTestUtils.allUploadsUseStructuredMessage;
@@ -79,14 +87,76 @@ public class ValidatableContentTests {
     }
 
     /**
-     * The number of options types exercised here must match the number of production options types that implement
-     * {@link ValidatableContent}. If a new validatable options type is added without being covered here, this test
-     * fails to force the coverage to stay complete.
+     * Independently discovers every {@link ValidatableContent} options type on the classpath and asserts that
+     * {@link #validatableOptions()} covers exactly that set (and contains no duplicates). Deriving the expected set
+     * via reflection — rather than hardcoding a count — means adding a new ValidatableContent options type without
+     * updating {@link #validatableOptions()} fails this test.
      */
     @Test
-    public void allValidatableOptionTypesAreCovered() {
-        assertEquals(15, validatableOptions().count(),
-            "Every options type implementing ValidatableContent must be represented in validatableOptions().");
+    public void allValidatableOptionTypesAreCovered() throws Exception {
+        List<Class<?>> coveredList
+            = validatableOptions().map(args -> args.get()[1].getClass()).collect(Collectors.toList());
+        Set<Class<?>> covered = new HashSet<>(coveredList);
+        assertEquals(coveredList.size(), covered.size(), "validatableOptions() must not contain duplicate types");
+
+        Set<Class<?>> discovered = discoverValidatableContentOptionTypes();
+        assertEquals(discovered, covered,
+            "validatableOptions() must cover exactly the ValidatableContent options types. Missing: "
+                + difference(discovered, covered) + "; unexpected: " + difference(covered, discovered));
+    }
+
+    private static Set<Class<?>> difference(Set<Class<?>> a, Set<Class<?>> b) {
+        Set<Class<?>> result = new HashSet<>(a);
+        result.removeAll(b);
+        return result;
+    }
+
+    /**
+     * Scans {@code com.azure.storage.blob.options} on the classpath for every public, concrete class implementing
+     * {@link ValidatableContent}, handling both exploded class directories and jars.
+     */
+    private static Set<Class<?>> discoverValidatableContentOptionTypes() throws Exception {
+        String pkg = "com.azure.storage.blob.options";
+        String pkgPath = pkg.replace('.', '/');
+        Set<Class<?>> result = new HashSet<>();
+        File root
+            = new File(BlockBlobStageBlockOptions.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+        if (root.isDirectory()) {
+            File[] classFiles
+                = new File(root, pkgPath).listFiles((dir, name) -> name.endsWith(".class") && !name.contains("$"));
+            if (classFiles != null) {
+                for (File classFile : classFiles) {
+                    String name = classFile.getName();
+                    addIfValidatableOption(result, pkg + "." + name.substring(0, name.length() - ".class".length()));
+                }
+            }
+        } else {
+            try (JarFile jar = new JarFile(root)) {
+                Enumeration<JarEntry> entries = jar.entries();
+                while (entries.hasMoreElements()) {
+                    String name = entries.nextElement().getName();
+                    if (name.startsWith(pkgPath + "/")
+                        && name.endsWith(".class")
+                        && !name.contains("$")
+                        && name.indexOf('/', pkgPath.length() + 1) < 0) {
+                        addIfValidatableOption(result,
+                            name.substring(0, name.length() - ".class".length()).replace('/', '.'));
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    private static void addIfValidatableOption(Set<Class<?>> result, String className) throws ClassNotFoundException {
+        Class<?> clazz = Class.forName(className);
+        int mods = clazz.getModifiers();
+        if (ValidatableContent.class.isAssignableFrom(clazz)
+            && !clazz.isInterface()
+            && !Modifier.isAbstract(mods)
+            && Modifier.isPublic(mods)) {
+            result.add(clazz);
+        }
     }
 
     @ParameterizedTest

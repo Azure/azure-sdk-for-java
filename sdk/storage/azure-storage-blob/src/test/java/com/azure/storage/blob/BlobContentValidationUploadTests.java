@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.ContentValidationTestUtils.RecordedRequest;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -1794,12 +1795,16 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     public void uploadRetryReplaysBodyAndRevalidatesAfterConsumption() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
         AtomicBoolean failedOnce = new AtomicBoolean(false);
-        // Fail the first upload attempt once with a retryable 500; the SDK must replay the (already consumed) body
-        // and the content-validation policy must recompute the checksum on the retried request.
-        HttpPipelinePolicy fault
-            = (context, next) -> isUploadAttempt(context.getHttpRequest()) && failedOnce.compareAndSet(false, true)
-                ? injectedError(context.getHttpRequest(), 500)
-                : next.process();
+        // Fail the first upload attempt once with a retryable 500, but only AFTER draining the request body so the
+        // transport has actually consumed the stream. The retry must then replay the body and the content-validation
+        // policy must recompute the checksum on the retried request.
+        HttpPipelinePolicy fault = (context, next) -> {
+            if (isUploadAttempt(context.getHttpRequest()) && failedOnce.compareAndSet(false, true)) {
+                return FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
+                    .then(injectedError(context.getHttpRequest(), 500));
+            }
+            return next.process();
+        };
         BlockBlobClient client = createBlobClientWithFullRequestSniffer(recorded, fault).getBlockBlobClient();
 
         byte[] data = getRandomByteArray(UNDER_4MB);
