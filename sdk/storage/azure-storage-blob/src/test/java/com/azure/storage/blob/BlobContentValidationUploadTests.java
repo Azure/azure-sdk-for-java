@@ -1371,7 +1371,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         }
     }
 
-    @LiveOnly // Server-side MD5/CRC64 conflict; fixture is now a valid raw digest (point #2); run live.
     @ParameterizedTest
     @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
     public void blockBlobUploadWithCustomerProvidedMd5AndCrc64Header(ContentValidationAlgorithm algorithm) {
@@ -1387,7 +1386,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         assertTrue(e.getMessage().contains(MESSAGE));
     }
 
-    @LiveOnly // Server-side MD5/CRC64 conflict; fixture is now a valid raw digest (point #2); run live.
     @ParameterizedTest
     @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
     public void stageBlockWithCustomerProvidedMd5AndCrc64Header(ContentValidationAlgorithm algorithm) {
@@ -1403,7 +1401,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         assertTrue(e.getMessage().contains(MESSAGE));
     }
 
-    @LiveOnly // Server-side MD5/CRC64 conflict; fixture is now a valid raw digest (point #2); run live.
     @ParameterizedTest
     @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
     public void appendBlockWithCustomerProvidedMd5AndCrc64Header(ContentValidationAlgorithm algorithm) {
@@ -1790,7 +1787,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         return reactor.core.publisher.Mono.just(new MockHttpResponse(request, status, headers, body));
     }
 
-    @LiveOnly // Fault injection + retry replay is awkward to record; validated live.
     @Test
     public void uploadRetryReplaysBodyAndRevalidatesAfterConsumption() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
@@ -1819,7 +1815,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         }
     }
 
-    @LiveOnly // Fault injection; validated live.
     @Test
     public void uploadErrorIsPropagated() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
@@ -1836,7 +1831,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         assertEquals(403, ex.getStatusCode());
     }
 
-    @LiveOnly // Fault injection; validated live.
     @Test
     public void failedStageBlockDoesNotCommitIncompleteData() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
