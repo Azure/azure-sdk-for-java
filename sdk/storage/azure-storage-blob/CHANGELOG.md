@@ -11,6 +11,7 @@
   `GetBlob`, `PutBlob`, `PutBlock`, `PutPage`, and `AppendBlock` operations.
 
 ### Bugs Fixed
+- Fixed account name parsing for DFS endpoints when the account name contains "blob".
 - Fixed SDK-generated ETag consistency locks for retries, chunked downloads, input streams, and seekable reads to send
   RFC 9110-conformant `If-Match` values.
 - Fixed an issue where `BlobClientBase.openSeekableByteChannelRead` issued an unnecessary HTTP request (resulting
