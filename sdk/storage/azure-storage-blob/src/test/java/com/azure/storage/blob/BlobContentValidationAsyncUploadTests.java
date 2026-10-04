@@ -1261,13 +1261,16 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     public void cancelledMultipartUploadDoesNotCommit() throws InterruptedException {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
         CountDownLatch blockStaged = new CountDownLatch(1);
-        // Signal as soon as a Put Block request begins, so we only cancel AFTER staging has actually started.
+        // Release the latch only AFTER a Put Block has successfully completed, so we cancel only once a block has
+        // genuinely been staged at the service (not merely dispatched). This keeps the no-commit assertion meaningful.
         HttpPipelinePolicy stagingObserver = (context, next) -> {
             String url = context.getHttpRequest().getUrl().toString();
-            if (url.contains("comp=block") && !url.contains("comp=blocklist")) {
-                blockStaged.countDown();
-            }
-            return next.process();
+            boolean isPutBlock = url.contains("comp=block") && !url.contains("comp=blocklist");
+            return next.process().doOnNext(response -> {
+                if (isPutBlock && response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
+                    blockStaged.countDown();
+                }
+            });
         };
         BlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded, stagingObserver);
 
@@ -1285,9 +1288,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)).subscribe();
 
         try {
-            // Staging must actually begin; otherwise the no-commit assertion below would pass vacuously.
-            assertTrue(blockStaged.await(60, TimeUnit.SECONDS), "Staging must begin before the upload is cancelled");
-            assertFalse(contentBearingUploadRequests(recorded).isEmpty(), "At least one block must have been staged");
+            // A block must have been fully staged (successful Put Block); otherwise the no-commit assertion below
+            // would pass vacuously.
+            assertTrue(blockStaged.await(60, TimeUnit.SECONDS),
+                "A block must be successfully staged before the upload is cancelled");
         } finally {
             subscription.dispose(); // cancel mid-flight
         }
