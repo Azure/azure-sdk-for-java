@@ -176,13 +176,13 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
 
     /*
      * Optional. Supported in version 2026-02-01 and above.
-     * The number of days that change feed reocrds are retrained on the share. Valid values are between 1 and 365
+     * The number of days that change feed records are retained on the share. Valid values are between 1 and 365
      * inclusive. Default if not specified is 7 days.
      */
     private Integer changeFeedRetentionInDays;
 
     /*
-     * Optional. Supported in version 2026-02-01 and above. The name of the blob container where teh change feed
+     * Optional. Supported in version 2026-02-01 and above. The name of the blob container where the change feed
      * records are stored. The name of the blob container is in the format {@code $fileschangefeed-<guid>}.
      */
     private String changeFeedBlobContainerName;
