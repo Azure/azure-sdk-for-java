@@ -781,10 +781,19 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
     It 'rejects source mode changes' {
         $fixture = New-JavaDocFixture
         Write-FixtureFile $fixture.Root $fixture.JavaPath $script:AfterSource
+        if (-not $IsWindows) {
+            # Keep the Unix working-tree execute bit consistent with the staged mode.
+            $sourcePath = Join-Path $fixture.Root $fixture.JavaPath
+            $mode = [System.IO.File]::GetUnixFileMode($sourcePath)
+            [System.IO.File]::SetUnixFileMode($sourcePath, ($mode -bor [System.IO.UnixFileMode]::UserExecute))
+        }
         $null = Invoke-FixtureGit $fixture.Root @('add', '--all')
         $null = Invoke-FixtureGit $fixture.Root @('update-index', '--chmod=+x', '--', $fixture.JavaPath)
         $null = Invoke-FixtureGit $fixture.Root @('commit', '-q', '-m', 'Fixture mode')
         Complete-JavaDocFixture $fixture
+        $snapshot = Get-JavaDocMergeSnapshot $fixture.Root $fixture.Head $fixture.Source
+        $snapshot.Changes[0].OldMode | Should -BeExactly '100644'
+        $snapshot.Changes[0].NewMode | Should -BeExactly '100755'
         $result = Measure-Fixture $fixture
         $result.Files.Reason | Should -Contain 'unsupported-source-status'
         $result.WouldSuppressTests | Should -BeFalse
