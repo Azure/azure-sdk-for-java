@@ -27,7 +27,7 @@ import com.azure.resourcemanager.keyvault.models.ManagedHsm;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmProperties;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSku;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuFamily;
-import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuName;
+import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuNameV2;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient;
@@ -257,7 +257,7 @@ public class ManagedHsmTests extends SamplesTestBase {
                 .getManagedHsms()
                 .createOrUpdate(rgName, mhsmName, new ManagedHsmInner().withLocation(Region.US_EAST2.name())
                     .withSku(
-                        new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.B).withName(ManagedHsmSkuName.STANDARD_B1))
+                        new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.B).withName(ManagedHsmSkuNameV2.STANDARD_B1))
                     .withProperties(
                         new ManagedHsmProperties().withTenantId(UUID.fromString(azureResourceManager.tenantId()))
                             .withInitialAdminObjectIds(Arrays.asList(objectId))
