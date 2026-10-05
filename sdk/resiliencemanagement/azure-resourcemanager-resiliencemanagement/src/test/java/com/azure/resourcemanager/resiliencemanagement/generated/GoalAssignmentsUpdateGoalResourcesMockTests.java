@@ -15,9 +15,10 @@ import com.azure.resourcemanager.resiliencemanagement.models.AttestationState;
 import com.azure.resourcemanager.resiliencemanagement.models.ConfirmationStatus;
 import com.azure.resourcemanager.resiliencemanagement.models.ExclusionState;
 import com.azure.resourcemanager.resiliencemanagement.models.GoalResourceProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.ResiliencyProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.SolutionDisplayName;
 import com.azure.resourcemanager.resiliencemanagement.models.UpdateGoalResourceRequest;
-import com.azure.resourcemanager.resiliencemanagement.models.UserConfirmationForHighAvailabilityItem;
+import com.azure.resourcemanager.resiliencemanagement.models.UserConfirmationItem;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -37,79 +38,44 @@ public final class GoalAssignmentsUpdateGoalResourcesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.goalAssignments()
-            .updateGoalResources("hmipgawtxxpkyjc", "cjxgrytf",
+            .updateGoalResources("wtqabpxuckp", "gqoweyirdhlisn",
                 new UpdateGoalResourceRequest()
                     .withResources(
                         Arrays
                             .asList(
                                 new GoalResourceInner()
-                                    .withProperties(new GoalResourceProperties().withResourceArmId("ycilrmcaykggnox")
-                                        .withHighAvailabilityGoalParticipation(ExclusionState.INCLUDED)
-                                        .withHighAvailabilityAttestationStatus(AttestationState.NOT_ATTESTED)
-                                        .withDisasterRecoveryGoalParticipation(ExclusionState.EXCLUDED)
-                                        .withDisasterRecoveryAttestationStatus(AttestationState.MANUALLY_ATTESTED)
-                                        .withUserConfirmationForHighAvailability(Arrays.asList(
-                                            new UserConfirmationForHighAvailabilityItem()
-                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                                                .withConfirmationStatus(ConfirmationStatus.APPROVAL_PENDING),
-                                            new UserConfirmationForHighAvailabilityItem()
-                                                .withSolutionDisplayName(
-                                                    SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
-                                                .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER),
-                                            new UserConfirmationForHighAvailabilityItem()
-                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                                                .withConfirmationStatus(ConfirmationStatus.APPROVAL_PENDING),
-                                            new UserConfirmationForHighAvailabilityItem()
-                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                                                .withConfirmationStatus(ConfirmationStatus.APPROVAL_PENDING)))),
-                                new GoalResourceInner()
-                                    .withProperties(new GoalResourceProperties().withResourceArmId("rvlagunbtgfebwln")
-                                        .withHighAvailabilityGoalParticipation(ExclusionState.INCLUDED)
-                                        .withHighAvailabilityAttestationStatus(AttestationState.NOT_ATTESTED)
-                                        .withDisasterRecoveryGoalParticipation(ExclusionState.INCLUDED)
-                                        .withDisasterRecoveryAttestationStatus(AttestationState.MANUALLY_ATTESTED)
-                                        .withUserConfirmationForHighAvailability(Arrays.asList(
-                                            new UserConfirmationForHighAvailabilityItem()
-                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                                                .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER),
-                                            new UserConfirmationForHighAvailabilityItem()
-                                                .withSolutionDisplayName(
-                                                    SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
-                                                .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER),
-                                            new UserConfirmationForHighAvailabilityItem()
-                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                                                .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER),
-                                            new UserConfirmationForHighAvailabilityItem()
-                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                                                .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER)))),
-                                new GoalResourceInner()
-                                    .withProperties(new GoalResourceProperties().withResourceArmId("nkqbhsyrq")
-                                        .withHighAvailabilityGoalParticipation(ExclusionState.INCLUDED)
-                                        .withHighAvailabilityAttestationStatus(AttestationState.NOT_ATTESTED)
-                                        .withDisasterRecoveryGoalParticipation(ExclusionState.INCLUDED)
-                                        .withDisasterRecoveryAttestationStatus(AttestationState.NOT_ATTESTED)
-                                        .withUserConfirmationForHighAvailability(
-                                            Arrays.asList(new UserConfirmationForHighAvailabilityItem()
-                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                                                .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER)))),
-                                new GoalResourceInner()
-                                    .withProperties(new GoalResourceProperties().withResourceArmId("fl")
-                                        .withHighAvailabilityGoalParticipation(ExclusionState.EXCLUDED)
-                                        .withHighAvailabilityAttestationStatus(AttestationState.NOT_ATTESTED)
-                                        .withDisasterRecoveryGoalParticipation(ExclusionState.INCLUDED)
-                                        .withDisasterRecoveryAttestationStatus(AttestationState.MANUALLY_ATTESTED)
-                                        .withUserConfirmationForHighAvailability(Arrays.asList(
-                                            new UserConfirmationForHighAvailabilityItem()
-                                                .withSolutionDisplayName(
-                                                    SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
-                                                .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER),
-                                            new UserConfirmationForHighAvailabilityItem()
-                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                                                .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED),
-                                            new UserConfirmationForHighAvailabilityItem()
-                                                .withSolutionDisplayName(
-                                                    SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
-                                                .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER)))))),
+                                    .withProperties(
+                                        new GoalResourceProperties().withResourceArmId("lqqmpiz")
+                                            .withHighAvailabilityGoalParticipation(ExclusionState.EXCLUDED)
+                                            .withHighAvailabilityAttestationStatus(AttestationState.NOT_ATTESTED)
+                                            .withZonalResiliency(new ResiliencyProperties()
+                                                .withGoalParticipation(ExclusionState.EXCLUDED)
+                                                .withAttestationStatus(AttestationState.MANUALLY_ATTESTED)
+                                                .withUserConfirmation(Arrays.asList(
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                        .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER),
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                        .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER))))
+                                            .withDisasterRecoveryGoalParticipation(ExclusionState.EXCLUDED)
+                                            .withDisasterRecoveryAttestationStatus(AttestationState.MANUALLY_ATTESTED)
+                                            .withUserConfirmationForHighAvailability(Arrays.asList(
+                                                new UserConfirmationItem()
+                                                    .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                    .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER),
+                                                new UserConfirmationItem()
+                                                    .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                    .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED),
+                                                new UserConfirmationItem()
+                                                    .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                    .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER),
+                                                new UserConfirmationItem()
+                                                    .withSolutionDisplayName(
+                                                        SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                    .withConfirmationStatus(ConfirmationStatus.APPROVAL_PENDING)))))),
                 com.azure.core.util.Context.NONE);
 
     }

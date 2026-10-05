@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class UsagePlansCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/UsagePlans_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/UsagePlans_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: UsagePlans_CreateOrUpdate_MaximumSet.

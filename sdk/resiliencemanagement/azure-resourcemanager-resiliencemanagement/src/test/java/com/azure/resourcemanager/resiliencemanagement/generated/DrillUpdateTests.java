@@ -10,12 +10,17 @@ import com.azure.resourcemanager.resiliencemanagement.models.AssociatedIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ChaosResourcePropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillUpdate;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillUpdateProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.HealthModelMonitoringProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.resiliencemanagement.models.MonitoringPropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.RBACSetupMode;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryPlanPropertiesOfDrill;
+import com.azure.resourcemanager.resiliencemanagement.models.SliMonitoringProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.SliSelection;
+import com.azure.resourcemanager.resiliencemanagement.models.SliType;
 import com.azure.resourcemanager.resiliencemanagement.models.UserAssignedIdentity;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -24,75 +29,109 @@ public final class DrillUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DrillUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"vjzhpjbib\",\"tenantId\":\"mfxumvfcluyovw\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"niyujv\":{\"principalId\":\"ezzxscyhwzdgiruj\",\"clientId\":\"bomvzzbtdcqv\"},\"ymsgaojfmwnc\":{\"principalId\":\"l\",\"clientId\":\"shfssnrbgyef\"},\"cpqjlihhyu\":{\"principalId\":\"mrfhirctymox\",\"clientId\":\"tpipiwyczuhx\"}}},\"properties\":{\"recoveryPlanProperties\":{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"sdvlmfwdgzxulucv\"},\"recoveryPlanId\":\"mrsreuzvxurisjnh\",\"recoveryPlanResourceExcludedCount\":1488634157},\"drillAssetProperties\":{\"subscription\":\"ifqjz\",\"region\":\"xmrhu\",\"resourceGroup\":\"wp\"},\"chaosResourceProperties\":{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"trgjupauutpwoqh\"},\"chaosResourceIdentityForFaults\":{\"type\":\"None\",\"userAssignedIdentity\":\"jqgwzp\"},\"chaosResourceId\":\"qntcypsxjvfoimwk\",\"faultDurationInMin\":37072566},\"rbacSetupMode\":\"AutomatedCustomRole\",\"monitoringProperties\":{\"identity\":{\"type\":\"None\",\"userAssignedIdentity\":\"vydfceacvlhvygdy\"},\"logAnalyticsWorkspaceId\":\"umrtwnawjsl\",\"rawMetricsDataCollectionRuleId\":\"wkojgcyztsfmzn\",\"serviceGroupMetricsDataCollectionRuleId\":\"eqphchqnrnr\",\"dataCollectionEndpointId\":\"ehuwrykqgaifmvik\"}}}")
+            "{\"identity\":{\"principalId\":\"vwlyoup\",\"tenantId\":\"fbkjubdyhgkfmi\",\"type\":\"None\",\"userAssignedIdentities\":{\"mmqtgqqqxhr\":{\"principalId\":\"zfttsttktlahb\",\"clientId\":\"ctxtgzukxi\"},\"azivjlfrqttbajl\":{\"principalId\":\"rxcpjuisavo\",\"clientId\":\"dzf\"},\"igovi\":{\"principalId\":\"tnwxy\",\"clientId\":\"pidkqqfkuvscxkdm\"}}},\"properties\":{\"recoveryPlanProperties\":{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"mloazuru\"},\"recoveryPlanId\":\"bgo\",\"recoveryPlanResourceExcludedCount\":1644940787},\"drillAssetProperties\":{\"subscription\":\"eoybfhjxakvvjgs\",\"region\":\"ordilmywwtkgkxny\",\"resourceGroup\":\"abgyvudt\"},\"chaosResourceProperties\":{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"bcihxuuwhc\"},\"chaosResourceIdentityForFaults\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"ccybvp\"},\"chaosResourceId\":\"akkud\",\"faultDurationInMin\":1773964666},\"rbacSetupMode\":\"AutomatedBuiltinRoles\",\"monitoringProperties\":{\"identity\":{\"type\":\"None\",\"userAssignedIdentity\":\"agst\"},\"logAnalyticsWorkspaceId\":\"ohpfkyrkdbdgiog\",\"rawMetricsDataCollectionRuleId\":\"kmnwqjnobaiyhddv\",\"serviceGroupMetricsDataCollectionRuleId\":\"cegfnmntfp\",\"dataCollectionEndpointId\":\"memfnczdwvvbalxl\"},\"healthModelMonitoringProperties\":{\"identity\":{\"type\":\"None\",\"userAssignedIdentity\":\"podbzevwrdnh\"},\"discoveryRuleId\":\"ukuv\"},\"sliMonitoringProperties\":{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"wsmystuluqypf\"},\"slis\":[{\"sliId\":\"lerchpq\",\"type\":\"Availability\"},{\"sliId\":\"f\",\"type\":\"Availability\"},{\"sliId\":\"babwidfcxss\",\"type\":\"Latency\"},{\"sliId\":\"unnoxyhk\",\"type\":\"Availability\"}]}}}")
             .toObject(DrillUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
             model.properties().recoveryPlanProperties().identity().type());
-        Assertions.assertEquals("sdvlmfwdgzxulucv",
+        Assertions.assertEquals("mloazuru",
             model.properties().recoveryPlanProperties().identity().userAssignedIdentity());
-        Assertions.assertEquals("ifqjz", model.properties().drillAssetProperties().subscription());
-        Assertions.assertEquals("xmrhu", model.properties().drillAssetProperties().region());
-        Assertions.assertEquals("wp", model.properties().drillAssetProperties().resourceGroup());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals("eoybfhjxakvvjgs", model.properties().drillAssetProperties().subscription());
+        Assertions.assertEquals("ordilmywwtkgkxny", model.properties().drillAssetProperties().region());
+        Assertions.assertEquals("abgyvudt", model.properties().drillAssetProperties().resourceGroup());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED,
             model.properties().chaosResourceProperties().identity().type());
-        Assertions.assertEquals("trgjupauutpwoqh",
+        Assertions.assertEquals("bcihxuuwhc",
             model.properties().chaosResourceProperties().identity().userAssignedIdentity());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE,
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
             model.properties().chaosResourceProperties().chaosResourceIdentityForFaults().type());
-        Assertions.assertEquals("jqgwzp",
+        Assertions.assertEquals("ccybvp",
             model.properties().chaosResourceProperties().chaosResourceIdentityForFaults().userAssignedIdentity());
-        Assertions.assertEquals(RBACSetupMode.AUTOMATED_CUSTOM_ROLE, model.properties().rbacSetupMode());
+        Assertions.assertEquals(RBACSetupMode.AUTOMATED_BUILTIN_ROLES, model.properties().rbacSetupMode());
         Assertions.assertEquals(ManagedServiceIdentityType.NONE,
             model.properties().monitoringProperties().identity().type());
-        Assertions.assertEquals("vydfceacvlhvygdy",
-            model.properties().monitoringProperties().identity().userAssignedIdentity());
+        Assertions.assertEquals("agst", model.properties().monitoringProperties().identity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE,
+            model.properties().healthModelMonitoringProperties().identity().type());
+        Assertions.assertEquals("podbzevwrdnh",
+            model.properties().healthModelMonitoringProperties().identity().userAssignedIdentity());
+        Assertions.assertEquals("ukuv", model.properties().healthModelMonitoringProperties().discoveryRuleId());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED,
+            model.properties().sliMonitoringProperties().identity().type());
+        Assertions.assertEquals("wsmystuluqypf",
+            model.properties().sliMonitoringProperties().identity().userAssignedIdentity());
+        Assertions.assertEquals("lerchpq", model.properties().sliMonitoringProperties().slis().get(0).sliId());
+        Assertions.assertEquals(SliType.AVAILABILITY,
+            model.properties().sliMonitoringProperties().slis().get(0).type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DrillUpdate model = new DrillUpdate()
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("niyujv", new UserAssignedIdentity(), "ymsgaojfmwnc",
-                    new UserAssignedIdentity(), "cpqjlihhyu", new UserAssignedIdentity())))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("mmqtgqqqxhr", new UserAssignedIdentity(), "azivjlfrqttbajl",
+                    new UserAssignedIdentity(), "igovi", new UserAssignedIdentity())))
             .withProperties(new DrillUpdateProperties()
                 .withRecoveryPlanProperties(new RecoveryPlanPropertiesOfDrill()
                     .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentity("sdvlmfwdgzxulucv")))
-                .withDrillAssetProperties(
-                    new AssetPropertiesOfDrill().withSubscription("ifqjz").withRegion("xmrhu").withResourceGroup("wp"))
+                        .withUserAssignedIdentity("mloazuru")))
+                .withDrillAssetProperties(new AssetPropertiesOfDrill().withSubscription("eoybfhjxakvvjgs")
+                    .withRegion("ordilmywwtkgkxny")
+                    .withResourceGroup("abgyvudt"))
                 .withChaosResourceProperties(new ChaosResourcePropertiesOfDrill()
-                    .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentity("trgjupauutpwoqh"))
+                    .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentity("bcihxuuwhc"))
                     .withChaosResourceIdentityForFaults(
-                        new AssociatedIdentity().withType(ManagedServiceIdentityType.NONE)
-                            .withUserAssignedIdentity("jqgwzp")))
-                .withRbacSetupMode(RBACSetupMode.AUTOMATED_CUSTOM_ROLE)
+                        new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                            .withUserAssignedIdentity("ccybvp")))
+                .withRbacSetupMode(RBACSetupMode.AUTOMATED_BUILTIN_ROLES)
                 .withMonitoringProperties(new MonitoringPropertiesOfDrill()
                     .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.NONE)
-                        .withUserAssignedIdentity("vydfceacvlhvygdy"))));
+                        .withUserAssignedIdentity("agst")))
+                .withHealthModelMonitoringProperties(new HealthModelMonitoringProperties()
+                    .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.NONE)
+                        .withUserAssignedIdentity("podbzevwrdnh"))
+                    .withDiscoveryRuleId("ukuv"))
+                .withSliMonitoringProperties(new SliMonitoringProperties()
+                    .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentity("wsmystuluqypf"))
+                    .withSlis(Arrays.asList(new SliSelection().withSliId("lerchpq").withType(SliType.AVAILABILITY),
+                        new SliSelection().withSliId("f").withType(SliType.AVAILABILITY),
+                        new SliSelection().withSliId("babwidfcxss").withType(SliType.LATENCY),
+                        new SliSelection().withSliId("unnoxyhk").withType(SliType.AVAILABILITY)))));
         model = BinaryData.fromObject(model).toObject(DrillUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
             model.properties().recoveryPlanProperties().identity().type());
-        Assertions.assertEquals("sdvlmfwdgzxulucv",
+        Assertions.assertEquals("mloazuru",
             model.properties().recoveryPlanProperties().identity().userAssignedIdentity());
-        Assertions.assertEquals("ifqjz", model.properties().drillAssetProperties().subscription());
-        Assertions.assertEquals("xmrhu", model.properties().drillAssetProperties().region());
-        Assertions.assertEquals("wp", model.properties().drillAssetProperties().resourceGroup());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals("eoybfhjxakvvjgs", model.properties().drillAssetProperties().subscription());
+        Assertions.assertEquals("ordilmywwtkgkxny", model.properties().drillAssetProperties().region());
+        Assertions.assertEquals("abgyvudt", model.properties().drillAssetProperties().resourceGroup());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED,
             model.properties().chaosResourceProperties().identity().type());
-        Assertions.assertEquals("trgjupauutpwoqh",
+        Assertions.assertEquals("bcihxuuwhc",
             model.properties().chaosResourceProperties().identity().userAssignedIdentity());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE,
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
             model.properties().chaosResourceProperties().chaosResourceIdentityForFaults().type());
-        Assertions.assertEquals("jqgwzp",
+        Assertions.assertEquals("ccybvp",
             model.properties().chaosResourceProperties().chaosResourceIdentityForFaults().userAssignedIdentity());
-        Assertions.assertEquals(RBACSetupMode.AUTOMATED_CUSTOM_ROLE, model.properties().rbacSetupMode());
+        Assertions.assertEquals(RBACSetupMode.AUTOMATED_BUILTIN_ROLES, model.properties().rbacSetupMode());
         Assertions.assertEquals(ManagedServiceIdentityType.NONE,
             model.properties().monitoringProperties().identity().type());
-        Assertions.assertEquals("vydfceacvlhvygdy",
-            model.properties().monitoringProperties().identity().userAssignedIdentity());
+        Assertions.assertEquals("agst", model.properties().monitoringProperties().identity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE,
+            model.properties().healthModelMonitoringProperties().identity().type());
+        Assertions.assertEquals("podbzevwrdnh",
+            model.properties().healthModelMonitoringProperties().identity().userAssignedIdentity());
+        Assertions.assertEquals("ukuv", model.properties().healthModelMonitoringProperties().discoveryRuleId());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED,
+            model.properties().sliMonitoringProperties().identity().type());
+        Assertions.assertEquals("wsmystuluqypf",
+            model.properties().sliMonitoringProperties().identity().userAssignedIdentity());
+        Assertions.assertEquals("lerchpq", model.properties().sliMonitoringProperties().slis().get(0).sliId());
+        Assertions.assertEquals(SliType.AVAILABILITY,
+            model.properties().sliMonitoringProperties().slis().get(0).type());
     }
 
     // Use "Map.of" if available

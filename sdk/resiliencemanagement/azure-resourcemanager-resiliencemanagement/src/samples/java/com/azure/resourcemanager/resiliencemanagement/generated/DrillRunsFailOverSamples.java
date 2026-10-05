@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class DrillRunsFailOverSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/DrillRuns_FailOver_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/DrillRuns_FailOver_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRuns_FailOver_MaximumSet.

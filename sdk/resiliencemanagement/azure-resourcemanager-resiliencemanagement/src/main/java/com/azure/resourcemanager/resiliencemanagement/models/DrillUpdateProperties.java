@@ -41,6 +41,17 @@ public final class DrillUpdateProperties implements JsonSerializable<DrillUpdate
      */
     private MonitoringPropertiesOfDrill monitoringProperties;
 
+    /*
+     * Azure Health Model monitoring properties of the Drill. Send null to clear the selection.
+     */
+    private HealthModelMonitoringProperties healthModelMonitoringProperties;
+
+    /*
+     * SLI monitoring properties of the Drill. Send null to clear the selection; the submitted slis array is the new
+     * desired state.
+     */
+    private SliMonitoringProperties sliMonitoringProperties;
+
     /**
      * Creates an instance of DrillUpdateProperties class.
      */
@@ -148,6 +159,51 @@ public final class DrillUpdateProperties implements JsonSerializable<DrillUpdate
     }
 
     /**
+     * Get the healthModelMonitoringProperties property: Azure Health Model monitoring properties of the Drill. Send
+     * null to clear the selection.
+     * 
+     * @return the healthModelMonitoringProperties value.
+     */
+    public HealthModelMonitoringProperties healthModelMonitoringProperties() {
+        return this.healthModelMonitoringProperties;
+    }
+
+    /**
+     * Set the healthModelMonitoringProperties property: Azure Health Model monitoring properties of the Drill. Send
+     * null to clear the selection.
+     * 
+     * @param healthModelMonitoringProperties the healthModelMonitoringProperties value to set.
+     * @return the DrillUpdateProperties object itself.
+     */
+    public DrillUpdateProperties
+        withHealthModelMonitoringProperties(HealthModelMonitoringProperties healthModelMonitoringProperties) {
+        this.healthModelMonitoringProperties = healthModelMonitoringProperties;
+        return this;
+    }
+
+    /**
+     * Get the sliMonitoringProperties property: SLI monitoring properties of the Drill. Send null to clear the
+     * selection; the submitted slis array is the new desired state.
+     * 
+     * @return the sliMonitoringProperties value.
+     */
+    public SliMonitoringProperties sliMonitoringProperties() {
+        return this.sliMonitoringProperties;
+    }
+
+    /**
+     * Set the sliMonitoringProperties property: SLI monitoring properties of the Drill. Send null to clear the
+     * selection; the submitted slis array is the new desired state.
+     * 
+     * @param sliMonitoringProperties the sliMonitoringProperties value to set.
+     * @return the DrillUpdateProperties object itself.
+     */
+    public DrillUpdateProperties withSliMonitoringProperties(SliMonitoringProperties sliMonitoringProperties) {
+        this.sliMonitoringProperties = sliMonitoringProperties;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -158,6 +214,8 @@ public final class DrillUpdateProperties implements JsonSerializable<DrillUpdate
         jsonWriter.writeJsonField("chaosResourceProperties", this.chaosResourceProperties);
         jsonWriter.writeStringField("rbacSetupMode", this.rbacSetupMode == null ? null : this.rbacSetupMode.toString());
         jsonWriter.writeJsonField("monitoringProperties", this.monitoringProperties);
+        jsonWriter.writeJsonField("healthModelMonitoringProperties", this.healthModelMonitoringProperties);
+        jsonWriter.writeJsonField("sliMonitoringProperties", this.sliMonitoringProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -189,6 +247,12 @@ public final class DrillUpdateProperties implements JsonSerializable<DrillUpdate
                 } else if ("monitoringProperties".equals(fieldName)) {
                     deserializedDrillUpdateProperties.monitoringProperties
                         = MonitoringPropertiesOfDrill.fromJson(reader);
+                } else if ("healthModelMonitoringProperties".equals(fieldName)) {
+                    deserializedDrillUpdateProperties.healthModelMonitoringProperties
+                        = HealthModelMonitoringProperties.fromJson(reader);
+                } else if ("sliMonitoringProperties".equals(fieldName)) {
+                    deserializedDrillUpdateProperties.sliMonitoringProperties
+                        = SliMonitoringProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

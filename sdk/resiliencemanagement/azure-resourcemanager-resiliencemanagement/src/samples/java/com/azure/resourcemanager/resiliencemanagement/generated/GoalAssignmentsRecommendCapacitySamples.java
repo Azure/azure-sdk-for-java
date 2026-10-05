@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class GoalAssignmentsRecommendCapacitySamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/GoalAssignments_RecommendCapacity_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/GoalAssignments_RecommendCapacity_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_RecommendCapacity_MaximumSet.
