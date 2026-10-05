@@ -110,7 +110,7 @@ If the native module is not resolved, the bundled JNI library is unavailable to 
 Cosmos DB direct mode falls back to JDK NIO unless a native library is supplied another way.
 These JPMS launch options do not apply to Java 8 or to classpath applications. Resolving
 the module does not by itself prove epoll is usable on the current OS. The
-[Netty HTTP plugin's module-path guidance](../../core/azure-core-http-netty/README.md#native-transports-on-the-module-path)
+[Netty HTTP plugin's module-path guidance](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty/README.md#native-transports-on-the-module-path)
 also covers gateway HTTP and macOS kqueue.
 
 ### Global Distribution
