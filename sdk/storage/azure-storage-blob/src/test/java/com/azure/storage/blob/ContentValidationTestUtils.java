@@ -6,12 +6,19 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.contentvalidation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageEncoder;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
+import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -189,5 +196,81 @@ public final class ContentValidationTestUtils {
         assertEquals(String.valueOf(expectedStructuredMessageEncodedLength(unencodedContentBytes)),
             headers.getValue(HttpHeaderName.CONTENT_LENGTH),
             "Content-Length must equal the encoded structured-message length");
+    }
+
+    /**
+     * Identifies the distinct block a content-bearing upload belongs to: the Put Block {@code blockid} query
+     * parameter when present, otherwise the full URL. Grouping by this key makes block counts retry-independent (a
+     * retried Put Block reuses the same block id), unlike counting raw requests.
+     */
+    public static String uploadBlockKey(RecordedRequest request) {
+        String url = request.getUrl();
+        int idx = url.indexOf("blockid=");
+        if (idx < 0) {
+            return url;
+        }
+        int start = idx + "blockid=".length();
+        int end = url.indexOf('&', start);
+        return end < 0 ? url.substring(start) : url.substring(start, end);
+    }
+
+    /**
+     * Groups content-bearing uploads by distinct block (see {@link #uploadBlockKey}) and returns each block's
+     * unencoded structured-message content length. Retry-independent: a retried block collapses to one entry.
+     */
+    public static java.util.Map<String, Long> uploadBlockUnencodedLengths(List<RecordedRequest> recorded) {
+        java.util.Map<String, Long> blocks = new java.util.LinkedHashMap<>();
+        for (RecordedRequest upload : contentBearingUploadRequests(recorded)) {
+            String length
+                = upload.getHeaders().getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            if (length != null) {
+                blocks.put(uploadBlockKey(upload), Long.parseLong(length.trim()));
+            }
+        }
+        return blocks;
+    }
+
+    /**
+     * True if the request is an upload attempt that already carries content-validation headers (a CRC64 header or a
+     * structured-message body). Used by fault-injection policies to fail only the data-bearing upload calls.
+     */
+    public static boolean isUploadAttempt(HttpRequest request) {
+        return request.getHeaders().getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME) != null
+            || request.getHeaders().getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME) != null;
+    }
+
+    /**
+     * A synthetic storage error response (XML body with code {@code InjectedFailure}) for fault injection.
+     */
+    public static Mono<HttpResponse> injectedError(HttpRequest request, int status) {
+        byte[] body = ("<?xml version=\"1.0\"?><Error><Code>InjectedFailure</Code>"
+            + "<Message>Injected failure</Message></Error>").getBytes(StandardCharsets.UTF_8);
+        // BlobStorageException.getErrorCode() is populated from the x-ms-error-code response header, not the body.
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml")
+            .set(HttpHeaderName.fromString("x-ms-error-code"), "InjectedFailure");
+        return Mono.just(new MockHttpResponse(request, status, headers, body));
+    }
+
+    /**
+     * Terminal mock that answers any request with a 201 carrying the minimal headers the append/page/block response
+     * deserializers expect. Lets request-shape tests observe outgoing headers without a live service.
+     */
+    public static Mono<HttpResponse> terminalSuccess(HttpRequest request) {
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.ETAG, "\"0x8DMOCKETAG\"")
+            .set(HttpHeaderName.fromString("x-ms-request-server-encrypted"), "true")
+            .set(HttpHeaderName.fromString("x-ms-blob-append-offset"), "0")
+            .set(HttpHeaderName.fromString("x-ms-blob-committed-block-count"), "1");
+        return Mono.just(new MockHttpResponse(request, 201, headers));
+    }
+
+    /**
+     * Raw 16-byte MD5 digest of {@code data} (the form the {@code setContentMd5} options expect).
+     */
+    public static byte[] md5(byte[] data) {
+        try {
+            return MessageDigest.getInstance("MD5").digest(data);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

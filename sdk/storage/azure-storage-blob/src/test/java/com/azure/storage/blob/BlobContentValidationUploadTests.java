@@ -5,14 +5,13 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.ContentValidationTestUtils.RecordedRequest;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
@@ -49,7 +48,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -1468,14 +1466,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         return createBlobClientWithFullRequestSniffer(recorded).getBlockBlobClient();
     }
 
-    private static byte[] md5Digest(byte[] data) {
-        try {
-            return MessageDigest.getInstance("MD5").digest(data);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @ParameterizedTest
     @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
     public void putBlobImmediatelyBelow4MbUsesCrc64Header(ContentValidationAlgorithm algorithm) {
@@ -1579,17 +1569,14 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             .setRequestConditions(new BlobRequestConditions())
             .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64), null, Context.NONE);
 
-        List<RecordedRequest> uploads = contentBearingUploadRequests(recorded);
-        assertEquals(3, uploads.size(), "A 5 MiB payload with a 2 MiB block size must stage exactly three blocks");
+        // Count DISTINCT blocks by their Put Block id, so the assertion is retry-independent (a retried block reuses
+        // its block id). Every distinct block must carry a structured message, and the three must be 2, 2, 1 MiB.
         assertTrue(allUploadsUseStructuredMessage(recorded), "Every staged block must carry a structured message");
-
-        List<Long> perBlockLengths = uploads.stream()
-            .map(r -> Long
-                .parseLong(r.getHeaders().getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME)))
-            .sorted()
-            .collect(Collectors.toList());
-        assertEquals(Arrays.asList((long) Constants.MB, 2L * Constants.MB, 2L * Constants.MB), perBlockLengths,
-            "The final partial (1 MiB) block must be validated with its true length, not padded or skipped");
+        java.util.Map<String, Long> blocks = ContentValidationTestUtils.uploadBlockUnencodedLengths(recorded);
+        assertEquals(3, blocks.size(), "A 5 MiB payload with a 2 MiB block size must stage exactly three blocks");
+        assertEquals(Arrays.asList((long) Constants.MB, 2L * Constants.MB, 2L * Constants.MB),
+            blocks.values().stream().sorted().collect(Collectors.toList()),
+            "The three blocks must be 2 MiB, 2 MiB, and a final 1 MiB partial block (validated with its true length)");
     }
 
     @Test
@@ -1621,7 +1608,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     public void putBlobMd5OnlyControlIsForwardedWithoutContentValidation() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
         byte[] data = getRandomByteArray(UNDER_4MB);
-        byte[] rawDigest = md5Digest(data);
+        byte[] rawDigest = ContentValidationTestUtils.md5(data);
         assertEquals(16, rawDigest.length, "MD5 fixture must be the raw 16-byte digest, not a Base64-encoded value");
 
         recordingBlockClient(recorded).uploadWithResponse(
@@ -1644,7 +1631,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     @Test
     public void appendBlockForwardsLeaseEtagAppendPositionAndSizeWithValidation() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        HttpPipelinePolicy terminal = (context, next) -> terminalSuccess(context.getHttpRequest());
+        HttpPipelinePolicy terminal
+            = (context, next) -> ContentValidationTestUtils.terminalSuccess(context.getHttpRequest());
         AppendBlobClient client = createBlobClientWithFullRequestSniffer(recorded, terminal).getAppendBlobClient();
         client.create();
 
@@ -1670,7 +1658,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     @Test
     public void uploadPagesForwardsLeaseEtagAndSequenceNumberWithValidation() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        HttpPipelinePolicy terminal = (context, next) -> terminalSuccess(context.getHttpRequest());
+        HttpPipelinePolicy terminal
+            = (context, next) -> ContentValidationTestUtils.terminalSuccess(context.getHttpRequest());
         PageBlobClient client = createBlobClientWithFullRequestSniffer(recorded, terminal).getPageBlobClient();
         client.create(UNDER_4MB_PAGE_ALIGNED);
 
@@ -1692,37 +1681,11 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         assertEquals("7", headers.getValue(CV_SEQ_EQ));
     }
 
-    /**
-     * Terminal mock that answers any request with a 201 carrying the minimal headers the append/page/block response
-     * deserializers expect. Lets condition-forwarding tests observe outgoing headers without a live service.
-     */
-    private static reactor.core.publisher.Mono<com.azure.core.http.HttpResponse> terminalSuccess(HttpRequest request) {
-        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.ETAG, "\"0x8DMOCKETAG\"")
-            .set(HttpHeaderName.fromString("x-ms-request-server-encrypted"), "true")
-            .set(HttpHeaderName.fromString("x-ms-blob-append-offset"), "0")
-            .set(HttpHeaderName.fromString("x-ms-blob-committed-block-count"), "1");
-        return reactor.core.publisher.Mono.just(new MockHttpResponse(request, 201, headers));
-    }
-
     // ===========================================================================================
     // Failures after work has started: replay-after-consumption, error propagation, and no commit on failure.
-    //
-    // Failures are injected with a client-side fault policy (the pattern the download tests use), so these are
-    // LiveOnly.
+    // Failures are injected with a client-side fault policy; shared fault/mock helpers live in
+    // ContentValidationTestUtils.
     // ===========================================================================================
-
-    private static boolean isUploadAttempt(HttpRequest request) {
-        return request.getHeaders().getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME) != null
-            || request.getHeaders().getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME) != null;
-    }
-
-    private static reactor.core.publisher.Mono<com.azure.core.http.HttpResponse> injectedError(HttpRequest request,
-        int status) {
-        byte[] body = ("<?xml version=\"1.0\"?><Error><Code>InjectedFailure</Code>"
-            + "<Message>Injected failure</Message></Error>").getBytes(StandardCharsets.UTF_8);
-        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
-        return reactor.core.publisher.Mono.just(new MockHttpResponse(request, status, headers, body));
-    }
 
     @Test
     public void uploadRetryReplaysBodyAndRevalidatesAfterConsumption() {
@@ -1732,9 +1695,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         // transport has actually consumed the stream. The retry must then replay the body and the content-validation
         // policy must recompute the checksum on the retried request.
         HttpPipelinePolicy fault = (context, next) -> {
-            if (isUploadAttempt(context.getHttpRequest()) && failedOnce.compareAndSet(false, true)) {
+            if (ContentValidationTestUtils.isUploadAttempt(context.getHttpRequest())
+                && failedOnce.compareAndSet(false, true)) {
                 return FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
-                    .then(injectedError(context.getHttpRequest(), 500));
+                    .then(ContentValidationTestUtils.injectedError(context.getHttpRequest(), 500));
             }
             return next.process();
         };
@@ -1755,9 +1719,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     @Test
     public void uploadErrorIsPropagated() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        HttpPipelinePolicy fault = (context, next) -> isUploadAttempt(context.getHttpRequest())
-            ? injectedError(context.getHttpRequest(), 403)
-            : next.process();
+        HttpPipelinePolicy fault
+            = (context, next) -> ContentValidationTestUtils.isUploadAttempt(context.getHttpRequest())
+                ? ContentValidationTestUtils.injectedError(context.getHttpRequest(), 403)
+                : next.process();
         BlockBlobClient client = createBlobClientWithFullRequestSniffer(recorded, fault).getBlockBlobClient();
 
         BlobStorageException ex = assertThrows(BlobStorageException.class,
@@ -1766,6 +1731,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
                     .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
                 null, Context.NONE));
         assertEquals(403, ex.getStatusCode());
+        assertEquals(BlobErrorCode.fromString("InjectedFailure"), ex.getErrorCode());
     }
 
     @Test
@@ -1775,13 +1741,13 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         HttpPipelinePolicy fault = (context, next) -> {
             String url = context.getHttpRequest().getUrl().toString();
             return url.contains("comp=block") && !url.contains("comp=blocklist")
-                ? injectedError(context.getHttpRequest(), 403)
+                ? ContentValidationTestUtils.injectedError(context.getHttpRequest(), 403)
                 : next.process();
         };
         BlobClient client = createBlobClientWithFullRequestSniffer(recorded, fault);
 
         long blockSize = 2L * Constants.MB;
-        assertThrows(BlobStorageException.class,
+        BlobStorageException ex = assertThrows(BlobStorageException.class,
             () -> client
                 .uploadWithResponse(new BlobParallelUploadOptions(new ByteArrayInputStream(getRandomByteArray(FIVE_MB)))
                     .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
@@ -1790,6 +1756,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
                     .setRequestConditions(new BlobRequestConditions())
                     .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64), null, Context.NONE));
 
+        assertEquals(403, ex.getStatusCode());
+        assertEquals(BlobErrorCode.fromString("InjectedFailure"), ex.getErrorCode());
         assertFalse(hasCommitBlockListRequest(recorded),
             "A failed multipart upload must not commit a block list of incomplete data");
     }
