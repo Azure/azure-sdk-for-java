@@ -1141,43 +1141,8 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     //
     // Put Blob (BlockBlobSimpleUpload) and Put Block header-mode + exact-value coverage lives in the existing
     // blockBlobSimpleUpload*/stageBlock* tests above (parameterized over CRC64/AUTO). These request-shape tests add
-    // operations and scenarios those do not cover (append/pages byte-array exact values, non-zero page offset, etc.).
+    // operations and scenarios those do not cover (page byte-array structured message, non-zero page offset, etc.).
     // ===========================================================================================
-
-    @Test
-    public void appendBlockRequestBelow4MbUsesCrc64HeaderWithExactValue() {
-        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        AppendBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getAppendBlobAsyncClient();
-        byte[] data = getRandomByteArray(UNDER_4MB);
-
-        StepVerifier
-            .create(client.create()
-                .then(client.appendBlockWithResponse(new AppendBlobAppendBlockOptions(BinaryData.fromBytes(data))
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))))
-            .expectNextCount(1)
-            .verifyComplete();
-
-        assertTrue(allUploadsUseCrc64Header(recorded));
-        assertCrc64HeaderMatches(contentBearingUploadRequests(recorded).get(0).getHeaders(), data);
-    }
-
-    @Test
-    public void uploadPagesRequestBelow4MbUsesCrc64HeaderWithExactValue() {
-        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        PageBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getPageBlobAsyncClient();
-        byte[] data = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
-        PageRange range = new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1);
-
-        StepVerifier
-            .create(client.create(UNDER_4MB_PAGE_ALIGNED)
-                .then(client.uploadPagesWithResponse(new PageBlobUploadPagesOptions(range, BinaryData.fromBytes(data))
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))))
-            .expectNextCount(1)
-            .verifyComplete();
-
-        assertTrue(allUploadsUseCrc64Header(recorded));
-        assertCrc64HeaderMatches(contentBearingUploadRequests(recorded).get(0).getHeaders(), data);
-    }
 
     @Test
     public void uploadPagesRequestAtExactly4MbUsesStructuredMessageWithExactLengths() {

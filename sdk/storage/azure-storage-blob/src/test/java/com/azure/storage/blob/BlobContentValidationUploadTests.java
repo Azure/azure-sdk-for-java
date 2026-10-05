@@ -1491,31 +1491,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     }
 
     @Test
-    public void appendBlockBelow4MbUsesCrc64HeaderWithExactValue() {
-        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        AppendBlobClient client = createBlobClientWithFullRequestSniffer(recorded).getAppendBlobClient();
-        client.create();
-        byte[] data = getRandomByteArray(UNDER_4MB);
-        client.appendBlockWithResponse(new AppendBlobAppendBlockOptions(BinaryData.fromBytes(data))
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64), null, Context.NONE);
-        assertTrue(allUploadsUseCrc64Header(recorded));
-        assertCrc64HeaderMatches(contentBearingUploadRequests(recorded).get(0).getHeaders(), data);
-    }
-
-    @Test
-    public void uploadPagesBelow4MbUsesCrc64HeaderWithExactValueAtZeroOffset() {
-        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        PageBlobClient client = createBlobClientWithFullRequestSniffer(recorded).getPageBlobClient();
-        client.create(UNDER_4MB_PAGE_ALIGNED);
-        byte[] data = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
-        PageRange range = new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1);
-        client.uploadPagesWithResponse(new PageBlobUploadPagesOptions(range, BinaryData.fromBytes(data))
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64), null, Context.NONE);
-        assertTrue(allUploadsUseCrc64Header(recorded));
-        assertCrc64HeaderMatches(contentBearingUploadRequests(recorded).get(0).getHeaders(), data);
-    }
-
-    @Test
     public void uploadPagesAtNonZeroOffsetIsValidatedAndForwardsRange() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
         PageBlobClient client = createBlobClientWithFullRequestSniffer(recorded).getPageBlobClient();

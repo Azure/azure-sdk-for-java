@@ -99,7 +99,7 @@ public final class ContentValidationTestUtils {
             .collect(Collectors.toList());
     }
 
-    public static boolean isStructuredMessageRequest(HttpHeaders headers) {
+    private static boolean isStructuredMessageRequest(HttpHeaders headers) {
         String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
         String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
         String structuredLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
@@ -168,7 +168,7 @@ public final class ContentValidationTestUtils {
      * Expected Base64 of the little-endian 8-byte Storage CRC64 of {@code data}, matching what the production
      * encoding policy writes into the {@code x-ms-content-crc64} header.
      */
-    public static String expectedCrc64Base64(byte[] data) {
+    private static String expectedCrc64Base64(byte[] data) {
         long crc64 = StorageCrc64Calculator.compute(data, 0);
         byte[] crc64Bytes = new byte[8];
         for (int i = 0; i < 8; i++) {
@@ -203,7 +203,7 @@ public final class ContentValidationTestUtils {
      * parameter when present, otherwise the full URL. Grouping by this key makes block counts retry-independent (a
      * retried Put Block reuses the same block id), unlike counting raw requests.
      */
-    public static String uploadBlockKey(RecordedRequest request) {
+    private static String uploadBlockKey(RecordedRequest request) {
         String url = request.getUrl();
         int idx = url.indexOf("blockid=");
         if (idx < 0) {
