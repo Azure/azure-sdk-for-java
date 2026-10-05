@@ -23,6 +23,33 @@
 
 - Upgraded `msal4j` from `1.23.1` to `1.26.0`.
 
+## 1.18.7 (2026-10-01)
+
+### Features Added
+
+- Added support for user-assigned managed identities on Azure Arc in `ManagedIdentityCredential` and `DefaultAzureCredential`. ([#50371](https://github.com/Azure/azure-sdk-for-java/pull/50371))
+
+### Bugs Fixed
+
+- Fixed `NullPointerException` in `IdentityClientOptions` when running in GraalVM native images (e.g., Quarkus applications). Replaced reflection-dependent `AzureIdentityEnvVars` enum usage with direct string literal to ensure compatibility with native compilation. ([#47940](https://github.com/Azure/azure-sdk-for-java/pull/47940))
+- Fixed logging for token authentication errors to include full stack traces with inner exceptions. Previously, error logs referenced "inner exceptions" but only logged the error message, making debugging difficult. ([#47974](https://github.com/Azure/azure-sdk-for-java/pull/47974))
+- Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications. ([#48472](https://github.com/Azure/azure-sdk-for-java/pull/48472))
+- Improved `AzureDeveloperCliCredential` error handling to extract meaningful messages from `azd auth token` JSON output, providing cleaner error messages to users. ([#47975](https://github.com/Azure/azure-sdk-for-java/pull/47975))
+- Fixed misleading authentication error reporting when token requests are interrupted or the JVM shuts down. ([#50585](https://github.com/Azure/azure-sdk-for-java/issues/50585))
+- Fixed IMDS discovery in `DefaultAzureCredential` to wait for HTTP response headers with a read timeout, allowing the credential chain to continue when a local endpoint accepts connections but does not respond, while preserving fallback on probe setup failures. ([#50517](https://github.com/Azure/azure-sdk-for-java/pull/50517))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.1` to version `1.60.0`.
+- Upgraded `azure-core-http-netty` from `1.16.7` to version `1.16.8`.
+- Upgraded `msal4j` from `1.23.1` to version `1.26.0`.
+
+#### Dependency Updates
+
+- Upgraded `msal4j` from `1.23.1` to `1.26.0`.
+
 ## 1.18.6 (2026-08-31)
 
 ### Other Changes
