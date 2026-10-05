@@ -141,6 +141,26 @@ public class RntbdWorkloadIdTests {
         assertThat(workloadIdToken.isPresent()).isFalse();
     }
 
+    @Test(groups = { "unit" })
+    public void workloadIdAtUShortBoundariesIsEncoded() {
+        assertThat(createRequestHeaders("0").get(RntbdConstants.RntbdRequestHeader.WorkloadId).getValue(Integer.class))
+            .isEqualTo(0);
+        assertThat(createRequestHeaders("65535").get(RntbdConstants.RntbdRequestHeader.WorkloadId).getValue(Integer.class))
+            .isEqualTo(65535);
+    }
+
+    @Test(groups = { "unit" })
+    public void workloadIdOutsideUShortRangeIsNotTruncatedAndIsIgnored() {
+        for (String value : new String[] { "65536", "65537", "-1", String.valueOf(Integer.MAX_VALUE) }) {
+            assertThatCode(() -> createRequestHeaders(value)).doesNotThrowAnyException();
+
+            RntbdToken workloadIdToken = createRequestHeaders(value).get(RntbdConstants.RntbdRequestHeader.WorkloadId);
+            assertThat(workloadIdToken.isPresent())
+                .as("workload id %s must not be truncated into a different value", value)
+                .isFalse();
+        }
+    }
+
     private static RntbdRequestHeaders createRequestHeaders(String workloadId) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             null,

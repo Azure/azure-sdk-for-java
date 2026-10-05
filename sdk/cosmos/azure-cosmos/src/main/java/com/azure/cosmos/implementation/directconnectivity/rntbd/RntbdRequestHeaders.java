@@ -897,6 +897,14 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         if (StringUtils.isNotEmpty(value)) {
             try {
                 final int workloadId = Integer.parseInt(value);
+
+                // WorkloadId is a UShort token; values outside its range would be silently
+                // truncated on the wire and attributed to a different workload.
+                if (workloadId < 0 || workloadId > 0xFFFF) {
+                    logger.warn("Workload id header value {} is out of range and will not be sent", value);
+                    return;
+                }
+
                 this.getWorkloadId().setValue(workloadId);
             } catch (NumberFormatException e) {
                 logger.warn("Invalid value for workload id header: {}", value, e);
