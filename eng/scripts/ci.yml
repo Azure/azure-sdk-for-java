@@ -34,6 +34,9 @@ extends:
     TargetDirectory: eng/scripts/
     TargetTags: 'UnitTest'
     PreTestSteps:
+      - checkout: self
+        fetchDepth: 1
+        fetchTags: false
       - pwsh: |
           . (Join-Path "$(Build.SourcesDirectory)" eng common scripts Helpers PSModule-Helpers.ps1)
           Install-ModuleIfNotInstalled "powershell-yaml" "0.4.7"
