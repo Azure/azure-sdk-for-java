@@ -12,8 +12,6 @@
 
 #### Dependency Updates
 
-- Upgraded `msal4j` from `1.23.1` to version `1.26.0`.
-
 ## 1.1.24 (2026-10-01)
 
 ### Other Changes
