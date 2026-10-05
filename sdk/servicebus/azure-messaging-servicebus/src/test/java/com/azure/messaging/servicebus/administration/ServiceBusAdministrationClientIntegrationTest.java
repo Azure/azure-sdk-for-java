@@ -14,8 +14,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusServiceVersion;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceiverClient;
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.TestUtils;
+import com.azure.messaging.servicebus.models.SubQueue;
+import com.azure.messaging.servicebus.models.ServiceBusMessageState;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
@@ -25,6 +33,7 @@ import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.EmptyRuleAction;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
+import com.azure.messaging.servicebus.administration.models.MessagingSku;
 import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
@@ -47,9 +56,11 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
@@ -62,9 +73,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Tests {@link ServiceBusAdministrationClient}.
@@ -74,6 +87,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
     private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
+    private final TokenCredential conformanceCredential = new DefaultAzureCredentialBuilder().build();
 
     //region Create tests
 
@@ -419,6 +433,398 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         if (!interceptorManager.isPlaybackMode()) {
             final String[] split = TestUtils.getFullyQualifiedDomainName(true).split("\\.", 2);
             assertEquals(split[0], namespaceProperties.getName());
+            assertNotNull(namespaceProperties.getMessagingSku());
+            assertNotNull(namespaceProperties.getCreatedTime());
+            assertNotNull(namespaceProperties.getModifiedTime());
+        }
+    }
+
+    @Test
+    @LiveOnly
+    void conformanceNamespaceProperties() {
+        final NamespaceProperties namespaceProperties = getConformanceClient().getNamespaceProperties();
+        assertEquals(NamespaceType.MESSAGING, namespaceProperties.getNamespaceType());
+        assertEquals(TestUtils.getFullyQualifiedDomainName(false).split("\\.", 2)[0], namespaceProperties.getName());
+        assertNotNull(namespaceProperties.getMessagingSku());
+        assertNotNull(namespaceProperties.getCreatedTime());
+        assertNotNull(namespaceProperties.getModifiedTime());
+    }
+
+    @Test
+    @LiveOnly
+    void premiumNamespaceHasDedicatedCapacityAndUnpartitionedQueue() {
+        final ServiceBusAdministrationClient client = getConformanceClient();
+        final NamespaceProperties namespaceProperties = client.getNamespaceProperties();
+        assumeTrue(MessagingSku.PREMIUM.equals(namespaceProperties.getMessagingSku()),
+            "Dedicated capacity requires a Premium namespace.");
+        assertNotNull(namespaceProperties.getMessagingUnits());
+        assertTrue(namespaceProperties.getMessagingUnits() > 0);
+
+        final String queueName = testResourceNamer.randomName("premium", 10);
+        client.createQueue(queueName);
+        try {
+            assertFalse(client.getQueue(queueName).isPartitioningEnabled());
+        } finally {
+            client.deleteQueue(queueName);
+        }
+    }
+
+    @Test
+    @LiveOnly
+    void standardPartitionedQueueRoutesMessages() {
+        final ServiceBusAdministrationClient client = getConformanceClient();
+        assumeTrue(MessagingSku.STANDARD.equals(client.getNamespaceProperties().getMessagingSku()),
+            "Partitioned entity routing requires a Standard namespace.");
+        final String queueName = testResourceNamer.randomName("partitioned", 10);
+        client.createQueue(queueName, new CreateQueueOptions().setPartitioningEnabled(true));
+        try {
+            assertTrue(client.getQueue(queueName).isPartitioningEnabled());
+            final ServiceBusClientBuilder builder = getConformanceBuilder();
+            try (ServiceBusSenderClient sender = builder.sender().queueName(queueName).buildClient();
+                ServiceBusReceiverClient receiver = builder.receiver().queueName(queueName).buildClient()) {
+                sender.sendMessage(new ServiceBusMessage("partitioned").setPartitionKey("route-one"));
+                final ServiceBusReceivedMessage message
+                    = receiver.receiveMessages(1, Duration.ofSeconds(30)).stream().findFirst().orElse(null);
+                assertNotNull(message);
+                assertEquals("route-one", message.getPartitionKey());
+                receiver.complete(message);
+            }
+        } finally {
+            client.deleteQueue(queueName);
+        }
+    }
+
+    @Test
+    @LiveOnly
+    void premiumLargeMessageRoundTrips() {
+        final ServiceBusAdministrationClient client = getConformanceClient();
+        assumeTrue(MessagingSku.PREMIUM.equals(client.getNamespaceProperties().getMessagingSku()),
+            "Messages larger than 1 MB require Premium.");
+        final String queueName = testResourceNamer.randomName("large", 10);
+        client.createQueue(queueName, new CreateQueueOptions().setMaxMessageSizeInKilobytes(4096));
+        try {
+            assertTrue(client.getQueue(queueName).getMaxMessageSizeInKilobytes() >= 4096);
+            final byte[] body = new byte[1024 * 1024 + 1];
+            Arrays.fill(body, (byte) 0x5a);
+            final ServiceBusClientBuilder builder = getConformanceBuilder();
+            try (ServiceBusSenderClient sender = builder.sender().queueName(queueName).buildClient();
+                ServiceBusReceiverClient receiver = builder.receiver().queueName(queueName).buildClient()) {
+                sender.sendMessage(new ServiceBusMessage(body));
+                final ServiceBusReceivedMessage received
+                    = receiver.receiveMessages(1, Duration.ofSeconds(30)).stream().findFirst().orElse(null);
+                assertNotNull(received);
+                assertTrue(Arrays.equals(body, received.getBody().toBytes()));
+                receiver.complete(received);
+            }
+        } finally {
+            client.deleteQueue(queueName);
+        }
+    }
+
+    @Test
+    @LiveOnly
+    void newSubscriptionReceivesViaDefaultRule() {
+        final ServiceBusAdministrationClient client = getConformanceClient();
+        final String topicName = testResourceNamer.randomName("rules", 10);
+        final String subscriptionName = testResourceNamer.randomName("default", 10);
+        client.createTopic(topicName);
+        try {
+            client.createSubscription(topicName, subscriptionName);
+            final RuleProperties rule = client.getRule(topicName, subscriptionName, "$Default");
+            assertInstanceOf(TrueRuleFilter.class, rule.getFilter());
+            final ServiceBusClientBuilder builder = getConformanceBuilder();
+            try (ServiceBusSenderClient sender = builder.sender().topicName(topicName).buildClient();
+                ServiceBusReceiverClient receiver
+                    = builder.receiver().topicName(topicName).subscriptionName(subscriptionName).buildClient()) {
+                sender.sendMessage(new ServiceBusMessage("default-rule"));
+                final ServiceBusReceivedMessage received
+                    = receiver.receiveMessages(1, Duration.ofSeconds(30)).stream().findFirst().orElse(null);
+                assertNotNull(received);
+                assertEquals("default-rule", received.getBody().toString());
+                receiver.complete(received);
+            }
+        } finally {
+            client.deleteTopic(topicName);
+        }
+    }
+
+    @Test
+    @LiveOnly
+    void entityDefaultTtlExpiresMessageToDeadLetterQueue() {
+        verifyExpiredMessage(false);
+    }
+
+    @Test
+    @LiveOnly
+    void perMessageTtlExpiresMessageToDeadLetterQueue() {
+        verifyExpiredMessage(true);
+    }
+
+    @Test
+    @LiveOnly
+    void expiredMessageRemainsSettleableWhileLocked() throws InterruptedException {
+        final ServiceBusAdministrationClient client = getConformanceClient();
+        final String queueName = testResourceNamer.randomName("inflight", 10);
+        client.createQueue(queueName,
+            new CreateQueueOptions().setDeadLetteringOnMessageExpiration(true).setLockDuration(Duration.ofMinutes(1)));
+        try {
+            final ServiceBusClientBuilder builder = getConformanceBuilder();
+            try (ServiceBusSenderClient sender = builder.sender().queueName(queueName).buildClient();
+                ServiceBusReceiverClient receiver = builder.receiver().queueName(queueName).buildClient();
+                ServiceBusReceiverClient deadLetters
+                    = builder.receiver().queueName(queueName).subQueue(SubQueue.DEAD_LETTER_QUEUE).buildClient()) {
+                sender.sendMessage(new ServiceBusMessage("in-flight").setTimeToLive(Duration.ofSeconds(10)));
+                final ServiceBusReceivedMessage received
+                    = receiver.receiveMessages(1, Duration.ofSeconds(20)).stream().findFirst().orElse(null);
+                assertNotNull(received, "Message expired before it was locked.");
+                final long expiry = received.getExpiresAt().toInstant().toEpochMilli();
+                assertTrue(expiry <= System.currentTimeMillis() + Duration.ofSeconds(30).toMillis(),
+                    "Message expiration exceeded the configured TTL.");
+                assertTrue(received.getLockedUntil().toInstant().toEpochMilli() > expiry,
+                    "The message lock must outlive its TTL to prove in-flight expiration.");
+                final long delay = expiry - System.currentTimeMillis() + Duration.ofSeconds(2).toMillis();
+                if (delay > 0) {
+                    Thread.sleep(delay);
+                }
+                assertTrue(System.currentTimeMillis() > expiry, "Message did not expire while locked.");
+                receiver.complete(received);
+                assertNull(deadLetters.receiveMessages(1, Duration.ofSeconds(5)).stream().findFirst().orElse(null),
+                    "A completed in-flight message must not be dead-lettered after its TTL.");
+            }
+        } finally {
+            client.deleteQueue(queueName);
+        }
+    }
+
+    @Test
+    @LiveOnly
+    void prefetchedMessagesAreBufferedByFirstReceiver() throws InterruptedException {
+        final ServiceBusAdministrationClient client = getConformanceClient();
+        final String queueName = testResourceNamer.randomName("prefetch", 10);
+        client.createQueue(queueName, new CreateQueueOptions().setLockDuration(Duration.ofMinutes(2)));
+        try {
+            final ServiceBusClientBuilder builder = getConformanceBuilder();
+            try (ServiceBusSenderClient sender = builder.sender().queueName(queueName).buildClient();
+                ServiceBusReceiverClient prefetched
+                    = builder.receiver().queueName(queueName).prefetchCount(10).buildClient();
+                ServiceBusReceiverClient competing = builder.receiver().queueName(queueName).buildClient()) {
+                for (int i = 0; i < 3; i++) {
+                    sender.sendMessage(new ServiceBusMessage("buffer-" + i));
+                }
+                final ServiceBusReceivedMessage first
+                    = prefetched.receiveMessages(1, Duration.ofSeconds(30)).stream().findFirst().orElse(null);
+                assertNotNull(first);
+                Thread.sleep(Duration.ofSeconds(5).toMillis());
+                assertNull(competing.receiveMessages(1, Duration.ofSeconds(5)).stream().findFirst().orElse(null),
+                    "Another receiver obtained a message that should be buffered by prefetch.");
+                final List<ServiceBusReceivedMessage> buffered
+                    = prefetched.receiveMessages(2, Duration.ofSeconds(10)).stream().collect(Collectors.toList());
+                assertEquals(2, buffered.size());
+                prefetched.complete(first);
+                buffered.forEach(prefetched::complete);
+            }
+        } finally {
+            client.deleteQueue(queueName);
+        }
+    }
+
+    @Test
+    @LiveOnly
+    void idleQueueIsDeletedByBroker() throws InterruptedException {
+        final ServiceBusAdministrationClient client = getConformanceClient();
+        final String queueName = testResourceNamer.randomName("idle", 10);
+        client.createQueue(queueName, new CreateQueueOptions().setAutoDeleteOnIdle(Duration.ofMinutes(5)));
+        try {
+            assertEquals(Duration.ofMinutes(5), client.getQueue(queueName).getAutoDeleteOnIdle());
+            final long deadline = System.nanoTime() + Duration.ofMinutes(8).toNanos();
+            while (client.getQueueExists(queueName) && System.nanoTime() < deadline) {
+                Thread.sleep(Duration.ofSeconds(10).toMillis());
+            }
+            assertFalse(client.getQueueExists(queueName), "Broker did not delete the idle queue.");
+        } finally {
+            if (client.getQueueExists(queueName)) {
+                client.deleteQueue(queueName);
+            }
+        }
+    }
+
+    @Test
+    @LiveOnly
+    void excessForwardingHopsMoveMessageToTransferDeadLetterQueue() {
+        final ServiceBusAdministrationClient client = getConformanceClient();
+        final String[] queues = new String[6];
+        for (int i = 0; i < queues.length; i++) {
+            queues[i] = testResourceNamer.randomName("hop" + i, 10);
+        }
+        int created = 0;
+        try {
+            for (int i = queues.length - 1; i >= 0; i--) {
+                client.createQueue(queues[i],
+                    i == queues.length - 1
+                        ? new CreateQueueOptions()
+                        : new CreateQueueOptions().setForwardTo(queues[i + 1]));
+                created++;
+            }
+            final ServiceBusClientBuilder builder = getConformanceBuilder();
+            try (ServiceBusSenderClient sender = builder.sender().queueName(queues[0]).buildClient();
+                ServiceBusReceiverClient transfer = builder.receiver()
+                    .queueName(queues[4])
+                    .subQueue(SubQueue.TRANSFER_DEAD_LETTER_QUEUE)
+                    .buildClient()) {
+                sender.sendMessage(new ServiceBusMessage("too-many-hops"));
+                final long deadline = System.nanoTime() + Duration.ofMinutes(2).toNanos();
+                ServiceBusReceivedMessage failed = null;
+                while (failed == null && System.nanoTime() < deadline) {
+                    failed = transfer.receiveMessages(1, Duration.ofSeconds(5)).stream().findFirst().orElse(null);
+                }
+                assertNotNull(failed, "The fifth forwarding hop did not enter the source transfer DLQ.");
+                assertEquals("MaxTransferHopCountExceeded", failed.getDeadLetterReason());
+                assertEquals("too-many-hops", failed.getBody().toString());
+                transfer.complete(failed);
+            }
+        } finally {
+            for (int i = queues.length - created; i < queues.length; i++) {
+                client.deleteQueue(queues[i]);
+            }
+        }
+    }
+
+    @Test
+    @LiveOnly
+    void filterEvaluationFailureDeadLettersMessage() {
+        final ServiceBusAdministrationClient client = getConformanceClient();
+        final String topicName = testResourceNamer.randomName("filter", 10);
+        final String subscriptionName = testResourceNamer.randomName("errors", 10);
+        client.createTopic(topicName);
+        try {
+            client.createSubscription(topicName, subscriptionName,
+                new CreateSubscriptionOptions().setEnableDeadLetteringOnFilterEvaluationExceptions(true));
+            client.deleteRule(topicName, subscriptionName, "$Default");
+            client.createRule(topicName, subscriptionName, "divide-by-zero",
+                new CreateRuleOptions().setFilter(new SqlRuleFilter("1 / divisor > 0")));
+            final ServiceBusClientBuilder builder = getConformanceBuilder();
+            try (ServiceBusSenderClient sender = builder.sender().topicName(topicName).buildClient();
+                ServiceBusReceiverClient deadLetters = builder.receiver()
+                    .topicName(topicName)
+                    .subscriptionName(subscriptionName)
+                    .subQueue(SubQueue.DEAD_LETTER_QUEUE)
+                    .buildClient()) {
+                final ServiceBusMessage invalid = new ServiceBusMessage("invalid-filter");
+                invalid.getApplicationProperties().put("divisor", 0);
+                sender.sendMessage(invalid);
+                final long deadline = System.nanoTime() + Duration.ofMinutes(2).toNanos();
+                ServiceBusReceivedMessage failed = null;
+                while (failed == null && System.nanoTime() < deadline) {
+                    failed = deadLetters.receiveMessages(1, Duration.ofSeconds(5)).stream().findFirst().orElse(null);
+                }
+                assertNotNull(failed, "The filter evaluation error did not dead-letter the message.");
+                assertEquals("invalid-filter", failed.getBody().toString());
+                assertEquals("FilterEvaluationException", failed.getDeadLetterReason());
+                deadLetters.complete(failed);
+            }
+        } finally {
+            client.deleteTopic(topicName);
+        }
+    }
+
+    private void verifyExpiredMessage(boolean perMessageTtl) {
+        final ServiceBusAdministrationClient client = getConformanceClient();
+        final String queueName = testResourceNamer.randomName("expiry", 10);
+        final CreateQueueOptions options = new CreateQueueOptions().setDeadLetteringOnMessageExpiration(true);
+        if (!perMessageTtl) {
+            options.setDefaultMessageTimeToLive(Duration.ofSeconds(10));
+        }
+        client.createQueue(queueName, options);
+        try {
+            final ServiceBusClientBuilder builder = getConformanceBuilder();
+            try (ServiceBusSenderClient sender = builder.sender().queueName(queueName).buildClient();
+                ServiceBusReceiverClient deadLetters
+                    = builder.receiver().queueName(queueName).subQueue(SubQueue.DEAD_LETTER_QUEUE).buildClient()) {
+                final ServiceBusMessage message = new ServiceBusMessage("expired");
+                if (perMessageTtl) {
+                    message.setTimeToLive(Duration.ofSeconds(10));
+                }
+                sender.sendMessage(message);
+                final OffsetDateTime deadline = OffsetDateTime.now().plusMinutes(2);
+                ServiceBusReceivedMessage expired = null;
+                while (expired == null && OffsetDateTime.now().isBefore(deadline)) {
+                    expired = deadLetters.receiveMessages(1, Duration.ofSeconds(5)).stream().findFirst().orElse(null);
+                }
+                assertNotNull(expired, "Expired message was not moved to the dead-letter queue.");
+                assertEquals("TTLExpiredException", expired.getDeadLetterReason());
+                deadLetters.complete(expired);
+            }
+        } finally {
+            client.deleteQueue(queueName);
+        }
+    }
+
+    @Test
+    @LiveOnly
+    void maxDeliveryCountDeadLettersAbandonedMessage() {
+        final ServiceBusAdministrationClient client = getConformanceClient();
+        final String queueName = testResourceNamer.randomName("delivery", 10);
+        client.createQueue(queueName, new CreateQueueOptions().setMaxDeliveryCount(2));
+        try {
+            final ServiceBusClientBuilder builder = getConformanceBuilder();
+            try (ServiceBusSenderClient sender = builder.sender().queueName(queueName).buildClient();
+                ServiceBusReceiverClient receiver = builder.receiver().queueName(queueName).buildClient();
+                ServiceBusReceiverClient deadLetters
+                    = builder.receiver().queueName(queueName).subQueue(SubQueue.DEAD_LETTER_QUEUE).buildClient()) {
+                sender.sendMessage(new ServiceBusMessage("redeliver"));
+                for (int delivery = 0; delivery < 2; delivery++) {
+                    final ServiceBusReceivedMessage received
+                        = receiver.receiveMessages(1, Duration.ofSeconds(30)).stream().findFirst().orElse(null);
+                    assertNotNull(received, "Message was not delivered before max delivery count.");
+                    receiver.abandon(received);
+                }
+                final ServiceBusReceivedMessage deadLetter
+                    = deadLetters.receiveMessages(1, Duration.ofSeconds(30)).stream().findFirst().orElse(null);
+                assertNotNull(deadLetter, "Message was not dead-lettered after max delivery count.");
+                assertEquals("MaxDeliveryCountExceeded", deadLetter.getDeadLetterReason());
+                deadLetters.complete(deadLetter);
+            }
+        } finally {
+            client.deleteQueue(queueName);
+        }
+    }
+
+    @Test
+    @LiveOnly
+    void activeDeferredAndScheduledMessageStates() {
+        final ServiceBusAdministrationClient client = getConformanceClient();
+        final String queueName = testResourceNamer.randomName("states", 10);
+        client.createQueue(queueName);
+        try {
+            final ServiceBusClientBuilder builder = getConformanceBuilder();
+            try (ServiceBusSenderClient sender = builder.sender().queueName(queueName).buildClient();
+                ServiceBusReceiverClient receiver = builder.receiver().queueName(queueName).buildClient()) {
+                sender.sendMessage(new ServiceBusMessage("active"));
+                final ServiceBusReceivedMessage active
+                    = receiver.receiveMessages(1, Duration.ofSeconds(30)).stream().findFirst().orElse(null);
+                assertNotNull(active);
+                assertEquals(ServiceBusMessageState.ACTIVE, active.getState());
+                receiver.defer(active);
+
+                final ServiceBusReceivedMessage deferred = receiver.receiveDeferredMessage(active.getSequenceNumber());
+                assertNotNull(deferred);
+                assertEquals(ServiceBusMessageState.DEFERRED, deferred.getState());
+                receiver.complete(deferred);
+
+                final long scheduledSequence
+                    = sender.scheduleMessage(new ServiceBusMessage("scheduled"), OffsetDateTime.now().plusMinutes(2));
+                try {
+                    final ServiceBusReceivedMessage scheduled
+                        = receiver.peekMessages(1, scheduledSequence).stream().findFirst().orElse(null);
+                    assertNotNull(scheduled);
+                    assertEquals(scheduledSequence, scheduled.getSequenceNumber());
+                    assertEquals(ServiceBusMessageState.SCHEDULED, scheduled.getState());
+                } finally {
+                    sender.cancelScheduledMessage(scheduledSequence);
+                }
+            }
+        } finally {
+            client.deleteQueue(queueName);
         }
     }
 
@@ -880,6 +1286,17 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     }
 
     //endregion
+
+    private ServiceBusAdministrationClient getConformanceClient() {
+        return new ServiceBusAdministrationClientBuilder()
+            .credential(TestUtils.getFullyQualifiedDomainName(false), conformanceCredential)
+            .buildClient();
+    }
+
+    private ServiceBusClientBuilder getConformanceBuilder() {
+        return new ServiceBusClientBuilder().credential(TestUtils.getFullyQualifiedDomainName(false),
+            conformanceCredential);
+    }
 
     private ServiceBusAdministrationClient getClient() {
         return getClient(null);
