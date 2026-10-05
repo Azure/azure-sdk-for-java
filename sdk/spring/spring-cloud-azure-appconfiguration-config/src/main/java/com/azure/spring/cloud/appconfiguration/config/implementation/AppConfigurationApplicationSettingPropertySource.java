@@ -140,7 +140,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             if (SNAPSHOT_REF_CONTENT_TYPE.equals(setting.getContentType())) {
                 String snapshotName = parseSnapshotName(setting);
                 replicaClient.getTracingInfo().setUsesSnapshotReference();
-try {
+                try {
                     resolvedSettings.addAll(replicaClient.listSettingSnapshot(snapshotName, context));
                 } catch (com.azure.core.exception.HttpResponseException e) {
                     if (e.getResponse() == null || e.getResponse().getStatusCode() != 404) {
