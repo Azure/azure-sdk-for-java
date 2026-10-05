@@ -16,7 +16,7 @@ parameters:
 jobs:
 - deployment: ${{ parameters.DeploymentName }}
   displayName: 'Publish ${{ parameters.ArtifactName }} to ${{ parameters.Registry }}' 
-  condition: ${{ parameters.CustomCondition }}
+  condition: and(succeededOrFailed(), ${{ parameters.CustomCondition }})
   environment: ${{ parameters.Environment }}
   dependsOn: ${{ parameters.DependsOn }}
   variables:

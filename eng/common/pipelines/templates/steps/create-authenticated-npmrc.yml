@@ -31,11 +31,11 @@ steps:
       "registry=${{ parameters.registryUrl }}" | Out-File $npmrcPath
       Write-Host "##vso[task.setvariable variable=resolvedNpmrcPath]$npmrcPath"
     displayName: "Create .npmrc"
-    condition: ${{ parameters.CustomCondition }}
+    condition: and(succeededOrFailed(), ${{ parameters.CustomCondition }})
 
   - task: npmAuthenticate@0
     displayName: Authenticate .npmrc
-    condition: ${{ parameters.CustomCondition }}
+    condition: and(succeededOrFailed(), ${{ parameters.CustomCondition }})
     inputs:
       workingFile: $(resolvedNpmrcPath)
       azureDevOpsServiceConnection: ${{ parameters.ServiceConnection }}

@@ -18,7 +18,7 @@
 steps:
   - bash: sudo chown -R runner ~/.Azure
     displayName: (MacOS) Grant access to ~/.Azure
-    condition: contains(variables['OSVmImage'], 'mac')
+    condition: and(succeeded(), contains(variables['OSVmImage'], 'mac'))
 
   - task: Powershell@2
     displayName: Setup Az Modules and Dogfood Environment
