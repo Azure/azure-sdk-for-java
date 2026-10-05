@@ -159,16 +159,16 @@ The examples below show common operations for core AI Projects sub-clients. For 
 
 | Folder | Scenarios |
 | --- | --- |
-| [agents](src/samples/java/com/azure/ai/projects/agents) | Create and delete agents using the Agents client library. |
-| [connections](src/samples/java/com/azure/ai/projects/connections) | List connections and retrieve connection details. |
-| [datageneration](src/samples/java/com/azure/ai/projects/datageneration) | Create data generation jobs and evaluate generated datasets. |
-| [datasets](src/samples/java/com/azure/ai/projects/datasets) | Upload files and manage datasets and versions. |
-| [deployments](src/samples/java/com/azure/ai/projects/deployments) | List and retrieve model deployments. |
-| [evaluations](src/samples/java/com/azure/ai/projects/evaluations) | Evaluate inline or uploaded JSONL data using built-in evaluators, native graders, and custom rubrics; manage and generate evaluator versions. |
-| [indexes](src/samples/java/com/azure/ai/projects/indexes) | Create, list, retrieve, and delete indexes. |
-| [models](src/samples/java/com/azure/ai/projects/models) | Register model weights and manage model versions. |
-| [routines](src/samples/java/com/azure/ai/projects/routines) | Manage routines, dispatch manually, and use schedule and timer triggers. |
-| [skills](src/samples/java/com/azure/ai/projects/skills) | Manage skills and upload or download skill packages. |
+| [agents](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/agents) | Create and delete agents using the Agents client library. |
+| [connections](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/connections) | List connections and retrieve connection details. |
+| [datageneration](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/datageneration) | Create data generation jobs and evaluate generated datasets. |
+| [datasets](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/datasets) | Upload files and manage datasets and versions. |
+| [deployments](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/deployments) | List and retrieve model deployments. |
+| [evaluations](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/evaluations) | Evaluate inline or uploaded JSONL data using built-in evaluators, native graders, and custom rubrics; manage and generate evaluator versions. |
+| [indexes](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/indexes) | Create, list, retrieve, and delete indexes. |
+| [models](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/models) | Register model weights and manage model versions. |
+| [routines](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/routines) | Manage routines, dispatch manually, and use schedule and timer triggers. |
+| [skills](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-projects/src/samples/java/com/azure/ai/projects/skills) | Manage skills and upload or download skill packages. |
 
 ### Connections operations
 
