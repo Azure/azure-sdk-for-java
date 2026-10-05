@@ -4,21 +4,71 @@
 
 ### Features Added
 
+- Added `EvaluatorsClient` and `EvaluatorsAsyncClient`, built directly through
+  `AIProjectClientBuilder.buildEvaluatorsClient()` and `buildEvaluatorsAsyncClient()`, for generally available
+  evaluator-version management and rubric-generation jobs. Preview evaluator definitions such as
+  `EndpointBasedEvaluatorDefinition` require `allowPreview(true)`. `BetaEvaluatorsClient` and
+  `BetaEvaluatorsAsyncClient` retain preview pending-upload and credential operations.
+- Evaluation data generation graduated to general availability on `DatasetsClient` and `DatasetsAsyncClient`.
+  Added scenario-specific input and result models for evaluation, supervised fine-tuning, and reinforcement
+  fine-tuning. Fine-tuning scenarios remain in preview and require `allowPreview(true)`; their output configurations
+  support merge-file IDs.
+- Added `ConnectionType.OPEN_API` (`OpenAPI`) and `ConnectionType.REMOTE_A2A` (`RemoteA2A`) for listing and identifying
+  OpenAPI and remote agent-to-agent connections.
+- Added `ApiError.getMisalignment()` to expose structured misalignment details using the OpenAI
+  `ErrorObject.Misalignment` model.
+
 ### Breaking Changes
 
-- Moved data generation job operations from `BetaDatasetsClient` and `BetaDatasetsAsyncClient` onto `DatasetsClient` and `DatasetsAsyncClient`, built directly from `AIProjectClientBuilder` through `buildDatasetsClient()` and `buildDatasetsAsyncClient()`. Preview data generation scenarios now require `allowPreview(true)`; GA scenarios do not.
-- Changed the constructors of `DataGenerationJobConfiguration`, `DataGenerationJobSource`, `EvaluatorDefinition`, and `EvaluatorGenerationJobSource` from public to protected. Construct their concrete subtypes instead. Deserialization of unknown discriminator values remains supported.
+- Removed `BetaDatasetsClient`, `BetaDatasetsAsyncClient`, and their beta-builder methods. Use `DatasetsClient` /
+  `DatasetsAsyncClient`, built directly through `AIProjectClientBuilder`, for data generation job operations.
+  Default requests do not send a preview feature header; set `allowPreview(true)` for preview data generation.
+- Moved evaluator-version CRUD, listing, and evaluator-generation job operations from `BetaEvaluatorsClient` /
+  `BetaEvaluatorsAsyncClient` to `EvaluatorsClient` / `EvaluatorsAsyncClient`. Build the new clients directly through
+  `AIProjectClientBuilder`; generally available operations no longer require the `Evaluations=V1Preview` header.
+- Data generation creation methods now accept `DataGenerationJobInputs` instead of `DataGenerationJob`. Construct
+  `EvaluationDataGenerationJobInputs`, `SupervisedFineTuningDataGenerationJobInputs`, or
+  `ReinforcementFineTuningDataGenerationJobInputs` with a name, sources, and generation configuration.
+  `DataGenerationJob` is now an immutable response model with top-level `getName()`, `getSources()`, and
+  `getGenerationConfiguration()` properties; its no-argument constructor and `getInputs()` / `setInputs(...)` were
+  removed.
+- Renamed `DataGenerationJobOptions` and its `SimpleQnA`, `SimulationSeed`, `ToolUseFineTuning`, and `Traces` subtypes to
+  the corresponding `*DataGenerationJobConfiguration` types. `DataGenerationJobInputs.getOptions()` was replaced by
+  `getGenerationConfiguration()`. `DataGenerationJobOutputOptions` and the `getOutputOptions()` /
+  `setOutputOptions(...)` accessors were replaced by scenario-specific `*DataGenerationJobOutputConfiguration` types
+  and `getOutputConfiguration()` / `setOutputConfiguration(...)` accessors on concrete input models.
+- Renamed `DataGenerationJobScenario.SUPERVISED_FINETUNING` and `REINFORCEMENT_FINETUNING` to
+  `SUPERVISED_FINETUNING_PREVIEW` and `REINFORCEMENT_FINETUNING_PREVIEW`. Their wire values now use the
+  `supervised_finetuning_preview` and `reinforcement_finetuning_preview` discriminator values.
+- Renamed `DataGenerationJobResult.getGeneratedSamples()` to `getGeneratedSampleCount()`.
+- Evaluator generation creation methods now accept `EvaluatorGenerationInputs` instead of `EvaluatorGenerationJob`.
+  `EvaluatorGenerationJob` is now an immutable response model with top-level source, model, and evaluator-name
+  properties; its no-argument constructor and `getInputs()` / `setInputs(...)` were removed.
+- Changed public constructors on polymorphic base models to protected: `DataGenerationJobInputs`,
+  `DataGenerationJobSource`, `EvaluationTaxonomyInput`, `EvaluatorDefinition`, `EvaluatorGenerationJobSource`,
+  `InsightRequest`, `RecurrenceSchedule`, `RoutineAction`, `RoutineDispatchPayload`, `RoutineTrigger`, `ScheduleTask`,
+  `TargetConfig`, and `Trigger`. The renamed `DataGenerationJobConfiguration` base also has a protected constructor.
+  Construct concrete subtypes instead; deserialization of unknown discriminator values remains supported.
 
 ### Bugs Fixed
 
+- Fixed OpenAI clients built from `AIProjectClientBuilder` to acquire bearer tokens through the Azure HTTP pipeline.
+  Asynchronous clients now use asynchronous token acquisition instead of calling `TokenCredential.getTokenSync(...)`;
+  synchronous clients continue to use synchronous token acquisition.
 - Fixed skill file uploads to omit an unset `default` flag instead of sending the literal text `null`.
-- Updated preserved data generation deserializers and samples to use the renamed configuration models and evaluator generation inputs.
 
 ### Other Changes
 
 - Organized Java samples into feature-specific folders, with synchronous and asynchronous samples together.
 - Added synchronous and asynchronous evaluation samples for inline data, uploaded JSONL datasets, and native OpenAI graders.
 - Added synchronous and asynchronous evaluator catalog and rubric generation samples, including metadata updates, version review, evaluation runs, and cleanup.
+- Updated data generation samples for the scenario-specific input, configuration, and output models.
+- Regenerated the client from the updated TypeSpec specification.
+
+#### Dependency Updates
+
+- Updated `azure-ai-agents` from `2.6.0` to `2.7.0`.
+- Updated `openai-java` from `4.45.0` to `4.69.0`.
 
 ## 2.6.1 (2026-09-23)
 
