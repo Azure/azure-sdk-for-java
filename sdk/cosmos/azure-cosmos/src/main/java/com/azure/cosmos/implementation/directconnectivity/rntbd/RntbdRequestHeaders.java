@@ -897,7 +897,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         if (StringUtils.isNotEmpty(value)) {
             try {
                 final int workloadId = Integer.parseInt(value);
-                this.getWorkloadId().setValue((byte) workloadId);
+                this.getWorkloadId().setValue(workloadId);
             } catch (NumberFormatException e) {
                 logger.warn("Invalid value for workload id header: {}", value, e);
             }
