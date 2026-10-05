@@ -44,6 +44,9 @@ safe-outputs:
   close-issue:
     max: 1
     target: "*"
+  dispatch-workflow:
+    workflows: [issue-investigation]
+    max: 1
   noop:
     report-as-issue: false
   jobs:
@@ -175,6 +178,12 @@ safe-outputs:
                   return;
                 }
               }
+
+jobs:
+  safe_outputs:
+    # Owner notification can add needs-team-triage on failure. Do not race that recovery.
+    needs: [mention_owners]
+    if: needs.mention_owners.result == 'success' || needs.mention_owners.result == 'skipped'
 
 tools:
   bash: ["gh:*"]
@@ -702,3 +711,27 @@ Rules for the standard sections:
   - 🔎 Debugging / Reproduction Notes: include diagnostic observations and numbered investigation steps; note similar open issues found via read-only `gh` searches if any
   - 🏷️ Label Confidence: explain category and service label selection; state confidence as High, Medium, or Low with justification; note other labels considered and why they were rejected
   - 👥 Owner Routing: show which CODEOWNERS `# ServiceLabel:` entry matched (with line number) and why; list AzureSdkOwners and ServiceOwners found; state what routing action was requested; briefly note other entries encountered during the bottom-to-top scan and why they were skipped
+
+## Step 9: Investigation Handoff
+
+After requesting the final labels, owner routing, and analysis comment, dispatch `issue-investigation` only when all of these are true:
+
+- The target is an issue, not a pull request
+- The final label set contains exactly one service label (color #e99695) and exactly one category label (color #ffeb77)
+- The final label set contains `customer-reported`
+- Neither the final label set nor the issue has `needs-triage`, `needs-team-triage`, `issue-addressed`, or `needs-author-feedback`
+- No earlier step exited, closed the issue, or fell back to manual triage
+
+Use the final label decision from Step 6, not a new read that assumes queued safe outputs have already been applied. Do not require a `bug` label or restrict the handoff to a particular service or category.
+
+Make at most one call to the generated `issue_investigation` safe-output tool, after the label and comment calls, with:
+
+```json
+{
+  "issue_number": "${{ github.event.issue.number || github.event.inputs.issue_number }}"
+}
+```
+
+The compiler generates this workflow-specific tool from `dispatch-workflow`; it wraps the input in a `dispatch_workflow` output record. Do not call an assumed generic dispatch tool or nest the tool arguments in `inputs`.
+
+Safe outputs are applied after the agent finishes. The output job waits for owner notification or its recovery, but the individual writes are not a transaction. The investigation must retrieve the issue again and validate the applied labels and current state before acting. A requested dispatch is not confirmation that investigation completed.
