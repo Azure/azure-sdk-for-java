@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed query-metrics parsing so malformed attributes such as `=` and `metric` now throw `IllegalArgumentException` instead of `NullPointerException`.
 
 #### Other Changes
 * Added a compact `ppaf` bookmark to each data-plane attempt in `CosmosDiagnostics`, containing the current per-partition write region, failed regions, and the time it was designated, or an empty object when no override is active.
