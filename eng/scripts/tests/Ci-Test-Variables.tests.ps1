@@ -174,7 +174,7 @@ Describe 'Compile-time latest non-LTS JDK configuration' -Tag 'UnitTest' {
         }
     }
 
-    It 'includes all three latest-JDK tasks only in the Linux opt-in branch' {
+    It 'includes latest-JDK tasks only in the Linux opt-in branch with default runtime conditions' {
         $branches = @(
             $script:JdkTemplate.steps | Where-Object { $_.Contains($script:LinuxLatestJdkCondition) }
         )
@@ -185,7 +185,7 @@ Describe 'Compile-time latest non-LTS JDK configuration' -Tag 'UnitTest' {
         $steps.displayName | Should -Contain 'Install Latest JDK'
         $steps.displayName | Should -Contain 'Verify Latest JDK Install'
         foreach ($step in $steps) {
-            $step.condition | Should -BeExactly 'always()'
+            $step.Contains('condition') | Should -BeFalse
         }
         @($script:JdkTemplate.steps | Where-Object { $_.displayName -in $steps.displayName }) |
             Should -BeNullOrEmpty
