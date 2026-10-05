@@ -36,6 +36,10 @@ stages:
           demands: ImageOverride -equals $(Image)
 
         steps:
+          - checkout: self
+            fetchDepth: 1
+            fetchTags: false
+
           - ${{ parameters.PreTestSteps }}
 
           - template: /eng/common/pipelines/templates/steps/run-pester-tests.yml

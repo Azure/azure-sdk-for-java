@@ -33,3 +33,8 @@ extends:
   parameters:
     TargetDirectory: eng/scripts/
     TargetTags: 'UnitTest'
+    PreTestSteps:
+      - pwsh: |
+          . (Join-Path "$(Build.SourcesDirectory)" eng common scripts Helpers PSModule-Helpers.ps1)
+          Install-ModuleIfNotInstalled "powershell-yaml" "0.4.7"
+        displayName: Install PowerShell YAML
