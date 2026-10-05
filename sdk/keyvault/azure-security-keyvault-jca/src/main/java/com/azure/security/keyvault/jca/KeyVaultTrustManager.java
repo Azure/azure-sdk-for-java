@@ -3,8 +3,8 @@
 
 package com.azure.security.keyvault.jca;
 
+import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.net.Socket;
 import java.security.KeyStore;
@@ -34,7 +34,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
     /**
      * Stores the default trust manager.
      */
-    private X509TrustManager defaultTrustManager;
+    private final X509ExtendedTrustManager defaultTrustManager;
 
     /**
      * Stores the keystore.
@@ -43,6 +43,8 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Constructor.
+     *
+     * @throws IllegalStateException if an extended PKIX trust manager cannot be initialized.
      */
     public KeyVaultTrustManager() {
         this(null);
@@ -52,6 +54,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
      * Constructor.
      *
      * @param keyStore the keystore.
+     * @throws IllegalStateException if an extended PKIX trust manager cannot be initialized.
      */
     public KeyVaultTrustManager(KeyStore keyStore) {
         this.keyStore = keyStore;
@@ -64,21 +67,69 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
             }
         }
         try {
-            TrustManagerFactory factory = TrustManagerFactory.getInstance("PKIX", "SunJSSE");
-            factory.init(keyStore);
-            defaultTrustManager = (X509TrustManager) factory.getTrustManagers()[0];
-        } catch (NoSuchAlgorithmException | NoSuchProviderException | KeyStoreException ex) {
-            LOGGER.log(WARNING, "Unable to get the trust manager factory.", ex);
+            defaultTrustManager = createTrustManager(keyStore);
+        } catch (CertificateException ex) {
+            throw new IllegalStateException("Unable to initialize the trust manager.", ex);
         }
-        if (defaultTrustManager == null) {
+    }
+
+    private static X509ExtendedTrustManager createTrustManager(KeyStore trustStore) throws CertificateException {
+        CertificateException failure = new CertificateException("Unable to initialize an extended PKIX trust manager.");
+        for (String provider : new String[] { "SunJSSE", "IbmJSSE" }) {
             try {
-                TrustManagerFactory factory = TrustManagerFactory.getInstance("PKIX", "IbmJSSE");
-                factory.init(keyStore);
-                defaultTrustManager = (X509TrustManager) factory.getTrustManagers()[0];
+                TrustManagerFactory factory = TrustManagerFactory.getInstance("PKIX", provider);
+                factory.init(trustStore);
+                for (TrustManager manager : factory.getTrustManagers()) {
+                    if (manager instanceof X509ExtendedTrustManager) {
+                        return (X509ExtendedTrustManager) manager;
+                    }
+                }
+                failure
+                    .addSuppressed(new CertificateException(provider + " does not supply an extended trust manager."));
             } catch (NoSuchAlgorithmException | NoSuchProviderException | KeyStoreException ex) {
-                LOGGER.log(WARNING, "Unable to get the trust manager factory.", ex);
+                failure.addSuppressed(ex);
             }
         }
+        throw failure;
+    }
+
+    private void checkTrusted(X509Certificate[] chain, TrustCheck check) throws CertificateException {
+        CertificateException originalFailure;
+        try {
+            check.check(defaultTrustManager);
+            return;
+        } catch (CertificateException ex) {
+            originalFailure = ex;
+        }
+        if (keyStore == null) {
+            throw originalFailure;
+        }
+        X509ExtendedTrustManager fallback;
+        try {
+            if (keyStore.getCertificateAlias(chain[0]) == null) {
+                throw originalFailure;
+            }
+            // A matching Key Vault leaf is a trust anchor, not an exemption from connection-specific checks.
+            KeyStore trustedCertificate = KeyStore.getInstance("JKS");
+            trustedCertificate.load(null, null);
+            trustedCertificate.setCertificateEntry("trusted", chain[0]);
+            fallback = createTrustManager(trustedCertificate);
+        } catch (KeyStoreException | IOException | NoSuchAlgorithmException ex) {
+            CertificateException failure = new CertificateException("Unable to verify in keystore.", ex);
+            failure.addSuppressed(originalFailure);
+            throw failure;
+        }
+        try {
+            check.check(fallback);
+        } catch (CertificateException failure) {
+            failure.addSuppressed(originalFailure);
+            throw failure;
+        }
+    }
+
+    @FunctionalInterface
+    private interface TrustCheck {
+        void check(X509ExtendedTrustManager manager) throws CertificateException;
     }
 
     /**
@@ -179,7 +230,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
     @Override
     public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket)
         throws CertificateException {
-        checkClientTrusted(chain, authType);
+        checkTrusted(chain, manager -> manager.checkClientTrusted(chain, authType, socket));
     }
 
     /**
@@ -194,7 +245,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
     @Override
     public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket)
         throws CertificateException {
-        checkServerTrusted(chain, authType);
+        checkTrusted(chain, manager -> manager.checkServerTrusted(chain, authType, socket));
     }
 
     /**
@@ -209,7 +260,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
     @Override
     public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
         throws CertificateException {
-        checkClientTrusted(chain, authType);
+        checkTrusted(chain, manager -> manager.checkClientTrusted(chain, authType, engine));
     }
 
     /**
@@ -224,6 +275,6 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
     @Override
     public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
         throws CertificateException {
-        checkServerTrusted(chain, authType);
+        checkTrusted(chain, manager -> manager.checkServerTrusted(chain, authType, engine));
     }
 }
