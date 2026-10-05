@@ -19,7 +19,7 @@ BeforeAll {
     ).steps
 }
 
-Describe 'CI test variable scope' {
+Describe 'CI test variable scope' -Tag 'UnitTest' {
     It 'inherits static globals instead of copying them into each matrix job' {
         $variables = @($script:TestJob.variables)
         $variables.Count | Should -Be 2
@@ -53,7 +53,7 @@ Describe 'CI test variable scope' {
     }
 }
 
-Describe 'Project-list initialization YAML' {
+Describe 'Project-list initialization YAML' -Tag 'UnitTest' {
     BeforeAll {
         $script:ProjectListTasks = @(
             $script:ProjectListSteps | Where-Object {
@@ -75,7 +75,7 @@ Describe 'Project-list initialization YAML' {
     }
 }
 
-Describe 'Compile-time macOS JDK installation' {
+Describe 'Compile-time macOS JDK installation' -Tag 'UnitTest' {
     BeforeAll {
         $script:JdkTemplate = Get-Content (
             Join-Path $script:EngineeringRoot 'pipelines/templates/steps/install-latest-jdk.yml'
@@ -139,7 +139,7 @@ Describe 'Compile-time macOS JDK installation' {
     }
 }
 
-Describe 'Compile-time latest non-LTS JDK configuration' {
+Describe 'Compile-time latest non-LTS JDK configuration' -Tag 'UnitTest' {
     BeforeAll {
         $script:LinuxLatestJdkCondition = '${{ if and(parameters.IsLatestNonLtsJdk, eq(parameters.OSName, ''linux'')) }}'
         $script:JdkTemplate = Get-Content (
@@ -261,5 +261,47 @@ Describe 'Compile-time latest non-LTS JDK configuration' {
         ([regex]::Matches(
             $cosmos, '(?m)^\s+IsLatestNonLtsJdk: \$\{\{ parameters\.IsLatestNonLtsJdk \}\}\s*$'
         )).Count | Should -Be 3
+    }
+}
+
+Describe 'Script CI pipeline triggers' -Tag 'UnitTest' {
+    It 'runs <Trigger> checks for changes to covered pipeline files' -TestCases @(
+        @{ Trigger = 'trigger' }
+        @{ Trigger = 'pr' }
+    ) {
+        param($Trigger)
+
+        $pipeline = Get-Content (
+            Join-Path $script:EngineeringRoot 'scripts/ci.yml'
+        ) -Raw | ConvertFrom-Yaml -Ordered
+        $pathFilters = $pipeline[$Trigger].paths
+        $coveredPaths = @(
+            'eng/pipelines/pullrequest.yml'
+            'eng/pipelines/templates/jobs/ci.yml'
+            'eng/pipelines/templates/jobs/ci.tests.yml'
+            'eng/pipelines/templates/jobs/live.tests.yml'
+            'eng/pipelines/templates/stages/archetype-sdk-client.yml'
+            'eng/pipelines/templates/stages/cosmos-sdk-client.yml'
+            'eng/pipelines/templates/stages/archetype-sdk-tests.yml'
+            'eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml'
+            'eng/pipelines/templates/variables/globals.yml'
+            'eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml'
+            'eng/pipelines/templates/steps/install-latest-jdk.yml'
+            'eng/pipelines/templates/steps/run-and-validate-linting.yml'
+            'eng/pipelines/templates/steps/retain-troubleshooting-artifacts.yml'
+            'eng/pipelines/templates/steps/build-and-test.yml'
+            'eng/pipelines/templates/steps/build-and-test-native.yml'
+            'eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml'
+            'eng/pipelines/scripts/Get-Troubleshooting-Artifacts.ps1'
+            'eng/pipelines/scripts/Get-Test-Logs.ps1'
+            'eng/pipelines/scripts/Get-Heap-Dump-Hprofs.ps1'
+            'eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1'
+        )
+        foreach ($pipelinePath in $coveredPaths) {
+            @($pathFilters.include | Where-Object { $pipelinePath -like $_ }).Count |
+                Should -BeGreaterThan 0 -Because "$pipelinePath must trigger $Trigger checks"
+            @($pathFilters.exclude | Where-Object { $pipelinePath -like $_ }).Count |
+                Should -Be 0 -Because "$pipelinePath must not be excluded from $Trigger checks"
+        }
     }
 }
