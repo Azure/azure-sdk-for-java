@@ -3,9 +3,18 @@
 
 package com.azure.storage.file.share;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
+import com.azure.storage.file.share.models.ShareProperties;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.ByteArrayInputStream;
 import java.util.EnumSet;
@@ -15,6 +24,35 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ModelTests {
+
+    @Test
+    void sharePropertiesChangeFeedDefaultsAndClearing() {
+        ShareProperties properties = new ShareProperties();
+        assertNull(properties.isChangeFeedEnabled());
+        assertNull(properties.getChangeFeedRetentionInDays());
+
+        properties.setChangeFeedEnabled(true).setChangeFeedRetentionInDays(7);
+        properties.setChangeFeedEnabled(null).setChangeFeedRetentionInDays(null);
+        assertNull(properties.isChangeFeedEnabled());
+        assertNull(properties.getChangeFeedRetentionInDays());
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = { "null,null", "true,7", "false,1", "null,7", "false,null" }, nullValues = "null")
+    void mapSharePropertiesChangeFeed(Boolean enabled, Integer retentionInDays) {
+        HttpHeaders rawHeaders = new HttpHeaders();
+        SharesGetPropertiesHeaders headers = new SharesGetPropertiesHeaders(rawHeaders).setXMsShareQuota(1)
+            .setXMsFileEnableChangeFeed(enabled)
+            .setXMsFileChangeFeedRetentionInDays(retentionInDays);
+        ResponseBase<SharesGetPropertiesHeaders, Void> response
+            = new ResponseBase<>(new HttpRequest(HttpMethod.GET, "https://account.file.core.windows.net/share"), 200,
+                rawHeaders, null, headers);
+
+        ShareProperties properties = ModelHelper.mapGetPropertiesResponse(response).getValue();
+
+        assertEquals(enabled, properties.isChangeFeedEnabled());
+        assertEquals(retentionInDays, properties.getChangeFeedRetentionInDays());
+    }
 
     @Test
     void ntfsToAttributes() {
