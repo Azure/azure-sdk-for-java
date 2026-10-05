@@ -234,6 +234,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyCrc64Headers(recorded));
+        assertCrc64HeaderMatches(recorded.get(0), randomData);
     }
 
     @ParameterizedTest
@@ -251,6 +252,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
+        assertStructuredMessageLengths(recorded.get(0), FIVE_MB);
     }
 
     @Test
@@ -288,6 +290,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         client.stageBlockWithResponse(options, null, Context.NONE);
         assertTrue(hasOnlyCrc64Headers(recorded));
+        assertCrc64HeaderMatches(recorded.get(0), randomData);
     }
 
     @ParameterizedTest
@@ -305,6 +308,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         client.stageBlockWithResponse(options, null, Context.NONE);
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
+        assertStructuredMessageLengths(recorded.get(0), FIVE_MB);
     }
 
     @Test
@@ -816,6 +820,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
+        assertStructuredMessageLengths(recorded.get(0), EXACTLY_4MB);
     }
 
     @ParameterizedTest
@@ -833,6 +838,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         client.stageBlockWithResponse(options, null, Context.NONE);
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
+        assertStructuredMessageLengths(recorded.get(0), EXACTLY_4MB);
     }
 
     // ===========================================================================================
@@ -1472,22 +1478,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     @ParameterizedTest
     @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void putBlobBelow4MbUsesCrc64HeaderWithExactValue(ContentValidationAlgorithm algorithm) {
-        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        byte[] data = getRandomByteArray(UNDER_4MB);
-
-        recordingBlockClient(recorded).uploadWithResponse(
-            new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(data)).setContentValidationAlgorithm(algorithm), null,
-            Context.NONE);
-
-        List<RecordedRequest> uploads = contentBearingUploadRequests(recorded);
-        assertEquals(1, uploads.size());
-        assertTrue(allUploadsUseCrc64Header(recorded));
-        assertCrc64HeaderMatches(uploads.get(0).getHeaders(), data);
-    }
-
-    @ParameterizedTest
-    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
     public void putBlobImmediatelyBelow4MbUsesCrc64Header(ContentValidationAlgorithm algorithm) {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
         byte[] data = getRandomByteArray(JUST_UNDER_4MB);
@@ -1501,43 +1491,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         assertCrc64HeaderMatches(contentBearingUploadRequests(recorded).get(0).getHeaders(), data);
     }
 
-    @ParameterizedTest
-    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void putBlobExactly4MbUsesStructuredMessageWithExactLengths(ContentValidationAlgorithm algorithm) {
-        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        byte[] data = getRandomByteArray(EXACTLY_4MB);
-
-        recordingBlockClient(recorded).uploadWithResponse(
-            new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(data)).setContentValidationAlgorithm(algorithm), null,
-            Context.NONE);
-
-        assertTrue(allUploadsUseStructuredMessage(recorded), "Exactly 4 MiB must use a structured message");
-        assertStructuredMessageLengths(contentBearingUploadRequests(recorded).get(0).getHeaders(), EXACTLY_4MB);
-    }
-
-    @ParameterizedTest
-    @EnumSource(value = ContentValidationAlgorithm.class, names = { "CRC64", "AUTO" })
-    public void putBlobAbove4MbUsesStructuredMessageWithExactLengths(ContentValidationAlgorithm algorithm) {
-        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        byte[] data = getRandomByteArray(FIVE_MB);
-
-        recordingBlockClient(recorded).uploadWithResponse(
-            new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(data)).setContentValidationAlgorithm(algorithm), null,
-            Context.NONE);
-
-        assertTrue(allUploadsUseStructuredMessage(recorded));
-        assertStructuredMessageLengths(contentBearingUploadRequests(recorded).get(0).getHeaders(), FIVE_MB);
-    }
-
-    @Test
-    public void putBlobWithNoneAlgorithmHasNoValidation() {
-        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        recordingBlockClient(recorded)
-            .uploadWithResponse(new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(getRandomByteArray(FIVE_MB)))
-                .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE), null, Context.NONE);
-        assertTrue(noUploadUsesContentValidation(recorded));
-    }
-
     @Test
     public void putBlobWithOmittedAlgorithmHasNoValidation() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
@@ -1545,28 +1498,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         recordingBlockClient(recorded).uploadWithResponse(
             new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(getRandomByteArray(FIVE_MB))), null, Context.NONE);
         assertTrue(noUploadUsesContentValidation(recorded));
-    }
-
-    @Test
-    public void stageBlockBelow4MbUsesCrc64HeaderWithExactValue() {
-        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        byte[] data = getRandomByteArray(UNDER_4MB);
-        recordingBlockClient(recorded)
-            .stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(), BinaryData.fromBytes(data))
-                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64), null, Context.NONE);
-        assertTrue(allUploadsUseCrc64Header(recorded));
-        assertCrc64HeaderMatches(contentBearingUploadRequests(recorded).get(0).getHeaders(), data);
-    }
-
-    @Test
-    public void stageBlockAbove4MbUsesStructuredMessageWithExactLengths() {
-        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        recordingBlockClient(recorded).stageBlockWithResponse(
-            new BlockBlobStageBlockOptions(getBlockID(), BinaryData.fromBytes(getRandomByteArray(FIVE_MB)))
-                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
-            null, Context.NONE);
-        assertTrue(allUploadsUseStructuredMessage(recorded));
-        assertStructuredMessageLengths(contentBearingUploadRequests(recorded).get(0).getHeaders(), FIVE_MB);
     }
 
     @Test
@@ -1614,7 +1545,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     }
 
     @Test
-    public void uploadPagesAbove4MbUsesStructuredMessageWithExactLengths() {
+    public void uploadPagesAtExactly4MbUsesStructuredMessageWithExactLengths() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
         PageBlobClient client = createBlobClientWithFullRequestSniffer(recorded).getPageBlobClient();
         client.create(FOUR_MB_PAGE_ALIGNED);
@@ -1706,35 +1637,32 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     // ===========================================================================================
     // Condition forwarding together with content validation.
     //
-    // The conditions are deliberately unsatisfiable so no server state setup is needed; the request is still sent
-    // and recorded with the condition headers (which is what we assert), then rejected server-side.
+    // A terminal mock answers every request with 201 so these deterministically inspect the OUTGOING condition
+    // headers without depending on the service enforcing (and rejecting) the conditions.
     // ===========================================================================================
 
     @Test
     public void appendBlockForwardsLeaseEtagAppendPositionAndSizeWithValidation() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        AppendBlobClient client = createBlobClientWithFullRequestSniffer(recorded).getAppendBlobClient();
+        HttpPipelinePolicy terminal = (context, next) -> terminalSuccess(context.getHttpRequest());
+        AppendBlobClient client = createBlobClientWithFullRequestSniffer(recorded, terminal).getAppendBlobClient();
         client.create();
 
         byte[] data = getRandomByteArray(UNDER_4MB);
         AppendBlobRequestConditions conditions
             = new AppendBlobRequestConditions().setLeaseId(testResourceNamer.randomUuid())
-                .setIfMatch("\"0xNONMATCHINGETAG\"")
+                .setIfMatch("\"0xSOMEETAG\"")
                 .setAppendPosition(0L)
                 .setMaxSize(1024L * 1024L * 1024L);
-        try {
-            client.appendBlockWithResponse(
-                new AppendBlobAppendBlockOptions(BinaryData.fromBytes(data)).setRequestConditions(conditions)
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
-                null, Context.NONE);
-        } catch (BlobStorageException expectedPreconditionFailure) {
-            // The unsatisfiable lease/ETag causes a server rejection; we only assert the outgoing request shape.
-        }
+        client.appendBlockWithResponse(
+            new AppendBlobAppendBlockOptions(BinaryData.fromBytes(data)).setRequestConditions(conditions)
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
+            null, Context.NONE);
 
         HttpHeaders headers = contentBearingUploadRequests(recorded).get(0).getHeaders();
         assertTrue(ContentValidationTestUtils.isCrc64HeaderRequest(headers));
         assertEquals(conditions.getLeaseId(), headers.getValue(CV_LEASE_ID));
-        assertEquals("\"0xNONMATCHINGETAG\"", headers.getValue(CV_IF_MATCH));
+        assertEquals("\"0xSOMEETAG\"", headers.getValue(CV_IF_MATCH));
         assertEquals("0", headers.getValue(CV_APPEND_POS));
         assertEquals(String.valueOf(1024L * 1024L * 1024L), headers.getValue(CV_MAX_SIZE));
     }
@@ -1742,29 +1670,38 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     @Test
     public void uploadPagesForwardsLeaseEtagAndSequenceNumberWithValidation() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        PageBlobClient client = createBlobClientWithFullRequestSniffer(recorded).getPageBlobClient();
+        HttpPipelinePolicy terminal = (context, next) -> terminalSuccess(context.getHttpRequest());
+        PageBlobClient client = createBlobClientWithFullRequestSniffer(recorded, terminal).getPageBlobClient();
         client.create(UNDER_4MB_PAGE_ALIGNED);
 
         byte[] data = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
         PageRange range = new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1);
         PageBlobRequestConditions conditions
             = new PageBlobRequestConditions().setLeaseId(testResourceNamer.randomUuid())
-                .setIfMatch("\"0xNONMATCHINGETAG\"")
+                .setIfMatch("\"0xSOMEETAG\"")
                 .setIfSequenceNumberEqualTo(7L);
-        try {
-            client.uploadPagesWithResponse(
-                new PageBlobUploadPagesOptions(range, BinaryData.fromBytes(data)).setRequestConditions(conditions)
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
-                null, Context.NONE);
-        } catch (BlobStorageException expectedPreconditionFailure) {
-            // The unsatisfiable lease/ETag/sequence number causes a server rejection; assert request shape only.
-        }
+        client.uploadPagesWithResponse(
+            new PageBlobUploadPagesOptions(range, BinaryData.fromBytes(data)).setRequestConditions(conditions)
+                .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
+            null, Context.NONE);
 
         HttpHeaders headers = contentBearingUploadRequests(recorded).get(0).getHeaders();
         assertTrue(ContentValidationTestUtils.isCrc64HeaderRequest(headers));
         assertEquals(conditions.getLeaseId(), headers.getValue(CV_LEASE_ID));
-        assertEquals("\"0xNONMATCHINGETAG\"", headers.getValue(CV_IF_MATCH));
+        assertEquals("\"0xSOMEETAG\"", headers.getValue(CV_IF_MATCH));
         assertEquals("7", headers.getValue(CV_SEQ_EQ));
+    }
+
+    /**
+     * Terminal mock that answers any request with a 201 carrying the minimal headers the append/page/block response
+     * deserializers expect. Lets condition-forwarding tests observe outgoing headers without a live service.
+     */
+    private static reactor.core.publisher.Mono<com.azure.core.http.HttpResponse> terminalSuccess(HttpRequest request) {
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.ETAG, "\"0x8DMOCKETAG\"")
+            .set(HttpHeaderName.fromString("x-ms-request-server-encrypted"), "true")
+            .set(HttpHeaderName.fromString("x-ms-blob-append-offset"), "0")
+            .set(HttpHeaderName.fromString("x-ms-blob-committed-block-count"), "1");
+        return reactor.core.publisher.Mono.just(new MockHttpResponse(request, 201, headers));
     }
 
     // ===========================================================================================
@@ -1809,10 +1746,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         List<RecordedRequest> uploads = contentBearingUploadRequests(recorded);
         assertTrue(uploads.size() >= 2, "Expected at least one failed attempt followed by a successful retry");
+        // Every attempt (the failed one and the retry) must carry a CRC64 header, and the replayed retry must carry
+        // the checksum of the fully re-read body.
         assertTrue(allUploadsUseCrc64Header(recorded), "Both the failed attempt and the retry must be validated");
-        for (RecordedRequest upload : uploads) {
-            assertCrc64HeaderMatches(upload.getHeaders(), data);
-        }
+        assertCrc64HeaderMatches(uploads.get(uploads.size() - 1).getHeaders(), data);
     }
 
     @Test

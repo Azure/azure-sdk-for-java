@@ -235,6 +235,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
             assertTrue(hasOnlyCrc64Headers(recorded));
+            assertCrc64HeaderMatches(recorded.get(0), randomData);
         }).verifyComplete();
     }
 
@@ -254,6 +255,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
             assertTrue(hasOnlyStructuredMessageHeaders(recorded));
+            assertStructuredMessageLengths(recorded.get(0), FIVE_MB);
         }).verifyComplete();
     }
 
@@ -292,9 +294,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlockBlobStageBlockOptions options
             = new BlockBlobStageBlockOptions(getBlockID(), data).setContentValidationAlgorithm(algorithm);
 
-        StepVerifier.create(client.stageBlockWithResponse(options))
-            .assertNext(response -> assertTrue(hasOnlyCrc64Headers(recorded)))
-            .verifyComplete();
+        StepVerifier.create(client.stageBlockWithResponse(options)).assertNext(response -> {
+            assertTrue(hasOnlyCrc64Headers(recorded));
+            assertCrc64HeaderMatches(recorded.get(0), randomData);
+        }).verifyComplete();
     }
 
     @ParameterizedTest
@@ -310,9 +313,10 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         BlockBlobStageBlockOptions options
             = new BlockBlobStageBlockOptions(getBlockID(), data).setContentValidationAlgorithm(algorithm);
 
-        StepVerifier.create(client.stageBlockWithResponse(options))
-            .assertNext(response -> assertTrue(hasOnlyStructuredMessageHeaders(recorded)))
-            .verifyComplete();
+        StepVerifier.create(client.stageBlockWithResponse(options)).assertNext(response -> {
+            assertTrue(hasOnlyStructuredMessageHeaders(recorded));
+            assertStructuredMessageLengths(recorded.get(0), FIVE_MB);
+        }).verifyComplete();
     }
 
     @Test
@@ -594,6 +598,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
             assertNotNull(response.getValue().getETag());
             assertTrue(hasOnlyStructuredMessageHeaders(recorded));
+            assertStructuredMessageLengths(recorded.get(0), EXACTLY_4MB);
         }).verifyComplete();
     }
 
@@ -1126,51 +1131,11 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     // ===========================================================================================
     // Request-shape verification (async): exact header mode, checksum value, and per-request content length.
     // Requests are captured with a pass-through sniffer and sent to the service.
+    //
+    // Put Blob (BlockBlobSimpleUpload) and Put Block header-mode + exact-value coverage lives in the existing
+    // blockBlobSimpleUpload*/stageBlock* tests above (parameterized over CRC64/AUTO). These request-shape tests add
+    // operations and scenarios those do not cover (append/pages byte-array exact values, non-zero page offset, etc.).
     // ===========================================================================================
-
-    @Test
-    public void putBlobRequestBelow4MbUsesCrc64HeaderWithExactValue() {
-        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        BlockBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getBlockBlobAsyncClient();
-        byte[] data = getRandomByteArray(UNDER_4MB);
-
-        StepVerifier.create(client.uploadWithResponse(new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(data))
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64))).expectNextCount(1).verifyComplete();
-
-        assertTrue(allUploadsUseCrc64Header(recorded));
-        assertCrc64HeaderMatches(contentBearingUploadRequests(recorded).get(0).getHeaders(), data);
-    }
-
-    @Test
-    public void putBlobRequestAbove4MbUsesStructuredMessageWithExactLengths() {
-        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        BlockBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getBlockBlobAsyncClient();
-
-        StepVerifier
-            .create(client
-                .uploadWithResponse(new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(getRandomByteArray(FIVE_MB)))
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64)))
-            .expectNextCount(1)
-            .verifyComplete();
-
-        assertTrue(allUploadsUseStructuredMessage(recorded));
-        assertStructuredMessageLengths(contentBearingUploadRequests(recorded).get(0).getHeaders(), FIVE_MB);
-    }
-
-    @Test
-    public void putBlobRequestWithNoneAlgorithmHasNoValidation() {
-        List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
-        BlockBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getBlockBlobAsyncClient();
-
-        StepVerifier
-            .create(client
-                .uploadWithResponse(new BlockBlobSimpleUploadOptions(BinaryData.fromBytes(getRandomByteArray(FIVE_MB)))
-                    .setContentValidationAlgorithm(ContentValidationAlgorithm.NONE)))
-            .expectNextCount(1)
-            .verifyComplete();
-
-        assertTrue(noUploadUsesContentValidation(recorded));
-    }
 
     @Test
     public void appendBlockRequestBelow4MbUsesCrc64HeaderWithExactValue() {
@@ -1208,7 +1173,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     }
 
     @Test
-    public void uploadPagesRequestAbove4MbUsesStructuredMessageWithExactLengths() {
+    public void uploadPagesRequestAtExactly4MbUsesStructuredMessageWithExactLengths() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
         PageBlobAsyncClient client = createBlobAsyncClientWithFullRequestSniffer(recorded).getPageBlobAsyncClient();
         byte[] data = getRandomByteArray(FOUR_MB_PAGE_ALIGNED);

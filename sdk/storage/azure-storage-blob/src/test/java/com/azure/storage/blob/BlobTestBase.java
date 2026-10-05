@@ -65,8 +65,6 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
-import com.azure.storage.common.implementation.contentvalidation.StructuredMessageEncoder;
-import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
@@ -1589,26 +1587,6 @@ public class BlobTestBase extends TestProxyTestBase {
         policies[0] = sniffPolicy;
         System.arraycopy(extraPolicies, 0, policies, 1, extraPolicies.length);
         return policies;
-    }
-
-    protected static long expectedStructuredMessageEncodedLength(int unencodedContentBytes) {
-        return new StructuredMessageEncoder(unencodedContentBytes,
-            StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64)
-                .getEncodedMessageLength();
-    }
-
-    /**
-     * Sum of encoded lengths per block upload (each HTTP request carries its own structured message wrapper).
-     */
-    protected static long expectedStructuredMessageEncodedLengthChunked(int totalUnencodedBytes, long blockSizeBytes) {
-        long sum = 0;
-        int remaining = totalUnencodedBytes;
-        while (remaining > 0) {
-            int chunk = (int) Math.min(remaining, blockSizeBytes);
-            sum += expectedStructuredMessageEncodedLength(chunk);
-            remaining -= chunk;
-        }
-        return sum;
     }
 
     /**

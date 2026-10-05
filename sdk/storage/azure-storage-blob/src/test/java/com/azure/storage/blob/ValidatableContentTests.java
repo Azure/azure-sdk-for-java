@@ -222,8 +222,9 @@ public class ValidatableContentTests {
 
     @Test
     public void unknownLengthDataIsRejected() {
-        // BinaryData.fromStream(stream) has no defined length; content validation requires a known length, so the
-        // options constructor must reject it up front rather than sending an un-validatable request.
+        // BinaryData.fromStream(stream) has no defined length. These options constructors require a known length
+        // unconditionally (independent of whether content validation is later enabled), so they must reject it up
+        // front rather than deferring the failure to request time.
         assertThrows(NullPointerException.class, () -> new AppendBlobAppendBlockOptions(unknownLengthData()));
         assertThrows(NullPointerException.class, () -> new BlockBlobStageBlockOptions("blockId", unknownLengthData()));
         assertThrows(NullPointerException.class, () -> new BlockBlobSimpleUploadOptions(unknownLengthData()));
