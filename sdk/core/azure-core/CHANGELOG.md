@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added `GeneratedCodeUtils` to support generated HTTP clients with request customization, response-consumption controls,
+  URI encoding, request body length validation, typed response decoding, and unexpected-response exception creation.
+
 ### Breaking Changes
 
 ### Bugs Fixed

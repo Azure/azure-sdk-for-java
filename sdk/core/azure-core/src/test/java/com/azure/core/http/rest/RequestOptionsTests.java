@@ -7,15 +7,20 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.implementation.http.rest.ErrorOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.GeneratedCodeUtils;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
+import java.util.EnumSet;
 
 import static com.azure.core.CoreTestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RequestOptionsTests {
@@ -76,5 +81,59 @@ public class RequestOptionsTests {
         assertEquals("baz", headers.getValue(X_MS_FOO));
         assertEquals(HttpMethod.GET, request.getHttpMethod());
         assertEquals("https://request.url?%24skipToken=1", request.getUrl().toString());
+    }
+
+    @Test
+    public void generatedCodeAppliesRequestOptionsInOrder() throws MalformedURLException {
+        HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"));
+        BinaryData body = BinaryData.fromString("body");
+        RequestOptions options
+            = new RequestOptions().setHeader(X_MS_FOO, "initial").addRequestCallback(updatedRequest -> {
+                assertEquals("initial", updatedRequest.getHeaders().getValue(X_MS_FOO));
+                updatedRequest.setHttpMethod(HttpMethod.GET);
+                updatedRequest.setUrl("https://request.url");
+            }).addQueryParam("query", "a b").setHeader(X_MS_FOO, "updated").setBody(body);
+
+        GeneratedCodeUtils.applyRequestOptions(request, options);
+
+        assertEquals(HttpMethod.GET, request.getHttpMethod());
+        assertEquals("https://request.url?query=a%20b", request.getUrl().toString());
+        assertEquals("updated", request.getHeaders().getValue(X_MS_FOO));
+        assertSame(body, request.getBodyAsBinaryData());
+    }
+
+    @Test
+    public void generatedCodeAllowsNullRequestOptions() throws MalformedURLException {
+        HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"));
+
+        GeneratedCodeUtils.applyRequestOptions(request, null);
+
+        assertEquals(HttpMethod.POST, request.getHttpMethod());
+        assertEquals("http://request.url", request.getUrl().toString());
+    }
+
+    @Test
+    public void generatedCodeRejectsNullRequest() {
+        assertThrows(NullPointerException.class, () -> GeneratedCodeUtils.applyRequestOptions(null, null));
+    }
+
+    @Test
+    public void generatedCodeThrowsOnUnexpectedResponsesByDefault() {
+        assertTrue(GeneratedCodeUtils.shouldThrowException(null));
+        assertTrue(GeneratedCodeUtils.shouldThrowException(new RequestOptions()));
+    }
+
+    @Test
+    public void generatedCodeHonorsNoThrowErrorOptions() {
+        RequestOptions options = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
+
+        assertFalse(GeneratedCodeUtils.shouldThrowException(options));
+    }
+
+    @Test
+    public void generatedCodeThrowsWhenErrorOptionsAreEmpty() {
+        RequestOptions options = new RequestOptions().setErrorOptions(EnumSet.noneOf(ErrorOptions.class));
+
+        assertTrue(GeneratedCodeUtils.shouldThrowException(options));
     }
 }

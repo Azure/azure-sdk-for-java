@@ -7,6 +7,7 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.implementation.http.rest.ErrorOptions;
+import com.azure.core.implementation.http.rest.RequestOptionsAccessHelper;
 import com.azure.core.implementation.http.rest.UrlEscapers;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -121,6 +122,20 @@ public final class RequestOptions {
     private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
 
     private static final EnumSet<ErrorOptions> DEFAULT = EnumSet.of(ErrorOptions.THROW);
+
+    static {
+        RequestOptionsAccessHelper.setAccessor(new RequestOptionsAccessHelper.RequestOptionsAccessor() {
+            @Override
+            public void applyRequestOptions(HttpRequest request, RequestOptions options) {
+                options.getRequestCallback().accept(request);
+            }
+
+            @Override
+            public boolean shouldThrowException(RequestOptions options) {
+                return !options.getErrorOptions().contains(ErrorOptions.NO_THROW);
+            }
+        });
+    }
 
     private Consumer<HttpRequest> requestCallback = request -> {
     };
