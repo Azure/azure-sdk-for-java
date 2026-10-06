@@ -109,8 +109,9 @@ public final class TopicRuntimeProperties {
     /**
      * Gets the total number of SQL filters across all subscriptions of the topic.
      *
-     * <p>The service supplies this count from api-version {@code 2024-05} onwards. The value is {@code 0} when
-     * the client targets an earlier {@link ServiceBusServiceVersion} that does not supply it.</p>
+     * <p>The service supplies this count only from api-version {@code 2024-05} onwards, and only in regions that
+     * have deployed the topic filter count feature. The value is {@code 0} when the client targets an earlier
+     * {@link ServiceBusServiceVersion} or the region does not supply it.</p>
      *
      * @return The total number of SQL filters across all subscriptions of the topic.
      */
@@ -121,8 +122,9 @@ public final class TopicRuntimeProperties {
     /**
      * Gets the total number of correlation filters across all subscriptions of the topic.
      *
-     * <p>The service supplies this count from api-version {@code 2024-05} onwards. The value is {@code 0} when
-     * the client targets an earlier {@link ServiceBusServiceVersion} that does not supply it.</p>
+     * <p>The service supplies this count only from api-version {@code 2024-05} onwards, and only in regions that
+     * have deployed the topic filter count feature. The value is {@code 0} when the client targets an earlier
+     * {@link ServiceBusServiceVersion} or the region does not supply it.</p>
      *
      * @return The total number of correlation filters across all subscriptions of the topic.
      */
