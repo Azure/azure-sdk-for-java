@@ -1,15 +1,5 @@
 # Release History
 
-## 2.57.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.56.1 (2026-08-18)
 
 ### Other Changes
@@ -21,6 +11,7 @@
 - Upgraded `azure-resourcemanager-msi` from `2.54.0` to version `2.54.1`.
 - Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
 - Upgraded `azure-resourcemanager-dns` from `2.53.9` to version `2.53.10`.
+
 
 ## 2.56.0 (2026-07-28)
 
@@ -52,6 +43,7 @@
 - Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
 - Upgraded `azure-resourcemanager-dns` from `2.53.8` to version `2.53.9`.
 
+
 ## 2.55.2 (2026-05-05)
 
 ### Other Changes
@@ -74,6 +66,7 @@
 - Upgraded `azure-resourcemanager-storage` from `2.55.3` to version `2.55.4`.
 - Upgraded `azure-resourcemanager-msi` from `2.53.6` to version `2.53.7`.
 - Upgraded `azure-resourcemanager-keyvault` from `2.55.0` to version `2.55.1`.
+
 
 ## 2.55.0 (2026-02-26)
 
