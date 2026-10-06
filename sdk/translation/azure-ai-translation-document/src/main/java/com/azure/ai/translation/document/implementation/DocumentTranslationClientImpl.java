@@ -179,8 +179,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> translation(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/document/batches")
         @ExpectedResponses({ 202 })
@@ -190,8 +189,7 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> translationSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Get("/document/batches")
         @ExpectedResponses({ 200 })
@@ -432,9 +430,8 @@ public final class DocumentTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> translationWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.translation(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, body, requestOptions, context));
     }
 
     /**
@@ -513,9 +510,8 @@ public final class DocumentTranslationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<Void> translationWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.translationSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
-            body, requestOptions, Context.NONE);
+        return service.translationSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, body,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -2881,26 +2877,20 @@ public final class DocumentTranslationClientImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String path) {
         try {
-            Object value = binaryData.toObject(Map.class);
-            for (String segment : path) {
-                value = ((Map<?, ?>) value).get(segment);
-            }
-            List<?> values = (List<?>) value;
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            List<?> values = (List<?>) obj.get(path);
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String... path) {
+    private String getNextLink(BinaryData binaryData, String path) {
         try {
-            Object value = binaryData.toObject(Map.class);
-            for (String segment : path) {
-                value = ((Map<?, ?>) value).get(segment);
-            }
-            return (String) value;
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            return (String) obj.get(path);
         } catch (RuntimeException e) {
             return null;
         }
