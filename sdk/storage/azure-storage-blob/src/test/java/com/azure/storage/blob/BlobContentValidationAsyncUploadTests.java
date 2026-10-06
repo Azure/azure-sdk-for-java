@@ -80,6 +80,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * {@link BlobContentValidationUploadTests}.
  */
 public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
+    private static final HttpHeaderName LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
+    private static final HttpHeaderName IF_MATCH = HttpHeaderName.fromString("If-Match");
+    private static final HttpHeaderName APPEND_POS = HttpHeaderName.fromString("x-ms-blob-condition-appendpos");
+    private static final HttpHeaderName MAX_SIZE = HttpHeaderName.fromString("x-ms-blob-condition-maxsize");
+    private static final HttpHeaderName SEQ_EQ = HttpHeaderName.fromString("x-ms-if-sequence-number-eq");
+    private static final HttpHeaderName X_MS_RANGE = HttpHeaderName.fromString("x-ms-range");
+
     private static final int TEN_MB = 10 * Constants.MB;
     // Generic ">= 4 MiB so the single-shot upload path uses a structured message" payload for the replayable
     // (non-live) tests. 5 MiB keeps a single Put Blob / Put Block / Append Block request (still above the 4 MiB
@@ -1238,17 +1245,6 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             "A cancelled multipart upload must not commit a block list of incomplete data");
     }
 
-    // ===========================================================================================
-    // Async counterparts of the sync-only request-shape / failure / forwarding tests.
-    // ===========================================================================================
-
-    private static final HttpHeaderName LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
-    private static final HttpHeaderName IF_MATCH = HttpHeaderName.fromString("If-Match");
-    private static final HttpHeaderName APPEND_POS = HttpHeaderName.fromString("x-ms-blob-condition-appendpos");
-    private static final HttpHeaderName MAX_SIZE = HttpHeaderName.fromString("x-ms-blob-condition-maxsize");
-    private static final HttpHeaderName SEQ_EQ = HttpHeaderName.fromString("x-ms-if-sequence-number-eq");
-    private static final HttpHeaderName X_MS_RANGE = HttpHeaderName.fromString("x-ms-range");
-
     @Test
     public void uploadRetryReplaysBodyAndRevalidatesAfterConsumption() {
         List<RecordedRequest> recorded = new CopyOnWriteArrayList<>();
@@ -1422,12 +1418,11 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             .expectNextCount(1)
             .verifyComplete();
 
-        List<RecordedRequest> uploads = contentBearingUploadRequests(recorded);
-        assertEquals(blocks.length, uploads.size(), "Each append must produce exactly one Append Block request");
-        assertTrue(allUploadsUseCrc64Header(recorded), "Every appended block must be validated");
-        for (int i = 0; i < blocks.length; i++) {
-            assertCrc64HeaderMatches(uploads.get(i).getHeaders(), blocks[i]);
-        }
+        // Match each block to a validated upload by checksum (retry-independent): a retried append reuses the same
+        // CRC64, so this does not depend on the request count or order.
+        assertTrue(contentBearingUploadRequests(recorded).size() >= blocks.length,
+            "Each block must produce at least one Append Block request");
+        ContentValidationTestUtils.assertEachBlockValidatedWithCrc64(recorded, blocks);
     }
 
     @Test

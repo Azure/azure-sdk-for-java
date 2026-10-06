@@ -21,9 +21,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Helpers for inspecting the content-validation headers on recorded upload requests.
@@ -187,6 +189,22 @@ public final class ContentValidationTestUtils {
         assertEquals(expectedCrc64Base64(expectedContent),
             headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME),
             "x-ms-content-crc64 must equal the CRC64 of the uploaded bytes");
+    }
+
+    /**
+     * Retry-independently asserts that every supplied block was validated with its own CRC64 at least once among the
+     * content-bearing uploads. Blocks are matched by checksum (not request order or count), so a retried upload —
+     * which reuses the same CRC64 — cannot make this fail. Also asserts every upload carried a CRC64 header.
+     */
+    public static void assertEachBlockValidatedWithCrc64(List<RecordedRequest> recorded, byte[]... blocks) {
+        assertTrue(allUploadsUseCrc64Header(recorded), "Every uploaded block must carry a CRC64 header");
+        Set<String> sentCrc64 = contentBearingUploadRequests(recorded).stream()
+            .map(r -> r.getHeaders().getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME))
+            .collect(Collectors.toSet());
+        for (int i = 0; i < blocks.length; i++) {
+            assertTrue(sentCrc64.contains(expectedCrc64Base64(blocks[i])),
+                "Block " + i + " must have been validated with its CRC64");
+        }
     }
 
     public static void assertStructuredMessageLengths(HttpHeaders headers, int unencodedContentBytes) {

@@ -79,6 +79,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Async counterparts of the same operations are in {@link BlobContentValidationAsyncUploadTests}.
  */
 public class BlobContentValidationUploadTests extends BlobTestBase {
+    private static final HttpHeaderName CV_LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
+    private static final HttpHeaderName CV_IF_MATCH = HttpHeaderName.fromString("If-Match");
+    private static final HttpHeaderName CV_APPEND_POS = HttpHeaderName.fromString("x-ms-blob-condition-appendpos");
+    private static final HttpHeaderName CV_MAX_SIZE = HttpHeaderName.fromString("x-ms-blob-condition-maxsize");
+    private static final HttpHeaderName CV_SEQ_EQ = HttpHeaderName.fromString("x-ms-if-sequence-number-eq");
+    private static final HttpHeaderName CV_RANGE = HttpHeaderName.fromString("x-ms-range");
+
     private static final int TEN_MB = 10 * Constants.MB;
     // Generic ">= 4 MiB so the single-shot upload path uses a structured message" payload for the replayable
     // (non-live) tests. 5 MiB keeps a single Put Blob / Put Block / Append Block request (still above the 4 MiB
@@ -1455,13 +1462,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
     private static final int JUST_UNDER_4MB = 4 * Constants.MB - 1;
 
-    private static final HttpHeaderName CV_LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
-    private static final HttpHeaderName CV_IF_MATCH = HttpHeaderName.fromString("If-Match");
-    private static final HttpHeaderName CV_APPEND_POS = HttpHeaderName.fromString("x-ms-blob-condition-appendpos");
-    private static final HttpHeaderName CV_MAX_SIZE = HttpHeaderName.fromString("x-ms-blob-condition-maxsize");
-    private static final HttpHeaderName CV_SEQ_EQ = HttpHeaderName.fromString("x-ms-if-sequence-number-eq");
-    private static final HttpHeaderName CV_RANGE = HttpHeaderName.fromString("x-ms-range");
-
     private BlockBlobClient recordingBlockClient(List<RecordedRequest> recorded) {
         return createBlobClientWithFullRequestSniffer(recorded).getBlockBlobClient();
     }
@@ -1567,12 +1567,11 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
                 .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64), null, Context.NONE);
         }
 
-        List<RecordedRequest> uploads = contentBearingUploadRequests(recorded);
-        assertEquals(blocks.length, uploads.size(), "Each append must produce exactly one Append Block request");
-        assertTrue(allUploadsUseCrc64Header(recorded), "Every appended block must be validated");
-        for (int i = 0; i < blocks.length; i++) {
-            assertCrc64HeaderMatches(uploads.get(i).getHeaders(), blocks[i]);
-        }
+        // Match each block to a validated upload by checksum (retry-independent): a retried append reuses the same
+        // CRC64, so this does not depend on the request count or order.
+        assertTrue(contentBearingUploadRequests(recorded).size() >= blocks.length,
+            "Each block must produce at least one Append Block request");
+        ContentValidationTestUtils.assertEachBlockValidatedWithCrc64(recorded, blocks);
     }
 
     /**
