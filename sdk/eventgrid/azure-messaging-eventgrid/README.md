@@ -82,7 +82,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>4.31.8</version>
+    <version>4.31.9</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
