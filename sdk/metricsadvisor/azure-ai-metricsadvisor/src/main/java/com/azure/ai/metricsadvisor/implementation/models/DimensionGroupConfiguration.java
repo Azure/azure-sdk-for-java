@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,7 +19,6 @@ public final class DimensionGroupConfiguration implements JsonSerializable<Dimen
     /*
      * The group property.
      */
-    @Generated
     private DimensionGroupIdentity group;
 
     /*
@@ -28,31 +26,26 @@ public final class DimensionGroupConfiguration implements JsonSerializable<Dimen
      * 
      * should be specified when combining multiple detection conditions
      */
-    @Generated
     private AnomalyDetectionConfigurationLogicType conditionOperator;
 
     /*
      * The smartDetectionCondition property.
      */
-    @Generated
     private SmartDetectionCondition smartDetectionCondition;
 
     /*
      * The hardThresholdCondition property.
      */
-    @Generated
     private HardThresholdCondition hardThresholdCondition;
 
     /*
      * The changeThresholdCondition property.
      */
-    @Generated
     private ChangeThresholdCondition changeThresholdCondition;
 
     /**
      * Creates an instance of DimensionGroupConfiguration class.
      */
-    @Generated
     public DimensionGroupConfiguration() {
     }
 
@@ -61,7 +54,6 @@ public final class DimensionGroupConfiguration implements JsonSerializable<Dimen
      * 
      * @return the group value.
      */
-    @Generated
     public DimensionGroupIdentity getGroup() {
         return this.group;
     }
@@ -72,7 +64,6 @@ public final class DimensionGroupConfiguration implements JsonSerializable<Dimen
      * @param group the group value to set.
      * @return the DimensionGroupConfiguration object itself.
      */
-    @Generated
     public DimensionGroupConfiguration setGroup(DimensionGroupIdentity group) {
         this.group = group;
         return this;
@@ -85,7 +76,6 @@ public final class DimensionGroupConfiguration implements JsonSerializable<Dimen
      * 
      * @return the conditionOperator value.
      */
-    @Generated
     public AnomalyDetectionConfigurationLogicType getConditionOperator() {
         return this.conditionOperator;
     }
@@ -98,7 +88,6 @@ public final class DimensionGroupConfiguration implements JsonSerializable<Dimen
      * @param conditionOperator the conditionOperator value to set.
      * @return the DimensionGroupConfiguration object itself.
      */
-    @Generated
     public DimensionGroupConfiguration setConditionOperator(AnomalyDetectionConfigurationLogicType conditionOperator) {
         this.conditionOperator = conditionOperator;
         return this;
@@ -109,7 +98,6 @@ public final class DimensionGroupConfiguration implements JsonSerializable<Dimen
      * 
      * @return the smartDetectionCondition value.
      */
-    @Generated
     public SmartDetectionCondition getSmartDetectionCondition() {
         return this.smartDetectionCondition;
     }
@@ -120,7 +108,6 @@ public final class DimensionGroupConfiguration implements JsonSerializable<Dimen
      * @param smartDetectionCondition the smartDetectionCondition value to set.
      * @return the DimensionGroupConfiguration object itself.
      */
-    @Generated
     public DimensionGroupConfiguration setSmartDetectionCondition(SmartDetectionCondition smartDetectionCondition) {
         this.smartDetectionCondition = smartDetectionCondition;
         return this;
@@ -131,7 +118,6 @@ public final class DimensionGroupConfiguration implements JsonSerializable<Dimen
      * 
      * @return the hardThresholdCondition value.
      */
-    @Generated
     public HardThresholdCondition getHardThresholdCondition() {
         return this.hardThresholdCondition;
     }
@@ -142,7 +128,6 @@ public final class DimensionGroupConfiguration implements JsonSerializable<Dimen
      * @param hardThresholdCondition the hardThresholdCondition value to set.
      * @return the DimensionGroupConfiguration object itself.
      */
-    @Generated
     public DimensionGroupConfiguration setHardThresholdCondition(HardThresholdCondition hardThresholdCondition) {
         this.hardThresholdCondition = hardThresholdCondition;
         return this;
@@ -153,7 +138,6 @@ public final class DimensionGroupConfiguration implements JsonSerializable<Dimen
      * 
      * @return the changeThresholdCondition value.
      */
-    @Generated
     public ChangeThresholdCondition getChangeThresholdCondition() {
         return this.changeThresholdCondition;
     }
@@ -164,16 +148,11 @@ public final class DimensionGroupConfiguration implements JsonSerializable<Dimen
      * @param changeThresholdCondition the changeThresholdCondition value to set.
      * @return the DimensionGroupConfiguration object itself.
      */
-    @Generated
     public DimensionGroupConfiguration setChangeThresholdCondition(ChangeThresholdCondition changeThresholdCondition) {
         this.changeThresholdCondition = changeThresholdCondition;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -195,7 +174,6 @@ public final class DimensionGroupConfiguration implements JsonSerializable<Dimen
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DimensionGroupConfiguration.
      */
-    @Generated
     public static DimensionGroupConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DimensionGroupConfiguration deserializedDimensionGroupConfiguration = new DimensionGroupConfiguration();
