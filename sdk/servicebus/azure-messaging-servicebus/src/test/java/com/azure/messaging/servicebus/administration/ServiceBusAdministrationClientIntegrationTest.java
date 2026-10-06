@@ -55,6 +55,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
@@ -666,21 +667,34 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
                 created++;
             }
             final ServiceBusClientBuilder builder = getConformanceBuilder();
-            try (ServiceBusSenderClient sender = builder.sender().queueName(queues[0]).buildClient();
-                ServiceBusReceiverClient transfer = builder.receiver()
-                    .queueName(queues[4])
-                    .subQueue(SubQueue.TRANSFER_DEAD_LETTER_QUEUE)
-                    .buildClient()) {
-                sender.sendMessage(new ServiceBusMessage("too-many-hops"));
-                final long deadline = System.nanoTime() + Duration.ofMinutes(2).toNanos();
-                ServiceBusReceivedMessage failed = null;
-                while (failed == null && System.nanoTime() < deadline) {
-                    failed = transfer.receiveMessages(1, Duration.ofSeconds(5)).stream().findFirst().orElse(null);
+            try (ServiceBusSenderClient sender = builder.sender().queueName(queues[0]).buildClient()) {
+                final List<ServiceBusReceiverClient> transferReceivers = new ArrayList<>();
+                try {
+                    for (int i = 0; i < queues.length - 1; i++) {
+                        transferReceivers.add(builder.receiver()
+                            .queueName(queues[i])
+                            .subQueue(SubQueue.TRANSFER_DEAD_LETTER_QUEUE)
+                            .buildClient());
+                    }
+                    sender.sendMessage(new ServiceBusMessage("too-many-hops"));
+                    final long deadline = System.nanoTime() + Duration.ofMinutes(2).toNanos();
+                    ServiceBusReceivedMessage failed = null;
+                    while (failed == null && System.nanoTime() < deadline) {
+                        for (ServiceBusReceiverClient receiver : transferReceivers) {
+                            failed
+                                = receiver.receiveMessages(1, Duration.ofSeconds(1)).stream().findFirst().orElse(null);
+                            if (failed != null) {
+                                assertEquals("MaxTransferHopCountExceeded", failed.getDeadLetterReason());
+                                assertEquals("too-many-hops", failed.getBody().toString());
+                                receiver.complete(failed);
+                                break;
+                            }
+                        }
+                    }
+                    assertNotNull(failed, "Excess forwarding did not enter any forwarding source's transfer DLQ.");
+                } finally {
+                    transferReceivers.forEach(ServiceBusReceiverClient::close);
                 }
-                assertNotNull(failed, "The fifth forwarding hop did not enter the source transfer DLQ.");
-                assertEquals("MaxTransferHopCountExceeded", failed.getDeadLetterReason());
-                assertEquals("too-many-hops", failed.getBody().toString());
-                transfer.complete(failed);
             }
         } finally {
             for (int i = queues.length - created; i < queues.length; i++) {
@@ -700,7 +714,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
             client.createSubscription(topicName, subscriptionName,
                 new CreateSubscriptionOptions().setEnableDeadLetteringOnFilterEvaluationExceptions(true));
             client.deleteRule(topicName, subscriptionName, "$Default");
-            client.createRule(topicName, subscriptionName, "divide-by-zero",
+            client.createRule(topicName, "divide-by-zero", subscriptionName,
                 new CreateRuleOptions().setFilter(new SqlRuleFilter("1 / divisor > 0")));
             final ServiceBusClientBuilder builder = getConformanceBuilder();
             try (ServiceBusSenderClient sender = builder.sender().topicName(topicName).buildClient();
