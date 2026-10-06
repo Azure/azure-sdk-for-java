@@ -6,8 +6,8 @@ package com.azure.storage.file.datalake;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.models.SessionOptions;
+import com.azure.storage.blob.models.SessionOptions.SessionMode;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import org.junit.jupiter.api.Test;
 
