@@ -12,11 +12,11 @@ import com.microsoft.azure.servicebus.management.ManagementClientAsync;
 import com.microsoft.azure.servicebus.management.QueueDescription;
 import com.microsoft.azure.servicebus.management.SubscriptionDescription;
 import com.microsoft.azure.servicebus.management.TopicDescription;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
@@ -30,7 +30,7 @@ public abstract class ClientSessionTests extends Tests {
     private IMessageSender sendClient;
     private IMessageAndSessionPump receiveClient;
     
-    @BeforeClass
+    @BeforeAll
     public static void init() {
         ClientSessionTests.entityNameCreatedForAllTests = null;
         ClientSessionTests.receiveEntityPathForAllTest = null;
@@ -39,7 +39,7 @@ public abstract class ClientSessionTests extends Tests {
         managementClient = new ManagementClientAsync(namespaceEndpointURI, managementClientSettings);
     }
     
-    @Before
+    @BeforeEach
     public void setup() throws InterruptedException, ExecutionException {
         if (this.shouldCreateEntityForEveryTest() || ClientSessionTests.entityNameCreatedForAllTests == null) {
              // Create entity
@@ -73,7 +73,7 @@ public abstract class ClientSessionTests extends Tests {
         }
     }
     
-    @After
+    @AfterEach
     public void tearDown() throws ServiceBusException, InterruptedException, ExecutionException {
         if (this.sendClient != null) {
             this.sendClient.close();
@@ -93,7 +93,7 @@ public abstract class ClientSessionTests extends Tests {
         }
     }
     
-    @AfterClass
+    @AfterAll
     public static void cleanupAfterAllTest() throws ExecutionException, InterruptedException, IOException {
         if (managementClient != null) {
             if (ClientSessionTests.entityNameCreatedForAllTests != null) {

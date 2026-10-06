@@ -9,10 +9,14 @@ import com.azure.analytics.planetarycomputer.models.GeoJsonFeature;
 import com.azure.analytics.planetarycomputer.models.GeoJsonGeometry;
 import com.azure.analytics.planetarycomputer.models.GeoJsonPolygon;
 import com.azure.analytics.planetarycomputer.models.GeometryType;
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.StacItemStatisticsGeoJson;
 import com.azure.analytics.planetarycomputer.models.StacItemStatisticsGeoJsonProperties;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -33,8 +37,12 @@ public final class MosaicItemsGeoJsonStatisticsGetTests extends PlanetaryCompute
                                 Arrays.asList(-84.3814, 33.6714), Arrays.asList(-84.3814, 33.6806),
                                 Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714)))),
                         FeatureType.FEATURE).setProperties(mapOf()),
-                    null, Arrays.asList("image"), null, null, null, null, null, null, null, null, null, null, null,
-                    null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                    (List<Integer>) null, Arrays.asList("image"), (String) null, (List<String>) null, (Boolean) null,
+                    (String) null, (Boolean) null, (WarpKernelResampling) null, (String) null, (Resampling) null,
+                    (Integer) null, (Boolean) null, (List<Integer>) null, (List<Integer>) null, (String) null,
+                    (String) null, (String) null, (String) null, (List<Integer>) null, (String) null, (String) null,
+                    (List<String>) null, (SelMethod) null, (String) null, (String) null, (Integer) null,
+                    (Integer) null);
 
         // response assertion
         Assertions.assertNotNull(response);

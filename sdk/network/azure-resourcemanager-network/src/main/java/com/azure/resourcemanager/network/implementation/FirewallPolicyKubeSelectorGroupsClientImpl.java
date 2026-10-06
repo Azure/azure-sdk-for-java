@@ -157,7 +157,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             return Mono
                 .error(new IllegalArgumentException("Parameter kubeSelectorGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -202,7 +202,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             return Mono
                 .error(new IllegalArgumentException("Parameter kubeSelectorGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -307,7 +307,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
         } else {
             resource.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -361,7 +361,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
         } else {
             resource.validate();
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -581,7 +581,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             return Mono
                 .error(new IllegalArgumentException("Parameter kubeSelectorGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, firewallPolicyName, kubeSelectorGroupName, context))
@@ -624,7 +624,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             return Mono
                 .error(new IllegalArgumentException("Parameter kubeSelectorGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             firewallPolicyName, kubeSelectorGroupName, context);
@@ -814,7 +814,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             return Mono
                 .error(new IllegalArgumentException("Parameter firewallPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -855,7 +855,7 @@ public final class FirewallPolicyKubeSelectorGroupsClientImpl implements Firewal
             return Mono
                 .error(new IllegalArgumentException("Parameter firewallPolicyName is required and cannot be null."));
         }
-        final String apiVersion = "2025-09-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

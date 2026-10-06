@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class NetworkManagersPatchSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkManagerPatch.json
+     * x-ms-original-file: 2026-01-01/NetworkManagerPatch.json
      */
     /**
      * Sample code: NetworkManagesPatch.

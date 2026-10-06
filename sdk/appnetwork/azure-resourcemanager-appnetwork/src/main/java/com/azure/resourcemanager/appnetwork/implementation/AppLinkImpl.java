@@ -12,6 +12,7 @@ import com.azure.resourcemanager.appnetwork.models.AppLink;
 import com.azure.resourcemanager.appnetwork.models.AppLinkProperties;
 import com.azure.resourcemanager.appnetwork.models.AppLinkUpdate;
 import com.azure.resourcemanager.appnetwork.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.appnetwork.models.ManagedServiceIdentityUpdate;
 import java.util.Collections;
 import java.util.Map;
 
@@ -177,6 +178,11 @@ public final class AppLinkImpl implements AppLink, AppLink.Definition, AppLink.U
 
     public AppLinkImpl withIdentity(ManagedServiceIdentity identity) {
         this.innerModel().withIdentity(identity);
+        return this;
+    }
+
+    public AppLinkImpl withIdentity(ManagedServiceIdentityUpdate identity) {
+        this.updateProperties.withIdentity(identity);
         return this;
     }
 

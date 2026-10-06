@@ -13,9 +13,9 @@ public final class SpecializedHostPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SpecializedHostProperties model = BinaryData.fromString(
-            "{\"kind\":\"Specialized\",\"provisioningState\":\"Failed\",\"displayName\":\"vjxxjnsp\",\"moRefId\":\"ptkoenkoukn\",\"fqdn\":\"dwtiukbldngkp\",\"maintenance\":\"Upgrade\",\"faultDomain\":\"azyxoegukg\"}")
+            "{\"kind\":\"Specialized\",\"provisioningState\":\"Succeeded\",\"displayName\":\"enkouknvudw\",\"moRefId\":\"ukbldngkpo\",\"fqdn\":\"pazyxoegukg\",\"maintenance\":\"Replacement\",\"faultDomain\":\"ucgygevqz\",\"licenses\":[{\"kind\":\"HostLicense\"}]}")
             .toObject(SpecializedHostProperties.class);
-        Assertions.assertEquals("vjxxjnsp", model.displayName());
-        Assertions.assertEquals(HostMaintenance.UPGRADE, model.maintenance());
+        Assertions.assertEquals("enkouknvudw", model.displayName());
+        Assertions.assertEquals(HostMaintenance.REPLACEMENT, model.maintenance());
     }
 }

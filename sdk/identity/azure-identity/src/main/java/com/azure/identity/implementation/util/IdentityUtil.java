@@ -31,8 +31,104 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public final class IdentityUtil {
+    /**
+     * The message of the {@link IllegalStateException} the JVM raises from {@code Runtime.addShutdownHook} once
+     * shutdown has begun. azure-core's shared executor hits it when a token request arrives while the JVM is
+     * shutting down.
+     */
+    private static final String JVM_SHUTDOWN_IN_PROGRESS = "Shutdown in progress";
+
+    /**
+     * Whether the throwable, or any cause in its chain, is an {@link InterruptedException}.
+     * <p>
+     * An interruption is a cooperative cancellation of the calling thread, for example a Reactor scheduler disposing
+     * the worker that is waiting for a token. It is not an authentication failure and should not be reported as one.
+     *
+     * @param throwable The throwable to inspect.
+     * @return {@code true} if the throwable was caused by the calling thread being interrupted.
+     */
+    public static boolean isInterruption(Throwable throwable) {
+        return hasCause(throwable, IdentityUtil::isInterrupted);
+    }
+
+    /**
+     * Rethrows {@code failure} when it is a shutdown signal, and does nothing otherwise.
+     * <p>
+     * Credentials wrap their token-cache lookup in a catch-all so that a cache miss falls through to a full
+     * acquisition. A cancellation is not a cache miss: falling through would ignore it and, for the interactive
+     * credentials, prompt the user for a request that is already cancelled.
+     *
+     * @param failure The failure raised while acquiring a token.
+     * @throws RuntimeException If {@code failure} is a shutdown signal.
+     */
+    public static void rethrowIfShutdownSignal(Exception failure) {
+        if (failure instanceof RuntimeException && isShutdownSignal(failure)) {
+            throw (RuntimeException) failure;
+        }
+    }
+
+    /**
+     * Whether the throwable, or any cause in its chain, is a shutdown signal rather than an authentication failure.
+     * <p>
+     * That is either an interruption of the calling thread (see {@link #isInterruption(Throwable)}) or the
+     * {@link IllegalStateException} the JVM raises when a shutdown hook is registered after shutdown has begun,
+     * which a token request runs into when it reaches azure-core's shared executor while the JVM is shutting down.
+     * Neither says anything about the credential, so neither should be reported as an authentication error.
+     *
+     * @param throwable The throwable to inspect.
+     * @return {@code true} if the throwable was caused by the calling thread being interrupted or by the JVM
+     * shutting down.
+     */
+    public static boolean isShutdownSignal(Throwable throwable) {
+        return hasCause(throwable, throwable1 -> isInterrupted(throwable1) || isJvmShuttingDown(throwable1));
+    }
+
+    private static boolean isInterrupted(Throwable throwable) {
+        return throwable instanceof InterruptedException;
+    }
+
+    private static boolean isJvmShuttingDown(Throwable throwable) {
+        return throwable instanceof IllegalStateException && JVM_SHUTDOWN_IN_PROGRESS.equals(throwable.getMessage());
+    }
+
+    /**
+     * Whether {@code throwable} or any throwable in its causal chain matches {@code predicate}.
+     * <p>
+     * A causal chain can be made cyclic through {@link Throwable#initCause(Throwable)}, so the chain is walked with
+     * two cursors advancing at different speeds; they meet only if the chain loops, which ends the walk. The chain is
+     * otherwise followed to its end, as {@code RetryPolicy} does when it inspects a chain for retriable causes.
+     *
+     * @param throwable The throwable to inspect, which may be null.
+     * @param predicate The test to apply to each throwable in the chain.
+     * @return Whether any throwable in the chain matches.
+     */
+    private static boolean hasCause(Throwable throwable, Predicate<Throwable> predicate) {
+        Throwable slow = throwable;
+        Throwable fast = throwable;
+        while (fast != null) {
+            if (predicate.test(fast)) {
+                return true;
+            }
+            fast = fast.getCause();
+            if (fast == null) {
+                return false;
+            }
+            if (predicate.test(fast)) {
+                return true;
+            }
+            fast = fast.getCause();
+            slow = slow.getCause();
+            if (fast == slow) {
+                // The chain loops back on itself; everything reachable has been tested.
+                return false;
+            }
+        }
+        return false;
+    }
+
     public static final Path VSCODE_AUTH_RECORD_PATH = Paths.get(System.getProperty("user.home"), ".azure",
         "ms-azuretools.vscode-azureresourcegroups", "authRecord.json");
     private static final ClientLogger LOGGER = new ClientLogger(IdentityUtil.class);

@@ -10,6 +10,6 @@ import com.azure.resourcemanager.containerserviceaimanager.models.CredentialResu
 public final class CredentialResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CredentialResult model = BinaryData.fromString("{\"name\":\"efgugnxk\"}").toObject(CredentialResult.class);
+        CredentialResult model = BinaryData.fromString("{\"name\":\"iachbo\"}").toObject(CredentialResult.class);
     }
 }

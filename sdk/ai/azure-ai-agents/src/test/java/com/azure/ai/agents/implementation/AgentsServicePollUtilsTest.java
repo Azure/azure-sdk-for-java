@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.implementation;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 class AgentsServicePollUtilsTest {
+    @Test
+    void optimizationPollingUsesPublicJobRoute() {
+        String pollingUrl = AgentsServicePollUtils.getOptimizationPollingUrl(
+            BinaryData.fromString("{\"id\":\"opt_123\",\"status\":\"queued\"}"),
+            "https://example.test/api/projects/project");
+
+        assertEquals("https://example.test/api/projects/project/agent_optimization_jobs/opt_123", pollingUrl);
+    }
+
+    @Test
+    void optimizationPollingHandlesTrailingSlash() {
+        String pollingUrl = AgentsServicePollUtils.getOptimizationPollingUrl(
+            BinaryData.fromString("{\"id\":\"opt_123\"}"), "https://example.test/api/projects/project/");
+
+        assertEquals("https://example.test/api/projects/project/agent_optimization_jobs/opt_123", pollingUrl);
+    }
 
     static Stream<Arguments> remapStatusCases() {
         return Stream.of(
@@ -24,7 +41,9 @@ class AgentsServicePollUtilsTest {
             Arguments.of("Completed", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED),
             Arguments.of("COMPLETED", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED),
             Arguments.of("superseded", LongRunningOperationStatus.USER_CANCELLED),
-            Arguments.of("Superseded", LongRunningOperationStatus.USER_CANCELLED));
+            Arguments.of("Superseded", LongRunningOperationStatus.USER_CANCELLED),
+            Arguments.of("cancelled", LongRunningOperationStatus.USER_CANCELLED),
+            Arguments.of("CANCELLED", LongRunningOperationStatus.USER_CANCELLED));
     }
 
     @ParameterizedTest

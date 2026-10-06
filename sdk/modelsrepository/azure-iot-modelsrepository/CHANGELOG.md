@@ -11,7 +11,7 @@
 
 #### Dependency Updates
 
-- Upgraded Jackson from `2.18.7` to `2.18.9`.
+- Upgraded Jackson from `2.18.7` to `2.18.11`.
 
 ## 1.0.0-beta.1 (2021-03-30)
 

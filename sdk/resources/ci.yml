@@ -10,11 +10,17 @@ trigger:
     include:
       - sdk/resources/ci.yml
       - sdk/resources/azure-resourcemanager-resources/
+      - sdk/resources/azure-resourcemanager-resources-bicep/
+      - sdk/resources/azure-resourcemanager-resources-deployments/
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/
+      - sdk/resources/azure-resourcemanager-resources-policy/
     exclude:
       - sdk/resources/pom.xml
       - sdk/resources/azure-resourcemanager-resources/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-bicep/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-deployments/pom.xml
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-policy/pom.xml
 
 pr:
   branches:
@@ -27,11 +33,17 @@ pr:
     include:
       - sdk/resources/ci.yml
       - sdk/resources/azure-resourcemanager-resources/
+      - sdk/resources/azure-resourcemanager-resources-bicep/
+      - sdk/resources/azure-resourcemanager-resources-deployments/
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/
+      - sdk/resources/azure-resourcemanager-resources-policy/
     exclude:
       - sdk/resources/pom.xml
       - sdk/resources/azure-resourcemanager-resources/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-bicep/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-deployments/pom.xml
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-policy/pom.xml
 
 parameters:
   - name: release_azureresourcemanagerresources

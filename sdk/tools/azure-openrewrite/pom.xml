@@ -176,32 +176,32 @@
         <dependency>
           <groupId>com.fasterxml.jackson.core</groupId>
           <artifactId>jackson-core</artifactId>
-          <version>2.18.9</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+          <version>2.18.11</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
         </dependency>
         <!-- Jackson Dataformat Smile -->
         <dependency>
           <groupId>com.fasterxml.jackson.dataformat</groupId>
           <artifactId>jackson-dataformat-smile</artifactId>
-          <version>2.18.9</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-smile;external_dependency} -->
+          <version>2.18.11</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-smile;external_dependency} -->
         </dependency>
         <dependency>
           <groupId>com.fasterxml.jackson.core</groupId>
           <artifactId>jackson-databind</artifactId>
-          <version>2.18.9</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+          <version>2.18.11</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
         </dependency>
 
         <!-- Library Test dependencies -->
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>1.59.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+          <version>1.60.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
           <scope>test</scope>
         </dependency>
 
         <dependency>
           <groupId>io.clientcore</groupId>
           <artifactId>core</artifactId>
-          <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+          <version>1.0.0-beta.12</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
           <scope>test</scope>
         </dependency>
 
@@ -229,7 +229,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.18.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.18.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
           <scope>test</scope>
         </dependency>
 
@@ -299,7 +299,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.18.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.18.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
@@ -369,7 +369,7 @@
         <dependency>
           <groupId>io.clientcore</groupId>
           <artifactId>core</artifactId>
-          <version>1.0.0-beta.11</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+          <version>1.0.0-beta.12</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
@@ -503,7 +503,7 @@
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>${project.parent.relativePath}/../../../eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml</excludeFilterFile>
+          <excludeFilterFile>${project.basedir}${file.separator}..${file.separator}..${file.separator}..${file.separator}eng${file.separator}lintingconfigs${file.separator}spotbugs${file.separator}track2${file.separator}spotbugs-exclude.xml</excludeFilterFile>
           <fork>true</fork>
         </configuration>
       </plugin>

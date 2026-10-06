@@ -32,7 +32,7 @@ import java.util.Map;
  */
 public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceVnetAdditionalPublicPut.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceVnetAdditionalPublicPut.json
      */
     /**
      * Sample code: Create NVA in VNet with PrivateNic, PublicNic &amp; AdditionalPublicNic.
@@ -76,7 +76,7 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceVnetDualStackPut.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceVnetDualStackPut.json
      */
     /**
      * Sample code: Create NVA in VNet for IPv4 and IPv6.
@@ -114,7 +114,7 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceSaaSPut.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceSaaSPut.json
      */
     /**
      * Sample code: Create SaaS NetworkVirtualAppliance.
@@ -133,7 +133,7 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceVnetNetworkProfilePut.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceVnetNetworkProfilePut.json
      */
     /**
      * Sample code: Create NVA in VNet with PrivateNic &amp; PublicNic, including NetworkProfile.
@@ -202,7 +202,7 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceVhubIPv4Put.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceVhubIPv4Put.json
      */
     /**
      * Sample code: Create NVA in Virtual Hub for IPv4.
@@ -261,7 +261,7 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceVnetIPv4Put.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceVnetIPv4Put.json
      */
     /**
      * Sample code: Create NVA in VNet for IPv4.
@@ -299,7 +299,7 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceVnetAdditionalPrivatePut.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceVnetAdditionalPrivatePut.json
      */
     /**
      * Sample code: Create NVA in VNet with PrivateNic, PublicNic &amp; AdditionalPrivateNic.
@@ -343,7 +343,7 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceVnetIngressPut.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceVnetIngressPut.json
      */
     /**
      * Sample code: Create NVA in VNet with PrivateNic &amp; PublicNic, including Internet-Ingress.
@@ -384,7 +384,7 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceVhubDualStackPut.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceVhubDualStackPut.json
      */
     /**
      * Sample code: Create NVA in Virtual Hub for IPv4 and IPv6.
@@ -414,7 +414,7 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceVnetBasicPut.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceVnetBasicPut.json
      */
     /**
      * Sample code: Create NVA in VNet with PrivateNic &amp; PublicNic.
@@ -453,7 +453,7 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualAppliancePut.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualAppliancePut.json
      */
     /**
      * Sample code: Create NetworkVirtualAppliance.

@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.DiffBackupIntervalInHours;
+import com.azure.resourcemanager.sql.models.ImmutabilityStatus;
 import java.io.IOException;
 
 /**
@@ -148,6 +149,41 @@ public final class BackupShortTermRetentionPolicyInner extends ProxyResource {
         }
         this.innerProperties().withDiffBackupIntervalInHours(diffBackupIntervalInHours);
         return this;
+    }
+
+    /**
+     * Get the lockImmutability property: Whether to lock the immutability of the backups governed by this short term
+     * retention policy.
+     * 
+     * @return the lockImmutability value.
+     */
+    public Boolean lockImmutability() {
+        return this.innerProperties() == null ? null : this.innerProperties().lockImmutability();
+    }
+
+    /**
+     * Set the lockImmutability property: Whether to lock the immutability of the backups governed by this short term
+     * retention policy.
+     * 
+     * @param lockImmutability the lockImmutability value to set.
+     * @return the BackupShortTermRetentionPolicyInner object itself.
+     */
+    public BackupShortTermRetentionPolicyInner withLockImmutability(Boolean lockImmutability) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupShortTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withLockImmutability(lockImmutability);
+        return this;
+    }
+
+    /**
+     * Get the immutabilityStatus property: The immutability status of the backups governed by this short term retention
+     * policy.
+     * 
+     * @return the immutabilityStatus value.
+     */
+    public ImmutabilityStatus immutabilityStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().immutabilityStatus();
     }
 
     /**

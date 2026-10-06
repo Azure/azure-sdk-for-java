@@ -319,8 +319,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationName") String locationName,
             @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
-            @QueryParam("databaseState") DatabaseState databaseState, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("databaseState") DatabaseState databaseState, @QueryParam("$skiptoken") String skiptoken,
+            @QueryParam("$top") Long top, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups")
@@ -331,8 +331,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @PathParam("locationName") String locationName,
             @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
             @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
-            @QueryParam("databaseState") DatabaseState databaseState, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("databaseState") DatabaseState databaseState, @QueryParam("$skiptoken") String skiptoken,
+            @QueryParam("$top") Long top, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionBackups")
@@ -343,8 +343,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName,
             @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
-            @QueryParam("databaseState") DatabaseState databaseState, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("databaseState") DatabaseState databaseState, @QueryParam("$skiptoken") String skiptoken,
+            @QueryParam("$top") Long top, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups")
@@ -356,8 +356,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName,
             @PathParam("longTermRetentionServerName") String longTermRetentionServerName,
             @QueryParam("onlyLatestPerDatabase") Boolean onlyLatestPerDatabase,
-            @QueryParam("databaseState") DatabaseState databaseState, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("databaseState") DatabaseState databaseState, @QueryParam("$skiptoken") String skiptoken,
+            @QueryParam("$top") Long top, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -5717,6 +5717,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5725,7 +5727,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByLocationSinglePageAsync(String locationName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5740,7 +5742,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), locationName, onlyLatestPerDatabase, databaseState, accept, context))
+                this.client.getSubscriptionId(), locationName, onlyLatestPerDatabase, databaseState, skiptoken, top,
+                accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -5752,6 +5755,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5761,7 +5766,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByLocationSinglePageAsync(String locationName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5777,7 +5782,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         context = this.client.mergeContext(context);
         return service
             .listByLocation(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                locationName, onlyLatestPerDatabase, databaseState, accept, context)
+                locationName, onlyLatestPerDatabase, databaseState, skiptoken, top, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -5788,6 +5793,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5795,8 +5802,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(String locationName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
-        return new PagedFlux<>(() -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState),
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top) {
+        return new PagedFlux<>(
+            () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState, skiptoken, top),
             nextLink -> listByLocationNextSinglePageAsync(nextLink));
     }
 
@@ -5813,7 +5821,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     public PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
-        return new PagedFlux<>(() -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState),
+        final String skiptoken = null;
+        final Long top = null;
+        return new PagedFlux<>(
+            () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState, skiptoken, top),
             nextLink -> listByLocationNextSinglePageAsync(nextLink));
     }
 
@@ -5823,6 +5834,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5831,10 +5844,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByLocationAsync(String locationName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
-        return new PagedFlux<>(
-            () -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState, context),
-            nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top, Context context) {
+        return new PagedFlux<>(() -> listByLocationSinglePageAsync(locationName, onlyLatestPerDatabase, databaseState,
+            skiptoken, top, context), nextLink -> listByLocationNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -5850,7 +5862,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     public PagedIterable<LongTermRetentionBackupInner> listByLocation(String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
-        return new PagedIterable<>(listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState));
+        final String skiptoken = null;
+        final Long top = null;
+        return new PagedIterable<>(
+            listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState, skiptoken, top));
     }
 
     /**
@@ -5859,6 +5874,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5867,8 +5884,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByLocation(String locationName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
-        return new PagedIterable<>(listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState, context));
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top, Context context) {
+        return new PagedIterable<>(
+            listByLocationAsync(locationName, onlyLatestPerDatabase, databaseState, skiptoken, top, context));
     }
 
     /**
@@ -5878,6 +5896,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5886,7 +5906,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByServerSinglePageAsync(String locationName,
-        String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
+        String skiptoken, Long top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5906,7 +5927,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         return FluxUtil
             .withContext(context -> service.listByServer(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), locationName, longTermRetentionServerName, onlyLatestPerDatabase,
-                databaseState, accept, context))
+                databaseState, skiptoken, top, accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -5919,6 +5940,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5929,7 +5952,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByServerSinglePageAsync(String locationName,
         String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
-        Context context) {
+        String skiptoken, Long top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5949,7 +5972,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         context = this.client.mergeContext(context);
         return service
             .listByServer(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState, accept, context)
+                locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState, skiptoken, top, accept,
+                context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -5961,6 +5985,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5968,9 +5994,11 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByServerAsync(String locationName,
-        String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
+        String skiptoken, Long top) {
         return new PagedFlux<>(() -> listByServerSinglePageAsync(locationName, longTermRetentionServerName,
-            onlyLatestPerDatabase, databaseState), nextLink -> listByServerNextSinglePageAsync(nextLink));
+            onlyLatestPerDatabase, databaseState, skiptoken, top),
+            nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -5988,8 +6016,11 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String longTermRetentionServerName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
+        final String skiptoken = null;
+        final Long top = null;
         return new PagedFlux<>(() -> listByServerSinglePageAsync(locationName, longTermRetentionServerName,
-            onlyLatestPerDatabase, databaseState), nextLink -> listByServerNextSinglePageAsync(nextLink));
+            onlyLatestPerDatabase, databaseState, skiptoken, top),
+            nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -5999,6 +6030,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6008,9 +6041,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByServerAsync(String locationName,
         String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
-        Context context) {
-        return new PagedFlux<>(() -> listByServerSinglePageAsync(locationName, longTermRetentionServerName,
-            onlyLatestPerDatabase, databaseState, context),
+        String skiptoken, Long top, Context context) {
+        return new PagedFlux<>(
+            () -> listByServerSinglePageAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase,
+                databaseState, skiptoken, top, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
@@ -6029,8 +6063,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String longTermRetentionServerName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
-        return new PagedIterable<>(
-            listByServerAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
+        final String skiptoken = null;
+        final Long top = null;
+        return new PagedIterable<>(listByServerAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase,
+            databaseState, skiptoken, top));
     }
 
     /**
@@ -6040,6 +6076,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6049,9 +6087,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByServer(String locationName,
         String longTermRetentionServerName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
-        Context context) {
+        String skiptoken, Long top, Context context) {
         return new PagedIterable<>(listByServerAsync(locationName, longTermRetentionServerName, onlyLatestPerDatabase,
-            databaseState, context));
+            databaseState, skiptoken, top, context));
     }
 
     /**
@@ -6061,6 +6099,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6069,7 +6109,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupLocationSinglePageAsync(
-        String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
+        String skiptoken, Long top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -6089,7 +6130,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         return FluxUtil
             .withContext(context -> service.listByResourceGroupLocation(this.client.getEndpoint(),
                 this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, locationName,
-                onlyLatestPerDatabase, databaseState, accept, context))
+                onlyLatestPerDatabase, databaseState, skiptoken, top, accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -6102,6 +6143,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6112,7 +6155,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupLocationSinglePageAsync(
         String resourceGroupName, String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState,
-        Context context) {
+        String skiptoken, Long top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -6133,7 +6176,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         return service
             .listByResourceGroupLocation(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, locationName, onlyLatestPerDatabase, databaseState,
-                accept, context)
+                skiptoken, top, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -6145,6 +6188,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6152,9 +6197,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(String resourceGroupName,
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top) {
         return new PagedFlux<>(() -> listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName,
-            onlyLatestPerDatabase, databaseState),
+            onlyLatestPerDatabase, databaseState, skiptoken, top),
             nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink));
     }
 
@@ -6173,8 +6218,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
+        final String skiptoken = null;
+        final Long top = null;
         return new PagedFlux<>(() -> listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName,
-            onlyLatestPerDatabase, databaseState),
+            onlyLatestPerDatabase, databaseState, skiptoken, top),
             nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink));
     }
 
@@ -6185,6 +6232,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6193,9 +6242,11 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByResourceGroupLocationAsync(String resourceGroupName,
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName,
-            onlyLatestPerDatabase, databaseState, context),
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top,
+        Context context) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupLocationSinglePageAsync(resourceGroupName, locationName, onlyLatestPerDatabase,
+                databaseState, skiptoken, top, context),
             nextLink -> listByResourceGroupLocationNextSinglePageAsync(nextLink, context));
     }
 
@@ -6214,8 +6265,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String locationName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
-        return new PagedIterable<>(
-            listByResourceGroupLocationAsync(resourceGroupName, locationName, onlyLatestPerDatabase, databaseState));
+        final String skiptoken = null;
+        final Long top = null;
+        return new PagedIterable<>(listByResourceGroupLocationAsync(resourceGroupName, locationName,
+            onlyLatestPerDatabase, databaseState, skiptoken, top));
     }
 
     /**
@@ -6225,6 +6278,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param locationName The location of the database.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6233,9 +6288,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupLocation(String resourceGroupName,
-        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
+        String locationName, Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupLocationAsync(resourceGroupName, locationName,
-            onlyLatestPerDatabase, databaseState, context));
+            onlyLatestPerDatabase, databaseState, skiptoken, top, context));
     }
 
     /**
@@ -6246,6 +6302,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6255,7 +6313,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupServerSinglePageAsync(
         String resourceGroupName, String locationName, String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState) {
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -6279,7 +6337,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         return FluxUtil
             .withContext(context -> service.listByResourceGroupServer(this.client.getEndpoint(),
                 this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, locationName,
-                longTermRetentionServerName, onlyLatestPerDatabase, databaseState, accept, context))
+                longTermRetentionServerName, onlyLatestPerDatabase, databaseState, skiptoken, top, accept, context))
             .<PagedResponse<LongTermRetentionBackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -6293,6 +6351,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6303,7 +6363,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LongTermRetentionBackupInner>> listByResourceGroupServerSinglePageAsync(
         String resourceGroupName, String locationName, String longTermRetentionServerName,
-        Boolean onlyLatestPerDatabase, DatabaseState databaseState, Context context) {
+        Boolean onlyLatestPerDatabase, DatabaseState databaseState, String skiptoken, Long top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -6328,7 +6388,7 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         return service
             .listByResourceGroupServer(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, locationName, longTermRetentionServerName,
-                onlyLatestPerDatabase, databaseState, accept, context)
+                onlyLatestPerDatabase, databaseState, skiptoken, top, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -6341,6 +6401,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6349,10 +6411,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState) {
+        DatabaseState databaseState, String skiptoken, Long top) {
         return new PagedFlux<>(
             () -> listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName,
-                onlyLatestPerDatabase, databaseState),
+                onlyLatestPerDatabase, databaseState, skiptoken, top),
             nextLink -> listByResourceGroupServerNextSinglePageAsync(nextLink));
     }
 
@@ -6372,9 +6434,11 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String locationName, String longTermRetentionServerName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
+        final String skiptoken = null;
+        final Long top = null;
         return new PagedFlux<>(
             () -> listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName,
-                onlyLatestPerDatabase, databaseState),
+                onlyLatestPerDatabase, databaseState, skiptoken, top),
             nextLink -> listByResourceGroupServerNextSinglePageAsync(nextLink));
     }
 
@@ -6386,6 +6450,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6395,10 +6461,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LongTermRetentionBackupInner> listByResourceGroupServerAsync(String resourceGroupName,
         String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState, Context context) {
+        DatabaseState databaseState, String skiptoken, Long top, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupServerSinglePageAsync(resourceGroupName, locationName, longTermRetentionServerName,
-                onlyLatestPerDatabase, databaseState, context),
+                onlyLatestPerDatabase, databaseState, skiptoken, top, context),
             nextLink -> listByResourceGroupServerNextSinglePageAsync(nextLink, context));
     }
 
@@ -6418,8 +6484,10 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
         String locationName, String longTermRetentionServerName) {
         final Boolean onlyLatestPerDatabase = null;
         final DatabaseState databaseState = null;
+        final String skiptoken = null;
+        final Long top = null;
         return new PagedIterable<>(listByResourceGroupServerAsync(resourceGroupName, locationName,
-            longTermRetentionServerName, onlyLatestPerDatabase, databaseState));
+            longTermRetentionServerName, onlyLatestPerDatabase, databaseState, skiptoken, top));
     }
 
     /**
@@ -6430,6 +6498,8 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
      * @param longTermRetentionServerName The name of the server.
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases.
+     * @param skiptoken An opaque token that identifies a starting point in the collection.
+     * @param top The number of elements to return from the collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -6439,9 +6509,9 @@ public final class LongTermRetentionBackupsClientImpl implements LongTermRetenti
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LongTermRetentionBackupInner> listByResourceGroupServer(String resourceGroupName,
         String locationName, String longTermRetentionServerName, Boolean onlyLatestPerDatabase,
-        DatabaseState databaseState, Context context) {
+        DatabaseState databaseState, String skiptoken, Long top, Context context) {
         return new PagedIterable<>(listByResourceGroupServerAsync(resourceGroupName, locationName,
-            longTermRetentionServerName, onlyLatestPerDatabase, databaseState, context));
+            longTermRetentionServerName, onlyLatestPerDatabase, databaseState, skiptoken, top, context));
     }
 
     /**

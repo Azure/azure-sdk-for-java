@@ -15,6 +15,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Cluster;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.FipsMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
@@ -636,6 +637,31 @@ public final class ServerInner extends Resource {
             this.innerProperties = new ServerProperties();
         }
         this.innerProperties().withCluster(cluster);
+        return this;
+    }
+
+    /**
+     * Get the fipsMode property: Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the
+     * server. If not specified on create, it defaults to Disabled.
+     * 
+     * @return the fipsMode value.
+     */
+    public FipsMode fipsMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().fipsMode();
+    }
+
+    /**
+     * Set the fipsMode property: Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the
+     * server. If not specified on create, it defaults to Disabled.
+     * 
+     * @param fipsMode the fipsMode value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withFipsMode(FipsMode fipsMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withFipsMode(fipsMode);
         return this;
     }
 

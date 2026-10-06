@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.SwapResourceProperties;
  */
 public final class VipSwapCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/CloudServiceSwapPut.json
+     * x-ms-original-file: 2026-01-01/CloudServiceSwapPut.json
      */
     /**
      * Sample code: Put vip swap operation.

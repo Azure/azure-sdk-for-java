@@ -15,22 +15,24 @@ public final class VaultSecretGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VaultSecretGroup model = BinaryData.fromString(
-            "{\"sourceVault\":{\"id\":\"khjwn\"},\"vaultCertificates\":[{\"certificateUrl\":\"luicpdggkzzlvmbm\",\"certificateStore\":\"xmodf\"},{\"certificateUrl\":\"efyw\",\"certificateStore\":\"pfvmwyhrfou\"}]}")
+            "{\"sourceVault\":{\"id\":\"aejxd\"},\"vaultCertificates\":[{\"certificateUrl\":\"kzbbtd\",\"certificateStore\":\"mv\"},{\"certificateUrl\":\"kgpwoz\",\"certificateStore\":\"kfpbs\"},{\"certificateUrl\":\"ofd\",\"certificateStore\":\"uusdttouwa\"},{\"certificateUrl\":\"ekqvkeln\",\"certificateStore\":\"vbxwyjsflhh\"}]}")
             .toObject(VaultSecretGroup.class);
-        Assertions.assertEquals("khjwn", model.sourceVault().id());
-        Assertions.assertEquals("luicpdggkzzlvmbm", model.vaultCertificates().get(0).certificateUrl());
-        Assertions.assertEquals("xmodf", model.vaultCertificates().get(0).certificateStore());
+        Assertions.assertEquals("aejxd", model.sourceVault().id());
+        Assertions.assertEquals("kzbbtd", model.vaultCertificates().get(0).certificateUrl());
+        Assertions.assertEquals("mv", model.vaultCertificates().get(0).certificateStore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VaultSecretGroup model = new VaultSecretGroup().withSourceVault(new SubResource().withId("khjwn"))
-            .withVaultCertificates(Arrays.asList(
-                new VaultCertificate().withCertificateUrl("luicpdggkzzlvmbm").withCertificateStore("xmodf"),
-                new VaultCertificate().withCertificateUrl("efyw").withCertificateStore("pfvmwyhrfou")));
+        VaultSecretGroup model = new VaultSecretGroup().withSourceVault(new SubResource().withId("aejxd"))
+            .withVaultCertificates(
+                Arrays.asList(new VaultCertificate().withCertificateUrl("kzbbtd").withCertificateStore("mv"),
+                    new VaultCertificate().withCertificateUrl("kgpwoz").withCertificateStore("kfpbs"),
+                    new VaultCertificate().withCertificateUrl("ofd").withCertificateStore("uusdttouwa"),
+                    new VaultCertificate().withCertificateUrl("ekqvkeln").withCertificateStore("vbxwyjsflhh")));
         model = BinaryData.fromObject(model).toObject(VaultSecretGroup.class);
-        Assertions.assertEquals("khjwn", model.sourceVault().id());
-        Assertions.assertEquals("luicpdggkzzlvmbm", model.vaultCertificates().get(0).certificateUrl());
-        Assertions.assertEquals("xmodf", model.vaultCertificates().get(0).certificateStore());
+        Assertions.assertEquals("aejxd", model.sourceVault().id());
+        Assertions.assertEquals("kzbbtd", model.vaultCertificates().get(0).certificateUrl());
+        Assertions.assertEquals("mv", model.vaultCertificates().get(0).certificateStore());
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.SelMethod;
 import com.azure.analytics.planetarycomputer.models.StacItemPointAsset;
 import java.util.List;
 import org.junit.jupiter.api.Disabled;
@@ -15,8 +16,9 @@ public final class MosaicCollectionsPointAssetsGetPointAssetsTests extends Plane
     @Disabled
     public void testMosaicCollectionsPointAssetsGetPointAssetsTests() {
         // method invocation
-        List<StacItemPointAsset> response
-            = dataClient.getCollectionPointAssets("naip-atl", -122.4194, 37.7749, null, null, null, null, null,
-                "item-id-1,item-id-2", "-180,-90,180,90", "{}", "-datetime", null, null, null, null, null, null, null);
+        List<StacItemPointAsset> response = dataClient.getCollectionPointAssets("naip-atl", -122.4194, 37.7749,
+            (Integer) null, (Integer) null, (Integer) null, (Boolean) null, (Boolean) null, "item-id-1,item-id-2",
+            "-180,-90,180,90", "{}", "-datetime", (String) null, (String) null, (List<Integer>) null, (String) null,
+            (List<String>) null, (SelMethod) null, (String) null);
     }
 }
