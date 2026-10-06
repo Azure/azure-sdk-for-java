@@ -42,14 +42,7 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
     private VirtualMachineInfo virtualMachineInfo;
 
     /**
-     * Creates an instance of ResourceOperation class.
-     */
-    private ResourceOperation() {
-    }
-
-    /**
-     * Get the resourceId property: Unique identifier for the resource involved in the operation, for example Azure
-     * resource ID.
+     * Gets the resourceId property: The virtual machine Azure resource ID.
      * 
      * @return the resourceId value.
      */
@@ -58,7 +51,7 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
     }
 
     /**
-     * Get the errorCode property: Resource level error code if it exists.
+     * Gets the errorCode property: A code that identifies the error for the virtual machine operation.
      * 
      * @return the errorCode value.
      */
@@ -67,7 +60,7 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
     }
 
     /**
-     * Get the errorDetails property: Resource level error details if they exist.
+     * Gets the errorDetails property: A message that describes the error for the virtual machine operation.
      * 
      * @return the errorDetails value.
      */
@@ -76,7 +69,7 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
     }
 
     /**
-     * Get the operation property: Details of the operation performed on a resource.
+     * Gets the operation property: The virtual machine operation details.
      * 
      * @return the operation value.
      */
@@ -85,7 +78,7 @@ public final class ResourceOperation implements JsonSerializable<ResourceOperati
     }
 
     /**
-     * Get the virtualMachineInfo property: Information about the virtual machine.
+     * Gets the virtualMachineInfo property: Details of the virtual machine on which the operation is performed.
      * 
      * @return the virtualMachineInfo value.
      */

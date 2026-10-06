@@ -11,7 +11,7 @@ public final class MaintenanceEventResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceEventResourceProperties model = BinaryData.fromString(
-            "{\"maintenanceEventId\":\"sfraoyzko\",\"maintenanceType\":\"PlannedMaintenance\",\"description\":\"lmnguxaw\",\"status\":\"Rescheduled\",\"startTime\":\"2021-07-04T15:12:18Z\",\"endTime\":\"2021-05-10T21:48:11Z\",\"estimatedDowntime\":\"yuuximerqfobwyzn\",\"deferrable\":false,\"deferralDeadline\":\"2021-06-13T13:26Z\",\"rescheduledFrom\":\"2021-01-17T13:00:38Z\",\"lastUpdatedTime\":\"2021-07-03T19:33:46Z\",\"originalStartTime\":\"2021-09-04T21:24:09Z\"}")
+            "{\"maintenanceEventId\":\"maequiahxicslfa\",\"maintenanceType\":\"PlannedMaintenance\",\"description\":\"piyylhalnswhccsp\",\"status\":\"Complete\",\"startTime\":\"2021-06-09T09:48:38Z\",\"endTime\":\"2021-07-06T09:04:22Z\",\"estimatedDowntime\":\"witqscywuggwoluh\",\"deferrable\":false,\"deferralDeadline\":\"2021-09-19T07:40:53Z\",\"rescheduledFrom\":\"2021-07-16T15:54:52Z\",\"lastUpdatedTime\":\"2021-04-05T16:57:13Z\",\"originalStartTime\":\"2021-04-14T11:53:46Z\"}")
             .toObject(MaintenanceEventResourceProperties.class);
     }
 }

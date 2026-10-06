@@ -54,7 +54,7 @@ public class MemorySearchAsync {
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
         OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
-        ConversationServiceAsync conversationServiceAsync = builder.buildOpenAIAsyncClient().conversations();
+        ConversationServiceAsync conversationServiceAsync = openAIAsyncClient.conversations();
         // Memory store operations use sync client for setup/teardown
         BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
 
@@ -91,22 +91,21 @@ public class MemorySearchAsync {
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
                 // First conversation: teach a preference
-                return Mono.fromFuture(conversationServiceAsync.create())
+                return Mono.fromFuture(() -> conversationServiceAsync.create())
                     .<Response>flatMap(conv -> {
                         firstConvRef.set(conv.id());
-                        return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
-                            .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
-                                ResponseCreateParams.builder()
-                                    .conversation(conv.id())
-                                    .input("I prefer dark roast coffee")
-                                    .build())));
+                        return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                            ResponseCreateParams.builder()
+                                .conversation(conv.id())
+                                .input("I prefer dark roast coffee")
+                                .build()));
                     });
             })
             .doOnNext(response -> System.out.println("First response received"))
             .delayElement(Duration.ofSeconds(MEMORY_WRITE_DELAY_SECONDS))
             .flatMap(ignored -> {
                 // Second conversation: test memory recall
-                return Mono.fromFuture(conversationServiceAsync.create())
+                return Mono.fromFuture(() -> conversationServiceAsync.create())
                     .<Response>flatMap(conv -> {
                         secondConvRef.set(conv.id());
                         return Mono.fromFuture(() -> openAIAsyncClient.responses().create(

@@ -16,7 +16,8 @@ import java.io.IOException;
  * stop generating audio and emit a `output_audio_buffer.cleared` event. This
  * event should be preceded by a `response.cancel` client event to stop the
  * generation of the current response.
- * [Learn more](/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
+ * [Learn
+ * more](https://developers.openai.com/api/docs/guides/realtime-conversations#client-and-server-events-for-audio-in-webrtc).
  */
 @Fluent
 @Beta(warningText = "Preview API. VoiceAgents=V1Preview")

@@ -22,8 +22,7 @@ public class RealtimeSessionUpdateEventSerializationTests {
             = UnionTypeSerializationTestUtils.deserialize(json, RealtimeSessionUpdateEvent::fromJson);
 
         assertTrue(json.contains("\"session\":{\"type\":\"realtime\""));
-        assertInstanceOf(RealtimeSessionConfiguration.class, result.getSessionAsRealtimeSessionConfiguration());
-        assertNull(result.getSessionAsRealtimeTranscriptionSessionConfiguration());
+        assertInstanceOf(RealtimeSessionConfiguration.class, result.getSession());
     }
 
     @Test
@@ -36,9 +35,7 @@ public class RealtimeSessionUpdateEventSerializationTests {
             = UnionTypeSerializationTestUtils.deserialize(json, RealtimeSessionUpdateEvent::fromJson);
 
         assertTrue(json.contains("\"session\":{\"type\":\"transcription\""));
-        assertInstanceOf(RealtimeTranscriptionSessionConfiguration.class,
-            result.getSessionAsRealtimeTranscriptionSessionConfiguration());
-        assertNull(result.getSessionAsRealtimeSessionConfiguration());
+        assertInstanceOf(RealtimeTranscriptionSessionConfiguration.class, result.getSession());
     }
 
     @Test
@@ -46,7 +43,6 @@ public class RealtimeSessionUpdateEventSerializationTests {
         RealtimeSessionUpdateEvent event = UnionTypeSerializationTestUtils.deserialize("{\"type\":\"session.update\"}",
             RealtimeSessionUpdateEvent::fromJson);
 
-        assertNull(event.getSessionAsRealtimeSessionConfiguration());
-        assertNull(event.getSessionAsRealtimeTranscriptionSessionConfiguration());
+        assertNull(event.getSession());
     }
 }

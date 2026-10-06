@@ -12,14 +12,14 @@ public final class SelfManagedUpgradeProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SelfManagedUpgradeProfile model
-            = BinaryData.fromString("{\"version\":\"pofm\"}").toObject(SelfManagedUpgradeProfile.class);
-        Assertions.assertEquals("pofm", model.version());
+            = BinaryData.fromString("{\"version\":\"stxgc\"}").toObject(SelfManagedUpgradeProfile.class);
+        Assertions.assertEquals("stxgc", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelfManagedUpgradeProfile model = new SelfManagedUpgradeProfile().withVersion("pofm");
+        SelfManagedUpgradeProfile model = new SelfManagedUpgradeProfile().withVersion("stxgc");
         model = BinaryData.fromObject(model).toObject(SelfManagedUpgradeProfile.class);
-        Assertions.assertEquals("pofm", model.version());
+        Assertions.assertEquals("stxgc", model.version());
     }
 }

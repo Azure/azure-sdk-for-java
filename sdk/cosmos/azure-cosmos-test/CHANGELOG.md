@@ -4,6 +4,8 @@
 
 #### Features Added
 
+* Added support for injecting address-refresh request timeout, internal server, compute internal, partition failover, service unavailable, lease not found, channel closed, partition migration retry-limit, and read quorum errors.
+
 #### Breaking Changes
 
 #### Bugs Fixed

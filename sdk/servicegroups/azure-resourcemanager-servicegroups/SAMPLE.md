@@ -1,6 +1,10 @@
 # Code snippets and samples
 
 
+## Operations
+
+- [List](#operations_list)
+
 ## ResourceProvider
 
 - [CreateOrUpdateServiceGroup](#resourceprovider_createorupdateservicegroup)
@@ -10,12 +14,33 @@
 ## ServiceGroups
 
 - [Get](#servicegroups_get)
-- [ListAncestors](#servicegroups_listancestors)
+### Operations_List
+
+```java
+/**
+ * Samples for Operations List.
+ */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2026-08-01/Operations_List.json
+     */
+    /**
+     * Sample code: ListOperations.
+     * 
+     * @param manager Entry point to ServiceGroupsManager.
+     */
+    public static void listOperations(com.azure.resourcemanager.servicegroups.ServiceGroupsManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### ResourceProvider_CreateOrUpdateServiceGroup
 
 ```java
 import com.azure.resourcemanager.servicegroups.fluent.models.ServiceGroupInner;
 import com.azure.resourcemanager.servicegroups.models.ParentServiceGroupProperties;
+import com.azure.resourcemanager.servicegroups.models.ServiceGroupAttributes;
 import com.azure.resourcemanager.servicegroups.models.ServiceGroupProperties;
 
 /**
@@ -23,7 +48,7 @@ import com.azure.resourcemanager.servicegroups.models.ServiceGroupProperties;
  */
 public final class ResourceProviderCreateOrUpdateServiceGroupSamples {
     /*
-     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_Put.json
+     * x-ms-original-file: 2026-08-01/ServiceGroup_Put.json
      */
     /**
      * Sample code: PutServiceGroup.
@@ -35,6 +60,7 @@ public final class ResourceProviderCreateOrUpdateServiceGroupSamples {
             .createOrUpdateServiceGroup("ServiceGroup1",
                 new ServiceGroupInner()
                     .withProperties(new ServiceGroupProperties().withDisplayName("ServiceGroup 1 Name")
+                        .withAttributes(new ServiceGroupAttributes().withCriticality(2))
                         .withParent(new ParentServiceGroupProperties()
                             .withResourceId("/providers/Microsoft.Management/serviceGroups/RootGroup"))),
                 com.azure.core.util.Context.NONE);
@@ -50,7 +76,7 @@ public final class ResourceProviderCreateOrUpdateServiceGroupSamples {
  */
 public final class ResourceProviderDeleteServiceGroupSamples {
     /*
-     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_Delete.json
+     * x-ms-original-file: 2026-08-01/ServiceGroup_Delete.json
      */
     /**
      * Sample code: DeleteServiceGroup.
@@ -68,6 +94,7 @@ public final class ResourceProviderDeleteServiceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.servicegroups.fluent.models.ServiceGroupInner;
+import com.azure.resourcemanager.servicegroups.models.ServiceGroupAttributes;
 import com.azure.resourcemanager.servicegroups.models.ServiceGroupProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,7 +104,7 @@ import java.util.Map;
  */
 public final class ResourceProviderUpdateServiceGroupSamples {
     /*
-     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_Patch.json
+     * x-ms-original-file: 2026-08-01/ServiceGroup_Patch.json
      */
     /**
      * Sample code: PatchServiceGroup.
@@ -88,7 +115,8 @@ public final class ResourceProviderUpdateServiceGroupSamples {
         manager.resourceProviders()
             .updateServiceGroup("ServiceGroup1",
                 new ServiceGroupInner()
-                    .withProperties(new ServiceGroupProperties().withDisplayName("ServiceGroup 1 Name"))
+                    .withProperties(new ServiceGroupProperties().withDisplayName("ServiceGroup 1 Name")
+                        .withAttributes(new ServiceGroupAttributes().withCriticality(2)))
                     .withTags(mapOf("tag1", "value1", "tag2", "value2")),
                 com.azure.core.util.Context.NONE);
     }
@@ -115,7 +143,7 @@ public final class ResourceProviderUpdateServiceGroupSamples {
  */
 public final class ServiceGroupsGetSamples {
     /*
-     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_Get.json
+     * x-ms-original-file: 2026-08-01/ServiceGroup_Get.json
      */
     /**
      * Sample code: GetServiceGroup.
@@ -125,28 +153,6 @@ public final class ServiceGroupsGetSamples {
     public static void getServiceGroup(com.azure.resourcemanager.servicegroups.ServiceGroupsManager manager) {
         manager.serviceGroups()
             .getWithResponse("20000000-0001-0000-0000-000000000000", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### ServiceGroups_ListAncestors
-
-```java
-/**
- * Samples for ServiceGroups ListAncestors.
- */
-public final class ServiceGroupsListAncestorsSamples {
-    /*
-     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_ListAncestors.json
-     */
-    /**
-     * Sample code: ListServiceGroupAncestors.
-     * 
-     * @param manager Entry point to ServiceGroupsManager.
-     */
-    public static void listServiceGroupAncestors(com.azure.resourcemanager.servicegroups.ServiceGroupsManager manager) {
-        manager.serviceGroups()
-            .listAncestorsWithResponse("20000000-0001-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }
 ```
