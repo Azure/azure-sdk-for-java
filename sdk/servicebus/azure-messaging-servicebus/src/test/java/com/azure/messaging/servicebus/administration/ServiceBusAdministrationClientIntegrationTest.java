@@ -716,6 +716,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
                     ServiceBusSenderClient sender = viaBuilder.sender().queueName(destination).buildClient();
                     ServiceBusReceiverClient sourceReceiver
                         = receiverBuilder.receiver().queueName(source).buildClient();
+                    ServiceBusReceiverClient destinationReceiver
+                        = receiverBuilder.receiver().queueName(destination).buildClient();
                     ServiceBusReceiverClient transferDeadLetters = receiverBuilder.receiver()
                         .queueName(source)
                         .subQueue(SubQueue.TRANSFER_DEAD_LETTER_QUEUE)
@@ -728,7 +730,19 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
                     assertNotNull(seed, "The send-via source did not initialize.");
                     sourceReceiver.complete(seed);
 
-                    client.deleteQueue(destination);
+                    final ServiceBusTransactionContext warmTransaction = sender.createTransaction();
+                    sender.sendMessage(new ServiceBusMessage("warm-send-via"), warmTransaction);
+                    sender.commitTransaction(warmTransaction);
+                    final ServiceBusReceivedMessage warm
+                        = destinationReceiver.receiveMessages(1, Duration.ofSeconds(30))
+                            .stream()
+                            .findFirst()
+                            .orElse(null);
+                    assertNotNull(warm, "The send-via destination did not receive the warm-up message.");
+                    destinationReceiver.complete(warm);
+
+                    client.updateQueue(client.getQueue(destination).setStatus(EntityStatus.SEND_DISABLED));
+                    assertEquals(EntityStatus.SEND_DISABLED, client.getQueue(destination).getStatus());
                     final ServiceBusTransactionContext transaction = sender.createTransaction();
                     sender.sendMessage(new ServiceBusMessage("failed-send-via"), transaction);
                     sender.commitTransaction(transaction);
@@ -741,7 +755,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
                             .orElse(null);
                     }
                     assertNotNull(failed,
-                        "Send-via to a deleted destination did not enter the via queue's transfer DLQ.");
+                        "Send-via to a send-disabled destination did not enter the via queue's transfer DLQ.");
                     assertEquals("failed-send-via", failed.getBody().toString());
                     transferDeadLetters.complete(failed);
                 }
