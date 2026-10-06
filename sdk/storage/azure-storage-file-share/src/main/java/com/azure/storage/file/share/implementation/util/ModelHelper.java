@@ -536,7 +536,10 @@ public class ModelHelper {
             .setMaxBurstCreditsForIops(headers.getXMsShareMaxBurstCreditsForIops())
             .setNextAllowedProvisionedIopsDowngradeTime(headers.getXMsShareNextAllowedProvisionedIopsDowngradeTime())
             .setNextAllowedProvisionedBandwidthDowngradeTime(
-                headers.getXMsShareNextAllowedProvisionedBandwidthDowngradeTime());
+                headers.getXMsShareNextAllowedProvisionedBandwidthDowngradeTime())
+            .setChangeFeedEnabled(headers.isXMsFileEnableChangeFeed())
+            .setChangeFeedBlobContainerName(headers.getXMsFileBlobContainerForXfilesChangeFeed())
+            .setChangeFeedRetentionInDays(headers.getXMsFileChangeFeedRetentionInDays());
 
         return new SimpleResponse<>(response, shareProperties);
     }

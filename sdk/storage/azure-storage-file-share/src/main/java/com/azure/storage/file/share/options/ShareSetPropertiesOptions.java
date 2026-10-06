@@ -23,6 +23,8 @@ public class ShareSetPropertiesOptions {
     private Long paidBurstingMaxBandwidthMibps;
     private Long provisionedMaxIops;
     private Long provisionedMaxBandwidthMibps;
+    private Boolean enableChangeFeed;
+    private Integer changeFeedRetentionInDays;
 
     /**
      * Creates a new instance of {@link ShareSetPropertiesOptions}.
@@ -256,4 +258,49 @@ public class ShareSetPropertiesOptions {
         this.provisionedMaxBandwidthMibps = provisionedMaxBandwidthMibps;
         return this;
     }
+
+    /**
+     * Get the enableChangeFeed property:
+     * Optional. Supported in version 2026-06-06 and above. Only applicable for premium file storage accounts.
+     * This property enables change feed on the share.
+     * @return the enableChangeFeed value.
+     */
+    public Boolean isChangeFeedEnabled() {
+        return enableChangeFeed;
+    }
+
+    /**
+     * Set the enableChangeFeed property:
+     * Optional. Supported in version 2026-06-06 and above. Only applicable for premium file storage accounts.
+     * This property enables change feed on the share.
+     * @param enableChangeFeed the enableChangeFeed value to set.
+     * @return the ShareSetPropertiesOptions object itself.
+     */
+    public ShareSetPropertiesOptions setChangeFeedEnabled(Boolean enableChangeFeed) {
+        this.enableChangeFeed = enableChangeFeed;
+        return this;
+    }
+
+    /**
+     * Get the changeFeedRetentionInDays property:
+     * Optional. Supported in version 2026-06-06 and above. Only applicable for premium file storage accounts.
+     * The number of days that change feed records are retained.
+     * @return the changeFeedRetentionInDays value.
+     */
+    public Integer getChangeFeedRetentionInDays() {
+        return changeFeedRetentionInDays;
+    }
+
+    /**
+     * Set the changeFeedRetentionInDays property:
+     * Optional. Supported in version 2026-06-06 and above. Only applicable for premium file storage accounts.
+     * The number of days that change feed records are retained.
+     * @param changeFeedRetentionInDays the changeFeedRetentionInDays value to set.
+     * @return the ShareSetPropertiesOptions object itself.
+     */
+    public ShareSetPropertiesOptions setChangeFeedRetentionInDays(Integer changeFeedRetentionInDays) {
+        this.changeFeedRetentionInDays = changeFeedRetentionInDays;
+        return this;
+    }
+
 }
