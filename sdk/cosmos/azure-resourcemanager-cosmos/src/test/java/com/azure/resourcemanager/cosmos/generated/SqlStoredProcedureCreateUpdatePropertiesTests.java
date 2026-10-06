@@ -15,24 +15,24 @@ public final class SqlStoredProcedureCreateUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlStoredProcedureCreateUpdateProperties model = BinaryData.fromString(
-            "{\"resource\":{\"id\":\"hvvmuvgpmun\",\"body\":\"sx\"},\"options\":{\"throughput\":43120418,\"autoscaleSettings\":{\"maxThroughput\":837522232}}}")
+            "{\"resource\":{\"id\":\"fwyfwlwxjwet\",\"body\":\"sihclafzvaylp\"},\"options\":{\"throughput\":1236951545,\"autoscaleSettings\":{\"maxThroughput\":1346932281}}}")
             .toObject(SqlStoredProcedureCreateUpdateProperties.class);
-        Assertions.assertEquals("hvvmuvgpmun", model.resource().id());
-        Assertions.assertEquals("sx", model.resource().body());
-        Assertions.assertEquals(43120418, model.options().throughput());
-        Assertions.assertEquals(837522232, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("fwyfwlwxjwet", model.resource().id());
+        Assertions.assertEquals("sihclafzvaylp", model.resource().body());
+        Assertions.assertEquals(1236951545, model.options().throughput());
+        Assertions.assertEquals(1346932281, model.options().autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlStoredProcedureCreateUpdateProperties model = new SqlStoredProcedureCreateUpdateProperties()
-            .withResource(new SqlStoredProcedureResource().withId("hvvmuvgpmun").withBody("sx"))
-            .withOptions(new CreateUpdateOptions().withThroughput(43120418)
-                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(837522232)));
+            .withResource(new SqlStoredProcedureResource().withId("fwyfwlwxjwet").withBody("sihclafzvaylp"))
+            .withOptions(new CreateUpdateOptions().withThroughput(1236951545)
+                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(1346932281)));
         model = BinaryData.fromObject(model).toObject(SqlStoredProcedureCreateUpdateProperties.class);
-        Assertions.assertEquals("hvvmuvgpmun", model.resource().id());
-        Assertions.assertEquals("sx", model.resource().body());
-        Assertions.assertEquals(43120418, model.options().throughput());
-        Assertions.assertEquals(837522232, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("fwyfwlwxjwet", model.resource().id());
+        Assertions.assertEquals("sihclafzvaylp", model.resource().body());
+        Assertions.assertEquals(1236951545, model.options().throughput());
+        Assertions.assertEquals(1346932281, model.options().autoscaleSettings().maxThroughput());
     }
 }
