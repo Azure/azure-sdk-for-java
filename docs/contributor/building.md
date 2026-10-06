@@ -140,7 +140,7 @@ update snippets during the build and verify them during `verify`.
 4. Rebuild the package; the snippet is embedded automatically:
 
    ```bash
-  mvn clean install -f sdk/<service>/<artifact>/pom.xml -Dgpg.skip
+   mvn clean install -f sdk/<service>/<artifact>/pom.xml -Dgpg.skip
    ```
 
 5. Verify `README.md` contains the injected sample.
