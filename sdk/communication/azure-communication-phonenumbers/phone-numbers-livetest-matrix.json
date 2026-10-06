@@ -14,7 +14,7 @@
             "macos-latest": {
                 "OSVmImage": "env:MACVMIMAGE",
                 "Pool": "env:MACPOOL",
-                "JavaTestVersion": "1.25",
+                "JavaTestVersion": "1.21",
                 "AZURE_TEST_HTTP_CLIENTS": "netty",
                 "AZURE_TEST_AGENT": "MACOS_1015_JAVA11"
             }
@@ -34,7 +34,7 @@
                     "Pool": "env:LINUXPOOL"
                 }
             },
-            "JavaTestVersion": "1.25",
+            "JavaTestVersion": "1.21",
             "AZURE_TEST_HTTP_CLIENTS": "netty",
             "TestFromSource": true,
             "TestGoals": "verify",
@@ -51,7 +51,7 @@
                     "Pool": "env:WINDOWSPOOL"
                 }
             },
-            "JavaTestVersion": "1.25",
+            "JavaTestVersion": "1.21",
             "RunAggregateReports": true,
             "AZURE_TEST_HTTP_CLIENTS": "netty",
             "TestFromSource": false,
