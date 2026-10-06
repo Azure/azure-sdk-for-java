@@ -1,6 +1,6 @@
 # Release History
 
-## 12.21.0 (Unreleased)
+## 12.21.0 (2026-10-06)
 
 ### Features Added
 - Added support for service version 2026-10-06.
@@ -8,7 +8,7 @@
 ### Other Changes
 
 #### Dependency Updates
-- Upgraded `azure-core` from `1.59.0` to version `1.59.1`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
 - Upgraded `azure-storage-common` from `12.34.1` to version `12.35.0`.
 
 ## 12.20.1 (2026-08-18)
