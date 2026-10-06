@@ -5,12 +5,14 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.SoftDeletedArtifactTypes;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * Describes the properties of a soft-deleted resource.
@@ -32,6 +34,18 @@ public final class GallerySoftDeletedResourceProperties
      * The timestamp for when the resource is soft-deleted. In dateTime offset format.
      */
     private String softDeletedTime;
+
+    /*
+     * The timestamp after which a soft-deleted gallery image version is no longer consumable for VM/VMSS creation or
+     * VMSS scale out. It is calculated from the soft-deleted time plus the retention period. In dateTime offset format.
+     */
+    private OffsetDateTime consumptionEndTime;
+
+    /*
+     * The timestamp at which a soft-deleted gallery image version is permanently (hard) deleted and can no longer be
+     * recovered. In dateTime offset format.
+     */
+    private OffsetDateTime hardDeletionTargetTime;
 
     /**
      * Creates an instance of GallerySoftDeletedResourceProperties class.
@@ -64,6 +78,27 @@ public final class GallerySoftDeletedResourceProperties
      */
     public String softDeletedTime() {
         return this.softDeletedTime;
+    }
+
+    /**
+     * Get the consumptionEndTime property: The timestamp after which a soft-deleted gallery image version is no longer
+     * consumable for VM/VMSS creation or VMSS scale out. It is calculated from the soft-deleted time plus the retention
+     * period. In dateTime offset format.
+     * 
+     * @return the consumptionEndTime value.
+     */
+    public OffsetDateTime consumptionEndTime() {
+        return this.consumptionEndTime;
+    }
+
+    /**
+     * Get the hardDeletionTargetTime property: The timestamp at which a soft-deleted gallery image version is
+     * permanently (hard) deleted and can no longer be recovered. In dateTime offset format.
+     * 
+     * @return the hardDeletionTargetTime value.
+     */
+    public OffsetDateTime hardDeletionTargetTime() {
+        return this.hardDeletionTargetTime;
     }
 
     /**
@@ -110,6 +145,12 @@ public final class GallerySoftDeletedResourceProperties
                         = SoftDeletedArtifactTypes.fromString(reader.getString());
                 } else if ("softDeletedTime".equals(fieldName)) {
                     deserializedGallerySoftDeletedResourceProperties.softDeletedTime = reader.getString();
+                } else if ("consumptionEndTime".equals(fieldName)) {
+                    deserializedGallerySoftDeletedResourceProperties.consumptionEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("hardDeletionTargetTime".equals(fieldName)) {
+                    deserializedGallerySoftDeletedResourceProperties.hardDeletionTargetTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

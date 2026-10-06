@@ -252,7 +252,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
         Mockito.when(mockRetryFactory.getRequestPolicy(null)).thenReturn(retryPolicy);
-        responseFlux = rxDocumentClient.readDocument(itemSelfLink, requestOptions);
+        responseFlux = rxDocumentClient.readDocument(itemSelfLink, null, requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
@@ -263,7 +263,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
         Mockito.when(mockRetryFactory.getRequestPolicy(null)).thenReturn(retryPolicy);
-        responseFlux = rxDocumentClient.deleteDocument(itemSelfLink, requestOptions);
+        responseFlux = rxDocumentClient.deleteDocument(itemSelfLink, null, requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
@@ -274,7 +274,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
         Mockito.when(mockRetryFactory.getRequestPolicy(null)).thenReturn(retryPolicy);
-        responseFlux = rxDocumentClient.replaceDocument(itemSelfLink, new Document(), requestOptions);
+        responseFlux = rxDocumentClient.replaceDocument(itemSelfLink, null, new Document(), requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();

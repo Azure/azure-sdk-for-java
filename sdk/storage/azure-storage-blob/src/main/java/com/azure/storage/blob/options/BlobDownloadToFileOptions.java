@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.ValidatableContent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.nio.file.OpenOption;
@@ -18,7 +19,7 @@ import java.util.Set;
  * Extended options that may be passed when downloading a blob to a file.
  */
 @Fluent
-public class BlobDownloadToFileOptions {
+public class BlobDownloadToFileOptions implements ValidatableContent {
     private final String filePath;
     private BlobRange range;
     private ParallelTransferOptions parallelTransferOptions;
@@ -174,6 +175,7 @@ public class BlobDownloadToFileOptions {
      *
      * @return The transfer validation checksum algorithm.
      */
+    @Override
     public ContentValidationAlgorithm getContentValidationAlgorithm() {
         return contentValidationAlgorithm;
     }
@@ -185,6 +187,7 @@ public class BlobDownloadToFileOptions {
      * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
+    @Override
     public BlobDownloadToFileOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;

@@ -30,7 +30,7 @@ import java.util.Arrays;
  */
 public final class RaiPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/PutRaiPolicy.json
+     * x-ms-original-file: 2026-07-15-preview/PutRaiPolicy.json
      */
     /**
      * Sample code: PutRaiPolicy.
@@ -104,7 +104,7 @@ public final class RaiPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/PutRaiPolicyWithEgress.json
+     * x-ms-original-file: 2026-07-15-preview/PutRaiPolicyWithEgress.json
      */
     /**
      * Sample code: PutRaiPolicyWithEgress.
@@ -117,6 +117,7 @@ public final class RaiPoliciesCreateOrUpdateSamples {
             .define("egress-baseline")
             .withExistingAccount("resourceGroupName", "accountName")
             .withProperties(new RaiPolicyProperties().withBasePolicyName("Microsoft.Default")
+                .withContentFilters(Arrays.asList())
                 .withEgressPolicy(new RaiEgressPolicyConfig().withMode(RaiEgressMode.ENFORCED)
                     .withDefaultAction(RaiEgressDefaultAction.DENY)
                     .withDescription("Corporate baseline egress policy for sandboxed agents")

@@ -14,21 +14,21 @@ public final class AddDataAnnotationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AddDataAnnotationRequest model = BinaryData.fromString(
-            "{\"annotationDetails\":{\"sspuunnoxyhkx\":\"dfc\",\"dao\":\"qddrihpfhoqcaae\",\"xkzb\":\"djvlpj\",\"ncj\":\"msgeivsiykzk\"},\"description\":\"onbzoggculapzwy\"}")
+            "{\"annotationDetails\":{\"ulfgslqu\":\"e\",\"pjuohminyfl\":\"kwdlenrdsutujba\",\"w\":\"orwmduvwpklv\",\"epn\":\"ygdxpgpqchis\"},\"description\":\"jcrxgibbdaxcon\"}")
             .toObject(AddDataAnnotationRequest.class);
-        Assertions.assertEquals("dfc", model.annotationDetails().get("sspuunnoxyhkx"));
-        Assertions.assertEquals("onbzoggculapzwy", model.description());
+        Assertions.assertEquals("e", model.annotationDetails().get("ulfgslqu"));
+        Assertions.assertEquals("jcrxgibbdaxcon", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AddDataAnnotationRequest model = new AddDataAnnotationRequest()
             .withAnnotationDetails(
-                mapOf("sspuunnoxyhkx", "dfc", "dao", "qddrihpfhoqcaae", "xkzb", "djvlpj", "ncj", "msgeivsiykzk"))
-            .withDescription("onbzoggculapzwy");
+                mapOf("ulfgslqu", "e", "pjuohminyfl", "kwdlenrdsutujba", "w", "orwmduvwpklv", "epn", "ygdxpgpqchis"))
+            .withDescription("jcrxgibbdaxcon");
         model = BinaryData.fromObject(model).toObject(AddDataAnnotationRequest.class);
-        Assertions.assertEquals("dfc", model.annotationDetails().get("sspuunnoxyhkx"));
-        Assertions.assertEquals("onbzoggculapzwy", model.description());
+        Assertions.assertEquals("e", model.annotationDetails().get("ulfgslqu"));
+        Assertions.assertEquals("jcrxgibbdaxcon", model.description());
     }
 
     // Use "Map.of" if available

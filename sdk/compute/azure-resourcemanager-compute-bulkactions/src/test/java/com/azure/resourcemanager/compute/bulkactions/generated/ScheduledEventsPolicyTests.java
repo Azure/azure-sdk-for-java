@@ -17,12 +17,12 @@ public final class ScheduledEventsPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledEventsPolicy model = BinaryData.fromString(
-            "{\"userInitiatedRedeploy\":{\"automaticallyApprove\":true},\"userInitiatedReboot\":{\"automaticallyApprove\":false},\"scheduledEventsAdditionalPublishingTargets\":{\"eventGridAndResourceGraph\":{\"enable\":false,\"scheduledEventsApiVersion\":\"lmpewwwfbkr\"}},\"allInstancesDown\":{\"automaticallyApprove\":true}}")
+            "{\"userInitiatedRedeploy\":{\"automaticallyApprove\":true},\"userInitiatedReboot\":{\"automaticallyApprove\":false},\"scheduledEventsAdditionalPublishingTargets\":{\"eventGridAndResourceGraph\":{\"enable\":true,\"scheduledEventsApiVersion\":\"bckhsmtxpsi\"}},\"allInstancesDown\":{\"automaticallyApprove\":true}}")
             .toObject(ScheduledEventsPolicy.class);
         Assertions.assertTrue(model.userInitiatedRedeploy().userInitiatedRedeployAutomaticallyApprove());
         Assertions.assertFalse(model.userInitiatedReboot().userInitiatedRebootAutomaticallyApprove());
-        Assertions.assertFalse(model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().enable());
-        Assertions.assertEquals("lmpewwwfbkr",
+        Assertions.assertTrue(model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().enable());
+        Assertions.assertEquals("bckhsmtxpsi",
             model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().scheduledEventsApiVersion());
         Assertions.assertTrue(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
     }
@@ -34,13 +34,13 @@ public final class ScheduledEventsPolicyTests {
             .withUserInitiatedReboot(new UserInitiatedReboot().withUserInitiatedRebootAutomaticallyApprove(false))
             .withScheduledEventsAdditionalPublishingTargets(
                 new ScheduledEventsAdditionalPublishingTargets().withEventGridAndResourceGraph(
-                    new EventGridAndResourceGraph().withEnable(false).withScheduledEventsApiVersion("lmpewwwfbkr")))
+                    new EventGridAndResourceGraph().withEnable(true).withScheduledEventsApiVersion("bckhsmtxpsi")))
             .withAllInstancesDown(new AllInstancesDown().withAllInstancesDownAutomaticallyApprove(true));
         model = BinaryData.fromObject(model).toObject(ScheduledEventsPolicy.class);
         Assertions.assertTrue(model.userInitiatedRedeploy().userInitiatedRedeployAutomaticallyApprove());
         Assertions.assertFalse(model.userInitiatedReboot().userInitiatedRebootAutomaticallyApprove());
-        Assertions.assertFalse(model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().enable());
-        Assertions.assertEquals("lmpewwwfbkr",
+        Assertions.assertTrue(model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().enable());
+        Assertions.assertEquals("bckhsmtxpsi",
             model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().scheduledEventsApiVersion());
         Assertions.assertTrue(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
     }

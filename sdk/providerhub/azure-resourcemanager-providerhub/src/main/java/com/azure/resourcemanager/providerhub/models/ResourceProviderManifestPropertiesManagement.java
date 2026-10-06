@@ -80,15 +80,6 @@ public final class ResourceProviderManifestPropertiesManagement extends Resource
      * {@inheritDoc}
      */
     @Override
-    public ResourceProviderManifestPropertiesManagement withServiceTreeInfos(List<ServiceTreeInfo> serviceTreeInfos) {
-        super.withServiceTreeInfos(serviceTreeInfos);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public ResourceProviderManifestPropertiesManagement
         withResourceAccessPolicy(ResourceAccessPolicy resourceAccessPolicy) {
         super.withResourceAccessPolicy(resourceAccessPolicy);
@@ -163,15 +154,22 @@ public final class ResourceProviderManifestPropertiesManagement extends Resource
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceProviderManifestPropertiesManagement
+        withFeatureManagementOwners(List<String> featureManagementOwners) {
+        super.withFeatureManagementOwners(featureManagementOwners);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        if (serviceTreeInfos() != null) {
-            serviceTreeInfos().forEach(e -> e.validate());
-        }
         if (resourceAccessRoles() != null) {
             resourceAccessRoles().forEach(e -> e.validate());
         }
@@ -197,8 +195,6 @@ public final class ResourceProviderManifestPropertiesManagement extends Resource
         jsonWriter.writeStringField("incidentRoutingService", incidentRoutingService());
         jsonWriter.writeStringField("incidentRoutingTeam", incidentRoutingTeam());
         jsonWriter.writeStringField("incidentContactEmail", incidentContactEmail());
-        jsonWriter.writeArrayField("serviceTreeInfos", serviceTreeInfos(),
-            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("resourceAccessPolicy",
             resourceAccessPolicy() == null ? null : resourceAccessPolicy().toString());
         jsonWriter.writeArrayField("resourceAccessRoles", resourceAccessRoles(),
@@ -211,6 +207,8 @@ public final class ResourceProviderManifestPropertiesManagement extends Resource
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("pcCode", pcCode());
         jsonWriter.writeStringField("profitCenterProgramId", profitCenterProgramId());
+        jsonWriter.writeArrayField("featureManagementOwners", featureManagementOwners(),
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -249,10 +247,6 @@ public final class ResourceProviderManifestPropertiesManagement extends Resource
                 } else if ("incidentContactEmail".equals(fieldName)) {
                     deserializedResourceProviderManifestPropertiesManagement
                         .withIncidentContactEmail(reader.getString());
-                } else if ("serviceTreeInfos".equals(fieldName)) {
-                    List<ServiceTreeInfo> serviceTreeInfos
-                        = reader.readArray(reader1 -> ServiceTreeInfo.fromJson(reader1));
-                    deserializedResourceProviderManifestPropertiesManagement.withServiceTreeInfos(serviceTreeInfos);
                 } else if ("resourceAccessPolicy".equals(fieldName)) {
                     deserializedResourceProviderManifestPropertiesManagement
                         .withResourceAccessPolicy(ResourceAccessPolicy.fromString(reader.getString()));
@@ -280,6 +274,10 @@ public final class ResourceProviderManifestPropertiesManagement extends Resource
                 } else if ("profitCenterProgramId".equals(fieldName)) {
                     deserializedResourceProviderManifestPropertiesManagement
                         .withProfitCenterProgramId(reader.getString());
+                } else if ("featureManagementOwners".equals(fieldName)) {
+                    List<String> featureManagementOwners = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceProviderManifestPropertiesManagement
+                        .withFeatureManagementOwners(featureManagementOwners);
                 } else {
                     reader.skipChildren();
                 }

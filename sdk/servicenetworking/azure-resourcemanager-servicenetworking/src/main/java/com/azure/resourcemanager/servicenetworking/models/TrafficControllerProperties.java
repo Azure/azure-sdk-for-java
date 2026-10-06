@@ -38,6 +38,11 @@ public final class TrafficControllerProperties implements JsonSerializable<Traff
     private List<ResourceId> securityPolicies;
 
     /*
+     * Private Endpoint Connections List
+     */
+    private List<ResourceId> privateEndpointConnections;
+
+    /*
      * Security Policy Configuration
      */
     private SecurityPolicyConfigurations securityPolicyConfigurations;
@@ -87,6 +92,15 @@ public final class TrafficControllerProperties implements JsonSerializable<Traff
      */
     public List<ResourceId> securityPolicies() {
         return this.securityPolicies;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private Endpoint Connections List.
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    public List<ResourceId> privateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
     /**
@@ -156,6 +170,10 @@ public final class TrafficControllerProperties implements JsonSerializable<Traff
                 } else if ("securityPolicies".equals(fieldName)) {
                     List<ResourceId> securityPolicies = reader.readArray(reader1 -> ResourceId.fromJson(reader1));
                     deserializedTrafficControllerProperties.securityPolicies = securityPolicies;
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<ResourceId> privateEndpointConnections
+                        = reader.readArray(reader1 -> ResourceId.fromJson(reader1));
+                    deserializedTrafficControllerProperties.privateEndpointConnections = privateEndpointConnections;
                 } else if ("securityPolicyConfigurations".equals(fieldName)) {
                     deserializedTrafficControllerProperties.securityPolicyConfigurations
                         = SecurityPolicyConfigurations.fromJson(reader);

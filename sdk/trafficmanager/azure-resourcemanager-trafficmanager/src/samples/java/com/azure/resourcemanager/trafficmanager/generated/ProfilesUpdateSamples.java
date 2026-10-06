@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class ProfilesUpdateSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-PATCH-MonitorConfig.json
+     * x-ms-original-file: 2026-09-01/Profile-PATCH-MonitorConfig.json
      */
     /**
      * Sample code: Profile-PATCH-MonitorConfig.
@@ -41,7 +41,7 @@ public final class ProfilesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-04-01-preview/Profile-PATCH-RecordType.json
+     * x-ms-original-file: 2026-09-01/Profile-PATCH-RecordType.json
      */
     /**
      * Sample code: Profile-PATCH-RecordType.

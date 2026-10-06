@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class ElasticSnapshotsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/ElasticSnapshots_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-15-preview/ElasticSnapshots_CreateOrUpdate.json
      */
     /**
      * Sample code: ElasticSnapshots_CreateOrUpdate.

@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The state the occurrence is at a given time.
+ * The current state of a scheduled action occurrence.
  */
 public final class OccurrenceState extends ExpandableStringEnum<OccurrenceState> {
     /**
-     * The occurrence was created.
+     * The occurrence has been created.
      */
     public static final OccurrenceState CREATED = fromString("Created");
 
     /**
-     * The occurrence is being rescheduled.
+     * The scheduled time for the occurrence is being updated.
      */
     public static final OccurrenceState RESCHEDULING = fromString("Rescheduling");
 
@@ -27,22 +27,22 @@ public final class OccurrenceState extends ExpandableStringEnum<OccurrenceState>
     public static final OccurrenceState SCHEDULED = fromString("Scheduled");
 
     /**
-     * The occurrence has successfully ran.
+     * The occurrence operations completed successfully.
      */
     public static final OccurrenceState SUCCEEDED = fromString("Succeeded");
 
     /**
-     * The occurrence has failed during its scheduling.
+     * One or more of the occurrence operations failed.
      */
     public static final OccurrenceState FAILED = fromString("Failed");
 
     /**
-     * The occurrence is going through cancellation.
+     * Cancellation of the occurrence is in progress.
      */
     public static final OccurrenceState CANCELLING = fromString("Cancelling");
 
     /**
-     * The occurrence has been canceled.
+     * The occurrence was canceled.
      */
     public static final OccurrenceState CANCELED = fromString("Canceled");
 

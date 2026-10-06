@@ -12,12 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * A credential value. Exactly one variant must be set.
- * 
- * In the current API version, only the `inline` variant is supported. Future
- * API versions are expected to add additional credential kinds (for example,
- * managed identity and Key Vault secret references) as sibling variants on
- * this model.
+ * A credential value used for accessing gated or private models.
  */
 @Fluent
 public final class CredentialValue implements JsonSerializable<CredentialValue> {
@@ -25,6 +20,17 @@ public final class CredentialValue implements JsonSerializable<CredentialValue> 
      * An inline credential containing a secret value supplied in the request payload.
      */
     private InlineCredential inline;
+
+    /*
+     * A user-assigned managed
+     * identity the platform authenticates as. Required for `MicrosoftFoundry` sources and
+     * the user must grant the `Foundry User` role (role definition id 53ca6127-db72-4b80-b1b0-d745d6d5456d) on the
+     * Foundry project.
+     * See https://aka.ms/aks/aim-modelsource for more details.
+     * The platform federates this identity to an in-cluster puller ServiceAccount (Workload Identity) at deployment
+     * time.
+     */
+    private ManagedIdentityCredential managedIdentity;
 
     /**
      * Creates an instance of CredentialValue class.
@@ -53,12 +59,45 @@ public final class CredentialValue implements JsonSerializable<CredentialValue> 
     }
 
     /**
+     * Get the managedIdentity property: A user-assigned managed
+     * identity the platform authenticates as. Required for `MicrosoftFoundry` sources and
+     * the user must grant the `Foundry User` role (role definition id 53ca6127-db72-4b80-b1b0-d745d6d5456d) on the
+     * Foundry project.
+     * See https://aka.ms/aks/aim-modelsource for more details.
+     * The platform federates this identity to an in-cluster puller ServiceAccount (Workload Identity) at deployment
+     * time.
+     * 
+     * @return the managedIdentity value.
+     */
+    public ManagedIdentityCredential managedIdentity() {
+        return this.managedIdentity;
+    }
+
+    /**
+     * Set the managedIdentity property: A user-assigned managed
+     * identity the platform authenticates as. Required for `MicrosoftFoundry` sources and
+     * the user must grant the `Foundry User` role (role definition id 53ca6127-db72-4b80-b1b0-d745d6d5456d) on the
+     * Foundry project.
+     * See https://aka.ms/aks/aim-modelsource for more details.
+     * The platform federates this identity to an in-cluster puller ServiceAccount (Workload Identity) at deployment
+     * time.
+     * 
+     * @param managedIdentity the managedIdentity value to set.
+     * @return the CredentialValue object itself.
+     */
+    public CredentialValue withManagedIdentity(ManagedIdentityCredential managedIdentity) {
+        this.managedIdentity = managedIdentity;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("inline", this.inline);
+        jsonWriter.writeJsonField("managedIdentity", this.managedIdentity);
         return jsonWriter.writeEndObject();
     }
 
@@ -79,6 +118,8 @@ public final class CredentialValue implements JsonSerializable<CredentialValue> 
 
                 if ("inline".equals(fieldName)) {
                     deserializedCredentialValue.inline = InlineCredential.fromJson(reader);
+                } else if ("managedIdentity".equals(fieldName)) {
+                    deserializedCredentialValue.managedIdentity = ManagedIdentityCredential.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

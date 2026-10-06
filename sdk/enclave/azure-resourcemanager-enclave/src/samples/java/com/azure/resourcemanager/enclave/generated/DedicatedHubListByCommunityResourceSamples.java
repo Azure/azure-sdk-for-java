@@ -9,7 +9,7 @@ package com.azure.resourcemanager.enclave.generated;
  */
 public final class DedicatedHubListByCommunityResourceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/DedicatedHubs_ListByCommunityResource.json
+     * x-ms-original-file: 2026-04-01/DedicatedHubs_ListByCommunityResource.json
      */
     /**
      * Sample code: DedicatedHub_ListByCommunityResource.

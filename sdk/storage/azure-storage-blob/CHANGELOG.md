@@ -8,6 +8,10 @@
 
 ### Bugs Fixed
 
+- Fixed account name parsing for DFS endpoints when the account name contains "blob".
+- Fixed SDK-generated ETag consistency locks for retries, chunked downloads, input streams, and seekable reads to send
+  RFC 9110-conformant `If-Match` values.
+
 ### Other Changes
 
 ## 12.35.1 (2026-08-18)

@@ -7,6 +7,10 @@ import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.CoreUtilsTests;
 import io.clientcore.core.utils.configuration.Configuration;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -210,5 +214,49 @@ public class ImplUtilsTests {
 
             // direct buffer
             Arguments.of(ByteBuffer.allocateDirect(BYTES.length).put(BYTES).position(0), BYTES));
+    }
+
+    /**
+     * {@link Runtime#addShutdownHook(Thread)} and {@link Runtime#removeShutdownHook(Thread)} throw
+     * {@link IllegalStateException} once the JVM is shutting down. The JVM cannot be put into that state from a
+     * test, so the registration is passed in here the same way the production overloads pass the real one.
+     */
+    @Test
+    public void addShutdownHookReturnsNullWhenJvmIsShuttingDown() {
+        Thread shutdownThread = new Thread(() -> {
+        });
+
+        assertNull(ImplUtils.addShutdownHookSafely(shutdownThread, ignored -> {
+            throw new IllegalStateException("Shutdown in progress");
+        }));
+    }
+
+    @Test
+    public void addShutdownHookDoesNotSwallowOtherFailures() {
+        Thread shutdownThread = new Thread(() -> {
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> ImplUtils.addShutdownHookSafely(shutdownThread, ignored -> {
+            throw new IllegalArgumentException("Hook previously registered");
+        }));
+    }
+
+    @Test
+    public void removeShutdownHookDoesNotThrowWhenJvmIsShuttingDown() {
+        Thread shutdownThread = new Thread(() -> {
+        });
+
+        assertDoesNotThrow(() -> ImplUtils.removeShutdownHookSafely(shutdownThread, ignored -> {
+            throw new IllegalStateException("Shutdown in progress");
+        }));
+    }
+
+    @Test
+    public void shutdownHookRoundTripIsUnchanged() {
+        Thread shutdownThread = new Thread(() -> {
+        });
+
+        assertSame(shutdownThread, ImplUtils.addShutdownHookSafely(shutdownThread));
+        assertDoesNotThrow(() -> ImplUtils.removeShutdownHookSafely(shutdownThread));
     }
 }

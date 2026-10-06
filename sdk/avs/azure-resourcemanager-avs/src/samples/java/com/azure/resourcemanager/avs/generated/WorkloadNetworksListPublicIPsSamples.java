@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksListPublicIPsSamples {
     /*
-     * x-ms-original-file: 2025-09-01/WorkloadNetworks_ListPublicIPs.json
+     * x-ms-original-file: 2026-03-01/WorkloadNetworks_ListPublicIPs.json
      */
     /**
      * Sample code: WorkloadNetworks_ListPublicIPs.

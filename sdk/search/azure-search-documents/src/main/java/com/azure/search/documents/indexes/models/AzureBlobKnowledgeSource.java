@@ -100,6 +100,8 @@ public final class AzureBlobKnowledgeSource extends KnowledgeSource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("resultsProcessing",
+            getResultsProcessing() == null ? null : getResultsProcessing().toString());
         jsonWriter.writeStringField("@odata.etag", getETag());
         jsonWriter.writeJsonField("encryptionKey", getEncryptionKey());
         jsonWriter.writeJsonField("azureBlobParameters", this.azureBlobParameters);
@@ -121,6 +123,7 @@ public final class AzureBlobKnowledgeSource extends KnowledgeSource {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
             AzureBlobKnowledgeSourceParameters azureBlobParameters = null;
@@ -132,6 +135,8 @@ public final class AzureBlobKnowledgeSource extends KnowledgeSource {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
@@ -147,10 +152,21 @@ public final class AzureBlobKnowledgeSource extends KnowledgeSource {
             AzureBlobKnowledgeSource deserializedAzureBlobKnowledgeSource
                 = new AzureBlobKnowledgeSource(name, azureBlobParameters);
             deserializedAzureBlobKnowledgeSource.setDescription(description);
+            deserializedAzureBlobKnowledgeSource.setResultsProcessing(resultsProcessing);
             deserializedAzureBlobKnowledgeSource.setETag(eTag);
             deserializedAzureBlobKnowledgeSource.setEncryptionKey(encryptionKey);
             deserializedAzureBlobKnowledgeSource.kind = kind;
             return deserializedAzureBlobKnowledgeSource;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public AzureBlobKnowledgeSource setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        super.setResultsProcessing(resultsProcessing);
+        return this;
     }
 }

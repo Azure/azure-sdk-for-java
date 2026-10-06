@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysGetResiliencyInformationSamples {
     /*
-     * x-ms-original-file: 2025-09-01/VirtualNetworkGatewayGetResiliencyInformation.json
+     * x-ms-original-file: 2026-01-01/VirtualNetworkGatewayGetResiliencyInformation.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayResiliencyInformation.

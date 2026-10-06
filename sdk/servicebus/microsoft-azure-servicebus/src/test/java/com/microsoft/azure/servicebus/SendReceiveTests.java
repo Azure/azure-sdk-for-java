@@ -15,12 +15,12 @@ import com.microsoft.azure.servicebus.management.TopicDescription;
 
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public abstract class SendReceiveTests extends Tests {
     static ManagementClientAsync managementClient = null;
@@ -35,7 +35,7 @@ public abstract class SendReceiveTests extends Tests {
     protected String entityName;
     private final String sessionId = null;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() {
         SendReceiveTests.entityNameCreatedForAllTests = null;
         SendReceiveTests.receiveEntityPathForAllTest = null;
@@ -44,7 +44,7 @@ public abstract class SendReceiveTests extends Tests {
         managementClient = new ManagementClientAsync(namespaceEndpointURI, managementClientSettings);
     }
 
-    @Before
+    @BeforeEach
     public void setup() throws InterruptedException, ExecutionException, ServiceBusException {
         if (this.shouldCreateEntityForEveryTest() || SendReceiveTests.entityNameCreatedForAllTests == null) {
              // Create entity
@@ -79,7 +79,7 @@ public abstract class SendReceiveTests extends Tests {
         this.sender = ClientFactory.createMessageSenderFromEntityPath(this.factory, this.entityName);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws ServiceBusException, InterruptedException, ExecutionException {
         if (!this.shouldCreateEntityForEveryTest()) {
             this.drainAllMessages();
@@ -102,7 +102,7 @@ public abstract class SendReceiveTests extends Tests {
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanupAfterAllTest() throws ExecutionException, InterruptedException, IOException {
         if (managementClient == null) {
             return;
@@ -162,7 +162,7 @@ public abstract class SendReceiveTests extends Tests {
         try
         {
         	message.setTimeToLive(timeToLive);
-            Assert.fail("Message should not allow negative or zero timeToLive property.");
+            Assertions.fail("Message should not allow negative or zero timeToLive property.");
         }
         catch (IllegalArgumentException iae)
         {

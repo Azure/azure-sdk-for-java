@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Connection information for HorizonDb parameter group.
+ * Connection information for HorizonDB parameter group.
  */
 @Fluent
 public final class HorizonDbClusterParameterGroupConnectionProperties
@@ -23,7 +23,7 @@ public final class HorizonDbClusterParameterGroupConnectionProperties
     private String id;
 
     /*
-     * Indication of if parameter group is applied on HorizonDb resource.
+     * Indication of if parameter group is applied on HorizonDB resource.
      */
     private String syncStatus;
 
@@ -59,7 +59,7 @@ public final class HorizonDbClusterParameterGroupConnectionProperties
     }
 
     /**
-     * Get the syncStatus property: Indication of if parameter group is applied on HorizonDb resource.
+     * Get the syncStatus property: Indication of if parameter group is applied on HorizonDB resource.
      * 
      * @return the syncStatus value.
      */

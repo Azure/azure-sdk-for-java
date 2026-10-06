@@ -220,6 +220,29 @@ public final class StorageApplianceInner extends Resource {
     }
 
     /**
+     * Get the storageApplianceSkuId property: The SKU for the storage appliance.
+     * 
+     * @return the storageApplianceSkuId value.
+     */
+    public String storageApplianceSkuId() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageApplianceSkuId();
+    }
+
+    /**
+     * Set the storageApplianceSkuId property: The SKU for the storage appliance.
+     * 
+     * @param storageApplianceSkuId the storageApplianceSkuId value to set.
+     * @return the StorageApplianceInner object itself.
+     */
+    public StorageApplianceInner withStorageApplianceSkuId(String storageApplianceSkuId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageApplianceProperties();
+        }
+        this.innerProperties().withStorageApplianceSkuId(storageApplianceSkuId);
+        return this;
+    }
+
+    /**
      * Get the rackSlot property: The slot the storage appliance is in the rack based on the BOM configuration.
      * 
      * @return the rackSlot value.
@@ -262,29 +285,6 @@ public final class StorageApplianceInner extends Resource {
             this.innerProperties = new StorageApplianceProperties();
         }
         this.innerProperties().withSerialNumber(serialNumber);
-        return this;
-    }
-
-    /**
-     * Get the storageApplianceSkuId property: The SKU for the storage appliance.
-     * 
-     * @return the storageApplianceSkuId value.
-     */
-    public String storageApplianceSkuId() {
-        return this.innerProperties() == null ? null : this.innerProperties().storageApplianceSkuId();
-    }
-
-    /**
-     * Set the storageApplianceSkuId property: The SKU for the storage appliance.
-     * 
-     * @param storageApplianceSkuId the storageApplianceSkuId value to set.
-     * @return the StorageApplianceInner object itself.
-     */
-    public StorageApplianceInner withStorageApplianceSkuId(String storageApplianceSkuId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StorageApplianceProperties();
-        }
-        this.innerProperties().withStorageApplianceSkuId(storageApplianceSkuId);
         return this;
     }
 

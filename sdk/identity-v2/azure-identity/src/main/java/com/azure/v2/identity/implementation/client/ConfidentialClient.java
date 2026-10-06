@@ -22,7 +22,6 @@ import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.SharedExecutorService;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -256,8 +255,6 @@ public class ConfidentialClient extends ClientBase {
 
         if (clientOptions.getExecutorService() != null) {
             applicationBuilder.executorService(clientOptions.getExecutorService());
-        } else {
-            applicationBuilder.executorService(SharedExecutorService.getInstance());
         }
 
         TokenCachePersistenceOptions tokenCachePersistenceOptions = clientOptions.getTokenCacheOptions();

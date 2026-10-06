@@ -12,18 +12,13 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The execution parameters the scheduled action is supposed to follow.
+ * Settings that control how the scheduled action operation is executed.
  */
 @Fluent
 public final class ScheduledActionsExecutionParameters
     implements JsonSerializable<ScheduledActionsExecutionParameters> {
     /*
-     * Details that could optimize the user's request
-     */
-    private OptimizationPreference optimizationPreference;
-
-    /*
-     * Retry policy the user can pass
+     * The retry settings for failed resource operations.
      */
     private ScheduledActionsRetryPolicy retryPolicy;
 
@@ -34,28 +29,7 @@ public final class ScheduledActionsExecutionParameters
     }
 
     /**
-     * Get the optimizationPreference property: Details that could optimize the user's request.
-     * 
-     * @return the optimizationPreference value.
-     */
-    public OptimizationPreference optimizationPreference() {
-        return this.optimizationPreference;
-    }
-
-    /**
-     * Set the optimizationPreference property: Details that could optimize the user's request.
-     * 
-     * @param optimizationPreference the optimizationPreference value to set.
-     * @return the ScheduledActionsExecutionParameters object itself.
-     */
-    public ScheduledActionsExecutionParameters
-        withOptimizationPreference(OptimizationPreference optimizationPreference) {
-        this.optimizationPreference = optimizationPreference;
-        return this;
-    }
-
-    /**
-     * Get the retryPolicy property: Retry policy the user can pass.
+     * Get the retryPolicy property: The retry settings for failed resource operations.
      * 
      * @return the retryPolicy value.
      */
@@ -64,7 +38,7 @@ public final class ScheduledActionsExecutionParameters
     }
 
     /**
-     * Set the retryPolicy property: Retry policy the user can pass.
+     * Set the retryPolicy property: The retry settings for failed resource operations.
      * 
      * @param retryPolicy the retryPolicy value to set.
      * @return the ScheduledActionsExecutionParameters object itself.
@@ -80,8 +54,6 @@ public final class ScheduledActionsExecutionParameters
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("optimizationPreference",
-            this.optimizationPreference == null ? null : this.optimizationPreference.toString());
         jsonWriter.writeJsonField("retryPolicy", this.retryPolicy);
         return jsonWriter.writeEndObject();
     }
@@ -102,10 +74,7 @@ public final class ScheduledActionsExecutionParameters
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("optimizationPreference".equals(fieldName)) {
-                    deserializedScheduledActionsExecutionParameters.optimizationPreference
-                        = OptimizationPreference.fromString(reader.getString());
-                } else if ("retryPolicy".equals(fieldName)) {
+                if ("retryPolicy".equals(fieldName)) {
                     deserializedScheduledActionsExecutionParameters.retryPolicy
                         = ScheduledActionsRetryPolicy.fromJson(reader);
                 } else {

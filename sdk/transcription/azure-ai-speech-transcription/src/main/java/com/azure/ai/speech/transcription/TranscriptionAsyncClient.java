@@ -51,59 +51,6 @@ public final class TranscriptionAsyncClient {
     }
 
     /**
-     * Transcribes the provided audio stream.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     durationMilliseconds: int (Required)
-     *     combinedPhrases (Required): [
-     *          (Required){
-     *             channel: Integer (Optional)
-     *             text: String (Required)
-     *         }
-     *     ]
-     *     phrases (Required): [
-     *          (Required){
-     *             channel: Integer (Optional)
-     *             speaker: Integer (Optional)
-     *             offsetMilliseconds: int (Required)
-     *             durationMilliseconds: int (Required)
-     *             text: String (Required)
-     *             words (Optional): [
-     *                  (Optional){
-     *                     text: String (Required)
-     *                     offsetMilliseconds: int (Required)
-     *                     durationMilliseconds: int (Required)
-     *                 }
-     *             ]
-     *             locale: String (Optional)
-     *             confidence: double (Required)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param body The body of the multipart request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the transcribe operation along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> transcribeWithResponse(BinaryData body, RequestOptions requestOptions) {
-        // Operation 'transcribe' is of content-type 'multipart/form-data'. Protocol API is not usable and hence not
-        // generated.
-        return this.serviceClient.transcribeWithResponseAsync(body, requestOptions);
-    }
-
-    /**
      * Transcribes the provided audio stream with the specified options.
      *
      * <p><strong>Sample</strong></p>
@@ -154,7 +101,7 @@ public final class TranscriptionAsyncClient {
         RequestOptions requestOptions) {
         AudioFileDetails audio = options.getFileDetails();
         RequestOptions effectiveRequestOptions = requestOptions == null ? new RequestOptions() : requestOptions;
-        return transcribeWithResponse(
+        return transcribeWithResponseInternal(
             new MultipartFormDataHelper(effectiveRequestOptions).serializeJsonField("definition", options)
                 .serializeFileField("audio", audio == null ? null : audio.getContent(),
                     audio == null ? null : audio.getContentType(), audio == null ? null : audio.getFilename())
@@ -162,5 +109,58 @@ public final class TranscriptionAsyncClient {
                 .getRequestBody(),
             effectiveRequestOptions).map(
                 response -> new SimpleResponse<>(response, response.getValue().toObject(TranscriptionResult.class)));
+    }
+
+    /**
+     * Transcribes the provided audio stream.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     durationMilliseconds: int (Required)
+     *     combinedPhrases (Required): [
+     *          (Required){
+     *             channel: Integer (Optional)
+     *             text: String (Required)
+     *         }
+     *     ]
+     *     phrases (Required): [
+     *          (Required){
+     *             channel: Integer (Optional)
+     *             speaker: Integer (Optional)
+     *             offsetMilliseconds: int (Required)
+     *             durationMilliseconds: int (Required)
+     *             text: String (Required)
+     *             words (Optional): [
+     *                  (Optional){
+     *                     text: String (Required)
+     *                     offsetMilliseconds: int (Required)
+     *                     durationMilliseconds: int (Required)
+     *                 }
+     *             ]
+     *             locale: String (Optional)
+     *             confidence: double (Required)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param body The body of the multipart request.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of the transcribe operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> transcribeWithResponseInternal(BinaryData body, RequestOptions requestOptions) {
+        // Operation 'transcribe' is of content-type 'multipart/form-data'. Protocol API is not usable and hence not
+        // generated.
+        return this.serviceClient.transcribeWithResponseInternalAsync(body, requestOptions);
     }
 }

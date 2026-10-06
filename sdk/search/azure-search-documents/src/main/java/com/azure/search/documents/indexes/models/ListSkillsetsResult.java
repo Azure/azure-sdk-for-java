@@ -71,11 +71,29 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
                     List<SearchIndexerSkillset> skillsets
                         = reader.readArray(reader1 -> SearchIndexerSkillset.fromJson(reader1));
                     deserializedListSkillsetsResult.skillsets = skillsets;
+                } else if ("@odata.nextLink".equals(fieldName)) {
+                    deserializedListSkillsetsResult.odataNextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedListSkillsetsResult;
         });
+    }
+
+    /*
+     * The URL that can be used to fetch the next set of results.
+     */
+    @Generated
+    private String odataNextLink;
+
+    /**
+     * Get the odataNextLink property: The URL that can be used to fetch the next set of results.
+     *
+     * @return the odataNextLink value.
+     */
+    @Generated
+    public String getOdataNextLink() {
+        return this.odataNextLink;
     }
 }

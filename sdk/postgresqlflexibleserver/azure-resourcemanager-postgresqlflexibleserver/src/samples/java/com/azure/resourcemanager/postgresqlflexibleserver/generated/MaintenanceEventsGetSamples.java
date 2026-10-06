@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class MaintenanceEventsGetSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/MaintenanceEventsGet.json
+     * x-ms-original-file: 2026-07-01-preview/MaintenanceEventsGet.json
      */
     /**
      * Sample code: Get information about a maintenance event for a server.

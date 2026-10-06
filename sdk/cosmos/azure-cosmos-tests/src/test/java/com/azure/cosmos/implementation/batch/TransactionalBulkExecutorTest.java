@@ -12,10 +12,15 @@ import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosTransactionalBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyBuilder;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -40,12 +45,14 @@ import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class TransactionalBulkExecutorTest extends BatchTestBase {
 
@@ -96,6 +103,17 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
 
         database.createContainer(containerProperties).block();
         return database.getContainer(collectionName);
+    }
+
+    private static CosmosAsyncContainer createHierarchicalContainer(CosmosAsyncDatabase database) {
+        String containerId = UUID.randomUUID().toString();
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        partitionKeyDefinition.setKind(PartitionKind.MULTI_HASH);
+        partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
+        partitionKeyDefinition.setPaths(Arrays.asList("/tenant", "/id"));
+
+        database.createContainer(new CosmosContainerProperties(containerId, partitionKeyDefinition)).block();
+        return database.getContainer(containerId);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
@@ -264,6 +282,29 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
             Thread.sleep(10);
             iterations++;
         }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void incompletePartitionKeyFailureTerminatesPipeline() {
+        this.container = createHierarchicalContainer(database);
+        String tenant = "tenant-" + UUID.randomUUID();
+
+        Map<String, Object> invalidItem = new HashMap<>();
+        invalidItem.put("id", UUID.randomUUID().toString());
+        invalidItem.put("tenant", tenant);
+        CosmosBatch invalidBatch = CosmosBatch.createCosmosBatch(
+            new PartitionKeyBuilder().add(tenant).build());
+        invalidBatch.createItemOperation(invalidItem);
+
+        CosmosBatchBulkOperation invalidOperation = new CosmosBatchBulkOperation(invalidBatch);
+        TransactionalBulkExecutor executor = new TransactionalBulkExecutor(
+            this.container,
+            Flux.just(invalidOperation),
+            new CosmosTransactionalBulkExecutionOptionsImpl());
+
+        assertThatThrownBy(() -> executor.execute().collectList().block())
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(RMResources.PartitionKeyMismatch);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
