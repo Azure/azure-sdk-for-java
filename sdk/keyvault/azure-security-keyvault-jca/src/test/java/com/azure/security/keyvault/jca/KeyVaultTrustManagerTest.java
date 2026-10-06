@@ -27,6 +27,7 @@ import javax.net.ssl.ExtendedSSLSession;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
+import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLParameters;
 import javax.net.ssl.SSLServerSocket;
@@ -310,8 +311,9 @@ public class KeyVaultTrustManagerTest {
             if (accepted) {
                 assertNull(serverFailure);
             } else {
-                assertTrue(serverFailure instanceof SSLHandshakeException || serverFailure instanceof SocketException,
-                    () -> "Expected a TLS alert or connection reset, got: " + serverFailure);
+                // Java 8 can wrap the peer's rejection or disconnect in a generic SSLException.
+                assertTrue(serverFailure instanceof SSLException || serverFailure instanceof SocketException,
+                    () -> "Expected a TLS failure or connection reset, got: " + serverFailure);
             }
         } finally {
             executor.shutdownNow();
