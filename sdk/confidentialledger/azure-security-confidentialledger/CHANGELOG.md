@@ -1,249 +1,5 @@
 # Release History
 
-## 2.0.2-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 2.0.2-beta.1 (2026-08-17)
-
-### Breaking Changes
-
-#### `ConfidentialLedgerClientBuilder` was modified
-
-* `credential(com.azure.core.credential.TokenCredential)` was removed
-
-#### `ConfidentialLedgerServiceVersion` was modified
-
-* `V2022_05_13` was removed
-
-### Features Added
-
-* `models.ReceiptLeafComponents` was added
-
-* `models.UserDefinedFunctionHook` was added
-
-* `models.UserDefinedRole` was added
-
-* `models.Collection` was added
-
-* `models.LedgerUser` was added
-
-* `models.ConfidentialLedgerEnclaves` was added
-
-* `models.Metadata` was added
-
-* `models.ApplicationClaim` was added
-
-* `models.UserDefinedFunctionExecutionResponse` was added
-
-* `models.Role` was added
-
-* `models.LedgerUserMultipleRoles` was added
-
-* `models.JsRuntimeOptions` was added
-
-* `models.ClaimDigest` was added
-
-* `models.TransactionState` was added
-
-* `models.Bundle` was added
-
-* `models.LedgerQueryResult` was added
-
-* `models.UserDefinedFunction` was added
-
-* `models.UserDefinedFunctionExecutionStatus` was added
-
-* `models.UserDefinedRoles` was added
-
-* `models.ModuleDef` was added
-
-* `models.ReceiptElement` was added
-
-* `models.EnclaveQuote` was added
-
-* `models.TransactionStatus` was added
-
-* `models.ForwardingRequired` was added
-
-* `models.UserDefinedFunctionExecutionProperties` was added
-
-* `models.ConfidentialLedgerQueryState` was added
-
-* `models.RedirectionStrategy` was added
-
-* `models.InterpreterReusePolicy` was added
-
-* `models.LedgerEntry` was added
-
-* `models.UserDefinedFunctionExecutionError` was added
-
-* `models.UserDefinedFunctionExecutionResult` was added
-
-* `models.ApplicationClaimProtocol` was added
-
-* `models.ConsortiumMember` was added
-
-* `models.MethodToEndpointProperties` was added
-
-* `models.ReceiptContents` was added
-
-* `models.LedgerEntryClaim` was added
-
-* `models.Mode` was added
-
-* `models.TransactionReceipt` was added
-
-* `models.ApplicationClaimKind` was added
-
-* `ConfidentialLedgerRedirectPolicy` was added
-
-* `models.EndpointProperties` was added
-
-* `models.ConfidentialLedgerUserRoleName` was added
-
-* `models.Constitution` was added
-
-* `models.LedgerWriteResult` was added
-
-#### `ConfidentialLedgerAsyncClient` was modified
-
-* `getUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `createUserDefinedFunction(java.lang.String,models.UserDefinedFunction)` was added
-* `createOrUpdateUser(java.lang.String,models.LedgerUser)` was added
-* `updateUserDefinedRoleStableWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `getRuntimeOptionsWithResponse(com.azure.core.http.rest.RequestOptions)` was added
-* `createOrUpdateLedgerUserWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `listLedgerEntries(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
-* `listTags(com.azure.core.http.rest.RequestOptions)` was added
-* `executeUserDefinedFunction(java.lang.String,models.UserDefinedFunctionExecutionProperties)` was added
-* `listTags()` was added
-* `createUserDefinedRoleStableWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `createLedgerEntry(models.LedgerEntry,java.lang.String,java.lang.String)` was added
-* `createUserDefinedRoleStable(models.UserDefinedRoles)` was added
-* `deleteLedgerUser(java.lang.String)` was added
-* `updateRuntimeOptionsStableWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `createUserDefinedEndpoint(models.Bundle)` was added
-* `getLedgerUserWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `listLedgerEntries()` was added
-* `getUserDefinedEndpoint()` was added
-* `executeUserDefinedFunction(java.lang.String)` was added
-* `listUsers(com.azure.core.http.rest.RequestOptions)` was added
-* `getLedgerUser(java.lang.String)` was added
-* `getCurrentLedgerEntry()` was added
-* `deleteUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `getEnclaveQuotes()` was added
-* `getUser(java.lang.String)` was added
-* `getUserDefinedFunction(java.lang.String)` was added
-* `updateRuntimeOptionsStable(models.JsRuntimeOptions)` was added
-* `getLedgerEntry(java.lang.String,java.lang.String)` was added
-* `getConstitution()` was added
-* `listCollections()` was added
-* `deleteLedgerUserWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `createOrUpdateLedgerUser(java.lang.String,models.LedgerUserMultipleRoles)` was added
-* `deleteUserDefinedRoleStableWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `getCurrentLedgerEntry(java.lang.String)` was added
-* `executeUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `getUserDefinedEndpointWithResponse(com.azure.core.http.rest.RequestOptions)` was added
-* `getTransactionStatus(java.lang.String)` was added
-* `getReceipt(java.lang.String)` was added
-* `listTags(java.lang.String)` was added
-* `createUserDefinedEndpointWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `deleteUser(java.lang.String)` was added
-* `getUserDefinedRole(java.lang.String)` was added
-* `getUserDefinedEndpointsModuleWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `listUserDefinedFunctions()` was added
-* `getLedgerEntry(java.lang.String)` was added
-* `getUserDefinedRoleWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `deleteUserDefinedRoleStable(java.lang.String)` was added
-* `getUserDefinedEndpointsModule(java.lang.String)` was added
-* `listUsers()` was added
-* `getRuntimeOptions()` was added
-* `createUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `listConsortiumMembers()` was added
-* `listLedgerUsers(com.azure.core.http.rest.RequestOptions)` was added
-* `listUserDefinedFunctions(com.azure.core.http.rest.RequestOptions)` was added
-* `updateUserDefinedRoleStable(models.UserDefinedRoles)` was added
-* `createLedgerEntry(models.LedgerEntry)` was added
-* `listLedgerUsers()` was added
-* `deleteUserDefinedFunction(java.lang.String)` was added
-
-#### `ConfidentialLedgerServiceVersion` was modified
-
-* `V2026_02_23` was added
-
-#### `ConfidentialLedgerClient` was modified
-
-* `deleteLedgerUser(java.lang.String)` was added
-* `getUserDefinedRoleWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `getUserDefinedEndpointsModule(java.lang.String)` was added
-* `listTags()` was added
-* `listUserDefinedFunctions(com.azure.core.http.rest.RequestOptions)` was added
-* `updateRuntimeOptionsStable(models.JsRuntimeOptions)` was added
-* `deleteUserDefinedFunction(java.lang.String)` was added
-* `getLedgerEntry(java.lang.String,java.lang.String)` was added
-* `listLedgerEntries()` was added
-* `getUserDefinedEndpointWithResponse(com.azure.core.http.rest.RequestOptions)` was added
-* `updateRuntimeOptionsStableWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `getCurrentLedgerEntry()` was added
-* `getTransactionStatus(java.lang.String)` was added
-* `listCollections()` was added
-* `listLedgerUsers()` was added
-* `getCurrentLedgerEntry(java.lang.String)` was added
-* `getReceipt(java.lang.String)` was added
-* `createOrUpdateLedgerUserWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `deleteUserDefinedRoleStable(java.lang.String)` was added
-* `executeUserDefinedFunction(java.lang.String,models.UserDefinedFunctionExecutionProperties)` was added
-* `getUserDefinedFunction(java.lang.String)` was added
-* `deleteUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `getUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `listLedgerUsers(com.azure.core.http.rest.RequestOptions)` was added
-* `getLedgerEntry(java.lang.String)` was added
-* `deleteLedgerUserWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `getLedgerUserWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `getUser(java.lang.String)` was added
-* `deleteUser(java.lang.String)` was added
-* `getUserDefinedEndpoint()` was added
-* `createOrUpdateLedgerUser(java.lang.String,models.LedgerUserMultipleRoles)` was added
-* `getLedgerUser(java.lang.String)` was added
-* `getEnclaveQuotes()` was added
-* `listTags(java.lang.String)` was added
-* `createUserDefinedEndpoint(models.Bundle)` was added
-* `createUserDefinedEndpointWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `getUserDefinedEndpointsModuleWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `createUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `listUserDefinedFunctions()` was added
-* `getConstitution()` was added
-* `updateUserDefinedRoleStableWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `createOrUpdateUser(java.lang.String,models.LedgerUser)` was added
-* `createUserDefinedRoleStable(models.UserDefinedRoles)` was added
-* `executeUserDefinedFunction(java.lang.String)` was added
-* `getUserDefinedRole(java.lang.String)` was added
-* `listTags(com.azure.core.http.rest.RequestOptions)` was added
-* `deleteUserDefinedRoleStableWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `getRuntimeOptionsWithResponse(com.azure.core.http.rest.RequestOptions)` was added
-* `executeUserDefinedFunctionWithResponse(java.lang.String,com.azure.core.http.rest.RequestOptions)` was added
-* `getRuntimeOptions()` was added
-* `listUsers()` was added
-* `listConsortiumMembers()` was added
-* `listLedgerEntries(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
-* `updateUserDefinedRoleStable(models.UserDefinedRoles)` was added
-* `createUserDefinedRoleStableWithResponse(com.azure.core.util.BinaryData,com.azure.core.http.rest.RequestOptions)` was added
-* `createUserDefinedFunction(java.lang.String,models.UserDefinedFunction)` was added
-* `createLedgerEntry(models.LedgerEntry,java.lang.String,java.lang.String)` was added
-* `listUsers(com.azure.core.http.rest.RequestOptions)` was added
-* `createLedgerEntry(models.LedgerEntry)` was added
-
-#### `certificate.ConfidentialLedgerCertificateServiceVersion` was modified
-
-* `V2024_12_09_PREVIEW` was added
-
 ## 1.0.37 (2026-08-18)
 
 ### Other Changes
@@ -252,6 +8,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
 - Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+
 
 ## 1.0.36 (2026-07-01)
 
@@ -263,16 +20,6 @@
 - Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
 
 
-## 1.1.0-beta.3 (2026-06-05)
-
-### Bugs Fixed
-
-- Hardened `ConfidentialLedgerRedirectPolicy` to enforce a stricter redirect destination policy. The client now
-  only follows HTTP redirects whose target host is the original ledger host or one of its subdomains (using the
-  same scheme). Redirects to sibling ledgers, parent domains, unrelated hosts, or look-alike suffix domains are
-  refused, logged at the warning level, and never followed, preventing the sensitive `Authorization` header from
-  being forwarded to an unintended destination.
-
 ## 1.0.35 (2026-05-05)
 
 ### Other Changes
@@ -282,15 +29,6 @@
 - Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 - Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
 
-## 1.1.0-beta.2 (2026-02-18)
-
-### Features Added
-
-- Added `ConfidentialLedgerRedirectPolicy` to the HTTP pipeline by default. This policy automatically follows
-  HTTP redirects (301, 302, 307, 308) for all HTTP methods including POST, and preserves the Authorization
-  header when redirecting to the same scheme and to hosts that are the same as or subdomains of the original
-  request (ports may differ). This fixes write operations (POST) being rejected when the Confidential Ledger
-  service redirects from a secondary node to the primary node.
 
 ## 1.0.34 (2026-01-29)
 
@@ -301,6 +39,7 @@
 - Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 
+
 ## 1.0.33 (2025-10-27)
 
 ### Other Changes
@@ -309,6 +48,7 @@
 
 - Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
 - Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+
 
 ## 1.0.32 (2025-09-25)
 
@@ -319,6 +59,7 @@
 - Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
 - Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 
+
 ## 1.0.31 (2025-08-21)
 
 ### Other Changes
@@ -327,6 +68,7 @@
 
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+
 
 ## 1.0.30 (2025-07-29)
 
@@ -337,6 +79,7 @@
 - Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
 - Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
 
+
 ## 1.0.29 (2025-06-19)
 
 ### Other Changes
@@ -346,10 +89,6 @@
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
 
-## 1.1.0-beta.1 (2025-04-24)
-
-### Features Added
-- User Defined Funtions (UDFs) support in Ledger API.
 
 ## 1.0.28 (2025-03-24)
 
@@ -360,6 +99,7 @@
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 - Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
 
+
 ## 1.0.27 (2025-02-25)
 
 ### Other Changes
@@ -368,6 +108,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
 - Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+
 
 ## 1.0.26 (2024-12-04)
 
@@ -378,6 +119,7 @@
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
 
+
 ## 1.0.25 (2024-10-27)
 
 ### Other Changes
@@ -386,6 +128,7 @@
 
 - Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
 - Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+
 
 ## 1.0.24 (2024-09-27)
 
@@ -396,6 +139,7 @@
 - Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
 - Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
 
+
 ## 1.0.23 (2024-08-24)
 
 ### Other Changes
@@ -404,6 +148,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 - Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+
 
 ## 1.0.22 (2024-07-26)
 
@@ -414,6 +159,7 @@
 - Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
 - Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
 
+
 ## 1.0.21 (2024-06-27)
 
 ### Other Changes
@@ -422,6 +168,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+
 
 ## 1.0.20 (2024-05-28)
 
@@ -432,6 +179,7 @@
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
 
+
 ## 1.0.19 (2024-04-23)
 
 ### Other Changes
@@ -440,6 +188,7 @@
 
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
 
 ## 1.0.18 (2024-03-20)
 
@@ -450,6 +199,7 @@
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 
+
 ## 1.0.17 (2024-02-20)
 
 ### Other Changes
@@ -458,6 +208,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
 
 ## 1.0.16 (2023-12-04)
 
@@ -468,6 +219,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
 
+
 ## 1.0.15 (2023-11-20)
 
 ### Other Changes
@@ -476,6 +228,7 @@
 
 - Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
 - Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+
 
 ## 1.0.14 (2023-10-20)
 
@@ -486,6 +239,7 @@
 - Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
 - Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
 
+
 ## 1.0.13 (2023-09-22)
 
 ### Other Changes
@@ -495,6 +249,7 @@
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 - Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 
+
 ## 1.0.12 (2023-08-18)
 
 ### Other Changes
@@ -503,6 +258,7 @@
 
 - Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
 - Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
 
 ## 1.0.11 (2023-07-25)
 
@@ -522,6 +278,7 @@
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 - Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
+
 ## 1.0.9 (2023-05-23)
 
 ### Other Changes
@@ -530,6 +287,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
 
 ## 1.0.8 (2023-04-21)
 
@@ -540,6 +298,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
 - Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 
+
 ## 1.0.7 (2023-03-07)
 ### Other Changes
 
@@ -547,12 +306,14 @@
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 - Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
 
+
 ## 1.0.6 (2023-02-07)
 ### Other Changes
 
 #### Dependency Updates
 - Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
 - Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+
 
 ## 1.0.5 (2023-01-10)
 ### Other Changes
