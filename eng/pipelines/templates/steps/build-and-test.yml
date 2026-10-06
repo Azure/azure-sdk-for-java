@@ -46,18 +46,8 @@ parameters:
     default: [ ]
 
 steps:
-  - task: PythonScript@0
-    displayName: 'Update external dependency versions'
-    inputs:
-      scriptPath: 'eng/versioning/update_versions.py'
-      arguments: '--skip-readme --version-override ${{ parameters.VersionOverride }}'
-    condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
-
   - task: Maven@4
-    ${{ if eq(parameters.TestVersionSupport, 'true') }}:
-      displayName: '${{ parameters.VersionOverride }} - Build'
-    ${{ else }}:
-      displayName: 'Build'
+    displayName: 'Build with default dependency versions'
     inputs:
       mavenPomFile: ClientPom.xml
       options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }}
@@ -67,6 +57,27 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'install'
+
+  - task: PythonScript@0
+    displayName: 'Update external dependency versions'
+    inputs:
+      scriptPath: 'eng/versioning/update_versions.py'
+      arguments: '--skip-readme --version-override ${{ parameters.VersionOverride }}'
+    condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
+
+  # Dependencies must retain their default-version compilation during compatibility tests.
+  - task: Maven@4
+    displayName: '${{ parameters.VersionOverride }} - Rebuild selected projects'
+    inputs:
+      mavenPomFile: ClientPom.xml
+      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }} -pl $(ProjectList)
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: $(JavaTestVersion)
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      goals: 'clean install'
+    condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   - ${{ parameters.PreTestRunSteps }}
 

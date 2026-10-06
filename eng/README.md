@@ -29,6 +29,11 @@ than separate source and non-source Maven tasks. Test project selectors remain i
 packages whose resources were provisioned. `TestFromSource` controls version preparation and dependent-project
 selection, not a separate build/test path.
 
+Dependency version compatibility jobs first build and install the scoped reactor with the normal dependency versions.
+After applying a version override, they run `clean install` on only `$(ProjectList)`, without `-am` or `-amd`.
+Both phases use `ClientPom.xml`, but dependency libraries retain their normal-version compilation so an older
+compatibility dependency does not need to compile the current SDK source.
+
 Run the generator regression tests with:
 
 ```powershell
