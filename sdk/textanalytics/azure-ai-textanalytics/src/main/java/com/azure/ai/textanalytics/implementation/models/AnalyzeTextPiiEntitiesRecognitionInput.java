@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,25 +18,21 @@ public final class AnalyzeTextPiiEntitiesRecognitionInput extends AnalyzeTextTas
     /*
      * Enumeration of supported Text Analysis tasks.
      */
-    @Generated
     private AnalyzeTextTaskKind kind = AnalyzeTextTaskKind.PII_ENTITY_RECOGNITION;
 
     /*
      * The analysisInput property.
      */
-    @Generated
     private MultiLanguageAnalysisInput analysisInput;
 
     /*
      * Supported parameters for a PII Entities Recognition task.
      */
-    @Generated
     private PiiTaskParameters parameters;
 
     /**
      * Creates an instance of AnalyzeTextPiiEntitiesRecognitionInput class.
      */
-    @Generated
     public AnalyzeTextPiiEntitiesRecognitionInput() {
     }
 
@@ -46,7 +41,6 @@ public final class AnalyzeTextPiiEntitiesRecognitionInput extends AnalyzeTextTas
      * 
      * @return the kind value.
      */
-    @Generated
     @Override
     public AnalyzeTextTaskKind getKind() {
         return this.kind;
@@ -57,7 +51,6 @@ public final class AnalyzeTextPiiEntitiesRecognitionInput extends AnalyzeTextTas
      * 
      * @return the analysisInput value.
      */
-    @Generated
     public MultiLanguageAnalysisInput getAnalysisInput() {
         return this.analysisInput;
     }
@@ -68,7 +61,6 @@ public final class AnalyzeTextPiiEntitiesRecognitionInput extends AnalyzeTextTas
      * @param analysisInput the analysisInput value to set.
      * @return the AnalyzeTextPiiEntitiesRecognitionInput object itself.
      */
-    @Generated
     public AnalyzeTextPiiEntitiesRecognitionInput setAnalysisInput(MultiLanguageAnalysisInput analysisInput) {
         this.analysisInput = analysisInput;
         return this;
@@ -79,7 +71,6 @@ public final class AnalyzeTextPiiEntitiesRecognitionInput extends AnalyzeTextTas
      * 
      * @return the parameters value.
      */
-    @Generated
     public PiiTaskParameters getParameters() {
         return this.parameters;
     }
@@ -90,7 +81,6 @@ public final class AnalyzeTextPiiEntitiesRecognitionInput extends AnalyzeTextTas
      * @param parameters the parameters value to set.
      * @return the AnalyzeTextPiiEntitiesRecognitionInput object itself.
      */
-    @Generated
     public AnalyzeTextPiiEntitiesRecognitionInput setParameters(PiiTaskParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -99,7 +89,6 @@ public final class AnalyzeTextPiiEntitiesRecognitionInput extends AnalyzeTextTas
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,7 +106,6 @@ public final class AnalyzeTextPiiEntitiesRecognitionInput extends AnalyzeTextTas
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AnalyzeTextPiiEntitiesRecognitionInput.
      */
-    @Generated
     public static AnalyzeTextPiiEntitiesRecognitionInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnalyzeTextPiiEntitiesRecognitionInput deserializedAnalyzeTextPiiEntitiesRecognitionInput
