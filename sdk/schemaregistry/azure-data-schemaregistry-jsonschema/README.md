@@ -22,7 +22,7 @@ identifiers and JSON encoded data.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-jsonschema</artifactId>
-  <version>1.0.10</version>
+  <version>1.0.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
