@@ -649,7 +649,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
 
     @Test
     @LiveOnly
-    void excessForwardingHopsMoveMessageToTransferDeadLetterQueue() {
+    void excessForwardingHopsMoveMessageToDeadLetterQueue() {
         final ServiceBusAdministrationClient client = getConformanceClient();
         final String[] queues = new String[6];
         for (int i = 0; i < queues.length; i++) {
@@ -666,19 +666,17 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
             }
             final ServiceBusClientBuilder builder = getConformanceBuilder();
             try (ServiceBusSenderClient sender = builder.sender().queueName(queues[0]).buildClient()) {
-                final List<ServiceBusReceiverClient> transferReceivers = new ArrayList<>();
+                final List<ServiceBusReceiverClient> deadLetterReceivers = new ArrayList<>();
                 try {
                     for (int i = 0; i < queues.length - 1; i++) {
-                        transferReceivers.add(builder.receiver()
-                            .queueName(queues[i])
-                            .subQueue(SubQueue.TRANSFER_DEAD_LETTER_QUEUE)
-                            .buildClient());
+                        deadLetterReceivers.add(
+                            builder.receiver().queueName(queues[i]).subQueue(SubQueue.DEAD_LETTER_QUEUE).buildClient());
                     }
                     sender.sendMessage(new ServiceBusMessage("too-many-hops"));
                     final long deadline = System.nanoTime() + Duration.ofMinutes(2).toNanos();
                     ServiceBusReceivedMessage failed = null;
                     while (failed == null && System.nanoTime() < deadline) {
-                        for (ServiceBusReceiverClient receiver : transferReceivers) {
+                        for (ServiceBusReceiverClient receiver : deadLetterReceivers) {
                             failed
                                 = receiver.receiveMessages(1, Duration.ofSeconds(1)).stream().findFirst().orElse(null);
                             if (failed != null) {
@@ -689,14 +687,54 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
                             }
                         }
                     }
-                    assertNotNull(failed, "Excess forwarding did not enter any forwarding source's transfer DLQ.");
+                    assertNotNull(failed, "Excess forwarding did not enter any forwarding source's DLQ.");
                 } finally {
-                    transferReceivers.forEach(ServiceBusReceiverClient::close);
+                    deadLetterReceivers.forEach(ServiceBusReceiverClient::close);
                 }
             }
         } finally {
             for (int i = queues.length - created; i < queues.length; i++) {
                 client.deleteQueue(queues[i]);
+            }
+        }
+    }
+
+    @Test
+    @LiveOnly
+    void failedForwardingCanBeReceivedFromTransferDeadLetterQueue() {
+        final ServiceBusAdministrationClient client = getConformanceClient();
+        final String source = testResourceNamer.randomName("transfer", 10);
+        final String destination = testResourceNamer.randomName("target", 10);
+        client.createQueue(destination);
+        try {
+            client.createQueue(source, new CreateQueueOptions().setForwardTo(destination));
+            try {
+                client.deleteQueue(destination);
+                final ServiceBusClientBuilder builder = getConformanceBuilder();
+                try (ServiceBusSenderClient sender = builder.sender().queueName(source).buildClient();
+                    ServiceBusReceiverClient transferDeadLetters = builder.receiver()
+                        .queueName(source)
+                        .subQueue(SubQueue.TRANSFER_DEAD_LETTER_QUEUE)
+                        .buildClient()) {
+                    sender.sendMessage(new ServiceBusMessage("failed-forwarding"));
+                    final long deadline = System.nanoTime() + Duration.ofMinutes(2).toNanos();
+                    ServiceBusReceivedMessage failed = null;
+                    while (failed == null && System.nanoTime() < deadline) {
+                        failed = transferDeadLetters.receiveMessages(1, Duration.ofSeconds(5))
+                            .stream()
+                            .findFirst()
+                            .orElse(null);
+                    }
+                    assertNotNull(failed, "Forwarding to a deleted destination did not enter the source transfer DLQ.");
+                    assertEquals("failed-forwarding", failed.getBody().toString());
+                    transferDeadLetters.complete(failed);
+                }
+            } finally {
+                client.deleteQueue(source);
+            }
+        } finally {
+            if (client.getQueueExists(destination)) {
+                client.deleteQueue(destination);
             }
         }
     }
@@ -731,7 +769,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
                 }
                 assertNotNull(failed, "The filter evaluation error did not dead-letter the message.");
                 assertEquals("invalid-filter", failed.getBody().toString());
-                assertEquals("FilterEvaluationException", failed.getDeadLetterReason());
+                assertEquals("FilterException", failed.getDeadLetterReason());
                 deadLetters.complete(failed);
             }
         } finally {
