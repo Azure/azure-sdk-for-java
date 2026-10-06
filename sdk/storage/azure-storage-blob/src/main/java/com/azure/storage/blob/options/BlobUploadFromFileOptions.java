@@ -8,8 +8,6 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.common.ContentValidationAlgorithm;
-import com.azure.storage.common.ValidatableContent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.util.Map;
@@ -18,7 +16,7 @@ import java.util.Map;
  * Extended options that may be passed when uploading a blob from a file.
  */
 @Fluent
-public class BlobUploadFromFileOptions implements ValidatableContent {
+public class BlobUploadFromFileOptions {
     private final String filePath;
     private ParallelTransferOptions parallelTransferOptions;
     private BlobHttpHeaders headers;
@@ -26,7 +24,6 @@ public class BlobUploadFromFileOptions implements ValidatableContent {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
-    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Constructs a {@link BlobUploadFromFileOptions}.
@@ -165,31 +162,6 @@ public class BlobUploadFromFileOptions implements ValidatableContent {
      */
     public BlobUploadFromFileOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
-        return this;
-    }
-
-    /**
-     * Gets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @return The transfer validation checksum algorithm.
-     */
-    @Override
-    public ContentValidationAlgorithm getContentValidationAlgorithm() {
-        return contentValidationAlgorithm;
-    }
-
-    /**
-     * Sets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
-     * @return The updated options.
-     */
-    @Override
-    public BlobUploadFromFileOptions
-        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
-        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

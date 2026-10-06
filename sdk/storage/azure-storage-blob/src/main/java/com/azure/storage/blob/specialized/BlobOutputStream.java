@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.specialized;
 
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -17,14 +16,10 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
-import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
-import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.common.implementation.Constants;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -52,13 +47,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
     static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client,
         final AppendBlobRequestConditions appendBlobRequestConditions) {
-        return new AppendBlobOutputStream(client, appendBlobRequestConditions, null);
-    }
-
-    static BlobOutputStream appendBlobOutputStream(final AppendBlobAsyncClient client,
-        final AppendBlobRequestConditions appendBlobRequestConditions,
-        final ContentValidationAlgorithm contentValidationAlgorithm) {
-        return new AppendBlobOutputStream(client, appendBlobRequestConditions, contentValidationAlgorithm);
+        return new AppendBlobOutputStream(client, appendBlobRequestConditions);
     }
 
     /**
@@ -115,18 +104,12 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         BlockBlobOutputStreamOptions options, Context context) {
         options = options == null ? new BlockBlobOutputStreamOptions() : options;
         return new BlockBlobOutputStream(client, options.getParallelTransferOptions(), options.getHeaders(),
-            options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(),
-            options.getContentValidationAlgorithm(), context);
+            options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(), context);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
         final BlobRequestConditions requestConditions) {
-        return pageBlobOutputStream(client, pageRange, requestConditions, null);
-    }
-
-    static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
-        final BlobRequestConditions requestConditions, final ContentValidationAlgorithm contentValidationAlgorithm) {
-        return new PageBlobOutputStream(client, pageRange, requestConditions, contentValidationAlgorithm);
+        return new PageBlobOutputStream(client, pageRange, requestConditions);
     }
 
     abstract void commit();
@@ -174,11 +157,9 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private final AppendBlobRequestConditions appendBlobRequestConditions;
         private final AppendBlobAsyncClient client;
-        private final ContentValidationAlgorithm contentValidationAlgorithm;
 
         private AppendBlobOutputStream(final AppendBlobAsyncClient client,
-            final AppendBlobRequestConditions appendBlobRequestConditions,
-            final ContentValidationAlgorithm contentValidationAlgorithm) {
+            final AppendBlobRequestConditions appendBlobRequestConditions) {
             // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service
             // versions support up to 4MB
             super(client.getServiceVersion().ordinal() < BlobServiceVersion.V2022_11_02.ordinal()
@@ -189,7 +170,6 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             this.appendBlobRequestConditions = (appendBlobRequestConditions == null)
                 ? new AppendBlobRequestConditions()
                 : appendBlobRequestConditions;
-            this.contentValidationAlgorithm = contentValidationAlgorithm;
 
             if (this.appendBlobRequestConditions.getAppendPosition() == null) {
                 this.appendBlobRequestConditions.setAppendPosition(client.getProperties().block().getBlobSize());
@@ -198,11 +178,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private Mono<Void> appendBlock(Flux<ByteBuffer> blockData, long writeLength) {
             long newAppendOffset = appendBlobRequestConditions.getAppendPosition() + writeLength;
-            return BinaryData.fromFlux(blockData, writeLength, false)
-                .flatMap(binaryData -> client.appendBlockWithResponseInternal(
-                    new AppendBlobAppendBlockOptions(binaryData).setRequestConditions(appendBlobRequestConditions)
-                        .setContentValidationAlgorithm(contentValidationAlgorithm),
-                    Context.NONE))
+            return client.appendBlockWithResponse(blockData, writeLength, null, appendBlobRequestConditions)
                 .doOnNext(ignored -> appendBlobRequestConditions.setAppendPosition(newAppendOffset))
                 .then()
                 .onErrorResume(t -> t instanceof IOException || t instanceof BlobStorageException, e -> {
@@ -247,8 +223,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private BlockBlobOutputStream(final BlobAsyncClient client,
             final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
             final Map<String, String> metadata, Map<String, String> tags, final AccessTier tier,
-            final BlobRequestConditions requestConditions, final ContentValidationAlgorithm contentValidationAlgorithm,
-            Context context) {
+            final BlobRequestConditions requestConditions, Context context) {
             super(Integer.MAX_VALUE); // writeThreshold is effectively not used by BlockBlobOutputStream.
             // There is a bug in reactor core that does not handle converting Context.NONE to a reactor context.
             context = context == null || context.equals(Context.NONE) ? null : context;
@@ -266,8 +241,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                         .setMetadata(metadata)
                         .setTags(tags)
                         .setTier(tier)
-                        .setRequestConditions(requestConditions)
-                        .setContentValidationAlgorithm(contentValidationAlgorithm))
+                        .setRequestConditions(requestConditions))
                 // This allows the operation to continue while maintaining the error that occurred.
                 .onErrorResume(e -> {
                     if (e instanceof IOException) {
@@ -345,15 +319,12 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private final PageBlobAsyncClient client;
         private final PageBlobRequestConditions pageBlobRequestConditions;
         private final PageRange pageRange;
-        private final ContentValidationAlgorithm contentValidationAlgorithm;
 
         private PageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
-            final BlobRequestConditions blobRequestConditions,
-            final ContentValidationAlgorithm contentValidationAlgorithm) {
+            final BlobRequestConditions blobRequestConditions) {
             super(PageBlobClient.MAX_PUT_PAGES_BYTES);
             this.client = client;
             this.pageRange = pageRange;
-            this.contentValidationAlgorithm = contentValidationAlgorithm;
 
             if (blobRequestConditions != null) {
                 this.pageBlobRequestConditions
@@ -368,12 +339,9 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         }
 
         private Mono<Void> writePages(Flux<ByteBuffer> pageData, int length, long offset) {
-            PageRange pageRange = new PageRange().setStart(offset).setEnd(offset + length - 1);
-            return BinaryData.fromFlux(pageData, (long) length, false)
-                .flatMap(binaryData -> client
-                    .uploadPagesWithResponseInternal(new PageBlobUploadPagesOptions(pageRange, binaryData)
-                        .setRequestConditions(pageBlobRequestConditions)
-                        .setContentValidationAlgorithm(contentValidationAlgorithm), Context.NONE))
+            return client
+                .uploadPagesWithResponse(new PageRange().setStart(offset).setEnd(offset + length - 1), pageData, null,
+                    pageBlobRequestConditions)
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);

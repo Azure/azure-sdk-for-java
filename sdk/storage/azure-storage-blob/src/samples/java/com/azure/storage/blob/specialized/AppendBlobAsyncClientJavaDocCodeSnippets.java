@@ -3,16 +3,13 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
-import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
-import com.azure.storage.common.ContentValidationAlgorithm;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -119,21 +116,6 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
         client.appendBlockWithResponse(data, length, md5, requestConditions).subscribe(response ->
             System.out.printf("AppendBlob has %d committed blocks%n", response.getValue().getBlobCommittedBlockCount()));
         // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-byte-AppendBlobRequestConditions
-    }
-
-    /**
-     * Code snippet for {@link AppendBlobAsyncClient#appendBlockWithResponse(AppendBlobAppendBlockOptions)}
-     */
-    public void appendBlockWithResponseOptions() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#AppendBlobAppendBlockOptions
-        BinaryData data = BinaryData.fromString("data");
-        AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data)
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        client.appendBlockWithResponse(options).subscribe(response ->
-            System.out.printf("AppendBlob has %d committed blocks%n",
-                response.getValue().getBlobCommittedBlockCount()));
-        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#AppendBlobAppendBlockOptions
     }
 
     /**

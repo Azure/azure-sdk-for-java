@@ -6,8 +6,6 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
-import com.azure.storage.common.ContentValidationAlgorithm;
-import com.azure.storage.common.ValidatableContent;
 
 import java.nio.channels.SeekableByteChannel;
 
@@ -15,12 +13,11 @@ import java.nio.channels.SeekableByteChannel;
  * Extended options that may be passed when opening a blob seekable byte channel for reading.
  */
 @Fluent
-public final class BlobSeekableByteChannelReadOptions implements ValidatableContent {
+public final class BlobSeekableByteChannelReadOptions {
     private Long initialPosition;
     private BlobRequestConditions requestConditions;
     private Integer readSizeInBytes;
     private ConsistentReadControl consistentReadControl;
-    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link BlobSeekableByteChannelReadOptions}.
@@ -109,31 +106,6 @@ public final class BlobSeekableByteChannelReadOptions implements ValidatableCont
      */
     public BlobSeekableByteChannelReadOptions setConsistentReadControl(ConsistentReadControl consistentReadControl) {
         this.consistentReadControl = consistentReadControl;
-        return this;
-    }
-
-    /**
-     * Gets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @return The transfer validation checksum algorithm.
-     */
-    @Override
-    public ContentValidationAlgorithm getContentValidationAlgorithm() {
-        return contentValidationAlgorithm;
-    }
-
-    /**
-     * Sets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
-     * @return The updated options.
-     */
-    @Override
-    public BlobSeekableByteChannelReadOptions
-        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
-        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }
