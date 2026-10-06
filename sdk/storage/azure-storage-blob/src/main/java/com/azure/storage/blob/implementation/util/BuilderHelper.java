@@ -91,8 +91,8 @@ public final class BuilderHelper {
      * @param configuration Configuration store contain environment settings.
      * @param logger {@link ClientLogger} used to log any exception.
      * @param audience {@link BlobAudience} used to determine the audience of the blob.
-     * @param sessionOptions {@link SessionOptions} containing the session mode, container name, and account name for session-based authentication.
-     * @param serviceVersion The service version for session creation. Required when session is active.
+     * @param sessionOptions {@link SessionOptions} containing the session mode, account name, and optional provider.
+     * @param serviceVersion The service version for session creation; defaults to the latest version when null.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
@@ -150,7 +150,7 @@ public final class BuilderHelper {
         postAuthenticationPolicies.add(new ScrubEtagPolicy());
 
         // When the resolved session mode is enabled and a tokenCredential is
-        // present, a single SessionTokenCredentialPolicy is added as the auth policy. The session policy wraps the bearer
+        // present, a single SessionAuthenticationPolicy is added as the auth policy. The session policy wraps the bearer
         // token policy internally and delegates to it for non-session-eligible requests. When sessions are not active,
         // the bearer token policy is added directly.
         if (tokenCredential != null) {

@@ -2551,8 +2551,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 .verifyComplete();
         }
 
-        // Greater than or equal to because there might be a retry that has a Session token as well if test is run with
-        // listBlobsOverSessionEnabledClient()
+        // Transport retries can produce more than one observed request per blob.
         assertTrue(downloadAuthSchemes.size() >= blobCount,
             "Expected to observe at least one download request per blob; saw " + downloadAuthSchemes);
         assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
@@ -2616,7 +2615,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @Test
     @LiveOnly
     @ResourceLock("BlobSessionAuth")
-    // This test validates that listing blobs with a session-enabled client uses Bearer authorization because
+    // This test validates that listing blobs with a session-enabled client uses bearer authentication because
     // List Blobs is a container-level GET request, not a blob-level GET request.
     public void listBlobsOverSessionEnabledClient() {
         String blobName = generateBlobName();

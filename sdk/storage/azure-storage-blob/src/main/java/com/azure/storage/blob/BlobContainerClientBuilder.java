@@ -104,7 +104,8 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
 
     /**
      * Sets the options for session-based authentication of eligible GET blob requests.
-     * Requests that are not eligible continue to use bearer token authentication.
+     * Applies when this builder constructs a pipeline with a {@link TokenCredential}; requests that are not
+     * eligible continue to use bearer token authentication. Sessions are disabled by default.
      *
      * @param sessionOptions The session options for the HTTP pipeline.
      * @return the updated BlobContainerClientBuilder object.

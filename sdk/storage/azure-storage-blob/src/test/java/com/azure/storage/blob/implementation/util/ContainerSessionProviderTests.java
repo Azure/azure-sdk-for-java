@@ -125,7 +125,6 @@ public class ContainerSessionProviderTests extends BlobTestBase {
                 assertNotNull(credential.getSessionToken());
                 assertNotNull(credential.getSessionKey());
                 assertNotNull(credential.getExpiresAt());
-                //            assertEquals(AuthenticationType.HMAC, session.getAuthenticationType());
             })
             .verifyComplete();
 

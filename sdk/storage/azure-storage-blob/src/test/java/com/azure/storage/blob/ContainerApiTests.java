@@ -2526,8 +2526,7 @@ public class ContainerApiTests extends BlobTestBase {
             assertEquals(DATA.getDefaultText(), downloaded.toString());
         }
 
-        // Greater than or equal to because there might be a retry that has a Session token as well if test is run with
-        // listBlobsOverSessionEnabledClient()
+        // Transport retries can produce more than one observed request per blob.
         assertTrue(downloadAuthSchemes.size() >= blobCount,
             "Expected to observe at least one download request per blob; saw " + downloadAuthSchemes);
         assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
@@ -2590,8 +2589,7 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     @LiveOnly
     @ResourceLock("BlobSessionAuth")
-    // This test validates that listing blobs with a session-enabled client uses Bearer authorization because
-    // List Blobs is a container-level GET request, not a blob-level GET request so it users Bearer tokens instead of session tokens.
+    // Listing uses bearer authentication because List Blobs is a container-level GET, not an eligible blob GET.
     public void listBlobsOverSessionEnabledClient() {
         String blobName = generateBlobName();
         cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
@@ -2617,10 +2615,9 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     @LiveOnly
     @ResourceLock("BlobSessionAuth")
-    // Verifies that the cached session token rotates on its own while a client keeps issuing blob GET requests.
-    // A session credential is short-lived (~5 minutes) and the credential cache fetches a fresh one in the
-    // background before the current one expires. This test keeps issuing small GETs across more than one session
-    // lifetime and asserts that the session token observed on the wire changes at least once (rotation happened).
+    // Verifies token rotation while a client keeps issuing blob GET requests. Cache lookups trigger background
+    // refresh when due; they acquire a new credential if the cached one has expired. The test expects the
+    // service-issued session lifetime to be approximately five minutes.
     public void sessionTokenRotates() {
         String blobName = generateBlobName();
         cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
@@ -2628,8 +2625,7 @@ public class ContainerApiTests extends BlobTestBase {
         SessionGetInspectionPolicy inspect = new SessionGetInspectionPolicy(blobName);
         BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
 
-        // Continuously issue small GET requests for slightly longer than one session lifetime so we are
-        // guaranteed to cross at least one background rotation boundary while requests are in flight.
+        // Issue small GET requests for longer than the expected session lifetime to observe token rotation.
         long testDurationMillis = 6 * 60 * 1000L;
         long pollIntervalMillis = 10 * 1000L;
         long deadline = System.currentTimeMillis() + testDurationMillis;
@@ -2653,14 +2649,10 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     @LiveOnly
     @ResourceLock("BlobSessionAuth")
-    // Verifies that, while a client hammers the service with small, rapid, back-to-back blob GET requests, the
-    // cached session token rotates and every download still succeeds. The service legitimately returns transient
-    // "session_token_invalid" (401, network-context-mismatch) responses while it rotates a session's binding; the
-    // SDK recovers from those by invalidating the session, creating a fresh one, and retrying, so the caller's GET
-    // never fails. We therefore assert the contract the SDK can actually honor - every download returns the
-    // correct content (no invalid-token failure ever surfaces to the caller) and the token rotates at least once -
-    // rather than asserting the wire never carries a 401, which the service does not guarantee. (Recovered
-    // invalid-token responses are still recorded and surfaced in the failure message below for diagnostics.)
+    // Verifies that tokens rotate and downloads succeed during rapid, back-to-back blob GET requests.
+    // A session-signed 401 invalidates the rejected credential if still current and retries with bearer authentication;
+    // a later request can acquire a new session. The test asserts successful downloads, not the absence of
+    // wire-level authentication failures, which are retained for diagnostics.
     public void sessionTokenRotatesWithoutInvalidTokenGets() {
         String blobName = generateBlobName();
         cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
@@ -2668,17 +2660,13 @@ public class ContainerApiTests extends BlobTestBase {
         SessionGetInspectionPolicy inspect = new SessionGetInspectionPolicy(blobName);
         BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
 
-        // Continuously issue small GET requests, back-to-back with no delay, for slightly longer than one
-        // session lifetime so we are guaranteed to cross at least one rotation boundary while a high volume of
-        // requests are in flight.
+        // Issue back-to-back GET requests for longer than the expected five-minute session lifetime.
         long testDurationMillis = 6 * 60 * 1000L;
         long deadline = System.currentTimeMillis() + testDurationMillis;
         int getCount = 0;
 
         while (System.currentTimeMillis() < deadline) {
-            // Each GET must succeed with the expected content. If a transient invalid-token 401 reaches the wire,
-            // the SDK's retry transparently recovers it, so this download still returns the blob - the caller
-            // never observes a failure.
+            // Each download must return the expected content, including when it falls back to bearer after a 401.
             assertEquals(DATA.getDefaultText(), sessionBlob.downloadContent().toString());
             getCount++;
         }
@@ -2695,13 +2683,10 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     @LiveOnly
     @ResourceLock("BlobSessionAuth")
-    // Simulates a slow-polling client that issues a single small blob GET roughly every 30 seconds. Because the
-    // requests are sparse, the client can go a long time between responses and may miss the service's proactive
-    // "x-ms-auth-info: session_expiring" hint window entirely - so it can end up signing a request with a token
-    // that has expired purely due to the passage of time. This verifies the SDK handles that gracefully: every
-    // download still returns the correct content (the cache rotates to a fresh session - proactively via its own
-    // refresh timer when it can, or via the one-shot 401 retry as a backstop when an expired token slips onto the
-    // wire) and the session token observed on the wire rotates at least once over the multi-lifetime window.
+    // Simulates a client issuing a blob GET roughly every 30 seconds, potentially missing session_expiring hints.
+    // Each cache lookup checks expiration: a usable credential can trigger background refresh, while an expired
+    // credential requires acquisition before signing. A session-signed 401 falls back to bearer for that request.
+    // Downloads must succeed and the observed session token must rotate over the test window.
     public void sessionTokenRotatesWithSparsePolling() {
         String blobName = generateBlobName();
         cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
@@ -2709,19 +2694,16 @@ public class ContainerApiTests extends BlobTestBase {
         SessionGetInspectionPolicy inspect = new SessionGetInspectionPolicy(blobName);
         BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
 
-        // Poll once every ~30s for longer than two session lifetimes (~5 min each) so we are guaranteed to cross
-        // multiple expiry boundaries. The wide gap between requests is what makes it possible to land a request
-        // on an already-expired token: the proactive refresh point can come due during the idle gap, and the
-        // first request after it - 30s later - may be signed just after the token has lapsed.
+        // Poll for longer than two expected five-minute lifetimes. Refresh times may pass during the idle gaps,
+        // but expiration and refresh eligibility are evaluated only when the cache is accessed.
         long testDurationMillis = 11 * 60 * 1000L;
         long pollIntervalMillis = 30 * 1000L;
         long deadline = System.currentTimeMillis() + testDurationMillis;
         int getCount = 0;
 
         while (System.currentTimeMillis() < deadline) {
-            // The caller must never observe a failure: each sparse GET returns the expected content, whether the
-            // cached token was still valid, was proactively rotated, or had to be re-acquired after a 401. Any
-            // expired-token use is recovered transparently by the policy's single retry with a fresh session.
+            // Each download must return the expected content, whether it uses a cached or newly acquired session
+            // or falls back to bearer after a session-signed 401.
             assertEquals(DATA.getDefaultText(), sessionBlob.downloadContent().toString());
             getCount++;
             sleepIfRunningAgainstService(pollIntervalMillis);
@@ -2738,9 +2720,8 @@ public class ContainerApiTests extends BlobTestBase {
 
     /**
      * Test-only pipeline policy that watches blob-level GET requests for a single blob and records, at the wire
-     * level (PER_RETRY), the Session token used to sign each request and any invalid-token (401/403) responses
-     * those requests receive. Used to assert that session tokens rotate over time without any request ever being
-     * signed with an expired/invalid token.
+     * level (PER_RETRY), the Session token used to sign each request and any HTTP 401/403 responses, including
+     * bearer responses. Used to assert token rotation and include authentication failures in diagnostics.
      */
     private static final class SessionGetInspectionPolicy implements HttpPipelinePolicy {
         private final String blobName;

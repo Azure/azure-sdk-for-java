@@ -32,8 +32,8 @@ public final class SessionCredential {
      * @param sessionKey the Base64-encoded session key used to sign requests.
      * @param expiresAt the instant at which this session credential expires.
      * @param accountName the storage account name this session credential is scoped to.
-     * @throws NullPointerException if {@code sessionToken}, {@code sessionKey}, or {@code accountName} is
-     * {@code null}.
+     * @throws NullPointerException if {@code sessionToken}, {@code sessionKey}, {@code expiresAt},
+     * or {@code accountName} is {@code null}.
      */
     public SessionCredential(String sessionToken, String sessionKey, OffsetDateTime expiresAt, String accountName) {
         this.sessionToken = Objects.requireNonNull(sessionToken, "'sessionToken' cannot be null.");

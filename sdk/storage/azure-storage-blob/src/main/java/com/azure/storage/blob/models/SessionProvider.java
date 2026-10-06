@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
  * <li>{@link #refreshSession} proactively refreshes a credential when it is expiring.</li>
  * </ol>
  *
- * Implementations must be thread-safe. Methods may be called concurrently for different containers, identified
+ * Implementations must be thread-safe. Methods may be called concurrently for the same or different containers, identified
  * by the {@link SessionRequestContext} passed to each method. {@link #invalidateSession} must compare and
  * invalidate atomically, and {@link #refreshSession} must return without waiting for the refresh to complete.
  * <p>
@@ -72,7 +72,8 @@ public interface SessionProvider {
      *
      * @param context the request-scoped session parameters.
      * @param rejectedCredential the credential the service rejected with HTTP 401.
-     * @return {@code true} if this call invalidated the credential; {@code false} if it was already replaced.
+     * @return {@code true} if this call invalidated the credential; {@code false} if it is no longer current,
+     * including when it was already invalidated or replaced.
      */
     boolean invalidateSession(SessionRequestContext context, SessionCredential rejectedCredential);
 

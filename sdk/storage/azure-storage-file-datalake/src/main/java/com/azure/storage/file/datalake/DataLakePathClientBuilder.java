@@ -111,8 +111,9 @@ public final class DataLakePathClientBuilder
 
     /**
      * Sets the options for session-based authentication of eligible GET blob requests made by the underlying Blob
-     * clients used by this Data Lake client. Requests that are not eligible continue to use bearer token
-     * authentication.
+     * clients used by this Data Lake client. Applies when the builder constructs a pipeline with a
+     * {@link TokenCredential}; requests that are not eligible continue to use bearer token authentication.
+     * Sessions are disabled by default and are not used by the DFS pipeline.
      *
      * @param sessionOptions The session options for the HTTP pipeline.
      * @return the updated DataLakePathClientBuilder object.

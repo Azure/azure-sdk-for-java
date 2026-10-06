@@ -51,10 +51,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * <p>
  * These tests drive {@link ContainerSessionProvider} with an injectable {@link Clock} and a fake HTTP transport
  * ({@link CreateSessionTransport}) so the expiry, proactive-refresh, and per-container independence logic
- * can be exercised without sleeping or hitting the service. Unlike {@code SessionProviderSeamTest} (which
- * verifies the container name is placed correctly on the wire), these tests focus on cache timing: which
- * token is returned when, and how many CreateSession calls are made. Account-level acquisition cooldown is
- * covered separately by {@code SessionTokenCredentialPolicyTest}.
+ * can be exercised without waiting for real credential expiration or hitting the service.
+ * {@link ContainerSessionProviderTests} covers session acquisition through the service client; these tests
+ * focus on cache timing, returned credentials, and CreateSession call counts. Per-container acquisition
+ * cooldown is covered separately by {@link com.azure.storage.blob.policy.SessionAuthenticationPolicyTest}.
  */
 public class ContainerSessionProviderCacheTest {
 
@@ -64,7 +64,7 @@ public class ContainerSessionProviderCacheTest {
     private static final String FIRST_TOKEN = "first-session-token";
     private static final String SECOND_TOKEN = "second-session-token";
 
-    // A session's usable lifetime in these tests (the service issues ~5 minute sessions).
+    // A session's usable lifetime in these tests.
     private static final Duration SESSION_LIFETIME = Duration.ofMinutes(5);
     private static final Instant TEST_START = Instant.parse("2026-06-19T00:00:00Z");
 
@@ -117,7 +117,7 @@ public class ContainerSessionProviderCacheTest {
 
     /**
      * When the service has NOT sent a {@code session_expiring} hint, the cache must still refresh
-     * automatically once its own jittered timer elapses (while the current token is still usable), serving
+     * on a lookup after its jittered refresh time (while the current token is still usable), serving
      * the current token until the refreshed one is ready.
      */
     @Test
@@ -133,7 +133,7 @@ public class ContainerSessionProviderCacheTest {
         // 5s safety buffer => at most lifetime-5s) but still before hard expiry, so the token remains usable.
         clock.advance(SESSION_LIFETIME.minusSeconds(2));
 
-        // Second request: token still usable, refresh timer elapsed, no service hint => automatic background
+        // Second request: token still usable, refresh time passed, no service hint => automatic background
         // refresh. The current token is served while the refresh happens.
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
         assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
@@ -173,8 +173,7 @@ public class ContainerSessionProviderCacheTest {
 
         SessionCredential firstCredential = provider.getSession(context);
 
-        // Before the shadow copy was removed, this late rejection incorrectly reported success even though the
-        // background refresh had already replaced the cached credential.
+        // Replace the cached credential before reporting a rejection of the original one.
         clock.advance(SESSION_LIFETIME.minusSeconds(2));
         assertEquals(FIRST_TOKEN, provider.getSession(context).getSessionToken());
         assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
@@ -188,8 +187,8 @@ public class ContainerSessionProviderCacheTest {
 
     /**
      * Two different containers must refresh completely independently: advancing the clock past one
-     * container's jittered refresh point must trigger a background refresh for that container only, leaving
-     * the other container's still-fresh session untouched.
+     * container's jittered refresh point and accessing it must trigger a background refresh for that container
+     * only, leaving the other container's cached session untouched until that container is accessed.
      */
     @Test
     public void independentContainersRefreshIndependently() {
@@ -213,7 +212,7 @@ public class ContainerSessionProviderCacheTest {
         assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
 
         // Container B has not been touched since the clock advanced, so it must not have refreshed - proving
-        // the two containers' caches operate independently rather than sharing one refresh timer.
+        // the two containers' caches refresh independently on access.
         assertEquals(1, httpClient.getRequestCount(CONTAINER_B));
     }
 
@@ -229,7 +228,7 @@ public class ContainerSessionProviderCacheTest {
         // First request mints the token.
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
 
-        // Advance only slightly - well before the earliest jittered refresh point (80% of lifetime).
+        // Advance only slightly - well before 80% of (lifetime minus the safety buffer).
         clock.advance(Duration.ofSeconds(30));
 
         // Several more requests reuse the same token; no refresh is triggered.
@@ -267,7 +266,7 @@ public class ContainerSessionProviderCacheTest {
             .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
             .verifyComplete();
 
-        // Advance well short of the earliest jittered refresh point (80% of lifetime).
+        // Advance well short of 80% of (lifetime minus the safety buffer).
         clock.advance(Duration.ofSeconds(30));
 
         StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A)))
@@ -430,7 +429,7 @@ public class ContainerSessionProviderCacheTest {
 
     /**
      * Repeatedly invokes {@code supplier} (which triggers a synchronous cache lookup that may itself kick
-     * off a background refresh subscription) until it observes {@code expectedToken} or a timeout elapses.
+     * off a background refresh subscription) until it observes {@link #SECOND_TOKEN} or a timeout elapses.
      * Background refreshes complete on a separate subscription from the caller that triggered them, so
      * asserting on the very next call without allowing for that latency would be flaky.
      */

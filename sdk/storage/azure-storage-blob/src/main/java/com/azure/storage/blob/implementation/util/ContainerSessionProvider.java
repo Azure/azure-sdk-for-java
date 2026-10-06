@@ -52,11 +52,11 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * <h2>Background refresh</h2>
  * <p>
- * {@link #refreshSession} forces an immediate background refresh even when the client's own
- * jittered refresh timer has not yet elapsed, so the service's
- * {@code x-ms-auth-info: session_expiring} hint is acted on promptly. The one exception is that the
- * refresh is suppressed while the cache is backing off from a recent session creation failure, which
- * stops a failing service from being retried once per request.
+ * Cache lookups can start a background refresh once the jittered refresh time has passed.
+ * {@link #refreshSession} requests an earlier background refresh in response to the service's
+ * {@code x-ms-auth-info: session_expiring} hint. Background refresh requires a usable cached credential,
+ * shares any in-flight acquisition, and respects backoff after a recent session creation failure.
+ * Missing or expired credentials are acquired on the next lookup; there is no periodic refresh timer.
  *
  * <p>
  * Follows the same constructor pattern as {@link com.azure.storage.blob.BlobContainerClient}:
@@ -69,7 +69,7 @@ final class ContainerSessionProvider implements SessionProvider {
 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerSessionProvider.class);
     private static final Duration IDLE_EVICTION_THRESHOLD = Duration.ofMinutes(IDLE_EVICTION_THRESHOLD_MINUTES);
-    // Defensive fallback expiration for a malformed/absent service response.
+    // Defensive fallback expiration when the service response omits the expiration field.
     private static final Duration DEFAULT_EXPIRATION_OFFSET = Duration.ofMinutes(5L);
 
     private final AzureBlobStorageImpl azureBlobStorage;

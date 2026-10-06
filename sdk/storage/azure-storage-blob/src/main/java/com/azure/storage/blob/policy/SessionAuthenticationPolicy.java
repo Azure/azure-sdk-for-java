@@ -38,12 +38,13 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
  * A pipeline policy that selects between session token and bearer token authentication.
  * <p>
  * This policy occupies the authentication policy slot in the pipeline, wrapping the
- * {@link StorageBearerTokenChallengeAuthorizationPolicy}. For eligible blob GET requests,
+ * {@link StorageBearerTokenChallengeAuthorizationPolicy}. When sessions are enabled, for eligible blob GET requests,
  * the policy authenticates with a session token. For all other requests, it delegates to the
  * wrapped bearer token policy.
  * <p>
  * Session-signed requests that receive HTTP 401 are retried once with bearer authentication, and the rejected
- * session credential is invalidated. Other responses are returned to the caller unchanged.
+ * session credential is invalidated only if it is still current. Rejections do not start a cooldown;
+ * subsequent eligible requests may acquire a new session. Other responses are returned to the caller unchanged.
  * <p>
  * If session acquisition fails with HTTP 403, 5xx, or HTTP 400 with the {@code FeatureNotEnabled} error code, the
  * container is placed in a five minute cooldown during which requests for that container go straight to bearer
@@ -256,7 +257,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
 
     /**
      * Handles a session credential being rejected by the service. The rejected credential is invalidated so the next
-     * request attempts to create a new session.
+     * request can acquire a new session. A credential already replaced by a concurrent refresh is left unchanged.
      */
     private void handleSessionRejection(SessionRequestContext requestContext, SessionCredential session) {
         logSessionInvalidation(requestContext, sessionProvider.invalidateSession(requestContext, session));

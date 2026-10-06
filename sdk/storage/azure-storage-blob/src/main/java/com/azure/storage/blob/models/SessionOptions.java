@@ -22,8 +22,8 @@ public final class SessionOptions {
 
     /**
      * Creates a new {@link SessionOptions} instance with {@link SessionMode#AUTO}, which currently disables sessions.
-     * This applies to clients configured with a {@link com.azure.core.credential.TokenCredential} and to eligible GET
-     * Blob operations.
+     * Session authentication must be enabled explicitly and applies to eligible GET Blob operations on clients
+     * configured with a {@link com.azure.core.credential.TokenCredential}.
      */
     public SessionOptions() {
     }
@@ -49,7 +49,7 @@ public final class SessionOptions {
     }
 
     /**
-     * Gets the storage account name used for session HMAC signing.
+     * Gets the storage account name supplied to the session provider.
      *
      * @return the account name, or {@code null} if not set (will be parsed from the endpoint URL).
      */
@@ -58,9 +58,10 @@ public final class SessionOptions {
     }
 
     /**
-     * Sets the storage account name used for session HMAC signing. When set, this takes precedence
+     * Sets the storage account name supplied to the session provider. When set, this takes precedence
      * over the account name parsed from the endpoint URL. This is useful for custom domain URLs
-     * where the account name cannot be inferred from the hostname.
+     * where the account name cannot be inferred from the hostname. The built-in provider includes this name in
+     * the returned credential; signing uses {@link SessionCredential#getAccountName()}.
      *
      * @param accountName the storage account name.
      * @return the updated {@link SessionOptions} object.
@@ -81,10 +82,13 @@ public final class SessionOptions {
 
     /**
      * Sets the custom provider used to obtain session credentials. When set, the provider is called directly
-     * for each eligible request: the SDK does not layer additional caching on top of a custom provider, so
-     * the provider is responsible for its own caching and refresh strategy. The SDK retains ownership of
+     * for each eligible request outside an acquisition cooldown: the SDK does not layer additional credential
+     * caching on top of a custom provider, so the provider is responsible for its own caching and refresh strategy.
+     * The SDK retains ownership of
      * HMAC request signing, of choosing between session and bearer authentication, and of pausing session use
-     * for a storage account when sessions repeatedly fail against it, as described on {@link SessionProvider}.
+     * for a container for five minutes after session acquisition fails with HTTP 403, 5xx, or HTTP 400 with
+     * the {@code FeatureNotEnabled} error code. HTTP 401 responses to session-signed requests invalidate the
+     * rejected credential and fall back to bearer for that request without starting a cooldown.
      * The same provider instance may be supplied to multiple service client builders to share its cache; that
      * pause, however, is tracked per client pipeline and is not shared by those clients.
      * When {@code null}, the built-in provider is used, which calls the storage service's CreateSession REST
@@ -114,15 +118,18 @@ public final class SessionOptions {
         AUTO,
 
         /**
-         * Always use bearer token authentication. No session tokens are used.
+         * Disable session token authentication. Clients configured with a
+         * {@link com.azure.core.credential.TokenCredential} use bearer token authentication.
          */
         DISABLED,
 
         /**
-         * Opt in to session token authentication for all containers.
+         * Opt in to session token authentication for eligible requests across all containers on clients
+         * configured with a {@link com.azure.core.credential.TokenCredential}.
          * Each container gets its own cached session token when using the built-in session provider.
-         * Requires a storage account name; client construction throws if one cannot be
+         * The built-in provider requires a storage account name; client construction throws if one cannot be
          * determined from either {@link SessionOptions#getAccountName()} or the client endpoint.
+         * A custom provider supplies the signing account name in each {@link SessionCredential}.
          */
         ENABLED
     }

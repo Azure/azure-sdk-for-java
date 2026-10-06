@@ -28,8 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * {@link ContainerSessionProvider}.
  * <p>
  * These verify default synchronous retrieval and rejection of a context missing a container name.
- * The successful sync and async routing paths are covered by {@code TokenCredentialSessionProviderTests} against the
- * live service, while {@code TokenCredentialSessionProviderCacheTest} fakes the transport to test cache timing.
+ * Successful sync and async acquisition paths are covered by {@link ContainerSessionProviderTests},
+ * while {@link ContainerSessionProviderCacheTest} fakes the transport to test cache timing.
  */
 public class SessionProviderTests {
 

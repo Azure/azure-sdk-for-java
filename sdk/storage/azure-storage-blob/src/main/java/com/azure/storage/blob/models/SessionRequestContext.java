@@ -7,12 +7,11 @@ package com.azure.storage.blob.models;
  * Carries the request-scoped parameters needed to obtain a {@link SessionCredential}, such as the target
  * container and account.
  * <p>
- * Both {@code containerName} and {@code accountName} are optional: they are resolved automatically from the
- * request URL in the common case, and are only needed here when that automatic resolution isn't possible or
- * isn't correct - for example, a custom domain URL that a {@link SessionProvider} implementation cannot
- * parse the account name from, or a proxying scenario where the effective container differs from the one on
- * the wire. A {@link SessionProvider} implementation should treat either value as a hint that may be absent
- * rather than something it can always rely on.
+ * The session authentication policy populates the container name from the request URL and the account name
+ * from {@link SessionOptions#getAccountName()} or the request URL. This object does not resolve missing
+ * values itself. When calling the built-in provider directly, a nonempty container name is required, and
+ * an account name must be supplied either by the provider's configuration or by this context.
+ * Custom providers define their own requirements for these values.
  * <p>
  * This exists so a single {@link SessionProvider} instance can be asked for a session that is scoped to a
  * specific container at call time, rather than being permanently bound to one container at construction
