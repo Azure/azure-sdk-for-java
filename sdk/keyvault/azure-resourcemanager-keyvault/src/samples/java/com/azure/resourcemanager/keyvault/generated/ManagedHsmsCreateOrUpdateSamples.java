@@ -8,7 +8,7 @@ import com.azure.resourcemanager.keyvault.fluent.models.ManagedHsmInner;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmProperties;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSku;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuFamily;
-import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuNameV2;
+import com.azure.resourcemanager.keyvault.models.ManagedHsmSkuName;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,19 +30,16 @@ public final class ManagedHsmsCreateOrUpdateSamples {
         com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
         manager.serviceClient()
             .getManagedHsms()
-            .createOrUpdate("hsm-group", "hsm1",
-                new ManagedHsmInner()
-                    .withProperties(
-                        new ManagedHsmProperties().withTenantId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
-                            .withInitialAdminObjectIds(Arrays.asList("00000000-0000-0000-0000-000000000000"))
-                            .withEnableSoftDelete(true)
-                            .withSoftDeleteRetentionInDays(90)
-                            .withEnablePurgeProtection(false))
-                    .withSku(
-                        new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.B).withName(ManagedHsmSkuNameV2.STANDARD_B1))
-                    .withLocation("westus")
-                    .withTags(mapOf("Dept", "hsm", "Environment", "dogfood")),
-                com.azure.core.util.Context.NONE);
+            .createOrUpdate("hsm-group", "hsm1", new ManagedHsmInner()
+                .withProperties(
+                    new ManagedHsmProperties().withTenantId(UUID.fromString("00000000-0000-0000-0000-000000000000"))
+                        .withInitialAdminObjectIds(Arrays.asList("00000000-0000-0000-0000-000000000000"))
+                        .withEnableSoftDelete(true)
+                        .withSoftDeleteRetentionInDays(90)
+                        .withEnablePurgeProtection(false))
+                .withSku(new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.B).withName(ManagedHsmSkuName.STANDARD_B1))
+                .withLocation("westus")
+                .withTags(mapOf("Dept", "hsm", "Environment", "dogfood")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -25,7 +25,7 @@ public final class ManagedHsmSku implements JsonSerializable<ManagedHsmSku> {
     /*
      * SKU of the managed HSM Pool
      */
-    private ManagedHsmSkuNameV2 name;
+    private ManagedHsmSkuName name;
 
     /**
      * Creates an instance of ManagedHsmSku class.
@@ -58,7 +58,7 @@ public final class ManagedHsmSku implements JsonSerializable<ManagedHsmSku> {
      * 
      * @return the name value.
      */
-    public ManagedHsmSkuNameV2 name() {
+    public ManagedHsmSkuName name() {
         return this.name;
     }
 
@@ -68,7 +68,7 @@ public final class ManagedHsmSku implements JsonSerializable<ManagedHsmSku> {
      * @param name the name value to set.
      * @return the ManagedHsmSku object itself.
      */
-    public ManagedHsmSku withName(ManagedHsmSkuNameV2 name) {
+    public ManagedHsmSku withName(ManagedHsmSkuName name) {
         this.name = name;
         return this;
     }
@@ -121,7 +121,7 @@ public final class ManagedHsmSku implements JsonSerializable<ManagedHsmSku> {
                 if ("family".equals(fieldName)) {
                     deserializedManagedHsmSku.family = ManagedHsmSkuFamily.fromString(reader.getString());
                 } else if ("name".equals(fieldName)) {
-                    deserializedManagedHsmSku.name = ManagedHsmSkuNameV2.fromString(reader.getString());
+                    deserializedManagedHsmSku.name = ManagedHsmSkuName.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

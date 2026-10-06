@@ -6,24 +6,26 @@
 
 ### Breaking Changes
 
-#### `models.ManagedHsmSkuName` was removed
+#### `models.ManagedHsmSkuName` was modified
 
-#### `models.ManagedHsmSku` was modified
-
-* `withName(models.ManagedHsmSkuName)` was removed
-* `models.ManagedHsmSkuName name()` -> `models.ManagedHsmSkuNameV2 name()`
+* `valueOf(java.lang.String)` was removed
+* `models.ManagedHsmSkuName[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
 
 ### Features Added
-
-* `models.ManagedHsmSkuNameV2` was added
 
 #### `models.JsonWebKeyType` was modified
 
 * `OCT_HSM` was added
 
-#### `models.ManagedHsmSku` was modified
+#### `models.ManagedHsmSkuName` was modified
 
-* `withName(models.ManagedHsmSkuNameV2)` was added
+* `ManagedHsmSkuName()` was added
+* `STANDARD_B5V2` was added
+* `STANDARD_B10V2` was added
+* `STANDARD_B20V2` was added
+* `STANDARD_B1V2` was added
+* `STANDARD_B15V2` was added
 
 ## 2.55.4 (2026-08-18)
 
