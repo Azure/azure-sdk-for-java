@@ -399,6 +399,21 @@ function Write-JavaDocReportWarning {
     Write-Warning "Java documentation classification is inconclusive: $logError"
 }
 
+function New-JavaDocPathIndex {
+    param([AllowEmptyCollection()][object[]]$Classifications)
+
+    $index = [System.Collections.Generic.Dictionary[string, object]]::new([System.StringComparer]::Ordinal)
+    foreach ($classification in $Classifications) {
+        if ($index.ContainsKey($classification.Path)) {
+            # Duplicate results are ambiguous, so they cannot authorize non-runtime validation.
+            $index[$classification.Path] = $null
+        } else {
+            $index.Add($classification.Path, $classification)
+        }
+    }
+    return ,$index
+}
+
 function Complete-JavaDocLibraryReport {
     param($Library, [string]$ComparisonError)
 
@@ -524,6 +539,7 @@ function Get-JavaDocChangeReport {
         # Reuse path policy without publishing the legacy script's RunTests/RunBuild output variables.
         $legacyClassifier = Join-Path $PSScriptRoot '..' 'Classify-PRChanges.ps1'
         $pathClassification = & $legacyClassifier -ChangedFiles $snapshot.Changes.Path -PassThru 6>$null
+        $pathIndex = New-JavaDocPathIndex -Classifications $pathClassification.Paths
         $candidates = @()
         $owners = [System.Collections.Generic.Dictionary[string, object]]::new([System.StringComparer]::Ordinal)
         $libraries = [System.Collections.Generic.Dictionary[string, object]]::new([System.StringComparer]::Ordinal)
@@ -569,8 +585,9 @@ function Get-JavaDocChangeReport {
                 }
                 $libraries[$file.Module].Files += $file
             }
-            $pathResult = @($pathClassification.Paths | Where-Object { $_.Path -ceq $change.Path })
-            if ($pathResult.Count -eq 1 -and -not $pathResult[0].RequiresJavaTests) {
+            $pathResult = $null
+            if ($pathIndex.TryGetValue($change.Path, [ref]$pathResult) -and
+                $null -ne $pathResult -and -not $pathResult.RequiresJavaTests) {
                 $file.Reason = 'existing-non-runtime-validation'
                 continue
             }

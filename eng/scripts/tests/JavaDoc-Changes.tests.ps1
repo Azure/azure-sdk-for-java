@@ -11,6 +11,7 @@ BeforeAll {
     . (Join-Path $PSScriptRoot '..' 'helpers' 'JavaDoc-Change-Helpers.ps1')
     $script:OriginalStartJavaDocProcess = (Get-Command Start-JavaDocProcess).ScriptBlock
     $script:OriginalGetJavaDocSource = (Get-Command Get-JavaDocSource).ScriptBlock
+    $script:OriginalNewJavaDocPathIndex = (Get-Command New-JavaDocPathIndex).ScriptBlock
     $script:PowerShellExecutable = (Get-Process -Id $PID).Path
     $script:SourcePath = 'sdk/example/example/src/main/java/Example.java'
     $script:BeforeSource = "class Example {`n    /** Old description. */`n    String name() { return `"name`"; }`n}`n"
@@ -222,6 +223,80 @@ BeforeAll {
     }
 }
 
+Describe 'Java documentation path classification index' -Tag 'UnitTest' {
+    It 'keeps unique classifications available by their exact paths' {
+        $documentation = [PSCustomObject]@{ Path = 'README.md'; RequiresJavaTests = $false }
+        $functional = [PSCustomObject]@{ Path = 'sdk/example/example/pom.xml'; RequiresJavaTests = $true }
+        $index = New-JavaDocPathIndex @($documentation, $functional)
+        $index.Count | Should -Be 2
+        [object]::ReferenceEquals($index['README.md'], $documentation) | Should -BeTrue
+        [object]::ReferenceEquals($index['sdk/example/example/pom.xml'], $functional) | Should -BeTrue
+    }
+
+    It 'does not confuse case differences or longer path prefixes' {
+        $index = New-JavaDocPathIndex @(
+            [PSCustomObject]@{ Path = 'README.md'; RequiresJavaTests = $false }
+            [PSCustomObject]@{ Path = 'readme.md'; RequiresJavaTests = $true }
+            [PSCustomObject]@{ Path = 'README.md.template'; RequiresJavaTests = $true }
+        )
+        $index.Count | Should -Be 3
+        $index['README.md'].RequiresJavaTests | Should -BeFalse
+        $index['readme.md'].RequiresJavaTests | Should -BeTrue
+        $index['README.md.template'].RequiresJavaTests | Should -BeTrue
+        $value = $null
+        $index.TryGetValue('Readme.md', [ref]$value) | Should -BeFalse
+        $value | Should -BeNullOrEmpty
+    }
+
+    It 'does not authorize missing classifications' {
+        $index = New-JavaDocPathIndex @([PSCustomObject]@{ Path = 'README.md'; RequiresJavaTests = $false })
+        $value = $null
+        $index.TryGetValue('missing.md', [ref]$value) | Should -BeFalse
+        $value | Should -BeNullOrEmpty
+    }
+
+    It 'keeps an empty classification set empty' {
+        $index = New-JavaDocPathIndex @()
+        $index.Count | Should -Be 0
+    }
+
+    It 'does not authorize duplicate classifications: <Kind>' -TestCases @(
+        @{ Kind = 'identical' }
+        @{ Kind = 'conflicting' }
+        @{ Kind = 'repeated' }
+    ) {
+        param($Kind)
+        $classifications = @(
+            [PSCustomObject]@{ Path = 'README.md'; RequiresJavaTests = $false }
+            [PSCustomObject]@{ Path = 'README.md'; RequiresJavaTests = ($Kind -eq 'conflicting') }
+            [PSCustomObject]@{ Path = 'NOTICE.txt'; RequiresJavaTests = $false }
+        )
+        if ($Kind -eq 'repeated') {
+            $classifications += [PSCustomObject]@{ Path = 'README.md'; RequiresJavaTests = $false }
+        }
+        $index = New-JavaDocPathIndex $classifications
+        $index.Count | Should -Be 2
+        $value = $null
+        $index.TryGetValue('README.md', [ref]$value) | Should -BeTrue
+        $value | Should -BeNullOrEmpty
+        $index['NOTICE.txt'].RequiresJavaTests | Should -BeFalse
+    }
+
+    It 'indexes large classification sets without losing path results' {
+        $classifications = @(for ($i = 0; $i -lt 2000; $i++) {
+            [PSCustomObject]@{
+                Path = "sdk/example/example/src/main/java/Source$i.java"
+                RequiresJavaTests = ($i % 2 -eq 0)
+            }
+        })
+        $index = New-JavaDocPathIndex $classifications
+        $index.Count | Should -Be $classifications.Count
+        foreach ($classification in $classifications) {
+            [object]::ReferenceEquals($index[$classification.Path], $classification) | Should -BeTrue
+        }
+    }
+}
+
 Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
     BeforeEach {
         $script:SavedForce = $env:FORCE_FULL_VALIDATION
@@ -363,6 +438,29 @@ Describe 'Java documentation report-only classification' -Tag 'UnitTest' {
         $result.Libraries[0].CandidateFileCount | Should -Be 0
         $result.Libraries[0].ComparedFileCount | Should -Be 0
         $result.Libraries[1].ComparedFileCount | Should -Be 2
+    }
+
+    It 'keeps a <Kind> documentation classification conservative without blocking other libraries' -TestCases @(
+        @{ Kind = 'missing' }
+        @{ Kind = 'duplicate' }
+    ) {
+        param($Kind)
+        $fixture = New-LibraryFixture -TriggeringLibrary 0 -Trigger 'readme'
+        Mock New-JavaDocPathIndex {
+            $rows = @($Classifications | Where-Object Path -CNE 'sdk/appconfiguration/azure-data-appconfiguration/README.md')
+            if ($Kind -eq 'duplicate') {
+                $entry = $Classifications |
+                    Where-Object Path -CEQ 'sdk/appconfiguration/azure-data-appconfiguration/README.md'
+                $rows += @($entry, $entry)
+            }
+            return & $script:OriginalNewJavaDocPathIndex $rows
+        }
+        $result = Measure-Fixture $fixture
+        $result.Decision | Should -BeExactly 'PartiallyEligible'
+        $result.Libraries[0].Decision | Should -BeExactly 'NotEligible'
+        $result.Libraries[0].Reason | Should -BeExactly 'unsupported-or-mixed-changes'
+        $result.Libraries[1].Decision | Should -BeExactly 'Eligible'
+        $result.WouldSuppressTests | Should -BeFalse
     }
 
     It 'keeps <Trigger> failures or inputs local to their owning library' -TestCases @(
