@@ -9,7 +9,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Preserved connection-specific validation when delegating TLS certificate checks, including checks of certificates trusted through the Key Vault keystore.
+- Preserved configured TLS endpoint identification and connection-specific validation when delegating certificate checks, including checks of certificates trusted through the Key Vault keystore. ([#50667](https://github.com/Azure/azure-sdk-for-java/pull/50667))
 - Stopped recording sensitive data in `FINER` level logs. Review any logs captured at the `FINER` level or lower in previous library versions and rotate any sensitive data contained there.
 - Fixed bug: `jarsigner` reports invalid certificate chain (`PKIX path building failed: unable to find valid certification path to requested target`) when using a non-exportable Azure Key Vault certificate. When the certificate chain returned by Azure Key Vault does not end in a self-signed root, the missing issuer certificates are now resolved at runtime using the CA Issuers URL in the AIA (Authority Information Access) extension of each certificate. Responses are cached by URL so subsequent loads can reuse them without another network request. ([#44267](https://github.com/Azure/azure-sdk-for-java/issues/44267))
 - Fixed an issue where `KeyStore.load(KeyVaultLoadStoreParameter)` could combine explicit client settings with certificate cache and path settings captured earlier from system properties. The parameter now carries the complete key store configuration. ([#50163](https://github.com/Azure/azure-sdk-for-java/pull/50163))

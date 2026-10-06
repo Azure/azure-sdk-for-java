@@ -118,6 +118,11 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
             CertificateException failure = new CertificateException("Unable to verify in keystore.", ex);
             failure.addSuppressed(originalFailure);
             throw failure;
+        } catch (CertificateException failure) {
+            if (failure != originalFailure) {
+                failure.addSuppressed(originalFailure);
+            }
+            throw failure;
         }
         try {
             check.check(fallback);
