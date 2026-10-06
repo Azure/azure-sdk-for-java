@@ -107,7 +107,8 @@ public class CPKNAsyncTests extends BlobTestBase {
         ListBlobsOptions options
             = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
         StepVerifier
-            .create(cpkncesContainer.create().then(cpknAppendBlob.create()).thenMany(cpkncesContainer.listBlobs(options)))
+            .create(
+                cpkncesContainer.create().then(cpknAppendBlob.create()).thenMany(cpkncesContainer.listBlobs(options)))
             .assertNext(r -> assertEquals(scope2, r.getProperties().getEncryptionScope()))
             .verifyComplete();
     }
@@ -123,9 +124,10 @@ public class CPKNAsyncTests extends BlobTestBase {
 
         ListBlobsOptions options = new ListBlobsOptions().setPrefix("")
             .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
-        StepVerifier.create(cpkncesContainer.create()
-            .then(cpknAppendBlob.create())
-            .thenMany(cpkncesContainer.listBlobsByHierarchy("/", options)))
+        StepVerifier
+            .create(cpkncesContainer.create()
+                .then(cpknAppendBlob.create())
+                .thenMany(cpkncesContainer.listBlobsByHierarchy("/", options)))
             .assertNext(r -> assertEquals(scope2, r.getProperties().getEncryptionScope()))
             .verifyComplete();
     }

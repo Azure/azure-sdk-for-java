@@ -250,8 +250,8 @@ public class VersioningTests extends BlobTestBase {
         BlockBlobItem blobItemV3
             = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
 
-        PagedIterable<BlobItem> blobs = blobContainerClient.listBlobs(
-            new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true))
+        PagedIterable<BlobItem> blobs = blobContainerClient
+            .listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true))
                 .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML), null);
 
         Iterator<BlobItem> iterator = blobs.stream().iterator();
@@ -274,8 +274,8 @@ public class VersioningTests extends BlobTestBase {
         BlockBlobItem blobItemV3
             = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
 
-        PagedIterable<BlobItem> blobs = blobContainerClient.listBlobs(
-            new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(false))
+        PagedIterable<BlobItem> blobs = blobContainerClient
+            .listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(false))
                 .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML), null);
 
         assertEquals(1, blobs.stream().count());

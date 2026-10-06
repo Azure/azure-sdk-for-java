@@ -946,8 +946,10 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .flatMap(blobContainerItem -> Mono.delay(Duration.ofMillis(delay))
                 .then(primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
                     new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())))
-                .flatMap(r -> r.getValue().listBlobs(new ListBlobsOptions()
-                    .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML)).collectList()));
+                .flatMap(r -> r.getValue()
+                    .listBlobs(new ListBlobsOptions()
+                        .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML))
+                    .collectList()));
 
         StepVerifier.create(response).assertNext(r -> {
             assertEquals(1, r.size());
