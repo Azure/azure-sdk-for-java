@@ -1441,13 +1441,7 @@ public class DataLakePathClient {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
         }
 
-        // Build an async client rooted at the destination path so that operations delegated to the async client (for
-        // example file upload/append/flush or directory child/ACL clients) target the destination rather than the
-        // original source path.
-        DataLakePathAsyncClient destinationAsyncClient
-            = dataLakePathAsyncClient.getPathAsyncClient(destinationFileSystem, destinationPath);
-
-        return new DataLakePathClient(destinationAsyncClient,
+        return new DataLakePathClient(dataLakePathAsyncClient,
             dataLakePathAsyncClient.prepareBuilderReplacePath(destinationFileSystem, destinationPath)
                 .buildBlockBlobClient(),
             getHttpPipeline(), getAccountUrl(), serviceVersion, accountName, destinationFileSystem, destinationPath,

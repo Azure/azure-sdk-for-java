@@ -55,7 +55,7 @@ public class AsyncBufferedUploadExample {
         argument list.
          */
         Flux<ByteBuffer> sourceData = getSourceFileClient(endpoint, credential, fileSystemName).read()
-            // Perform some unpredictable transformation.
+            // Perform some unpredicatable transformation.
             .map(AsyncBufferedUploadExample::randomTransformation);
 
         /*
