@@ -50,7 +50,7 @@ public class DigitalTwinsClientJavaDocCodeSnippets extends CodeSnippetBase {
 
     public DigitalTwinsClient createDigitalTwinsClient() {
 
-        String tenantId = getTenantId();
+        String tenantId = getTenenatId();
         String clientId = getClientId();
         String clientSecret = getClientSecret();
         String digitalTwinsEndpointUrl = getEndpointUrl();
