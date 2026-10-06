@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Set;
@@ -192,19 +193,22 @@ public final class ContentValidationTestUtils {
     }
 
     /**
-     * Retry-independently asserts that every supplied block was validated with its own CRC64 at least once among the
-     * content-bearing uploads. Blocks are matched by checksum (not request order or count), so a retried upload —
-     * which reuses the same CRC64 — cannot make this fail. Also asserts every upload carried a CRC64 header.
+     * Retry-independently asserts that the blocks uploaded were exactly the expected blocks: every upload carried a
+     * CRC64 header, and the set of validated checksums equals the set of expected block checksums. Matching by
+     * checksum set (rather than request order or count) means a retried upload — which reuses the same CRC64 —
+     * collapses harmlessly, while a missing block OR an extra/incorrect block (a wrong checksum uploaded alongside
+     * the correct ones) still fails the check.
      */
     public static void assertEachBlockValidatedWithCrc64(List<RecordedRequest> recorded, byte[]... blocks) {
         assertTrue(allUploadsUseCrc64Header(recorded), "Every uploaded block must carry a CRC64 header");
         Set<String> sentCrc64 = contentBearingUploadRequests(recorded).stream()
             .map(r -> r.getHeaders().getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME))
             .collect(Collectors.toSet());
-        for (int i = 0; i < blocks.length; i++) {
-            assertTrue(sentCrc64.contains(expectedCrc64Base64(blocks[i])),
-                "Block " + i + " must have been validated with its CRC64");
-        }
+        Set<String> expectedCrc64
+            = Arrays.stream(blocks).map(ContentValidationTestUtils::expectedCrc64Base64).collect(Collectors.toSet());
+        assertEquals(expectedCrc64, sentCrc64,
+            "The validated block checksums must exactly match the expected blocks (no missing, extra, or incorrect "
+                + "blocks)");
     }
 
     public static void assertStructuredMessageLengths(HttpHeaders headers, int unencodedContentBytes) {

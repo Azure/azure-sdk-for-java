@@ -1418,10 +1418,8 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
             .expectNextCount(1)
             .verifyComplete();
 
-        // Match each block to a validated upload by checksum (retry-independent): a retried append reuses the same
-        // CRC64, so this does not depend on the request count or order.
-        assertTrue(contentBearingUploadRequests(recorded).size() >= blocks.length,
-            "Each block must produce at least one Append Block request");
+        // Retry-independently validate every append block by checksum: the set of sent CRC64 values must exactly
+        // match the expected blocks, so neither missing nor extra/incorrect blocks slip through, even with retries.
         ContentValidationTestUtils.assertEachBlockValidatedWithCrc64(recorded, blocks);
     }
 
