@@ -305,7 +305,7 @@ public class StorageImplUtils {
     public static boolean isServiceEndpoint(String host, String serviceSubDomain) {
         return !CoreUtils.isNullOrEmpty(host)
             && !CoreUtils.isNullOrEmpty(serviceSubDomain)
-            && host.contains("." + serviceSubDomain + ".");
+            && host.toLowerCase(Locale.ROOT).contains("." + serviceSubDomain + ".");
     }
 
     /**
