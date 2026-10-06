@@ -14,12 +14,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * This is the response from a get operations status request.
+ * The current results for the requested operations.
  */
 @Immutable
 public final class GetOperationStatusResponseInner implements JsonSerializable<GetOperationStatusResponseInner> {
     /*
-     * An array of resource operations based on their operation ids
+     * The current result for each requested operation.
      */
     private List<ResourceOperation> results;
 
@@ -30,7 +30,7 @@ public final class GetOperationStatusResponseInner implements JsonSerializable<G
     }
 
     /**
-     * Get the results property: An array of resource operations based on their operation ids.
+     * Get the results property: The current result for each requested operation.
      * 
      * @return the results value.
      */

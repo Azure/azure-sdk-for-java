@@ -5,9 +5,12 @@
 ### Features Added
 
 ### Breaking Changes
+
 - Changed `HttpRetryOptions.delayFromHeaders` to `HttpRetryOptions.delayFromRetryCondition`. The `Function` is now a
   `Function<HttpRetryCondition, Duration>` instead of `Function<HttpHeaders, Duration>`. This allows richer inspection
   of the reason the request failed and is being retried when calculating the delay. ([#46384](https://github.com/Azure/azure-sdk-for-java/pull/46384))
+- Removed `SharedExecutorService`. HTTP transports now use their native default executors unless one is explicitly
+  configured.
 
 ### Bugs Fixed
 

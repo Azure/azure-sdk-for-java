@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Container App Functions collection ARM resource.
+ * A paged list of recent bulk action errors.
  */
 @Immutable
 public final class ContainerAppsFunctionCollection implements JsonSerializable<ContainerAppsFunctionCollection> {

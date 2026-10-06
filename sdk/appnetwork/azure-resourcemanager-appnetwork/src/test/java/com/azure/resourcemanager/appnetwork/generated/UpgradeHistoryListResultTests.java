@@ -13,15 +13,15 @@ public final class UpgradeHistoryListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpgradeHistoryListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"startTimestamp\":\"2021-06-20T14:57:34Z\",\"endTimestamp\":\"2021-04-06T02:20:21Z\",\"initiatedBy\":\"whybcib\",\"fromVersion\":\"yvdcsitynnaa\",\"toVersion\":\"dectehfiqsc\",\"provisioningState\":\"Failed\"},\"id\":\"vhezrkgqhcj\",\"name\":\"efovgmk\",\"type\":\"sle\"},{\"properties\":{\"startTimestamp\":\"2021-11-16T17:16:24Z\",\"endTimestamp\":\"2021-04-09T10:04:55Z\",\"initiatedBy\":\"qjpkcattpngjcrc\",\"fromVersion\":\"zsqpjhvmdajvny\",\"toVersion\":\"ounqecano\",\"provisioningState\":\"Succeeded\"},\"id\":\"fhyhltrpmopjmcma\",\"name\":\"u\",\"type\":\"kthfui\"}],\"nextLink\":\"odsfcpkvxodpuozm\"}")
+            "{\"value\":[{\"properties\":{\"startTimestamp\":\"2021-03-26T22:43:42Z\",\"endTimestamp\":\"2021-06-25T22:17:23Z\",\"initiatedBy\":\"y\",\"fromVersion\":\"mivkwlzuvcc\",\"toVersion\":\"wnfnbacf\",\"provisioningState\":\"Canceled\"},\"id\":\"ebxetqgtzxdp\",\"name\":\"qbqqwxr\",\"type\":\"feallnwsu\"},{\"properties\":{\"startTimestamp\":\"2021-03-05T06:08:28Z\",\"endTimestamp\":\"2021-07-20T03:53:27Z\",\"initiatedBy\":\"ampmngnz\",\"fromVersion\":\"c\",\"toVersion\":\"aqw\",\"provisioningState\":\"Canceled\"},\"id\":\"cbonqvpk\",\"name\":\"lrxnjeaseiphe\",\"type\":\"f\"},{\"properties\":{\"startTimestamp\":\"2021-01-11T01:58:16Z\",\"endTimestamp\":\"2021-03-02T13:58:02Z\",\"initiatedBy\":\"y\",\"fromVersion\":\"enjbdlwtgrhp\",\"toVersion\":\"jp\",\"provisioningState\":\"Failed\"},\"id\":\"sxazjpq\",\"name\":\"e\",\"type\":\"ualhbxxhejj\"},{\"properties\":{\"startTimestamp\":\"2021-11-16T19:25:53Z\",\"endTimestamp\":\"2021-03-24T05:32:31Z\",\"initiatedBy\":\"dgwdslfhot\",\"fromVersion\":\"mcy\",\"toVersion\":\"pwlbjnpg\",\"provisioningState\":\"Succeeded\"},\"id\":\"adehxnltyfsopp\",\"name\":\"suesnzw\",\"type\":\"ej\"}],\"nextLink\":\"vorxzdmohct\"}")
             .toObject(UpgradeHistoryListResult.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-20T14:57:34Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T22:43:42Z"),
             model.value().get(0).properties().startTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T02:20:21Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T22:17:23Z"),
             model.value().get(0).properties().endTimestamp());
-        Assertions.assertEquals("whybcib", model.value().get(0).properties().initiatedBy());
-        Assertions.assertEquals("yvdcsitynnaa", model.value().get(0).properties().fromVersion());
-        Assertions.assertEquals("dectehfiqsc", model.value().get(0).properties().toVersion());
-        Assertions.assertEquals("odsfcpkvxodpuozm", model.nextLink());
+        Assertions.assertEquals("y", model.value().get(0).properties().initiatedBy());
+        Assertions.assertEquals("mivkwlzuvcc", model.value().get(0).properties().fromVersion());
+        Assertions.assertEquals("wnfnbacf", model.value().get(0).properties().toVersion());
+        Assertions.assertEquals("vorxzdmohct", model.nextLink());
     }
 }

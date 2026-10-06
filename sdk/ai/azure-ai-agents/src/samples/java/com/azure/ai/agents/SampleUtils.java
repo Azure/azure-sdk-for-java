@@ -72,12 +72,4 @@ public class SampleUtils {
         throw new RuntimeException("Sample resource file not found: " + fileName);
     }
 
-    private static UpdateAgentDetailsOptions createPinnedEndpointOptions(AgentVersionDetails versionDetails) {
-        AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-            .setVersionSelector(new VersionSelector().setVersionSelectionRule(
-                new FixedRatioVersionSelectionRule(100).setAgentVersion(versionDetails.getVersion())))
-            .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
-
-        return new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig);
-    }
 }

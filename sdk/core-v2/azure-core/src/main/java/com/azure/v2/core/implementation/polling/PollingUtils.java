@@ -17,7 +17,6 @@ import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.utils.CoreUtils;
-import io.clientcore.core.utils.SharedExecutorService;
 
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
@@ -27,6 +26,7 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
@@ -100,7 +100,7 @@ public final class PollingUtils {
 
     public static <T> PollResponse<T> pollingLoop(PollingContext<T> pollingContext, Duration timeout,
         LongRunningOperationStatus statusToWaitFor, Function<PollingContext<T>, PollResponse<T>> pollOperation,
-        Duration pollInterval, boolean isWaitForStatus) {
+        Duration pollInterval, boolean isWaitForStatus, ScheduledExecutorService executor) {
         boolean timeBound = timeout != null;
         long timeoutInMillis = timeBound ? timeout.toMillis() : -1;
         long startTime = System.currentTimeMillis();
@@ -125,11 +125,11 @@ public final class PollingUtils {
             final Future<PollResponse<T>> pollOp;
             if (firstPoll) {
                 firstPoll = false;
-                pollOp = SharedExecutorService.getInstance().submit(() -> pollOperation.apply(pollingContext));
+                pollOp = executor.submit(() -> pollOperation.apply(pollingContext));
             } else {
                 Duration delay = getDelay(intermediatePollResponse, pollInterval);
-                pollOp = SharedExecutorService.getInstance()
-                    .schedule(() -> pollOperation.apply(pollingContext), delay.toMillis(), TimeUnit.MILLISECONDS);
+                pollOp = executor.schedule(() -> pollOperation.apply(pollingContext), delay.toMillis(),
+                    TimeUnit.MILLISECONDS);
             }
 
             try {
