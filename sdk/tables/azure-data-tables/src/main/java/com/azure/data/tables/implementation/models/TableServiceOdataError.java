@@ -5,7 +5,6 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class TableServiceOdataError implements JsonSerializable<TableServi
     /*
      * The service error code.
      */
-    @Generated
     private String code;
 
     /*
      * The service error message.
      */
-    @Generated
     private TableServiceOdataErrorMessage message;
 
     /**
      * Creates an instance of TableServiceOdataError class.
      */
-    @Generated
     public TableServiceOdataError() {
     }
 
@@ -41,7 +37,6 @@ public final class TableServiceOdataError implements JsonSerializable<TableServi
      * 
      * @return the code value.
      */
-    @Generated
     public String getCode() {
         return this.code;
     }
@@ -52,7 +47,6 @@ public final class TableServiceOdataError implements JsonSerializable<TableServi
      * @param code the code value to set.
      * @return the TableServiceOdataError object itself.
      */
-    @Generated
     public TableServiceOdataError setCode(String code) {
         this.code = code;
         return this;
@@ -63,7 +57,6 @@ public final class TableServiceOdataError implements JsonSerializable<TableServi
      * 
      * @return the message value.
      */
-    @Generated
     public TableServiceOdataErrorMessage getMessage() {
         return this.message;
     }
@@ -74,7 +67,6 @@ public final class TableServiceOdataError implements JsonSerializable<TableServi
      * @param message the message value to set.
      * @return the TableServiceOdataError object itself.
      */
-    @Generated
     public TableServiceOdataError setMessage(TableServiceOdataErrorMessage message) {
         this.message = message;
         return this;
@@ -83,7 +75,6 @@ public final class TableServiceOdataError implements JsonSerializable<TableServi
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,7 +91,6 @@ public final class TableServiceOdataError implements JsonSerializable<TableServi
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TableServiceOdataError.
      */
-    @Generated
     public static TableServiceOdataError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TableServiceOdataError deserializedTableServiceOdataError = new TableServiceOdataError();
