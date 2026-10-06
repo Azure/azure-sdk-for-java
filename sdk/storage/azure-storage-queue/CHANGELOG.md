@@ -1,15 +1,5 @@
 # Release History
 
-## 12.31.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 12.30.1 (2026-08-18)
 
 ### Other Changes
@@ -20,10 +10,6 @@
 - Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
 - Upgraded `azure-storage-common` from `12.34.0` to version `12.34.1`.
 
-## 12.31.0-beta.1 (2026-07-28)
-
-### Features Added
-- Added support for service version 2026-10-06.
 
 ## 12.30.0 (2026-06-11)
 
