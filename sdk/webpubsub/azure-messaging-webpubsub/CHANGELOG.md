@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.5.7 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+
 ## 1.5.6 (2026-07-01)
 
 ### Other Changes
@@ -315,7 +324,7 @@
 
 - Added method `removeConnectionFromAllGroupsWithResponse` in `WebPubSubServiceClient` and `WebPubSubServiceAsyncClient` to remove the connection from all the groups it is in.
 - Added a `webpubsub.group` option in `GetClientAccessTokenOptions`, to enable connections join initial groups once it is connected.
-- Added a `filter` parameter when sending messages to connections in a hub/group/user to filter out the connections recieving message, details about `filter` syntax please see [OData filter syntax for Azure Web PubSub](https://aka.ms/awps/filter-syntax).
+- Added a `filter` parameter when sending messages to connections in a hub/group/user to filter out the connections receiving message, details about `filter` syntax please see [OData filter syntax for Azure Web PubSub](https://aka.ms/awps/filter-syntax).
 
 ### Other Changes
 

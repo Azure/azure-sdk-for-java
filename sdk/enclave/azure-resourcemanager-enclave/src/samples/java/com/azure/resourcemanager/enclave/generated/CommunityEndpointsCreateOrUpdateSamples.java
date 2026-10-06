@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class CommunityEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CommunityEndpoints_CreateOrUpdate.json
+     * x-ms-original-file: 2026-04-01/CommunityEndpoints_CreateOrUpdate.json
      */
     /**
      * Sample code: CommunityEndpoints_CreateOrUpdate.

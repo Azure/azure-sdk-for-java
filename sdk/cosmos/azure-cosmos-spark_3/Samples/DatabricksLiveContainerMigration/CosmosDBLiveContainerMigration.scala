@@ -65,7 +65,7 @@ def createCosmosDB(cosmosDatabaseName: String, cosmosContainerProvisionedThrough
   }    
 }
 
-def createThroughtputControlTable(cosmosDatabaseName: String){/* NOTE: It is important to enable TTL (can be off/-1 by default) on the throughput control container */
+def createThroughputControlTable(cosmosDatabaseName: String){/* NOTE: It is important to enable TTL (can be off/-1 by default) on the throughput control container */
   val query = s"""
                   CREATE TABLE IF NOT EXISTS cosmosCatalog.`$cosmosDatabaseName`.`ThroughputControl` USING cosmos.oltp 
                   OPTIONS (
@@ -132,7 +132,7 @@ def cosmosInitReadStream(cosmosEndpoint: String, cosmosMasterKey: String, cosmos
       .options(changeFeedConfig)
       .load
   
-  /*this will preserve the source document fields and retain the "_etag" and "_ts" property values as "_origin_etag" and "_origin_ts" in the sink documnet*/
+  /*this will preserve the source document fields and retain the "_etag" and "_ts" property values as "_origin_etag" and "_origin_ts" in the sink document*/
   return changeFeedDF.withColumnRenamed("_rawbody", "_origin_rawBody")
 }
 
@@ -159,7 +159,7 @@ connectToCosmos(cosmosEndpoint = cosmosEndpoint, cosmosMasterKey = cosmosMasterK
 
 createCosmosDB(cosmosDatabaseName = cosmosTargetDatabaseName, cosmosContainerProvisionedThroughput = cosmosTargetContainerProvisionedThroughput)
 
-createThroughtputControlTable(cosmosDatabaseName = cosmosSourceDatabaseName)
+createThroughputControlTable(cosmosDatabaseName = cosmosSourceDatabaseName)
 
 createCosmosContainer(cosmosDatabaseName = cosmosTargetDatabaseName, cosmosContainerName = cosmosTargetContainerName, cosmosPartitionKey = cosmosTargetContainerPartitionKey, cosmosContainerProvisionedThroughput = cosmosTargetContainerProvisionedThroughput)
 

@@ -12,20 +12,20 @@ public final class CertificatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateProperties model = BinaryData.fromString(
-            "{\"subject\":\"bpkkpwdre\",\"expiry\":\"Sun, 12 Sep 2021 16:04:39 GMT\",\"thumbprint\":\"vq\",\"isVerified\":false,\"created\":\"Fri, 12 Nov 2021 04:23:21 GMT\",\"updated\":\"Sun, 13 Jun 2021 02:13:45 GMT\",\"certificate\":\"suwsyrsnds\",\"policyResourceId\":\"g\"}")
+            "{\"subject\":\"gk\",\"expiry\":\"Fri, 02 Apr 2021 01:13:45 GMT\",\"thumbprint\":\"bmpaxmodfvu\",\"isVerified\":false,\"created\":\"Wed, 07 Jul 2021 11:17:58 GMT\",\"updated\":\"Sun, 25 Apr 2021 15:51:11 GMT\",\"certificate\":\"vmwy\",\"policyResourceId\":\"fouyf\"}")
             .toObject(CertificateProperties.class);
         Assertions.assertFalse(model.isVerified());
-        Assertions.assertEquals("suwsyrsnds", model.certificate());
-        Assertions.assertEquals("g", model.policyResourceId());
+        Assertions.assertEquals("vmwy", model.certificate());
+        Assertions.assertEquals("fouyf", model.policyResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CertificateProperties model
-            = new CertificateProperties().withIsVerified(false).withCertificate("suwsyrsnds").withPolicyResourceId("g");
+            = new CertificateProperties().withIsVerified(false).withCertificate("vmwy").withPolicyResourceId("fouyf");
         model = BinaryData.fromObject(model).toObject(CertificateProperties.class);
         Assertions.assertFalse(model.isVerified());
-        Assertions.assertEquals("suwsyrsnds", model.certificate());
-        Assertions.assertEquals("g", model.policyResourceId());
+        Assertions.assertEquals("vmwy", model.certificate());
+        Assertions.assertEquals("fouyf", model.policyResourceId());
     }
 }

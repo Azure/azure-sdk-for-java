@@ -12,11 +12,13 @@ import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentFormula;
 import com.azure.ai.contentunderstanding.models.DocumentHyperlink;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -57,17 +59,16 @@ public class Sample10_AnalyzeConfigsAsyncTest extends ContentUnderstandingClient
 
         // Use reactive pattern: chain operations using flatMap
         // In a real application, you would use subscribe() instead of block()
-        AnalysisResult result = operation.last().flatMap(pollResponse -> {
-            if (pollResponse.getStatus().isComplete()) {
-                return pollResponse.getFinalResult();
-            } else {
-                return Mono.error(
-                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-            }
-        }).block(); // block() is used here for testing; in production, use subscribe()
+        AnalysisResult result = operation.last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "Document analysis"))
+            .block(); // block() is used here for testing; in production, use subscribe()
         // END:ContentUnderstandingAnalyzeWithConfigsAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeWithConfigsAsync
+        assertTrue(Files.exists(filePath), "Sample file should exist at " + filePath);
+        assertTrue(fileBytes.length > 0, "Sample file should not be empty");
+        assertNotNull(binaryData, "Binary data should not be null");
         assertNotNull(operation, "Analysis operation should not be null");
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result should contain contents");
@@ -87,6 +88,62 @@ public class Sample10_AnalyzeConfigsAsyncTest extends ContentUnderstandingClient
         int totalPages = firstDocContent.getEndPageNumber() - firstDocContent.getStartPageNumber() + 1;
         System.out.println("Document has " + totalPages + " page(s) from " + firstDocContent.getStartPageNumber()
             + " to " + firstDocContent.getEndPageNumber());
+
+        if (firstDocContent.getFigures() != null) {
+            for (com.azure.ai.contentunderstanding.models.DocumentFigure figure : firstDocContent.getFigures()) {
+                if (figure instanceof DocumentChartFigure) {
+                    DocumentChartFigure chart = (DocumentChartFigure) figure;
+                    assertNotNull(chart.getId(), "Chart ID should not be null");
+                    assertFalse(chart.getId().trim().isEmpty(), "Chart ID should not be empty");
+                }
+            }
+        }
+
+        assertNotNull(firstDocContent.getHyperlinks(), "Hyperlinks should not be null");
+        assertFalse(firstDocContent.getHyperlinks().isEmpty(), "Sample document should contain hyperlinks");
+        for (DocumentHyperlink hyperlink : firstDocContent.getHyperlinks()) {
+            assertNotNull(hyperlink, "Hyperlink should not be null");
+            assertTrue(
+                (hyperlink.getUrl() != null && !hyperlink.getUrl().trim().isEmpty())
+                    || (hyperlink.getContent() != null && !hyperlink.getContent().trim().isEmpty()),
+                "Each hyperlink should have a URL or content");
+        }
+
+        assertNotNull(firstDocContent.getPages(), "Pages should not be null");
+        assertFalse(firstDocContent.getPages().isEmpty(), "Sample document should contain pages");
+        int assertedFormulaCount = 0;
+        for (com.azure.ai.contentunderstanding.models.DocumentPage page : firstDocContent.getPages()) {
+            if (page.getFormulas() != null) {
+                assertedFormulaCount += page.getFormulas().size();
+                for (DocumentFormula formula : page.getFormulas()) {
+                    assertNotNull(formula, "Formula should not be null");
+                    assertNotNull(formula.getKind(), "Formula kind should not be null");
+                    if (formula.getConfidence() != null) {
+                        assertTrue(formula.getConfidence() >= 0 && formula.getConfidence() <= 1,
+                            "Formula confidence should be between 0 and 1");
+                    }
+                }
+            }
+        }
+        assertTrue(assertedFormulaCount > 0, "Sample document should contain formulas");
+
+        assertNotNull(firstDocContent.getAnnotations(), "Annotations should not be null");
+        assertFalse(firstDocContent.getAnnotations().isEmpty(), "Sample document should contain annotations");
+        for (DocumentAnnotation annotation : firstDocContent.getAnnotations()) {
+            assertNotNull(annotation, "Annotation should not be null");
+            assertNotNull(annotation.getId(), "Annotation ID should not be null");
+            assertFalse(annotation.getId().trim().isEmpty(), "Annotation ID should not be empty");
+            assertNotNull(annotation.getKind(), "Annotation kind should not be null");
+            if (annotation.getComments() != null) {
+                for (com.azure.ai.contentunderstanding.models.DocumentAnnotationComment comment : annotation
+                    .getComments()) {
+                    assertNotNull(comment, "Annotation comment should not be null");
+                    assertNotNull(comment.getMessage(), "Annotation comment message should not be null");
+                    assertFalse(comment.getMessage().trim().isEmpty(),
+                        "Annotation comment message should not be empty");
+                }
+            }
+        }
         System.out.println("Document features analysis with configs completed successfully");
         // END:Assertion_ContentUnderstandingAnalyzeWithConfigsAsync
 
@@ -191,5 +248,16 @@ public class Sample10_AnalyzeConfigsAsyncTest extends ContentUnderstandingClient
             }
         }
         // END:ContentUnderstandingExtractAnnotationsAsync
+
+    }
+
+    private static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
     }
 }

@@ -103,22 +103,6 @@ jobs:
               Pool: $(Pool)
               ${{ insert }}: ${{ parameters.EnvVars }}
 
-        - ${{ each directory in coalesce(parameters.TestResourceDirectories, split(parameters.ServiceDirectory, '|')) }}:
-          - template: /eng/common/TestResources/deploy-test-resources.yml
-            parameters:
-              ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
-                Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
-              ServiceDirectory: '${{ directory }}'
-              SubscriptionConfiguration: $(SubscriptionConfiguration)
-              ArmTemplateParameters: $(ArmTemplateParameters)
-              UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
-              PersistOidcToken: ${{ parameters.PersistOidcToken }}
-              ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
-              SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
-              EnvVars:
-                Pool: $(Pool)
-                ${{ insert }}: ${{ parameters.EnvVars }}
-
       - ${{ parameters.PreSteps }}
 
       # Authenticate with Azure Artifacts
@@ -126,7 +110,24 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
-          PreTestRunSteps: ${{ parameters.PreTestRunSteps }}
+          PreTestRunSteps:
+            - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+              - ${{ each directory in coalesce(parameters.TestResourceDirectories, split(parameters.ServiceDirectory, '|')) }}:
+                - template: /eng/common/TestResources/deploy-test-resources.yml
+                  parameters:
+                    ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
+                      Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
+                    ServiceDirectory: '${{ directory }}'
+                    SubscriptionConfiguration: $(SubscriptionConfiguration)
+                    ArmTemplateParameters: $(ArmTemplateParameters)
+                    UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+                    PersistOidcToken: ${{ parameters.PersistOidcToken }}
+                    ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+                    SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
+                    EnvVars:
+                      Pool: $(Pool)
+                      ${{ insert }}: ${{ parameters.EnvVars }}
+            - ${{ parameters.PreTestRunSteps }}
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
           BuildOptions: ${{ parameters.BuildOptions }}
@@ -151,7 +152,16 @@ jobs:
       # macOS has known issues running HTTP fault injector, change this once
       # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
       - ${{ if and(eq(parameters.UseHttpFaultInjector, 'true'), not(contains(variables['OSVmImage'], 'mac'))) }}:
-        - template: /eng/pipelines/templates/steps/publish-http-fault-injector-logs.yml
+        - task: PowerShell@2
+          displayName: 'Check for and copy http-fault-injector log file'
+          inputs:
+            pwsh: true
+            filePath: eng/pipelines/scripts/Publish-FaultInjectorLogs.ps1
+            arguments: >
+              -LogFileDirectory $(Build.SourcesDirectory)
+              -OutputDirectory $(System.DefaultWorkingDirectory)
+              -UniqueId $(System.JobName)
+          condition: failed()
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - ${{ each directory in coalesce(parameters.TestResourceDirectories, split(parameters.ServiceDirectory, '|')) }}:
@@ -162,4 +172,3 @@ jobs:
               UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
               ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
               SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
-

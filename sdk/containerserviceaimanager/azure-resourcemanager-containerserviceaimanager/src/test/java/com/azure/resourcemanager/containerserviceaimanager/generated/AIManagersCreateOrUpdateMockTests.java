@@ -28,7 +28,7 @@ public final class AIManagersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"deletePolicy\":\"Delete\",\"managedResourceGroupName\":\"ftpvjzbexil\"},\"eTag\":\"nfqqnvwp\",\"identity\":{\"principalId\":\"aruoujmkcjhwqyt\",\"tenantId\":\"ybn\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"thnzd\":{\"principalId\":\"drjervnaenqpehin\",\"clientId\":\"ygmi\"},\"qlkth\":{\"principalId\":\"sl\",\"clientId\":\"ayqigynduhav\"},\"vaolpsslqlf\":{\"principalId\":\"aqolbgycduiertg\",\"clientId\":\"y\"},\"bzmnvdfznud\":{\"principalId\":\"dnbbglzps\",\"clientId\":\"ydmcwyhzdxssa\"}}},\"location\":\"dvxzbncblylpst\",\"tags\":{\"ntnev\":\"hxsrzdzucersc\"},\"id\":\"iwjmygtdssls\",\"name\":\"tmweriofzpyq\",\"type\":\"emwabnet\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"deletePolicy\":\"Keep\",\"managedResourceGroupName\":\"kbebxmubyyntwlrb\",\"clusterResourceId\":\"koievseo\"},\"eTag\":\"q\",\"identity\":{\"principalId\":\"tmuwlauwzi\",\"tenantId\":\"bm\",\"type\":\"None\",\"userAssignedIdentities\":{\"pglkf\":{\"principalId\":\"fuzmuvpbtt\",\"clientId\":\"morppxebmnzbtbh\"},\"v\":{\"principalId\":\"hdneuelfph\",\"clientId\":\"yhtozfikdowwqu\"},\"dsjnka\":{\"principalId\":\"xclvit\",\"clientId\":\"qzonosggbhcohf\"},\"pnppfuf\":{\"principalId\":\"utiiswacf\",\"clientId\":\"dkzzewkfvhqcrail\"}}},\"location\":\"wdmhdlxyjrxs\",\"tags\":{\"pnedgf\":\"fcnihgwq\",\"rhvoods\":\"cvkcvqvpkeqdcv\"},\"id\":\"tbobz\",\"name\":\"opcjwvnhd\",\"type\":\"d\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,22 +38,23 @@ public final class AIManagersCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AIManager response = manager.aIManagers()
-            .define("pfqbuaceopzf")
-            .withRegion("hsfxoblytkb")
-            .withExistingResourceGroup("llwptfdy")
-            .withTags(mapOf("hqjohxcrsbfova", "ewwwfbkrvrnsv"))
-            .withProperties(new AIManagerProperties().withDeletePolicy(DeletePolicy.KEEP))
+            .define("qlkth")
+            .withRegion("mwabnetshhszhedp")
+            .withExistingResourceGroup("ayqigynduhav")
+            .withTags(mapOf("wtppjflcxogaoko", "iwubmwmbesldnk", "nsikvmkqzeqqkdl", "z"))
+            .withProperties(new AIManagerProperties().withDeletePolicy(DeletePolicy.KEEP).withClusterResourceId("r"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("xjyngudivk", new UserAssignedIdentity(), "uvjfdxxive",
-                    new UserAssignedIdentity(), "wvxysl", new UserAssignedIdentity())))
-            .withIfMatch("rxbpyb")
-            .withIfNoneMatch("rfbjf")
+                .withUserAssignedIdentities(
+                    mapOf("xsrz", new UserAssignedIdentity(), "tmweriofzpyq", new UserAssignedIdentity())))
+            .withIfMatch("akbogqxndlkzgxh")
+            .withIfNoneMatch("ripl")
             .create();
 
-        Assertions.assertEquals("dvxzbncblylpst", response.location());
-        Assertions.assertEquals("hxsrzdzucersc", response.tags().get("ntnev"));
-        Assertions.assertEquals(DeletePolicy.DELETE, response.properties().deletePolicy());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("wdmhdlxyjrxs", response.location());
+        Assertions.assertEquals("fcnihgwq", response.tags().get("pnedgf"));
+        Assertions.assertEquals(DeletePolicy.KEEP, response.properties().deletePolicy());
+        Assertions.assertEquals("koievseo", response.properties().clusterResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
     }
 
     // Use "Map.of" if available

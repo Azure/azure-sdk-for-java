@@ -21,7 +21,7 @@ public final class RelationshipsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"jcpeogkhnmg\",\"parentEntityName\":\"ro\",\"childEntityName\":\"xddbhfhpfpaz\",\"tags\":{\"dulontacn\":\"ywjxh\",\"rljyoogwxhnsdu\":\"qwtehtuevr\",\"kfuarenlv\":\"gwbsreurf\",\"nafvvkyfedev\":\"htkln\"},\"discoveredBy\":\"oslc\"},\"id\":\"y\",\"name\":\"okkhminq\",\"type\":\"ymc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"xqbawpc\",\"parentEntityName\":\"bnzqcyknapq\",\"childEntityName\":\"fyuicdh\",\"tags\":{\"bdvibidmhmwffpl\":\"ybww\"},\"discoveredBy\":\"u\"},\"id\":\"pckc\",\"name\":\"rrvwey\",\"type\":\"xoy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class RelationshipsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Relationship response = manager.relationships()
-            .getWithResponse("khgb", "qtanarfdlpuk", "py", com.azure.core.util.Context.NONE)
+            .getWithResponse("vfxzopjh", "zxlioh", "d", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jcpeogkhnmg", response.properties().displayName());
-        Assertions.assertEquals("ro", response.properties().parentEntityName());
-        Assertions.assertEquals("xddbhfhpfpaz", response.properties().childEntityName());
-        Assertions.assertEquals("ywjxh", response.properties().tags().get("dulontacn"));
+        Assertions.assertEquals("xqbawpc", response.properties().displayName());
+        Assertions.assertEquals("bnzqcyknapq", response.properties().parentEntityName());
+        Assertions.assertEquals("fyuicdh", response.properties().childEntityName());
+        Assertions.assertEquals("ybww", response.properties().tags().get("bdvibidmhmwffpl"));
     }
 }

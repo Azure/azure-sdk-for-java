@@ -1,6 +1,6 @@
 # Release History
 
-## 2.60.0-beta.1 (Unreleased)
+## 2.62.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,274 @@
 
 ### Other Changes
 
+## 2.61.0 (2026-09-15)
+
+- Package api-version Microsoft.Network: 2026-01-01, Microsoft.Compute: 2018-10-01.
+
+### Breaking Changes
+
+#### `models.EnableOnlyIpv6PeeringState` was removed
+
+### Features Added
+
+* `models.AuthenticationPolicyUpdateParameters` was added
+
+* `models.ApplicationGatewayAdvancedRoutingCondition` was added
+
+* `models.SessionRecordingIdentityType` was added
+
+* `models.ApplicationGatewayAdvancedRoutingMapPropertiesFormat` was added
+
+* `models.PeeringHealth` was added
+
+* `models.MigrateExpressRouteCircuitRequest` was added
+
+* `models.ApplicationGatewayAdvancedRoutingRule` was added
+
+* `models.ApplicationGatewayAdvancedRoutingConditionType` was added
+
+* `models.BastionHostUpdate` was added
+
+* `models.PeeringStats` was added
+
+* `models.AuthenticationPolicyPropertiesFormat` was added
+
+* `models.ApprovalReference` was added
+
+* `models.AuthenticationProviderProperties` was added
+
+* `models.OnUnauthenticatedRequest` was added
+
+* `models.SessionRecordingIdentity` was added
+
+* `models.PortMigrationInfo` was added
+
+* `models.SourcePortStats` was added
+
+* `models.ApplicationGatewayWafRuleParanoiaLevel` was added
+
+* `models.UserTrustProviderType` was added
+
+* `models.ApplicationGatewayAdvancedRoutingPropertyValueMatcher` was added
+
+* `models.BastionSessionRecordingConfiguration` was added
+
+* `models.ApplicationGatewayAdvancedRoutingMap` was added
+
+* `models.Metric` was added
+
+* `models.ApplicationGatewayAdvancedRoutingRulePropertiesFormat` was added
+
+* `models.ApplicationGatewayAuthConfig` was added
+
+* `models.PortMapping` was added
+
+* `models.MigrateExpressRouteCircuitHealthCheckDetails` was added
+
+* `models.ApplicationGatewayAdvancedRoutingConditionSetPropertiesFormat` was added
+
+* `models.WebApplicationFirewallPolicyTier` was added
+
+* `models.MigrateExpressRouteCircuitValidateAndHealthCheckRequest` was added
+
+* `models.ApplicationGatewayAdvancedRoutingConditionSet` was added
+
+#### `models.ApplicationGatewayFirewallRule` was modified
+
+* `paranoiaLevel()` was added
+
+#### `models.NetworkRule` was modified
+
+* `sourceGeoLocations()` was added
+* `withDestinationGeoLocations(java.util.List)` was added
+* `withSourceGeoLocations(java.util.List)` was added
+* `destinationGeoLocations()` was added
+
+#### `models.IpamPoolUpdateProperties` was modified
+
+* `withMaxAllocationSize(java.lang.String)` was added
+* `minAllocationSize()` was added
+* `maxAllocationSize()` was added
+* `withMinAllocationSize(java.lang.String)` was added
+
+#### `models.ApplicationGatewaySkuName` was modified
+
+* `BASIC_V2` was added
+* `BASIC_WAF_V2` was added
+
+#### `models.IpamPoolProperties` was modified
+
+* `maxAllocationSize()` was added
+* `minAllocationSize()` was added
+* `withMaxAllocationSize(java.lang.String)` was added
+* `withMinAllocationSize(java.lang.String)` was added
+
+#### `models.ExpressRouteLagPropertiesFormat` was modified
+
+* `circuits()` was added
+
+#### `models.ApplicationGatewayFirewallRuleSet` was modified
+
+* `displayName()` was added
+
+#### `models.ApplicationGatewayFirewallManifestRuleSet` was modified
+
+* `displayName()` was added
+
+#### `models.ApplicationGatewayTier` was modified
+
+* `BASIC_V2` was added
+* `BASIC_WAF_V2` was added
+
+#### `models.PrivateLinkServiceConnection` was modified
+
+* `approvalReference()` was added
+* `withApprovalReference(models.ApprovalReference)` was added
+
+#### `models.ApplicationGatewayRequestRoutingRuleType` was modified
+
+* `ADVANCED_ROUTING` was added
+
+#### `models.VirtualNetworkGatewayMigrationType` was modified
+
+* `UPGRADE_GATEWAY_TO_DUAL_STACK` was added
+* `MIGRATE_GATEWAY_FOR_POINT_TO_SITE_PROFILE` was added
+
+## 2.60.1 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
+
+## 2.60.0 (2026-08-14)
+
+- Package api-version Microsoft.Network: 2025-09-01, Microsoft.Compute: 2018-10-01.
+
+### Features Added
+
+* `models.AddressPrefixSetPropertiesFormat` was added
+
+* `models.FirstPartyServiceTagPropertiesFormat` was added
+
+* `models.ExpressRouteLagBillingType` was added
+
+* `models.ExpressRouteLagLinkPropertiesFormat` was added
+
+* `models.GenerateExpressRouteLagsLOARequest` was added
+
+* `models.ExpressRouteLagLacpTimer` was added
+
+* `models.NetworkVirtualAppliancePrepareMigrationRequest` was added
+
+* `models.GatewayEffectiveRoute` was added
+
+* `models.ExpressRouteLagUpdateTagsOrIdentityRequest` was added
+
+* `models.StorageAccountSettings` was added
+
+* `models.FirewallPolicyKubeSelectorGroupProperties` was added
+
+* `models.NetworkVirtualApplianceCommitMigrationRequest` was added
+
+* `models.NetworkVirtualApplianceMigrationStatus` was added
+
+* `models.NetworkVirtualApplianceCommitMigrationProperties` was added
+
+* `models.MoveIpConfigurationItem` was added
+
+* `models.ExpressRouteDiagnosticsSettings` was added
+
+* `models.NetworkVirtualApplianceExecuteMigrationRequest` was added
+
+* `models.ConnectionAnalyzerEndpointType` was added
+
+* `models.ConnectionAnalyzerEndpoint` was added
+
+* `models.LoadBalancerMode` was added
+
+* `models.DiagnosticOperationResult` was added
+
+* `models.MoveIpConfigurationResourceReference` was added
+
+* `models.OutputSettings` was added
+
+* `models.MigrationType` was added
+
+* `models.ExpressRouteLagEncapsulation` was added
+
+* `models.ExpressRouteLagPropertiesFormat` was added
+
+* `models.ProtocolSettings` was added
+
+* `models.ExpressRouteLagMemberPropertiesFormat` was added
+
+* `models.GatewayEffectiveRouteNextHopType` was added
+
+* `models.DiagnosticOperation` was added
+
+* `models.MoveIpConfigurationsRequest` was added
+
+* `models.ConnectionAnalyzerProperties` was added
+
+* `models.ConnectivityCheckSettings` was added
+
+* `models.NetworkVirtualAppliancePrepareMigrationProperties` was added
+
+* `models.EnableOnlyIpv6PeeringState` was added
+
+* `models.KubeLabelSelector` was added
+
+* `models.DiagnosticOperationsSettings` was added
+
+* `models.NetworkVirtualApplianceExecuteMigrationProperties` was added
+
+* `models.LabelSelectorOperator` was added
+
+* `models.LabelSelectorExpression` was added
+
+* `models.ConnectionAnalyzerStatus` was added
+
+* `models.ResiliencyLevel` was added
+
+#### `models.NetworkRule` was modified
+
+* `sourceKubeSelectorGroups()` was added
+* `withSourceKubeSelectorGroups(java.util.List)` was added
+
+#### `models.ServiceProviderProvisioningState` was modified
+
+* `DE_PROVISIONED` was added
+
+#### `models.ApplicationGatewayGlobalConfiguration` was modified
+
+* `withDisableDefaultServerHeaderInResponse(java.lang.Boolean)` was added
+* `disableDefaultServerHeaderInResponse()` was added
+
+#### `models.LoadBalancerSkuName` was modified
+
+* `SERVICE` was added
+
+#### `models.ExpressRouteCircuitSkuTier` was modified
+
+* `MULTI_CLOUD` was added
+
+#### `models.ApplicationRule` was modified
+
+* `withSourceKubeSelectorGroups(java.util.List)` was added
+* `sourceKubeSelectorGroups()` was added
+
+#### `models.VirtualApplianceNicProperties` was modified
+
+* `publicIpAddressV6()` was added
+* `privateIpAddressV6()` was added
+
+#### `models.IpTag` was modified
+
+* `withFirstPartyServiceTagId(java.lang.String)` was added
+* `firstPartyServiceTagId()` was added
+
 ## 2.59.1 (2026-07-07)
 
 ### Other Changes
@@ -17,12 +285,6 @@
 #### Dependency Updates
 
 - Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
-
-## 2.59.0 (2026-06-29)
-
-### Other Changes
-
-- Updated `api-version` to `2025-07-01`.
 
 ## 2.58.3 (2026-07-01)
 
@@ -32,6 +294,12 @@
 
 - Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
 
+
+## 2.59.0 (2026-06-29)
+
+### Other Changes
+
+- Updated `api-version` to `2025-07-01`.
 
 ## 2.58.2 (2026-05-05)
 

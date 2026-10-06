@@ -7,20 +7,32 @@ package com.azure.ai.contentunderstanding.samples;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
+import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
+import com.azure.ai.contentunderstanding.models.ContentFieldType;
+import com.azure.ai.contentunderstanding.models.GenerationMethod;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Sample demonstrating how to get analyzer information.
- * This sample shows:
- * 1. Retrieving analyzer details by ID
- * 2. Accessing analyzer configuration
- * 3. Inspecting field schema definitions
- * 4. Getting prebuilt analyzer information
+ * Sample demonstrating how to retrieve information about prebuilt and custom analyzers.
+ *
+ * <p>This sample retrieves {@code prebuilt-documentSearch} and {@code prebuilt-invoice}, creates and retrieves a
+ * custom analyzer, and prints each raw JSON response for inspecting the complete configuration.</p>
  */
 public class Sample06_GetAnalyzer {
 
-    public static void main(String[] args) {
+     public static void main(String[] args) throws IOException {
         // BEGIN: com.azure.ai.contentunderstanding.sample06.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -38,20 +50,86 @@ public class Sample06_GetAnalyzer {
         }
         // END: com.azure.ai.contentunderstanding.sample06.buildClient
 
-        // BEGIN:ContentUnderstandingGetAnalyzer
-        // Get a prebuilt analyzer (these are always available)
-        String analyzerId = "prebuilt-invoice";
+        getPrebuiltAnalyzer(client);
+        getPrebuiltInvoice(client);
+        getCustomAnalyzer(client);
+    }
 
-        System.out.println("Retrieving analyzer '" + analyzerId + "'...");
+    private static void getPrebuiltAnalyzer(ContentUnderstandingClient client) throws IOException {
+        // BEGIN:ContentUnderstandingGetPrebuiltAnalyzer
+        Response<BinaryData> response
+            = client.getAnalyzerWithResponse("prebuilt-documentSearch", new RequestOptions());
+        ContentAnalyzer analyzer = response.getValue().toObject(ContentAnalyzer.class);
 
-        ContentAnalyzer analyzer = client.getAnalyzer(analyzerId);
-
+        // Print a few properties from ContentAnalyzer
         System.out.println("Analyzer ID: " + analyzer.getAnalyzerId());
         System.out.println(
             "Base Analyzer ID: " + (analyzer.getBaseAnalyzerId() != null ? analyzer.getBaseAnalyzerId() : "N/A"));
         System.out.println("Description: " + (analyzer.getDescription() != null ? analyzer.getDescription() : "N/A"));
+        System.out.println("Enable OCR: " + analyzer.getConfig().isOcrEnabled());
+        System.out.println("Enable Layout: " + analyzer.getConfig().isLayoutEnabled());
+        System.out.println("Models: " + analyzer.getModels());
+        printAnalyzerDetails(analyzer);
 
-        // Display configuration
+        System.out.println("\nPrebuilt-documentSearch Analyzer (Raw JSON):");
+        System.out.println(formatJson(response.getValue()));
+        // END:ContentUnderstandingGetPrebuiltAnalyzer
+    }
+
+    private static void getPrebuiltInvoice(ContentUnderstandingClient client) throws IOException {
+        // BEGIN:ContentUnderstandingGetPrebuiltInvoice
+        Response<BinaryData> response = client.getAnalyzerWithResponse("prebuilt-invoice", new RequestOptions());
+        ContentAnalyzer analyzer = response.getValue().toObject(ContentAnalyzer.class);
+
+        System.out.println("\nPrebuilt-invoice Analyzer (Raw JSON):");
+        System.out.println(formatJson(response.getValue()));
+        printAnalyzerDetails(analyzer);
+        // END:ContentUnderstandingGetPrebuiltInvoice
+    }
+
+    private static void getCustomAnalyzer(ContentUnderstandingClient client) throws IOException {
+        // BEGIN:ContentUnderstandingGetCustomAnalyzer
+        String analyzerId = "my_custom_analyzer_" + System.currentTimeMillis();
+
+        Map<String, ContentFieldDefinition> fields = new HashMap<>();
+        fields.put("company_name", new ContentFieldDefinition().setType(ContentFieldType.STRING)
+            .setMethod(GenerationMethod.EXTRACT)
+            .setDescription("Name of the company"));
+
+        ContentFieldSchema fieldSchema = new ContentFieldSchema().setName("test_schema")
+            .setDescription("Test schema for GetAnalyzer sample")
+            .setFields(fields);
+
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", SampleModelConfiguration.getCompletionModel());
+
+        ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Test analyzer for GetAnalyzer sample")
+            .setConfig(new ContentAnalyzerConfig().setReturnDetails(true))
+            .setFieldSchema(fieldSchema)
+            .setModels(models);
+
+        client.beginCreateAnalyzer(analyzerId, analyzer).getFinalResult();
+        try {
+            Response<BinaryData> response = client.getAnalyzerWithResponse(analyzerId, new RequestOptions());
+            ContentAnalyzer retrievedAnalyzer = response.getValue().toObject(ContentAnalyzer.class);
+
+            System.out.println("\nCustom Analyzer (Raw JSON):");
+            System.out.println(formatJson(response.getValue()));
+            System.out.println("Retrieved analyzer: " + retrievedAnalyzer.getAnalyzerId());
+        } finally {
+            client.deleteAnalyzer(analyzerId);
+        }
+        // END:ContentUnderstandingGetCustomAnalyzer
+    }
+
+    private static String formatJson(BinaryData json) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(json.toBytes());
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
+    }
+
+    private static void printAnalyzerDetails(ContentAnalyzer analyzer) {
         if (analyzer.getConfig() != null) {
             System.out.println("\nAnalyzer Configuration:");
             System.out.println("  Enable OCR: " + analyzer.getConfig().isOcrEnabled());
@@ -62,7 +140,6 @@ public class Sample06_GetAnalyzer {
             System.out.println("  Return Details: " + analyzer.getConfig().isReturnDetails());
         }
 
-        // Display field schema if available
         if (analyzer.getFieldSchema() != null) {
             System.out.println("\nField Schema:");
             System.out.println("  Name: " + analyzer.getFieldSchema().getName());
@@ -71,37 +148,30 @@ public class Sample06_GetAnalyzer {
                 : "N/A"));
             if (analyzer.getFieldSchema().getFields() != null) {
                 System.out.println("  Number of fields: " + analyzer.getFieldSchema().getFields().size());
-                System.out.println("  Fields:");
-                analyzer.getFieldSchema().getFields().forEach((fieldName, fieldDef) -> {
-                    System.out.println("    - " + fieldName + " (" + fieldDef.getType() + ", Method: "
-                        + (fieldDef.getMethod() != null ? fieldDef.getMethod() : "N/A") + ")");
-                    if (fieldDef.getDescription() != null && !fieldDef.getDescription().trim().isEmpty()) {
-                        System.out.println("      Description: " + fieldDef.getDescription());
+                analyzer.getFieldSchema().getFields().forEach((fieldName, fieldDefinition) -> {
+                    System.out.println("    - " + fieldName + " (" + fieldDefinition.getType() + ", Method: "
+                        + (fieldDefinition.getMethod() != null ? fieldDefinition.getMethod() : "N/A") + ")");
+                    if (fieldDefinition.getDescription() != null
+                        && !fieldDefinition.getDescription().trim().isEmpty()) {
+                        System.out.println("      Description: " + fieldDefinition.getDescription());
                     }
                 });
             }
         }
 
-        // Display models if available
         if (analyzer.getModels() != null && !analyzer.getModels().isEmpty()) {
             System.out.println("\nModel Mappings:");
-            analyzer.getModels().forEach((modelKey, modelValue) -> {
-                System.out.println("  " + modelKey + ": " + modelValue);
-            });
+            analyzer.getModels().forEach(
+                (modelKey, modelValue) -> System.out.println("  " + modelKey + ": " + modelValue));
         }
-
-        // Display status if available
         if (analyzer.getStatus() != null) {
             System.out.println("\nAnalyzer Status: " + analyzer.getStatus());
         }
-
-        // Display created/updated timestamps if available
         if (analyzer.getCreatedAt() != null) {
             System.out.println("Created: " + analyzer.getCreatedAt());
         }
         if (analyzer.getLastModifiedAt() != null) {
             System.out.println("Updated: " + analyzer.getLastModifiedAt());
         }
-        // END:ContentUnderstandingGetAnalyzer
     }
 }

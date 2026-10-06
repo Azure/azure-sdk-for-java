@@ -41,6 +41,11 @@ public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessChe
      */
     private String linkedType;
 
+    /*
+     * The options for the linked access check.
+     */
+    private LinkedAccessCheckOptions options;
+
     /**
      * Creates an instance of LinkedAccessCheck class.
      */
@@ -148,6 +153,15 @@ public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessChe
     }
 
     /**
+     * Get the options property: The options for the linked access check.
+     * 
+     * @return the options value.
+     */
+    public LinkedAccessCheckOptions options() {
+        return this.options;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -194,6 +208,8 @@ public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessChe
                     deserializedLinkedAccessCheck.linkedActionVerb = reader.getString();
                 } else if ("linkedType".equals(fieldName)) {
                     deserializedLinkedAccessCheck.linkedType = reader.getString();
+                } else if ("options".equals(fieldName)) {
+                    deserializedLinkedAccessCheck.options = LinkedAccessCheckOptions.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

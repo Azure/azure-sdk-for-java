@@ -16,7 +16,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/PutDeployment.json
+     * x-ms-original-file: 2026-07-15-preview/PutDeployment.json
      */
     /**
      * Sample code: PutDeployment.
@@ -36,7 +36,7 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-15-preview/PutDeploymentWithSpeculativeDecoding.json
+     * x-ms-original-file: 2026-07-15-preview/PutDeploymentWithSpeculativeDecoding.json
      */
     /**
      * Sample code: PutDeploymentWithSpeculativeDecoding.

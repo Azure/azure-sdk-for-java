@@ -27,7 +27,7 @@ public final class HealthModelsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"or\",\"tenantId\":\"wjlvizbfhfov\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"cwyhahno\":{\"principalId\":\"btuodxeszabbel\",\"clientId\":\"umuaslzkwrrwoycq\"},\"rzpgep\":{\"principalId\":\"rkywuhpsvfuu\",\"clientId\":\"tlwexxwlalniexz\"},\"hzyvlixqnrkcx\":{\"principalId\":\"yb\",\"clientId\":\"wpgdak\"}}},\"location\":\"ibn\",\"tags\":{\"ttexoqqpwcyyufmh\":\"suxswqrntvlwijp\"},\"id\":\"uncuw\",\"name\":\"qspkcdqzhlctd\",\"type\":\"unqndyfpchrqb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"cd\",\"tenantId\":\"qbw\",\"type\":\"None\",\"userAssignedIdentities\":{\"ud\":{\"principalId\":\"gsfjac\",\"clientId\":\"lhhxudbxvodhtnsi\"}}},\"location\":\"m\",\"tags\":{\"rcxfailcfxwmdb\":\"ckdlpag\",\"lnacgcc\":\"xdfgsftufqobr\"},\"id\":\"knh\",\"name\":\"kizvytn\",\"type\":\"zvulj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,19 +37,19 @@ public final class HealthModelsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HealthModel response = manager.healthModels()
-            .define("hcz")
-            .withRegion("vidizozsdb")
-            .withExistingResourceGroup("ivfcdisyirnx")
-            .withTags(mapOf("n", "jmonfdgn", "keifzzhmkdasv", "ypuuwwltvuqjctze"))
+            .define("yxkyxvx")
+            .withRegion("doj")
+            .withExistingResourceGroup("jjidjk")
+            .withTags(mapOf("ecuijpxtxs", "vavrefdees"))
             .withProperties(new HealthModelProperties())
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(
-                    mapOf("ofizehtdhgbj", new UserAssignedIdentity(), "mjerbdk", new UserAssignedIdentity())))
+                    mapOf("zg", new UserAssignedIdentity(), "qiekkkzddrt", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("ibn", response.location());
-        Assertions.assertEquals("suxswqrntvlwijp", response.tags().get("ttexoqqpwcyyufmh"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("m", response.location());
+        Assertions.assertEquals("ckdlpag", response.tags().get("rcxfailcfxwmdb"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
     }
 
     // Use "Map.of" if available

@@ -135,6 +135,10 @@ public final class KnowledgeBaseIndexedSharePointActivityRecord extends Knowledg
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("id", getId());
+        jsonWriter.writeStringField("startedAt",
+            getStartedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getStartedAt()));
+        jsonWriter.writeStringField("completedAt",
+            getCompletedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCompletedAt()));
         jsonWriter.writeNumberField("elapsedMs", getElapsedMs());
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("warning", getWarning());
@@ -145,6 +149,7 @@ public final class KnowledgeBaseIndexedSharePointActivityRecord extends Knowledg
         jsonWriter.writeNumberField("count", this.count);
         jsonWriter.writeJsonField("imageServing", this.imageServing);
         jsonWriter.writeJsonField("indexedSharePointArguments", this.indexedSharePointArguments);
+        jsonWriter.writeJsonField("queryHintProcessing", this.queryHintProcessing);
         return jsonWriter.writeEndObject();
     }
 
@@ -161,6 +166,8 @@ public final class KnowledgeBaseIndexedSharePointActivityRecord extends Knowledg
     public static KnowledgeBaseIndexedSharePointActivityRecord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int id = 0;
+            OffsetDateTime startedAt = null;
+            OffsetDateTime completedAt = null;
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
             String warning = null;
@@ -170,11 +177,18 @@ public final class KnowledgeBaseIndexedSharePointActivityRecord extends Knowledg
             Integer count = null;
             ImageServingStatistics imageServing = null;
             KnowledgeBaseIndexedSharePointActivityArguments indexedSharePointArguments = null;
+            KnowledgeBaseQueryHintProcessing queryHintProcessing = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getInt();
+                } else if ("startedAt".equals(fieldName)) {
+                    startedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("completedAt".equals(fieldName)) {
+                    completedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("elapsedMs".equals(fieldName)) {
                     elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {
@@ -194,12 +208,16 @@ public final class KnowledgeBaseIndexedSharePointActivityRecord extends Knowledg
                     imageServing = ImageServingStatistics.fromJson(reader);
                 } else if ("indexedSharePointArguments".equals(fieldName)) {
                     indexedSharePointArguments = KnowledgeBaseIndexedSharePointActivityArguments.fromJson(reader);
+                } else if ("queryHintProcessing".equals(fieldName)) {
+                    queryHintProcessing = KnowledgeBaseQueryHintProcessing.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             KnowledgeBaseIndexedSharePointActivityRecord deserializedKnowledgeBaseIndexedSharePointActivityRecord
                 = new KnowledgeBaseIndexedSharePointActivityRecord(id);
+            deserializedKnowledgeBaseIndexedSharePointActivityRecord.setStartedAt(startedAt);
+            deserializedKnowledgeBaseIndexedSharePointActivityRecord.setCompletedAt(completedAt);
             deserializedKnowledgeBaseIndexedSharePointActivityRecord.setElapsedMs(elapsedMs);
             deserializedKnowledgeBaseIndexedSharePointActivityRecord.setError(error);
             deserializedKnowledgeBaseIndexedSharePointActivityRecord.setWarning(warning);
@@ -210,7 +228,24 @@ public final class KnowledgeBaseIndexedSharePointActivityRecord extends Knowledg
             deserializedKnowledgeBaseIndexedSharePointActivityRecord.imageServing = imageServing;
             deserializedKnowledgeBaseIndexedSharePointActivityRecord.indexedSharePointArguments
                 = indexedSharePointArguments;
+            deserializedKnowledgeBaseIndexedSharePointActivityRecord.queryHintProcessing = queryHintProcessing;
             return deserializedKnowledgeBaseIndexedSharePointActivityRecord;
         });
+    }
+
+    /*
+     * Details about the expressions generated from query hints for this activity.
+     */
+    @Generated
+    private KnowledgeBaseQueryHintProcessing queryHintProcessing;
+
+    /**
+     * Get the queryHintProcessing property: Details about the expressions generated from query hints for this activity.
+     *
+     * @return the queryHintProcessing value.
+     */
+    @Generated
+    public KnowledgeBaseQueryHintProcessing getQueryHintProcessing() {
+        return this.queryHintProcessing;
     }
 }

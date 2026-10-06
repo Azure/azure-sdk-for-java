@@ -20,7 +20,7 @@ public final class ExperimentsGetExecutionWithResponseMockTests {
     @Test
     public void testGetExecutionWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"status\":\"znabaobns\",\"startedAt\":\"2021-11-13T05:24:12Z\",\"stoppedAt\":\"2021-05-03T18:13:03Z\",\"provisioningState\":\"Running\"},\"id\":\"mkmvguihywartspp\",\"name\":\"kixkykxdssjpemm\",\"type\":\"cfxhikkflrmy\"}";
+            = "{\"properties\":{\"status\":\"vmaonurjt\",\"startedAt\":\"2021-05-12T05:44:48Z\",\"stoppedAt\":\"2021-03-13T14:20:43Z\",\"provisioningState\":\"Deleting\"},\"id\":\"ecmslclbl\",\"name\":\"jxl\",\"type\":\"bsjuscvsfx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class ExperimentsGetExecutionWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExperimentExecution response = manager.experiments()
-            .getExecutionWithResponse("ewbidyvteowxv", "piudeugfsxzecpa", "wkufykhvuhxepm",
-                com.azure.core.util.Context.NONE)
+            .getExecutionWithResponse("etnjuhpsprkz", "aupia", "cxnafbwqrooh", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

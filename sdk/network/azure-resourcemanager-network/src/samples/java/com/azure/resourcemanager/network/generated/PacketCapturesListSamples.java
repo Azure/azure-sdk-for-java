@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PacketCapturesListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NetworkWatcherPacketCapturesList.json
+     * x-ms-original-file: 2026-01-01/NetworkWatcherPacketCapturesList.json
      */
     /**
      * Sample code: List packet captures.

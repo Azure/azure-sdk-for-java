@@ -5,16 +5,14 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.BrowserAutomationPreviewTool;
+import com.azure.ai.agents.models.BrowserAutomationTool;
 import com.azure.ai.agents.models.BrowserAutomationToolConnectionParameters;
 import com.azure.ai.agents.models.BrowserAutomationToolParameters;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 
@@ -42,11 +40,10 @@ public class BrowserAutomationSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
 
         // BEGIN: com.azure.ai.agents.define_browser_automation
         // Create browser automation tool with connection configuration
-        BrowserAutomationPreviewTool browserTool = new BrowserAutomationPreviewTool(
+        BrowserAutomationTool browserTool = new BrowserAutomationTool(
             new BrowserAutomationToolParameters(
                 new BrowserAutomationToolConnectionParameters(connectionId)
             )
@@ -63,13 +60,12 @@ public class BrowserAutomationSync {
 
         try {
             // Create a response
-            AgentReference agentReference = new AgentReference(agent.getName())
-                .setVersion(agent.getVersion());
+            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
-            Response response = responsesClient.createAzureResponse(
-                new AzureCreateResponseOptions().setAgentReference(agentReference),
+            Response response = openAIClient.responses().create(
                 ResponseCreateParams.builder()
-                    .input("Navigate to microsoft.com and summarize the main content"));
+                    .input("Navigate to microsoft.com and summarize the main content")
+                    .build());
 
             System.out.println("Response: " + response.output());
         } finally {

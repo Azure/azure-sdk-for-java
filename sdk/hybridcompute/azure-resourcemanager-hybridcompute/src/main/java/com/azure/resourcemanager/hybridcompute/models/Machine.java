@@ -65,7 +65,7 @@ public interface Machine {
      * 
      * @return the identity value.
      */
-    ManagedServiceIdentity identity();
+    Identity identity();
 
     /**
      * Gets the kind property: Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware
@@ -485,7 +485,7 @@ public interface Machine {
              * @param identity Identity for the resource.
              * @return the next definition stage.
              */
-            WithCreate withIdentity(ManagedServiceIdentity identity);
+            WithCreate withIdentity(Identity identity);
         }
 
         /**
@@ -792,7 +792,7 @@ public interface Machine {
              * @param identity Identity for the resource.
              * @return the next definition stage.
              */
-            Update withIdentity(ManagedServiceIdentity identity);
+            Update withIdentity(Identity identity);
         }
 
         /**

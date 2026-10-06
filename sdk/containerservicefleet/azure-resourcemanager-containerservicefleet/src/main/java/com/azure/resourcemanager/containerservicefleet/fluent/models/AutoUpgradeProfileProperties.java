@@ -55,11 +55,11 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
     private AutoUpgradeProfileStatus autoUpgradeProfileStatus;
 
     /*
-     * This is the target Kubernetes
-     * version for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
+     * This is the target Kubernetes version
+     * for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
      * By default, this is empty.
      * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
-     * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
+     * If upgrade channel is not TargetKubernetesVersion, this field must be empty.
      */
     private String targetKubernetesVersion;
 
@@ -201,11 +201,11 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
     }
 
     /**
-     * Get the targetKubernetesVersion property: This is the target Kubernetes
-     * version for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
+     * Get the targetKubernetesVersion property: This is the target Kubernetes version
+     * for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
      * By default, this is empty.
      * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
-     * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
+     * If upgrade channel is not TargetKubernetesVersion, this field must be empty.
      * 
      * @return the targetKubernetesVersion value.
      */
@@ -214,11 +214,11 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
     }
 
     /**
-     * Set the targetKubernetesVersion property: This is the target Kubernetes
-     * version for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
+     * Set the targetKubernetesVersion property: This is the target Kubernetes version
+     * for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
      * By default, this is empty.
      * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
-     * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
+     * If upgrade channel is not TargetKubernetesVersion, this field must be empty.
      * 
      * @param targetKubernetesVersion the targetKubernetesVersion value to set.
      * @return the AutoUpgradeProfileProperties object itself.

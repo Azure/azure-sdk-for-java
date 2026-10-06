@@ -13,18 +13,18 @@ public final class ProviderRegistrationPropertiesPrivateResourceProviderConfigur
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProviderRegistrationPropertiesPrivateResourceProviderConfiguration model
-            = BinaryData.fromString("{\"allowedSubscriptions\":[\"eafidltugsresm\",\"ssjhoiftxfkf\"]}")
+            = BinaryData.fromString("{\"allowedSubscriptions\":[\"dwxf\",\"wiivwzjbhyzsx\"]}")
                 .toObject(ProviderRegistrationPropertiesPrivateResourceProviderConfiguration.class);
-        Assertions.assertEquals("eafidltugsresm", model.allowedSubscriptions().get(0));
+        Assertions.assertEquals("dwxf", model.allowedSubscriptions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProviderRegistrationPropertiesPrivateResourceProviderConfiguration model
             = new ProviderRegistrationPropertiesPrivateResourceProviderConfiguration()
-                .withAllowedSubscriptions(Arrays.asList("eafidltugsresm", "ssjhoiftxfkf"));
+                .withAllowedSubscriptions(Arrays.asList("dwxf", "wiivwzjbhyzsx"));
         model = BinaryData.fromObject(model)
             .toObject(ProviderRegistrationPropertiesPrivateResourceProviderConfiguration.class);
-        Assertions.assertEquals("eafidltugsresm", model.allowedSubscriptions().get(0));
+        Assertions.assertEquals("dwxf", model.allowedSubscriptions().get(0));
     }
 }

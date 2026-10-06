@@ -12,10 +12,10 @@ public final class CertificateListDescriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateListDescriptionInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"subject\":\"aeaeneqnzarrw\",\"expiry\":\"Fri, 21 May 2021 16:07:38 GMT\",\"thumbprint\":\"ijfqkacewiipfp\",\"isVerified\":false,\"created\":\"Fri, 06 Aug 2021 09:42:10 GMT\",\"updated\":\"Sun, 24 Jan 2021 11:42:32 GMT\",\"certificate\":\"f\",\"policyResourceId\":\"hqkvpuvksgplsak\"},\"etag\":\"n\",\"id\":\"ynl\",\"name\":\"ph\",\"type\":\"op\"},{\"properties\":{\"subject\":\"lqiyntorzihl\",\"expiry\":\"Sat, 03 Jul 2021 10:26:48 GMT\",\"thumbprint\":\"swsrms\",\"isVerified\":false,\"created\":\"Tue, 30 Mar 2021 08:07:03 GMT\",\"updated\":\"Fri, 08 Oct 2021 11:48:09 GMT\",\"certificate\":\"hckqqzqioxiy\",\"policyResourceId\":\"iizynkedyatrwyh\"},\"etag\":\"ibzyhwitsmyp\",\"id\":\"npcdpumnzgm\",\"name\":\"z\",\"type\":\"mabiknsorgjhxb\"}]}")
+            "{\"value\":[{\"properties\":{\"subject\":\"pwiyzvqtm\",\"expiry\":\"Wed, 22 Sep 2021 09:26:58 GMT\",\"thumbprint\":\"xkp\",\"isVerified\":false,\"created\":\"Tue, 02 Mar 2021 10:38:26 GMT\",\"updated\":\"Wed, 08 Dec 2021 09:50:21 GMT\",\"certificate\":\"mquxvypo\",\"policyResourceId\":\"kopkwhojvpajqgx\"},\"etag\":\"mocmbqfqvmk\",\"id\":\"oz\",\"name\":\"pvhelxprg\",\"type\":\"yat\"}]}")
             .toObject(CertificateListDescriptionInner.class);
         Assertions.assertFalse(model.value().get(0).properties().isVerified());
-        Assertions.assertEquals("f", model.value().get(0).properties().certificate());
-        Assertions.assertEquals("hqkvpuvksgplsak", model.value().get(0).properties().policyResourceId());
+        Assertions.assertEquals("mquxvypo", model.value().get(0).properties().certificate());
+        Assertions.assertEquals("kopkwhojvpajqgx", model.value().get(0).properties().policyResourceId());
     }
 }

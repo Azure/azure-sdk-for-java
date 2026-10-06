@@ -17,34 +17,24 @@ public final class RunAfterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RunAfter model = BinaryData.fromString(
-            "{\"behavior\":\"Any\",\"items\":[{\"type\":\"Action\",\"name\":\"cmjdmspof\",\"onActionLifecycle\":\"Skipped\"},{\"type\":\"Action\",\"name\":\"hryl\",\"onActionLifecycle\":\"Running\"},{\"type\":\"Action\",\"name\":\"rz\",\"onActionLifecycle\":\"Success\"},{\"type\":\"Action\",\"name\":\"edm\",\"onActionLifecycle\":\"Start\"}]}")
+            "{\"behavior\":\"All\",\"items\":[{\"type\":\"Action\",\"name\":\"gbzjedmstkv\",\"onActionLifecycle\":\"Success\"}]}")
             .toObject(RunAfter.class);
-        Assertions.assertEquals(RunAfterBehavior.ANY, model.behavior());
+        Assertions.assertEquals(RunAfterBehavior.ALL, model.behavior());
         Assertions.assertEquals(ActionDependencyType.ACTION, model.items().get(0).type());
-        Assertions.assertEquals("cmjdmspof", model.items().get(0).name());
-        Assertions.assertEquals(ActionLifecycle.SKIPPED, model.items().get(0).onActionLifecycle());
+        Assertions.assertEquals("gbzjedmstkv", model.items().get(0).name());
+        Assertions.assertEquals(ActionLifecycle.SUCCESS, model.items().get(0).onActionLifecycle());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RunAfter model = new RunAfter().withBehavior(RunAfterBehavior.ANY)
-            .withItems(Arrays.asList(
-                new ActionDependency().withType(ActionDependencyType.ACTION)
-                    .withName("cmjdmspof")
-                    .withOnActionLifecycle(ActionLifecycle.SKIPPED),
-                new ActionDependency().withType(ActionDependencyType.ACTION)
-                    .withName("hryl")
-                    .withOnActionLifecycle(ActionLifecycle.RUNNING),
-                new ActionDependency().withType(ActionDependencyType.ACTION)
-                    .withName("rz")
-                    .withOnActionLifecycle(ActionLifecycle.SUCCESS),
-                new ActionDependency().withType(ActionDependencyType.ACTION)
-                    .withName("edm")
-                    .withOnActionLifecycle(ActionLifecycle.START)));
+        RunAfter model = new RunAfter().withBehavior(RunAfterBehavior.ALL)
+            .withItems(Arrays.asList(new ActionDependency().withType(ActionDependencyType.ACTION)
+                .withName("gbzjedmstkv")
+                .withOnActionLifecycle(ActionLifecycle.SUCCESS)));
         model = BinaryData.fromObject(model).toObject(RunAfter.class);
-        Assertions.assertEquals(RunAfterBehavior.ANY, model.behavior());
+        Assertions.assertEquals(RunAfterBehavior.ALL, model.behavior());
         Assertions.assertEquals(ActionDependencyType.ACTION, model.items().get(0).type());
-        Assertions.assertEquals("cmjdmspof", model.items().get(0).name());
-        Assertions.assertEquals(ActionLifecycle.SKIPPED, model.items().get(0).onActionLifecycle());
+        Assertions.assertEquals("gbzjedmstkv", model.items().get(0).name());
+        Assertions.assertEquals(ActionLifecycle.SUCCESS, model.items().get(0).onActionLifecycle());
     }
 }

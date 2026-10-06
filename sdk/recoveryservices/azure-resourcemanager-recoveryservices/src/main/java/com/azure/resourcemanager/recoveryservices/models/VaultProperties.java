@@ -107,6 +107,11 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
      */
     private List<String> resourceGuardOperationRequests;
 
+    /*
+     * Region of choice settings for this vault.
+     */
+    private RegionOfChoiceSettings regionOfChoiceSettings;
+
     /**
      * Creates an instance of VaultProperties class.
      */
@@ -391,6 +396,26 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
     }
 
     /**
+     * Get the regionOfChoiceSettings property: Region of choice settings for this vault.
+     * 
+     * @return the regionOfChoiceSettings value.
+     */
+    public RegionOfChoiceSettings regionOfChoiceSettings() {
+        return this.regionOfChoiceSettings;
+    }
+
+    /**
+     * Set the regionOfChoiceSettings property: Region of choice settings for this vault.
+     * 
+     * @param regionOfChoiceSettings the regionOfChoiceSettings value to set.
+     * @return the VaultProperties object itself.
+     */
+    public VaultProperties withRegionOfChoiceSettings(RegionOfChoiceSettings regionOfChoiceSettings) {
+        this.regionOfChoiceSettings = regionOfChoiceSettings;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -408,6 +433,7 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
         jsonWriter.writeJsonField("securitySettings", this.securitySettings);
         jsonWriter.writeArrayField("resourceGuardOperationRequests", this.resourceGuardOperationRequests,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("regionOfChoiceSettings", this.regionOfChoiceSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -469,6 +495,8 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
                 } else if ("resourceGuardOperationRequests".equals(fieldName)) {
                     List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
                     deserializedVaultProperties.resourceGuardOperationRequests = resourceGuardOperationRequests;
+                } else if ("regionOfChoiceSettings".equals(fieldName)) {
+                    deserializedVaultProperties.regionOfChoiceSettings = RegionOfChoiceSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

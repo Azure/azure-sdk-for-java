@@ -40,14 +40,14 @@ public final class BatchJobPreparationAndReleaseTaskStatus
      * Information about the execution status of the Job Preparation Task on this Compute Node.
      */
     @Generated
-    private BatchJobPreparationTaskExecutionInfo jobPreparationTaskExecutionInfo;
+    private BatchJobPreparationTaskExecutionDetails jobPreparationTaskExecutionInfo;
 
     /*
      * Information about the execution status of the Job Release Task on this Compute Node. This property is set only if
      * the Job Release Task has run on the Compute Node.
      */
     @Generated
-    private BatchJobReleaseTaskExecutionInfo jobReleaseTaskExecutionInfo;
+    private BatchJobReleaseTaskExecutionDetails jobReleaseTaskExecutionInfo;
 
     /**
      * Creates an instance of BatchJobPreparationAndReleaseTaskStatus class.
@@ -93,7 +93,7 @@ public final class BatchJobPreparationAndReleaseTaskStatus
      * @return the jobPreparationTaskExecutionInfo value.
      */
     @Generated
-    public BatchJobPreparationTaskExecutionInfo getJobPreparationTaskExecutionInfo() {
+    public BatchJobPreparationTaskExecutionDetails getJobPreparationTaskExecutionInfo() {
         return this.jobPreparationTaskExecutionInfo;
     }
 
@@ -104,7 +104,7 @@ public final class BatchJobPreparationAndReleaseTaskStatus
      * @return the jobReleaseTaskExecutionInfo value.
      */
     @Generated
-    public BatchJobReleaseTaskExecutionInfo getJobReleaseTaskExecutionInfo() {
+    public BatchJobReleaseTaskExecutionDetails getJobReleaseTaskExecutionInfo() {
         return this.jobReleaseTaskExecutionInfo;
     }
 
@@ -147,10 +147,10 @@ public final class BatchJobPreparationAndReleaseTaskStatus
                     deserializedBatchJobPreparationAndReleaseTaskStatus.nodeUrl = reader.getString();
                 } else if ("jobPreparationTaskExecutionInfo".equals(fieldName)) {
                     deserializedBatchJobPreparationAndReleaseTaskStatus.jobPreparationTaskExecutionInfo
-                        = BatchJobPreparationTaskExecutionInfo.fromJson(reader);
+                        = BatchJobPreparationTaskExecutionDetails.fromJson(reader);
                 } else if ("jobReleaseTaskExecutionInfo".equals(fieldName)) {
                     deserializedBatchJobPreparationAndReleaseTaskStatus.jobReleaseTaskExecutionInfo
-                        = BatchJobReleaseTaskExecutionInfo.fromJson(reader);
+                        = BatchJobReleaseTaskExecutionDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

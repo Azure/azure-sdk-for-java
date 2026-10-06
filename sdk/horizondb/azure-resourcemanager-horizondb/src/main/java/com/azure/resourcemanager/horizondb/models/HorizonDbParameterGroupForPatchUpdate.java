@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * HorizonDb parameter group for update operations.
+ * HorizonDB parameter group for update operations.
  */
 @Fluent
 public final class HorizonDbParameterGroupForPatchUpdate
@@ -24,7 +24,7 @@ public final class HorizonDbParameterGroupForPatchUpdate
     private Map<String, String> tags;
 
     /*
-     * The properties that can be updated for a HorizonDb parameter group.
+     * The properties that can be updated for a HorizonDB parameter group.
      */
     private HorizonDbParameterGroupPropertiesForPatchUpdate properties;
 
@@ -55,7 +55,7 @@ public final class HorizonDbParameterGroupForPatchUpdate
     }
 
     /**
-     * Get the properties property: The properties that can be updated for a HorizonDb parameter group.
+     * Get the properties property: The properties that can be updated for a HorizonDB parameter group.
      * 
      * @return the properties value.
      */
@@ -64,7 +64,7 @@ public final class HorizonDbParameterGroupForPatchUpdate
     }
 
     /**
-     * Set the properties property: The properties that can be updated for a HorizonDb parameter group.
+     * Set the properties property: The properties that can be updated for a HorizonDB parameter group.
      * 
      * @param properties the properties value to set.
      * @return the HorizonDbParameterGroupForPatchUpdate object itself.

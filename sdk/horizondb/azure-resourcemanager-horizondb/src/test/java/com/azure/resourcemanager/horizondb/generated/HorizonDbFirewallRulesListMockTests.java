@@ -22,7 +22,7 @@ public final class HorizonDbFirewallRulesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"startIpAddress\":\"hrfou\",\"endIpAddress\":\"ft\",\"description\":\"kcpwiy\",\"provisioningState\":\"InProgress\"},\"id\":\"mnubexkpzksmond\",\"name\":\"mquxvypo\",\"type\":\"gkopkwhojvpajqgx\"}]}";
+            = "{\"value\":[{\"properties\":{\"startIpAddress\":\"ok\",\"endIpAddress\":\"tllxdyhgsyocogj\",\"description\":\"dtbnnha\",\"provisioningState\":\"InProgress\"},\"id\":\"rkvcikhnvpa\",\"name\":\"qgxqquezikyw\",\"type\":\"gxk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class HorizonDbFirewallRulesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HorizonDbFirewallRule> response = manager.horizonDbFirewallRules()
-            .list("qsluicp", "ggkzzlvmbmpa", "modfvuefywsbpfvm", com.azure.core.util.Context.NONE);
+            .list("nzgmwznmabik", "sorgj", "xbldtlwwrlkdmtn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hrfou", response.iterator().next().properties().startIpAddress());
-        Assertions.assertEquals("ft", response.iterator().next().properties().endIpAddress());
-        Assertions.assertEquals("kcpwiy", response.iterator().next().properties().description());
+        Assertions.assertEquals("ok", response.iterator().next().properties().startIpAddress());
+        Assertions.assertEquals("tllxdyhgsyocogj", response.iterator().next().properties().endIpAddress());
+        Assertions.assertEquals("dtbnnha", response.iterator().next().properties().description());
     }
 }

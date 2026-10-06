@@ -313,11 +313,11 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     }
 
     /**
-     * Lists the IDs of sessions that have active messages in this entity.
+     * Lists the IDs of sessions that have active messages or stored session state in this entity.
      *
-     * <p>Only sessions with active messages in the queue or subscription are returned.
-     * Sessions on the dead-letter queue or sessions having only a session state (but no messages)
-     * are not returned.</p>
+     * <p>Sessions with active messages or stored session state in the queue or subscription are
+     * returned. Sessions with neither are excluded. Sessions on the dead-letter queue are not
+     * returned.</p>
      *
      * <p>The returned {@link PagedFlux} fetches additional pages from the broker on demand using
      * cursor-based pagination (server-returned {@code skip} plus {@code lastSessionId} of the
@@ -330,26 +330,19 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listSessions() {
         // Wire value matches Track 1's SessionBrowser.MAXDATE so the broker switches into the
-        // active-messages mode it has historically been validated against.
-        return listSessionsInternal(ManagementConstants.ACTIVE_MESSAGES_SENTINEL);
+        // default listing mode for sessions with active messages or stored session state.
+        return listSessionsInternal(ManagementConstants.DEFAULT_LISTING_SENTINEL);
     }
 
     /**
-     * Lists the IDs of sessions whose state was updated after the specified time.
+     * Lists the IDs of sessions whose state was set or updated after the specified time.
      *
      * <p>The returned {@link PagedFlux} fetches additional pages from the broker on demand using
      * cursor-based pagination (server-returned {@code skip} plus {@code lastSessionId} of the
      * previous page) and terminates when the broker returns a page smaller than the requested page
      * size (a short or empty page signals the end). The default page size is 100; callers can
      * request a different size via {@link PagedFlux#byPage(int)}.</p>
-     *
-     * <p>Values at or beyond the active-messages sentinel value
-     * ({@code new Date(253402300800000L)}, rendered by {@code OffsetDateTime.toString()} as
-     * {@code +10000-01-01T00:00Z}, matching Track 1's {@code SessionBrowser.MAXDATE}) are clamped
-     * to that sentinel and behave the same as {@link #listSessions()}, returning sessions that
-     * have active messages.</p>
-     *
-     * @param sessionStateUpdatedAfter Only sessions whose session state was updated after this time are returned.
+     * @param sessionStateUpdatedAfter Only sessions whose session state was set or updated after this time are returned.
      * @return A {@link PagedFlux} of session ID strings.
      * @throws NullPointerException if {@code sessionStateUpdatedAfter} is null.
      */

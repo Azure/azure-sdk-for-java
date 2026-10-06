@@ -10,6 +10,21 @@
 
 ### Other Changes
 
+## 2.0.3 (2026-08-28)
+
+### Bugs Fixed
+
+- Fixed request URLs when using custom endpoints.
+
+## 2.0.2 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+
 ## 2.0.1 (2026-07-01)
 
 ### Other Changes

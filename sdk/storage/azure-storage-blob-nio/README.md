@@ -281,7 +281,7 @@ are not currently supported but are under consideration and may be added before 
 which of these may be most useful and are open to suggestions for items not included in this list. While all of these 
 items are being considered, they have not been investigated and designed and therefore we cannot confirm their 
 feasibility within Azure Blob Storage. Therefore, it may be the case that further investigation reveals a feature may 
-not be possible or otherwise may conflict with established design goals and therefor will not ultimately be supported. 
+not be possible or otherwise may conflict with established design goals and therefore will not ultimately be supported. 
 
 - Symbolic links
 - Hard links

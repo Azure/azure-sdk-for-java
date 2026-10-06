@@ -9,7 +9,35 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ApplicationGatewayGet.json
+     * x-ms-original-file: 2026-01-01/ApplicationGatewayGetBasicWafV2.json
+     */
+    /**
+     * Sample code: Get Basic_WAF_v2 Application Gateway.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void getBasicWAFV2ApplicationGateway(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getApplicationGateways()
+            .getByResourceGroupWithResponse("rg1", "appgw", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/ApplicationGatewayGetBasicV2.json
+     */
+    /**
+     * Sample code: Get Basic_v2 Application Gateway.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void getBasicV2ApplicationGateway(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getApplicationGateways()
+            .getByResourceGroupWithResponse("rg1", "appgw", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/ApplicationGatewayGet.json
      */
     /**
      * Sample code: Get ApplicationGateway.

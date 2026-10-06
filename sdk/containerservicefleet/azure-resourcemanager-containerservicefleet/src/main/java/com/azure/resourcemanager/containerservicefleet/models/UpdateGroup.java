@@ -26,6 +26,22 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
 
     /*
      * 
+     * Limits the number of member (cluster) upgrade failures tolerated within this group.
+     * Failures are evaluated over members within this group only.
+     * Accepts either:
+     * • A fixed count n, where n >= 0
+     * • A percentage p%, where 0 <= p <= 100
+     * Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+     * where p is the percentage as a decimal and N is the number of members in this group at scope start.
+     * Examples:
+     * • "3" --> up to 3 member upgrade failures are tolerated within this group. The 4th failure causes the group to
+     * fail.
+     * • "25%" --> up to 25% of the members in this group can fail their upgrade before the group is considered failed.
+     */
+    private String maxAllowedFailures;
+
+    /*
+     * 
      * The max number of upgrades that can run concurrently in this specific group.
      * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate
      * at a time.
@@ -43,6 +59,16 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
      * • "25%" --> up to 25% of the members in the group will be upgraded at the same time.
      */
     private String maxConcurrency;
+
+    /*
+     * 
+     * Select the members of the group.
+     * * If specified, label-based selection will override group name based selection,
+     * and Name is only used as an identifier.
+     * * If not specified, group name based selection will be used, and Name must match a
+     * group name of an existing fleet member.
+     */
+    private MemberSelector memberSelector;
 
     /*
      * A list of Gates that will be created before this Group is executed.
@@ -81,6 +107,50 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
      */
     public UpdateGroup withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the maxAllowedFailures property:
+     * Limits the number of member (cluster) upgrade failures tolerated within this group.
+     * Failures are evaluated over members within this group only.
+     * Accepts either:
+     * • A fixed count n, where n &gt;= 0
+     * • A percentage p%, where 0 &lt;= p &lt;= 100
+     * Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+     * where p is the percentage as a decimal and N is the number of members in this group at scope start.
+     * Examples:
+     * • "3" --&gt; up to 3 member upgrade failures are tolerated within this group. The 4th failure causes the group to
+     * fail.
+     * • "25%" --&gt; up to 25% of the members in this group can fail their upgrade before the group is considered
+     * failed.
+     * 
+     * @return the maxAllowedFailures value.
+     */
+    public String maxAllowedFailures() {
+        return this.maxAllowedFailures;
+    }
+
+    /**
+     * Set the maxAllowedFailures property:
+     * Limits the number of member (cluster) upgrade failures tolerated within this group.
+     * Failures are evaluated over members within this group only.
+     * Accepts either:
+     * • A fixed count n, where n &gt;= 0
+     * • A percentage p%, where 0 &lt;= p &lt;= 100
+     * Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+     * where p is the percentage as a decimal and N is the number of members in this group at scope start.
+     * Examples:
+     * • "3" --&gt; up to 3 member upgrade failures are tolerated within this group. The 4th failure causes the group to
+     * fail.
+     * • "25%" --&gt; up to 25% of the members in this group can fail their upgrade before the group is considered
+     * failed.
+     * 
+     * @param maxAllowedFailures the maxAllowedFailures value to set.
+     * @return the UpdateGroup object itself.
+     */
+    public UpdateGroup withMaxAllowedFailures(String maxAllowedFailures) {
+        this.maxAllowedFailures = maxAllowedFailures;
         return this;
     }
 
@@ -135,6 +205,36 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     }
 
     /**
+     * Get the memberSelector property:
+     * Select the members of the group.
+     * * If specified, label-based selection will override group name based selection,
+     * and Name is only used as an identifier.
+     * * If not specified, group name based selection will be used, and Name must match a
+     * group name of an existing fleet member.
+     * 
+     * @return the memberSelector value.
+     */
+    public MemberSelector memberSelector() {
+        return this.memberSelector;
+    }
+
+    /**
+     * Set the memberSelector property:
+     * Select the members of the group.
+     * * If specified, label-based selection will override group name based selection,
+     * and Name is only used as an identifier.
+     * * If not specified, group name based selection will be used, and Name must match a
+     * group name of an existing fleet member.
+     * 
+     * @param memberSelector the memberSelector value to set.
+     * @return the UpdateGroup object itself.
+     */
+    public UpdateGroup withMemberSelector(MemberSelector memberSelector) {
+        this.memberSelector = memberSelector;
+        return this;
+    }
+
+    /**
      * Get the beforeGates property: A list of Gates that will be created before this Group is executed.
      * 
      * @return the beforeGates value.
@@ -181,7 +281,9 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("maxAllowedFailures", this.maxAllowedFailures);
         jsonWriter.writeStringField("maxConcurrency", this.maxConcurrency);
+        jsonWriter.writeJsonField("memberSelector", this.memberSelector);
         jsonWriter.writeArrayField("beforeGates", this.beforeGates, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("afterGates", this.afterGates, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -205,8 +307,12 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
 
                 if ("name".equals(fieldName)) {
                     deserializedUpdateGroup.name = reader.getString();
+                } else if ("maxAllowedFailures".equals(fieldName)) {
+                    deserializedUpdateGroup.maxAllowedFailures = reader.getString();
                 } else if ("maxConcurrency".equals(fieldName)) {
                     deserializedUpdateGroup.maxConcurrency = reader.getString();
+                } else if ("memberSelector".equals(fieldName)) {
+                    deserializedUpdateGroup.memberSelector = MemberSelector.fromJson(reader);
                 } else if ("beforeGates".equals(fieldName)) {
                     List<GateConfiguration> beforeGates
                         = reader.readArray(reader1 -> GateConfiguration.fromJson(reader1));

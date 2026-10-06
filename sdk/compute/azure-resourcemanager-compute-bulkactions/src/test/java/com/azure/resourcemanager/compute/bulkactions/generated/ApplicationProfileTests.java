@@ -14,12 +14,12 @@ public final class ApplicationProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationProfile model = BinaryData.fromString(
-            "{\"galleryApplications\":[{\"tags\":\"jinfw\",\"order\":2087401910,\"packageReferenceId\":\"lt\",\"configurationReference\":\"cjvefkdlfo\",\"treatFailureAsDeploymentFailure\":true,\"enableAutomaticUpgrade\":false},{\"tags\":\"pagao\",\"order\":1739461107,\"packageReferenceId\":\"lpqblylsyxk\",\"configurationReference\":\"nsj\",\"treatFailureAsDeploymentFailure\":false,\"enableAutomaticUpgrade\":true}]}")
+            "{\"galleryApplications\":[{\"tags\":\"n\",\"order\":1443237539,\"packageReferenceId\":\"cn\",\"configurationReference\":\"jitcjedftwwaez\",\"treatFailureAsDeploymentFailure\":true,\"enableAutomaticUpgrade\":false},{\"tags\":\"pzfoqoui\",\"order\":1370358053,\"packageReferenceId\":\"xarzgszufoxciq\",\"configurationReference\":\"idoamciodhkha\",\"treatFailureAsDeploymentFailure\":true,\"enableAutomaticUpgrade\":false}]}")
             .toObject(ApplicationProfile.class);
-        Assertions.assertEquals("jinfw", model.galleryApplications().get(0).tags());
-        Assertions.assertEquals(2087401910, model.galleryApplications().get(0).order());
-        Assertions.assertEquals("lt", model.galleryApplications().get(0).packageReferenceId());
-        Assertions.assertEquals("cjvefkdlfo", model.galleryApplications().get(0).configurationReference());
+        Assertions.assertEquals("n", model.galleryApplications().get(0).tags());
+        Assertions.assertEquals(1443237539, model.galleryApplications().get(0).order());
+        Assertions.assertEquals("cn", model.galleryApplications().get(0).packageReferenceId());
+        Assertions.assertEquals("jitcjedftwwaez", model.galleryApplications().get(0).configurationReference());
         Assertions.assertTrue(model.galleryApplications().get(0).treatFailureAsDeploymentFailure());
         Assertions.assertFalse(model.galleryApplications().get(0).enableAutomaticUpgrade());
     }
@@ -27,23 +27,23 @@ public final class ApplicationProfileTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationProfile model = new ApplicationProfile().withGalleryApplications(Arrays.asList(
-            new VMGalleryApplication().withTags("jinfw")
-                .withOrder(2087401910)
-                .withPackageReferenceId("lt")
-                .withConfigurationReference("cjvefkdlfo")
+            new VMGalleryApplication().withTags("n")
+                .withOrder(1443237539)
+                .withPackageReferenceId("cn")
+                .withConfigurationReference("jitcjedftwwaez")
                 .withTreatFailureAsDeploymentFailure(true)
                 .withEnableAutomaticUpgrade(false),
-            new VMGalleryApplication().withTags("pagao")
-                .withOrder(1739461107)
-                .withPackageReferenceId("lpqblylsyxk")
-                .withConfigurationReference("nsj")
-                .withTreatFailureAsDeploymentFailure(false)
-                .withEnableAutomaticUpgrade(true)));
+            new VMGalleryApplication().withTags("pzfoqoui")
+                .withOrder(1370358053)
+                .withPackageReferenceId("xarzgszufoxciq")
+                .withConfigurationReference("idoamciodhkha")
+                .withTreatFailureAsDeploymentFailure(true)
+                .withEnableAutomaticUpgrade(false)));
         model = BinaryData.fromObject(model).toObject(ApplicationProfile.class);
-        Assertions.assertEquals("jinfw", model.galleryApplications().get(0).tags());
-        Assertions.assertEquals(2087401910, model.galleryApplications().get(0).order());
-        Assertions.assertEquals("lt", model.galleryApplications().get(0).packageReferenceId());
-        Assertions.assertEquals("cjvefkdlfo", model.galleryApplications().get(0).configurationReference());
+        Assertions.assertEquals("n", model.galleryApplications().get(0).tags());
+        Assertions.assertEquals(1443237539, model.galleryApplications().get(0).order());
+        Assertions.assertEquals("cn", model.galleryApplications().get(0).packageReferenceId());
+        Assertions.assertEquals("jitcjedftwwaez", model.galleryApplications().get(0).configurationReference());
         Assertions.assertTrue(model.galleryApplications().get(0).treatFailureAsDeploymentFailure());
         Assertions.assertFalse(model.galleryApplications().get(0).enableAutomaticUpgrade());
     }

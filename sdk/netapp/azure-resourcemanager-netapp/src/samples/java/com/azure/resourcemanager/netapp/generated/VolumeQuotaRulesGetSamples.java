@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumeQuotaRulesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/VolumeQuotaRules_Get.json
+     * x-ms-original-file: 2026-06-15-preview/VolumeQuotaRules_Get.json
      */
     /**
      * Sample code: VolumeQuotaRules_Get.

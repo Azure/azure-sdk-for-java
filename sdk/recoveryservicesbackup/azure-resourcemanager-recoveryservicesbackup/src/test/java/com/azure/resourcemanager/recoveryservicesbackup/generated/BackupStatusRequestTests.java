@@ -12,22 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupStatusRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupStatusRequest model = BinaryData.fromString(
-            "{\"resourceType\":\"SAPAseDatabase\",\"resourceId\":\"szpyglqdhmr\",\"poLogicalName\":\"ralcxpjbyypsj\"}")
+        BackupStatusRequest model = BinaryData
+            .fromString(
+                "{\"resourceType\":\"GenericDataSource\",\"resourceId\":\"znj\",\"poLogicalName\":\"jvaannggiycwkd\"}")
             .toObject(BackupStatusRequest.class);
-        Assertions.assertEquals(DataSourceType.SAPASE_DATABASE, model.resourceType());
-        Assertions.assertEquals("szpyglqdhmr", model.resourceId());
-        Assertions.assertEquals("ralcxpjbyypsj", model.poLogicalName());
+        Assertions.assertEquals(DataSourceType.GENERIC_DATA_SOURCE, model.resourceType());
+        Assertions.assertEquals("znj", model.resourceId());
+        Assertions.assertEquals("jvaannggiycwkd", model.poLogicalName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupStatusRequest model = new BackupStatusRequest().withResourceType(DataSourceType.SAPASE_DATABASE)
-            .withResourceId("szpyglqdhmr")
-            .withPoLogicalName("ralcxpjbyypsj");
+        BackupStatusRequest model = new BackupStatusRequest().withResourceType(DataSourceType.GENERIC_DATA_SOURCE)
+            .withResourceId("znj")
+            .withPoLogicalName("jvaannggiycwkd");
         model = BinaryData.fromObject(model).toObject(BackupStatusRequest.class);
-        Assertions.assertEquals(DataSourceType.SAPASE_DATABASE, model.resourceType());
-        Assertions.assertEquals("szpyglqdhmr", model.resourceId());
-        Assertions.assertEquals("ralcxpjbyypsj", model.poLogicalName());
+        Assertions.assertEquals(DataSourceType.GENERIC_DATA_SOURCE, model.resourceType());
+        Assertions.assertEquals("znj", model.resourceId());
+        Assertions.assertEquals("jvaannggiycwkd", model.poLogicalName());
     }
 }
