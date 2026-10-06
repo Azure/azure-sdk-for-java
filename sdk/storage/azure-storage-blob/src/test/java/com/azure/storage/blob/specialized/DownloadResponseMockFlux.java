@@ -19,8 +19,6 @@ import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 
 public class DownloadResponseMockFlux {
-    private static final String ETAG = "0x8DABC";
-
     static final int DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK = 0; // Data emitted in one chunk
     static final int DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK = 1; // Data emitted in multiple chunks
     static final int DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES = 2; // Stream failures successfully handled
@@ -37,7 +35,6 @@ public class DownloadResponseMockFlux {
     private int tryNumber;
     private DownloadRetryOptions options;
     private boolean subscribed = false; //// Only used for multiple subscription test.
-    private String retryIfMatch;
 
     public DownloadResponseMockFlux(int scenario, BlobTestBase testBase) {
         this.scenario = scenario;
@@ -75,10 +72,6 @@ public class DownloadResponseMockFlux {
 
     public int getTryNumber() {
         return this.tryNumber;
-    }
-
-    public String getRetryIfMatch() {
-        return retryIfMatch;
     }
 
     private Flux<ByteBuffer> getDownloadStream(long offset, Long count) {
@@ -161,9 +154,6 @@ public class DownloadResponseMockFlux {
     public HttpPipelinePolicy asPolicy() {
         return (context, next) -> {
             tryNumber++;
-            if (tryNumber > 1) {
-                retryIfMatch = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.IF_MATCH);
-            }
             HttpHeader rangeHeader = context.getHttpRequest().getHeaders().get("x-ms-range");
             long offset = 0L;
             Long count = null;
@@ -186,8 +176,7 @@ public class DownloadResponseMockFlux {
             Long contentUpperBound = finalCount == null ? scenarioData.remaining() - 1 : finalOffset + finalCount - 1;
             response.getHeaders()
                 .set(HttpHeaderName.CONTENT_RANGE,
-                    String.format("%d-%d/%d", finalOffset, contentUpperBound, scenarioData.remaining()))
-                .set(HttpHeaderName.ETAG, ETAG);
+                    String.format("%d-%d/%d", finalOffset, contentUpperBound, scenarioData.remaining()));
 
             switch (scenario) {
                 case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:

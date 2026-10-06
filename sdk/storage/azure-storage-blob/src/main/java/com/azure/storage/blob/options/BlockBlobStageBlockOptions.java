@@ -6,20 +6,17 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
-import com.azure.storage.common.ContentValidationAlgorithm;
-import com.azure.storage.common.ValidatableContent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * Extended options that may be passed when staging a block.
  */
 @Fluent
-public final class BlockBlobStageBlockOptions implements ValidatableContent {
+public final class BlockBlobStageBlockOptions {
     private final String base64BlockId;
     private final BinaryData data;
     private String leaseId;
     private byte[] contentMd5;
-    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link BlockBlobStageBlockOptions}.
@@ -98,31 +95,6 @@ public final class BlockBlobStageBlockOptions implements ValidatableContent {
      */
     public BlockBlobStageBlockOptions setContentMd5(byte[] contentMd5) {
         this.contentMd5 = CoreUtils.clone(contentMd5);
-        return this;
-    }
-
-    /**
-     * Gets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @return The transfer validation checksum algorithm.
-     */
-    @Override
-    public ContentValidationAlgorithm getContentValidationAlgorithm() {
-        return contentValidationAlgorithm;
-    }
-
-    /**
-     * Sets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
-     * @return The updated options.
-     */
-    @Override
-    public BlockBlobStageBlockOptions
-        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
-        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

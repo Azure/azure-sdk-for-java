@@ -8,8 +8,6 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.ContentValidationAlgorithm;
-import com.azure.storage.common.ValidatableContent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.nio.file.OpenOption;
@@ -19,7 +17,7 @@ import java.util.Set;
  * Extended options that may be passed when downloading a blob to a file.
  */
 @Fluent
-public class BlobDownloadToFileOptions implements ValidatableContent {
+public class BlobDownloadToFileOptions {
     private final String filePath;
     private BlobRange range;
     private ParallelTransferOptions parallelTransferOptions;
@@ -27,7 +25,6 @@ public class BlobDownloadToFileOptions implements ValidatableContent {
     private BlobRequestConditions requestConditions;
     private boolean retrieveContentRangeMd5;
     private Set<OpenOption> openOptions;
-    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Constructs a {@link BlobDownloadToFileOptions}.
@@ -166,31 +163,6 @@ public class BlobDownloadToFileOptions implements ValidatableContent {
      */
     public BlobDownloadToFileOptions setOpenOptions(Set<OpenOption> openOptions) {
         this.openOptions = openOptions;
-        return this;
-    }
-
-    /**
-     * Gets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @return The transfer validation checksum algorithm.
-     */
-    @Override
-    public ContentValidationAlgorithm getContentValidationAlgorithm() {
-        return contentValidationAlgorithm;
-    }
-
-    /**
-     * Sets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
-     * @return The updated options.
-     */
-    @Override
-    public BlobDownloadToFileOptions
-        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
-        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

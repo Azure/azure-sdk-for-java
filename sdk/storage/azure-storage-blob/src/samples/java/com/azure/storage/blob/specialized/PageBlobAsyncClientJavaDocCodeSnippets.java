@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.core.util.BinaryData;
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -18,8 +17,6 @@ import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
-import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
-import com.azure.storage.common.ContentValidationAlgorithm;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
@@ -141,24 +138,6 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> System.out.printf(
                 "Uploaded page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
         // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageRange-Flux-byte-PageBlobRequestConditions
-    }
-
-    /**
-     * Code snippet for {@link PageBlobAsyncClient#uploadPagesWithResponse(PageBlobUploadPagesOptions)}
-     */
-    public void uploadPagesWithResponseOptionsCodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageBlobUploadPagesOptions
-        PageRange pageRange = new PageRange()
-            .setStart(0)
-            .setEnd(511);
-        BinaryData data = BinaryData.fromBytes(new byte[512]);
-        PageBlobUploadPagesOptions options = new PageBlobUploadPagesOptions(pageRange, data)
-            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
-
-        client.uploadPagesWithResponse(options).subscribe(response ->
-            System.out.printf("Uploaded page blob with sequence number %s%n",
-                response.getValue().getBlobSequenceNumber()));
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.uploadPagesWithResponse#PageBlobUploadPagesOptions
     }
 
     /**
