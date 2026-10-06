@@ -1,5 +1,5 @@
 ---
-applyTo: "sdk/**/README.md,sdk/**/CHANGELOG.md,sdk/**/TROUBLESHOOTING.md,sdk/**/src/samples/**/*.java,sdk/**/src/main/java/**/*.java,sdk/**/customizations/**/*.java"
+applyTo: "sdk/**/README.md,sdk/**/CHANGELOG.md,sdk/**/TROUBLESHOOTING.md,sdk/**/src/samples/**/*.java,sdk/**/src/main/java/**/*.java"
 description: "Review Azure Java SDK JavaDoc, README, CHANGELOG, samples, and generated snippet references for user-visible inaccuracies."
 ---
 
@@ -19,10 +19,10 @@ sample for every added method.
   use the repository's snippet markers, such as `java readme-sample-*` in
   README. Flag a broken reference or stale code example with a concrete
   compile or runtime consequence; do not ask to hard-code JavaDoc examples.
-- Check that customer-visible behavior and breaking changes are accurately
-  represented in the package's current CHANGELOG entry when applicable.
-  Verify the previous GA surface before asserting a breaking change;
-  routine internal changes do not need customer-facing release notes.
+- Check that customer-visible behavior and RevApi-reported breaking changes
+  are accurately represented in the package's current CHANGELOG entry when
+  applicable. Substantiate semantic behavior changes; routine internal
+  changes do not need customer-facing release notes.
 - Ensure new samples use the module's actual Java/API baseline and do not
   embed real credentials or values that would disclose secrets. Do not flag
   intentionally fake placeholder names as secrets.

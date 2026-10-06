@@ -12,11 +12,11 @@ package's existing patterns. For Spring packages, the
 
 ## Public API and compatibility
 
-- Establish the last GA API before calling an API change breaking; preview
-  packages can evolve differently. Flag an actual loss of source or binary
-  compatibility for a released public API, not an internal rename or normal
-  generated churn. Do not request a breaking rename solely to match a naming
-  guideline.
+- Where configured, RevApi checks structural public API compatibility against
+  the latest GA release in CI. Do not duplicate its findings or reconstruct
+  the GA API baseline by hand; focus on behavioral regressions and API design
+  risks automated checks cannot detect. Do not request a breaking rename
+  solely to match a naming guideline.
 - For new service clients, check that the public entry point is an immutable
   `<Service>Client` or `<Service>AsyncClient`, constructed via a fluent
   `ClientBuilder` with valid build-time configuration. Preserve the package's
@@ -34,8 +34,10 @@ package's existing patterns. For Spring packages, the
 ## Implementation
 
 - Never block inside an async client path (`block()`, synchronous I/O, or
-  equivalent); sync-over-async inside a **sync** client is permitted. Forward
-  subscriber context in async flows and `Context` in sync service methods.
+  equivalent). Newly introduced sync-over-async in a **sync** client is
+  allowed but discouraged: note a direct synchronous path where viable as
+  a non-blocking suggestion, not a merge-blocking defect. Forward subscriber
+  context in async flows and `Context` in sync service methods.
 - Preserve the azure-core HTTP pipeline's retry, authentication, logging, and
   tracing policies. Flag lost tracing context, unsafe credential caching,
   or newly exposed secrets in logs, URLs, headers, or errors. In non-Spring

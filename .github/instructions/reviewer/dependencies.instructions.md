@@ -23,10 +23,11 @@ manifest difference. Normal synchronized version churn is not a finding.
   and version catalog entry so it can actually build and release. For
   Spring modules, respect their BOM and supported Spring dependency versions;
   the [Spring instructions](spring.instructions.md) take precedence.
-- Compare new public APIs and package versions with the last GA release
-  before calling a change incompatible. A patch release should not add
-  public features; a preview package can evolve differently. Do not treat
-  every dependency or version bump as a compatibility defect.
+- Check that package versions reflect the nature of the change: patch releases
+  should not add public APIs; preview packages may evolve differently. Where
+  configured, RevApi handles structural API compatibility; do not duplicate
+  its findings or treat every dependency or version bump as a compatibility
+  defect.
 
 Sources: [Java versioning and dependencies](https://azure.github.io/azure-sdk/java_introduction.html#java-version-semver),
 [Spring dependencies](https://azure.github.io/azure-sdk/java_spring.html#java-spring-dependency-approval),
