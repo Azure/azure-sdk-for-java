@@ -307,11 +307,11 @@ public class SessionAuthenticationPolicyTest {
     }
 
     /**
-     * Invalidating a rejected session means the next request creates a brand new one. Where sessions cannot work at
-     * all, that would repeat forever, so consecutive rejections must eventually suppress session authentication.
+     * Each rejected session falls back to bearer for that request. Repeated rejections do not suppress
+     * session acquisition on subsequent requests.
      */
     @Test
-    public void rejectedSessionIsNotCachedForTheNextRequest() {
+    public void repeatedSessionRejectionsDoNotStartCooldownAsync() {
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         WireTapHttpClient transport = bearerFallbackTransport(401);
@@ -328,7 +328,7 @@ public class SessionAuthenticationPolicyTest {
     }
 
     @Test
-    public void acceptedSessionResetsRejectionCount() {
+    public void sessionAcquisitionContinuesAcrossAcceptedAndRejectedResponses() {
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         WireTapHttpClient transport = sessionRejectionTransportWithAcceptedSecondRequest();
@@ -340,12 +340,12 @@ public class SessionAuthenticationPolicyTest {
                 .verifyComplete();
         }
 
-        // Four rejections total, but the accepted session reset the run, so the threshold is never reached.
+        // Every request attempts session authentication, regardless of the preceding response.
         verify(sessionProvider, times(5)).getSessionAsync(any());
     }
 
     @Test
-    public void rejectedSessionIsNotCachedAfterTimeAdvances() {
+    public void sessionRejectionsDoNotSuppressAcquisitionAfterTimeAdvances() {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         policy = createPolicy(clock);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
@@ -401,7 +401,7 @@ public class SessionAuthenticationPolicyTest {
     }
 
     @Test
-    public void sessionExpiringHintForcesBackgroundRefreshEvenWhenTimerNotDue() {
+    public void sessionExpiringHintRequestsProviderRefresh() {
         HttpRequest request = blobGetRequest();
         HttpHeaders responseHeaders
             = new HttpHeaders().set(HttpHeaderName.fromString("x-ms-auth-info"), "session_expiring");
@@ -412,11 +412,7 @@ public class SessionAuthenticationPolicyTest {
             .assertNext(r -> assertEquals(200, r.getStatusCode()))
             .verifyComplete();
 
-        // The service hint must trigger a proactive background refresh call, even though the client's
-        // own refresh timer had not yet elapsed. Dropping the hint here is what previously let the session
-        // be used past the rotation boundary, surfacing as a 401 "session_token_invalid" (network context
-        // mismatch). The refresh itself is delegated to the provider via refreshSession, distinct from the
-        // single getSessionAsync call used to obtain the credential for this request.
+        // The policy delegates the hint to refreshSession; the provider owns refresh timing and backoff.
         verify(sessionProvider, times(1)).getSessionAsync(any());
         verify(sessionProvider, times(1)).refreshSession(any());
     }
@@ -431,7 +427,7 @@ public class SessionAuthenticationPolicyTest {
             .assertNext(r -> assertEquals(200, r.getStatusCode()))
             .verifyComplete();
 
-        // Without the hint and with a fresh session, only the initial get is made and no refresh occurs.
+        // Without the hint, the policy does not explicitly request a refresh from the provider.
         verify(sessionProvider, times(1)).getSessionAsync(any());
         verify(sessionProvider, never()).refreshSession(any());
     }
@@ -463,7 +459,7 @@ public class SessionAuthenticationPolicyTest {
             "Signature must be base64-encoded, but was: " + actualSignature);
     }
 
-    // Sync tests use a minimal mock next-policy because the real pipeline doesn't expose sync invocation.
+    // Sync tests invoke the policy directly with a mock next-policy.
 
     @Test
     public void policyInvalidatesSessionAndFallsBackToBearerSync() {
@@ -521,7 +517,7 @@ public class SessionAuthenticationPolicyTest {
     }
 
     @Test
-    public void rejectedSessionIsNotCachedForTheNextRequestSync() {
+    public void repeatedSessionRejectionsDoNotStartCooldownSync() {
         when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
 
         for (int i = 0; i < 4; i++) {
