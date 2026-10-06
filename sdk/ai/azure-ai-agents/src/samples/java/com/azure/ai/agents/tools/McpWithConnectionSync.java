@@ -5,19 +5,16 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
-import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseOutputItem;
-import com.openai.services.blocking.ConversationService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +46,6 @@ public class McpWithConnectionSync {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ConversationService conversationService = builder.buildOpenAIClient().conversations();
 
         // BEGIN: com.azure.ai.agents.define_mcp_with_connection
         // Create MCP tool with project connection authentication
@@ -64,20 +60,15 @@ public class McpWithConnectionSync {
             .setInstructions("Use MCP tools as needed")
             .setTools(Collections.singletonList(mcpTool));
 
+        OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient("mcp-connection-agent");
+
         AgentVersionDetails agent = agentsClient.createAgentVersion("mcp-connection-agent", agentDefinition);
-        System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
-
         try {
-            SampleUtils.pinAgentVersion(agentsClient, agent);
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
-
-            // Create a conversation for context
-            Conversation conversation = conversationService.create();
+            System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
             // Send initial request that triggers the MCP tool
             Response response = openAIClient.responses().create(
                 ResponseCreateParams.builder()
-                    .conversation(conversation.id())
                     .input("What is my username in GitHub profile?")
                     .build());
 
@@ -102,11 +93,7 @@ public class McpWithConnectionSync {
 
                 // Send approvals back to continue the agent's work
                 Response followUp = openAIClient.responses().create(
-                    ResponseCreateParams.builder()
-                        .conversation(conversation.id())
-                        .inputOfResponse(approvals)
-                        .previousResponseId(response.id())
-                        .build());
+                    createApprovalResponseParams(response.id(), approvals));
 
                 System.out.println("Response: " + followUp.output());
             } else {
@@ -116,5 +103,13 @@ public class McpWithConnectionSync {
             agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
             System.out.println("Agent deleted");
         }
+    }
+
+    static ResponseCreateParams createApprovalResponseParams(String previousResponseId,
+        List<ResponseInputItem> approvals) {
+        return ResponseCreateParams.builder()
+            .inputOfResponse(approvals)
+            .previousResponseId(previousResponseId)
+            .build();
     }
 }

@@ -11,7 +11,7 @@ public final class RestorableTableGetResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableTableGetResultInner model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"_rid\":\"imixlmdbgice\",\"operationType\":\"SystemOperation\",\"canUndelete\":\"mdrjuqbpxt\",\"canUndeleteReason\":\"lj\",\"eventTimestamp\":\"znpaxwfqtyyqiprc\",\"ownerId\":\"ungbsoljc\",\"ownerResourceId\":\"iigz\"}},\"id\":\"uck\",\"name\":\"dsk\",\"type\":\"tiiqqcqikclsmaln\"}")
+            "{\"properties\":{\"resource\":{\"_rid\":\"vd\",\"operationType\":\"Replace\",\"canUndelete\":\"rugyozzzawnjdv\",\"canUndeleteReason\":\"rho\",\"eventTimestamp\":\"kkvxu\",\"ownerId\":\"qzbvbpsuvqhxt\",\"ownerResourceId\":\"fgdkwbk\"}},\"id\":\"klpiigfuzke\",\"name\":\"uipjclzjwaqd\",\"type\":\"ydewuwxyll\"}")
             .toObject(RestorableTableGetResultInner.class);
     }
 }

@@ -287,7 +287,7 @@
 /sdk/containerservice/                                             @elvazhu521 @FumingZhang @Azure/azure-java-sdk
 
 # PRLabel: %Cosmos
-/sdk/cosmos/                                                       @Azure/azure-cosmos-java-sdk-connectors @kirankumarkolli @Azure/azure-java-sdk
+/sdk/cosmos/                                                       @Azure/azure-cosmos-sdk @kirankumarkolli
 
 # ServiceLabel: %Cosmos
 # ServiceOwners:                                                   @kushagraThapar @pjohari-ms @TheovanKraay
@@ -960,6 +960,8 @@
 # ######## Eng Sys ########
 
 /eng/                                                              @raych1 @praveenkuttappan
+/eng/emitter-package.json                                          @alzimmermsft @weidongxu-microsoft
+/eng/emitter-package-lock.json                                     @alzimmermsft @weidongxu-microsoft
 /eng/automation/                                                   @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @raych1
 /eng/bomgenerator/                                                 @vcolin7 @alzimmermsft @jonathangiles @Azure/azure-java-sdk
 /eng/code-quality-reports/                                         @JonathanGiles @alzimmermsft @domainname @dingmeng-xue @moarychan @Azure/azure-java-sdk
