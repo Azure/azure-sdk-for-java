@@ -134,6 +134,13 @@ public class ClientTestBase extends TestProxyTestBase {
         ArrayList<TestProxySanitizer> sanitizers = new ArrayList<>();
         sanitizers.add(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         sanitizers.add(new TestProxySanitizer("$..image", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..principal_id", null, "00000000-0000-0000-0000-000000000000",
+            TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..client_id", null, "00000000-0000-0000-0000-000000000000",
+            TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..agent_guid", null, "00000000-0000-0000-0000-000000000000",
+            TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..blueprint_id", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         sanitizers.add(new TestProxySanitizer("(?<=./)([^?]+)", "/REDACTED/", TestProxySanitizerType.URL));
         sanitizers.add(new TestProxySanitizer("Content-Type", "^multipart\\/form-data(; charset=[^;]+)?; boundary=.*",
             "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER));
