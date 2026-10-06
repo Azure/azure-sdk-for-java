@@ -1,4 +1,7 @@
 parameters:
+  - name: ReleasePlanId
+    type: string
+    default: '0'
   - name: DependsOn
     type: object
     default:
@@ -38,6 +41,9 @@ stages:
       - template: /eng/pipelines/templates/variables/image.yml
       - name: AutoReleaseArtifactsJson
         value: $[ stageDependencies.AutoReleasePrepare.ResolveAutoReleasePackages.outputs['resolve.AutoReleaseArtifactsJson'] ]
+      - ${{ if and(eq(parameters.ServiceDirectory, 'template'), eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
+        - name: AutoReleaseSdkPullRequestUrl
+          value: $[ stageDependencies.AutoReleasePrepare.ResolveAutoReleasePackages.outputs['resolve.AutoReleaseSdkPullRequestUrl'] ]
     jobs:
       - job: PrepareAutoReleasePackages
         displayName: Prepare auto-release packages
@@ -356,14 +362,24 @@ stages:
             inputs:
               azureSubscription: opensource-api-connection
               scriptType: pscore
-              scriptLocation: inlineScript
-              inlineScript: |
-                $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json
-                foreach ($artifact in $artifacts) {
-                  $(Pipeline.Workspace)/azure-sdk-for-java/eng/common/scripts/Mark-ReleasePlanCompletion.ps1 `
-                    -PackageInfoFilePath "$(Pipeline.Workspace)/packages-signed-auto-release/PackageInfo/$($artifact.name).json" `
-                    -AzsdkExePath '$(AZSDK)'
-                }
+              ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+                # The staging script copies PackageInfo only for eligible auto-release artifacts.
+                scriptLocation: scriptPath
+                scriptPath: $(Pipeline.Workspace)/azure-sdk-for-java/eng/common/scripts/Mark-ReleasePlanCompletion.ps1
+                arguments: >
+                  -PackageInfoFilePath '$(Pipeline.Workspace)/packages-signed-auto-release/PackageInfo'
+                  -AzsdkExePath '$(AZSDK)'
+                  -ReleasePlanId '${{ parameters.ReleasePlanId }}'
+                  -SdkPullRequest '$(AutoReleaseSdkPullRequestUrl)'
+              ${{ else }}:
+                scriptLocation: inlineScript
+                inlineScript: |
+                  $artifacts = '$(AutoReleaseArtifactsJson)' | ConvertFrom-Json
+                  foreach ($artifact in $artifacts) {
+                    $(Pipeline.Workspace)/azure-sdk-for-java/eng/common/scripts/Mark-ReleasePlanCompletion.ps1 `
+                      -PackageInfoFilePath "$(Pipeline.Workspace)/packages-signed-auto-release/PackageInfo/$($artifact.name).json" `
+                      -AzsdkExePath '$(AZSDK)'
+                  }
               workingDirectory: $(Pipeline.Workspace)
 
       - job: UpdatePackageVersion

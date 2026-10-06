@@ -1,4 +1,7 @@
 parameters:
+  - name: ReleasePlanId
+    type: string
+    default: '0'
   - name: DependsOn
     type: object
   - name: ServiceDirectory
@@ -308,6 +311,8 @@ stages:
                   ConfigFileDir: $(Pipeline.Workspace)/packages-signed/PackageInfo
                   SourceRootPath: $(Pipeline.Workspace)/azure-sdk-for-java
                   PackageArtifactName: ${{artifact.name}}
+                  ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+                    ReleasePlanId: ${{ parameters.ReleasePlanId }}
 
         - job: UpdatePackageVersion
           displayName: "Update Package Version"

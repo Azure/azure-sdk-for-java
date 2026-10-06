@@ -1,4 +1,7 @@
 parameters:
+  - name: ReleasePlanId
+    type: string
+    default: '0'
   - name: Artifacts
     type: object
     default: []
@@ -169,6 +172,7 @@ extends:
       - ${{if and(not(and(eq(parameters.SkipPrValidation, true), eq(variables['Build.Reason'], 'Manual'))), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'), not(contains(variables['Build.DefinitionName'], 'tests-weekly'))) }}:
           - template: archetype-java-release-batch.yml
             parameters:
+              ReleasePlanId: ${{ parameters.ReleasePlanId }}
               DependsOn:
                 - Build
                 # Only depend on live test stages if the build depends on live tests and the build reason is manual.
@@ -201,6 +205,7 @@ extends:
               Artifacts: ${{ parameters.Artifacts }}
           - template: archetype-java-auto-release-batch.yml
             parameters:
+              ReleasePlanId: ${{ parameters.ReleasePlanId }}
               DependsOn:
                 - AutoReleasePrepare
               ServiceDirectory: ${{ parameters.ServiceDirectory }}
