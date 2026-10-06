@@ -8,14 +8,13 @@ import java.nio.charset.StandardCharsets;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.json.models.JsonObject;
-import com.azure.json.models.JsonString;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -28,15 +27,16 @@ public class ConfidentialLedgerClientSample {
                 .certificateEndpoint("https://identity.confidential-ledger.core.azure.com")
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(HttpClient.createDefault());
-
+        
             ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient = confidentialLedgerCertificateClientbuilder.buildClient();
 
             String ledgerId = "java-tests";
             Response<BinaryData> ledgerCertificateWithResponse = confidentialLedgerCertificateClient
                 .getLedgerIdentityWithResponse(ledgerId, null);
             BinaryData certificateResponse = ledgerCertificateWithResponse.getValue();
-            JsonObject jsonObject = certificateResponse.toObject(JsonObject.class);
-            String ledgerTlsCertificate = ((JsonString) jsonObject.getProperty("ledgerTlsCertificate")).getValue();
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(certificateResponse.toBytes());
+            String ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate").asText();
 
 
             SslContext sslContext = SslContextBuilder.forClient()
@@ -47,7 +47,7 @@ public class ConfidentialLedgerClientSample {
 
             ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
-                        .addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(), "https://confidential-ledger.azure.com/.default"))
+                        .credential(new DefaultAzureCredentialBuilder().build())
                         .httpClient(httpClient)
                         .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
