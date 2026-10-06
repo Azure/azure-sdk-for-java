@@ -9,25 +9,29 @@ package com.azure.storage.blob.models;
  * A session is a temporary security context scoped to a container that amortizes authentication
  * and authorization cost across many requests by signing them with a lightweight HMAC key instead
  * of a full bearer token.
+ * {@link #AUTO}
  * {@link #ENABLED}
  * {@link #DISABLED}
  */
 public enum SessionMode {
 
     /**
-     * The SDK creates a session on the first eligible request and, when using the built-in session provider,
-     * keeps an active session until it receives no requests for 5 minutes. This is the default. If a session
-     * cannot be created, or the service answers a session-signed request with HTTP 400, 401, 403, or 5xx, the SDK
-     * transparently falls back to bearer token authentication for that request. Repeated failures stop the
-     * SDK from using sessions for that container in that account for five minutes; during that window its
-     * requests are authenticated with bearer tokens without attempting to create a session. Other containers
-     * are unaffected.
+     * Default. The session authentication behavior is determined by the client library
+     * and may be updated in future releases.
      */
-    ENABLED,
+    AUTO,
 
     /**
-     * Always use bearer token authentication. No session tokens are ever created or used.
+     * Always use bearer token authentication. No session tokens are used.
      */
-    DISABLED
+    DISABLED,
+
+    /**
+     * Opt in to session token authentication for all containers.
+     * Each container gets its own cached session token when using the built-in session provider.
+     * Requires a storage account name; client construction throws if one cannot be
+     * determined from either {@link SessionOptions#getAccountName()} or the client endpoint.
+     */
+    ENABLED
 
 }

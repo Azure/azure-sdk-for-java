@@ -16,12 +16,12 @@ package com.azure.storage.blob.models;
  */
 public final class SessionOptions {
 
-    private SessionMode sessionMode = SessionMode.DISABLED;
+    private SessionMode sessionMode = SessionMode.AUTO;
     private String accountName;
     private SessionProvider sessionProvider;
 
     /**
-     * Creates a new {@link SessionOptions} instance with default values.
+     * Creates a new {@link SessionOptions} instance with {@link SessionMode#AUTO}, which currently disables sessions.
      * This applies to clients configured with a {@link com.azure.core.credential.TokenCredential} and to eligible GET
      * Blob operations.
      */
@@ -31,20 +31,20 @@ public final class SessionOptions {
     /**
      * Gets the session mode.
      *
-     * @return the {@link SessionMode}; defaults to {@link SessionMode#DISABLED}.
+     * @return the {@link SessionMode}; defaults to {@link SessionMode#AUTO}.
      */
     public SessionMode getSessionMode() {
         return sessionMode;
     }
 
     /**
-     * Sets the session mode. Passing {@code null} resets the mode to {@link SessionMode#ENABLED}.
+     * Sets the session mode. Passing {@code null} resets the mode to {@link SessionMode#AUTO}.
      *
      * @param sessionMode the {@link SessionMode} to set.
      * @return the updated {@link SessionOptions} object.
      */
     public SessionOptions setSessionMode(SessionMode sessionMode) {
-        this.sessionMode = sessionMode == null ? SessionMode.ENABLED : sessionMode;
+        this.sessionMode = sessionMode == null ? SessionMode.AUTO : sessionMode;
         return this;
     }
 

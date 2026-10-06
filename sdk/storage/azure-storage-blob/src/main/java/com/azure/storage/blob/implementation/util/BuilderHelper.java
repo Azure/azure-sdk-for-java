@@ -161,7 +161,8 @@ public final class BuilderHelper {
             StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy
                 = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
 
-            if (sessionOptions == null || sessionOptions.getSessionMode() == SessionMode.DISABLED) {
+            if (sessionOptions == null
+                || ModelHelper.resolveSessionMode(sessionOptions.getSessionMode()) != SessionMode.ENABLED) {
                 policies.add(bearerPolicy);
             } else {
                 BlobServiceVersion effectiveServiceVersion

@@ -16,6 +16,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.SessionCredential;
 import com.azure.storage.blob.models.SessionMode;
@@ -28,6 +29,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -82,6 +84,47 @@ public class SessionAuthenticationPolicyTest {
         });
 
         policy = createPolicy();
+    }
+
+    @ParameterizedTest
+    @EnumSource(SessionMode.class)
+    public void policyRespectsSessionModeAsync(SessionMode mode) {
+        policy
+            = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, new SessionOptions().setSessionMode(mode));
+        boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
+        if (sessionsEnabled) {
+            when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
+        }
+
+        StepVerifier.create(buildPipeline(successTransport()).send(blobGetRequest()))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        verify(sessionProvider, times(sessionsEnabled ? 1 : 0)).isRequestEligible(any());
+        verify(sessionProvider, times(sessionsEnabled ? 1 : 0)).getSessionAsync(any());
+        verify(bearerPolicy, times(sessionsEnabled ? 0 : 1)).process(any(), any());
+    }
+
+    @ParameterizedTest
+    @EnumSource(SessionMode.class)
+    public void policyRespectsSessionModeSync(SessionMode mode) {
+        policy
+            = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, new SessionOptions().setSessionMode(mode));
+        boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
+        if (sessionsEnabled) {
+            when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
+        }
+        HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
+        when(next.processSync()).thenReturn(new MockHttpResponse(null, 200));
+        when(next.clone()).thenReturn(next);
+
+        try (HttpResponse response = policy.processSync(createContext(), next)) {
+            assertEquals(200, response.getStatusCode());
+        }
+
+        verify(sessionProvider, times(sessionsEnabled ? 1 : 0)).isRequestEligible(any());
+        verify(sessionProvider, times(sessionsEnabled ? 1 : 0)).getSession(any());
+        verify(bearerPolicy, times(sessionsEnabled ? 0 : 1)).processSync(any(), any());
     }
 
     @ParameterizedTest

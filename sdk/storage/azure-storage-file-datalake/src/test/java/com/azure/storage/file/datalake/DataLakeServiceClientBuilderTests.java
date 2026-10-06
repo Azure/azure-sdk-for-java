@@ -111,6 +111,33 @@ public class DataLakeServiceClientBuilderTests {
         assertTrue(hasPolicyOfType(client.blobServiceClient.getHttpPipeline(), "SessionAuthenticationPolicy"));
     }
 
+    @Test
+    public void nullSessionModeUsesBearerPolicyWithoutSessions() {
+        DataLakeServiceClient client = new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .sessionOptions(new SessionOptions().setSessionMode(SessionMode.ENABLED).setSessionMode(null))
+            .buildClient();
+
+        HttpPipeline pipeline = client.blobServiceClient.getHttpPipeline();
+        assertFalse(hasPolicyOfType(pipeline, "SessionAuthenticationPolicy"));
+        assertTrue(hasPolicyOfType(pipeline, "StorageBearerTokenChallengeAuthorizationPolicy"));
+    }
+
+    @Test
+    public void nullSessionModeAsyncUsesBearerPolicyWithoutSessions() {
+        DataLakeServiceAsyncClient client = new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .sessionOptions(new SessionOptions().setSessionMode(SessionMode.ENABLED).setSessionMode(null))
+            .buildAsyncClient();
+
+        HttpPipeline pipeline
+            = client.getFileSystemAsyncClient("filesystem").getBlobContainerAsyncClient().getHttpPipeline();
+        assertFalse(hasPolicyOfType(pipeline, "SessionAuthenticationPolicy"));
+        assertTrue(hasPolicyOfType(pipeline, "StorageBearerTokenChallengeAuthorizationPolicy"));
+    }
+
     private static boolean hasPolicyOfType(HttpPipeline pipeline, String simpleClassName) {
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
             if (pipeline.getPolicy(i).getClass().getSimpleName().equals(simpleClassName)) {

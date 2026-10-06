@@ -14,6 +14,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
@@ -2672,7 +2673,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     private DataLakeFileSystemAsyncClient sessionEnabledFileSystemAsyncClient(HttpPipelinePolicy... policies) {
-        return getOAuthServiceAsyncClient(new SessionOptions(), policies)
+        return getOAuthServiceAsyncClient(new SessionOptions().setSessionMode(SessionMode.ENABLED), policies)
             .getFileSystemAsyncClient(dataLakeFileSystemAsyncClient.getFileSystemName());
     }
 

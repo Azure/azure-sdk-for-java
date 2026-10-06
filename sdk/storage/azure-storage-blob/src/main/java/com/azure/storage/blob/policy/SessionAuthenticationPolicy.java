@@ -14,6 +14,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.SessionCredential;
 import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.models.SessionOptions;
@@ -147,7 +148,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     private SessionRequestContext resolveSessionRequest(HttpPipelineCallContext context) {
-        if (sessionOptions.getSessionMode() == SessionMode.DISABLED) {
+        if (ModelHelper.resolveSessionMode(sessionOptions.getSessionMode()) != SessionMode.ENABLED) {
             return null;
         }
 

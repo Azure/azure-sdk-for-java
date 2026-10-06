@@ -24,6 +24,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.SessionCredential;
 import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.models.SessionOptions;
@@ -39,6 +40,7 @@ import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -64,6 +66,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -703,6 +706,61 @@ public class BuilderHelperTests {
 
     // region buildPipeline session tests
 
+    @Test
+    public void sessionOptionsUseAutoByDefault() {
+        assertEquals(SessionMode.AUTO, new SessionOptions().getSessionMode());
+    }
+
+    @Test
+    public void nullSessionModeResetsToAuto() {
+        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ENABLED);
+
+        assertEquals(SessionMode.ENABLED, options.getSessionMode());
+        assertSame(options, options.setSessionMode(null));
+        assertEquals(SessionMode.AUTO, options.getSessionMode());
+    }
+
+    @Test
+    public void autoSessionModeResolvesToDisabled() {
+        assertEquals(SessionMode.DISABLED, ModelHelper.resolveSessionMode(SessionMode.AUTO));
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = SessionMode.class, names = { "DISABLED", "ENABLED" })
+    public void explicitSessionModesAreNotChanged(SessionMode mode) {
+        assertEquals(mode, ModelHelper.resolveSessionMode(mode));
+    }
+
+    @ParameterizedTest
+    @EnumSource(SessionMode.class)
+    public void serviceBuilderRespectsSessionModeSync(SessionMode mode) {
+        HttpPipeline pipeline = new BlobServiceClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .sessionOptions(new SessionOptions().setSessionMode(mode))
+            .buildClient()
+            .getHttpPipeline();
+
+        boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
+        assertEquals(sessionsEnabled, hasPolicyOfType(pipeline, "SessionAuthenticationPolicy"));
+        assertEquals(!sessionsEnabled, hasPolicyOfType(pipeline, "StorageBearerTokenChallengeAuthorizationPolicy"));
+    }
+
+    @ParameterizedTest
+    @EnumSource(SessionMode.class)
+    public void serviceBuilderRespectsSessionModeAsync(SessionMode mode) {
+        HttpPipeline pipeline = new BlobServiceClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .sessionOptions(new SessionOptions().setSessionMode(mode))
+            .buildAsyncClient()
+            .getHttpPipeline();
+
+        boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
+        assertEquals(sessionsEnabled, hasPolicyOfType(pipeline, "SessionAuthenticationPolicy"));
+        assertEquals(!sessionsEnabled, hasPolicyOfType(pipeline, "StorageBearerTokenChallengeAuthorizationPolicy"));
+    }
+
     @ParameterizedTest(name = "{0}")
     @MethodSource("pipelinesWithoutSessionsSupplier")
     public void pipelinesWithoutSessionsDoNotContainSessionPolicy(String scenario,
@@ -838,6 +896,16 @@ public class BuilderHelperTests {
     private static Stream<Arguments> pipelinesWithoutSessionsSupplier() {
         return Stream.of(
             Arguments.of("null session options", (Supplier<HttpPipeline>) () -> buildTokenPipeline(null), true),
+            Arguments.of("default session options",
+                (Supplier<HttpPipeline>) () -> buildTokenPipeline(new SessionOptions()), true),
+            Arguments.of("automatic session mode",
+                (Supplier<HttpPipeline>) () -> buildTokenPipeline(
+                    new SessionOptions().setSessionMode(SessionMode.AUTO)),
+                true),
+            Arguments.of("session mode reset to null",
+                (Supplier<HttpPipeline>) () -> buildTokenPipeline(
+                    new SessionOptions().setSessionMode(SessionMode.ENABLED).setSessionMode(null)),
+                true),
             Arguments.of("sessions disabled",
                 (Supplier<HttpPipeline>) () -> buildTokenPipeline(
                     new SessionOptions().setSessionMode(SessionMode.DISABLED)),

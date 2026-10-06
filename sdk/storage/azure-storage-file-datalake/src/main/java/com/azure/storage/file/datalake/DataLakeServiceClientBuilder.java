@@ -561,8 +561,11 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
      * <p>
      * Sessions amortize authentication and authorization cost across many requests by signing them with a
      * lightweight HMAC key instead of a full bearer token, and are only effective for accounts with a
-     * hierarchical namespace (HNS) enabled. Session mode is enabled by default whenever this builder is
-     * configured with a {@link com.azure.core.credential.TokenCredential}. Session authentication is attempted only
+     * hierarchical namespace (HNS) enabled. Session mode defaults to
+     * {@link com.azure.storage.blob.models.SessionMode#AUTO}, which currently disables sessions. To enable them, set
+     * {@link SessionOptions#setSessionMode(com.azure.storage.blob.models.SessionMode)} to
+     * {@link com.azure.storage.blob.models.SessionMode#ENABLED} and configure this builder with a
+     * {@link com.azure.core.credential.TokenCredential}. Session authentication is attempted only
      * for eligible GET blob requests; requests that are not eligible for
      * session authentication, or for which session negotiation fails (for example, because HNS is not enabled),
      * transparently fall back to bearer token authentication.
