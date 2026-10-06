@@ -146,7 +146,7 @@ public final class EventGridSenderClientImpl {
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "EventGridSenderClient")
+    @ServiceInterface(name = "EventGridSenderClien")
     public interface EventGridSenderClientService {
         @Post("/topics/{topicName}:publish")
         @ExpectedResponses({ 200 })
