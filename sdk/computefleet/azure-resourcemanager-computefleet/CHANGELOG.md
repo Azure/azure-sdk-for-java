@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.4 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,360 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2026-09-29)
+
+- Azure Resource Manager Compute Fleet client library for Java. This package contains Microsoft Azure SDK for Compute Fleet Management SDK.  Package api-version 2026-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ComputeProfile` was modified
+
+* `validate()` was removed
+
+#### `models.PublicIPAddressSku` was modified
+
+* `validate()` was removed
+
+#### `models.VaultSecretGroup` was modified
+
+* `validate()` was removed
+
+#### `models.AdditionalCapabilities` was modified
+
+* `validate()` was removed
+
+#### `models.LinuxVMGuestPatchAutomaticByPlatformSettings` was modified
+
+* `validate()` was removed
+
+#### `models.VMAttributeMinMaxInteger` was modified
+
+* `validate()` was removed
+
+#### `models.ScheduledEventsProfile` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ApiError` was modified
+
+* `validate()` was removed
+
+#### `models.VMAttributes` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetPublicIPAddressConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetIPConfigurationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OSImageNotificationProfile` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetOSDisk` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetNetworkConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentityUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.ImageReference` was modified
+
+* `validate()` was removed
+
+#### `models.DiffDiskSettings` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetOSProfile` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetExtension` was modified
+
+* `validate()` was removed
+
+#### `models.LinuxConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetNetworkConfigurationDnsSettings` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualHardDisk` was modified
+
+* `validate()` was removed
+
+#### `models.RegularPriorityProfile` was modified
+
+* `validate()` was removed
+
+#### `models.BootDiagnostics` was modified
+
+* `validate()` was removed
+
+#### `models.VMAttributeMinMaxDouble` was modified
+
+* `validate()` was removed
+
+#### `models.WindowsConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ApplicationProfile` was modified
+
+* `validate()` was removed
+
+#### `models.FleetProperties` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetHardwareProfile` was modified
+
+* `validate()` was removed
+
+#### `models.LocationProfile` was modified
+
+* `validate()` was removed
+
+#### `models.ApiEntityReference` was modified
+
+* `validate()` was removed
+
+#### `models.VMGalleryApplication` was modified
+
+* `validate()` was removed
+
+#### `models.VMSizeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.CapacityReservationProfile` was modified
+
+* `validate()` was removed
+
+#### `models.VMDiskSecurityProfile` was modified
+
+* `validate()` was removed
+
+#### `models.WindowsVMGuestPatchAutomaticByPlatformSettings` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetIpTag` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.SshPublicKey` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetExtensionProfile` was modified
+
+* `validate()` was removed
+
+#### `models.AdditionalLocationsProfile` was modified
+
+* `validate()` was removed
+
+#### `models.SshConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.Plan` was modified
+
+* `validate()` was removed
+
+#### `models.WinRMListener` was modified
+
+* `validate()` was removed
+
+#### `models.WinRMConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.AdditionalUnattendContent` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnosticsProfile` was modified
+
+* `validate()` was removed
+
+#### `models.TerminateNotificationProfile` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetNetworkConfigurationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.VmSizeProfile` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceArtifactReference` was modified
+
+* `validate()` was removed
+
+#### `models.SpotPriorityProfile` was modified
+
+* `validate()` was removed
+
+#### `models.SecurityPostureReference` was modified
+
+* `validate()` was removed
+
+#### `models.ResourcePlanUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.ProxyAgentSettings` was modified
+
+* `validate()` was removed
+
+#### `models.FleetUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.PatchSettings` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetExtensionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.LinuxPatchSettings` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetIPConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetManagedDiskParameters` was modified
+
+* `validate()` was removed
+
+#### `models.InnerError` was modified
+
+* `validate()` was removed
+
+#### `models.KeyVaultSecretReference` was modified
+
+* `validate()` was removed
+
+#### `models.UefiSettings` was modified
+
+* `validate()` was removed
+
+#### `models.BaseVirtualMachineProfile` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetNetworkProfile` was modified
+
+* `validate()` was removed
+
+#### `models.SecurityProfile` was modified
+
+* `validate()` was removed
+
+#### `models.ApiErrorBase` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetPublicIPAddressConfigurationProperties` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetDataDisk` was modified
+
+* `validate()` was removed
+
+#### `models.VaultCertificate` was modified
+
+* `validate()` was removed
+
+#### `models.DiskEncryptionSetParameters` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineScaleSetStorageProfile` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.FleetMode` was added
+
+* `models.CapacityType` was added
+
+* `models.VirtualMachine` was added
+
+* `models.VMOperationStatus` was added
+
+#### `models.VirtualMachineScaleSet` was modified
+
+* `name()` was added
+
+#### `models.FleetProperties` was modified
+
+* `withVmNamePrefix(java.lang.String)` was added
+* `withMode(models.FleetMode)` was added
+* `capacityType()` was added
+* `mode()` was added
+* `vmNamePrefix()` was added
+* `withCapacityType(models.CapacityType)` was added
+
+#### `models.Fleets` was modified
+
+* `listVirtualMachines(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listVirtualMachines(java.lang.String,java.lang.String)` was added
+
+## 1.1.0-beta.4 (2026-07-22)
+
+- Azure Resource Manager Compute Fleet client library for Java. This package contains Microsoft Azure SDK for Compute Fleet Management SDK.  Package api-version 2026-06-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.VirtualMachine` was modified
+
+* `zone()` was added
+* `priority()` was added
+* `vmSize()` was added
 
 ## 1.1.0-beta.3 (2026-04-29)
 

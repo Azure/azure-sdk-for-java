@@ -11,7 +11,7 @@ public final class JobResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobResponseInner model = BinaryData.fromString(
-            "{\"jobId\":\"z\",\"startTimeUtc\":\"Sat, 23 Oct 2021 07:29:15 GMT\",\"endTimeUtc\":\"Thu, 09 Dec 2021 18:21:24 GMT\",\"type\":\"rebootDevice\",\"status\":\"running\",\"failureReason\":\"crnwbmeh\",\"statusMessage\":\"eyvjusrtslhspkde\",\"parentJobId\":\"aofmxagkvtme\"}")
+            "{\"jobId\":\"zbaliourqha\",\"startTimeUtc\":\"Thu, 13 May 2021 06:10:16 GMT\",\"endTimeUtc\":\"Fri, 28 May 2021 21:15:07 GMT\",\"type\":\"updateDeviceConfiguration\",\"status\":\"running\",\"failureReason\":\"xosow\",\"statusMessage\":\"cugicjoox\",\"parentJobId\":\"ebwpucwwfvo\"}")
             .toObject(JobResponseInner.class);
     }
 }

@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class RoutingIntentCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/RoutingIntentPut.json
+     * x-ms-original-file: 2026-01-01/RoutingIntentPut.json
      */
     /**
      * Sample code: RouteTablePut.

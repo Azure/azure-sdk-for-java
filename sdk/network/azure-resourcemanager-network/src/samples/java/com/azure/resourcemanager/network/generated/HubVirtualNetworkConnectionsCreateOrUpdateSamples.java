@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class HubVirtualNetworkConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/HubVirtualNetworkConnectionPut.json
+     * x-ms-original-file: 2026-01-01/HubVirtualNetworkConnectionPut.json
      */
     /**
      * Sample code: HubVirtualNetworkConnectionPut.
@@ -51,7 +51,7 @@ public final class HubVirtualNetworkConnectionsCreateOrUpdateSamples {
                     .withInboundRouteMap(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap1"))
                     .withOutboundRouteMap(new SubResource().withId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"))),
-                com.azure.core.util.Context.NONE);
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2")))
+                .withEnableOnlyIPv6Peering(false), com.azure.core.util.Context.NONE);
     }
 }

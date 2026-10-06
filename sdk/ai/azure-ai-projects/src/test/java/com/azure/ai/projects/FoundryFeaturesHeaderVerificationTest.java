@@ -3,6 +3,9 @@
 
 package com.azure.ai.projects;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -19,9 +22,12 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -52,7 +58,7 @@ public class FoundryFeaturesHeaderVerificationTest {
 
         builder.beta()
             .buildBetaEvaluatorsClient()
-            .getEvaluatorVersionWithResponse("evaluator", "1", new RequestOptions());
+            .getCredentialsWithResponse("evaluator", "1", BinaryData.fromString("{}"), new RequestOptions());
         assertEquals("Evaluations=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaInsightsClient().getInsightWithResponse("insight", new RequestOptions());
@@ -62,12 +68,12 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertEquals("Schedules=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaRoutinesClient().getRoutineWithResponse("routine", new RequestOptions());
-        assertEquals("Routines=V1Preview", foundryFeatures(httpClient));
+        assertEquals("Routines=V2Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaSkillsClient().getSkillWithResponse("skill", new RequestOptions());
         assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
 
-        builder.beta().buildBetaDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
+        builder.buildDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
         assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
 
         builder.buildEvaluationRulesClient()
@@ -93,7 +99,7 @@ public class FoundryFeaturesHeaderVerificationTest {
 
         builder.beta()
             .buildBetaEvaluatorsClient()
-            .getEvaluatorVersionWithResponse("evaluator", "1", new RequestOptions());
+            .getCredentialsWithResponse("evaluator", "1", BinaryData.fromString("{}"), new RequestOptions());
         assertEquals("Evaluations=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaInsightsClient().getInsightWithResponse("insight", new RequestOptions());
@@ -103,13 +109,15 @@ public class FoundryFeaturesHeaderVerificationTest {
         assertEquals("Schedules=V1Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaRoutinesClient().getRoutineWithResponse("routine", new RequestOptions());
-        assertEquals("Routines=V1Preview", foundryFeatures(httpClient));
+        assertEquals("Routines=V2Preview", foundryFeatures(httpClient));
 
         builder.beta().buildBetaSkillsClient().getSkillWithResponse("skill", new RequestOptions());
         assertEquals("Skills=V1Preview", foundryFeatures(httpClient));
 
-        builder.beta().buildBetaDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
-        assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
+        builder.beta()
+            .buildBetaAgentInsightMonitorsClient()
+            .getAgentInsightMonitorWithResponse("monitor", new RequestOptions());
+        assertEquals("AgentInsights=V1Preview", foundryFeatures(httpClient));
     }
 
     @Test
@@ -117,14 +125,20 @@ public class FoundryFeaturesHeaderVerificationTest {
         RecordingHttpClient httpClient = new RecordingHttpClient();
         AIProjectClientBuilder builder = createBuilder(httpClient);
 
-        builder.beta().buildBetaDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
-        assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
+        builder.beta().buildBetaModelsClient().getModelVersionWithResponse("model", "1", new RequestOptions());
+        assertEquals("Models=V1Preview", foundryFeatures(httpClient));
 
         // Beta clients temporarily add their required Foundry-Features policy while their pipeline is being built.
         // The policy must not remain on the reusable builder, otherwise a later non-beta client built from the same
         // builder would silently inherit a beta opt-in header despite allowPreview defaulting to false for GA clients.
         builder.buildEvaluationRulesClient()
             .createOrUpdateEvaluationRuleWithResponse("rule", BinaryData.fromString("{}"), new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+
+        builder.buildDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+
+        builder.buildDatasetsAsyncClient().getGenerationJobWithResponse("job", new RequestOptions()).block();
         assertNull(foundryFeatures(httpClient));
     }
 
@@ -134,10 +148,12 @@ public class FoundryFeaturesHeaderVerificationTest {
         String explicitHeader = "Insights=V1Preview";
         RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
 
-        createBuilder(httpClient).allowPreview(true)
-            .beta()
-            .buildBetaDatasetsClient()
-            .getGenerationJobWithResponse("job", requestOptions);
+        AIProjectClientBuilder builder = createBuilder(httpClient).allowPreview(true);
+        builder.buildDatasetsClient().getGenerationJobWithResponse("job", requestOptions);
+
+        assertEquals(explicitHeader, foundryFeatures(httpClient));
+
+        builder.buildDatasetsAsyncClient().getGenerationJobWithResponse("job", requestOptions).block();
 
         assertEquals(explicitHeader, foundryFeatures(httpClient));
     }
@@ -154,12 +170,55 @@ public class FoundryFeaturesHeaderVerificationTest {
     }
 
     @Test
+    public void datasetClientsDoNotAddPreviewHeadersByDefault() {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        AIProjectClientBuilder builder = createBuilder(httpClient);
+        DatasetsClient datasetsClient = builder.buildDatasetsClient();
+        DatasetsAsyncClient datasetsAsyncClient = builder.buildDatasetsAsyncClient();
+
+        datasetsClient.getGenerationJobWithResponse("job", new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+
+        datasetsAsyncClient.getGenerationJobWithResponse("job", new RequestOptions()).block();
+        assertNull(foundryFeatures(httpClient));
+
+        datasetsClient.getDatasetVersionWithResponse("dataset", "1", new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+
+        datasetsAsyncClient.getDatasetVersionWithResponse("dataset", "1", new RequestOptions()).block();
+        assertNull(foundryFeatures(httpClient));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void dataGenerationPreviewOptInPreservesCustomPipeline(boolean allowPreview) {
+        RecordingHttpClient httpClient = new RecordingHttpClient();
+        HttpPipeline customPipeline = createCustomPipeline(httpClient);
+        int originalPolicyCount = customPipeline.getPolicyCount();
+        AIProjectClientBuilder builder = createBuilder(customPipeline).allowPreview(allowPreview);
+        String expectedHeader = allowPreview ? "DataGenerationJobs=V1Preview" : null;
+
+        builder.buildDatasetsClient().getGenerationJobWithResponse("job", new RequestOptions());
+        assertEquals(expectedHeader, foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+
+        builder.buildDatasetsAsyncClient().getGenerationJobWithResponse("job", new RequestOptions()).block();
+        assertEquals(expectedHeader, foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+        assertEquals(originalPolicyCount, customPipeline.getPolicyCount());
+
+        builder.buildConnectionsClient().getConnectionWithResponse("connection", false, new RequestOptions());
+        assertNull(foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+    }
+
+    @Test
     public void allowPreviewUsesBuiltClientFeatureHeaderWithoutPathMatching() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
 
         createBuilder(httpClient).endpoint("https://localhost:8080/api/projects/project/evaluations/evaluation")
-            .beta()
-            .buildBetaDatasetsClient()
+            .allowPreview(true)
+            .buildDatasetsClient()
             .getGenerationJobWithResponse("job", new RequestOptions());
 
         assertEquals("DataGenerationJobs=V1Preview", foundryFeatures(httpClient));
@@ -205,9 +264,13 @@ public class FoundryFeaturesHeaderVerificationTest {
         String explicitHeader = "Insights=V1Preview";
         RequestOptions requestOptions = new RequestOptions().setHeader(FOUNDRY_FEATURES, explicitHeader);
 
-        createBuilder(createCustomPipeline(httpClient)).beta()
-            .buildBetaDatasetsClient()
-            .getGenerationJobWithResponse("job", requestOptions);
+        AIProjectClientBuilder builder = createBuilder(createCustomPipeline(httpClient)).allowPreview(true);
+        builder.buildDatasetsClient().getGenerationJobWithResponse("job", requestOptions);
+
+        assertEquals(explicitHeader, foundryFeatures(httpClient));
+        assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
+
+        builder.buildDatasetsAsyncClient().getGenerationJobWithResponse("job", requestOptions).block();
 
         assertEquals(explicitHeader, foundryFeatures(httpClient));
         assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
@@ -225,6 +288,37 @@ public class FoundryFeaturesHeaderVerificationTest {
         builder.buildAgentScopedOpenAIClient("agent").models().list();
         assertEquals(CUSTOM_PIPELINE_VALUE, customPipelineHeader(httpClient));
         assertNull(foundryFeatures(httpClient));
+    }
+
+    @Test
+    public void openAIAsyncClientUsesAsyncTokenAcquisition() {
+        RecordingHttpClient httpClient = newOpenAIRecordingHttpClient();
+        new AIProjectClientBuilder().endpoint("https://localhost:8080/api/projects/project")
+            .credential(new PathVerifyingCredential(false))
+            .httpClient(httpClient)
+            .serviceVersion(AIProjectsServiceVersion.V1)
+            .buildOpenAIAsyncClient()
+            .models()
+            .list()
+            .join();
+
+        assertEquals("Bearer async-token",
+            httpClient.getLastRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+    }
+
+    @Test
+    public void openAIClientUsesSynchronousTokenAcquisition() {
+        RecordingHttpClient httpClient = newOpenAIRecordingHttpClient();
+        new AIProjectClientBuilder().endpoint("https://localhost:8080/api/projects/project")
+            .credential(new PathVerifyingCredential(true))
+            .httpClient(httpClient)
+            .serviceVersion(AIProjectsServiceVersion.V1)
+            .buildOpenAIClient()
+            .models()
+            .list();
+
+        assertEquals("Bearer sync-token",
+            httpClient.getLastRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
     }
 
     private static RecordingHttpClient newOpenAIRecordingHttpClient() {
@@ -274,6 +368,30 @@ public class FoundryFeaturesHeaderVerificationTest {
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             context.getHttpRequest().getHeaders().set(CUSTOM_PIPELINE_HEADER, CUSTOM_PIPELINE_VALUE);
             return next.process();
+        }
+    }
+
+    private static final class PathVerifyingCredential implements TokenCredential {
+        private final boolean synchronous;
+
+        private PathVerifyingCredential(boolean synchronous) {
+            this.synchronous = synchronous;
+        }
+
+        @Override
+        public Mono<AccessToken> getToken(TokenRequestContext request) {
+            if (synchronous) {
+                return Mono.error(new AssertionError("The asynchronous token API must not be called."));
+            }
+            return Mono.just(new AccessToken("async-token", OffsetDateTime.now().plusHours(1)));
+        }
+
+        @Override
+        public AccessToken getTokenSync(TokenRequestContext request) {
+            if (!synchronous) {
+                throw new AssertionError("The synchronous token API must not be called.");
+            }
+            return new AccessToken("sync-token", OffsetDateTime.now().plusHours(1));
         }
     }
 

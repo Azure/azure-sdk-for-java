@@ -302,8 +302,8 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSupportedFormats(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("type") String type,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/document/formats")
         @ExpectedResponses({ 200 })
@@ -312,8 +312,8 @@ public final class DocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSupportedFormatsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("type") String type,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -398,6 +398,7 @@ public final class DocumentTranslationClientImpl {
      *                  (Required){
      *                     targetUrl: String (Required)
      *                     category: String (Optional)
+     *                     deploymentName: String (Optional)
      *                     language: String (Required)
      *                     glossaries (Optional): [
      *                          (Optional){
@@ -413,6 +414,9 @@ public final class DocumentTranslationClientImpl {
      *             storageType: String(Folder/File) (Optional)
      *         }
      *     ]
+     *     options (Optional): {
+     *         translateTextWithinImage: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -475,6 +479,7 @@ public final class DocumentTranslationClientImpl {
      *                  (Required){
      *                     targetUrl: String (Required)
      *                     category: String (Optional)
+     *                     deploymentName: String (Optional)
      *                     language: String (Required)
      *                     glossaries (Optional): [
      *                          (Optional){
@@ -490,6 +495,9 @@ public final class DocumentTranslationClientImpl {
      *             storageType: String(Folder/File) (Optional)
      *         }
      *     ]
+     *     options (Optional): {
+     *         translateTextWithinImage: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -552,6 +560,7 @@ public final class DocumentTranslationClientImpl {
      *                  (Required){
      *                     targetUrl: String (Required)
      *                     category: String (Optional)
+     *                     deploymentName: String (Optional)
      *                     language: String (Required)
      *                     glossaries (Optional): [
      *                          (Optional){
@@ -567,6 +576,9 @@ public final class DocumentTranslationClientImpl {
      *             storageType: String(Folder/File) (Optional)
      *         }
      *     ]
+     *     options (Optional): {
+     *         translateTextWithinImage: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -635,6 +647,7 @@ public final class DocumentTranslationClientImpl {
      *                  (Required){
      *                     targetUrl: String (Required)
      *                     category: String (Optional)
+     *                     deploymentName: String (Optional)
      *                     language: String (Required)
      *                     glossaries (Optional): [
      *                          (Optional){
@@ -650,6 +663,9 @@ public final class DocumentTranslationClientImpl {
      *             storageType: String(Folder/File) (Optional)
      *         }
      *     ]
+     *     options (Optional): {
+     *         translateTextWithinImage: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -718,6 +734,7 @@ public final class DocumentTranslationClientImpl {
      *                  (Required){
      *                     targetUrl: String (Required)
      *                     category: String (Optional)
+     *                     deploymentName: String (Optional)
      *                     language: String (Required)
      *                     glossaries (Optional): [
      *                          (Optional){
@@ -733,6 +750,9 @@ public final class DocumentTranslationClientImpl {
      *             storageType: String(Folder/File) (Optional)
      *         }
      *     ]
+     *     options (Optional): {
+     *         translateTextWithinImage: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -799,6 +819,7 @@ public final class DocumentTranslationClientImpl {
      *                  (Required){
      *                     targetUrl: String (Required)
      *                     category: String (Optional)
+     *                     deploymentName: String (Optional)
      *                     language: String (Required)
      *                     glossaries (Optional): [
      *                          (Optional){
@@ -814,6 +835,9 @@ public final class DocumentTranslationClientImpl {
      *             storageType: String(Folder/File) (Optional)
      *         }
      *     ]
+     *     options (Optional): {
+     *         translateTextWithinImage: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -974,6 +998,9 @@ public final class DocumentTranslationClientImpl {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -1133,6 +1160,9 @@ public final class DocumentTranslationClientImpl {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -1310,6 +1340,9 @@ public final class DocumentTranslationClientImpl {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -1467,6 +1500,9 @@ public final class DocumentTranslationClientImpl {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -1538,6 +1574,11 @@ public final class DocumentTranslationClientImpl {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
+     *     imageCharged: Integer (Optional)
+     *     imageCharacterDetected: Integer (Optional)
+     *     deploymentName: String (Optional)
      * }
      * }
      * </pre>
@@ -1589,6 +1630,11 @@ public final class DocumentTranslationClientImpl {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
+     *     imageCharged: Integer (Optional)
+     *     imageCharacterDetected: Integer (Optional)
+     *     deploymentName: String (Optional)
      * }
      * }
      * </pre>
@@ -1645,6 +1691,9 @@ public final class DocumentTranslationClientImpl {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -1701,6 +1750,9 @@ public final class DocumentTranslationClientImpl {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -1760,6 +1812,9 @@ public final class DocumentTranslationClientImpl {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -1820,6 +1875,9 @@ public final class DocumentTranslationClientImpl {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -1968,6 +2026,11 @@ public final class DocumentTranslationClientImpl {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
+     *     imageCharged: Integer (Optional)
+     *     imageCharacterDetected: Integer (Optional)
+     *     deploymentName: String (Optional)
      * }
      * }
      * </pre>
@@ -2119,6 +2182,11 @@ public final class DocumentTranslationClientImpl {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
+     *     imageCharged: Integer (Optional)
+     *     imageCharacterDetected: Integer (Optional)
+     *     deploymentName: String (Optional)
      * }
      * }
      * </pre>
@@ -2288,6 +2356,11 @@ public final class DocumentTranslationClientImpl {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
+     *     imageCharged: Integer (Optional)
+     *     imageCharacterDetected: Integer (Optional)
+     *     deploymentName: String (Optional)
      * }
      * }
      * </pre>
@@ -2438,6 +2511,11 @@ public final class DocumentTranslationClientImpl {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
+     *     imageCharged: Integer (Optional)
+     *     imageCharacterDetected: Integer (Optional)
+     *     deploymentName: String (Optional)
      * }
      * }
      * </pre>
@@ -2486,14 +2564,6 @@ public final class DocumentTranslationClientImpl {
      * service.
      * The list includes the common file extension, as well as the
      * content-type if using the upload API.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>type</td><td>String</td><td>No</td><td>the type of format like document or glossary . Allowed values:
-     * "document", "glossary".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2512,13 +2582,14 @@ public final class DocumentTranslationClientImpl {
      *             versions (Optional): [
      *                 String (Optional)
      *             ]
-     *             type: String(document/glossary) (Optional)
+     *             type: String(Document/Glossary) (Optional)
      *         }
      *     ]
      * }
      * }
      * </pre>
      * 
+     * @param type the type of format like document or glossary . Allowed values: "Document", "Glossary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2527,10 +2598,10 @@ public final class DocumentTranslationClientImpl {
      * @return list of supported file formats along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSupportedFormatsWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getSupportedFormatsWithResponseAsync(String type, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getSupportedFormats(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), type, accept, requestOptions, context));
     }
 
     /**
@@ -2540,14 +2611,6 @@ public final class DocumentTranslationClientImpl {
      * service.
      * The list includes the common file extension, as well as the
      * content-type if using the upload API.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>type</td><td>String</td><td>No</td><td>the type of format like document or glossary . Allowed values:
-     * "document", "glossary".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2566,13 +2629,14 @@ public final class DocumentTranslationClientImpl {
      *             versions (Optional): [
      *                 String (Optional)
      *             ]
-     *             type: String(document/glossary) (Optional)
+     *             type: String(Document/Glossary) (Optional)
      *         }
      *     ]
      * }
      * }
      * </pre>
      * 
+     * @param type the type of format like document or glossary . Allowed values: "Document", "Glossary".
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2581,9 +2645,9 @@ public final class DocumentTranslationClientImpl {
      * @return list of supported file formats along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSupportedFormatsWithResponse(RequestOptions requestOptions) {
+    public Response<BinaryData> getSupportedFormatsWithResponse(String type, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSupportedFormatsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+        return service.getSupportedFormatsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), type, accept,
             requestOptions, Context.NONE);
     }
 
@@ -2619,6 +2683,9 @@ public final class DocumentTranslationClientImpl {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -2676,6 +2743,9 @@ public final class DocumentTranslationClientImpl {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -2728,6 +2798,11 @@ public final class DocumentTranslationClientImpl {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
+     *     imageCharged: Integer (Optional)
+     *     imageCharacterDetected: Integer (Optional)
+     *     deploymentName: String (Optional)
      * }
      * }
      * </pre>
@@ -2779,6 +2854,11 @@ public final class DocumentTranslationClientImpl {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
+     *     imageCharged: Integer (Optional)
+     *     imageCharacterDetected: Integer (Optional)
+     *     deploymentName: String (Optional)
      * }
      * }
      * </pre>
@@ -2801,20 +2881,26 @@ public final class DocumentTranslationClientImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

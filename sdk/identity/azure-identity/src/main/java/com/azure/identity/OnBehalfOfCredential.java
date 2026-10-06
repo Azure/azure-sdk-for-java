@@ -82,9 +82,7 @@ public class OnBehalfOfCredential implements TokenCredential {
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        return Mono.deferContextual(ctx -> identityClient.authenticateWithConfidentialClientCache(request)
-            .onErrorResume(t -> Mono.empty())
-            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithOBO(request)))
+        return Mono.deferContextual(ctx -> identityClient.authenticateWithOBO(request)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(
                 error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error)));
@@ -92,15 +90,6 @@ public class OnBehalfOfCredential implements TokenCredential {
 
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
-        try {
-            AccessToken token = identitySyncClient.authenticateWithConfidentialClientCache(request);
-            if (token != null) {
-                LoggingUtil.logTokenSuccess(LOGGER, request);
-                return token;
-            }
-        } catch (Exception e) {
-        }
-
         try {
             AccessToken token = identitySyncClient.authenticateWithOBO(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);

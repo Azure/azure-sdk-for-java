@@ -168,10 +168,9 @@ public class WorkflowTest {
         };
     }
 
-    @AfterClass(groups = "fast", timeOut = TIMEOUT)
+    @AfterClass(groups = "fast", timeOut = TIMEOUT, alwaysRun = true)
     public void afterClass() {
         AsyncDocumentClient housekeepingClient = Utils.housekeepingClient();
-        Utils.safeCleanDatabases(housekeepingClient);
         Utils.safeClean(housekeepingClient, database);
         Utils.safeClose(housekeepingClient);
     }

@@ -29,8 +29,9 @@ public final class GuestSubscriptionsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        GuestSubscription response
-            = manager.guestSubscriptions().getWithResponse("a", "a", com.azure.core.util.Context.NONE).getValue();
+        GuestSubscription response = manager.guestSubscriptions()
+            .getWithResponse("khixuigdtopbo", "joghmewuama", com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }

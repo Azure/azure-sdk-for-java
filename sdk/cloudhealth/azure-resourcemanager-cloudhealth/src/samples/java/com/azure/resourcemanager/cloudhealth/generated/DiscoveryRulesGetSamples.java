@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class DiscoveryRulesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/DiscoveryRules_Get.json
+     * x-ms-original-file: 2026-09-01-preview/DiscoveryRules_Get.json
      */
     /**
      * Sample code: DiscoveryRules_Get.

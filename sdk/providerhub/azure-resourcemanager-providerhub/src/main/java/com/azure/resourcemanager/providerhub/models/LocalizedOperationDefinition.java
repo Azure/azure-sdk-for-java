@@ -42,6 +42,11 @@ public final class LocalizedOperationDefinition implements JsonSerializable<Loca
      */
     private OperationActionType actionType;
 
+    /*
+     * Anything
+     */
+    private Object properties;
+
     /**
      * Creates an instance of LocalizedOperationDefinition class.
      */
@@ -149,6 +154,26 @@ public final class LocalizedOperationDefinition implements JsonSerializable<Loca
     }
 
     /**
+     * Get the properties property: Anything.
+     * 
+     * @return the properties value.
+     */
+    public Object properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Anything.
+     * 
+     * @param properties the properties value to set.
+     * @return the LocalizedOperationDefinition object itself.
+     */
+    public LocalizedOperationDefinition withProperties(Object properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -181,6 +206,9 @@ public final class LocalizedOperationDefinition implements JsonSerializable<Loca
         jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
         jsonWriter.writeStringField("origin", this.origin == null ? null : this.origin.toString());
         jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
+        if (this.properties != null) {
+            jsonWriter.writeUntypedField("properties", this.properties);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -212,6 +240,8 @@ public final class LocalizedOperationDefinition implements JsonSerializable<Loca
                 } else if ("actionType".equals(fieldName)) {
                     deserializedLocalizedOperationDefinition.actionType
                         = OperationActionType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLocalizedOperationDefinition.properties = reader.readUntyped();
                 } else {
                     reader.skipChildren();
                 }

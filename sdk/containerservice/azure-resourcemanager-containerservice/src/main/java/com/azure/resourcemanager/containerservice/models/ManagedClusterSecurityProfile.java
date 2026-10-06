@@ -29,6 +29,12 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
     private AzureKeyVaultKms azureKeyVaultKms;
 
     /*
+     * Encryption at rest of Kubernetes resource objects. More information on this can be found under
+     * https://aka.ms/aks/kubernetesResourceObjectEncryption
+     */
+    private KubernetesResourceObjectEncryptionProfile kubernetesResourceObjectEncryptionProfile;
+
+    /*
      * Workload identity settings for the security profile. Workload identity enables Kubernetes applications to access
      * Azure cloud resources securely with Azure AD. See https://aka.ms/aks/wi for more details.
      */
@@ -91,6 +97,29 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
      */
     public ManagedClusterSecurityProfile withAzureKeyVaultKms(AzureKeyVaultKms azureKeyVaultKms) {
         this.azureKeyVaultKms = azureKeyVaultKms;
+        return this;
+    }
+
+    /**
+     * Get the kubernetesResourceObjectEncryptionProfile property: Encryption at rest of Kubernetes resource objects.
+     * More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
+     * 
+     * @return the kubernetesResourceObjectEncryptionProfile value.
+     */
+    public KubernetesResourceObjectEncryptionProfile kubernetesResourceObjectEncryptionProfile() {
+        return this.kubernetesResourceObjectEncryptionProfile;
+    }
+
+    /**
+     * Set the kubernetesResourceObjectEncryptionProfile property: Encryption at rest of Kubernetes resource objects.
+     * More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
+     * 
+     * @param kubernetesResourceObjectEncryptionProfile the kubernetesResourceObjectEncryptionProfile value to set.
+     * @return the ManagedClusterSecurityProfile object itself.
+     */
+    public ManagedClusterSecurityProfile withKubernetesResourceObjectEncryptionProfile(
+        KubernetesResourceObjectEncryptionProfile kubernetesResourceObjectEncryptionProfile) {
+        this.kubernetesResourceObjectEncryptionProfile = kubernetesResourceObjectEncryptionProfile;
         return this;
     }
 
@@ -175,6 +204,9 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
         if (azureKeyVaultKms() != null) {
             azureKeyVaultKms().validate();
         }
+        if (kubernetesResourceObjectEncryptionProfile() != null) {
+            kubernetesResourceObjectEncryptionProfile().validate();
+        }
         if (workloadIdentity() != null) {
             workloadIdentity().validate();
         }
@@ -191,6 +223,8 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("defender", this.defender);
         jsonWriter.writeJsonField("azureKeyVaultKms", this.azureKeyVaultKms);
+        jsonWriter.writeJsonField("kubernetesResourceObjectEncryptionProfile",
+            this.kubernetesResourceObjectEncryptionProfile);
         jsonWriter.writeJsonField("workloadIdentity", this.workloadIdentity);
         jsonWriter.writeJsonField("imageCleaner", this.imageCleaner);
         jsonWriter.writeArrayField("customCATrustCertificates", this.customCATrustCertificates,
@@ -219,6 +253,9 @@ public final class ManagedClusterSecurityProfile implements JsonSerializable<Man
                         = ManagedClusterSecurityProfileDefender.fromJson(reader);
                 } else if ("azureKeyVaultKms".equals(fieldName)) {
                     deserializedManagedClusterSecurityProfile.azureKeyVaultKms = AzureKeyVaultKms.fromJson(reader);
+                } else if ("kubernetesResourceObjectEncryptionProfile".equals(fieldName)) {
+                    deserializedManagedClusterSecurityProfile.kubernetesResourceObjectEncryptionProfile
+                        = KubernetesResourceObjectEncryptionProfile.fromJson(reader);
                 } else if ("workloadIdentity".equals(fieldName)) {
                     deserializedManagedClusterSecurityProfile.workloadIdentity
                         = ManagedClusterSecurityProfileWorkloadIdentity.fromJson(reader);

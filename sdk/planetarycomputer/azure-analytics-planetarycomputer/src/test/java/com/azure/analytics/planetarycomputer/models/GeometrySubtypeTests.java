@@ -10,16 +10,16 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 /**
- * Unit tests for Geometry subtype models: {@link Point}, {@link LineString}, {@link Polygon},
- * {@link MultiPoint}, {@link MultiLineString}, {@link MultiPolygon}.
+ * Unit tests for Geometry subtype models: {@link GeoJsonPoint}, {@link GeoJsonLineString}, {@link GeoJsonPolygon},
+ * {@link GeoJsonMultiPoint}, {@link GeoJsonMultiLineString}, {@link GeoJsonMultiPolygon}.
  */
 public final class GeometrySubtypeTests {
 
     @Test
     public void testPointDeserialize() throws Exception {
-        Point model = BinaryData
+        GeoJsonPoint model = BinaryData
             .fromString("{\"type\":\"Point\",\"coordinates\":[-73.99,40.71],\"bbox\":[-73.99,40.71,-73.99,40.71]}")
-            .toObject(Point.class);
+            .toObject(GeoJsonPoint.class);
         Assertions.assertEquals(GeometryType.POINT, model.getType());
         Assertions.assertNotNull(model.getCoordinates());
         Assertions.assertEquals(2, model.getCoordinates().size());
@@ -31,9 +31,9 @@ public final class GeometrySubtypeTests {
 
     @Test
     public void testPointRoundTrip() throws Exception {
-        Point model = new Point().setCoordinates(Arrays.asList(-73.99, 40.71))
+        GeoJsonPoint model = new GeoJsonPoint().setCoordinates(Arrays.asList(-73.99, 40.71))
             .setBoundingBox(Arrays.asList(-73.99, 40.71, -73.99, 40.71));
-        model = BinaryData.fromObject(model).toObject(Point.class);
+        model = BinaryData.fromObject(model).toObject(GeoJsonPoint.class);
         Assertions.assertEquals(GeometryType.POINT, model.getType());
         Assertions.assertEquals(2, model.getCoordinates().size());
         Assertions.assertEquals(-73.99, model.getCoordinates().get(0));
@@ -41,9 +41,9 @@ public final class GeometrySubtypeTests {
 
     @Test
     public void testLineStringDeserialize() throws Exception {
-        LineString model
+        GeoJsonLineString model
             = BinaryData.fromString("{\"type\":\"LineString\",\"coordinates\":[[-73.99,40.71],[-73.98,40.72]]}")
-                .toObject(LineString.class);
+                .toObject(GeoJsonLineString.class);
         Assertions.assertEquals(GeometryType.LINE_STRING, model.getType());
         Assertions.assertNotNull(model.getCoordinates());
         Assertions.assertEquals(2, model.getCoordinates().size());
@@ -52,18 +52,19 @@ public final class GeometrySubtypeTests {
 
     @Test
     public void testLineStringRoundTrip() throws Exception {
-        LineString model
-            = new LineString().setCoordinates(Arrays.asList(Arrays.asList(-73.99, 40.71), Arrays.asList(-73.98, 40.72)))
-                .setBoundingBox(Arrays.asList(-73.99, 40.71, -73.98, 40.72));
-        model = BinaryData.fromObject(model).toObject(LineString.class);
+        GeoJsonLineString model = new GeoJsonLineString()
+            .setCoordinates(Arrays.asList(Arrays.asList(-73.99, 40.71), Arrays.asList(-73.98, 40.72)))
+            .setBoundingBox(Arrays.asList(-73.99, 40.71, -73.98, 40.72));
+        model = BinaryData.fromObject(model).toObject(GeoJsonLineString.class);
         Assertions.assertEquals(GeometryType.LINE_STRING, model.getType());
         Assertions.assertEquals(2, model.getCoordinates().size());
     }
 
     @Test
     public void testPolygonDeserialize() throws Exception {
-        Polygon model = BinaryData.fromString("{\"type\":\"Polygon\",\"coordinates\":[[[-73.99,40.71],[-73.98,40.71],"
-            + "[-73.98,40.72],[-73.99,40.72],[-73.99,40.71]]]}").toObject(Polygon.class);
+        GeoJsonPolygon model
+            = BinaryData.fromString("{\"type\":\"Polygon\",\"coordinates\":[[[-73.99,40.71],[-73.98,40.71],"
+                + "[-73.98,40.72],[-73.99,40.72],[-73.99,40.71]]]}").toObject(GeoJsonPolygon.class);
         Assertions.assertEquals(GeometryType.POLYGON, model.getType());
         Assertions.assertNotNull(model.getCoordinates());
         Assertions.assertEquals(1, model.getCoordinates().size());
@@ -72,20 +73,20 @@ public final class GeometrySubtypeTests {
 
     @Test
     public void testPolygonRoundTrip() throws Exception {
-        Polygon model = new Polygon()
+        GeoJsonPolygon model = new GeoJsonPolygon()
             .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-73.99, 40.71), Arrays.asList(-73.98, 40.71),
                 Arrays.asList(-73.98, 40.72), Arrays.asList(-73.99, 40.72), Arrays.asList(-73.99, 40.71))))
             .setBoundingBox(Arrays.asList(-73.99, 40.71, -73.98, 40.72));
-        model = BinaryData.fromObject(model).toObject(Polygon.class);
+        model = BinaryData.fromObject(model).toObject(GeoJsonPolygon.class);
         Assertions.assertEquals(GeometryType.POLYGON, model.getType());
         Assertions.assertEquals(1, model.getCoordinates().size());
     }
 
     @Test
     public void testMultiPointDeserialize() throws Exception {
-        MultiPoint model
+        GeoJsonMultiPoint model
             = BinaryData.fromString("{\"type\":\"MultiPoint\",\"coordinates\":[[-73.99,40.71],[-73.98,40.72]]}")
-                .toObject(MultiPoint.class);
+                .toObject(GeoJsonMultiPoint.class);
         Assertions.assertEquals(GeometryType.MULTI_POINT, model.getType());
         Assertions.assertNotNull(model.getCoordinates());
         Assertions.assertEquals(2, model.getCoordinates().size());
@@ -93,18 +94,18 @@ public final class GeometrySubtypeTests {
 
     @Test
     public void testMultiPointRoundTrip() throws Exception {
-        MultiPoint model = new MultiPoint()
+        GeoJsonMultiPoint model = new GeoJsonMultiPoint()
             .setCoordinates(Arrays.asList(Arrays.asList(-73.99, 40.71), Arrays.asList(-73.98, 40.72)));
-        model = BinaryData.fromObject(model).toObject(MultiPoint.class);
+        model = BinaryData.fromObject(model).toObject(GeoJsonMultiPoint.class);
         Assertions.assertEquals(GeometryType.MULTI_POINT, model.getType());
         Assertions.assertEquals(2, model.getCoordinates().size());
     }
 
     @Test
     public void testMultiLineStringDeserialize() throws Exception {
-        MultiLineString model
+        GeoJsonMultiLineString model
             = BinaryData.fromString("{\"type\":\"MultiLineString\",\"coordinates\":[[[-73.99,40.71],[-73.98,40.72]],"
-                + "[[-73.97,40.73],[-73.96,40.74]]]}").toObject(MultiLineString.class);
+                + "[[-73.97,40.73],[-73.96,40.74]]]}").toObject(GeoJsonMultiLineString.class);
         Assertions.assertEquals(GeometryType.MULTI_LINE_STRING, model.getType());
         Assertions.assertNotNull(model.getCoordinates());
         Assertions.assertEquals(2, model.getCoordinates().size());
@@ -112,23 +113,23 @@ public final class GeometrySubtypeTests {
 
     @Test
     public void testMultiLineStringRoundTrip() throws Exception {
-        MultiLineString model = new MultiLineString()
+        GeoJsonMultiLineString model = new GeoJsonMultiLineString()
             .setCoordinates(Arrays.asList(Arrays.asList(Arrays.asList(-73.99, 40.71), Arrays.asList(-73.98, 40.72)),
                 Arrays.asList(Arrays.asList(-73.97, 40.73), Arrays.asList(-73.96, 40.74))))
             .setBoundingBox(Arrays.asList(-73.99, 40.71, -73.96, 40.74));
-        model = BinaryData.fromObject(model).toObject(MultiLineString.class);
+        model = BinaryData.fromObject(model).toObject(GeoJsonMultiLineString.class);
         Assertions.assertEquals(GeometryType.MULTI_LINE_STRING, model.getType());
         Assertions.assertEquals(2, model.getCoordinates().size());
     }
 
     @Test
     public void testMultiPolygonDeserialize() throws Exception {
-        MultiPolygon model
+        GeoJsonMultiPolygon model
             = BinaryData
                 .fromString(
                     "{\"type\":\"MultiPolygon\"," + "\"coordinates\":[[[[-73.99,40.71],[-73.98,40.71],[-73.98,40.72],"
                         + "[-73.99,40.72],[-73.99,40.71]]]]}")
-                .toObject(MultiPolygon.class);
+                .toObject(GeoJsonMultiPolygon.class);
         Assertions.assertEquals(GeometryType.MULTI_POLYGON, model.getType());
         Assertions.assertNotNull(model.getCoordinates());
         Assertions.assertEquals(1, model.getCoordinates().size());
@@ -136,33 +137,33 @@ public final class GeometrySubtypeTests {
 
     @Test
     public void testMultiPolygonRoundTrip() throws Exception {
-        MultiPolygon model = new MultiPolygon()
+        GeoJsonMultiPolygon model = new GeoJsonMultiPolygon()
             .setCoordinates(
                 Arrays.asList(Arrays.asList(Arrays.asList(Arrays.asList(-73.99, 40.71), Arrays.asList(-73.98, 40.71),
                     Arrays.asList(-73.98, 40.72), Arrays.asList(-73.99, 40.72), Arrays.asList(-73.99, 40.71)))))
             .setBoundingBox(Arrays.asList(-73.99, 40.71, -73.98, 40.72));
-        model = BinaryData.fromObject(model).toObject(MultiPolygon.class);
+        model = BinaryData.fromObject(model).toObject(GeoJsonMultiPolygon.class);
         Assertions.assertEquals(GeometryType.MULTI_POLYGON, model.getType());
         Assertions.assertEquals(1, model.getCoordinates().size());
     }
 
     @Test
     public void testGeometryDiscriminatorDispatch() throws Exception {
-        // Test that Geometry.fromJson dispatches to the correct subtype
-        Geometry point
-            = BinaryData.fromString("{\"type\":\"Point\",\"coordinates\":[-73.99,40.71]}").toObject(Geometry.class);
+        // Test that GeoJsonGeometry.fromJson dispatches to the correct subtype
+        GeoJsonGeometry point = BinaryData.fromString("{\"type\":\"Point\",\"coordinates\":[-73.99,40.71]}")
+            .toObject(GeoJsonGeometry.class);
         Assertions.assertEquals(GeometryType.POINT, point.getType());
-        Assertions.assertTrue(point instanceof Point);
+        Assertions.assertTrue(point instanceof GeoJsonPoint);
 
-        Geometry polygon
+        GeoJsonGeometry polygon
             = BinaryData.fromString("{\"type\":\"Polygon\",\"coordinates\":[[[-73.99,40.71],[-73.98,40.71],"
-                + "[-73.98,40.72],[-73.99,40.71]]]}").toObject(Geometry.class);
+                + "[-73.98,40.72],[-73.99,40.71]]]}").toObject(GeoJsonGeometry.class);
         Assertions.assertEquals(GeometryType.POLYGON, polygon.getType());
-        Assertions.assertTrue(polygon instanceof Polygon);
+        Assertions.assertTrue(polygon instanceof GeoJsonPolygon);
 
-        Geometry multiPoint = BinaryData.fromString("{\"type\":\"MultiPoint\",\"coordinates\":[[-73.99,40.71]]}")
-            .toObject(Geometry.class);
+        GeoJsonGeometry multiPoint = BinaryData.fromString("{\"type\":\"MultiPoint\",\"coordinates\":[[-73.99,40.71]]}")
+            .toObject(GeoJsonGeometry.class);
         Assertions.assertEquals(GeometryType.MULTI_POINT, multiPoint.getType());
-        Assertions.assertTrue(multiPoint instanceof MultiPoint);
+        Assertions.assertTrue(multiPoint instanceof GeoJsonMultiPoint);
     }
 }

@@ -12,19 +12,25 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ExecuteHibernateRequest request for executeHibernate operations.
+ * The virtual machines and execution settings for a bulk hibernate action.
  */
 @Fluent
 public final class ExecuteHibernateContent implements JsonSerializable<ExecuteHibernateContent> {
     /*
-     * The execution parameters for the request
+     * The execution settings for the bulk action.
      */
     private ExecutionParameters executionParameters;
 
     /*
-     * The resources for the request
+     * The target virtual machines.
      */
     private Resources resources;
+
+    /*
+     * The resources for the request with resource context information. Cannot be provided together with `resources` -
+     * exactly one must be specified.
+     */
+    private ResourcesWithContext resourcesWithContext;
 
     /**
      * Creates an instance of ExecuteHibernateContent class.
@@ -33,7 +39,7 @@ public final class ExecuteHibernateContent implements JsonSerializable<ExecuteHi
     }
 
     /**
-     * Get the executionParameters property: The execution parameters for the request.
+     * Get the executionParameters property: The execution settings for the bulk action.
      * 
      * @return the executionParameters value.
      */
@@ -42,7 +48,7 @@ public final class ExecuteHibernateContent implements JsonSerializable<ExecuteHi
     }
 
     /**
-     * Set the executionParameters property: The execution parameters for the request.
+     * Set the executionParameters property: The execution settings for the bulk action.
      * 
      * @param executionParameters the executionParameters value to set.
      * @return the ExecuteHibernateContent object itself.
@@ -53,7 +59,7 @@ public final class ExecuteHibernateContent implements JsonSerializable<ExecuteHi
     }
 
     /**
-     * Get the resources property: The resources for the request.
+     * Get the resources property: The target virtual machines.
      * 
      * @return the resources value.
      */
@@ -62,13 +68,35 @@ public final class ExecuteHibernateContent implements JsonSerializable<ExecuteHi
     }
 
     /**
-     * Set the resources property: The resources for the request.
+     * Set the resources property: The target virtual machines.
      * 
      * @param resources the resources value to set.
      * @return the ExecuteHibernateContent object itself.
      */
     public ExecuteHibernateContent withResources(Resources resources) {
         this.resources = resources;
+        return this;
+    }
+
+    /**
+     * Get the resourcesWithContext property: The resources for the request with resource context information. Cannot be
+     * provided together with `resources` - exactly one must be specified.
+     * 
+     * @return the resourcesWithContext value.
+     */
+    public ResourcesWithContext resourcesWithContext() {
+        return this.resourcesWithContext;
+    }
+
+    /**
+     * Set the resourcesWithContext property: The resources for the request with resource context information. Cannot be
+     * provided together with `resources` - exactly one must be specified.
+     * 
+     * @param resourcesWithContext the resourcesWithContext value to set.
+     * @return the ExecuteHibernateContent object itself.
+     */
+    public ExecuteHibernateContent withResourcesWithContext(ResourcesWithContext resourcesWithContext) {
+        this.resourcesWithContext = resourcesWithContext;
         return this;
     }
 
@@ -80,6 +108,7 @@ public final class ExecuteHibernateContent implements JsonSerializable<ExecuteHi
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("executionParameters", this.executionParameters);
         jsonWriter.writeJsonField("resources", this.resources);
+        jsonWriter.writeJsonField("resourcesWithContext", this.resourcesWithContext);
         return jsonWriter.writeEndObject();
     }
 
@@ -103,6 +132,8 @@ public final class ExecuteHibernateContent implements JsonSerializable<ExecuteHi
                     deserializedExecuteHibernateContent.executionParameters = ExecutionParameters.fromJson(reader);
                 } else if ("resources".equals(fieldName)) {
                     deserializedExecuteHibernateContent.resources = Resources.fromJson(reader);
+                } else if ("resourcesWithContext".equals(fieldName)) {
+                    deserializedExecuteHibernateContent.resourcesWithContext = ResourcesWithContext.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

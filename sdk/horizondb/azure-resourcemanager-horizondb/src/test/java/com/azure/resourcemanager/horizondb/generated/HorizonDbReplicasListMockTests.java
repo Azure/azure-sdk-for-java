@@ -23,7 +23,7 @@ public final class HorizonDbReplicasListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"role\":\"ReadWrite\",\"status\":\"Stopping\",\"fullyQualifiedDomainName\":\"kzgxhurip\",\"availabilityZone\":\"podxunkb\",\"provisioningState\":\"Provisioning\"},\"id\":\"ubyyntw\",\"name\":\"rbqtkoie\",\"type\":\"seotgqrllt\"}]}";
+            = "{\"value\":[{\"properties\":{\"role\":\"Read\",\"status\":\"Dropping\",\"fullyQualifiedDomainName\":\"tg\",\"availabilityZone\":\"bwoenwashrt\",\"provisioningState\":\"Failed\"},\"id\":\"nqxwbp\",\"name\":\"kulpiujwaasi\",\"type\":\"qiiobyuqer\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class HorizonDbReplicasListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<HorizonDbReplica> response = manager.horizonDbReplicas()
-            .list("mhhv", "gureodkwobdag", "tibqdxbxwakb", com.azure.core.util.Context.NONE);
+        PagedIterable<HorizonDbReplica> response
+            = manager.horizonDbReplicas().list("bahwfl", "szdtmhrkwof", "yvoqa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ReplicaRole.READ_WRITE, response.iterator().next().properties().role());
-        Assertions.assertEquals("podxunkb", response.iterator().next().properties().availabilityZone());
+        Assertions.assertEquals(ReplicaRole.READ, response.iterator().next().properties().role());
+        Assertions.assertEquals("bwoenwashrt", response.iterator().next().properties().availabilityZone());
     }
 }

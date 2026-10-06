@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class PacketCapturesCreateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NetworkWatcherPacketCaptureCreate.json
+     * x-ms-original-file: 2026-01-01/NetworkWatcherPacketCaptureCreate.json
      */
     /**
      * Sample code: Create packet capture.

@@ -41,6 +41,13 @@
 - [Get](#sharedlimits_get)
 - [ListBySubscriptionLocationResource](#sharedlimits_listbysubscriptionlocationresource)
 
+## TrustedHostSubscriptions
+
+- [Create](#trustedhostsubscriptions_create)
+- [Delete](#trustedhostsubscriptions_delete)
+- [Get](#trustedhostsubscriptions_get)
+- [ListBySubscriptionLocationResource](#trustedhostsubscriptions_listbysubscriptionlocationresource)
+
 ## VmFamilies
 
 - [Get](#vmfamilies_get)
@@ -53,7 +60,7 @@
  */
 public final class FeaturesDisableSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Features_Disable.json
+     * x-ms-original-file: 2026-07-31/Features_Disable.json
      */
     /**
      * Sample code: Disable feature.
@@ -76,7 +83,7 @@ import com.azure.resourcemanager.computelimit.models.FeatureEnableRequest;
  */
 public final class FeaturesEnableSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Features_Enable.json
+     * x-ms-original-file: 2026-07-31/Features_Enable.json
      */
     /**
      * Sample code: Enable feature.
@@ -100,7 +107,7 @@ public final class FeaturesEnableSamples {
  */
 public final class FeaturesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Features_Get_SharedLimit.json
+     * x-ms-original-file: 2026-07-31/Features_Get_SharedLimit.json
      */
     /**
      * Sample code: Get SharedLimit feature.
@@ -112,7 +119,7 @@ public final class FeaturesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/Features_Get.json
+     * x-ms-original-file: 2026-07-31/Features_Get.json
      */
     /**
      * Sample code: Get feature.
@@ -133,7 +140,7 @@ public final class FeaturesGetSamples {
  */
 public final class FeaturesListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Features_List.json
+     * x-ms-original-file: 2026-07-31/Features_List.json
      */
     /**
      * Sample code: List features.
@@ -156,7 +163,7 @@ import com.azure.resourcemanager.computelimit.models.GuestSubscriptionProperties
  */
 public final class GuestSubscriptionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GuestSubscriptions_Create.json
+     * x-ms-original-file: 2026-07-31/GuestSubscriptions_Create.json
      */
     /**
      * Sample code: Create a guest subscription.
@@ -181,7 +188,7 @@ public final class GuestSubscriptionsCreateSamples {
  */
 public final class GuestSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GuestSubscriptions_Delete.json
+     * x-ms-original-file: 2026-07-31/GuestSubscriptions_Delete.json
      */
     /**
      * Sample code: Delete a guest subscription.
@@ -204,7 +211,7 @@ public final class GuestSubscriptionsDeleteSamples {
  */
 public final class GuestSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GuestSubscriptions_Get.json
+     * x-ms-original-file: 2026-07-31/GuestSubscriptions_Get.json
      */
     /**
      * Sample code: Get a guest subscription.
@@ -226,7 +233,7 @@ public final class GuestSubscriptionsGetSamples {
  */
 public final class GuestSubscriptionsListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-07-01/GuestSubscriptions_List.json
+     * x-ms-original-file: 2026-07-31/GuestSubscriptions_List.json
      */
     /**
      * Sample code: List guest subscriptions for a scope.
@@ -250,7 +257,7 @@ import com.azure.resourcemanager.computelimit.models.MemberCapOverrideProperties
  */
 public final class MemberCapOverridesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/MemberCapOverrides_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-31/MemberCapOverrides_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a single member cap override.
@@ -276,7 +283,7 @@ public final class MemberCapOverridesCreateOrUpdateSamples {
  */
 public final class MemberCapOverridesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/MemberCapOverrides_Delete.json
+     * x-ms-original-file: 2026-07-31/MemberCapOverrides_Delete.json
      */
     /**
      * Sample code: Delete a single member cap override.
@@ -300,7 +307,7 @@ public final class MemberCapOverridesDeleteSamples {
  */
 public final class MemberCapOverridesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/MemberCapOverrides_Get.json
+     * x-ms-original-file: 2026-07-31/MemberCapOverrides_Get.json
      */
     /**
      * Sample code: Get a single member cap override.
@@ -323,7 +330,7 @@ public final class MemberCapOverridesGetSamples {
  */
 public final class MemberCapOverridesListByParentSamples {
     /*
-     * x-ms-original-file: 2026-07-01/MemberCapOverrides_ListByParent.json
+     * x-ms-original-file: 2026-07-31/MemberCapOverrides_ListByParent.json
      */
     /**
      * Sample code: List all member cap overrides under a shared limit cap.
@@ -345,7 +352,7 @@ public final class MemberCapOverridesListByParentSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Operations_List.json
+     * x-ms-original-file: 2026-07-31/Operations_List.json
      */
     /**
      * Sample code: List operations.
@@ -368,7 +375,7 @@ import com.azure.resourcemanager.computelimit.models.SharedLimitCapProperties;
  */
 public final class SharedLimitCapsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimitCaps_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-31/SharedLimitCaps_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a shared limit cap for a VM family.
@@ -394,7 +401,7 @@ public final class SharedLimitCapsCreateOrUpdateSamples {
  */
 public final class SharedLimitCapsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimitCaps_Delete.json
+     * x-ms-original-file: 2026-07-31/SharedLimitCaps_Delete.json
      */
     /**
      * Sample code: Delete the shared limit cap for a VM family.
@@ -417,7 +424,7 @@ public final class SharedLimitCapsDeleteSamples {
  */
 public final class SharedLimitCapsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimitCaps_Get.json
+     * x-ms-original-file: 2026-07-31/SharedLimitCaps_Get.json
      */
     /**
      * Sample code: Get a shared limit cap for a VM family.
@@ -439,7 +446,7 @@ public final class SharedLimitCapsGetSamples {
  */
 public final class SharedLimitCapsListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimitCaps_List.json
+     * x-ms-original-file: 2026-07-31/SharedLimitCaps_List.json
      */
     /**
      * Sample code: List shared limit caps in a region for the caller's subscription.
@@ -465,7 +472,7 @@ import java.util.Arrays;
  */
 public final class SharedLimitCapsSetMemberCapOverridesSamples {
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimitCaps_SetMemberCapOverrides.json
+     * x-ms-original-file: 2026-07-31/SharedLimitCaps_SetMemberCapOverrides.json
      */
     /**
      * Sample code: Replace the full set of member cap overrides for a shared limit cap.
@@ -483,7 +490,7 @@ public final class SharedLimitCapsSetMemberCapOverridesSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimitCaps_SetMemberCapOverrides_ClearAll.json
+     * x-ms-original-file: 2026-07-31/SharedLimitCaps_SetMemberCapOverrides_ClearAll.json
      */
     /**
      * Sample code: Clear all member cap overrides (supply an empty array).
@@ -510,7 +517,7 @@ import com.azure.resourcemanager.computelimit.models.SharedLimitProperties;
  */
 public final class SharedLimitsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimits_Create.json
+     * x-ms-original-file: 2026-07-31/SharedLimits_Create.json
      */
     /**
      * Sample code: Create a shared limit.
@@ -535,7 +542,7 @@ public final class SharedLimitsCreateSamples {
  */
 public final class SharedLimitsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimits_Delete.json
+     * x-ms-original-file: 2026-07-31/SharedLimits_Delete.json
      */
     /**
      * Sample code: Delete a shared limit.
@@ -557,7 +564,7 @@ public final class SharedLimitsDeleteSamples {
  */
 public final class SharedLimitsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimits_Get.json
+     * x-ms-original-file: 2026-07-31/SharedLimits_Get.json
      */
     /**
      * Sample code: Get a shared limit.
@@ -578,7 +585,7 @@ public final class SharedLimitsGetSamples {
  */
 public final class SharedLimitsListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-07-01/SharedLimits_List.json
+     * x-ms-original-file: 2026-07-31/SharedLimits_List.json
      */
     /**
      * Sample code: List all shared limits for a scope.
@@ -592,6 +599,99 @@ public final class SharedLimitsListBySubscriptionLocationResourceSamples {
 }
 ```
 
+### TrustedHostSubscriptions_Create
+
+```java
+/**
+ * Samples for TrustedHostSubscriptions Create.
+ */
+public final class TrustedHostSubscriptionsCreateSamples {
+    /*
+     * x-ms-original-file: 2026-07-31/TrustedHostSubscriptions_Create.json
+     */
+    /**
+     * Sample code: Trust a host subscription.
+     * 
+     * @param manager Entry point to ComputeLimitManager.
+     */
+    public static void trustAHostSubscription(com.azure.resourcemanager.computelimit.ComputeLimitManager manager) {
+        manager.trustedHostSubscriptions()
+            .define("22222222-2222-2222-2222-222222222222")
+            .withExistingLocation("eastus")
+            .create();
+    }
+}
+```
+
+### TrustedHostSubscriptions_Delete
+
+```java
+/**
+ * Samples for TrustedHostSubscriptions Delete.
+ */
+public final class TrustedHostSubscriptionsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-07-31/TrustedHostSubscriptions_Delete.json
+     */
+    /**
+     * Sample code: Revoke trust in a host subscription.
+     * 
+     * @param manager Entry point to ComputeLimitManager.
+     */
+    public static void
+        revokeTrustInAHostSubscription(com.azure.resourcemanager.computelimit.ComputeLimitManager manager) {
+        manager.trustedHostSubscriptions()
+            .deleteByResourceGroupWithResponse("eastus", "22222222-2222-2222-2222-222222222222",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TrustedHostSubscriptions_Get
+
+```java
+/**
+ * Samples for TrustedHostSubscriptions Get.
+ */
+public final class TrustedHostSubscriptionsGetSamples {
+    /*
+     * x-ms-original-file: 2026-07-31/TrustedHostSubscriptions_Get.json
+     */
+    /**
+     * Sample code: Get a trusted host subscription.
+     * 
+     * @param manager Entry point to ComputeLimitManager.
+     */
+    public static void getATrustedHostSubscription(com.azure.resourcemanager.computelimit.ComputeLimitManager manager) {
+        manager.trustedHostSubscriptions()
+            .getWithResponse("eastus", "22222222-2222-2222-2222-222222222222", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TrustedHostSubscriptions_ListBySubscriptionLocationResource
+
+```java
+/**
+ * Samples for TrustedHostSubscriptions ListBySubscriptionLocationResource.
+ */
+public final class TrustedHostSubscriptionsListBySubscriptionLocationResourceSamples {
+    /*
+     * x-ms-original-file: 2026-07-31/TrustedHostSubscriptions_List.json
+     */
+    /**
+     * Sample code: List trusted host subscriptions for a scope.
+     * 
+     * @param manager Entry point to ComputeLimitManager.
+     */
+    public static void
+        listTrustedHostSubscriptionsForAScope(com.azure.resourcemanager.computelimit.ComputeLimitManager manager) {
+        manager.trustedHostSubscriptions()
+            .listBySubscriptionLocationResource("eastus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### VmFamilies_Get
 
 ```java
@@ -600,7 +700,7 @@ public final class SharedLimitsListBySubscriptionLocationResourceSamples {
  */
 public final class VmFamiliesGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/VmFamilies_Get.json
+     * x-ms-original-file: 2026-07-31/VmFamilies_Get.json
      */
     /**
      * Sample code: Get a VM family.
@@ -621,7 +721,7 @@ public final class VmFamiliesGetSamples {
  */
 public final class VmFamiliesListBySubscriptionLocationResourceSamples {
     /*
-     * x-ms-original-file: 2026-07-01/VmFamilies_List.json
+     * x-ms-original-file: 2026-07-31/VmFamilies_List.json
      */
     /**
      * Sample code: List VM families.

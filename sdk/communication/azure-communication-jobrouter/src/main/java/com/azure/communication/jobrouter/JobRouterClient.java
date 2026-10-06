@@ -188,6 +188,14 @@ public final class JobRouterClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
      *
      * @param jobId Id of a job.
      * @param resource The resource instance.
@@ -684,6 +692,14 @@ public final class JobRouterClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
      *
      * @param jobId Id of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1278,6 +1294,14 @@ public final class JobRouterClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
      *
      * @param workerId Id of a worker.
      * @param resource The resource instance.
@@ -1682,6 +1706,14 @@ public final class JobRouterClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
      *
      * @param workerId Id of a worker.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

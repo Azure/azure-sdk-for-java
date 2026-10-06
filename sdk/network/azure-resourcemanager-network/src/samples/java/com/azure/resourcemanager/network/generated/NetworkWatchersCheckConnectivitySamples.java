@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.IpVersion;
  */
 public final class NetworkWatchersCheckConnectivitySamples {
     /*
-     * x-ms-original-file: 2025-07-01/NetworkWatcherConnectivityCheck.json
+     * x-ms-original-file: 2026-01-01/NetworkWatcherConnectivityCheck.json
      */
     /**
      * Sample code: Check connectivity.

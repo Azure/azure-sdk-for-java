@@ -13,25 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class IpFilterRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpFilterRule model = BinaryData.fromString(
-            "{\"filterName\":\"vswjdk\",\"action\":\"Reject\",\"ipMask\":\"soodqxhcrmnoh\",\"target\":\"serviceApi\"}")
+        IpFilterRule model = BinaryData
+            .fromString(
+                "{\"filterName\":\"jvtbvpyss\",\"action\":\"Reject\",\"ipMask\":\"nruj\",\"target\":\"deviceApi\"}")
             .toObject(IpFilterRule.class);
-        Assertions.assertEquals("vswjdk", model.filterName());
+        Assertions.assertEquals("jvtbvpyss", model.filterName());
         Assertions.assertEquals(IpFilterActionType.REJECT, model.action());
-        Assertions.assertEquals("soodqxhcrmnoh", model.ipMask());
-        Assertions.assertEquals(IpFilterTargetType.SERVICE_API, model.target());
+        Assertions.assertEquals("nruj", model.ipMask());
+        Assertions.assertEquals(IpFilterTargetType.DEVICE_API, model.target());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpFilterRule model = new IpFilterRule().withFilterName("vswjdk")
+        IpFilterRule model = new IpFilterRule().withFilterName("jvtbvpyss")
             .withAction(IpFilterActionType.REJECT)
-            .withIpMask("soodqxhcrmnoh")
-            .withTarget(IpFilterTargetType.SERVICE_API);
+            .withIpMask("nruj")
+            .withTarget(IpFilterTargetType.DEVICE_API);
         model = BinaryData.fromObject(model).toObject(IpFilterRule.class);
-        Assertions.assertEquals("vswjdk", model.filterName());
+        Assertions.assertEquals("jvtbvpyss", model.filterName());
         Assertions.assertEquals(IpFilterActionType.REJECT, model.action());
-        Assertions.assertEquals("soodqxhcrmnoh", model.ipMask());
-        Assertions.assertEquals(IpFilterTargetType.SERVICE_API, model.target());
+        Assertions.assertEquals("nruj", model.ipMask());
+        Assertions.assertEquals(IpFilterTargetType.DEVICE_API, model.target());
     }
 }

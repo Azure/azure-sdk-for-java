@@ -35,7 +35,7 @@ public class SessionsAsyncSample {
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint);
-        AgentsAsyncClient agentsAsyncClient = builder.allowPreview(true).buildAgentsAsyncClient();
+        AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
 
         AtomicReference<HostedAgentSessionResources> resourcesRef = new AtomicReference<>();
 

@@ -7,21 +7,21 @@ package com.azure.analytics.planetarycomputer.generated;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
 import com.azure.analytics.planetarycomputer.StacClient;
 import com.azure.analytics.planetarycomputer.models.FilterLanguage;
+import com.azure.analytics.planetarycomputer.models.StacAssetUrlSigningMode;
 import com.azure.analytics.planetarycomputer.models.StacItemCollection;
 import com.azure.analytics.planetarycomputer.models.StacSearchParameters;
 import com.azure.analytics.planetarycomputer.models.StacSearchSortingDirection;
 import com.azure.analytics.planetarycomputer.models.StacSortExtension;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class StacSearchCreate {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         StacClient stacClient
             = new PlanetaryComputerProClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
@@ -32,11 +32,11 @@ public class StacSearchCreate {
             .setDatetime("2021-01-01T00:00:00Z/2022-12-31T00:00:00Z")
             .setLimit(50)
             .setSortBy(Arrays.asList(new StacSortExtension("datetime", StacSearchSortingDirection.DESC)))
-            .setFilter(mapOf("op", "s_intersects", "args", JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize(
-                    "[{\"property\":\"geometry\"},{\"type\":\"Polygon\",\"coordinates\":[[[-84.46416308610219,33.6033686729869],[-84.38815071170247,33.6033686729869],[-84.38815071170247,33.6713179813099],[-84.46416308610219,33.6713179813099],[-84.46416308610219,33.6033686729869]]]}]",
-                    Object.class, SerializerEncoding.JSON)))
-            .setFilterLang(FilterLanguage.CQL2_JSON), null, null);
+            .setFilter(mapOf("op", BinaryData.fromBytes("s_intersects".getBytes(StandardCharsets.UTF_8)), "args",
+                BinaryData.fromBytes(
+                    "[{property=geometry}, {type=Polygon, coordinates=[[[-84.46416308610219, 33.6033686729869], [-84.38815071170247, 33.6033686729869], [-84.38815071170247, 33.6713179813099], [-84.46416308610219, 33.6713179813099], [-84.46416308610219, 33.6033686729869]]]}]"
+                        .getBytes(StandardCharsets.UTF_8))))
+            .setFilterLang(FilterLanguage.CQL2_JSON), (StacAssetUrlSigningMode) null, (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.stac-search.stac-search-create
     }
 

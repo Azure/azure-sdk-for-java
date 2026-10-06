@@ -11,6 +11,8 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.fabric.FabricManager;
 import com.azure.resourcemanager.fabric.models.CapacityAdministration;
+import com.azure.resourcemanager.fabric.models.CapacityOverageProperties;
+import com.azure.resourcemanager.fabric.models.CapacityOverageState;
 import com.azure.resourcemanager.fabric.models.FabricCapacity;
 import com.azure.resourcemanager.fabric.models.FabricCapacityProperties;
 import com.azure.resourcemanager.fabric.models.RpSku;
@@ -28,7 +30,7 @@ public final class FabricCapacitiesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"Pausing\",\"administration\":{\"members\":[\"jpkcattpng\",\"cr\",\"czsqpjhvm\",\"ajvnysounqe\"]}},\"sku\":{\"name\":\"a\",\"tier\":\"Fabric\"},\"location\":\"eupfhyhltrpm\",\"tags\":{\"odsfcpkvxodpuozm\":\"mcmatuokthfuiu\",\"ktwh\":\"zydagfuaxbezyiuo\",\"o\":\"dxwzywqsmbsurexi\",\"fksymddystki\":\"yocf\"},\"id\":\"uxh\",\"name\":\"yudxorrqnbp\",\"type\":\"czvyifq\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"Paused\",\"overage\":{\"state\":\"Enabled\",\"thresholdCapacityUnitHours\":884625398},\"administration\":{\"members\":[\"gwdkcglhsl\"]}},\"sku\":{\"name\":\"zj\",\"tier\":\"Fabric\"},\"location\":\"gdtjixhbkuofqwey\",\"tags\":{\"vyvdcs\":\"enevfyexfwhybci\",\"scjeypv\":\"tynnaamdectehfi\",\"gm\":\"ezrkgqhcjrefo\"},\"id\":\"qsl\",\"name\":\"yyvxyqjpkcattpn\",\"type\":\"jcrcczsqpjhvmda\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,20 +40,25 @@ public final class FabricCapacitiesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FabricCapacity response = manager.fabricCapacities()
-            .define("ynpwlbj")
-            .withRegion("dwxdndnv")
-            .withExistingResourceGroup("gwdslfhotwm")
-            .withProperties(new FabricCapacityProperties().withAdministration(
-                new CapacityAdministration().withMembers(Arrays.asList("tadehxnltyfsopp", "suesnzw", "ej", "avo"))))
-            .withSku(new RpSku().withName("xzdmohctb").withTier(RpSkuTier.FABRIC))
-            .withTags(mapOf("lazjdyggdtjixhbk", "ujjugwdkcglh", "fwhybcibvy", "ofqweykhmenevfye", "ynnaam", "dcsi",
-                "qsc", "ectehf"))
+            .define("isnjampmngnz")
+            .withRegion("wtgrhpdjpj")
+            .withExistingResourceGroup("feallnwsu")
+            .withProperties(new FabricCapacityProperties()
+                .withOverage(new CapacityOverageProperties().withState(CapacityOverageState.DISABLED)
+                    .withThresholdCapacityUnitHours(2024300309))
+                .withAdministration(
+                    new CapacityAdministration().withMembers(Arrays.asList("cbonqvpk", "lrxnjeaseiphe", "f"))))
+            .withSku(new RpSku().withName("okeyyienj").withTier(RpSkuTier.FABRIC))
+            .withTags(
+                mapOf("e", "sxazjpq", "zvdudgwdslfhotwm", "ualhbxxhejj", "pgacftadehxnlty", "ynpwlbj", "usue", "sop"))
             .create();
 
-        Assertions.assertEquals("eupfhyhltrpm", response.location());
-        Assertions.assertEquals("mcmatuokthfuiu", response.tags().get("odsfcpkvxodpuozm"));
-        Assertions.assertEquals("jpkcattpng", response.properties().administration().members().get(0));
-        Assertions.assertEquals("a", response.sku().name());
+        Assertions.assertEquals("gdtjixhbkuofqwey", response.location());
+        Assertions.assertEquals("enevfyexfwhybci", response.tags().get("vyvdcs"));
+        Assertions.assertEquals(CapacityOverageState.ENABLED, response.properties().overage().state());
+        Assertions.assertEquals(884625398, response.properties().overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("gwdkcglhsl", response.properties().administration().members().get(0));
+        Assertions.assertEquals("zj", response.sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, response.sku().tier());
     }
 

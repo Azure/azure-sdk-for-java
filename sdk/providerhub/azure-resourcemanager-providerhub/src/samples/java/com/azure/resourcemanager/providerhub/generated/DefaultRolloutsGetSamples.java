@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class DefaultRolloutsGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/DefaultRollouts_Get.json
+     * x-ms-original-file: 2025-10-01/DefaultRollouts_Get.json
      */
     /**
      * Sample code: DefaultRollouts_Get.

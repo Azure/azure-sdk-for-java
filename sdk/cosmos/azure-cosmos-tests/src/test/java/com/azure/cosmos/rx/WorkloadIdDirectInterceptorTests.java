@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -52,7 +53,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class WorkloadIdDirectInterceptorTests extends TestSuiteBase {
 
-    private static final String DATABASE_ID = "workloadIdDirectTestDb-" + UUID.randomUUID();
+    private static final String DATABASE_ID = CosmosDatabaseForTest.generateId("workloadIdDirect");
     private static final String CONTAINER_ID = "workloadIdDirectTestContainer-" + UUID.randomUUID();
 
     private CosmosAsyncClient clientWithWorkloadId;

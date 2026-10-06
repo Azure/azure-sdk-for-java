@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class VirtualMachinesStartSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VirtualMachines_Start.json
+     * x-ms-original-file: 2026-07-01/VirtualMachines_Start.json
      */
     /**
      * Sample code: Start virtual machine.

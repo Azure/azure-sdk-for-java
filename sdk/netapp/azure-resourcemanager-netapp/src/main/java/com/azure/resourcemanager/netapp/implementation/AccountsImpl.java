@@ -122,6 +122,14 @@ public final class AccountsImpl implements Accounts {
         this.serviceClient().changeKeyVault(resourceGroupName, accountName, body, context);
     }
 
+    public void refreshLdapBindPassword(String resourceGroupName, String accountName) {
+        this.serviceClient().refreshLdapBindPassword(resourceGroupName, accountName);
+    }
+
+    public void refreshLdapBindPassword(String resourceGroupName, String accountName, Context context) {
+        this.serviceClient().refreshLdapBindPassword(resourceGroupName, accountName, context);
+    }
+
     public NetAppAccount getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

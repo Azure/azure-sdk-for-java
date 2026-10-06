@@ -22,7 +22,7 @@ public final class IotDpsResourcesListPrivateLinkResourcesMockTests {
     @Test
     public void testListPrivateLinkResources() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"asrru\",\"requiredMembers\":[\"hsqfsubcgjbirxbp\",\"bsrfbj\",\"dtws\",\"otftpvjzbexilz\"],\"requiredZoneNames\":[\"qqnvwpmq\",\"aruoujmkcjhwqyt\",\"r\",\"bnw\"]},\"id\":\"wgdrjervnaenqp\",\"name\":\"hin\",\"type\":\"oygmift\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"rmfqjhhkxbpvj\",\"requiredMembers\":[\"hx\",\"j\"],\"requiredZoneNames\":[\"u\",\"ivkrtsw\",\"xqzvszjfa\",\"vjfdx\"]},\"id\":\"vetvt\",\"name\":\"qaqtdoqmcbxvwvxy\",\"type\":\"lqbhsf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class IotDpsResourcesListPrivateLinkResourcesMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<GroupIdInformation> response = manager.iotDpsResources()
-            .listPrivateLinkResources("wfbkrvrns", "shqjohxcrsbf", com.azure.core.util.Context.NONE);
+        PagedIterable<GroupIdInformation> response
+            = manager.iotDpsResources().listPrivateLinkResources("izpost", "grcfb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("asrru", response.iterator().next().properties().groupId());
-        Assertions.assertEquals("hsqfsubcgjbirxbp", response.iterator().next().properties().requiredMembers().get(0));
-        Assertions.assertEquals("qqnvwpmq", response.iterator().next().properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("rmfqjhhkxbpvj", response.iterator().next().properties().groupId());
+        Assertions.assertEquals("hx", response.iterator().next().properties().requiredMembers().get(0));
+        Assertions.assertEquals("u", response.iterator().next().properties().requiredZoneNames().get(0));
     }
 }

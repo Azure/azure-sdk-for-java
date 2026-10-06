@@ -35,7 +35,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.BastionHostsClient;
 import com.azure.resourcemanager.network.fluent.models.BastionHostInner;
 import com.azure.resourcemanager.network.implementation.models.BastionHostListResult;
-import com.azure.resourcemanager.network.models.TagsObject;
+import com.azure.resourcemanager.network.models.BastionHostUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -99,11 +99,11 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("bastionHostName") String bastionHostName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") TagsObject parameters,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BastionHostUpdate parameters,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -177,7 +177,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
             return Mono
                 .error(new IllegalArgumentException("Parameter bastionHostName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -215,7 +215,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
             return Mono
                 .error(new IllegalArgumentException("Parameter bastionHostName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -305,7 +305,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-01-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -351,7 +351,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-01-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -509,19 +509,19 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
     }
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName,
-        String bastionHostName, TagsObject parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String bastionHostName,
+        BastionHostUpdate parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -543,22 +543,22 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-01-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.updateTags(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                context -> service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                     resourceGroupName, bastionHostName, contentType, accept, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -566,8 +566,8 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
      * @return bastion Host resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName,
-        String bastionHostName, TagsObject parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String bastionHostName,
+        BastionHostUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -589,40 +589,39 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-01-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.updateTags(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, bastionHostName, contentType, accept, parameters, context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            bastionHostName, contentType, accept, parameters, context);
     }
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTagsAsync(String resourceGroupName,
-        String bastionHostName, TagsObject parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateTagsWithResponseAsync(resourceGroupName, bastionHostName, parameters);
+    public PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginUpdateAsync(String resourceGroupName,
+        String bastionHostName, BastionHostUpdate parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, bastionHostName, parameters);
         return this.client.<BastionHostInner, BastionHostInner>getLroResult(mono, this.client.getHttpPipeline(),
             BastionHostInner.class, BastionHostInner.class, this.client.getContext());
     }
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -630,38 +629,38 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
      * @return the {@link PollerFlux} for polling of bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTagsAsync(String resourceGroupName,
-        String bastionHostName, TagsObject parameters, Context context) {
+    private PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginUpdateAsync(String resourceGroupName,
+        String bastionHostName, BastionHostUpdate parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = updateTagsWithResponseAsync(resourceGroupName, bastionHostName, parameters, context);
+            = updateWithResponseAsync(resourceGroupName, bastionHostName, parameters, context);
         return this.client.<BastionHostInner, BastionHostInner>getLroResult(mono, this.client.getHttpPipeline(),
             BastionHostInner.class, BastionHostInner.class, context);
     }
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(String resourceGroupName,
-        String bastionHostName, TagsObject parameters) {
-        return this.beginUpdateTagsAsync(resourceGroupName, bastionHostName, parameters).getSyncPoller();
+    public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdate(String resourceGroupName,
+        String bastionHostName, BastionHostUpdate parameters) {
+        return this.beginUpdateAsync(resourceGroupName, bastionHostName, parameters).getSyncPoller();
     }
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -669,35 +668,35 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
      * @return the {@link SyncPoller} for polling of bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(String resourceGroupName,
-        String bastionHostName, TagsObject parameters, Context context) {
-        return this.beginUpdateTagsAsync(resourceGroupName, bastionHostName, parameters, context).getSyncPoller();
+    public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdate(String resourceGroupName,
+        String bastionHostName, BastionHostUpdate parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, bastionHostName, parameters, context).getSyncPoller();
     }
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BastionHostInner> updateTagsAsync(String resourceGroupName, String bastionHostName,
-        TagsObject parameters) {
-        return beginUpdateTagsAsync(resourceGroupName, bastionHostName, parameters).last()
+    public Mono<BastionHostInner> updateAsync(String resourceGroupName, String bastionHostName,
+        BastionHostUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, bastionHostName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -705,34 +704,34 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
      * @return bastion Host resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BastionHostInner> updateTagsAsync(String resourceGroupName, String bastionHostName,
-        TagsObject parameters, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, bastionHostName, parameters, context).last()
+    private Mono<BastionHostInner> updateAsync(String resourceGroupName, String bastionHostName,
+        BastionHostUpdate parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, bastionHostName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BastionHostInner updateTags(String resourceGroupName, String bastionHostName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, bastionHostName, parameters).block();
+    public BastionHostInner update(String resourceGroupName, String bastionHostName, BastionHostUpdate parameters) {
+        return updateAsync(resourceGroupName, bastionHostName, parameters).block();
     }
 
     /**
-     * Updates Tags for BastionHost resource.
+     * Updates Tags or identity for BastionHost resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bastionHostName The name of the Bastion Host.
-     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param parameters Parameters supplied to update BastionHost tags or identity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -740,9 +739,9 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BastionHostInner updateTags(String resourceGroupName, String bastionHostName, TagsObject parameters,
+    public BastionHostInner update(String resourceGroupName, String bastionHostName, BastionHostUpdate parameters,
         Context context) {
-        return updateTagsAsync(resourceGroupName, bastionHostName, parameters, context).block();
+        return updateAsync(resourceGroupName, bastionHostName, parameters, context).block();
     }
 
     /**
@@ -773,7 +772,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
             return Mono
                 .error(new IllegalArgumentException("Parameter bastionHostName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-01-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, bastionHostName, context))
@@ -810,7 +809,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
             return Mono
                 .error(new IllegalArgumentException("Parameter bastionHostName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-01-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             bastionHostName, context);
@@ -971,7 +970,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -1007,7 +1006,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1095,7 +1094,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1125,7 +1124,7 @@ public final class BastionHostsClientImpl implements InnerSupportsGet<BastionHos
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2026-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)

@@ -13,14 +13,14 @@ public final class ProtectableContainerResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProtectableContainerResourceInner model = BinaryData.fromString(
-            "{\"location\":\"nzcpdltkr\",\"tags\":{\"fzhompheq\":\"mtbdrvcqgu\",\"kyeclcdigpta\":\"urelyujlfyoump\"},\"eTag\":\"rzmq\",\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"ycijoclxiutgj\",\"backupManagementType\":\"AzureBackupServer\",\"healthStatus\":\"zjd\",\"containerId\":\"qjbtxjeaoqaqbzgy\"},\"id\":\"w\",\"name\":\"v\",\"type\":\"atbwbqam\"}")
+            "{\"location\":\"wzawnvsbcfhzagxn\",\"tags\":{\"mwrzregzgyufutrw\":\"cvd\",\"hmeott\":\"weryekzk\"},\"eTag\":\"jyosxwwh\",\"properties\":{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"tfvpndpmiljpn\",\"backupManagementType\":\"AzureBackupServer\",\"healthStatus\":\"dqllzsauzpjlxeeh\",\"containerId\":\"iqhzlr\"},\"id\":\"mezx\",\"name\":\"skihmxrfd\",\"type\":\"ajrednwyyshtuw\"}")
             .toObject(ProtectableContainerResourceInner.class);
-        Assertions.assertEquals("nzcpdltkr", model.location());
-        Assertions.assertEquals("mtbdrvcqgu", model.tags().get("fzhompheq"));
-        Assertions.assertEquals("rzmq", model.eTag());
-        Assertions.assertEquals("ycijoclxiutgj", model.properties().friendlyName());
+        Assertions.assertEquals("wzawnvsbcfhzagxn", model.location());
+        Assertions.assertEquals("cvd", model.tags().get("mwrzregzgyufutrw"));
+        Assertions.assertEquals("jyosxwwh", model.eTag());
+        Assertions.assertEquals("tfvpndpmiljpn", model.properties().friendlyName());
         Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.properties().backupManagementType());
-        Assertions.assertEquals("zjd", model.properties().healthStatus());
-        Assertions.assertEquals("qjbtxjeaoqaqbzgy", model.properties().containerId());
+        Assertions.assertEquals("dqllzsauzpjlxeeh", model.properties().healthStatus());
+        Assertions.assertEquals("iqhzlr", model.properties().containerId());
     }
 }

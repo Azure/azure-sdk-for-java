@@ -14,14 +14,12 @@ import com.azure.resourcemanager.providerhub.models.NotificationEndpointType;
 import com.azure.resourcemanager.providerhub.models.NotificationOptions;
 import com.azure.resourcemanager.providerhub.models.ProviderRegistrationKind;
 import com.azure.resourcemanager.providerhub.models.ProviderRegistrationProperties;
-import com.azure.resourcemanager.providerhub.models.Readiness;
 import com.azure.resourcemanager.providerhub.models.ResourceHydrationAccount;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderCapabilities;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderCapabilitiesEffect;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderEndpoint;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManagementErrorResponseMessageOptions;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManagementExpeditedRolloutMetadata;
-import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestPropertiesDstsConfiguration;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestPropertiesManagement;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestPropertiesNotificationSettings;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove;
@@ -31,7 +29,6 @@ import com.azure.resourcemanager.providerhub.models.ResourceProviderType;
 import com.azure.resourcemanager.providerhub.models.ServerFailureResponseMessageType;
 import com.azure.resourcemanager.providerhub.models.ServiceClientOptionsType;
 import com.azure.resourcemanager.providerhub.models.ServiceStatus;
-import com.azure.resourcemanager.providerhub.models.ServiceTreeInfo;
 import com.azure.resourcemanager.providerhub.models.SubscriberSetting;
 import java.util.Arrays;
 
@@ -40,7 +37,7 @@ import java.util.Arrays;
  */
 public final class ProviderRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/DirectProviderRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/DirectProviderRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: DirectProviderRegistrations_CreateOrUpdate.
@@ -51,64 +48,54 @@ public final class ProviderRegistrationsCreateOrUpdateSamples {
         directProviderRegistrationsCreateOrUpdate(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
         manager.providerRegistrations()
             .createOrUpdate("Microsoft.Contoso",
-                new ProviderRegistrationInner()
-                    .withProperties(new ProviderRegistrationProperties()
-                        .withServices(Arrays.asList(
-                            new ResourceProviderService().withServiceName("tags").withStatus(ServiceStatus.INACTIVE)))
-                        .withServiceName("root")
-                        .withProviderVersion("2.0")
-                        .withProviderType(ResourceProviderType.INTERNAL)
-                        .withManagement(new ResourceProviderManifestPropertiesManagement()
-                            .withIncidentRoutingService("Contoso Resource Provider")
-                            .withIncidentRoutingTeam("Contoso Triage")
-                            .withIncidentContactEmail("helpme@contoso.com")
-                            .withServiceTreeInfos(Arrays
-                                .asList(new ServiceTreeInfo().withServiceId("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69")
-                                    .withComponentId("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69")
-                                    .withReadiness(Readiness.IN_DEVELOPMENT))))
-                        .withCapabilities(Arrays.asList(
-                            new ResourceProviderCapabilities().withQuotaId("CSP_2015-05-01")
-                                .withEffect(ResourceProviderCapabilitiesEffect.ALLOW),
-                            new ResourceProviderCapabilities().withQuotaId("CSP_MG_2017-12-01")
-                                .withEffect(ResourceProviderCapabilitiesEffect.ALLOW)))
-                        .withDstsConfiguration(
-                            new ResourceProviderManifestPropertiesDstsConfiguration().withServiceName("prds-shim")
-                                .withServiceDnsName("prds.sparta.azure.com"))
-                        .withNotificationOptions(NotificationOptions.EMIT_SPENDING_LIMIT)
-                        .withResourceHydrationAccounts(Arrays
-                            .asList(new ResourceHydrationAccount().withAccountName("classichydrationprodsn01")
-                                .withSubscriptionId("e4eae963-2d15-43e6-a097-98bd75b33edd"),
-                                new ResourceHydrationAccount()
-                                    .withAccountName("classichydrationprodch01")
-                                    .withSubscriptionId("69e69ecb-e69c-41d4-99b8-87dd12781067")))
-                        .withNotificationSettings(new ResourceProviderManifestPropertiesNotificationSettings()
-                            .withSubscriberSettings(Arrays.asList(
-                                new SubscriberSetting().withFilterRules(Arrays.asList(new FilterRule().withFilterQuery(
-                                    "Resources | where event.eventType in ('Microsoft.Network/IpAddresses/write', 'Microsoft.KeyVault/vaults/move/action')")
-                                    .withEndpointInformation(Arrays.asList(
-                                        new EndpointInformation().withEndpoint("https://userrp.azure.com/arnnotify")
-                                            .withEndpointType(NotificationEndpointType.WEBHOOK)
-                                            .withSchemaVersion("3.0"),
-                                        new EndpointInformation().withEndpoint("https://userrp.azure.com/arnnotify")
-                                            .withEndpointType(NotificationEndpointType.EVENTHUB)
-                                            .withSchemaVersion("3.0"))))))))
-                        .withManagementGroupGlobalNotificationEndpoints(Arrays.asList(new ResourceProviderEndpoint()
-                            .withEndpointUri("{your_management_group_notification_endpoint}")))
-                        .withOptionalFeatures(Arrays.asList("Microsoft.Resources/PlatformSubscription"))
-                        .withResourceGroupLockOptionDuringMove(
-                            new ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove()
-                                .withBlockActionVerb(BlockActionVerb.ACTION))
-                        .withResponseOptions(new ResourceProviderManifestPropertiesResponseOptions()
-                            .withServiceClientOptionsType(ServiceClientOptionsType.DISABLE_AUTOMATIC_DECOMPRESSION))
-                        .withLegacyNamespace("legacyNamespace")
-                        .withLegacyRegistrations(Arrays.asList("legacyRegistration"))
-                        .withCustomManifestVersion("2.0"))
-                    .withKind(ProviderRegistrationKind.DIRECT),
+                new ProviderRegistrationInner().withProperties(new ProviderRegistrationProperties()
+                    .withServices(Arrays.asList(
+                        new ResourceProviderService().withServiceName("tags").withStatus(ServiceStatus.INACTIVE)))
+                    .withServiceName("root")
+                    .withProviderVersion("2.0")
+                    .withProviderType(ResourceProviderType.INTERNAL)
+                    .withManagement(new ResourceProviderManifestPropertiesManagement()
+                        .withIncidentRoutingService("Contoso Resource Provider")
+                        .withIncidentRoutingTeam("Contoso Triage")
+                        .withIncidentContactEmail("helpme@contoso.com"))
+                    .withCapabilities(Arrays.asList(
+                        new ResourceProviderCapabilities().withQuotaId("CSP_2015-05-01")
+                            .withEffect(ResourceProviderCapabilitiesEffect.ALLOW),
+                        new ResourceProviderCapabilities().withQuotaId("CSP_MG_2017-12-01")
+                            .withEffect(ResourceProviderCapabilitiesEffect.ALLOW)))
+                    .withNotificationOptions(NotificationOptions.EMIT_SPENDING_LIMIT)
+                    .withResourceHydrationAccounts(Arrays.asList(
+                        new ResourceHydrationAccount().withAccountName("classichydrationprodsn01")
+                            .withSubscriptionId("e4eae963-2d15-43e6-a097-98bd75b33edd"),
+                        new ResourceHydrationAccount().withAccountName("classichydrationprodch01")
+                            .withSubscriptionId("69e69ecb-e69c-41d4-99b8-87dd12781067")))
+                    .withNotificationSettings(new ResourceProviderManifestPropertiesNotificationSettings()
+                        .withSubscriberSettings(Arrays.asList(
+                            new SubscriberSetting().withFilterRules(Arrays.asList(new FilterRule().withFilterQuery(
+                                "Resources | where event.eventType in ('Microsoft.Network/IpAddresses/write', 'Microsoft.KeyVault/vaults/move/action')")
+                                .withEndpointInformation(Arrays.asList(
+                                    new EndpointInformation().withEndpoint("https://userrp.azure.com/arnnotify")
+                                        .withEndpointType(NotificationEndpointType.WEBHOOK)
+                                        .withSchemaVersion("3.0"),
+                                    new EndpointInformation().withEndpoint("https://userrp.azure.com/arnnotify")
+                                        .withEndpointType(NotificationEndpointType.EVENTHUB)
+                                        .withSchemaVersion("3.0"))))))))
+                    .withManagementGroupGlobalNotificationEndpoints(Arrays.asList(new ResourceProviderEndpoint()
+                        .withEndpointUri("{your_management_group_notification_endpoint}")))
+                    .withOptionalFeatures(Arrays.asList("Microsoft.Resources/PlatformSubscription"))
+                    .withResourceGroupLockOptionDuringMove(
+                        new ResourceProviderManifestPropertiesResourceGroupLockOptionDuringMove()
+                            .withBlockActionVerb(BlockActionVerb.ACTION))
+                    .withResponseOptions(new ResourceProviderManifestPropertiesResponseOptions()
+                        .withServiceClientOptionsType(ServiceClientOptionsType.DISABLE_AUTOMATIC_DECOMPRESSION))
+                    .withLegacyNamespace("legacyNamespace")
+                    .withLegacyRegistrations(Arrays.asList("legacyRegistration"))
+                    .withCustomManifestVersion("2.0")).withKind(ProviderRegistrationKind.DIRECT),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/ProviderRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/ProviderRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: ProviderRegistrations_CreateOrUpdate.
@@ -129,17 +116,13 @@ public final class ProviderRegistrationsCreateOrUpdateSamples {
                         .withIncidentRoutingService("Contoso Resource Provider")
                         .withIncidentRoutingTeam("Contoso Triage")
                         .withIncidentContactEmail("helpme@contoso.com")
-                        .withServiceTreeInfos(
-                            Arrays.asList(new ServiceTreeInfo().withServiceId("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69")
-                                .withComponentId("d1b7d8ba-05e2-48e6-90d6-d781b99c6e69")
-                                .withReadiness(Readiness.IN_DEVELOPMENT)))
-                        .withExpeditedRolloutSubmitters(Arrays.asList("SPARTA-PlatformServiceOperator"))
+                        .withExpeditedRolloutSubmitters(Arrays.asList("Contoso-PlatformServiceOperator"))
                         .withErrorResponseMessageOptions(new ResourceProviderManagementErrorResponseMessageOptions()
                             .withServerFailureResponseMessageType(ServerFailureResponseMessageType.OUTAGE_REPORTING))
                         .withExpeditedRolloutMetadata(
                             new ResourceProviderManagementExpeditedRolloutMetadata().withEnabled(false)
                                 .withExpeditedRolloutIntent(ExpeditedRolloutIntent.HOTFIX))
-                        .withCanaryManifestOwners(Arrays.asList("SPARTA-PlatformServiceAdmin"))
+                        .withCanaryManifestOwners(Arrays.asList("Contoso-PlatformServiceAdmin"))
                         .withPcCode("fakeTokenPlaceholder")
                         .withProfitCenterProgramId("1234"))
                     .withCapabilities(Arrays.asList(

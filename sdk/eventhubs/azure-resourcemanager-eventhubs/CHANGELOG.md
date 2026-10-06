@@ -1,10 +1,27 @@
 # Release History
 
-## 2.54.0-beta.1 (2026-07-22)
+## 2.54.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported `disableLocalAuth()` and `enableLocalAuth()` in `EventHubNamespace`.
+
+### Breaking Changes
+
+### Bugs Fixed
 
 ### Other Changes
 
 - Update `api-version` to `2026-07-01-preview`.
+
+## 2.53.11 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.57.1` to version `2.57.2`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
 
 ## 2.53.10 (2026-07-07)
 

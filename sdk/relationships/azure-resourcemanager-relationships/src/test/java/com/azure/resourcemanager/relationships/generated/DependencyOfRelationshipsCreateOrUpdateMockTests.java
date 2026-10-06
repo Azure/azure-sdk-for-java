@@ -22,7 +22,7 @@ public final class DependencyOfRelationshipsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sourceId\":\"blgphuticn\",\"targetId\":\"vkaozwyiftyhxhur\",\"targetTenant\":\"ftyxolniw\",\"originInformation\":{\"relationshipOriginType\":\"UserDiscoveredByRule\",\"discoveryEngine\":\"ukjfkgiawxklr\"},\"metadata\":{\"sourceType\":\"plwckbas\",\"targetType\":\"ypnddhsgcb\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ejk\",\"name\":\"tynqgoul\",\"type\":\"ndlik\"}";
+            = "{\"properties\":{\"sourceId\":\"jbavorxzdm\",\"targetId\":\"hctbqvudwxdn\",\"targetTenant\":\"vo\",\"originInformation\":{\"relationshipOriginType\":\"UserExplicitlyCreated\",\"discoveryEngine\":\"jugwdkcglhsl\"},\"metadata\":{\"sourceType\":\"jdyggdtji\",\"targetType\":\"hbkuofqwey\"},\"provisioningState\":\"Succeeded\"},\"id\":\"n\",\"name\":\"vfyexfw\",\"type\":\"ybcibvyvdcsit\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class DependencyOfRelationshipsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DependencyOfRelationship response = manager.dependencyOfRelationships()
-            .define("lssai")
-            .withExistingResourceUri("wtnhxbnjbiksqr")
+            .define("chcbonqvpkvlrxnj")
+            .withExistingResourceUri("zscxaqwo")
             .withProperties(
-                new DependencyOfRelationshipProperties().withTargetId("wnzlljfmppeeb").withTargetTenant("gxsabkyq"))
+                new DependencyOfRelationshipProperties().withTargetId("enjbdlwtgrhp").withTargetTenant("pj"))
             .create();
 
-        Assertions.assertEquals("vkaozwyiftyhxhur", response.properties().targetId());
-        Assertions.assertEquals("ftyxolniw", response.properties().targetTenant());
+        Assertions.assertEquals("hctbqvudwxdn", response.properties().targetId());
+        Assertions.assertEquals("vo", response.properties().targetTenant());
     }
 }

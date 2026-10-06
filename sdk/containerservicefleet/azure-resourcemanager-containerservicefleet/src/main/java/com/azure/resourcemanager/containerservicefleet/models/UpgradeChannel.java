@@ -40,6 +40,14 @@ public final class UpgradeChannel extends ExpandableStringEnum<UpgradeChannel> {
     public static final UpgradeChannel TARGET_KUBERNETES_VERSION = fromString("TargetKubernetesVersion");
 
     /**
+     * Applies security patches to the
+     * nodes of the target clusters.
+     * For information on the behavior of update run for security patch upgrade,
+     * see https://learn.microsoft.com/en-us/azure/kubernetes-fleet/update-orchestration?tabs=azure-portal.
+     */
+    public static final UpgradeChannel SECURITY_PATCH = fromString("SecurityPatch");
+
+    /**
      * Creates a new instance of UpgradeChannel value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

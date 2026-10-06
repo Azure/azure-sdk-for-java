@@ -163,6 +163,26 @@ public class StorageImplUtils {
     }
 
     /**
+     * Converts a potentially unquoted ETag into an RFC 9110 entity-tag value suitable for use in HTTP conditions.
+     * Storage historically exposed service-returned ETags without quotes, so both that legacy representation and the
+     * RFC-compliant representation are accepted. Response values remain unchanged for customer compatibility.
+     *
+     * @param eTag ETag value to normalize.
+     * @return An RFC 9110 conformant entity-tag, or the original value when no conversion is needed.
+     */
+    public static String toETagHeaderValue(String eTag) {
+        if (eTag == null || eTag.isEmpty() || Constants.HeaderConstants.ETAG_WILDCARD.equals(eTag)) {
+            return eTag;
+        }
+
+        if (eTag.length() >= 2 && (eTag.startsWith("\"") || eTag.startsWith("W/\"")) && eTag.endsWith("\"")) {
+            return eTag;
+        }
+
+        return "\"" + eTag + "\"";
+    }
+
+    /**
      * Asserts that a value is not {@code null}.
      *
      * @param param Name of the parameter
@@ -395,6 +415,19 @@ public class StorageImplUtils {
             }
         }
         return message;
+    }
+
+    /**
+     * Checks whether the provided header value is non-null, non-empty, and starts with the expected value.
+     *
+     * @param headerValue The header value to inspect.
+     * @param expectedHeaderValue The expected header value prefix.
+     * @return {@code true} if the header value is present and matches the expected value; otherwise {@code false}.
+     */
+    public static boolean hasMatchingHeaderValue(String headerValue, String expectedHeaderValue) {
+        return !CoreUtils.isNullOrEmpty(headerValue)
+            && !CoreUtils.isNullOrEmpty(expectedHeaderValue)
+            && headerValue.startsWith(expectedHeaderValue);
     }
 
     /**

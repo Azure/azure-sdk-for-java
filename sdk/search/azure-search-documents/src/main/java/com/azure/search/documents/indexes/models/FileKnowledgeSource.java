@@ -100,10 +100,13 @@ public final class FileKnowledgeSource extends KnowledgeSource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("resultsProcessing",
+            getResultsProcessing() == null ? null : getResultsProcessing().toString());
         jsonWriter.writeStringField("@odata.etag", getETag());
         jsonWriter.writeJsonField("encryptionKey", getEncryptionKey());
         jsonWriter.writeJsonField("fileParameters", this.fileParameters);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("corsOptions", this.corsOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -121,10 +124,12 @@ public final class FileKnowledgeSource extends KnowledgeSource {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
             FileKnowledgeSourceParameters fileParameters = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.FILE;
+            CorsOptions corsOptions = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -132,6 +137,8 @@ public final class FileKnowledgeSource extends KnowledgeSource {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
@@ -140,16 +147,61 @@ public final class FileKnowledgeSource extends KnowledgeSource {
                     fileParameters = FileKnowledgeSourceParameters.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     kind = KnowledgeSourceKind.fromString(reader.getString());
+                } else if ("corsOptions".equals(fieldName)) {
+                    corsOptions = CorsOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             FileKnowledgeSource deserializedFileKnowledgeSource = new FileKnowledgeSource(name, fileParameters);
             deserializedFileKnowledgeSource.setDescription(description);
+            deserializedFileKnowledgeSource.setResultsProcessing(resultsProcessing);
             deserializedFileKnowledgeSource.setETag(eTag);
             deserializedFileKnowledgeSource.setEncryptionKey(encryptionKey);
             deserializedFileKnowledgeSource.kind = kind;
+            deserializedFileKnowledgeSource.corsOptions = corsOptions;
             return deserializedFileKnowledgeSource;
         });
+    }
+
+    /*
+     * Options to control Cross-Origin Resource Sharing (CORS) for the File knowledge source's file endpoints (upload,
+     * list, update, delete).
+     */
+    @Generated
+    private CorsOptions corsOptions;
+
+    /**
+     * Get the corsOptions property: Options to control Cross-Origin Resource Sharing (CORS) for the File knowledge
+     * source's file endpoints (upload, list, update, delete).
+     *
+     * @return the corsOptions value.
+     */
+    @Generated
+    public CorsOptions getCorsOptions() {
+        return this.corsOptions;
+    }
+
+    /**
+     * Set the corsOptions property: Options to control Cross-Origin Resource Sharing (CORS) for the File knowledge
+     * source's file endpoints (upload, list, update, delete).
+     *
+     * @param corsOptions the corsOptions value to set.
+     * @return the FileKnowledgeSource object itself.
+     */
+    @Generated
+    public FileKnowledgeSource setCorsOptions(CorsOptions corsOptions) {
+        this.corsOptions = corsOptions;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FileKnowledgeSource setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        super.setResultsProcessing(resultsProcessing);
+        return this;
     }
 }

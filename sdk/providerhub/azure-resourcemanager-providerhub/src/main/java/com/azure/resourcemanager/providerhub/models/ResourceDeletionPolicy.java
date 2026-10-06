@@ -17,15 +17,19 @@ public final class ResourceDeletionPolicy extends ExpandableStringEnum<ResourceD
     public static final ResourceDeletionPolicy NOT_SPECIFIED = fromString("NotSpecified");
 
     /**
-     * Static value CascadeDeleteAll for ResourceDeletionPolicy.
+     * Static value Cascade for ResourceDeletionPolicy.
      */
-    public static final ResourceDeletionPolicy CASCADE_DELETE_ALL = fromString("CascadeDeleteAll");
+    public static final ResourceDeletionPolicy CASCADE = fromString("Cascade");
 
     /**
-     * Static value CascadeDeleteProxyOnlyChildren for ResourceDeletionPolicy.
+     * Static value Force for ResourceDeletionPolicy.
      */
-    public static final ResourceDeletionPolicy CASCADE_DELETE_PROXY_ONLY_CHILDREN
-        = fromString("CascadeDeleteProxyOnlyChildren");
+    public static final ResourceDeletionPolicy FORCE = fromString("Force");
+
+    /**
+     * Soft delete deletion policy.
+     */
+    public static final ResourceDeletionPolicy SOFT_DELETE = fromString("SoftDelete");
 
     /**
      * Creates a new instance of ResourceDeletionPolicy value.

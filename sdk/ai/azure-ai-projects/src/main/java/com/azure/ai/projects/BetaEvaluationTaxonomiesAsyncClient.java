@@ -308,7 +308,7 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     /**
      * Update an evaluation taxonomy
      *
-     * Update an evaluation taxonomy.
+     * Modifies the specified evaluation taxonomy with the provided changes.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -561,7 +561,7 @@ public final class BetaEvaluationTaxonomiesAsyncClient {
     /**
      * Update an evaluation taxonomy
      *
-     * Update an evaluation taxonomy.
+     * Modifies the specified evaluation taxonomy with the provided changes.
      *
      * @param name The name of the evaluation taxonomy.
      * @param taxonomy The evaluation taxonomy.

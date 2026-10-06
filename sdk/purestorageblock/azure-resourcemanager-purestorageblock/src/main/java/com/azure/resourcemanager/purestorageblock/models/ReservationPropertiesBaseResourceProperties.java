@@ -132,10 +132,10 @@ public final class ReservationPropertiesBaseResourceProperties
                 if ("marketplace".equals(fieldName)) {
                     deserializedReservationPropertiesBaseResourceProperties.marketplace
                         = MarketplaceDetails.fromJson(reader);
-                } else if ("user".equals(fieldName)) {
-                    deserializedReservationPropertiesBaseResourceProperties.user = UserDetails.fromJson(reader);
                 } else if ("reservationInternalId".equals(fieldName)) {
                     deserializedReservationPropertiesBaseResourceProperties.reservationInternalId = reader.getString();
+                } else if ("user".equals(fieldName)) {
+                    deserializedReservationPropertiesBaseResourceProperties.user = UserDetails.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedReservationPropertiesBaseResourceProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

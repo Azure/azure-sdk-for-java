@@ -42,7 +42,7 @@ import java.util.Map;
  */
 public final class KubernetesClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_Create.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_Create.json
      */
     /**
      * Sample code: Create or update Kubernetes cluster.
@@ -142,7 +142,7 @@ public final class KubernetesClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_L2LoadBalancer_Create.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_L2LoadBalancer_Create.json
      */
     /**
      * Sample code: Create or update Kubernetes cluster with a layer 2 load balancer.

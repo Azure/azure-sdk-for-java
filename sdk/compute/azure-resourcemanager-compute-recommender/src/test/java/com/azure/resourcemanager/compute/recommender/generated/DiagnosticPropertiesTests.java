@@ -12,7 +12,8 @@ public final class DiagnosticPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticProperties model
-            = BinaryData.fromString("{\"supportedResourceTypes\":[\"ybrk\"]}").toObject(DiagnosticProperties.class);
-        Assertions.assertEquals("ybrk", model.supportedResourceTypes().get(0));
+            = BinaryData.fromString("{\"supportedResourceTypes\":[\"nkzsmodmglou\",\"pbkwtmu\"]}")
+                .toObject(DiagnosticProperties.class);
+        Assertions.assertEquals("nkzsmodmglou", model.supportedResourceTypes().get(0));
     }
 }

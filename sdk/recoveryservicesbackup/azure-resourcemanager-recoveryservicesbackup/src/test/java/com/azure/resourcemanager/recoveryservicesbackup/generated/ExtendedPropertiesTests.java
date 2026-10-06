@@ -14,22 +14,22 @@ public final class ExtendedPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtendedProperties model = BinaryData.fromString(
-            "{\"diskExclusionProperties\":{\"diskLunList\":[743935236],\"isInclusionList\":false},\"linuxVmApplicationName\":\"pwlbjnpg\"}")
+            "{\"diskExclusionProperties\":{\"diskLunList\":[693587344],\"isInclusionList\":true},\"linuxVmApplicationName\":\"efovgmk\"}")
             .toObject(ExtendedProperties.class);
-        Assertions.assertEquals(743935236, model.diskExclusionProperties().diskLunList().get(0));
-        Assertions.assertFalse(model.diskExclusionProperties().isInclusionList());
-        Assertions.assertEquals("pwlbjnpg", model.linuxVmApplicationName());
+        Assertions.assertEquals(693587344, model.diskExclusionProperties().diskLunList().get(0));
+        Assertions.assertTrue(model.diskExclusionProperties().isInclusionList());
+        Assertions.assertEquals("efovgmk", model.linuxVmApplicationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExtendedProperties model = new ExtendedProperties()
             .withDiskExclusionProperties(
-                new DiskExclusionProperties().withDiskLunList(Arrays.asList(743935236)).withIsInclusionList(false))
-            .withLinuxVmApplicationName("pwlbjnpg");
+                new DiskExclusionProperties().withDiskLunList(Arrays.asList(693587344)).withIsInclusionList(true))
+            .withLinuxVmApplicationName("efovgmk");
         model = BinaryData.fromObject(model).toObject(ExtendedProperties.class);
-        Assertions.assertEquals(743935236, model.diskExclusionProperties().diskLunList().get(0));
-        Assertions.assertFalse(model.diskExclusionProperties().isInclusionList());
-        Assertions.assertEquals("pwlbjnpg", model.linuxVmApplicationName());
+        Assertions.assertEquals(693587344, model.diskExclusionProperties().diskLunList().get(0));
+        Assertions.assertTrue(model.diskExclusionProperties().isInclusionList());
+        Assertions.assertEquals("efovgmk", model.linuxVmApplicationName());
     }
 }

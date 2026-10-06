@@ -12,13 +12,13 @@ public final class RecoveryPointDiskConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPointDiskConfiguration model = BinaryData.fromString(
-            "{\"numberOfDisksIncludedInBackup\":1622829877,\"numberOfDisksAttachedToVm\":602738724,\"includedDiskList\":[{\"lun\":68719037,\"name\":\"dshf\"},{\"lun\":224040944,\"name\":\"bgye\"},{\"lun\":934099618,\"name\":\"sgaojfmwncot\"}],\"excludedDiskList\":[{\"lun\":2093197643,\"name\":\"ctymoxoftp\"}]}")
+            "{\"numberOfDisksIncludedInBackup\":180338782,\"numberOfDisksAttachedToVm\":1102080272,\"includedDiskList\":[{\"lun\":647378344,\"name\":\"gvvs\"},{\"lun\":1469869368,\"name\":\"jguq\"},{\"lun\":1811586286,\"name\":\"gzlvdnkfxu\"}],\"excludedDiskList\":[{\"lun\":1547666647,\"name\":\"rmuhapfcq\"},{\"lun\":1535415834,\"name\":\"xqv\"},{\"lun\":1014865004,\"name\":\"oymgccelvezr\"},{\"lun\":58606398,\"name\":\"mfe\"}]}")
             .toObject(RecoveryPointDiskConfiguration.class);
-        Assertions.assertEquals(1622829877, model.numberOfDisksIncludedInBackup());
-        Assertions.assertEquals(602738724, model.numberOfDisksAttachedToVm());
-        Assertions.assertEquals(68719037, model.includedDiskList().get(0).lun());
-        Assertions.assertEquals("dshf", model.includedDiskList().get(0).name());
-        Assertions.assertEquals(2093197643, model.excludedDiskList().get(0).lun());
-        Assertions.assertEquals("ctymoxoftp", model.excludedDiskList().get(0).name());
+        Assertions.assertEquals(180338782, model.numberOfDisksIncludedInBackup());
+        Assertions.assertEquals(1102080272, model.numberOfDisksAttachedToVm());
+        Assertions.assertEquals(647378344, model.includedDiskList().get(0).lun());
+        Assertions.assertEquals("gvvs", model.includedDiskList().get(0).name());
+        Assertions.assertEquals(1547666647, model.excludedDiskList().get(0).lun());
+        Assertions.assertEquals("rmuhapfcq", model.excludedDiskList().get(0).name());
     }
 }

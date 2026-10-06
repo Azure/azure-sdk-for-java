@@ -693,6 +693,41 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the enableFips property: Whether to enable FIPS mode at the cluster level. When enabled, this setting
+     * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
+     * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
+     * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
+     * 
+     * @return the enableFips value.
+     */
+    public Boolean enableFips() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableFips();
+    }
+
+    /**
+     * Set the enableFips property: Whether to enable FIPS mode at the cluster level. When enabled, this setting
+     * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
+     * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
+     * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
+     * 
+     * @param enableFips the enableFips value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withEnableFips(Boolean enableFips) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withEnableFips(enableFips);
+        return this;
+    }
+
+    /**
      * Get the networkProfile property: The network configuration profile.
      * 
      * @return the networkProfile value.

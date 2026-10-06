@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class VolumesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_Delete.json
+     * x-ms-original-file: 2026-07-01/Volumes_Delete.json
      */
     /**
      * Sample code: Delete volume.

@@ -5,6 +5,7 @@ package com.azure.security.keyvault.jca.implementation.utils;
 import com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
@@ -13,12 +14,14 @@ import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
 import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.config.RegistryBuilder;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.ssl.SSLContexts;
+import org.apache.hc.core5.util.Timeout;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -76,6 +79,114 @@ public final class HttpUtil {
         }
 
         return result;
+    }
+
+    /**
+     * Performs an HTTP GET request and returns the raw response body as a byte array.
+     * Used primarily for downloading DER-encoded certificates from CA Issuers URLs in
+     * AIA (Authority Information Access) certificate extensions.
+     *
+     * @param url the URL to fetch
+     * @return the response body bytes, or {@code null} if the request fails or returns non-2xx
+     */
+    public static byte[] getBytes(String url) {
+        return getBytesWithMetadata(url).body;
+    }
+
+    static BinaryHttpResponse getBytesWithMetadata(String url) {
+        try (CloseableHttpClient client = buildClient()) {
+            HttpGet httpGet = new HttpGet(url);
+            httpGet.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
+            // Set reasonable timeouts to prevent indefinite hangs when fetching AIA certificate chain
+            RequestConfig config = RequestConfig.custom()
+                .setConnectTimeout(Timeout.ofSeconds(10))
+                .setResponseTimeout(Timeout.ofSeconds(10))
+                .build();
+            httpGet.setConfig(config);
+            return client.execute(httpGet, response -> toBinaryResponse(response, url));
+        } catch (Exception e) {
+            // Catch all exceptions including IOException, IllegalArgumentException (malformed URL),
+            // and other runtime exceptions that may occur during HTTP execution.
+            // Gracefully return null to allow AIA completion to fail silently instead of breaking
+            // the entire jarsigner/signing operation.
+            LOGGER.log(WARNING, e, () -> "Unable to finish the HTTP GET (bytes) request for URL: " + url);
+            return BinaryHttpResponse.empty();
+        }
+    }
+
+    static BinaryHttpResponse toBinaryResponse(ClassicHttpResponse response, String url) throws IOException {
+        int status = response.getCode();
+        if (status < 200 || status >= 300) {
+            LOGGER.log(WARNING, "HTTP GET returned status {0} for URL: {1}", new Object[] { status, url });
+            return new BinaryHttpResponse(null, getCombinedHeaderValue(response, "Cache-Control"),
+                getHeaderValue(response, "Date"), getHeaderValue(response, "Age"), getHeaderValue(response, "Expires"));
+        }
+
+        HttpEntity entity = response.getEntity();
+        byte[] body = entity != null ? EntityUtils.toByteArray(entity) : null;
+        return new BinaryHttpResponse(body, getCombinedHeaderValue(response, "Cache-Control"),
+            getHeaderValue(response, "Date"), getHeaderValue(response, "Age"), getHeaderValue(response, "Expires"));
+    }
+
+    private static String getCombinedHeaderValue(ClassicHttpResponse response, String name) {
+        Header[] headers = response.getHeaders(name);
+        if (headers.length == 0) {
+            return null;
+        }
+
+        StringBuilder value = new StringBuilder();
+        for (Header header : headers) {
+            if (value.length() > 0) {
+                value.append(", ");
+            }
+            value.append(header.getValue());
+        }
+        return value.toString();
+    }
+
+    private static String getHeaderValue(ClassicHttpResponse response, String name) {
+        Header header = response.getFirstHeader(name);
+        return header == null ? null : header.getValue();
+    }
+
+    static final class BinaryHttpResponse {
+        private final byte[] body;
+        private final String cacheControl;
+        private final String date;
+        private final String age;
+        private final String expires;
+
+        BinaryHttpResponse(byte[] body, String cacheControl, String date, String age, String expires) {
+            this.body = body;
+            this.cacheControl = cacheControl;
+            this.date = date;
+            this.age = age;
+            this.expires = expires;
+        }
+
+        private static BinaryHttpResponse empty() {
+            return new BinaryHttpResponse(null, null, null, null, null);
+        }
+
+        byte[] getBody() {
+            return body;
+        }
+
+        String getCacheControl() {
+            return cacheControl;
+        }
+
+        String getDate() {
+            return date;
+        }
+
+        String getAge() {
+            return age;
+        }
+
+        String getExpires() {
+            return expires;
+        }
     }
 
     public static String post(String uri, String body, String contentType) {

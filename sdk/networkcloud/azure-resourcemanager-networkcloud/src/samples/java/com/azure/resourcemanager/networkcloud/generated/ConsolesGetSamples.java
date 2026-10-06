@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class ConsolesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Consoles_Get.json
+     * x-ms-original-file: 2026-07-01/Consoles_Get.json
      */
     /**
      * Sample code: Get virtual machine console.

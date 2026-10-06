@@ -47,13 +47,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TelemetryItemExporterTest {
 
-    private static final String CONNECTION_STRING
-        = "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=http://foo.bar";
-    private static final String REDIRECT_CONNECTION_STRING
-        = "InstrumentationKey=11111111-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=http://foo.bar";
+    private static final String CONNECTION_STRING = "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;"
+        + "IngestionEndpoint=https://dc.services.visualstudio.com";
+    private static final String REDIRECT_CONNECTION_STRING = "InstrumentationKey=11111111-0000-0000-0000-0FEEDDADBEEF;"
+        + "IngestionEndpoint=https://dc.services.visualstudio.com";
 
     private static final String INSTRUMENTATION_KEY = "00000000-0000-0000-0000-0FEEDDADBEEF";
-    private static final String REDIRECT_URL = "http://foo.bar.redirect";
+    // stamp reassignment moves from the global host to a regional host under a different suffix
+    private static final String REDIRECT_URL = "https://westus-0.in.applicationinsights.azure.com";
+    private static final String UNTRUSTED_REDIRECT_URL = "https://attacker.invalid";
 
     RecordingHttpClient recordingHttpClient;
 
@@ -309,6 +311,27 @@ public class TelemetryItemExporterTest {
         assertThat(group3.get(0).getConnectionString()).isEqualTo(REDIRECT_CONNECTION_STRING);
         assertThat(group3.get(1).getTags().get(ContextTagKeys.AI_CLOUD_ROLE.toString())).isEqualTo("rolename3");
         assertThat(group3.get(1).getConnectionString()).isEqualTo(REDIRECT_CONNECTION_STRING);
+    }
+
+    @Test
+    public void untrustedRedirectIsNotFollowedOrCachedTest() {
+        // given
+        recordingHttpClient = new RecordingHttpClient(request -> {
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Location", UNTRUSTED_REDIRECT_URL);
+            return Mono.just(new MockHttpResponse(request, 307, new HttpHeaders(headers)));
+        });
+        List<TelemetryItem> telemetryItems = new ArrayList<>();
+        telemetryItems.add(TestUtils.createMetricTelemetry("metric" + 1, 1, REDIRECT_CONNECTION_STRING));
+        TelemetryItemExporter exporter = getExporter();
+
+        // when
+        exporter.send(telemetryItems);
+        exporter.send(telemetryItems);
+
+        // then
+        // each send stops at the original endpoint instead of replaying against the untrusted host
+        assertThat(recordingHttpClient.getCount()).isEqualTo(2);
     }
 
     static class RecordingHttpClient implements HttpClient {

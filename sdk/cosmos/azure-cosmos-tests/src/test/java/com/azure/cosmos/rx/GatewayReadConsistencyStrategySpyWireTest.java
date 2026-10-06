@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -106,7 +107,7 @@ public class GatewayReadConsistencyStrategySpyWireTest {
             .gatewayMode()
             .buildAsyncClient();
 
-        databaseId = "ReadConsistencyStrategy-spy-" + UUID.randomUUID().toString().substring(0, 8);
+        databaseId = CosmosDatabaseForTest.generateId("readConsistencyStrategySpy");
         containerId = "testcontainer";
 
         cosmosClient.createDatabaseIfNotExists(databaseId).block();
@@ -484,7 +485,7 @@ public class GatewayReadConsistencyStrategySpyWireTest {
         client.clearCapturedRequests();
         RequestOptions requestOptions = getItemOptionsAccessor().toRequestOptions(cosmosOptions);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
-        client.readDocument(getDocumentLink(), requestOptions).block();
+        client.readDocument(getDocumentLink(), null, requestOptions).block();
 
         List<HttpRequest> requests = client.getCapturedRequests();
         assertThat(requests).isNotEmpty();
@@ -497,7 +498,7 @@ public class GatewayReadConsistencyStrategySpyWireTest {
     private HttpRequest executeReadAndCapture(String mode, SpyClientUnderTestFactory.ClientUnderTest client, RequestOptions requestOptions) {
         client.clearCapturedRequests();
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
-        client.readDocument(getDocumentLink(), requestOptions).block();
+        client.readDocument(getDocumentLink(), null, requestOptions).block();
 
         List<HttpRequest> requests = client.getCapturedRequests();
         assertThat(requests).isNotEmpty();

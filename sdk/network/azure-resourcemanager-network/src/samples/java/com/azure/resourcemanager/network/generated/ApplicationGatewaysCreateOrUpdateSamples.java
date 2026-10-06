@@ -9,6 +9,16 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRequestRoutingRuleInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslCertificateInner;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAdvancedRoutingCondition;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAdvancedRoutingConditionSet;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAdvancedRoutingConditionSetPropertiesFormat;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAdvancedRoutingConditionType;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAdvancedRoutingMap;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAdvancedRoutingMapPropertiesFormat;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAdvancedRoutingPropertyValueMatcher;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAdvancedRoutingRule;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAdvancedRoutingRulePropertiesFormat;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAuthConfig;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
@@ -50,7 +60,131 @@ import java.util.Map;
  */
 public final class ApplicationGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ApplicationGatewayCreate.json
+     * x-ms-original-file: 2026-01-01/ApplicationGatewayCreateBasicV2.json
+     */
+    /**
+     * Sample code: Create Basic_v2 Application Gateway.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void createBasicV2ApplicationGateway(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getApplicationGateways()
+            .createOrUpdate("rg1", "appgw", new ApplicationGatewayInner().withLocation("eastus")
+                .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
+                        new ManagedServiceIdentityUserAssignedIdentities())))
+                .withSku(new ApplicationGatewaySku().withName(ApplicationGatewaySkuName.BASIC_V2)
+                    .withTier(ApplicationGatewayTier.BASIC_V2))
+                .withGatewayIpConfigurations(Arrays.asList(new ApplicationGatewayIpConfigurationInner()
+                    .withName("appgwipc")
+                    .withSubnet(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet/subnets/appgwsubnet"))))
+                .withTrustedRootCertificates(
+                    Arrays.asList(new ApplicationGatewayTrustedRootCertificate().withName("rootcert").withData("****"),
+                        new ApplicationGatewayTrustedRootCertificate().withName("rootcert1")
+                            .withKeyVaultSecretId("fakeTokenPlaceholder")))
+                .withTrustedClientCertificates(Arrays
+                    .asList(new ApplicationGatewayTrustedClientCertificate().withName("clientcert").withData("****")))
+                .withSslCertificates(Arrays.asList(
+                    new ApplicationGatewaySslCertificateInner().withName("sslcert")
+                        .withData("****")
+                        .withPassword("fakeTokenPlaceholder"),
+                    new ApplicationGatewaySslCertificateInner().withName("sslcert2")
+                        .withKeyVaultSecretId("fakeTokenPlaceholder")))
+                .withFrontendIpConfigurations(Arrays.asList(new ApplicationGatewayFrontendIpConfiguration()
+                    .withName("appgwfip")
+                    .withPublicIpAddress(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/appgwpip"))))
+                .withFrontendPorts(Arrays.asList(new ApplicationGatewayFrontendPort().withName("appgwfp").withPort(443),
+                    new ApplicationGatewayFrontendPort().withName("appgwfp80").withPort(80)))
+                .withBackendAddressPools(
+                    Arrays.asList(
+                        new ApplicationGatewayBackendAddressPool().withName("appgwpool")
+                            .withBackendAddresses(Arrays.asList(
+                                new ApplicationGatewayBackendAddress().withIpAddress("10.0.1.1"),
+                                new ApplicationGatewayBackendAddress().withIpAddress("10.0.1.2"))),
+                        new ApplicationGatewayBackendAddressPool().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool1")
+                            .withName("appgwpool1")
+                            .withBackendAddresses(
+                                Arrays.asList(new ApplicationGatewayBackendAddress().withIpAddress("10.0.0.1"),
+                                    new ApplicationGatewayBackendAddress().withIpAddress("10.0.0.2")))))
+                .withBackendHttpSettingsCollection(
+                    Arrays.asList(new ApplicationGatewayBackendHttpSettings().withName("appgwbhs")
+                        .withPort(80)
+                        .withProtocol(ApplicationGatewayProtocol.HTTP)
+                        .withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity.DISABLED)
+                        .withRequestTimeout(30)))
+                .withHttpListeners(Arrays.asList(new ApplicationGatewayHttpListener().withName("appgwhl")
+                    .withFrontendIpConfiguration(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendIPConfigurations/appgwfip"))
+                    .withFrontendPort(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendPorts/appgwfp"))
+                    .withProtocol(ApplicationGatewayProtocol.HTTPS)
+                    .withSslCertificate(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/sslCertificates/sslcert"))
+                    .withSslProfile(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/sslProfiles/sslProfile1"))
+                    .withRequireServerNameIndication(false),
+                    new ApplicationGatewayHttpListener().withName("appgwhttplistener")
+                        .withFrontendIpConfiguration(new SubResource().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendIPConfigurations/appgwfip"))
+                        .withFrontendPort(new SubResource().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendPorts/appgwfp80"))
+                        .withProtocol(ApplicationGatewayProtocol.HTTP)))
+                .withSslProfiles(Arrays.asList(new ApplicationGatewaySslProfile().withName("sslProfile1")
+                    .withTrustedClientCertificates(Arrays.asList(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/trustedClientCertificates/clientcert")))
+                    .withSslPolicy(
+                        new ApplicationGatewaySslPolicy().withPolicyType(ApplicationGatewaySslPolicyType.CUSTOM)
+                            .withCipherSuites(
+                                Arrays.asList(ApplicationGatewaySslCipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256))
+                            .withMinProtocolVersion(ApplicationGatewaySslProtocol.TLSV1_1))
+                    .withClientAuthConfiguration(
+                        new ApplicationGatewayClientAuthConfiguration().withVerifyClientCertIssuerDN(true))))
+                .withRequestRoutingRules(Arrays.asList(new ApplicationGatewayRequestRoutingRuleInner()
+                    .withName("appgwrule")
+                    .withRuleType(ApplicationGatewayRequestRoutingRuleType.BASIC)
+                    .withPriority(10)
+                    .withBackendAddressPool(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"))
+                    .withBackendHttpSettings(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/appgwbhs"))
+                    .withHttpListener(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/httpListeners/appgwhl"))
+                    .withRewriteRuleSet(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"))))
+                .withRewriteRuleSets(
+                    Arrays
+                        .asList(new ApplicationGatewayRewriteRuleSet().withName("rewriteRuleSet1")
+                            .withRewriteRules(Arrays.asList(new ApplicationGatewayRewriteRule()
+                                .withName("Set X-Forwarded-For")
+                                .withRuleSequence(102)
+                                .withConditions(Arrays.asList(new ApplicationGatewayRewriteRuleCondition()
+                                    .withVariable("http_req_Authorization")
+                                    .withPattern("^Bearer")
+                                    .withIgnoreCase(true)
+                                    .withNegate(false)))
+                                .withActionSet(new ApplicationGatewayRewriteRuleActionSet()
+                                    .withRequestHeaderConfigurations(Arrays.asList(
+                                        new ApplicationGatewayHeaderConfiguration().withHeaderName("X-Forwarded-For")
+                                            .withHeaderValue("{var_add_x_forwarded_for_proxy}")))
+                                    .withResponseHeaderConfigurations(
+                                        Arrays.asList(new ApplicationGatewayHeaderConfiguration()
+                                            .withHeaderName("Strict-Transport-Security")
+                                            .withHeaderValue("max-age=31536000")))
+                                    .withUrlConfiguration(
+                                        new ApplicationGatewayUrlConfiguration().withModifiedPath("/abc")))))))
+                .withReservedCapacity(3)
+                .withGlobalConfiguration(new ApplicationGatewayGlobalConfiguration().withEnableRequestBuffering(true)
+                    .withEnableResponseBuffering(true)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/ApplicationGatewayCreate.json
      */
     /**
      * Sample code: Create Application Gateway.
@@ -68,6 +202,180 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                 .withSku(new ApplicationGatewaySku().withName(ApplicationGatewaySkuName.STANDARD_V2)
                     .withTier(ApplicationGatewayTier.STANDARD_V2)
                     .withCapacity(3))
+                .withGatewayIpConfigurations(Arrays.asList(new ApplicationGatewayIpConfigurationInner()
+                    .withName("appgwipc")
+                    .withSubnet(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet/subnets/appgwsubnet"))))
+                .withTrustedRootCertificates(
+                    Arrays.asList(new ApplicationGatewayTrustedRootCertificate().withName("rootcert").withData("****"),
+                        new ApplicationGatewayTrustedRootCertificate().withName("rootcert1")
+                            .withKeyVaultSecretId("fakeTokenPlaceholder")))
+                .withTrustedClientCertificates(Arrays
+                    .asList(new ApplicationGatewayTrustedClientCertificate().withName("clientcert").withData("****")))
+                .withSslCertificates(Arrays.asList(
+                    new ApplicationGatewaySslCertificateInner().withName("sslcert")
+                        .withData("****")
+                        .withPassword("fakeTokenPlaceholder"),
+                    new ApplicationGatewaySslCertificateInner().withName("sslcert2")
+                        .withKeyVaultSecretId("fakeTokenPlaceholder")))
+                .withFrontendIpConfigurations(Arrays.asList(new ApplicationGatewayFrontendIpConfiguration()
+                    .withName("appgwfip")
+                    .withPublicIpAddress(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/appgwpip"))))
+                .withFrontendPorts(Arrays.asList(new ApplicationGatewayFrontendPort().withName("appgwfp").withPort(443),
+                    new ApplicationGatewayFrontendPort().withName("appgwfp80").withPort(80)))
+                .withBackendAddressPools(
+                    Arrays.asList(
+                        new ApplicationGatewayBackendAddressPool().withName("appgwpool")
+                            .withBackendAddresses(Arrays.asList(
+                                new ApplicationGatewayBackendAddress().withIpAddress("10.0.1.1"),
+                                new ApplicationGatewayBackendAddress().withIpAddress("10.0.1.2"))),
+                        new ApplicationGatewayBackendAddressPool().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool1")
+                            .withName("appgwpool1")
+                            .withBackendAddresses(
+                                Arrays.asList(new ApplicationGatewayBackendAddress().withIpAddress("10.0.0.1"),
+                                    new ApplicationGatewayBackendAddress().withIpAddress("10.0.0.2")))))
+                .withBackendHttpSettingsCollection(
+                    Arrays.asList(new ApplicationGatewayBackendHttpSettings().withName("appgwbhs")
+                        .withPort(80)
+                        .withProtocol(ApplicationGatewayProtocol.HTTP)
+                        .withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity.DISABLED)
+                        .withRequestTimeout(30)))
+                .withHttpListeners(Arrays.asList(new ApplicationGatewayHttpListener().withName("appgwhl")
+                    .withFrontendIpConfiguration(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendIPConfigurations/appgwfip"))
+                    .withFrontendPort(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendPorts/appgwfp"))
+                    .withProtocol(ApplicationGatewayProtocol.HTTPS)
+                    .withSslCertificate(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/sslCertificates/sslcert"))
+                    .withSslProfile(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/sslProfiles/sslProfile1"))
+                    .withRequireServerNameIndication(false),
+                    new ApplicationGatewayHttpListener().withName("appgwhttplistener")
+                        .withFrontendIpConfiguration(new SubResource().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendIPConfigurations/appgwfip"))
+                        .withFrontendPort(new SubResource().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/frontendPorts/appgwfp80"))
+                        .withProtocol(ApplicationGatewayProtocol.HTTP)))
+                .withSslProfiles(Arrays.asList(new ApplicationGatewaySslProfile().withName("sslProfile1")
+                    .withTrustedClientCertificates(Arrays.asList(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/trustedClientCertificates/clientcert")))
+                    .withSslPolicy(
+                        new ApplicationGatewaySslPolicy().withPolicyType(ApplicationGatewaySslPolicyType.CUSTOM)
+                            .withCipherSuites(
+                                Arrays.asList(ApplicationGatewaySslCipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256))
+                            .withMinProtocolVersion(ApplicationGatewaySslProtocol.TLSV1_1))
+                    .withClientAuthConfiguration(
+                        new ApplicationGatewayClientAuthConfiguration().withVerifyClientCertIssuerDN(true))))
+                .withAdvancedRoutingMaps(Arrays.asList(new ApplicationGatewayAdvancedRoutingMap()
+                    .withProperties(new ApplicationGatewayAdvancedRoutingMapPropertiesFormat()
+                        .withDefaultBackendAddressPool(new SubResource().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"))
+                        .withDefaultBackendHttpSettings(new SubResource().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/appgwbhs"))
+                        .withAdvancedRoutingRules(Arrays.asList(new ApplicationGatewayAdvancedRoutingRule()
+                            .withProperties(new ApplicationGatewayAdvancedRoutingRulePropertiesFormat().withPriority(1)
+                                .withAdvancedRoutingConditionSet(new SubResource().withId(
+                                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/advancedRoutingConditionSets/advancedRoutingConditionSet1"))
+                                .withBackendAddressPool(new SubResource().withId(
+                                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool1"))
+                                .withBackendHttpSettings(new SubResource().withId(
+                                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/appgwbhs")))
+                            .withName("advancedRoutingRule1"))))
+                    .withName("advancedRoutingMap1")))
+                .withRequestRoutingRules(Arrays.asList(new ApplicationGatewayRequestRoutingRuleInner()
+                    .withName("appgwrule")
+                    .withRuleType(ApplicationGatewayRequestRoutingRuleType.BASIC)
+                    .withPriority(10)
+                    .withBackendAddressPool(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendAddressPools/appgwpool"))
+                    .withBackendHttpSettings(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/backendHttpSettingsCollection/appgwbhs"))
+                    .withHttpListener(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/httpListeners/appgwhl"))
+                    .withRewriteRuleSet(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/rewriteRuleSets/rewriteRuleSet1"))
+                    .withAuthConfigs(Arrays.asList(new ApplicationGatewayAuthConfig().withName("boundAuth")
+                        .withAuthenticationPolicy(new SubResource().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/authenticationPolicies/jwtValidationPolicy")))),
+                    new ApplicationGatewayRequestRoutingRuleInner().withName("appgwadvancedroutingrule")
+                        .withRuleType(ApplicationGatewayRequestRoutingRuleType.ADVANCED_ROUTING)
+                        .withPriority(20)
+                        .withHttpListener(new SubResource().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/httpListeners/appgwhttplistener"))
+                        .withAdvancedRoutingMap(new SubResource().withId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/applicationGateways/appgw/advancedRoutingMaps/advancedRoutingMap1"))))
+                .withRewriteRuleSets(
+                    Arrays
+                        .asList(new ApplicationGatewayRewriteRuleSet().withName("rewriteRuleSet1")
+                            .withRewriteRules(Arrays.asList(new ApplicationGatewayRewriteRule()
+                                .withName("Set X-Forwarded-For")
+                                .withRuleSequence(102)
+                                .withConditions(Arrays.asList(new ApplicationGatewayRewriteRuleCondition()
+                                    .withVariable("http_req_Authorization")
+                                    .withPattern("^Bearer")
+                                    .withIgnoreCase(true)
+                                    .withNegate(false)))
+                                .withActionSet(new ApplicationGatewayRewriteRuleActionSet()
+                                    .withRequestHeaderConfigurations(Arrays.asList(
+                                        new ApplicationGatewayHeaderConfiguration().withHeaderName("X-Forwarded-For")
+                                            .withHeaderValue("{var_add_x_forwarded_for_proxy}")))
+                                    .withResponseHeaderConfigurations(
+                                        Arrays.asList(new ApplicationGatewayHeaderConfiguration()
+                                            .withHeaderName("Strict-Transport-Security")
+                                            .withHeaderValue("max-age=31536000")))
+                                    .withUrlConfiguration(
+                                        new ApplicationGatewayUrlConfiguration().withModifiedPath("/abc")))))))
+                .withAdvancedRoutingConditionSets(
+                    Arrays
+                        .asList(
+                            new ApplicationGatewayAdvancedRoutingConditionSet()
+                                .withProperties(
+                                    new ApplicationGatewayAdvancedRoutingConditionSetPropertiesFormat()
+                                        .withRoutingConditions(Arrays.asList(
+                                            new ApplicationGatewayAdvancedRoutingCondition()
+                                                .withConditionType(
+                                                    ApplicationGatewayAdvancedRoutingConditionType.HEADER)
+                                                .withPropertyName("X-Client-Tier")
+                                                .withPropertyValues(Arrays.asList("premium")),
+                                            new ApplicationGatewayAdvancedRoutingCondition()
+                                                .withConditionType(ApplicationGatewayAdvancedRoutingConditionType.PATH)
+                                                .withPropertyValueMatcher(
+                                                    new ApplicationGatewayAdvancedRoutingPropertyValueMatcher()
+                                                        .withPattern("^/api/v2/.*")
+                                                        .withIgnoreCase(true)
+                                                        .withNegate(false)))))
+                                .withName("advancedRoutingConditionSet1")))
+                .withEntraJWTValidationConfigs(
+                    Arrays.asList(new ApplicationGatewayEntraJwtValidationConfig().withName("entraJWTValidationConfig1")
+                        .withUnAuthorizedRequestAction(ApplicationGatewayUnAuthorizedRequestAction.DENY)
+                        .withTenantId("70a036f6-8e4d-4615-bad6-149c02e7720d")
+                        .withClientId("37293f5a-97b3-451d-b786-f532d711c9ff")))
+                .withGlobalConfiguration(new ApplicationGatewayGlobalConfiguration().withEnableRequestBuffering(true)
+                    .withEnableResponseBuffering(true)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/ApplicationGatewayCreateBasicWafV2.json
+     */
+    /**
+     * Sample code: Create Basic_WAF_v2 Application Gateway.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void createBasicWAFV2ApplicationGateway(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getApplicationGateways()
+            .createOrUpdate("rg1", "appgw", new ApplicationGatewayInner().withLocation("eastus")
+                .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
+                        new ManagedServiceIdentityUserAssignedIdentities())))
+                .withSku(new ApplicationGatewaySku().withName(ApplicationGatewaySkuName.BASIC_WAF_V2)
+                    .withTier(ApplicationGatewayTier.BASIC_WAF_V2))
                 .withGatewayIpConfigurations(Arrays.asList(new ApplicationGatewayIpConfigurationInner()
                     .withName("appgwipc")
                     .withSubnet(new SubResource().withId(
@@ -170,6 +478,9 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                             .withHeaderValue("max-age=31536000")))
                                     .withUrlConfiguration(
                                         new ApplicationGatewayUrlConfiguration().withModifiedPath("/abc")))))))
+                .withFirewallPolicy(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/Policy1"))
+                .withReservedCapacity(3)
                 .withEntraJWTValidationConfigs(
                     Arrays.asList(new ApplicationGatewayEntraJwtValidationConfig().withName("entraJWTValidationConfig1")
                         .withUnAuthorizedRequestAction(ApplicationGatewayUnAuthorizedRequestAction.DENY)

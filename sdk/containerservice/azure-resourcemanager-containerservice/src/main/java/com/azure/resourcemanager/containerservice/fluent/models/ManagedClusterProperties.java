@@ -171,6 +171,17 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private KubernetesSupportPlan supportPlan;
 
     /*
+     * Whether to enable FIPS mode at the cluster level. When enabled, this setting enforces FIPS compliance for all
+     * AKS-managed components, such as the node operating system, addons, and [managed containerized
+     * components](https://aka.ms/aks/components/docs). See [Enable cluster-wide FIPS](https://aka.ms/aks/fips) for more
+     * details. When this property is enabled, all node pools in the cluster must also be FIPS-enabled. Although this
+     * property is available in a stable API version, cluster-wide FIPS remains a preview feature. Write requests whose
+     * resulting cluster state has this property set to true require the `Microsoft.ContainerService/EnableFIPSPreview`
+     * subscription feature registration.
+     */
+    private Boolean enableFips;
+
+    /*
      * The network configuration profile.
      */
     private ContainerServiceNetworkProfile networkProfile;
@@ -688,6 +699,38 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      */
     public ManagedClusterProperties withSupportPlan(KubernetesSupportPlan supportPlan) {
         this.supportPlan = supportPlan;
+        return this;
+    }
+
+    /**
+     * Get the enableFips property: Whether to enable FIPS mode at the cluster level. When enabled, this setting
+     * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
+     * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
+     * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
+     * 
+     * @return the enableFips value.
+     */
+    public Boolean enableFips() {
+        return this.enableFips;
+    }
+
+    /**
+     * Set the enableFips property: Whether to enable FIPS mode at the cluster level. When enabled, this setting
+     * enforces FIPS compliance for all AKS-managed components, such as the node operating system, addons, and [managed
+     * containerized components](https://aka.ms/aks/components/docs). See [Enable cluster-wide
+     * FIPS](https://aka.ms/aks/fips) for more details. When this property is enabled, all node pools in the cluster
+     * must also be FIPS-enabled. Although this property is available in a stable API version, cluster-wide FIPS remains
+     * a preview feature. Write requests whose resulting cluster state has this property set to true require the
+     * `Microsoft.ContainerService/EnableFIPSPreview` subscription feature registration.
+     * 
+     * @param enableFips the enableFips value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withEnableFips(Boolean enableFips) {
+        this.enableFips = enableFips;
         return this;
     }
 
@@ -1357,6 +1400,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("nodeResourceGroupProfile", this.nodeResourceGroupProfile);
         jsonWriter.writeBooleanField("enableRBAC", this.enableRbac);
         jsonWriter.writeStringField("supportPlan", this.supportPlan == null ? null : this.supportPlan.toString());
+        jsonWriter.writeBooleanField("enableFIPS", this.enableFips);
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("aadProfile", this.aadProfile);
         jsonWriter.writeJsonField("autoUpgradeProfile", this.autoUpgradeProfile);
@@ -1454,6 +1498,8 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                 } else if ("supportPlan".equals(fieldName)) {
                     deserializedManagedClusterProperties.supportPlan
                         = KubernetesSupportPlan.fromString(reader.getString());
+                } else if ("enableFIPS".equals(fieldName)) {
+                    deserializedManagedClusterProperties.enableFips = reader.getNullable(JsonReader::getBoolean);
                 } else if ("networkProfile".equals(fieldName)) {
                     deserializedManagedClusterProperties.networkProfile
                         = ContainerServiceNetworkProfile.fromJson(reader);

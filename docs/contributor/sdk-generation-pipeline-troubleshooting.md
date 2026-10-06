@@ -131,7 +131,7 @@ please check whether it causes failure, and fix them before apiview.
 > - *generated code*: produced by the generator; API surface may change when the spec or generator changes, which can break compilation.
 > - *customization code*: maintained by SDK developers; commonly wired via `customization-class` and preserved during regeneration with `partial-update: true`.
 >
-> Reference: autorest.java customization-base: https://github.com/Azure/autorest.java/tree/main/customization-base
+> Reference: [TypeSpec Java Customization](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-java-customization.md)
 
 **Prerequisites for customization:** When adding customization code, two options must be set in `tspconfig.yaml`:
 ```yaml

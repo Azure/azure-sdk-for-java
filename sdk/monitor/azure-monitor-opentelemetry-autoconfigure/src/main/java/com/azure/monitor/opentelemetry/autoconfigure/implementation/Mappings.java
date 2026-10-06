@@ -66,6 +66,9 @@ class Mappings {
             case LONG_ARRAY:
             case DOUBLE_ARRAY:
                 return join((List<?>) value);
+
+            case VALUE:
+                break;
         }
         if (unexpectedTypesLogged.add(type)) {
             logger.warning("unexpected attribute type: {}", type);

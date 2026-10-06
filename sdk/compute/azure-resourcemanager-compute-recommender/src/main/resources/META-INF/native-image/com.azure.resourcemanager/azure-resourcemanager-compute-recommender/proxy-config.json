@@ -1,1 +1,1 @@
-[["com.azure.resourcemanager.compute.recommender.implementation.OperationsClientImpl$OperationsService"],["com.azure.resourcemanager.compute.recommender.implementation.SpotPlacementScoresClientImpl$SpotPlacementScoresService"]]
+[["com.azure.resourcemanager.compute.recommender.implementation.OperationsClientImpl$OperationsService"],["com.azure.resourcemanager.compute.recommender.implementation.SkuMixPlacementScoresClientImpl$SkuMixPlacementScoresService"],["com.azure.resourcemanager.compute.recommender.implementation.SpotPlacementScoresClientImpl$SpotPlacementScoresService"]]

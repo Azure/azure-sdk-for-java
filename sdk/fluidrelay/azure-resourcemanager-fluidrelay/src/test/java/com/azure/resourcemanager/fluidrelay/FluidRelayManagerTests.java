@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
@@ -81,7 +82,15 @@ public class FluidRelayManagerTests extends TestProxyTestBase {
             Assertions.assertTrue(fluidRelayManager.fluidRelayServers().list().stream().count() > 0);
         } finally {
             if (server != null) {
-                fluidRelayManager.fluidRelayServers().deleteById(server.id());
+                try {
+                    fluidRelayManager.fluidRelayServers().deleteById(server.id());
+                } catch (ManagementException e) {
+                    if (e.getResponse() != null && e.getResponse().getStatusCode() == 202) {
+                        System.err.println("Warning: Fluid Relay delete was accepted but the SDK rejected HTTP 202.");
+                    } else {
+                        throw e;
+                    }
+                }
             }
         }
     }

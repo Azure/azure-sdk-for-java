@@ -24,6 +24,7 @@ stages:
             path: azure-sdk-build-tools
           - checkout: self
             fetchDepth: 1
+            fetchTags: false
             path: azure-sdk-for-java
 
           - download: current
@@ -45,6 +46,11 @@ stages:
           - download: current
             displayName: 'Download Signed Artifacts'
             artifact: packages-signed
+
+          # Setup Maven mirror settings and authenticate with Azure Artifacts
+          - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+            parameters:
+              SourceDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
 
           # gpg-sign and create the flattened directory for ESRP bulk publish
           # Note: The maven release requires the files to be local GPG signed
@@ -89,7 +95,13 @@ stages:
                 displayName: 'Download Artifact: packages-signed'
                 artifact: packages-signed
                 patterns: ${{artifact.groupId}}/${{artifact.name}}/**
-              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              - checkout: self
+                fetchFilter: tree:0
+                fetchDepth: 0
+                fetchTags: false
+                sparseCheckoutPatterns: /* !/*/ /eng /.config
+                env:
+                  AGENT_SOURCE_CHECKOUT_QUIET: 'true'
               - template: /eng/common/pipelines/templates/steps/retain-run.yml
               - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                 parameters:
@@ -139,13 +151,18 @@ stages:
                 patterns: ${{artifact.groupId}}/${{artifact.name}}/**
               - checkout: azure-sdk-build-tools
                 path: azure-sdk-build-tools
-              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              - checkout: self
+                path: azure-sdk-for-java
+                fetchFilter: tree:0
+                fetchDepth: 0
+                fetchTags: false
+                sparseCheckoutPatterns: /* !/*/ /eng /.config
+                env:
+                  AGENT_SOURCE_CHECKOUT_QUIET: 'true'
+              # Setup Maven mirror settings and authenticate with Azure Artifacts
+              - template: /eng/pipelines/templates/steps/maven-authenticate.yml
                 parameters:
-                  SkipCheckoutNone: true
-                  Repositories:
-                    - Name: Azure/azure-sdk-for-java
-                      Commitish: $(Build.SourceVersion)
-                      WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+                  SourceDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
               - template: tools/gpg/gpg.yml@azure-sdk-build-tools
               # Publish to the azure-sdk-for-java feed.
               - template: /eng/pipelines/templates/steps/java-dev-feed-publishing.yml

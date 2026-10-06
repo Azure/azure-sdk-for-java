@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computefleet.generated;
  */
 public final class FleetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-04-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-01/Fleets_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Fleets_ListByResourceGroup_MaximumSet_Gen.

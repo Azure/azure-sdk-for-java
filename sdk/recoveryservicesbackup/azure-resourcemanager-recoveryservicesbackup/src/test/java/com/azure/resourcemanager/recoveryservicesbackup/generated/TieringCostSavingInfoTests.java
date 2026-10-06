@@ -12,11 +12,11 @@ public final class TieringCostSavingInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TieringCostSavingInfo model = BinaryData.fromString(
-            "{\"objectType\":\"TieringCostSavingInfo\",\"sourceTierSizeReductionInBytes\":955869572885805880,\"targetTierSizeIncreaseInBytes\":291363591184248126,\"retailSourceTierCostPerGBPerMonth\":21.610865525134827,\"retailTargetTierCostPerGBPerMonth\":95.62502560178775}")
+            "{\"objectType\":\"TieringCostSavingInfo\",\"sourceTierSizeReductionInBytes\":5375436957038506450,\"targetTierSizeIncreaseInBytes\":2456794768398423703,\"retailSourceTierCostPerGBPerMonth\":71.6414818811735,\"retailTargetTierCostPerGBPerMonth\":39.83678643707781}")
             .toObject(TieringCostSavingInfo.class);
-        Assertions.assertEquals(955869572885805880L, model.sourceTierSizeReductionInBytes());
-        Assertions.assertEquals(291363591184248126L, model.targetTierSizeIncreaseInBytes());
-        Assertions.assertEquals(21.610865525134827, model.retailSourceTierCostPerGBPerMonth());
-        Assertions.assertEquals(95.62502560178775, model.retailTargetTierCostPerGBPerMonth());
+        Assertions.assertEquals(5375436957038506450L, model.sourceTierSizeReductionInBytes());
+        Assertions.assertEquals(2456794768398423703L, model.targetTierSizeIncreaseInBytes());
+        Assertions.assertEquals(71.6414818811735, model.retailSourceTierCostPerGBPerMonth());
+        Assertions.assertEquals(39.83678643707781, model.retailTargetTierCostPerGBPerMonth());
     }
 }
