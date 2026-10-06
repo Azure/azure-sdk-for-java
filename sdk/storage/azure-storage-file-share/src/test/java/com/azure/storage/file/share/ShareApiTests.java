@@ -1536,8 +1536,8 @@ public class ShareApiTests extends FileShareTestBase {
         try {
             assertEquals(201, response.getStatusCode());
             FileShareTestHelper.assertShareChangeFeedRequestHeaders(response, enabled, retentionInDays);
-            FileShareTestHelper.assertShareChangeFeedProperties(client.getPropertiesWithResponse(null, null),
-                enabled, retentionInDays);
+            FileShareTestHelper.assertShareChangeFeedProperties(client.getPropertiesWithResponse(null, null), enabled,
+                retentionInDays);
         } finally {
             client.delete();
         }
@@ -1558,7 +1558,8 @@ public class ShareApiTests extends FileShareTestBase {
             FileShareTestHelper.assertShareChangeFeedRequestHeaders(response, enabled, retentionInDays);
             FileShareTestHelper.assertShareChangeFeedProperties(client.getPropertiesWithResponse(null, null),
                 enabled == null ? true : enabled,
-                Boolean.FALSE.equals(enabled) ? retentionInDays
+                Boolean.FALSE.equals(enabled)
+                    ? retentionInDays
                     : retentionInDays == null ? Integer.valueOf(7) : retentionInDays);
         } finally {
             client.delete();

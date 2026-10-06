@@ -1194,10 +1194,11 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                 FileShareTestHelper.assertShareChangeFeedRequestHeaders(response, enabled, retentionInDays);
                 return client.getPropertiesWithResponse();
             }))
-                .assertNext(r -> FileShareTestHelper.assertShareChangeFeedProperties(r,
-                    enabled == null ? true : enabled,
-                    Boolean.FALSE.equals(enabled) ? retentionInDays
-                        : retentionInDays == null ? Integer.valueOf(7) : retentionInDays))
+                .assertNext(
+                    r -> FileShareTestHelper.assertShareChangeFeedProperties(r, enabled == null ? true : enabled,
+                        Boolean.FALSE.equals(enabled)
+                            ? retentionInDays
+                            : retentionInDays == null ? Integer.valueOf(7) : retentionInDays))
                 .verifyComplete();
         } finally {
             client.delete().block();
