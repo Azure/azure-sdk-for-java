@@ -102,4 +102,16 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
      */
     @Generated
     public static final ConnectionType REMOTE_TOOL_PREVIEW = fromString("RemoteTool_Preview");
+
+    /**
+     * OpenAPI connection.
+     */
+    @Generated
+    public static final ConnectionType OPEN_API = fromString("OpenAPI");
+
+    /**
+     * Remote agent-to-agent (A2A) connection.
+     */
+    @Generated
+    public static final ConnectionType REMOTE_A2A = fromString("RemoteA2A");
 }

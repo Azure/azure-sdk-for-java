@@ -1,0 +1,16 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.agents.models.EvaluationLevel",
+          "justification": "EvaluationLevel was deprecated and unused by any public API; it is removed in this release. See CHANGELOG.md."
+        }
+      ]
+    }
+  }
+]
