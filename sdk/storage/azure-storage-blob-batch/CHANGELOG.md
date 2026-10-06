@@ -1,16 +1,6 @@
 # Release History
 
-## 12.32.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 12.31.2 (2026-09-15)
+## 12.31.2 (2026-09-14)
 
 ### Bugs Fixed
 - Fixed a header-injection issue where carriage-return (`\r`) or line-feed (`\n`) characters in a batch operation's
@@ -28,10 +18,6 @@
 - Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
 - Upgraded `azure-storage-blob` from `12.35.0` to version `12.35.1`.
 
-## 12.32.0-beta.1 (2026-07-28)
-
-### Features Added
-- Added support for service version 2026-10-06.
 
 ## 12.31.0 (2026-06-11)
 
