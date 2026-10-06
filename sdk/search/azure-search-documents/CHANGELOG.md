@@ -1,57 +1,5 @@
 # Release History
 
-## 12.1.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 12.1.0-beta.2 (2026-08-28)
-
-### Features Added
-
-- Added support for the `2026-08-01-Preview` service version, which is now the default service version.
-- Added File knowledge source file management APIs on `SearchIndexClient`/`SearchIndexAsyncClient`, including
-  `uploadKnowledgeSourceFileMultipart` and `updateKnowledgeSourceFile`, along with the supporting models
-  `FileUploadMetadata`, `ContentFileDetails`, `UploadKnowledgeSourceFileMultipartRequest`,
-  `UpdateKnowledgeSourceFileRequest`, and `FileKnowledgeSourceExtractionMode`.
-- Added knowledge source query hint and boosting models: `SearchIndexKnowledgeSourceQueryHints`,
-  `SearchIndexKnowledgeSourceBoost`, `SearchIndexKnowledgeSourceBoostKind`,
-  `SearchIndexKnowledgeSourceFieldValueBoost`, `SearchIndexKnowledgeSourceMultiWordExpressionBoost`,
-  `SearchIndexKnowledgeSourceFilterHint`, and `KnowledgeSourceResultsProcessing`.
-- Added knowledge base retrieval models `KnowledgeBaseActivityRecordModel`, `KnowledgeBaseQueryHintProcessing`,
-  `KnowledgeBaseRetrieveDefaults`, and `KnowledgeRetrievalAutoReasoningEffort`.
-- Added `EntraAppAuthentication`, `KnowledgeSourceNetworkAccessMode`, `ServedImage`, and `ListingSearchType` models.
-- Added typed server-sent event `retrieveStream` APIs to `KnowledgeBaseRetrievalClient` and
-  `KnowledgeBaseRetrievalAsyncClient`, reusable `ServerSentEvent` and `ServerSentEventListener` models, and event
-  wrappers derived from `KnowledgeBaseRetrievalStreamEvent`, including `UnknownKnowledgeBaseRetrievalStreamEvent` for
-  forward-compatible handling of unrecognized event names.
-
-### Breaking Changes
-
-- `WorkIQKnowledgeSource` now takes a
-  `com.azure.search.documents.indexes.models.WorkIQKnowledgeSourceParameters`.
-- Removed the offset-based `listIndexesWithSelectedProperties(List<String> select, Integer top, Integer skip, Boolean count)`
-  overload from `SearchIndexClient`/`SearchIndexAsyncClient`. Use `listIndexesWithSelectedProperties()` or
-  `listIndexesWithSelectedProperties(List<String> select)`.
-- Changed `listIndexStatsSummary` overload parameters from `(Integer top, Integer skip, Boolean count)` to
-  `(String search, Integer pageSize, ListingSearchType searchType)`.
-- Changed the `KnowledgeBaseRetrievalClient`/`KnowledgeBaseRetrievalAsyncClient` `retrieve` overload from
-  `retrieve(KnowledgeBaseRetrievalOptions, String)` to
-  `retrieve(KnowledgeBaseRetrievalOptions, String querySourceAuthorization, String queryWorkIQSourceAuthorization)`.
-- Replaced `getModelName()` with `getModel().getModelName()` on `KnowledgeBaseModelAnswerSynthesisActivityRecord`,
-  `KnowledgeBaseModelQueryPlanningActivityRecord`, and `KnowledgeBaseModelWebSummarizationActivityRecord`.
-- Removed the `McpServerToolInclusionMode` and `WorkIQAttribution` models.
-
-### Bugs Fixed
-
-- Fixed knowledge source status deserialization for compact synchronization intervals such as `1d` while preserving
-  the existing Java `Duration` API.
-
 ## 12.0.2 (2026-08-18)
 
 ### Other Changes
@@ -61,6 +9,7 @@
 - Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
 - Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
 
+
 ## 12.0.1 (2026-07-01)
 
 ### Other Changes
@@ -69,32 +18,6 @@
 
 - Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
 - Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
-
-
-## 12.1.0-beta.1 (2026-05-28)
-
-### Features Added
-
-- Added support for the `2026-05-01-Preview` service version.
-- Added new knowledge source types: `FabricDataAgentKnowledgeSource`, `FabricOntologyKnowledgeSource`, `FileKnowledgeSource`, `IndexedSharePointKnowledgeSource`, `IndexedSqlKnowledgeSource`, `McpServerKnowledgeSource`, `RemoteSharePointKnowledgeSource`, and `WorkIQKnowledgeSource`.
-- Added MCP server knowledge source types including `McpServerAuthentication`, `McpServerOutputParsing`, and `McpServerTool`.
-- Added knowledge base reference types: `KnowledgeBaseFabricDataAgentReference`, `KnowledgeBaseFabricOntologyReference`, `KnowledgeBaseFileReference`, `KnowledgeBaseIndexedSharePointReference`, `KnowledgeBaseIndexedSqlReference`, `KnowledgeBaseMcpServerReference`, `KnowledgeBaseRemoteSharePointReference`, and `KnowledgeBaseWorkIQReference`.
-- Added `FreshnessPolicy` model for knowledge source freshness configuration.
-- Added `ContentColumnMapping` and `EmbeddingColumnMapping` models.
-- Added `SharePointConnectorAppRegistration` for SharePoint connector authentication.
-- Added `PurviewSensitivityLabelInfo` model.
-- Added `WorkIQAttribution` model.
-- Added `AssetStore` model.
-- Added `failOnError`, `maxOutputDocuments`, and `enableImageServing` properties to knowledge source parameters.
-- Added knowledge source params subtypes: `FabricDataAgentKnowledgeSourceParams`, `FabricOntologyKnowledgeSourceParams`, `FileKnowledgeSourceParams`, `IndexedSharePointKnowledgeSourceParams`, `IndexedSqlKnowledgeSourceParams`, `McpServerKnowledgeSourceParams`, `RemoteSharePointKnowledgeSourceParams`, and `WorkIQKnowledgeSourceParams`.
-- Added `ImageServingStatistics` model for knowledge base image content retrieval.
-
-### Breaking Changes
-
-- Renamed `AIServices` to `AiServices`, including `getAIServices()`/`setAIServices()` to `getAiServices()`/`setAiServices()` on `KnowledgeSourceIngestionParameters`.
-- Renamed `getInputTokens()`/`getOutputTokens()` to `getInputTokensCount()`/`getOutputTokensCount()` on `KnowledgeBaseModelWebSummarizationActivityRecord`.
-- Changed `KnowledgeBaseRetrievalClient` and `KnowledgeBaseRetrievalAsyncClient` `retrieve()` and `retrieveWithResponse()` signatures — client is now scoped to a single knowledge base at construction; `knowledgeBaseName` parameter replaced with `KnowledgeBaseRetrievalOptions`.
-
 
 
 ## 12.0.0 (2026-04-10)

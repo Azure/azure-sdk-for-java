@@ -12,11 +12,8 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.IndexingSchedule;
 import com.azure.search.documents.indexes.models.KnowledgeBaseModel;
 import com.azure.search.documents.indexes.models.KnowledgeSourceContentExtractionMode;
-import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption;
 import com.azure.search.documents.indexes.models.SearchIndexerDataIdentity;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Consolidates all general ingestion settings for knowledge sources.
@@ -53,13 +50,6 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
      */
     @Generated
     private IndexingSchedule ingestionSchedule;
-
-    /*
-     * Optional list of permission types to ingest together with document content. If specified, it will set the indexer
-     * permission options for the data source.
-     */
-    @Generated
-    private List<KnowledgeSourceIngestionPermissionOption> ingestionPermissionOptions;
 
     /*
      * Optional content extraction mode. Default is 'minimal'.
@@ -189,45 +179,6 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
     }
 
     /**
-     * Get the ingestionPermissionOptions property: Optional list of permission types to ingest together with document
-     * content. If specified, it will set the indexer permission options for the data source.
-     *
-     * @return the ingestionPermissionOptions value.
-     */
-    @Generated
-    public List<KnowledgeSourceIngestionPermissionOption> getIngestionPermissionOptions() {
-        return this.ingestionPermissionOptions;
-    }
-
-    /**
-     * Set the ingestionPermissionOptions property: Optional list of permission types to ingest together with document
-     * content. If specified, it will set the indexer permission options for the data source.
-     *
-     * @param ingestionPermissionOptions the ingestionPermissionOptions value to set.
-     * @return the KnowledgeSourceIngestionParameters object itself.
-     */
-    public KnowledgeSourceIngestionParameters
-        setIngestionPermissionOptions(KnowledgeSourceIngestionPermissionOption... ingestionPermissionOptions) {
-        this.ingestionPermissionOptions
-            = (ingestionPermissionOptions == null) ? null : Arrays.asList(ingestionPermissionOptions);
-        return this;
-    }
-
-    /**
-     * Set the ingestionPermissionOptions property: Optional list of permission types to ingest together with document
-     * content. If specified, it will set the indexer permission options for the data source.
-     *
-     * @param ingestionPermissionOptions the ingestionPermissionOptions value to set.
-     * @return the KnowledgeSourceIngestionParameters object itself.
-     */
-    @Generated
-    public KnowledgeSourceIngestionParameters
-        setIngestionPermissionOptions(List<KnowledgeSourceIngestionPermissionOption> ingestionPermissionOptions) {
-        this.ingestionPermissionOptions = ingestionPermissionOptions;
-        return this;
-    }
-
-    /**
      * Get the contentExtractionMode property: Optional content extraction mode. Default is 'minimal'.
      *
      * @return the contentExtractionMode value.
@@ -262,15 +213,9 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
         jsonWriter.writeJsonField("chatCompletionModel", this.chatCompletionModel);
         jsonWriter.writeBooleanField("disableImageVerbalization", this.disableImageVerbalization);
         jsonWriter.writeJsonField("ingestionSchedule", this.ingestionSchedule);
-        jsonWriter.writeArrayField("ingestionPermissionOptions", this.ingestionPermissionOptions,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeStringField("contentExtractionMode",
             this.contentExtractionMode == null ? null : this.contentExtractionMode.toString());
         jsonWriter.writeJsonField("aiServices", this.aiServices);
-        jsonWriter.writeJsonField("assetStore", this.assetStore);
-        jsonWriter.writeJsonField("freshnessPolicy", this.freshnessPolicy);
-        jsonWriter.writeStringField("networkAccessMode",
-            this.networkAccessMode == null ? null : this.networkAccessMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -305,85 +250,17 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
                 } else if ("ingestionSchedule".equals(fieldName)) {
                     deserializedKnowledgeSourceIngestionParameters.ingestionSchedule
                         = IndexingSchedule.fromJson(reader);
-                } else if ("ingestionPermissionOptions".equals(fieldName)) {
-                    List<KnowledgeSourceIngestionPermissionOption> ingestionPermissionOptions = reader
-                        .readArray(reader1 -> KnowledgeSourceIngestionPermissionOption.fromString(reader1.getString()));
-                    deserializedKnowledgeSourceIngestionParameters.ingestionPermissionOptions
-                        = ingestionPermissionOptions;
                 } else if ("contentExtractionMode".equals(fieldName)) {
                     deserializedKnowledgeSourceIngestionParameters.contentExtractionMode
                         = KnowledgeSourceContentExtractionMode.fromString(reader.getString());
                 } else if ("aiServices".equals(fieldName)) {
                     deserializedKnowledgeSourceIngestionParameters.aiServices = AiServices.fromJson(reader);
-                } else if ("assetStore".equals(fieldName)) {
-                    deserializedKnowledgeSourceIngestionParameters.assetStore = AssetStore.fromJson(reader);
-                } else if ("freshnessPolicy".equals(fieldName)) {
-                    deserializedKnowledgeSourceIngestionParameters.freshnessPolicy = FreshnessPolicy.fromJson(reader);
-                } else if ("networkAccessMode".equals(fieldName)) {
-                    deserializedKnowledgeSourceIngestionParameters.networkAccessMode
-                        = KnowledgeSourceNetworkAccessMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedKnowledgeSourceIngestionParameters;
         });
-    }
-
-    /*
-     * Optional asset store configuration for storing extracted assets such as images.
-     */
-    @Generated
-    private AssetStore assetStore;
-
-    /*
-     * Optional freshness policy for biasing retrieval toward newer documents.
-     */
-    @Generated
-    private FreshnessPolicy freshnessPolicy;
-
-    /**
-     * Get the assetStore property: Optional asset store configuration for storing extracted assets such as images.
-     *
-     * @return the assetStore value.
-     */
-    @Generated
-    public AssetStore getAssetStore() {
-        return this.assetStore;
-    }
-
-    /**
-     * Set the assetStore property: Optional asset store configuration for storing extracted assets such as images.
-     *
-     * @param assetStore the assetStore value to set.
-     * @return the KnowledgeSourceIngestionParameters object itself.
-     */
-    @Generated
-    public KnowledgeSourceIngestionParameters setAssetStore(AssetStore assetStore) {
-        this.assetStore = assetStore;
-        return this;
-    }
-
-    /**
-     * Get the freshnessPolicy property: Optional freshness policy for biasing retrieval toward newer documents.
-     *
-     * @return the freshnessPolicy value.
-     */
-    @Generated
-    public FreshnessPolicy getFreshnessPolicy() {
-        return this.freshnessPolicy;
-    }
-
-    /**
-     * Set the freshnessPolicy property: Optional freshness policy for biasing retrieval toward newer documents.
-     *
-     * @param freshnessPolicy the freshnessPolicy value to set.
-     * @return the KnowledgeSourceIngestionParameters object itself.
-     */
-    @Generated
-    public KnowledgeSourceIngestionParameters setFreshnessPolicy(FreshnessPolicy freshnessPolicy) {
-        this.freshnessPolicy = freshnessPolicy;
-        return this;
     }
 
     /*
@@ -411,40 +288,6 @@ public final class KnowledgeSourceIngestionParameters implements JsonSerializabl
     @Generated
     public KnowledgeSourceIngestionParameters setAiServices(AiServices aiServices) {
         this.aiServices = aiServices;
-        return this;
-    }
-
-    /*
-     * Optional network access mode for ingestion. Set to 'private' to run ingestion in a private execution environment
-     * that can reach data sources and dependencies over a private network. Default is 'public'. This is a create-time
-     * setting and cannot be changed after the knowledge source is created.
-     */
-    @Generated
-    private KnowledgeSourceNetworkAccessMode networkAccessMode;
-
-    /**
-     * Get the networkAccessMode property: Optional network access mode for ingestion. Set to 'private' to run ingestion
-     * in a private execution environment that can reach data sources and dependencies over a private network. Default
-     * is 'public'. This is a create-time setting and cannot be changed after the knowledge source is created.
-     *
-     * @return the networkAccessMode value.
-     */
-    @Generated
-    public KnowledgeSourceNetworkAccessMode getNetworkAccessMode() {
-        return this.networkAccessMode;
-    }
-
-    /**
-     * Set the networkAccessMode property: Optional network access mode for ingestion. Set to 'private' to run ingestion
-     * in a private execution environment that can reach data sources and dependencies over a private network. Default
-     * is 'public'. This is a create-time setting and cannot be changed after the knowledge source is created.
-     *
-     * @param networkAccessMode the networkAccessMode value to set.
-     * @return the KnowledgeSourceIngestionParameters object itself.
-     */
-    @Generated
-    public KnowledgeSourceIngestionParameters setNetworkAccessMode(KnowledgeSourceNetworkAccessMode networkAccessMode) {
-        this.networkAccessMode = networkAccessMode;
         return this;
     }
 }

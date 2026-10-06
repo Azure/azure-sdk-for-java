@@ -34,7 +34,7 @@ public final class KnowledgeBaseMessageImageContent extends KnowledgeBaseMessage
      * @param image the image value to set.
      */
     @Generated
-    public KnowledgeBaseMessageImageContent(KnowledgeBaseImageContent image) {
+    private KnowledgeBaseMessageImageContent(KnowledgeBaseImageContent image) {
         this.image = image;
     }
 

@@ -100,8 +100,6 @@ public final class SearchIndexKnowledgeSource extends KnowledgeSource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeStringField("resultsProcessing",
-            getResultsProcessing() == null ? null : getResultsProcessing().toString());
         jsonWriter.writeStringField("@odata.etag", getETag());
         jsonWriter.writeJsonField("encryptionKey", getEncryptionKey());
         jsonWriter.writeJsonField("searchIndexParameters", this.searchIndexParameters);
@@ -123,7 +121,6 @@ public final class SearchIndexKnowledgeSource extends KnowledgeSource {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
-            KnowledgeSourceResultsProcessing resultsProcessing = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
             SearchIndexKnowledgeSourceParameters searchIndexParameters = null;
@@ -135,8 +132,6 @@ public final class SearchIndexKnowledgeSource extends KnowledgeSource {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
-                } else if ("resultsProcessing".equals(fieldName)) {
-                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
@@ -152,21 +147,10 @@ public final class SearchIndexKnowledgeSource extends KnowledgeSource {
             SearchIndexKnowledgeSource deserializedSearchIndexKnowledgeSource
                 = new SearchIndexKnowledgeSource(name, searchIndexParameters);
             deserializedSearchIndexKnowledgeSource.setDescription(description);
-            deserializedSearchIndexKnowledgeSource.setResultsProcessing(resultsProcessing);
             deserializedSearchIndexKnowledgeSource.setETag(eTag);
             deserializedSearchIndexKnowledgeSource.setEncryptionKey(encryptionKey);
             deserializedSearchIndexKnowledgeSource.kind = kind;
             return deserializedSearchIndexKnowledgeSource;
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public SearchIndexKnowledgeSource setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
-        super.setResultsProcessing(resultsProcessing);
-        return this;
     }
 }
