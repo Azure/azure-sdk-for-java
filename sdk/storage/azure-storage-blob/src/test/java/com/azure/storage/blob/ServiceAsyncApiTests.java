@@ -29,7 +29,6 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.StaticWebsite;
-import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
@@ -947,8 +946,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 .then(primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
                     new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())))
                 .flatMap(r -> r.getValue()
-                    .listBlobs(new ListBlobsOptions()
-                        .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML))
+                    .listBlobs(new ListBlobsOptions())
                     .collectList()));
 
         StepVerifier.create(response).assertNext(r -> {

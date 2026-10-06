@@ -8,7 +8,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,8 +69,7 @@ public class SoftDeleteTests extends BlobTestBase {
 
         ListBlobsOptions options
             = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
-                .setPrefix(prefix)
-                .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+                .setPrefix(prefix);
         Iterator<BlobItem> blobs = containerClient.listBlobs(options, null).iterator();
 
         assertEquals(blobClient.getBlobName(), blobs.next().getName());
@@ -84,8 +82,7 @@ public class SoftDeleteTests extends BlobTestBase {
 
         ListBlobsOptions options
             = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
-                .setPrefix(prefix)
-                .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+                .setPrefix(prefix);
         Iterator<BlobItem> blobs = containerClient.listBlobsByHierarchy("", options, null).iterator();
 
         assertEquals(blobClient.getBlobName(), blobs.next().getName());

@@ -49,7 +49,6 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
-import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
@@ -2459,8 +2458,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             PageBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
             return bc.create(512).then(bc.setAccessTier(tier)).then(bc.getProperties()).flatMapMany(r -> {
                 assertEquals(tier, r.getAccessTier());
-                return cc.listBlobs(new ListBlobsOptions()
-                    .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML));
+                return cc.listBlobs(new ListBlobsOptions());
             });
         });
 

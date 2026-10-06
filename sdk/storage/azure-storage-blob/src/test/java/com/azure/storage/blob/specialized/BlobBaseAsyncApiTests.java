@@ -29,7 +29,6 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.RehydratePriority;
-import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
@@ -678,8 +677,7 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         blob1.upload(DATA.getDefaultBinaryData()).then(blob1.setAccessTier(AccessTier.SMART)).block();
         blob2.upload(DATA.getDefaultBinaryData()).then(blob2.setAccessTier(AccessTier.SMART)).block();
 
-        ListBlobsOptions listOptions
-            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+        ListBlobsOptions listOptions = new ListBlobsOptions();
 
         StepVerifier.create(ccAsync.listBlobs(listOptions, null).concatMap(blobItem -> {
             if (blobItem.getName().equals(blobName1) || blobItem.getName().equals(blobName2)) {
@@ -723,8 +721,7 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
             .then(blob2.setAccessTierWithResponse(options))
             .block();
 
-        ListBlobsOptions listOptions
-            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+        ListBlobsOptions listOptions = new ListBlobsOptions();
 
         StepVerifier.create(ccAsync.listBlobs(listOptions, null).concatMap(blobItem -> {
             if (blobItem.getName().equals(blobName1) || blobItem.getName().equals(blobName2)) {

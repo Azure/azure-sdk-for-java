@@ -19,7 +19,6 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PageBlobItem;
-import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
@@ -321,8 +320,7 @@ public class VersioningAsyncTests extends BlobTestBase {
                         .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
                         .flatMap(blobItemV3 -> blobContainerClient
                             .listBlobs(
-                                new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true))
-                                    .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML),
+                                new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)),
                                 null)
                             .collectList()
                             .flatMap(list -> Mono.zip(Mono.just(blobItemV1), Mono.just(blobItemV2),
@@ -353,8 +351,7 @@ public class VersioningAsyncTests extends BlobTestBase {
             .then(blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true))
             .flatMapMany(r -> Flux.zip(
                 blobContainerClient
-                    .listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(false))
-                        .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML), null),
+                    .listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(false)), null),
                 Flux.just(r)));
 
         StepVerifier.create(response)
