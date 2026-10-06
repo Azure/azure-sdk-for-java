@@ -5,14 +5,17 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
+import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
+import com.azure.storage.common.ContentValidationAlgorithm;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -129,6 +132,22 @@ public class AppendBlobClientJavaDocCodeSnippets {
             client.appendBlockWithResponse(data, length, md5, requestConditions, timeout, context)
                 .getValue().getBlobCommittedBlockCount());
         // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-byte-AppendBlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link AppendBlobClient#appendBlockWithResponse(AppendBlobAppendBlockOptions, Duration,
+     * Context)}
+     */
+    public void appendBlockWithResponseOptions() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#AppendBlobAppendBlockOptions-Duration-Context
+        BinaryData data = BinaryData.fromString("data");
+        AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data)
+            .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+        Context context = new Context("key", "value");
+
+        AppendBlobItem item = client.appendBlockWithResponse(options, timeout, context).getValue();
+        System.out.printf("AppendBlob has %d committed blocks%n", item.getBlobCommittedBlockCount());
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#AppendBlobAppendBlockOptions-Duration-Context
     }
 
     /**

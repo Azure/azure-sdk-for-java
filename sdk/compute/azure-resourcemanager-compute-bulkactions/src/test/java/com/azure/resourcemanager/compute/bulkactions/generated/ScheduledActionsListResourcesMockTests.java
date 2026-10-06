@@ -24,7 +24,7 @@ public final class ScheduledActionsListResourcesMockTests {
     @Test
     public void testListResources() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"mmkjsvthnwpztek\",\"id\":\"vmribiat\",\"type\":\"plucfotangcfhnyk\",\"resourceId\":\"cugswvxwlmzqw\",\"notificationSettings\":[{\"destination\":\"xnjmxm\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}]}";
+            = "{\"value\":[{\"name\":\"ftbyrplro\",\"id\":\"kpigqfusu\",\"type\":\"zmkw\",\"resourceId\":\"lsnoxaxmqeqalh\",\"notificationSettings\":[{\"destination\":\"hgwydyynfsv\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class ScheduledActionsListResourcesMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ScheduledActionResource> response
-            = manager.scheduledActions().listResources("vsg", "wohqfzizvu", com.azure.core.util.Context.NONE);
+        PagedIterable<ScheduledActionResource> response = manager.scheduledActions()
+            .listResources("etndnbfqyggagf", "nlgmtrwahzjmu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cugswvxwlmzqw", response.iterator().next().resourceId());
-        Assertions.assertEquals("xnjmxm", response.iterator().next().notificationSettings().get(0).destination());
+        Assertions.assertEquals("lsnoxaxmqeqalh", response.iterator().next().resourceId());
+        Assertions.assertEquals("hgwydyynfsv", response.iterator().next().notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL,
             response.iterator().next().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, response.iterator().next().notificationSettings().get(0).language());
-        Assertions.assertFalse(response.iterator().next().notificationSettings().get(0).disabled());
+        Assertions.assertTrue(response.iterator().next().notificationSettings().get(0).disabled());
     }
 }

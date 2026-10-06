@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appnetwork.generated;
 
 import com.azure.resourcemanager.appnetwork.models.AppLinkMember;
 import com.azure.resourcemanager.appnetwork.models.AppLinkMemberUpdateProperties;
-import com.azure.resourcemanager.appnetwork.models.ConnectivityProfile;
-import com.azure.resourcemanager.appnetwork.models.EastWestGatewayProfile;
+import com.azure.resourcemanager.appnetwork.models.ConnectivityProfileUpdate;
+import com.azure.resourcemanager.appnetwork.models.EastWestGatewayProfileUpdate;
 import com.azure.resourcemanager.appnetwork.models.EastWestGatewayVisibility;
-import com.azure.resourcemanager.appnetwork.models.SelfManagedUpgradeProfile;
+import com.azure.resourcemanager.appnetwork.models.SelfManagedUpgradeProfileUpdate;
 import com.azure.resourcemanager.appnetwork.models.UpgradeMode;
-import com.azure.resourcemanager.appnetwork.models.UpgradeProfile;
+import com.azure.resourcemanager.appnetwork.models.UpgradeProfileUpdate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class AppLinkMembersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/AppLinkMembers_Update.json
+     * x-ms-original-file: 2026-08-01-preview/AppLinkMembers_Update.json
      */
     /**
      * Sample code: AppLinkMembers_Update.
@@ -34,10 +34,12 @@ public final class AppLinkMembersUpdateSamples {
         resource.update()
             .withTags(mapOf("key7952", "fakeTokenPlaceholder"))
             .withProperties(new AppLinkMemberUpdateProperties()
-                .withUpgradeProfile(new UpgradeProfile().withMode(UpgradeMode.SELF_MANAGED)
-                    .withSelfManagedUpgradeProfile(new SelfManagedUpgradeProfile().withVersion("1.26")))
-                .withConnectivityProfile(new ConnectivityProfile().withEastWestGateway(
-                    new EastWestGatewayProfile().withVisibility(EastWestGatewayVisibility.INTERNAL))))
+                .withUpgradeProfile(new UpgradeProfileUpdate().withMode(UpgradeMode.SELF_MANAGED)
+                    .withSelfManagedUpgradeProfile(new SelfManagedUpgradeProfileUpdate().withVersion("1.26")))
+                .withConnectivityProfile(new ConnectivityProfileUpdate()
+                    .withEastWestGateway(
+                        new EastWestGatewayProfileUpdate().withVisibility(EastWestGatewayVisibility.INTERNAL))
+                    .withNetwork("network1")))
             .apply();
     }
 
