@@ -63,7 +63,8 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
 
     private final StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
     private final SessionProvider sessionProvider;
-    private final SessionOptions sessionOptions;
+    private final SessionMode sessionMode;
+    private final String accountName;
     private final Clock clock;
     private final ConcurrentHashMap<String, OffsetDateTime> containerCooldowns = new ConcurrentHashMap<>();
 
@@ -72,7 +73,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
      *
      * @param bearerPolicy the bearer token policy used for non-session requests and fallback.
      * @param sessionProvider the provider used to acquire and manage session credentials.
-     * @param sessionOptions the options that configure session authentication.
+     * @param sessionOptions the options that configure session authentication. Values are captured at construction.
      */
     public SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
         SessionProvider sessionProvider, SessionOptions sessionOptions) {
@@ -84,14 +85,16 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
      *
      * @param bearerPolicy the bearer token policy used for non-session requests and fallback.
      * @param sessionProvider the provider used to acquire and manage session credentials.
-     * @param sessionOptions the options that configure session authentication.
+     * @param sessionOptions the options that configure session authentication. Values are captured at construction.
      * @param clock the clock used for cooldown tracking.
      */
     SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
         SessionProvider sessionProvider, SessionOptions sessionOptions, Clock clock) {
         this.bearerPolicy = Objects.requireNonNull(bearerPolicy, "'bearerPolicy' cannot be null.");
         this.sessionProvider = Objects.requireNonNull(sessionProvider, "'sessionProvider' cannot be null.");
-        this.sessionOptions = Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null.");
+        Objects.requireNonNull(sessionOptions, "'sessionOptions' cannot be null.");
+        this.sessionMode = ModelHelper.resolveSessionMode(sessionOptions.getSessionMode());
+        this.accountName = sessionOptions.getAccountName();
         this.clock = Objects.requireNonNull(clock, "'clock' cannot be null.");
     }
 
@@ -149,7 +152,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     private SessionRequestContext resolveSessionRequest(HttpPipelineCallContext context) {
-        if (ModelHelper.resolveSessionMode(sessionOptions.getSessionMode()) != SessionMode.ENABLED) {
+        if (sessionMode != SessionMode.ENABLED) {
             return null;
         }
 
@@ -167,7 +170,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         }
 
         String containerName = parts.getBlobContainerName();
-        String accountName = getOverrideOrDefault(sessionOptions.getAccountName(), parts.getAccountName());
+        String accountName = getOverrideOrDefault(this.accountName, parts.getAccountName());
 
         if (CoreUtils.isNullOrEmpty(containerName) || CoreUtils.isNullOrEmpty(parts.getBlobName())) {
             return null;

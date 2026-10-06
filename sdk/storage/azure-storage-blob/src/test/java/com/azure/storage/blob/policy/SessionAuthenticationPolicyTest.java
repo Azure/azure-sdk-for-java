@@ -89,9 +89,10 @@ public class SessionAuthenticationPolicyTest {
     @ParameterizedTest
     @EnumSource(SessionMode.class)
     public void policyRespectsSessionModeAsync(SessionMode mode) {
-        policy
-            = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, new SessionOptions().setSessionMode(mode));
+        SessionOptions options = new SessionOptions().setSessionMode(mode);
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, options);
         boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
+        options.setSessionMode(sessionsEnabled ? SessionMode.DISABLED : SessionMode.ENABLED);
         if (sessionsEnabled) {
             when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         }
@@ -108,9 +109,10 @@ public class SessionAuthenticationPolicyTest {
     @ParameterizedTest
     @EnumSource(SessionMode.class)
     public void policyRespectsSessionModeSync(SessionMode mode) {
-        policy
-            = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, new SessionOptions().setSessionMode(mode));
+        SessionOptions options = new SessionOptions().setSessionMode(mode);
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, options);
         boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
+        options.setSessionMode(sessionsEnabled ? SessionMode.DISABLED : SessionMode.ENABLED);
         if (sessionsEnabled) {
             when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
         }
@@ -125,6 +127,43 @@ public class SessionAuthenticationPolicyTest {
         verify(sessionProvider, times(sessionsEnabled ? 1 : 0)).isRequestEligible(any());
         verify(sessionProvider, times(sessionsEnabled ? 1 : 0)).getSession(any());
         verify(bearerPolicy, times(sessionsEnabled ? 0 : 1)).processSync(any(), any());
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "original, original", ", testaccount", "'', testaccount" })
+    public void policyCapturesAccountNameAsync(String accountName, String expectedAccountName) {
+        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ENABLED).setAccountName(accountName);
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, options);
+        options.setAccountName("changed");
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
+
+        StepVerifier.create(buildPipeline(successTransport()).send(blobGetRequest())).assertNext(response -> {
+            assertEquals(200, response.getStatusCode());
+            response.close();
+        }).verifyComplete();
+
+        verify(sessionProvider)
+            .getSessionAsync(argThat(context -> expectedAccountName.equals(context.getAccountName())));
+        verify(bearerPolicy, never()).process(any(), any());
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "original, original", ", testaccount", "'', testaccount" })
+    public void policyCapturesAccountNameSync(String accountName, String expectedAccountName) {
+        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.ENABLED).setAccountName(accountName);
+        policy = new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, options);
+        options.setAccountName("changed");
+        when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
+        HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
+        when(next.processSync()).thenReturn(new MockHttpResponse(null, 200));
+        when(next.clone()).thenReturn(next);
+
+        try (HttpResponse response = policy.processSync(createContext(), next)) {
+            assertEquals(200, response.getStatusCode());
+        }
+
+        verify(sessionProvider).getSession(argThat(context -> expectedAccountName.equals(context.getAccountName())));
+        verify(bearerPolicy, never()).processSync(any(), any());
     }
 
     @ParameterizedTest
