@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.keys.implementation;
 
-import com.azure.security.keyvault.keys.models.ExternalKey;
 import com.azure.security.keyvault.keys.models.KeyAttestation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 
@@ -31,8 +30,6 @@ public final class KeyPropertiesHelper {
         void setHsmPlatform(KeyProperties keyProperties, String hsmPlatform);
 
         void setKeyAttestation(KeyProperties keyProperties, KeyAttestation keyAttestation);
-
-        void setExternalKey(KeyProperties keyProperties, ExternalKey externalKey);
     }
 
     public static void setCreatedOn(KeyProperties keyProperties, OffsetDateTime createdOn) {
@@ -73,10 +70,6 @@ public final class KeyPropertiesHelper {
 
     public static void setKeyAttestation(KeyProperties keyProperties, KeyAttestation keyAttestation) {
         accessor.setKeyAttestation(keyProperties, keyAttestation);
-    }
-
-    public static void setExternalKey(KeyProperties keyProperties, ExternalKey externalKey) {
-        accessor.setExternalKey(keyProperties, externalKey);
     }
 
     public static void setAccessor(KeyPropertiesAccessor accessor) {
