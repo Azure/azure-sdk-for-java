@@ -8,7 +8,7 @@ will focus on side-by-side comparisons for similar operations between the two pa
 
 > **Important:** `com.microsoft.azure:azure-servicebus` (the `com.microsoft.azure.servicebus` package) was retired on
 > September 30, 2026 and no longer receives official support or updates from Microsoft. Applications using this
-> AMQP-based library can continue to function. Migrate to `com.azure:azure-messaging-servicebus` to receive security
+> library can continue to function. Migrate to `com.azure:azure-messaging-servicebus` to receive security
 > updates and bug fixes. See the
 > [retirement announcement](https://techcommunity.microsoft.com/blog/messagingonazureblog/some-azure-service-bus-sdk-libraries-will-be-retired-on-30-september-2026%E2%80%94migrat/3917853).
 
@@ -68,8 +68,7 @@ improvements made to the Azure development experience, such as
  
 
 `com.azure:azure-messaging-servicebus` is the supported replacement for the retired
-`com.microsoft.azure:azure-servicebus` library. The comparisons in this guide retain the old APIs to help you migrate
-existing applications.
+`com.microsoft.azure:azure-servicebus` library.
 
 ### New features
 
