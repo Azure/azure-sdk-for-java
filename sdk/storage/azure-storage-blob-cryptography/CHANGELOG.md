@@ -1,17 +1,15 @@
 # Release History
 
-## 12.35.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixed encrypted downloads to apply the initial blob version lock when request conditions are omitted and to send the
-  generated `If-Match` value in RFC 9110-conformant form.
+## 12.34.3 (2026-10-06)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.35.1` to version `12.35.2`.
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+
 
 ## 12.34.2 (2026-08-26)
 
@@ -31,11 +29,6 @@
 - Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
 - Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
 - Upgraded `azure-storage-blob` from `12.35.0` to version `12.35.1`.
-
-## 12.35.0-beta.1 (2026-07-28)
-
-### Features Added
-- Added support for service version 2026-10-06.
 
 ## 12.34.0 (2026-06-11)
 
@@ -759,3 +752,4 @@ and
 ### Features included in `azure-storage-blob-cryptography`
 - This package supports client side encryption for blob storage.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
+

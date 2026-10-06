@@ -1,14 +1,15 @@
 # Release History
 
-## 12.32.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.31.2 (2026-10-06)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.34.1` to version `12.34.2`.
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+
 
 ## 12.31.1 (2026-08-18)
 
@@ -20,11 +21,6 @@
 - Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
 - Upgraded `azure-storage-common` from `12.34.0` to version `12.34.1`.
 
-## 12.32.0-beta.1 (2026-07-28)
-
-### Features Added
-- Added support for service version 2026-10-06.
-- Added support for `ShareFileClient.listAllRanges()` and `ShareFileClient.listAllRangesDiff()` APIs.
 
 ## 12.31.0 (2026-06-11)
 
@@ -832,11 +828,11 @@ and
 ## 12.0.0-preview.5 (2019-10-31)
 - Renamed FileReference to StorageFileItem
 - Changed response of ShareClient.listFilesAndDirectories FileReference to StorageFileItem
-- FileUploadRangeFromUrlInfo eTag() changed to getETag() and lastModified() changed to getLastModified()
+- FileUploadRangeFromUrlInfo eTag() changed to getETag() and lastModified() changed to getLastModidified()
 - Changed response of FileAsyncClient.download() from Mono<FileDownloadInfo> to Flux<ByteBuffer>
 - Renamed FileAsyncClient.downloadWithPropertiesWithResponse to downloadLoadWithResponse
 - Removed FileAsyncClient.uploadWithResponse(Flux<ByteBuffer>, long, long)
-- Changed response of FileClient.download() from FileDownloadInfo to void
+- Changed response of FileClient.download() from FileDownloadInfo to voif
 - Renamed FileClient.downloadWithPropertiesWithResponse to downloadLoadWithResponse
 - Changed FileClient upload methods to take InputStreams instead of ByteBuffers
 - Removed FileClient.uploadWithResponse(ByteBuffer, long, long)

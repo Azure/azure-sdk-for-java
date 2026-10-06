@@ -15,7 +15,6 @@ import reactor.util.annotation.Nullable;
 /**
  * Default tokenCredentialProvider implementation that provides tokenCredential instance.
  */
-@SuppressWarnings("deprecation")
 public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
 
     private final TokenCredentialProviderOptions options;

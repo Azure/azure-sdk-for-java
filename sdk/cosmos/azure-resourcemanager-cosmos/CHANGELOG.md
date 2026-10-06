@@ -1,14 +1,13 @@
 # Release History
 
-## 2.56.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.55.2 (2026-10-06)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.4`.
+
 
 ## 2.55.1 (2026-08-18)
 
@@ -17,6 +16,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
+
 
 ## 2.55.0 (2026-07-01)
 

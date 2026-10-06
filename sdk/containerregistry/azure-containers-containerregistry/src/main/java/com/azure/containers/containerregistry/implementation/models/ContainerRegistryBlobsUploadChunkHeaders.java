@@ -5,31 +5,25 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/**
- * The ContainerRegistryBlobsUploadChunkHeaders model.
- */
+/** The ContainerRegistryBlobsUploadChunkHeaders model. */
 @Fluent
 public final class ContainerRegistryBlobsUploadChunkHeaders {
     /*
      * The Docker-Upload-UUID property.
      */
-    @Generated
     private String dockerUploadUUID;
 
     /*
      * The Range property.
      */
-    @Generated
     private String range;
 
     /*
      * The Location property.
      */
-    @Generated
     private String location;
 
     private static final HttpHeaderName DOCKER_UPLOAD_UUID = HttpHeaderName.fromString("Docker-Upload-UUID");
@@ -37,7 +31,7 @@ public final class ContainerRegistryBlobsUploadChunkHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ContainerRegistryBlobsUploadChunkHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistryBlobsUploadChunkHeaders(HttpHeaders rawHeaders) {
@@ -48,21 +42,19 @@ public final class ContainerRegistryBlobsUploadChunkHeaders {
 
     /**
      * Get the dockerUploadUUID property: The Docker-Upload-UUID property.
-     * 
+     *
      * @return the dockerUploadUUID value.
      */
-    @Generated
     public String getDockerUploadUUID() {
         return this.dockerUploadUUID;
     }
 
     /**
      * Set the dockerUploadUUID property: The Docker-Upload-UUID property.
-     * 
+     *
      * @param dockerUploadUUID the dockerUploadUUID value to set.
      * @return the ContainerRegistryBlobsUploadChunkHeaders object itself.
      */
-    @Generated
     public ContainerRegistryBlobsUploadChunkHeaders setDockerUploadUUID(String dockerUploadUUID) {
         this.dockerUploadUUID = dockerUploadUUID;
         return this;
@@ -70,21 +62,19 @@ public final class ContainerRegistryBlobsUploadChunkHeaders {
 
     /**
      * Get the range property: The Range property.
-     * 
+     *
      * @return the range value.
      */
-    @Generated
     public String getRange() {
         return this.range;
     }
 
     /**
      * Set the range property: The Range property.
-     * 
+     *
      * @param range the range value to set.
      * @return the ContainerRegistryBlobsUploadChunkHeaders object itself.
      */
-    @Generated
     public ContainerRegistryBlobsUploadChunkHeaders setRange(String range) {
         this.range = range;
         return this;
@@ -92,21 +82,19 @@ public final class ContainerRegistryBlobsUploadChunkHeaders {
 
     /**
      * Get the location property: The Location property.
-     * 
+     *
      * @return the location value.
      */
-    @Generated
     public String getLocation() {
         return this.location;
     }
 
     /**
      * Set the location property: The Location property.
-     * 
+     *
      * @param location the location value to set.
      * @return the ContainerRegistryBlobsUploadChunkHeaders object itself.
      */
-    @Generated
     public ContainerRegistryBlobsUploadChunkHeaders setLocation(String location) {
         this.location = location;
         return this;

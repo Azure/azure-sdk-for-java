@@ -5,7 +5,6 @@
 package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,19 +20,16 @@ public final class ParticipantsCollection implements JsonSerializable<Participan
     /*
      * A collection of participants.
      */
-    @Generated
     private List<RoomParticipant> value;
 
     /*
      * If there are more participants that can be retrieved, the next link will be populated.
      */
-    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of ParticipantsCollection class.
      */
-    @Generated
     public ParticipantsCollection() {
     }
 
@@ -42,7 +38,6 @@ public final class ParticipantsCollection implements JsonSerializable<Participan
      * 
      * @return the value value.
      */
-    @Generated
     public List<RoomParticipant> getValue() {
         return this.value;
     }
@@ -53,38 +48,33 @@ public final class ParticipantsCollection implements JsonSerializable<Participan
      * @param value the value value to set.
      * @return the ParticipantsCollection object itself.
      */
-    @Generated
     public ParticipantsCollection setValue(List<RoomParticipant> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the nextLink property: If there are more participants that can be retrieved, the next link will be populated.
+     * Get the nextLink property: If there are more participants that can be retrieved, the next link will be
+     * populated.
      * 
      * @return the nextLink value.
      */
-    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
 
     /**
-     * Set the nextLink property: If there are more participants that can be retrieved, the next link will be populated.
+     * Set the nextLink property: If there are more participants that can be retrieved, the next link will be
+     * populated.
      * 
      * @param nextLink the nextLink value to set.
      * @return the ParticipantsCollection object itself.
      */
-    @Generated
     public ParticipantsCollection setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,7 +92,6 @@ public final class ParticipantsCollection implements JsonSerializable<Participan
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ParticipantsCollection.
      */
-    @Generated
     public static ParticipantsCollection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ParticipantsCollection deserializedParticipantsCollection = new ParticipantsCollection();

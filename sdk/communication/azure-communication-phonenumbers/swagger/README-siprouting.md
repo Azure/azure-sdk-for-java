@@ -25,7 +25,7 @@ autorest README-siprouting.md --java
 ```yaml
 title: Azure Communication Phone Numbers SIP Routing Service
 tag: package-2023-03
-use: '@autorest/java@4.1.62'
+use: '@autorest/java@4.1.52'
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/communication/data-plane/SipRouting/readme.md
 override-client-name: SipRoutingAdminClient
 custom-types-subpackage: models

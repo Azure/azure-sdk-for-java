@@ -106,7 +106,7 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
      * @param copySize Size of array to copy contents with.
      * @return Total number of bytes read from src.
      */
-    public static int copy(SeekableByteChannel src, OutputStream dst, int copySize) throws IOException {
+    private static int copy(SeekableByteChannel src, OutputStream dst, int copySize) throws IOException {
         int read;
         int totalRead = 0;
         byte[] temp = new byte[copySize];

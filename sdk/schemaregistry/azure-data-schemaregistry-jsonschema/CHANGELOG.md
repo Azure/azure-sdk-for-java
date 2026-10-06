@@ -1,14 +1,14 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.11 (2026-10-06)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-data-schemaregistry` from `1.5.13` to version `1.5.14`.
+
 
 ## 1.0.10 (2026-08-18)
 
@@ -18,6 +18,7 @@
 
 - Upgraded `azure-data-schemaregistry` from `1.5.12` to version `1.5.13`.
 - Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+
 
 ## 1.0.9 (2026-07-01)
 
@@ -38,6 +39,7 @@
 - Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 - Upgraded `azure-data-schemaregistry` from `1.5.10` to version `1.5.11`.
 
+
 ## 1.0.7 (2026-01-29)
 
 ### Other Changes
@@ -46,6 +48,7 @@
 
 - Upgraded `azure-data-schemaregistry` from `1.5.9` to version `1.5.10`.
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
 
 ## 1.0.6 (2025-10-27)
 
@@ -56,6 +59,7 @@
 - Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
 - Upgraded `azure-data-schemaregistry` from `1.5.8` to version `1.5.9`.
 
+
 ## 1.0.5 (2025-09-25)
 
 ### Other Changes
@@ -64,6 +68,7 @@
 
 - Upgraded `azure-data-schemaregistry` from `1.5.7` to version `1.5.8`.
 - Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
 
 ## 1.0.4 (2025-08-21)
 
@@ -74,6 +79,7 @@
 - Upgraded `azure-data-schemaregistry` from `1.5.6` to version `1.5.7`.
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 
+
 ## 1.0.3 (2025-07-29)
 
 ### Other Changes
@@ -82,6 +88,7 @@
 
 - Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
 - Upgraded `azure-data-schemaregistry` from `1.5.5` to version `1.6.0-beta.1`.
+
 
 ## 1.0.2 (2025-06-19)
 
@@ -92,6 +99,7 @@
 - Upgraded `azure-data-schemaregistry` from `1.5.4` to version `1.6.0-beta.1`.
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
 
+
 ## 1.0.1 (2025-03-24)
 
 ### Other Changes
@@ -100,6 +108,7 @@
 
 - Upgraded `azure-core` from `1.52.0` to version `1.55.3`.
 - Upgraded `azure-data-schemaregistry` from `1.5.0` to version `1.6.0-beta.1`.
+
 
 ## 1.0.0 (2024-09-12)
 

@@ -6,7 +6,6 @@ package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,28 +21,24 @@ public final class AlertResultList implements JsonSerializable<AlertResultList> 
     /*
      * The @nextLink property.
      */
-    @Generated
     private String nextLink;
 
     /*
      * The value property.
      */
-    @Generated
     private List<AnomalyAlert> value;
 
     /**
      * Creates an instance of AlertResultList class.
      */
-    @Generated
     public AlertResultList() {
     }
 
     /**
-     * Get the nextLink property: The &#064;nextLink property.
+     * Get the nextLink property: The @nextLink property.
      * 
      * @return the nextLink value.
      */
-    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -53,7 +48,6 @@ public final class AlertResultList implements JsonSerializable<AlertResultList> 
      * 
      * @return the value value.
      */
-    @Generated
     public List<AnomalyAlert> getValue() {
         return this.value;
     }
@@ -64,16 +58,11 @@ public final class AlertResultList implements JsonSerializable<AlertResultList> 
      * @param value the value value to set.
      * @return the AlertResultList object itself.
      */
-    @Generated
     public AlertResultList setValue(List<AnomalyAlert> value) {
         this.value = value;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -90,7 +79,6 @@ public final class AlertResultList implements JsonSerializable<AlertResultList> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AlertResultList.
      */
-    @Generated
     public static AlertResultList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AlertResultList deserializedAlertResultList = new AlertResultList();

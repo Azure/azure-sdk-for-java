@@ -9,10 +9,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.common.ContentValidationAlgorithm;
-import com.azure.storage.common.ValidatableContent;
 import com.azure.storage.common.implementation.StorageImplUtils;
-
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -22,7 +19,7 @@ import java.util.Map;
 /**
  * Extended options that may be passed when uploading a Block Blob in a single request.
  */
-public class BlockBlobSimpleUploadOptions implements ValidatableContent {
+public class BlockBlobSimpleUploadOptions {
     private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
     private final BinaryData data;
@@ -35,7 +32,6 @@ public class BlockBlobSimpleUploadOptions implements ValidatableContent {
     private BlobRequestConditions requestConditions;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
-    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link BlockBlobSimpleUploadOptions}.
@@ -295,31 +291,6 @@ public class BlockBlobSimpleUploadOptions implements ValidatableContent {
      */
     public BlockBlobSimpleUploadOptions setLegalHold(Boolean legalHold) {
         this.legalHold = legalHold;
-        return this;
-    }
-
-    /**
-     * Gets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @return The transfer validation checksum algorithm.
-     */
-    @Override
-    public ContentValidationAlgorithm getContentValidationAlgorithm() {
-        return contentValidationAlgorithm;
-    }
-
-    /**
-     * Sets the algorithm to use for transfer content validation on the request. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
-     * @return The updated options.
-     */
-    @Override
-    public BlockBlobSimpleUploadOptions
-        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
-        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }

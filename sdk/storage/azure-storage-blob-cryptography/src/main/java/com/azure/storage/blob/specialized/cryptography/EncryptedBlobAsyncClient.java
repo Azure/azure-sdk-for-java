@@ -60,7 +60,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES;
@@ -744,19 +744,20 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         if (EncryptedBlobClient.isRangeRequest(range)) {
             return populateRequestConditionsAndContext(requestConditions,
-                finalConditions -> super.downloadStreamWithResponse(range, options, finalConditions,
-                    getRangeContentMd5));
+                () -> super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5));
         } else {
             return super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);
         }
     }
 
     private <T> Mono<T> populateRequestConditionsAndContext(BlobRequestConditions requestConditions,
-        Function<BlobRequestConditions, Mono<T>> downloadCall) {
+        Supplier<Mono<T>> downloadCall) {
         return this.getPropertiesWithResponse(requestConditions).flatMap(response -> {
             BlobRequestConditions requestConditionsFinal
-                = EncryptedBlobClient.applyETagLock(requestConditions, response.getValue().getETag());
-            Mono<T> result = downloadCall.apply(requestConditionsFinal);
+                = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+
+            requestConditionsFinal.setIfMatch(response.getValue().getETag());
+            Mono<T> result = downloadCall.get();
 
             String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(response.getValue().getMetadata());
             if (encryptionDataKey != null) {
@@ -778,7 +779,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<BlobDownloadContentAsyncResponse> downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
         return populateRequestConditionsAndContext(requestConditions,
-            finalConditions -> super.downloadContentWithResponse(options, finalConditions));
+            () -> super.downloadContentWithResponse(options, requestConditions));
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -832,10 +833,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(BlobDownloadToFileOptions options) {
         options.setRequestConditions(
             options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions());
-        return populateRequestConditionsAndContext(options.getRequestConditions(), finalConditions -> {
-            options.setRequestConditions(finalConditions);
-            return super.downloadToFileWithResponse(options);
-        });
+        return populateRequestConditionsAndContext(options.getRequestConditions(),
+            () -> super.downloadToFileWithResponse(options));
     }
 
     /**
