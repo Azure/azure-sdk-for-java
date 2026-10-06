@@ -4,12 +4,13 @@
 package com.azure.messaging.servicebus;
 
 import java.time.Duration;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Demonstrates how to allow an in-flight message handler to finish before closing a processor.
- * Add a message to the queue before running this sample.
+ * Use an empty test queue that is not session-enabled. The sample sends its own message.
  */
 public class ServiceBusProcessorDrainTimeoutSample {
     /**
@@ -19,24 +20,34 @@ public class ServiceBusProcessorDrainTimeoutSample {
      * @throws InterruptedException If the wait for a message is interrupted.
      */
     public static void main(String[] args) throws InterruptedException {
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+        String connectionString = requiredEnvironment("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+        String queueName = requiredEnvironment("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+        String sampleMessageId = UUID.randomUUID().toString();
         CountDownLatch messageStarted = new CountDownLatch(1);
+        CountDownLatch messageCompleted = new CountDownLatch(1);
 
         ServiceBusProcessorClient processor = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .processor()
             .queueName(queueName)
             .disableAutoComplete()
+            // Include all handler work, including retries and delays, plus roughly 25% margin.
             .drainTimeout(Duration.ofSeconds(10))
             .processMessage(context -> {
                 System.out.printf("Processing message %s%n", context.getMessage().getMessageId());
-                messageStarted.countDown();
+                if (sampleMessageId.equals(context.getMessage().getMessageId())) {
+                    messageStarted.countDown();
+                }
                 try {
                     // Simulate work that should finish (including settlement) before close() returns.
                     TimeUnit.SECONDS.sleep(2);
+                    // Lock loss can cause redelivery. Make real work idempotent with deduplication checks or upserts:
+                    // https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement
                     context.complete();
                     System.out.println("Message completed.");
+                    if (sampleMessageId.equals(context.getMessage().getMessageId())) {
+                        messageCompleted.countDown();
+                    }
                 } catch (InterruptedException e) {
                     try {
                         context.abandon();
@@ -49,9 +60,17 @@ public class ServiceBusProcessorDrainTimeoutSample {
             .buildProcessorClient();
 
         try {
+            try (ServiceBusSenderClient sender = new ServiceBusClientBuilder()
+                .connectionString(connectionString)
+                .sender()
+                .queueName(queueName)
+                .buildClient()) {
+                sender.sendMessage(new ServiceBusMessage("Work to finish before shutdown").setMessageId(sampleMessageId));
+            }
+
             processor.start();
             if (!messageStarted.await(30, TimeUnit.SECONDS)) {
-                System.out.println("No message arrived within 30 seconds.");
+                throw new IllegalStateException("The sample message handler did not start within 30 seconds.");
             }
         } finally {
             // close() waits up to the configured drain timeout for active handlers.
@@ -59,5 +78,16 @@ public class ServiceBusProcessorDrainTimeoutSample {
             processor.close();
             System.out.println("Processor closed.");
         }
+        if (messageCompleted.getCount() != 0) {
+            throw new IllegalStateException("The sample message was not settled before processor shutdown.");
+        }
+    }
+
+    private static String requiredEnvironment(String name) {
+        String value = System.getenv(name);
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException("Set " + name + " before running this sample.");
+        }
+        return value;
     }
 }

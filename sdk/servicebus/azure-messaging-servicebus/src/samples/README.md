@@ -44,11 +44,13 @@ connection string value can be obtained by:
 - [Peek at a message][PeekMessageAsyncSample]
 
 To run the [processor drain-timeout sample][ServiceBusProcessorDrainTimeoutSample], set
-`AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING` and `AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME`, then add a message to that
-queue. Run `ServiceBusProcessorDrainTimeoutSample.main`: it waits for a message handler to start, then calls `close()`
-from the main thread. The configured 10-second drain timeout lets the handler finish and settle its message before the
-receiver closes; if it expires, shutdown proceeds anyway. Without an available message, the sample closes after 30
-seconds. The sample uses `close()` to demonstrate the documented drain and resource-cleanup contract.
+`AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING` to a connection string with Send and Listen permissions and
+`AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME` to an empty test queue that is not session-enabled.
+Run `ServiceBusProcessorDrainTimeoutSample.main`: it sends a uniquely identified message, waits for that message's
+handler to start, then calls `close()` from the main thread. The configured 10-second drain timeout lets the handler
+finish and settle its message before the receiver closes; if it expires, shutdown proceeds anyway. The sample fails
+if its handler does not start within 30 seconds or its message is not settled before `close()` returns.
+The sample uses `close()` to demonstrate the documented drain and resource-cleanup contract.
 
 ### Synchronous sending and receiving
 - [Send message batches synchronously][SendMessageBatchSyncSample]
