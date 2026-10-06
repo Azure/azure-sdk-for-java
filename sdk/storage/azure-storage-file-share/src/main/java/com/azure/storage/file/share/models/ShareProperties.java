@@ -169,20 +169,20 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
     private Boolean enableSmbDirectoryLease;
 
     /*
-     * Optional. Supported in version 2026-02-01 and above.
+     * Optional. Supported in version 2026-06-06 and above.
      * Specifies whether change feed is enabled on the share.
      */
     private Boolean enableChangeFeed;
 
     /*
-     * Optional. Supported in version 2026-02-01 and above.
+     * Optional. Supported in version 2026-06-06 and above.
      * The number of days that change feed records are retained on the share. Valid values are between 1 and 365
      * inclusive. Default if not specified is 7 days.
      */
     private Integer changeFeedRetentionInDays;
 
     /*
-     * Optional. Supported in version 2026-02-01 and above. The name of the blob container where the change feed
+     * Optional. Supported in version 2026-06-06 and above. The name of the blob container where the change feed
      * records are stored. The name of the blob container is in the format {@code $fileschangefeed-<guid>}.
      */
     private String changeFeedBlobContainerName;
@@ -846,7 +846,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
     }
 
     /**
-     * Optional. Supported in version 2026-02-01 and above.
+     * Optional. Supported in version 2026-06-06 and above.
      * Specifies whether change feed is enabled on the share.
      * @return the enableChangeFeed value, or {@code null} if not returned by the service.
      */
@@ -855,7 +855,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
     }
 
     /**
-     * Optional. Supported in version 2026-02-01 and above.
+     * Optional. Supported in version 2026-06-06 and above.
      * Specifies whether change feed is enabled on the share.
      * @param enableChangeFeed the enableChangeFeed value to set, or {@code null} if unavailable.
      * @return the ShareProperties object itself.
@@ -866,7 +866,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
     }
 
     /**
-     * Optional. Supported in version 2026-02-01 and above.
+     * Optional. Supported in version 2026-06-06 and above.
      * The number of days that change feed records are retained on the share. Valid values are between 1 and 365
      * inclusive. Default if not specified is 7 days.
      * @return the changeFeedRetentionInDays value, or {@code null} if not returned by the service.
@@ -876,7 +876,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
     }
 
     /**
-     * Optional. Supported in version 2026-02-01 and above.
+     * Optional. Supported in version 2026-06-06 and above.
      * The number of days that change feed records are retained on the share. Valid values are between 1 and 365
      * inclusive. Default if not specified is 7 days.
      * @param changeFeedRetentionInDays the changeFeedRetentionInDays value to set, or {@code null} if unavailable.
@@ -888,7 +888,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
     }
 
     /**
-     * Optional. Supported in version 2026-02-01 and above. The name of the blob container where the change feed
+     * Optional. Supported in version 2026-06-06 and above. The name of the blob container where the change feed
      * records are stored. The name of the blob container is in the format {@code $fileschangefeed-<guid>}.
      * @return the blobContainerForChangeFeed value.
      */
@@ -897,7 +897,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
     }
 
     /**
-     * Optional. Supported in version 2026-02-01 and above. The name of the blob container where the change feed
+     * Optional. Supported in version 2026-06-06 and above. The name of the blob container where the change feed
      * records are stored. The name of the blob container is in the format {@code $fileschangefeed-<guid>}.
      * @param changeFeedBlobContainerName the blobContainerForChangeFeed value to set.
      * @return the ShareProperties object itself.

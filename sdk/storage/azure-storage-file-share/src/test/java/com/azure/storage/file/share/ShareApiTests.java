@@ -1524,7 +1524,7 @@ public class ShareApiTests extends FileShareTestBase {
         premiumFileServiceClient.getShareClient(shareName).delete();
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-06-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#createShareChangeFeedSupplier")
     public void createShareChangeFeed(Boolean enabled, Integer retentionInDays) {
@@ -1543,7 +1543,7 @@ public class ShareApiTests extends FileShareTestBase {
         }
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-06-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#setPropertiesShareChangeFeedSupplier")
     public void setPropertiesShareChangeFeed(Boolean enabled, Integer retentionInDays) {

@@ -282,7 +282,7 @@ public class ShareCreateOptions {
 
     /**
      * Get the enableChangeFeed property:
-     * Optional. Supported in version 2027-03-07 and above. Only applicable for premium file storage accounts.
+     * Optional. Supported in version 2026-06-06 and above. Only applicable for premium file storage accounts.
      * This property enables change feed on the share.
      * @return the enableChangeFeed value.
      */
@@ -292,7 +292,7 @@ public class ShareCreateOptions {
 
     /**
      * Set the enableChangeFeed property:
-     * Optional. Supported in version 2027-03-07 and above. Only applicable for premium file storage accounts.
+     * Optional. Supported in version 2026-06-06 and above. Only applicable for premium file storage accounts.
      * This property enables change feed on the share.
      * @param enableChangeFeed the enableChangeFeed value to set.
      * @return the ShareCreateOptions object itself.
@@ -304,7 +304,7 @@ public class ShareCreateOptions {
 
     /**
      * Get the changeFeedRetentionInDays property:
-     * Optional. Supported in version 2027-03-07 and above. Only applicable for premium file storage accounts.
+     * Optional. Supported in version 2026-06-06 and above. Only applicable for premium file storage accounts.
      * The number of days that change feed records are retained.
      * @return the changeFeedRetentionInDays value.
      */
@@ -314,7 +314,7 @@ public class ShareCreateOptions {
 
     /**
      * Set the changeFeedRetentionInDays property:
-     * Optional. Supported in version 2027-03-07 and above. Only applicable for premium file storage accounts.
+     * Optional. Supported in version 2026-06-06 and above. Only applicable for premium file storage accounts.
      * The number of days that change feed records are retained.
      * @param changeFeedRetentionInDays the changeFeedRetentionInDays value to set.
      * @return the ShareCreateOptions object itself.
