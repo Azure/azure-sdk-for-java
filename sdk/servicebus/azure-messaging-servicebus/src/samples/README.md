@@ -56,12 +56,6 @@ connection string value can be obtained by:
 
 ### Synchronous Administration Client operations
 - [Update queue properties synchronously][AdministrationClientUpdateQueueSample]
-- [Read topic SQL and correlation filter counts][TopicFilterCountsSample]
-
-To run the topic filter-count sample, set `AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING` to a namespace connection
-string with Manage permission and `AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME` to an existing topic, then run
-`TopicFilterCountsSample.main` from your IDE. The sample reads runtime properties; it does not create or change rules.
-The sample uses service API version `2024-05` to read both filter counts.
 
 ### Generate Shared Access Signature
 - [Generate SAS and receive message][ReceiveMessageAsyncUsingSasSample]
@@ -106,7 +100,7 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [ServiceBusReceiverAsyncClientRetrySample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusReceiverAsyncClientRetrySample.java
 [ServiceBusSessionProcessorSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ServiceBusSessionProcessorSample.java
 [AdministrationClientUpdateQueueSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/AdministrationClientUpdateQueueSample.java
-[TopicFilterCountsSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/TopicFilterCountsSample.java
 [ReceiveMessageAsyncUsingSasSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageUsingSasSample.java
 [AdvancedConfigurationSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/AdvancedConfigurationSample.java
+
 
