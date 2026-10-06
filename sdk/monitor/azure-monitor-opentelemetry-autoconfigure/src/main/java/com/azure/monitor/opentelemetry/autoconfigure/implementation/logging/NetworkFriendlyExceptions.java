@@ -5,7 +5,6 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.logging;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import io.netty.handler.ssl.SslHandshakeTimeoutException;
 import org.slf4j.MDC;
 import reactor.util.annotation.Nullable;
 
@@ -132,7 +131,7 @@ public class NetworkFriendlyExceptions {
 
         @Override
         public boolean detect(Throwable error) {
-            if (error instanceof SslHandshakeTimeoutException) {
+            if (isSslHandshakeTimeoutException(error)) {
                 return false;
             }
             // we are getting lots of SSLHandshakeExceptions in app services, and we suspect some may not
@@ -184,6 +183,17 @@ public class NetworkFriendlyExceptions {
                 return "https://" + new URL(url).getHost();
             } catch (MalformedURLException e) {
                 return url;
+            }
+        }
+
+        private static boolean isSslHandshakeTimeoutException(Throwable error) {
+            // Check type for netty SslHandshakeTimeoutException without creating a hard dependency
+            // Catch only ClassNotFoundException so that we do not hide any other kind of linking problem.
+            try {
+                Class<?> sslTimeoutClass = Class.forName("io.netty.handler.ssl.SslHandshakeTimeoutException");
+                return sslTimeoutClass.isInstance(error);
+            } catch (ClassNotFoundException e) {
+                return false;
             }
         }
     }
