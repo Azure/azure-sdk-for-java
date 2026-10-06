@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,37 +14,31 @@ public final class RollUpMethod extends ExpandableStringEnum<RollUpMethod> {
     /**
      * Static value None for RollUpMethod.
      */
-    @Generated
     public static final RollUpMethod NONE = fromString("None");
 
     /**
      * Static value Sum for RollUpMethod.
      */
-    @Generated
     public static final RollUpMethod SUM = fromString("Sum");
 
     /**
      * Static value Max for RollUpMethod.
      */
-    @Generated
     public static final RollUpMethod MAX = fromString("Max");
 
     /**
      * Static value Min for RollUpMethod.
      */
-    @Generated
     public static final RollUpMethod MIN = fromString("Min");
 
     /**
      * Static value Avg for RollUpMethod.
      */
-    @Generated
     public static final RollUpMethod AVG = fromString("Avg");
 
     /**
      * Static value Count for RollUpMethod.
      */
-    @Generated
     public static final RollUpMethod COUNT = fromString("Count");
 
     /**
@@ -53,7 +46,6 @@ public final class RollUpMethod extends ExpandableStringEnum<RollUpMethod> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public RollUpMethod() {
     }
@@ -64,7 +56,6 @@ public final class RollUpMethod extends ExpandableStringEnum<RollUpMethod> {
      * @param name a name to look for.
      * @return the corresponding RollUpMethod.
      */
-    @Generated
     public static RollUpMethod fromString(String name) {
         return fromString(name, RollUpMethod.class);
     }
@@ -74,7 +65,6 @@ public final class RollUpMethod extends ExpandableStringEnum<RollUpMethod> {
      * 
      * @return known RollUpMethod values.
      */
-    @Generated
     public static Collection<RollUpMethod> values() {
         return values(RollUpMethod.class);
     }
