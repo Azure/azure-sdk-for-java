@@ -14,7 +14,10 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Represents a target specifying an Azure AI agent.
+ * A target that identifies an Azure AI agent.
+ *
+ * See [evaluate model or agent
+ * targets](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/cloud-evaluation-targets?tabs=python).
  */
 @Fluent
 public final class AzureAIAgentTarget extends Target {
@@ -26,19 +29,19 @@ public final class AzureAIAgentTarget extends Target {
     private String type = "azure_ai_agent";
 
     /*
-     * The unique identifier of the Azure AI agent.
+     * The name of the Azure AI agent to invoke as the evaluation target.
      */
     @Generated
     private final String name;
 
     /*
-     * The version of the Azure AI agent.
+     * The version of the Azure AI agent. When omitted, the latest version is used.
      */
     @Generated
     private String version;
 
     /*
-     * The parameters used to control the sampling behavior of the agent during text generation.
+     * Optional descriptions of tools available to the agent.
      */
     @Generated
     private List<ToolDescription> toolDescriptions;
@@ -55,7 +58,7 @@ public final class AzureAIAgentTarget extends Target {
     }
 
     /**
-     * Get the name property: The unique identifier of the Azure AI agent.
+     * Get the name property: The name of the Azure AI agent to invoke as the evaluation target.
      *
      * @return the name value.
      */
@@ -65,7 +68,7 @@ public final class AzureAIAgentTarget extends Target {
     }
 
     /**
-     * Get the version property: The version of the Azure AI agent.
+     * Get the version property: The version of the Azure AI agent. When omitted, the latest version is used.
      *
      * @return the version value.
      */
@@ -75,7 +78,7 @@ public final class AzureAIAgentTarget extends Target {
     }
 
     /**
-     * Set the version property: The version of the Azure AI agent.
+     * Set the version property: The version of the Azure AI agent. When omitted, the latest version is used.
      *
      * @param version the version value to set.
      * @return the AzureAIAgentTarget object itself.
@@ -87,8 +90,7 @@ public final class AzureAIAgentTarget extends Target {
     }
 
     /**
-     * Get the toolDescriptions property: The parameters used to control the sampling behavior of the agent during text
-     * generation.
+     * Get the toolDescriptions property: Optional descriptions of tools available to the agent.
      *
      * @return the toolDescriptions value.
      */
@@ -98,8 +100,7 @@ public final class AzureAIAgentTarget extends Target {
     }
 
     /**
-     * Set the toolDescriptions property: The parameters used to control the sampling behavior of the agent during text
-     * generation.
+     * Set the toolDescriptions property: Optional descriptions of tools available to the agent.
      *
      * @param toolDescriptions the toolDescriptions value to set.
      * @return the AzureAIAgentTarget object itself.
@@ -177,7 +178,7 @@ public final class AzureAIAgentTarget extends Target {
     }
 
     /*
-     * The tools property.
+     * Tool definitions made available when invoking the agent.
      */
     @Generated
     private List<BinaryData> tools;

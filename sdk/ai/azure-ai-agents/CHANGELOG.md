@@ -1,17 +1,81 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.7.0 (2026-10-06)
 
 ### Features Added
 
+- Browser automation graduated to general availability. Added `BrowserAutomationTool` and
+  `BrowserAutomationToolboxTool` with the `browser_automation` discriminator, plus
+  `ToolboxToolType.BROWSER_AUTOMATION`. The existing `BrowserAutomationPreviewTool` and
+  `BrowserAutomationPreviewToolboxTool` remain available.
+- Added `estimateOptimizationJob`, `listOptimizationCandidates`, `getOptimizationCandidate`, and
+  `promoteOptimizationCandidate` to `AgentsClient` and `AgentsAsyncClient`, with corresponding protocol methods.
+  Estimates expose call-count and cost bands by stage; candidate listing supports pagination and optional mutation
+  expansion through `AgentOptimizationCandidateExpand`.
+- Added typed agent-optimization configuration for baseline instructions, models, skills, and OpenAI function tools;
+  model search spaces; evaluator initialization parameters; training and validation evaluation sets; and concurrent
+  agent-run limits. `AgentOptimizationConfiguration` supports agent optimization, while
+  `PromptOptimizationConfiguration` supports prompt optimization with steering-prompt context.
+- Added target-completion and user-conversation-simulation evaluation sets with inline or registered-dataset sources.
+  `UserConversationSimulationConfiguration` supports turn limits, conversation repetitions, audio effects, and user
+  interruption behavior. `EvaluationModelConfiguration` supports text and voice model selection and
+  `ModelSamplingParameters`, including a `Long` completion-token limit.
+- Added `FunctionTool.setAsync(...)` and `CustomToolParameter.setAsync(...)` to configure asynchronous tool execution.
+- Added `ImageGenToolModel` values for `gpt-image-2`, `gpt-image-2.5-sunburst`, and `gpt-image-2.5-flare`, including
+  their dated model versions.
+- Added `ApiError.getMisalignment()` to expose structured misalignment details using the OpenAI
+  `ErrorObject.Misalignment` model.
+- Added `VoiceAgentWebSocketConnectionOptions.setTransport(...)` and `getTransport()` to select
+  `VoiceAgentTransport.WEBSOCKET` (the default) or `VoiceAgentTransport.WEBRTC`. WebRTC mode uses the WebSocket for
+  signaling; the SDK does not implement a WebRTC peer connection or media transport.
+
 ### Breaking Changes
+
+- Moved agent-optimization job operations from `BetaAgentsClient` / `BetaAgentsAsyncClient` to
+  `AgentsClient` / `AgentsAsyncClient`. Optimization no longer requires the `AgentsOptimization=V2Preview` header.
+  `BetaAgentsClient` and `BetaAgentsAsyncClient` retain preview agent-generation operations.
+- Replaced the no-argument `AgentOptimizationJob` constructor and `getInputs()` / `setInputs(...)` with
+  `AgentOptimizationJob(AgentOptimizationModelConfiguration, AgentOptimizationConfigurationBase)` and top-level
+  configuration properties. Use `setTargetConfiguration(...)` with
+  `AgentOptimizationFoundryAgentTargetConfiguration` to identify a registered Foundry agent.
+- Replaced the old optimization input hierarchy: `AgentOptimizationJobInputs`, `AgentOptimizationOptions`,
+  `OptimizedAgentIdentifier`, `AgentOptimizationDatasetInput`, `AgentOptimizationDatasetInputType`,
+  `AgentOptimizationInlineDatasetInput`, `AgentOptimizationReferenceDatasetInput`, `AgentOptimizationDatasetItem`,
+  `AgentOptimizationDatasetCriterion`, and `EvaluationLevel` were removed. Use the new optimization configuration,
+  evaluation-set, data-source, and test-case models instead.
+- Optimization job listing now returns `AgentOptimizationJob` instead of `AgentOptimizationJobListItem`.
+  `AgentOptimizationJobProgress` and `AgentOptimizationJob.getProgress()` were removed; use `getRunDuration()` and
+  the job result's candidate summary. `AgentOptimizationJobResult.getBaseline()`, `getBest()`, and `getCandidates()`
+  were replaced by `getCandidateSummary()`, with separate token-usage, latency, and termination-reason accessors.
+  Retrieve candidates through `listOptimizationCandidates(...)`.
+- `AgentOptimizationCandidate` now exposes typed output and nested evaluation details instead of top-level mutations,
+  scores, token averages, and evaluation IDs. Use `getOutput()` and `getEvaluation()`. `PromotionInfo` was replaced by
+  `AgentOptimizationCandidatePromotionInfo`, which exposes the promoted agent through an `AgentReference`.
+- `RealtimeSessionUpdateEvent` now has a single constructor accepting `RealtimeSessionConfigurationBase` and a public
+  `getSession()` accessor. The constructors accepting `RealtimeSessionConfiguration` or
+  `RealtimeTranscriptionSessionConfiguration` and their corresponding `getSessionAs...()` accessors were removed.
+  Pass either concrete session subtype to the new constructor and inspect the subtype returned by `getSession()`.
+- Changed the constructors of `MemoryItem` and `MemoryStoreDefinition` from public to protected. Construct their
+  concrete subtypes instead; deserialization of unknown discriminator values remains supported.
+- Removed the unused public `VoiceAgentFunctionToolType` enum.
 
 ### Bugs Fixed
 
+- Fixed OpenAI clients built from `AgentsClientBuilder` to acquire bearer tokens through the Azure HTTP pipeline.
+  Asynchronous clients now use asynchronous token acquisition instead of calling `TokenCredential.getTokenSync(...)`;
+  synchronous clients continue to use synchronous token acquisition.
+
 ### Other Changes
+
+- Added agent-endpoint configuration samples and optimization samples covering estimates, candidate inspection and
+  promotion, job management, cancellation, and advanced synchronous and asynchronous polling.
+- Updated conversation, tool, and hosted-agent samples, including agent-endpoint routing, asynchronous response
+  handling, session-log streaming, file-search uploads, and OpenAPI project-connection authentication.
+- Regenerated the client from the updated TypeSpec specification.
 
 #### Dependency Updates
 
+- Updated `openai-java` from `4.45.0` to `4.69.0`.
 - Upgraded Netty dependencies from `4.1.137.Final` to `4.1.138.Final`.
 
 ## 2.6.0 (2026-09-22)
