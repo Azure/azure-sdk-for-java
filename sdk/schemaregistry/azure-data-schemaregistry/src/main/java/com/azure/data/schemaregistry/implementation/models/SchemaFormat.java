@@ -4,7 +4,6 @@
 
 package com.azure.data.schemaregistry.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,21 +14,18 @@ public final class SchemaFormat extends ExpandableStringEnum<SchemaFormat> {
     /**
      * Static value application/json; serialization=Avro for SchemaFormat.
      */
-    @Generated
     public static final SchemaFormat APPLICATION_JSON_SERIALIZATION_AVRO
         = fromString("application/json; serialization=Avro");
 
     /**
      * Static value application/json; serialization=Json for SchemaFormat.
      */
-    @Generated
     public static final SchemaFormat APPLICATION_JSON_SERIALIZATION_JSON
         = fromString("application/json; serialization=Json");
 
     /**
      * Static value text/plain; charset=utf-8 for SchemaFormat.
      */
-    @Generated
     public static final SchemaFormat TEXT_PLAIN_CHARSET_UTF8 = fromString("text/plain; charset=utf-8");
 
     /**
@@ -37,7 +33,6 @@ public final class SchemaFormat extends ExpandableStringEnum<SchemaFormat> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public SchemaFormat() {
     }
@@ -48,7 +43,6 @@ public final class SchemaFormat extends ExpandableStringEnum<SchemaFormat> {
      * @param name a name to look for.
      * @return the corresponding SchemaFormat.
      */
-    @Generated
     public static SchemaFormat fromString(String name) {
         return fromString(name, SchemaFormat.class);
     }
@@ -58,7 +52,6 @@ public final class SchemaFormat extends ExpandableStringEnum<SchemaFormat> {
      * 
      * @return known SchemaFormat values.
      */
-    @Generated
     public static Collection<SchemaFormat> values() {
         return values(SchemaFormat.class);
     }
