@@ -99,12 +99,11 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
                 new TestProxySanitizer("x-ms-encryption-key-sha256", ".*", "REDACTED", TestProxySanitizerType.HEADER)));
         }
 
-        // Ignore some portions of the request as they contain random data for cryptography. If-Match is validated by
-        // focused unit tests because older recordings contain legacy unquoted values or omit SDK-generated conditions.
+        // Ignore some portions of the request as they contain random data for cryptography.
         interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
             .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-meta-encryptiondata", "x-ms-encryption-key-sha256",
                 "x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since", "If-Unmodified-Since", "Accept"))
-            .setExcludedHeaders(Arrays.asList("Accept-Language", "Content-Type", "If-Match"))
+            .setExcludedHeaders(Arrays.asList("Accept-Language", "Content-Type"))
             .setQueryOrderingIgnored(true)
             .setIgnoredQueryParameters(Arrays.asList("sv"))));
     }
