@@ -1578,28 +1578,6 @@ public class IndexManagementTests extends SearchTestBase {
         }).verifyComplete();
     }
 
-    @Test
-    public void createIndexWithSensitivityLabelFieldsSync() {
-        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
-            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
-            new SearchField("labelId", SearchFieldDataType.STRING).setSensitivityLabelId(true).setFilterable(true),
-            new SearchField("labelName", SearchFieldDataType.STRING).setSensitivityLabelName(true).setFilterable(true),
-            new SearchField("sourceDoc", SearchFieldDataType.STRING).setSourceDocumentId(true).setFilterable(true))
-                .setPurviewEnabled(true);
-
-        SearchIndex created = client.createIndex(index);
-        indexesToDelete.add(created.getName());
-
-        List<SearchField> fields = created.getFields();
-        SearchField labelIdField = fields.stream().filter(f -> "labelId".equals(f.getName())).findFirst().get();
-        SearchField labelNameField = fields.stream().filter(f -> "labelName".equals(f.getName())).findFirst().get();
-        SearchField sourceDocField = fields.stream().filter(f -> "sourceDoc".equals(f.getName())).findFirst().get();
-
-        assertEquals(true, labelIdField.isSensitivityLabelId());
-        assertEquals(true, labelNameField.isSensitivityLabelName());
-        assertEquals(true, sourceDocField.isSourceDocumentId());
-    }
-
     private List<SearchIndex> createIndexesForPagination(String prefix) {
         List<SearchIndex> indexes = Arrays.asList(createTestIndex(prefix + "-a"), createTestIndex(prefix + "-b"),
             createTestIndex(prefix + "-c"));
@@ -1608,29 +1586,6 @@ public class IndexManagementTests extends SearchTestBase {
             indexesToDelete.add(index.getName());
         });
         return indexes;
-    }
-
-    @Test
-    public void createIndexWithSensitivityLabelFieldsAsync() {
-        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
-            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
-            new SearchField("labelId", SearchFieldDataType.STRING).setSensitivityLabelId(true).setFilterable(true),
-            new SearchField("labelName", SearchFieldDataType.STRING).setSensitivityLabelName(true).setFilterable(true),
-            new SearchField("sourceDoc", SearchFieldDataType.STRING).setSourceDocumentId(true).setFilterable(true))
-                .setPurviewEnabled(true);
-
-        StepVerifier.create(asyncClient.createIndex(index)).assertNext(created -> {
-            indexesToDelete.add(created.getName());
-
-            List<SearchField> fields = created.getFields();
-            SearchField labelIdField = fields.stream().filter(f -> "labelId".equals(f.getName())).findFirst().get();
-            SearchField labelNameField = fields.stream().filter(f -> "labelName".equals(f.getName())).findFirst().get();
-            SearchField sourceDocField = fields.stream().filter(f -> "sourceDoc".equals(f.getName())).findFirst().get();
-
-            assertEquals(true, labelIdField.isSensitivityLabelId());
-            assertEquals(true, labelNameField.isSensitivityLabelName());
-            assertEquals(true, sourceDocField.isSourceDocumentId());
-        }).verifyComplete();
     }
 
     @Test
@@ -1708,20 +1663,4 @@ public class IndexManagementTests extends SearchTestBase {
         }).verifyComplete();
     }
 
-    @Test
-    public void sensitivityLabelFieldsDefaultToNullSync() {
-        SearchIndex index = new SearchIndex(randomIndexName(HOTEL_INDEX_NAME),
-            new SearchField("id", SearchFieldDataType.STRING).setKey(true),
-            new SearchField("content", SearchFieldDataType.STRING).setSearchable(true));
-
-        SearchIndex created = client.createIndex(index);
-        indexesToDelete.add(created.getName());
-
-        SearchField contentField
-            = created.getFields().stream().filter(f -> "content".equals(f.getName())).findFirst().get();
-        assertNull(contentField.isSensitivityLabelId());
-        assertNull(contentField.isSensitivityLabelName());
-        assertNull(contentField.isSourceDocumentId());
-        assertNull(created.getPermissionFilterOption());
-    }
 }

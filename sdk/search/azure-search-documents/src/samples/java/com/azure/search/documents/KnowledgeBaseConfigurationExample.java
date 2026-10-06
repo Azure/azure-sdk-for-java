@@ -10,7 +10,6 @@ import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
 import com.azure.search.documents.indexes.models.AzureOpenAIVectorizerParameters;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeBaseAzureOpenAIModel;
-import com.azure.search.documents.indexes.models.KnowledgeBaseRetrieveDefaults;
 import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -26,8 +25,8 @@ import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBui
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAgenticReasoningActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
-import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalAutoReasoningEffort;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalLowReasoningEffort;
+import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalMediumReasoningEffort;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalOutputMode;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalReasoningEffortKind;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
@@ -46,9 +45,9 @@ import java.util.UUID;
  *
  * <p>Set {@code SEARCH_ENDPOINT}, {@code SEARCH_API_KEY}, {@code SEARCH_OPENAI_ENDPOINT},
  * {@code SEARCH_OPENAI_API_KEY}, {@code SEARCH_OPENAI_DEPLOYMENT_NAME}, and {@code SEARCH_OPENAI_MODEL_NAME}. The
- * deployed model must support automatic reasoning.</p>
+ * deployed model must support knowledge retrieval.</p>
  */
-public class KnowledgeBasePreviewConfigurationExample {
+public class KnowledgeBaseConfigurationExample {
     private static final String SEMANTIC_CONFIGURATION_NAME = "sample-semantic-config";
 
     public static void main(String[] args) {
@@ -95,43 +94,28 @@ public class KnowledgeBasePreviewConfigurationExample {
             // With neither a request nor KB reasoning setting, the service default is low.
             verifyReasoningEffort(retrievalClient.retrieve(createRequest()), KnowledgeRetrievalReasoningEffortKind.LOW);
 
-            KnowledgeBaseRetrieveDefaults retrieveDefaults = new KnowledgeBaseRetrieveDefaults()
-                .setMaxRuntimeInSeconds(30)
-                .setMaxOutputDocuments(5)
-                .setMaxOutputSizeInTokens(6000);
-            knowledgeBase.setRetrievalReasoningEffort(new KnowledgeRetrievalAutoReasoningEffort())
-                .setRetrieveDefaults(retrieveDefaults);
+            knowledgeBase.setRetrievalReasoningEffort(new KnowledgeRetrievalMediumReasoningEffort());
             searchIndexClient.createOrUpdateKnowledgeBase(knowledgeBase);
 
             KnowledgeBase persistedKnowledgeBase = searchIndexClient.getKnowledgeBase(knowledgeBaseName);
-            if (!(persistedKnowledgeBase.getRetrievalReasoningEffort() instanceof KnowledgeRetrievalAutoReasoningEffort)
-                || persistedKnowledgeBase.getRetrieveDefaults() == null
-                || !Integer.valueOf(6000)
-                    .equals(persistedKnowledgeBase.getRetrieveDefaults().getMaxOutputSizeInTokens())) {
-                throw new IllegalStateException("The KB reasoning effort or retrieve defaults weren't persisted.");
+            if (!(persistedKnowledgeBase.getRetrievalReasoningEffort()
+                instanceof KnowledgeRetrievalMediumReasoningEffort)) {
+                throw new IllegalStateException("The KB reasoning effort wasn't persisted.");
             }
 
-            // When the request omits these values, KB auto reasoning and retrieveDefaults apply. Auto chooses the
-            // effective billing effort reported by the activity record.
-            KnowledgeBaseAgenticReasoningActivityRecord automaticReasoning
-                = findReasoningActivity(retrievalClient.retrieve(createRequest()));
-            if (automaticReasoning.getRetrievalReasoningEffort() == null) {
-                throw new IllegalStateException("Automatic reasoning didn't report an effective reasoning effort.");
-            }
+            verifyReasoningEffort(retrievalClient.retrieve(createRequest()),
+                KnowledgeRetrievalReasoningEffortKind.MEDIUM);
 
-            // Request values override the KB values. Note the intentionally different property names:
-            // retrieveDefaults.maxOutputSizeInTokens versus request.maxOutputSize.
+            // Request reasoning overrides the persisted KB setting without changing it.
             KnowledgeBaseRetrievalOptions requestOverride = createRequest()
                 .setRetrievalReasoningEffort(new KnowledgeRetrievalLowReasoningEffort())
                 .setMaxOutputDocuments(2)
-                .setMaxOutputSize(5000);
+                .setMaxOutputSizeInTokens(5000);
             verifyReasoningEffort(retrievalClient.retrieve(requestOverride), KnowledgeRetrievalReasoningEffortKind.LOW);
 
             KnowledgeBase unchangedKnowledgeBase = searchIndexClient.getKnowledgeBase(knowledgeBaseName);
             if (!(unchangedKnowledgeBase.getRetrievalReasoningEffort()
-                instanceof KnowledgeRetrievalAutoReasoningEffort)
-                || !Integer.valueOf(6000)
-                    .equals(unchangedKnowledgeBase.getRetrieveDefaults().getMaxOutputSizeInTokens())) {
+                instanceof KnowledgeRetrievalMediumReasoningEffort)) {
                 throw new IllegalStateException("Request overrides must not modify persisted KB configuration.");
             }
             System.out.println("Verified request > knowledge base > service-default precedence.");
@@ -164,7 +148,7 @@ public class KnowledgeBasePreviewConfigurationExample {
     private static void uploadSampleDocument(SearchClient searchClient) {
         Map<String, Object> document = new LinkedHashMap<>();
         document.put("id", "1");
-        document.put("title", "August product update");
+        document.put("title", "October product update");
         document.put("content", "The latest product update adds knowledge base reasoning improvements.");
         document.put("category", "Product update");
         IndexDocumentsResult result = searchClient.indexDocuments(new IndexDocumentsBatch(
