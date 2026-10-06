@@ -63,8 +63,8 @@ AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
 ``` 
 
 The Agents client library has the following sub-clients which group the different operations that can be performed: 
-- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, including agent optimization. Agent
-  optimization does not require a preview feature header. When `allowPreview(true)` is configured, these clients can
+- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, including agent optimization.
+  When `allowPreview(true)` is configured, these clients can
   also use preview definitions, hosted-agent sessions, session files, and code package operations.
 - `BetaAgentsClient` / `BetaAgentsAsyncClient` **(preview)**: Generate and create agents from high-level prompts.
 - `ResponsesClient` / `ResponsesAsyncClient`: Create responses that require Azure-specific request fields, such as an explicit `AgentReference` or structured inputs. For standard OpenAI Responses API calls through an agent endpoint, use an agent-scoped OpenAI client. See the [OpenAI Responses API documentation][openai_responses_api_docs] for more information.
@@ -143,6 +143,7 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 | `AzureAISearchTool` | Azure AI Search |
 | `AzureFunctionTool` | Azure Functions |
 | `BingGroundingTool` | Bing grounding |
+| `BrowserAutomationTool` | Browser automation |
 | `CaptureStructuredOutputsTool` | Structured output capture |
 | `CodeInterpreterTool` | Code interpreter |
 | `FileSearchTool` | File search |
@@ -215,7 +216,7 @@ response cancellation, client-executed function tools, and optional persisted co
 [Realtime voice-agent WebSocket examples](#realtime-voice-agent-websocket-examples-preview) for complete samples.
 
 Use `VoiceAgentWebSocketConnectionOptions` with `openWebSocketSession` to configure session IDs, agent version
-selection, structured inputs, persistence, buffering, and timeouts. Options are copied when the session is opened, so
+selection, transport, structured inputs, persistence, buffering, and timeouts. Options are copied when the session is opened, so
 later changes do not affect the active session.
 
 ```java
@@ -226,16 +227,18 @@ VoiceAgentWebSocketConnectionOptions options = new VoiceAgentWebSocketConnection
     .setStoreEnabled(true);
 ```
 
-The SDK owns the WebSocket route, API version, authentication scope, transport, and preview feature headers. Endpoint,
+The SDK owns the WebSocket route, API version, and authentication scope. Endpoint,
 credential, service version, configuration-based proxy settings, and `ClientOptions` are reused from
 `AgentsClientBuilder`. Custom HTTP clients, pipelines, policies, and retry settings are rejected when building a
 WebSocket client because the native WebSocket transports cannot apply them.
 
 ### Agent optimization
 
-The preview `BetaAgentsClient` and `BetaAgentsAsyncClient` can create and monitor agent optimization jobs. These jobs
-evaluate an agent against a registered dataset and evaluator, then return scored candidates for instructions, skills,
-tools, or model improvements. Agent optimization is currently in preview and requires an allow-listed Foundry project.
+`AgentsClient` and `AgentsAsyncClient` create and monitor agent optimization jobs.
+Construct `AgentOptimizationJob` with `AgentOptimizationModelConfiguration` and `AgentOptimizationConfiguration`
+(or `PromptOptimizationConfiguration` for prompt optimization). These jobs return scored candidates for instructions,
+skills, tools, or model improvements. Use `estimateOptimizationJob`, `listOptimizationCandidates`,
+`getOptimizationCandidate`, and `promoteOptimizationCandidate` to estimate costs and manage candidates.
 See [Agent optimizer in Foundry Agent Service][agent_optimizer_overview] for the service workflow and the complete
 examples in [AgentOptimizationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/optimization/AgentOptimizationSample.java)
 and [AgentOptimizationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/optimization/AgentOptimizationAsyncSample.java).
@@ -655,13 +658,13 @@ See the full sample in [SharePointGroundingSync.java](https://github.com/Azure/a
 
 ---
 
-##### **Browser Automation (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/browser-automation?pivots=java))
+##### **Browser Automation** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/browser-automation?pivots=java))
 
-Interact with web pages through browser automation:
+Interact with web pages using `BrowserAutomationTool`. For toolbox configuration, use `BrowserAutomationToolboxTool`.
 
 ```java com.azure.ai.agents.define_browser_automation
 // Create browser automation tool with connection configuration
-BrowserAutomationPreviewTool browserTool = new BrowserAutomationPreviewTool(
+BrowserAutomationTool browserTool = new BrowserAutomationTool(
     new BrowserAutomationToolParameters(
         new BrowserAutomationToolConnectionParameters(connectionId)
     )

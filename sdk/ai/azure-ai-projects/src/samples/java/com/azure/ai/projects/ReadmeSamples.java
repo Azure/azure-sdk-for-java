@@ -35,7 +35,7 @@ public final class ReadmeSamples {
         EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
         BetaEvaluationTaxonomiesClient evaluationTaxonomiesClient
             = builder.beta().buildBetaEvaluationTaxonomiesClient();
-        BetaEvaluatorsClient evaluatorsClient = builder.beta().buildBetaEvaluatorsClient();
+        EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
         IndexesClient indexesClient = builder.buildIndexesClient();
         BetaInsightsClient insightsClient = builder.beta().buildBetaInsightsClient();
         BetaModelsClient modelsClient = builder.beta().buildBetaModelsClient();
