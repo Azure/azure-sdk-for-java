@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The mode to create a new HorizonDb cluster.
+ * The mode to create a new HorizonDB cluster.
  */
 public final class CreateModeCluster extends ExpandableStringEnum<CreateModeCluster> {
     /**

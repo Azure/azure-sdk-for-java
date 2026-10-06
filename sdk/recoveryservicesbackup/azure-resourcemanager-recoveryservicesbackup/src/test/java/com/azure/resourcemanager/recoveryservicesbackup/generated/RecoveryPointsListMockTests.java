@@ -25,7 +25,7 @@ public final class RecoveryPointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"NotAvailable\",\"threatInfo\":[{\"threatTitle\":\"hupmomihzbd\",\"threatDescription\":\"xpkcdp\",\"lastUpdatedTime\":\"2021-05-29T14:33:46Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-08-18T08:15:07Z\",\"threatEndTime\":\"2021-05-15T13:41:02Z\",\"threatURI\":\"hflrufssjyghsfx\",\"threatSeverity\":\"Critical\"},{\"threatTitle\":\"ammgmqfmefgv\",\"threatDescription\":\"pd\",\"lastUpdatedTime\":\"2021-09-02T07:42:17Z\",\"threatState\":\"Ignored\",\"threatStartTime\":\"2021-06-16T04:28:37Z\",\"threatEndTime\":\"2021-06-19T04:54:36Z\",\"threatURI\":\"landkdcdjhunhgh\",\"threatSeverity\":\"Informational\"},{\"threatTitle\":\"nrrnquoxsoti\",\"threatDescription\":\"imseobf\",\"lastUpdatedTime\":\"2021-04-26T16:13:49Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-11-30T14:41:28Z\",\"threatEndTime\":\"2021-07-12T16:46:05Z\",\"threatURI\":\"zmmx\",\"threatSeverity\":\"High\"},{\"threatTitle\":\"quzexokjxebjvbz\",\"threatDescription\":\"zabwmvog\",\"lastUpdatedTime\":\"2021-11-23T09:45:11Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-04-06T23:40:55Z\",\"threatEndTime\":\"2021-10-30T07:16:04Z\",\"threatURI\":\"wcehaqidoyzlt\",\"threatSeverity\":\"Critical\"}]},\"tags\":{\"iaeapfs\":\"oqpe\",\"pqqncju\":\"rgdtpeqnacyheqw\",\"ymc\":\"khjoz\"},\"location\":\"bupyv\",\"eTag\":\"vliqiips\",\"id\":\"bsvs\",\"name\":\"aieswhddzy\",\"type\":\"isnuepywyjln\"}]}";
+            = "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"Warning\",\"threatInfo\":[{\"threatTitle\":\"tbgnixxowwzkyfw\",\"threatDescription\":\"piw\",\"lastUpdatedTime\":\"2021-08-14T23:51:50Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-08-28T14:18:59Z\",\"threatEndTime\":\"2021-10-19T01:59:07Z\",\"threatURI\":\"kldmaxxijv\",\"threatSeverity\":\"Critical\"},{\"threatTitle\":\"dgkjgyacwra\",\"threatDescription\":\"kwefc\",\"lastUpdatedTime\":\"2021-06-27T07:32:28Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-03-26T00:02:18Z\",\"threatEndTime\":\"2021-02-03T01:23:38Z\",\"threatURI\":\"wyxqiclad\",\"threatSeverity\":\"Informational\"}]},\"tags\":{\"quvjez\":\"vuqmcbymsfobj\",\"mvpsimioyo\":\"j\",\"clibbfqpsp\":\"glkmiqwnnr\",\"exzgpmnmabedd\":\"ladydgnhautwu\"},\"location\":\"lwgdfpfqfpcvs\",\"eTag\":\"l\",\"id\":\"rvwerfwxbsmtb\",\"name\":\"jj\",\"type\":\"h\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,15 @@ public final class RecoveryPointsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RecoveryPointResource> response = manager.recoveryPoints()
-            .list("xjxjoe", "lqxr", "dknkobe", "tmbozomtzamicbig", "cdgzseznux", "euairaabmdlqjb",
-                com.azure.core.util.Context.NONE);
+            .list("pceeznzangprbf", "xyxz", "bcip", "msexroqr", "dktxfv", "nfee", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ThreatStatus.NOT_AVAILABLE, response.iterator().next().properties().threatStatus());
+        Assertions.assertEquals(ThreatStatus.WARNING, response.iterator().next().properties().threatStatus());
         Assertions.assertEquals(ThreatState.IN_PROGRESS,
             response.iterator().next().properties().threatInfo().get(0).threatState());
         Assertions.assertEquals(ThreatSeverity.CRITICAL,
             response.iterator().next().properties().threatInfo().get(0).threatSeverity());
-        Assertions.assertEquals("oqpe", response.iterator().next().tags().get("iaeapfs"));
-        Assertions.assertEquals("bupyv", response.iterator().next().location());
-        Assertions.assertEquals("vliqiips", response.iterator().next().etag());
+        Assertions.assertEquals("vuqmcbymsfobj", response.iterator().next().tags().get("quvjez"));
+        Assertions.assertEquals("lwgdfpfqfpcvs", response.iterator().next().location());
+        Assertions.assertEquals("l", response.iterator().next().etag());
     }
 }

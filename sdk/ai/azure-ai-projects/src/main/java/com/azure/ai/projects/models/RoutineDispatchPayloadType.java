@@ -11,7 +11,7 @@ import java.util.Collection;
 /**
  * The discriminator values supported for manual routine dispatch payloads.
  */
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class RoutineDispatchPayloadType extends ExpandableStringEnum<RoutineDispatchPayloadType> {
 
     /**

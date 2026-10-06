@@ -23,6 +23,16 @@ public final class RescheduleOperationConstraintKind extends ExpandableStringEnu
     public static final RescheduleOperationConstraintKind BLOCKED_WHILE_RESCHEDULE_OPERATION = fromString("Blocked");
 
     /**
+     * Defines allowed window for rescheduling.
+     */
+    public static final RescheduleOperationConstraintKind RESCHEDULING_WINDOW = fromString("ReschedulingWindow");
+
+    /**
+     * Defines weekend rescheduling restriction.
+     */
+    public static final RescheduleOperationConstraintKind WEEKEND_RESCHEDULING = fromString("WeekendRescheduling");
+
+    /**
      * Creates a new instance of RescheduleOperationConstraintKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

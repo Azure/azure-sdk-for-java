@@ -52,6 +52,16 @@ public final class State extends ExpandableStringEnum<State> {
     public static final State HEALTHY = fromString("Healthy");
 
     /**
+     * Is succeeded.
+     */
+    public static final State SUCCEEDED = fromString("Succeeded");
+
+    /**
+     * Is upgrading.
+     */
+    public static final State UPGRADING = fromString("Upgrading");
+
+    /**
      * Creates a new instance of State value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

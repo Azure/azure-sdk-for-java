@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class FleetManagedNamespacesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FleetManagedNamespaces_Get.json
+     * x-ms-original-file: 2026-06-02-preview/FleetManagedNamespaces_Get.json
      */
     /**
      * Sample code: FleetManagedNamespaces_Get.

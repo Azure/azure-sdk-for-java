@@ -21,7 +21,7 @@ public final class HorizonDbPoolsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"location\":\"uvwbhsqfs\",\"state\":\"Stopping\",\"replicaCount\":540005244,\"version\":\"irx\",\"createMode\":\"Update\",\"provisioningState\":\"Canceled\"},\"tags\":{\"twss\":\"bjf\",\"tpvjzbexilzznfqq\":\"t\",\"taruoujmkcj\":\"vwpm\",\"ervnaenqpehi\":\"wqytjrybnwjewgdr\"},\"id\":\"oygmift\",\"name\":\"nzdndslgna\",\"type\":\"qig\"}";
+            = "{\"properties\":{\"location\":\"xclvit\",\"state\":\"Stopped\",\"replicaCount\":176578322,\"version\":\"osggbhc\",\"createMode\":\"Create\",\"provisioningState\":\"InProgress\"},\"tags\":{\"aljutiiswac\":\"n\",\"fvhqc\":\"fgdkzzew\",\"lvpnpp\":\"a\",\"hdlxyjrxsagafcn\":\"uflrwd\"},\"id\":\"gwq\",\"name\":\"pnedgf\",\"type\":\"cvkcvqvpkeqdcv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class HorizonDbPoolsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HorizonDbPool response = manager.horizonDbPools()
-            .getWithResponse("pe", "wwfbkrvrnsvshq", "ohxcrsbfova", com.azure.core.util.Context.NONE)
+            .getWithResponse("glkfg", "hdneuelfph", "dyhtozfikdowwquu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uvwbhsqfs", response.properties().location());
-        Assertions.assertEquals("bjf", response.tags().get("twss"));
+        Assertions.assertEquals("xclvit", response.properties().location());
+        Assertions.assertEquals("n", response.tags().get("aljutiiswac"));
     }
 }

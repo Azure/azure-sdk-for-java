@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class QuickPulseCoordinatorTest {
     private static final long VERIFY_TIMEOUT_MILLIS = 10000;
@@ -118,6 +119,105 @@ class QuickPulseCoordinatorTest {
         coordinator.stop();
         thread.join(THREAD_JOIN_TIMEOUT_MILLIS);
         assertThat(thread.isAlive()).isFalse();
+    }
+
+    @Test
+    void acceptsSameLiveMetricsDomainRedirect() {
+        QuickPulseDataSender mockSender = Mockito.mock(QuickPulseDataSender.class);
+        QuickPulsePingSender mockPingSender = Mockito.mock(QuickPulsePingSender.class);
+        Mockito.doReturn("https://westus.livediagnostics.monitor.azure.com/")
+            .when(mockPingSender)
+            .getQuickPulseEndpoint();
+
+        QuickPulseCoordinator coordinator = createCoordinator(mockSender, mockPingSender);
+
+        HttpHeaders rawPingHeaders = new HttpHeaders();
+        rawPingHeaders.add(QPS_STATUS_HEADER, "true");
+        rawPingHeaders.add(QPS_SERVICE_ENDPOINT_REDIRECT,
+            "https://eastus.livediagnostics.monitor.azure.com/QuickPulseService.svc/");
+
+        assertThat(coordinator.handleReceivedPingHeaders(new IsSubscribedHeaders(rawPingHeaders)))
+            .isEqualTo(QuickPulseStatus.QP_IS_ON);
+        verify(mockSender).setRedirectEndpointPrefix("https://eastus.livediagnostics.monitor.azure.com/");
+    }
+
+    @Test
+    void acceptsSameHostRedirect() {
+        QuickPulseDataSender mockSender = Mockito.mock(QuickPulseDataSender.class);
+        QuickPulsePingSender mockPingSender = Mockito.mock(QuickPulsePingSender.class);
+        Mockito.doReturn("https://live.example.com/").when(mockPingSender).getQuickPulseEndpoint();
+
+        QuickPulseCoordinator coordinator = createCoordinator(mockSender, mockPingSender);
+
+        HttpHeaders rawPingHeaders = new HttpHeaders();
+        rawPingHeaders.add(QPS_STATUS_HEADER, "true");
+        rawPingHeaders.add(QPS_SERVICE_ENDPOINT_REDIRECT, "https://live.example.com/QuickPulseService.svc/");
+
+        assertThat(coordinator.handleReceivedPingHeaders(new IsSubscribedHeaders(rawPingHeaders)))
+            .isEqualTo(QuickPulseStatus.QP_IS_ON);
+        verify(mockSender).setRedirectEndpointPrefix("https://live.example.com/");
+    }
+
+    @Test
+    void rejectsCrossOriginRedirect() {
+        QuickPulseDataSender mockSender = Mockito.mock(QuickPulseDataSender.class);
+        QuickPulsePingSender mockPingSender = Mockito.mock(QuickPulsePingSender.class);
+        Mockito.doReturn("https://westus.livediagnostics.monitor.azure.com/")
+            .when(mockPingSender)
+            .getQuickPulseEndpoint();
+
+        QuickPulseCoordinator coordinator = createCoordinator(mockSender, mockPingSender);
+
+        HttpHeaders rawPingHeaders = new HttpHeaders();
+        rawPingHeaders.add(QPS_STATUS_HEADER, "true");
+        rawPingHeaders.add(QPS_SERVICE_ENDPOINT_REDIRECT, "https://attacker.invalid/QuickPulseService.svc/");
+
+        assertThat(coordinator.handleReceivedPingHeaders(new IsSubscribedHeaders(rawPingHeaders)))
+            .isEqualTo(QuickPulseStatus.QP_IS_ON);
+        Mockito.verify(mockSender, Mockito.never()).setRedirectEndpointPrefix(any());
+    }
+
+    @Test
+    void rejectsInvalidRedirects() {
+        assertRedirectRejected("http://eastus.livediagnostics.monitor.azure.com/QuickPulseService.svc/");
+        assertRedirectRejected("https://user@eastus.livediagnostics.monitor.azure.com/QuickPulseService.svc/");
+        assertRedirectRejected("https://eastus.livediagnostics.monitor.azure.com:444/QuickPulseService.svc/");
+        assertRedirectRejected(
+            "https://evil.livediagnostics.monitor.azure.com.attacker.invalid/QuickPulseService.svc/");
+        assertRedirectRejected("https://evil.live.example.com/QuickPulseService.svc/");
+    }
+
+    private static void assertRedirectRejected(String redirectLink) {
+        QuickPulseDataSender mockSender = Mockito.mock(QuickPulseDataSender.class);
+        QuickPulsePingSender mockPingSender = Mockito.mock(QuickPulsePingSender.class);
+        Mockito.doReturn("https://westus.livediagnostics.monitor.azure.com/")
+            .when(mockPingSender)
+            .getQuickPulseEndpoint();
+
+        QuickPulseCoordinator coordinator = createCoordinator(mockSender, mockPingSender);
+
+        HttpHeaders rawPingHeaders = new HttpHeaders();
+        rawPingHeaders.add(QPS_STATUS_HEADER, "true");
+        rawPingHeaders.add(QPS_SERVICE_ENDPOINT_REDIRECT, redirectLink);
+
+        assertThat(coordinator.handleReceivedPingHeaders(new IsSubscribedHeaders(rawPingHeaders)))
+            .isEqualTo(QuickPulseStatus.QP_IS_ON);
+        Mockito.verify(mockSender, Mockito.never()).setRedirectEndpointPrefix(any());
+    }
+
+    private static QuickPulseCoordinator createCoordinator(QuickPulseDataSender mockSender,
+        QuickPulsePingSender mockPingSender) {
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
+        QuickPulseCoordinatorInitData initData
+            = new QuickPulseCoordinatorInitDataBuilder().withDataFetcher(mock(QuickPulseDataFetcher.class))
+                .withDataSender(mockSender)
+                .withPingSender(mockPingSender)
+                .withCollector(new QuickPulseDataCollector(configuration))
+                .withWaitBetweenPingsInMillis(10L)
+                .withWaitBetweenPostsInMillis(10L)
+                .withWaitOnErrorInMillis(10L)
+                .build();
+        return new QuickPulseCoordinator(initData);
     }
 
     @Disabled("sporadically failing on CI")

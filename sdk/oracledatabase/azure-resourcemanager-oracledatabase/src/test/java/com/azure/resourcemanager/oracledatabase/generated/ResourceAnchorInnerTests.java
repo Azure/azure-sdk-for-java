@@ -15,21 +15,20 @@ public final class ResourceAnchorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceAnchorInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"linkedCompartmentId\":\"eta\"},\"location\":\"tsxoatftgz\",\"tags\":{\"vefloccsrmozihmi\":\"bs\",\"wtxxpkyjcx\":\"g\",\"ycilrmcaykggnox\":\"jxgrytfmp\",\"pfnznthjtwkj\":\"ztrksxwpndf\"},\"id\":\"osrxuzvoa\",\"name\":\"ktcqio\",\"type\":\"mgbzahgxqdlyrtl\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"linkedCompartmentId\":\"aohdjh\"},\"location\":\"lzok\",\"tags\":{\"atftgzpnpbsw\":\"xpelnjetagltsx\"},\"id\":\"e\",\"name\":\"loccsrmozihm\",\"type\":\"pgawtxxpkyjcxcjx\"}")
             .toObject(ResourceAnchorInner.class);
-        Assertions.assertEquals("tsxoatftgz", model.location());
-        Assertions.assertEquals("bs", model.tags().get("vefloccsrmozihmi"));
+        Assertions.assertEquals("lzok", model.location());
+        Assertions.assertEquals("xpelnjetagltsx", model.tags().get("atftgzpnpbsw"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceAnchorInner model = new ResourceAnchorInner().withLocation("tsxoatftgz")
-            .withTags(mapOf("vefloccsrmozihmi", "bs", "wtxxpkyjcx", "g", "ycilrmcaykggnox", "jxgrytfmp", "pfnznthjtwkj",
-                "ztrksxwpndf"))
+        ResourceAnchorInner model = new ResourceAnchorInner().withLocation("lzok")
+            .withTags(mapOf("atftgzpnpbsw", "xpelnjetagltsx"))
             .withProperties(new ResourceAnchorProperties());
         model = BinaryData.fromObject(model).toObject(ResourceAnchorInner.class);
-        Assertions.assertEquals("tsxoatftgz", model.location());
-        Assertions.assertEquals("bs", model.tags().get("vefloccsrmozihmi"));
+        Assertions.assertEquals("lzok", model.location());
+        Assertions.assertEquals("xpelnjetagltsx", model.tags().get("atftgzpnpbsw"));
     }
 
     // Use "Map.of" if available

@@ -12,11 +12,11 @@ public final class GetDataAnnotationsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetDataAnnotationsResponseInner model = BinaryData.fromString(
-            "{\"entityName\":\"vwzjbhyz\",\"annotations\":[{\"annotationId\":\"rkambt\",\"createdAt\":\"2021-03-11T10:38:35Z\",\"annotationDetails\":{\"eqvldspast\":\"vmnvu\",\"flvestmjlxrrilo\":\"bkkd\",\"kuziycsle\":\"apeewchpxlkt\"},\"description\":\"f\"}],\"nextMarker\":\"tcktyhjtqedcgzu\"}")
+            "{\"entityName\":\"nhxmsi\",\"annotations\":[{\"annotationId\":\"miloxggdufiqndie\",\"createdAt\":\"2021-06-22T17:00:53Z\",\"annotationDetails\":{\"yysfgdot\":\"fjchvc\",\"jeknizshq\":\"ubiipuipwoqonma\",\"b\":\"cimpevfg\"},\"description\":\"rilbywdx\"},{\"annotationId\":\"icc\",\"createdAt\":\"2020-12-26T20:12:03Z\",\"annotationDetails\":{\"qujizdvo\":\"scjfnyns\",\"blgyavutpthj\":\"ytibyow\",\"msksbp\":\"xoi\",\"cgxxlxs\":\"mlqoljx\"},\"description\":\"gcvizqzdwlvwlyou\"},{\"annotationId\":\"gfbkjubdyh\",\"createdAt\":\"2021-12-06T06:26:32Z\",\"annotationDetails\":{\"g\":\"in\",\"tsttktlahbq\":\"wzf\",\"mmqtgqqqxhr\":\"ctxtgzukxi\"},\"description\":\"rxcpjuisavo\"}],\"nextMarker\":\"dzf\"}")
             .toObject(GetDataAnnotationsResponseInner.class);
-        Assertions.assertEquals("vwzjbhyz", model.entityName());
-        Assertions.assertEquals("vmnvu", model.annotations().get(0).annotationDetails().get("eqvldspast"));
-        Assertions.assertEquals("f", model.annotations().get(0).description());
-        Assertions.assertEquals("tcktyhjtqedcgzu", model.nextMarker());
+        Assertions.assertEquals("nhxmsi", model.entityName());
+        Assertions.assertEquals("fjchvc", model.annotations().get(0).annotationDetails().get("yysfgdot"));
+        Assertions.assertEquals("rilbywdx", model.annotations().get(0).description());
+        Assertions.assertEquals("dzf", model.nextMarker());
     }
 }

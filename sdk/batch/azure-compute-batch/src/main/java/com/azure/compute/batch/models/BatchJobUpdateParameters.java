@@ -57,7 +57,7 @@ public final class BatchJobUpdateParameters implements JsonSerializable<BatchJob
      * updated as normal). If omitted, the Job continues to run on its current Pool.
      */
     @Generated
-    private BatchPoolInfo poolInfo;
+    private BatchPoolDetails poolInfo;
 
     /*
      * The action the Batch service should take when all Tasks in the Job are in the completed state. If omitted, the
@@ -208,24 +208,8 @@ public final class BatchJobUpdateParameters implements JsonSerializable<BatchJob
      * @return the poolInfo value.
      */
     @Generated
-    public BatchPoolInfo getPoolInfo() {
+    public BatchPoolDetails getPoolInfo() {
         return this.poolInfo;
-    }
-
-    /**
-     * Set the poolInfo property: The Pool on which the Batch service runs the Job's Tasks. You may change the Pool for
-     * a Job only when the Job is disabled. The Patch Job call will fail if you include the poolInfo element and the Job
-     * is not disabled. If you specify an autoPoolSpecification in the poolInfo, only the keepAlive property of the
-     * autoPoolSpecification can be updated, and then only if the autoPoolSpecification has a poolLifetimeOption of Job
-     * (other job properties can be updated as normal). If omitted, the Job continues to run on its current Pool.
-     *
-     * @param poolInfo the poolInfo value to set.
-     * @return the BatchJobUpdateParameters object itself.
-     */
-    @Generated
-    public BatchJobUpdateParameters setPoolInfo(BatchPoolInfo poolInfo) {
-        this.poolInfo = poolInfo;
-        return this;
     }
 
     /**
@@ -350,7 +334,7 @@ public final class BatchJobUpdateParameters implements JsonSerializable<BatchJob
                 } else if ("constraints".equals(fieldName)) {
                     deserializedBatchJobUpdateParameters.constraints = BatchJobConstraints.fromJson(reader);
                 } else if ("poolInfo".equals(fieldName)) {
-                    deserializedBatchJobUpdateParameters.poolInfo = BatchPoolInfo.fromJson(reader);
+                    deserializedBatchJobUpdateParameters.poolInfo = BatchPoolDetails.fromJson(reader);
                 } else if ("onAllTasksComplete".equals(fieldName)) {
                     deserializedBatchJobUpdateParameters.allTasksCompleteMode
                         = BatchAllTasksCompleteMode.fromString(reader.getString());
@@ -366,5 +350,21 @@ public final class BatchJobUpdateParameters implements JsonSerializable<BatchJob
             }
             return deserializedBatchJobUpdateParameters;
         });
+    }
+
+    /**
+     * Set the poolInfo property: The Pool on which the Batch service runs the Job's Tasks. You may change the Pool for
+     * a Job only when the Job is disabled. The Patch Job call will fail if you include the poolInfo element and the Job
+     * is not disabled. If you specify an autoPoolSpecification in the poolInfo, only the keepAlive property of the
+     * autoPoolSpecification can be updated, and then only if the autoPoolSpecification has a poolLifetimeOption of Job
+     * (other job properties can be updated as normal). If omitted, the Job continues to run on its current Pool.
+     *
+     * @param poolInfo the poolInfo value to set.
+     * @return the BatchJobUpdateParameters object itself.
+     */
+    @Generated
+    public BatchJobUpdateParameters setPoolInfo(BatchPoolDetails poolInfo) {
+        this.poolInfo = poolInfo;
+        return this;
     }
 }

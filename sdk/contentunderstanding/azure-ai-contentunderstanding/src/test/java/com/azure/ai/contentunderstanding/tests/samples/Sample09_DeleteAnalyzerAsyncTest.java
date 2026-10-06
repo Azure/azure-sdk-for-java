@@ -6,11 +6,12 @@ package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
-import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
-import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
-import com.azure.ai.contentunderstanding.models.ContentFieldType;
-import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -39,70 +40,80 @@ public class Sample09_DeleteAnalyzerAsyncTest extends ContentUnderstandingClient
         // First, create a temporary analyzer to delete
         String analyzerId = testResourceNamer.randomName("analyzer_to_delete_", 50);
 
-        Map<String, ContentFieldDefinition> fields = new HashMap<>();
-        ContentFieldDefinition titleDef = new ContentFieldDefinition();
-        titleDef.setType(ContentFieldType.STRING);
-        titleDef.setMethod(GenerationMethod.EXTRACT);
-        titleDef.setDescription("Document title");
-        fields.put("title", titleDef);
-
-        ContentFieldSchema fieldSchema = new ContentFieldSchema();
-        fieldSchema.setName("temp_schema");
-        fieldSchema.setDescription("Temporary schema for deletion demo");
-        fieldSchema.setFields(fields);
-
         Map<String, String> models = new HashMap<>();
-        models.put("completion", "gpt-4.1");
-        models.put("embedding", "text-embedding-3-large");
+        models.put("completion", getModelProfile().getCompletionModel());
 
         ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
-            .setDescription("Temporary analyzer for deletion demo")
-            .setConfig(new ContentAnalyzerConfig().setOcrEnabled(true).setLayoutEnabled(true))
-            .setFieldSchema(fieldSchema)
+            .setDescription("Simple analyzer for deletion example")
+            .setConfig(new ContentAnalyzerConfig().setReturnDetails(true))
             .setModels(models);
 
-        contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, analyzer).last().flatMap(pollResponse -> {
-            if (pollResponse.getStatus().isComplete()) {
-                return pollResponse.getFinalResult();
-            } else {
-                return Mono.error(
-                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-            }
-        }).block();
-        System.out.println("Temporary analyzer created: " + analyzerId);
-
-        // Verify the analyzer exists
-        ContentAnalyzer retrievedAnalyzer = contentUnderstandingAsyncClient.getAnalyzer(analyzerId).block();
-        System.out.println("Verified analyzer exists with ID: " + retrievedAnalyzer.getAnalyzerId());
-
-        // Delete the analyzer
-        contentUnderstandingAsyncClient.deleteAnalyzer(analyzerId).block();
-        System.out.println("Analyzer deleted successfully: " + analyzerId);
-
-        // Verify the analyzer no longer exists
-        boolean analyzerDeleted = false;
+        boolean deleteIssued = false;
         try {
-            contentUnderstandingAsyncClient.getAnalyzer(analyzerId).block();
-        } catch (ResourceNotFoundException e) {
-            analyzerDeleted = true;
-            System.out.println("Confirmed: Analyzer no longer exists");
+            ContentAnalyzer createdAnalyzer
+                = contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, analyzer, true)
+                    .last()
+                    .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                        "Analyzer creation"))
+                    .block();
+            assertNotNull(createdAnalyzer);
+            System.out.println("Temporary analyzer created: " + analyzerId);
+
+            // Verify the analyzer exists
+            Response<BinaryData> getResponse
+                = contentUnderstandingAsyncClient.getAnalyzerWithResponse(analyzerId, new RequestOptions()).block();
+            ContentAnalyzer retrievedAnalyzer = getResponse.getValue().toObject(ContentAnalyzer.class);
+            System.out.println("Verified analyzer exists with ID: " + retrievedAnalyzer.getAnalyzerId());
+
+            // Delete the analyzer
+            contentUnderstandingAsyncClient.deleteAnalyzer(analyzerId).block();
+            deleteIssued = true;
+            System.out.println("Analyzer deleted successfully: " + analyzerId);
+
+            // Verify the analyzer no longer exists
+            HttpResponseException deletionException = org.junit.jupiter.api.Assertions.assertThrows(
+                HttpResponseException.class, () -> contentUnderstandingAsyncClient.getAnalyzer(analyzerId).block());
+            int deletionStatus = deletionException.getResponse().getStatusCode();
+            System.out.println("Confirmed: Analyzer no longer exists (status " + deletionStatus + ")");
+            // END:ContentUnderstandingDeleteAnalyzerAsync
+
+            // BEGIN:Assertion_ContentUnderstandingDeleteAnalyzerAsync
+            assertNotNull(analyzerId, "Analyzer ID should not be null");
+            assertFalse(analyzerId.trim().isEmpty(), "Analyzer ID should not be empty");
+            System.out.println("Analyzer ID verified: " + analyzerId);
+
+            assertNotNull(retrievedAnalyzer, "Retrieved analyzer should not be null before deletion");
+            assertEquals(analyzerId, retrievedAnalyzer.getAnalyzerId(), "Retrieved analyzer ID should match");
+            assertEquals(200, getResponse.getStatusCode(), "Get analyzer response status should be 200");
+            assertEquals("prebuilt-document", retrievedAnalyzer.getBaseAnalyzerId(), "Base analyzer ID should match");
+            assertEquals("Simple analyzer for deletion example", retrievedAnalyzer.getDescription(),
+                "Description should match");
+            assertNotNull(retrievedAnalyzer.getConfig(), "Config should not be null");
+            assertEquals(Boolean.TRUE, retrievedAnalyzer.getConfig().isReturnDetails(), "ReturnDetails should be true");
+            assertNotNull(retrievedAnalyzer.getModels(), "Models should not be null");
+            assertEquals(getModelProfile().getCompletionModel(), retrievedAnalyzer.getModels().get("completion"),
+                "Completion model should match the configured model");
+            System.out.println("Analyzer existence verified before deletion");
+
+            assertTrue(deletionStatus == 404 || deletionStatus == 400,
+                "Deleted analyzer should return 404 or 400, but returned " + deletionStatus);
+            boolean foundDeletedAnalyzer = contentUnderstandingAsyncClient.listAnalyzers()
+                .any(listedAnalyzer -> analyzerId.equals(listedAnalyzer.getAnalyzerId()))
+                .block();
+            assertFalse(foundDeletedAnalyzer, "Deleted analyzer should not appear in the analyzer list");
+            System.out.println("Analyzer deletion verified");
+
+            System.out.println("All analyzer deletion properties validated successfully");
+            // END:Assertion_ContentUnderstandingDeleteAnalyzerAsync
+        } finally {
+            if (!deleteIssued) {
+                try {
+                    contentUnderstandingAsyncClient.deleteAnalyzer(analyzerId).block();
+                } catch (Exception ignored) {
+                    // Preserve the original test failure.
+                }
+            }
         }
-        // END:ContentUnderstandingDeleteAnalyzerAsync
-
-        // BEGIN:Assertion_ContentUnderstandingDeleteAnalyzerAsync
-        assertNotNull(analyzerId, "Analyzer ID should not be null");
-        assertFalse(analyzerId.trim().isEmpty(), "Analyzer ID should not be empty");
-        System.out.println("Analyzer ID verified: " + analyzerId);
-
-        assertNotNull(retrievedAnalyzer, "Retrieved analyzer should not be null before deletion");
-        assertEquals(analyzerId, retrievedAnalyzer.getAnalyzerId(), "Retrieved analyzer ID should match");
-        System.out.println("Analyzer existence verified before deletion");
-
-        assertTrue(analyzerDeleted, "Analyzer should be deleted and not retrievable");
-        System.out.println("Analyzer deletion verified");
-
-        System.out.println("All analyzer deletion properties validated successfully");
-        // END:Assertion_ContentUnderstandingDeleteAnalyzerAsync
     }
 
     @Test
@@ -122,5 +133,15 @@ public class Sample09_DeleteAnalyzerAsyncTest extends ContentUnderstandingClient
         }
 
         System.out.println("Non-existent analyzer deletion behavior verified (SDK allows idempotent deletes)");
+    }
+
+    private static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
     }
 }

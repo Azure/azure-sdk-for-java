@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class EntitiesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Entities_Get.json
+     * x-ms-original-file: 2026-09-01-preview/Entities_Get.json
      */
     /**
      * Sample code: Entities_Get.

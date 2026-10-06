@@ -13,19 +13,19 @@ public final class FilterDevicesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FilterDevices model = BinaryData.fromString(
-            "{\"bareMetalMachineNames\":[\"npwzcjaes\",\"vvsccyajguq\",\"hwyg\",\"lvdnkfx\"],\"rackNames\":[\"mdwzrmuhapfcqdps\",\"xqv\",\"svuo\",\"mgccelvezrypq\"]}")
+            "{\"bareMetalMachineNames\":[\"tmdvypgikdgs\",\"ywkbirryuzhlhkjo\"],\"rackNames\":[\"qqaatjinrvgou\",\"mfiibfggj\",\"ool\",\"rwxkvtkkgl\"]}")
             .toObject(FilterDevices.class);
-        Assertions.assertEquals("npwzcjaes", model.bareMetalMachineNames().get(0));
-        Assertions.assertEquals("mdwzrmuhapfcqdps", model.rackNames().get(0));
+        Assertions.assertEquals("tmdvypgikdgs", model.bareMetalMachineNames().get(0));
+        Assertions.assertEquals("qqaatjinrvgou", model.rackNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FilterDevices model = new FilterDevices()
-            .withBareMetalMachineNames(Arrays.asList("npwzcjaes", "vvsccyajguq", "hwyg", "lvdnkfx"))
-            .withRackNames(Arrays.asList("mdwzrmuhapfcqdps", "xqv", "svuo", "mgccelvezrypq"));
+        FilterDevices model
+            = new FilterDevices().withBareMetalMachineNames(Arrays.asList("tmdvypgikdgs", "ywkbirryuzhlhkjo"))
+                .withRackNames(Arrays.asList("qqaatjinrvgou", "mfiibfggj", "ool", "rwxkvtkkgl"));
         model = BinaryData.fromObject(model).toObject(FilterDevices.class);
-        Assertions.assertEquals("npwzcjaes", model.bareMetalMachineNames().get(0));
-        Assertions.assertEquals("mdwzrmuhapfcqdps", model.rackNames().get(0));
+        Assertions.assertEquals("tmdvypgikdgs", model.bareMetalMachineNames().get(0));
+        Assertions.assertEquals("qqaatjinrvgou", model.rackNames().get(0));
     }
 }

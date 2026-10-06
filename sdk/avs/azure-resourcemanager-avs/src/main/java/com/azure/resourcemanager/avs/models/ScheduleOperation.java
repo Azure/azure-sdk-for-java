@@ -36,6 +36,11 @@ public final class ScheduleOperation extends MaintenanceManagementOperation {
      */
     private List<ScheduleOperationConstraint> constraints;
 
+    /*
+     * Recommendations for scheduling maintenance
+     */
+    private MaintenanceRecommendation recommendation;
+
     /**
      * Creates an instance of ScheduleOperation class.
      */
@@ -80,6 +85,15 @@ public final class ScheduleOperation extends MaintenanceManagementOperation {
     }
 
     /**
+     * Get the recommendation property: Recommendations for scheduling maintenance.
+     * 
+     * @return the recommendation value.
+     */
+    public MaintenanceRecommendation recommendation() {
+        return this.recommendation;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -88,6 +102,9 @@ public final class ScheduleOperation extends MaintenanceManagementOperation {
     public void validate() {
         if (constraints() != null) {
             constraints().forEach(e -> e.validate());
+        }
+        if (recommendation() != null) {
+            recommendation().validate();
         }
     }
 
@@ -127,6 +144,8 @@ public final class ScheduleOperation extends MaintenanceManagementOperation {
                     List<ScheduleOperationConstraint> constraints
                         = reader.readArray(reader1 -> ScheduleOperationConstraint.fromJson(reader1));
                     deserializedScheduleOperation.constraints = constraints;
+                } else if ("recommendation".equals(fieldName)) {
+                    deserializedScheduleOperation.recommendation = MaintenanceRecommendation.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

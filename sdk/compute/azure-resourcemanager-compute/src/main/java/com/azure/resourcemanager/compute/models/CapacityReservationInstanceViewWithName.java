@@ -23,6 +23,12 @@ public final class CapacityReservationInstanceViewWithName extends CapacityReser
     private String name;
 
     /*
+     * The reservation state information for a capacity reservation, this detail is primarily provided for Future
+     * capacity reservations. Minimum API version: 2026-04-01.
+     */
+    private CapacityReservationStateInfo reservationStateInfo;
+
+    /*
      * The resource status information.
      */
     private List<InstanceViewStatus> statuses;
@@ -45,6 +51,17 @@ public final class CapacityReservationInstanceViewWithName extends CapacityReser
      */
     public String name() {
         return this.name;
+    }
+
+    /**
+     * Get the reservationStateInfo property: The reservation state information for a capacity reservation, this detail
+     * is primarily provided for Future capacity reservations. Minimum API version: 2026-04-01.
+     * 
+     * @return the reservationStateInfo value.
+     */
+    @Override
+    public CapacityReservationStateInfo reservationStateInfo() {
+        return this.reservationStateInfo;
     }
 
     /**
@@ -80,6 +97,9 @@ public final class CapacityReservationInstanceViewWithName extends CapacityReser
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+        if (reservationStateInfo() != null) {
+            reservationStateInfo().validate();
+        }
     }
 
     /**
@@ -90,6 +110,7 @@ public final class CapacityReservationInstanceViewWithName extends CapacityReser
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("utilizationInfo", utilizationInfo());
         jsonWriter.writeArrayField("statuses", statuses(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("reservationStateInfo", reservationStateInfo());
         return jsonWriter.writeEndObject();
     }
 
@@ -116,6 +137,9 @@ public final class CapacityReservationInstanceViewWithName extends CapacityReser
                     List<InstanceViewStatus> statuses
                         = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
                     deserializedCapacityReservationInstanceViewWithName.statuses = statuses;
+                } else if ("reservationStateInfo".equals(fieldName)) {
+                    deserializedCapacityReservationInstanceViewWithName.reservationStateInfo
+                        = CapacityReservationStateInfo.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedCapacityReservationInstanceViewWithName.name = reader.getString();
                 } else {

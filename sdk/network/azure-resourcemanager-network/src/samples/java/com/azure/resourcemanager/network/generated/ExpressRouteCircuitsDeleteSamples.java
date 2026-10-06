@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteCircuitsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExpressRouteCircuitDelete.json
+     * x-ms-original-file: 2026-01-01/ExpressRouteCircuitDelete.json
      */
     /**
      * Sample code: Delete ExpressRouteCircuit.
@@ -23,7 +23,7 @@ public final class ExpressRouteCircuitsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/ExpressRouteMultiCloudCircuitDelete.json
+     * x-ms-original-file: 2026-01-01/ExpressRouteMultiCloudCircuitDelete.json
      */
     /**
      * Sample code: Delete MultiCloud ExpressRouteCircuit.

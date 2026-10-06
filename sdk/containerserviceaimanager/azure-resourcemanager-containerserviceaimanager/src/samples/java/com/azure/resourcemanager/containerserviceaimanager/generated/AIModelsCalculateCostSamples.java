@@ -4,14 +4,12 @@
 
 package com.azure.resourcemanager.containerserviceaimanager.generated;
 
-import com.azure.resourcemanager.containerserviceaimanager.models.CalculateCostRequest;
-
 /**
  * Samples for AIModels CalculateCost.
  */
 public final class AIModelsCalculateCostSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/AIModels_CalculateCost.json
+     * x-ms-original-file: 2026-09-02-preview/AIModels_CalculateCost.json
      */
     /**
      * Sample code: AIModels_CalculateCost_MaximumSet.
@@ -20,8 +18,6 @@ public final class AIModelsCalculateCostSamples {
      */
     public static void aIModelsCalculateCostMaximumSet(
         com.azure.resourcemanager.containerserviceaimanager.ContainerServiceAIManagerManager manager) {
-        manager.aIModels()
-            .calculateCostWithResponse("eastus", "9806f0c862fdd920", new CalculateCostRequest(),
-                com.azure.core.util.Context.NONE);
+        manager.aIModels().calculateCostWithResponse("eastus", "9806f0c862fdd920", com.azure.core.util.Context.NONE);
     }
 }

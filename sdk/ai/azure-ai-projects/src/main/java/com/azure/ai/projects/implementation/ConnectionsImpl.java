@@ -169,7 +169,7 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview/OpenAPI/RemoteA2A) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
@@ -181,6 +181,14 @@ public final class ConnectionsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param name The friendly name of the connection, provided by the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -211,7 +219,7 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview/OpenAPI/RemoteA2A) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
@@ -223,6 +231,14 @@ public final class ConnectionsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param name The friendly name of the connection, provided by the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -253,7 +269,7 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview/OpenAPI/RemoteA2A) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
@@ -265,6 +281,14 @@ public final class ConnectionsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param name The friendly name of the connection, provided by the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -296,7 +320,7 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview/OpenAPI/RemoteA2A) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
@@ -308,6 +332,14 @@ public final class ConnectionsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param name The friendly name of the connection, provided by the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -336,7 +368,7 @@ public final class ConnectionsImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>connectionType</td><td>String</td><td>No</td><td>Lists connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys", "RemoteTool_Preview".</td></tr>
+     * "AppInsights", "CustomKeys", "RemoteTool_Preview", "OpenAPI", "RemoteA2A".</td></tr>
      * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>Lists connections that are default
      * connections</td></tr>
      * </table>
@@ -348,7 +380,7 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview/OpenAPI/RemoteA2A) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
@@ -389,7 +421,7 @@ public final class ConnectionsImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>connectionType</td><td>String</td><td>No</td><td>Lists connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys", "RemoteTool_Preview".</td></tr>
+     * "AppInsights", "CustomKeys", "RemoteTool_Preview", "OpenAPI", "RemoteA2A".</td></tr>
      * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>Lists connections that are default
      * connections</td></tr>
      * </table>
@@ -401,7 +433,7 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview/OpenAPI/RemoteA2A) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
@@ -440,7 +472,7 @@ public final class ConnectionsImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>connectionType</td><td>String</td><td>No</td><td>Lists connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys", "RemoteTool_Preview".</td></tr>
+     * "AppInsights", "CustomKeys", "RemoteTool_Preview", "OpenAPI", "RemoteA2A".</td></tr>
      * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>Lists connections that are default
      * connections</td></tr>
      * </table>
@@ -452,7 +484,7 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview/OpenAPI/RemoteA2A) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
@@ -491,7 +523,7 @@ public final class ConnectionsImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>connectionType</td><td>String</td><td>No</td><td>Lists connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys", "RemoteTool_Preview".</td></tr>
+     * "AppInsights", "CustomKeys", "RemoteTool_Preview", "OpenAPI", "RemoteA2A".</td></tr>
      * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>Lists connections that are default
      * connections</td></tr>
      * </table>
@@ -503,7 +535,7 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview/OpenAPI/RemoteA2A) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
@@ -543,7 +575,7 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview/OpenAPI/RemoteA2A) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
@@ -587,7 +619,7 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview/OpenAPI/RemoteA2A) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {

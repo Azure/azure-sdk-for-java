@@ -16,6 +16,7 @@ import com.azure.resourcemanager.containerregistry.models.ConnectionState;
 import com.azure.resourcemanager.containerregistry.models.GarbageCollectionProperties;
 import com.azure.resourcemanager.containerregistry.models.LoggingProperties;
 import com.azure.resourcemanager.containerregistry.models.LoginServerProperties;
+import com.azure.resourcemanager.containerregistry.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.containerregistry.models.ParentProperties;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.RegistrySyncResult;
@@ -33,6 +34,12 @@ public final class ConnectedRegistryInner extends ProxyResource {
      * The properties of the connected registry.
      */
     private ConnectedRegistryProperties innerProperties;
+
+    /*
+     * The user-assigned managed identity used by the on-prem connected registry to authenticate with the cloud registry
+     * for sync operations. Requires authType to be ManagedIdentity.
+     */
+    private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -67,6 +74,28 @@ public final class ConnectedRegistryInner extends ProxyResource {
      */
     private ConnectedRegistryProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: The user-assigned managed identity used by the on-prem connected registry to
+     * authenticate with the cloud registry for sync operations. Requires authType to be ManagedIdentity.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The user-assigned managed identity used by the on-prem connected registry to
+     * authenticate with the cloud registry for sync operations. Requires authType to be ManagedIdentity.
+     * 
+     * @param identity the identity value to set.
+     * @return the ConnectedRegistryInner object itself.
+     */
+    public ConnectedRegistryInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -361,6 +390,9 @@ public final class ConnectedRegistryInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -370,6 +402,7 @@ public final class ConnectedRegistryInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -397,6 +430,8 @@ public final class ConnectedRegistryInner extends ProxyResource {
                     deserializedConnectedRegistryInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedConnectedRegistryInner.innerProperties = ConnectedRegistryProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedConnectedRegistryInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedConnectedRegistryInner.systemData = SystemData.fromJson(reader);
                 } else {

@@ -215,6 +215,52 @@ public final class ContentUnderstandingClientImpl {
             @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("*/*") BinaryData binaryInput, RequestOptions requestOptions, Context context);
 
+        @Post("/analyzers/{analyzerId}:analyzeInline")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> analyzeInline(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("analyzerId") String analyzerId,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData analyzeInlineRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/analyzers/{analyzerId}:analyzeInline")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> analyzeInlineSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("analyzerId") String analyzerId,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData analyzeInlineRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/analyzers/{analyzerId}:analyzeBinaryInline")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> analyzeBinaryInline(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("analyzerId") String analyzerId,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("*/*") BinaryData binaryInput, RequestOptions requestOptions, Context context);
+
+        @Post("/analyzers/{analyzerId}:analyzeBinaryInline")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> analyzeBinaryInlineSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("analyzerId") String analyzerId,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("*/*") BinaryData binaryInput, RequestOptions requestOptions, Context context);
+
         @Post("/analyzers/{analyzerId}:copy")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -529,6 +575,8 @@ public final class ContentUnderstandingClientImpl {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -578,6 +626,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -600,6 +651,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -607,9 +661,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -649,6 +707,8 @@ public final class ContentUnderstandingClientImpl {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -698,6 +758,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -720,6 +783,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -727,9 +793,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -767,6 +837,8 @@ public final class ContentUnderstandingClientImpl {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -816,6 +888,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -838,6 +913,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -845,9 +923,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -893,6 +975,8 @@ public final class ContentUnderstandingClientImpl {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -942,6 +1026,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -964,6 +1051,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -971,9 +1061,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -1019,6 +1113,8 @@ public final class ContentUnderstandingClientImpl {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1068,6 +1164,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -1090,6 +1189,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -1097,9 +1199,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -1144,6 +1250,8 @@ public final class ContentUnderstandingClientImpl {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
@@ -1193,6 +1301,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -1215,6 +1326,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -1222,9 +1336,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -1269,6 +1387,8 @@ public final class ContentUnderstandingClientImpl {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * <tr><td>range</td><td>String</td><td>No</td><td>Range of the input to analyze (ex. `1-3,5,9-`). Document content
      * uses 1-based page numbers, while audio visual content uses integer milliseconds.</td></tr>
      * </table>
@@ -1307,6 +1427,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -1329,6 +1452,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -1336,9 +1462,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -1378,6 +1508,8 @@ public final class ContentUnderstandingClientImpl {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * <tr><td>range</td><td>String</td><td>No</td><td>Range of the input to analyze (ex. `1-3,5,9-`). Document content
      * uses 1-based page numbers, while audio visual content uses integer milliseconds.</td></tr>
      * </table>
@@ -1416,6 +1548,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -1438,6 +1573,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -1445,9 +1583,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -1485,6 +1627,8 @@ public final class ContentUnderstandingClientImpl {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * <tr><td>range</td><td>String</td><td>No</td><td>Range of the input to analyze (ex. `1-3,5,9-`). Document content
      * uses 1-based page numbers, while audio visual content uses integer milliseconds.</td></tr>
      * </table>
@@ -1523,6 +1667,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -1545,6 +1692,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -1552,9 +1702,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -1601,6 +1755,8 @@ public final class ContentUnderstandingClientImpl {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * <tr><td>range</td><td>String</td><td>No</td><td>Range of the input to analyze (ex. `1-3,5,9-`). Document content
      * uses 1-based page numbers, while audio visual content uses integer milliseconds.</td></tr>
      * </table>
@@ -1639,6 +1795,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -1661,6 +1820,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -1668,9 +1830,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -1717,6 +1883,8 @@ public final class ContentUnderstandingClientImpl {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * <tr><td>range</td><td>String</td><td>No</td><td>Range of the input to analyze (ex. `1-3,5,9-`). Document content
      * uses 1-based page numbers, while audio visual content uses integer milliseconds.</td></tr>
      * </table>
@@ -1755,6 +1923,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -1777,6 +1948,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -1784,9 +1958,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -1832,6 +2010,8 @@ public final class ContentUnderstandingClientImpl {
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
      * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
      * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
      * <tr><td>range</td><td>String</td><td>No</td><td>Range of the input to analyze (ex. `1-3,5,9-`). Document content
      * uses 1-based page numbers, while audio visual content uses integer milliseconds.</td></tr>
      * </table>
@@ -1870,6 +2050,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -1892,6 +2075,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -1899,9 +2085,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -1934,6 +2124,544 @@ public final class ContentUnderstandingClientImpl {
                     .setServiceVersion(this.getServiceVersion().getVersion()),
                 "result"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    }
+
+    /**
+     * Extract content and fields from input. The analysis result is embedded inline in the JSON response body (HTTP
+     * 200) without creating a long-running operation — no polling or separate result retrieval is needed. Intended for
+     * lightweight analysis scenarios (e.g., document analyzers without field extraction, small page counts). The result
+     * is not persisted on the server. See service documentation for current constraints.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringEncoding</td><td>String</td><td>No</td><td> The string encoding format for content spans in the
+     * response.
+     * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
+     * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
+     * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     inputs (Required): [
+     *          (Required){
+     *             url: String (Optional)
+     *             data: byte[] (Optional)
+     *             name: String (Optional)
+     *             mimeType: String (Optional)
+     *             range: String (Optional)
+     *         }
+     *     ]
+     *     modelDeployments (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Required): {
+     *         analyzerId: String (Optional)
+     *         apiVersion: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Optional)
+     *                     innererror (Optional): (recursive schema, see innererror above)
+     *                 }
+     *             }
+     *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         stringEncoding: String (Optional)
+     *         contents (Required): [
+     *              (Required){
+     *                 kind: String(document/audioVisual) (Required)
+     *                 mimeType: String (Required)
+     *                 analyzerId: String (Optional)
+     *                 category: String (Optional)
+     *                 path: String (Optional)
+     *                 markdown: String (Optional)
+     *                 fields (Optional): {
+     *                     String (Required): {
+     *                         type: String(string/date/time/number/integer/boolean/array/object/json) (Required)
+     *                         spans (Optional): [
+     *                              (Optional){
+     *                                 offset: int (Required)
+     *                                 length: int (Required)
+     *                             }
+     *                         ]
+     *                         confidence: Double (Optional)
+     *                         source: String (Optional)
+     *                     }
+     *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *             }
+     *         ]
+     *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param analyzeInlineRequest The analyzeInlineRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return provides inline response details for analyze operations along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> analyzeInlineWithResponseAsync(String analyzerId, BinaryData analyzeInlineRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.analyzeInline(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                analyzerId, contentType, accept, analyzeInlineRequest, requestOptions, context));
+    }
+
+    /**
+     * Extract content and fields from input. The analysis result is embedded inline in the JSON response body (HTTP
+     * 200) without creating a long-running operation — no polling or separate result retrieval is needed. Intended for
+     * lightweight analysis scenarios (e.g., document analyzers without field extraction, small page counts). The result
+     * is not persisted on the server. See service documentation for current constraints.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringEncoding</td><td>String</td><td>No</td><td> The string encoding format for content spans in the
+     * response.
+     * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
+     * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
+     * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     inputs (Required): [
+     *          (Required){
+     *             url: String (Optional)
+     *             data: byte[] (Optional)
+     *             name: String (Optional)
+     *             mimeType: String (Optional)
+     *             range: String (Optional)
+     *         }
+     *     ]
+     *     modelDeployments (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Required): {
+     *         analyzerId: String (Optional)
+     *         apiVersion: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Optional)
+     *                     innererror (Optional): (recursive schema, see innererror above)
+     *                 }
+     *             }
+     *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         stringEncoding: String (Optional)
+     *         contents (Required): [
+     *              (Required){
+     *                 kind: String(document/audioVisual) (Required)
+     *                 mimeType: String (Required)
+     *                 analyzerId: String (Optional)
+     *                 category: String (Optional)
+     *                 path: String (Optional)
+     *                 markdown: String (Optional)
+     *                 fields (Optional): {
+     *                     String (Required): {
+     *                         type: String(string/date/time/number/integer/boolean/array/object/json) (Required)
+     *                         spans (Optional): [
+     *                              (Optional){
+     *                                 offset: int (Required)
+     *                                 length: int (Required)
+     *                             }
+     *                         ]
+     *                         confidence: Double (Optional)
+     *                         source: String (Optional)
+     *                     }
+     *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *             }
+     *         ]
+     *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param analyzeInlineRequest The analyzeInlineRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return provides inline response details for analyze operations along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> analyzeInlineWithResponse(String analyzerId, BinaryData analyzeInlineRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.analyzeInlineSync(this.getEndpoint(), this.getServiceVersion().getVersion(), analyzerId,
+            contentType, accept, analyzeInlineRequest, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Extract content and fields from binary input. The analysis result is embedded inline in the JSON response body
+     * (HTTP 200) without creating a long-running operation — no polling or separate result retrieval is needed.
+     * Intended for lightweight analysis scenarios (e.g., document analyzers without field extraction, small page
+     * counts). The result is not persisted on the server. See service documentation for current constraints.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringEncoding</td><td>String</td><td>No</td><td> The string encoding format for content spans in the
+     * response.
+     * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
+     * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
+     * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
+     * <tr><td>range</td><td>String</td><td>No</td><td>Range of the input to analyze (ex. `1-3,5,9-`). Document content
+     * uses 1-based page numbers, while audio visual content uses integer milliseconds.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Required): {
+     *         analyzerId: String (Optional)
+     *         apiVersion: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Optional)
+     *                     innererror (Optional): (recursive schema, see innererror above)
+     *                 }
+     *             }
+     *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         stringEncoding: String (Optional)
+     *         contents (Required): [
+     *              (Required){
+     *                 kind: String(document/audioVisual) (Required)
+     *                 mimeType: String (Required)
+     *                 analyzerId: String (Optional)
+     *                 category: String (Optional)
+     *                 path: String (Optional)
+     *                 markdown: String (Optional)
+     *                 fields (Optional): {
+     *                     String (Required): {
+     *                         type: String(string/date/time/number/integer/boolean/array/object/json) (Required)
+     *                         spans (Optional): [
+     *                              (Optional){
+     *                                 offset: int (Required)
+     *                                 length: int (Required)
+     *                             }
+     *                         ]
+     *                         confidence: Double (Optional)
+     *                         source: String (Optional)
+     *                     }
+     *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *             }
+     *         ]
+     *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param contentType Request content type.
+     * @param binaryInput The binary content of the document to analyze.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return provides inline response details for analyze operations along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> analyzeBinaryInlineWithResponseAsync(String analyzerId, String contentType,
+        BinaryData binaryInput, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.analyzeBinaryInline(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                analyzerId, contentType, accept, binaryInput, requestOptions, context));
+    }
+
+    /**
+     * Extract content and fields from binary input. The analysis result is embedded inline in the JSON response body
+     * (HTTP 200) without creating a long-running operation — no polling or separate result retrieval is needed.
+     * Intended for lightweight analysis scenarios (e.g., document analyzers without field extraction, small page
+     * counts). The result is not persisted on the server. See service documentation for current constraints.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringEncoding</td><td>String</td><td>No</td><td> The string encoding format for content spans in the
+     * response.
+     * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.")</td></tr>
+     * <tr><td>processingLocation</td><td>String</td><td>No</td><td>The location where the data may be processed.
+     * Defaults to global. Allowed values: "geography", "dataZone", "global".</td></tr>
+     * <tr><td>allowInputTruncation</td><td>Boolean</td><td>No</td><td>Overrides the analyzer's allowInputTruncation
+     * setting for this request. When omitted, the analyzer's configured value applies.</td></tr>
+     * <tr><td>range</td><td>String</td><td>No</td><td>Range of the input to analyze (ex. `1-3,5,9-`). Document content
+     * uses 1-based page numbers, while audio visual content uses integer milliseconds.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     result (Required): {
+     *         analyzerId: String (Optional)
+     *         apiVersion: String (Optional)
+     *         createdAt: OffsetDateTime (Optional)
+     *         warnings (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Optional)
+     *                     innererror (Optional): (recursive schema, see innererror above)
+     *                 }
+     *             }
+     *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         stringEncoding: String (Optional)
+     *         contents (Required): [
+     *              (Required){
+     *                 kind: String(document/audioVisual) (Required)
+     *                 mimeType: String (Required)
+     *                 analyzerId: String (Optional)
+     *                 category: String (Optional)
+     *                 path: String (Optional)
+     *                 markdown: String (Optional)
+     *                 fields (Optional): {
+     *                     String (Required): {
+     *                         type: String(string/date/time/number/integer/boolean/array/object/json) (Required)
+     *                         spans (Optional): [
+     *                              (Optional){
+     *                                 offset: int (Required)
+     *                                 length: int (Required)
+     *                             }
+     *                         ]
+     *                         confidence: Double (Optional)
+     *                         source: String (Optional)
+     *                     }
+     *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
+     *             }
+     *         ]
+     *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     *
+     * @param analyzerId The unique identifier of the analyzer.
+     * @param contentType Request content type.
+     * @param binaryInput The binary content of the document to analyze.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return provides inline response details for analyze operations along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> analyzeBinaryInlineWithResponse(String analyzerId, String contentType,
+        BinaryData binaryInput, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.analyzeBinaryInlineSync(this.getEndpoint(), this.getServiceVersion().getVersion(), analyzerId,
+            contentType, accept, binaryInput, requestOptions, Context.NONE);
     }
 
     /**
@@ -2011,6 +2739,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -2158,6 +2892,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -2303,6 +3043,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -2457,6 +3203,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -2611,6 +3363,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -2764,6 +3522,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -2905,6 +3669,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -3010,6 +3780,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -3144,6 +3920,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -3249,6 +4031,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -3382,6 +4170,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -3487,6 +4281,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -3627,6 +4427,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -3732,6 +4538,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -3872,6 +4684,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -3977,6 +4795,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -4116,6 +4940,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -4221,6 +5051,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -4434,6 +5270,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -4564,6 +5406,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -4755,6 +5603,12 @@ public final class ContentUnderstandingClientImpl {
      *             enableSegment: Boolean (Optional)
      *             segmentPerPage: Boolean (Optional)
      *             omitContent: Boolean (Optional)
+     *             workflow: String(default/agentic) (Optional)
+     *             allowInputTruncation: Boolean (Optional)
+     *             allowInPageSegments: Boolean (Optional)
+     *             chunkingStrategy (Optional): {
+     *                 kind: String(semantic) (Required)
+     *             }
      *         }
      *         fieldSchema (Optional): {
      *             name: String (Optional)
@@ -4808,9 +5662,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -4896,6 +5754,12 @@ public final class ContentUnderstandingClientImpl {
      *             enableSegment: Boolean (Optional)
      *             segmentPerPage: Boolean (Optional)
      *             omitContent: Boolean (Optional)
+     *             workflow: String(default/agentic) (Optional)
+     *             allowInputTruncation: Boolean (Optional)
+     *             allowInPageSegments: Boolean (Optional)
+     *             chunkingStrategy (Optional): {
+     *                 kind: String(semantic) (Required)
+     *             }
      *         }
      *         fieldSchema (Optional): {
      *             name: String (Optional)
@@ -4949,9 +5813,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -5005,6 +5873,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -5027,6 +5898,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -5034,9 +5908,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -5088,6 +5966,9 @@ public final class ContentUnderstandingClientImpl {
      *         warnings (Optional): [
      *             (recursive schema, see above)
      *         ]
+     *         infos (Optional): [
+     *             (recursive schema, see above)
+     *         ]
      *         stringEncoding: String (Optional)
      *         contents (Required): [
      *              (Required){
@@ -5110,6 +5991,9 @@ public final class ContentUnderstandingClientImpl {
      *                         source: String (Optional)
      *                     }
      *                 }
+     *                 metadata (Optional): {
+     *                     String: String (Required)
+     *                 }
      *             }
      *         ]
      *     }
@@ -5117,9 +6001,13 @@ public final class ContentUnderstandingClientImpl {
      *         documentPagesMinimal: Integer (Optional)
      *         documentPagesBasic: Integer (Optional)
      *         documentPagesStandard: Integer (Optional)
+     *         documentPagesMinimalInline: Integer (Optional)
+     *         documentPagesBasicInline: Integer (Optional)
+     *         documentPagesStandardInline: Integer (Optional)
      *         audioHours: Double (Optional)
      *         videoHours: Double (Optional)
      *         contextualizationTokens: Integer (Optional)
+     *         advancedContextualizationTokens: Integer (Optional)
      *         tokens (Optional): {
      *             String: int (Required)
      *         }
@@ -5371,6 +6259,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -5496,6 +6390,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -5619,6 +6519,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -5742,6 +6648,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -5865,6 +6777,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -5970,6 +6888,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -6104,6 +7028,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -6209,6 +7139,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -6434,6 +7370,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)
@@ -6561,6 +7503,12 @@ public final class ContentUnderstandingClientImpl {
      *         enableSegment: Boolean (Optional)
      *         segmentPerPage: Boolean (Optional)
      *         omitContent: Boolean (Optional)
+     *         workflow: String(default/agentic) (Optional)
+     *         allowInputTruncation: Boolean (Optional)
+     *         allowInPageSegments: Boolean (Optional)
+     *         chunkingStrategy (Optional): {
+     *             kind: String(semantic) (Required)
+     *         }
      *     }
      *     fieldSchema (Optional): {
      *         name: String (Optional)

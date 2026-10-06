@@ -13,8 +13,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.purestorageblock.fluent.models.AvsConnectionInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.AvsStatusInner;
+import com.azure.resourcemanager.purestorageblock.fluent.models.PlatformConsoleActivationCodeInner;
+import com.azure.resourcemanager.purestorageblock.fluent.models.PlatformConsoleAuthResultInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.StoragePoolHealthInfoInner;
 import com.azure.resourcemanager.purestorageblock.fluent.models.StoragePoolInner;
+import com.azure.resourcemanager.purestorageblock.models.PlatformConsoleAuthConfig;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolEnableAvsConnectionPost;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolFinalizeAvsConnectionPost;
 import com.azure.resourcemanager.purestorageblock.models.StoragePoolUpdate;
@@ -581,4 +584,64 @@ public interface StoragePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void repairAvsConnection(String resourceGroupName, String storagePoolName, Context context);
+
+    /**
+     * Returns a one-time activation code for platform console access to the storage pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storagePoolName Name of the storage pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return one-time activation code for platform console access along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PlatformConsoleActivationCodeInner> listPlatformConsoleActivationCodeWithResponse(String resourceGroupName,
+        String storagePoolName, Context context);
+
+    /**
+     * Returns a one-time activation code for platform console access to the storage pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storagePoolName Name of the storage pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return one-time activation code for platform console access.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PlatformConsoleActivationCodeInner listPlatformConsoleActivationCode(String resourceGroupName,
+        String storagePoolName);
+
+    /**
+     * Configure authentication settings for platform console access to the storage pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storagePoolName Name of the storage pool.
+     * @param config Platform console authentication configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base model for platform console authentication result along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PlatformConsoleAuthResultInner> configurePlatformConsoleAuthWithResponse(String resourceGroupName,
+        String storagePoolName, PlatformConsoleAuthConfig config, Context context);
+
+    /**
+     * Configure authentication settings for platform console access to the storage pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storagePoolName Name of the storage pool.
+     * @param config Platform console authentication configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base model for platform console authentication result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PlatformConsoleAuthResultInner configurePlatformConsoleAuth(String resourceGroupName, String storagePoolName,
+        PlatformConsoleAuthConfig config);
 }

@@ -23,7 +23,7 @@ public final class ManagedComputeUsagesOperationGroupsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"gc\",\"name\":{\"value\":\"utehlka\",\"localizedValue\":\"tipquks\"},\"type\":\"kn\",\"unit\":\"Milliseconds\",\"limit\":51.918316567854916,\"currentValue\":80.10511815598674,\"offerScope\":\"cekggvmfnnb\",\"deployments\":[{\"deploymentId\":\"dfkkedeetxtpwcv\",\"projectId\":\"fwsunjzijaciwmm\",\"modelId\":\"tqdonbzzs\",\"acceleratorCount\":9222881084879047202,\"instanceCount\":1850672842}]}]}";
+            = "{\"value\":[{\"id\":\"qoyimxp\",\"name\":{\"value\":\"tteagbgacnqpju\",\"localizedValue\":\"vud\"},\"type\":\"lpbybkisb\",\"unit\":\"Milliseconds\",\"limit\":96.66093645341567,\"currentValue\":23.715688206182318,\"offerScope\":\"jrau\",\"deployments\":[{\"deploymentId\":\"znurttu\",\"projectId\":\"aaxxdcdjmdkqtxfr\",\"modelId\":\"ecxstowa\",\"acceleratorCount\":4515477228323203458,\"instanceCount\":918294664}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class ManagedComputeUsagesOperationGroupsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ManagedComputeUsage> response
-            = manager.managedComputeUsagesOperationGroups().list("vqlcqufylamxo", com.azure.core.util.Context.NONE);
+            = manager.managedComputeUsagesOperationGroups().list("rgyzcslazp", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(UnitType.MILLISECONDS, response.iterator().next().unit());
-        Assertions.assertEquals(51.918316567854916D, response.iterator().next().limit());
-        Assertions.assertEquals(80.10511815598674D, response.iterator().next().currentValue());
-        Assertions.assertEquals("cekggvmfnnb", response.iterator().next().offerScope());
-        Assertions.assertEquals("dfkkedeetxtpwcv", response.iterator().next().deployments().get(0).deploymentId());
-        Assertions.assertEquals("fwsunjzijaciwmm", response.iterator().next().deployments().get(0).projectId());
-        Assertions.assertEquals("tqdonbzzs", response.iterator().next().deployments().get(0).modelId());
-        Assertions.assertEquals(9222881084879047202L,
+        Assertions.assertEquals(96.66093645341567D, response.iterator().next().limit());
+        Assertions.assertEquals(23.715688206182318D, response.iterator().next().currentValue());
+        Assertions.assertEquals("jrau", response.iterator().next().offerScope());
+        Assertions.assertEquals("znurttu", response.iterator().next().deployments().get(0).deploymentId());
+        Assertions.assertEquals("aaxxdcdjmdkqtxfr", response.iterator().next().deployments().get(0).projectId());
+        Assertions.assertEquals("ecxstowa", response.iterator().next().deployments().get(0).modelId());
+        Assertions.assertEquals(4515477228323203458L,
             response.iterator().next().deployments().get(0).acceleratorCount());
-        Assertions.assertEquals(1850672842, response.iterator().next().deployments().get(0).instanceCount());
+        Assertions.assertEquals(918294664, response.iterator().next().deployments().get(0).instanceCount());
     }
 }

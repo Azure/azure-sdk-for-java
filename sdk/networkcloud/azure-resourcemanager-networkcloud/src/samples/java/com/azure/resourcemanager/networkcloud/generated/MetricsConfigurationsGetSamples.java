@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class MetricsConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ClusterMetricsConfigurations_Get.json
+     * x-ms-original-file: 2026-07-01/ClusterMetricsConfigurations_Get.json
      */
     /**
      * Sample code: Get metrics configuration of cluster.

@@ -1,0 +1,10 @@
+diff --git a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/CHANGELOG.md b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/CHANGELOG.md
+index d4681a3..e2cb52b 100644
+--- a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/CHANGELOG.md
++++ b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/CHANGELOG.md
+@@ -4,4 +4,5 @@
+ 
+ - Package api-version 2026-06-01-preview.
+ - Package api-version 2026-08-01-preview.
+ - Added widget schedules.
++- Added widget tags.
