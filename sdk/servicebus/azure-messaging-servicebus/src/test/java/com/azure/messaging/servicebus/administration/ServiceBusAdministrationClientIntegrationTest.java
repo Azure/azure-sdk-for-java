@@ -14,7 +14,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusServiceVersion;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
@@ -88,7 +87,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
     private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
-    private final TokenCredential conformanceCredential = new DefaultAzureCredentialBuilder().build();
 
     //region Create tests
 
@@ -1302,14 +1300,12 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     //endregion
 
     private ServiceBusAdministrationClient getConformanceClient() {
-        return new ServiceBusAdministrationClientBuilder()
-            .credential(TestUtils.getFullyQualifiedDomainName(false), conformanceCredential)
+        return new ServiceBusAdministrationClientBuilder().connectionString(TestUtils.getConnectionString(false))
             .buildClient();
     }
 
     private ServiceBusClientBuilder getConformanceBuilder() {
-        return new ServiceBusClientBuilder().credential(TestUtils.getFullyQualifiedDomainName(false),
-            conformanceCredential);
+        return new ServiceBusClientBuilder().connectionString(TestUtils.getConnectionString(false));
     }
 
     private ServiceBusAdministrationClient getClient() {
