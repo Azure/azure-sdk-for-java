@@ -20,6 +20,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.models.SubQueue;
 import com.azure.messaging.servicebus.models.ServiceBusMessageState;
@@ -680,7 +681,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
                             failed
                                 = receiver.receiveMessages(1, Duration.ofSeconds(1)).stream().findFirst().orElse(null);
                             if (failed != null) {
-                                assertEquals("MaxTransferHopCountExceeded", failed.getDeadLetterReason());
+                                assertEquals("Maximum transfer hop count is exceeded.", failed.getDeadLetterReason());
                                 assertEquals("too-many-hops", failed.getBody().toString());
                                 receiver.complete(failed);
                                 break;
@@ -701,22 +702,36 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
 
     @Test
     @LiveOnly
-    void failedForwardingCanBeReceivedFromTransferDeadLetterQueue() {
+    void failedSendViaCanBeReceivedFromTransferDeadLetterQueue() {
         final ServiceBusAdministrationClient client = getConformanceClient();
         final String source = testResourceNamer.randomName("transfer", 10);
         final String destination = testResourceNamer.randomName("target", 10);
         client.createQueue(destination);
         try {
-            client.createQueue(source, new CreateQueueOptions().setForwardTo(destination));
+            client.createQueue(source);
             try {
-                client.deleteQueue(destination);
-                final ServiceBusClientBuilder builder = getConformanceBuilder();
-                try (ServiceBusSenderClient sender = builder.sender().queueName(source).buildClient();
-                    ServiceBusReceiverClient transferDeadLetters = builder.receiver()
+                final ServiceBusClientBuilder viaBuilder = getConformanceBuilder().enableCrossEntityTransactions();
+                final ServiceBusClientBuilder receiverBuilder = getConformanceBuilder();
+                try (ServiceBusSenderClient via = viaBuilder.sender().queueName(source).buildClient();
+                    ServiceBusSenderClient sender = viaBuilder.sender().queueName(destination).buildClient();
+                    ServiceBusReceiverClient sourceReceiver
+                        = receiverBuilder.receiver().queueName(source).buildClient();
+                    ServiceBusReceiverClient transferDeadLetters = receiverBuilder.receiver()
                         .queueName(source)
                         .subQueue(SubQueue.TRANSFER_DEAD_LETTER_QUEUE)
                         .buildClient()) {
-                    sender.sendMessage(new ServiceBusMessage("failed-forwarding"));
+                    final ServiceBusTransactionContext seedTransaction = via.createTransaction();
+                    via.sendMessage(new ServiceBusMessage("initialize-via"), seedTransaction);
+                    via.commitTransaction(seedTransaction);
+                    final ServiceBusReceivedMessage seed
+                        = sourceReceiver.receiveMessages(1, Duration.ofSeconds(30)).stream().findFirst().orElse(null);
+                    assertNotNull(seed, "The send-via source did not initialize.");
+                    sourceReceiver.complete(seed);
+
+                    client.deleteQueue(destination);
+                    final ServiceBusTransactionContext transaction = sender.createTransaction();
+                    sender.sendMessage(new ServiceBusMessage("failed-send-via"), transaction);
+                    sender.commitTransaction(transaction);
                     final long deadline = System.nanoTime() + Duration.ofMinutes(2).toNanos();
                     ServiceBusReceivedMessage failed = null;
                     while (failed == null && System.nanoTime() < deadline) {
@@ -725,8 +740,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
                             .findFirst()
                             .orElse(null);
                     }
-                    assertNotNull(failed, "Forwarding to a deleted destination did not enter the source transfer DLQ.");
-                    assertEquals("failed-forwarding", failed.getBody().toString());
+                    assertNotNull(failed,
+                        "Send-via to a deleted destination did not enter the via queue's transfer DLQ.");
+                    assertEquals("failed-send-via", failed.getBody().toString());
                     transferDeadLetters.complete(failed);
                 }
             } finally {
