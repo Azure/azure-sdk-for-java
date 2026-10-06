@@ -9,6 +9,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
+import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecoveryOperationResultRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.InstantItemRecoveryTarget;
 
 /**
  * An instance of this class provides access to all the operations defined in ItemLevelRecoveryConnectionsClient.
@@ -96,4 +98,49 @@ public interface ItemLevelRecoveryConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     void revoke(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId);
+
+    /**
+     * Fetches the mount scripts (iSCSI connection details) for an active Instant Item Recovery (ILR) session on the
+     * recovery point. Required from API version 2026-08-01 onwards; replaces the scripts previously returned inline in
+     * the operationsStatus (ILR provision) response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the VaultResource.
+     * @param fabricName The name of the BackupFabricResource.
+     * @param containerName Name of the container whose details need to be fetched.
+     * @param protectedItemName Backed up item name whose details are to be fetched.
+     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return target details for file / folder restore along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<InstantItemRecoveryTarget> listInstantItemRecoveryOperationResultWithResponse(String resourceGroupName,
+        String vaultName, String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+        InstantItemRecoveryOperationResultRequest body, Context context);
+
+    /**
+     * Fetches the mount scripts (iSCSI connection details) for an active Instant Item Recovery (ILR) session on the
+     * recovery point. Required from API version 2026-08-01 onwards; replaces the scripts previously returned inline in
+     * the operationsStatus (ILR provision) response.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the VaultResource.
+     * @param fabricName The name of the BackupFabricResource.
+     * @param containerName Name of the container whose details need to be fetched.
+     * @param protectedItemName Backed up item name whose details are to be fetched.
+     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return target details for file / folder restore.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    InstantItemRecoveryTarget listInstantItemRecoveryOperationResult(String resourceGroupName, String vaultName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+        InstantItemRecoveryOperationResultRequest body);
 }

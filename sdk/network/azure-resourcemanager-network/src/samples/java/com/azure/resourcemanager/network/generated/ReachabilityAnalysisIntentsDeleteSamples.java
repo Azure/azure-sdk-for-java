@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ReachabilityAnalysisIntentsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ReachabilityAnalysisIntentDelete.json
+     * x-ms-original-file: 2026-01-01/ReachabilityAnalysisIntentDelete.json
      */
     /**
      * Sample code: ReachabilityAnalysisIntentDelete.

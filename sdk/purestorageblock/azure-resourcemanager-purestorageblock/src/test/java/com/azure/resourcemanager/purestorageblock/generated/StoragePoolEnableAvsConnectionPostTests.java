@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class StoragePoolEnableAvsConnectionPostTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StoragePoolEnableAvsConnectionPost model
-            = BinaryData.fromString("{\"sddcResourceId\":\"wj\"}").toObject(StoragePoolEnableAvsConnectionPost.class);
-        Assertions.assertEquals("wj", model.clusterResourceId());
+        StoragePoolEnableAvsConnectionPost model = BinaryData.fromString("{\"sddcResourceId\":\"tiirqtdqoa\"}")
+            .toObject(StoragePoolEnableAvsConnectionPost.class);
+        Assertions.assertEquals("tiirqtdqoa", model.clusterResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoragePoolEnableAvsConnectionPost model = new StoragePoolEnableAvsConnectionPost().withClusterResourceId("wj");
+        StoragePoolEnableAvsConnectionPost model
+            = new StoragePoolEnableAvsConnectionPost().withClusterResourceId("tiirqtdqoa");
         model = BinaryData.fromObject(model).toObject(StoragePoolEnableAvsConnectionPost.class);
-        Assertions.assertEquals("wj", model.clusterResourceId());
+        Assertions.assertEquals("tiirqtdqoa", model.clusterResourceId());
     }
 }

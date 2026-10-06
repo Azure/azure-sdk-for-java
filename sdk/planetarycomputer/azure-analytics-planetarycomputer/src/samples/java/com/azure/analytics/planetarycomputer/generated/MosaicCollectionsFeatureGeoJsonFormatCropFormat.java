@@ -6,14 +6,21 @@ package com.azure.analytics.planetarycomputer.generated;
 
 import com.azure.analytics.planetarycomputer.DataClient;
 import com.azure.analytics.planetarycomputer.PlanetaryComputerProClientBuilder;
+import com.azure.analytics.planetarycomputer.models.ColorMapNames;
 import com.azure.analytics.planetarycomputer.models.FeatureType;
 import com.azure.analytics.planetarycomputer.models.GeoJsonFeature;
 import com.azure.analytics.planetarycomputer.models.GeoJsonPolygon;
+import com.azure.analytics.planetarycomputer.models.PixelSelection;
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
+import com.azure.analytics.planetarycomputer.models.TerrainAlgorithm;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MosaicCollectionsFeatureGeoJsonFormatCropFormat {
@@ -32,9 +39,14 @@ public class MosaicCollectionsFeatureGeoJsonFormatCropFormat {
                                 Arrays.asList(-84.3814, 33.6714), Arrays.asList(-84.3814, 33.6806),
                                 Arrays.asList(-84.3906, 33.6806), Arrays.asList(-84.3906, 33.6714)))),
                         FeatureType.FEATURE).setProperties(mapOf()),
-                    null, Arrays.asList("image"), null, null, null, null, null, null, null, null, null, null, null,
-                    "item-id-1,item-id-2", "-180,-90,180,90", "{}", "-datetime", null, null, null, null, null, null,
-                    null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                    (List<Integer>) null, Arrays.asList("image"), (String) null, (List<String>) null, (Boolean) null,
+                    (String) null, (Boolean) null, (WarpKernelResampling) null, (Integer) null, (Integer) null,
+                    (Integer) null, (Boolean) null, (Boolean) null, "item-id-1,item-id-2", "-180,-90,180,90", "{}",
+                    "-datetime", (String) null, (String) null, (List<Integer>) null, (String) null, (List<String>) null,
+                    (SelMethod) null, (TerrainAlgorithm) null, (String) null, (String) null, (Integer) null,
+                    (Integer) null, (Integer) null, (String) null, (String) null, (Resampling) null,
+                    (PixelSelection) null, (List<String>) null, (ColorMapNames) null, (String) null, (Boolean) null,
+                    (String) null);
         // END:com.azure.analytics.planetarycomputer.generated.data-crop-collection-feature-by-format.mosaic-collections-feature-geo-json-format-crop-format
     }
 

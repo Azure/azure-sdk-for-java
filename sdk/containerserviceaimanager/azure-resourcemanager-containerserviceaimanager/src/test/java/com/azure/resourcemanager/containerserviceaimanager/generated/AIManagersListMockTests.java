@@ -24,7 +24,7 @@ public final class AIManagersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"deletePolicy\":\"Delete\",\"managedResourceGroupName\":\"loayqcgw\"},\"eTag\":\"zjuzgwyz\",\"identity\":{\"principalId\":\"xongmtsavjcbpwxq\",\"tenantId\":\"rknftguvriuhprwm\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"nmefqsgzvahapj\":{\"principalId\":\"tayriwwroyqbex\",\"clientId\":\"cqibycnojv\"},\"xkvugfhzov\":{\"principalId\":\"hpvgqz\",\"clientId\":\"rvxdjzlmw\"},\"ultskzbbtdz\":{\"principalId\":\"jvzunluthnnp\",\"clientId\":\"xipeilpjzuaejx\"}}},\"location\":\"veekgpwozuhkfp\",\"tags\":{\"luu\":\"yofd\",\"smv\":\"dttouwaboekqvkel\",\"aln\":\"xwyjsflhhc\",\"qcslyjpkiid\":\"ixisxyawjoy\"},\"id\":\"yexz\",\"name\":\"eli\",\"type\":\"hnrztfol\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"deletePolicy\":\"Keep\",\"managedResourceGroupName\":\"wbxqzvszjfau\",\"clusterResourceId\":\"fdxxivetvtcqaqtd\"},\"eTag\":\"mcbxvwvxysl\",\"identity\":{\"principalId\":\"sfxobl\",\"tenantId\":\"k\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"q\":{\"principalId\":\"wwwfbkr\",\"clientId\":\"nsvs\"}}},\"location\":\"hxcr\",\"tags\":{\"cgjbirxbp\":\"ovasrruvwbhsqfsu\",\"dtws\":\"bsrfbj\"},\"id\":\"otftpvjzbexilz\",\"name\":\"nfqqnvwp\",\"type\":\"qtaruoujmkcjhwq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,10 +35,10 @@ public final class AIManagersListMockTests {
 
         PagedIterable<AIManager> response = manager.aIManagers().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("veekgpwozuhkfp", response.iterator().next().location());
-        Assertions.assertEquals("yofd", response.iterator().next().tags().get("luu"));
-        Assertions.assertEquals(DeletePolicy.DELETE, response.iterator().next().properties().deletePolicy());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
-            response.iterator().next().identity().type());
+        Assertions.assertEquals("hxcr", response.iterator().next().location());
+        Assertions.assertEquals("ovasrruvwbhsqfsu", response.iterator().next().tags().get("cgjbirxbp"));
+        Assertions.assertEquals(DeletePolicy.KEEP, response.iterator().next().properties().deletePolicy());
+        Assertions.assertEquals("fdxxivetvtcqaqtd", response.iterator().next().properties().clusterResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
     }
 }

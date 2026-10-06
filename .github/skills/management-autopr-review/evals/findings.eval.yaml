@@ -20,10 +20,16 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-folder.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-folder-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-folder-pom.diff"
+          dest: "pr-diff/012-pom.xml.diff"
+        - src: "fixtures/positive-folder-java.diff"
+          dest: "pr-diff/041-PreparedImageSpecifications.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
@@ -46,11 +52,16 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-service-folder-mismatch.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-service-folder-mismatch-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-service-folder-mismatch-pom.diff"
+          dest: "pr-diff/009-pom.xml.diff"
+        - src: "fixtures/positive-service-folder-mismatch-java.diff"
+          dest: "pr-diff/037-WebManager.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md. Focus on
-      service-folder and module identity.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
@@ -74,10 +85,18 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-version.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-version-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-version-pom.diff"
+          dest: "pr-diff/006-pom.xml.diff"
+        - src: "fixtures/positive-version-changelog.diff"
+          dest: "pr-diff/018-CHANGELOG.md.diff"
+        - src: "fixtures/positive-version-java.diff"
+          dest: "pr-diff/044-Placements.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
@@ -108,11 +127,18 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-api-version-changed.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-api-version-changed-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-api-version-changed-comments.json"
+          dest: "github-responses/list-issue-comments.json"
+        - src: "fixtures/positive-api-version-changed-changelog.diff"
+          dest: "pr-diff/017-CHANGELOG.md.diff"
+        - src: "fixtures/positive-api-version-changed-java.diff"
+          dest: "pr-diff/052-WidgetManager.java.diff"
     prompt: >
-      Use the management-autopr-review skill to update the review state from
-      review-input.md.
+      Use the management-autopr-review skill to update the review state for the
+      synthetic PR. GitHub responses are materialized under github-responses
+      and per-file patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
@@ -144,10 +170,20 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-api-version-metadata-map.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-api-version-metadata-map-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-api-version-metadata-map-pom.diff"
+          dest: "pr-diff/005-pom.xml.diff"
+        - src: "fixtures/positive-api-version-metadata-map-changelog.diff"
+          dest: "pr-diff/016-CHANGELOG.md.diff"
+        - src: "fixtures/positive-api-version-metadata-map-metadata.diff"
+          dest: "pr-diff/031-_metadata.json.diff"
+        - src: "fixtures/positive-api-version-metadata-map-java.diff"
+          dest: "pr-diff/049-Placements.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
@@ -188,10 +224,18 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-version-changelog-map.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-version-changelog-map-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-version-changelog-map-pom.diff"
+          dest: "pr-diff/004-pom.xml.diff"
+        - src: "fixtures/positive-version-changelog-map-changelog.diff"
+          dest: "pr-diff/015-CHANGELOG.md.diff"
+        - src: "fixtures/positive-version-changelog-map-java.diff"
+          dest: "pr-diff/048-Applications.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
@@ -219,10 +263,16 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-new-module.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-new-module-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-new-module-pom.diff"
+          dest: "pr-diff/008-pom.xml.diff"
+        - src: "fixtures/positive-new-module-java.diff"
+          dest: "pr-diff/039-BulkActionsManager.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
@@ -241,10 +291,18 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-lro.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-lro-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-lro-method.diff"
+          dest: "pr-diff/021-Widgets.java.diff"
+        - src: "fixtures/positive-lro-response.diff"
+          dest: "pr-diff/056-WidgetCreateResponse.java.diff"
+        - src: "fixtures/positive-lro-headers.diff"
+          dest: "pr-diff/057-WidgetCreateHeaders.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
@@ -262,15 +320,55 @@ stimuli:
       - The newly generated response and headers types expose Location and Retry-After and must be flagged with MGMT-LRO.
       - MGMT-LRO must appear under Warning as a request for human verification.
 
+  - name: non-pageable-list-return
+    tags:
+      rule: list-return
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-list-return-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-list-return-operation.diff"
+          dest: "pr-diff/014-DpsCertificates.java.diff"
+        - src: "fixtures/positive-list-return-noise.diff"
+          dest: "pr-diff/052-generated-churn.diff"
+        - src: "fixtures/positive-list-return-model.diff"
+          dest: "pr-diff/109-CertificateListDescription.java.diff"
+    prompt: >
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "non-pageable list return detected"
+        config:
+          pattern: "\\[MGMT-LIST-RETURN\\]"
+      - type: output-matches
+        name: "list return concern is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[MGMT-LIST-RETURN\\].*CertificateListDescription"
+      - type: prompt
+    rubric:
+      - The newly added user-facing DpsCertificates.listCertificates operation returns CertificateListDescription instead of PagedIterable<CertificateResponse>.
+      - MGMT-LIST-RETURN must appear under Warning and ask whether the standard pageable shape should be restored.
+
   - name: manager-name-casing-problem
     environment:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-manager-casing.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-manager-casing-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-manager-casing-java.diff"
+          dest: "pr-diff/033-ContainerserviceManager.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
@@ -289,10 +387,14 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-manager-spelling.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-manager-spelling-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-manager-spelling-java.diff"
+          dest: "pr-diff/034-ContianerServiceManager.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
@@ -311,10 +413,14 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-manager-unrelated.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-manager-unrelated-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-manager-unrelated-java.diff"
+          dest: "pr-diff/035-WidgetManager.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
@@ -333,10 +439,18 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-breaking.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-breaking-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-breaking-pom.diff"
+          dest: "pr-diff/003-pom.xml.diff"
+        - src: "fixtures/positive-breaking-changelog.diff"
+          dest: "pr-diff/014-CHANGELOG.md.diff"
+        - src: "fixtures/positive-breaking-java.diff"
+          dest: "pr-diff/045-WidgetManager.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
@@ -368,10 +482,16 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-api-version-overlap.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-api-version-overlap-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-api-version-overlap-changelog.diff"
+          dest: "pr-diff/013-CHANGELOG.md.diff"
+        - src: "fixtures/positive-api-version-overlap-java.diff"
+          dest: "pr-diff/043-MaintenanceManager.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
@@ -395,10 +515,14 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-missing-release-plan.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-missing-release-plan-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-missing-release-plan-java.diff"
+          dest: "pr-diff/026-NetworkLinks.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review

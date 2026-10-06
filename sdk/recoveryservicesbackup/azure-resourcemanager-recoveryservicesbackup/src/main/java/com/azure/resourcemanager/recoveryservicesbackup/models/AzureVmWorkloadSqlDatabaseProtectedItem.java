@@ -25,16 +25,6 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
      */
     private String protectedItemType = "AzureVmWorkloadSQLDatabase";
 
-    /*
-     * Name of the parent protected item (e.g., SQL Instance name) when this database is protected as part of a parent.
-     */
-    private String parentProtectedItem;
-
-    /*
-     * Protection type in case protected as part of a parent.
-     */
-    private ProtectionLevel protectionLevel;
-
     /**
      * Creates an instance of AzureVmWorkloadSqlDatabaseProtectedItem class.
      */
@@ -49,48 +39,6 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
     @Override
     public String protectedItemType() {
         return this.protectedItemType;
-    }
-
-    /**
-     * Get the parentProtectedItem property: Name of the parent protected item (e.g., SQL Instance name) when this
-     * database is protected as part of a parent.
-     * 
-     * @return the parentProtectedItem value.
-     */
-    public String parentProtectedItem() {
-        return this.parentProtectedItem;
-    }
-
-    /**
-     * Set the parentProtectedItem property: Name of the parent protected item (e.g., SQL Instance name) when this
-     * database is protected as part of a parent.
-     * 
-     * @param parentProtectedItem the parentProtectedItem value to set.
-     * @return the AzureVmWorkloadSqlDatabaseProtectedItem object itself.
-     */
-    public AzureVmWorkloadSqlDatabaseProtectedItem withParentProtectedItem(String parentProtectedItem) {
-        this.parentProtectedItem = parentProtectedItem;
-        return this;
-    }
-
-    /**
-     * Get the protectionLevel property: Protection type in case protected as part of a parent.
-     * 
-     * @return the protectionLevel value.
-     */
-    public ProtectionLevel protectionLevel() {
-        return this.protectionLevel;
-    }
-
-    /**
-     * Set the protectionLevel property: Protection type in case protected as part of a parent.
-     * 
-     * @param protectionLevel the protectionLevel value to set.
-     * @return the AzureVmWorkloadSqlDatabaseProtectedItem object itself.
-     */
-    public AzureVmWorkloadSqlDatabaseProtectedItem withProtectionLevel(ProtectionLevel protectionLevel) {
-        this.protectionLevel = protectionLevel;
-        return this;
     }
 
     /**
@@ -394,9 +342,6 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
         jsonWriter.writeMapField("kpisHealths", kpisHealths(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("nodesList", nodesList(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("protectedItemType", this.protectedItemType);
-        jsonWriter.writeStringField("parentProtectedItem", this.parentProtectedItem);
-        jsonWriter.writeStringField("protectionLevel",
-            this.protectionLevel == null ? null : this.protectionLevel.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -463,6 +408,8 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
                 } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
                     deserializedAzureVmWorkloadSqlDatabaseProtectedItem
                         .withSoftDeleteRetentionPeriodInDays(reader.getNullable(JsonReader::getInt));
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSqlDatabaseProtectedItem.withSourceLocation(reader.getString());
                 } else if ("vaultId".equals(fieldName)) {
                     deserializedAzureVmWorkloadSqlDatabaseProtectedItem.withVaultId(reader.getString());
                 } else if ("sourceSideScanInfo".equals(fieldName)) {
@@ -509,11 +456,6 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
                     deserializedAzureVmWorkloadSqlDatabaseProtectedItem.withNodesList(nodesList);
                 } else if ("protectedItemType".equals(fieldName)) {
                     deserializedAzureVmWorkloadSqlDatabaseProtectedItem.protectedItemType = reader.getString();
-                } else if ("parentProtectedItem".equals(fieldName)) {
-                    deserializedAzureVmWorkloadSqlDatabaseProtectedItem.parentProtectedItem = reader.getString();
-                } else if ("protectionLevel".equals(fieldName)) {
-                    deserializedAzureVmWorkloadSqlDatabaseProtectedItem.protectionLevel
-                        = ProtectionLevel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

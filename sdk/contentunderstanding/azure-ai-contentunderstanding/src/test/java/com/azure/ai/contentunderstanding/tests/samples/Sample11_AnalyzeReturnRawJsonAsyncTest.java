@@ -6,6 +6,7 @@ package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,11 +14,12 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,29 +45,20 @@ public class Sample11_AnalyzeReturnRawJsonAsyncTest extends ContentUnderstanding
         // Load local test file
         Path filePath = Paths.get("src/samples/resources/sample_invoice.pdf");
         byte[] fileBytes = Files.readAllBytes(filePath);
+        BinaryData binaryData = BinaryData.fromBytes(fileBytes);
 
-        // Prepare request body with binary data using JSON format
-        // Note: The API expects a JSON request with "inputs" array containing document data
-        String base64Data = java.util.Base64.getEncoder().encodeToString(fileBytes);
-        String requestJson = String.format("{\"inputs\": [{\"data\": \"%s\"}]}", base64Data);
-        BinaryData requestBody = BinaryData.fromString(requestJson);
-
-        // Use protocol method to get raw JSON response
+        // Use the binary protocol method to get the raw JSON response without Base64-encoding the input
         // Note: For production use, prefer the object model approach (beginAnalyze with typed parameters)
         // which returns AnalysisResult objects that are easier to work with
-        PollerFlux<BinaryData, BinaryData> operation = contentUnderstandingAsyncClient
-            .beginAnalyze("prebuilt-documentSearch", requestBody, new RequestOptions());
+        PollerFlux<BinaryData, BinaryData> operation = contentUnderstandingAsyncClient.beginAnalyzeBinary(
+            "prebuilt-documentSearch", "application/octet-stream", binaryData, new RequestOptions());
 
         // Use reactive pattern: chain operations using flatMap
         // In a real application, you would use subscribe() instead of block()
-        BinaryData responseData = operation.last().flatMap(pollResponse -> {
-            if (pollResponse.getStatus().isComplete()) {
-                return pollResponse.getFinalResult();
-            } else {
-                return Mono.error(
-                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-            }
-        }).block(); // block() is used here for testing; in production, use subscribe()
+        BinaryData responseData = operation.last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "Document analysis"))
+            .block(); // block() is used here for testing; in production, use subscribe()
         // END:ContentUnderstandingAnalyzeReturnRawJsonAsync
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeReturnRawJsonAsync
@@ -84,26 +77,17 @@ public class Sample11_AnalyzeReturnRawJsonAsyncTest extends ContentUnderstanding
         assertTrue(responseString.length() > 0, "Response string should not be empty");
         System.out.println("Response string length: " + String.format("%,d", responseString.length()) + " characters");
 
-        // Verify response is valid JSON format
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode jsonNode = mapper.readTree(responseData.toBytes());
-            assertNotNull(jsonNode, "Response should be valid JSON");
-            System.out.println("Response is valid JSON format");
-        } catch (Exception ex) {
-            fail("Response data is not valid JSON: " + ex.getMessage());
-        }
-
-        System.out.println("Raw JSON analysis operation completed successfully");
         // END:Assertion_ContentUnderstandingAnalyzeReturnRawJsonAsync
 
         // BEGIN:ContentUnderstandingParseRawJsonAsync
         // Parse the raw JSON response
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(responseData.toBytes());
+        assertNotNull(jsonNode, "Response should be valid JSON");
 
         // Pretty-print the JSON
         String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
+        byte[] prettyJsonBytes = prettyJson.getBytes(StandardCharsets.UTF_8);
 
         // Create output directory if it doesn't exist
         Path outputDir = Paths.get("target/sample_output");
@@ -113,10 +97,10 @@ public class Sample11_AnalyzeReturnRawJsonAsyncTest extends ContentUnderstanding
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         String outputFileName = "analyze_result_" + timestamp + ".json";
         Path outputPath = outputDir.resolve(outputFileName);
-        Files.write(outputPath, prettyJson.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        Files.write(outputPath, prettyJsonBytes);
 
         System.out.println("Raw JSON response saved to: " + outputPath);
-        System.out.println("File size: " + String.format("%,d", prettyJson.length()) + " characters");
+        System.out.println("File size: " + String.format("%,d", prettyJsonBytes.length) + " bytes");
         // END:ContentUnderstandingParseRawJsonAsync
 
         // BEGIN:Assertion_ContentUnderstandingParseRawJsonAsync
@@ -133,6 +117,23 @@ public class Sample11_AnalyzeReturnRawJsonAsyncTest extends ContentUnderstanding
         assertTrue(prettyJson.contains("\n"), "Pretty JSON should contain line breaks");
         assertTrue(prettyJson.contains("  "), "Pretty JSON should contain indentation");
         System.out.println("JSON is properly formatted with indentation");
+
+        JsonNode reparsedJson = mapper.readTree(prettyJson);
+        assertNotNull(reparsedJson, "Pretty JSON should remain valid JSON");
+
+        assertTrue(jsonNode.isObject(), "JSON root should be an object");
+        assertEquals("prebuilt-documentSearch", jsonNode.path("analyzerId").asText(),
+            "Analyzer ID should match the request");
+        JsonNode contentsNode = jsonNode.get("contents");
+        assertNotNull(contentsNode, "Result should contain contents");
+        assertTrue(contentsNode.isArray(), "Contents should be an array");
+        assertFalse(contentsNode.isEmpty(), "Contents should not be empty");
+        assertEquals(1, contentsNode.size(), "PDF should produce one content element");
+        JsonNode firstContent = contentsNode.get(0);
+        assertTrue(firstContent.isObject(), "First content should be an object");
+        assertEquals("document", firstContent.path("kind").asText(), "Content kind should be document");
+        assertEquals("application/pdf", firstContent.path("mimeType").asText(),
+            "Content MIME type should be application/pdf");
 
         // Verify output directory
         assertNotNull(outputDir, "Output directory path should not be null");
@@ -156,10 +157,21 @@ public class Sample11_AnalyzeReturnRawJsonAsyncTest extends ContentUnderstanding
         // Verify file content size
         long fileSize = Files.size(outputPath);
         assertTrue(fileSize > 0, "Output file should not be empty");
-        assertEquals(prettyJson.length(), fileSize, "File size should match pretty JSON length");
+        assertEquals(prettyJsonBytes.length, fileSize, "File size should match the UTF-8 JSON byte length");
         System.out.println("Output file size verified: " + String.format("%,d", fileSize) + " bytes");
 
         System.out.println("Raw JSON parsing and saving completed successfully");
+        Files.deleteIfExists(outputPath);
         // END:Assertion_ContentUnderstandingParseRawJsonAsync
+    }
+
+    private static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
     }
 }

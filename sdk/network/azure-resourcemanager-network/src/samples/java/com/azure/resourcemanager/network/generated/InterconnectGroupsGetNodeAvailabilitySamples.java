@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class InterconnectGroupsGetNodeAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-07-01/InterconnectGroupGetNodeAvailability.json
+     * x-ms-original-file: 2026-01-01/InterconnectGroupGetNodeAvailability.json
      */
     /**
      * Sample code: Get interconnect group node availability.

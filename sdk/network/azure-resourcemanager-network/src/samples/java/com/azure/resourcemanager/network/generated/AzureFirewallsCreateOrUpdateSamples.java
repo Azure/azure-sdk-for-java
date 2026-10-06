@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public final class AzureFirewallsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPutWithAfcConfiguration.json
+     * x-ms-original-file: 2026-01-01/AzureFirewallPutWithAfcConfiguration.json
      */
     /**
      * Sample code: Create Azure Firewall With AFC Control Plane.
@@ -62,7 +62,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPutWithIpGroups.json
+     * x-ms-original-file: 2026-01-01/AzureFirewallPutWithIpGroups.json
      */
     /**
      * Sample code: Create Azure Firewall With IpGroups.
@@ -143,7 +143,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPutWithZones.json
+     * x-ms-original-file: 2026-01-01/AzureFirewallPutWithZones.json
      */
     /**
      * Sample code: Create Azure Firewall With Zones.
@@ -224,7 +224,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPut.json
+     * x-ms-original-file: 2026-01-01/AzureFirewallPut.json
      */
     /**
      * Sample code: Create Azure Firewall.
@@ -300,12 +300,12 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/pipName"))))
                 .withThreatIntelMode(AzureFirewallThreatIntelMode.ALERT)
                 .withSku(new AzureFirewallSku().withName(AzureFirewallSkuName.AZFW_VNET)
-                    .withTier(AzureFirewallSkuTier.STANDARD)),
-                null, com.azure.core.util.Context.NONE);
+                    .withTier(AzureFirewallSkuTier.STANDARD))
+                .withAiSecurityAddOn(true), null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPutWithAdditionalProperties.json
+     * x-ms-original-file: 2026-01-01/AzureFirewallPutWithAdditionalProperties.json
      */
     /**
      * Sample code: Create Azure Firewall With Additional Properties.
@@ -388,7 +388,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPutInHub.json
+     * x-ms-original-file: 2026-01-01/AzureFirewallPutInHub.json
      */
     /**
      * Sample code: Create Azure Firewall in virtual Hub.
@@ -414,7 +414,34 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallPutWithMgmtSubnet.json
+     * x-ms-original-file: 2026-01-01/AzureFirewallPutWithAiSecurityAddOn.json
+     */
+    /**
+     * Sample code: Create Azure Firewall With AI Security Add-On.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void
+        createAzureFirewallWithAISecurityAddOn(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getAzureFirewalls()
+            .createOrUpdate("rg1", "azurefirewall", new AzureFirewallInner().withLocation("West US")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                .withZones(Arrays.asList())
+                .withIpConfigurations(Arrays.asList(new AzureFirewallIpConfiguration()
+                    .withName("azureFirewallIpConfiguration")
+                    .withSubnet(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/AzureFirewallSubnet"))
+                    .withPublicIpAddress(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/pipName"))))
+                .withThreatIntelMode(AzureFirewallThreatIntelMode.ALERT)
+                .withSku(new AzureFirewallSku().withName(AzureFirewallSkuName.AZFW_VNET)
+                    .withTier(AzureFirewallSkuTier.PREMIUM))
+                .withAiSecurityAddOn(true), null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-01-01/AzureFirewallPutWithMgmtSubnet.json
      */
     /**
      * Sample code: Create Azure Firewall With management subnet.

@@ -224,7 +224,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(cosmosItemRequestOptions);
 
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
-        client.readDocument(documentLink, requestOptions).block();
+        client.readDocument(documentLink, null, requestOptions).block();
 
         List<HttpRequest> requests = client.getCapturedRequests();
         for (HttpRequest httpRequest : requests) {
@@ -246,7 +246,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(cosmosItemRequestOptions);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
 
-        assertThatThrownBy(() -> client.readDocument(documentLink, requestOptions).block())
+        assertThatThrownBy(() -> client.readDocument(documentLink, null, requestOptions).block())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("MaxIntegratedCacheStaleness granularity is milliseconds");
     }
@@ -264,7 +264,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(cosmosItemRequestOptions);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
 
-        assertThatThrownBy(() -> client.readDocument(documentLink, requestOptions).block())
+        assertThatThrownBy(() -> client.readDocument(documentLink, null, requestOptions).block())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("MaxIntegratedCacheStaleness duration cannot be negative");
     }
@@ -284,7 +284,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(cosmosItemRequestOptions);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
-        ResourceResponse<Document> response = client.readDocument(documentLink, requestOptions).block();
+        ResourceResponse<Document> response = client.readDocument(documentLink, null, requestOptions).block();
         if (cacheBypass) {
             String responseHeader = response.getResponseHeaders().get("x-ms-cosmos-cache-bypass");
             assertThat(responseHeader).isNotNull();
@@ -360,7 +360,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         client.clearCapturedRequests();
         RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(cosmosItemRequestOptions);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
-        client.readDocument(documentLink, requestOptions).block();
+        client.readDocument(documentLink, null, requestOptions).block();
         List<HttpRequest> requests = client.getCapturedRequests();
         for (HttpRequest httpRequest : requests) {
             validateRequestHasDedicatedGatewayHeaders(httpRequest, cosmosItemRequestOptions.getDedicatedGatewayRequestOptions());

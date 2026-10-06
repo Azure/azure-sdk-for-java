@@ -21,7 +21,7 @@ public final class LicensesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"uyzlw\",\"name\":\"hmem\",\"type\":\"ooclutnp\"}]}";
+            = "{\"value\":[{\"properties\":{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Canceled\"},\"id\":\"ab\",\"name\":\"dujtmvcope\",\"type\":\"c\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class LicensesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<License> response
-            = manager.licenses().list("hvtrrmhwrbfdpyf", "ubhvj", com.azure.core.util.Context.NONE);
+            = manager.licenses().list("xofvcjk", "dirazf", com.azure.core.util.Context.NONE);
 
     }
 }

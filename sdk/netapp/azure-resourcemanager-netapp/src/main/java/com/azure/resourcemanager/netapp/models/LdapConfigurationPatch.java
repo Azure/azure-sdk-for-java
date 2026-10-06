@@ -28,9 +28,9 @@ public final class LdapConfigurationPatch implements JsonSerializable<LdapConfig
     private List<String> ldapServers;
 
     /*
-     * Specifies whether or not the LDAP traffic needs to be secured via TLS.
+     * Indicates the secure LDAP mode for encrypting communication between ANF storage and customer LDAP servers.
      */
-    private Boolean ldapOverTLS;
+    private SecureLdapType secureLdapType;
 
     /*
      * When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded ldap servers CA
@@ -132,22 +132,24 @@ public final class LdapConfigurationPatch implements JsonSerializable<LdapConfig
     }
 
     /**
-     * Get the ldapOverTLS property: Specifies whether or not the LDAP traffic needs to be secured via TLS.
+     * Get the secureLdapType property: Indicates the secure LDAP mode for encrypting communication between ANF storage
+     * and customer LDAP servers.
      * 
-     * @return the ldapOverTLS value.
+     * @return the secureLdapType value.
      */
-    public Boolean ldapOverTLS() {
-        return this.ldapOverTLS;
+    public SecureLdapType secureLdapType() {
+        return this.secureLdapType;
     }
 
     /**
-     * Set the ldapOverTLS property: Specifies whether or not the LDAP traffic needs to be secured via TLS.
+     * Set the secureLdapType property: Indicates the secure LDAP mode for encrypting communication between ANF storage
+     * and customer LDAP servers.
      * 
-     * @param ldapOverTLS the ldapOverTLS value to set.
+     * @param secureLdapType the secureLdapType value to set.
      * @return the LdapConfigurationPatch object itself.
      */
-    public LdapConfigurationPatch withLdapOverTLS(Boolean ldapOverTLS) {
-        this.ldapOverTLS = ldapOverTLS;
+    public LdapConfigurationPatch withSecureLdapType(SecureLdapType secureLdapType) {
+        this.secureLdapType = secureLdapType;
         return this;
     }
 
@@ -386,7 +388,8 @@ public final class LdapConfigurationPatch implements JsonSerializable<LdapConfig
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("domain", this.domain);
         jsonWriter.writeArrayField("ldapServers", this.ldapServers, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("ldapOverTLS", this.ldapOverTLS);
+        jsonWriter.writeStringField("secureLdapType",
+            this.secureLdapType == null ? null : this.secureLdapType.toString());
         jsonWriter.writeStringField("serverCACertificate", this.serverCACertificate);
         jsonWriter.writeStringField("certificateCNHost", this.certificateCNHost);
         jsonWriter.writeArrayField("dnsServers", this.dnsServers, (writer, element) -> writer.writeString(element));
@@ -421,8 +424,8 @@ public final class LdapConfigurationPatch implements JsonSerializable<LdapConfig
                 } else if ("ldapServers".equals(fieldName)) {
                     List<String> ldapServers = reader.readArray(reader1 -> reader1.getString());
                     deserializedLdapConfigurationPatch.ldapServers = ldapServers;
-                } else if ("ldapOverTLS".equals(fieldName)) {
-                    deserializedLdapConfigurationPatch.ldapOverTLS = reader.getNullable(JsonReader::getBoolean);
+                } else if ("secureLdapType".equals(fieldName)) {
+                    deserializedLdapConfigurationPatch.secureLdapType = SecureLdapType.fromString(reader.getString());
                 } else if ("serverCACertificate".equals(fieldName)) {
                     deserializedLdapConfigurationPatch.serverCACertificate = reader.getString();
                 } else if ("certificateCNHost".equals(fieldName)) {

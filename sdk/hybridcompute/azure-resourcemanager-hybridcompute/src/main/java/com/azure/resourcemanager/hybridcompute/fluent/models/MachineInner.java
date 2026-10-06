@@ -17,11 +17,11 @@ import com.azure.resourcemanager.hybridcompute.models.ArcKindEnum;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
 import com.azure.resourcemanager.hybridcompute.models.FirmwareProfile;
 import com.azure.resourcemanager.hybridcompute.models.HardwareProfile;
+import com.azure.resourcemanager.hybridcompute.models.Identity;
 import com.azure.resourcemanager.hybridcompute.models.IdentityKeyStore;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.MachineStatusReason;
-import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
 import com.azure.resourcemanager.hybridcompute.models.StatusTypes;
@@ -49,7 +49,7 @@ public final class MachineInner extends Resource {
     /*
      * Identity for the resource.
      */
-    private ManagedServiceIdentity identity;
+    private Identity identity;
 
     /*
      * Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware etc.
@@ -105,7 +105,7 @@ public final class MachineInner extends Resource {
      * 
      * @return the identity value.
      */
-    public ManagedServiceIdentity identity() {
+    public Identity identity() {
         return this.identity;
     }
 
@@ -115,7 +115,7 @@ public final class MachineInner extends Resource {
      * @param identity the identity value to set.
      * @return the MachineInner object itself.
      */
-    public MachineInner withIdentity(ManagedServiceIdentity identity) {
+    public MachineInner withIdentity(Identity identity) {
         this.identity = identity;
         return this;
     }
@@ -825,7 +825,7 @@ public final class MachineInner extends Resource {
                         = reader.readArray(reader1 -> MachineExtensionInner.fromJson(reader1));
                     deserializedMachineInner.resources = resources;
                 } else if ("identity".equals(fieldName)) {
-                    deserializedMachineInner.identity = ManagedServiceIdentity.fromJson(reader);
+                    deserializedMachineInner.identity = Identity.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedMachineInner.kind = ArcKindEnum.fromString(reader.getString());
                 } else if ("systemData".equals(fieldName)) {

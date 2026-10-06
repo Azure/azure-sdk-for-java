@@ -58,7 +58,7 @@ public class BuildReport {
     }
 
     /**
-     * The list of Azure dependencis used by the project.
+     * The list of Azure dependencies used by the project.
      * @return The list of Azure dependencies used by the project.
      */
     public List<String> getAzureDependencies() {

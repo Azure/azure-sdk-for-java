@@ -12,22 +12,22 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Describes the fallback operation that was performed.
+ * Information about the fallback operation attempted after the requested operation did not succeed.
  */
 @Immutable
 public final class FallbackOperationInfo implements JsonSerializable<FallbackOperationInfo> {
     /*
-     * The last operation type that was performed as a fallback
+     * The type of the additional operation.
      */
     private ResourceOperationType lastOpType;
 
     /*
-     * The status of the fallback operation
+     * The status of the additional operation.
      */
     private String status;
 
     /*
-     * The error code if the fallback operation failed
+     * The error returned when the additional operation did not succeed.
      */
     private ResourceOperationError error;
 
@@ -38,7 +38,7 @@ public final class FallbackOperationInfo implements JsonSerializable<FallbackOpe
     }
 
     /**
-     * Get the lastOpType property: The last operation type that was performed as a fallback.
+     * Get the lastOpType property: The type of the additional operation.
      * 
      * @return the lastOpType value.
      */
@@ -47,7 +47,7 @@ public final class FallbackOperationInfo implements JsonSerializable<FallbackOpe
     }
 
     /**
-     * Get the status property: The status of the fallback operation.
+     * Get the status property: The status of the additional operation.
      * 
      * @return the status value.
      */
@@ -56,7 +56,7 @@ public final class FallbackOperationInfo implements JsonSerializable<FallbackOpe
     }
 
     /**
-     * Get the error property: The error code if the fallback operation failed.
+     * Get the error property: The error returned when the additional operation did not succeed.
      * 
      * @return the error value.
      */

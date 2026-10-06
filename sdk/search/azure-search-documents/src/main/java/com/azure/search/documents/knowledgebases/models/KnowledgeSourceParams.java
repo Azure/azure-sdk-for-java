@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
+import com.azure.search.documents.indexes.models.KnowledgeSourceResultsProcessing;
 import java.io.IOException;
 
 /**
@@ -162,8 +163,11 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
         jsonWriter.writeBooleanField("includeReferences", this.includeReferences);
         jsonWriter.writeBooleanField("includeReferenceSourceData", this.includeReferenceSourceData);
         jsonWriter.writeBooleanField("alwaysQuerySource", this.alwaysQuerySource);
+        jsonWriter.writeBooleanField("neverQuerySource", this.neverQuerySource);
         jsonWriter.writeBooleanField("failOnError", this.failOnError);
         jsonWriter.writeNumberField("rerankerThreshold", this.rerankerThreshold);
+        jsonWriter.writeStringField("resultsProcessing",
+            this.resultsProcessing == null ? null : this.resultsProcessing.toString());
         jsonWriter.writeNumberField("maxOutputDocuments", this.maxOutputDocuments);
         jsonWriter.writeBooleanField("enableImageServing", this.enableImageServing);
         return jsonWriter.writeEndObject();
@@ -235,8 +239,10 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
             Boolean alwaysQuerySource = null;
+            Boolean neverQuerySource = null;
             Boolean failOnError = null;
             Float rerankerThreshold = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
             Integer maxOutputDocuments = null;
             Boolean enableImageServing = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -252,10 +258,14 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
                 } else if ("alwaysQuerySource".equals(fieldName)) {
                     alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
+                } else if ("neverQuerySource".equals(fieldName)) {
+                    neverQuerySource = reader.getNullable(JsonReader::getBoolean);
                 } else if ("failOnError".equals(fieldName)) {
                     failOnError = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("maxOutputDocuments".equals(fieldName)) {
                     maxOutputDocuments = reader.getNullable(JsonReader::getInt);
                 } else if ("enableImageServing".equals(fieldName)) {
@@ -269,8 +279,10 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
             deserializedKnowledgeSourceParams.includeReferences = includeReferences;
             deserializedKnowledgeSourceParams.includeReferenceSourceData = includeReferenceSourceData;
             deserializedKnowledgeSourceParams.alwaysQuerySource = alwaysQuerySource;
+            deserializedKnowledgeSourceParams.neverQuerySource = neverQuerySource;
             deserializedKnowledgeSourceParams.failOnError = failOnError;
             deserializedKnowledgeSourceParams.rerankerThreshold = rerankerThreshold;
+            deserializedKnowledgeSourceParams.resultsProcessing = resultsProcessing;
             deserializedKnowledgeSourceParams.maxOutputDocuments = maxOutputDocuments;
             deserializedKnowledgeSourceParams.enableImageServing = enableImageServing;
             return deserializedKnowledgeSourceParams;
@@ -394,6 +406,71 @@ public class KnowledgeSourceParams implements JsonSerializable<KnowledgeSourcePa
     @Generated
     public KnowledgeSourceParams setEnableImageServing(Boolean enableImageServing) {
         this.enableImageServing = enableImageServing;
+        return this;
+    }
+
+    /*
+     * Indicates that this knowledge source should be excluded from the request's candidate set and never queried at
+     * retrieval time. The exclusion is request-local and does not modify knowledge base membership. Cannot be combined
+     * with alwaysQuerySource on the same knowledge source.
+     */
+    @Generated
+    private Boolean neverQuerySource;
+
+    /*
+     * Overrides the knowledge source's stored resultsProcessing for this retrieve call only. When omitted, the stored
+     * knowledge source value applies.
+     */
+    @Generated
+    private KnowledgeSourceResultsProcessing resultsProcessing;
+
+    /**
+     * Get the neverQuerySource property: Indicates that this knowledge source should be excluded from the request's
+     * candidate set and never queried at retrieval time. The exclusion is request-local and does not modify knowledge
+     * base membership. Cannot be combined with alwaysQuerySource on the same knowledge source.
+     *
+     * @return the neverQuerySource value.
+     */
+    @Generated
+    public Boolean isNeverQuerySource() {
+        return this.neverQuerySource;
+    }
+
+    /**
+     * Set the neverQuerySource property: Indicates that this knowledge source should be excluded from the request's
+     * candidate set and never queried at retrieval time. The exclusion is request-local and does not modify knowledge
+     * base membership. Cannot be combined with alwaysQuerySource on the same knowledge source.
+     *
+     * @param neverQuerySource the neverQuerySource value to set.
+     * @return the KnowledgeSourceParams object itself.
+     */
+    @Generated
+    public KnowledgeSourceParams setNeverQuerySource(Boolean neverQuerySource) {
+        this.neverQuerySource = neverQuerySource;
+        return this;
+    }
+
+    /**
+     * Get the resultsProcessing property: Overrides the knowledge source's stored resultsProcessing for this retrieve
+     * call only. When omitted, the stored knowledge source value applies.
+     *
+     * @return the resultsProcessing value.
+     */
+    @Generated
+    public KnowledgeSourceResultsProcessing getResultsProcessing() {
+        return this.resultsProcessing;
+    }
+
+    /**
+     * Set the resultsProcessing property: Overrides the knowledge source's stored resultsProcessing for this retrieve
+     * call only. When omitted, the stored knowledge source value applies.
+     *
+     * @param resultsProcessing the resultsProcessing value to set.
+     * @return the KnowledgeSourceParams object itself.
+     */
+    @Generated
+    public KnowledgeSourceParams setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        this.resultsProcessing = resultsProcessing;
         return this;
     }
 }

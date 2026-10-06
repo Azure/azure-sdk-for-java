@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.generated;
 
 import com.azure.analytics.purview.datamap.models.AtlasEntitiesWithExtInfo;
 import com.azure.analytics.purview.datamap.models.AtlasEntity;
+import com.azure.analytics.purview.datamap.models.BusinessAttributeUpdateBehavior;
 import com.azure.analytics.purview.datamap.models.ContactInfo;
 import com.azure.analytics.purview.datamap.models.EntityMutationResult;
 import com.azure.analytics.purview.datamap.models.EntityStatus;
@@ -24,46 +25,64 @@ public final class EntityBulkCreateOrUpdateTests extends DataMapClientTestBase {
     @Disabled
     public void testEntityBulkCreateOrUpdateTests() {
         // method invocation
-        EntityMutationResult response = entityClient.batchCreateOrUpdate(new AtlasEntitiesWithExtInfo()
-            .setReferredEntities(mapOf())
-            .setEntities(Arrays.asList(
-                new AtlasEntity()
-                    .setAttributes(mapOf("owner", BinaryData.fromBytes("ExampleOwner".getBytes(StandardCharsets.UTF_8)),
-                        "modifiedTime", BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "createTime",
-                        BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "qualifiedName",
-                        BinaryData.fromBytes("exampleaccount1".getBytes(StandardCharsets.UTF_8)), "name",
-                        BinaryData.fromBytes("ExampleStorageAccount1".getBytes(StandardCharsets.UTF_8)), "description",
-                        null, "publicAccessLevel", null))
-                    .setTypeName("azure_storage_account")
-                    .setCreatedBy("ExampleCreator")
-                    .setStatus(EntityStatus.ACTIVE)
-                    .setUpdatedBy("ExampleUpdator")
-                    .setVersion(0L)
-                    .setContacts(mapOf("Expert", Arrays.asList(
-                        new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df").setInfo("Example Expert Info")),
-                        "Owner",
-                        Arrays
-                            .asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
-                                .setInfo("Example Owner Info")))),
-                new AtlasEntity()
-                    .setAttributes(mapOf("owner", BinaryData.fromBytes("ExampleOwner".getBytes(StandardCharsets.UTF_8)),
-                        "modifiedTime", BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "createTime",
-                        BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "qualifiedName",
-                        BinaryData.fromBytes("exampleaccount2".getBytes(StandardCharsets.UTF_8)), "name",
-                        BinaryData.fromBytes("ExampleStorageAccount2".getBytes(StandardCharsets.UTF_8)), "description",
-                        BinaryData.fromBytes("Example Description".getBytes(StandardCharsets.UTF_8)),
-                        "publicAccessLevel", null))
-                    .setTypeName("azure_storage_account")
-                    .setCreatedBy("ExampleCreator")
-                    .setStatus(EntityStatus.ACTIVE)
-                    .setUpdatedBy("ExampleUpdator")
-                    .setVersion(0L)
-                    .setContacts(mapOf("Expert",
-                        Arrays.asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
-                            .setInfo("Example Expert Info")),
-                        "Owner", Arrays.asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
-                            .setInfo("Example Owner Info")))))),
-            null, null);
+        EntityMutationResult response
+            = entityClient
+                .batchCreateOrUpdate(
+                    new AtlasEntitiesWithExtInfo().setReferredEntities(mapOf())
+                        .setEntities(
+                            Arrays
+                                .asList(
+                                    new AtlasEntity()
+                                        .setAttributes(mapOf("owner",
+                                            BinaryData.fromBytes("ExampleOwner".getBytes(StandardCharsets.UTF_8)),
+                                            "modifiedTime", BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)),
+                                            "createTime", BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)),
+                                            "qualifiedName",
+                                            BinaryData.fromBytes("exampleaccount1".getBytes(StandardCharsets.UTF_8)),
+                                            "name",
+                                            BinaryData
+                                                .fromBytes("ExampleStorageAccount1".getBytes(StandardCharsets.UTF_8)),
+                                            "description", null, "publicAccessLevel", null))
+                                        .setTypeName("azure_storage_account")
+                                        .setCreatedBy("ExampleCreator")
+                                        .setStatus(EntityStatus.ACTIVE)
+                                        .setUpdatedBy("ExampleUpdator")
+                                        .setVersion(0L)
+                                        .setContacts(mapOf("Expert",
+                                            Arrays.asList(new ContactInfo()
+                                                .setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
+                                                .setInfo("Example Expert Info")),
+                                            "Owner",
+                                            Arrays.asList(new ContactInfo()
+                                                .setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
+                                                .setInfo("Example Owner Info")))),
+                                    new AtlasEntity()
+                                        .setAttributes(mapOf("owner",
+                                            BinaryData.fromBytes("ExampleOwner".getBytes(StandardCharsets.UTF_8)),
+                                            "modifiedTime", BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)),
+                                            "createTime", BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)),
+                                            "qualifiedName",
+                                            BinaryData.fromBytes("exampleaccount2".getBytes(StandardCharsets.UTF_8)),
+                                            "name",
+                                            BinaryData
+                                                .fromBytes("ExampleStorageAccount2".getBytes(StandardCharsets.UTF_8)),
+                                            "description",
+                                            BinaryData
+                                                .fromBytes("Example Description".getBytes(StandardCharsets.UTF_8)),
+                                            "publicAccessLevel", null))
+                                        .setTypeName("azure_storage_account")
+                                        .setCreatedBy("ExampleCreator")
+                                        .setStatus(EntityStatus.ACTIVE)
+                                        .setUpdatedBy("ExampleUpdator")
+                                        .setVersion(0L)
+                                        .setContacts(mapOf("Expert", Arrays
+                                            .asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
+                                                .setInfo("Example Expert Info")),
+                                            "Owner",
+                                            Arrays
+                                                .asList(new ContactInfo().setId("30435ff9-9b96-44af-a5a9-e05c8b1ae2df")
+                                                    .setInfo("Example Owner Info")))))),
+                    (String) null, (BusinessAttributeUpdateBehavior) null);
 
         // response assertion
         Assertions.assertNotNull(response);

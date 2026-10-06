@@ -11,25 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationsDisplayDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationsDisplayDefinition model = BinaryData.fromString(
-            "{\"provider\":\"eallnwsubisnj\",\"resource\":\"mpmngnzscxaqwoo\",\"operation\":\"hcbonqvpkvlr\",\"description\":\"njeaseipheofloke\"}")
+        OperationsDisplayDefinition model = BinaryData
+            .fromString("{\"provider\":\"igdtopbob\",\"resource\":\"og\",\"operation\":\"m\",\"description\":\"w\"}")
             .toObject(OperationsDisplayDefinition.class);
-        Assertions.assertEquals("eallnwsubisnj", model.provider());
-        Assertions.assertEquals("mpmngnzscxaqwoo", model.resource());
-        Assertions.assertEquals("hcbonqvpkvlr", model.operation());
-        Assertions.assertEquals("njeaseipheofloke", model.description());
+        Assertions.assertEquals("igdtopbob", model.provider());
+        Assertions.assertEquals("og", model.resource());
+        Assertions.assertEquals("m", model.operation());
+        Assertions.assertEquals("w", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationsDisplayDefinition model = new OperationsDisplayDefinition().withProvider("eallnwsubisnj")
-            .withResource("mpmngnzscxaqwoo")
-            .withOperation("hcbonqvpkvlr")
-            .withDescription("njeaseipheofloke");
+        OperationsDisplayDefinition model = new OperationsDisplayDefinition().withProvider("igdtopbob")
+            .withResource("og")
+            .withOperation("m")
+            .withDescription("w");
         model = BinaryData.fromObject(model).toObject(OperationsDisplayDefinition.class);
-        Assertions.assertEquals("eallnwsubisnj", model.provider());
-        Assertions.assertEquals("mpmngnzscxaqwoo", model.resource());
-        Assertions.assertEquals("hcbonqvpkvlr", model.operation());
-        Assertions.assertEquals("njeaseipheofloke", model.description());
+        Assertions.assertEquals("igdtopbob", model.provider());
+        Assertions.assertEquals("og", model.resource());
+        Assertions.assertEquals("m", model.operation());
+        Assertions.assertEquals("w", model.description());
     }
 }

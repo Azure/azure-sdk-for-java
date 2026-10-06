@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class HealthModelsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/HealthModels_ListByResourceGroup.json
+     * x-ms-original-file: 2026-09-01-preview/HealthModels_ListByResourceGroup.json
      */
     /**
      * Sample code: HealthModels_ListByResourceGroup.

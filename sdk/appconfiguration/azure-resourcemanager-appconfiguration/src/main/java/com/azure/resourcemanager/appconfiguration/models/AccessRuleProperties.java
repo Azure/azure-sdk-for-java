@@ -18,7 +18,7 @@ import java.util.List;
 @Immutable
 public final class AccessRuleProperties implements JsonSerializable<AccessRuleProperties> {
     /*
-     * The direction property.
+     * Direction of the access rule
      */
     private AccessRuleDirection direction;
 
@@ -59,7 +59,7 @@ public final class AccessRuleProperties implements JsonSerializable<AccessRulePr
     }
 
     /**
-     * Get the direction property: The direction property.
+     * Get the direction property: Direction of the access rule.
      * 
      * @return the direction value.
      */

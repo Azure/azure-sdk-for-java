@@ -31,11 +31,6 @@ public final class BulkCreateCustomPriorityProfile implements JsonSerializable<B
      */
     private EvictionPolicy evictionPolicy;
 
-    /*
-     * The allocation strategy for VM size selection
-     */
-    private BulkCreateCustomAllocationStrategy allocationStrategy;
-
     /**
      * Creates an instance of BulkCreateCustomPriorityProfile class.
      */
@@ -103,27 +98,6 @@ public final class BulkCreateCustomPriorityProfile implements JsonSerializable<B
     }
 
     /**
-     * Get the allocationStrategy property: The allocation strategy for VM size selection.
-     * 
-     * @return the allocationStrategy value.
-     */
-    public BulkCreateCustomAllocationStrategy allocationStrategy() {
-        return this.allocationStrategy;
-    }
-
-    /**
-     * Set the allocationStrategy property: The allocation strategy for VM size selection.
-     * 
-     * @param allocationStrategy the allocationStrategy value to set.
-     * @return the BulkCreateCustomPriorityProfile object itself.
-     */
-    public BulkCreateCustomPriorityProfile
-        withAllocationStrategy(BulkCreateCustomAllocationStrategy allocationStrategy) {
-        this.allocationStrategy = allocationStrategy;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -133,8 +107,6 @@ public final class BulkCreateCustomPriorityProfile implements JsonSerializable<B
         jsonWriter.writeNumberField("maxPricePerVM", this.maxPricePerVM);
         jsonWriter.writeStringField("evictionPolicy",
             this.evictionPolicy == null ? null : this.evictionPolicy.toString());
-        jsonWriter.writeStringField("allocationStrategy",
-            this.allocationStrategy == null ? null : this.allocationStrategy.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -162,9 +134,6 @@ public final class BulkCreateCustomPriorityProfile implements JsonSerializable<B
                 } else if ("evictionPolicy".equals(fieldName)) {
                     deserializedBulkCreateCustomPriorityProfile.evictionPolicy
                         = EvictionPolicy.fromString(reader.getString());
-                } else if ("allocationStrategy".equals(fieldName)) {
-                    deserializedBulkCreateCustomPriorityProfile.allocationStrategy
-                        = BulkCreateCustomAllocationStrategy.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

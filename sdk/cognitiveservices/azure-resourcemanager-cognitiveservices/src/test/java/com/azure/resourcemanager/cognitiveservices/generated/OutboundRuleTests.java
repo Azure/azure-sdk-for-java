@@ -14,7 +14,7 @@ public final class OutboundRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundRule model = BinaryData.fromString(
-            "{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Provisioning\",\"errorInformation\":\"fnjyix\",\"parentRuleNames\":[\"ratqxmbjro\",\"mzznvalqjrhuzgfx\",\"njt\",\"usllywpvtiotz\"]}")
+            "{\"type\":\"OutboundRule\",\"category\":\"Recommended\",\"status\":\"Provisioning\",\"errorInformation\":\"xkbrfg\",\"parentRuleNames\":[\"jiye\",\"hfjsrwqrxetf\",\"cwv\",\"r\"]}")
             .toObject(OutboundRule.class);
         Assertions.assertEquals(RuleCategory.RECOMMENDED, model.category());
         Assertions.assertEquals(RuleStatus.PROVISIONING, model.status());

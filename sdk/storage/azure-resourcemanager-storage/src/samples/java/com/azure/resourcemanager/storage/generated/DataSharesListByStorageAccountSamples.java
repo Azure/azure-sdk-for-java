@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class DataSharesListByStorageAccountSamples {
     /*
-     * x-ms-original-file: 2026-04-01/StorageDataShareCRUD/StorageDataShares_ListByStorageAccount.json
+     * x-ms-original-file: 2026-06-01/StorageDataShareCRUD/StorageDataShares_ListByStorageAccount.json
      */
     /**
      * Sample code: ListDataSharesByStorageAccount.

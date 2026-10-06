@@ -9,11 +9,10 @@ import com.azure.resourcemanager.compute.bulkactions.fluent.models.ScheduledActi
 import com.azure.resourcemanager.compute.bulkactions.models.Language;
 import com.azure.resourcemanager.compute.bulkactions.models.Month;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationType;
-import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsDeadlineType;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsDeadlineType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.WeekDay;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,31 +21,28 @@ public final class ScheduledActionResourcesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionResourcesInner model = BinaryData.fromString(
-            "{\"properties\":{\"resourceType\":\"VirtualMachineScaleSet\",\"actionType\":\"Deallocate\",\"startTime\":\"2021-10-01T23:09:27Z\",\"endTime\":\"2021-03-22T17:01:19Z\",\"schedule\":{\"scheduledTime\":\"jskgfmocwahp\",\"timeZone\":\"gat\",\"requestedWeekDays\":[\"Friday\"],\"requestedMonths\":[\"August\",\"September\",\"October\"],\"requestedDaysOfTheMonth\":[679664674],\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":1424152759,\"retryWindowInMinutes\":1313881471,\"onFailureAction\":\"Start\"}},\"deadlineType\":\"CompleteBy\"},\"notificationSettings\":[{\"destination\":\"xkyxvxevblbj\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"lageuaulxun\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}],\"disabled\":true,\"provisioningState\":\"Failed\",\"resourceNotificationSettings\":[{\"destination\":\"enlsvxeizzgwkln\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"eycxcktpiymertee\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"iekkkzddrtkgdojb\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]},\"id\":\"efdeesve\",\"name\":\"uij\",\"type\":\"xtxsuwprtujw\"}")
+            "{\"properties\":{\"resourceType\":\"VirtualMachine\",\"actionType\":\"Deallocate\",\"startTime\":\"2021-05-29T17:37:18Z\",\"endTime\":\"2021-01-09T21:04Z\",\"schedule\":{\"scheduledTime\":\"vmmghfcfiwrxgk\",\"timeZone\":\"euvyinzqodfvpgs\",\"requestedWeekDays\":[\"Saturday\"],\"requestedMonths\":[\"July\",\"February\"],\"requestedDaysOfTheMonth\":[806186877,369289727,1170150782],\"executionParameters\":{\"retryPolicy\":{\"retryCount\":1656349594,\"retryWindowInMinutes\":1783616159,\"onFailureAction\":\"Create\"}},\"deadlineType\":\"CompleteBy\"},\"notificationSettings\":[{\"destination\":\"qvlgafcqusrdvetn\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"tnwlduycv\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"mewip\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}],\"disabled\":false,\"provisioningState\":\"Canceled\",\"resourceNotificationSettings\":[{\"destination\":\"sjjxundxgketw\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]},\"id\":\"f\",\"name\":\"mhv\",\"type\":\"muvgp\"}")
             .toObject(ScheduledActionResourcesInner.class);
-        Assertions.assertEquals(ResourceType.VIRTUAL_MACHINE_SCALE_SET, model.properties().resourceType());
+        Assertions.assertEquals(ResourceType.VIRTUAL_MACHINE, model.properties().resourceType());
         Assertions.assertEquals(ScheduledActionType.DEALLOCATE, model.properties().actionType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-01T23:09:27Z"), model.properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-22T17:01:19Z"), model.properties().endTime());
-        Assertions.assertEquals("jskgfmocwahp", model.properties().schedule().scheduledTime());
-        Assertions.assertEquals("gat", model.properties().schedule().timeZone());
-        Assertions.assertEquals(WeekDay.FRIDAY, model.properties().schedule().requestedWeekDays().get(0));
-        Assertions.assertEquals(Month.AUGUST, model.properties().schedule().requestedMonths().get(0));
-        Assertions.assertEquals(679664674, model.properties().schedule().requestedDaysOfTheMonth().get(0));
-        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
-            model.properties().schedule().executionParameters().optimizationPreference());
-        Assertions.assertEquals(1424152759,
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T17:37:18Z"), model.properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-09T21:04Z"), model.properties().endTime());
+        Assertions.assertEquals("vmmghfcfiwrxgk", model.properties().schedule().scheduledTime());
+        Assertions.assertEquals("euvyinzqodfvpgs", model.properties().schedule().timeZone());
+        Assertions.assertEquals(WeekDay.SATURDAY, model.properties().schedule().requestedWeekDays().get(0));
+        Assertions.assertEquals(Month.JULY, model.properties().schedule().requestedMonths().get(0));
+        Assertions.assertEquals(806186877, model.properties().schedule().requestedDaysOfTheMonth().get(0));
+        Assertions.assertEquals(1656349594,
             model.properties().schedule().executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(1313881471,
+        Assertions.assertEquals(1783616159,
             model.properties().schedule().executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(RecurringScheduledActionsResourceOperationType.START,
+        Assertions.assertEquals(ScheduledActionsResourceOperationType.CREATE,
             model.properties().schedule().executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals(RecurringScheduledActionsDeadlineType.COMPLETE_BY,
-            model.properties().schedule().deadlineType());
-        Assertions.assertEquals("xkyxvxevblbj", model.properties().notificationSettings().get(0).destination());
+        Assertions.assertEquals(ScheduledActionsDeadlineType.COMPLETE_BY, model.properties().schedule().deadlineType());
+        Assertions.assertEquals("qvlgafcqusrdvetn", model.properties().notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.properties().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.properties().notificationSettings().get(0).language());
         Assertions.assertFalse(model.properties().notificationSettings().get(0).disabled());
-        Assertions.assertTrue(model.properties().disabled());
+        Assertions.assertFalse(model.properties().disabled());
     }
 }

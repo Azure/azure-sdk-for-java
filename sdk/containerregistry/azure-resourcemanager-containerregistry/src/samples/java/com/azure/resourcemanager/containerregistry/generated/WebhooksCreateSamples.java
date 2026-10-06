@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class WebhooksCreateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/WebhookCreate.json
+     * x-ms-original-file: 2026-09-01-preview/WebhookCreate.json
      */
     /**
      * Sample code: WebhookCreate.

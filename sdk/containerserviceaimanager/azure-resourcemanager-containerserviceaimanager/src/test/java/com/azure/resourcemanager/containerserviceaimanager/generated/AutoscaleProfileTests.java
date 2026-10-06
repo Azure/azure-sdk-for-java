@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoscaleProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoscaleProfile model = BinaryData.fromString("{\"minReplicas\":413176852,\"maxReplicas\":1721819579}")
+        AutoscaleProfile model = BinaryData.fromString("{\"minReplicas\":1714142157,\"maxReplicas\":1446067033}")
             .toObject(AutoscaleProfile.class);
-        Assertions.assertEquals(413176852, model.minReplicas());
-        Assertions.assertEquals(1721819579, model.maxReplicas());
+        Assertions.assertEquals(1714142157, model.minReplicas());
+        Assertions.assertEquals(1446067033, model.maxReplicas());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoscaleProfile model = new AutoscaleProfile().withMinReplicas(413176852).withMaxReplicas(1721819579);
+        AutoscaleProfile model = new AutoscaleProfile().withMinReplicas(1714142157).withMaxReplicas(1446067033);
         model = BinaryData.fromObject(model).toObject(AutoscaleProfile.class);
-        Assertions.assertEquals(413176852, model.minReplicas());
-        Assertions.assertEquals(1721819579, model.maxReplicas());
+        Assertions.assertEquals(1714142157, model.minReplicas());
+        Assertions.assertEquals(1446067033, model.maxReplicas());
     }
 }

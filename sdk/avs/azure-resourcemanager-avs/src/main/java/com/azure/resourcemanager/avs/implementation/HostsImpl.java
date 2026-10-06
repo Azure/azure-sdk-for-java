@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.HostsClient;
 import com.azure.resourcemanager.avs.fluent.models.HostModelInner;
 import com.azure.resourcemanager.avs.models.HostModel;
+import com.azure.resourcemanager.avs.models.HostUpdate;
 import com.azure.resourcemanager.avs.models.Hosts;
 
 public final class HostsImpl implements Hosts {
@@ -49,6 +50,25 @@ public final class HostsImpl implements Hosts {
 
     public HostModel get(String resourceGroupName, String privateCloudName, String clusterName, String hostId) {
         HostModelInner inner = this.serviceClient().get(resourceGroupName, privateCloudName, clusterName, hostId);
+        if (inner != null) {
+            return new HostModelImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<HostModel> updateWithResponse(String resourceGroupName, String privateCloudName, String clusterName,
+        String hostId, HostUpdate properties, Context context) {
+        Response<HostModelInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, privateCloudName, clusterName, hostId, properties, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new HostModelImpl(inner.getValue(), this.manager()));
+    }
+
+    public HostModel update(String resourceGroupName, String privateCloudName, String clusterName, String hostId,
+        HostUpdate properties) {
+        HostModelInner inner
+            = this.serviceClient().update(resourceGroupName, privateCloudName, clusterName, hostId, properties);
         if (inner != null) {
             return new HostModelImpl(inner, this.manager());
         } else {

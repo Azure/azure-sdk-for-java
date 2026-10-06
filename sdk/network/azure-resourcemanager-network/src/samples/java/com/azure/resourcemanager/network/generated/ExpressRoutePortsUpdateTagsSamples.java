@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ExpressRoutePortsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ExpressRoutePortUpdateTags.json
+     * x-ms-original-file: 2026-01-01/ExpressRoutePortUpdateTags.json
      */
     /**
      * Sample code: ExpressRoutePortUpdateTags.

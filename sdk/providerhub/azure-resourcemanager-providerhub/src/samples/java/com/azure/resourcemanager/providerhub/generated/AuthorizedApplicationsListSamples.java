@@ -9,7 +9,7 @@ package com.azure.resourcemanager.providerhub.generated;
  */
 public final class AuthorizedApplicationsListSamples {
     /*
-     * x-ms-original-file: 2024-09-01/AuthorizedApplications_List.json
+     * x-ms-original-file: 2025-10-01/AuthorizedApplications_List.json
      */
     /**
      * Sample code: AuthorizedApplications_List.

@@ -13,10 +13,10 @@ import com.microsoft.azure.eventhubs.ReceiverOptions;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -33,7 +33,7 @@ public class ReceiverRuntimeMetricsTest extends ApiTestBase {
     private static PartitionReceiver receiverWithoutOptions = null;
     private static PartitionReceiver receiverWithOptionsDisabled = null;
 
-    @BeforeClass
+    @BeforeAll
     public static void initializeEventHub() throws Exception {
 
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
@@ -52,7 +52,7 @@ public class ReceiverRuntimeMetricsTest extends ApiTestBase {
         TestBase.pushEventsToPartition(ehClient, PARTITION_ID, SENT_EVENTS).get();
     }
 
-    @AfterClass()
+    @AfterAll
     public static void cleanup() throws EventHubException {
 
         if (receiverWithOptions != null) {
@@ -72,14 +72,14 @@ public class ReceiverRuntimeMetricsTest extends ApiTestBase {
         }
     }
 
-    @Test()
+    @Test
     public void testRuntimeMetricsReturnedWhenEnabled() throws EventHubException {
 
         LinkedList<EventData> receivedEventsWithOptions = new LinkedList<>();
         while (receivedEventsWithOptions.size() < SENT_EVENTS) {
             for (EventData eData : receiverWithOptions.receiveSync(1)) {
                 receivedEventsWithOptions.add(eData);
-                Assert.assertEquals((Long) eData.getSystemProperties().getSequenceNumber(),
+                Assertions.assertEquals((Long) eData.getSystemProperties().getSequenceNumber(),
                     receiverWithOptions.getEventPosition().getSequenceNumber());
             }
         }
@@ -89,22 +89,22 @@ public class ReceiverRuntimeMetricsTest extends ApiTestBase {
             offsets.add(eData.getSystemProperties().getOffset());
         }
 
-        Assert.assertTrue(receiverWithOptions.getRuntimeInformation() != null);
-        Assert.assertTrue(offsets.contains(receiverWithOptions.getRuntimeInformation().getLastEnqueuedOffset()));
-        Assert.assertTrue(receiverWithOptions.getRuntimeInformation().getLastEnqueuedSequenceNumber() >= receivedEventsWithOptions.iterator().next().getSystemProperties().getSequenceNumber());
+        Assertions.assertTrue(receiverWithOptions.getRuntimeInformation() != null);
+        Assertions.assertTrue(offsets.contains(receiverWithOptions.getRuntimeInformation().getLastEnqueuedOffset()));
+        Assertions.assertTrue(receiverWithOptions.getRuntimeInformation().getLastEnqueuedSequenceNumber() >= receivedEventsWithOptions.iterator().next().getSystemProperties().getSequenceNumber());
     }
 
-    @Test()
+    @Test
     public void testRuntimeMetricsWhenDisabled() throws EventHubException {
 
         receiverWithOptionsDisabled.receiveSync(10);
-        Assert.assertTrue(receiverWithOptionsDisabled.getRuntimeInformation() == null);
+        Assertions.assertTrue(receiverWithOptionsDisabled.getRuntimeInformation() == null);
     }
 
-    @Test()
+    @Test
     public void testRuntimeMetricsDefaultDisabled() throws EventHubException {
 
         receiverWithoutOptions.receiveSync(10);
-        Assert.assertTrue(receiverWithoutOptions.getRuntimeInformation() == null);
+        Assertions.assertTrue(receiverWithoutOptions.getRuntimeInformation() == null);
     }
 }

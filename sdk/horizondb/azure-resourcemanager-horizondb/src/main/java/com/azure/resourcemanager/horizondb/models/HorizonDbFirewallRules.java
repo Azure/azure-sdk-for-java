@@ -13,41 +13,41 @@ import com.azure.core.util.Context;
  */
 public interface HorizonDbFirewallRules {
     /**
-     * Gets information about a HorizonDb firewall rule.
+     * Gets information about a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb firewall rule along with {@link Response}.
+     * @return information about a HorizonDB firewall rule along with {@link Response}.
      */
     Response<HorizonDbFirewallRule> getWithResponse(String resourceGroupName, String clusterName, String poolName,
         String firewallRuleName, Context context);
 
     /**
-     * Gets information about a HorizonDb firewall rule.
+     * Gets information about a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb firewall rule.
+     * @return information about a HorizonDB firewall rule.
      */
     HorizonDbFirewallRule get(String resourceGroupName, String clusterName, String poolName, String firewallRuleName);
 
     /**
-     * Lists all HorizonDb firewall rules in a pool.
+     * Lists all HorizonDB firewall rules in a pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -56,11 +56,11 @@ public interface HorizonDbFirewallRules {
     PagedIterable<HorizonDbFirewallRule> list(String resourceGroupName, String clusterName, String poolName);
 
     /**
-     * Lists all HorizonDb firewall rules in a pool.
+     * Lists all HorizonDB firewall rules in a pool.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,12 +71,12 @@ public interface HorizonDbFirewallRules {
         Context context);
 
     /**
-     * Deletes a HorizonDb firewall rule.
+     * Deletes a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -84,12 +84,12 @@ public interface HorizonDbFirewallRules {
     void delete(String resourceGroupName, String clusterName, String poolName, String firewallRuleName);
 
     /**
-     * Deletes a HorizonDb firewall rule.
+     * Deletes a HorizonDB firewall rule.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDb cluster.
-     * @param poolName The name of the HorizonDb pool.
-     * @param firewallRuleName The name of the HorizonDb firewall rule.
+     * @param clusterName The name of the HorizonDB cluster.
+     * @param poolName The name of the HorizonDB pool.
+     * @param firewallRuleName The name of the HorizonDB firewall rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -99,30 +99,30 @@ public interface HorizonDbFirewallRules {
         Context context);
 
     /**
-     * Gets information about a HorizonDb firewall rule.
+     * Gets information about a HorizonDB firewall rule.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb firewall rule along with {@link Response}.
+     * @return information about a HorizonDB firewall rule along with {@link Response}.
      */
     HorizonDbFirewallRule getById(String id);
 
     /**
-     * Gets information about a HorizonDb firewall rule.
+     * Gets information about a HorizonDB firewall rule.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a HorizonDb firewall rule along with {@link Response}.
+     * @return information about a HorizonDB firewall rule along with {@link Response}.
      */
     Response<HorizonDbFirewallRule> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a HorizonDb firewall rule.
+     * Deletes a HorizonDB firewall rule.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,7 +132,7 @@ public interface HorizonDbFirewallRules {
     void deleteById(String id);
 
     /**
-     * Deletes a HorizonDb firewall rule.
+     * Deletes a HorizonDB firewall rule.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
