@@ -4,7 +4,7 @@
 
 # Microsoft Azure Service Bus Client for Java
 
-> Please note, a newer package [com.azure:azure-messaging-servicebus](https://central.sonatype.com/artifact/com.azure/azure-messaging-servicebus) for [Azure Service Bus](https://azure.microsoft.com/services/service-bus/) is available as of December 2020. While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the [migration guide](https://aka.ms/azsdk/java/migrate/sb) for more details.
+> **Important:** `com.microsoft.azure:azure-servicebus` was retired on September 30, 2026 and no longer receives official support or updates from Microsoft. Migrate to [com.azure:azure-messaging-servicebus](https://central.sonatype.com/artifact/com.azure/azure-messaging-servicebus). See the [migration guide](https://aka.ms/azsdk/java/migrate/sb) and [current Java samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus). This directory is retained for existing applications and migration reference.
 
 This is the Java client library for Azure Service Bus that focuses on Queues & Topics. If you are looking for Event Hubs and Relay clients, follow the below links:
 * [Event Hubs](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/microsoft-azure-eventhubs)
@@ -30,11 +30,10 @@ The package can be downloaded from [Maven](https://central.sonatype.com/artifact
 
 See our [Contribution Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
-## How to get support
+## Historical troubleshooting resources
 
-## Support resources to check prior to raising issues
+This retired library is unsupported. For migration help, use the migration guide linked above.
 
-1. Azure Service Bus [samples](https://github.com/Azure/azure-service-bus/tree/master/samples)
 1. Already [resolved issues](https://github.com/Azure/azure-service-bus-java/issues?q=is%3Aissue+is%3Aclosed)
 1. [StackOverflow](https://stackoverflow.com/questions/tagged/azureservicebus)
 
@@ -91,4 +90,3 @@ To use a proxy for unit tests, set an environment variable `RUN_WITH_PROXY` to `
 8. Go to environment and add `AZURE_TEST_MODE=RECORD` and `AZURE_SERVICEBUS_CONNECTION_STRING` with the namespace connection string.
 9. Click "Apply" and then "Run"
 10. You should have a new view next to the package explorer called JUnit showing the running tests and see Console outputs depending on which test currently runs. If you do not see the JUnit tab go to Window > Show view > Other... > Java > JUnit
-
