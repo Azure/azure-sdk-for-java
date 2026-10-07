@@ -4,6 +4,7 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import io.netty.resolver.AddressResolverGroup;
 import io.netty.resolver.DefaultAddressResolverGroup;
@@ -150,5 +151,16 @@ public class ReadmeSamples {
             .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxHeaderSize(256 * 1024)))
             .build();
         // END: readme-sample-customMaxHeaderSize
+    }
+
+    /**
+     * Configures HTTP/2 with HTTP/1.1 fallback.
+     */
+    public void configureHttpVersion() {
+        // BEGIN: readme-sample-configureHttpVersion
+        HttpClient client = new NettyAsyncHttpClientBuilder()
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+            .build();
+        // END: readme-sample-configureHttpVersion
     }
 }

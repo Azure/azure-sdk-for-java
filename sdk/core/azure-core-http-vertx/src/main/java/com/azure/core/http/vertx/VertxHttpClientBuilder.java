@@ -4,6 +4,7 @@
 package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.ReflectiveInvoker;
@@ -12,11 +13,14 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.HttpVersion;
 import io.vertx.core.net.ProxyType;
 
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.concurrent.CountDownLatch;
@@ -78,11 +82,40 @@ public class VertxHttpClientBuilder {
     private Configuration configuration;
     private HttpClientOptions httpClientOptions;
     private Vertx vertx;
+    private HttpProtocolVersion maximumHttpVersion;
 
     /**
      * Creates an instance of {@link VertxHttpClientBuilder}.
      */
     public VertxHttpClientBuilder() {
+    }
+
+    /**
+     * Sets the maximum HTTP protocol version the client supports.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_2} enables HTTP/2 with HTTP/1.1 fallback and enables TLS protocol negotiation
+     * through ALPN. For plain HTTP requests, Vert.x's HTTP/2 cleartext upgrade configuration applies.
+     * <p>
+     * By default, the client uses HTTP/1.1, or the protocols configured in {@link #httpClientOptions(HttpClientOptions)}.
+     * An explicit maximum overrides the protocol and ALPN settings in a copy of those options. Passing null clears the
+     * maximum and restores the original options.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <!-- src_embed readme-sample-configureHttpVersion -->
+     * <pre>
+     * HttpClient client = new VertxHttpClientBuilder&#40;&#41;
+     *     .maximumHttpVersion&#40;HttpProtocolVersion.HTTP_2&#41;
+     *     .build&#40;&#41;;
+     * </pre>
+     * <!-- end readme-sample-configureHttpVersion -->
+     *
+     * @param httpVersion The maximum HTTP protocol version, or null to clear the setting.
+     * @return The updated VertxHttpClientBuilder object.
+     */
+    public VertxHttpClientBuilder maximumHttpVersion(HttpProtocolVersion httpVersion) {
+        this.maximumHttpVersion = httpVersion;
+        return this;
     }
 
     /**
@@ -283,6 +316,19 @@ public class VertxHttpClientBuilder {
                 }
 
                 buildOptions.setProxyOptions(vertxProxyOptions);
+            }
+        }
+
+        if (maximumHttpVersion != null) {
+            buildOptions = new HttpClientOptions(buildOptions);
+            if (maximumHttpVersion == HttpProtocolVersion.HTTP_1_1) {
+                buildOptions.setProtocolVersion(HttpVersion.HTTP_1_1)
+                    .setUseAlpn(false)
+                    .setAlpnVersions(Collections.singletonList(HttpVersion.HTTP_1_1));
+            } else if (maximumHttpVersion == HttpProtocolVersion.HTTP_2) {
+                buildOptions.setProtocolVersion(HttpVersion.HTTP_2)
+                    .setUseAlpn(true)
+                    .setAlpnVersions(Arrays.asList(HttpVersion.HTTP_2, HttpVersion.HTTP_1_1));
             }
         }
 

@@ -60,14 +60,13 @@
  * HTTP/2 protocols, with HTTP/2 being the preferred protocol.
  * </p>
  *
- * <!-- src_embed readme-sample-useHttp2WithConfiguredNettyClient -->
+ * <!-- src_embed readme-sample-configureHttpVersion -->
  * <pre>
- * &#47;&#47; Constructs an HttpClient that supports both HTTP&#47;1.1 and HTTP&#47;2 with HTTP&#47;2 being the preferred protocol.
- * HttpClient client = new NettyAsyncHttpClientBuilder&#40;reactor.netty.http.client.HttpClient.create&#40;&#41;
- *     .protocol&#40;HttpProtocol.HTTP11, HttpProtocol.H2&#41;&#41;
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+ *     .maximumHttpVersion&#40;HttpProtocolVersion.HTTP_2&#41;
  *     .build&#40;&#41;;
  * </pre>
- * <!-- end readme-sample-useHttp2WithConfiguredNettyClient -->
+ * <!-- end readme-sample-configureHttpVersion -->
  *
  * <p>
  * It is also possible to create a Netty HttpClient that only supports HTTP/2.

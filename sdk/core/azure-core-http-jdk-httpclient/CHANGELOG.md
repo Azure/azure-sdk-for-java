@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `maximumHttpVersion` to enable HTTP/2 with HTTP/1.1 fallback. The default remains HTTP/1.1.
+
 ### Breaking Changes
 
 ### Bugs Fixed

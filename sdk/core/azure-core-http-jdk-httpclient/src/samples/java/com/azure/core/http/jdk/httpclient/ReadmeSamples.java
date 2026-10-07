@@ -4,6 +4,7 @@
 package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -44,6 +45,17 @@ public class ReadmeSamples {
             .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
             .build();
         // END: readme-sample-createProxyClient
+    }
+
+    /**
+     * Configures HTTP/2 with HTTP/1.1 fallback.
+     */
+    public void configureHttpVersion() {
+        // BEGIN: readme-sample-configureHttpVersion
+        HttpClient client = new JdkHttpClientBuilder()
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+            .build();
+        // END: readme-sample-configureHttpVersion
     }
 
 }

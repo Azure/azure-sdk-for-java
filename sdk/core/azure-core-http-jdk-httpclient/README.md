@@ -61,6 +61,7 @@ The following sections provide several code snippets covering some of the most c
 
 - [Create a Simple Client](#create-a-simple-client)
 - [Create a Client with Proxy](#create-a-client-with-proxy)
+- [Create a Client with HTTP/2 Support](#create-a-client-with-http2-support)
 
 ### Create a Simple Client
 
@@ -85,6 +86,20 @@ HttpClient client = new JdkHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
     .build();
 ```
+
+### Create a Client with HTTP/2 Support
+
+Enable HTTP/2 with HTTP/1.1 fallback using `com.azure.core.http.HttpProtocolVersion`.
+
+```java readme-sample-configureHttpVersion
+HttpClient client = new JdkHttpClientBuilder()
+    .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
+    .build();
+```
+
+The JDK client negotiates the protocol with the server. Use `HTTP_1_1` to limit the client to HTTP/1.1. The default
+remains HTTP/1.1, including when a native JDK builder is supplied. Passing `null` clears the maximum and restores
+that default.
 
 ## Next steps
 
@@ -114,5 +129,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- links -->
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
-
 
