@@ -6,6 +6,7 @@ package com.azure.ai.agents.implementation.realtime;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.RawRealtimeServerEvent;
 import com.azure.ai.agents.models.RealtimeServerEvent;
+import com.azure.ai.agents.models.VoiceAgentTransport;
 import com.azure.ai.agents.models.VoiceAgentWebSocketConnectionOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpHeader;
@@ -116,7 +117,8 @@ public final class VoiceAgentWebSocketUtils {
         UrlBuilder url = UrlBuilder.parse(baseUri.toString());
         url.setQueryParameter("api-version", encode(configuration.getApiVersion()));
         url.setQueryParameter("x-ms-client-sdk", encode(configuration.getUserAgent()));
-        url.setQueryParameter("transport", "websocket");
+        VoiceAgentTransport transport = options.getTransport();
+        url.setQueryParameter("transport", transport == null ? "websocket" : encode(transport.toString()));
         if (options.isStoreEnabled() != null) {
             url.setQueryParameter("store", options.isStoreEnabled().toString());
         }

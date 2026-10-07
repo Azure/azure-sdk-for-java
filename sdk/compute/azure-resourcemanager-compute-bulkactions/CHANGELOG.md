@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,48 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.7 (2026-09-29)
+
+- Azure Resource Manager Compute BulkActions client library for Java. This package contains Microsoft Azure SDK for Compute BulkActions Management SDK.  Package api-version 2026-10-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.AcknowledgeBulkOperationErrorsRequest` was added
+
+* `models.AcknowledgeBulkOperationErrorsResponse` was added
+
+#### `models.VirtualMachineBulkOperations` was modified
+
+* `bulkAcknowledgeOperationErrorsWithResponse(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest,com.azure.core.util.Context)` was added
+* `bulkAcknowledgeOperationErrors(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest)` was added
+
+## 1.0.0-beta.6 (2026-09-25)
+
+- Azure Resource Manager Compute BulkActions client library for Java. This package contains Microsoft Azure SDK for Compute BulkActions Management SDK.  Package api-version 2026-10-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ResourceOperation` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was removed
+* `toJson(com.azure.json.JsonWriter)` was removed
+* `java.lang.String errorDetails()` -> `java.lang.String errorDetails()`
+* `java.lang.String resourceId()` -> `java.lang.String resourceId()`
+* `models.ResourceOperationDetails operation()` -> `models.ResourceOperationDetails operation()`
+* `models.VirtualMachineInfo virtualMachineInfo()` -> `models.VirtualMachineInfo virtualMachineInfo()`
+* `java.lang.String errorCode()` -> `java.lang.String errorCode()`
+
+### Features Added
+
+#### `models.VirtualMachineBulkOperations` was modified
+
+* `bulkListOperationErrors(java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
+* `bulkListOperationErrors(java.lang.String,java.lang.String)` was added
+
+#### `models.ResourceOperation` was modified
+
+* `innerModel()` was added
 
 ## 1.0.0-beta.5 (2026-09-24)
 

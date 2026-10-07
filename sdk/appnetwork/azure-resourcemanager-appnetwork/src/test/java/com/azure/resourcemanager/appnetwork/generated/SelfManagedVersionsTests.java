@@ -12,9 +12,9 @@ public final class SelfManagedVersionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SelfManagedVersions model = BinaryData.fromString(
-            "{\"versions\":[{\"version\":\"a\",\"upgrades\":[\"nyqupedeojnabck\"]},{\"version\":\"smtxpsieb\",\"upgrades\":[\"hvpesapskrdqm\",\"jjdhtld\",\"kyzxuutk\"]},{\"version\":\"cwscwsvlx\",\"upgrades\":[\"ogtwrupqsxvnmi\"]},{\"version\":\"ykvceoveil\",\"upgrades\":[\"notyfjfcnjbkcn\",\"dhbt\",\"kphywpnvjto\"]}]}")
+            "{\"versions\":[{\"version\":\"yav\",\"upgrades\":[\"heun\",\"mqhgyxzkonocuk\",\"klyaxuconu\"]},{\"version\":\"szfkbe\",\"upgrades\":[\"ewrmjmwvvjektc\"]},{\"version\":\"senhwlrs\",\"upgrades\":[\"rzpwvlqdqgbiq\",\"lihkaetcktvfc\",\"vf\"]},{\"version\":\"nkymuctqhjfbebrj\",\"upgrades\":[\"erfuwuttt\"]}]}")
             .toObject(SelfManagedVersions.class);
-        Assertions.assertEquals("a", model.versions().get(0).version());
-        Assertions.assertEquals("nyqupedeojnabck", model.versions().get(0).upgrades().get(0));
+        Assertions.assertEquals("yav", model.versions().get(0).version());
+        Assertions.assertEquals("heun", model.versions().get(0).upgrades().get(0));
     }
 }

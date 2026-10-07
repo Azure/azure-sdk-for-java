@@ -287,7 +287,7 @@
 /sdk/containerservice/                                             @elvazhu521 @FumingZhang @Azure/azure-java-sdk
 
 # PRLabel: %Cosmos
-/sdk/cosmos/                                                       @Azure/azure-cosmos-java-sdk-connectors @kirankumarkolli @Azure/azure-java-sdk
+/sdk/cosmos/                                                       @Azure/azure-cosmos-sdk @kirankumarkolli
 
 # ServiceLabel: %Cosmos
 # ServiceOwners:                                                   @kushagraThapar @pjohari-ms @TheovanKraay
@@ -980,7 +980,6 @@
 /eng/versioning/version_client.txt
 
 # Add owners for notifications for specific pipelines
-/eng/pipelines/aggregate-reports.yml                               @alzimmermsft @jonathangiles @Azure/azure-java-sdk
 /eng/common/pipelines/codeowners-linter.yml                        @alzimmermsft @Azure/azure-java-sdk
 /eng/pipelines/docindex.yml                                        @danieljurek @raych1
 

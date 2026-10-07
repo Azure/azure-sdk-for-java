@@ -16,6 +16,15 @@
 
 - Upgraded `netty-codec-http` from `4.1.137.Final` to version `4.1.138.Final`.
 
+## 1.1.11 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `netty-codec-http` from `4.1.137.Final` to version `4.1.138.Final`.
+
 ## 1.1.10 (2026-08-18)
 
 ### Other Changes

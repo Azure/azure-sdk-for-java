@@ -29,7 +29,7 @@ public class InsightRequest implements JsonSerializable<InsightRequest> {
      * Creates an instance of InsightRequest class.
      */
     @Generated
-    public InsightRequest() {
+    protected InsightRequest() {
     }
 
     /**

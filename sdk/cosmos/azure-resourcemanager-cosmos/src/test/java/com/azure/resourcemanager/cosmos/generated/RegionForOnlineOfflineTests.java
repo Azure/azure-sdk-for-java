@@ -12,14 +12,14 @@ public final class RegionForOnlineOfflineTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionForOnlineOffline model
-            = BinaryData.fromString("{\"region\":\"wkfvhqcrailvp\"}").toObject(RegionForOnlineOffline.class);
-        Assertions.assertEquals("wkfvhqcrailvp", model.region());
+            = BinaryData.fromString("{\"region\":\"aqolbgycduiertg\"}").toObject(RegionForOnlineOffline.class);
+        Assertions.assertEquals("aqolbgycduiertg", model.region());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegionForOnlineOffline model = new RegionForOnlineOffline().withRegion("wkfvhqcrailvp");
+        RegionForOnlineOffline model = new RegionForOnlineOffline().withRegion("aqolbgycduiertg");
         model = BinaryData.fromObject(model).toObject(RegionForOnlineOffline.class);
-        Assertions.assertEquals("wkfvhqcrailvp", model.region());
+        Assertions.assertEquals("aqolbgycduiertg", model.region());
     }
 }

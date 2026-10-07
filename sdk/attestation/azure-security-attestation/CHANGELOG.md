@@ -28,6 +28,14 @@
   do not work with binary TPM payloads: converting binary data to a `String` using UTF-8 changes the bytes, and the
   attestation request fails.
 
+## 1.1.42 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+
 ## 1.1.41 (2026-08-18)
 
 ### Other Changes

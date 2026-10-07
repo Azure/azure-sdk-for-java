@@ -14,6 +14,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.BackupForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Cluster;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateModeForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.FipsMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailabilityForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindowForPatch;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
@@ -88,6 +89,11 @@ public final class ServerPropertiesForPatch implements JsonSerializable<ServerPr
     private CreateModeForPatch createMode;
 
     /*
+     * Identifier of the server to be used as the source of the new server.
+     */
+    private String sourceServerResourceId;
+
+    /*
      * Role of the server in a replication set.
      */
     private ReplicationRole replicationRole;
@@ -107,6 +113,12 @@ public final class ServerPropertiesForPatch implements JsonSerializable<ServerPr
      * Cluster properties of a server.
      */
     private Cluster cluster;
+
+    /*
+     * Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the server. If not specified, the
+     * current value is preserved.
+     */
+    private FipsMode fipsMode;
 
     /**
      * Creates an instance of ServerPropertiesForPatch class.
@@ -330,6 +342,26 @@ public final class ServerPropertiesForPatch implements JsonSerializable<ServerPr
     }
 
     /**
+     * Get the sourceServerResourceId property: Identifier of the server to be used as the source of the new server.
+     * 
+     * @return the sourceServerResourceId value.
+     */
+    public String sourceServerResourceId() {
+        return this.sourceServerResourceId;
+    }
+
+    /**
+     * Set the sourceServerResourceId property: Identifier of the server to be used as the source of the new server.
+     * 
+     * @param sourceServerResourceId the sourceServerResourceId value to set.
+     * @return the ServerPropertiesForPatch object itself.
+     */
+    public ServerPropertiesForPatch withSourceServerResourceId(String sourceServerResourceId) {
+        this.sourceServerResourceId = sourceServerResourceId;
+        return this;
+    }
+
+    /**
      * Get the replicationRole property: Role of the server in a replication set.
      * 
      * @return the replicationRole value.
@@ -414,6 +446,28 @@ public final class ServerPropertiesForPatch implements JsonSerializable<ServerPr
     }
 
     /**
+     * Get the fipsMode property: Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the
+     * server. If not specified, the current value is preserved.
+     * 
+     * @return the fipsMode value.
+     */
+    public FipsMode fipsMode() {
+        return this.fipsMode;
+    }
+
+    /**
+     * Set the fipsMode property: Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the
+     * server. If not specified, the current value is preserved.
+     * 
+     * @param fipsMode the fipsMode value to set.
+     * @return the ServerPropertiesForPatch object itself.
+     */
+    public ServerPropertiesForPatch withFipsMode(FipsMode fipsMode) {
+        this.fipsMode = fipsMode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -429,11 +483,13 @@ public final class ServerPropertiesForPatch implements JsonSerializable<ServerPr
         jsonWriter.writeJsonField("dataEncryption", this.dataEncryption);
         jsonWriter.writeStringField("availabilityZone", this.availabilityZone);
         jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
+        jsonWriter.writeStringField("sourceServerResourceId", this.sourceServerResourceId);
         jsonWriter.writeStringField("replicationRole",
             this.replicationRole == null ? null : this.replicationRole.toString());
         jsonWriter.writeJsonField("replica", this.replica);
         jsonWriter.writeJsonField("network", this.network);
         jsonWriter.writeJsonField("cluster", this.cluster);
+        jsonWriter.writeStringField("fipsMode", this.fipsMode == null ? null : this.fipsMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -474,6 +530,8 @@ public final class ServerPropertiesForPatch implements JsonSerializable<ServerPr
                     deserializedServerPropertiesForPatch.availabilityZone = reader.getString();
                 } else if ("createMode".equals(fieldName)) {
                     deserializedServerPropertiesForPatch.createMode = CreateModeForPatch.fromString(reader.getString());
+                } else if ("sourceServerResourceId".equals(fieldName)) {
+                    deserializedServerPropertiesForPatch.sourceServerResourceId = reader.getString();
                 } else if ("replicationRole".equals(fieldName)) {
                     deserializedServerPropertiesForPatch.replicationRole
                         = ReplicationRole.fromString(reader.getString());
@@ -483,6 +541,8 @@ public final class ServerPropertiesForPatch implements JsonSerializable<ServerPr
                     deserializedServerPropertiesForPatch.network = Network.fromJson(reader);
                 } else if ("cluster".equals(fieldName)) {
                     deserializedServerPropertiesForPatch.cluster = Cluster.fromJson(reader);
+                } else if ("fipsMode".equals(fieldName)) {
+                    deserializedServerPropertiesForPatch.fipsMode = FipsMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
