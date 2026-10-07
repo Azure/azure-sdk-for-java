@@ -275,8 +275,7 @@ public class VersioningTests extends BlobTestBase {
             = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
 
         PagedIterable<BlobItem> blobs = blobContainerClient
-            .listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(false))
-                .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML), null);
+            .listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(false)), null);
 
         assertEquals(1, blobs.stream().count());
         assertEquals(blobItemV3.getVersionId(), blobs.stream().iterator().next().getVersionId());

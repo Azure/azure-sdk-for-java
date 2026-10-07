@@ -13,7 +13,6 @@ import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -104,8 +103,7 @@ public class CPKNAsyncTests extends BlobTestBase {
         AppendBlobAsyncClient cpknAppendBlob
             = cpkncesContainer.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
 
-        ListBlobsOptions options
-            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+        ListBlobsOptions options = new ListBlobsOptions();
         StepVerifier
             .create(
                 cpkncesContainer.create().then(cpknAppendBlob.create()).thenMany(cpkncesContainer.listBlobs(options)))
@@ -122,8 +120,7 @@ public class CPKNAsyncTests extends BlobTestBase {
         AppendBlobAsyncClient cpknAppendBlob
             = cpkncesContainer.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
 
-        ListBlobsOptions options = new ListBlobsOptions().setPrefix("")
-            .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix("");
         StepVerifier
             .create(cpkncesContainer.create()
                 .then(cpknAppendBlob.create())
