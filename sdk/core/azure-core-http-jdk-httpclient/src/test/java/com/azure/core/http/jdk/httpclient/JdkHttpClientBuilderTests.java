@@ -75,6 +75,23 @@ public class JdkHttpClientBuilderTests {
     }
 
     @Test
+    public void clearingMaximumHttpVersionRestoresDefault() throws Exception {
+        JdkHttpClientBuilder builder = new JdkHttpClientBuilder().configuration(Configuration.NONE)
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_2);
+        HttpClient first = builder.build();
+        HttpClient cleared = builder.maximumHttpVersion(null).build();
+        try {
+            assertEquals(java.net.http.HttpClient.Version.HTTP_1_1,
+                JdkHttpClientHttp2Tests.getNativeClient(cleared).version());
+            assertEquals(java.net.http.HttpClient.Version.HTTP_2,
+                JdkHttpClientHttp2Tests.getNativeClient(first).version());
+        } finally {
+            JdkHttpClientHttp2Tests.closeNativeClient(first);
+            JdkHttpClientHttp2Tests.closeNativeClient(cleared);
+        }
+    }
+
+    @Test
     public void maximumHttpVersionOverridesNativeBuilderAndResetsToHttp1() throws Exception {
         Executor executor = Runnable::run;
         java.net.http.HttpClient.Builder nativeBuilder
