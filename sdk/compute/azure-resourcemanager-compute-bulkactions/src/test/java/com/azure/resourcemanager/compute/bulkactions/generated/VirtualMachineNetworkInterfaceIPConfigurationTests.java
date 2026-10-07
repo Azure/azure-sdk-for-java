@@ -48,7 +48,7 @@ public final class VirtualMachineNetworkInterfaceIPConfigurationTests {
             model.properties().publicIPAddressConfiguration().properties().ipTags().get(0).tag());
         Assertions.assertEquals("biknsorgjhxbld",
             model.properties().publicIPAddressConfiguration().properties().publicIPPrefix().id());
-        Assertions.assertEquals(IPVersions.IPV4,
+        Assertions.assertEquals(IPVersions.IPV6,
             model.properties().publicIPAddressConfiguration().properties().publicIPAddressVersion());
         Assertions.assertEquals(PublicIPAllocationMethod.STATIC,
             model.properties().publicIPAddressConfiguration().properties().publicIPAllocationMethod());
@@ -112,7 +112,7 @@ public final class VirtualMachineNetworkInterfaceIPConfigurationTests {
             model.properties().publicIPAddressConfiguration().properties().ipTags().get(0).tag());
         Assertions.assertEquals("biknsorgjhxbld",
             model.properties().publicIPAddressConfiguration().properties().publicIPPrefix().id());
-        Assertions.assertEquals(IPVersions.IPV4,
+        Assertions.assertEquals(IPVersions.IPV6,
             model.properties().publicIPAddressConfiguration().properties().publicIPAddressVersion());
         Assertions.assertEquals(PublicIPAllocationMethod.STATIC,
             model.properties().publicIPAddressConfiguration().properties().publicIPAllocationMethod());

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.compute.bulkactions.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 

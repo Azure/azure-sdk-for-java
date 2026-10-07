@@ -5,8 +5,6 @@
 package com.azure.ai.projects.implementation;
 
 import com.azure.ai.projects.AIProjectsServiceVersion;
-import com.azure.ai.projects.models.EvaluatorGenerationJob;
-import com.azure.ai.projects.models.EvaluatorVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;

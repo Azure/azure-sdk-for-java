@@ -24,7 +24,7 @@ public final class ScheduledEventsPolicyTests {
         Assertions.assertTrue(model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().enable());
         Assertions.assertEquals("bckhsmtxpsi",
             model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().scheduledEventsApiVersion());
-        Assertions.assertFalse(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
+        Assertions.assertTrue(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
     }
 
     @org.junit.jupiter.api.Test
@@ -42,6 +42,6 @@ public final class ScheduledEventsPolicyTests {
         Assertions.assertTrue(model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().enable());
         Assertions.assertEquals("bckhsmtxpsi",
             model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().scheduledEventsApiVersion());
-        Assertions.assertFalse(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
+        Assertions.assertTrue(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
     }
 }

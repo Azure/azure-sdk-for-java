@@ -66,11 +66,13 @@
 
 ## VirtualMachineBulkOperations
 
+- [BulkAcknowledgeOperationErrors](#virtualmachinebulkoperations_bulkacknowledgeoperationerrors)
 - [BulkCancelOperations](#virtualmachinebulkoperations_bulkcanceloperations)
 - [BulkDeallocateOperation](#virtualmachinebulkoperations_bulkdeallocateoperation)
 - [BulkDeleteOperation](#virtualmachinebulkoperations_bulkdeleteoperation)
 - [BulkGetOperationsStatus](#virtualmachinebulkoperations_bulkgetoperationsstatus)
 - [BulkHibernateOperation](#virtualmachinebulkoperations_bulkhibernateoperation)
+- [BulkListOperationErrors](#virtualmachinebulkoperations_bulklistoperationerrors)
 - [BulkReimageOperation](#virtualmachinebulkoperations_bulkreimageoperation)
 - [BulkStartOperation](#virtualmachinebulkoperations_bulkstartoperation)
 ### BulkCreate_Cancel
@@ -1639,9 +1641,6 @@ import com.azure.resourcemanager.compute.bulkactions.models.Month;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdate;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionUpdateProperties;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsDeadlineType;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsScheduleUpdate;
 import com.azure.resourcemanager.compute.bulkactions.models.WeekDay;
 import java.util.Arrays;

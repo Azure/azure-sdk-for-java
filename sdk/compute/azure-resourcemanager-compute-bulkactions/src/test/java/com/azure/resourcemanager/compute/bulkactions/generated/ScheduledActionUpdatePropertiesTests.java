@@ -46,8 +46,8 @@ public final class ScheduledActionUpdatePropertiesTests {
         Assertions.assertEquals("qdzfvazivjlfrqtt", model.notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.notificationSettings().get(0).language());
-        Assertions.assertTrue(model.notificationSettings().get(0).disabled());
-        Assertions.assertTrue(model.disabled());
+        Assertions.assertFalse(model.notificationSettings().get(0).disabled());
+        Assertions.assertFalse(model.disabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -92,7 +92,7 @@ public final class ScheduledActionUpdatePropertiesTests {
         Assertions.assertEquals("qdzfvazivjlfrqtt", model.notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.notificationSettings().get(0).language());
-        Assertions.assertTrue(model.notificationSettings().get(0).disabled());
-        Assertions.assertTrue(model.disabled());
+        Assertions.assertFalse(model.notificationSettings().get(0).disabled());
+        Assertions.assertFalse(model.disabled());
     }
 }

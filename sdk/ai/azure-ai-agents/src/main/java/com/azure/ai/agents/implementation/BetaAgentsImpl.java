@@ -5,8 +5,6 @@
 package com.azure.ai.agents.implementation;
 
 import com.azure.ai.agents.AgentsServiceVersion;
-import com.azure.ai.agents.models.AgentOptimizationJob;
-import com.azure.ai.agents.models.AgentOptimizationJobResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;

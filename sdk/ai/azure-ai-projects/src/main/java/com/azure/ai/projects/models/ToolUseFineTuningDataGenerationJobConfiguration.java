@@ -135,20 +135,4 @@ public final class ToolUseFineTuningDataGenerationJobConfiguration extends DataG
             return deserializedToolUseFineTuningDataGenerationJobConfiguration;
         });
     }
-
-    /*
-     * Maximum number of samples to generate, up to service-defined limits.
-     */
-    @Generated
-    private final int maxSamples;
-
-    /**
-     * Get the maxSamples property: Maximum number of samples to generate, up to service-defined limits.
-     *
-     * @return the maxSamples value.
-     */
-    @Generated
-    public int getMaxSamples() {
-        return this.maxSamples;
-    }
 }

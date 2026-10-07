@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.BetaMemoryStoresClient;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.MemorySearchPreviewTool;
