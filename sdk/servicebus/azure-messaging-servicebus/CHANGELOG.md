@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Added a sample showing how to configure processor drain timeout and allow in-flight message settlement during shutdown.
+
 ## 7.18.1 (2026-10-06)
 
 ### Other Changes

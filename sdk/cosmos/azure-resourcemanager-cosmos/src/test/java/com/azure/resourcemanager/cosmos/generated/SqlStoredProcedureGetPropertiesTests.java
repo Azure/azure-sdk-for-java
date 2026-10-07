@@ -12,9 +12,9 @@ public final class SqlStoredProcedureGetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlStoredProcedureGetProperties model = BinaryData.fromString(
-            "{\"resource\":{\"_rid\":\"nk\",\"_ts\":27.386929,\"_etag\":\"jb\",\"id\":\"rgaehvvibrxjj\",\"body\":\"oqbeitpkxzt\"}}")
+            "{\"resource\":{\"_rid\":\"vigorqjbttzhragl\",\"_ts\":96.13141,\"_etag\":\"onqjujeickpzvcpo\",\"id\":\"mxelnwcltyjed\",\"body\":\"xm\"}}")
             .toObject(SqlStoredProcedureGetProperties.class);
-        Assertions.assertEquals("rgaehvvibrxjj", model.resource().id());
-        Assertions.assertEquals("oqbeitpkxzt", model.resource().body());
+        Assertions.assertEquals("mxelnwcltyjed", model.resource().id());
+        Assertions.assertEquals("xm", model.resource().body());
     }
 }
