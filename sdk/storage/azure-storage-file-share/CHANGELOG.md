@@ -4,9 +4,10 @@
 
 ### Features Added
 - Added support for service version 2026-10-06.
-- Added support for `ShareFileClient.listAllRanges()` and `ShareFileClient.listAllRangesDiff()` APIs.
+- Added support for sync `ShareFileClient.listAllRanges()` and `ShareFileClient.listAllRangesDiff()` APIs, and async counterparts.
 
 ### Other Changes
+- Deprecated the `listRanges` overloads, `listRangesDiff`, and `listRangesDiffWithResponse` on `ShareFileClient` and `ShareFileAsyncClient`.
 
 #### Dependency Updates
 - Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.

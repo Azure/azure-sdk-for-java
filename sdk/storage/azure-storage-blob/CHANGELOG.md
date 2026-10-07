@@ -5,7 +5,7 @@
 ### Features Added
 - Added support for service version 2026-10-06.
 - Added support for retrieving `AccessTier` headers to `BlobDownloadHeaders`.
-- Added support for `PutBlob` operations returning both the existing MD5 content hash and the new CRC64 checksum.
+- Added `getContentCrc64()` to `BlockBlobItem`, `AppendBlobItem`, and `PageBlobItem` to expose CRC64 checksums returned by the service, alongside MD5 where applicable.
 - Added support for Apache Arrow response format for `ListBlobs` flat and `ListBlobs` hierarchical options.
 - Added support for content validation with structured message and CRC64 via `ContentValidationAlgorithm`. Supported for
   `GetBlob`, `PutBlob`, `PutBlock`, `PutPage`, and `AppendBlock` operations.
@@ -14,6 +14,7 @@
 - Fixed account name parsing for DFS endpoints when the account name contains "blob".
 - Fixed SDK-generated ETag consistency locks for retries, chunked downloads, input streams, and seekable reads to send
   RFC 9110-conformant `If-Match` values.
+- Fixed chunked download ETag consistency conditions to preserve the caller's `If-Unmodified-Since` value instead of copying `If-Modified-Since`.
 - Fixed an issue where `BlobClientBase.openSeekableByteChannelRead` issued an unnecessary HTTP request (resulting
   in an HTTP 416 response) after the entire blob had already been returned in the initial range download. When the
   channel is opened with ETag consistency control (the default), the read behavior now short-circuits to end-of-file
