@@ -151,6 +151,9 @@ HttpClient client = new VertxHttpClientBuilder()
 
 ### Create a Client with HTTP/2 Support
 
+To configure the protocol version without depending on a Vert.x-specific builder, use
+[`HttpClientOptions.setMaximumHttpVersion` with `HttpClient.createDefault(options)`](../azure-core/README.md#configuring-the-http-protocol-version).
+
 Enable HTTP/2 with HTTP/1.1 fallback using `com.azure.core.http.HttpProtocolVersion`.
 
 ```java readme-sample-configureHttpVersion

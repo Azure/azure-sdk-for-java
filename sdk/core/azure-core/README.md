@@ -99,6 +99,28 @@ deserialized result of the service call and to the details of the HTTP response 
 `HttpPipeline` is a construct that contains a list of `HttpPipelinePolicy` which are applied to a request
 sequentially to prepare it being sent by an `HttpClient`.
 
+### Configuring the HTTP Protocol Version
+
+Use `HttpClientOptions` to configure the maximum HTTP protocol version without depending on a transport-specific
+builder. `HttpClient.createDefault(options)` selects an `HttpClientProvider` from the classpath using the existing
+service provider mechanism. Netty, OkHttp, Vert.x, and JDK HTTP client providers support this option.
+
+```java readme-sample-configureHttpVersionWithOptions
+HttpClientOptions options = new HttpClientOptions()
+    .setMaximumHttpVersion(HttpProtocolVersion.HTTP_2);
+HttpClient client = HttpClient.createDefault(options);
+```
+
+`HttpProtocolVersion.HTTP_2` allows HTTP/2 with HTTP/1.1 fallback when HTTP/2 isn't negotiated.
+`HttpProtocolVersion.HTTP_1_1` limits the client to HTTP/1.1. The option is `null` by default, preserving the selected
+transport's existing default: HTTP/1.1 for Netty, Vert.x, and JDK, and HTTP/2 with HTTP/1.1 fallback for OkHttp.
+Passing `null` to `setMaximumHttpVersion` clears an explicit maximum for subsequently created clients. Changing the
+options doesn't affect existing clients.
+
+You can also pass these options to a service client builder's `clientOptions` method when the builder creates its
+default HTTP client. If an HTTP client or pipeline is supplied explicitly, configure that client's protocol version
+instead. Use `setHttpClientProvider` only when you also want to select a particular provider on the classpath.
+
 ### Exception Hierarchy with `AzureException`
 
 `AzureException` is the root exception in the hierarchy used in Azure Core. Additional exceptions such as
@@ -271,4 +293,3 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
-
