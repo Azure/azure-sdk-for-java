@@ -8,6 +8,7 @@
   service answers with an interim `100 Continue` response. This does not change how or when the request body is sent.
 
 - Added `maximumHttpVersion` to select HTTP/1.1 or HTTP/2 with HTTP/1.1 fallback while preserving existing defaults.
+- Added support for `HttpClientOptions.setMaximumHttpVersion` through the HTTP client provider.
 
 ### Breaking Changes
 
