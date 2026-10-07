@@ -16,18 +16,15 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http2.DefaultHttp2Headers;
-import io.netty.handler.codec.http2.DefaultHttp2HeadersDecoder;
 import io.netty.handler.codec.http2.DefaultHttp2HeadersFrame;
 import io.netty.handler.codec.http2.Http2Exception;
 import io.netty.handler.codec.http2.Http2FrameCodecBuilder;
+import io.netty.handler.codec.http2.Http2FrameCodec;
 import io.netty.handler.codec.http2.Http2Headers;
 import io.netty.handler.codec.http2.Http2HeadersFrame;
 import io.netty.handler.codec.http2.Http2MultiplexHandler;
@@ -45,13 +42,13 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
-import reactor.netty.DisposableServer;
+import reactor.core.publisher.Flux;
 import reactor.netty.http.Http2SslContextSpec;
 import reactor.netty.http.HttpProtocol;
-import reactor.netty.http.server.HttpServer;
 
 import javax.net.ssl.KeyManagerFactory;
 import java.io.InputStream;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -60,6 +57,8 @@ import java.nio.file.Paths;
 import java.security.KeyStore;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -99,7 +98,7 @@ public class CosmosHttp2HeaderCompatibilityTest {
     public void decoderRetainsHeaderListLimit() {
         ByteBuf block = headerBlock(":status", "200", HEADER, " version ");
         try {
-            assertThatThrownBy(() -> new DefaultHttp2HeadersDecoder(false, 32).decodeHeaders(1, block))
+            assertThatThrownBy(() -> new CosmosHttp2HeadersDecoder(32).decodeHeaders(1, block))
                 .isInstanceOf(Http2Exception.HeaderListSizeException.class);
         } finally {
             block.release();
@@ -107,12 +106,11 @@ public class CosmosHttp2HeaderCompatibilityTest {
     }
 
     @Test(groups = "unit")
-    public void handlerRetainsNameValidation() {
+    public void customDecoderRetainsNameValidation() {
         ByteBuf block = headerBlock(":status", "200", "X-MS-ServiceVersion", "version");
         try {
-            assertThatThrownBy(() -> Http2ResponseHeaderValidationHandler.validateHeaders(
-                new DefaultHttp2HeadersDecoder(false, 8192).decodeHeaders(1, block)))
-                .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> new CosmosHttp2HeadersDecoder(8192).decodeHeaders(1, block))
+                .isInstanceOf(Http2Exception.StreamException.class);
         } finally {
             block.release();
         }
@@ -125,15 +123,13 @@ public class CosmosHttp2HeaderCompatibilityTest {
 
     @Test(groups = "unit", dataProvider = "indexedValues")
     public void decoderPreservesIndexedValuesWithoutCopyingArrays(String value) throws Exception {
-        DefaultHttp2HeadersDecoder decoder = new DefaultHttp2HeadersDecoder(false, 8192);
+        CosmosHttp2HeadersDecoder decoder = new CosmosHttp2HeadersDecoder(8192);
         ByteBuf first = headerBlock(HEADER, value);
         ByteBuf second = Unpooled.buffer(1).writeByte(0xbe);
         first.setByte(0, 0x40);
         try {
             Http2Headers a = decoder.decodeHeaders(1, first);
             Http2Headers b = decoder.decodeHeaders(3, second);
-            Http2ResponseHeaderValidationHandler.validateHeaders(a);
-            Http2ResponseHeaderValidationHandler.validateHeaders(b);
             assertThat(a.get(HEADER).toString()).isEqualTo("version");
             assertThat(b.get(HEADER).toString()).isEqualTo("version");
             assertThat(((AsciiString) b.get(HEADER)).array())
@@ -144,56 +140,6 @@ public class CosmosHttp2HeaderCompatibilityTest {
         } finally {
             first.release();
             second.release();
-        }
-    }
-
-    @DataProvider(name = "cleartextProtocols")
-    public Object[][] cleartextProtocols() {
-        return new Object[][] {
-            { new HttpProtocol[] { HttpProtocol.H2C } },
-            { new HttpProtocol[] { HttpProtocol.HTTP11, HttpProtocol.H2C } }
-        };
-    }
-
-    @Test(groups = "unit", dataProvider = "cleartextProtocols")
-    public void cleartextBootstrapDisablesValidationWithConfiguredLimit(HttpProtocol[] protocols) {
-        HttpServer template = HttpServer.create().host("127.0.0.1").port(0)
-            .protocol(HttpProtocol.HTTP11, HttpProtocol.H2C)
-            .handle((request, response) -> response.header(HEADER, "version").sendString(Mono.just("ok")));
-        DisposableServer server = template.bindNow(TIMEOUT);
-        try {
-            DisposableServer second = template.bindNow(TIMEOUT);
-            try {
-                reactor.netty.http.client.HttpClient client = reactor.netty.http.client.HttpClient.newConnection()
-                    .protocol(protocols).http2Settings(settings -> settings.maxHeaderListSize(16384))
-                    .httpResponseDecoder(spec -> spec.validateHeaders(false))
-                    .observe((connection, state) -> {
-                        Channel ch = connection.channel();
-                        Channel parent = ch.parent() != null ? ch.parent() : ch;
-                        io.netty.handler.codec.http2.Http2FrameCodec codec = parent.pipeline().get(
-                            io.netty.handler.codec.http2.Http2FrameCodec.class);
-                        if (codec != null && parent.pipeline().get(
-                            Http2ResponseHeaderValidationHandler.HANDLER_NAME) == null) {
-                            parent.pipeline().addAfter(parent.pipeline().context(codec).name(),
-                                Http2ResponseHeaderValidationHandler.HANDLER_NAME,
-                                Http2ResponseHeaderValidationHandler.INSTANCE);
-                        }
-                    })
-                    .doOnResponse((response, connection) -> {
-                        assertThat(connection.channel().parent()).isNotNull();
-                        assertThat(connection.channel().parent().pipeline().get(
-                            io.netty.handler.codec.http2.Http2FrameCodec.class)
-                            .decoder().localSettings().maxHeaderListSize()).isEqualTo(16384L);
-                    });
-                for (DisposableServer target : new DisposableServer[] { server, second }) {
-                    assertThat(client.get().uri("http://127.0.0.1:" + target.port() + "/")
-                        .responseSingle((response, body) -> body.asString()).block(TIMEOUT)).isEqualTo("ok");
-                }
-            } finally {
-                second.disposeNow(TIMEOUT);
-            }
-        } finally {
-            server.disposeNow(TIMEOUT);
         }
     }
 
@@ -216,11 +162,10 @@ public class CosmosHttp2HeaderCompatibilityTest {
     }
 
     @Test(groups = "unit", dataProvider = "padding")
-    public void handlerNormalizesOnlyServiceVersionPadding(String value, String expected) throws Exception {
+    public void decoderNormalizesOnlyServiceVersionPadding(String value, String expected) throws Exception {
         ByteBuf block = headerBlock(":status", "200", HEADER, value);
         try {
-            Http2Headers headers = new DefaultHttp2HeadersDecoder(false, 8192).decodeHeaders(1, block);
-            Http2ResponseHeaderValidationHandler.validateHeaders(headers);
+            Http2Headers headers = new CosmosHttp2HeadersDecoder(8192).decodeHeaders(1, block);
             assertThat(headers.get(HEADER).toString()).isEqualTo(expected);
         } finally {
             block.release();
@@ -237,35 +182,34 @@ public class CosmosHttp2HeaderCompatibilityTest {
     }
 
     @Test(groups = "unit", dataProvider = "prohibitedValues")
-    public void handlerRetainsStrictValueValidation(String name, String value) {
+    public void decoderRetainsStrictValueValidation(String name, String value) {
         ByteBuf block = headerBlock(":status", "200", name, value);
         try {
-            assertThatThrownBy(() -> Http2ResponseHeaderValidationHandler.validateHeaders(
-                new DefaultHttp2HeadersDecoder(false, 8192).decodeHeaders(1, block)))
-                .isInstanceOf(IllegalArgumentException.class).hasMessageContaining(name);
+            assertThatThrownBy(() -> new CosmosHttp2HeadersDecoder(8192).decodeHeaders(1, block))
+                .isInstanceOf(Http2Exception.StreamException.class).hasMessageContaining(name);
         } finally {
             block.release();
         }
     }
 
     @Test(groups = "unit")
-    public void decodedHeadersDoNotRetainOriginalPseudoHeaderWireOrder() throws Exception {
+    public void customDecoderRetainsOriginalPseudoHeaderWireOrderValidation() {
         ByteBuf block = headerBlock(HEADER, " version ", ":status", "200");
         try {
-            Http2Headers headers = new DefaultHttp2HeadersDecoder(false, 8192).decodeHeaders(1, block);
-            assertThat(headers.iterator().next().getKey().toString()).isEqualTo(":status");
+            assertThatThrownBy(() -> new CosmosHttp2HeadersDecoder(8192).decodeHeaders(1, block))
+                .isInstanceOf(Http2Exception.StreamException.class).hasMessageContaining("after regular header");
         } finally {
             block.release();
         }
     }
 
     @Test(groups = "unit")
-    public void releasedBootstrapValidationFlagIsFalseForHttp2() {
+    public void releasedBootstrapValidationRemainsEnabledForBothProtocols() {
         HttpClient client = HttpClient.createFixed(clientConfig(true));
         try {
             reactor.netty.http.client.HttpClient transport = com.azure.cosmos.implementation.directconnectivity
                 .ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, client, "httpClient");
-            assertThat(transport.configuration().decoder().validateHeaders()).isFalse();
+            assertThat(transport.configuration().decoder().validateHeaders()).isTrue();
         } finally {
             client.shutdown();
         }
@@ -360,6 +304,103 @@ public class CosmosHttp2HeaderCompatibilityTest {
         }
     }
 
+    @DataProvider(name = "malformedWireHeaders")
+    public Object[][] malformedWireHeaders() {
+        return new Object[][] {
+            { new String[] { HEADER, "version", ":status", "200" }, "after regular header" },
+            { new String[] { ":status", "200", ":status", "201" }, "Duplicate" },
+            { new String[] { ":status", "200", "X-UPPER", "value" }, "invalid header name" },
+            { new String[] { ":status", "200", "connection", "close" }, "connection-specific" },
+            { new String[] { ":status", "200", ":method", "GET" }, "Mix of request and response" }
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "malformedWireHeaders")
+    public void productionPipelineRejectsMalformedWireHeaders(String[] fields, String expectedError) throws Exception {
+        try (LoopbackServer server = new LoopbackServer("unused", true, fields)) {
+            HttpClient client = HttpClient.createFixed(clientConfig(true));
+            try {
+                HttpRequest request = new HttpRequest(HttpMethod.GET, server.uri(), server.port());
+                assertThatThrownBy(() -> readHeader(client, request)).hasMessageContaining(expectedError);
+            } finally {
+                client.shutdown();
+            }
+        }
+    }
+
+    @Test(groups = "unit")
+    public void productionPipelineMultiplexesConcurrentRequests() throws Exception {
+        try (LoopbackServer server = new LoopbackServer(" version ", true)) {
+            HttpClient client = HttpClient.createFixed(clientConfig(true));
+            try {
+                List<HttpRequest> requests = new ArrayList<>();
+                for (int i = 0; i < 20; i++) {
+                    requests.add(new HttpRequest(HttpMethod.GET, server.uri(), server.port()));
+                }
+                List<String> values = Flux.fromIterable(requests)
+                    .flatMap(request -> readHeaderAsync(client, request), 12).collectList().block(TIMEOUT);
+                assertThat(values).hasSize(20).allMatch("version"::equals);
+                String parent = requests.get(0).reactorNettyRequestRecord().getParentChannelId();
+                assertThat(requests).allSatisfy(request -> {
+                    assertThat(request.reactorNettyRequestRecord().isHttp2()).isTrue();
+                    assertThat(request.reactorNettyRequestRecord().getParentChannelId()).isEqualTo(parent);
+                });
+                assertThat(requests.stream().map(request -> request.reactorNettyRequestRecord().getChannelId()).distinct()
+                    .count()).isEqualTo(20);
+            } finally {
+                client.shutdown();
+            }
+        }
+    }
+
+    @Test(groups = "unit")
+    public void productionPipelineRetainsParentAfterInvalidResponseStream() throws Exception {
+        try (LoopbackServer server = new LoopbackServer(" version ", true)) {
+            HttpClient client = HttpClient.createFixed(clientConfig(true));
+            try {
+                HttpRequest first = new HttpRequest(HttpMethod.GET, server.uri(), server.port());
+                assertThat(readHeader(client, first)).isEqualTo("version");
+                HttpRequest invalid = new HttpRequest(HttpMethod.GET, server.uri() + "invalid", server.port());
+                assertThatThrownBy(() -> readHeader(client, invalid)).hasMessageContaining(HEADER);
+                HttpRequest next = new HttpRequest(HttpMethod.GET, server.uri(), server.port());
+                assertThat(readHeader(client, next)).isEqualTo("version");
+                assertThat(next.reactorNettyRequestRecord().getParentChannelId())
+                    .isEqualTo(first.reactorNettyRequestRecord().getParentChannelId());
+            } finally {
+                client.shutdown();
+            }
+        }
+    }
+
+    @Test(groups = "unit")
+    public void productionPipelineSupportsUnpooledClient() throws Exception {
+        try (LoopbackServer server = new LoopbackServer(" version ", true)) {
+            HttpClient client = HttpClient.create(clientConfig(true));
+            try {
+                HttpRequest request = new HttpRequest(HttpMethod.GET, server.uri(), server.port());
+                assertThat(readHeader(client, request)).isEqualTo("version");
+                assertThat(request.reactorNettyRequestRecord().isHttp2()).isTrue();
+            } finally {
+                client.shutdown();
+            }
+        }
+    }
+
+    @Test(groups = "unit")
+    public void productionPipelineReportsCloseBeforeSettingsWithoutWaitingForRequestTimeout() throws Exception {
+        try (LoopbackServer server = new LoopbackServer("unused", true, null, true)) {
+            HttpClient client = HttpClient.createFixed(clientConfig(true));
+            try {
+                HttpRequest request = new HttpRequest(HttpMethod.GET, server.uri(), server.port());
+                assertThatThrownBy(() -> readHeader(client, request)).satisfies(error ->
+                    assertThat(reactor.core.Exceptions.unwrap(error)).isInstanceOf(IOException.class)
+                        .hasMessageContaining("before receiving initial HTTP/2 SETTINGS"));
+            } finally {
+                client.shutdown();
+            }
+        }
+    }
+
     private static HttpClientConfig clientConfig(boolean http2) {
         return new HttpClientConfig(new Configs()).withServerCertValidationDisabled(true)
             .withNetworkRequestTimeout(TIMEOUT)
@@ -368,22 +409,27 @@ public class CosmosHttp2HeaderCompatibilityTest {
     }
 
     private static String readHeader(HttpClient client, HttpRequest request) {
+        return readHeaderAsync(client, request).block(TIMEOUT);
+    }
+
+    private static Mono<String> readHeaderAsync(HttpClient client, HttpRequest request) {
         return client.send(request).flatMap(response -> {
             assertThat(response.statusCode()).isEqualTo(200);
             if (request.reactorNettyRequestRecord().isHttp2()) {
                 Channel channel = response.internConnection().channel();
                 Channel parent = channel.parent() != null ? channel.parent() : channel;
-                assertThat(parent.pipeline().get(Http2ResponseHeaderValidationHandler.HANDLER_NAME))
-                    .isSameAs(Http2ResponseHeaderValidationHandler.INSTANCE);
-                assertThat(parent.pipeline().names().indexOf(Http2ResponseHeaderValidationHandler.HANDLER_NAME))
+                assertThat(parent.pipeline().get(Http2SettingsHandler.HANDLER_NAME))
+                    .isSameAs(Http2SettingsHandler.INSTANCE);
+                assertThat(parent.pipeline().get(CosmosHttp2ChannelInitializer.HANDLER_NAME)).isNull();
+                assertThat(parent.pipeline().names().indexOf(Http2SettingsHandler.HANDLER_NAME))
                     .isLessThan(parent.pipeline().names().indexOf("reactor.left.h2MultiplexHandler"));
             } else {
                 assertThat(response.internConnection().channel().pipeline().get(
-                    Http2ResponseHeaderValidationHandler.HANDLER_NAME)).isNull();
+                    Http2SettingsHandler.HANDLER_NAME)).isNull();
             }
             String value = response.headerValue(HEADER);
             return response.bodyAsString().defaultIfEmpty("").thenReturn(value);
-        }).block(TIMEOUT);
+        });
     }
 
     private static ByteBuf headerBlock(String... fields) {
@@ -403,6 +449,15 @@ public class CosmosHttp2HeaderCompatibilityTest {
         private final Channel channel;
 
         private LoopbackServer(String value, boolean http2) throws Exception {
+            this(value, http2, null);
+        }
+
+        private LoopbackServer(String value, boolean http2, String[] wireHeaders) throws Exception {
+            this(value, http2, wireHeaders, false);
+        }
+
+        private LoopbackServer(String value, boolean http2, String[] wireHeaders, boolean closeBeforeSettings)
+            throws Exception {
             String protocol = http2 ? ApplicationProtocolNames.HTTP_2 : ApplicationProtocolNames.HTTP_1_1;
             SslContext ssl = SslContextBuilder.forServer(keys).sslProvider(SslProvider.JDK)
                 .applicationProtocolConfig(new ApplicationProtocolConfig(ApplicationProtocolConfig.Protocol.ALPN,
@@ -410,7 +465,7 @@ public class CosmosHttp2HeaderCompatibilityTest {
                     ApplicationProtocolConfig.SelectedListenerFailureBehavior.ACCEPT, protocol)).build();
             boolean bound = false;
             try {
-                channel = bind(ssl, value, http2, protocol);
+                channel = bind(ssl, value, http2, protocol, wireHeaders, closeBeforeSettings);
                 bound = true;
             } finally {
                 if (!bound) {
@@ -419,7 +474,9 @@ public class CosmosHttp2HeaderCompatibilityTest {
             }
         }
 
-        private Channel bind(SslContext ssl, String value, boolean http2, String protocol) throws InterruptedException {
+        private Channel bind(SslContext ssl, String value, boolean http2, String protocol, String[] wireHeaders,
+                             boolean closeBeforeSettings)
+            throws InterruptedException {
             return new ServerBootstrap().group(acceptor, workers).channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
@@ -429,6 +486,10 @@ public class CosmosHttp2HeaderCompatibilityTest {
                             @Override
                             protected void configurePipeline(ChannelHandlerContext context, String selected) {
                                 assertThat(selected).isEqualTo(protocol);
+                                if (closeBeforeSettings) {
+                                    context.close();
+                                    return;
+                                }
                                 if (http2) {
                                     context.pipeline().addLast(Http2FrameCodecBuilder.forServer().build(),
                                         new Http2MultiplexHandler(new ChannelInitializer<Channel>() {
@@ -439,9 +500,16 @@ public class CosmosHttp2HeaderCompatibilityTest {
                                                     public void channelRead(ChannelHandlerContext ctx, Object message) {
                                                         try {
                                                             if (message instanceof Http2HeadersFrame) {
-                                                                Http2Headers headers = new DefaultHttp2Headers(false, false, 16)
-                                                                    .status("200").add(HEADER, value);
-                                                                ctx.writeAndFlush(new DefaultHttp2HeadersFrame(headers, true));
+                                                                if (wireHeaders == null) {
+                                                                    String responseValue = "/invalid".equals(
+                                                                        ((Http2HeadersFrame) message).headers().path().toString())
+                                                                        ? " v\0 " : value;
+                                                                    Http2Headers headers = new DefaultHttp2Headers(false, false, 16)
+                                                                        .status("200").add(HEADER, responseValue);
+                                                                    ctx.writeAndFlush(new DefaultHttp2HeadersFrame(headers, true));
+                                                                } else {
+                                                                    writeRawHeaders(ctx, (Http2HeadersFrame) message, wireHeaders);
+                                                                }
                                                             }
                                                         } finally {
                                                             ReferenceCountUtil.release(message);
@@ -470,6 +538,19 @@ public class CosmosHttp2HeaderCompatibilityTest {
 
         private int port() {
             return ((InetSocketAddress) channel.localAddress()).getPort();
+        }
+
+        private void writeRawHeaders(ChannelHandlerContext ctx, Http2HeadersFrame request, String[] fields) {
+            ByteBuf block = headerBlock(fields);
+            try {
+                ByteBuf frame = ctx.alloc().buffer(9 + block.readableBytes());
+                frame.writeMedium(block.readableBytes()).writeByte(1).writeByte(5).writeInt(request.stream().id());
+                frame.writeBytes(block);
+                // Bypass the server encoder so pseudo-header order and duplicates stay intact on the wire.
+                ctx.channel().parent().pipeline().context(Http2FrameCodec.class).writeAndFlush(frame);
+            } finally {
+                block.release();
+            }
         }
 
         private String uri() {

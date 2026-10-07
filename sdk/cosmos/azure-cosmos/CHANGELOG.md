@@ -7,7 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed HTTP/2 response decoding of surrounding whitespace in `x-ms-serviceversion` by validating decoded headers in a channel handler before stream multiplexing. HTTP/1.1 retains native Netty header validation.
+* Fixed HTTP/2 response decoding of surrounding whitespace in `x-ms-serviceversion` by selecting a strict, connection-local headers decoder during public channel initialization. HTTP/1.1 retains Reactor's native initialization and validation.
 
 #### Other Changes
 * Added a compact `ppaf` bookmark to each data-plane attempt in `CosmosDiagnostics`, containing the current per-partition write region, failed regions, and the time it was designated, or an empty object when no override is active.

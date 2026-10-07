@@ -11,14 +11,11 @@ import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpClientCodec;
-import io.netty.handler.codec.http.HttpDecoderConfig;
 import io.netty.handler.codec.http2.Http2FrameCodec;
 import io.netty.handler.codec.http2.Http2MultiplexHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.util.ReferenceCountUtil;
-import io.netty.util.AttributeKey;
 import io.netty.util.ResourceLeakDetector;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
@@ -29,14 +26,15 @@ import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.ConnectionObserver;
 import reactor.netty.NettyOutbound;
+import reactor.netty.ReactorNetty;
 import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.netty.http.client.HttpClientState;
-import reactor.netty.http.client.HttpResponseDecoderSpec;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.transport.ProxyProvider;
 import reactor.util.context.Context;
+import reactor.util.context.ContextView;
 
 import java.lang.invoke.WrongMethodTypeException;
 import java.time.Duration;
@@ -56,8 +54,6 @@ public class ReactorNettyClient implements HttpClient {
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final String REACTOR_NETTY_REQUEST_RECORD_KEY = "reactorNettyRequestRecordKey";
-    private static final AttributeKey<Boolean> HTTP11_VALIDATION_RESTORED =
-        AttributeKey.valueOf("cosmosHttp11HeaderValidationRestored");
 
     private static final Logger logger = LoggerFactory.getLogger(ReactorNettyClient.class.getSimpleName());
 
@@ -68,23 +64,6 @@ public class ReactorNettyClient implements HttpClient {
     private Logger wireTapLogger;
 
     private ReactorNettyClient() {}
-
-    static void restoreHttp11HeaderValidation(Channel channel, HttpClientConfig config) {
-        ChannelPipeline pipeline = channel.pipeline();
-        HttpClientCodec codec = pipeline.get(HttpClientCodec.class);
-        if (codec != null && !Boolean.TRUE.equals(channel.attr(HTTP11_VALIDATION_RESTORED).get())) {
-            // ALPN fallback is configured, but no request has been sent. Keep H1's native validator.
-            HttpDecoderConfig decoderConfig = new HttpDecoderConfig()
-                .setMaxInitialLineLength(config.getMaxInitialLineLength())
-                .setMaxHeaderSize(config.getMaxHeaderSize())
-                .setMaxChunkSize(config.getMaxChunkSize())
-                .setValidateHeaders(true);
-            pipeline.replace(codec, "reactor.left.httpCodec", new HttpClientCodec(decoderConfig,
-                HttpResponseDecoderSpec.DEFAULT_FAIL_ON_MISSING_RESPONSE,
-                HttpResponseDecoderSpec.DEFAULT_PARSE_HTTP_AFTER_CONNECT_REQUEST));
-            channel.attr(HTTP11_VALIDATION_RESTORED).set(Boolean.TRUE);
-        }
-    }
 
     /**
      * Creates ReactorNettyClient with un-pooled connection.
@@ -165,13 +144,12 @@ public class ReactorNettyClient implements HttpClient {
                     httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())
                                            .maxHeaderSize(this.httpClientConfig.getMaxHeaderSize())
                                            .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
-                                           .validateHeaders(!isH2Enabled);
+                                           .validateHeaders(true);
                     return httpResponseDecoderSpec;
                 });
 
         if (isH2Enabled) {
             this.httpClient = this.httpClient.doOnConnected(connection -> {
-                restoreHttp11HeaderValidation(connection.channel(), this.httpClientConfig);
                 // Manual HTTP/2 PING keepalive -- sends PING frames when the connection is idle
                 // to prevent L7 middleboxes (NAT, firewalls, LBs) from reaping the connection.
                 // For H2, doOnConnected fires on the parent TCP channel when the connection
@@ -212,16 +190,17 @@ public class ReactorNettyClient implements HttpClient {
                     .maxFrameSize(Configs.getHttp2MaxFrameSizeInBytes())   // 64KB default; overridable via COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB / COSMOS_HTTP2_MAX_FRAME_SIZE_IN_KB (clamped to [64KB, 16383KB])
                     .maxConcurrentStreams(http2CfgAccessor().getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
                 )
+                .doOnChannelInit((observer, channel, remoteAddress) -> CosmosHttp2ChannelInitializer.install(
+                    channel, observer, this.httpClient.configuration().http2SettingsSpec()))
                 .doOnConnected((connection -> {
-                    // Validate decoded values before multiplexing and HTTP/1.1 conversion.
                     ChannelPipeline channelPipeline = connection.channel().pipeline();
                     if (channelPipeline.get(Http2FrameCodec.class) != null
-                        && channelPipeline.get(Http2ResponseHeaderValidationHandler.HANDLER_NAME) == null) {
+                        && channelPipeline.get(Http2SettingsHandler.HANDLER_NAME) == null) {
                         try {
                             channelPipeline.addAfter(
                                 "reactor.left.httpCodec",
-                                Http2ResponseHeaderValidationHandler.HANDLER_NAME,
-                                Http2ResponseHeaderValidationHandler.INSTANCE);
+                                Http2SettingsHandler.HANDLER_NAME,
+                                Http2SettingsHandler.INSTANCE);
                         } catch (IllegalArgumentException ignored) {
                             // TOCTOU race: between the get()==null check above and addAfter(),
                             // a concurrent doOnConnected may have installed the handler.
@@ -527,14 +506,18 @@ public class ReactorNettyClient implements HttpClient {
 
     /**
      * Extracts the ReactorNettyRequestRecord from the connection's context.
-     * Returns null if the connection is not a ConnectionObserver or if the record is not in context.
+     * Unpooled HTTP/2 parent connections expose their context on the channel rather than the connection.
      */
     private static ReactorNettyRequestRecord getRequestRecordFromConnection(Connection conn) {
         if (conn instanceof ConnectionObserver) {
-            return ((ConnectionObserver) conn)
+            ReactorNettyRequestRecord record = ((ConnectionObserver) conn)
                 .currentContext().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
+            if (record != null) {
+                return record;
+            }
         }
-        return null;
+        ContextView context = ReactorNetty.getChannelContext(conn.channel());
+        return context == null ? null : context.getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
     }
 
     /**
