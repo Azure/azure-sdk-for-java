@@ -513,7 +513,7 @@ com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-privatel
 com.azure.resourcemanager:azure-resourcemanager-resources-bicep;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-playwright;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-managedops;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-storagediscovery;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-storagediscovery;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-workloadorchestration;1.0.0-beta.1;1.0.0-beta.2
