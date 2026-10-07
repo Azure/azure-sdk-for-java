@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Fixed Live Metrics stopping with `QuickPulseCoordinator failed` when the service returned a polling interval hint header. ([#48347](https://github.com/Azure/azure-sdk-for-java/issues/48347))
+- Fixed Live Metrics stopping with `QuickPulseCoordinator failed` when the service returned a polling interval hint header. ([#50693](https://github.com/Azure/azure-sdk-for-java/pull/50693))
 
 ### Other Changes
 
