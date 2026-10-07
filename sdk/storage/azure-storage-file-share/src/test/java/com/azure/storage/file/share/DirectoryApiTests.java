@@ -155,7 +155,7 @@ public class DirectoryApiTests extends FileShareTestBase {
             actual.getSmbProperties().getFileCreationTime());
         assertEquals(expected.getSmbProperties().getFileLastWriteTime(),
             actual.getSmbProperties().getFileLastWriteTime());
-        assertTrue(directoryClient.exists());
+        assertThrows(IllegalStateException.class, directoryClient::exists);
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
@@ -208,6 +208,71 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertEquals(OffsetDateTime.parse("2015-10-21T07:28:00Z"), properties.getLastModified());
         assertTrue(properties.isServerEncrypted());
         FileIdTestHelper.assertSmbProperties(properties.getSmbProperties());
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void directoryFileIdClientsRejectPathOperations() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            throw new AssertionError("Path operations must be rejected before sending a request.");
+        }).build();
+        ShareDirectoryClient directoryClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .buildClient()
+            .getShareClient(FileIdTestHelper.SHARE_NAME)
+            .getDirectoryClientByFileId(FileIdTestHelper.FILE_ID);
+
+        IllegalStateException existsException = assertThrows(IllegalStateException.class, directoryClient::exists);
+        assertEquals("exists is not supported for a file-ID-addressed client.", existsException.getMessage());
+        assertThrows(IllegalStateException.class, () -> directoryClient.existsWithResponse(null, Context.NONE));
+        IllegalStateException exception
+            = assertThrows(IllegalStateException.class, () -> directoryClient.getFileClient("child"));
+        assertEquals("getFileClient is not supported for a file-ID-addressed client.", exception.getMessage());
+        assertThrows(IllegalStateException.class, () -> directoryClient.getSubdirectoryClient("child"));
+        assertThrows(IllegalStateException.class, directoryClient::create);
+        assertThrows(IllegalStateException.class, directoryClient::createIfNotExists);
+        assertThrows(IllegalStateException.class, directoryClient::delete);
+        assertThrows(IllegalStateException.class, directoryClient::deleteIfExists);
+        assertThrows(IllegalStateException.class, () -> directoryClient.setProperties(null, null));
+        assertThrows(IllegalStateException.class, () -> directoryClient.setMetadata(null));
+        assertThrows(IllegalStateException.class, () -> directoryClient.listFilesAndDirectories().iterator().hasNext());
+        assertThrows(IllegalStateException.class,
+            () -> directoryClient.listHandles(null, true, null, Context.NONE).iterator().hasNext());
+        assertThrows(IllegalStateException.class, () -> directoryClient.forceCloseHandle("handle"));
+        assertThrows(IllegalStateException.class, () -> directoryClient.forceCloseAllHandles(true, null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> directoryClient.rename("destination"));
+        assertThrows(IllegalStateException.class, () -> directoryClient.generateSas(null));
+        assertThrows(IllegalStateException.class, () -> directoryClient.createSubdirectory("child"));
+        assertThrows(IllegalStateException.class, () -> directoryClient.createSubdirectoryIfNotExists("child"));
+        assertThrows(IllegalStateException.class, () -> directoryClient.deleteSubdirectory("child"));
+        assertThrows(IllegalStateException.class, () -> directoryClient.deleteSubdirectoryIfExists("child"));
+        assertThrows(IllegalStateException.class, () -> directoryClient.createFile("child", 1024));
+        assertThrows(IllegalStateException.class, () -> directoryClient.deleteFile("child"));
+        assertThrows(IllegalStateException.class, () -> directoryClient.deleteFileIfExists("child"));
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @ParameterizedTest
+    @ValueSource(strings = { "", "parent/directory" })
+    public void directoryPathClientsAllowMutations(String path) {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertEquals(HttpMethod.PUT, request.getHttpMethod());
+            assertEquals("/" + FileIdTestHelper.SHARE_NAME + "/" + path, Utility.urlDecode(request.getUrl().getPath()));
+            assertFalse(request.getUrl().getQuery().contains("fileid="));
+            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("directory")
+                .set(HttpHeaderName.fromString("x-ms-request-server-encrypted"), "true")));
+        }).build();
+        ShareDirectoryClient directoryClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .buildClient()
+            .getShareClient(FileIdTestHelper.SHARE_NAME)
+            .getDirectoryClient(path);
+
+        directoryClient.setMetadata(Collections.singletonMap("key", "value"));
+        assertEquals((path.isEmpty() ? "" : path + "/") + "child",
+            directoryClient.getFileClient("child").getFilePath());
     }
 
     @DoNotRecord
@@ -282,6 +347,8 @@ public class DirectoryApiTests extends FileShareTestBase {
         Assertions.assertEquals(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/"
             + (path.isEmpty() ? "" : path + "/") + "child?sharesnapshot=snapshot",
             directoryClient.getSubdirectoryClient("child").getDirectoryUrl());
+        assertTrue(directoryClient.exists());
+        assertTrue(directoryClient.existsWithResponse(null, Context.NONE).getValue());
     }
 
     @DoNotRecord

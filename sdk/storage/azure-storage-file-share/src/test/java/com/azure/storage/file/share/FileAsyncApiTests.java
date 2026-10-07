@@ -15,11 +15,13 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
@@ -51,6 +53,7 @@ import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeItem;
 import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
+import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRequestConditions;
@@ -62,10 +65,12 @@ import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
+import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
+import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient;
@@ -304,10 +309,110 @@ public class FileAsyncApiTests extends FileShareTestBase {
         Assertions.assertThrows(IllegalStateException.class, () -> fileClient.setMetadata(null).block());
         Assertions.assertThrows(IllegalStateException.class, () -> fileClient.rename("destination").block());
         Assertions.assertThrows(IllegalStateException.class, () -> fileClient.forceCloseAllHandles().block());
+        StepVerifier.create(fileClient.existsWithResponse()).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.createWithResponse(new ShareFileCreateOptions(1024)))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.deleteWithResponse(null)).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.deleteIfExists()).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.deleteIfExistsWithResponse(null)).verifyError(IllegalStateException.class);
+        String sourceUrl = FileIdTestHelper.ENDPOINT + "/share/source";
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> fileClient.beginCopy(sourceUrl, Collections.emptyMap(), null));
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> fileClient.beginCopy(sourceUrl, new ShareFileCopyOptions(), null));
+        StepVerifier.create(fileClient.abortCopy("copy-id")).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.abortCopyWithResponse("copy-id", null)).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.setProperties(1024, null, null, null)).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.setPropertiesWithResponse(new ShareFileSetPropertiesOptions(1024)))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.setMetadataWithResponse(null, null)).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.uploadRangeFromUrl(1, 0, 0, sourceUrl)).verifyError(IllegalStateException.class);
+        StepVerifier
+            .create(fileClient.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(1, sourceUrl)))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.clearRange(1)).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.clearRangeWithResponse(1, 0, null)).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.listRanges(new ShareFileRange(0, 0L), null))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.listRangesDiff("snapshot")).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.listRangesDiffWithResponse(new ShareFileListRangesDiffOptions("snapshot")))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.listAllRanges()).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.listAllRanges(new ShareFileListRangesOptions()))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.listAllRangesDiff("snapshot")).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.listAllRangesDiff(new ShareFileListRangesDiffOptions("snapshot")))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.listHandles()).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.listHandles(1)).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.forceCloseHandle("handle")).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.forceCloseHandleWithResponse("handle")).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.renameWithResponse(new ShareFileRenameOptions("destination")))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.createHardLink("target")).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.createHardLinkWithResponse(new ShareFileCreateHardLinkOptions("target")))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.createSymbolicLink("target")).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.createSymbolicLinkWithResponse(new ShareFileCreateSymbolicLinkOptions("target")))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.getSymbolicLink()).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.getSymbolicLinkWithResponse()).verifyError(IllegalStateException.class);
+        Assertions.assertThrows(IllegalStateException.class, () -> fileClient.generateSas(null));
+        Assertions.assertThrows(IllegalStateException.class, () -> fileClient.generateSas(null, null, Context.NONE));
+        Assertions.assertThrows(IllegalStateException.class, () -> fileClient.generateUserDelegationSas(null, null));
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> fileClient.generateUserDelegationSas(null, null, null, Context.NONE));
         IllegalStateException linksException = Assertions.assertThrows(IllegalStateException.class,
             () -> testShareClient.getFileClient("path/file").getFileLinks().block());
         Assertions.assertEquals("getFileLinks requires a file-ID-addressed client.", linksException.getMessage());
         Assertions.assertFalse(requestSent.get());
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @ParameterizedTest
+    @ValueSource(ints = { -1, 0, 3 })
+    public void asyncFileIdTransfersRejectBeforeAccessingData(int fileSize, @TempDir Path directory)
+        throws IOException {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            throw new AssertionError("File-ID transfers must not send a request.");
+        }).build();
+        ShareFileAsyncClient fileClient = new ShareFileClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .shareName(FileIdTestHelper.SHARE_NAME)
+            .fileId(FileIdTestHelper.FILE_ID)
+            .pipeline(pipeline)
+            .buildFileAsyncClient();
+        Flux<ByteBuffer> input = Flux.defer(() -> {
+            throw new AssertionError("Rejected uploads must not subscribe to input.");
+        });
+        StepVerifier.create(fileClient.upload(input, 1)).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.upload(input, new ParallelTransferOptions()))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.uploadWithResponse(input, 1, 0L, null)).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.uploadWithResponse(new ShareFileUploadOptions(input)))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.uploadRange(input, 1)).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(input, 1)))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.downloadWithResponse(new ShareFileDownloadOptions()))
+            .verifyError(IllegalStateException.class);
+
+        Path path = directory.resolve("transfer");
+        byte[] content = new byte[Math.max(fileSize, 0)];
+        Arrays.fill(content, (byte) 42);
+        if (fileSize >= 0) {
+            Files.write(path, content);
+        }
+        StepVerifier.create(fileClient.downloadToFile(path.toString())).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.downloadToFileWithResponse(path.toString(), null, null))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.uploadFromFile(path.toString())).verifyError(IllegalStateException.class);
+        StepVerifier.create(fileClient.uploadFromFile(path.toString(), null)).verifyError(IllegalStateException.class);
+        if (fileSize < 0) {
+            assertFalse(Files.exists(path));
+        } else {
+            assertArrayEquals(content, Files.readAllBytes(path));
+        }
     }
 
     @Test

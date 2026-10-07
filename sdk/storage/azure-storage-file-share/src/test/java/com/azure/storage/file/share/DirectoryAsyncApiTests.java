@@ -146,7 +146,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             assertEquals(expected.getSmbProperties().getFileLastWriteTime(),
                 actual.getSmbProperties().getFileLastWriteTime());
         }).verifyComplete();
-        StepVerifier.create(directoryClient.exists()).expectNext(true).verifyComplete();
+        StepVerifier.create(directoryClient.exists()).verifyError(IllegalStateException.class);
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
@@ -205,6 +205,76 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             assertTrue(properties.isServerEncrypted());
             FileIdTestHelper.assertSmbProperties(properties.getSmbProperties());
         }).verifyComplete();
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void asyncDirectoryFileIdClientsRejectPathOperations() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            throw new AssertionError("Path operations must be rejected before sending a request.");
+        }).build();
+        ShareDirectoryAsyncClient directoryClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME)
+            .getDirectoryClientByFileId(FileIdTestHelper.FILE_ID);
+
+        StepVerifier.create(directoryClient.exists()).verifyErrorSatisfies(error -> {
+            assertInstanceOf(IllegalStateException.class, error);
+            assertEquals("exists is not supported for a file-ID-addressed client.", error.getMessage());
+        });
+        StepVerifier.create(directoryClient.existsWithResponse()).verifyError(IllegalStateException.class);
+        IllegalStateException exception
+            = Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.getFileClient("child"));
+        assertEquals("getFileClient is not supported for a file-ID-addressed client.", exception.getMessage());
+        Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.getSubdirectoryClient("child"));
+        StepVerifier.create(directoryClient.create()).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.createIfNotExists()).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.delete()).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.deleteIfExists()).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.setProperties(null, null)).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.setMetadata(null)).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.listFilesAndDirectories()).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.listHandles(null, true)).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.forceCloseHandle("handle")).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.forceCloseAllHandles(true)).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.rename("destination")).verifyError(IllegalStateException.class);
+        Assertions.assertThrows(IllegalStateException.class, () -> directoryClient.generateSas(null));
+        StepVerifier.create(directoryClient.createSubdirectory("child")).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.createSubdirectoryIfNotExists("child"))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.deleteSubdirectory("child")).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.deleteSubdirectoryIfExists("child"))
+            .verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.createFile("child", 1024)).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.deleteFile("child")).verifyError(IllegalStateException.class);
+        StepVerifier.create(directoryClient.deleteFileIfExists("child")).verifyError(IllegalStateException.class);
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @ParameterizedTest
+    @ValueSource(strings = { "", "parent/directory" })
+    public void asyncDirectoryPathClientsAllowMutations(String path) {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertEquals(HttpMethod.PUT, request.getHttpMethod());
+            assertEquals("/" + FileIdTestHelper.SHARE_NAME + "/" + path, Utility.urlDecode(request.getUrl().getPath()));
+            assertFalse(request.getUrl().getQuery().contains("fileid="));
+            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("directory")
+                .set(HttpHeaderName.fromString("x-ms-request-server-encrypted"), "true")));
+        }).build();
+        ShareDirectoryAsyncClient directoryClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME)
+            .getDirectoryClient(path);
+
+        StepVerifier.create(directoryClient.setMetadata(Collections.singletonMap("key", "value")))
+            .expectNextCount(1)
+            .verifyComplete();
+        assertEquals((path.isEmpty() ? "" : path + "/") + "child",
+            directoryClient.getFileClient("child").getFilePath());
     }
 
     @DoNotRecord
@@ -279,6 +349,10 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         Assertions.assertEquals(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/"
             + (path.isEmpty() ? "" : path + "/") + "child?sharesnapshot=snapshot",
             directoryClient.getSubdirectoryClient("child").getDirectoryUrl());
+        StepVerifier.create(directoryClient.exists()).expectNext(true).verifyComplete();
+        StepVerifier.create(directoryClient.existsWithResponse())
+            .assertNext(response -> assertTrue(response.getValue()))
+            .verifyComplete();
     }
 
     @DoNotRecord

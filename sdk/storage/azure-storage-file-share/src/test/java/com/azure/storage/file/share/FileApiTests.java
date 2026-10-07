@@ -323,12 +323,130 @@ class FileApiTests extends FileShareTestBase {
         Assertions.assertThrows(IllegalStateException.class, () -> fileClient.rename("destination"));
         Assertions.assertThrows(IllegalStateException.class, fileClient::getFileOutputStream);
         Assertions.assertThrows(IllegalStateException.class, () -> fileClient.generateSas(null));
+        assertThrows(IllegalStateException.class, () -> fileClient.existsWithResponse(null, Context.NONE));
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.createWithResponse(new ShareFileCreateOptions(1024), null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> fileClient.deleteWithResponse(null, null, Context.NONE));
+        assertThrows(IllegalStateException.class, fileClient::deleteIfExists);
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.deleteIfExistsWithResponse(null, null, Context.NONE));
+        String sourceUrl = FileIdTestHelper.ENDPOINT + "/share/source";
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.beginCopy(sourceUrl, Collections.emptyMap(), null).poll());
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.beginCopy(sourceUrl, new ShareFileCopyOptions(), null).poll());
+        assertThrows(IllegalStateException.class, () -> fileClient.abortCopy("copy-id"));
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.abortCopyWithResponse("copy-id", null, null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> fileClient.setProperties(1024, null, null, null));
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.setPropertiesWithResponse(new ShareFileSetPropertiesOptions(1024), null, Context.NONE));
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.setMetadataWithResponse(null, null, null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> fileClient.uploadRangeFromUrl(1, 0, 0, sourceUrl));
+        assertThrows(IllegalStateException.class, () -> fileClient
+            .uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(1, sourceUrl), null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> fileClient.clearRange(1));
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.clearRangeWithResponse(1, 0, null, null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> fileClient.listRanges().iterator().hasNext());
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.listRanges(new ShareFileRange(0, 0L), null, null, Context.NONE).iterator().hasNext());
+        assertThrows(IllegalStateException.class, () -> fileClient.listRangesDiff("snapshot"));
+        assertThrows(IllegalStateException.class, () -> fileClient
+            .listRangesDiffWithResponse(new ShareFileListRangesDiffOptions("snapshot"), null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> fileClient.listAllRanges().iterator().hasNext());
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.listAllRanges(new ShareFileListRangesOptions(), null, Context.NONE).iterator().hasNext());
+        assertThrows(IllegalStateException.class, () -> fileClient.listAllRangesDiff("snapshot").iterator().hasNext());
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.listAllRangesDiff(new ShareFileListRangesDiffOptions("snapshot"), null, Context.NONE)
+                .iterator()
+                .hasNext());
+        assertThrows(IllegalStateException.class, () -> fileClient.listHandles().iterator().hasNext());
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.listHandles(1, null, Context.NONE).iterator().hasNext());
+        assertThrows(IllegalStateException.class, () -> fileClient.forceCloseHandle("handle"));
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.forceCloseHandleWithResponse("handle", null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> fileClient.forceCloseAllHandles(null, Context.NONE));
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.renameWithResponse(new ShareFileRenameOptions("destination"), null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> fileClient.createHardLink("target"));
+        assertThrows(IllegalStateException.class, () -> fileClient
+            .createHardLinkWithResponse(new ShareFileCreateHardLinkOptions("target"), null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> fileClient.createSymbolicLink("target"));
+        assertThrows(IllegalStateException.class, () -> fileClient
+            .createSymbolicLinkWithResponse(new ShareFileCreateSymbolicLinkOptions("target"), null, Context.NONE));
+        assertThrows(IllegalStateException.class, fileClient::getSymbolicLink);
+        assertThrows(IllegalStateException.class, () -> fileClient.getSymbolicLinkWithResponse(null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> fileClient.generateSas(null, null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> fileClient.generateUserDelegationSas(null, null));
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.generateUserDelegationSas(null, null, null, Context.NONE));
+        assertThrows(IllegalStateException.class, fileClient::openInputStream);
+        assertThrows(IllegalStateException.class, () -> fileClient.openInputStream(new ShareFileRange(0, 0L)));
+        assertThrows(IllegalStateException.class, () -> fileClient.getFileOutputStream(0));
+        assertThrows(IllegalStateException.class, () -> fileClient.getFileSeekableByteChannelRead(null));
+        assertThrows(IllegalStateException.class, () -> fileClient.getFileSeekableByteChannelWrite(null));
         IllegalStateException linksException = Assertions.assertThrows(IllegalStateException.class,
             () -> testShareClient.getFileClient("path/file").getFileLinks());
         Assertions.assertEquals("getFileLinks requires a file-ID-addressed client.", linksException.getMessage());
         Assertions.assertThrows(IllegalArgumentException.class, () -> testShareClient.getFileClientByFileId(" "));
         Assertions.assertThrows(IllegalArgumentException.class, () -> testShareClient.getFileClientByFileId(null));
         Assertions.assertFalse(requestSent.get());
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @ParameterizedTest
+    @ValueSource(ints = { -1, 0, 3 })
+    public void fileIdTransfersRejectBeforeAccessingData(int fileSize, @TempDir Path directory) throws IOException {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            throw new AssertionError("File-ID transfers must not send a request.");
+        }).build();
+        ShareFileClient fileClient = new ShareFileClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .shareName(FileIdTestHelper.SHARE_NAME)
+            .fileId(FileIdTestHelper.FILE_ID)
+            .pipeline(pipeline)
+            .buildFileClient();
+        InputStream input = new InputStream() {
+            @Override
+            public int read() {
+                throw new AssertionError("Rejected uploads must not read input.");
+            }
+        };
+        assertThrows(IllegalStateException.class, () -> fileClient.upload(input, 1));
+        assertThrows(IllegalStateException.class, () -> fileClient.upload(input, 1, new ParallelTransferOptions()));
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.uploadWithResponse(input, 1, 0L, null, null, Context.NONE));
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.uploadWithResponse(new ShareFileUploadOptions(input, 1), null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> fileClient.uploadRange(input, 1));
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(input, 1), null, Context.NONE));
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        assertThrows(IllegalStateException.class, () -> fileClient.download(output));
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.downloadWithResponse(output, new ShareFileDownloadOptions(), null, Context.NONE));
+        assertEquals(0, output.size());
+
+        Path path = directory.resolve("transfer");
+        byte[] content = new byte[Math.max(fileSize, 0)];
+        Arrays.fill(content, (byte) 42);
+        if (fileSize >= 0) {
+            Files.write(path, content);
+        }
+        assertThrows(IllegalStateException.class, () -> fileClient.downloadToFile(path.toString()));
+        assertThrows(IllegalStateException.class,
+            () -> fileClient.downloadToFileWithResponse(path.toString(), null, null, null, Context.NONE));
+        assertThrows(IllegalStateException.class, () -> fileClient.uploadFromFile(path.toString()));
+        assertThrows(IllegalStateException.class, () -> fileClient.uploadFromFile(path.toString(), null));
+        if (fileSize < 0) {
+            assertFalse(Files.exists(path));
+        } else {
+            assertArrayEquals(content, Files.readAllBytes(path));
+        }
     }
 
     @DoNotRecord

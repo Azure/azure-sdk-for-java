@@ -2525,6 +2525,7 @@ public class ShareFileClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-range">Azure Docs Upload</a>.</p>
      *
      * @param uploadFilePath The path where store the source file to upload
+     * @throws IllegalStateException If this client is addressed by file ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String uploadFilePath) {
@@ -2552,6 +2553,7 @@ public class ShareFileClient {
      *
      * @param uploadFilePath The path where store the source file to upload
      * @param requestConditions {@link ShareRequestConditions}
+     * @throws IllegalStateException If this client is addressed by file ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String uploadFilePath, ShareRequestConditions requestConditions) {

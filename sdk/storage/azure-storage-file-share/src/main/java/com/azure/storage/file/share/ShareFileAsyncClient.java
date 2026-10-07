@@ -2719,6 +2719,7 @@ public class ShareFileAsyncClient {
      * @param uploadFilePath The path where store the source file to upload
      * @return An empty response.
      * @throws UncheckedIOException If an I/O error occurs.
+     * @throws IllegalStateException If this client is addressed by file ID, emitted through the returned publisher.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String uploadFilePath) {
@@ -2752,10 +2753,12 @@ public class ShareFileAsyncClient {
      * @param requestConditions {@link ShareRequestConditions}
      * @return An empty response.
      * @throws UncheckedIOException If an I/O error occurs.
+     * @throws IllegalStateException If this client is addressed by file ID, emitted through the returned publisher.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String uploadFilePath, ShareRequestConditions requestConditions) {
         try {
+            ShareErrors.validatePathOperation(fileId, "uploadFromFile");
             return Mono.using(() -> channelSetup(uploadFilePath, StandardOpenOption.READ),
                 channel -> Flux.fromIterable(sliceFile(uploadFilePath))
                     .flatMap(chunk -> uploadWithResponse(
