@@ -494,6 +494,22 @@ jobs:
               ServiceDirectory: ${{parameters.ServiceDirectory}}
               ExcludePaths: ${{parameters.ExcludePaths}}
           - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+            - ${{ if and(eq(parameters.SDKType, 'client'), eq(variables['System.TeamProject'], 'public'), eq(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java')) }}:
+              - task: PowerShell@2
+                displayName: Evaluate Java documentation, comments, and formatting (report only)
+                name: java_doc_report
+                condition: and(succeeded(), eq(variables['JavaDocClassifierReportOnly'], 'true'))
+                inputs:
+                  pwsh: true
+                  filePath: eng/scripts/Measure-JavaDocChanges.ps1
+                  arguments: >
+                    -RepositoryRoot '$(Build.SourcesDirectory)'
+                    -ExpectedHeadSha '$(Build.SourceVersion)'
+                    -ExpectedSourceSha '$(System.PullRequest.SourceCommitId)'
+                    -OutputPath '$(Build.ArtifactStagingDirectory)/java-doc-report.json'
+                    -Pipeline
+                env:
+                  FORCE_FULL_VALIDATION: $(ForceFullValidation)
             # Phase 1 keeps Build and Analyze enabled so their unique validation is preserved.
             # Clearing only this job's PackageInfo folder produces an empty test matrix.
             - task: PowerShell@2

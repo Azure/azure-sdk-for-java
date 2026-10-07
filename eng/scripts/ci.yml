@@ -10,6 +10,8 @@ trigger:
   paths:
     include:
       - eng/scripts/*
+      - eng/java-doc-classifier/*
+      - eng/pipelines/templates/jobs/ci.yml
       - eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
       - eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
     exclude:
@@ -25,6 +27,8 @@ pr:
   paths:
     include:
       - eng/scripts/*
+      - eng/java-doc-classifier/*
+      - eng/pipelines/templates/jobs/ci.yml
       - eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
       - eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
 
@@ -33,3 +37,14 @@ extends:
   parameters:
     TargetDirectory: eng/scripts/
     TargetTags: 'UnitTest'
+    PreTestSteps:
+      - task: Maven@4
+        displayName: Build and test Java documentation classifier
+        inputs:
+          mavenPomFile: eng/java-doc-classifier/pom.xml
+          goals: 'package'
+          options: '--batch-mode --no-transfer-progress'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.17'
+          publishJUnitResults: true
+          testResultsFiles: 'eng/java-doc-classifier/target/surefire-reports/TEST-*.xml'
