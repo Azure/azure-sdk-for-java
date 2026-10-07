@@ -69,6 +69,22 @@ public interface Snapshot {
     String volumeName();
 
     /**
+     * Gets the snapshotAccessState property: The state of snapshot which determines the access availability of the
+     * snapshot.
+     * 
+     * @return the snapshotAccessState value.
+     */
+    SnapshotAccessState snapshotAccessState();
+
+    /**
+     * Gets the completionPercent property: Percentage complete for the background copy of the snapshot when a snapshot
+     * is in InstantAccess state.
+     * 
+     * @return the completionPercent value.
+     */
+    Double completionPercent();
+
+    /**
      * Gets the inner com.azure.resourcemanager.elasticsan.fluent.models.SnapshotInner object.
      * 
      * @return the inner object.

@@ -45,37 +45,29 @@ public final class ScheduledActionsUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.scheduledActions()
-            .update("akdkifmjnnawtqab", "xuckpggqoweyir",
-                new ScheduledActionUpdate().withTags(mapOf("n", "isngwflqqmpizru"))
+            .update("ons", "onwpnga",
+                new ScheduledActionUpdate().withTags(mapOf("cxlzhcoxovnekh", "nixjawrtmjfjmy"))
                     .withProperties(new ScheduledActionUpdateProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
-                        .withActionType(ScheduledActionType.START)
-                        .withStartTime(OffsetDateTime.parse("2021-07-30T07:52:46Z"))
-                        .withEndTime(OffsetDateTime.parse("2021-09-02T05:49:50Z"))
-                        .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("saasiixtmkzj")
-                            .withTimeZone("viirhgfgrws")
+                        .withActionType(ScheduledActionType.DEALLOCATE)
+                        .withStartTime(OffsetDateTime.parse("2021-09-11T05:10:01Z"))
+                        .withEndTime(OffsetDateTime.parse("2021-06-11T07:28:09Z"))
+                        .withSchedule(new ScheduledActionsScheduleUpdate().withScheduledTime("txrdcqtjvi")
+                            .withTimeZone("tgepuslvyjtcvuwk")
                             .withRequestedWeekDays(
-                                Arrays.asList(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.MONDAY, WeekDay.FRIDAY))
-                            .withRequestedMonths(Arrays.asList(Month.ALL))
-                            .withRequestedDaysOfTheMonth(Arrays.asList(871795155, 39003903, 156163640, 1015396503))
+                                Arrays.asList(WeekDay.TUESDAY, WeekDay.THURSDAY, WeekDay.THURSDAY, WeekDay.SUNDAY))
+                            .withRequestedMonths(Arrays.asList(Month.AUGUST, Month.AUGUST, Month.JULY, Month.AUGUST))
+                            .withRequestedDaysOfTheMonth(Arrays.asList(1061854569, 1176427262, 1792697721, 504632941))
                             .withExecutionParameters(new ScheduledActionsExecutionParameters()
-                                .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(1666158836)
-                                    .withRetryWindowInMinutes(1709678755)
-                                    .withOnFailureAction(ScheduledActionsResourceOperationType.CREATE)))
-                            .withDeadlineType(ScheduledActionsDeadlineType.COMPLETE_BY))
-                        .withNotificationSettings(Arrays.asList(
-                            new NotificationProperties().withDestination("gxffmshkwf")
-                                .withType(NotificationType.EMAIL)
-                                .withLanguage(Language.EN_US)
-                                .withDisabled(true),
-                            new NotificationProperties().withDestination("xwopdbydpizqa")
-                                .withType(NotificationType.EMAIL)
-                                .withLanguage(Language.EN_US)
-                                .withDisabled(true),
-                            new NotificationProperties().withDestination("xbiygnugjknfsmf")
+                                .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(381723653)
+                                    .withRetryWindowInMinutes(828769902)
+                                    .withOnFailureAction(ScheduledActionsResourceOperationType.DEALLOCATE)))
+                            .withDeadlineType(ScheduledActionsDeadlineType.INITIATE_AT))
+                        .withNotificationSettings(
+                            Arrays.asList(new NotificationProperties().withDestination("uewmrswnjlxuzrhw")
                                 .withType(NotificationType.EMAIL)
                                 .withLanguage(Language.EN_US)
                                 .withDisabled(true)))
-                        .withDisabled(true)),
+                        .withDisabled(false)),
                 com.azure.core.util.Context.NONE);
 
     }
