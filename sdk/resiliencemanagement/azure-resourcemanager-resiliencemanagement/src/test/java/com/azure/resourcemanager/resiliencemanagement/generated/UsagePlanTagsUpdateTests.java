@@ -14,17 +14,17 @@ public final class UsagePlanTagsUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsagePlanTagsUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"aivmxyasflvgs\":\"abzxrvxcushsp\",\"hknsmjbl\":\"zwywako\",\"ryuzcbmqqv\":\"ljhlnymzotq\",\"fgtayxonsup\":\"mv\"}}")
+            "{\"tags\":{\"wwinhehf\":\"iqxeiiqbimht\",\"blembnkbwvqvxkd\":\"pofvwb\",\"duragegizvc\":\"vqihebwtswbzuwf\"}}")
             .toObject(UsagePlanTagsUpdate.class);
-        Assertions.assertEquals("abzxrvxcushsp", model.tags().get("aivmxyasflvgs"));
+        Assertions.assertEquals("iqxeiiqbimht", model.tags().get("wwinhehf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsagePlanTagsUpdate model = new UsagePlanTagsUpdate().withTags(mapOf("aivmxyasflvgs", "abzxrvxcushsp",
-            "hknsmjbl", "zwywako", "ryuzcbmqqv", "ljhlnymzotq", "fgtayxonsup", "mv"));
+        UsagePlanTagsUpdate model = new UsagePlanTagsUpdate()
+            .withTags(mapOf("wwinhehf", "iqxeiiqbimht", "blembnkbwvqvxkd", "pofvwb", "duragegizvc", "vqihebwtswbzuwf"));
         model = BinaryData.fromObject(model).toObject(UsagePlanTagsUpdate.class);
-        Assertions.assertEquals("abzxrvxcushsp", model.tags().get("aivmxyasflvgs"));
+        Assertions.assertEquals("iqxeiiqbimht", model.tags().get("wwinhehf"));
     }
 
     // Use "Map.of" if available
