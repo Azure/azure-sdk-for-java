@@ -25,7 +25,7 @@ public final class NetworkInterfaceReferenceTests {
     public void testSerialize() throws Exception {
         NetworkInterfaceReference model = new NetworkInterfaceReference().withId("wj")
             .withProperties(
-                new NetworkInterfaceReferenceProperties().withPrimary(true).withDeleteOption(DeleteOptions.DELETE));
+                new NetworkInterfaceReferenceProperties().withPrimary(false).withDeleteOption(DeleteOptions.DELETE));
         model = BinaryData.fromObject(model).toObject(NetworkInterfaceReference.class);
         Assertions.assertEquals("wj", model.id());
         Assertions.assertFalse(model.properties().primary());

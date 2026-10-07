@@ -41,6 +41,6 @@ public final class ScheduledActionsListResourcesMockTests {
         Assertions.assertEquals(NotificationType.EMAIL,
             response.iterator().next().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, response.iterator().next().notificationSettings().get(0).language());
-        Assertions.assertFalse(response.iterator().next().notificationSettings().get(0).disabled());
+        Assertions.assertTrue(response.iterator().next().notificationSettings().get(0).disabled());
     }
 }

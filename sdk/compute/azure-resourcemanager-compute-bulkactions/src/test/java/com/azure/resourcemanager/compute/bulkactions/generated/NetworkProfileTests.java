@@ -37,8 +37,7 @@ public final class NetworkProfileTests {
         Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().primary());
         Assertions.assertEquals(DeleteOptions.DELETE,
             model.networkInterfaceConfigurations().get(0).properties().deleteOption());
-        Assertions
-            .assertFalse(model.networkInterfaceConfigurations().get(0).properties().enableAcceleratedNetworking());
+        Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableAcceleratedNetworking());
         Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().disableTcpStateTracking());
         Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableFpga());
         Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableIPForwarding());
@@ -115,8 +114,7 @@ public final class NetworkProfileTests {
         Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().primary());
         Assertions.assertEquals(DeleteOptions.DELETE,
             model.networkInterfaceConfigurations().get(0).properties().deleteOption());
-        Assertions
-            .assertFalse(model.networkInterfaceConfigurations().get(0).properties().enableAcceleratedNetworking());
+        Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableAcceleratedNetworking());
         Assertions.assertFalse(model.networkInterfaceConfigurations().get(0).properties().disableTcpStateTracking());
         Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableFpga());
         Assertions.assertTrue(model.networkInterfaceConfigurations().get(0).properties().enableIPForwarding());

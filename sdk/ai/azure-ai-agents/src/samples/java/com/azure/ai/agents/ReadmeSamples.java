@@ -67,16 +67,6 @@ public final class ReadmeSamples {
         AgentVersionDetails agent = agentsClient.createAgentVersion("my-agent", promptAgentDefinition);
         // END: com.azure.ai.agents.create_prompt_agent
 
-        // BEGIN: com.azure.ai.agents.configure_agent_endpoint
-        AgentEndpointConfig endpointConfig = new AgentEndpointConfig()
-            .setVersionSelector(new VersionSelector().setVersionSelectionRule(
-                new FixedRatioVersionSelectionRule(100).setAgentVersion(agent.getVersion())))
-            .setProtocolConfiguration(new ProtocolConfiguration().setResponses(new ResponsesProtocolConfiguration()));
-
-        agentsClient.updateAgentDetails(agent.getName(),
-            new UpdateAgentDetailsOptions().setAgentEndpoint(endpointConfig));
-        // END: com.azure.ai.agents.configure_agent_endpoint
-
         // BEGIN: com.azure.ai.agents.create_conversation
         OpenAIClient agentScopedClient = builder.buildAgentScopedOpenAIClient(agent.getName());
         ConversationService conversationsClient = agentScopedClient.conversations();

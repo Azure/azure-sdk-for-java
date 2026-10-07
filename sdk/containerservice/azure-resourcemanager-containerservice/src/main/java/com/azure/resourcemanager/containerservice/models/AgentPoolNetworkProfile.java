@@ -37,11 +37,6 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
      */
     private DRANETProfile dranet;
 
-    /*
-     * DRANET settings of an agent pool.
-     */
-    private DRANETProfile dranet;
-
     /**
      * Creates an instance of AgentPoolNetworkProfile class.
      */
@@ -133,26 +128,6 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
     }
 
     /**
-     * Get the dranet property: DRANET settings of an agent pool.
-     * 
-     * @return the dranet value.
-     */
-    public DRANETProfile dranet() {
-        return this.dranet;
-    }
-
-    /**
-     * Set the dranet property: DRANET settings of an agent pool.
-     * 
-     * @param dranet the dranet value to set.
-     * @return the AgentPoolNetworkProfile object itself.
-     */
-    public AgentPoolNetworkProfile withDranet(DRANETProfile dranet) {
-        this.dranet = dranet;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -163,9 +138,6 @@ public final class AgentPoolNetworkProfile implements JsonSerializable<AgentPool
         }
         if (allowedHostPorts() != null) {
             allowedHostPorts().forEach(e -> e.validate());
-        }
-        if (dranet() != null) {
-            dranet().validate();
         }
         if (dranet() != null) {
             dranet().validate();

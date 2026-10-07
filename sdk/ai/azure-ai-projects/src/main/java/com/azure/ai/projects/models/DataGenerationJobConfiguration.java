@@ -176,11 +176,4 @@ public class DataGenerationJobConfiguration implements JsonSerializable<DataGene
             return deserializedDataGenerationJobConfiguration;
         });
     }
-
-    /**
-     * Creates an instance of DataGenerationJobOptions class.
-     */
-    @Generated
-    public DataGenerationJobOptions() {
-    }
 }

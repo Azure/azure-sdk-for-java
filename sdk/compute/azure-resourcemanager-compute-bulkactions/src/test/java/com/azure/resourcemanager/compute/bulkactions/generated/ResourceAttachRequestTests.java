@@ -46,7 +46,7 @@ public final class ResourceAttachRequestTests {
                     new NotificationProperties().withDestination("kmoyxcdyuibh")
                         .withType(NotificationType.EMAIL)
                         .withLanguage(Language.EN_US)
-                        .withDisabled(false)))));
+                        .withDisabled(true)))));
         model = BinaryData.fromObject(model).toObject(ResourceAttachRequest.class);
         Assertions.assertEquals("rnysux", model.resources().get(0).resourceId());
         Assertions.assertEquals("a", model.resources().get(0).notificationSettings().get(0).destination());

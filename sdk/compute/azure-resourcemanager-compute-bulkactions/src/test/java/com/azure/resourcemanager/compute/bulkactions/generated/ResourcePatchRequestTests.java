@@ -23,7 +23,7 @@ public final class ResourcePatchRequestTests {
         Assertions.assertEquals("agt", model.resources().get(0).notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.resources().get(0).notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.resources().get(0).notificationSettings().get(0).language());
-        Assertions.assertFalse(model.resources().get(0).notificationSettings().get(0).disabled());
+        Assertions.assertTrue(model.resources().get(0).notificationSettings().get(0).disabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -72,6 +72,6 @@ public final class ResourcePatchRequestTests {
         Assertions.assertEquals("agt", model.resources().get(0).notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, model.resources().get(0).notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.resources().get(0).notificationSettings().get(0).language());
-        Assertions.assertFalse(model.resources().get(0).notificationSettings().get(0).disabled());
+        Assertions.assertTrue(model.resources().get(0).notificationSettings().get(0).disabled());
     }
 }

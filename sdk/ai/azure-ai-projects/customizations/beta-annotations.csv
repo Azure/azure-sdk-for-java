@@ -118,7 +118,6 @@ class;com.azure.ai.projects.models.ScheduleRun;Preview API. Schedules=V1Preview;
 class;com.azure.ai.projects.models.ScheduleTask;Preview API. Schedules=V1Preview;
 class;com.azure.ai.projects.models.ScheduleTaskType;Preview API. Schedules=V1Preview;
 class;com.azure.ai.projects.models.SimpleQnAFineTuningQuestionType;Preview API. DataGenerationJobs=V1Preview;
-class;com.azure.ai.projects.models.SimulationSeedDataGenerationJobOptions;Preview API. DataGenerationJobs=V1Preview;
 class;com.azure.ai.projects.models.SkillDetails;Preview API. Skills=V1Preview;
 class;com.azure.ai.projects.models.SkillInlineContent;Preview API. Skills=V1Preview;
 class;com.azure.ai.projects.models.SkillVersion;Preview API. Skills=V1Preview;

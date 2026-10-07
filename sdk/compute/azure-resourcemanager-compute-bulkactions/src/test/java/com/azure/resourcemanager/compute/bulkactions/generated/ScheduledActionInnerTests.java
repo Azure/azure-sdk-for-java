@@ -53,7 +53,7 @@ public final class ScheduledActionInnerTests {
         Assertions.assertEquals(NotificationType.EMAIL, model.properties().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.properties().notificationSettings().get(0).language());
         Assertions.assertTrue(model.properties().notificationSettings().get(0).disabled());
-        Assertions.assertTrue(model.properties().disabled());
+        Assertions.assertFalse(model.properties().disabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -89,7 +89,7 @@ public final class ScheduledActionInnerTests {
                         .withType(NotificationType.EMAIL)
                         .withLanguage(Language.EN_US)
                         .withDisabled(false)))
-                .withDisabled(true));
+                .withDisabled(false));
         model = BinaryData.fromObject(model).toObject(ScheduledActionInner.class);
         Assertions.assertEquals("quwrbehwag", model.location());
         Assertions.assertEquals("uffkmrqemvvh", model.tags().get("xtdr"));
@@ -113,7 +113,7 @@ public final class ScheduledActionInnerTests {
         Assertions.assertEquals(NotificationType.EMAIL, model.properties().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, model.properties().notificationSettings().get(0).language());
         Assertions.assertTrue(model.properties().notificationSettings().get(0).disabled());
-        Assertions.assertTrue(model.properties().disabled());
+        Assertions.assertFalse(model.properties().disabled());
     }
 
     // Use "Map.of" if available

@@ -79,6 +79,6 @@ public final class ScheduledActionsListMockTests {
         Assertions.assertEquals(Language.EN_US,
             response.iterator().next().properties().notificationSettings().get(0).language());
         Assertions.assertTrue(response.iterator().next().properties().notificationSettings().get(0).disabled());
-        Assertions.assertFalse(response.iterator().next().properties().disabled());
+        Assertions.assertTrue(response.iterator().next().properties().disabled());
     }
 }
