@@ -1,14 +1,18 @@
 # Release History
 
-## 12.32.0-beta.2 (Unreleased)
+## 12.32.0 (2026-10-07)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for service version 2026-10-06.
+- Added support for sync `ShareFileClient.listAllRanges()` and `ShareFileClient.listAllRangesDiff()` APIs, and async counterparts.
 
 ### Other Changes
+- Deprecated the `listRanges` overloads, `listRangesDiff`, and `listRangesDiffWithResponse` on `ShareFileClient` and `ShareFileAsyncClient`.
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-storage-common` from `12.34.1` to version `12.35.0`.
 
 ## 12.31.1 (2026-08-18)
 

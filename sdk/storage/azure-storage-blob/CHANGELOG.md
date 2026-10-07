@@ -1,18 +1,42 @@
 # Release History
 
-## 12.36.0-beta.2 (Unreleased)
+## 12.36.0 (2026-10-07)
 
 ### Features Added
-
-### Breaking Changes
+- Added support for service version 2026-10-06.
+- Added support for retrieving `AccessTier` headers to `BlobDownloadHeaders`.
+- Added `getContentCrc64()` to `BlockBlobItem`, `AppendBlobItem`, and `PageBlobItem` to expose CRC64 checksums returned by the service, alongside MD5 where applicable.
+- Added support for Apache Arrow response format for `ListBlobs` flat and `ListBlobs` hierarchical options.
+- Added support for content validation with structured message and CRC64 via `ContentValidationAlgorithm`. Supported for
+  `GetBlob`, `PutBlob`, `PutBlock`, `PutPage`, and `AppendBlock` operations.
 
 ### Bugs Fixed
-
 - Fixed account name parsing for DFS endpoints when the account name contains "blob".
 - Fixed SDK-generated ETag consistency locks for retries, chunked downloads, input streams, and seekable reads to send
   RFC 9110-conformant `If-Match` values.
+- Fixed chunked download ETag consistency conditions to preserve the caller's `If-Unmodified-Since` value instead of copying `If-Modified-Since`.
+- Fixed an issue where `BlobClientBase.openSeekableByteChannelRead` issued an unnecessary HTTP request (resulting
+  in an HTTP 416 response) after the entire blob had already been returned in the initial range download. When the
+  channel is opened with ETag consistency control (the default), the read behavior now short-circuits to end-of-file
+  once the known resource length is reached, avoiding the extra round trip.
+- Fixed an issue where a transport-level failure while streaming the body of the trailing HTTP 416 response from
+  `BlobClientBase.openSeekableByteChannelRead` (for example "Connection reset by peer") could propagate out of the
+  channel even though all of the blob's content had already been delivered to the caller. The read behavior now
+  logs a warning and signals end-of-file when such an error occurs at or past the known end of the resource.
 
 ### Other Changes
+- Deprecated `AppendBlobAsyncClient.appendBlockWithResponse(Flux, long, byte[], AppendBlobRequestConditions)` and
+  `AppendBlobClient.appendBlockWithResponse(InputStream, long, byte[], AppendBlobRequestConditions, Duration, Context)`
+  in favor of the new `appendBlockWithResponse` overloads that accept an `AppendBlobAppendBlockOptions` options bag.
+- Deprecated `PageBlobAsyncClient.uploadPagesWithResponse(PageRange, Flux, byte[], PageBlobRequestConditions)` and
+  `PageBlobClient.uploadPagesWithResponse(PageRange, InputStream, byte[], PageBlobRequestConditions, Duration, Context)`
+  in favor of the new `uploadPagesWithResponse` overloads that accept a `PageBlobUploadPagesOptions` options bag.
+
+#### Dependency Updates
+- Upgraded `azure-storage-internal-avro` from `12.20.1` to version `12.21.0`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-storage-common` from `12.34.1` to version `12.35.0`.
 
 ## 12.35.1 (2026-08-18)
 
