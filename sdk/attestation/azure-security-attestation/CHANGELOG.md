@@ -23,7 +23,10 @@
 ### Other Changes
 
 - Deprecated the `String`-based `attestTpm(String)` and `attestTpmWithResponse(String, ...)` overloads on
-  `AttestationClient` and `AttestationAsyncClient`. Use the new `BinaryData`-based overloads instead.
+  `AttestationClient` and `AttestationAsyncClient`; use the `BinaryData`-based overloads instead. The `String`
+  overloads are retained for compatibility with earlier versions and will be removed in a future major release. They
+  do not work with binary TPM payloads: converting binary data to a `String` using UTF-8 changes the bytes, and the
+  attestation request fails.
 
 ## 1.1.41 (2026-08-18)
 

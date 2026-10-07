@@ -23,9 +23,11 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -261,6 +263,81 @@ public class AttestationTpmOfflineTests {
             ClientAuthenticationException exception = assertInstanceOf(ClientAuthenticationException.class, error);
             assertEquals(401, exception.getResponse().getStatusCode());
         }).verify();
+    }
+
+    // Payloads containing every byte value (0x00-0xFF). TPM attestation payloads are opaque binary data.
+
+    @Test
+    void attestTpmBinaryDataAllByteValuesRoundTrip() {
+        byte[] payload = allByteValues();
+        MockTpmHttpClient httpClient = MockTpmHttpClient.success(payload);
+
+        TpmAttestationResult result = buildClient(httpClient).attestTpm(BinaryData.fromBytes(payload));
+
+        httpClient.assertSingleTpmRequest(payload);
+        assertArrayEquals(payload, result.getTpmResult().toBytes());
+    }
+
+    @Test
+    void attestTpmBinaryDataAsyncAllByteValuesRoundTrip() {
+        byte[] payload = allByteValues();
+        MockTpmHttpClient httpClient = MockTpmHttpClient.success(payload);
+
+        StepVerifier.create(buildAsyncClient(httpClient).attestTpm(BinaryData.fromBytes(payload)))
+            .assertNext(result -> assertArrayEquals(payload, result.getTpmResult().toBytes()))
+            .verifyComplete();
+
+        httpClient.assertSingleTpmRequest(payload);
+    }
+
+    @Test
+    void attestTpmBinaryDataRandomPayloadsRoundTrip() {
+        Random random = new Random(42);
+        for (int i = 0; i < 100; i++) {
+            byte[] payload = new byte[1 + random.nextInt(4096)];
+            random.nextBytes(payload);
+            MockTpmHttpClient httpClient = MockTpmHttpClient.success(payload);
+
+            TpmAttestationResult result = buildClient(httpClient).attestTpm(BinaryData.fromBytes(payload));
+
+            httpClient.assertSingleTpmRequest(payload);
+            assertArrayEquals(payload, result.getTpmResult().toBytes(), "payload " + i);
+        }
+    }
+
+    /**
+     * Documents the limitation of the deprecated {@code String} overloads, which is unchanged from version 1.1.41: a
+     * binary payload converted to a {@code String} with UTF-8 loses every byte that isn't valid UTF-8, so the service
+     * receives different data than the original payload. Use the {@code BinaryData} overloads for binary payloads.
+     */
+    @Test
+    @SuppressWarnings("deprecation")
+    void attestTpmStringCannotCarryNonUtf8Bytes() {
+        byte[] payload = allByteValues();
+        MockTpmHttpClient httpClient = MockTpmHttpClient.success(payload);
+
+        String result = buildClient(httpClient).attestTpm(new String(payload, StandardCharsets.UTF_8));
+
+        // Request: bytes 0x00-0x7F are sent unchanged; each of 0x80-0xFF was replaced with U+FFFD (EF BF BD) when the
+        // caller converted the payload to a String, so 256 bytes become 512 on the wire.
+        byte[] sent = httpClient.getSingleRequestData();
+        assertEquals(512, sent.length);
+        assertArrayEquals(Arrays.copyOfRange(payload, 0, 128), Arrays.copyOfRange(sent, 0, 128));
+        for (int i = 128; i < sent.length; i += 3) {
+            assertArrayEquals(new byte[] { (byte) 0xEF, (byte) 0xBF, (byte) 0xBD }, Arrays.copyOfRange(sent, i, i + 3),
+                "replacement character at offset " + i);
+        }
+
+        // Response: a binary reply decoded as UTF-8 doesn't round-trip either.
+        assertEquals(512, result.getBytes(StandardCharsets.UTF_8).length);
+    }
+
+    private static byte[] allByteValues() {
+        byte[] bytes = new byte[256];
+        for (int i = 0; i < bytes.length; i++) {
+            bytes[i] = (byte) i;
+        }
+        return bytes;
     }
 
     private static AttestationClient buildClient(HttpClient httpClient) {

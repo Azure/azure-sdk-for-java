@@ -594,15 +594,17 @@ public final class AttestationAsyncClient {
      *
      * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a>
      *
-     * <p>The request is encoded as UTF-8 before it is sent to the service, and the service response is decoded as
-     * UTF-8.</p>
+     * <p>Use the {@link BinaryData} overload instead. This overload is retained for compatibility with earlier
+     * versions of this library and will be removed in a future major release. It does not work with binary TPM
+     * payloads: converting binary data to a {@code String} using UTF-8 changes the bytes, and the attestation request
+     * fails.</p>
      *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @deprecated TPM attestation requests and responses are opaque binary data. Use
+     * @deprecated Does not work with binary TPM payloads; will be removed in a future major release. Use
      * {@link #attestTpmWithResponse(BinaryData)} instead.
      */
     @Deprecated
@@ -616,15 +618,17 @@ public final class AttestationAsyncClient {
      *
      * The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a>
      *
-     * <p>The request is encoded as UTF-8 before it is sent to the service, and the service response is decoded as
-     * UTF-8.</p>
+     * <p>Use the {@link BinaryData} overload instead. This overload is retained for compatibility with earlier
+     * versions of this library and will be removed in a future major release. It does not work with binary TPM
+     * payloads: converting binary data to a {@code String} using UTF-8 changes the bytes, and the attestation request
+     * fails.</p>
      *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @deprecated TPM attestation requests and responses are opaque binary data. Use
+     * @deprecated Does not work with binary TPM payloads; will be removed in a future major release. Use
      * {@link #attestTpm(BinaryData)} instead.
      */
     @Deprecated
