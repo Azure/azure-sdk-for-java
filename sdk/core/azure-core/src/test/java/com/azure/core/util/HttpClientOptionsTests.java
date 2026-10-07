@@ -3,9 +3,11 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpProtocolVersion;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
@@ -15,12 +17,41 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link HttpClientOptions}.
  */
 public class HttpClientOptionsTests {
+    @Test
+    public void defaultMaximumHttpVersionRemainsNull() {
+        assertNull(new HttpClientOptions().getMaximumHttpVersion());
+    }
+
+    @ParameterizedTest
+    @EnumSource(HttpProtocolVersion.class)
+    public void maximumHttpVersionReturnsAsIs(HttpProtocolVersion version) {
+        HttpClientOptions options = new HttpClientOptions();
+        assertSame(options, options.setMaximumHttpVersion(version));
+        assertEquals(version, options.getMaximumHttpVersion());
+    }
+
+    @ParameterizedTest
+    @EnumSource(HttpProtocolVersion.class)
+    public void clearingMaximumHttpVersionRestoresDefault(HttpProtocolVersion version) {
+        HttpClientOptions options = new HttpClientOptions().setMaximumHttpVersion(version);
+        assertSame(options, options.setMaximumHttpVersion(null));
+        assertNull(options.getMaximumHttpVersion());
+    }
+
+    @Test
+    public void nullMaximumHttpVersionRemainsNull() {
+        HttpClientOptions options = new HttpClientOptions();
+        assertSame(options, options.setMaximumHttpVersion(null));
+        assertNull(options.getMaximumHttpVersion());
+    }
+
     @ParameterizedTest
     @MethodSource("timeoutSupplier")
     public void nullTimeoutDefaultsTo60Seconds(BiFunction<HttpClientOptions, Duration, HttpClientOptions> timeoutSetter,

@@ -3,23 +3,31 @@
 
 package com.azure.core.http.okhttp;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpClientProvider;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.validation.http.HttpClientOptionsProviderTests;
+import okhttp3.Protocol;
 import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
 import java.net.ProxySelector;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link OkHttpAsyncClientProvider}.
  */
-public class OkHttpAsyncClientProviderTests {
+public class OkHttpAsyncClientProviderTests extends HttpClientOptionsProviderTests {
     @Test
     public void nullOptionsReturnsBaseClient() {
         OkHttpAsyncHttpClient httpClient = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider().createInstance(null);
@@ -80,5 +88,25 @@ public class OkHttpAsyncClientProviderTests {
         assertEquals(expectedTimeout, httpClient.httpClient.connectTimeoutMillis());
         assertEquals(expectedTimeout, httpClient.httpClient.writeTimeoutMillis());
         assertEquals(expectedTimeout, httpClient.httpClient.readTimeoutMillis());
+    }
+
+    @Override
+    protected HttpClientProvider createProvider(Configuration configuration) {
+        return new OkHttpAsyncClientProvider(configuration);
+    }
+
+    @Override
+    protected void assertMaximumHttpVersion(HttpClient client, HttpProtocolVersion version) {
+        OkHttpAsyncHttpClient okHttpClient = assertInstanceOf(OkHttpAsyncHttpClient.class, client);
+        assertEquals(version == HttpProtocolVersion.HTTP_1_1
+            ? Collections.singletonList(Protocol.HTTP_1_1)
+            : Arrays.asList(Protocol.HTTP_2, Protocol.HTTP_1_1), okHttpClient.httpClient.protocols());
+    }
+
+    @Override
+    protected void closeHttpClient(HttpClient client) {
+        okhttp3.OkHttpClient nativeClient = ((OkHttpAsyncHttpClient) client).httpClient;
+        nativeClient.connectionPool().evictAll();
+        nativeClient.dispatcher().executorService().shutdown();
     }
 }

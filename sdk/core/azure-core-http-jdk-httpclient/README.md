@@ -89,6 +89,9 @@ HttpClient client = new JdkHttpClientBuilder()
 
 ### Create a Client with HTTP/2 Support
 
+To configure the protocol version without depending on a JDK-specific builder, use
+[`HttpClientOptions.setMaximumHttpVersion` with `HttpClient.createDefault(options)`](../azure-core/README.md#configuring-the-http-protocol-version).
+
 Enable HTTP/2 with HTTP/1.1 fallback using `com.azure.core.http.HttpProtocolVersion`.
 
 ```java readme-sample-configureHttpVersion
@@ -129,4 +132,3 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- links -->
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
-
