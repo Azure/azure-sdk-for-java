@@ -6,7 +6,8 @@
 
 ## Overview
 
-The build is configured with four code-quality tools that run automatically in CI:
+The client SDK parents configure the following quality tools. CI selects the checks and enforcement
+settings for each job; not every job runs every tool.
 
 | Tool | What It Checks |
 |------|---------------|
@@ -14,27 +15,38 @@ The build is configured with four code-quality tools that run automatically in C
 | **SpotBugs** | Potential bugs via static analysis |
 | **Revapi** | Breaking API changes against the latest GA release |
 | **JaCoCo** | Test coverage thresholds |
+| **Spotless** | Java source formatting |
 
-All four are configured to **fail the build** on violations.  
-Always run them locally before opening a pull request.
+Enabled checks can fail the build on violations, depending on the SDK and pipeline configuration.
+The client parent skips SpotBugs by default, although some SDKs, including `azure-core`, enable it.
+Spotless can update source formatting during `process-sources` and checks it during `verify`.
+Run the relevant checks locally before opening a pull request.
 
 ---
 
 ## Running CheckStyle and SpotBugs Locally
 
+Run these commands from the repository root, replacing `<groupId>:<artifactId>` with the SDK's Maven
+coordinates. `-am` includes dependencies with matching versions in the reactor.
+
 ```bash
-mvn spotbugs:check checkstyle:checkstyle-aggregate \
-  -DskipTests -Dgpg.skip \
+mvn test-compile spotbugs:check checkstyle:check \
+  -DskipTests -Dgpg.skip -Dspotbugs.skip=false \
   -pl "<groupId>:<artifactId>" -am
 ```
 
 Example for `azure-core`:
 
 ```bash
-mvn spotbugs:check checkstyle:checkstyle-aggregate \
-  -DskipTests -Dgpg.skip \
+mvn test-compile spotbugs:check checkstyle:check \
+  -DskipTests -Dgpg.skip -Dspotbugs.skip=false \
   -pl "com.azure:azure-core" -am
 ```
+
+`test-compile` refreshes production, test, and sample bytecode without running tests. Direct SpotBugs
+goals do not compile sources themselves, so omitting compilation can analyze stale classes or fail
+on a clean checkout. `-Dspotbugs.skip=false` enables analysis even when the SDK inherits the parent's
+default skip setting. `checkstyle:check` enforces violations; generate HTML reports separately below.
 
 ### Adding a SpotBugs Exclusion
 
@@ -104,12 +116,15 @@ Maven-backed `IntegrationTest` tags).
 
 ## Testing for Breaking API Changes (Revapi)
 
+After building the SDK JAR, run this command from the SDK's directory:
+
 ```bash
 mvn revapi:check
 ```
 
-This compares the current API surface against the latest GA version on Maven Central
-and reports any incompatible changes.
+This compares the current API surface against the latest GA version available through the configured
+Maven repositories and reports incompatible changes. The client parent uses a `versionFormat` filter
+to exclude prerelease versions from the baseline.
 
 ### Adding a RevApi Suppression
 
@@ -169,49 +184,60 @@ when removed individually, even though at least one is still required. Remove em
 extension blocks and delete the file when no configuration remains. A missing prior
 GA baseline is inconclusive, not evidence that a suppression is unnecessary.
 
-After building the SDK JAR, run from its directory:
-
-```bash
-mvn revapi:check
-```
-
 ---
 
 ## Generating HTML Quality Reports
 
+Generate reports for an individual SDK module. Run from the repository root; for example:
+
 ```bash
-mvn install site:site site:stage -Dgpg.skip
+mvn verify site:site -f sdk/appconfiguration/azure-data-appconfiguration/pom.xml \
+  -Dgpg.skip -Dspotbugs.skip=false
 ```
 
-Report output locations:
+Enable SpotBugs explicitly and do not use the local analysis skip flags when generating reports.
+Maven Site generates the module's configured reports, not repository-wide aggregate reports.
+
+For modules using the client parent's default reporting configuration, output paths are relative to
+the module directory (for this example, `sdk/appconfiguration/azure-data-appconfiguration/`):
 
 | Report | Path |
 |--------|------|
-| SpotBugs | `eng/spotbugs-aggregate-report/target/spotbugs/spotbugsXml.html` |
-| CheckStyle | `target/staging/checkstyle-aggregate.html` |
-| JavaDoc | `target/staging/apidocs/index.html` |
-| Revapi | `target/staging/revapi-aggregate-report.html` |
-| Maven Site | `target/staging/index.html` |
+| SpotBugs | `target/site/spotbugs.html` |
+| CheckStyle | `target/site/checkstyle.html` |
+| JavaDoc | `target/site/apidocs/index.html` |
+| Revapi | Linked from `target/site/project-reports.html` |
+| Maven Site | `target/site/index.html` |
 
 ## Generating JaCoCo Coverage Report
 
 ```bash
-mvn test -Dgpg.skip -Dinclude-non-shipping-modules
+mvn verify -f sdk/appconfiguration/azure-data-appconfiguration/pom.xml -Dgpg.skip
 ```
 
-Report: `eng/jacoco-test-coverage/target/site/test-coverage/index.html`
+The client parent merges unit and integration test coverage and generates the HTML report during
+`verify`. Running only `mvn test` collects unit test coverage data but does not generate this report.
+Do not set `-DskipTests` or `-Djacoco.skip` when collecting coverage.
+
+Report: `target/site/test-coverage/index.html`, relative to the SDK module directory.
 
 ---
 
 ## Skipping Analysis During Local Development
 
-Add these flags to any Maven command for a faster local build:
+Append these flags to a Maven build command to skip common quality checks and Javadoc generation
+during local iteration:
 
-```
--Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true
+```bash
+-Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true \
+  -Drevapi.skip=true -Djacoco.skip=true -Dspotless.skip=true
 ```
 
-> **Do not skip these in your final PR build.** CI will check them regardless.
+These flags do not disable compilation, snippet verification, or every module-specific check.
+`-Dspotless.skip=true` also prevents automatic source formatting.
+
+> **Do not skip the required checks in your final PR build.** Follow the SDK's CI configuration,
+> and explicitly enable SpotBugs with `-Dspotbugs.skip=false` when running it locally.
 
 ---
 
@@ -223,7 +249,7 @@ files live next to the SDK's `pom.xml`:
 | File | Purpose |
 |------|---------|
 | `eng/lintingconfigs/checkstyle/{clientcore,track2,vnext}/checkstyle.xml` | Shared CheckStyle rules |
-| `eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml` | Per-module suppressions |
+| `eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml` | Fallback suppressions when an SDK has no local file |
 | `eng/lintingconfigs/spotbugs/track2/spotbugs-exclude.xml` | Shared cross-SDK SpotBugs exclusions |
 | `eng/lintingconfigs/spotbugs/spotbugs-include.xml` | Shared SpotBugs inclusion policy for modern clients |
 | `eng/lintingconfigs/revapi/{clientcore,track2}/revapi.json` | Shared RevApi policy and cross-SDK exceptions |
@@ -233,12 +259,21 @@ files live next to the SDK's `pom.xml`:
 
 ### Adding a CheckStyle Suppression
 
-If a package has a legitimately long name (approved by architects), add a suppression:
+For an architect-approved long package name, add a narrowly scoped entry inside the `<suppressions>`
+element in the SDK's local `checkstyle-suppressions.xml`. For example:
 
 ```xml
-<!-- eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml -->
-<suppress checks="PackageName" files="com/azure/resourcemanager/<verylongsegment>/.*\.java"/>
+<suppress checks="PackageName"
+          files="com[/\\]azure[/\\]resourcemanager[/\\]kubernetesconfiguration[/\\].*\.java"/>
 ```
+
+`[/\\]` matches both Unix and Windows path separators. Replace the example package with the specific
+approved package; do not broaden the exception beyond the affected SDK.
+
+The client parents automatically select an SDK-local file when it exists. Unlike SpotBugs and RevApi
+configuration, local CheckStyle suppressions **replace**, rather than append to, the shared suppression
+file. When creating a local file, retain the applicable shared suppressions. Changes to the central
+file do not affect SDKs already using a local file; reserve central changes for cross-SDK policy.
 
 > **Important:** Never disable CheckStyle or SpotBugs rules globally.  
 > File-scoped suppressions require justification in the PR description.
