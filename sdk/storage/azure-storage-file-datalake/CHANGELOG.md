@@ -6,6 +6,7 @@
 - Added support for service version 2026-10-06.
 
 ### Bugs Fixed
+- Fixed account name parsing for DFS endpoints when the account name contains "blob".
 - Fixed a bug where the client returned by `rename`, `renameWithResponse`, and `undeletePath` URL-encoded the path
   name a second time, causing subsequent requests made through that client to target a double-encoded path when the
   name contained characters such as `%`, `#`, or a space.
