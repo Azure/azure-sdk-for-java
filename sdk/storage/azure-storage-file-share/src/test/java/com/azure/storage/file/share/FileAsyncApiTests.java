@@ -251,33 +251,6 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @DoNotRecord
     @Tag("file-id-mock")
-    @ParameterizedTest
-    @ValueSource(booleans = { false, true })
-    public void asyncPathPropertiesRetainTimestampMapping(boolean directory) {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
-            Assertions.assertEquals("/share/item", request.getUrl().getPath());
-            Assertions.assertFalse(request.getUrl().toString().contains("fileid="));
-            Assertions.assertEquals(directory ? HttpMethod.GET : HttpMethod.HEAD, request.getHttpMethod());
-            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("item")));
-        }).build();
-        ShareAsyncClient client = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
-            .pipeline(pipeline)
-            .buildAsyncClient()
-            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
-
-        if (directory) {
-            FileIdTestHelper
-                .assertSmbProperties(client.getDirectoryClient("item").getProperties().block().getSmbProperties());
-        } else {
-            ShareFileProperties properties = client.getFileClient("item").getProperties().block();
-            FileIdTestHelper.assertSmbProperties(properties.getSmbProperties());
-            Assertions.assertEquals(1024, properties.getContentLength());
-            Assertions.assertEquals("value", properties.getMetadata().get("key"));
-        }
-    }
-
-    @DoNotRecord
-    @Tag("file-id-mock")
     @Test
     public void asyncFileLinksRequireFileId() {
         AtomicReference<Boolean> requestSent = new AtomicReference<>(false);

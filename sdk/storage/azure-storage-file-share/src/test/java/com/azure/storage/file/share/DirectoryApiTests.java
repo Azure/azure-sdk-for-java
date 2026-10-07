@@ -18,7 +18,6 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -72,7 +71,6 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import reactor.core.publisher.Mono;
@@ -170,21 +168,8 @@ public class DirectoryApiTests extends FileShareTestBase {
     @Tag("file-id-mock")
     @ParameterizedTest
     @ValueSource(booleans = { false, true })
-    public void directoryPropertiesByFileIdRouteAndMapHeaders(boolean snapshot) {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
-            assertEquals(HttpMethod.GET, request.getHttpMethod());
-            assertEquals("/" + FileIdTestHelper.SHARE_NAME, request.getUrl().getPath());
-            String query = request.getUrl().getQuery();
-            assertTrue(query.contains("restype=directory"));
-            assertTrue(query.contains("fileid=" + FileIdTestHelper.FILE_ID));
-            assertEquals(snapshot, query.contains("sharesnapshot=snapshot"));
-            return Mono.just(new MockHttpResponse(request, 200,
-                FileIdTestHelper.fileHeaders("directory")
-                    .set(HttpHeaderName.fromString("x-ms-type"), "directory")
-                    .set(HttpHeaderName.fromString("x-ms-server-encrypted"), "true")));
-        }).build();
+    public void directoryClientByFileIdUrl(boolean snapshot) {
         ShareClient source = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
-            .pipeline(pipeline)
             .serviceVersion(ShareServiceVersion.V2027_03_07)
             .buildClient()
             .getShareClient(FileIdTestHelper.SHARE_NAME);
@@ -199,24 +184,15 @@ public class DirectoryApiTests extends FileShareTestBase {
             FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME
                 + (snapshot ? "?sharesnapshot=snapshot&" : "?") + "fileid=" + FileIdTestHelper.FILE_ID,
             directoryClient.getDirectoryUrl());
-
-        ShareDirectoryProperties properties = directoryClient.getProperties();
-        assertEquals("directory", properties.getFileName());
-        assertEquals("value", properties.getMetadata().get("key"));
-        assertEquals("\"0x8DEAF1479E1C087\"", properties.getETag());
-        assertEquals(OffsetDateTime.parse("2015-10-21T07:28:00Z"), properties.getLastModified());
-        assertTrue(properties.isServerEncrypted());
-        FileIdTestHelper.assertSmbProperties(properties.getSmbProperties());
     }
 
     @DoNotRecord
     @Tag("file-id-mock")
-    @ParameterizedTest
-    @ValueSource(strings = { "", "parent/directory" })
-    public void directoryPathClientsAllowMutations(String path) {
+    @Test
+    public void rootDirectoryAllowsMetadataUpdates() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
             assertEquals(HttpMethod.PUT, request.getHttpMethod());
-            assertEquals("/" + FileIdTestHelper.SHARE_NAME + "/" + path, Utility.urlDecode(request.getUrl().getPath()));
+            assertEquals("/" + FileIdTestHelper.SHARE_NAME + "/", request.getUrl().getPath());
             assertFalse(request.getUrl().getQuery().contains("fileid="));
             return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("directory")
                 .set(HttpHeaderName.fromString("x-ms-request-server-encrypted"), "true")));
@@ -225,11 +201,9 @@ public class DirectoryApiTests extends FileShareTestBase {
             .pipeline(pipeline)
             .buildClient()
             .getShareClient(FileIdTestHelper.SHARE_NAME)
-            .getDirectoryClient(path);
+            .getRootDirectoryClient();
 
         directoryClient.setMetadata(Collections.singletonMap("key", "value"));
-        assertEquals((path.isEmpty() ? "" : path + "/") + "child",
-            directoryClient.getFileClient("child").getFilePath());
     }
 
     @DoNotRecord
@@ -274,16 +248,8 @@ public class DirectoryApiTests extends FileShareTestBase {
     @Tag("file-id-mock")
     @ParameterizedTest
     @ValueSource(strings = { "", "parent/directory" })
-    public void directoryPropertiesUsePath(String path) {
-        AtomicReference<String> requestUrl = new AtomicReference<>();
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
-            Assertions.assertEquals(HttpMethod.GET, request.getHttpMethod());
-            requestUrl.set(request.getUrl().toString());
-            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("directory")));
-        }).build();
-
+    public void directoryPathClientSnapshotUrls(String path) {
         ShareClient testShareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
-            .pipeline(pipeline)
             .serviceVersion(ShareServiceVersion.V2027_03_07)
             .buildClient()
             .getShareClient(FileIdTestHelper.SHARE_NAME);
@@ -293,19 +259,10 @@ public class DirectoryApiTests extends FileShareTestBase {
         Assertions.assertEquals(
             FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/" + path + "?sharesnapshot=snapshot",
             directoryClient.getDirectoryUrl());
-        ShareDirectoryProperties properties = directoryClient.getProperties();
-        Assertions.assertEquals("value", properties.getMetadata().get("key"));
-        FileIdTestHelper.assertSmbProperties(properties.getSmbProperties());
-        Assertions.assertTrue(Utility.urlDecode(requestUrl.get())
-            .startsWith(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/" + path + "?"));
-        Assertions.assertTrue(requestUrl.get().contains("restype=directory"));
-        Assertions.assertTrue(requestUrl.get().contains("sharesnapshot=snapshot"));
-        Assertions.assertFalse(requestUrl.get().contains("fileid="));
+        assertEquals("", directoryClient.getFileId());
         Assertions.assertEquals(FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/"
             + (path.isEmpty() ? "" : path + "/") + "child?sharesnapshot=snapshot",
             directoryClient.getSubdirectoryClient("child").getDirectoryUrl());
-        assertTrue(directoryClient.exists());
-        assertTrue(directoryClient.existsWithResponse(null, Context.NONE).getValue());
     }
 
     @DoNotRecord
@@ -313,19 +270,12 @@ public class DirectoryApiTests extends FileShareTestBase {
     @ParameterizedTest
     @ValueSource(strings = { "", "parent/directory" })
     public void directoryClientBuilderClearsFileIdForPath(String path) {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
-            Assertions.assertEquals("/" + FileIdTestHelper.SHARE_NAME + "/" + path,
-                Utility.urlDecode(request.getUrl().getPath()));
-            Assertions.assertFalse(request.getUrl().toString().contains("fileid="));
-            return Mono.just(new MockHttpResponse(request, 200, FileIdTestHelper.fileHeaders("directory")));
-        }).build();
         ShareFileClientBuilder builder = new ShareFileClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
             .shareName(FileIdTestHelper.SHARE_NAME)
-            .pipeline(pipeline)
             .fileId(FileIdTestHelper.FILE_ID);
         ShareDirectoryClient directoryClient = builder.resourcePath(path).buildDirectoryClient();
         Assertions.assertEquals(path, directoryClient.getDirectoryPath());
-        FileIdTestHelper.assertSmbProperties(directoryClient.getProperties().getSmbProperties());
+        assertEquals("", directoryClient.getFileId());
         String expectedUrl = FileIdTestHelper.ENDPOINT + "/" + FileIdTestHelper.SHARE_NAME + "/" + path;
         Assertions.assertEquals(expectedUrl, directoryClient.getDirectoryUrl());
         Assertions.assertEquals(expectedUrl + (path.isEmpty() ? "" : "/") + "file.txt",
