@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -36,12 +37,23 @@ public class ServiceBusAadOnlyConformanceIT extends TestProxyTestBase {
         final ServiceBusAdministrationClient administration
             = new ServiceBusAdministrationClientBuilder().credential(namespace, credential).buildClient();
         final String queueName = testResourceNamer.randomName("aadonly", 10);
-        administration.createQueue(queueName);
+        final long roleDeadline = System.nanoTime() + Duration.ofMinutes(8).toNanos();
+        while (true) {
+            try {
+                administration.createQueue(queueName);
+                break;
+            } catch (HttpResponseException e) {
+                final int status = e.getResponse() == null ? 0 : e.getResponse().getStatusCode();
+                if ((status != 401 && status != 403) || System.nanoTime() >= roleDeadline) {
+                    throw e;
+                }
+                Thread.sleep(Duration.ofSeconds(15).toMillis());
+            }
+        }
         try {
             final ServiceBusClientBuilder builder = new ServiceBusClientBuilder().credential(namespace, credential);
             try (ServiceBusSenderClient sender = builder.sender().queueName(queueName).buildClient();
                 ServiceBusReceiverClient receiver = builder.receiver().queueName(queueName).buildClient()) {
-                final long roleDeadline = System.nanoTime() + Duration.ofMinutes(8).toNanos();
                 while (true) {
                     try {
                         sender.sendMessage(new ServiceBusMessage("identity-only"));
