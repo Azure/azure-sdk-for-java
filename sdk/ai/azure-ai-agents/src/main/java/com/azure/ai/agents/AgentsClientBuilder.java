@@ -4,7 +4,6 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsClientImpl;
-import com.azure.ai.agents.implementation.TokenUtils;
 import com.azure.ai.agents.implementation.http.FoundryPolicyHelper;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
@@ -57,7 +56,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * A builder for creating a new instance of the AgentsClient type.
@@ -92,9 +90,8 @@ public final class AgentsClientBuilder
     @Generated
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-ai-agents.properties");
 
-    private static final String AGENT_PREVIEW_FEATURES = Stream
-        .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString),
-            Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString()))
+    private static final String AGENT_PREVIEW_FEATURES = Arrays.stream(AgentDefinitionOptInKeys.values())
+        .map(AgentDefinitionOptInKeys::toString)
         .collect(Collectors.joining(","));
 
     private static final String MEMORY_STORES_PREVIEW_FEATURES
@@ -102,6 +99,8 @@ public final class AgentsClientBuilder
 
     private static final String VOICE_AGENTS_PREVIEW_FEATURES
         = AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString();
+
+    private static final String PIPELINE_AUTHENTICATION_PLACEHOLDER = "pipeline-authentication";
 
     private boolean allowPreview;
 
@@ -389,7 +388,12 @@ public final class AgentsClientBuilder
     }
 
     private com.openai.core.http.HttpClient createOpenAIHttpClient(String foundryFeatures) {
-        return HttpClientHelper.mapToOpenAIHttpClient(resolvePipeline(foundryFeatures));
+        HttpPipeline localPipeline = resolvePipeline(foundryFeatures);
+        if (pipeline != null && tokenCredential != null) {
+            localPipeline = FoundryPolicyHelper.prependPolicy(localPipeline,
+                new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
+        return HttpClientHelper.mapToOpenAIHttpClient(localPipeline);
     }
 
     /**
@@ -480,8 +484,7 @@ public final class AgentsClientBuilder
 
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder(String agentName) {
         OpenAIOkHttpClient.Builder builder = OpenAIOkHttpClient.builder()
-            .credential(
-                BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
+            .credential(BearerTokenCredential.create(PIPELINE_AUTHENTICATION_PLACEHOLDER));
         builder.azureUrlPathMode(AzureUrlPathMode.UNIFIED);
         if (CoreUtils.isNullOrEmpty(agentName)) {
             builder.baseUrl(getDefaultBaseUrl());
@@ -498,8 +501,7 @@ public final class AgentsClientBuilder
 
     private OpenAIOkHttpClientAsync.Builder getOpenAIAsyncClientBuilder(String agentName) {
         OpenAIOkHttpClientAsync.Builder builder = OpenAIOkHttpClientAsync.builder()
-            .credential(
-                BearerTokenCredential.create(TokenUtils.getBearerTokenSupplier(this.tokenCredential, DEFAULT_SCOPES)));
+            .credential(BearerTokenCredential.create(PIPELINE_AUTHENTICATION_PLACEHOLDER));
         builder.azureUrlPath(AzureUrlPathMode.UNIFIED);
         if (CoreUtils.isNullOrEmpty(agentName)) {
             builder.baseUrl(getDefaultBaseUrl());
@@ -584,7 +586,7 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds an asynchronous beta Agents client for preview agent optimization operations.
+         * Builds an asynchronous beta Agents client for preview agent generation operations.
          * <p>
          * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
          * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the
@@ -647,7 +649,7 @@ public final class AgentsClientBuilder
         }
 
         /**
-         * Builds a synchronous beta Agents client for preview agent optimization operations.
+         * Builds a synchronous beta Agents client for preview agent generation operations.
          * <p>
          * The client is created using the endpoint, credential, pipeline, policies, and other configuration set on the
          * enclosing {@link AgentsClientBuilder}. Requests made by the client automatically include the

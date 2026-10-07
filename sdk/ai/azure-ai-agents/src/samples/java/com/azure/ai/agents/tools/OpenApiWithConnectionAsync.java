@@ -6,7 +6,6 @@ package com.azure.ai.agents.tools;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.SampleUtils;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.OpenApiFunctionDefinition;
 import com.azure.ai.agents.models.OpenApiProjectConnectionAuthDetails;
 import com.azure.ai.agents.models.OpenApiProjectConnectionSecurityScheme;
@@ -22,7 +21,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This sample demonstrates (using the async client) how to create an agent with an OpenAPI tool
@@ -32,8 +30,13 @@ import java.util.concurrent.atomic.AtomicReference;
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
  *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
- *   <li>OPENAPI_PROJECT_CONNECTION_ID - The OpenAPI project connection ID.</li>
+ *   <li>OPENAPI_PROJECT_CONNECTION_ID - A Custom Keys connection containing your TripAdvisor API key
+ *       under the key name {@code key}.</li>
  * </ul>
+ *
+ * <p>This sample uses the TripAdvisor location-search specification bundled at
+ * {@code src/samples/resources/assets/tripadvisor_openapi.json}. It declares API key authentication
+ * in the {@code key} query parameter, matching the project connection.</p>
  */
 public class OpenApiWithConnectionAsync {
     public static void main(String[] args) throws Exception {
@@ -49,47 +52,36 @@ public class OpenApiWithConnectionAsync {
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
         OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
-
         Map<String, BinaryData> spec = OpenApiFunctionDefinition.readSpecFromFile(
-            SampleUtils.getResourcePath("assets/httpbin_openapi.json"));
+            SampleUtils.getResourcePath("assets/tripadvisor_openapi.json"));
 
         OpenApiTool openApiTool = new OpenApiTool(
             new OpenApiFunctionDefinition(
-                "httpbin_get",
+                "tripadvisor",
                 spec,
                 new OpenApiProjectConnectionAuthDetails(
                     new OpenApiProjectConnectionSecurityScheme(connectionId)))
-                .setDescription("Get request metadata from an OpenAPI endpoint."));
+                .setDescription("TripAdvisor API to get travel information."));
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("You are a helpful assistant.")
             .setTools(Collections.singletonList(openApiTool));
 
-        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
-            .flatMap(agent -> {
-                agentRef.set(agent);
+        Mono.usingWhen(
+            agentsAsyncClient.createAgentVersion(agentName, agentDefinition),
+            agent -> {
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
-                    .then(Mono.fromFuture(() -> openAIAsyncClient.responses().create(
-                        ResponseCreateParams.builder()
-                            .input("Call the API and summarize the returned URL and origin.")
-                            .build())));
-            })
-            .doOnNext(response -> {
-                System.out.println("Response: " + response.output());
-            })
-            .then(Mono.defer(() -> {
-                AgentVersionDetails agent = agentRef.get();
-                if (agent != null) {
-                    return agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion())
-                        .doOnSuccess(v -> System.out.println("Agent deleted"));
-                }
-                return Mono.empty();
-            }))
+                return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .input("Recommend me 5 top hotels in the United States")
+                        .build()))
+                    .timeout(Duration.ofSeconds(300))
+                    .doOnNext(response -> System.out.println("Response: " + response.output()));
+            },
+            agent -> agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion())
+                .doOnSuccess(unused -> System.out.println("Agent deleted")))
             .doOnError(error -> System.err.println("Error: " + error.getMessage()))
-            .timeout(Duration.ofSeconds(300))
             .block();
     }
 }
