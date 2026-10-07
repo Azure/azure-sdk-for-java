@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeUpdateProperties;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Response for Volume request.
@@ -61,21 +62,21 @@ public final class VolumeUpdate implements JsonSerializable<VolumeUpdate> {
     }
 
     /**
-     * Get the managedBy property: Parent resource information.
+     * Get the managedBy property: Information about Azure services owning the ElasticSan volume resource.
      * 
      * @return the managedBy value.
      */
-    public ManagedByInfo managedBy() {
+    public List<ManagedByResources> managedBy() {
         return this.innerProperties() == null ? null : this.innerProperties().managedBy();
     }
 
     /**
-     * Set the managedBy property: Parent resource information.
+     * Set the managedBy property: Information about Azure services owning the ElasticSan volume resource.
      * 
      * @param managedBy the managedBy value to set.
      * @return the VolumeUpdate object itself.
      */
-    public VolumeUpdate withManagedBy(ManagedByInfo managedBy) {
+    public VolumeUpdate withManagedBy(List<ManagedByResources> managedBy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VolumeUpdateProperties();
         }
