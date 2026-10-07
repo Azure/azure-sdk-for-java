@@ -12,9 +12,9 @@ public final class OptionsResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OptionsResource model
-            = BinaryData.fromString("{\"throughput\":1201300359,\"autoscaleSettings\":{\"maxThroughput\":1294640448}}")
+            = BinaryData.fromString("{\"throughput\":1301478988,\"autoscaleSettings\":{\"maxThroughput\":242462331}}")
                 .toObject(OptionsResource.class);
-        Assertions.assertEquals(1201300359, model.throughput());
-        Assertions.assertEquals(1294640448, model.autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1301478988, model.throughput());
+        Assertions.assertEquals(242462331, model.autoscaleSettings().maxThroughput());
     }
 }

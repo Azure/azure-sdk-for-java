@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
+import com.azure.resourcemanager.elasticsan.models.SnapshotAccessState;
 import com.azure.resourcemanager.elasticsan.models.SnapshotCreationData;
 import java.io.IOException;
 
@@ -38,6 +39,16 @@ public final class SnapshotProperties implements JsonSerializable<SnapshotProper
      * Source Volume Name of a snapshot
      */
     private String volumeName;
+
+    /*
+     * The state of snapshot which determines the access availability of the snapshot.
+     */
+    private SnapshotAccessState snapshotAccessState;
+
+    /*
+     * Percentage complete for the background copy of the snapshot when a snapshot is in InstantAccess state.
+     */
+    private Double completionPercent;
 
     /**
      * Creates an instance of SnapshotProperties class.
@@ -93,6 +104,26 @@ public final class SnapshotProperties implements JsonSerializable<SnapshotProper
     }
 
     /**
+     * Get the snapshotAccessState property: The state of snapshot which determines the access availability of the
+     * snapshot.
+     * 
+     * @return the snapshotAccessState value.
+     */
+    public SnapshotAccessState snapshotAccessState() {
+        return this.snapshotAccessState;
+    }
+
+    /**
+     * Get the completionPercent property: Percentage complete for the background copy of the snapshot when a snapshot
+     * is in InstantAccess state.
+     * 
+     * @return the completionPercent value.
+     */
+    public Double completionPercent() {
+        return this.completionPercent;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -144,6 +175,11 @@ public final class SnapshotProperties implements JsonSerializable<SnapshotProper
                     deserializedSnapshotProperties.sourceVolumeSizeGiB = reader.getNullable(JsonReader::getLong);
                 } else if ("volumeName".equals(fieldName)) {
                     deserializedSnapshotProperties.volumeName = reader.getString();
+                } else if ("snapshotAccessState".equals(fieldName)) {
+                    deserializedSnapshotProperties.snapshotAccessState
+                        = SnapshotAccessState.fromString(reader.getString());
+                } else if ("completionPercent".equals(fieldName)) {
+                    deserializedSnapshotProperties.completionPercent = reader.getNullable(JsonReader::getDouble);
                 } else {
                     reader.skipChildren();
                 }

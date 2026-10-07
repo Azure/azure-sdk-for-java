@@ -980,7 +980,6 @@
 /eng/versioning/version_client.txt
 
 # Add owners for notifications for specific pipelines
-/eng/pipelines/aggregate-reports.yml                               @alzimmermsft @jonathangiles @Azure/azure-java-sdk
 /eng/common/pipelines/codeowners-linter.yml                        @alzimmermsft @Azure/azure-java-sdk
 /eng/pipelines/docindex.yml                                        @danieljurek @raych1
 

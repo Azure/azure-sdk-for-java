@@ -107,6 +107,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
 
     private Boolean store;
     private String agentVersionOverride;
+    private VoiceAgentTransport transport;
     private Duration handshakeTimeout = Duration.ofSeconds(30);
     private Duration closeTimeout = Duration.ofSeconds(10);
     private String agentSessionId;
@@ -132,6 +133,7 @@ public final class VoiceAgentWebSocketConnectionOptions {
         this.malformedEventHandler = source.malformedEventHandler;
         this.store = source.store;
         this.agentVersionOverride = source.agentVersionOverride;
+        this.transport = source.transport;
         this.handshakeTimeout = source.handshakeTimeout;
         this.closeTimeout = source.closeTimeout;
         this.agentSessionId = source.agentSessionId;
@@ -211,6 +213,27 @@ public final class VoiceAgentWebSocketConnectionOptions {
      */
     public VoiceAgentWebSocketConnectionOptions setAgentVersionOverride(String agentVersionOverride) {
         this.agentVersionOverride = agentVersionOverride;
+        return this;
+    }
+
+    /**
+     * Gets the transport used for the realtime connection.
+     *
+     * @return the transport, or {@code null} to use {@link VoiceAgentTransport#WEBSOCKET}.
+     */
+    public VoiceAgentTransport getTransport() {
+        return transport;
+    }
+
+    /**
+     * Sets the transport used for the realtime connection. When using {@link VoiceAgentTransport#WEBRTC}, the caller
+     * is responsible for completing SDP negotiation using the RTC call signaling events.
+     *
+     * @param transport the transport, or {@code null} to use {@link VoiceAgentTransport#WEBSOCKET}.
+     * @return this options instance.
+     */
+    public VoiceAgentWebSocketConnectionOptions setTransport(VoiceAgentTransport transport) {
+        this.transport = transport;
         return this;
     }
 

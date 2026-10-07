@@ -79,7 +79,7 @@ org.apache.logging.log4j:log4j-slf4j-impl;2.26.0
 org.apache.maven:maven-core;3.9.11
 org.apache.maven.archetype:archetype-packaging;3.4.0
 org.apache.maven.plugins:maven-archetype-plugin;3.4.0
-org.apache.qpid:proton-j;0.34.1
+org.apache.qpid:proton-j;0.35.0
 org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.groovy:groovy-jsr223;3.0.19
 org.codehaus.janino:janino;3.1.10

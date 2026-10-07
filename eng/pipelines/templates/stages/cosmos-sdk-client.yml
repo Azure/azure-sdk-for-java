@@ -11,6 +11,9 @@ parameters:
 - name: SDKType
   type: string
   default: not-specified
+- name: IsLatestNonLtsJdk
+  type: boolean
+  default: false
 - name: MatrixFilters
   type: object
   default: []
@@ -50,6 +53,7 @@ extends:
             - ${{ else }}:
               - ${{ parameters.Artifacts }}
             SDKType: ${{parameters.SDKType}}
+            IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
             MatrixConfigs:
               - Name: Cosmos_ci_test
                 Path: eng/pipelines/templates/stages/platform-matrix.json
@@ -92,6 +96,7 @@ extends:
               - ${{ parameters.LanguageFilter }}
               - ${{ parameters.MatrixFilters }}
             AdditionalParameters:
+              IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
               BuildParallelization: 2
               BuildOptions: '$(BuildOptions)'
               DisableAzureResourceCreation: true
@@ -182,6 +187,7 @@ extends:
                   - ${{ parameters.LanguageFilter }}
                   - ${{ parameters.MatrixFilters }}
                 AdditionalParameters:
+                  IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
                   BuildParallelization: 2
                   DisableAzureResourceCreation: true
                   ServiceDirectory: cosmos
