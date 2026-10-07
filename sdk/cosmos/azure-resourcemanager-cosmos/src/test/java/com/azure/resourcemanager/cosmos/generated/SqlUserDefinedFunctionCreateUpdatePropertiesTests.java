@@ -15,24 +15,24 @@ public final class SqlUserDefinedFunctionCreateUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlUserDefinedFunctionCreateUpdateProperties model = BinaryData.fromString(
-            "{\"resource\":{\"id\":\"mdxotngfdgu\",\"body\":\"yzihgrkyuizabsn\"},\"options\":{\"throughput\":464167190,\"autoscaleSettings\":{\"maxThroughput\":537597244}}}")
+            "{\"resource\":{\"id\":\"bqinjipnwjfu\",\"body\":\"lafcbahh\"},\"options\":{\"throughput\":1336272838,\"autoscaleSettings\":{\"maxThroughput\":1504313101}}}")
             .toObject(SqlUserDefinedFunctionCreateUpdateProperties.class);
-        Assertions.assertEquals("mdxotngfdgu", model.resource().id());
-        Assertions.assertEquals("yzihgrkyuizabsn", model.resource().body());
-        Assertions.assertEquals(464167190, model.options().throughput());
-        Assertions.assertEquals(537597244, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("bqinjipnwjfu", model.resource().id());
+        Assertions.assertEquals("lafcbahh", model.resource().body());
+        Assertions.assertEquals(1336272838, model.options().throughput());
+        Assertions.assertEquals(1504313101, model.options().autoscaleSettings().maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlUserDefinedFunctionCreateUpdateProperties model = new SqlUserDefinedFunctionCreateUpdateProperties()
-            .withResource(new SqlUserDefinedFunctionResource().withId("mdxotngfdgu").withBody("yzihgrkyuizabsn"))
-            .withOptions(new CreateUpdateOptions().withThroughput(464167190)
-                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(537597244)));
+            .withResource(new SqlUserDefinedFunctionResource().withId("bqinjipnwjfu").withBody("lafcbahh"))
+            .withOptions(new CreateUpdateOptions().withThroughput(1336272838)
+                .withAutoscaleSettings(new AutoscaleSettings().withMaxThroughput(1504313101)));
         model = BinaryData.fromObject(model).toObject(SqlUserDefinedFunctionCreateUpdateProperties.class);
-        Assertions.assertEquals("mdxotngfdgu", model.resource().id());
-        Assertions.assertEquals("yzihgrkyuizabsn", model.resource().body());
-        Assertions.assertEquals(464167190, model.options().throughput());
-        Assertions.assertEquals(537597244, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("bqinjipnwjfu", model.resource().id());
+        Assertions.assertEquals("lafcbahh", model.resource().body());
+        Assertions.assertEquals(1336272838, model.options().throughput());
+        Assertions.assertEquals(1504313101, model.options().autoscaleSettings().maxThroughput());
     }
 }

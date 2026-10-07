@@ -24,6 +24,8 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mockConstruction;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class OnBehalfOfCredentialTest {
@@ -37,6 +39,7 @@ public class OnBehalfOfCredentialTest {
         String secret = "secret";
         String token1 = "token1";
         String token2 = "token2";
+        String tokenFromAnotherUser = "tokenFromAnotherUser";
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
@@ -44,7 +47,8 @@ public class OnBehalfOfCredentialTest {
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock
             = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithConfidentialClientCache(any()))
+                    .thenReturn(TestUtils.getMockAccessToken(tokenFromAnotherUser, expiresAt));
                 when(identityClient.authenticateWithOBO(request1))
                     .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
                 when(identityClient.authenticateWithOBO(request2))
@@ -64,14 +68,18 @@ public class OnBehalfOfCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assertions.assertNotNull(identityClientMock);
+
+            IdentityClient identityClient = identityClientMock.constructed().get(0);
+            verify(identityClient, never()).authenticateWithConfidentialClientCache(any());
+            verify(identityClient).authenticateWithOBO(request1);
+            verify(identityClient).authenticateWithOBO(request2);
         }
 
         // mock
         try (MockedConstruction<IdentitySyncClient> identityClientMock
             = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
                 when(identitySyncClient.authenticateWithConfidentialClientCache(any()))
-                    .thenThrow(new IllegalStateException("Test"));
+                    .thenReturn(TestUtils.getMockAccessTokenSync(tokenFromAnotherUser, expiresAt));
                 when(identitySyncClient.authenticateWithOBO(request1))
                     .thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
                 when(identitySyncClient.authenticateWithOBO(request2))
@@ -91,7 +99,11 @@ public class OnBehalfOfCredentialTest {
             accessToken = credential.getTokenSync(request2);
             Assertions.assertEquals(token2, accessToken.getToken());
             Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assertions.assertNotNull(identityClientMock);
+
+            IdentitySyncClient identitySyncClient = identityClientMock.constructed().get(0);
+            verify(identitySyncClient, never()).authenticateWithConfidentialClientCache(any());
+            verify(identitySyncClient).authenticateWithOBO(request1);
+            verify(identitySyncClient).authenticateWithOBO(request2);
         }
     }
 

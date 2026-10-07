@@ -12,9 +12,9 @@ public final class CassandraTableGetPropertiesOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CassandraTableGetPropertiesOptions model
-            = BinaryData.fromString("{\"throughput\":532534725,\"autoscaleSettings\":{\"maxThroughput\":1991162890}}")
+            = BinaryData.fromString("{\"throughput\":2017064438,\"autoscaleSettings\":{\"maxThroughput\":2013220790}}")
                 .toObject(CassandraTableGetPropertiesOptions.class);
-        Assertions.assertEquals(532534725, model.throughput());
-        Assertions.assertEquals(1991162890, model.autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(2017064438, model.throughput());
+        Assertions.assertEquals(2013220790, model.autoscaleSettings().maxThroughput());
     }
 }

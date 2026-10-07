@@ -11,7 +11,7 @@ public final class RestorableGremlinDatabasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableGremlinDatabaseProperties model = BinaryData.fromString(
-            "{\"resource\":{\"_rid\":\"gmusaictdscnkzzo\",\"operationType\":\"Recreate\",\"canUndelete\":\"d\",\"canUndeleteReason\":\"zeqozre\",\"eventTimestamp\":\"bzq\",\"ownerId\":\"bnjrqvz\",\"ownerResourceId\":\"exozonynp\"}}")
+            "{\"resource\":{\"_rid\":\"eszyaqgomlbmfgge\",\"operationType\":\"SystemOperation\",\"canUndelete\":\"kcjjlwkyeahhh\",\"canUndeleteReason\":\"pulnrfcqufmcihp\",\"eventTimestamp\":\"owrer\",\"ownerId\":\"xptch\",\"ownerResourceId\":\"yqqidqimlgbbfjm\"}}")
             .toObject(RestorableGremlinDatabaseProperties.class);
     }
 }
