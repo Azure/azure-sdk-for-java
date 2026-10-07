@@ -46,24 +46,6 @@ parameters:
     default: [ ]
 
 steps:
-  - task: Maven@4
-    ${{ if eq(parameters.TestVersionSupport, 'true') }}:
-      displayName: '${{ parameters.VersionOverride }} - Build for non-From Source run'
-    ${{ else }}:
-      displayName: 'Build for non-From Source run'
-    inputs:
-      mavenPomFile: pom.xml
-      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }} -pl $(ProjectList) -am
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaTestVersion)
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-      goals: 'install'
-    env:
-      VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
-    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), ne(variables['FirstTestOverrideRan'], 'true'))
-
   - task: PythonScript@0
     displayName: 'Update external dependency versions'
     inputs:
@@ -72,37 +54,19 @@ steps:
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
   - task: Maven@4
-    displayName: '${{ parameters.VersionOverride }} - Re-build for version override run'
+    ${{ if eq(parameters.TestVersionSupport, 'true') }}:
+      displayName: '${{ parameters.VersionOverride }} - Build'
+    ${{ else }}:
+      displayName: 'Build'
     inputs:
-      mavenPomFile: pom.xml
-      options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} -pl $(ProjectList)
-      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaTestVersion)
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-      goals: 'clean install'
-    env:
-      VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
-    condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
-
-  - task: Maven@4
-    displayName: 'Build for From Source run'
-    inputs:
-      mavenPomFile: ClientFromSourcePom.xml
-      goals: 'install'
-      # Build and install every track 2, client, library. The purpose is to have all the libraries installed on the
-      # machine, so we can simply run tests with the -amd switch and we can remove the SNAFU of dependencies that
-      # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
-      # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
-      # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
+      mavenPomFile: ClientPom.xml
       options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }}
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+      goals: 'install'
 
   - ${{ parameters.PreTestRunSteps }}
 
@@ -115,8 +79,16 @@ steps:
         arguments: >
           -JavaTestVersion $(JavaTestVersion)
 
+    - ${{ if eq(parameters.IsLiveTest, 'true') }}:
+      - pwsh: |
+          Write-Host "##vso[task.setvariable variable=TestSelectionOptions]"
+        displayName: Use empty live test selection options
+    - ${{ else }}:
+      - pwsh: |
+          Write-Host "##vso[task.setvariable variable=TestSelectionOptions]-amd"
+        displayName: Set test selection options (-amd)
+
     - task: AzurePowerShell@5
-      condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
       ${{ if eq(parameters.TestVersionSupport, 'true') }}:
         displayName: '${{ parameters.VersionOverride }} - Run tests (Federated Auth)'
       ${{ else }}:
@@ -131,7 +103,7 @@ steps:
           $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
           $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
 
-          mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} ${{ parameters.TestGoals }}
+          mvn --% -f "$(Build.SourcesDirectory)/ClientPom.xml" $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} $(TestSelectionOptions) ${{ parameters.BuildOptions }} -T ${{ parameters.TestParallelization }} ${{ parameters.TestGoals }}
           exit $LASTEXITCODE
       env:
         JAVA_HOME: $(PowerShellJavaHome)
@@ -141,14 +113,16 @@ steps:
 
   - ${{ else }}:
     - task: Maven@4
-      condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
       ${{ if eq(parameters.TestVersionSupport, 'true') }}:
         displayName: '${{ parameters.VersionOverride }} - Run tests'
       ${{ else }}:
         displayName: 'Run tests'
       inputs:
-        mavenPomFile: pom.xml
-        options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
+        mavenPomFile: ClientPom.xml
+        ${{ if eq(parameters.IsLiveTest, 'true') }}:
+          options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
+        ${{ else }}:
+          options: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }}'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaTestVersion)
@@ -177,63 +151,6 @@ steps:
       jdkArchitectureOption: 'x64'
       goals: jacoco:report-aggregate
     condition: eq(variables['RunAggregateReports'], 'true')
-
-  - ${{ if eq('true', parameters.UseFederatedAuth) }}:
-    - ${{ if eq(parameters.IsLiveTest, 'true') }}:
-      - pwsh: |
-          Write-Host "##vso[task.setvariable variable=LiveTestSourceParams]"
-        displayName: Use empty live test source params
-    - ${{ else }}:
-      - pwsh: |
-          Write-Host "##vso[task.setvariable variable=LiveTestSourceParams]-amd"
-        displayName: Set live test source params (-amd)
-
-    - task: AzurePowerShell@5
-      displayName: 'Run tests for From Source run (Federated Auth)'
-      condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
-      inputs:
-        azureSubscription: ${{ parameters.ServiceConnection }}
-        azurePowerShellVersion: LatestVersion
-        pwsh: true
-        ScriptType: InlineScript
-        Inline: |
-          $account = (Get-AzContext).Account
-          $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
-          $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
-
-          mvn --% -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml ${{ parameters.TestGoals }} $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} $(LiveTestSourceParams) ${{ parameters.BuildOptions }} -T ${{ parameters.TestParallelization }}
-          exit $LASTEXITCODE
-      env:
-        # PowerShellJavaHome is set in the 'Set PowerShellJavaHome'
-        # task above
-        JAVA_HOME: $(PowerShellJavaHome)
-        MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
-        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-        ${{ insert }}: ${{ parameters.TestEnvVars }}
-
-  - ${{ else }}:
-    - task: Maven@4
-      displayName: 'Run tests for From Source run'
-      inputs:
-        mavenPomFile: ClientFromSourcePom.xml
-        # For the "From Source" runs we don't want the -am switch as we don't care about running tests for our
-        # dependencies, but we do want the -amd switch because we want to run tests on things that depend on us.
-        ${{ if eq(parameters.IsLiveTest, 'true') }}:
-          options: $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}
-        ${{ else }}:
-          options: $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }}
-        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: $(JavaTestVersion)
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        # The "From Source" runs only care about running tests for libraries within an SDK/area
-        # as well as libraries which depend on them and not the other stages in the Maven
-        # lifecycle that test or verify targets would execute. The libraries were already
-        # compiled and installed in the previous task, this tasks only runs tests.
-        goals: ${{ parameters.TestGoals }}
-      env: ${{ parameters.TestEnvVars }}
-      condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - ${{ if eq(parameters.TestVersionSupport, 'true') }}:
     - template: /eng/pipelines/templates/steps/retain-test-logs.yml

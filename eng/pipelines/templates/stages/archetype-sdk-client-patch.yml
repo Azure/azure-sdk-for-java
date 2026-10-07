@@ -85,10 +85,10 @@ extends:
                 arguments: '--skip-readme'
 
             - task: PythonScript@0
-              displayName: 'Generate FromSource POM and directories for sparse checkout'
+              displayName: 'Generate build POM and directories for sparse checkout'
               inputs:
-                scriptPath: 'eng/scripts/generate_from_source_pom.py'
-                arguments: '--artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList)'
+                scriptPath: 'eng/scripts/generate_scoped_pom.py'
+                arguments: '--artifacts-list $(ArtifactsList) --from-source false --additional-modules-list $(AdditionalModulesList)'
                 workingDirectory: '$(System.DefaultWorkingDirectory)'
 
             - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
@@ -110,7 +110,7 @@ extends:
             # Save the Package Properties
             #
             # ServiceDirectories variable is a plain, comma separated list of ServiceDirectories that is output by the
-            # generate_from_source_pom script above.
+            # generate_scoped_pom script above.
             - pwsh: |
                 $ServiceDirs = '$(ServiceDirectories)'
                 $ArtifactList = @('${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}' `
@@ -132,11 +132,11 @@ extends:
                   ForRelease: true
 
             - task: Maven@4
-              displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
+              displayName: 'Build and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
               inputs:
-                mavenPomFile: ClientFromSourcePom.xml
+                mavenPomFile: ClientPom.xml
                 goals: 'deploy'
-                options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dspotless.apply.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module, so we ensure it always builds in CI.
+                options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dspotless.apply.skip=true -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build'
                 mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                 javaHomeOption: 'JDKVersion'
                 jdkVersionOption: ${{ parameters.JavaBuildVersion }}
@@ -243,10 +243,10 @@ extends:
                 arguments: '--skip-readme'
 
             - task: PythonScript@0
-              displayName: 'Generate FromSource POM and directories for sparse checkout'
+              displayName: 'Generate build POM and directories for sparse checkout'
               inputs:
-                scriptPath: 'eng/scripts/generate_from_source_pom.py'
-                arguments: '--artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList)'
+                scriptPath: 'eng/scripts/generate_scoped_pom.py'
+                arguments: '--artifacts-list $(ArtifactsList) --from-source false --additional-modules-list $(AdditionalModulesList)'
                 workingDirectory: '$(System.DefaultWorkingDirectory)'
 
             - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml

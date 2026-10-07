@@ -88,6 +88,7 @@ jacoco.exec
 
 # Generated client pom file
 ClientAggregatePom.xml
+ClientPom.xml
 ClientFromSourcePom.xml
 
 # Generated aggregate coverage reports pom file
