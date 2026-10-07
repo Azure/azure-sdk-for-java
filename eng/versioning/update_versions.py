@@ -22,7 +22,6 @@
 
 import argparse
 from datetime import timedelta
-import json
 import os
 import re
 import sys
@@ -39,6 +38,8 @@ from utils import version_regex_str_no_anchor
 from utils import version_update_start_marker
 from utils import version_update_end_marker
 from utils import version_update_marker
+from utils import load_version_overrides
+from project_overrides import prepare_project_overrides
 import xml.etree.ElementTree as ET
 
 exception_list = []
@@ -177,23 +178,6 @@ def update_changelog(pom_file, is_increment, library_array):
     else:
         print('There is no CHANGELOG.md file in {}, skipping update'.format(dirname))
 
-def load_version_overrides(the_file, version_map, overrides_name):
-    with open(the_file) as f:
-        data = json.load(f)
-        if overrides_name not in data:
-            raise ValueError('Version override name: {0} is not found in {1}'.format(overrides_name, the_file))
-
-        overrides = data[overrides_name]
-        for override in overrides:
-            if len(override) != 1:
-                raise ValueError('Expected exactly one module, but got: {0}'.format(override))
-
-            for module_name in override:
-                module_str = module_name + ";" + override[module_name]
-                module = CodeModule(module_str)
-                version_map[module.name] = module
-                break
-
 def display_version_info(version_map):
     for value in version_map.values():
         print(value)
@@ -259,6 +243,7 @@ def main():
     parser = argparse.ArgumentParser(description='Replace version numbers in poms and READMEs.')
     parser.add_argument('--skip-readme', '--sr', action='store_true', help='Skip updating of readme files if argument is present')
     parser.add_argument('--target-file', '--tf', nargs='?', help='File to update (optional) - all files in the current directory and subdirectories are scanned if omitted')
+    parser.add_argument('--project-list', '--pl', help='Apply dependency overrides only to these projects in the aggregate --target-file POM.')
     parser.add_argument('--auto-version-increment', '--avi', action='store_true', help='If this script is being run after an auto version increment, add changelog entry for new version')
     # Comma separated list artifacts, has to be split into an array. If we're not skipping README updates, only update MD files for entries for the list of libraries passed in
     parser.add_argument('--library-list', '--ll', nargs='?', help='(Optional) Comma seperated list of groupId:artifactId. If updating MD files, only update entries in this list.')
@@ -272,7 +257,16 @@ def main():
         library_array = args.library_list.split(',')
     print('library_array length: {0}'.format(len(library_array)))
     print(library_array)
-    update_versions_all(args.target_file, args.skip_readme, args.auto_version_increment, library_array, args.version_override, args.include_perf_tests, args.setting_dev_version)
+    if args.project_list is not None:
+        if not args.target_file or not args.version_override or args.version_override.startswith('$'):
+            parser.error('--project-list requires --target-file and a named --version-override.')
+        if args.auto_version_increment or args.include_perf_tests or args.setting_dev_version or args.library_list:
+            parser.error('--project-list cannot be combined with release versioning options.')
+        prepare_project_overrides(
+            args.target_file, args.project_list,
+            os.path.join(os.path.dirname(__file__), 'supported_external_dependency_versions.json'), args.version_override)
+    else:
+        update_versions_all(args.target_file, args.skip_readme, args.auto_version_increment, library_array, args.version_override, args.include_perf_tests, args.setting_dev_version)
     elapsed_time = time.time() - start_time
     print('elapsed_time={}'.format(elapsed_time))
     print('Total time for replacement: {}'.format(str(timedelta(seconds=elapsed_time))))

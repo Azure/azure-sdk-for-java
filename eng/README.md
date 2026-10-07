@@ -29,15 +29,29 @@ than separate source and non-source Maven tasks. Test project selectors remain i
 packages whose resources were provisioned. `TestFromSource` controls version preparation and dependent-project
 selection, not a separate build/test path.
 
-Dependency version compatibility jobs first build and install the scoped reactor with the normal dependency versions.
-After applying a version override, they run `clean install` on only `$(ProjectList)`, without `-am` or `-amd`.
-Both phases use `ClientPom.xml`, but dependency libraries retain their normal-version compilation so an older
-compatibility dependency does not need to compile the current SDK source.
+Dependency version compatibility jobs prepare overrides only in the selected `$(ProjectList)` POMs before
+building `ClientPom.xml` once. Supporting modules and shared parent POMs retain their normal dependency versions.
+Selected projects receive direct-version updates, local dependency management for transitive overrides, and
+matching Enforcer allowlists. Inherited direct dependencies and marked version properties from local parents are
+overridden in the selected child, not in the parent. Shared parent/BOM targets and inherited profile dependencies
+that require an override are rejected explicitly instead of changing other modules' compilation.
 
-Run the generator regression tests with:
+Prepare one compatibility target locally with:
 
 ```powershell
-python -m unittest discover -s eng/scripts -p test_generate_scoped_pom.py -v
+python eng/scripts/generate_scoped_pom.py --artifacts-list com.azure:azure-core-version-tests --from-source false
+python eng/versioning/update_versions.py --skip-readme --target-file ClientPom.xml --project-list com.azure:azure-core-version-tests --version-override reactor_2020
+mvn -f ClientPom.xml install -DskipTests
+```
+
+Without `--project-list`, the version updater retains its existing repository-wide and individual-file behavior.
+The project-scoped mode only writes selected module POMs and requires their parent POMs to be available locally.
+
+Run the generator and override regression tests, including Maven compilation/runtime fixtures, with:
+
+```powershell
+$env:AZSDK_RUN_MAVEN_OVERRIDE_TESTS = 'true'
+python -m unittest discover -s eng/scripts -p test_*.py -v
 ```
 
 ## PR Documentation Validation

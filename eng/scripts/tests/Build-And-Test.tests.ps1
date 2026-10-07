@@ -21,40 +21,33 @@ BeforeAll {
 }
 
 Describe 'Scoped dependency version compatibility builds' -Tag 'UnitTest' {
-    It 'builds the scoped reactor before applying dependency overrides' {
+    It 'prepares selected project overrides before the single scoped build' {
         $script:Build.Count | Should -Be 1
         $script:Override.Count | Should -Be 1
-        $script:Build[0].Index | Should -BeLessThan $script:Override[0].Index
+        $script:Override[0].Index | Should -BeLessThan $script:Build[0].Index
     }
 
-    It 'clean rebuilds selected projects after applying dependency overrides' {
+    It 'limits version preparation to selected projects in the scoped reactor' {
         $script:Override.Count | Should -Be 1
-        $script:Rebuild.Count | Should -Be 1
-        $script:Rebuild[0].Index | Should -BeGreaterThan $script:Override[0].Index
-        $script:Rebuild[0].Value | Should -Match '(?m)^      options: .*-pl \$\(ProjectList\)'
-        $script:Rebuild[0].Value | Should -Not -Match (
-            '(?<!\S)(?:-am|-amd|--also-make(?:-dependents)?)(?=\s|$)')
+        $script:Override[0].Value | Should -Match '--target-file ClientPom\.xml'
+        $script:Override[0].Value | Should -Match '--project-list \$\(ProjectList\)'
+        $script:Override[0].Value | Should -Match '--version-override \$\{\{ parameters\.VersionOverride \}\}'
     }
 
-    It 'uses the scoped POM and shared build options in both phases' {
+    It 'uses the scoped POM and shared build options without a compatibility rebuild' {
         $script:Build.Count | Should -Be 1
-        $script:Rebuild.Count | Should -Be 1
-        foreach ($step in @($script:Build[0], $script:Rebuild[0])) {
-            $step.Value | Should -Match '(?m)^      mavenPomFile: ClientPom\.xml\r?$'
-            $step.Value | Should -Match '-DskipTests'
-            $step.Value | Should -Match '\$\(DefaultSkipOptions\)'
-            $step.Value | Should -Match '\$\{\{ parameters\.BuildOptions \}\}'
-            $step.Value | Should -Match '-T \$\{\{ parameters\.BuildParallelization \}\}'
-        }
+        $script:Rebuild.Count | Should -Be 0
+        $script:Build[0].Value | Should -Match '(?m)^      mavenPomFile: ClientPom\.xml\r?$'
+        $script:Build[0].Value | Should -Match '-DskipTests'
+        $script:Build[0].Value | Should -Match '\$\(DefaultSkipOptions\)'
+        $script:Build[0].Value | Should -Match '\$\{\{ parameters\.BuildOptions \}\}'
+        $script:Build[0].Value | Should -Match '-T \$\{\{ parameters\.BuildParallelization \}\}'
     }
 
-    It 'guards version preparation and the selected rebuild with the same runtime condition' {
+    It 'only prepares overrides when version compatibility testing is enabled' {
         $script:Override.Count | Should -Be 1
-        $script:Rebuild.Count | Should -Be 1
-        foreach ($step in @($script:Override[0], $script:Rebuild[0])) {
-            $condition = [regex]::Match($step.Value, '(?m)^    condition: [^\r\n]+').Value.Trim()
-            $condition | Should -Be $script:OverrideCondition
-        }
+        $condition = [regex]::Match($script:Override[0].Value, '(?m)^    condition: [^\r\n]+').Value.Trim()
+        $condition | Should -Be $script:OverrideCondition
     }
 
     It 'keeps the initial build unconditional and includes the full scoped reactor' {
@@ -67,8 +60,8 @@ Describe 'Scoped dependency version compatibility builds' -Tag 'UnitTest' {
     It 'shares build sequencing between source and non-source jobs' {
         $script:Build.Count | Should -Be 1
         $script:Override.Count | Should -Be 1
-        $script:Rebuild.Count | Should -Be 1
-        foreach ($step in @($script:Build[0], $script:Override[0], $script:Rebuild[0])) {
+        $script:Rebuild.Count | Should -Be 0
+        foreach ($step in @($script:Build[0], $script:Override[0])) {
             $step.Value | Should -Not -Match 'TestFromSource|ClientFromSourcePom\.xml'
         }
     }

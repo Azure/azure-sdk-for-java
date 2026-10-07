@@ -5,6 +5,7 @@
 # versioning python scripts.
 
 from enum import Enum
+import json
 import re
 from typing import Dict
 from subprocess import check_call, CalledProcessError
@@ -144,6 +145,19 @@ class CodeModule:
             return temp + ':[' + self.external_dependency + ']'
         else:
             raise ValueError('string_for_allowlist_include called on non-external_dependency: ' + self.name)
+
+def load_version_overrides(the_file, version_map, overrides_name):
+    with open(the_file) as f:
+        data = json.load(f)
+        if overrides_name not in data:
+            raise ValueError('Version override name: {0} is not found in {1}'.format(overrides_name, the_file))
+
+        for override in data[overrides_name]:
+            if len(override) != 1:
+                raise ValueError('Expected exactly one module, but got: {0}'.format(override))
+            for module_name, version in override.items():
+                module = CodeModule(module_name + ";" + version)
+                version_map[module.name] = module
 
 def run_check_call(
     command_array,

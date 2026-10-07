@@ -10,6 +10,10 @@ trigger:
   paths:
     include:
       - eng/scripts/*
+      - eng/versioning/project_overrides.py
+      - eng/versioning/update_versions.py
+      - eng/versioning/utils.py
+      - eng/versioning/supported_external_dependency_versions.json
       - eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
       - eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
     exclude:
@@ -25,6 +29,10 @@ pr:
   paths:
     include:
       - eng/scripts/*
+      - eng/versioning/project_overrides.py
+      - eng/versioning/update_versions.py
+      - eng/versioning/utils.py
+      - eng/versioning/supported_external_dependency_versions.json
       - eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
       - eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
 
@@ -38,5 +46,7 @@ extends:
         displayName: 'Use Python $(PythonVersion)'
         inputs:
           versionSpec: $(PythonVersion)
-      - script: python -m unittest discover -s eng/scripts -p test_generate_scoped_pom.py -v
-        displayName: Test aggregate build POM generation
+      - script: python -m unittest discover -s eng/scripts -p "test_*.py" -v
+        displayName: Test scoped POM generation and project dependency overrides
+        env:
+          AZSDK_RUN_MAVEN_OVERRIDE_TESTS: 'true'
