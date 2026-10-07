@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
@@ -102,7 +103,8 @@ public class CPKNTests extends BlobTestBase {
         AppendBlobClient cpknAppendBlob = cpkncesContainer.getBlobClient(generateBlobName()).getAppendBlobClient();
         cpknAppendBlob.create();
 
-        ListBlobsOptions options = new ListBlobsOptions();
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
         Iterator<BlobItem> items = cpkncesContainer.listBlobs(options, null).iterator();
 
         BlobItem blob = items.next();
@@ -120,7 +122,8 @@ public class CPKNTests extends BlobTestBase {
         AppendBlobClient cpknAppendBlob = cpkncesContainer.getBlobClient(generateBlobName()).getAppendBlobClient();
         cpknAppendBlob.create();
 
-        ListBlobsOptions options = new ListBlobsOptions().setPrefix("");
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix("")
+            .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
         Iterator<BlobItem> items = cpkncesContainer.listBlobsByHierarchy("/", options, null).iterator();
 
         BlobItem blob = items.next();

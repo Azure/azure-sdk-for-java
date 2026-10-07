@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,7 +53,8 @@ public class SoftDeleteAsyncTests extends BlobTestBase {
     public void listBlobsFlatOptionsDeleted() {
         ListBlobsOptions options
             = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
-                .setPrefix(prefix);
+                .setPrefix(prefix)
+                .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
         StepVerifier.create(blobClient.delete().thenMany(containerClient.listBlobs(options)))
             .assertNext(r -> assertEquals(blobClient.getBlobName(), r.getName()))
             .verifyComplete();
@@ -62,7 +64,8 @@ public class SoftDeleteAsyncTests extends BlobTestBase {
     public void listBlobsHierOptionsDeleted() {
         ListBlobsOptions options
             = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
-                .setPrefix(prefix);
+                .setPrefix(prefix)
+                .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
         StepVerifier.create(blobClient.delete().thenMany(containerClient.listBlobsByHierarchy("", options)))
             .assertNext(r -> assertEquals(blobClient.getBlobName(), r.getName()))
             .verifyComplete();

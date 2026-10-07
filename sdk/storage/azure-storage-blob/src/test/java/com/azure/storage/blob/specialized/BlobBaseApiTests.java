@@ -27,6 +27,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
@@ -892,7 +893,8 @@ public class BlobBaseApiTests extends BlobTestBase {
         blob1.setAccessTier(AccessTier.SMART);
         blob2.setAccessTier(AccessTier.SMART);
 
-        ListBlobsOptions listOptions = new ListBlobsOptions();
+        ListBlobsOptions listOptions
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
 
         cc.listBlobs(listOptions, null).forEach(blobItem -> {
             if (blobItem.getName().equals(blobName1) || blobItem.getName().equals(blobName2)) {
@@ -933,7 +935,8 @@ public class BlobBaseApiTests extends BlobTestBase {
         blob1.setAccessTierWithResponse(options, null, Context.NONE);
         blob2.setAccessTierWithResponse(options, null, Context.NONE);
 
-        ListBlobsOptions listOptions = new ListBlobsOptions();
+        ListBlobsOptions listOptions
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
 
         cc.listBlobs(listOptions, null).forEach(blobItem -> {
             if (blobItem.getName().equals(blobName1) || blobItem.getName().equals(blobName2)) {
