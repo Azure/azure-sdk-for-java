@@ -2643,7 +2643,8 @@ public class ContainerApiTests extends BlobTestBase {
 
         Set<String> distinctTokens = new HashSet<>(inspect.getSessionTokens());
         assertTrue(distinctTokens.size() >= 2,
-            "Expected the session token to rotate at least once over the test window; only saw " + distinctTokens);
+            "Expected the session token to rotate at least once over the test window; only saw " + distinctTokens.size()
+                + " distinct token(s)");
     }
 
     @Test
@@ -2676,8 +2677,9 @@ public class ContainerApiTests extends BlobTestBase {
 
         Set<String> distinctTokens = new HashSet<>(inspect.getSessionTokens());
         assertTrue(distinctTokens.size() >= 2,
-            "Expected the session token to rotate at least once over the test window; saw tokens " + distinctTokens
-                + " and transparently-recovered invalid-token responses " + inspect.getInvalidAuthStatuses());
+            "Expected the session token to rotate at least once over the test window; saw " + distinctTokens.size()
+                + " distinct token(s)" + " and transparently-recovered invalid-token responses "
+                + inspect.getInvalidAuthStatuses());
     }
 
     @Test
