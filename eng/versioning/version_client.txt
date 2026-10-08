@@ -295,7 +295,7 @@ com.azure.resourcemanager:azure-resourcemanager-msi;2.54.2;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-network;2.61.1;2.62.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-privatedns;2.53.11;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-resources;2.54.4;2.55.0
+com.azure.resourcemanager:azure-resourcemanager-resources;2.55.0;2.56.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-redis;2.53.11;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-search;2.54.10;2.55.0-beta.3
@@ -545,7 +545,7 @@ com.azure.resourcemanager:azure-resourcemanager-redhatopenshifthcp;1.0.0-beta.1;
 com.azure.resourcemanager:azure-resourcemanager-storagesync;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-resources-deployments;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-resources-policy;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-resources-templatespecs;1.0.0;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-resources-templatespecs;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute-workloadmanager;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
