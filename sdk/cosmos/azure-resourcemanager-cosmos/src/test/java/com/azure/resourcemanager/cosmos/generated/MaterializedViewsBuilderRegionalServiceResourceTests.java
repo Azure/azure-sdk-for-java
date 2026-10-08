@@ -11,7 +11,7 @@ public final class MaterializedViewsBuilderRegionalServiceResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaterializedViewsBuilderRegionalServiceResource model
-            = BinaryData.fromString("{\"name\":\"pfpdof\",\"location\":\"kclbtxluevsol\",\"status\":\"Error\"}")
+            = BinaryData.fromString("{\"name\":\"hvtuwyjsqwzsz\",\"location\":\"zjg\",\"status\":\"Creating\"}")
                 .toObject(MaterializedViewsBuilderRegionalServiceResource.class);
     }
 }

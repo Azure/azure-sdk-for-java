@@ -82,6 +82,15 @@
 * `SUCCEEDED` was added
 * `CANCELED` was added
 
+## 2.54.2 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.57.2` to version `2.58.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
+
 ## 2.54.1 (2026-08-18)
 
 ### Other Changes

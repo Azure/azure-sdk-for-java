@@ -13,13 +13,13 @@ public final class CassandraKeyspaceGetResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CassandraKeyspaceGetResultsInner model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"_rid\":\"qcwgaxfgvaknokz\",\"_ts\":68.62356,\"_etag\":\"r\",\"id\":\"tixldzyyfytpqs\"},\"options\":{\"throughput\":1286470793,\"autoscaleSettings\":{\"maxThroughput\":1092655779}}},\"location\":\"ivyqlkjuvsmbmsl\",\"tags\":{\"mx\":\"ovwzdbpqvybefg\",\"vcuartrhun\":\"okcvtlubses\",\"reuykbbmnwagl\":\"pirykycndzfqiv\"},\"identity\":{\"principalId\":\"oeeonqlnfwm\",\"tenantId\":\"mvqdbpbhfckdvez\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"alehpav\":{\"principalId\":\"zhddubbnqf\",\"clientId\":\"h\"},\"teajohiyg\":{\"principalId\":\"ugiqjtiogqg\",\"clientId\":\"inic\"}}},\"id\":\"n\",\"name\":\"onhpcz\",\"type\":\"kmktpvwxqcseh\"}")
+            "{\"properties\":{\"resource\":{\"_rid\":\"umyw\",\"_ts\":47.70764,\"_etag\":\"xgo\",\"id\":\"oyjfqipu\"},\"options\":{\"throughput\":68265470,\"autoscaleSettings\":{\"maxThroughput\":94013318}}},\"location\":\"ke\",\"tags\":{\"m\":\"vop\"},\"identity\":{\"principalId\":\"qujlyegqa\",\"tenantId\":\"igflqqbtnyjp\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"baevwjcnkottl\":{\"principalId\":\"vabm\",\"clientId\":\"s\"}}},\"id\":\"hvajmailfemjjzak\",\"name\":\"wjiqullqxb\",\"type\":\"mvrscmqerndbrny\"}")
             .toObject(CassandraKeyspaceGetResultsInner.class);
-        Assertions.assertEquals("ivyqlkjuvsmbmsl", model.location());
-        Assertions.assertEquals("ovwzdbpqvybefg", model.tags().get("mx"));
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("tixldzyyfytpqs", model.resource().id());
-        Assertions.assertEquals(1286470793, model.options().throughput());
-        Assertions.assertEquals(1092655779, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals("ke", model.location());
+        Assertions.assertEquals("vop", model.tags().get("m"));
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("oyjfqipu", model.resource().id());
+        Assertions.assertEquals(68265470, model.options().throughput());
+        Assertions.assertEquals(94013318, model.options().autoscaleSettings().maxThroughput());
     }
 }

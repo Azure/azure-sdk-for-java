@@ -1,10 +1,12 @@
 # Release History
 
-## 2.54.0 (2026-08-20)
+## 2.54.0 (2026-10-08)
 
 - Package api-version 2026-07-01.
 
 ### Features Added
+
+- Supported `defineAfdEndpoint`, `defineOriginGroup`, `defineRuleSet` method in `CdnProfile` for Azure Front Door Standard/Premium Sku.
 
 * `models.EnforceMtlsEnabledState` was added
 
@@ -261,6 +263,20 @@
 
 * `AFD_URL_SIGNING` was added
 * `EDGE_ACTION` was added
+
+### Breaking Changes
+
+- Changed `typeName()` return type from `String` to enum types (`DeliveryRuleActionParametersType`, `DeliveryRuleConditionParametersType`, `CertificateSourceParametersType`, `KeyVaultSigningKeyParametersType`) in condition/action parameter classes.
+- Changed `withTypeName(String)` parameter type to corresponding enum type in condition/action parameter classes.
+- Removed `fromInt(int)` method from `PolicySettingsDefaultCustomBlockResponseStatusCode` class. Use `fromValue(Integer)` instead.
+
+## 2.53.11 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
 
 ## 2.53.10 (2026-08-18)
 

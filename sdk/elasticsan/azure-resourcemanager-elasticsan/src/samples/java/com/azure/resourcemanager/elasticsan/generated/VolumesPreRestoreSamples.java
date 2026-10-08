@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class VolumesPreRestoreSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Volumes_PreRestore_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/Volumes_PreRestore_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_PreRestore_MaximumSet_Gen.

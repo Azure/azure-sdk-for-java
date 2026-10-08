@@ -13,12 +13,12 @@ public final class SqlStoredProcedureGetResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlStoredProcedureGetResultsInner model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"_rid\":\"wqfbylyrfgiagt\",\"_ts\":87.74515,\"_etag\":\"cqwogfnzjvusfzl\",\"id\":\"mozuxylfsb\",\"body\":\"adpysownbt\"}},\"location\":\"bugrj\",\"tags\":{\"foj\":\"ojcmisofieyp\"},\"identity\":{\"principalId\":\"hcuplc\",\"tenantId\":\"cwkhihi\",\"type\":\"None\",\"userAssignedIdentities\":{\"ecactx\":{\"principalId\":\"qtz\",\"clientId\":\"rgnowcjhfgm\"},\"ifzmpjwyivqi\":{\"principalId\":\"oteyowc\",\"clientId\":\"qovekqvgqou\"},\"kvyklxubyjaffmm\":{\"principalId\":\"xcvhrfs\",\"clientId\":\"uagrttikteusqc\"},\"lqxihhrmooiz\":{\"principalId\":\"lcqcuubgqibrt\",\"clientId\":\"metttwgd\"}}},\"id\":\"eypxiutcxapzhyr\",\"name\":\"etoge\",\"type\":\"joxslhvnhla\"}")
+            "{\"properties\":{\"resource\":{\"_rid\":\"ubwefqs\",\"_ts\":15.355677,\"_etag\":\"qtferrqwexjkmf\",\"id\":\"apjwogqqnobpudcd\",\"body\":\"tqwpwya\"}},\"location\":\"zasqbucljgkyexao\",\"tags\":{\"jumfqwazlnq\":\"aipidsdaultxi\",\"zqdqxt\":\"mcjn\",\"nyfusfzsvtuikzh\":\"jw\"},\"identity\":{\"principalId\":\"glcfhmlrqryxyn\",\"tenantId\":\"zrdpsovwxznptgoe\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ioovzidsxwaab\":{\"principalId\":\"pfhvfslk\",\"clientId\":\"tjlrigjksky\"},\"kzobgopxlhsln\":{\"principalId\":\"ifrygzn\",\"clientId\":\"axri\"}}},\"id\":\"xieixynllxec\",\"name\":\"crojp\",\"type\":\"slhcawjutifd\"}")
             .toObject(SqlStoredProcedureGetResultsInner.class);
-        Assertions.assertEquals("bugrj", model.location());
-        Assertions.assertEquals("ojcmisofieyp", model.tags().get("foj"));
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("mozuxylfsb", model.resource().id());
-        Assertions.assertEquals("adpysownbt", model.resource().body());
+        Assertions.assertEquals("zasqbucljgkyexao", model.location());
+        Assertions.assertEquals("aipidsdaultxi", model.tags().get("jumfqwazlnq"));
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("apjwogqqnobpudcd", model.resource().id());
+        Assertions.assertEquals("tqwpwya", model.resource().body());
     }
 }

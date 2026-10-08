@@ -12,8 +12,8 @@ public final class NotebookWorkspaceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NotebookWorkspaceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"notebookServerEndpoint\":\"wriuomzczfkic\",\"status\":\"vsaaxwsp\"},\"id\":\"xikhfj\",\"name\":\"ebglcxkxgzzro\",\"type\":\"vygys\"},{\"properties\":{\"notebookServerEndpoint\":\"mesrfsvpi\",\"status\":\"zpatqtd\"},\"id\":\"wxspvckojaz\",\"name\":\"bgspf\",\"type\":\"esubzpvpv\"},{\"properties\":{\"notebookServerEndpoint\":\"ytcovqs\",\"status\":\"srfjbdxzfxnx\"},\"id\":\"b\",\"name\":\"uoswkjmdih\",\"type\":\"cy\"},{\"properties\":{\"notebookServerEndpoint\":\"lwhbwzjnu\",\"status\":\"rfgmdqgnnbzrtfte\"},\"id\":\"uubjtvgjsxmty\",\"name\":\"jvavdpwwo\",\"type\":\"tdp\"}],\"nextLink\":\"its\"}")
+            "{\"value\":[{\"properties\":{\"notebookServerEndpoint\":\"svfnkwm\",\"status\":\"jjekrknfdrugj\"},\"id\":\"ckgtxkrdtulc\",\"name\":\"cjdk\",\"type\":\"otcsu\"},{\"properties\":{\"notebookServerEndpoint\":\"oonsvobchkxfp\",\"status\":\"dyslbklglmnn\"},\"id\":\"wayqshwyqxrid\",\"name\":\"tb\",\"type\":\"aqjmkgxqwque\"},{\"properties\":{\"notebookServerEndpoint\":\"lztpziizevjykof\",\"status\":\"zefkhkqtwqlepjj\"},\"id\":\"c\",\"name\":\"sf\",\"type\":\"zcntogffjwajnrtw\"},{\"properties\":{\"notebookServerEndpoint\":\"qkifmxawostfz\",\"status\":\"hrkmjqncfv\"},\"id\":\"cnhemvwfnq\",\"name\":\"wypvndrwbgo\",\"type\":\"tggrss\"}],\"nextLink\":\"jfkainj\"}")
             .toObject(NotebookWorkspaceListResult.class);
-        Assertions.assertEquals("its", model.nextLink());
+        Assertions.assertEquals("jfkainj", model.nextLink());
     }
 }

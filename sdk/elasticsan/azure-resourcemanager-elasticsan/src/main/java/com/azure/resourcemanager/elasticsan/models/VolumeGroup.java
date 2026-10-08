@@ -99,6 +99,46 @@ public interface VolumeGroup {
     Boolean enforceDataIntegrityCheckForIscsi();
 
     /**
+     * Gets the encryptionInTransit property: A boolean indicating whether or not Encryption in Transit is enabled,
+     * supported only for ISCSI protocol.
+     * 
+     * @return the encryptionInTransit value.
+     */
+    Boolean encryptionInTransit();
+
+    /**
+     * Gets the reservedIops property: Reserved IOPS allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @return the reservedIops value.
+     */
+    Integer reservedIops();
+
+    /**
+     * Gets the reservedMBps property: Reserved MBps allocated for this volume group, applicable for QualityOfService
+     * PerformanceCritical only.
+     * 
+     * @return the reservedMBps value.
+     */
+    Integer reservedMBps();
+
+    /**
+     * Gets the qualityOfService property: Quality of Service tier for the volume group, applicable for
+     * ElasticSanVersion V2 only.
+     * 
+     * @return the qualityOfService value.
+     */
+    QualityOfService qualityOfService();
+
+    /**
+     * Gets the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its
+     * associated resources.
+     * 
+     * @return the deleteRetentionPolicy value.
+     */
+    DeleteRetentionPolicy deleteRetentionPolicy();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -147,9 +187,12 @@ public interface VolumeGroup {
          * The stage of the VolumeGroup definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithIdentity, DefinitionStages.WithProtocolType,
-            DefinitionStages.WithEncryption, DefinitionStages.WithEncryptionProperties,
-            DefinitionStages.WithNetworkAcls, DefinitionStages.WithEnforceDataIntegrityCheckForIscsi {
+        interface WithCreate
+            extends DefinitionStages.WithIdentity, DefinitionStages.WithProtocolType, DefinitionStages.WithEncryption,
+            DefinitionStages.WithEncryptionProperties, DefinitionStages.WithNetworkAcls,
+            DefinitionStages.WithEnforceDataIntegrityCheckForIscsi, DefinitionStages.WithEncryptionInTransit,
+            DefinitionStages.WithReservedIops, DefinitionStages.WithReservedMBps, DefinitionStages.WithQualityOfService,
+            DefinitionStages.WithDeleteRetentionPolicy {
             /**
              * Executes the create request.
              * 
@@ -247,6 +290,81 @@ public interface VolumeGroup {
              */
             WithCreate withEnforceDataIntegrityCheckForIscsi(Boolean enforceDataIntegrityCheckForIscsi);
         }
+
+        /**
+         * The stage of the VolumeGroup definition allowing to specify encryptionInTransit.
+         */
+        interface WithEncryptionInTransit {
+            /**
+             * Specifies the encryptionInTransit property: A boolean indicating whether or not Encryption in Transit is
+             * enabled, supported only for ISCSI protocol..
+             * 
+             * @param encryptionInTransit A boolean indicating whether or not Encryption in Transit is enabled,
+             * supported only for ISCSI protocol.
+             * @return the next definition stage.
+             */
+            WithCreate withEncryptionInTransit(Boolean encryptionInTransit);
+        }
+
+        /**
+         * The stage of the VolumeGroup definition allowing to specify reservedIops.
+         */
+        interface WithReservedIops {
+            /**
+             * Specifies the reservedIops property: Reserved IOPS allocated for this volume group, applicable for
+             * QualityOfService PerformanceCritical only..
+             * 
+             * @param reservedIops Reserved IOPS allocated for this volume group, applicable for QualityOfService
+             * PerformanceCritical only.
+             * @return the next definition stage.
+             */
+            WithCreate withReservedIops(Integer reservedIops);
+        }
+
+        /**
+         * The stage of the VolumeGroup definition allowing to specify reservedMBps.
+         */
+        interface WithReservedMBps {
+            /**
+             * Specifies the reservedMBps property: Reserved MBps allocated for this volume group, applicable for
+             * QualityOfService PerformanceCritical only..
+             * 
+             * @param reservedMBps Reserved MBps allocated for this volume group, applicable for QualityOfService
+             * PerformanceCritical only.
+             * @return the next definition stage.
+             */
+            WithCreate withReservedMBps(Integer reservedMBps);
+        }
+
+        /**
+         * The stage of the VolumeGroup definition allowing to specify qualityOfService.
+         */
+        interface WithQualityOfService {
+            /**
+             * Specifies the qualityOfService property: Quality of Service tier for the volume group, applicable for
+             * ElasticSanVersion V2 only..
+             * 
+             * @param qualityOfService Quality of Service tier for the volume group, applicable for ElasticSanVersion V2
+             * only.
+             * @return the next definition stage.
+             */
+            WithCreate withQualityOfService(QualityOfService qualityOfService);
+        }
+
+        /**
+         * The stage of the VolumeGroup definition allowing to specify deleteRetentionPolicy.
+         */
+        interface WithDeleteRetentionPolicy {
+            /**
+             * Specifies the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and
+             * its associated resources..
+             * 
+             * @param deleteRetentionPolicy The retention policy for the soft deleted volume group and its associated
+             * resources.
+             * @return the next definition stage.
+             */
+            WithCreate withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy);
+        }
     }
 
     /**
@@ -261,7 +379,8 @@ public interface VolumeGroup {
      */
     interface Update extends UpdateStages.WithIdentity, UpdateStages.WithProtocolType, UpdateStages.WithEncryption,
         UpdateStages.WithEncryptionProperties, UpdateStages.WithNetworkAcls,
-        UpdateStages.WithEnforceDataIntegrityCheckForIscsi {
+        UpdateStages.WithEnforceDataIntegrityCheckForIscsi, UpdateStages.WithReservedIops,
+        UpdateStages.WithReservedMBps, UpdateStages.WithDeleteRetentionPolicy {
         /**
          * Executes the update request.
          * 
@@ -362,6 +481,51 @@ public interface VolumeGroup {
              * @return the next definition stage.
              */
             Update withEnforceDataIntegrityCheckForIscsi(Boolean enforceDataIntegrityCheckForIscsi);
+        }
+
+        /**
+         * The stage of the VolumeGroup update allowing to specify reservedIops.
+         */
+        interface WithReservedIops {
+            /**
+             * Specifies the reservedIops property: Reserved IOPS allocated for this volume group, applicable for
+             * QualityOfService PerformanceCritical only..
+             * 
+             * @param reservedIops Reserved IOPS allocated for this volume group, applicable for QualityOfService
+             * PerformanceCritical only.
+             * @return the next definition stage.
+             */
+            Update withReservedIops(Integer reservedIops);
+        }
+
+        /**
+         * The stage of the VolumeGroup update allowing to specify reservedMBps.
+         */
+        interface WithReservedMBps {
+            /**
+             * Specifies the reservedMBps property: Reserved MBps allocated for this volume group, applicable for
+             * QualityOfService PerformanceCritical only..
+             * 
+             * @param reservedMBps Reserved MBps allocated for this volume group, applicable for QualityOfService
+             * PerformanceCritical only.
+             * @return the next definition stage.
+             */
+            Update withReservedMBps(Integer reservedMBps);
+        }
+
+        /**
+         * The stage of the VolumeGroup update allowing to specify deleteRetentionPolicy.
+         */
+        interface WithDeleteRetentionPolicy {
+            /**
+             * Specifies the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and
+             * its associated resources.
+             * 
+             * @param deleteRetentionPolicy The retention policy for the soft deleted volume group and its associated
+             * resources.
+             * @return the next definition stage.
+             */
+            Update withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy);
         }
     }
 

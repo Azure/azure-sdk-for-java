@@ -13,6 +13,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.AutoScalePolicyEnforcement;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
+import com.azure.resourcemanager.elasticsan.models.ElasticSanVersion;
 import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
@@ -26,7 +27,7 @@ public final class ElasticSansListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"sdyhtozfikdowwq\"],\"provisioningState\":\"Invalid\",\"baseSizeTiB\":4718477365662643943,\"extendedCapacitySizeTiB\":5921750907311392346,\"totalVolumeSizeGiB\":5570761026718933034,\"volumeGroupCount\":2045084080849688226,\"totalIops\":7005518236104417042,\"totalMBps\":7356451248141105316,\"totalSizeTiB\":2475379821135257560,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"sjnkal\",\"utiiswacf\"]},\"id\":\"dkzzewkfvhqcrail\",\"name\":\"pnppfuf\",\"type\":\"rwdmhdlxyjrxsa\"}],\"publicNetworkAccess\":\"Enabled\",\"autoScaleProperties\":{\"scaleUpProperties\":{\"unusedSizeTiB\":3165727782283367859,\"increaseCapacityUnitByTiB\":3130876298104392093,\"capacityUnitScaleUpLimitTiB\":7972426552267245030,\"autoScalePolicyEnforcement\":\"None\"}}},\"location\":\"bcvkcvqvpkeq\",\"tags\":{\"zdopcjwvnhd\":\"drhvoodsotbo\",\"mgxcxrslpm\":\"d\"},\"id\":\"twuoegrpkhjwni\",\"name\":\"qsluicp\",\"type\":\"ggkzzlvmbmpa\"}]}";
+            = "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"sttwvogvbbe\",\"dcngqqmoakufgmj\"],\"provisioningState\":\"Canceled\",\"baseSizeTiB\":8437145680290186926,\"extendedCapacitySizeTiB\":1495236562115587975,\"totalVolumeSizeGiB\":1523837111721006893,\"volumeGroupCount\":3476175612376206504,\"totalIops\":1883025934463379828,\"totalMBps\":7055133601536930645,\"totalSizeTiB\":7635065103848169138,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"ziuiefozbhdm\",\"mlmz\",\"hoftr\",\"ae\"]},\"id\":\"iahxicsl\",\"name\":\"aoqzpiyylhaln\",\"type\":\"whccs\"},{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"witqscywuggwoluh\",\"zbwemh\",\"i\"]},\"id\":\"brgz\",\"name\":\"wmsweypqwd\",\"type\":\"ggicccnxqhue\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"stvlzywemhzrnc\",\"dtclusiypb\",\"fgytguslfeadcyg\"]},\"id\":\"kyhejhzisxgf\",\"name\":\"elolppvksrpqvuj\",\"type\":\"raehtwdwrft\"}],\"publicNetworkAccess\":\"Enabled\",\"autoScaleProperties\":{\"scaleUpProperties\":{\"unusedSizeTiB\":2879619884101914896,\"increaseCapacityUnitByTiB\":9133137668950506494,\"capacityUnitScaleUpLimitTiB\":4167665808046905183,\"autoScalePolicyEnforcement\":\"Enabled\"}},\"version\":\"V2\",\"usedCapacityGiB\":5539785035584885149,\"totalReservedIops\":1926362561,\"totalReservedMBps\":2010330726},\"location\":\"hevxcced\",\"tags\":{\"odn\":\"md\",\"ltiugcxnavv\":\"zxltjcvn\",\"y\":\"xqi\"},\"id\":\"unyowxwl\",\"name\":\"djrkvfgbvfvpd\",\"type\":\"odacizs\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,21 +38,25 @@ public final class ElasticSansListMockTests {
 
         PagedIterable<ElasticSan> response = manager.elasticSans().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bcvkcvqvpkeq", response.iterator().next().location());
-        Assertions.assertEquals("drhvoodsotbo", response.iterator().next().tags().get("zdopcjwvnhd"));
+        Assertions.assertEquals("hevxcced", response.iterator().next().location());
+        Assertions.assertEquals("md", response.iterator().next().tags().get("odn"));
         Assertions.assertEquals(SkuName.PREMIUM_LRS, response.iterator().next().sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().sku().tier());
-        Assertions.assertEquals("sdyhtozfikdowwq", response.iterator().next().availabilityZones().get(0));
-        Assertions.assertEquals(4718477365662643943L, response.iterator().next().baseSizeTiB());
-        Assertions.assertEquals(5921750907311392346L, response.iterator().next().extendedCapacitySizeTiB());
+        Assertions.assertEquals("sttwvogvbbe", response.iterator().next().availabilityZones().get(0));
+        Assertions.assertEquals(8437145680290186926L, response.iterator().next().baseSizeTiB());
+        Assertions.assertEquals(1495236562115587975L, response.iterator().next().extendedCapacitySizeTiB());
+        Assertions.assertEquals(1883025934463379828L, response.iterator().next().totalIops());
+        Assertions.assertEquals(7055133601536930645L, response.iterator().next().totalMBps());
+        Assertions.assertEquals(7635065103848169138L, response.iterator().next().totalSizeTiB());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.iterator().next().publicNetworkAccess());
-        Assertions.assertEquals(3165727782283367859L,
+        Assertions.assertEquals(2879619884101914896L,
             response.iterator().next().autoScaleProperties().scaleUpProperties().unusedSizeTiB());
-        Assertions.assertEquals(3130876298104392093L,
+        Assertions.assertEquals(9133137668950506494L,
             response.iterator().next().autoScaleProperties().scaleUpProperties().increaseCapacityUnitByTiB());
-        Assertions.assertEquals(7972426552267245030L,
+        Assertions.assertEquals(4167665808046905183L,
             response.iterator().next().autoScaleProperties().scaleUpProperties().capacityUnitScaleUpLimitTiB());
-        Assertions.assertEquals(AutoScalePolicyEnforcement.NONE,
+        Assertions.assertEquals(AutoScalePolicyEnforcement.ENABLED,
             response.iterator().next().autoScaleProperties().scaleUpProperties().autoScalePolicyEnforcement());
+        Assertions.assertEquals(ElasticSanVersion.V2, response.iterator().next().version());
     }
 }
