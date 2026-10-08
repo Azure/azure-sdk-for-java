@@ -36,14 +36,14 @@ final class CosmosHttp2FrameCodecBuilder extends Http2FrameCodecBuilder {
                                    Http2Settings settings) {
         Long maxHeaderListSize = settings.maxHeaderListSize();
         Http2FrameReader reader = new DefaultHttp2FrameReader(new CosmosHttp2HeadersDecoder(
-            maxHeaderListSize == null ? Http2CodecUtil.DEFAULT_HEADER_LIST_SIZE : maxHeaderListSize),
+            isValidateHeaders(), maxHeaderListSize == null ? Http2CodecUtil.DEFAULT_HEADER_LIST_SIZE : maxHeaderListSize),
             decoderEnforceMaxSmallContinuationFrames());
         if (frameLogger() != null) {
             reader = new Http2InboundFrameLogger(reader, frameLogger());
         }
         Http2ConnectionDecoder replacement = new DefaultHttp2ConnectionDecoder(
             decoder.connection(), encoder, reader, promisedRequestVerifier(), isAutoAckSettingsFrame(),
-            isAutoAckPingFrame(), true, isValidateRequiredPseudoHeaders());
+            isAutoAckPingFrame(), isValidateHeaders(), isValidateRequiredPseudoHeaders());
 
         // Retain Netty's constructed encoder/control-frame limits. The second builder reapplies
         // decoder protections to the custom reader before a codec is installed or sends its preface.

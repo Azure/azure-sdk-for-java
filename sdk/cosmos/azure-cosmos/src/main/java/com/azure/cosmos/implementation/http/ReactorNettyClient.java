@@ -191,7 +191,7 @@ public class ReactorNettyClient implements HttpClient {
                     .maxConcurrentStreams(http2CfgAccessor().getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
                 )
                 .doOnChannelInit((observer, channel, remoteAddress) -> CosmosHttp2ChannelInitializer.install(
-                    channel, observer, this.httpClient.configuration().http2SettingsSpec()))
+                    channel, observer, this.httpClient.configuration()))
                 .doOnConnected((connection -> {
                     ChannelPipeline channelPipeline = connection.channel().pipeline();
                     if (channelPipeline.get(Http2FrameCodec.class) != null

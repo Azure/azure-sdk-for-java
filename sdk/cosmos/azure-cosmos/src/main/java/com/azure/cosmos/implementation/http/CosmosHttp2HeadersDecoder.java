@@ -14,17 +14,21 @@ final class CosmosHttp2HeadersDecoder extends DefaultHttp2HeadersDecoder {
     private static final int SERVER_VERSION_HASH = SERVER_VERSION.hashCode();
 
     CosmosHttp2HeadersDecoder(long maxHeaderListSize) {
-        super(true, true, maxHeaderListSize);
+        this(true, maxHeaderListSize);
+    }
+
+    CosmosHttp2HeadersDecoder(boolean validateHeaders, long maxHeaderListSize) {
+        super(validateHeaders, validateHeaders, maxHeaderListSize);
     }
 
     @Override
     protected Http2Headers newHeaders() {
-        return new CosmosHttp2Headers(numberOfHeadersGuess());
+        return new CosmosHttp2Headers(validateHeaders(), validateHeaderValues(), numberOfHeadersGuess());
     }
 
     private static final class CosmosHttp2Headers extends DefaultHttp2Headers {
-        private CosmosHttp2Headers(int arraySizeHint) {
-            super(true, true, arraySizeHint);
+        private CosmosHttp2Headers(boolean validateNames, boolean validateValues, int arraySizeHint) {
+            super(validateNames, validateValues, arraySizeHint);
         }
 
         @Override

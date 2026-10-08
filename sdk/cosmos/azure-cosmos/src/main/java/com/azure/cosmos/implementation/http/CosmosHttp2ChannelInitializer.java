@@ -31,10 +31,14 @@ final class CosmosHttp2ChannelInitializer extends ChannelInboundHandlerAdapter {
     private final ConnectionObserver observer;
     private final Http2Settings settings;
     private final Http2SettingsSpec settingsSpec;
+    private final boolean validateHeaders;
 
-    private CosmosHttp2ChannelInitializer(ConnectionObserver observer, Http2SettingsSpec settingsSpec) {
+    private CosmosHttp2ChannelInitializer(ConnectionObserver observer,
+                                         reactor.netty.http.client.HttpClientConfig config) {
         this.observer = observer;
-        this.settingsSpec = settingsSpec;
+        this.settingsSpec = config.http2SettingsSpec();
+        this.validateHeaders = config.decoder().validateHeaders();
+        // Preserve the same settings mapping as Reactor Netty 1.2.18 HttpClientConfig.http2Settings().
         this.settings = Http2Settings.defaultSettings();
         if (settingsSpec != null) {
             if (settingsSpec.headerTableSize() != null) {
@@ -56,13 +60,13 @@ final class CosmosHttp2ChannelInitializer extends ChannelInboundHandlerAdapter {
         }
     }
 
-    static void install(Channel channel, ConnectionObserver observer, Http2SettingsSpec settingsSpec) {
+    static void install(Channel channel, ConnectionObserver observer, reactor.netty.http.client.HttpClientConfig config) {
         ChannelPipeline pipeline = channel.pipeline();
         if (pipeline.get(NettyPipeline.H2OrHttp11Codec) == null) {
             throw new IllegalStateException("Expected Reactor's deferred H2/HTTP1.1 initializer");
         }
         pipeline.addBefore(NettyPipeline.H2OrHttp11Codec, HANDLER_NAME,
-            new CosmosHttp2ChannelInitializer(observer, settingsSpec));
+            new CosmosHttp2ChannelInitializer(observer, config));
     }
 
     @Override
@@ -74,7 +78,8 @@ final class CosmosHttp2ChannelInitializer extends ChannelInboundHandlerAdapter {
         if (ApplicationProtocolNames.HTTP_2.equals(ssl.applicationProtocol())) {
             ChannelPipeline pipeline = ctx.pipeline();
             CosmosHttp2FrameCodecBuilder builder = new CosmosHttp2FrameCodecBuilder();
-            builder.initialSettings(settings);
+            // Mirror Reactor's existing H2 builder configuration; only the headers decoder differs.
+            builder.validateHeaders(validateHeaders).initialSettings(settings);
             if (settingsSpec != null) {
                 if (settingsSpec.maxDecodedRstFramesPerWindow() != null
                     && settingsSpec.maxDecodedRstFramesSecondsPerWindow() != null) {

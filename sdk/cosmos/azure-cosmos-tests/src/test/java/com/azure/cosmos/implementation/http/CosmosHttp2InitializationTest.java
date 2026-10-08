@@ -6,9 +6,11 @@ package com.azure.cosmos.implementation.http;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http2.Http2Error;
 import io.netty.handler.codec.http2.Http2Exception;
 import io.netty.handler.codec.http2.Http2FrameCodec;
+import io.netty.handler.codec.http2.Http2FrameAdapter;
 import io.netty.handler.codec.http2.Http2Headers;
 import io.netty.handler.codec.http2.Http2Settings;
 import io.netty.handler.codec.http2.Http2SettingsAckFrame;
@@ -16,11 +18,62 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class CosmosHttp2InitializationTest {
+    @DataProvider(name = "validationFlags")
+    public Object[][] validationFlags() {
+        return new Object[][] { { true }, { false } };
+    }
+
+    @Test(groups = "unit", dataProvider = "validationFlags")
+    public void codecBuilderRetainsExistingValidationSpec(boolean validateHeaders) throws Exception {
+        CosmosHttp2FrameCodecBuilder builder = new CosmosHttp2FrameCodecBuilder();
+        builder.validateHeaders(validateHeaders);
+        Http2FrameCodec codec = builder.build();
+        AtomicReference<Http2Headers> received = new AtomicReference<>();
+        codec.decoder().frameListener(new Http2FrameAdapter() {
+            @Override
+            public void onHeadersRead(ChannelHandlerContext ctx, int streamId, Http2Headers headers, int padding,
+                                      boolean endStream) {
+                received.set(headers);
+            }
+
+            @Override
+            public void onHeadersRead(ChannelHandlerContext ctx, int streamId, Http2Headers headers, int streamDependency,
+                                      short weight, boolean exclusive, int padding, boolean endStream) {
+                received.set(headers);
+            }
+        });
+        EmbeddedChannel channel = new EmbeddedChannel(codec);
+        ByteBuf block = headerBlock(":status", "200", "X-UPPER", "a\0b");
+        ByteBuf frame = Unpooled.buffer(9 + block.readableBytes());
+        ByteBuf settings = Unpooled.buffer(9).writeMedium(0).writeByte(4).writeByte(0).writeInt(0);
+        try {
+            ChannelHandlerContext context = channel.pipeline().context(codec);
+            codec.decoder().decodeFrame(context, settings, Collections.emptyList());
+            codec.connection().local().createStream(1, false);
+            frame.writeMedium(block.readableBytes()).writeByte(1).writeByte(5).writeInt(1).writeBytes(block);
+            if (validateHeaders) {
+                assertThatThrownBy(() -> codec.decoder().decodeFrame(context, frame, Collections.emptyList()))
+                    .isInstanceOf(Http2Exception.StreamException.class);
+                assertThat(received.get()).isNull();
+            } else {
+                codec.decoder().decodeFrame(context, frame, Collections.emptyList());
+                assertThat(received.get().get("X-UPPER").toString()).isEqualTo("a\0b");
+            }
+        } finally {
+            settings.release();
+            frame.release();
+            block.release();
+            channel.finishAndReleaseAll();
+        }
+    }
+
     @DataProvider(name = "invalidHeaders")
     public Object[][] invalidHeaders() {
         return new Object[][] {
