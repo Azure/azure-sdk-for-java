@@ -23,6 +23,11 @@ public final class DatabaseAccountRegenerateKeyParameters
      */
     private KeyKind keyKind;
 
+    /*
+     * Optional flag indicating whether to skip account keys last usage check.
+     */
+    private Boolean skipAccountKeysLastUsageCheck;
+
     /**
      * Creates an instance of DatabaseAccountRegenerateKeyParameters class.
      */
@@ -50,6 +55,29 @@ public final class DatabaseAccountRegenerateKeyParameters
     }
 
     /**
+     * Get the skipAccountKeysLastUsageCheck property: Optional flag indicating whether to skip account keys last usage
+     * check.
+     * 
+     * @return the skipAccountKeysLastUsageCheck value.
+     */
+    public Boolean skipAccountKeysLastUsageCheck() {
+        return this.skipAccountKeysLastUsageCheck;
+    }
+
+    /**
+     * Set the skipAccountKeysLastUsageCheck property: Optional flag indicating whether to skip account keys last usage
+     * check.
+     * 
+     * @param skipAccountKeysLastUsageCheck the skipAccountKeysLastUsageCheck value to set.
+     * @return the DatabaseAccountRegenerateKeyParameters object itself.
+     */
+    public DatabaseAccountRegenerateKeyParameters
+        withSkipAccountKeysLastUsageCheck(Boolean skipAccountKeysLastUsageCheck) {
+        this.skipAccountKeysLastUsageCheck = skipAccountKeysLastUsageCheck;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -71,6 +99,7 @@ public final class DatabaseAccountRegenerateKeyParameters
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("keyKind", this.keyKind == null ? null : this.keyKind.toString());
+        jsonWriter.writeBooleanField("skipAccountKeysLastUsageCheck", this.skipAccountKeysLastUsageCheck);
         return jsonWriter.writeEndObject();
     }
 
@@ -93,6 +122,9 @@ public final class DatabaseAccountRegenerateKeyParameters
 
                 if ("keyKind".equals(fieldName)) {
                     deserializedDatabaseAccountRegenerateKeyParameters.keyKind = KeyKind.fromString(reader.getString());
+                } else if ("skipAccountKeysLastUsageCheck".equals(fieldName)) {
+                    deserializedDatabaseAccountRegenerateKeyParameters.skipAccountKeysLastUsageCheck
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

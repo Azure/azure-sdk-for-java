@@ -12,7 +12,7 @@ public final class CommandOutputInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommandOutputInner model
-            = BinaryData.fromString("{\"commandOutput\":\"aaxoialahfxwcc\"}").toObject(CommandOutputInner.class);
-        Assertions.assertEquals("aaxoialahfxwcc", model.commandOutput());
+            = BinaryData.fromString("{\"commandOutput\":\"evasyntvzjyie\"}").toObject(CommandOutputInner.class);
+        Assertions.assertEquals("evasyntvzjyie", model.commandOutput());
     }
 }

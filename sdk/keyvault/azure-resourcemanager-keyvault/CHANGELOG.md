@@ -1,6 +1,6 @@
 # Release History
 
-## 2.56.0 (2026-10-01)
+## 2.56.0 (Unreleased)
 
 - Package api-version 2026-05-15.
 
@@ -26,6 +26,17 @@
 * `STANDARD_B20V2` was added
 * `STANDARD_B1V2` was added
 * `STANDARD_B15V2` was added
+
+## 2.55.5 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-security-keyvault-secrets` from `4.11.2` to version `4.11.3`.
+- Upgraded `azure-security-keyvault-keys` from `4.11.2` to version `4.11.3`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.12` to version `2.53.13`.
 
 ## 2.55.4 (2026-08-18)
 

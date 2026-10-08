@@ -12,6 +12,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.models.AutoScaleProperties;
+import com.azure.resourcemanager.elasticsan.models.ElasticSanVersion;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.Sku;
@@ -181,8 +182,8 @@ public final class ElasticSanInner extends Resource {
      * 
      * @return the baseSizeTiB value.
      */
-    public long baseSizeTiB() {
-        return this.innerProperties() == null ? 0L : this.innerProperties().baseSizeTiB();
+    public Long baseSizeTiB() {
+        return this.innerProperties() == null ? null : this.innerProperties().baseSizeTiB();
     }
 
     /**
@@ -191,7 +192,7 @@ public final class ElasticSanInner extends Resource {
      * @param baseSizeTiB the baseSizeTiB value to set.
      * @return the ElasticSanInner object itself.
      */
-    public ElasticSanInner withBaseSizeTiB(long baseSizeTiB) {
+    public ElasticSanInner withBaseSizeTiB(Long baseSizeTiB) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ElasticSanProperties();
         }
@@ -204,8 +205,8 @@ public final class ElasticSanInner extends Resource {
      * 
      * @return the extendedCapacitySizeTiB value.
      */
-    public long extendedCapacitySizeTiB() {
-        return this.innerProperties() == null ? 0L : this.innerProperties().extendedCapacitySizeTiB();
+    public Long extendedCapacitySizeTiB() {
+        return this.innerProperties() == null ? null : this.innerProperties().extendedCapacitySizeTiB();
     }
 
     /**
@@ -214,7 +215,7 @@ public final class ElasticSanInner extends Resource {
      * @param extendedCapacitySizeTiB the extendedCapacitySizeTiB value to set.
      * @return the ElasticSanInner object itself.
      */
-    public ElasticSanInner withExtendedCapacitySizeTiB(long extendedCapacitySizeTiB) {
+    public ElasticSanInner withExtendedCapacitySizeTiB(Long extendedCapacitySizeTiB) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ElasticSanProperties();
         }
@@ -241,7 +242,8 @@ public final class ElasticSanInner extends Resource {
     }
 
     /**
-     * Get the totalIops property: Total Provisioned IOPS of the Elastic San appliance.
+     * Get the totalIops property: Total Provisioned IOPS of the Elastic San appliance. Settable only for
+     * ElasticSanVersion V2, where it is required; read-only for V1.
      * 
      * @return the totalIops value.
      */
@@ -250,7 +252,23 @@ public final class ElasticSanInner extends Resource {
     }
 
     /**
-     * Get the totalMBps property: Total Provisioned MBps Elastic San appliance.
+     * Set the totalIops property: Total Provisioned IOPS of the Elastic San appliance. Settable only for
+     * ElasticSanVersion V2, where it is required; read-only for V1.
+     * 
+     * @param totalIops the totalIops value to set.
+     * @return the ElasticSanInner object itself.
+     */
+    public ElasticSanInner withTotalIops(Long totalIops) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticSanProperties();
+        }
+        this.innerProperties().withTotalIops(totalIops);
+        return this;
+    }
+
+    /**
+     * Get the totalMBps property: Total Provisioned MBps Elastic San appliance. Settable only for ElasticSanVersion V2,
+     * where it is required; read-only for V1.
      * 
      * @return the totalMBps value.
      */
@@ -259,12 +277,43 @@ public final class ElasticSanInner extends Resource {
     }
 
     /**
-     * Get the totalSizeTiB property: Total size of the Elastic San appliance in TB.
+     * Set the totalMBps property: Total Provisioned MBps Elastic San appliance. Settable only for ElasticSanVersion V2,
+     * where it is required; read-only for V1.
+     * 
+     * @param totalMBps the totalMBps value to set.
+     * @return the ElasticSanInner object itself.
+     */
+    public ElasticSanInner withTotalMBps(Long totalMBps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticSanProperties();
+        }
+        this.innerProperties().withTotalMBps(totalMBps);
+        return this;
+    }
+
+    /**
+     * Get the totalSizeTiB property: Total size of the Elastic San appliance in TB. Settable only for ElasticSanVersion
+     * V2, where it is required; read-only for V1.
      * 
      * @return the totalSizeTiB value.
      */
     public Long totalSizeTiB() {
         return this.innerProperties() == null ? null : this.innerProperties().totalSizeTiB();
+    }
+
+    /**
+     * Set the totalSizeTiB property: Total size of the Elastic San appliance in TB. Settable only for ElasticSanVersion
+     * V2, where it is required; read-only for V1.
+     * 
+     * @param totalSizeTiB the totalSizeTiB value to set.
+     * @return the ElasticSanInner object itself.
+     */
+    public ElasticSanInner withTotalSizeTiB(Long totalSizeTiB) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticSanProperties();
+        }
+        this.innerProperties().withTotalSizeTiB(totalSizeTiB);
+        return this;
     }
 
     /**
@@ -322,6 +371,56 @@ public final class ElasticSanInner extends Resource {
         }
         this.innerProperties().withAutoScaleProperties(autoScaleProperties);
         return this;
+    }
+
+    /**
+     * Get the version property: Elastic San appliance version. Defaults to V1 if not specified.
+     * 
+     * @return the version value.
+     */
+    public ElasticSanVersion version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Set the version property: Elastic San appliance version. Defaults to V1 if not specified.
+     * 
+     * @param version the version value to set.
+     * @return the ElasticSanInner object itself.
+     */
+    public ElasticSanInner withVersion(ElasticSanVersion version) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticSanProperties();
+        }
+        this.innerProperties().withVersion(version);
+        return this;
+    }
+
+    /**
+     * Get the usedCapacityGiB property: Used capacity in GiB.
+     * 
+     * @return the usedCapacityGiB value.
+     */
+    public Long usedCapacityGiB() {
+        return this.innerProperties() == null ? null : this.innerProperties().usedCapacityGiB();
+    }
+
+    /**
+     * Get the totalReservedIops property: Total IOPS reserved by all the volume groups under an ElasticSan.
+     * 
+     * @return the totalReservedIops value.
+     */
+    public Integer totalReservedIops() {
+        return this.innerProperties() == null ? null : this.innerProperties().totalReservedIops();
+    }
+
+    /**
+     * Get the totalReservedMBps property: Total MBps reserved by all the volume groups under an ElasticSan.
+     * 
+     * @return the totalReservedMBps value.
+     */
+    public Integer totalReservedMBps() {
+        return this.innerProperties() == null ? null : this.innerProperties().totalReservedMBps();
     }
 
     /**
