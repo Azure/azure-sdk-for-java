@@ -12,10 +12,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.models.IscsiTargetInfo;
-import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
+import com.azure.resourcemanager.elasticsan.models.ManagedByResources;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Response for Volume request.
@@ -166,21 +167,21 @@ public final class VolumeInner extends ProxyResource {
     }
 
     /**
-     * Get the managedBy property: Parent resource information.
+     * Get the managedBy property: Information about Azure services owning the ElasticSan volume resource.
      * 
      * @return the managedBy value.
      */
-    public ManagedByInfo managedBy() {
+    public List<ManagedByResources> managedBy() {
         return this.innerProperties() == null ? null : this.innerProperties().managedBy();
     }
 
     /**
-     * Set the managedBy property: Parent resource information.
+     * Set the managedBy property: Information about Azure services owning the ElasticSan volume resource.
      * 
      * @param managedBy the managedBy value to set.
      * @return the VolumeInner object itself.
      */
-    public VolumeInner withManagedBy(ManagedByInfo managedBy) {
+    public VolumeInner withManagedBy(List<ManagedByResources> managedBy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VolumeProperties();
         }

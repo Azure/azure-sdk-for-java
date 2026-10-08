@@ -13,16 +13,16 @@ public final class SnapshotInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotInner model = BinaryData.fromString(
-            "{\"properties\":{\"creationData\":{\"sourceId\":\"vlopwiyighx\"},\"provisioningState\":\"Invalid\",\"sourceVolumeSizeGiB\":1480911341118464142,\"volumeName\":\"iuebbaumny\"},\"id\":\"ped\",\"name\":\"ojnabckhsmtxpsie\",\"type\":\"tfhvpesapskrdqmh\"}")
+            "{\"properties\":{\"creationData\":{\"sourceId\":\"sxyawjoyaqcs\"},\"provisioningState\":\"Failed\",\"sourceVolumeSizeGiB\":8733309321655340713,\"volumeName\":\"dzyexznelixh\",\"snapshotAccessState\":\"Available\",\"completionPercent\":65.0090874045316},\"id\":\"hb\",\"name\":\"xknalaulppg\",\"type\":\"dtpnapnyiropuhp\"}")
             .toObject(SnapshotInner.class);
-        Assertions.assertEquals("vlopwiyighx", model.creationData().sourceId());
+        Assertions.assertEquals("sxyawjoyaqcs", model.creationData().sourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SnapshotInner model
-            = new SnapshotInner().withCreationData(new SnapshotCreationData().withSourceId("vlopwiyighx"));
+            = new SnapshotInner().withCreationData(new SnapshotCreationData().withSourceId("sxyawjoyaqcs"));
         model = BinaryData.fromObject(model).toObject(SnapshotInner.class);
-        Assertions.assertEquals("vlopwiyighx", model.creationData().sourceId());
+        Assertions.assertEquals("sxyawjoyaqcs", model.creationData().sourceId());
     }
 }

@@ -10,6 +10,18 @@
 
 ### Other Changes
 
+- Added a sample showing how to configure processor drain timeout and allow in-flight message settlement during shutdown.
+
+## 7.18.1 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-core-amqp` from `2.12.1` to version `2.12.2`.
+
 ## 7.18.0 (2026-10-06)
 
 ### Features Added
