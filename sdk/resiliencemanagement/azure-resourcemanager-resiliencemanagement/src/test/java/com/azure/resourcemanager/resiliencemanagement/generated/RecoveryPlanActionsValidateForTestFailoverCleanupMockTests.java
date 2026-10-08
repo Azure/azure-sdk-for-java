@@ -27,7 +27,7 @@ public final class RecoveryPlanActionsValidateForTestFailoverCleanupMockTests {
     @Test
     public void testValidateForTestFailoverCleanup() throws Exception {
         String responseStr
-            = "{\"recoveryResourceQualifications\":[{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"ttefjoknssq\",\"provisioningState\":\"Updating\",\"resourceId\":\"dikdfrdbi\",\"resourceLocation\":\"rjgeih\",\"resourcePhysicalZones\":[\"ggwfiwz\"],\"inclusionState\":\"Included\",\"needsAttention\":true,\"attentionReasons\":[\"ephmgtvljvrcmyfq\",\"pgxh\",\"pomyqwcabvnuile\",\"yaswlpaugmr\"],\"protectionStatus\":\"HighlyAvailable\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":true},{\"isAutoFailover\":true},{\"isAutoFailover\":true},{\"isAutoFailover\":false}],\"selectedProtectionSolutionType\":\"AzureNative\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"fkvcisi\",\"associatedIdentity\":{\"type\":\"SystemAssigned,UserAssigned\"},\"errorDetails\":{}},\"id\":\"dsxjwuivedw\",\"name\":\"gyeewxeiq\",\"type\":\"psmgo\"},\"operationQualificationDetails\":{\"qualificationState\":\"Qualified\",\"notQualifiedReasons\":[\"mljdlrgmsplzga\",\"fcshh\",\"new\",\"nxkympqanxrjk\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"bta\",\"status\":\"Flagged\"}]}},{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"nyghshxcylhkgmn\",\"provisioningState\":\"Accepted\",\"resourceId\":\"xycphdrwjjkh\",\"resourceLocation\":\"omacluzvxnqmhr\",\"resourcePhysicalZones\":[\"df\"],\"inclusionState\":\"Included\",\"needsAttention\":true,\"attentionReasons\":[\"css\"],\"protectionStatus\":\"HighlyAvailable\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":true},{\"isAutoFailover\":false},{\"isAutoFailover\":true},{\"isAutoFailover\":false}],\"selectedProtectionSolutionType\":\"AzureNative\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"kdqzrdzsylo\",\"associatedIdentity\":{\"type\":\"SystemAssigned,UserAssigned\"},\"errorDetails\":{}},\"id\":\"czzydmxzjij\",\"name\":\"vuaurk\",\"type\":\"hci\"},\"operationQualificationDetails\":{\"qualificationState\":\"NotQualified\",\"notQualifiedReasons\":[\"fx\",\"dcoxnbk\",\"ja\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"nqbnqb\",\"status\":\"Flagged\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"xqltgrd\",\"status\":\"NotApplicable\"}]}}]}";
+            = "{\"recoveryResourceQualifications\":[{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"ucfx\",\"provisioningState\":\"NeedsAttention\",\"resourceId\":\"flrmymyi\",\"resourceLocation\":\"qlhris\",\"resourcePhysicalZones\":[\"miii\",\"v\"],\"inclusionState\":\"Excluded\",\"inclusionDisabledReasons\":[\"ResourceHighlyAvailable\",\"ResourceActiveActiveProtection\"],\"needsAttention\":true,\"attentionReasons\":[\"totiowlxteqdptjg\",\"dtguk\",\"anblwphqlkccu\"],\"protectionStatus\":\"NotProtected\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":false},{\"isAutoFailover\":true}],\"selectedProtectionSolutionType\":\"AzureTemplate\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"lwgniiprglvawu\",\"associatedIdentity\":{\"type\":\"None\"},\"errorDetails\":{}},\"id\":\"ypivlsbb\",\"name\":\"pmcubkmifoxxkub\",\"type\":\"phavpmhbrb\"},\"operationQualificationDetails\":{\"qualificationState\":\"Excluded\",\"notQualifiedReasons\":[\"ovpbbttefjoknssq\",\"zqedikdfrdbi\",\"mrjgeihfqlggwfi\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"mjpb\",\"status\":\"NotApplicable\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"hmgtvljvrcmyfqi\",\"status\":\"NotApplicable\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"hnp\",\"status\":\"Passed\"}]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,34 +37,34 @@ public final class RecoveryPlanActionsValidateForTestFailoverCleanupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ValidateForRecoveryOperationBaseResponse response = manager.recoveryPlanActions()
-            .validateForTestFailoverCleanup("avp", "h", "rbqgvgov", com.azure.core.util.Context.NONE);
+            .validateForTestFailoverCleanup("vguihywar", "spphk", "xkykxdssjp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ttefjoknssq",
+        Assertions.assertEquals("ucfx",
             response.recoveryResourceQualifications()
                 .get(0)
                 .recoveryResource()
                 .properties()
                 .recoveryResourceUniqueId());
-        Assertions.assertEquals(ResourceInclusionState.INCLUDED,
+        Assertions.assertEquals(ResourceInclusionState.EXCLUDED,
             response.recoveryResourceQualifications().get(0).recoveryResource().properties().inclusionState());
-        Assertions.assertEquals(ResourceProtectionSolutionType.AZURE_NATIVE,
+        Assertions.assertEquals(ResourceProtectionSolutionType.AZURE_TEMPLATE,
             response.recoveryResourceQualifications()
                 .get(0)
                 .recoveryResource()
                 .properties()
                 .selectedProtectionSolutionType());
-        Assertions.assertEquals("fkvcisi",
+        Assertions.assertEquals("lwgniiprglvawu",
             response.recoveryResourceQualifications().get(0).recoveryResource().properties().recoveryGroupId());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE,
             response.recoveryResourceQualifications()
                 .get(0)
                 .recoveryResource()
                 .properties()
                 .associatedIdentity()
                 .type());
-        Assertions.assertEquals(QualificationState.QUALIFIED,
+        Assertions.assertEquals(QualificationState.EXCLUDED,
             response.recoveryResourceQualifications().get(0).operationQualificationDetails().qualificationState());
-        Assertions.assertEquals("mljdlrgmsplzga",
+        Assertions.assertEquals("ovpbbttefjoknssq",
             response.recoveryResourceQualifications()
                 .get(0)
                 .operationQualificationDetails()
@@ -77,14 +77,14 @@ public final class RecoveryPlanActionsValidateForTestFailoverCleanupMockTests {
                 .resourceFeasibilityReviews()
                 .get(0)
                 .feasibilityType());
-        Assertions.assertEquals("bta",
+        Assertions.assertEquals("mjpb",
             response.recoveryResourceQualifications()
                 .get(0)
                 .operationQualificationDetails()
                 .resourceFeasibilityReviews()
                 .get(0)
                 .resourceType());
-        Assertions.assertEquals(ResourceFeasibilityReviewStatus.FLAGGED,
+        Assertions.assertEquals(ResourceFeasibilityReviewStatus.NOT_APPLICABLE,
             response.recoveryResourceQualifications()
                 .get(0)
                 .operationQualificationDetails()

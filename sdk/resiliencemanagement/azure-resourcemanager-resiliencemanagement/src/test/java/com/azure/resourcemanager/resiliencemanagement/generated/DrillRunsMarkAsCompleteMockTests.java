@@ -30,8 +30,8 @@ public final class DrillRunsMarkAsCompleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.drillRuns()
-            .markAsComplete("clid", "tujwjju", "wbeqrkuor", "tssruqnmdvhazc",
-                new MarkAsCompleteRequest().withDrillRunStage(DrillRunSubtasks.FAILOVER_REVERSE),
+            .markAsComplete("gitsqh", "vbrzcdb", "nfzndscxmxeat", "db",
+                new MarkAsCompleteRequest().withDrillRunStage(DrillRunSubtasks.FAULT_INJECTION),
                 com.azure.core.util.Context.NONE);
 
     }

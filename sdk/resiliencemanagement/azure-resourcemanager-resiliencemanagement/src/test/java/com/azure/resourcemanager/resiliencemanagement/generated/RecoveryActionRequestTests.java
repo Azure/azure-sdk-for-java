@@ -12,14 +12,14 @@ public final class RecoveryActionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryActionRequest model
-            = BinaryData.fromString("{\"description\":\"fsdjpvkvp\"}").toObject(RecoveryActionRequest.class);
-        Assertions.assertEquals("fsdjpvkvp", model.description());
+            = BinaryData.fromString("{\"description\":\"ingamvp\"}").toObject(RecoveryActionRequest.class);
+        Assertions.assertEquals("ingamvp", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryActionRequest model = new RecoveryActionRequest().withDescription("fsdjpvkvp");
+        RecoveryActionRequest model = new RecoveryActionRequest().withDescription("ingamvp");
         model = BinaryData.fromObject(model).toObject(RecoveryActionRequest.class);
-        Assertions.assertEquals("fsdjpvkvp", model.description());
+        Assertions.assertEquals("ingamvp", model.description());
     }
 }

@@ -14,22 +14,22 @@ public final class ResourceFeasibilityReviewTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceFeasibilityReview model = BinaryData.fromString(
-            "{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"e\",\"currentTargetSku\":{\"sku\":\"sbzkf\",\"vCpu\":1389741266,\"ram\":160788729,\"monthlyPrice\":94.17045724921427,\"currency\":\"cvinvkjjxdxrbuuk\",\"offeringId\":\"lewyhmlwpaz\"},\"status\":\"Unavailable\",\"recommendedTargetSkus\":[{\"sku\":\"fn\",\"vCpu\":2098727625,\"ram\":484940684,\"monthlyPrice\":98.17491321939255,\"currency\":\"hxx\",\"offeringId\":\"yq\"},{\"sku\":\"xzfe\",\"vCpu\":608343994,\"ram\":1372310139,\"monthlyPrice\":32.968010036192894,\"currency\":\"xorjaltolmncwsob\",\"offeringId\":\"csdbnwdcfhuc\"},{\"sku\":\"dpfuvg\",\"vCpu\":793590133,\"ram\":1418717450,\"monthlyPrice\":23.072930221590447,\"currency\":\"xbvtvudu\",\"offeringId\":\"cormr\"},{\"sku\":\"xqtvcofu\",\"vCpu\":1364369199,\"ram\":2052668715,\"monthlyPrice\":13.640986474670536,\"currency\":\"gdknnqv\",\"offeringId\":\"znqntoru\"}]}")
+            "{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"x\",\"currentTargetSku\":{\"sku\":\"q\",\"vCpu\":1114621463,\"ram\":2028743450,\"monthlyPrice\":85.93399456998422,\"currency\":\"odhkha\",\"offeringId\":\"khnzbonlw\"},\"status\":\"Passed\",\"recommendedTargetSkus\":[{\"sku\":\"gokdwbwhks\",\"vCpu\":2115458799,\"ram\":2022074677,\"monthlyPrice\":45.87017743150863,\"currency\":\"tvb\",\"offeringId\":\"gsfraoyzkoow\"},{\"sku\":\"lmnguxaw\",\"vCpu\":1823569828,\"ram\":357082526,\"monthlyPrice\":46.302410420078765,\"currency\":\"imerqfobwyznk\",\"offeringId\":\"kutwpf\"},{\"sku\":\"pagmhrskdsnf\",\"vCpu\":2086518628,\"ram\":1790091997,\"monthlyPrice\":33.3416694694227,\"currency\":\"lmkk\",\"offeringId\":\"vdlhewpusdsttwv\"},{\"sku\":\"gvbbejdcng\",\"vCpu\":9453165,\"ram\":1926790713,\"monthlyPrice\":66.04288324062676,\"currency\":\"m\",\"offeringId\":\"rwr\"}]}")
             .toObject(ResourceFeasibilityReview.class);
         Assertions.assertEquals(ResourceFeasibilityReviewType.SKU_CAPACITY, model.feasibilityType());
-        Assertions.assertEquals("e", model.resourceType());
-        Assertions.assertEquals("sbzkf", model.currentTargetSku().sku());
-        Assertions.assertEquals(1389741266, model.currentTargetSku().vCpu());
-        Assertions.assertEquals(160788729, model.currentTargetSku().ram());
-        Assertions.assertEquals(94.17045724921427D, model.currentTargetSku().monthlyPrice());
-        Assertions.assertEquals("cvinvkjjxdxrbuuk", model.currentTargetSku().currency());
-        Assertions.assertEquals("lewyhmlwpaz", model.currentTargetSku().offeringId());
-        Assertions.assertEquals(ResourceFeasibilityReviewStatus.UNAVAILABLE, model.status());
-        Assertions.assertEquals("fn", model.recommendedTargetSkus().get(0).sku());
-        Assertions.assertEquals(2098727625, model.recommendedTargetSkus().get(0).vCpu());
-        Assertions.assertEquals(484940684, model.recommendedTargetSkus().get(0).ram());
-        Assertions.assertEquals(98.17491321939255D, model.recommendedTargetSkus().get(0).monthlyPrice());
-        Assertions.assertEquals("hxx", model.recommendedTargetSkus().get(0).currency());
-        Assertions.assertEquals("yq", model.recommendedTargetSkus().get(0).offeringId());
+        Assertions.assertEquals("x", model.resourceType());
+        Assertions.assertEquals("q", model.currentTargetSku().sku());
+        Assertions.assertEquals(1114621463, model.currentTargetSku().vCpu());
+        Assertions.assertEquals(2028743450, model.currentTargetSku().ram());
+        Assertions.assertEquals(85.93399456998422D, model.currentTargetSku().monthlyPrice());
+        Assertions.assertEquals("odhkha", model.currentTargetSku().currency());
+        Assertions.assertEquals("khnzbonlw", model.currentTargetSku().offeringId());
+        Assertions.assertEquals(ResourceFeasibilityReviewStatus.PASSED, model.status());
+        Assertions.assertEquals("gokdwbwhks", model.recommendedTargetSkus().get(0).sku());
+        Assertions.assertEquals(2115458799, model.recommendedTargetSkus().get(0).vCpu());
+        Assertions.assertEquals(2022074677, model.recommendedTargetSkus().get(0).ram());
+        Assertions.assertEquals(45.87017743150863D, model.recommendedTargetSkus().get(0).monthlyPrice());
+        Assertions.assertEquals("tvb", model.recommendedTargetSkus().get(0).currency());
+        Assertions.assertEquals("gsfraoyzkoow", model.recommendedTargetSkus().get(0).offeringId());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class GoalAssignmentsGetSamples {
     /*
-     * x-ms-original-file: 2026-10-01/GoalAssignments_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/GoalAssignments_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalAssignments_Get_MaximumSet.
@@ -18,7 +18,6 @@ public final class GoalAssignmentsGetSamples {
      */
     public static void goalAssignmentsGetMaximumSet(
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
-        manager.goalAssignments()
-            .getWithResponse("production-sg", "zonal-resiliency-goal", com.azure.core.util.Context.NONE);
+        manager.goalAssignments().getWithResponse("sg1", "ga1", com.azure.core.util.Context.NONE);
     }
 }

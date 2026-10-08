@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public final class RecoveryPlansUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/RecoveryPlans_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/RecoveryPlans_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlans_Update_MaximumSet.

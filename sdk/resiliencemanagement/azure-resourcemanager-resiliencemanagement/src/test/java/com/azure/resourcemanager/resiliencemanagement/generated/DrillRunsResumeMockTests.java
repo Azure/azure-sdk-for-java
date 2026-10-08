@@ -27,7 +27,7 @@ public final class DrillRunsResumeMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.drillRuns().resume("qumq", "jgydzul", "dsaeuzanhsfnh", "enwphpzfngq", com.azure.core.util.Context.NONE);
+        manager.drillRuns().resume("hblkwqpatvbq", "dtcjbctv", "vuzqymt", "owog", com.azure.core.util.Context.NONE);
 
     }
 }

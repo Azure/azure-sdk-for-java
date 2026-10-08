@@ -22,7 +22,7 @@ public final class DrillRunsListReportDownloadUrlMockTests {
     @Test
     public void testListReportDownloadUrl() throws Exception {
         String responseStr
-            = "{\"format\":\"Html\",\"downloadUrl\":\"aybfu\",\"expiryTimestamp\":\"2021-02-09T08:33:36Z\"}";
+            = "{\"format\":\"Html\",\"downloadUrl\":\"juvsmbmslzoyovw\",\"expiryTimestamp\":\"2021-10-25T20:52:13Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class DrillRunsListReportDownloadUrlMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ListReportDownloadUrlResponse response = manager.drillRuns()
-            .listReportDownloadUrl("yxey", "uqi", "ijiitns", "xlzdesygrijwa",
+            .listReportDownloadUrl("r", "tixldzyyfytpqs", "x", "mmpuj",
                 new ListReportDownloadUrlRequest().withFormat(DrillReportFormat.HTML),
                 com.azure.core.util.Context.NONE);
 

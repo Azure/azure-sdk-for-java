@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class RecoveryPlanActionsFailoverSamples {
     /*
-     * x-ms-original-file: 2026-10-01/RecoveryPlanActions_Failover_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/RecoveryPlanActions_Failover_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_Failover_MaximumSet.

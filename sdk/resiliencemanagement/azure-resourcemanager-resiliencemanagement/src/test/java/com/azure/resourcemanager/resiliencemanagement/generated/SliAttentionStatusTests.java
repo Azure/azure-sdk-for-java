@@ -13,9 +13,9 @@ public final class SliAttentionStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SliAttentionStatus model = BinaryData.fromString(
-            "{\"sliId\":\"qjlihhyuspska\",\"type\":\"Latency\",\"exists\":\"Exists\",\"typeMatch\":\"Mismatched\",\"drillRbacOnDestinationAmw\":\"NotSet\",\"rbacNeededOnDestinationAmws\":[\"x\",\"lucvpam\",\"sreuzvxurisjnh\",\"ytxifqjzgxmrh\"]}")
+            "{\"sliId\":\"vk\",\"type\":\"Availability\",\"exists\":\"NotExists\",\"typeMatch\":\"Mismatched\",\"drillRbacOnDestinationAmw\":\"Set\",\"rbacNeededOnDestinationAmws\":[\"tczheydbsdshmkx\",\"aehvbbxuri\",\"ltfnhtbaxkgx\"]}")
             .toObject(SliAttentionStatus.class);
-        Assertions.assertEquals("qjlihhyuspska", model.sliId());
-        Assertions.assertEquals(SliType.LATENCY, model.type());
+        Assertions.assertEquals("vk", model.sliId());
+        Assertions.assertEquals(SliType.AVAILABILITY, model.type());
     }
 }

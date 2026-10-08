@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillAttestation;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillMode;
 import com.azure.resourcemanager.resiliencemanagement.models.ExecutionConfigurations;
+import com.azure.resourcemanager.resiliencemanagement.models.IsoDuration;
 import com.azure.resourcemanager.resiliencemanagement.models.JobErrorInfo;
 import com.azure.resourcemanager.resiliencemanagement.models.JobExtendedInfo;
 import com.azure.resourcemanager.resiliencemanagement.models.JobProperties;
@@ -70,6 +71,11 @@ public final class DrillRunPropertiesInner extends JobProperties {
      * Summary of report generation for this Drill Run.
      */
     private DrillReportSummaryInner report;
+
+    /*
+     * Recovery time objective for the drill run.
+     */
+    private IsoDuration recoveryTimeObjective;
 
     /*
      * Indicates whether the job was triggered by the system or a user.
@@ -210,6 +216,15 @@ public final class DrillRunPropertiesInner extends JobProperties {
      */
     public DrillReportSummaryInner report() {
         return this.report;
+    }
+
+    /**
+     * Get the recoveryTimeObjective property: Recovery time objective for the drill run.
+     * 
+     * @return the recoveryTimeObjective value.
+     */
+    public IsoDuration recoveryTimeObjective() {
+        return this.recoveryTimeObjective;
     }
 
     /**
@@ -410,6 +425,9 @@ public final class DrillRunPropertiesInner extends JobProperties {
                     deserializedDrillRunPropertiesInner.currentActiveOperationId = reader.getString();
                 } else if ("report".equals(fieldName)) {
                     deserializedDrillRunPropertiesInner.report = DrillReportSummaryInner.fromJson(reader);
+                } else if ("recoveryTimeObjective".equals(fieldName)) {
+                    deserializedDrillRunPropertiesInner.recoveryTimeObjective
+                        = IsoDuration.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

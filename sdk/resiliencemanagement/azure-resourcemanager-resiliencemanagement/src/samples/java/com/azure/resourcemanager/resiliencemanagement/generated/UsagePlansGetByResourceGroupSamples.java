@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class UsagePlansGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-10-01/UsagePlans_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/UsagePlans_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: UsagePlans_Get_MaximumSet.

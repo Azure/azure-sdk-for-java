@@ -38,24 +38,125 @@ public final class GoalAssignmentsUpdateGoalResourcesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.goalAssignments()
-            .updateGoalResources("eytu", "lbfjkwr",
+            .updateGoalResources("os", "gbzahgxqdlyr",
                 new UpdateGoalResourceRequest()
                     .withResources(
                         Arrays
                             .asList(
                                 new GoalResourceInner()
-                                    .withProperties(new GoalResourceProperties().withResourceArmId("kqbh")
+                                    .withProperties(
+                                        new GoalResourceProperties().withResourceArmId("laprlt")
+                                            .withZonalResiliency(new ResiliencyProperties()
+                                                .withGoalParticipation(ExclusionState.INCLUDED)
+                                                .withAttestationStatus(AttestationState.NOT_ATTESTED)
+                                                .withUserConfirmation(Arrays.asList(
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                        .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED),
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                        .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER),
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                        .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER))))
+                                            .withRegionalResiliency(new ResiliencyProperties()
+                                                .withGoalParticipation(ExclusionState.INCLUDED)
+                                                .withAttestationStatus(AttestationState.MANUALLY_ATTESTED)
+                                                .withUserConfirmation(Arrays.asList(
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                        .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED),
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                        .withConfirmationStatus(ConfirmationStatus.APPROVAL_PENDING),
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                        .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER),
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                        .withConfirmationStatus(
+                                                            ConfirmationStatus.APPROVED_BY_USER))))),
+                                new GoalResourceInner().withProperties(new GoalResourceProperties()
+                                    .withResourceArmId("mjjyuojq")
+                                    .withZonalResiliency(new ResiliencyProperties()
+                                        .withGoalParticipation(ExclusionState.INCLUDED)
+                                        .withAttestationStatus(AttestationState.NOT_ATTESTED)
+                                        .withUserConfirmation(Arrays.asList(new UserConfirmationItem()
+                                            .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                            .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER))))
+                                    .withRegionalResiliency(
+                                        new ResiliencyProperties().withGoalParticipation(ExclusionState.INCLUDED)
+                                            .withAttestationStatus(AttestationState.NOT_ATTESTED)
+                                            .withUserConfirmation(Arrays.asList(new UserConfirmationItem()
+                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER))))),
+                                new GoalResourceInner()
+                                    .withProperties(new GoalResourceProperties().withResourceArmId("akdkifmjnnawtqab")
                                         .withZonalResiliency(new ResiliencyProperties()
-                                            .withGoalParticipation(ExclusionState.EXCLUDED)
-                                            .withAttestationStatus(AttestationState.MANUALLY_ATTESTED)
+                                            .withGoalParticipation(ExclusionState.INCLUDED)
+                                            .withAttestationStatus(AttestationState.NOT_ATTESTED)
                                             .withUserConfirmation(Arrays.asList(
                                                 new UserConfirmationItem()
                                                     .withSolutionDisplayName(
                                                         SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
-                                                    .withConfirmationStatus(ConfirmationStatus.APPROVAL_PENDING),
+                                                    .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED),
                                                 new UserConfirmationItem()
                                                     .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                                                    .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER))))))),
+                                                    .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER),
+                                                new UserConfirmationItem()
+                                                    .withSolutionDisplayName(
+                                                        SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                    .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER))))
+                                        .withRegionalResiliency(
+                                            new ResiliencyProperties().withGoalParticipation(ExclusionState.INCLUDED)
+                                                .withAttestationStatus(AttestationState.MANUALLY_ATTESTED)
+                                                .withUserConfirmation(Arrays.asList(
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                        .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER),
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                        .withConfirmationStatus(
+                                                            ConfirmationStatus.REJECTED_BY_USER))))),
+                                new GoalResourceInner()
+                                    .withProperties(
+                                        new GoalResourceProperties().withResourceArmId("rhgfgrwsdpgrat")
+                                            .withZonalResiliency(new ResiliencyProperties()
+                                                .withGoalParticipation(ExclusionState.INCLUDED)
+                                                .withAttestationStatus(AttestationState.MANUALLY_ATTESTED)
+                                                .withUserConfirmation(Arrays.asList(new UserConfirmationItem()
+                                                    .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                    .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER))))
+                                            .withRegionalResiliency(new ResiliencyProperties()
+                                                .withGoalParticipation(ExclusionState.EXCLUDED)
+                                                .withAttestationStatus(AttestationState.MANUALLY_ATTESTED)
+                                                .withUserConfirmation(Arrays.asList(
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                        .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED),
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                        .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER),
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                        .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED),
+                                                    new UserConfirmationItem()
+                                                        .withSolutionDisplayName(
+                                                            SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                        .withConfirmationStatus(
+                                                            ConfirmationStatus.REJECTED_BY_USER))))))),
                 com.azure.core.util.Context.NONE);
 
     }

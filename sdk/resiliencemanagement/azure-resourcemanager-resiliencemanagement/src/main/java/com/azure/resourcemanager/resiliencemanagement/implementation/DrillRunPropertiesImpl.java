@@ -11,6 +11,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.DrillMode;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillReportSummary;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.ExecutionConfigurations;
+import com.azure.resourcemanager.resiliencemanagement.models.IsoDuration;
 import com.azure.resourcemanager.resiliencemanagement.models.JobErrorInfo;
 import com.azure.resourcemanager.resiliencemanagement.models.JobExtendedInfo;
 import com.azure.resourcemanager.resiliencemanagement.models.JobRetryDetails;
@@ -138,6 +139,10 @@ public final class DrillRunPropertiesImpl implements DrillRunProperties {
         } else {
             return null;
         }
+    }
+
+    public IsoDuration recoveryTimeObjective() {
+        return this.innerModel().recoveryTimeObjective();
     }
 
     public DrillRunPropertiesInner innerModel() {

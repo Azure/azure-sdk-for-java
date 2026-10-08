@@ -30,9 +30,9 @@ public final class DrillsEndMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.drills()
-            .end("alwcjgckbb", "ccgzpraoxnyu", "fa",
+            .end("e", "quowtljvfwhrea", "khyxvrqtvbcz",
                 new DrillEndRequest().withAttestation(DrillAttestation.ATTESTED_SUCCESS)
-                    .withAttestationNotes("gftipwc"),
+                    .withAttestationNotes("lmdgglmepjp"),
                 com.azure.core.util.Context.NONE);
 
     }

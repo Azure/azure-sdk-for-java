@@ -15,33 +15,34 @@ public final class OperationQualificationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationQualificationDetails model = BinaryData.fromString(
-            "{\"qualificationState\":\"Qualified\",\"notQualifiedReasons\":[\"dblx\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"fnjhfjxwmszkkfo\",\"currentTargetSku\":{\"sku\":\"eyfkzikfja\",\"vCpu\":398738394,\"ram\":693357808,\"monthlyPrice\":64.92464168471196,\"currency\":\"zel\",\"offeringId\":\"irels\"},\"status\":\"Unavailable\",\"recommendedTargetSkus\":[{\"sku\":\"nwabfatkldd\",\"vCpu\":863801878,\"ram\":1654989663,\"monthlyPrice\":93.75537201960277,\"currency\":\"oz\",\"offeringId\":\"sphyoulpjrvxa\"},{\"sku\":\"l\",\"vCpu\":1902797615,\"ram\":1837530813,\"monthlyPrice\":82.85015069614175,\"currency\":\"tx\",\"offeringId\":\"cskfcktqumiekk\"},{\"sku\":\"zzikhlyfjhdg\",\"vCpu\":757390701,\"ram\":558583308,\"monthlyPrice\":55.78101761152992,\"currency\":\"g\",\"offeringId\":\"qidbqfatpxllrxcy\"}]},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"oadsuvar\",\"currentTargetSku\":{\"sku\":\"wdmjsjqbjhhyx\",\"vCpu\":1337445939,\"ram\":288329779,\"monthlyPrice\":25.967948532046993,\"currency\":\"hp\",\"offeringId\":\"kgymareqnajxqug\"},\"status\":\"Unavailable\",\"recommendedTargetSkus\":[{\"sku\":\"cubeddgssofw\",\"vCpu\":1153520576,\"ram\":1521931041,\"monthlyPrice\":93.36067062905525,\"currency\":\"njijpxacqqudf\",\"offeringId\":\"yxbaaabjyvayf\"},{\"sku\":\"imrzrtuzqog\",\"vCpu\":239466068,\"ram\":218306871,\"monthlyPrice\":19.798147948928946,\"currency\":\"wnwmewzs\",\"offeringId\":\"ceuzsoibjudpfr\"},{\"sku\":\"trthzvaytdwkqbr\",\"vCpu\":1725477484,\"ram\":749295202,\"monthlyPrice\":0.7295389823285925,\"currency\":\"iilivpdtiirqtd\",\"offeringId\":\"axoruzfgsquy\"}]},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"rxxle\",\"currentTargetSku\":{\"sku\":\"ramxjezwlwnw\",\"vCpu\":1769146485,\"ram\":544110475,\"monthlyPrice\":4.017968577348341,\"currency\":\"patdooaojkniodko\",\"offeringId\":\"bw\"},\"status\":\"NotApplicable\",\"recommendedTargetSkus\":[{\"sku\":\"emmsbvdkc\",\"vCpu\":1751076005,\"ram\":1291411043,\"monthlyPrice\":96.50162022534653,\"currency\":\"jlfltkacjvefkdlf\",\"offeringId\":\"kggkfpa\"},{\"sku\":\"ao\",\"vCpu\":1739461107,\"ram\":1784212142,\"monthlyPrice\":77.41547410161382,\"currency\":\"lsyxkqjnsjervt\",\"offeringId\":\"gxsds\"}]}]}")
+            "{\"qualificationState\":\"Qualified\",\"notQualifiedReasons\":[\"wzsyyceuzs\",\"i\",\"judpfrxt\",\"thzvaytdwkqbrqu\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"h\",\"currentTargetSku\":{\"sku\":\"iilivpdtiirqtd\",\"vCpu\":887642500,\"ram\":1693357038,\"monthlyPrice\":16.886163052758963,\"currency\":\"gsquyfxrxxlept\",\"offeringId\":\"mxjezwlw\"},\"status\":\"NotApplicable\",\"recommendedTargetSkus\":[{\"sku\":\"qlcvydy\",\"vCpu\":1772856853,\"ram\":1972932814,\"monthlyPrice\":52.76586916186798,\"currency\":\"kniod\",\"offeringId\":\"oebwnujhemms\"},{\"sku\":\"vdkcrodtj\",\"vCpu\":321367930,\"ram\":2127235728,\"monthlyPrice\":48.601111864993506,\"currency\":\"kacjvefkdlfo\",\"offeringId\":\"ggkfpagaowpul\"}]},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"blylsyxkqjnsj\",\"currentTargetSku\":{\"sku\":\"vti\",\"vCpu\":574368120,\"ram\":1219711828,\"monthlyPrice\":57.00010229736245,\"currency\":\"mpsbzkfzbeyv\",\"offeringId\":\"qi\"},\"status\":\"Passed\",\"recommendedTargetSkus\":[{\"sku\":\"v\",\"vCpu\":273661642,\"ram\":611015935,\"monthlyPrice\":95.88628079977293,\"currency\":\"ukzclewyhmlwpaz\",\"offeringId\":\"pofncck\"},{\"sku\":\"yfzqwhxxbu\",\"vCpu\":27324889,\"ram\":437954475,\"monthlyPrice\":18.088224974528387,\"currency\":\"tpp\",\"offeringId\":\"o\"},{\"sku\":\"xorjaltolmncwsob\",\"vCpu\":981854920,\"ram\":1051180868,\"monthlyPrice\":42.05402405040643,\"currency\":\"cf\",\"offeringId\":\"cqdpfuv\"},{\"sku\":\"lsbjjcanvxbv\",\"vCpu\":1747022410,\"ram\":1741162391,\"monthlyPrice\":81.381784837469,\"currency\":\"rmrlxqtvcof\",\"offeringId\":\"f\"}]},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"kgjubgdknnqvsazn\",\"currentTargetSku\":{\"sku\":\"tor\",\"vCpu\":761865502,\"ram\":1449495124,\"monthlyPrice\":17.71073252254488,\"currency\":\"yc\",\"offeringId\":\"auwjuetaebu\"},\"status\":\"Unavailable\",\"recommendedTargetSkus\":[{\"sku\":\"movsmzlxwabmqoe\",\"vCpu\":1641212216,\"ram\":1043168058,\"monthlyPrice\":48.58376215745843,\"currency\":\"qujmqlgkf\",\"offeringId\":\"ndo\"},{\"sku\":\"ongbjcnt\",\"vCpu\":175195194,\"ram\":106360631,\"monthlyPrice\":6.367842959750202,\"currency\":\"twwaezkojvdcpzf\",\"offeringId\":\"ouicybxarzgszu\"}]}]}")
             .toObject(OperationQualificationDetails.class);
         Assertions.assertEquals(QualificationState.QUALIFIED, model.qualificationState());
-        Assertions.assertEquals("dblx", model.notQualifiedReasons().get(0));
+        Assertions.assertEquals("wzsyyceuzs", model.notQualifiedReasons().get(0));
         Assertions.assertEquals(ResourceFeasibilityReviewType.SKU_CAPACITY,
             model.resourceFeasibilityReviews().get(0).feasibilityType());
-        Assertions.assertEquals("fnjhfjxwmszkkfo", model.resourceFeasibilityReviews().get(0).resourceType());
-        Assertions.assertEquals("eyfkzikfja", model.resourceFeasibilityReviews().get(0).currentTargetSku().sku());
-        Assertions.assertEquals(398738394, model.resourceFeasibilityReviews().get(0).currentTargetSku().vCpu());
-        Assertions.assertEquals(693357808, model.resourceFeasibilityReviews().get(0).currentTargetSku().ram());
-        Assertions.assertEquals(64.92464168471196D,
+        Assertions.assertEquals("h", model.resourceFeasibilityReviews().get(0).resourceType());
+        Assertions.assertEquals("iilivpdtiirqtd", model.resourceFeasibilityReviews().get(0).currentTargetSku().sku());
+        Assertions.assertEquals(887642500, model.resourceFeasibilityReviews().get(0).currentTargetSku().vCpu());
+        Assertions.assertEquals(1693357038, model.resourceFeasibilityReviews().get(0).currentTargetSku().ram());
+        Assertions.assertEquals(16.886163052758963D,
             model.resourceFeasibilityReviews().get(0).currentTargetSku().monthlyPrice());
-        Assertions.assertEquals("zel", model.resourceFeasibilityReviews().get(0).currentTargetSku().currency());
-        Assertions.assertEquals("irels", model.resourceFeasibilityReviews().get(0).currentTargetSku().offeringId());
-        Assertions.assertEquals(ResourceFeasibilityReviewStatus.UNAVAILABLE,
+        Assertions.assertEquals("gsquyfxrxxlept",
+            model.resourceFeasibilityReviews().get(0).currentTargetSku().currency());
+        Assertions.assertEquals("mxjezwlw", model.resourceFeasibilityReviews().get(0).currentTargetSku().offeringId());
+        Assertions.assertEquals(ResourceFeasibilityReviewStatus.NOT_APPLICABLE,
             model.resourceFeasibilityReviews().get(0).status());
-        Assertions.assertEquals("nwabfatkldd",
+        Assertions.assertEquals("qlcvydy",
             model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).sku());
-        Assertions.assertEquals(863801878,
+        Assertions.assertEquals(1772856853,
             model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).vCpu());
-        Assertions.assertEquals(1654989663,
+        Assertions.assertEquals(1972932814,
             model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).ram());
-        Assertions.assertEquals(93.75537201960277D,
+        Assertions.assertEquals(52.76586916186798D,
             model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).monthlyPrice());
-        Assertions.assertEquals("oz",
+        Assertions.assertEquals("kniod",
             model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).currency());
-        Assertions.assertEquals("sphyoulpjrvxa",
+        Assertions.assertEquals("oebwnujhemms",
             model.resourceFeasibilityReviews().get(0).recommendedTargetSkus().get(0).offeringId());
     }
 }

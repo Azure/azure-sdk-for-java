@@ -12,18 +12,18 @@ public final class DiskReprotectInputDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiskReprotectInputDetails model = BinaryData
-            .fromString("{\"diskResourceId\":\"iertgccymvaolp\",\"stagingStorageAccountResourceId\":\"lqlfm\"}")
+            .fromString("{\"diskResourceId\":\"cjefuzmu\",\"stagingStorageAccountResourceId\":\"bttdumorppxe\"}")
             .toObject(DiskReprotectInputDetails.class);
-        Assertions.assertEquals("iertgccymvaolp", model.diskResourceId());
-        Assertions.assertEquals("lqlfm", model.stagingStorageAccountResourceId());
+        Assertions.assertEquals("cjefuzmu", model.diskResourceId());
+        Assertions.assertEquals("bttdumorppxe", model.stagingStorageAccountResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskReprotectInputDetails model = new DiskReprotectInputDetails().withDiskResourceId("iertgccymvaolp")
-            .withStagingStorageAccountResourceId("lqlfm");
+        DiskReprotectInputDetails model = new DiskReprotectInputDetails().withDiskResourceId("cjefuzmu")
+            .withStagingStorageAccountResourceId("bttdumorppxe");
         model = BinaryData.fromObject(model).toObject(DiskReprotectInputDetails.class);
-        Assertions.assertEquals("iertgccymvaolp", model.diskResourceId());
-        Assertions.assertEquals("lqlfm", model.stagingStorageAccountResourceId());
+        Assertions.assertEquals("cjefuzmu", model.diskResourceId());
+        Assertions.assertEquals("bttdumorppxe", model.stagingStorageAccountResourceId());
     }
 }

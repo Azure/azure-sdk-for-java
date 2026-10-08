@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class DrillRunResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-10-01/DrillRunResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/DrillRunResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRunResources_Get_MaximumSet.

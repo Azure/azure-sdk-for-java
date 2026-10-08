@@ -14,19 +14,19 @@ public final class MonitoringPropertiesOfDrillTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MonitoringPropertiesOfDrill model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"uutpwoqhih\"},\"logAnalyticsWorkspaceId\":\"qg\",\"rawMetricsDataCollectionRuleId\":\"pnfqntcyp\",\"serviceGroupMetricsDataCollectionRuleId\":\"jv\",\"dataCollectionEndpointId\":\"imwkslircizj\"}")
+            "{\"identity\":{\"type\":\"None\",\"userAssignedIdentity\":\"udlgzibthostgkts\"},\"logAnalyticsWorkspaceId\":\"dxeclzedqbcvh\",\"rawMetricsDataCollectionRuleId\":\"h\",\"serviceGroupMetricsDataCollectionRuleId\":\"odqkdlwwqfb\",\"dataCollectionEndpointId\":\"lkxt\"}")
             .toObject(MonitoringPropertiesOfDrill.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("uutpwoqhih", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("udlgzibthostgkts", model.identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MonitoringPropertiesOfDrill model = new MonitoringPropertiesOfDrill()
-            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentity("uutpwoqhih"));
+            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentity("udlgzibthostgkts"));
         model = BinaryData.fromObject(model).toObject(MonitoringPropertiesOfDrill.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("uutpwoqhih", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("udlgzibthostgkts", model.identity().userAssignedIdentity());
     }
 }

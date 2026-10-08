@@ -15,19 +15,21 @@ public final class ValidateForExecutionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidateForExecutionRequest model = BinaryData.fromString(
-            "{\"validateForExecutionProperties\":{\"operationName\":\"Failover\",\"sourceLocations\":[\"gzukxitmm\",\"tg\",\"qqxhrnxrxcpj\"]}}")
+            "{\"validateForExecutionProperties\":{\"operationName\":\"ReprotectReverse\",\"sourceLocations\":[\"jvlpjxxkzbr\",\"sgeivsiy\"]}}")
             .toObject(ValidateForExecutionRequest.class);
-        Assertions.assertEquals(DrillRunTasks.FAILOVER, model.validateForExecutionProperties().operationName());
-        Assertions.assertEquals("gzukxitmm", model.validateForExecutionProperties().sourceLocations().get(0));
+        Assertions.assertEquals(DrillRunTasks.REPROTECT_REVERSE,
+            model.validateForExecutionProperties().operationName());
+        Assertions.assertEquals("jvlpjxxkzbr", model.validateForExecutionProperties().sourceLocations().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ValidateForExecutionRequest model = new ValidateForExecutionRequest().withValidateForExecutionProperties(
-            new ValidateForExecutionProperties().withOperationName(DrillRunTasks.FAILOVER)
-                .withSourceLocations(Arrays.asList("gzukxitmm", "tg", "qqxhrnxrxcpj")));
+            new ValidateForExecutionProperties().withOperationName(DrillRunTasks.REPROTECT_REVERSE)
+                .withSourceLocations(Arrays.asList("jvlpjxxkzbr", "sgeivsiy")));
         model = BinaryData.fromObject(model).toObject(ValidateForExecutionRequest.class);
-        Assertions.assertEquals(DrillRunTasks.FAILOVER, model.validateForExecutionProperties().operationName());
-        Assertions.assertEquals("gzukxitmm", model.validateForExecutionProperties().sourceLocations().get(0));
+        Assertions.assertEquals(DrillRunTasks.REPROTECT_REVERSE,
+            model.validateForExecutionProperties().operationName());
+        Assertions.assertEquals("jvlpjxxkzbr", model.validateForExecutionProperties().sourceLocations().get(0));
     }
 }

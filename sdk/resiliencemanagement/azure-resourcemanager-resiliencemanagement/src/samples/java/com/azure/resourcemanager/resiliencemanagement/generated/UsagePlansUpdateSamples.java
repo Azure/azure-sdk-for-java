@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class UsagePlansUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/UsagePlans_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/UsagePlans_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: UsagePlans_Update_MaximumSet.

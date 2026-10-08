@@ -24,6 +24,16 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
     private boolean requireZonalResiliency;
 
     /*
+     * Whether regional resiliency is required for this goal assignment.
+     */
+    private Boolean requireRegionalResiliency;
+
+    /*
+     * Recovery objectives targeted for regional resiliency.
+     */
+    private RegionalObjectives regionalObjectives;
+
+    /*
      * List of service level resources.
      */
     private List<ServiceLevelResource> serviceLevelResources;
@@ -61,6 +71,46 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
      */
     public GoalAssignmentProperties withRequireZonalResiliency(boolean requireZonalResiliency) {
         this.requireZonalResiliency = requireZonalResiliency;
+        return this;
+    }
+
+    /**
+     * Get the requireRegionalResiliency property: Whether regional resiliency is required for this goal assignment.
+     * 
+     * @return the requireRegionalResiliency value.
+     */
+    public Boolean requireRegionalResiliency() {
+        return this.requireRegionalResiliency;
+    }
+
+    /**
+     * Set the requireRegionalResiliency property: Whether regional resiliency is required for this goal assignment.
+     * 
+     * @param requireRegionalResiliency the requireRegionalResiliency value to set.
+     * @return the GoalAssignmentProperties object itself.
+     */
+    public GoalAssignmentProperties withRequireRegionalResiliency(Boolean requireRegionalResiliency) {
+        this.requireRegionalResiliency = requireRegionalResiliency;
+        return this;
+    }
+
+    /**
+     * Get the regionalObjectives property: Recovery objectives targeted for regional resiliency.
+     * 
+     * @return the regionalObjectives value.
+     */
+    public RegionalObjectives regionalObjectives() {
+        return this.regionalObjectives;
+    }
+
+    /**
+     * Set the regionalObjectives property: Recovery objectives targeted for regional resiliency.
+     * 
+     * @param regionalObjectives the regionalObjectives value to set.
+     * @return the GoalAssignmentProperties object itself.
+     */
+    public GoalAssignmentProperties withRegionalObjectives(RegionalObjectives regionalObjectives) {
+        this.regionalObjectives = regionalObjectives;
         return this;
     }
 
@@ -109,6 +159,8 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("requireZonalResiliency", this.requireZonalResiliency);
+        jsonWriter.writeBooleanField("requireRegionalResiliency", this.requireRegionalResiliency);
+        jsonWriter.writeJsonField("regionalObjectives", this.regionalObjectives);
         jsonWriter.writeArrayField("serviceLevelResources", this.serviceLevelResources,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -132,6 +184,11 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
 
                 if ("requireZonalResiliency".equals(fieldName)) {
                     deserializedGoalAssignmentProperties.requireZonalResiliency = reader.getBoolean();
+                } else if ("requireRegionalResiliency".equals(fieldName)) {
+                    deserializedGoalAssignmentProperties.requireRegionalResiliency
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("regionalObjectives".equals(fieldName)) {
+                    deserializedGoalAssignmentProperties.regionalObjectives = RegionalObjectives.fromJson(reader);
                 } else if ("serviceLevelResources".equals(fieldName)) {
                     List<ServiceLevelResource> serviceLevelResources
                         = reader.readArray(reader1 -> ServiceLevelResource.fromJson(reader1));

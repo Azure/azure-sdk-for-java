@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class DrillResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-10-01/DrillResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/DrillResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillResources_Get_MaximumSet.
@@ -20,6 +20,21 @@ public final class DrillResourcesGetSamples {
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
         manager.drillResources()
             .getWithResponse("sampleServiceGroupName", "drill1", "b6378181-9dc0-4a43-8e09-97a8b08aabaa",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-31-preview/DrillResources_Get_Regional.json
+     */
+    /**
+     * Sample code: DrillResources_Get_Regional.
+     * 
+     * @param manager Entry point to ResilienceManagementManager.
+     */
+    public static void
+        drillResourcesGetRegional(com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
+        manager.drillResources()
+            .getWithResponse("sampleServiceGroupName", "regionalDrill", "b6378181-9dc0-4a43-8e09-97a8b08aabaa",
                 com.azure.core.util.Context.NONE);
     }
 }

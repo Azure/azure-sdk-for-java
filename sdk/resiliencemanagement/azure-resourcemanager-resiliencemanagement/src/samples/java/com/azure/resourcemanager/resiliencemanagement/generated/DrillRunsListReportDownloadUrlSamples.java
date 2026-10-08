@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resiliencemanagement.models.ListReportDownloadU
  */
 public final class DrillRunsListReportDownloadUrlSamples {
     /*
-     * x-ms-original-file: 2026-10-01/DrillRuns_ListReportDownloadUrl_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/DrillRuns_ListReportDownloadUrl_MaximumSet_Gen.json
      */
     /**
      * Sample code: DrillRuns_ListReportDownloadUrl_MaximumSet.

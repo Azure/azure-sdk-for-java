@@ -37,6 +37,34 @@ public final class ResourceProtectionSolutionType extends ExpandableStringEnum<R
     public static final ResourceProtectionSolutionType CUSTOM_RUNBOOK = fromString("CustomRunbook");
 
     /**
+     * Resource recovery is orchestrated by deploying an Azure Resource Manager template.
+     */
+    public static final ResourceProtectionSolutionType AZURE_TEMPLATE = fromString("AzureTemplate");
+
+    /**
+     * Resource is protected with Azure Storage account customer-managed failover.
+     */
+    public static final ResourceProtectionSolutionType AZURE_STORAGE_ACCOUNT = fromString("AzureStorageAccount");
+
+    /**
+     * Resource is protected with Azure Service Bus geo-replication, where a premium namespace replicates data to a
+     * secondary region and recovery promotes that secondary in place.
+     */
+    public static final ResourceProtectionSolutionType AZURE_SERVICE_BUS = fromString("AzureServiceBus");
+
+    /**
+     * Resource is protected with Azure NetApp Files cross-region replication, where recovery fails over to the
+     * destination volume.
+     */
+    public static final ResourceProtectionSolutionType AZURE_NET_APP_FILES = fromString("AzureNetAppFiles");
+
+    /**
+     * Resource is protected with Azure Cosmos DB multiregion replication using customer-managed failover, where
+     * recovery promotes a secondary region to the write region.
+     */
+    public static final ResourceProtectionSolutionType AZURE_COSMOS_DB = fromString("AzureCosmosDB");
+
+    /**
      * Creates a new instance of ResourceProtectionSolutionType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

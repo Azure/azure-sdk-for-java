@@ -13,18 +13,18 @@ public final class AssociatedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AssociatedIdentity model
-            = BinaryData.fromString("{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"buhfmvfaxkffeiit\"}")
+            = BinaryData.fromString("{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"rywn\"}")
                 .toObject(AssociatedIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("buhfmvfaxkffeiit", model.userAssignedIdentity());
+        Assertions.assertEquals("rywn", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AssociatedIdentity model = new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-            .withUserAssignedIdentity("buhfmvfaxkffeiit");
+            .withUserAssignedIdentity("rywn");
         model = BinaryData.fromObject(model).toObject(AssociatedIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("buhfmvfaxkffeiit", model.userAssignedIdentity());
+        Assertions.assertEquals("rywn", model.userAssignedIdentity());
     }
 }

@@ -15,10 +15,10 @@ public final class UserConfirmationItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserConfirmationItem model = BinaryData.fromString(
-            "{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"RejectedByUser\",\"reasonForRequestingConfirmation\":\"VmInMultiZoneScaleSetStatelessOnly\"}")
+            "{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalNotNeeded\",\"reasonForRequestingConfirmation\":\"VmInMultiZoneScaleSetStatelessOnly\"}")
             .toObject(UserConfirmationItem.class);
-        Assertions.assertEquals(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK, model.solutionDisplayName());
-        Assertions.assertEquals(ConfirmationStatus.REJECTED_BY_USER, model.confirmationStatus());
+        Assertions.assertEquals(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS, model.solutionDisplayName());
+        Assertions.assertEquals(ConfirmationStatus.APPROVAL_NOT_NEEDED, model.confirmationStatus());
         Assertions.assertEquals(ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY,
             model.reasonForRequestingConfirmation());
     }
@@ -26,13 +26,13 @@ public final class UserConfirmationItemTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UserConfirmationItem model
-            = new UserConfirmationItem().withSolutionDisplayName(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
-                .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER)
+            = new UserConfirmationItem().withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED)
                 .withReasonForRequestingConfirmation(
                     ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY);
         model = BinaryData.fromObject(model).toObject(UserConfirmationItem.class);
-        Assertions.assertEquals(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK, model.solutionDisplayName());
-        Assertions.assertEquals(ConfirmationStatus.REJECTED_BY_USER, model.confirmationStatus());
+        Assertions.assertEquals(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS, model.solutionDisplayName());
+        Assertions.assertEquals(ConfirmationStatus.APPROVAL_NOT_NEEDED, model.confirmationStatus());
         Assertions.assertEquals(ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY,
             model.reasonForRequestingConfirmation());
     }

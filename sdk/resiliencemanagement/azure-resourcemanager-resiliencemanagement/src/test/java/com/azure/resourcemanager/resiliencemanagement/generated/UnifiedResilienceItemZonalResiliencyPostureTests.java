@@ -13,12 +13,12 @@ public final class UnifiedResilienceItemZonalResiliencyPostureTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UnifiedResilienceItemZonalResiliencyPosture model = BinaryData.fromString(
-            "{\"enabledResourceCount\":6902773260918891368,\"notEnabledResourceCount\":7451197711543446112,\"notEvaluatedResourceCount\":4043093198932851211,\"userConfirmationNeededCount\":69335588181115107,\"evaluationDateTime\":\"2021-08-19T06:29:12Z\"}")
+            "{\"enabledResourceCount\":3593976183974666652,\"notEnabledResourceCount\":339483842138773069,\"notEvaluatedResourceCount\":5787215353675069655,\"userConfirmationNeededCount\":3757192969147775574,\"evaluationDateTime\":\"2021-04-12T17:52:43Z\"}")
             .toObject(UnifiedResilienceItemZonalResiliencyPosture.class);
-        Assertions.assertEquals(6902773260918891368L, model.enabledResourceCount());
-        Assertions.assertEquals(7451197711543446112L, model.notEnabledResourceCount());
-        Assertions.assertEquals(4043093198932851211L, model.notEvaluatedResourceCount());
-        Assertions.assertEquals(69335588181115107L, model.userConfirmationNeededCount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-19T06:29:12Z"), model.evaluationDateTime());
+        Assertions.assertEquals(3593976183974666652L, model.enabledResourceCount());
+        Assertions.assertEquals(339483842138773069L, model.notEnabledResourceCount());
+        Assertions.assertEquals(5787215353675069655L, model.notEvaluatedResourceCount());
+        Assertions.assertEquals(3757192969147775574L, model.userConfirmationNeededCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T17:52:43Z"), model.evaluationDateTime());
     }
 }

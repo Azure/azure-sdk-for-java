@@ -11,10 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class GoalsDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GoalsData model
-            = BinaryData.fromString("{\"assignmentId\":\"cpopmxel\",\"zonalResiliency\":{\"required\":false}}")
-                .toObject(GoalsData.class);
-        Assertions.assertEquals("cpopmxel", model.assignmentId());
-        Assertions.assertFalse(model.zonalResiliency().required());
+        GoalsData model = BinaryData.fromString(
+            "{\"assignmentId\":\"z\",\"zonalResiliency\":{\"required\":true},\"regionalResiliency\":{\"required\":true}}")
+            .toObject(GoalsData.class);
+        Assertions.assertEquals("z", model.assignmentId());
+        Assertions.assertTrue(model.zonalResiliency().required());
+        Assertions.assertTrue(model.regionalResiliency().required());
     }
 }

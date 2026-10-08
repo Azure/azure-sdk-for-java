@@ -26,6 +26,11 @@ public final class GoalsData implements JsonSerializable<GoalsData> {
      */
     private UnifiedResilienceItemGoalRequirement zonalResiliency;
 
+    /*
+     * Regional resiliency goal copied from the goal assignment.
+     */
+    private UnifiedResilienceItemGoalRequirement regionalResiliency;
+
     /**
      * Creates an instance of GoalsData class.
      */
@@ -51,6 +56,15 @@ public final class GoalsData implements JsonSerializable<GoalsData> {
     }
 
     /**
+     * Get the regionalResiliency property: Regional resiliency goal copied from the goal assignment.
+     * 
+     * @return the regionalResiliency value.
+     */
+    public UnifiedResilienceItemGoalRequirement regionalResiliency() {
+        return this.regionalResiliency;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -58,6 +72,7 @@ public final class GoalsData implements JsonSerializable<GoalsData> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("assignmentId", this.assignmentId);
         jsonWriter.writeJsonField("zonalResiliency", this.zonalResiliency);
+        jsonWriter.writeJsonField("regionalResiliency", this.regionalResiliency);
         return jsonWriter.writeEndObject();
     }
 
@@ -81,6 +96,8 @@ public final class GoalsData implements JsonSerializable<GoalsData> {
                     deserializedGoalsData.assignmentId = reader.getString();
                 } else if ("zonalResiliency".equals(fieldName)) {
                     deserializedGoalsData.zonalResiliency = UnifiedResilienceItemGoalRequirement.fromJson(reader);
+                } else if ("regionalResiliency".equals(fieldName)) {
+                    deserializedGoalsData.regionalResiliency = UnifiedResilienceItemGoalRequirement.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

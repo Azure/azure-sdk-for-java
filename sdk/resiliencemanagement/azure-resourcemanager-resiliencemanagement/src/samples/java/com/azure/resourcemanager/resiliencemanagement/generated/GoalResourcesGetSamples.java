@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class GoalResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-10-01/GoalResources_Get_Complete_Example.json
+     * x-ms-original-file: 2026-10-31-preview/GoalResources_Get_Complete_Example.json
      */
     /**
      * Sample code: GoalResources_Get_Complete_Example.
@@ -19,11 +19,12 @@ public final class GoalResourcesGetSamples {
     public static void goalResourcesGetCompleteExample(
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
         manager.goalResources()
-            .getWithResponse("production-sg", "zonal-resiliency-goal", "primary-vm", com.azure.core.util.Context.NONE);
+            .getWithResponse("production-sg", "resiliencyGoalAssignment", "web-app-resource",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-10-01/GoalResources_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/GoalResources_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: GoalResources_Get_MaximumSet.
@@ -33,11 +34,11 @@ public final class GoalResourcesGetSamples {
     public static void
         goalResourcesGetMaximumSet(com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
         manager.goalResources()
-            .getWithResponse("production-sg", "zonal-resiliency-goal", "primary-vm", com.azure.core.util.Context.NONE);
+            .getWithResponse("umyghwnfpzsgrhpczizcn", "ga1", "gr1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-10-01/GoalResources_Get_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/GoalResources_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: GoalResources_Get_MinimumSet.
@@ -46,7 +47,6 @@ public final class GoalResourcesGetSamples {
      */
     public static void
         goalResourcesGetMinimumSet(com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
-        manager.goalResources()
-            .getWithResponse("production-sg", "zonal-resiliency-goal", "primary-vm", com.azure.core.util.Context.NONE);
+        manager.goalResources().getWithResponse("sg1", "ga1", "gr1", com.azure.core.util.Context.NONE);
     }
 }

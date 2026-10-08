@@ -16,34 +16,34 @@ public final class RecoveryGroupCustomRunbookActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryGroupCustomRunbookAction model = BinaryData.fromString(
-            "{\"type\":\"CustomRunbook\",\"actionResourceId\":\"uqkhrsajiwku\",\"parameters\":{\"vxieduugidyj\":\"skghsauuimj\"},\"associatedIdentity\":{\"type\":\"None\",\"userAssignedIdentity\":\"y\"},\"name\":\"osvexcsonpclhoc\",\"description\":\"slkevle\",\"timeoutInMinutes\":529592400}")
+            "{\"type\":\"CustomRunbook\",\"actionResourceId\":\"hcbkhajde\",\"parameters\":{\"hagalpbuxwgipwh\":\"md\"},\"associatedIdentity\":{\"type\":\"None\",\"userAssignedIdentity\":\"kgshwa\"},\"name\":\"kix\",\"description\":\"injep\",\"timeoutInMinutes\":895884461}")
             .toObject(RecoveryGroupCustomRunbookAction.class);
-        Assertions.assertEquals("osvexcsonpclhoc", model.name());
-        Assertions.assertEquals("slkevle", model.description());
-        Assertions.assertEquals(529592400, model.timeoutInMinutes());
-        Assertions.assertEquals("uqkhrsajiwku", model.actionResourceId());
-        Assertions.assertEquals("skghsauuimj", model.parameters().get("vxieduugidyj"));
+        Assertions.assertEquals("kix", model.name());
+        Assertions.assertEquals("injep", model.description());
+        Assertions.assertEquals(895884461, model.timeoutInMinutes());
+        Assertions.assertEquals("hcbkhajde", model.actionResourceId());
+        Assertions.assertEquals("md", model.parameters().get("hagalpbuxwgipwh"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.associatedIdentity().type());
-        Assertions.assertEquals("y", model.associatedIdentity().userAssignedIdentity());
+        Assertions.assertEquals("kgshwa", model.associatedIdentity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryGroupCustomRunbookAction model = new RecoveryGroupCustomRunbookAction().withName("osvexcsonpclhoc")
-            .withDescription("slkevle")
-            .withTimeoutInMinutes(529592400)
-            .withActionResourceId("uqkhrsajiwku")
-            .withParameters(mapOf("vxieduugidyj", "skghsauuimj"))
+        RecoveryGroupCustomRunbookAction model = new RecoveryGroupCustomRunbookAction().withName("kix")
+            .withDescription("injep")
+            .withTimeoutInMinutes(895884461)
+            .withActionResourceId("hcbkhajde")
+            .withParameters(mapOf("hagalpbuxwgipwh", "md"))
             .withAssociatedIdentity(
-                new AssociatedIdentity().withType(ManagedServiceIdentityType.NONE).withUserAssignedIdentity("y"));
+                new AssociatedIdentity().withType(ManagedServiceIdentityType.NONE).withUserAssignedIdentity("kgshwa"));
         model = BinaryData.fromObject(model).toObject(RecoveryGroupCustomRunbookAction.class);
-        Assertions.assertEquals("osvexcsonpclhoc", model.name());
-        Assertions.assertEquals("slkevle", model.description());
-        Assertions.assertEquals(529592400, model.timeoutInMinutes());
-        Assertions.assertEquals("uqkhrsajiwku", model.actionResourceId());
-        Assertions.assertEquals("skghsauuimj", model.parameters().get("vxieduugidyj"));
+        Assertions.assertEquals("kix", model.name());
+        Assertions.assertEquals("injep", model.description());
+        Assertions.assertEquals(895884461, model.timeoutInMinutes());
+        Assertions.assertEquals("hcbkhajde", model.actionResourceId());
+        Assertions.assertEquals("md", model.parameters().get("hagalpbuxwgipwh"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.associatedIdentity().type());
-        Assertions.assertEquals("y", model.associatedIdentity().userAssignedIdentity());
+        Assertions.assertEquals("kgshwa", model.associatedIdentity().userAssignedIdentity());
     }
 
     // Use "Map.of" if available

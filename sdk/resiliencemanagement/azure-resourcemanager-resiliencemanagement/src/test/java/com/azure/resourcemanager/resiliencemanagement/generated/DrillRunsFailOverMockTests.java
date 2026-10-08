@@ -36,15 +36,16 @@ public final class DrillRunsFailOverMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.drillRuns()
-            .failOver("nc", "exxqcwg", "xf", "vaknokzwjj",
-                new DrillRunFailoverRequest().withAutoFailover(AutoFailover.ENABLE)
+            .failOver("pxgzdyimsfayor", "r", "vk", "oge",
+                new DrillRunFailoverRequest().withAutoFailover(AutoFailover.DISABLE)
                     .withFailoverProperties(
                         new FailoverRequest().withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
                             .withFailoverRequestProperties(new FailoverRequestProperties()
-                                .withSourceLocations(Arrays.asList("xldzyyfytpqsix", "mmpuj", "vyqlkjuvsmbmslzo"))
-                                .withSelectedResourceIds(Arrays.asList("wzdbpqvybefgv", "x", "okcvtlubses"))
+                                .withSourceLocations(
+                                    Arrays.asList("smjkwynqxaekqsy", "vwjtqpkevmyltjc", "spxklu", "cclfgxannn"))
+                                .withSelectedResourceIds(Arrays.asList("zposewxigpxvkqm"))
                                 .withExecutionConfigurations(
-                                    new ExecutionConfigurations().withUserConsent(UserConsent.UNSPECIFIED)))),
+                                    new ExecutionConfigurations().withUserConsent(UserConsent.ALLOWED)))),
                 com.azure.core.util.Context.NONE);
 
     }

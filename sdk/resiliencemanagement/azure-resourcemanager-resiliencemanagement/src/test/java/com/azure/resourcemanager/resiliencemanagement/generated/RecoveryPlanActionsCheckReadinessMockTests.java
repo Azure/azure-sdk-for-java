@@ -27,7 +27,8 @@ public final class RecoveryPlanActionsCheckReadinessMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.recoveryPlanActions().checkReadiness("q", "jxcx", "rzdcgdzbenribcaw", com.azure.core.util.Context.NONE);
+        manager.recoveryPlanActions()
+            .checkReadiness("mvanbwzo", "mnrxxbsojkl", "nhmdptysprqs", com.azure.core.util.Context.NONE);
 
     }
 }

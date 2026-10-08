@@ -19,106 +19,112 @@ public final class AddOrUpdateResourcesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AddOrUpdateResourcesRequest model = BinaryData.fromString(
-            "{\"faultDurationInMin\":234603951,\"resourceLists\":{\"includeResources\":[{\"id\":\"podbzevwrdnh\",\"faultProperties\":{\"availableFaults\":[{\"faultUrn\":\"vsjcswsmystuluqy\",\"faultName\":\"fcvlerch\",\"targetResourceId\":\"qbmfpjbabwidf\"}],\"defaultFault\":{\"faultUrn\":\"sspuunnoxyhkx\",\"faultName\":\"qddrihpfhoqcaae\",\"targetResourceId\":\"dao\"},\"overriddenDefaultFault\":{\"faultUrn\":\"jvlpjxxkzbr\",\"faultName\":\"sgeivsiy\",\"targetResourceId\":\"zkdnc\"},\"customFault\":{\"faultName\":\"xonbzoggculapz\",\"scriptResourceId\":\"y\"}}},{\"id\":\"pgogtqxepny\",\"faultProperties\":{\"availableFaults\":[{\"faultUrn\":\"ajlyjtlvofqzhv\",\"faultName\":\"cib\",\"targetResourceId\":\"fmo\"},{\"faultUrn\":\"uxrkjp\",\"faultName\":\"dwxf\",\"targetResourceId\":\"wiivwzjbhyzsx\"}],\"defaultFault\":{\"faultUrn\":\"kambtrnegvmnvuqe\",\"faultName\":\"vldspa\",\"targetResourceId\":\"tjb\"},\"overriddenDefaultFault\":{\"faultUrn\":\"dmflv\",\"faultName\":\"stmjlxrri\",\"targetResourceId\":\"ozapeew\"},\"customFault\":{\"faultName\":\"pxlktwkuziycsl\",\"scriptResourceId\":\"vu\"}}}],\"excludeResources\":[\"tcktyhjtqedcgzu\",\"wmmrq\"],\"updateResources\":[{\"id\":\"rjvpglydzgkrvqee\",\"faultProperties\":{\"availableFaults\":[{\"faultUrn\":\"pryu\",\"faultName\":\"nwy\",\"targetResourceId\":\"pzdm\"}],\"defaultFault\":{\"faultUrn\":\"zvfvaawz\",\"faultName\":\"adflgzu\",\"targetResourceId\":\"iglaecx\"},\"overriddenDefaultFault\":{\"faultUrn\":\"t\",\"faultName\":\"cokpv\",\"targetResourceId\":\"mlqtmldgxob\"},\"customFault\":{\"faultName\":\"rclnpkc\",\"scriptResourceId\":\"ayzri\"}}}]},\"forceInclusionAndUpdate\":\"Enable\"}")
+            "{\"faultDurationInMin\":1160577956,\"resourceLists\":{\"includeResources\":[{\"id\":\"z\",\"faultProperties\":{\"availableFaults\":[{\"faultUrn\":\"vpglydz\",\"faultName\":\"krvq\",\"targetResourceId\":\"ev\"},{\"faultUrn\":\"oepry\",\"faultName\":\"t\",\"targetResourceId\":\"wytpzdmovz\"},{\"faultUrn\":\"fvaawzqa\",\"faultName\":\"f\",\"targetResourceId\":\"gzuriglaecxndt\"}],\"defaultFault\":{\"faultUrn\":\"okpvzm\",\"faultName\":\"qtmldgxo\",\"targetResourceId\":\"firclnpkciayz\"},\"overriddenDefaultFault\":{\"faultUrn\":\"ykhyawfvjlboxqvk\",\"faultName\":\"lmxhomdyn\",\"targetResourceId\":\"dwdigumb\"},\"customFault\":{\"faultName\":\"aauzzptjazysd\",\"scriptResourceId\":\"hezwwvaiq\"}}}],\"excludeResources\":[\"vfonkphhqyikvyl\"],\"updateResources\":[{\"id\":\"avluwmncs\",\"faultProperties\":{\"availableFaults\":[{\"faultUrn\":\"fybvpoek\",\"faultName\":\"sgsgbdhu\",\"targetResourceId\":\"qgnjdgkynscli\"},{\"faultUrn\":\"hzvhxnkomtkubo\",\"faultName\":\"ppnvdxz\",\"targetResourceId\":\"hihfrbbcevqagtlt\"},{\"faultUrn\":\"hlfkqojpy\",\"faultName\":\"vgtrdcnifmzzs\",\"targetResourceId\":\"ymbrnysuxmpraf\"},{\"faultUrn\":\"g\",\"faultName\":\"khocxvdfffwaf\",\"targetResourceId\":\"roud\"}],\"defaultFault\":{\"faultUrn\":\"pavehhr\",\"faultName\":\"kbunzoz\",\"targetResourceId\":\"dhcxgkmoy\"},\"overriddenDefaultFault\":{\"faultUrn\":\"dyuib\",\"faultName\":\"mfdn\",\"targetResourceId\":\"zydvfvf\"},\"customFault\":{\"faultName\":\"naeo\",\"scriptResourceId\":\"srvhmgorffuki\"}}},{\"id\":\"cvwmzhwplefa\",\"faultProperties\":{\"availableFaults\":[{\"faultUrn\":\"l\",\"faultName\":\"btgn\",\"targetResourceId\":\"nzeyqxtjj\"},{\"faultUrn\":\"zqlqhyc\",\"faultName\":\"vodggxdbee\",\"targetResourceId\":\"mieknlraria\"},{\"faultUrn\":\"wiuagydwqf\",\"faultName\":\"ylyrfgiagtco\",\"targetResourceId\":\"ocqwogfnzjvus\"},{\"faultUrn\":\"zldmozuxy\",\"faultName\":\"fsbtkad\",\"targetResourceId\":\"ysownbtgkbug\"}],\"defaultFault\":{\"faultUrn\":\"qctojcmisof\",\"faultName\":\"eypefojyqd\",\"targetResourceId\":\"cuplcplcwkhih\"},\"overriddenDefaultFault\":{\"faultUrn\":\"lhzdsqtzb\",\"faultName\":\"rgnowcjhfgm\",\"targetResourceId\":\"ecactx\"},\"customFault\":{\"faultName\":\"oteyowc\",\"scriptResourceId\":\"uqovekqvgqouwif\"}}},{\"id\":\"mpjw\",\"faultProperties\":{\"availableFaults\":[{\"faultUrn\":\"ikf\",\"faultName\":\"cvhrfsp\",\"targetResourceId\":\"uagrttikteusqc\"},{\"faultUrn\":\"kvyklxubyjaffmm\",\"faultName\":\"bl\",\"targetResourceId\":\"qcuubgqibrta\"}],\"defaultFault\":{\"faultUrn\":\"etttwgdslqxihhr\",\"faultName\":\"ooizqseyp\",\"targetResourceId\":\"iut\"},\"overriddenDefaultFault\":{\"faultUrn\":\"apzhyrpetoge\",\"faultName\":\"joxslhvnhla\",\"targetResourceId\":\"rqnkkzjcjbtr\"},\"customFault\":{\"faultName\":\"ehvvib\",\"scriptResourceId\":\"xjjs\"}}}]},\"forceInclusionAndUpdate\":\"Disable\"}")
             .toObject(AddOrUpdateResourcesRequest.class);
-        Assertions.assertEquals(234603951, model.faultDurationInMin());
-        Assertions.assertEquals("podbzevwrdnh", model.resourceLists().includeResources().get(0).id());
-        Assertions.assertEquals("jvlpjxxkzbr",
+        Assertions.assertEquals(1160577956, model.faultDurationInMin());
+        Assertions.assertEquals("z", model.resourceLists().includeResources().get(0).id());
+        Assertions.assertEquals("ykhyawfvjlboxqvk",
             model.resourceLists().includeResources().get(0).faultProperties().overriddenDefaultFault().faultUrn());
-        Assertions.assertEquals("sgeivsiy",
+        Assertions.assertEquals("lmxhomdyn",
             model.resourceLists().includeResources().get(0).faultProperties().overriddenDefaultFault().faultName());
-        Assertions.assertEquals("zkdnc",
+        Assertions.assertEquals("dwdigumb",
             model.resourceLists()
                 .includeResources()
                 .get(0)
                 .faultProperties()
                 .overriddenDefaultFault()
                 .targetResourceId());
-        Assertions.assertEquals("xonbzoggculapz",
+        Assertions.assertEquals("aauzzptjazysd",
             model.resourceLists().includeResources().get(0).faultProperties().customFault().faultName());
-        Assertions.assertEquals("y",
+        Assertions.assertEquals("hezwwvaiq",
             model.resourceLists().includeResources().get(0).faultProperties().customFault().scriptResourceId());
-        Assertions.assertEquals("tcktyhjtqedcgzu", model.resourceLists().excludeResources().get(0));
-        Assertions.assertEquals("rjvpglydzgkrvqee", model.resourceLists().updateResources().get(0).id());
-        Assertions.assertEquals("t",
+        Assertions.assertEquals("vfonkphhqyikvyl", model.resourceLists().excludeResources().get(0));
+        Assertions.assertEquals("avluwmncs", model.resourceLists().updateResources().get(0).id());
+        Assertions.assertEquals("dyuib",
             model.resourceLists().updateResources().get(0).faultProperties().overriddenDefaultFault().faultUrn());
-        Assertions.assertEquals("cokpv",
+        Assertions.assertEquals("mfdn",
             model.resourceLists().updateResources().get(0).faultProperties().overriddenDefaultFault().faultName());
-        Assertions.assertEquals("mlqtmldgxob",
+        Assertions.assertEquals("zydvfvf",
             model.resourceLists()
                 .updateResources()
                 .get(0)
                 .faultProperties()
                 .overriddenDefaultFault()
                 .targetResourceId());
-        Assertions.assertEquals("rclnpkc",
+        Assertions.assertEquals("naeo",
             model.resourceLists().updateResources().get(0).faultProperties().customFault().faultName());
-        Assertions.assertEquals("ayzri",
+        Assertions.assertEquals("srvhmgorffuki",
             model.resourceLists().updateResources().get(0).faultProperties().customFault().scriptResourceId());
-        Assertions.assertEquals(ForceInclusionAndUpdate.ENABLE, model.forceInclusionAndUpdate());
+        Assertions.assertEquals(ForceInclusionAndUpdate.DISABLE, model.forceInclusionAndUpdate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddOrUpdateResourcesRequest model = new AddOrUpdateResourcesRequest().withFaultDurationInMin(234603951)
+        AddOrUpdateResourcesRequest model = new AddOrUpdateResourcesRequest().withFaultDurationInMin(1160577956)
             .withResourceLists(new ResourceLists()
-                .withIncludeResources(Arrays.asList(
-                    new IncludeOrUpdateResource().withId("podbzevwrdnh")
-                        .withFaultProperties(new FaultProperties()
-                            .withOverriddenDefaultFault(new FaultDetails().withFaultUrn("jvlpjxxkzbr")
-                                .withFaultName("sgeivsiy")
-                                .withTargetResourceId("zkdnc"))
-                            .withCustomFault(
-                                new CustomFaultDetails().withFaultName("xonbzoggculapz").withScriptResourceId("y"))),
-                    new IncludeOrUpdateResource().withId("pgogtqxepny")
-                        .withFaultProperties(new FaultProperties()
-                            .withOverriddenDefaultFault(new FaultDetails().withFaultUrn("dmflv")
-                                .withFaultName("stmjlxrri")
-                                .withTargetResourceId("ozapeew"))
-                            .withCustomFault(
-                                new CustomFaultDetails().withFaultName("pxlktwkuziycsl").withScriptResourceId("vu")))))
-                .withExcludeResources(Arrays.asList("tcktyhjtqedcgzu", "wmmrq"))
-                .withUpdateResources(Arrays.asList(new IncludeOrUpdateResource().withId("rjvpglydzgkrvqee")
+                .withIncludeResources(Arrays.asList(new IncludeOrUpdateResource().withId("z")
+                    .withFaultProperties(new FaultProperties()
+                        .withOverriddenDefaultFault(new FaultDetails().withFaultUrn("ykhyawfvjlboxqvk")
+                            .withFaultName("lmxhomdyn")
+                            .withTargetResourceId("dwdigumb"))
+                        .withCustomFault(new CustomFaultDetails().withFaultName("aauzzptjazysd")
+                            .withScriptResourceId("hezwwvaiq")))))
+                .withExcludeResources(Arrays.asList("vfonkphhqyikvyl"))
+                .withUpdateResources(Arrays.asList(new IncludeOrUpdateResource().withId("avluwmncs")
                     .withFaultProperties(new FaultProperties().withOverriddenDefaultFault(
-                        new FaultDetails().withFaultUrn("t").withFaultName("cokpv").withTargetResourceId("mlqtmldgxob"))
+                        new FaultDetails().withFaultUrn("dyuib").withFaultName("mfdn").withTargetResourceId("zydvfvf"))
                         .withCustomFault(
-                            new CustomFaultDetails().withFaultName("rclnpkc").withScriptResourceId("ayzri"))))))
-            .withForceInclusionAndUpdate(ForceInclusionAndUpdate.ENABLE);
+                            new CustomFaultDetails().withFaultName("naeo").withScriptResourceId("srvhmgorffuki"))),
+                    new IncludeOrUpdateResource().withId("cvwmzhwplefa")
+                        .withFaultProperties(new FaultProperties()
+                            .withOverriddenDefaultFault(new FaultDetails().withFaultUrn("lhzdsqtzb")
+                                .withFaultName("rgnowcjhfgm")
+                                .withTargetResourceId("ecactx"))
+                            .withCustomFault(new CustomFaultDetails().withFaultName("oteyowc")
+                                .withScriptResourceId("uqovekqvgqouwif"))),
+                    new IncludeOrUpdateResource().withId("mpjw")
+                        .withFaultProperties(new FaultProperties()
+                            .withOverriddenDefaultFault(new FaultDetails().withFaultUrn("apzhyrpetoge")
+                                .withFaultName("joxslhvnhla")
+                                .withTargetResourceId("rqnkkzjcjbtr"))
+                            .withCustomFault(
+                                new CustomFaultDetails().withFaultName("ehvvib").withScriptResourceId("xjjs"))))))
+            .withForceInclusionAndUpdate(ForceInclusionAndUpdate.DISABLE);
         model = BinaryData.fromObject(model).toObject(AddOrUpdateResourcesRequest.class);
-        Assertions.assertEquals(234603951, model.faultDurationInMin());
-        Assertions.assertEquals("podbzevwrdnh", model.resourceLists().includeResources().get(0).id());
-        Assertions.assertEquals("jvlpjxxkzbr",
+        Assertions.assertEquals(1160577956, model.faultDurationInMin());
+        Assertions.assertEquals("z", model.resourceLists().includeResources().get(0).id());
+        Assertions.assertEquals("ykhyawfvjlboxqvk",
             model.resourceLists().includeResources().get(0).faultProperties().overriddenDefaultFault().faultUrn());
-        Assertions.assertEquals("sgeivsiy",
+        Assertions.assertEquals("lmxhomdyn",
             model.resourceLists().includeResources().get(0).faultProperties().overriddenDefaultFault().faultName());
-        Assertions.assertEquals("zkdnc",
+        Assertions.assertEquals("dwdigumb",
             model.resourceLists()
                 .includeResources()
                 .get(0)
                 .faultProperties()
                 .overriddenDefaultFault()
                 .targetResourceId());
-        Assertions.assertEquals("xonbzoggculapz",
+        Assertions.assertEquals("aauzzptjazysd",
             model.resourceLists().includeResources().get(0).faultProperties().customFault().faultName());
-        Assertions.assertEquals("y",
+        Assertions.assertEquals("hezwwvaiq",
             model.resourceLists().includeResources().get(0).faultProperties().customFault().scriptResourceId());
-        Assertions.assertEquals("tcktyhjtqedcgzu", model.resourceLists().excludeResources().get(0));
-        Assertions.assertEquals("rjvpglydzgkrvqee", model.resourceLists().updateResources().get(0).id());
-        Assertions.assertEquals("t",
+        Assertions.assertEquals("vfonkphhqyikvyl", model.resourceLists().excludeResources().get(0));
+        Assertions.assertEquals("avluwmncs", model.resourceLists().updateResources().get(0).id());
+        Assertions.assertEquals("dyuib",
             model.resourceLists().updateResources().get(0).faultProperties().overriddenDefaultFault().faultUrn());
-        Assertions.assertEquals("cokpv",
+        Assertions.assertEquals("mfdn",
             model.resourceLists().updateResources().get(0).faultProperties().overriddenDefaultFault().faultName());
-        Assertions.assertEquals("mlqtmldgxob",
+        Assertions.assertEquals("zydvfvf",
             model.resourceLists()
                 .updateResources()
                 .get(0)
                 .faultProperties()
                 .overriddenDefaultFault()
                 .targetResourceId());
-        Assertions.assertEquals("rclnpkc",
+        Assertions.assertEquals("naeo",
             model.resourceLists().updateResources().get(0).faultProperties().customFault().faultName());
-        Assertions.assertEquals("ayzri",
+        Assertions.assertEquals("srvhmgorffuki",
             model.resourceLists().updateResources().get(0).faultProperties().customFault().scriptResourceId());
-        Assertions.assertEquals(ForceInclusionAndUpdate.ENABLE, model.forceInclusionAndUpdate());
+        Assertions.assertEquals(ForceInclusionAndUpdate.DISABLE, model.forceInclusionAndUpdate());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class RecoveryPlanActionsFailoverCommitSamples {
     /*
-     * x-ms-original-file: 2026-10-01/RecoveryPlanActions_FailoverCommit_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/RecoveryPlanActions_FailoverCommit_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_FailoverCommit_MaximumSet.

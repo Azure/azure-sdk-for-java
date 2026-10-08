@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public final class RecoveryPlansCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/RecoveryPlans_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/RecoveryPlans_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlans_CreateOrUpdate_MaximumSet.

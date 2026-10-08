@@ -14,24 +14,22 @@ public final class HealthModelMonitoringPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HealthModelMonitoringProperties model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentity\":\"dfcea\"},\"healthModelId\":\"vlhv\"}")
+            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"fsmlmbtxhwgfw\"},\"healthModelId\":\"rtawcoezb\"}")
             .toObject(HealthModelMonitoringProperties.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("dfcea", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("vlhv", model.healthModelId());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("fsmlmbtxhwgfw", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("rtawcoezb", model.healthModelId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HealthModelMonitoringProperties model
-            = new HealthModelMonitoringProperties()
-                .withIdentity(
-                    new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentity("dfcea"))
-                .withHealthModelId("vlhv");
+        HealthModelMonitoringProperties model = new HealthModelMonitoringProperties()
+            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentity("fsmlmbtxhwgfw"))
+            .withHealthModelId("rtawcoezb");
         model = BinaryData.fromObject(model).toObject(HealthModelMonitoringProperties.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("dfcea", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("vlhv", model.healthModelId());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("fsmlmbtxhwgfw", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("rtawcoezb", model.healthModelId());
     }
 }

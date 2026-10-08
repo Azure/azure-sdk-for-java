@@ -8,6 +8,7 @@ import com.azure.resourcemanager.resiliencemanagement.fluent.models.DrillInner;
 import com.azure.resourcemanager.resiliencemanagement.models.AssetPropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.AssociatedIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ChaosResourcePropertiesOfDrill;
+import com.azure.resourcemanager.resiliencemanagement.models.DrillProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.GoalAssignmentPropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.HealthModelMonitoringProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentity;
@@ -18,7 +19,6 @@ import com.azure.resourcemanager.resiliencemanagement.models.RecoveryPlanPropert
 import com.azure.resourcemanager.resiliencemanagement.models.SliMonitoringProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.SliSelection;
 import com.azure.resourcemanager.resiliencemanagement.models.SliType;
-import com.azure.resourcemanager.resiliencemanagement.models.ZonalDrillProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public final class DrillsCreateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/Drills_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/Drills_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: Drills_Create_MaximumSet.
@@ -38,7 +38,7 @@ public final class DrillsCreateSamples {
     public static void
         drillsCreateMaximumSet(com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
         manager.drills()
-            .create("sampleServiceGroupName", "drill1", new DrillInner().withProperties(new ZonalDrillProperties()
+            .create("sampleServiceGroupName", "drill1", new DrillInner().withProperties(new DrillProperties()
                 .withRecoveryPlanProperties(new RecoveryPlanPropertiesOfDrill().withIdentity(new AssociatedIdentity()
                     .withType(ManagedServiceIdentityType.USER_ASSIGNED)
                     .withUserAssignedIdentity(

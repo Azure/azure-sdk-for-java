@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class RecoveryPlanActionsReprotectMockTests {
     @Test
     public void testReprotect() throws Exception {
-        String responseStr = "{\"jobId\":\"fulopmjnlexwhcb\"}";
+        String responseStr = "{\"jobId\":\"cxneh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class RecoveryPlanActionsReprotectMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RecoveryPlanActionBaseResponse response = manager.recoveryPlanActions()
-            .reprotect("ocxnehvsmtodl", "pyapucygvoav", "unssxlghieegjl",
+            .reprotect("oqza", "unwqr", "zfrgqhaohcm",
                 new ReprotectRequest().withReprotectRequestProperties(new ReprotectRequestProperties()
-                    .withSelectedResourceIds(Arrays.asList("aseksgbuxantuyg", "hgaqipirpiwrq"))),
+                    .withSelectedResourceIds(Arrays.asList("njrohmbpy", "yx", "meblyd", "vkfkmr"))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fulopmjnlexwhcb", response.jobId());
+        Assertions.assertEquals("cxneh", response.jobId());
     }
 }

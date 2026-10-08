@@ -17,24 +17,27 @@ public final class SliMonitoringPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SliMonitoringProperties model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"yftumrtwna\"},\"slis\":[{\"sliId\":\"slbi\",\"type\":\"Latency\"}]}")
+            "{\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentity\":\"bskhudygoookkqfq\"},\"slis\":[{\"sliId\":\"vleo\",\"type\":\"Latency\"},{\"sliId\":\"ml\",\"type\":\"Latency\"},{\"sliId\":\"qtqzfavyv\",\"type\":\"Availability\"},{\"sliId\":\"qybaryeua\",\"type\":\"Availability\"}]}")
             .toObject(SliMonitoringProperties.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("yftumrtwna", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("slbi", model.slis().get(0).sliId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("bskhudygoookkqfq", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("vleo", model.slis().get(0).sliId());
         Assertions.assertEquals(SliType.LATENCY, model.slis().get(0).type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SliMonitoringProperties model = new SliMonitoringProperties()
-            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentity("yftumrtwna"))
-            .withSlis(Arrays.asList(new SliSelection().withSliId("slbi").withType(SliType.LATENCY)));
+            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentity("bskhudygoookkqfq"))
+            .withSlis(Arrays.asList(new SliSelection().withSliId("vleo").withType(SliType.LATENCY),
+                new SliSelection().withSliId("ml").withType(SliType.LATENCY),
+                new SliSelection().withSliId("qtqzfavyv").withType(SliType.AVAILABILITY),
+                new SliSelection().withSliId("qybaryeua").withType(SliType.AVAILABILITY)));
         model = BinaryData.fromObject(model).toObject(SliMonitoringProperties.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("yftumrtwna", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("slbi", model.slis().get(0).sliId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("bskhudygoookkqfq", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("vleo", model.slis().get(0).sliId());
         Assertions.assertEquals(SliType.LATENCY, model.slis().get(0).type());
     }
 }

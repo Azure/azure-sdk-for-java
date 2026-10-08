@@ -14,19 +14,19 @@ public final class GoalAssignmentPropertiesOfDrillTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoalAssignmentPropertiesOfDrill model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentity\":\"nopqgikyzirtx\"},\"goalAssignmentId\":\"uxzejntpsew\"}")
+            "{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"xjvfoimwksl\"},\"goalAssignmentId\":\"cizjxvydfceacvl\"}")
             .toObject(GoalAssignmentPropertiesOfDrill.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("nopqgikyzirtx", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("xjvfoimwksl", model.identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GoalAssignmentPropertiesOfDrill model = new GoalAssignmentPropertiesOfDrill()
-            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentity("nopqgikyzirtx"));
+            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentity("xjvfoimwksl"));
         model = BinaryData.fromObject(model).toObject(GoalAssignmentPropertiesOfDrill.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("nopqgikyzirtx", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("xjvfoimwksl", model.identity().userAssignedIdentity());
     }
 }

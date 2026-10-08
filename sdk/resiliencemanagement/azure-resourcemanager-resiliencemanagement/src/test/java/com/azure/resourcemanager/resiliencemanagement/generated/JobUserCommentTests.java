@@ -12,7 +12,7 @@ public final class JobUserCommentTests {
     public void testDeserialize() throws Exception {
         JobUserComment model = BinaryData
             .fromString(
-                "{\"commentType\":\"ResumeReason\",\"commentTime\":\"2021-06-19T08:48:14Z\",\"comments\":\"sjq\"}")
+                "{\"commentType\":\"ResumeReason\",\"commentTime\":\"2021-04-12T00:35:59Z\",\"comments\":\"sexso\"}")
             .toObject(JobUserComment.class);
     }
 }

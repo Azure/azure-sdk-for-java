@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.resiliencemanagement.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.resiliencemanagement.models.IsoDuration;
 import com.azure.resourcemanager.resiliencemanagement.models.UnifiedResilienceItemResiliencyPosture;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -13,13 +14,20 @@ public final class UnifiedResilienceItemResiliencyPostureTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UnifiedResilienceItemResiliencyPosture model = BinaryData.fromString(
-            "{\"zonalResiliency\":{\"enabledResourceCount\":5534103231898562936,\"notEnabledResourceCount\":8114690620012618166,\"notEvaluatedResourceCount\":1834888259011817847,\"userConfirmationNeededCount\":1149822936606293846,\"evaluationDateTime\":\"2021-07-21T13:18:40Z\"}}")
+            "{\"zonalResiliency\":{\"enabledResourceCount\":7088679129818612035,\"notEnabledResourceCount\":7546790947661599150,\"notEvaluatedResourceCount\":3578038999561407028,\"userConfirmationNeededCount\":4238648304218497383,\"evaluationDateTime\":\"2021-03-22T04:27:33Z\"},\"regionalResiliency\":{\"enabledResourceCount\":463743290248651534,\"notEnabledResourceCount\":3801068538267237341,\"notEvaluatedResourceCount\":2863611225699682559,\"userConfirmationNeededCount\":5763224345501072524,\"evaluationDateTime\":\"2021-01-20T23:20:50Z\",\"estimatedRecoveryPointObjective\":\"PT1H\"}}")
             .toObject(UnifiedResilienceItemResiliencyPosture.class);
-        Assertions.assertEquals(5534103231898562936L, model.zonalResiliency().enabledResourceCount());
-        Assertions.assertEquals(8114690620012618166L, model.zonalResiliency().notEnabledResourceCount());
-        Assertions.assertEquals(1834888259011817847L, model.zonalResiliency().notEvaluatedResourceCount());
-        Assertions.assertEquals(1149822936606293846L, model.zonalResiliency().userConfirmationNeededCount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-21T13:18:40Z"),
+        Assertions.assertEquals(7088679129818612035L, model.zonalResiliency().enabledResourceCount());
+        Assertions.assertEquals(7546790947661599150L, model.zonalResiliency().notEnabledResourceCount());
+        Assertions.assertEquals(3578038999561407028L, model.zonalResiliency().notEvaluatedResourceCount());
+        Assertions.assertEquals(4238648304218497383L, model.zonalResiliency().userConfirmationNeededCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-22T04:27:33Z"),
             model.zonalResiliency().evaluationDateTime());
+        Assertions.assertEquals(463743290248651534L, model.regionalResiliency().enabledResourceCount());
+        Assertions.assertEquals(3801068538267237341L, model.regionalResiliency().notEnabledResourceCount());
+        Assertions.assertEquals(2863611225699682559L, model.regionalResiliency().notEvaluatedResourceCount());
+        Assertions.assertEquals(5763224345501072524L, model.regionalResiliency().userConfirmationNeededCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T23:20:50Z"),
+            model.regionalResiliency().evaluationDateTime());
+        Assertions.assertEquals(IsoDuration.PT1H, model.regionalResiliency().estimatedRecoveryPointObjective());
     }
 }

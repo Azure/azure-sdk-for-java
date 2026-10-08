@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class RecoveryPlanActionsCheckReadinessSamples {
     /*
-     * x-ms-original-file: 2026-10-01/RecoveryPlanActions_CheckReadiness_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/RecoveryPlanActions_CheckReadiness_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_CheckReadiness_MaximumSet.

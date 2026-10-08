@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class RecoveryPlansDeleteSamples {
     /*
-     * x-ms-original-file: 2026-10-01/RecoveryPlans_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-31-preview/RecoveryPlans_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlans_Delete_MaximumSet.

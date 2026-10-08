@@ -16,107 +16,98 @@ public final class RecoveryGroupsSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryGroupsSetting model = BinaryData.fromString(
-            "{\"defaultGroup\":{\"properties\":{\"groupUniqueId\":\"krxd\",\"orderId\":435751453,\"description\":\"i\",\"preActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"hzrvqd\",\"description\":\"bhj\",\"timeoutInMinutes\":792570944}],\"postActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"ehoqfbowskan\",\"description\":\"tzlcuiywgqywgn\",\"timeoutInMinutes\":508841198},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"vynhzgpphrcg\",\"description\":\"cocpecfvmmcoofsx\",\"timeoutInMinutes\":1165207027},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"evgbmqjq\",\"description\":\"c\",\"timeoutInMinutes\":138991761},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"mivkwlzuvcc\",\"description\":\"nfnbacfionlebxe\",\"timeoutInMinutes\":1013324715}]},\"id\":\"tzxdpnqbqqwx\",\"name\":\"jfeallnwsub\",\"type\":\"snjampmng\"},\"additionalGroups\":[{\"properties\":{\"groupUniqueId\":\"xaqwoochcbonqv\",\"orderId\":1820619923,\"description\":\"vlrxnjeaseiph\",\"preActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"lokeyy\",\"description\":\"nj\",\"timeoutInMinutes\":290307035}],\"postActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"tgrhpdjpjumas\",\"description\":\"zj\",\"timeoutInMinutes\":958851014},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"yegu\",\"description\":\"hb\",\"timeoutInMinutes\":703719662},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"hejjz\",\"description\":\"dudgwdslfhot\",\"timeoutInMinutes\":743935236}]},\"id\":\"ynpwlbj\",\"name\":\"pgacftadehxnlty\",\"type\":\"sop\"},{\"properties\":{\"groupUniqueId\":\"suesnzw\",\"orderId\":332314223,\"description\":\"jbavorxzdm\",\"preActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"tbqvudw\",\"description\":\"ndnvo\",\"timeoutInMinutes\":1257781428},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"ujjugwdkcglh\",\"description\":\"azjdyggd\",\"timeoutInMinutes\":1473301167},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"ixhbkuofqweykhm\",\"description\":\"evfyexfwhybcib\",\"timeoutInMinutes\":908813690}],\"postActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"c\",\"description\":\"tynnaamdectehfi\",\"timeoutInMinutes\":1860942440}]},\"id\":\"jeyp\",\"name\":\"hezrkgq\",\"type\":\"c\"}]}")
+            "{\"defaultGroup\":{\"properties\":{\"groupUniqueId\":\"jbdlwtgrhpdjpju\",\"orderId\":1984471736,\"description\":\"sxazjpq\",\"preActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"ualhbxxhejj\",\"description\":\"v\",\"timeoutInMinutes\":514021855}],\"postActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"wdslfhotwmcy\",\"description\":\"wlbjnpgacftade\",\"timeoutInMinutes\":756336922},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"nltyfsoppusuesnz\",\"description\":\"ej\",\"timeoutInMinutes\":600821678},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"vorxzdmohct\",\"description\":\"vudwx\",\"timeoutInMinutes\":1222672575}]},\"id\":\"nvowgujju\",\"name\":\"wdkcglhsl\",\"type\":\"zj\"},\"additionalGroups\":[{\"properties\":{\"groupUniqueId\":\"dtjixhb\",\"orderId\":1474231325,\"description\":\"ofqweykhmenevfye\",\"preActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"hybcibv\",\"description\":\"dcsi\",\"timeoutInMinutes\":1451837179},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"nnaamdectehfiqsc\",\"description\":\"ypvhezrkg\",\"timeoutInMinutes\":693587344}],\"postActions\":[{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"refovgmkqsleyyvx\",\"description\":\"jpkcattpng\",\"timeoutInMinutes\":452676867},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"rcczsqpjhvmd\",\"description\":\"v\",\"timeoutInMinutes\":1022740915},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"sounqecanoaeu\",\"description\":\"hy\",\"timeoutInMinutes\":2101228547},{\"type\":\"RecoveryGroupBaseAction\",\"name\":\"trpmo\",\"description\":\"mcmatuokthfuiu\",\"timeoutInMinutes\":1958511129}]},\"id\":\"sfcpkvxodpuozm\",\"name\":\"zydagfuaxbezyiuo\",\"type\":\"ktwh\"}]}")
             .toObject(RecoveryGroupsSetting.class);
-        Assertions.assertEquals("krxd", model.defaultGroup().properties().groupUniqueId());
-        Assertions.assertEquals(435751453, model.defaultGroup().properties().orderId());
-        Assertions.assertEquals("i", model.defaultGroup().properties().description());
-        Assertions.assertEquals("hzrvqd", model.defaultGroup().properties().preActions().get(0).name());
-        Assertions.assertEquals("bhj", model.defaultGroup().properties().preActions().get(0).description());
-        Assertions.assertEquals(792570944, model.defaultGroup().properties().preActions().get(0).timeoutInMinutes());
-        Assertions.assertEquals("ehoqfbowskan", model.defaultGroup().properties().postActions().get(0).name());
-        Assertions.assertEquals("tzlcuiywgqywgn", model.defaultGroup().properties().postActions().get(0).description());
-        Assertions.assertEquals(508841198, model.defaultGroup().properties().postActions().get(0).timeoutInMinutes());
-        Assertions.assertEquals("xaqwoochcbonqv", model.additionalGroups().get(0).properties().groupUniqueId());
-        Assertions.assertEquals(1820619923, model.additionalGroups().get(0).properties().orderId());
-        Assertions.assertEquals("vlrxnjeaseiph", model.additionalGroups().get(0).properties().description());
-        Assertions.assertEquals("lokeyy", model.additionalGroups().get(0).properties().preActions().get(0).name());
-        Assertions.assertEquals("nj", model.additionalGroups().get(0).properties().preActions().get(0).description());
-        Assertions.assertEquals(290307035,
+        Assertions.assertEquals("jbdlwtgrhpdjpju", model.defaultGroup().properties().groupUniqueId());
+        Assertions.assertEquals(1984471736, model.defaultGroup().properties().orderId());
+        Assertions.assertEquals("sxazjpq", model.defaultGroup().properties().description());
+        Assertions.assertEquals("ualhbxxhejj", model.defaultGroup().properties().preActions().get(0).name());
+        Assertions.assertEquals("v", model.defaultGroup().properties().preActions().get(0).description());
+        Assertions.assertEquals(514021855, model.defaultGroup().properties().preActions().get(0).timeoutInMinutes());
+        Assertions.assertEquals("wdslfhotwmcy", model.defaultGroup().properties().postActions().get(0).name());
+        Assertions.assertEquals("wlbjnpgacftade", model.defaultGroup().properties().postActions().get(0).description());
+        Assertions.assertEquals(756336922, model.defaultGroup().properties().postActions().get(0).timeoutInMinutes());
+        Assertions.assertEquals("dtjixhb", model.additionalGroups().get(0).properties().groupUniqueId());
+        Assertions.assertEquals(1474231325, model.additionalGroups().get(0).properties().orderId());
+        Assertions.assertEquals("ofqweykhmenevfye", model.additionalGroups().get(0).properties().description());
+        Assertions.assertEquals("hybcibv", model.additionalGroups().get(0).properties().preActions().get(0).name());
+        Assertions.assertEquals("dcsi", model.additionalGroups().get(0).properties().preActions().get(0).description());
+        Assertions.assertEquals(1451837179,
             model.additionalGroups().get(0).properties().preActions().get(0).timeoutInMinutes());
-        Assertions.assertEquals("tgrhpdjpjumas",
+        Assertions.assertEquals("refovgmkqsleyyvx",
             model.additionalGroups().get(0).properties().postActions().get(0).name());
-        Assertions.assertEquals("zj", model.additionalGroups().get(0).properties().postActions().get(0).description());
-        Assertions.assertEquals(958851014,
+        Assertions.assertEquals("jpkcattpng",
+            model.additionalGroups().get(0).properties().postActions().get(0).description());
+        Assertions.assertEquals(452676867,
             model.additionalGroups().get(0).properties().postActions().get(0).timeoutInMinutes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryGroupsSetting model = new RecoveryGroupsSetting()
-            .withDefaultGroup(new RecoveryGroup().withProperties(new RecoveryGroupProperties().withGroupUniqueId("krxd")
-                .withOrderId(435751453)
-                .withDescription("i")
-                .withPreActions(Arrays.asList(new RecoveryGroupBaseAction().withName("hzrvqd")
-                    .withDescription("bhj")
-                    .withTimeoutInMinutes(792570944)))
-                .withPostActions(Arrays.asList(
-                    new RecoveryGroupBaseAction().withName("ehoqfbowskan")
-                        .withDescription("tzlcuiywgqywgn")
-                        .withTimeoutInMinutes(508841198),
-                    new RecoveryGroupBaseAction().withName("vynhzgpphrcg")
-                        .withDescription("cocpecfvmmcoofsx")
-                        .withTimeoutInMinutes(1165207027),
-                    new RecoveryGroupBaseAction().withName("evgbmqjq")
-                        .withDescription("c")
-                        .withTimeoutInMinutes(138991761),
-                    new RecoveryGroupBaseAction().withName("mivkwlzuvcc")
-                        .withDescription("nfnbacfionlebxe")
-                        .withTimeoutInMinutes(1013324715)))))
-            .withAdditionalGroups(Arrays.asList(
-                new RecoveryGroup().withProperties(new RecoveryGroupProperties().withGroupUniqueId("xaqwoochcbonqv")
-                    .withOrderId(1820619923)
-                    .withDescription("vlrxnjeaseiph")
-                    .withPreActions(Arrays.asList(new RecoveryGroupBaseAction().withName("lokeyy")
-                        .withDescription("nj")
-                        .withTimeoutInMinutes(290307035)))
+            .withDefaultGroup(
+                new RecoveryGroup().withProperties(new RecoveryGroupProperties().withGroupUniqueId("jbdlwtgrhpdjpju")
+                    .withOrderId(1984471736)
+                    .withDescription("sxazjpq")
+                    .withPreActions(Arrays.asList(new RecoveryGroupBaseAction().withName("ualhbxxhejj")
+                        .withDescription("v")
+                        .withTimeoutInMinutes(514021855)))
                     .withPostActions(Arrays.asList(
-                        new RecoveryGroupBaseAction().withName("tgrhpdjpjumas")
-                            .withDescription("zj")
-                            .withTimeoutInMinutes(958851014),
-                        new RecoveryGroupBaseAction().withName("yegu")
-                            .withDescription("hb")
-                            .withTimeoutInMinutes(703719662),
-                        new RecoveryGroupBaseAction().withName("hejjz")
-                            .withDescription("dudgwdslfhot")
-                            .withTimeoutInMinutes(743935236)))),
-                new RecoveryGroup().withProperties(new RecoveryGroupProperties().withGroupUniqueId("suesnzw")
-                    .withOrderId(332314223)
-                    .withDescription("jbavorxzdm")
+                        new RecoveryGroupBaseAction().withName("wdslfhotwmcy")
+                            .withDescription("wlbjnpgacftade")
+                            .withTimeoutInMinutes(756336922),
+                        new RecoveryGroupBaseAction().withName("nltyfsoppusuesnz")
+                            .withDescription("ej")
+                            .withTimeoutInMinutes(600821678),
+                        new RecoveryGroupBaseAction().withName("vorxzdmohct")
+                            .withDescription("vudwx")
+                            .withTimeoutInMinutes(1222672575)))))
+            .withAdditionalGroups(Arrays
+                .asList(new RecoveryGroup().withProperties(new RecoveryGroupProperties().withGroupUniqueId("dtjixhb")
+                    .withOrderId(1474231325)
+                    .withDescription("ofqweykhmenevfye")
                     .withPreActions(Arrays.asList(
-                        new RecoveryGroupBaseAction().withName("tbqvudw")
-                            .withDescription("ndnvo")
-                            .withTimeoutInMinutes(1257781428),
-                        new RecoveryGroupBaseAction().withName("ujjugwdkcglh")
-                            .withDescription("azjdyggd")
-                            .withTimeoutInMinutes(1473301167),
-                        new RecoveryGroupBaseAction().withName("ixhbkuofqweykhm")
-                            .withDescription("evfyexfwhybcib")
-                            .withTimeoutInMinutes(908813690)))
-                    .withPostActions(Arrays.asList(new RecoveryGroupBaseAction().withName("c")
-                        .withDescription("tynnaamdectehfi")
-                        .withTimeoutInMinutes(1860942440))))));
+                        new RecoveryGroupBaseAction().withName("hybcibv")
+                            .withDescription("dcsi")
+                            .withTimeoutInMinutes(1451837179),
+                        new RecoveryGroupBaseAction().withName("nnaamdectehfiqsc")
+                            .withDescription("ypvhezrkg")
+                            .withTimeoutInMinutes(693587344)))
+                    .withPostActions(Arrays.asList(
+                        new RecoveryGroupBaseAction().withName("refovgmkqsleyyvx")
+                            .withDescription("jpkcattpng")
+                            .withTimeoutInMinutes(452676867),
+                        new RecoveryGroupBaseAction().withName("rcczsqpjhvmd")
+                            .withDescription("v")
+                            .withTimeoutInMinutes(1022740915),
+                        new RecoveryGroupBaseAction().withName("sounqecanoaeu")
+                            .withDescription("hy")
+                            .withTimeoutInMinutes(2101228547),
+                        new RecoveryGroupBaseAction().withName("trpmo")
+                            .withDescription("mcmatuokthfuiu")
+                            .withTimeoutInMinutes(1958511129))))));
         model = BinaryData.fromObject(model).toObject(RecoveryGroupsSetting.class);
-        Assertions.assertEquals("krxd", model.defaultGroup().properties().groupUniqueId());
-        Assertions.assertEquals(435751453, model.defaultGroup().properties().orderId());
-        Assertions.assertEquals("i", model.defaultGroup().properties().description());
-        Assertions.assertEquals("hzrvqd", model.defaultGroup().properties().preActions().get(0).name());
-        Assertions.assertEquals("bhj", model.defaultGroup().properties().preActions().get(0).description());
-        Assertions.assertEquals(792570944, model.defaultGroup().properties().preActions().get(0).timeoutInMinutes());
-        Assertions.assertEquals("ehoqfbowskan", model.defaultGroup().properties().postActions().get(0).name());
-        Assertions.assertEquals("tzlcuiywgqywgn", model.defaultGroup().properties().postActions().get(0).description());
-        Assertions.assertEquals(508841198, model.defaultGroup().properties().postActions().get(0).timeoutInMinutes());
-        Assertions.assertEquals("xaqwoochcbonqv", model.additionalGroups().get(0).properties().groupUniqueId());
-        Assertions.assertEquals(1820619923, model.additionalGroups().get(0).properties().orderId());
-        Assertions.assertEquals("vlrxnjeaseiph", model.additionalGroups().get(0).properties().description());
-        Assertions.assertEquals("lokeyy", model.additionalGroups().get(0).properties().preActions().get(0).name());
-        Assertions.assertEquals("nj", model.additionalGroups().get(0).properties().preActions().get(0).description());
-        Assertions.assertEquals(290307035,
+        Assertions.assertEquals("jbdlwtgrhpdjpju", model.defaultGroup().properties().groupUniqueId());
+        Assertions.assertEquals(1984471736, model.defaultGroup().properties().orderId());
+        Assertions.assertEquals("sxazjpq", model.defaultGroup().properties().description());
+        Assertions.assertEquals("ualhbxxhejj", model.defaultGroup().properties().preActions().get(0).name());
+        Assertions.assertEquals("v", model.defaultGroup().properties().preActions().get(0).description());
+        Assertions.assertEquals(514021855, model.defaultGroup().properties().preActions().get(0).timeoutInMinutes());
+        Assertions.assertEquals("wdslfhotwmcy", model.defaultGroup().properties().postActions().get(0).name());
+        Assertions.assertEquals("wlbjnpgacftade", model.defaultGroup().properties().postActions().get(0).description());
+        Assertions.assertEquals(756336922, model.defaultGroup().properties().postActions().get(0).timeoutInMinutes());
+        Assertions.assertEquals("dtjixhb", model.additionalGroups().get(0).properties().groupUniqueId());
+        Assertions.assertEquals(1474231325, model.additionalGroups().get(0).properties().orderId());
+        Assertions.assertEquals("ofqweykhmenevfye", model.additionalGroups().get(0).properties().description());
+        Assertions.assertEquals("hybcibv", model.additionalGroups().get(0).properties().preActions().get(0).name());
+        Assertions.assertEquals("dcsi", model.additionalGroups().get(0).properties().preActions().get(0).description());
+        Assertions.assertEquals(1451837179,
             model.additionalGroups().get(0).properties().preActions().get(0).timeoutInMinutes());
-        Assertions.assertEquals("tgrhpdjpjumas",
+        Assertions.assertEquals("refovgmkqsleyyvx",
             model.additionalGroups().get(0).properties().postActions().get(0).name());
-        Assertions.assertEquals("zj", model.additionalGroups().get(0).properties().postActions().get(0).description());
-        Assertions.assertEquals(958851014,
+        Assertions.assertEquals("jpkcattpng",
+            model.additionalGroups().get(0).properties().postActions().get(0).description());
+        Assertions.assertEquals(452676867,
             model.additionalGroups().get(0).properties().postActions().get(0).timeoutInMinutes());
     }
 }

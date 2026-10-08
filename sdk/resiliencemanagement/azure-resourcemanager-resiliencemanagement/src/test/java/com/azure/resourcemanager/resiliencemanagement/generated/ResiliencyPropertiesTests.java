@@ -19,15 +19,15 @@ public final class ResiliencyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResiliencyProperties model = BinaryData.fromString(
-            "{\"goalParticipation\":\"Included\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"UnsupportedResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalNotNeeded\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"}]}")
+            "{\"goalParticipation\":\"Included\",\"attestationStatus\":\"ManuallyAttested\",\"exclusionReason\":\"FailedOverResource\",\"userConfirmation\":[{\"solutionDisplayName\":\"VmInMultiZoneVmss\",\"confirmationStatus\":\"ApprovalPending\",\"reasonForRequestingConfirmation\":\"VmInMultiZoneScaleSetStatelessOnly\"},{\"solutionDisplayName\":\"ZonePinnedVmWithZrsDisk\",\"confirmationStatus\":\"ApprovalNotNeeded\",\"reasonForRequestingConfirmation\":\"ZonePinnedZrsDataDisksConditional\"}]}")
             .toObject(ResiliencyProperties.class);
         Assertions.assertEquals(ExclusionState.INCLUDED, model.goalParticipation());
         Assertions.assertEquals(AttestationState.MANUALLY_ATTESTED, model.attestationStatus());
         Assertions.assertEquals(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS,
             model.userConfirmation().get(0).solutionDisplayName());
-        Assertions.assertEquals(ConfirmationStatus.APPROVAL_NOT_NEEDED,
+        Assertions.assertEquals(ConfirmationStatus.APPROVAL_PENDING,
             model.userConfirmation().get(0).confirmationStatus());
-        Assertions.assertEquals(ReasonForRequestingConfirmation.ZONE_PINNED_ZRS_DATA_DISKS_CONDITIONAL,
+        Assertions.assertEquals(ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY,
             model.userConfirmation().get(0).reasonForRequestingConfirmation());
     }
 
@@ -35,8 +35,12 @@ public final class ResiliencyPropertiesTests {
     public void testSerialize() throws Exception {
         ResiliencyProperties model = new ResiliencyProperties().withGoalParticipation(ExclusionState.INCLUDED)
             .withAttestationStatus(AttestationState.MANUALLY_ATTESTED)
-            .withUserConfirmation(Arrays
-                .asList(new UserConfirmationItem().withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+            .withUserConfirmation(Arrays.asList(
+                new UserConfirmationItem().withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                    .withConfirmationStatus(ConfirmationStatus.APPROVAL_PENDING)
+                    .withReasonForRequestingConfirmation(
+                        ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY),
+                new UserConfirmationItem().withSolutionDisplayName(SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
                     .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED)
                     .withReasonForRequestingConfirmation(
                         ReasonForRequestingConfirmation.ZONE_PINNED_ZRS_DATA_DISKS_CONDITIONAL)));
@@ -45,9 +49,9 @@ public final class ResiliencyPropertiesTests {
         Assertions.assertEquals(AttestationState.MANUALLY_ATTESTED, model.attestationStatus());
         Assertions.assertEquals(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS,
             model.userConfirmation().get(0).solutionDisplayName());
-        Assertions.assertEquals(ConfirmationStatus.APPROVAL_NOT_NEEDED,
+        Assertions.assertEquals(ConfirmationStatus.APPROVAL_PENDING,
             model.userConfirmation().get(0).confirmationStatus());
-        Assertions.assertEquals(ReasonForRequestingConfirmation.ZONE_PINNED_ZRS_DATA_DISKS_CONDITIONAL,
+        Assertions.assertEquals(ReasonForRequestingConfirmation.VM_IN_MULTI_ZONE_SCALE_SET_STATELESS_ONLY,
             model.userConfirmation().get(0).reasonForRequestingConfirmation());
     }
 }

@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class RecommendCapacityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecommendCapacityRequest model
-            = BinaryData.fromString("{\"resourceIds\":[\"kcqvkocrc\",\"dkwt\",\"hxbnjbiksqrg\"]}")
-                .toObject(RecommendCapacityRequest.class);
-        Assertions.assertEquals("kcqvkocrc", model.resourceIds().get(0));
+        RecommendCapacityRequest model = BinaryData.fromString("{\"resourceIds\":[\"wpwcukjfkgiawxkl\",\"ypl\"]}")
+            .toObject(RecommendCapacityRequest.class);
+        Assertions.assertEquals("wpwcukjfkgiawxkl", model.resourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecommendCapacityRequest model
-            = new RecommendCapacityRequest().withResourceIds(Arrays.asList("kcqvkocrc", "dkwt", "hxbnjbiksqrg"));
+            = new RecommendCapacityRequest().withResourceIds(Arrays.asList("wpwcukjfkgiawxkl", "ypl"));
         model = BinaryData.fromObject(model).toObject(RecommendCapacityRequest.class);
-        Assertions.assertEquals("kcqvkocrc", model.resourceIds().get(0));
+        Assertions.assertEquals("wpwcukjfkgiawxkl", model.resourceIds().get(0));
     }
 }
