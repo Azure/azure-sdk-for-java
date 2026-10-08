@@ -16,20 +16,20 @@ public final class GenericRecoveryPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GenericRecoveryPoint model = BinaryData.fromString(
-            "{\"objectType\":\"GenericRecoveryPoint\",\"friendlyName\":\"jylwbtlhflsj\",\"recoveryPointType\":\"hszfjvfb\",\"recoveryPointTime\":\"2021-08-02T20:09:46Z\",\"recoveryPointAdditionalInfo\":\"ljagrqmqhl\",\"recoveryPointProperties\":{\"expiryTime\":\"iiiojnalghf\",\"ruleName\":\"tvsexsowuel\",\"isSoftDeleted\":true,\"immutabilityProperties\":{\"isImmutable\":false,\"expiryTime\":\"2021-06-13T10:08:13Z\"}},\"threatStatus\":\"NotAvailable\",\"threatInfo\":[{\"threatTitle\":\"zkw\",\"threatDescription\":\"g\",\"lastUpdatedTime\":\"2021-10-11T18:28:46Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-03-26T20:29:02Z\",\"threatEndTime\":\"2021-10-04T11:20:51Z\",\"threatURI\":\"sxhqxujx\",\"threatSeverity\":\"Informational\"}]}")
+            "{\"objectType\":\"GenericRecoveryPoint\",\"friendlyName\":\"nbixxrti\",\"recoveryPointType\":\"cpwpg\",\"recoveryPointTime\":\"2021-08-25T01:58:09Z\",\"recoveryPointAdditionalInfo\":\"ivtsoxfrkenxpm\",\"recoveryPointProperties\":{\"expiryTime\":\"frpmpdnqqskaw\",\"ruleName\":\"qvmmbn\",\"isSoftDeleted\":false,\"immutabilityProperties\":{\"isImmutable\":false,\"expiryTime\":\"2021-07-05T10:15:40Z\"}},\"threatStatus\":\"NotAvailable\",\"threatInfo\":[{\"threatTitle\":\"nitgvkxlz\",\"threatDescription\":\"drf\",\"lastUpdatedTime\":\"2021-06-06T10:57:32Z\",\"threatState\":\"Ignored\",\"threatStartTime\":\"2021-08-14T17:21:29Z\",\"threatEndTime\":\"2021-11-13T05:38:27Z\",\"threatURI\":\"cansymoyqhlwigd\",\"threatSeverity\":\"Warning\"},{\"threatTitle\":\"bxgomfaj\",\"threatDescription\":\"asqvd\",\"lastUpdatedTime\":\"2021-08-06T04:39:44Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-07-22T12:10:30Z\",\"threatEndTime\":\"2021-01-03T11:42:14Z\",\"threatURI\":\"sqzhzbezkg\",\"threatSeverity\":\"Warning\"}]}")
             .toObject(GenericRecoveryPoint.class);
         Assertions.assertEquals(ThreatStatus.NOT_AVAILABLE, model.threatStatus());
-        Assertions.assertEquals(ThreatState.IN_PROGRESS, model.threatInfo().get(0).threatState());
-        Assertions.assertEquals(ThreatSeverity.INFORMATIONAL, model.threatInfo().get(0).threatSeverity());
-        Assertions.assertEquals("jylwbtlhflsj", model.friendlyName());
-        Assertions.assertEquals("hszfjvfb", model.recoveryPointType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-02T20:09:46Z"), model.recoveryPointTime());
-        Assertions.assertEquals("ljagrqmqhl", model.recoveryPointAdditionalInfo());
-        Assertions.assertEquals("iiiojnalghf", model.recoveryPointProperties().expiryTime());
-        Assertions.assertEquals("tvsexsowuel", model.recoveryPointProperties().ruleName());
-        Assertions.assertTrue(model.recoveryPointProperties().isSoftDeleted());
+        Assertions.assertEquals(ThreatState.IGNORED, model.threatInfo().get(0).threatState());
+        Assertions.assertEquals(ThreatSeverity.WARNING, model.threatInfo().get(0).threatSeverity());
+        Assertions.assertEquals("nbixxrti", model.friendlyName());
+        Assertions.assertEquals("cpwpg", model.recoveryPointType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-25T01:58:09Z"), model.recoveryPointTime());
+        Assertions.assertEquals("ivtsoxfrkenxpm", model.recoveryPointAdditionalInfo());
+        Assertions.assertEquals("frpmpdnqqskaw", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("qvmmbn", model.recoveryPointProperties().ruleName());
+        Assertions.assertFalse(model.recoveryPointProperties().isSoftDeleted());
         Assertions.assertFalse(model.recoveryPointProperties().immutabilityProperties().isImmutable());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-13T10:08:13Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-05T10:15:40Z"),
             model.recoveryPointProperties().immutabilityProperties().expiryTime());
     }
 }

@@ -13,25 +13,25 @@ public final class PreValidateEnableBackupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PreValidateEnableBackupRequest model = BinaryData.fromString(
-            "{\"resourceType\":\"SAPHanaDatabase\",\"resourceId\":\"gydgrpxncakiq\",\"vaultId\":\"ndjrkclamggl\",\"properties\":\"mfejdoqeykglty\"}")
+            "{\"resourceType\":\"Sharepoint\",\"resourceId\":\"gfredmlscg\",\"vaultId\":\"lccnaovjowaz\",\"properties\":\"abacomlyotgkws\"}")
             .toObject(PreValidateEnableBackupRequest.class);
-        Assertions.assertEquals(DataSourceType.SAPHANA_DATABASE, model.resourceType());
-        Assertions.assertEquals("gydgrpxncakiq", model.resourceId());
-        Assertions.assertEquals("ndjrkclamggl", model.vaultId());
-        Assertions.assertEquals("mfejdoqeykglty", model.properties());
+        Assertions.assertEquals(DataSourceType.SHAREPOINT, model.resourceType());
+        Assertions.assertEquals("gfredmlscg", model.resourceId());
+        Assertions.assertEquals("lccnaovjowaz", model.vaultId());
+        Assertions.assertEquals("abacomlyotgkws", model.properties());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PreValidateEnableBackupRequest model
-            = new PreValidateEnableBackupRequest().withResourceType(DataSourceType.SAPHANA_DATABASE)
-                .withResourceId("gydgrpxncakiq")
-                .withVaultId("ndjrkclamggl")
-                .withProperties("mfejdoqeykglty");
+            = new PreValidateEnableBackupRequest().withResourceType(DataSourceType.SHAREPOINT)
+                .withResourceId("gfredmlscg")
+                .withVaultId("lccnaovjowaz")
+                .withProperties("abacomlyotgkws");
         model = BinaryData.fromObject(model).toObject(PreValidateEnableBackupRequest.class);
-        Assertions.assertEquals(DataSourceType.SAPHANA_DATABASE, model.resourceType());
-        Assertions.assertEquals("gydgrpxncakiq", model.resourceId());
-        Assertions.assertEquals("ndjrkclamggl", model.vaultId());
-        Assertions.assertEquals("mfejdoqeykglty", model.properties());
+        Assertions.assertEquals(DataSourceType.SHAREPOINT, model.resourceType());
+        Assertions.assertEquals("gfredmlscg", model.resourceId());
+        Assertions.assertEquals("lccnaovjowaz", model.vaultId());
+        Assertions.assertEquals("abacomlyotgkws", model.properties());
     }
 }

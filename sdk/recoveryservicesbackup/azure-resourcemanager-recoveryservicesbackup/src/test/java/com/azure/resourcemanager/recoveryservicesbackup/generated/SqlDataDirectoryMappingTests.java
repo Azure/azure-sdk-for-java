@@ -13,24 +13,24 @@ public final class SqlDataDirectoryMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlDataDirectoryMapping model = BinaryData.fromString(
-            "{\"mappingType\":\"Data\",\"sourceLogicalName\":\"piljhahzvech\",\"sourcePath\":\"bnwieholew\",\"targetPath\":\"iuubwefqsf\"}")
+            "{\"mappingType\":\"Data\",\"sourceLogicalName\":\"bwetnjuhpsp\",\"sourcePath\":\"zyaupiac\",\"targetPath\":\"n\"}")
             .toObject(SqlDataDirectoryMapping.class);
         Assertions.assertEquals(SqlDataDirectoryType.DATA, model.mappingType());
-        Assertions.assertEquals("piljhahzvech", model.sourceLogicalName());
-        Assertions.assertEquals("bnwieholew", model.sourcePath());
-        Assertions.assertEquals("iuubwefqsf", model.targetPath());
+        Assertions.assertEquals("bwetnjuhpsp", model.sourceLogicalName());
+        Assertions.assertEquals("zyaupiac", model.sourcePath());
+        Assertions.assertEquals("n", model.targetPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlDataDirectoryMapping model = new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.DATA)
-            .withSourceLogicalName("piljhahzvech")
-            .withSourcePath("bnwieholew")
-            .withTargetPath("iuubwefqsf");
+            .withSourceLogicalName("bwetnjuhpsp")
+            .withSourcePath("zyaupiac")
+            .withTargetPath("n");
         model = BinaryData.fromObject(model).toObject(SqlDataDirectoryMapping.class);
         Assertions.assertEquals(SqlDataDirectoryType.DATA, model.mappingType());
-        Assertions.assertEquals("piljhahzvech", model.sourceLogicalName());
-        Assertions.assertEquals("bnwieholew", model.sourcePath());
-        Assertions.assertEquals("iuubwefqsf", model.targetPath());
+        Assertions.assertEquals("bwetnjuhpsp", model.sourceLogicalName());
+        Assertions.assertEquals("zyaupiac", model.sourcePath());
+        Assertions.assertEquals("n", model.targetPath());
     }
 }

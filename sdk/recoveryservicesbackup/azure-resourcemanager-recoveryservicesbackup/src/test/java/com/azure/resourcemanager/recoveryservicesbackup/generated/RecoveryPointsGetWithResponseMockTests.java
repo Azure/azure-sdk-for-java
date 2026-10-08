@@ -24,7 +24,7 @@ public final class RecoveryPointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"UnHealthy\",\"threatInfo\":[{\"threatTitle\":\"cpj\",\"threatDescription\":\"uqgixex\",\"lastUpdatedTime\":\"2021-04-05T10:28:16Z\",\"threatState\":\"Ignored\",\"threatStartTime\":\"2021-11-27T14:04:08Z\",\"threatEndTime\":\"2021-09-02T04:57:07Z\",\"threatURI\":\"huerkjddvrglie\",\"threatSeverity\":\"Warning\"},{\"threatTitle\":\"vbiiftksdwgdnk\",\"threatDescription\":\"gmwdh\",\"lastUpdatedTime\":\"2021-04-19T17:37:58Z\",\"threatState\":\"InProgress\",\"threatStartTime\":\"2021-04-01T00:54:20Z\",\"threatEndTime\":\"2021-09-27T11:55:39Z\",\"threatURI\":\"g\",\"threatSeverity\":\"Warning\"},{\"threatTitle\":\"t\",\"threatDescription\":\"aqgzekajclyzgs\",\"lastUpdatedTime\":\"2021-04-21T17:36:16Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-11-11T22:10:46Z\",\"threatEndTime\":\"2021-04-21T21:06:45Z\",\"threatURI\":\"otvmrxk\",\"threatSeverity\":\"Warning\"},{\"threatTitle\":\"vvjbhvhdiqayf\",\"threatDescription\":\"iyu\",\"lastUpdatedTime\":\"2021-06-15T23:07:24Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-07-01T21:53:07Z\",\"threatEndTime\":\"2021-09-15T12:15:44Z\",\"threatURI\":\"hyibdrqrswh\",\"threatSeverity\":\"High\"}]},\"tags\":{\"owtjo\":\"y\",\"vjnn\":\"ztfwfqchvcz\"},\"location\":\"agfyvrtpqpe\",\"eTag\":\"z\",\"id\":\"krepdqhqyhwqwem\",\"name\":\"xqabckmzeoxi\",\"type\":\"hgreohtwhlpuz\"}";
+            = "{\"properties\":{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"UnHealthy\",\"threatInfo\":[{\"threatTitle\":\"fpcfjf\",\"threatDescription\":\"lgzawkgyepeyamnn\",\"lastUpdatedTime\":\"2021-02-15T10:13:01Z\",\"threatState\":\"Active\",\"threatStartTime\":\"2021-01-16T09:56:14Z\",\"threatEndTime\":\"2021-07-02T14:34:17Z\",\"threatURI\":\"kzrn\",\"threatSeverity\":\"Critical\"},{\"threatTitle\":\"tdhuo\",\"threatDescription\":\"wqpsqaz\",\"lastUpdatedTime\":\"2021-01-30T13:42:07Z\",\"threatState\":\"Resolved\",\"threatStartTime\":\"2021-06-25T01:03:25Z\",\"threatEndTime\":\"2021-11-30T20:35:22Z\",\"threatURI\":\"bh\",\"threatSeverity\":\"Informational\"}]},\"tags\":{\"ftvhkmoogj\":\"ztibniyntsxjmfm\",\"gmjgrul\":\"hskb\"},\"location\":\"ogxhcxn\",\"eTag\":\"tpfdzxcouzfwofwa\",\"id\":\"kzkdtzxsoednlwg\",\"name\":\"ihezomucmq\",\"type\":\"isnionetbzdrdpue\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,15 @@ public final class RecoveryPointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RecoveryPointResource response = manager.recoveryPoints()
-            .getWithResponse("x", "qk", "xym", "kqv", "qepdx", "ltuubw", com.azure.core.util.Context.NONE)
+            .getWithResponse("lgsrgkrfizrpywlp", "yuqh", "lmcskyk", "fuofixcnpcfykkp", "ycpawm", "jp",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(ThreatStatus.UN_HEALTHY, response.properties().threatStatus());
-        Assertions.assertEquals(ThreatState.IGNORED, response.properties().threatInfo().get(0).threatState());
-        Assertions.assertEquals(ThreatSeverity.WARNING, response.properties().threatInfo().get(0).threatSeverity());
-        Assertions.assertEquals("y", response.tags().get("owtjo"));
-        Assertions.assertEquals("agfyvrtpqpe", response.location());
-        Assertions.assertEquals("z", response.etag());
+        Assertions.assertEquals(ThreatState.ACTIVE, response.properties().threatInfo().get(0).threatState());
+        Assertions.assertEquals(ThreatSeverity.CRITICAL, response.properties().threatInfo().get(0).threatSeverity());
+        Assertions.assertEquals("ztibniyntsxjmfm", response.tags().get("ftvhkmoogj"));
+        Assertions.assertEquals("ogxhcxn", response.location());
+        Assertions.assertEquals("tpfdzxcouzfwofwa", response.etag());
     }
 }

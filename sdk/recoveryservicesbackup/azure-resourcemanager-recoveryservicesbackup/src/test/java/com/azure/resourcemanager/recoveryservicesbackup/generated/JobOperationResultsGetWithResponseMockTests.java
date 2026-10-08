@@ -28,7 +28,7 @@ public final class JobOperationResultsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.jobOperationResults()
-            .getWithResponse("mkahpqha", "yntacihnco", "mip", "mliqmvlb", com.azure.core.util.Context.NONE);
+            .getWithResponse("mhjobzr", "prizdcqhyft", "vb", "wgwhgkg", com.azure.core.util.Context.NONE);
 
     }
 }

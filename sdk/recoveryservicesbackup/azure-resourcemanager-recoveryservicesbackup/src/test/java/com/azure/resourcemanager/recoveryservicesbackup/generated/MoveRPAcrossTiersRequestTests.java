@@ -13,21 +13,21 @@ public final class MoveRPAcrossTiersRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MoveRPAcrossTiersRequest model = BinaryData.fromString(
-            "{\"objectType\":\"ixjsprozvcputeg\",\"sourceTierType\":\"ArchivedRP\",\"targetTierType\":\"InstantRP\"}")
+            "{\"objectType\":\"ixjsprozvcputeg\",\"sourceTierType\":\"IASnapshotRP\",\"targetTierType\":\"InstantRP\"}")
             .toObject(MoveRPAcrossTiersRequest.class);
         Assertions.assertEquals("ixjsprozvcputeg", model.objectType());
-        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.sourceTierType());
+        Assertions.assertEquals(RecoveryPointTierType.IASNAPSHOT_RP, model.sourceTierType());
         Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.targetTierType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MoveRPAcrossTiersRequest model = new MoveRPAcrossTiersRequest().withObjectType("ixjsprozvcputeg")
-            .withSourceTierType(RecoveryPointTierType.ARCHIVED_RP)
+            .withSourceTierType(RecoveryPointTierType.IASNAPSHOT_RP)
             .withTargetTierType(RecoveryPointTierType.INSTANT_RP);
         model = BinaryData.fromObject(model).toObject(MoveRPAcrossTiersRequest.class);
         Assertions.assertEquals("ixjsprozvcputeg", model.objectType());
-        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.sourceTierType());
+        Assertions.assertEquals(RecoveryPointTierType.IASNAPSHOT_RP, model.sourceTierType());
         Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.targetTierType());
     }
 }

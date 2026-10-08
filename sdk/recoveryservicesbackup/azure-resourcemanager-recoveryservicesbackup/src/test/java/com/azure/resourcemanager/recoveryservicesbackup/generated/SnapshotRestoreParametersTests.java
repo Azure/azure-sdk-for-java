@@ -6,24 +6,28 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SnapshotRestoreParameters;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class SnapshotRestoreParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SnapshotRestoreParameters model
-            = BinaryData.fromString("{\"skipAttachAndMount\":false,\"logPointInTimeForDBRecovery\":\"gny\"}")
-                .toObject(SnapshotRestoreParameters.class);
+        SnapshotRestoreParameters model = BinaryData.fromString(
+            "{\"skipAttachAndMount\":false,\"logPointInTimeForDBRecovery\":\"cqlliz\",\"disksToDetachOnClash\":[\"csjvhrwef\"]}")
+            .toObject(SnapshotRestoreParameters.class);
         Assertions.assertFalse(model.skipAttachAndMount());
-        Assertions.assertEquals("gny", model.logPointInTimeForDBRecovery());
+        Assertions.assertEquals("cqlliz", model.logPointInTimeForDBRecovery());
+        Assertions.assertEquals("csjvhrwef", model.disksToDetachOnClash().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnapshotRestoreParameters model
-            = new SnapshotRestoreParameters().withSkipAttachAndMount(false).withLogPointInTimeForDBRecovery("gny");
+        SnapshotRestoreParameters model = new SnapshotRestoreParameters().withSkipAttachAndMount(false)
+            .withLogPointInTimeForDBRecovery("cqlliz")
+            .withDisksToDetachOnClash(Arrays.asList("csjvhrwef"));
         model = BinaryData.fromObject(model).toObject(SnapshotRestoreParameters.class);
         Assertions.assertFalse(model.skipAttachAndMount());
-        Assertions.assertEquals("gny", model.logPointInTimeForDBRecovery());
+        Assertions.assertEquals("cqlliz", model.logPointInTimeForDBRecovery());
+        Assertions.assertEquals("csjvhrwef", model.disksToDetachOnClash().get(0));
     }
 }

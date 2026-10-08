@@ -84,4 +84,72 @@ public interface RecoveryPoints {
      */
     PagedIterable<RecoveryPointResource> list(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String filter, Context context);
+
+    /**
+     * Triggers fetching the additional details of a recovery point, which are not returned by the recovery point GET
+     * API. This is an asynchronous operation. Returns tracking headers which can be tracked using the
+     * GetRPExtendedInfoOperationResult API.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param fabricName Fabric name associated with the backed up items.
+     * @param parameters Request payload containing the ARM id of the recovery point whose additional details are to be
+     * fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
+        GetRPExtendedInfoRequestResource parameters);
+
+    /**
+     * Triggers fetching the additional details of a recovery point, which are not returned by the recovery point GET
+     * API. This is an asynchronous operation. Returns tracking headers which can be tracked using the
+     * GetRPExtendedInfoOperationResult API.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param fabricName Fabric name associated with the backed up items.
+     * @param parameters Request payload containing the ARM id of the recovery point whose additional details are to be
+     * fetched.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void getRPExtendedInfo(String resourceGroupName, String vaultName, String fabricName,
+        GetRPExtendedInfoRequestResource parameters, Context context);
+
+    /**
+     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
+     * 202 Accepted while the operation is still running.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param fabricName Fabric name associated with the backed up items.
+     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
+     * fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName, String fabricName,
+        String operationId);
+
+    /**
+     * Returns the additional details of the recovery points fetched by a prior getRPExtendedInfo operation. Returns
+     * 202 Accepted while the operation is still running.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param fabricName Fabric name associated with the backed up items.
+     * @param operationId OperationID which represents the prior getRPExtendedInfo operation whose result needs to be
+     * fetched.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void getRPExtendedInfoOperationResult(String resourceGroupName, String vaultName, String fabricName,
+        String operationId, Context context);
 }
