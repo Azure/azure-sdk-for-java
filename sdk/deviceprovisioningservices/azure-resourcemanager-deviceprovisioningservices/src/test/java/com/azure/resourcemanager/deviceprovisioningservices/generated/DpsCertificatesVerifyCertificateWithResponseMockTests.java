@@ -23,7 +23,7 @@ public final class DpsCertificatesVerifyCertificateWithResponseMockTests {
     @Test
     public void testVerifyCertificateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subject\":\"bebrjcxerfuwuttt\",\"expiry\":\"Sun, 03 Jan 2021 01:51:47 GMT\",\"thumbprint\":\"rbirphxe\",\"isVerified\":false,\"created\":\"Sun, 07 Nov 2021 03:18:20 GMT\",\"updated\":\"Sun, 23 May 2021 19:09:39 GMT\"},\"etag\":\"jky\",\"id\":\"j\",\"name\":\"uujqgidokgjljyo\",\"type\":\"gvcl\"}";
+            = "{\"properties\":{\"subject\":\"uwbc\",\"expiry\":\"Fri, 07 May 2021 17:14:51 GMT\",\"thumbprint\":\"mehhseyvjusrtsl\",\"isVerified\":true,\"created\":\"Mon, 25 Jan 2021 12:50:37 GMT\",\"updated\":\"Sun, 16 May 2021 22:51:00 GMT\"},\"etag\":\"ofmxagkvtmelmqkr\",\"id\":\"hvljuahaquh\",\"name\":\"dhmdua\",\"type\":\"aex\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class DpsCertificatesVerifyCertificateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateResponse response = manager.dpsCertificates()
-            .verifyCertificateWithResponse("noc", "koklya", "uconuqszfkbey", "ewrmjmwvvjektc",
-                new VerificationCodeRequest().withCertificate("enhwlrs"), "frzpwvlqdqgb", "qylihkaetckt".getBytes(),
-                true, CertificatePurpose.SERVER_AUTHENTICATION, OffsetDateTime.parse("2021-11-30T18:53:22Z"),
-                OffsetDateTime.parse("2020-12-30T14:20:48Z"), true, "snkymuctq", com.azure.core.util.Context.NONE)
+            .verifyCertificateWithResponse("onobglaocqx", "ccm", "yudxytlmoy", "xv",
+                new VerificationCodeRequest().withCertificate("u"), "wpzntxhdzh", "rqjbhckfrl".getBytes(), false,
+                CertificatePurpose.SERVER_AUTHENTICATION, OffsetDateTime.parse("2021-11-29T20:48:55Z"),
+                OffsetDateTime.parse("2021-11-28T23:04:04Z"), false, "yvpycanuzbpzk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertFalse(response.properties().isVerified());
+        Assertions.assertTrue(response.properties().isVerified());
     }
 }
