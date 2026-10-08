@@ -31,6 +31,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
 
@@ -49,6 +50,7 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
  * If session acquisition fails with HTTP 403, 5xx, or HTTP 400 with the {@code FeatureNotEnabled} error code, the
  * container is placed in a five minute cooldown during which requests for that container go straight to bearer
  * authentication. Cooldown state is held by this policy instance, so it is scoped to a single client pipeline.
+ * Requests opportunistically remove expired cooldowns across all containers, at most once per minute.
  * Acquisition failures that do not carry one of those status codes fall back to bearer for that request only
  * and do not start a cooldown.
  */
@@ -60,6 +62,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     private static final String SESSION_EXPIRING = "session_expiring";
     private static final String SESSION_PREFIX = "Session ";
     private static final Duration SESSION_COOLDOWN = Duration.ofMinutes(5);
+    private static final Duration COOLDOWN_CLEANUP_INTERVAL = Duration.ofMinutes(1);
 
     private final StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
     private final SessionProvider sessionProvider;
@@ -67,6 +70,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     private final String accountName;
     private final Clock clock;
     private final ConcurrentHashMap<String, OffsetDateTime> containerCooldowns = new ConcurrentHashMap<>();
+    private final AtomicReference<OffsetDateTime> nextCooldownCleanup = new AtomicReference<>(OffsetDateTime.MIN);
 
     /**
      * Creates a session authentication policy.
@@ -100,6 +104,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        removeExpiredCooldowns();
         SessionRequestContext requestContext = resolveSessionRequest(context);
         if (requestContext == null) {
             return bearerPolicy.process(context, next);
@@ -129,6 +134,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        removeExpiredCooldowns();
         SessionRequestContext requestContext = resolveSessionRequest(context);
         if (requestContext == null) {
             return bearerPolicy.processSync(context, next);
@@ -334,6 +340,26 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
         }
 
         return statusCode == 400 && "FeatureNotEnabled".equals(response.getHeaderValue(ERROR_CODE_HEADER_NAME));
+    }
+
+    private void removeExpiredCooldowns() {
+        if (containerCooldowns.isEmpty()) {
+            return;
+        }
+
+        OffsetDateTime now = OffsetDateTime.now(clock);
+        OffsetDateTime nextCleanup = nextCooldownCleanup.get();
+        if (now.isBefore(nextCleanup)
+            || !nextCooldownCleanup.compareAndSet(nextCleanup, now.plus(COOLDOWN_CLEANUP_INTERVAL))) {
+            return;
+        }
+
+        containerCooldowns.forEach((container, expiration) -> {
+            if (!now.isBefore(expiration)) {
+                // Keep a cooldown renewed after this sweep read its expiration.
+                containerCooldowns.remove(container, expiration);
+            }
+        });
     }
 
     private boolean isContainerInCooldown(String containerName) {

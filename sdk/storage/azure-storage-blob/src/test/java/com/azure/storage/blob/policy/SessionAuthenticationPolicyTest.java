@@ -34,6 +34,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.lang.reflect.Field;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
@@ -295,6 +296,46 @@ public class SessionAuthenticationPolicyTest {
             .verifyComplete();
 
         verify(sessionProvider, times(2)).getSessionAsync(any());
+    }
+
+    @Test
+    public void unrelatedRequestsRemoveExpiredCooldownsSync() throws ReflectiveOperationException {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        policy = createPolicy(clock);
+        BlobStorageException failure
+            = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 500), null);
+        when(sessionProvider.getSession(any())).thenThrow(failure, failure, failure).thenReturn(credentialWithToken());
+
+        sendSessionResponseSync(blobGetRequest("testaccount", "expired-a"), 200);
+        sendSessionResponseSync(blobGetRequest("testaccount", "expired-b"), 200);
+        clock.advance(Duration.ofMinutes(4));
+        sendSessionResponseSync(blobGetRequest("testaccount", "active"), 200);
+        clock.advance(Duration.ofMinutes(1));
+        sendSessionResponseSync(blobGetRequest("testaccount", "unrelated"), 200);
+
+        assertOnlyActiveCooldownRemains();
+    }
+
+    @Test
+    public void unrelatedRequestsRemoveExpiredCooldownsAsync() throws ReflectiveOperationException {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        policy = createPolicy(clock);
+        BlobStorageException failure
+            = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 500), null);
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(failure))
+            .thenReturn(Mono.error(failure))
+            .thenReturn(Mono.error(failure))
+            .thenReturn(Mono.just(credentialWithToken()));
+        HttpPipeline pipeline = buildPipeline(successTransport());
+
+        sendCooldownRequestAsync(pipeline, "expired-a");
+        sendCooldownRequestAsync(pipeline, "expired-b");
+        clock.advance(Duration.ofMinutes(4));
+        sendCooldownRequestAsync(pipeline, "active");
+        clock.advance(Duration.ofMinutes(1));
+        sendCooldownRequestAsync(pipeline, "unrelated");
+
+        assertOnlyActiveCooldownRemains();
     }
 
     @Test
@@ -650,6 +691,22 @@ public class SessionAuthenticationPolicyTest {
     }
 
     // Helpers
+
+    private void assertOnlyActiveCooldownRemains() throws ReflectiveOperationException {
+        Field field = SessionAuthenticationPolicy.class.getDeclaredField("containerCooldowns");
+        field.setAccessible(true);
+        Map<?, ?> cooldowns = (Map<?, ?>) field.get(policy);
+        assertEquals(1, cooldowns.size());
+        assertTrue(cooldowns.containsKey("active"));
+    }
+
+    private void sendCooldownRequestAsync(HttpPipeline pipeline, String containerName) {
+        HttpRequest request = blobGetRequest("testaccount", containerName);
+        StepVerifier.create(pipeline.send(request)).assertNext(response -> {
+            assertEquals(200, response.getStatusCode());
+            response.close();
+        }).verifyComplete();
+    }
 
     private void sendSessionResponseSync(HttpRequest request, int sessionStatusCode) {
         sendSessionResponseSync(request, sessionStatusCode, mock(HttpPipelineNextSyncPolicy.class));
