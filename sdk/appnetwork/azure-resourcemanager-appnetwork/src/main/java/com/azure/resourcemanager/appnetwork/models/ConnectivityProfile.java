@@ -26,6 +26,11 @@ public final class ConnectivityProfile implements JsonSerializable<ConnectivityP
      */
     private PrivateConnectProfile privateConnect;
 
+    /*
+     * The network name for an Azure Kubernetes Application Network member.
+     */
+    private String network;
+
     /**
      * Creates an instance of ConnectivityProfile class.
      */
@@ -73,6 +78,26 @@ public final class ConnectivityProfile implements JsonSerializable<ConnectivityP
     }
 
     /**
+     * Get the network property: The network name for an Azure Kubernetes Application Network member.
+     * 
+     * @return the network value.
+     */
+    public String network() {
+        return this.network;
+    }
+
+    /**
+     * Set the network property: The network name for an Azure Kubernetes Application Network member.
+     * 
+     * @param network the network value to set.
+     * @return the ConnectivityProfile object itself.
+     */
+    public ConnectivityProfile withNetwork(String network) {
+        this.network = network;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -80,6 +105,7 @@ public final class ConnectivityProfile implements JsonSerializable<ConnectivityP
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("eastWestGateway", this.eastWestGateway);
         jsonWriter.writeJsonField("privateConnect", this.privateConnect);
+        jsonWriter.writeStringField("network", this.network);
         return jsonWriter.writeEndObject();
     }
 
@@ -102,6 +128,8 @@ public final class ConnectivityProfile implements JsonSerializable<ConnectivityP
                     deserializedConnectivityProfile.eastWestGateway = EastWestGatewayProfile.fromJson(reader);
                 } else if ("privateConnect".equals(fieldName)) {
                     deserializedConnectivityProfile.privateConnect = PrivateConnectProfile.fromJson(reader);
+                } else if ("network".equals(fieldName)) {
+                    deserializedConnectivityProfile.network = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.55.0 (2026-09-28)
+## 2.55.0 (2026-10-08)
 
 - Package api-version 2026-07-01.
 
@@ -13,6 +13,15 @@
 ### Other Changes
 
 - Updated `api-version` of management locks to `2020-05-01`.
+
+## 2.54.4 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-core-management` from `1.19.6` to version `1.19.8`.
 
 ## 2.54.3 (2026-08-18)
 

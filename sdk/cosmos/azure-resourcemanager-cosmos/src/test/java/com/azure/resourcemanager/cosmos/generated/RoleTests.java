@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class RoleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Role model = BinaryData.fromString("{\"db\":\"e\",\"role\":\"ela\"}").toObject(Role.class);
-        Assertions.assertEquals("e", model.db());
-        Assertions.assertEquals("ela", model.role());
+        Role model = BinaryData.fromString("{\"db\":\"jddvjsaqw\",\"role\":\"mmwllc\"}").toObject(Role.class);
+        Assertions.assertEquals("jddvjsaqw", model.db());
+        Assertions.assertEquals("mmwllc", model.role());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Role model = new Role().withDb("e").withRole("ela");
+        Role model = new Role().withDb("jddvjsaqw").withRole("mmwllc");
         model = BinaryData.fromObject(model).toObject(Role.class);
-        Assertions.assertEquals("e", model.db());
-        Assertions.assertEquals("ela", model.role());
+        Assertions.assertEquals("jddvjsaqw", model.db());
+        Assertions.assertEquals("mmwllc", model.role());
     }
 }

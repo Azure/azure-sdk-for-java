@@ -16,23 +16,25 @@ public final class IncludedPathTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IncludedPath model = BinaryData.fromString(
-            "{\"path\":\"u\",\"indexes\":[{\"dataType\":\"LineString\",\"precision\":293589117,\"kind\":\"Spatial\"}]}")
+            "{\"path\":\"aumweoohguufu\",\"indexes\":[{\"dataType\":\"LineString\",\"precision\":1654543073,\"kind\":\"Hash\"},{\"dataType\":\"MultiPolygon\",\"precision\":943860065,\"kind\":\"Spatial\"},{\"dataType\":\"String\",\"precision\":60989181,\"kind\":\"Hash\"}]}")
             .toObject(IncludedPath.class);
-        Assertions.assertEquals("u", model.path());
+        Assertions.assertEquals("aumweoohguufu", model.path());
         Assertions.assertEquals(DataType.LINE_STRING, model.indexes().get(0).dataType());
-        Assertions.assertEquals(293589117, model.indexes().get(0).precision());
-        Assertions.assertEquals(IndexKind.SPATIAL, model.indexes().get(0).kind());
+        Assertions.assertEquals(1654543073, model.indexes().get(0).precision());
+        Assertions.assertEquals(IndexKind.HASH, model.indexes().get(0).kind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IncludedPath model = new IncludedPath().withPath("u")
+        IncludedPath model = new IncludedPath().withPath("aumweoohguufu")
             .withIndexes(Arrays.asList(
-                new Indexes().withDataType(DataType.LINE_STRING).withPrecision(293589117).withKind(IndexKind.SPATIAL)));
+                new Indexes().withDataType(DataType.LINE_STRING).withPrecision(1654543073).withKind(IndexKind.HASH),
+                new Indexes().withDataType(DataType.MULTI_POLYGON).withPrecision(943860065).withKind(IndexKind.SPATIAL),
+                new Indexes().withDataType(DataType.STRING).withPrecision(60989181).withKind(IndexKind.HASH)));
         model = BinaryData.fromObject(model).toObject(IncludedPath.class);
-        Assertions.assertEquals("u", model.path());
+        Assertions.assertEquals("aumweoohguufu", model.path());
         Assertions.assertEquals(DataType.LINE_STRING, model.indexes().get(0).dataType());
-        Assertions.assertEquals(293589117, model.indexes().get(0).precision());
-        Assertions.assertEquals(IndexKind.SPATIAL, model.indexes().get(0).kind());
+        Assertions.assertEquals(1654543073, model.indexes().get(0).precision());
+        Assertions.assertEquals(IndexKind.HASH, model.indexes().get(0).kind());
     }
 }

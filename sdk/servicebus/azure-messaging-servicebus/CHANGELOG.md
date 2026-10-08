@@ -1,11 +1,34 @@
 # Release History
 
+## 7.19.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+- Added a sample showing how to configure processor drain timeout and allow in-flight message settlement during shutdown.
+
+## 7.18.1 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-core-amqp` from `2.12.1` to version `2.12.2`.
+
 ## 7.18.0 (2026-10-06)
 
 ### Features Added
 
 - Added `listSessions()` and `listSessions(OffsetDateTime sessionStateUpdatedAfter)` to `ServiceBusSessionReceiverAsyncClient` (returning `PagedFlux<String>`) and `ServiceBusSessionReceiverClient` (returning `PagedIterable<String>`). The no-arg overload returns sessions with active messages or stored session state; the `sessionStateUpdatedAfter` overload returns sessions whose session state was set or updated after the given timestamp. Implements the `com.microsoft:get-message-sessions` AMQP management operation. ([#48956](https://github.com/Azure/azure-sdk-for-java/pull/48956))
 - Added `getSqlFilterCount()` and `getCorrelationFilterCount()` to `TopicRuntimeProperties`, exposing the total number of SQL filters and correlation filters across all of a topic's subscriptions.
+- Added a runnable topic filter-count sample that reads both counts from an existing topic.
 - Added `ServiceBusServiceVersion.V2024_05` and made it the latest version. The administration client now uses `api-version=2024-05` by default, which is required for the topic filter counts above.
 
 - Added `drainTimeout(Duration)` to `ServiceBusProcessorClientBuilder` and `ServiceBusSessionProcessorClientBuilder` to configure the maximum wait time for in-flight message handlers during processor shutdown. Defaults to 30 seconds.
