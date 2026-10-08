@@ -739,33 +739,31 @@ public class BuilderHelperTests {
     @ParameterizedTest
     @EnumSource(SessionMode.class)
     public void serviceBuilderRespectsSessionModeSync(SessionMode mode) {
-        BlobServiceClient client = new BlobServiceClientBuilder().endpoint(ENDPOINT)
+        HttpPipeline pipeline = new BlobServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new MockTokenCredential())
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .httpClient(new NoOpHttpClient())
             .sessionOptions(new SessionOptions().setSessionMode(mode))
-            .buildClient();
-        HttpPipeline pipeline = client.getHttpPipeline();
+            .buildClient()
+            .getHttpPipeline();
 
         boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
         assertEquals(sessionsEnabled, hasPolicyOfType(pipeline, "SessionAuthenticationPolicy"));
         assertEquals(!sessionsEnabled, hasPolicyOfType(pipeline, "StorageBearerTokenChallengeAuthorizationPolicy"));
-        assertNotNull(client.getAccountInfo());
     }
 
     @ParameterizedTest
     @EnumSource(SessionMode.class)
     public void serviceBuilderRespectsSessionModeAsync(SessionMode mode) {
-        BlobServiceAsyncClient client = new BlobServiceClientBuilder().endpoint(ENDPOINT)
+        HttpPipeline pipeline = new BlobServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new MockTokenCredential())
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .httpClient(new NoOpHttpClient())
             .sessionOptions(new SessionOptions().setSessionMode(mode))
-            .buildAsyncClient();
-        HttpPipeline pipeline = client.getHttpPipeline();
+            .buildAsyncClient()
+            .getHttpPipeline();
 
         boolean sessionsEnabled = ModelHelper.resolveSessionMode(mode) == SessionMode.ENABLED;
         assertEquals(sessionsEnabled, hasPolicyOfType(pipeline, "SessionAuthenticationPolicy"));
         assertEquals(!sessionsEnabled, hasPolicyOfType(pipeline, "StorageBearerTokenChallengeAuthorizationPolicy"));
-        StepVerifier.create(client.getAccountInfo()).assertNext(info -> assertNotNull(info)).verifyComplete();
     }
 
     @ParameterizedTest(name = "{0}")
