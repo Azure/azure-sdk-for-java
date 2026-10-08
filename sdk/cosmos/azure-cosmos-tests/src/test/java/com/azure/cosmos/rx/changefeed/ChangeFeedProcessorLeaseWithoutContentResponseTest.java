@@ -85,10 +85,10 @@ public class ChangeFeedProcessorLeaseWithoutContentResponseTest extends TestSuit
         };
     }
 
-    @BeforeClass(groups = { "query", "long-emulator" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = { "query", "long-emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_ChangeFeedProcessorLeaseWithoutContentResponseTest() {
         client = getClientBuilder().buildAsyncClient();
-        createdDatabase = createTestDatabase(client, "cfpLeaseNoContent");
+        createdDatabase = getSharedCosmosDatabase(client);
 
         CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
             .diagnosticsHandler((diagnosticsContext, traceContext) -> recordLeaseOperation(diagnosticsContext));
@@ -101,7 +101,6 @@ public class ChangeFeedProcessorLeaseWithoutContentResponseTest extends TestSuit
 
     @AfterClass(groups = { "query", "long-emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(createdDatabase);
         safeClose(leaseClientWithoutContentResponse);
         safeClose(client);
     }
