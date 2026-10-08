@@ -34,6 +34,11 @@ final class CosmosHttp2FrameCodecBuilder extends Http2FrameCodecBuilder {
     @Override
     protected Http2FrameCodec build(Http2ConnectionDecoder decoder, Http2ConnectionEncoder encoder,
                                    Http2Settings settings) {
+        return new DelegatingCodecBuilder(newConnectionDecoder(decoder, encoder, settings), encoder, settings, this).build();
+    }
+
+    private Http2ConnectionDecoder newConnectionDecoder(Http2ConnectionDecoder decoder, Http2ConnectionEncoder encoder,
+                                                       Http2Settings settings) {
         Long maxHeaderListSize = settings.maxHeaderListSize();
         Http2FrameReader reader = new DefaultHttp2FrameReader(new CosmosHttp2HeadersDecoder(
             isValidateHeaders(), maxHeaderListSize == null ? Http2CodecUtil.DEFAULT_HEADER_LIST_SIZE : maxHeaderListSize),
@@ -48,24 +53,24 @@ final class CosmosHttp2FrameCodecBuilder extends Http2FrameCodecBuilder {
         // Retain Netty's constructed encoder/control-frame limits. The second builder reapplies
         // decoder protections to the custom reader before a codec is installed or sends its preface.
         decoder.close();
-        return new DecoderBuilder(replacement, encoder, settings, this).build();
+        return replacement;
     }
 
-    private static final class DecoderBuilder extends Http2FrameCodecBuilder {
-        private DecoderBuilder(Http2ConnectionDecoder decoder, Http2ConnectionEncoder encoder,
-                               Http2Settings settings, CosmosHttp2FrameCodecBuilder source) {
-            initialSettings(settings);
-            gracefulShutdownTimeoutMillis(source.gracefulShutdownTimeoutMillis());
-            decoderEnforceMaxConsecutiveEmptyDataFrames(source.decoderEnforceMaxConsecutiveEmptyDataFrames());
-            decoderEnforceMaxRstFramesPerWindow(source.maxDecodedRstFrames, source.rstWindowSeconds);
-            decoupleCloseAndGoAway(source.decoupleCloseAndGoAway());
-            flushPreface(source.flushPreface());
-            codec(decoder, encoder);
+    private static final class DelegatingCodecBuilder extends Http2FrameCodecBuilder {
+        private DelegatingCodecBuilder(Http2ConnectionDecoder decoder, Http2ConnectionEncoder encoder,
+                                       Http2Settings settings, CosmosHttp2FrameCodecBuilder source) {
+            super.initialSettings(settings);
+            super.gracefulShutdownTimeoutMillis(source.gracefulShutdownTimeoutMillis());
+            super.decoderEnforceMaxConsecutiveEmptyDataFrames(source.decoderEnforceMaxConsecutiveEmptyDataFrames());
+            super.decoderEnforceMaxRstFramesPerWindow(source.maxDecodedRstFrames, source.rstWindowSeconds);
+            super.decoupleCloseAndGoAway(source.decoupleCloseAndGoAway());
+            super.flushPreface(source.flushPreface());
+            super.codec(decoder, encoder);
         }
 
         @Override
         public boolean isServer() {
-            return false;
+            return decoder().connection().isServer();
         }
     }
 }

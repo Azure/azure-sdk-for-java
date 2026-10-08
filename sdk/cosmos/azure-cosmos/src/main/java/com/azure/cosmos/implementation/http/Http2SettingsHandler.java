@@ -18,11 +18,11 @@ final class Http2SettingsHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof Http2SettingsAckFrame) {
             ReferenceCountUtil.release(msg);
         } else {
-            ctx.fireChannelRead(msg);
+            super.channelRead(ctx, msg);
         }
     }
 }

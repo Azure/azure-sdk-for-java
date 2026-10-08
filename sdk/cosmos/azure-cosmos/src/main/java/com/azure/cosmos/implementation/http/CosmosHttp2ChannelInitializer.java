@@ -76,36 +76,39 @@ final class CosmosHttp2ChannelInitializer extends ChannelInboundHandlerAdapter {
             throw new IllegalStateException("Expected TLS before Cosmos HTTP/2 initialization");
         }
         if (ApplicationProtocolNames.HTTP_2.equals(ssl.applicationProtocol())) {
-            ChannelPipeline pipeline = ctx.pipeline();
-            CosmosHttp2FrameCodecBuilder builder = new CosmosHttp2FrameCodecBuilder();
-            // Mirror Reactor's existing H2 builder configuration; only the headers decoder differs.
-            builder.validateHeaders(validateHeaders).initialSettings(settings);
-            if (settingsSpec != null) {
-                if (settingsSpec.maxDecodedRstFramesPerWindow() != null
-                    && settingsSpec.maxDecodedRstFramesSecondsPerWindow() != null) {
-                    builder.decoderEnforceMaxRstFramesPerWindow(settingsSpec.maxDecodedRstFramesPerWindow(),
-                        settingsSpec.maxDecodedRstFramesSecondsPerWindow());
-                }
-                if (settingsSpec.maxEncodedRstFramesPerWindow() != null
-                    && settingsSpec.maxEncodedRstFramesSecondsPerWindow() != null) {
-                    builder.encoderEnforceMaxRstFramesPerWindow(settingsSpec.maxEncodedRstFramesPerWindow(),
-                        settingsSpec.maxEncodedRstFramesSecondsPerWindow());
-                }
-            }
-            if (pipeline.get(NettyPipeline.LoggingHandler) != null) {
-                builder.frameLogger(new Http2FrameLogger(LogLevel.DEBUG, "reactor.netty.http.client.h2"));
-            }
-            pipeline.remove(NettyPipeline.H2OrHttp11Codec);
-            pipeline.addBefore(NettyPipeline.ReactiveBridge, NettyPipeline.H2Flush,
-                new FlushConsolidationHandler(1024, true));
-            pipeline.addBefore(NettyPipeline.ReactiveBridge, NettyPipeline.HttpCodec, builder.build());
-            pipeline.addBefore(NettyPipeline.ReactiveBridge, NettyPipeline.H2MultiplexHandler,
-                new Http2MultiplexHandler(InboundStreamHandler.INSTANCE));
-            pipeline.addBefore(NettyPipeline.ReactiveBridge, NettyPipeline.HttpTrafficHandler,
-                new InitialSettingsHandler(observer));
+            configureHttp2Pipeline(ctx.pipeline());
         }
-        ctx.fireChannelActive();
+        super.channelActive(ctx);
         ctx.pipeline().remove(this);
+    }
+
+    private void configureHttp2Pipeline(ChannelPipeline pipeline) {
+        CosmosHttp2FrameCodecBuilder builder = new CosmosHttp2FrameCodecBuilder();
+        // Mirror Reactor's existing H2 builder configuration; only the headers decoder differs.
+        builder.validateHeaders(validateHeaders).initialSettings(settings);
+        if (settingsSpec != null) {
+            if (settingsSpec.maxDecodedRstFramesPerWindow() != null
+                && settingsSpec.maxDecodedRstFramesSecondsPerWindow() != null) {
+                builder.decoderEnforceMaxRstFramesPerWindow(settingsSpec.maxDecodedRstFramesPerWindow(),
+                    settingsSpec.maxDecodedRstFramesSecondsPerWindow());
+            }
+            if (settingsSpec.maxEncodedRstFramesPerWindow() != null
+                && settingsSpec.maxEncodedRstFramesSecondsPerWindow() != null) {
+                builder.encoderEnforceMaxRstFramesPerWindow(settingsSpec.maxEncodedRstFramesPerWindow(),
+                    settingsSpec.maxEncodedRstFramesSecondsPerWindow());
+            }
+        }
+        if (pipeline.get(NettyPipeline.LoggingHandler) != null) {
+            builder.frameLogger(new Http2FrameLogger(LogLevel.DEBUG, "reactor.netty.http.client.h2"));
+        }
+        pipeline.remove(NettyPipeline.H2OrHttp11Codec);
+        pipeline.addBefore(NettyPipeline.ReactiveBridge, NettyPipeline.H2Flush,
+            new FlushConsolidationHandler(1024, true));
+        pipeline.addBefore(NettyPipeline.ReactiveBridge, NettyPipeline.HttpCodec, builder.build());
+        pipeline.addBefore(NettyPipeline.ReactiveBridge, NettyPipeline.H2MultiplexHandler,
+            new Http2MultiplexHandler(InboundStreamHandler.INSTANCE));
+        pipeline.addBefore(NettyPipeline.ReactiveBridge, NettyPipeline.HttpTrafficHandler,
+            new InitialSettingsHandler(observer));
     }
 
     @ChannelHandler.Sharable
@@ -128,7 +131,7 @@ final class CosmosHttp2ChannelInitializer extends ChannelInboundHandlerAdapter {
         }
 
         @Override
-        public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             if (msg instanceof Http2SettingsFrame) {
                 ctx.channel().attr(ENABLE_CONNECT_PROTOCOL).set(
                     ((Http2SettingsFrame) msg).settings().get(Http2CodecUtil.SETTINGS_ENABLE_CONNECT_PROTOCOL));
@@ -136,13 +139,13 @@ final class CosmosHttp2ChannelInitializer extends ChannelInboundHandlerAdapter {
                 ctx.pipeline().remove(NettyPipeline.ReactiveBridge);
                 ctx.pipeline().remove(this);
             } else {
-                ctx.fireChannelRead(msg);
+                super.channelRead(ctx, msg);
             }
         }
 
         @Override
-        public void channelInactive(ChannelHandlerContext ctx) {
-            ctx.fireExceptionCaught(new IOException("Connection closed before receiving initial HTTP/2 SETTINGS"));
+        public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+            super.exceptionCaught(ctx, new IOException("Connection closed before receiving initial HTTP/2 SETTINGS"));
         }
 
         private void notifyState(Channel channel, ConnectionObserver.State state) {

@@ -33,28 +33,29 @@ final class CosmosHttp2HeadersDecoder extends DefaultHttp2HeadersDecoder {
 
         @Override
         public Http2Headers add(CharSequence name, CharSequence value) {
-            if (value != null && AsciiString.hashCode(name) == SERVER_VERSION_HASH
-                && AsciiString.contentEquals(SERVER_VERSION, name)) {
-                int start = 0;
-                int end = value.length();
-                while (start < end && isOptionalWhitespace(value.charAt(start))) {
-                    start++;
-                }
-                while (end > start && isOptionalWhitespace(value.charAt(end - 1))) {
-                    end--;
-                }
-                if (start != 0 || end != value.length()) {
-                    value = value instanceof AsciiString
-                        ? ((AsciiString) value).subSequence(start, end, false)
-                        : value.subSequence(start, end);
-                }
-            }
-            return super.add(name, value);
+            return super.add(name, normalizeServiceVersion(name, value));
         }
+    }
 
-        private static boolean isOptionalWhitespace(char value) {
-            // CR/LF/NUL must reach Netty's strict validator, not be trimmed away.
-            return value == ' ' || value == '\t';
+    private static CharSequence normalizeServiceVersion(CharSequence name, CharSequence value) {
+        if (value == null || AsciiString.hashCode(name) != SERVER_VERSION_HASH
+            || !AsciiString.contentEquals(SERVER_VERSION, name)) {
+            return value;
         }
+        int start = 0;
+        int end = value.length();
+        while (start < end && isOptionalWhitespace(value.charAt(start))) {
+            start++;
+        }
+        while (end > start && isOptionalWhitespace(value.charAt(end - 1))) {
+            end--;
+        }
+        return start == 0 && end == value.length() ? value : value instanceof AsciiString
+            ? ((AsciiString) value).subSequence(start, end, false) : value.subSequence(start, end);
+    }
+
+    private static boolean isOptionalWhitespace(char value) {
+        // CR/LF/NUL must reach Netty's strict validator, not be trimmed away.
+        return value == ' ' || value == '\t';
     }
 }
