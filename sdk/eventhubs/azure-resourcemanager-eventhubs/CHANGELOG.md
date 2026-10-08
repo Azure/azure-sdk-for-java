@@ -6,10 +6,6 @@
 
 - Supported `disableLocalAuth()` and `enableLocalAuth()` in `EventHubNamespace`.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 - Update `api-version` to `2026-07-01-preview`.
