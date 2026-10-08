@@ -40,8 +40,8 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
  * <p>
  * This policy occupies the authentication policy slot in the pipeline, wrapping the
  * {@link StorageBearerTokenChallengeAuthorizationPolicy}. When sessions are enabled, for eligible blob GET requests,
- * the policy authenticates with a session token. For all other requests, it delegates to the
- * wrapped bearer token policy.
+ * the policy authenticates with a session token, refreshing {@code x-ms-date} before each signing.
+ * For all other requests, it delegates to the wrapped bearer token policy.
  * <p>
  * Session-signed requests that receive HTTP 401 are retried once with bearer authentication, and the rejected
  * session credential is invalidated only if it is still current. Each transport retry may fall back independently.
@@ -231,9 +231,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     private void signRequest(HttpPipelineCallContext context, SessionCredential credential) {
-        if (context.getHttpRequest().getHeaders().getValue(X_MS_DATE) == null) {
-            context.getHttpRequest().setHeader(X_MS_DATE, DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
-        }
+        context.getHttpRequest().setHeader(X_MS_DATE, DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
 
         StorageSharedKeyCredential sharedKey
             = new StorageSharedKeyCredential(credential.getAccountName(), credential.getSessionKey());

@@ -51,6 +51,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -543,7 +544,40 @@ public class SessionAuthenticationPolicyTest {
             "Signature must be base64-encoded, but was: " + actualSignature);
     }
 
+    @Test
+    public void policyRefreshesExistingSigningDateAsync() {
+        HttpRequest request = blobGetRequest();
+        HttpHeaderName dateHeader = HttpHeaderName.fromString("x-ms-date");
+        String staleDate = "Thu, 24 Sep 2026 00:00:00 GMT";
+        request.setHeader(dateHeader, staleDate);
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
+
+        StepVerifier.create(buildPipeline(successTransport()).send(request)).assertNext(response -> {
+            assertEquals(200, response.getStatusCode());
+            response.close();
+        }).verifyComplete();
+
+        assertNotNull(request.getHeaders().getValue(dateHeader));
+        assertNotEquals(staleDate, request.getHeaders().getValue(dateHeader));
+        assertTrue(isSessionAuthenticated(request));
+    }
+
     // Sync tests invoke the policy directly with a mock next-policy.
+
+    @Test
+    public void policyRefreshesExistingSigningDateSync() {
+        HttpRequest request = blobGetRequest();
+        HttpHeaderName dateHeader = HttpHeaderName.fromString("x-ms-date");
+        String staleDate = "Thu, 24 Sep 2026 00:00:00 GMT";
+        request.setHeader(dateHeader, staleDate);
+        when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
+
+        sendSessionResponseSync(request, 200);
+
+        assertNotNull(request.getHeaders().getValue(dateHeader));
+        assertNotEquals(staleDate, request.getHeaders().getValue(dateHeader));
+        assertTrue(isSessionAuthenticated(request));
+    }
 
     @Test
     public void policyInvalidatesSessionAndFallsBackToBearerSync() {
