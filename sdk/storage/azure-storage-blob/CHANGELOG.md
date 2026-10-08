@@ -53,7 +53,6 @@
 ### Other Changes
 
 #### Dependency Updates
-
 - Upgraded `azure-storage-common` from `12.34.1` to version `12.34.2`.
 - Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
 - Upgraded `azure-storage-internal-avro` from `12.20.1` to version `12.20.2`.
