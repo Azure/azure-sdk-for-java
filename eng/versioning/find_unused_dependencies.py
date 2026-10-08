@@ -4,8 +4,10 @@
 # This script is used to find unused dependencies in the version_client.txt and external_dependencies.txt files.
 # It is used in the CI pipeline to ensure that all dependencies are used in the codebase.
 
+import argparse
 import os
 
+from utils import CodeModule
 from utils import load_version_map_from_file
 from utils import version_update_marker
 
@@ -23,24 +25,18 @@ def fixup_version_map(version_file, version_map):
             version_map[key] = (False, val)
 
 def find_unused_dependencies(dep_map, message):
-    unused_deps = [key for key in dep_map if not dep_map[key][0]]
+    unused_deps = get_unused_dependencies(dep_map)
     if unused_deps:
         print(message)
         for dep in unused_deps:
             print("  " + dep)
     return bool(unused_deps)
 
-def main():
-    version_map = {}
-    ext_dep_map = {}
+def get_unused_dependencies(dep_map):
+    return [key for key in dep_map if not dep_map[key][0]]
 
-    version_file = os.path.normpath("eng/versioning/version_client.txt")
-    dependency_file = os.path.normpath("eng/versioning/external_dependencies.txt")
-
-    fixup_version_map(version_file, version_map)
-    fixup_version_map(dependency_file, ext_dep_map)
-
-    for root, _, files in os.walk("."):
+def mark_referenced_dependencies(repository_root, version_map, ext_dep_map):
+    for root, _, files in os.walk(repository_root):
         try:
             for file in files:
                 if file.startswith("pom") and file.endswith(".xml"):
@@ -57,11 +53,62 @@ def main():
         except KeyError as e:
             print(str(e) + " was not found in the right place. Please investigate.")
 
+def remove_dependency_entries(dependency_file, dependency_names):
+    with open(dependency_file, encoding="utf-8", newline="") as file:
+        lines = file.readlines()
+
+    with open(dependency_file, "w", encoding="utf-8", newline="") as file:
+        for line in lines:
+            stripped_line = line.strip()
+            if stripped_line and not stripped_line.startswith("#"):
+                module = CodeModule(stripped_line)
+                if module.name in dependency_names:
+                    continue
+            file.write(line)
+
+def remove_unused_external_dependencies(repository_root, dependency_file):
+    ext_dep_map = {}
+    fixup_version_map(dependency_file, ext_dep_map)
+    mark_referenced_dependencies(repository_root, {}, ext_dep_map)
+
+    unused_ext_deps = get_unused_dependencies(ext_dep_map)
+    if unused_ext_deps:
+        print("Removing unused external_dependencies.txt entries:")
+        for dependency in unused_ext_deps:
+            print("  " + dependency)
+        remove_dependency_entries(dependency_file, set(unused_ext_deps))
+
+    return unused_ext_deps
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--remove-unused-external-dependencies",
+        action="store_true",
+        help="Remove external_dependencies.txt entries that have no references in pom files.",
+    )
+    args = parser.parse_args()
+
+    repository_root = os.path.normpath(".")
+    version_file = os.path.normpath("eng/versioning/version_client.txt")
+    dependency_file = os.path.normpath("eng/versioning/external_dependencies.txt")
+
+    if args.remove_unused_external_dependencies:
+        remove_unused_external_dependencies(repository_root, dependency_file)
+        return 0
+
+    version_map = {}
+    ext_dep_map = {}
+    fixup_version_map(version_file, version_map)
+    fixup_version_map(dependency_file, ext_dep_map)
+    mark_referenced_dependencies(repository_root, version_map, ext_dep_map)
+
     unused_dependencies = find_unused_dependencies(version_map, "Unused version_client.txt entries:")
     unused_ext_dep = find_unused_dependencies(ext_dep_map, "Unused external_dependencies.txt entries:")
 
     if unused_dependencies or unused_ext_dep:
-        exit(1)
+        return 1
+    return 0
 
 if __name__ == "__main__":
-    main()
+    exit(main())

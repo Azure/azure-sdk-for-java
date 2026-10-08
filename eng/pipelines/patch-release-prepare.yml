@@ -19,6 +19,7 @@ extends:
       - stage: PreparePatchRelease
         displayName: Prepare Patch Release
         variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
           - template: /eng/pipelines/templates/variables/image.yml
         jobs:
           - job: PreparePatchRelease
@@ -67,6 +68,26 @@ extends:
                     -UseCurrentBranch
                 env:
                   SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+
+              - task: UsePythonVersion@0
+                displayName: 'Use Python $(PythonVersion)'
+                inputs:
+                  versionSpec: $(PythonVersion)
+
+              - task: PythonScript@0
+                displayName: 'Remove unused external dependencies'
+                inputs:
+                  scriptPath: eng/versioning/find_unused_dependencies.py
+                  arguments: --remove-unused-external-dependencies
+
+              - task: PowerShell@2
+                displayName: 'Generate patch changelog manifest'
+                inputs:
+                  pwsh: true
+                  filePath: eng/scripts/New-PatchChangelog.ps1
+                  arguments: >
+                    -PackagesYmlPath eng/pipelines/patch-release.yml
+                    -OutputPath patch-changelog.md
 
               # Create a PR with the patches prepared
               - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
