@@ -11,17 +11,17 @@
 #### `models.TrafficFlow` was modified
 
 * `TrafficFlow()` was changed to private access
-* `withSourceIp(java.lang.String)` was removed
-* `withLongitude(java.lang.Double)` was removed
-* `withQueryExperiences(java.util.List)` was removed
 * `withLatitude(java.lang.Double)` was removed
+* `withSourceIp(java.lang.String)` was removed
+* `withQueryExperiences(java.util.List)` was removed
+* `withLongitude(java.lang.Double)` was removed
 
 #### `models.QueryExperience` was modified
 
 * `QueryExperience()` was changed to private access
+* `withQueryCount(int)` was removed
 * `withEndpointId(int)` was removed
 * `withLatency(java.lang.Double)` was removed
-* `withQueryCount(int)` was removed
 
 #### `models.HeatMapEndpoint` was modified
 
@@ -32,9 +32,9 @@
 #### `models.Region` was modified
 
 * `Region()` was changed to private access
-* `withCode(java.lang.String)` was removed
-* `withName(java.lang.String)` was removed
 * `withRegions(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+* `withCode(java.lang.String)` was removed
 
 ### Features Added
 
