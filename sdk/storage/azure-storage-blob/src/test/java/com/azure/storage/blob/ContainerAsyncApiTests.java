@@ -4,10 +4,14 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -53,6 +57,7 @@ import java.io.ByteArrayInputStream;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -767,6 +772,62 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         //cleanup
         premiumBlobServiceAsyncClient.deleteBlobContainer(containerName).block();
+    }
+
+    @ParameterizedTest
+    @MethodSource("serializationFormatSupplier")
+    @DoNotRecord
+    public void listBlobsUsesResolvedSerializationFormat(ListBlobsOptions options, String expectedAcceptHeader) {
+        AtomicReference<String> acceptHeader = new AtomicReference<>();
+        BlobContainerAsyncClient client = createSerializationFormatClient(acceptHeader);
+
+        StepVerifier.create(client.listBlobs(options).byPage(1)).verifyErrorSatisfies(error -> {
+            BlobStorageException exception = assertInstanceOf(BlobStorageException.class, error);
+            assertEquals(500, exception.getStatusCode());
+        });
+        assertEquals(expectedAcceptHeader, acceptHeader.get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("serializationFormatSupplier")
+    @DoNotRecord
+    public void listBlobsByHierarchyUsesResolvedSerializationFormat(ListBlobsOptions options,
+        String expectedAcceptHeader) {
+        AtomicReference<String> acceptHeader = new AtomicReference<>();
+        BlobContainerAsyncClient client = createSerializationFormatClient(acceptHeader);
+
+        StepVerifier.create(client.listBlobsByHierarchy("/", options).byPage(1)).verifyErrorSatisfies(error -> {
+            BlobStorageException exception = assertInstanceOf(BlobStorageException.class, error);
+            assertEquals(500, exception.getStatusCode());
+        });
+        assertEquals(expectedAcceptHeader, acceptHeader.get());
+    }
+
+    private static BlobContainerAsyncClient createSerializationFormatClient(AtomicReference<String> acceptHeader) {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            acceptHeader.set(request.getHeaders().getValue(HttpHeaderName.ACCEPT));
+            // Fail after capturing the request so the test doesn't need a format-specific response body.
+            return Mono.just(new MockHttpResponse(request, 500));
+        }).build();
+        return new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/container")
+            .credential(new MockTokenCredential())
+            .pipeline(pipeline)
+            .buildAsyncClient();
+    }
+
+    private static Stream<Arguments> serializationFormatSupplier() {
+        String arrowAcceptHeader
+            = Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM + ",application/xml";
+        return Stream.of(Arguments.of(null, arrowAcceptHeader), Arguments.of(new ListBlobsOptions(), arrowAcceptHeader),
+            Arguments.of(
+                new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.AUTO),
+                arrowAcceptHeader),
+            Arguments.of(
+                new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW),
+                arrowAcceptHeader),
+            Arguments.of(
+                new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML),
+                "application/xml"));
     }
 
     @Test

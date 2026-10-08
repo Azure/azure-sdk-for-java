@@ -4,9 +4,13 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -59,6 +63,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.publisher.Mono;
 
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
@@ -82,6 +87,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -764,6 +770,60 @@ public class ContainerApiTests extends BlobTestBase {
 
         // cleanup:
         ccPremium.delete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("serializationFormatSupplier")
+    @DoNotRecord
+    public void listBlobsUsesResolvedSerializationFormat(ListBlobsOptions options, String expectedAcceptHeader) {
+        AtomicReference<String> acceptHeader = new AtomicReference<>();
+        BlobContainerClient client = createSerializationFormatClient(acceptHeader);
+
+        BlobStorageException exception = assertThrows(BlobStorageException.class,
+            () -> client.listBlobs(options, null).iterableByPage(1).iterator().hasNext());
+        assertEquals(500, exception.getStatusCode());
+        assertEquals(expectedAcceptHeader, acceptHeader.get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("serializationFormatSupplier")
+    @DoNotRecord
+    public void listBlobsByHierarchyUsesResolvedSerializationFormat(ListBlobsOptions options,
+        String expectedAcceptHeader) {
+        AtomicReference<String> acceptHeader = new AtomicReference<>();
+        BlobContainerClient client = createSerializationFormatClient(acceptHeader);
+
+        BlobStorageException exception = assertThrows(BlobStorageException.class,
+            () -> client.listBlobsByHierarchy("/", options, null).iterableByPage(1).iterator().hasNext());
+        assertEquals(500, exception.getStatusCode());
+        assertEquals(expectedAcceptHeader, acceptHeader.get());
+    }
+
+    private static BlobContainerClient createSerializationFormatClient(AtomicReference<String> acceptHeader) {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            acceptHeader.set(request.getHeaders().getValue(HttpHeaderName.ACCEPT));
+            // Fail after capturing the request so the test doesn't need a format-specific response body.
+            return Mono.just(new MockHttpResponse(request, 500));
+        }).build();
+        return new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/container")
+            .credential(new MockTokenCredential())
+            .pipeline(pipeline)
+            .buildClient();
+    }
+
+    private static Stream<Arguments> serializationFormatSupplier() {
+        String arrowAcceptHeader
+            = Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM + ",application/xml";
+        return Stream.of(Arguments.of(null, arrowAcceptHeader), Arguments.of(new ListBlobsOptions(), arrowAcceptHeader),
+            Arguments.of(
+                new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.AUTO),
+                arrowAcceptHeader),
+            Arguments.of(
+                new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW),
+                arrowAcceptHeader),
+            Arguments.of(
+                new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML),
+                "application/xml"));
     }
 
     @Test
