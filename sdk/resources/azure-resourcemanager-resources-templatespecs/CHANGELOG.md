@@ -1,5 +1,15 @@
 # Release History
 
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0 (2026-09-28)
 
 - Azure Resource Manager Template Specs client library for Java, targeting service API version `2022-02-01`. For documentation on how to use this package, see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
