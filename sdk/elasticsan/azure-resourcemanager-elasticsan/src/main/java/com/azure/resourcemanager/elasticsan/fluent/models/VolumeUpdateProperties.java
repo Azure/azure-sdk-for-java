@@ -9,8 +9,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
+import com.azure.resourcemanager.elasticsan.models.ManagedByResources;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Volume response properties.
@@ -23,9 +24,9 @@ public final class VolumeUpdateProperties implements JsonSerializable<VolumeUpda
     private Long sizeGiB;
 
     /*
-     * Parent resource information.
+     * Information about Azure services owning the ElasticSan volume resource.
      */
-    private ManagedByInfo managedBy;
+    private List<ManagedByResources> managedBy;
 
     /**
      * Creates an instance of VolumeUpdateProperties class.
@@ -54,21 +55,21 @@ public final class VolumeUpdateProperties implements JsonSerializable<VolumeUpda
     }
 
     /**
-     * Get the managedBy property: Parent resource information.
+     * Get the managedBy property: Information about Azure services owning the ElasticSan volume resource.
      * 
      * @return the managedBy value.
      */
-    public ManagedByInfo managedBy() {
+    public List<ManagedByResources> managedBy() {
         return this.managedBy;
     }
 
     /**
-     * Set the managedBy property: Parent resource information.
+     * Set the managedBy property: Information about Azure services owning the ElasticSan volume resource.
      * 
      * @param managedBy the managedBy value to set.
      * @return the VolumeUpdateProperties object itself.
      */
-    public VolumeUpdateProperties withManagedBy(ManagedByInfo managedBy) {
+    public VolumeUpdateProperties withManagedBy(List<ManagedByResources> managedBy) {
         this.managedBy = managedBy;
         return this;
     }
@@ -80,7 +81,7 @@ public final class VolumeUpdateProperties implements JsonSerializable<VolumeUpda
      */
     public void validate() {
         if (managedBy() != null) {
-            managedBy().validate();
+            managedBy().forEach(e -> e.validate());
         }
     }
 
@@ -91,7 +92,7 @@ public final class VolumeUpdateProperties implements JsonSerializable<VolumeUpda
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("sizeGiB", this.sizeGiB);
-        jsonWriter.writeJsonField("managedBy", this.managedBy);
+        jsonWriter.writeArrayField("managedBy", this.managedBy, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -113,7 +114,9 @@ public final class VolumeUpdateProperties implements JsonSerializable<VolumeUpda
                 if ("sizeGiB".equals(fieldName)) {
                     deserializedVolumeUpdateProperties.sizeGiB = reader.getNullable(JsonReader::getLong);
                 } else if ("managedBy".equals(fieldName)) {
-                    deserializedVolumeUpdateProperties.managedBy = ManagedByInfo.fromJson(reader);
+                    List<ManagedByResources> managedBy
+                        = reader.readArray(reader1 -> ManagedByResources.fromJson(reader1));
+                    deserializedVolumeUpdateProperties.managedBy = managedBy;
                 } else {
                     reader.skipChildren();
                 }

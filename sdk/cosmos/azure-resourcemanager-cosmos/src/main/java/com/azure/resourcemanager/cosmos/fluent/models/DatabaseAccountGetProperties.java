@@ -14,6 +14,8 @@ import com.azure.resourcemanager.cosmos.models.ApiProperties;
 import com.azure.resourcemanager.cosmos.models.BackupPolicy;
 import com.azure.resourcemanager.cosmos.models.Capability;
 import com.azure.resourcemanager.cosmos.models.Capacity;
+import com.azure.resourcemanager.cosmos.models.CapacityMode;
+import com.azure.resourcemanager.cosmos.models.CapacityModeChangeTransitionState;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
@@ -21,6 +23,7 @@ import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountOfferType;
 import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
+import com.azure.resourcemanager.cosmos.models.DiagnosticLogSettings;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
@@ -28,6 +31,7 @@ import com.azure.resourcemanager.cosmos.models.MinimalTlsVersion;
 import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.RestoreParameters;
+import com.azure.resourcemanager.cosmos.models.SoftDeleteConfiguration;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import java.io.IOException;
 import java.util.List;
@@ -201,6 +205,11 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
     private List<String> networkAclBypassResourceIds;
 
     /*
+     * The Object representing the different Diagnostic log settings for the Cosmos DB Account.
+     */
+    private DiagnosticLogSettings diagnosticLogSettings;
+
+    /*
      * Opt-out of local authentication and ensure only MSI and AAD can be used exclusively for authentication.
      */
     private Boolean disableLocalAuth;
@@ -209,6 +218,21 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
      * The object that represents all properties related to capacity enforcement on an account.
      */
     private Capacity capacity;
+
+    /*
+     * Indicates the capacityMode of the Cosmos DB account.
+     */
+    private CapacityMode capacityMode;
+
+    /*
+     * The object that represents the migration state for the CapacityMode of the Cosmos DB account.
+     */
+    private CapacityModeChangeTransitionState capacityModeChangeTransitionState;
+
+    /*
+     * Flag to indicate whether to enable MaterializedViews on the Cosmos DB account
+     */
+    private Boolean enableMaterializedViews;
 
     /*
      * The object that represents the metadata for the Account Keys of the Cosmos DB account.
@@ -256,6 +280,30 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
      * Flag to indicate enabling/disabling of Per-Region Per-partition autoscale Preview feature on the account
      */
     private Boolean enablePerRegionPerPartitionAutoscale;
+
+    /*
+     * Flag to indicate if All Versions and Deletes Change feed feature is enabled on the account
+     */
+    private Boolean enableAllVersionsAndDeletesChangeFeed;
+
+    /*
+     * The configuration for soft delete on the Cosmos DB account.
+     */
+    private SoftDeleteConfiguration softDeleteConfiguration;
+
+    /*
+     * Total dedicated throughput (RU/s) for database account. Represents the sum of all manual provisioned throughput
+     * and all autoscale max RU/s across all shared throughput databases and dedicated throughput containers in the
+     * account for 1 region. READ ONLY.
+     */
+    private Long throughputPoolDedicatedRUs;
+
+    /*
+     * When this account is part of a fleetspace with throughput pooling enabled, this is the maximum additional
+     * throughput (RU/s) that can be consumed from the pool, summed across all shared throughput databases and dedicated
+     * throughput containers in the account for 1 region. READ ONLY.
+     */
+    private Long throughputPoolMaxConsumableRUs;
 
     /*
      * Flag to indicate enabling/disabling of hierarchical partition key ID last level enforcement on the account.
@@ -828,6 +876,28 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
     }
 
     /**
+     * Get the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     * 
+     * @return the diagnosticLogSettings value.
+     */
+    public DiagnosticLogSettings diagnosticLogSettings() {
+        return this.diagnosticLogSettings;
+    }
+
+    /**
+     * Set the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     * 
+     * @param diagnosticLogSettings the diagnosticLogSettings value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withDiagnosticLogSettings(DiagnosticLogSettings diagnosticLogSettings) {
+        this.diagnosticLogSettings = diagnosticLogSettings;
+        return this;
+    }
+
+    /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
      * 
@@ -868,6 +938,71 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
      */
     public DatabaseAccountGetProperties withCapacity(Capacity capacity) {
         this.capacity = capacity;
+        return this;
+    }
+
+    /**
+     * Get the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     * 
+     * @return the capacityMode value.
+     */
+    public CapacityMode capacityMode() {
+        return this.capacityMode;
+    }
+
+    /**
+     * Set the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     * 
+     * @param capacityMode the capacityMode value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withCapacityMode(CapacityMode capacityMode) {
+        this.capacityMode = capacityMode;
+        return this;
+    }
+
+    /**
+     * Get the capacityModeChangeTransitionState property: The object that represents the migration state for the
+     * CapacityMode of the Cosmos DB account.
+     * 
+     * @return the capacityModeChangeTransitionState value.
+     */
+    public CapacityModeChangeTransitionState capacityModeChangeTransitionState() {
+        return this.capacityModeChangeTransitionState;
+    }
+
+    /**
+     * Set the capacityModeChangeTransitionState property: The object that represents the migration state for the
+     * CapacityMode of the Cosmos DB account.
+     * 
+     * @param capacityModeChangeTransitionState the capacityModeChangeTransitionState value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties
+        withCapacityModeChangeTransitionState(CapacityModeChangeTransitionState capacityModeChangeTransitionState) {
+        this.capacityModeChangeTransitionState = capacityModeChangeTransitionState;
+        return this;
+    }
+
+    /**
+     * Get the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     * 
+     * @return the enableMaterializedViews value.
+     */
+    public Boolean enableMaterializedViews() {
+        return this.enableMaterializedViews;
+    }
+
+    /**
+     * Set the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     * 
+     * @param enableMaterializedViews the enableMaterializedViews value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withEnableMaterializedViews(Boolean enableMaterializedViews) {
+        this.enableMaterializedViews = enableMaterializedViews;
         return this;
     }
 
@@ -1047,6 +1182,99 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
     }
 
     /**
+     * Get the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
+     * feature is enabled on the account.
+     * 
+     * @return the enableAllVersionsAndDeletesChangeFeed value.
+     */
+    public Boolean enableAllVersionsAndDeletesChangeFeed() {
+        return this.enableAllVersionsAndDeletesChangeFeed;
+    }
+
+    /**
+     * Set the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
+     * feature is enabled on the account.
+     * 
+     * @param enableAllVersionsAndDeletesChangeFeed the enableAllVersionsAndDeletesChangeFeed value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties
+        withEnableAllVersionsAndDeletesChangeFeed(Boolean enableAllVersionsAndDeletesChangeFeed) {
+        this.enableAllVersionsAndDeletesChangeFeed = enableAllVersionsAndDeletesChangeFeed;
+        return this;
+    }
+
+    /**
+     * Get the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     * 
+     * @return the softDeleteConfiguration value.
+     */
+    public SoftDeleteConfiguration softDeleteConfiguration() {
+        return this.softDeleteConfiguration;
+    }
+
+    /**
+     * Set the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     * 
+     * @param softDeleteConfiguration the softDeleteConfiguration value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withSoftDeleteConfiguration(SoftDeleteConfiguration softDeleteConfiguration) {
+        this.softDeleteConfiguration = softDeleteConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the throughputPoolDedicatedRUs property: Total dedicated throughput (RU/s) for database account. Represents
+     * the sum of all manual provisioned throughput and all autoscale max RU/s across all shared throughput databases
+     * and dedicated throughput containers in the account for 1 region. READ ONLY.
+     * 
+     * @return the throughputPoolDedicatedRUs value.
+     */
+    public Long throughputPoolDedicatedRUs() {
+        return this.throughputPoolDedicatedRUs;
+    }
+
+    /**
+     * Set the throughputPoolDedicatedRUs property: Total dedicated throughput (RU/s) for database account. Represents
+     * the sum of all manual provisioned throughput and all autoscale max RU/s across all shared throughput databases
+     * and dedicated throughput containers in the account for 1 region. READ ONLY.
+     * 
+     * @param throughputPoolDedicatedRUs the throughputPoolDedicatedRUs value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withThroughputPoolDedicatedRUs(Long throughputPoolDedicatedRUs) {
+        this.throughputPoolDedicatedRUs = throughputPoolDedicatedRUs;
+        return this;
+    }
+
+    /**
+     * Get the throughputPoolMaxConsumableRUs property: When this account is part of a fleetspace with throughput
+     * pooling enabled, this is the maximum additional throughput (RU/s) that can be consumed from the pool, summed
+     * across all shared throughput databases and dedicated throughput containers in the account for 1 region. READ
+     * ONLY.
+     * 
+     * @return the throughputPoolMaxConsumableRUs value.
+     */
+    public Long throughputPoolMaxConsumableRUs() {
+        return this.throughputPoolMaxConsumableRUs;
+    }
+
+    /**
+     * Set the throughputPoolMaxConsumableRUs property: When this account is part of a fleetspace with throughput
+     * pooling enabled, this is the maximum additional throughput (RU/s) that can be consumed from the pool, summed
+     * across all shared throughput databases and dedicated throughput containers in the account for 1 region. READ
+     * ONLY.
+     * 
+     * @param throughputPoolMaxConsumableRUs the throughputPoolMaxConsumableRUs value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withThroughputPoolMaxConsumableRUs(Long throughputPoolMaxConsumableRUs) {
+        this.throughputPoolMaxConsumableRUs = throughputPoolMaxConsumableRUs;
+        return this;
+    }
+
+    /**
      * Get the enforceHierarchicalPartitionKeyIdLastLevel property: Flag to indicate enabling/disabling of hierarchical
      * partition key ID last level enforcement on the account.
      * 
@@ -1117,11 +1345,20 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
         if (cors() != null) {
             cors().forEach(e -> e.validate());
         }
+        if (diagnosticLogSettings() != null) {
+            diagnosticLogSettings().validate();
+        }
         if (capacity() != null) {
             capacity().validate();
         }
+        if (capacityModeChangeTransitionState() != null) {
+            capacityModeChangeTransitionState().validate();
+        }
         if (keysMetadata() != null) {
             keysMetadata().validate();
+        }
+        if (softDeleteConfiguration() != null) {
+            softDeleteConfiguration().validate();
         }
     }
 
@@ -1159,8 +1396,12 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
             this.networkAclBypass == null ? null : this.networkAclBypass.toString());
         jsonWriter.writeArrayField("networkAclBypassResourceIds", this.networkAclBypassResourceIds,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("diagnosticLogSettings", this.diagnosticLogSettings);
         jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
         jsonWriter.writeJsonField("capacity", this.capacity);
+        jsonWriter.writeStringField("capacityMode", this.capacityMode == null ? null : this.capacityMode.toString());
+        jsonWriter.writeJsonField("capacityModeChangeTransitionState", this.capacityModeChangeTransitionState);
+        jsonWriter.writeBooleanField("enableMaterializedViews", this.enableMaterializedViews);
         jsonWriter.writeBooleanField("enablePartitionMerge", this.enablePartitionMerge);
         jsonWriter.writeBooleanField("enableBurstCapacity", this.enableBurstCapacity);
         jsonWriter.writeStringField("minimalTlsVersion",
@@ -1170,6 +1411,11 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
         jsonWriter.writeStringField("defaultPriorityLevel",
             this.defaultPriorityLevel == null ? null : this.defaultPriorityLevel.toString());
         jsonWriter.writeBooleanField("enablePerRegionPerPartitionAutoscale", this.enablePerRegionPerPartitionAutoscale);
+        jsonWriter.writeBooleanField("enableAllVersionsAndDeletesChangeFeed",
+            this.enableAllVersionsAndDeletesChangeFeed);
+        jsonWriter.writeJsonField("softDeleteConfiguration", this.softDeleteConfiguration);
+        jsonWriter.writeNumberField("throughputPoolDedicatedRUs", this.throughputPoolDedicatedRUs);
+        jsonWriter.writeNumberField("throughputPoolMaxConsumableRUs", this.throughputPoolMaxConsumableRUs);
         jsonWriter.writeBooleanField("enforceHierarchicalPartitionKeyIdLastLevel",
             this.enforceHierarchicalPartitionKeyIdLastLevel);
         return jsonWriter.writeEndObject();
@@ -1279,11 +1525,22 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
                 } else if ("networkAclBypassResourceIds".equals(fieldName)) {
                     List<String> networkAclBypassResourceIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedDatabaseAccountGetProperties.networkAclBypassResourceIds = networkAclBypassResourceIds;
+                } else if ("diagnosticLogSettings".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.diagnosticLogSettings
+                        = DiagnosticLogSettings.fromJson(reader);
                 } else if ("disableLocalAuth".equals(fieldName)) {
                     deserializedDatabaseAccountGetProperties.disableLocalAuth
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("capacity".equals(fieldName)) {
                     deserializedDatabaseAccountGetProperties.capacity = Capacity.fromJson(reader);
+                } else if ("capacityMode".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.capacityMode = CapacityMode.fromString(reader.getString());
+                } else if ("capacityModeChangeTransitionState".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.capacityModeChangeTransitionState
+                        = CapacityModeChangeTransitionState.fromJson(reader);
+                } else if ("enableMaterializedViews".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.enableMaterializedViews
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("keysMetadata".equals(fieldName)) {
                     deserializedDatabaseAccountGetProperties.keysMetadata
                         = DatabaseAccountKeysMetadata.fromJson(reader);
@@ -1309,6 +1566,18 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
                 } else if ("enablePerRegionPerPartitionAutoscale".equals(fieldName)) {
                     deserializedDatabaseAccountGetProperties.enablePerRegionPerPartitionAutoscale
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAllVersionsAndDeletesChangeFeed".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.enableAllVersionsAndDeletesChangeFeed
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("softDeleteConfiguration".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.softDeleteConfiguration
+                        = SoftDeleteConfiguration.fromJson(reader);
+                } else if ("throughputPoolDedicatedRUs".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.throughputPoolDedicatedRUs
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("throughputPoolMaxConsumableRUs".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.throughputPoolMaxConsumableRUs
+                        = reader.getNullable(JsonReader::getLong);
                 } else if ("enforceHierarchicalPartitionKeyIdLastLevel".equals(fieldName)) {
                     deserializedDatabaseAccountGetProperties.enforceHierarchicalPartitionKeyIdLastLevel
                         = reader.getNullable(JsonReader::getBoolean);

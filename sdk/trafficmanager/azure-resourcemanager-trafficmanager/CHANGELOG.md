@@ -40,6 +40,14 @@
 
 * `models.RecordType` was added
 
+## 2.53.11 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
+
 ## 2.53.10 (2026-08-18)
 
 ### Other Changes

@@ -12,8 +12,8 @@ public final class LocationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LocationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"supportsAvailabilityZone\":true,\"isResidencyRestricted\":true,\"backupStorageRedundancies\":[\"Geo\",\"Local\"],\"isSubscriptionRegionAccessAllowedForRegular\":false,\"isSubscriptionRegionAccessAllowedForAz\":false,\"status\":\"Creating\"},\"id\":\"hfjv\",\"name\":\"ywjzebecuvlbefvw\",\"type\":\"ljkxpylrwoxz\"},{\"properties\":{\"supportsAvailabilityZone\":true,\"isResidencyRestricted\":true,\"backupStorageRedundancies\":[\"Geo\",\"Geo\",\"Local\",\"Local\"],\"isSubscriptionRegionAccessAllowedForRegular\":true,\"isSubscriptionRegionAccessAllowedForAz\":false,\"status\":\"Updating\"},\"id\":\"dkdkgawqwjxi\",\"name\":\"dfkcef\",\"type\":\"ygzqpjoisfmn\"}],\"nextLink\":\"bdjnxume\"}")
+            "{\"value\":[{\"properties\":{\"supportsAvailabilityZone\":true,\"isResidencyRestricted\":true,\"backupStorageRedundancies\":[\"Zone\",\"Local\",\"Zone\",\"Local\"],\"isSubscriptionRegionAccessAllowedForRegular\":true,\"isSubscriptionRegionAccessAllowedForAz\":true,\"status\":\"Updating\"},\"id\":\"kltvdhqnufbx\",\"name\":\"e\",\"type\":\"i\"},{\"properties\":{\"supportsAvailabilityZone\":true,\"isResidencyRestricted\":true,\"backupStorageRedundancies\":[\"Geo\",\"Geo\",\"Zone\",\"Geo\"],\"isSubscriptionRegionAccessAllowedForRegular\":false,\"isSubscriptionRegionAccessAllowedForAz\":true,\"status\":\"Initializing\"},\"id\":\"uwudhuaor\",\"name\":\"jkehwvumosqi\",\"type\":\"c\"}],\"nextLink\":\"qprlobruge\"}")
             .toObject(LocationListResult.class);
-        Assertions.assertEquals("bdjnxume", model.nextLink());
+        Assertions.assertEquals("qprlobruge", model.nextLink());
     }
 }
