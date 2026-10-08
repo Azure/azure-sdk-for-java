@@ -11,7 +11,6 @@ import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http2.Http2FrameCodec;
 import io.netty.handler.codec.http2.Http2MultiplexHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.resolver.DefaultAddressResolverGroup;
@@ -140,13 +139,11 @@ public class ReactorNettyClient implements HttpClient {
                             httpClientConfig.isServerCertValidationDisabled(),
                             false)))
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) this.httpClientConfig.getConnectionAcquireTimeout().toMillis())
-                .httpResponseDecoder(httpResponseDecoderSpec -> {
+                .httpResponseDecoder(httpResponseDecoderSpec ->
                     httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())
                                            .maxHeaderSize(this.httpClientConfig.getMaxHeaderSize())
                                            .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
-                                           .validateHeaders(true);
-                    return httpResponseDecoderSpec;
-                });
+                                           .validateHeaders(true));
 
         if (isH2Enabled) {
             this.httpClient = this.httpClient.doOnConnected(connection -> {
@@ -189,25 +186,13 @@ public class ReactorNettyClient implements HttpClient {
                     .initialWindowSize(1024 * 1024) // 1MB initial window size
                     .maxFrameSize(Configs.getHttp2MaxFrameSizeInBytes())   // 64KB default; overridable via COSMOS.HTTP2_MAX_FRAME_SIZE_IN_KB / COSMOS_HTTP2_MAX_FRAME_SIZE_IN_KB (clamped to [64KB, 16383KB])
                     .maxConcurrentStreams(http2CfgAccessor().getEffectiveMaxConcurrentStreams(http2Cfg))  // Increased from default 30
-                )
+                );
+            reactor.netty.http.client.HttpClientConfig channelConfig = this.httpClient.configuration();
+            this.httpClient = this.httpClient
                 .doOnChannelInit((observer, channel, remoteAddress) -> CosmosHttp2ChannelInitializer.install(
-                    channel, observer, this.httpClient.configuration()))
+                    channel, observer, channelConfig))
                 .doOnConnected((connection -> {
                     ChannelPipeline channelPipeline = connection.channel().pipeline();
-                    if (channelPipeline.get(Http2FrameCodec.class) != null
-                        && channelPipeline.get(Http2SettingsHandler.HANDLER_NAME) == null) {
-                        try {
-                            channelPipeline.addAfter(
-                                "reactor.left.httpCodec",
-                                Http2SettingsHandler.HANDLER_NAME,
-                                Http2SettingsHandler.INSTANCE);
-                        } catch (IllegalArgumentException ignored) {
-                            // TOCTOU race: between the get()==null check above and addAfter(),
-                            // a concurrent doOnConnected may have installed the handler.
-                            // Duplicate handler name is the only possible cause.
-                        }
-                    }
-
                     // Install exception handler at the tail of the HTTP/2 parent (TCP)
                     // channel pipeline. This pipeline has no ChannelOperationsHandler
                     // (unlike H1.1), so TCP-level exceptions (RST, broken pipe) propagate

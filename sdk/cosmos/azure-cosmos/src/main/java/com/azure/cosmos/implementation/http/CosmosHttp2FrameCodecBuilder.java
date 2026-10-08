@@ -34,7 +34,16 @@ final class CosmosHttp2FrameCodecBuilder extends Http2FrameCodecBuilder {
     @Override
     protected Http2FrameCodec build(Http2ConnectionDecoder decoder, Http2ConnectionEncoder encoder,
                                    Http2Settings settings) {
-        return new DelegatingCodecBuilder(newConnectionDecoder(decoder, encoder, settings), encoder, settings, this).build();
+        Http2ConnectionDecoder replacement = newConnectionDecoder(decoder, encoder, settings);
+        // Let Netty reapply decoder protections; retain its original encoder and control-frame limits.
+        CosmosHttp2DecoderCodecBuilder builder = new CosmosHttp2DecoderCodecBuilder();
+        builder.initialSettings(settings)
+            .gracefulShutdownTimeoutMillis(gracefulShutdownTimeoutMillis())
+            .decoderEnforceMaxConsecutiveEmptyDataFrames(decoderEnforceMaxConsecutiveEmptyDataFrames())
+            .decoderEnforceMaxRstFramesPerWindow(maxDecodedRstFrames, rstWindowSeconds)
+            .decoupleCloseAndGoAway(decoupleCloseAndGoAway())
+            .flushPreface(flushPreface());
+        return builder.build(replacement, encoder);
     }
 
     private Http2ConnectionDecoder newConnectionDecoder(Http2ConnectionDecoder decoder, Http2ConnectionEncoder encoder,
@@ -50,27 +59,7 @@ final class CosmosHttp2FrameCodecBuilder extends Http2FrameCodecBuilder {
             decoder.connection(), encoder, reader, promisedRequestVerifier(), isAutoAckSettingsFrame(),
             isAutoAckPingFrame(), isValidateHeaders(), isValidateRequiredPseudoHeaders());
 
-        // Retain Netty's constructed encoder/control-frame limits. The second builder reapplies
-        // decoder protections to the custom reader before a codec is installed or sends its preface.
         decoder.close();
         return replacement;
-    }
-
-    private static final class DelegatingCodecBuilder extends Http2FrameCodecBuilder {
-        private DelegatingCodecBuilder(Http2ConnectionDecoder decoder, Http2ConnectionEncoder encoder,
-                                       Http2Settings settings, CosmosHttp2FrameCodecBuilder source) {
-            super.initialSettings(settings);
-            super.gracefulShutdownTimeoutMillis(source.gracefulShutdownTimeoutMillis());
-            super.decoderEnforceMaxConsecutiveEmptyDataFrames(source.decoderEnforceMaxConsecutiveEmptyDataFrames());
-            super.decoderEnforceMaxRstFramesPerWindow(source.maxDecodedRstFrames, source.rstWindowSeconds);
-            super.decoupleCloseAndGoAway(source.decoupleCloseAndGoAway());
-            super.flushPreface(source.flushPreface());
-            super.codec(decoder, encoder);
-        }
-
-        @Override
-        public boolean isServer() {
-            return decoder().connection().isServer();
-        }
     }
 }

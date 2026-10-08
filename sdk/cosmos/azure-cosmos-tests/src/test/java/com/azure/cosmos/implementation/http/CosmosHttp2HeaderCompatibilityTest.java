@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -45,10 +46,11 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
 import reactor.netty.http.Http2SslContextSpec;
 import reactor.netty.http.HttpProtocol;
+import reactor.netty.DisposableServer;
+import reactor.netty.http.server.HttpServer;
 
 import javax.net.ssl.KeyManagerFactory;
 import java.io.InputStream;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -392,12 +394,47 @@ public class CosmosHttp2HeaderCompatibilityTest {
             HttpClient client = HttpClient.createFixed(clientConfig(true));
             try {
                 HttpRequest request = new HttpRequest(HttpMethod.GET, server.uri(), server.port());
-                assertThatThrownBy(() -> readHeader(client, request)).satisfies(error ->
-                    assertThat(reactor.core.Exceptions.unwrap(error)).isInstanceOf(IOException.class)
-                        .hasMessageContaining("before receiving initial HTTP/2 SETTINGS"));
+                assertThatThrownBy(() -> readHeader(client, request)).satisfies(error -> {
+                    Throwable cause = reactor.core.Exceptions.unwrap(error);
+                    assertThat(cause).isInstanceOf(Http2PrematureCloseException.class)
+                        .hasMessageContaining("before receiving initial HTTP/2 SETTINGS");
+                    assertThat(WebExceptionUtility.isNetworkFailure((Exception) cause)).isTrue();
+                });
             } finally {
                 client.shutdown();
             }
+        }
+    }
+
+    @DataProvider(name = "connectionPooling")
+    public Object[][] connectionPooling() {
+        return new Object[][] { { true }, { false } };
+    }
+
+    @Test(groups = "unit", dataProvider = "connectionPooling")
+    public void http2EnabledClientRetainsPlaintextHttp11Fallback(boolean pooled) throws Exception {
+        DisposableServer server = HttpServer.create().host("127.0.0.1").port(0)
+            .handle((request, response) -> response.header(HEADER, "version").sendString(Mono.just("plaintext-body")))
+            .bindNow(TIMEOUT);
+        HttpClient client = null;
+        try {
+            client = pooled ? HttpClient.createFixed(clientConfig(true)) : HttpClient.create(clientConfig(true));
+            HttpRequest request = new HttpRequest(HttpMethod.GET, "http://127.0.0.1:" + server.port() + "/", server.port());
+            String body = client.send(request).flatMap(response -> {
+                assertThat(response.statusCode()).isEqualTo(200);
+                assertThat(response.headerValue(HEADER)).isEqualTo("version");
+                assertThat(response.internConnection().channel().pipeline().get(CosmosHttp2ChannelInitializer.HANDLER_NAME))
+                    .isNull();
+                assertThat(response.internConnection().channel().pipeline().get(Http2SettingsHandler.HANDLER_NAME)).isNull();
+                return response.bodyAsString();
+            }).block(TIMEOUT);
+            assertThat(body).isEqualTo("plaintext-body");
+            assertThat(request.reactorNettyRequestRecord().isHttp2()).isFalse();
+        } finally {
+            if (client != null) {
+                client.shutdown();
+            }
+            server.disposeNow(TIMEOUT);
         }
     }
 
