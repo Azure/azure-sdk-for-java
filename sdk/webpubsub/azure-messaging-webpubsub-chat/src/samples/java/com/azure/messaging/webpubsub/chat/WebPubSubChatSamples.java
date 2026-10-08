@@ -22,32 +22,38 @@ public final class WebPubSubChatSamples {
     /** Creates a client from a connection string. */
     public void createClientWithConnectionString() {
         // BEGIN: readme-sample-createChatClientWithConnectionString
+        // <ChatJava_ConnectionString>
         WebPubSubChatServiceClient client = new WebPubSubChatServiceClientBuilder()
             .connectionString("<web-pubsub-connection-string>")
             .hub("chat")
             .buildClient();
+        // </ChatJava_ConnectionString>
         // END: readme-sample-createChatClientWithConnectionString
     }
 
     /** Creates a client from an endpoint and access key. */
     public void createClientWithKey() {
         // BEGIN: readme-sample-createChatClientWithKey
+        // <ChatJava_AccessKey>
         WebPubSubChatServiceClient client = new WebPubSubChatServiceClientBuilder()
             .endpoint("https://<resource-name>.webpubsub.azure.com")
             .hub("chat")
             .credential(new AzureKeyCredential("<web-pubsub-access-key>"))
             .buildClient();
+        // </ChatJava_AccessKey>
         // END: readme-sample-createChatClientWithKey
     }
 
     /** Creates a client using Microsoft Entra ID. */
     public void createClientWithEntraId() {
         // BEGIN: readme-sample-createChatClientWithEntraId
+        // <ChatJava_EntraId>
         WebPubSubChatServiceClient client = new WebPubSubChatServiceClientBuilder()
             .endpoint("https://<resource-name>.webpubsub.azure.com")
             .hub("chat")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
+        // </ChatJava_EntraId>
         // END: readme-sample-createChatClientWithEntraId
     }
 
@@ -56,9 +62,11 @@ public final class WebPubSubChatSamples {
         WebPubSubChatServiceClient client = createClient();
 
         // BEGIN: readme-sample-getChatClientAccessToken
+        // <ChatJava_ClientAccessToken>
         WebPubSubClientAccessToken accessToken = client.getClientAccessToken(
             new GetClientAccessTokenOptions().setUserId("alice").setExpiresAfter(Duration.ofHours(1)));
         String clientConnectionUrl = accessToken.getUrl();
+        // </ChatJava_ClientAccessToken>
         // END: readme-sample-getChatClientAccessToken
     }
 
@@ -67,12 +75,14 @@ public final class WebPubSubChatSamples {
         WebPubSubChatServiceClient client = createClient();
 
         // BEGIN: readme-sample-manageChatRoles
+        // <ChatJava_ManageRoles>
         ChatRole moderator = new ChatRole(Arrays.asList(ChatPermission.ROOM_HISTORY,
             ChatPermission.ROOM_REMOVE_USER, ChatPermission.ROOM_PUBLISH_MESSAGE));
         client.createOrReplaceRole("room.moderator", moderator);
 
         client.listRoles().forEach(role -> System.out.println(role.getName()));
         client.deleteRole("room.moderator");
+        // </ChatJava_ManageRoles>
         // END: readme-sample-manageChatRoles
     }
 
@@ -81,6 +91,7 @@ public final class WebPubSubChatSamples {
         WebPubSubChatServiceClient client = createClient();
 
         // BEGIN: readme-sample-manageChatRooms
+        // <ChatJava_RoomUserMembership>
         client.createOrReplaceRole("user.room_creator",
             new ChatRole(Arrays.asList(ChatPermission.USER_CREATE_ROOM)));
         client.createOrReplaceRole("room.contributor",
@@ -96,6 +107,7 @@ public final class WebPubSubChatSamples {
         client.deleteUser("alice");
         client.deleteRole("room.contributor");
         client.deleteRole("user.room_creator");
+        // </ChatJava_RoomUserMembership>
         // END: readme-sample-manageChatRooms
     }
 
@@ -104,29 +116,35 @@ public final class WebPubSubChatSamples {
         WebPubSubChatServiceClient client = createClient();
 
         // BEGIN: readme-sample-listChatMessages
+        // <ChatJava_MessageHistory>
         ChatRoom room = client.getRoom("general");
         client.listMessages(room.getDefaultConversation()).forEach(message ->
             System.out.printf("%s: %s%n", message.getCreatedBy(), message.getContent().getText()));
+        // </ChatJava_MessageHistory>
         // END: readme-sample-listChatMessages
     }
 
     /** Creates an asynchronous client and lists roles. */
     public void createAsyncClient() {
         // BEGIN: readme-sample-createAsyncChatClient
+        // <ChatJava_AsyncClient>
         WebPubSubChatServiceAsyncClient asyncClient = new WebPubSubChatServiceClientBuilder()
             .connectionString("<web-pubsub-connection-string>")
             .hub("chat")
             .buildAsyncClient();
 
         asyncClient.listRoles().subscribe(role -> System.out.println(role.getName()));
+        // </ChatJava_AsyncClient>
         // END: readme-sample-createAsyncChatClient
     }
 
     /** Reads the built-in role and permission values. */
     public void builtInValues() {
         // BEGIN: readme-sample-chatBuiltInValues
+        // <ChatJava_BuiltInValues>
         String memberRole = BuiltInChatRoles.ROOM_MEMBER;
         ChatPermission publishPermission = ChatPermission.ROOM_PUBLISH_MESSAGE;
+        // </ChatJava_BuiltInValues>
         // END: readme-sample-chatBuiltInValues
     }
 
