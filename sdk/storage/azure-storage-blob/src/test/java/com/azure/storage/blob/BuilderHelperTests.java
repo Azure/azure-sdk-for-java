@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
@@ -19,6 +20,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.Header;
@@ -56,6 +58,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -85,6 +88,7 @@ public class BuilderHelperTests {
             + "<SessionToken>session-token</SessionToken>"
             + "<SessionKey>dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==</SessionKey>"
             + "</Credentials></CreateSessionResult>";
+    private static final String DATA_RESPONSE_BODY = "data-response";
 
     private static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, url).setBody(Flux.empty())
@@ -830,6 +834,30 @@ public class BuilderHelperTests {
             "Per-retry policies must run for data requests, saw " + observedMethods);
     }
 
+    @ParameterizedTest
+    @EnumSource(value = HttpLogDetailLevel.class, names = { "BODY", "BODY_AND_HEADERS" })
+    public void createSessionResponseBodyIsNotLoggedAsync(HttpLogDetailLevel logLevel) {
+        SessionLoggingTestContext testContext = createSessionLoggingTestContext(logLevel);
+
+        StepVerifier.create(testContext.pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        testContext.assertOnlyDataResponseWasLogged();
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = HttpLogDetailLevel.class, names = { "BODY", "BODY_AND_HEADERS" })
+    public void createSessionResponseBodyIsNotLoggedSync(HttpLogDetailLevel logLevel) {
+        SessionLoggingTestContext testContext = createSessionLoggingTestContext(logLevel);
+
+        try (HttpResponse response = testContext.pipeline
+            .sendSync(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob"), Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+        }
+        testContext.assertOnlyDataResponseWasLogged();
+    }
+
     @Test
     public void customEndpointRequiresAccountNameForDefaultSessionProvider() {
         assertThrows(IllegalArgumentException.class,
@@ -892,6 +920,79 @@ public class BuilderHelperTests {
         return BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
             null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), mockClient, new ArrayList<>(),
             new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), options, null);
+    }
+
+    private static SessionLoggingTestContext createSessionLoggingTestContext(HttpLogDetailLevel logLevel) {
+        List<String> loggedBodies = Collections.synchronizedList(new ArrayList<>());
+        AtomicReference<BufferTrackingHttpResponse> sessionResponse = new AtomicReference<>();
+        AtomicReference<BufferTrackingHttpResponse> dataResponse = new AtomicReference<>();
+
+        HttpClient httpClient = request -> {
+            boolean createSession = request.getHttpMethod() == HttpMethod.POST;
+            String body = createSession ? CREATE_SESSION_RESPONSE_BODY : DATA_RESPONSE_BODY;
+            HttpHeaders headers
+                = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, createSession ? "application/xml" : "text/plain")
+                    .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(body.getBytes(StandardCharsets.UTF_8).length));
+            BufferTrackingHttpResponse response
+                = new BufferTrackingHttpResponse(request, createSession ? 201 : 200, headers, body);
+            (createSession ? sessionResponse : dataResponse).set(response);
+            return Mono.just(response);
+        };
+
+        HttpLogOptions logOptions = BuilderHelper.getDefaultHttpLogOptions()
+            .setLogLevel(logLevel)
+            .setResponseLogger((logger, loggingContext) -> {
+                HttpResponse response = loggingContext.getHttpResponse().buffer();
+                return response.getBodyAsString().defaultIfEmpty("").doOnNext(loggedBodies::add).thenReturn(response);
+            });
+
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
+            REQUEST_RETRY_OPTIONS, null, logOptions, new ClientOptions(), httpClient, new ArrayList<>(),
+            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class),
+            new SessionOptions().setSessionMode(SessionMode.ENABLED), BlobServiceVersion.getLatest());
+        return new SessionLoggingTestContext(pipeline, loggedBodies, sessionResponse, dataResponse);
+    }
+
+    private static final class SessionLoggingTestContext {
+        private final HttpPipeline pipeline;
+        private final List<String> loggedBodies;
+        private final AtomicReference<BufferTrackingHttpResponse> sessionResponse;
+        private final AtomicReference<BufferTrackingHttpResponse> dataResponse;
+
+        private SessionLoggingTestContext(HttpPipeline pipeline, List<String> loggedBodies,
+            AtomicReference<BufferTrackingHttpResponse> sessionResponse,
+            AtomicReference<BufferTrackingHttpResponse> dataResponse) {
+            this.pipeline = pipeline;
+            this.loggedBodies = loggedBodies;
+            this.sessionResponse = sessionResponse;
+            this.dataResponse = dataResponse;
+        }
+
+        private void assertOnlyDataResponseWasLogged() {
+            assertNotNull(sessionResponse.get());
+            assertNotNull(dataResponse.get());
+            assertEquals(0, sessionResponse.get().getBufferCount());
+            assertEquals(1, dataResponse.get().getBufferCount());
+            assertEquals(Collections.singletonList(DATA_RESPONSE_BODY), loggedBodies);
+        }
+    }
+
+    private static final class BufferTrackingHttpResponse extends MockHttpResponse {
+        private final AtomicInteger bufferCount = new AtomicInteger();
+
+        private BufferTrackingHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, String body) {
+            super(request, statusCode, headers, body.getBytes(StandardCharsets.UTF_8));
+        }
+
+        @Override
+        public HttpResponse buffer() {
+            bufferCount.incrementAndGet();
+            return this;
+        }
+
+        private int getBufferCount() {
+            return bufferCount.get();
+        }
     }
 
     private static Stream<Arguments> pipelinesWithoutSessionsSupplier() {

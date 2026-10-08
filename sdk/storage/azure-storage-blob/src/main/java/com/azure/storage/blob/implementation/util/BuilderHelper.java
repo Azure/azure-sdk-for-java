@@ -14,6 +14,7 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureSasCredentialPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -52,6 +53,7 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -171,7 +173,7 @@ public final class BuilderHelper {
                 if (sessionProvider == null) {
                     String accountName = resolveSessionAccountName(endpoint, sessionOptions.getAccountName());
                     sessionProvider = createDefaultSessionProvider(policies, bearerPolicy, postAuthenticationPolicies,
-                        effectiveHttpClient, clientOptions, endpoint, effectiveServiceVersion, accountName);
+                        logOptions, effectiveHttpClient, clientOptions, endpoint, effectiveServiceVersion, accountName);
                 }
                 policies.add(new SessionAuthenticationPolicy(bearerPolicy, sessionProvider, sessionOptions));
             }
@@ -208,18 +210,39 @@ public final class BuilderHelper {
      * Creates the default {@link SessionProvider}, backed by a bearer-only {@link HttpPipeline} used for
      * CreateSession calls. That pipeline mirrors the data pipeline - the same pre-auth policies, bearer token policy,
      * post-auth policies and transport - but has no session policy, because session credentials are bound to the
-     * network context of the CreateSession call.
+     * network context of the CreateSession call. HTTP logging policies are replaced with body-disabled logging so the
+     * session token and key in the CreateSession response cannot be logged.
      */
     private static SessionProvider createDefaultSessionProvider(List<HttpPipelinePolicy> preAuthPolicies,
         StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-        List<HttpPipelinePolicy> postAuthenticationPolicies, HttpClient httpClient, ClientOptions clientOptions,
-        String endpoint, BlobServiceVersion serviceVersion, String accountName) {
+        List<HttpPipelinePolicy> postAuthenticationPolicies, HttpLogOptions logOptions, HttpClient httpClient,
+        ClientOptions clientOptions, String endpoint, BlobServiceVersion serviceVersion, String accountName) {
         List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(preAuthPolicies);
         bearerPolicies.add(bearerPolicy);
         bearerPolicies.addAll(postAuthenticationPolicies);
 
+        HttpLoggingPolicy sessionLoggingPolicy = createSessionLoggingPolicy(logOptions);
+        bearerPolicies.replaceAll(policy -> policy instanceof HttpLoggingPolicy ? sessionLoggingPolicy : policy);
+
         return new ContainerSessionProvider(createPipeline(bearerPolicies, httpClient, clientOptions), endpoint,
             serviceVersion, accountName);
+    }
+
+    private static HttpLoggingPolicy createSessionLoggingPolicy(HttpLogOptions logOptions) {
+        HttpLogOptions sourceOptions = logOptions == null ? new HttpLogOptions() : logOptions;
+        HttpLogDetailLevel logLevel = sourceOptions.getLogLevel();
+        if (logLevel == HttpLogDetailLevel.BODY) {
+            logLevel = HttpLogDetailLevel.BASIC;
+        } else if (logLevel == HttpLogDetailLevel.BODY_AND_HEADERS) {
+            logLevel = HttpLogDetailLevel.HEADERS;
+        }
+
+        // Custom loggers receive the raw response and could read the credential payload, so don't copy them.
+        HttpLogOptions sessionLogOptions = new HttpLogOptions().setLogLevel(logLevel)
+            .setAllowedHttpHeaderNames(new HashSet<>(sourceOptions.getAllowedHttpHeaderNames()))
+            .setAllowedQueryParamNames(new HashSet<>(sourceOptions.getAllowedQueryParamNames()))
+            .disableRedactedHeaderLogging(sourceOptions.isRedactedHeaderLoggingDisabled());
+        return new HttpLoggingPolicy(sessionLogOptions);
     }
 
     private static HttpClient getOrCreateHttpClient(HttpClient httpClient, ClientOptions clientOptions) {
