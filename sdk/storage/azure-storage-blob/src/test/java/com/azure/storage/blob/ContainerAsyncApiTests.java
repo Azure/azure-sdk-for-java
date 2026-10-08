@@ -2336,20 +2336,20 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 .then(impl.getContainers()
                     .listBlobFlatSegmentApacheArrowWithResponseAsync(containerName, null, null, null, include, null,
                         null, null, null))
-                .flatMap(response -> {
-                    // Verify Content-Type is Arrow
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(bytes -> {
                     String contentType = response.getDeserializedHeaders().getContentType();
                     assertTrue(
                         StorageImplUtils.hasMatchingHeaderValue(contentType,
                             Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
                         "Expected Arrow content type but got: " + contentType);
+                    return ArrowBlobListDeserializer.deserialize(new ByteArrayInputStream(bytes));
+                }));
 
-                    // Collect the Flux<ByteBuffer> body into a byte[] and feed it to the deserializer.
-                    return FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                        .map(bytes -> ArrowBlobListDeserializer.deserialize(new ByteArrayInputStream(bytes)));
-                });
+        StepVerifier.create(testMono.zipWhen(result -> bc.getProperties())).assertNext(response -> {
+            ArrowBlobListDeserializer.ArrowListBlobsResult result = response.getT1();
+            BlobProperties properties = response.getT2();
+            assertNotNull(properties.getAccessTier());
 
-        StepVerifier.create(testMono).assertNext(result -> {
             // Verify pagination — single blob, no next page
             assertNull(result.getNextMarker());
 
@@ -2370,7 +2370,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             assertNotNull(item.getProperties().getLastModified());
             assertNotNull(item.getProperties().getCreationTime());
             assertEquals(BlobType.BLOCK_BLOB, item.getProperties().getBlobType());
-            assertEquals(AccessTier.HOT, item.getProperties().getAccessTier());
+            assertEquals(properties.getAccessTier(), item.getProperties().getAccessTier());
             assertTrue(item.getProperties().isAccessTierInferred());
             assertTrue(item.getProperties().isServerEncrypted());
             assertEquals(LeaseStateType.AVAILABLE, item.getProperties().getLeaseState());

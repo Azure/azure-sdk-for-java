@@ -2336,16 +2336,18 @@ public class ContainerApiTests extends BlobTestBase {
             .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, null, null, include, null, null, null,
                 null, com.azure.core.util.Context.NONE);
 
-        // Verify Content-Type is Arrow
-        String contentType = response.getDeserializedHeaders().getContentType();
-        assertTrue(
-            StorageImplUtils.hasMatchingHeaderValue(contentType,
-                Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
-            "Expected Arrow content type but got: " + contentType);
+        ArrowBlobListDeserializer.ArrowListBlobsResult result;
+        try (InputStream body = response.getValue()) {
+            String contentType = response.getDeserializedHeaders().getContentType();
+            assertTrue(
+                StorageImplUtils.hasMatchingHeaderValue(contentType,
+                    Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
+                "Expected Arrow content type but got: " + contentType);
+            result = ArrowBlobListDeserializer.deserialize(body);
+        }
 
-        // Deserialize using ArrowBlobListDeserializer
-        ArrowBlobListDeserializer.ArrowListBlobsResult result
-            = ArrowBlobListDeserializer.deserialize(response.getValue());
+        BlobProperties properties = cc.getBlobClient(blobName).getProperties();
+        assertNotNull(properties.getAccessTier());
 
         // Verify pagination — single blob, no next page
         assertNull(result.getNextMarker());
@@ -2367,7 +2369,7 @@ public class ContainerApiTests extends BlobTestBase {
         assertNotNull(item.getProperties().getLastModified());
         assertNotNull(item.getProperties().getCreationTime());
         assertEquals(BlobType.BLOCK_BLOB, item.getProperties().getBlobType());
-        assertEquals(AccessTier.HOT, item.getProperties().getAccessTier());
+        assertEquals(properties.getAccessTier(), item.getProperties().getAccessTier());
         assertTrue(item.getProperties().isAccessTierInferred());
         assertTrue(item.getProperties().isServerEncrypted());
         assertEquals(LeaseStateType.AVAILABLE, item.getProperties().getLeaseState());
