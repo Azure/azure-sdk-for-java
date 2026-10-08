@@ -92,8 +92,81 @@ public class VoiceAgentTracerTests {
             assertEquals(SpanKind.CLIENT, child.getKind());
             assertEquals(connect.getSpanContext().getTraceId(), child.getSpanContext().getTraceId());
             assertEquals(connect.getSpanContext().getSpanId(), child.getParentSpanId());
-            assertTrue(child.getEvents().isEmpty(), "Payload events must be suppressed by default.");
+            if (child.getName().startsWith("send ")) {
+                assertEquals(VoiceAgentTracer.INPUT_EVENT, child.getEvents().get(0).getName());
+                assertNull(child.getEvents().get(0).getAttributes().get(VoiceAgentTracer.EVENT_CONTENT));
+            } else if (child.getName().startsWith("recv ")) {
+                assertEquals(VoiceAgentTracer.OUTPUT_EVENT, child.getEvents().get(0).getName());
+                assertNull(child.getEvents().get(0).getAttributes().get(VoiceAgentTracer.EVENT_CONTENT));
+            }
         }
+    }
+
+    @Test
+    public void sessionConfigurationRespectsContentRecording() {
+        String payload = "{\"type\":\"session.update\",\"session\":{\"instructions\":\"secret\","
+            + "\"temperature\":0.7,\"max_output_tokens\":256,\"tools\":[{\"type\":\"function\"}],"
+            + "\"audio\":{\"input\":{\"format\":{\"type\":\"audio/pcm\",\"rate\":24000}},"
+            + "\"output\":{\"format\":{\"type\":\"audio/pcmu\"}}}}}";
+        tracer.startConnectSpan();
+        tracer.traceSendRaw(payload);
+        tracer.traceSendRaw("{\"type\":\"session.update\",\"session\":{\"temperature\":0.8}}");
+        tracer.endConnectSpan(null);
+
+        SpanData connect = exporter.getFinishedSpanItems().get(2);
+        assertEquals("0.8", connect.getAttributes().get(VoiceAgentTracer.GEN_AI_REQUEST_TEMPERATURE));
+        assertEquals("256", connect.getAttributes().get(VoiceAgentTracer.GEN_AI_REQUEST_MAX_OUTPUT_TOKENS));
+        assertEquals("audio/pcm", connect.getAttributes().get(VoiceAgentTracer.GEN_AI_VOICE_INPUT_AUDIO_FORMAT));
+        assertEquals("audio/pcmu", connect.getAttributes().get(VoiceAgentTracer.GEN_AI_VOICE_OUTPUT_AUDIO_FORMAT));
+        assertEquals(24000L, connect.getAttributes().get(VoiceAgentTracer.GEN_AI_VOICE_INPUT_SAMPLE_RATE));
+        assertNull(connect.getAttributes().get(VoiceAgentTracer.GEN_AI_SYSTEM_INSTRUCTIONS));
+        assertNull(connect.getAttributes().get(VoiceAgentTracer.GEN_AI_REQUEST_TOOLS));
+
+        exporter.reset();
+        VoiceAgentTracer contentTracer = new VoiceAgentTracer(openTelemetry.getTracer("test"),
+            URI.create("wss://example.test/session"), "weather-agent", true);
+        contentTracer.startConnectSpan();
+        contentTracer.traceSendRaw(payload);
+        contentTracer.endConnectSpan(null);
+
+        SpanData contentConnect = exporter.getFinishedSpanItems().get(1);
+        assertEquals("secret", contentConnect.getAttributes().get(VoiceAgentTracer.GEN_AI_SYSTEM_INSTRUCTIONS));
+        assertTrue(contentConnect.getAttributes().get(VoiceAgentTracer.GEN_AI_REQUEST_TOOLS).contains("function"));
+        assertNotNull(exporter.getFinishedSpanItems()
+            .get(0)
+            .getEvents()
+            .get(0)
+            .getAttributes()
+            .get(VoiceAgentTracer.EVENT_CONTENT));
+    }
+
+    @Test
+    public void eventSpansIncludeCorrelationAttributes() {
+        tracer.startConnectSpan();
+        tracer.traceSendRaw("{\"type\":\"conversation.item.create\",\"previous_item_id\":\"previous-1\","
+            + "\"item\":{\"id\":\"item-1\",\"call_id\":\"call-1\"}}");
+        tracer.traceReceiveRaw("{\"type\":\"response.function_call_arguments.done\","
+            + "\"response_id\":\"response-1\",\"item_id\":\"item-2\",\"call_id\":\"call-2\"," + "\"output_index\":3}");
+        tracer.traceReceiveRaw("{\"type\":\"response.created\",\"response\":{\"id\":\"response-2\","
+            + "\"conversation_id\":\"conversation-2\"}}");
+        tracer.endConnectSpan(null);
+
+        SpanData send = exporter.getFinishedSpanItems().get(0);
+        assertEquals("previous-1", send.getAttributes().get(VoiceAgentTracer.GEN_AI_VOICE_PREVIOUS_ITEM_ID));
+        assertEquals("item-1", send.getAttributes().get(VoiceAgentTracer.GEN_AI_VOICE_ITEM_ID));
+        assertEquals("call-1", send.getAttributes().get(VoiceAgentTracer.GEN_AI_VOICE_CALL_ID));
+
+        SpanData receive = exporter.getFinishedSpanItems().get(1);
+        assertEquals("response-1", receive.getAttributes().get(VoiceAgentTracer.GEN_AI_RESPONSE_ID));
+        assertEquals("item-2", receive.getAttributes().get(VoiceAgentTracer.GEN_AI_VOICE_ITEM_ID));
+        assertEquals("call-2", receive.getAttributes().get(VoiceAgentTracer.GEN_AI_VOICE_CALL_ID));
+        assertEquals(3L, receive.getAttributes().get(VoiceAgentTracer.GEN_AI_VOICE_OUTPUT_INDEX));
+
+        SpanData responseCreated = exporter.getFinishedSpanItems().get(2);
+        assertEquals("response-2", responseCreated.getAttributes().get(VoiceAgentTracer.GEN_AI_RESPONSE_ID));
+        assertEquals("conversation-2", responseCreated.getAttributes().get(VoiceAgentTracer.GEN_AI_CONVERSATION_ID));
+        SpanData connect = exporter.getFinishedSpanItems().get(3);
+        assertEquals("conversation-2", connect.getAttributes().get(VoiceAgentTracer.GEN_AI_CONVERSATION_ID));
     }
 
     @Test
@@ -119,6 +192,34 @@ public class VoiceAgentTracerTests {
             .stream()
             .anyMatch(event -> VoiceAgentTracer.RATE_LIMITS_EVENT.equals(event.getName())
                 && event.getAttributes().get(VoiceAgentTracer.GEN_AI_VOICE_RATE_LIMITS).contains("tokens")));
+    }
+
+    @Test
+    public void malformedRawEventsRecoverPayloadType() {
+        tracer.startConnectSpan();
+        tracer.traceReceiveRaw("{\"type\":\"recoverable.event\",\"value\":");
+        tracer.traceReceiveRaw("{\"type\":");
+        tracer.endConnectSpan(null);
+
+        List<SpanData> spans = exporter.getFinishedSpanItems();
+        assertEquals("recv recoverable.event", spans.get(0).getName());
+        assertEquals("recoverable.event", spans.get(0).getAttributes().get(VoiceAgentTracer.GEN_AI_VOICE_EVENT_TYPE));
+        assertEquals("recv unknown", spans.get(1).getName());
+        assertEquals("unknown", spans.get(1).getAttributes().get(VoiceAgentTracer.GEN_AI_VOICE_EVENT_TYPE));
+    }
+
+    @Test
+    public void callbacksAfterConnectEndsDoNotCreateOrphanSpans() {
+        tracer.startConnectSpan();
+        tracer.endConnectSpan(null);
+
+        tracer.traceSendRaw("{\"type\":\"response.create\"}");
+        tracer.traceReceiveRaw("{\"type\":\"response.created\"}");
+        tracer.traceClose();
+
+        List<SpanData> spans = exporter.getFinishedSpanItems();
+        assertEquals(1, spans.size());
+        assertEquals("connect", spans.get(0).getName());
     }
 
     @Test
