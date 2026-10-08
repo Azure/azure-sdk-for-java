@@ -44,7 +44,8 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
  * wrapped bearer token policy.
  * <p>
  * Session-signed requests that receive HTTP 401 are retried once with bearer authentication, and the rejected
- * session credential is invalidated only if it is still current. Rejections do not start a cooldown;
+ * session credential is invalidated only if it is still current. Each transport retry may fall back independently.
+ * Rejections do not start a cooldown;
  * subsequent eligible requests may acquire a new session. Other responses are returned to the caller unchanged.
  * <p>
  * If session acquisition fails with HTTP 403, 5xx, or HTTP 400 with the {@code FeatureNotEnabled} error code, the
@@ -56,7 +57,6 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
  */
 public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(SessionAuthenticationPolicy.class);
-    private static final String RETRY_CONTEXT_KEY = "azure-storage-blob-session-auth-retried";
     private static final HttpHeaderName X_MS_AUTH_INFO = HttpHeaderName.fromString("x-ms-auth-info");
     private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
     private static final String SESSION_EXPIRING = "session_expiring";
@@ -200,13 +200,10 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
 
         if (response.getStatusCode() == 401) {
             handleSessionRejection(requestContext, session);
-        }
-
-        if (shouldFallBackToBearer(context, response)) {
             response.close();
-            context.setData(RETRY_CONTEXT_KEY, true);
             context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
             context.getHttpRequest().getHeaders().remove(X_MS_DATE);
+            // retryNext starts after this policy, so the bearer response cannot trigger another session fallback.
             return bearerPolicy.process(context, retryNext);
         }
 
@@ -224,11 +221,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
 
         if (response.getStatusCode() == 401) {
             handleSessionRejection(requestContext, session);
-        }
-
-        if (shouldFallBackToBearer(context, response)) {
             response.close();
-            context.setData(RETRY_CONTEXT_KEY, true);
             context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
             context.getHttpRequest().getHeaders().remove(X_MS_DATE);
             return bearerPolicy.processSync(context, retryNext);
@@ -291,18 +284,6 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
                     + "session was already invalidated. The request will proceed using bearer token.",
                 requestContext.getContainerName());
         }
-    }
-
-    /**
-     * Returns true for responses where retrying with bearer authentication can preserve
-     * request compatibility when session authentication is unavailable or rejected.
-     */
-    private static boolean shouldFallBackToBearer(HttpPipelineCallContext context, HttpResponse response) {
-        if (Boolean.TRUE.equals(context.getData(RETRY_CONTEXT_KEY).orElse(false))) {
-            return false;
-        }
-
-        return response.getStatusCode() == 401;
     }
 
     /**

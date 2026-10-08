@@ -15,6 +15,7 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -24,6 +25,9 @@ import com.azure.storage.blob.models.SessionOptions.SessionMode;
 import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
+import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.RequestRetryPolicy;
+import com.azure.storage.common.policy.RetryPolicyType;
 import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -688,6 +692,42 @@ public class SessionAuthenticationPolicyTest {
         }).verifyComplete();
 
         verify(sessionProvider).getSessionAsync(argThat(context -> "mycontainer".equals(context.getContainerName())));
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "true,200", "false,200", "true,401", "false,401" })
+    public void sessionRejectionFallsBackOnEachTransportAttempt(boolean sync, int finalStatusCode) {
+        SessionCredential credential = credentialWithToken();
+        when(sessionProvider.getSession(any())).thenReturn(credential);
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credential));
+        AtomicInteger sends = new AtomicInteger();
+        HttpClient transport = request -> {
+            int attempt = sends.incrementAndGet();
+            assertEquals(attempt % 2 == 1, isSessionAuthenticated(request));
+            int status = attempt % 2 == 1 ? 401 : (attempt == 2 ? 500 : finalStatusCode);
+            return Mono.just(new MockHttpResponse(request, status));
+        };
+        RequestRetryOptions retryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 30, 1L, 1L, null);
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(transport)
+            .policies(new RequestRetryPolicy(retryOptions), policy)
+            .build();
+
+        if (sync) {
+            try (HttpResponse response = pipeline.sendSync(blobGetRequest(), Context.NONE)) {
+                assertEquals(finalStatusCode, response.getStatusCode());
+            }
+            verify(sessionProvider, times(2)).getSession(any());
+            verify(bearerPolicy, times(2)).processSync(any(), any());
+        } else {
+            StepVerifier.create(pipeline.send(blobGetRequest())).assertNext(response -> {
+                assertEquals(finalStatusCode, response.getStatusCode());
+                response.close();
+            }).verifyComplete();
+            verify(sessionProvider, times(2)).getSessionAsync(any());
+            verify(bearerPolicy, times(2)).process(any(), any());
+        }
+        assertEquals(4, sends.get());
+        verify(sessionProvider, times(2)).invalidateSession(any(), org.mockito.ArgumentMatchers.same(credential));
     }
 
     // Helpers
