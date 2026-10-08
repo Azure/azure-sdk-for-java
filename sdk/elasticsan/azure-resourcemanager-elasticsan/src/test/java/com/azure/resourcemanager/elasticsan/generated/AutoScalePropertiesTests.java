@@ -14,27 +14,27 @@ public final class AutoScalePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoScaleProperties model = BinaryData.fromString(
-            "{\"scaleUpProperties\":{\"unusedSizeTiB\":1076268923335791776,\"increaseCapacityUnitByTiB\":6280199240757284109,\"capacityUnitScaleUpLimitTiB\":6794615360251570164,\"autoScalePolicyEnforcement\":\"Enabled\"}}")
+            "{\"scaleUpProperties\":{\"unusedSizeTiB\":9204546244351616694,\"increaseCapacityUnitByTiB\":1735908186849769210,\"capacityUnitScaleUpLimitTiB\":263357956670416647,\"autoScalePolicyEnforcement\":\"Disabled\"}}")
             .toObject(AutoScaleProperties.class);
-        Assertions.assertEquals(1076268923335791776L, model.scaleUpProperties().unusedSizeTiB());
-        Assertions.assertEquals(6280199240757284109L, model.scaleUpProperties().increaseCapacityUnitByTiB());
-        Assertions.assertEquals(6794615360251570164L, model.scaleUpProperties().capacityUnitScaleUpLimitTiB());
-        Assertions.assertEquals(AutoScalePolicyEnforcement.ENABLED,
+        Assertions.assertEquals(9204546244351616694L, model.scaleUpProperties().unusedSizeTiB());
+        Assertions.assertEquals(1735908186849769210L, model.scaleUpProperties().increaseCapacityUnitByTiB());
+        Assertions.assertEquals(263357956670416647L, model.scaleUpProperties().capacityUnitScaleUpLimitTiB());
+        Assertions.assertEquals(AutoScalePolicyEnforcement.DISABLED,
             model.scaleUpProperties().autoScalePolicyEnforcement());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutoScaleProperties model = new AutoScaleProperties()
-            .withScaleUpProperties(new ScaleUpProperties().withUnusedSizeTiB(1076268923335791776L)
-                .withIncreaseCapacityUnitByTiB(6280199240757284109L)
-                .withCapacityUnitScaleUpLimitTiB(6794615360251570164L)
-                .withAutoScalePolicyEnforcement(AutoScalePolicyEnforcement.ENABLED));
+            .withScaleUpProperties(new ScaleUpProperties().withUnusedSizeTiB(9204546244351616694L)
+                .withIncreaseCapacityUnitByTiB(1735908186849769210L)
+                .withCapacityUnitScaleUpLimitTiB(263357956670416647L)
+                .withAutoScalePolicyEnforcement(AutoScalePolicyEnforcement.DISABLED));
         model = BinaryData.fromObject(model).toObject(AutoScaleProperties.class);
-        Assertions.assertEquals(1076268923335791776L, model.scaleUpProperties().unusedSizeTiB());
-        Assertions.assertEquals(6280199240757284109L, model.scaleUpProperties().increaseCapacityUnitByTiB());
-        Assertions.assertEquals(6794615360251570164L, model.scaleUpProperties().capacityUnitScaleUpLimitTiB());
-        Assertions.assertEquals(AutoScalePolicyEnforcement.ENABLED,
+        Assertions.assertEquals(9204546244351616694L, model.scaleUpProperties().unusedSizeTiB());
+        Assertions.assertEquals(1735908186849769210L, model.scaleUpProperties().increaseCapacityUnitByTiB());
+        Assertions.assertEquals(263357956670416647L, model.scaleUpProperties().capacityUnitScaleUpLimitTiB());
+        Assertions.assertEquals(AutoScalePolicyEnforcement.DISABLED,
             model.scaleUpProperties().autoScalePolicyEnforcement());
     }
 }

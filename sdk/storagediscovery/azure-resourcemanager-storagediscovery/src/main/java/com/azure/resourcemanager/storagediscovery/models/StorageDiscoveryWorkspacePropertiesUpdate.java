@@ -38,6 +38,11 @@ public final class StorageDiscoveryWorkspacePropertiesUpdate
      */
     private List<StorageDiscoveryScope> scopes;
 
+    /*
+     * The capabilities configured for the storage discovery workspace.
+     */
+    private StorageDiscoveryCapabilitiesUpdate capabilities;
+
     /**
      * Creates an instance of StorageDiscoveryWorkspacePropertiesUpdate class.
      */
@@ -125,6 +130,26 @@ public final class StorageDiscoveryWorkspacePropertiesUpdate
     }
 
     /**
+     * Get the capabilities property: The capabilities configured for the storage discovery workspace.
+     * 
+     * @return the capabilities value.
+     */
+    public StorageDiscoveryCapabilitiesUpdate capabilities() {
+        return this.capabilities;
+    }
+
+    /**
+     * Set the capabilities property: The capabilities configured for the storage discovery workspace.
+     * 
+     * @param capabilities the capabilities value to set.
+     * @return the StorageDiscoveryWorkspacePropertiesUpdate object itself.
+     */
+    public StorageDiscoveryWorkspacePropertiesUpdate withCapabilities(StorageDiscoveryCapabilitiesUpdate capabilities) {
+        this.capabilities = capabilities;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -135,6 +160,7 @@ public final class StorageDiscoveryWorkspacePropertiesUpdate
         jsonWriter.writeArrayField("workspaceRoots", this.workspaceRoots,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("capabilities", this.capabilities);
         return jsonWriter.writeEndObject();
     }
 
@@ -166,6 +192,9 @@ public final class StorageDiscoveryWorkspacePropertiesUpdate
                     List<StorageDiscoveryScope> scopes
                         = reader.readArray(reader1 -> StorageDiscoveryScope.fromJson(reader1));
                     deserializedStorageDiscoveryWorkspacePropertiesUpdate.scopes = scopes;
+                } else if ("capabilities".equals(fieldName)) {
+                    deserializedStorageDiscoveryWorkspacePropertiesUpdate.capabilities
+                        = StorageDiscoveryCapabilitiesUpdate.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

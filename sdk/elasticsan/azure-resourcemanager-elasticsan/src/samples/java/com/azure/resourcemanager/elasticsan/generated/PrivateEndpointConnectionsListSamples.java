@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elasticsan.generated;
  */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PrivateEndpointConnections_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateEndpointConnections_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrivateEndpointConnections_List_MinimumSet_Gen.
@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/PrivateEndpointConnections_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateEndpointConnections_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrivateEndpointConnections_List_MaximumSet_Gen.

@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class MongoDBResourcesCreateUpdateMongoUserDefinitionSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBMongoDBUserDefinitionCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBMongoDBUserDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBUserDefinitionCreateUpdate.
