@@ -42,20 +42,24 @@ The client supports a connection string, an `AzureKeyCredential`, or a Microsoft
 Get the connection string from the Azure portal or Azure CLI, and store it securely. See [Web PubSub authorization][connection_string] for details.
 
 ```java readme-sample-createChatClientWithConnectionString
+// <ChatJava_ConnectionString>
 WebPubSubChatServiceClient client = new WebPubSubChatServiceClientBuilder()
     .connectionString("<web-pubsub-connection-string>")
     .hub("chat")
     .buildClient();
+// </ChatJava_ConnectionString>
 ```
 
 #### Use an access key
 
 ```java readme-sample-createChatClientWithKey
+// <ChatJava_AccessKey>
 WebPubSubChatServiceClient client = new WebPubSubChatServiceClientBuilder()
     .endpoint("https://<resource-name>.webpubsub.azure.com")
     .hub("chat")
     .credential(new AzureKeyCredential("<web-pubsub-access-key>"))
     .buildClient();
+// </ChatJava_AccessKey>
 ```
 
 #### Use Microsoft Entra ID
@@ -63,11 +67,13 @@ WebPubSubChatServiceClient client = new WebPubSubChatServiceClientBuilder()
 For recommended passwordless authentication, add the [Azure Identity][azure_identity] package, assign an appropriate Web PubSub data-plane role to the principal, and authenticate with a token credential. The following example uses `DefaultAzureCredential`:
 
 ```java readme-sample-createChatClientWithEntraId
+// <ChatJava_EntraId>
 WebPubSubChatServiceClient client = new WebPubSubChatServiceClientBuilder()
     .endpoint("https://<resource-name>.webpubsub.azure.com")
     .hub("chat")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
+// </ChatJava_EntraId>
 ```
 
 For more information, see [Authenticate Azure-hosted Java applications][azure_identity_auth] and [Microsoft Entra authorization for Azure Web PubSub][entra_authorization].
@@ -117,9 +123,11 @@ Messages sent to a conversation are delivered in real time to the room's connect
 ### Generate a client access token
 
 ```java readme-sample-getChatClientAccessToken
+// <ChatJava_ClientAccessToken>
 WebPubSubClientAccessToken accessToken = client.getClientAccessToken(
     new GetClientAccessTokenOptions().setUserId("alice").setExpiresAfter(Duration.ofHours(1)));
 String clientConnectionUrl = accessToken.getUrl();
+// </ChatJava_ClientAccessToken>
 ```
 
 The returned URL contains an access token. Send it only to the intended client, and do not log or persist it in production.
@@ -127,24 +135,29 @@ The returned URL contains an access token. Send it only to the intended client, 
 ### Work with built-in values
 
 ```java readme-sample-chatBuiltInValues
+// <ChatJava_BuiltInValues>
 String memberRole = BuiltInChatRoles.ROOM_MEMBER;
 ChatPermission publishPermission = ChatPermission.ROOM_PUBLISH_MESSAGE;
+// </ChatJava_BuiltInValues>
 ```
 
 ### Create and list a custom role
 
 ```java readme-sample-manageChatRoles
+// <ChatJava_ManageRoles>
 ChatRole moderator = new ChatRole(Arrays.asList(ChatPermission.ROOM_HISTORY,
     ChatPermission.ROOM_REMOVE_USER, ChatPermission.ROOM_PUBLISH_MESSAGE));
 client.createOrReplaceRole("room.moderator", moderator);
 
 client.listRoles().forEach(role -> System.out.println(role.getName()));
 client.deleteRole("room.moderator");
+// </ChatJava_ManageRoles>
 ```
 
 ### Create a user, room, and room membership
 
 ```java readme-sample-manageChatRooms
+// <ChatJava_RoomUserMembership>
 client.createOrReplaceRole("user.room_creator",
     new ChatRole(Arrays.asList(ChatPermission.USER_CREATE_ROOM)));
 client.createOrReplaceRole("room.contributor",
@@ -160,6 +173,7 @@ client.deleteRoom(room.getId());
 client.deleteUser("alice");
 client.deleteRole("room.contributor");
 client.deleteRole("user.room_creator");
+// </ChatJava_RoomUserMembership>
 ```
 
 Delete dependent resources in reverse order when they are no longer needed: room, user, and then roles.
@@ -167,20 +181,24 @@ Delete dependent resources in reverse order when they are no longer needed: room
 ### List persisted messages
 
 ```java readme-sample-listChatMessages
+// <ChatJava_MessageHistory>
 ChatRoom room = client.getRoom("general");
 client.listMessages(room.getDefaultConversation()).forEach(message ->
     System.out.printf("%s: %s%n", message.getCreatedBy(), message.getContent().getText()));
+// </ChatJava_MessageHistory>
 ```
 
 ### Use the asynchronous client
 
 ```java readme-sample-createAsyncChatClient
+// <ChatJava_AsyncClient>
 WebPubSubChatServiceAsyncClient asyncClient = new WebPubSubChatServiceClientBuilder()
     .connectionString("<web-pubsub-connection-string>")
     .hub("chat")
     .buildAsyncClient();
 
 asyncClient.listRoles().subscribe(role -> System.out.println(role.getName()));
+// </ChatJava_AsyncClient>
 ```
 
 ### Service API versions
