@@ -36,7 +36,6 @@ import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionOptions.SessionMode;
 import com.azure.storage.blob.models.SessionProvider;
-import com.azure.storage.blob.policy.SessionAuthenticationPolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
@@ -339,6 +338,16 @@ public final class BuilderHelper {
         TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
         return TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, STORAGE_TRACING_NAMESPACE_VALUE, tracingOptions);
+    }
+
+    /**
+     * Determines whether a pipeline policy provides session authentication.
+     *
+     * @param policy The pipeline policy to inspect.
+     * @return Whether the policy provides session authentication.
+     */
+    public static boolean isSessionAuthenticationPolicy(HttpPipelinePolicy policy) {
+        return policy instanceof SessionAuthenticationPolicy;
     }
 
     /**

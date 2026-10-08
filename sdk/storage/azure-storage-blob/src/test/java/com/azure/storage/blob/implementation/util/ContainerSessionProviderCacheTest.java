@@ -54,7 +54,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * can be exercised without waiting for real credential expiration or hitting the service.
  * {@link ContainerSessionProviderTests} covers session acquisition through the service client; these tests
  * focus on cache timing, returned credentials, and CreateSession call counts. Per-container acquisition
- * cooldown is covered separately by {@link com.azure.storage.blob.policy.SessionAuthenticationPolicyTest}.
+ * cooldown is covered separately by {@link SessionAuthenticationPolicyTest}.
  */
 public class ContainerSessionProviderCacheTest {
 

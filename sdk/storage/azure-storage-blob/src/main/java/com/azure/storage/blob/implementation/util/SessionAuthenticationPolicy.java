@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.policy;
+package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
@@ -14,7 +14,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.SessionCredential;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionOptions.SessionMode;
@@ -55,7 +54,7 @@ import static com.azure.storage.common.implementation.Constants.HeaderConstants.
  * Acquisition failures that do not carry one of those status codes fall back to bearer for that request only
  * and do not start a cooldown.
  */
-public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
+final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(SessionAuthenticationPolicy.class);
     private static final HttpHeaderName X_MS_AUTH_INFO = HttpHeaderName.fromString("x-ms-auth-info");
     private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
@@ -79,7 +78,7 @@ public final class SessionAuthenticationPolicy implements HttpPipelinePolicy {
      * @param sessionProvider the provider used to acquire and manage session credentials.
      * @param sessionOptions the options that configure session authentication. Values are captured at construction.
      */
-    public SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
+    SessionAuthenticationPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
         SessionProvider sessionProvider, SessionOptions sessionOptions) {
         this(bearerPolicy, sessionProvider, sessionOptions, Clock.systemUTC());
     }
