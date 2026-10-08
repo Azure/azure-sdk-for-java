@@ -78,12 +78,4 @@ public final class SessionCredential {
         return accountName;
     }
 
-    /**
-     * Gets whether this session credential is expired.
-     *
-     * @return {@code true} if the current time is after {@link #getExpiresAt()}; {@code false} otherwise.
-     */
-    public boolean isExpired() {
-        return OffsetDateTime.now().isAfter(expiresAt);
-    }
 }

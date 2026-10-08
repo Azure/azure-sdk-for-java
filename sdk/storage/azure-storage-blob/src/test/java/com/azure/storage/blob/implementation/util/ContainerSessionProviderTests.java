@@ -153,7 +153,7 @@ public class ContainerSessionProviderTests extends BlobTestBase {
         assertNotNull(credential.getSessionToken());
         assertNotNull(credential.getSessionKey());
         assertNotNull(credential.getExpiresAt());
-        assertFalse(credential.isExpired());
+        assertFalse(credential.getExpiresAt().isBefore(testResourceNamer.now()));
     }
 
     @Disabled("Service does not yet support User Delegation SAS for Create Session — returns InvalidSessionAuthenticationType")
@@ -179,7 +179,7 @@ public class ContainerSessionProviderTests extends BlobTestBase {
                 assertNotNull(credential.getSessionToken());
                 assertNotNull(credential.getSessionKey());
                 assertNotNull(credential.getExpiresAt());
-                assertFalse(credential.isExpired());
+                assertFalse(credential.getExpiresAt().isBefore(testResourceNamer.now()));
             })
             .verifyComplete();
     }
