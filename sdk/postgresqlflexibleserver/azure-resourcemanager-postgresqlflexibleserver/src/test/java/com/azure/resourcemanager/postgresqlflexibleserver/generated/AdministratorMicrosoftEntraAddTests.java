@@ -13,22 +13,22 @@ public final class AdministratorMicrosoftEntraAddTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdministratorMicrosoftEntraAdd model = BinaryData.fromString(
-            "{\"properties\":{\"principalType\":\"ServicePrincipal\",\"principalName\":\"xndzwm\",\"tenantId\":\"efajpj\"}}")
+            "{\"properties\":{\"principalType\":\"Unknown\",\"principalName\":\"fwynwcvtbvkay\",\"tenantId\":\"tnvyqiatkzwp\"}}")
             .toObject(AdministratorMicrosoftEntraAdd.class);
-        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principalType());
-        Assertions.assertEquals("xndzwm", model.principalName());
-        Assertions.assertEquals("efajpj", model.tenantId());
+        Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
+        Assertions.assertEquals("fwynwcvtbvkay", model.principalName());
+        Assertions.assertEquals("tnvyqiatkzwp", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AdministratorMicrosoftEntraAdd model
-            = new AdministratorMicrosoftEntraAdd().withPrincipalType(PrincipalType.SERVICE_PRINCIPAL)
-                .withPrincipalName("xndzwm")
-                .withTenantId("efajpj");
+            = new AdministratorMicrosoftEntraAdd().withPrincipalType(PrincipalType.UNKNOWN)
+                .withPrincipalName("fwynwcvtbvkay")
+                .withTenantId("tnvyqiatkzwp");
         model = BinaryData.fromObject(model).toObject(AdministratorMicrosoftEntraAdd.class);
-        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principalType());
-        Assertions.assertEquals("xndzwm", model.principalName());
-        Assertions.assertEquals("efajpj", model.tenantId());
+        Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
+        Assertions.assertEquals("fwynwcvtbvkay", model.principalName());
+        Assertions.assertEquals("tnvyqiatkzwp", model.tenantId());
     }
 }

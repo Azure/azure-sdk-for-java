@@ -1,6 +1,6 @@
 # Release History
 
-## 2.64.0-beta.2 (Unreleased)
+## 2.65.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,29 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.64.1 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
+
+## 2.64.0 (2026-09-29)
+
+- Package api-version 2026-07-01.
+
+### Features Added
+
+* `models.KubernetesResourceObjectEncryptionProfile` was added
+
+* `models.InfrastructureEncryption` was added
+
+#### `models.ManagedClusterSecurityProfile` was modified
+
+* `withKubernetesResourceObjectEncryptionProfile(models.KubernetesResourceObjectEncryptionProfile)` was added
+* `kubernetesResourceObjectEncryptionProfile()` was added
 
 ## 2.64.0-beta.1 (2026-09-01)
 

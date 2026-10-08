@@ -14,17 +14,17 @@ public final class FleetspaceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetspaceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Online\",\"fleetspaceApiKind\":\"NoSQL\",\"serviceTier\":\"GeneralPurpose\",\"dataRegions\":[\"nhtmeplhbp\",\"bap\",\"ummmkvavucgji\",\"aiq\"],\"throughputPoolConfiguration\":{\"minThroughput\":1940753594,\"maxThroughput\":1431651894,\"dedicatedRUs\":5873691817945541274,\"maxConsumableRUs\":464292919391586778}},\"id\":\"uzdmhv\",\"name\":\"lvivj\",\"type\":\"xmlitqdsjip\"},{\"properties\":{\"provisioningState\":\"InternallyReady\",\"fleetspaceApiKind\":\"NoSQL\",\"serviceTier\":\"GeneralPurpose\",\"dataRegions\":[\"riifefn\"],\"throughputPoolConfiguration\":{\"minThroughput\":173143566,\"maxThroughput\":1677805514,\"dedicatedRUs\":5722887155206429100,\"maxConsumableRUs\":7822603693152244116}},\"id\":\"eailwdqmqf\",\"name\":\"deotmfx\",\"type\":\"kd\"}],\"nextLink\":\"wgnamkuuy\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Initializing\",\"fleetspaceApiKind\":\"NoSQL\",\"serviceTier\":\"GeneralPurpose\",\"dataRegions\":[\"au\",\"fshznu\",\"ttuhaaax\"],\"throughputPoolConfiguration\":{\"minThroughput\":487545221,\"maxThroughput\":178534975,\"dedicatedRUs\":7741917657137270977,\"maxConsumableRUs\":5949862560682157515}},\"id\":\"mbecxs\",\"name\":\"owagehxuihwes\",\"type\":\"tjaqgbl\"},{\"properties\":{\"provisioningState\":\"Creating\",\"fleetspaceApiKind\":\"NoSQL\",\"serviceTier\":\"BusinessCritical\",\"dataRegions\":[\"spsaneyvaerpiob\",\"hrfbrj\",\"kjwqdmraqnilp\"],\"throughputPoolConfiguration\":{\"minThroughput\":1799589380,\"maxThroughput\":703772124,\"dedicatedRUs\":8710729360806434411,\"maxConsumableRUs\":6369529725398699244}},\"id\":\"f\",\"name\":\"jwlzseodtqfdrsl\",\"type\":\"ymqxserwy\"}],\"nextLink\":\"hytjwgetfigw\"}")
             .toObject(FleetspaceListResult.class);
         Assertions.assertEquals(FleetspacePropertiesFleetspaceApiKind.NO_SQL, model.value().get(0).fleetspaceApiKind());
         Assertions.assertEquals(FleetspacePropertiesServiceTier.GENERAL_PURPOSE, model.value().get(0).serviceTier());
-        Assertions.assertEquals("nhtmeplhbp", model.value().get(0).dataRegions().get(0));
-        Assertions.assertEquals(1940753594, model.value().get(0).throughputPoolConfiguration().minThroughput());
-        Assertions.assertEquals(1431651894, model.value().get(0).throughputPoolConfiguration().maxThroughput());
-        Assertions.assertEquals(5873691817945541274L,
+        Assertions.assertEquals("au", model.value().get(0).dataRegions().get(0));
+        Assertions.assertEquals(487545221, model.value().get(0).throughputPoolConfiguration().minThroughput());
+        Assertions.assertEquals(178534975, model.value().get(0).throughputPoolConfiguration().maxThroughput());
+        Assertions.assertEquals(7741917657137270977L,
             model.value().get(0).throughputPoolConfiguration().dedicatedRUs());
-        Assertions.assertEquals(464292919391586778L,
+        Assertions.assertEquals(5949862560682157515L,
             model.value().get(0).throughputPoolConfiguration().maxConsumableRUs());
-        Assertions.assertEquals("wgnamkuuy", model.nextLink());
+        Assertions.assertEquals("hytjwgetfigw", model.nextLink());
     }
 }

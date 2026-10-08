@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FileSearchTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -55,7 +54,9 @@ public class FileSearchSync {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         OpenAIClient projectOpenAIClient = builder.buildOpenAIClient();
-        ConversationService conversationService = projectOpenAIClient.conversations();
+        String agentName = "file-search-agent";
+        OpenAIClient agentOpenAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+        ConversationService conversationService = agentOpenAIClient.conversations();
 
         AgentVersionDetails agent = null;
         Conversation conversation = null;
@@ -99,11 +100,8 @@ public class FileSearchSync {
                     + "When asked about information, use the file search tool to find relevant content from the files.")
                 .setTools(Collections.singletonList(tool));
 
-            agent = agentsClient.createAgentVersion("file-search-agent", agentDefinition);
+            agent = agentsClient.createAgentVersion(agentName, agentDefinition);
             System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
-
-            SampleUtils.pinAgentVersion(agentsClient, agent);
-            OpenAIClient agentOpenAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // Create a conversation and ask the agent
             conversation = conversationService.create();
