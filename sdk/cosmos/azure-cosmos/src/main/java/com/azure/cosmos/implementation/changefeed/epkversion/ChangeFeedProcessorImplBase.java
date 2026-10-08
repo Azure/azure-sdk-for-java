@@ -145,10 +145,6 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
     private void validateLeaseContainer(CosmosAsyncContainer leaseContainer) {
         checkNotNull(leaseContainer, "Argument 'leaseContainer' can not be null");
 
-        if (!getContextClient(leaseContainer).isContentResponseOnWriteEnabled()) {
-            throw new IllegalArgumentException("leaseClient: content response on write setting must be enabled");
-        }
-
         ConsistencyLevel consistencyLevel = getContextClient(leaseContainer).getConsistencyLevel();
         if (consistencyLevel == ConsistencyLevel.CONSISTENT_PREFIX || consistencyLevel == ConsistencyLevel.EVENTUAL) {
             logger.warn("leaseClient consistency level setting are less then expected which is SESSION");
