@@ -1,14 +1,122 @@
 # Release History
 
-## 2.59.0-beta.1 (Unreleased)
+## 2.59.0 (2026-10-08)
+
+- Package api-version 2026-09-01.
 
 ### Features Added
 
-### Breaking Changes
+* `models.BlobAccessPointAccessKeyAuthProperties` was added
 
-### Bugs Fixed
+* `models.BlobAccessPointEndpointConnectionPropertiesUpdate` was added
 
-### Other Changes
+* `models.ResourceProvisioningState` was added
+
+* `models.BlobAccessPointConnectionPropertiesUpdate` was added
+
+* `models.BlobAccessPointAccessKeyAuthPropertiesUpdate` was added
+
+* `models.BlobAccessPointNetAppOntapSourceProperties` was added
+
+* `models.BlobAccessPointGenericS3SourcePropertiesUpdate` was added
+
+* `models.BlobAccessPointDellOneFsSourcePropertiesUpdate` was added
+
+* `models.BlobAccessPointQumuloSourceProperties` was added
+
+* `models.BlobAccessPointProposedConnectionTestRequest` was added
+
+* `models.BlobAccessPointConnectionTestRequest` was added
+
+* `models.BlobAccessPointTlsVerification` was added
+
+* `models.BlobAccessPointRemoteAuthProperties` was added
+
+* `models.BlobAccessPointSourceType` was added
+
+* `models.BlobAccessPointRemoteAuthType` was added
+
+* `models.BlobAccessPointConfigurationUpdate` was added
+
+* `models.TurboTierStatus` was added
+
+* `models.BlobAccessPointPrivateLinkIdType` was added
+
+* `models.TurboTier` was added
+
+* `models.BlobAccessPointSourcePropertiesUpdate` was added
+
+* `models.BlobAccessPointNasuniSourceProperties` was added
+
+* `models.BlobAccessPointPrivateLinkConnectionPropertiesUpdate` was added
+
+* `models.BlobAccessPointQumuloSourcePropertiesUpdate` was added
+
+* `models.BlobAccessPointConnectionTestStatus` was added
+
+* `models.BlobAccessPointConfigurationConnection` was added
+
+* `models.BlobAccessPointConnectionType` was added
+
+* `models.BlobAccessPointNetAppOntapSourcePropertiesUpdate` was added
+
+* `models.ContextCacheCheckNameAvailabilityParameters` was added
+
+* `models.BlobAccessPointAzureNetAppFilesSourceProperties` was added
+
+* `models.BlobAccessPointAzureNetAppFilesSourcePropertiesUpdate` was added
+
+* `models.BlobAccessPointConfigurationProperties` was added
+
+* `models.BlobAccessPointConfigurationState` was added
+
+* `models.BlobAccessPointConnectionProperties` was added
+
+* `models.BlobAccessPointGenericS3SourceProperties` was added
+
+* `models.BlobAccessPointCommvaultSourcePropertiesUpdate` was added
+
+* `models.BlobAccessPointEndpointConnectionProperties` was added
+
+* `models.BlobAccessPointCommvaultSourceProperties` was added
+
+* `models.BlobAccessPointNasuniSourcePropertiesUpdate` was added
+
+* `models.ContextCacheCheckNameAvailabilityFailureReason` was added
+
+* `models.BlobAccessPointRemoteAuthPropertiesUpdate` was added
+
+* `models.BlobAccessPointConfigurationPropertiesUpdate` was added
+
+* `models.BlobAccessPointDellOneFsSourceProperties` was added
+
+* `models.BlobAccessPointPrivateLinkConnectionProperties` was added
+
+* `models.BlobAccessPointSourceProperties` was added
+
+#### `models.StorageAccountUpdateParameters` was modified
+
+* `withTurboTier(models.TurboTier)` was added
+* `turboTier()` was added
+
+#### `models.NspAccessRuleProperties` was modified
+
+* `serviceTags()` was added
+
+#### `models.AdvancedPlatformMetricsRuleProperties` was modified
+
+* `metricsToEmit()` was added
+* `withMetricsToEmit(java.util.List)` was added
+
+#### `models.StorageDataCollaborationPolicyProperties` was modified
+
+* `allowBlobAccessPoints()` was added
+* `withAllowBlobAccessPoints(java.lang.Boolean)` was added
+
+#### `models.StorageAccountCreateParameters` was modified
+
+* `withTurboTier(models.TurboTier)` was added
+* `turboTier()` was added
 
 ## 2.58.1 (2026-10-06)
 

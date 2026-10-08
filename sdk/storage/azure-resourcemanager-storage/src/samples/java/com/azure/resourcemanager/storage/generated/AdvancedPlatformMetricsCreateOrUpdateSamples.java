@@ -9,6 +9,7 @@ import com.azure.resourcemanager.storage.models.AdvancedPlatformMetricsFilterTyp
 import com.azure.resourcemanager.storage.models.AdvancedPlatformMetricsRuleConfig;
 import com.azure.resourcemanager.storage.models.AdvancedPlatformMetricsRuleProperties;
 import com.azure.resourcemanager.storage.models.AdvancedPlatformMetricsRuleType;
+import com.azure.resourcemanager.storage.models.MetricsEmitted;
 import java.util.Arrays;
 
 /**
@@ -17,7 +18,7 @@ import java.util.Arrays;
 public final class AdvancedPlatformMetricsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_AllContainers.json
+     * 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_AllContainers.json
      */
     /**
      * Sample code: AdvancedPlatformMetricsRules_CreateOrUpdate_AllContainers - Create advanced platform metrics rule
@@ -41,7 +42,7 @@ public final class AdvancedPlatformMetricsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerList.json
+     * 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerList.json
      */
     /**
      * Sample code: AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerList - Create advanced platform metrics rule
@@ -66,7 +67,7 @@ public final class AdvancedPlatformMetricsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-06-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerPrefix.json
+     * 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerPrefix.json
      */
     /**
      * Sample code: AdvancedPlatformMetricsRules_CreateOrUpdate_ContainerPrefix - Create advanced platform metrics rule
@@ -86,6 +87,31 @@ public final class AdvancedPlatformMetricsCreateOrUpdateSamples {
                         .withRuleConfig(new AdvancedPlatformMetricsRuleConfig()
                             .withFilterType(AdvancedPlatformMetricsFilterType.CONTAINER_PREFIX_FILTER)
                             .withFilterValues(Arrays.asList("logs", "data")))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2026-09-01/AdvancedPlatformMetricsCRUD/AdvancedPlatformMetricsRules_CreateOrUpdate_MetricLevelEnablement.json
+     */
+    /**
+     * Sample code: AdvancedPlatformMetricsRules_CreateOrUpdate_MetricLevelEnablement - Create advanced platform metrics
+     * rule with selected metrics.
+     * 
+     * @param manager Entry point to StorageManager.
+     */
+    public static void
+        advancedPlatformMetricsRulesCreateOrUpdateMetricLevelEnablementCreateAdvancedPlatformMetricsRuleWithSelectedMetrics(
+            com.azure.resourcemanager.storage.StorageManager manager) {
+        manager.serviceClient()
+            .getAdvancedPlatformMetrics()
+            .createOrUpdateWithResponse("res6977", "sto2527",
+                AdvancedPlatformMetricsRuleType.CONTAINER_LEVEL_CAPACITY_METRICS,
+                new AdvancedPlatformMetricsRuleInner()
+                    .withProperties(new AdvancedPlatformMetricsRuleProperties().withEnabled(true)
+                        .withMetricsToEmit(Arrays.asList(MetricsEmitted.CONTAINER_USED_SIZE))
+                        .withRuleConfig(new AdvancedPlatformMetricsRuleConfig()
+                            .withFilterType(AdvancedPlatformMetricsFilterType.ALL_CONTAINERS_FILTER))),
                 com.azure.core.util.Context.NONE);
     }
 }

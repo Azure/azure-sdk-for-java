@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class StorageAccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01/StorageAccountListByResourceGroup.json
+     * x-ms-original-file: 2026-09-01/StorageAccountListByResourceGroup.json
      */
     /**
      * Sample code: StorageAccountListByResourceGroup.
