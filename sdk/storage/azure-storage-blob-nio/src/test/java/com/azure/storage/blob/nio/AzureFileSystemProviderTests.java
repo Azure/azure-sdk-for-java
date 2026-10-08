@@ -4,12 +4,14 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.storage.blob.BlobClient;
@@ -1407,6 +1409,9 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     @ParameterizedTest
     @MethodSource("setAttributesTierSupplier")
     public void setAttributesTier(AccessTier tier) throws IOException {
+        // Tier behavior is independent of listing format; retain this test's XML recordings.
+        config = initializeConfigMap(
+            new AddHeadersPolicy(new HttpHeaders().set(HttpHeaderName.ACCEPT, "application/xml")));
         AzureFileSystem fs = createFS(config);
         Path path = fs.getPath(generateBlobName());
         OutputStream os = fs.provider().newOutputStream(path);

@@ -4,10 +4,14 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -53,6 +57,7 @@ import java.io.ByteArrayInputStream;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -767,6 +772,62 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         //cleanup
         premiumBlobServiceAsyncClient.deleteBlobContainer(containerName).block();
+    }
+
+    @ParameterizedTest
+    @MethodSource("serializationFormatSupplier")
+    @DoNotRecord
+    public void listBlobsUsesResolvedSerializationFormat(ListBlobsOptions options, String expectedAcceptHeader) {
+        AtomicReference<String> acceptHeader = new AtomicReference<>();
+        BlobContainerAsyncClient client = createSerializationFormatClient(acceptHeader);
+
+        StepVerifier.create(client.listBlobs(options).byPage(1)).verifyErrorSatisfies(error -> {
+            BlobStorageException exception = assertInstanceOf(BlobStorageException.class, error);
+            assertEquals(500, exception.getStatusCode());
+        });
+        assertEquals(expectedAcceptHeader, acceptHeader.get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("serializationFormatSupplier")
+    @DoNotRecord
+    public void listBlobsByHierarchyUsesResolvedSerializationFormat(ListBlobsOptions options,
+        String expectedAcceptHeader) {
+        AtomicReference<String> acceptHeader = new AtomicReference<>();
+        BlobContainerAsyncClient client = createSerializationFormatClient(acceptHeader);
+
+        StepVerifier.create(client.listBlobsByHierarchy("/", options).byPage(1)).verifyErrorSatisfies(error -> {
+            BlobStorageException exception = assertInstanceOf(BlobStorageException.class, error);
+            assertEquals(500, exception.getStatusCode());
+        });
+        assertEquals(expectedAcceptHeader, acceptHeader.get());
+    }
+
+    private static BlobContainerAsyncClient createSerializationFormatClient(AtomicReference<String> acceptHeader) {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            acceptHeader.set(request.getHeaders().getValue(HttpHeaderName.ACCEPT));
+            // Fail after capturing the request so the test doesn't need a format-specific response body.
+            return Mono.just(new MockHttpResponse(request, 500));
+        }).build();
+        return new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/container")
+            .credential(new MockTokenCredential())
+            .pipeline(pipeline)
+            .buildAsyncClient();
+    }
+
+    private static Stream<Arguments> serializationFormatSupplier() {
+        String arrowAcceptHeader
+            = Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM + ",application/xml";
+        return Stream.of(Arguments.of(null, arrowAcceptHeader), Arguments.of(new ListBlobsOptions(), arrowAcceptHeader),
+            Arguments.of(
+                new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.AUTO),
+                arrowAcceptHeader),
+            Arguments.of(
+                new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW),
+                arrowAcceptHeader),
+            Arguments.of(
+                new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML),
+                "application/xml"));
     }
 
     @Test
@@ -2250,8 +2311,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
-    public void listBlobsArrowNullUseArrowUsesXml() {
-        // Default apacheArrowEnabled is null — should use XML path without error
+    public void listBlobsArrowNullDefaultsToArrow() {
         String blobName = generateBlobName();
         BlockBlobAsyncClient bc = ccAsync.getBlobAsyncClient(blobName).getBlockBlobAsyncClient();
 
@@ -2337,20 +2397,20 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 .then(impl.getContainers()
                     .listBlobFlatSegmentApacheArrowWithResponseAsync(containerName, null, null, null, include, null,
                         null, null, null))
-                .flatMap(response -> {
-                    // Verify Content-Type is Arrow
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(bytes -> {
                     String contentType = response.getDeserializedHeaders().getContentType();
                     assertTrue(
                         StorageImplUtils.hasMatchingHeaderValue(contentType,
                             Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
                         "Expected Arrow content type but got: " + contentType);
+                    return ArrowBlobListDeserializer.deserialize(new ByteArrayInputStream(bytes));
+                }));
 
-                    // Collect the Flux<ByteBuffer> body into a byte[] and feed it to the deserializer.
-                    return FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                        .map(bytes -> ArrowBlobListDeserializer.deserialize(new ByteArrayInputStream(bytes)));
-                });
+        StepVerifier.create(testMono.zipWhen(result -> bc.getProperties())).assertNext(response -> {
+            ArrowBlobListDeserializer.ArrowListBlobsResult result = response.getT1();
+            BlobProperties properties = response.getT2();
+            assertNotNull(properties.getAccessTier());
 
-        StepVerifier.create(testMono).assertNext(result -> {
             // Verify pagination — single blob, no next page
             assertNull(result.getNextMarker());
 
@@ -2371,7 +2431,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             assertNotNull(item.getProperties().getLastModified());
             assertNotNull(item.getProperties().getCreationTime());
             assertEquals(BlobType.BLOCK_BLOB, item.getProperties().getBlobType());
-            assertEquals(AccessTier.HOT, item.getProperties().getAccessTier());
+            assertEquals(properties.getAccessTier(), item.getProperties().getAccessTier());
             assertTrue(item.getProperties().isAccessTierInferred());
             assertTrue(item.getProperties().isServerEncrypted());
             assertEquals(LeaseStateType.AVAILABLE, item.getProperties().getLeaseState());
