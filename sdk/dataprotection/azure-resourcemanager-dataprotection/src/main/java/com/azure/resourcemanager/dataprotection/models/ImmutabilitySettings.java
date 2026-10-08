@@ -21,6 +21,11 @@ public final class ImmutabilitySettings implements JsonSerializable<Immutability
      */
     private ImmutabilityState state;
 
+    /*
+     * Immutability configuration containing type and duration.
+     */
+    private ImmutabilityConfiguration configuration;
+
     /**
      * Creates an instance of ImmutabilitySettings class.
      */
@@ -48,12 +53,33 @@ public final class ImmutabilitySettings implements JsonSerializable<Immutability
     }
 
     /**
+     * Get the configuration property: Immutability configuration containing type and duration.
+     * 
+     * @return the configuration value.
+     */
+    public ImmutabilityConfiguration configuration() {
+        return this.configuration;
+    }
+
+    /**
+     * Set the configuration property: Immutability configuration containing type and duration.
+     * 
+     * @param configuration the configuration value to set.
+     * @return the ImmutabilitySettings object itself.
+     */
+    public ImmutabilitySettings withConfiguration(ImmutabilityConfiguration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeJsonField("configuration", this.configuration);
         return jsonWriter.writeEndObject();
     }
 
@@ -74,6 +100,8 @@ public final class ImmutabilitySettings implements JsonSerializable<Immutability
 
                 if ("state".equals(fieldName)) {
                     deserializedImmutabilitySettings.state = ImmutabilityState.fromString(reader.getString());
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedImmutabilitySettings.configuration = ImmutabilityConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

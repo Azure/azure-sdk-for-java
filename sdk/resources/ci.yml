@@ -14,6 +14,7 @@ trigger:
       - sdk/resources/azure-resourcemanager-resources-deployments/
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/
       - sdk/resources/azure-resourcemanager-resources-policy/
+      - sdk/resources/azure-resourcemanager-resources-templatespecs/
     exclude:
       - sdk/resources/pom.xml
       - sdk/resources/azure-resourcemanager-resources/pom.xml
@@ -21,6 +22,7 @@ trigger:
       - sdk/resources/azure-resourcemanager-resources-deployments/pom.xml
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/pom.xml
       - sdk/resources/azure-resourcemanager-resources-policy/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-templatespecs/pom.xml
 
 pr:
   branches:
@@ -37,6 +39,7 @@ pr:
       - sdk/resources/azure-resourcemanager-resources-deployments/
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/
       - sdk/resources/azure-resourcemanager-resources-policy/
+      - sdk/resources/azure-resourcemanager-resources-templatespecs/
     exclude:
       - sdk/resources/pom.xml
       - sdk/resources/azure-resourcemanager-resources/pom.xml
@@ -44,6 +47,7 @@ pr:
       - sdk/resources/azure-resourcemanager-resources-deployments/pom.xml
       - sdk/resources/azure-resourcemanager-resources-deploymentstacks/pom.xml
       - sdk/resources/azure-resourcemanager-resources-policy/pom.xml
+      - sdk/resources/azure-resourcemanager-resources-templatespecs/pom.xml
 
 parameters:
   - name: release_azureresourcemanagerresources
@@ -64,6 +68,10 @@ parameters:
     default: false
   - name: release_azureresourcemanagerresourcespolicy
     displayName: azure-resourcemanager-resources-policy
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagerresourcestemplatespecs
+    displayName: azure-resourcemanager-resources-templatespecs
     type: boolean
     default: false
 
@@ -92,3 +100,7 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresourcespolicy
         releaseInBatch: ${{ parameters.release_azureresourcemanagerresourcespolicy }}
+      - name: azure-resourcemanager-resources-templatespecs
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresourcestemplatespecs
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerresourcestemplatespecs }}

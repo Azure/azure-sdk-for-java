@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FileSearchTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -57,7 +56,9 @@ public class FileSearchAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ConversationServiceAsync conversationServiceAsync = builder.buildOpenAIAsyncClient().conversations();
+        String agentName = "file-search-agent";
+        OpenAIClientAsync agentOpenAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
+        ConversationServiceAsync conversationServiceAsync = agentOpenAIAsyncClient.conversations();
         // Vector store and file operations use the sync OpenAI client for setup
         OpenAIClient projectOpenAIClient = builder.buildOpenAIClient();
 
@@ -93,16 +94,12 @@ public class FileSearchAsync {
             .setInstructions("You are a helpful assistant that can search through uploaded files to answer questions.")
             .setTools(Collections.singletonList(tool));
 
-        agentsAsyncClient.createAgentVersion("file-search-agent", agentDefinition)
+        agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
             .flatMap(agent -> {
                 agentRef.set(agent);
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                OpenAIClientAsync agentOpenAIAsyncClient
-                    = builder.buildAgentScopedOpenAIAsyncClient(agent.getName());
-
-                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent)
-                    .then(Mono.fromFuture(conversationServiceAsync.create()))
+                return Mono.fromFuture(() -> conversationServiceAsync.create())
                     .<Response>flatMap(conversation -> {
                         conversationIdRef.set(conversation.id());
                         System.out.println("Created conversation: " + conversation.id());

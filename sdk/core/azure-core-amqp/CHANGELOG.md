@@ -17,6 +17,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.59.0` to `1.60.0`.
+- Upgraded `proton-j` from `0.34.1` to `0.35.0` to pick up AMQP decoder hardening (maximum nesting depth and frame/transfer limits).
 
 ## 2.13.0-beta.1 (2026-08-27)
 
