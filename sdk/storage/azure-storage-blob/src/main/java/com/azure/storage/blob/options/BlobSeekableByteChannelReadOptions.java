@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.common.ContentValidationAlgorithm;
+import com.azure.storage.common.ValidatableContent;
 
 import java.nio.channels.SeekableByteChannel;
 
@@ -14,7 +15,7 @@ import java.nio.channels.SeekableByteChannel;
  * Extended options that may be passed when opening a blob seekable byte channel for reading.
  */
 @Fluent
-public final class BlobSeekableByteChannelReadOptions {
+public final class BlobSeekableByteChannelReadOptions implements ValidatableContent {
     private Long initialPosition;
     private BlobRequestConditions requestConditions;
     private Integer readSizeInBytes;
@@ -117,6 +118,7 @@ public final class BlobSeekableByteChannelReadOptions {
      *
      * @return The transfer validation checksum algorithm.
      */
+    @Override
     public ContentValidationAlgorithm getContentValidationAlgorithm() {
         return contentValidationAlgorithm;
     }
@@ -128,6 +130,7 @@ public final class BlobSeekableByteChannelReadOptions {
      * @param contentValidationAlgorithm The transfer validation checksum algorithm.
      * @return The updated options.
      */
+    @Override
     public BlobSeekableByteChannelReadOptions
         setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
         this.contentValidationAlgorithm = contentValidationAlgorithm;

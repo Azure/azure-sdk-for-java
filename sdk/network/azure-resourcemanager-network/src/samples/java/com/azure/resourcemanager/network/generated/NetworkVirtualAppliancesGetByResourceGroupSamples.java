@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkVirtualAppliancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceGet.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceGet.json
      */
     /**
      * Sample code: Get NetworkVirtualAppliance.
@@ -23,7 +23,7 @@ public final class NetworkVirtualAppliancesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceVnetDualStackGet.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceVnetDualStackGet.json
      */
     /**
      * Sample code: Get NetworkVirtualAppliance in VNet with Dual Stack.
@@ -38,7 +38,7 @@ public final class NetworkVirtualAppliancesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/NetworkVirtualApplianceVhubDualStackGet.json
+     * x-ms-original-file: 2026-01-01/NetworkVirtualApplianceVhubDualStackGet.json
      */
     /**
      * Sample code: Get NetworkVirtualAppliance in Virtual Hub with Dual Stack.

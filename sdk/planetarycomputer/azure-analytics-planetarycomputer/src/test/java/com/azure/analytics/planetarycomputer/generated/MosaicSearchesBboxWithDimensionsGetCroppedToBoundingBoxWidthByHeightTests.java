@@ -4,8 +4,15 @@
 
 package com.azure.analytics.planetarycomputer.generated;
 
+import com.azure.analytics.planetarycomputer.models.ColorMapNames;
+import com.azure.analytics.planetarycomputer.models.PixelSelection;
+import com.azure.analytics.planetarycomputer.models.Resampling;
+import com.azure.analytics.planetarycomputer.models.SelMethod;
+import com.azure.analytics.planetarycomputer.models.TerrainAlgorithm;
+import com.azure.analytics.planetarycomputer.models.WarpKernelResampling;
 import com.azure.core.util.BinaryData;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -18,9 +25,13 @@ public final class MosaicSearchesBboxWithDimensionsGetCroppedToBoundingBoxWidthB
     public void testMosaicSearchesBboxWithDimensionsGetCroppedToBoundingBoxWidthByHeightTests() {
         // method invocation
         BinaryData response = dataClient.getSearchBboxCropWithDimensions("ba13fc7947b9b585690d84ee61aaa653", -122.5,
-            37.7, -122.3, 37.8, 256, 256, "png", null, Arrays.asList("image"), null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
-            null, null, null, null, null);
+            37.7, -122.3, 37.8, 256, 256, "png", (List<Integer>) null, Arrays.asList("image"), (String) null,
+            (List<String>) null, (Boolean) null, (String) null, (Boolean) null, (WarpKernelResampling) null,
+            (Integer) null, (Integer) null, (Integer) null, (Boolean) null, (Boolean) null, (String) null,
+            (List<Integer>) null, (String) null, (String) null, (List<String>) null, (SelMethod) null,
+            (TerrainAlgorithm) null, (String) null, (String) null, (String) null, (Integer) null, (String) null,
+            (String) null, (Resampling) null, (PixelSelection) null, (List<String>) null, (ColorMapNames) null,
+            (String) null, (Boolean) null);
 
         // response assertion
         Assertions.assertNotNull(response);

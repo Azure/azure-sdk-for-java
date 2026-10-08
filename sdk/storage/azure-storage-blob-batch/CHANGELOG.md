@@ -10,6 +10,24 @@
 
 ### Other Changes
 
+## 12.31.3 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.35.1` to version `12.35.2`.
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+
+## 12.31.2 (2026-09-15)
+
+### Bugs Fixed
+- Fixed a header-injection issue where carriage-return (`\r`) or line-feed (`\n`) characters in a batch operation's
+  inner request header names or values (for example, a tag condition supplied via
+  `BlobRequestConditions.setTagsConditions`) were serialized into the multipart batch body without validation. Such
+  characters are now rejected with an `IllegalArgumentException` before serialization.
+
 ## 12.31.1 (2026-08-18)
 
 ### Other Changes

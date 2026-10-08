@@ -25,67 +25,66 @@ public final class WindowsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WindowsConfiguration model = BinaryData.fromString(
-            "{\"provisionVMAgent\":false,\"enableAutomaticUpdates\":true,\"timeZone\":\"u\",\"additionalUnattendContent\":[{\"passName\":\"OobeSystem\",\"componentName\":\"Microsoft-Windows-Shell-Setup\",\"settingName\":\"AutoLogon\",\"content\":\"morppxebmnzbtbh\"}],\"patchSettings\":{\"patchMode\":\"AutomaticByPlatform\",\"enableHotpatching\":true,\"assessmentMode\":\"ImageDefault\",\"automaticByPlatformSettings\":{\"rebootSetting\":\"Always\",\"bypassPlatformSafetyChecksOnUserSchedule\":false}},\"winRM\":{\"listeners\":[{\"protocol\":\"Http\",\"certificateUrl\":\"dyhtozfikdowwquu\"},{\"protocol\":\"Http\",\"certificateUrl\":\"clvit\"},{\"protocol\":\"Https\",\"certificateUrl\":\"o\"},{\"protocol\":\"Http\",\"certificateUrl\":\"gbhcohfwdsj\"}]}}")
+            "{\"provisionVMAgent\":true,\"enableAutomaticUpdates\":false,\"timeZone\":\"ualupjmkh\",\"additionalUnattendContent\":[{\"passName\":\"OobeSystem\",\"componentName\":\"Microsoft-Windows-Shell-Setup\",\"settingName\":\"AutoLogon\",\"content\":\"tjrip\"}],\"patchSettings\":{\"patchMode\":\"AutomaticByOS\",\"enableHotpatching\":true,\"assessmentMode\":\"AutomaticByPlatform\",\"automaticByPlatformSettings\":{\"rebootSetting\":\"Unknown\",\"bypassPlatformSafetyChecksOnUserSchedule\":false}},\"winRM\":{\"listeners\":[{\"protocol\":\"Https\",\"certificateUrl\":\"vlvqhjkbegi\"}]}}")
             .toObject(WindowsConfiguration.class);
-        Assertions.assertFalse(model.provisionVMAgent());
-        Assertions.assertTrue(model.enableAutomaticUpdates());
-        Assertions.assertEquals("u", model.timeZone());
+        Assertions.assertTrue(model.provisionVMAgent());
+        Assertions.assertFalse(model.enableAutomaticUpdates());
+        Assertions.assertEquals("ualupjmkh", model.timeZone());
         Assertions.assertEquals(AdditionalUnattendContentPassName.OOBE_SYSTEM,
             model.additionalUnattendContent().get(0).passName());
         Assertions.assertEquals(AdditionalUnattendContentComponentName.MICROSOFT_WINDOWS_SHELL_SETUP,
             model.additionalUnattendContent().get(0).componentName());
         Assertions.assertEquals(SettingNames.AUTO_LOGON, model.additionalUnattendContent().get(0).settingName());
-        Assertions.assertEquals("morppxebmnzbtbh", model.additionalUnattendContent().get(0).content());
-        Assertions.assertEquals(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM, model.patchSettings().patchMode());
+        Assertions.assertEquals("tjrip", model.additionalUnattendContent().get(0).content());
+        Assertions.assertEquals(WindowsVMGuestPatchMode.AUTOMATIC_BY_OS, model.patchSettings().patchMode());
         Assertions.assertTrue(model.patchSettings().enableHotpatching());
-        Assertions.assertEquals(WindowsPatchAssessmentMode.IMAGE_DEFAULT, model.patchSettings().assessmentMode());
-        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS,
+        Assertions.assertEquals(WindowsPatchAssessmentMode.AUTOMATIC_BY_PLATFORM,
+            model.patchSettings().assessmentMode());
+        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN,
             model.patchSettings().automaticByPlatformSettings().rebootSetting());
         Assertions.assertFalse(
             model.patchSettings().automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
-        Assertions.assertEquals(ProtocolTypes.HTTP, model.winRM().listeners().get(0).protocol());
-        Assertions.assertEquals("dyhtozfikdowwquu", model.winRM().listeners().get(0).certificateUrl());
+        Assertions.assertEquals(ProtocolTypes.HTTPS, model.winRM().listeners().get(0).protocol());
+        Assertions.assertEquals("vlvqhjkbegi", model.winRM().listeners().get(0).certificateUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WindowsConfiguration model = new WindowsConfiguration().withProvisionVMAgent(false)
-            .withEnableAutomaticUpdates(true)
-            .withTimeZone("u")
+        WindowsConfiguration model = new WindowsConfiguration().withProvisionVMAgent(true)
+            .withEnableAutomaticUpdates(false)
+            .withTimeZone("ualupjmkh")
             .withAdditionalUnattendContent(Arrays
                 .asList(new AdditionalUnattendContent().withPassName(AdditionalUnattendContentPassName.OOBE_SYSTEM)
                     .withComponentName(AdditionalUnattendContentComponentName.MICROSOFT_WINDOWS_SHELL_SETUP)
                     .withSettingName(SettingNames.AUTO_LOGON)
-                    .withContent("morppxebmnzbtbh")))
-            .withPatchSettings(new PatchSettings().withPatchMode(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
+                    .withContent("tjrip")))
+            .withPatchSettings(new PatchSettings().withPatchMode(WindowsVMGuestPatchMode.AUTOMATIC_BY_OS)
                 .withEnableHotpatching(true)
-                .withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT)
+                .withAssessmentMode(WindowsPatchAssessmentMode.AUTOMATIC_BY_PLATFORM)
                 .withAutomaticByPlatformSettings(new WindowsVMGuestPatchAutomaticByPlatformSettings()
-                    .withRebootSetting(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS)
+                    .withRebootSetting(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
                     .withBypassPlatformSafetyChecksOnUserSchedule(false)))
-            .withWinRM(new WinRMConfiguration().withListeners(Arrays.asList(
-                new WinRMListener().withProtocol(ProtocolTypes.HTTP).withCertificateUrl("dyhtozfikdowwquu"),
-                new WinRMListener().withProtocol(ProtocolTypes.HTTP).withCertificateUrl("clvit"),
-                new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("o"),
-                new WinRMListener().withProtocol(ProtocolTypes.HTTP).withCertificateUrl("gbhcohfwdsj"))));
+            .withWinRM(new WinRMConfiguration().withListeners(Arrays
+                .asList(new WinRMListener().withProtocol(ProtocolTypes.HTTPS).withCertificateUrl("vlvqhjkbegi"))));
         model = BinaryData.fromObject(model).toObject(WindowsConfiguration.class);
-        Assertions.assertFalse(model.provisionVMAgent());
-        Assertions.assertTrue(model.enableAutomaticUpdates());
-        Assertions.assertEquals("u", model.timeZone());
+        Assertions.assertTrue(model.provisionVMAgent());
+        Assertions.assertFalse(model.enableAutomaticUpdates());
+        Assertions.assertEquals("ualupjmkh", model.timeZone());
         Assertions.assertEquals(AdditionalUnattendContentPassName.OOBE_SYSTEM,
             model.additionalUnattendContent().get(0).passName());
         Assertions.assertEquals(AdditionalUnattendContentComponentName.MICROSOFT_WINDOWS_SHELL_SETUP,
             model.additionalUnattendContent().get(0).componentName());
         Assertions.assertEquals(SettingNames.AUTO_LOGON, model.additionalUnattendContent().get(0).settingName());
-        Assertions.assertEquals("morppxebmnzbtbh", model.additionalUnattendContent().get(0).content());
-        Assertions.assertEquals(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM, model.patchSettings().patchMode());
+        Assertions.assertEquals("tjrip", model.additionalUnattendContent().get(0).content());
+        Assertions.assertEquals(WindowsVMGuestPatchMode.AUTOMATIC_BY_OS, model.patchSettings().patchMode());
         Assertions.assertTrue(model.patchSettings().enableHotpatching());
-        Assertions.assertEquals(WindowsPatchAssessmentMode.IMAGE_DEFAULT, model.patchSettings().assessmentMode());
-        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS,
+        Assertions.assertEquals(WindowsPatchAssessmentMode.AUTOMATIC_BY_PLATFORM,
+            model.patchSettings().assessmentMode());
+        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN,
             model.patchSettings().automaticByPlatformSettings().rebootSetting());
         Assertions.assertFalse(
             model.patchSettings().automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
-        Assertions.assertEquals(ProtocolTypes.HTTP, model.winRM().listeners().get(0).protocol());
-        Assertions.assertEquals("dyhtozfikdowwquu", model.winRM().listeners().get(0).certificateUrl());
+        Assertions.assertEquals(ProtocolTypes.HTTPS, model.winRM().listeners().get(0).protocol());
+        Assertions.assertEquals("vlvqhjkbegi", model.winRM().listeners().get(0).certificateUrl());
     }
 }

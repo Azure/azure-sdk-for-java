@@ -32,6 +32,11 @@ public final class WorkloadType extends ExpandableStringEnum<WorkloadType> {
     public static final WorkloadType APEX = fromString("APEX");
 
     /**
+     * LH - indicates an Oracle Autonomous AI Lakehouse database.
+     */
+    public static final WorkloadType LH = fromString("LH");
+
+    /**
      * Creates a new instance of WorkloadType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

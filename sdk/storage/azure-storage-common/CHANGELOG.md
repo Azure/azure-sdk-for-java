@@ -4,11 +4,24 @@
 
 ### Features Added
 
+- Added the `ValidatableContent` interface, implemented by the various upload and download option types that support
+  transfer content validation. This allows `ContentValidationAlgorithm` to be configured and inspected agnostically
+  across many different upload and download operations.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.34.2 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
 
 ## 12.34.1 (2026-08-18)
 

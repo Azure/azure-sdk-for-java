@@ -10,6 +10,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAdvancedRoutingConditionSet;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAdvancedRoutingMap;
 import com.azure.resourcemanager.network.models.ApplicationGatewayAutoscaleConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
@@ -146,6 +148,12 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
     private List<ApplicationGatewayUrlPathMapInner> urlPathMaps;
 
     /*
+     * Advanced routing maps of the application gateway resource. For default limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     */
+    private List<ApplicationGatewayAdvancedRoutingMap> advancedRoutingMaps;
+
+    /*
      * Request routing rules of the application gateway resource.
      */
     private List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules;
@@ -159,6 +167,12 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
      * Rewrite rules for the application gateway resource.
      */
     private List<ApplicationGatewayRewriteRuleSet> rewriteRuleSets;
+
+    /*
+     * Advanced routing condition sets of the application gateway resource. For default limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     */
+    private List<ApplicationGatewayAdvancedRoutingConditionSet> advancedRoutingConditionSets;
 
     /*
      * Redirect configurations of the application gateway resource. For default limits, see [Application Gateway
@@ -190,6 +204,11 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
      * Autoscale Configuration.
      */
     private ApplicationGatewayAutoscaleConfiguration autoscaleConfiguration;
+
+    /*
+     * The reserved capacity of the application gateway resource. Applicable to the Basic_v2 and Basic_WAF_v2 SKU tiers.
+     */
+    private Integer reservedCapacity;
 
     /*
      * PrivateLink configurations on application gateway.
@@ -662,6 +681,31 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
     }
 
     /**
+     * Get the advancedRoutingMaps property: Advanced routing maps of the application gateway resource. For default
+     * limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     * 
+     * @return the advancedRoutingMaps value.
+     */
+    public List<ApplicationGatewayAdvancedRoutingMap> advancedRoutingMaps() {
+        return this.advancedRoutingMaps;
+    }
+
+    /**
+     * Set the advancedRoutingMaps property: Advanced routing maps of the application gateway resource. For default
+     * limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     * 
+     * @param advancedRoutingMaps the advancedRoutingMaps value to set.
+     * @return the ApplicationGatewayPropertiesFormat object itself.
+     */
+    public ApplicationGatewayPropertiesFormat
+        withAdvancedRoutingMaps(List<ApplicationGatewayAdvancedRoutingMap> advancedRoutingMaps) {
+        this.advancedRoutingMaps = advancedRoutingMaps;
+        return this;
+    }
+
+    /**
      * Get the requestRoutingRules property: Request routing rules of the application gateway resource.
      * 
      * @return the requestRoutingRules value.
@@ -720,6 +764,31 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
     public ApplicationGatewayPropertiesFormat
         withRewriteRuleSets(List<ApplicationGatewayRewriteRuleSet> rewriteRuleSets) {
         this.rewriteRuleSets = rewriteRuleSets;
+        return this;
+    }
+
+    /**
+     * Get the advancedRoutingConditionSets property: Advanced routing condition sets of the application gateway
+     * resource. For default limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     * 
+     * @return the advancedRoutingConditionSets value.
+     */
+    public List<ApplicationGatewayAdvancedRoutingConditionSet> advancedRoutingConditionSets() {
+        return this.advancedRoutingConditionSets;
+    }
+
+    /**
+     * Set the advancedRoutingConditionSets property: Advanced routing condition sets of the application gateway
+     * resource. For default limits, see [Application Gateway
+     * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
+     * 
+     * @param advancedRoutingConditionSets the advancedRoutingConditionSets value to set.
+     * @return the ApplicationGatewayPropertiesFormat object itself.
+     */
+    public ApplicationGatewayPropertiesFormat withAdvancedRoutingConditionSets(
+        List<ApplicationGatewayAdvancedRoutingConditionSet> advancedRoutingConditionSets) {
+        this.advancedRoutingConditionSets = advancedRoutingConditionSets;
         return this;
     }
 
@@ -847,6 +916,28 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
     public ApplicationGatewayPropertiesFormat
         withAutoscaleConfiguration(ApplicationGatewayAutoscaleConfiguration autoscaleConfiguration) {
         this.autoscaleConfiguration = autoscaleConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the reservedCapacity property: The reserved capacity of the application gateway resource. Applicable to the
+     * Basic_v2 and Basic_WAF_v2 SKU tiers.
+     * 
+     * @return the reservedCapacity value.
+     */
+    public Integer reservedCapacity() {
+        return this.reservedCapacity;
+    }
+
+    /**
+     * Set the reservedCapacity property: The reserved capacity of the application gateway resource. Applicable to the
+     * Basic_v2 and Basic_WAF_v2 SKU tiers.
+     * 
+     * @param reservedCapacity the reservedCapacity value to set.
+     * @return the ApplicationGatewayPropertiesFormat object itself.
+     */
+    public ApplicationGatewayPropertiesFormat withReservedCapacity(Integer reservedCapacity) {
+        this.reservedCapacity = reservedCapacity;
         return this;
     }
 
@@ -1076,6 +1167,9 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
         if (urlPathMaps() != null) {
             urlPathMaps().forEach(e -> e.validate());
         }
+        if (advancedRoutingMaps() != null) {
+            advancedRoutingMaps().forEach(e -> e.validate());
+        }
         if (requestRoutingRules() != null) {
             requestRoutingRules().forEach(e -> e.validate());
         }
@@ -1084,6 +1178,9 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
         }
         if (rewriteRuleSets() != null) {
             rewriteRuleSets().forEach(e -> e.validate());
+        }
+        if (advancedRoutingConditionSets() != null) {
+            advancedRoutingConditionSets().forEach(e -> e.validate());
         }
         if (redirectConfigurations() != null) {
             redirectConfigurations().forEach(e -> e.validate());
@@ -1146,10 +1243,14 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
         jsonWriter.writeArrayField("listeners", this.listeners, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("sslProfiles", this.sslProfiles, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("urlPathMaps", this.urlPathMaps, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("advancedRoutingMaps", this.advancedRoutingMaps,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("requestRoutingRules", this.requestRoutingRules,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("routingRules", this.routingRules, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("rewriteRuleSets", this.rewriteRuleSets,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("advancedRoutingConditionSets", this.advancedRoutingConditionSets,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("redirectConfigurations", this.redirectConfigurations,
             (writer, element) -> writer.writeJson(element));
@@ -1158,6 +1259,7 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
         jsonWriter.writeBooleanField("enableHttp2", this.enableHttp2);
         jsonWriter.writeBooleanField("enableFips", this.enableFips);
         jsonWriter.writeJsonField("autoscaleConfiguration", this.autoscaleConfiguration);
+        jsonWriter.writeNumberField("reservedCapacity", this.reservedCapacity);
         jsonWriter.writeArrayField("privateLinkConfigurations", this.privateLinkConfigurations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("customErrorConfigurations", this.customErrorConfigurations,
@@ -1259,6 +1361,10 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
                     List<ApplicationGatewayUrlPathMapInner> urlPathMaps
                         = reader.readArray(reader1 -> ApplicationGatewayUrlPathMapInner.fromJson(reader1));
                     deserializedApplicationGatewayPropertiesFormat.urlPathMaps = urlPathMaps;
+                } else if ("advancedRoutingMaps".equals(fieldName)) {
+                    List<ApplicationGatewayAdvancedRoutingMap> advancedRoutingMaps
+                        = reader.readArray(reader1 -> ApplicationGatewayAdvancedRoutingMap.fromJson(reader1));
+                    deserializedApplicationGatewayPropertiesFormat.advancedRoutingMaps = advancedRoutingMaps;
                 } else if ("requestRoutingRules".equals(fieldName)) {
                     List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules
                         = reader.readArray(reader1 -> ApplicationGatewayRequestRoutingRuleInner.fromJson(reader1));
@@ -1271,6 +1377,11 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
                     List<ApplicationGatewayRewriteRuleSet> rewriteRuleSets
                         = reader.readArray(reader1 -> ApplicationGatewayRewriteRuleSet.fromJson(reader1));
                     deserializedApplicationGatewayPropertiesFormat.rewriteRuleSets = rewriteRuleSets;
+                } else if ("advancedRoutingConditionSets".equals(fieldName)) {
+                    List<ApplicationGatewayAdvancedRoutingConditionSet> advancedRoutingConditionSets
+                        = reader.readArray(reader1 -> ApplicationGatewayAdvancedRoutingConditionSet.fromJson(reader1));
+                    deserializedApplicationGatewayPropertiesFormat.advancedRoutingConditionSets
+                        = advancedRoutingConditionSets;
                 } else if ("redirectConfigurations".equals(fieldName)) {
                     List<ApplicationGatewayRedirectConfigurationInner> redirectConfigurations
                         = reader.readArray(reader1 -> ApplicationGatewayRedirectConfigurationInner.fromJson(reader1));
@@ -1289,6 +1400,9 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
                 } else if ("autoscaleConfiguration".equals(fieldName)) {
                     deserializedApplicationGatewayPropertiesFormat.autoscaleConfiguration
                         = ApplicationGatewayAutoscaleConfiguration.fromJson(reader);
+                } else if ("reservedCapacity".equals(fieldName)) {
+                    deserializedApplicationGatewayPropertiesFormat.reservedCapacity
+                        = reader.getNullable(JsonReader::getInt);
                 } else if ("privateLinkConfigurations".equals(fieldName)) {
                     List<ApplicationGatewayPrivateLinkConfiguration> privateLinkConfigurations
                         = reader.readArray(reader1 -> ApplicationGatewayPrivateLinkConfiguration.fromJson(reader1));

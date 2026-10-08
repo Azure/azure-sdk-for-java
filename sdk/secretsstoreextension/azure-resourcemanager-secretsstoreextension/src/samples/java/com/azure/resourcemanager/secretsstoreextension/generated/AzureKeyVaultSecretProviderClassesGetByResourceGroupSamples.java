@@ -9,7 +9,7 @@ package com.azure.resourcemanager.secretsstoreextension.generated;
  */
 public final class AzureKeyVaultSecretProviderClassesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/AzureKeyVaultSecretProviderClasses_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/AzureKeyVaultSecretProviderClasses_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AzureKeyVaultSecretProviderClasses_Get.

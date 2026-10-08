@@ -22,7 +22,7 @@ public final class VolumeSnapshotsListByVolumeGroupMockTests {
     @Test
     public void testListByVolumeGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"creationData\":{\"sourceId\":\"htjsying\"},\"provisioningState\":\"Succeeded\",\"sourceVolumeSizeGiB\":6141451154217364363,\"volumeName\":\"dhtmdvypgikd\"},\"id\":\"zywkb\",\"name\":\"rryuzhlhkjo\",\"type\":\"rvqqaatj\"}]}";
+            = "{\"value\":[{\"properties\":{\"creationData\":{\"sourceId\":\"iogsjkmnwq\"},\"provisioningState\":\"Deleted\",\"sourceVolumeSizeGiB\":2956504850844663133,\"volumeName\":\"hdd\",\"snapshotAccessState\":\"Pending\",\"completionPercent\":98.24450158358532},\"id\":\"n\",\"name\":\"ntfpmvmemfnc\",\"type\":\"dwvvba\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,9 @@ public final class VolumeSnapshotsListByVolumeGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Snapshot> response = manager.volumeSnapshots()
-            .listByVolumeGroup("pg", "edkowepbqpcrfk", "wccsnjvcdwxlpqek", "tn", com.azure.core.util.Context.NONE);
+            .listByVolumeGroup("uwhcjyxccybv", "ayakkudzpx", "wjplma", "stcyohpfkyrkdbd",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("htjsying", response.iterator().next().creationData().sourceId());
+        Assertions.assertEquals("iogsjkmnwq", response.iterator().next().creationData().sourceId());
     }
 }

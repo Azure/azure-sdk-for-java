@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class MaintenancesInitiateChecksSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Maintenances_InitiateChecks.json
+     * x-ms-original-file: 2026-03-01/Maintenances_InitiateChecks.json
      */
     /**
      * Sample code: Maintenances_InitiateChecks.

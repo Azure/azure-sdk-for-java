@@ -12,7 +12,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.SourceScanAction;
  */
 public final class ConfigureSourceScanExecuteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/AzureIaasVm/ConfigureSourceScan.json
+     * x-ms-original-file: 2026-08-01/AzureIaasVm/ConfigureSourceScan.json
      */
     /**
      * Sample code: Configure Source Scan for Protected Item.

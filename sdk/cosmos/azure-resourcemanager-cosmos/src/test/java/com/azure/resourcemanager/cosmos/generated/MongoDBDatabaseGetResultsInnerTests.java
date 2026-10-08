@@ -15,18 +15,18 @@ public final class MongoDBDatabaseGetResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDBDatabaseGetResultsInner model = BinaryData.fromString(
-            "{\"properties\":{\"resource\":{\"_rid\":\"ntkwcegy\",\"_ts\":44.610237,\"_etag\":\"nseqacjjvp\",\"id\":\"lguooqjagmd\",\"restoreParameters\":{\"restoreSource\":\"ueio\",\"restoreTimestampInUtc\":\"2021-09-13T08:16:10Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Restore\"},\"options\":{\"throughput\":361835019,\"autoscaleSettings\":{\"maxThroughput\":807818343}}},\"location\":\"lq\",\"tags\":{\"gdirazf\":\"lmotoebnfxofvcj\",\"bmdujtmvcopexc\":\"xejw\"},\"identity\":{\"principalId\":\"rbuhhlky\",\"tenantId\":\"tqsrogtuwkff\",\"type\":\"None\",\"userAssignedIdentities\":{\"xnfuijtkbusqogs\":{\"principalId\":\"sidfv\",\"clientId\":\"g\"},\"qxfzyjqttvwk\":{\"principalId\":\"kayi\",\"clientId\":\"sharujtj\"},\"guaucmfdjwnla\":{\"principalId\":\"hjpenuygbq\",\"clientId\":\"qekewvnqvcd\"},\"sserxhtvsoxhlwn\":{\"principalId\":\"un\",\"clientId\":\"ikczvvitacgxmf\"}}},\"id\":\"j\",\"name\":\"qrsxyp\",\"type\":\"uuuybnchrsziz\"}")
+            "{\"properties\":{\"resource\":{\"_rid\":\"aurkihcirlde\",\"_ts\":59.72503,\"_etag\":\"c\",\"id\":\"xnbkkj\",\"restoreParameters\":{\"restoreSource\":\"rnnqb\",\"restoreTimestampInUtc\":\"2021-07-25T16:20:48Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Default\"},\"options\":{\"throughput\":187168175,\"autoscaleSettings\":{\"maxThroughput\":812541611}}},\"location\":\"gypxrxvbfihwuhvc\",\"tags\":{\"bxrblmliowxihspn\":\"s\"},\"identity\":{\"principalId\":\"agnepzwaklsb\",\"tenantId\":\"qqqagwwrxaomzi\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"qoyueayfbpcmsplb\":{\"principalId\":\"zezkhhltnjadh\",\"clientId\":\"aw\"},\"gdhxi\":{\"principalId\":\"rueqthwm\",\"clientId\":\"mbscbbx\"},\"jelaqacigele\":{\"principalId\":\"lopedbwdpyqyyb\",\"clientId\":\"bmdnafcbqwre\"}}},\"id\":\"d\",\"name\":\"vqvwzkjopwbe\",\"type\":\"nrlkwzdqy\"}")
             .toObject(MongoDBDatabaseGetResultsInner.class);
-        Assertions.assertEquals("lq", model.location());
-        Assertions.assertEquals("lmotoebnfxofvcj", model.tags().get("gdirazf"));
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("lguooqjagmd", model.resource().id());
-        Assertions.assertEquals("ueio", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-13T08:16:10Z"),
+        Assertions.assertEquals("gypxrxvbfihwuhvc", model.location());
+        Assertions.assertEquals("s", model.tags().get("bxrblmliowxihspn"));
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("xnbkkj", model.resource().id());
+        Assertions.assertEquals("rnnqb", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T16:20:48Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
         Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
-        Assertions.assertEquals(CreateMode.RESTORE, model.resource().createMode());
-        Assertions.assertEquals(361835019, model.options().throughput());
-        Assertions.assertEquals(807818343, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(CreateMode.DEFAULT, model.resource().createMode());
+        Assertions.assertEquals(187168175, model.options().throughput());
+        Assertions.assertEquals(812541611, model.options().autoscaleSettings().maxThroughput());
     }
 }

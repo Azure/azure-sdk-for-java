@@ -9,7 +9,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The supported question types for SimpleQnA data generation jobs used for fine-tuning scenarios.
+ * The supported question types for SimpleQnA data generation jobs used for fine-tuning scenarios. This is a preview
+ * feature.
  */
 @Beta(warningText = "Preview API. DataGenerationJobs=V1Preview")
 public final class SimpleQnAFineTuningQuestionType extends ExpandableStringEnum<SimpleQnAFineTuningQuestionType> {

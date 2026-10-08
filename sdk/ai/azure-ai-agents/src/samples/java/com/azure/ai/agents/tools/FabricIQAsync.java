@@ -5,14 +5,12 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ResponsesAsyncClient;
-import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FabricIqPreviewTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseOutputItem;
@@ -48,7 +46,7 @@ public class FabricIQAsync {
             .endpoint(endpoint);
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
-        ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
+        OpenAIClientAsync openAIAsyncClient = builder.buildAgentScopedOpenAIAsyncClient(agentName);
 
         FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
             .setServerLabel("fabric-iq-tool")
@@ -63,13 +61,10 @@ public class FabricIQAsync {
             agent -> {
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
-                AgentReference agentReference = new AgentReference(agent.getName())
-                    .setVersion(agent.getVersion());
-
-                return responsesAsyncClient.createAzureResponse(
-                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+                return Mono.fromFuture(() -> openAIAsyncClient.responses().create(
                     ResponseCreateParams.builder()
-                        .input(userInput))
+                        .input(userInput)
+                        .build()))
                     .doOnNext(FabricIQAsync::printResponse)
                     .then();
             },

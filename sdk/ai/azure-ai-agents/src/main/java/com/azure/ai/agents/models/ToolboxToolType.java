@@ -76,7 +76,22 @@ public enum ToolboxToolType {
     /**
      * Enum value a2a.
      */
-    A2A("a2a");
+    A2A("a2a"),
+
+    /**
+     * Enum value shell.
+     */
+    SHELL("shell"),
+
+    /**
+     * Enum value web_iq_preview.
+     */
+    WEB_IQ_PREVIEW("web_iq_preview"),
+
+    /**
+     * Enum value browser_automation.
+     */
+    BROWSER_AUTOMATION("browser_automation");
 
     /**
      * The actual serialized value for a ToolboxToolType instance.

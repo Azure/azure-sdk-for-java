@@ -12,8 +12,8 @@ public final class RestorableGremlinGraphsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableGremlinGraphsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resource\":{\"_rid\":\"limzfvppk\",\"operationType\":\"Recreate\",\"canUndelete\":\"fjmclngygnhrkomb\",\"canUndeleteReason\":\"tajdopggorwjoqtr\",\"eventTimestamp\":\"pvclpofyrl\",\"ownerId\":\"kptskwxjgvhxc\",\"ownerResourceId\":\"mkakmkook\"}},\"id\":\"utmgvmuyak\",\"name\":\"wk\",\"type\":\"ow\"},{\"properties\":{\"resource\":{\"_rid\":\"yrdurxflz\",\"operationType\":\"Create\",\"canUndelete\":\"ejtgzjxxl\",\"canUndeleteReason\":\"jlz\",\"eventTimestamp\":\"loiwy\",\"ownerId\":\"yzivrm\",\"ownerResourceId\":\"cdq\"}},\"id\":\"chwhrktj\",\"name\":\"ifibfiplhxfns\",\"type\":\"cjowlyeyzmu\"}],\"nextLink\":\"qcmhnxlzbu\"}")
+            "{\"value\":[{\"properties\":{\"resource\":{\"_rid\":\"ebaotbptgcsma\",\"operationType\":\"Delete\",\"canUndelete\":\"wqfmdqecvta\",\"canUndeleteReason\":\"wzmnobfewwpsibxo\",\"eventTimestamp\":\"qoqjrkblndy\",\"ownerId\":\"wgycvtqnzjc\",\"ownerResourceId\":\"qzhembtbw\"}},\"id\":\"lbadp\",\"name\":\"jdleajvmvvlooubs\",\"type\":\"ipjeo\"},{\"properties\":{\"resource\":{\"_rid\":\"ocjomlup\",\"operationType\":\"Delete\",\"canUndelete\":\"sj\",\"canUndeleteReason\":\"huslgdw\",\"eventTimestamp\":\"gdqyxajc\",\"ownerId\":\"rcavqcwyzoqzkmq\",\"ownerResourceId\":\"wsjnkiixepb\"}},\"id\":\"qqwwgfgsqxilefe\",\"name\":\"ewrznequqynttw\",\"type\":\"hajksbsyogjmqjhg\"}],\"nextLink\":\"dijnmcvjbs\"}")
             .toObject(RestorableGremlinGraphsListResult.class);
-        Assertions.assertEquals("qcmhnxlzbu", model.nextLink());
+        Assertions.assertEquals("dijnmcvjbs", model.nextLink());
     }
 }

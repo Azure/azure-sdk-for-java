@@ -11,7 +11,7 @@ public final class AIModelPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AIModelProperties model = BinaryData.fromString(
-            "{\"modelId\":\"byao\",\"description\":\"e\",\"spec\":{\"license\":\"sonpclhocohs\",\"isRestricted\":false,\"maxContextLength\":442163665}}")
+            "{\"modelId\":\"zvdudgwdslfhotwm\",\"description\":\"npwlbjnpg\",\"spec\":{\"license\":\"ftadehxnltyfs\",\"isRestricted\":true,\"maxContextLength\":1772029927}}")
             .toObject(AIModelProperties.class);
     }
 }

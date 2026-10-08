@@ -4,8 +4,8 @@
 package com.microsoft.azure.eventhubs.lib;
 
 import com.microsoft.azure.eventhubs.ProxyConfiguration;
-import org.junit.Assume;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -18,9 +18,9 @@ public class ApiTestBase extends TestBase {
     private static final String PROXY_USERNAME = "AZURE_PROXY_USERNAME";
     private static final String PROXY_PASSWORD = "AZURE_PROXY_PASSWORD";
 
-    @BeforeClass
+    @BeforeAll
     public static void skipIfNotConfigured() {
-        Assume.assumeTrue(TestContext.isTestConfigurationSet());
+        Assumptions.assumeTrue(TestContext.isTestConfigurationSet());
     }
 
     /**
