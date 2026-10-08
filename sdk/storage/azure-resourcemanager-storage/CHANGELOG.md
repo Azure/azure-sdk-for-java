@@ -1,6 +1,6 @@
 # Release History
 
-## 2.59.0 (2026-10-01)
+## 2.59.0 (2026-10-08)
 
 - Package api-version 2026-09-01.
 
@@ -117,6 +117,16 @@
 
 * `withTurboTier(models.TurboTier)` was added
 * `turboTier()` was added
+
+## 2.58.1 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-msi` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.12` to version `2.53.13`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
 
 ## 2.58.0 (2026-08-26)
 

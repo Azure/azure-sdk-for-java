@@ -10,12 +10,13 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
-import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
+import com.azure.resourcemanager.elasticsan.models.ManagedByResources;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.azure.resourcemanager.elasticsan.models.Volume;
 import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -24,7 +25,7 @@ public final class VolumesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"volumeId\":\"kzevdlhewpusds\",\"creationData\":{\"createSource\":\"None\",\"sourceId\":\"gvbbejdcng\"},\"sizeGiB\":4138602655046975085,\"storageTarget\":{\"targetIqn\":\"kufgmj\",\"targetPortalHostname\":\"wr\",\"targetPortalPort\":632499232,\"provisioningState\":\"Restoring\",\"status\":\"Updating\"},\"managedBy\":{\"resourceId\":\"uzkopbminrfd\"},\"provisioningState\":\"Succeeded\"},\"id\":\"hhziuief\",\"name\":\"zbhd\",\"type\":\"smlmzqhoftrm\"}";
+            = "{\"properties\":{\"volumeId\":\"mznbaeqphch\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"pxehuwrykqga\"},\"sizeGiB\":9022328896739271515,\"storageTarget\":{\"targetIqn\":\"klbydv\",\"targetPortalHostname\":\"bejdznxcv\",\"targetPortalPort\":929609340,\"provisioningState\":\"SoftDeleting\",\"status\":\"Invalid\"},\"managedBy\":[{\"clientId\":\"v\",\"version\":1858864878,\"resourceIds\":[\"fzg\",\"mjdftu\",\"jltduceam\"]},{\"clientId\":\"czu\",\"version\":289279485,\"resourceIds\":[\"cwwqiokn\"]},{\"clientId\":\"xmojmsvpkjp\",\"version\":967300246,\"resourceIds\":[\"fz\"]}],\"provisioningState\":\"Succeeded\"},\"id\":\"x\",\"name\":\"tczheydbsdshmkx\",\"type\":\"aehvbbxuri\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +35,21 @@ public final class VolumesCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Volume response = manager.volumes()
-            .define("zxkhnzbonlwnto")
-            .withExistingVolumegroup("gszufoxciqopid", "amcio", "hkh")
-            .withSizeGiB(4981925315017214440L)
+            .define("fwdgzxulucvp")
+            .withExistingVolumegroup("czuhxacpqjlihh", "usps", "asdvl")
+            .withSizeGiB(5028173088217913035L)
             .withCreationData(
-                new SourceCreationData().withCreateSource(VolumeCreateOption.DISK).withSourceId("zcmrvexztvb"))
-            .withManagedBy(new ManagedByInfo().withResourceId("erqf"))
+                new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceId("risjnhnytxifqjz"))
+            .withManagedBy(Arrays.asList(new ManagedByResources().withClientId("zpnfqntcypsxj")
+                .withVersion(453855311)
+                .withResourceIds(Arrays.asList("wkslir"))))
             .create();
 
-        Assertions.assertEquals(VolumeCreateOption.NONE, response.creationData().createSource());
-        Assertions.assertEquals("gvbbejdcng", response.creationData().sourceId());
-        Assertions.assertEquals(4138602655046975085L, response.sizeGiB());
-        Assertions.assertEquals("uzkopbminrfd", response.managedBy().resourceId());
+        Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, response.creationData().createSource());
+        Assertions.assertEquals("pxehuwrykqga", response.creationData().sourceId());
+        Assertions.assertEquals(9022328896739271515L, response.sizeGiB());
+        Assertions.assertEquals("v", response.managedBy().get(0).clientId());
+        Assertions.assertEquals(1858864878, response.managedBy().get(0).version());
+        Assertions.assertEquals("fzg", response.managedBy().get(0).resourceIds().get(0));
     }
 }
