@@ -352,8 +352,8 @@ public class VersioningAsyncTests extends BlobTestBase {
             .then(blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true))
             .then(blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true))
             .flatMapMany(r -> Flux.zip(
-                blobContainerClient
-                    .listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(false)), null),
+                blobContainerClient.listBlobs(
+                    new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(false)), null),
                 Flux.just(r)));
 
         StepVerifier.create(response)
