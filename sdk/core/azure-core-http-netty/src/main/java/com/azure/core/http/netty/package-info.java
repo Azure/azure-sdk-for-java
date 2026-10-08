@@ -69,6 +69,20 @@
  * <!-- end readme-sample-configureHttpVersion -->
  *
  * <p>
+ * You can also pass a pre-configured Reactor Netty HttpClient to the builder instead of creating the underlying
+ * client internally. The following client supports both HTTP/1.1 and HTTP/2, with HTTP/2 being the preferred protocol.
+ * </p>
+ *
+ * <!-- src_embed readme-sample-useHttp2WithConfiguredNettyClient -->
+ * <pre>
+ * &#47;&#47; Constructs an HttpClient that supports both HTTP&#47;1.1 and HTTP&#47;2 with HTTP&#47;2 being the preferred protocol.
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;reactor.netty.http.client.HttpClient.create&#40;&#41;
+ *     .protocol&#40;HttpProtocol.HTTP11, HttpProtocol.H2&#41;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-useHttp2WithConfiguredNettyClient -->
+ *
+ * <p>
  * It is also possible to create a Netty HttpClient that only supports HTTP/2.
  * </p>
  *
