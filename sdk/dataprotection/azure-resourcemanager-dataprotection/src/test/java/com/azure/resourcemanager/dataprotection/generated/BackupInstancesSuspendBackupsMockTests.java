@@ -31,8 +31,8 @@ public final class BackupInstancesSuspendBackupsMockTests {
 
         manager.backupInstances()
             .suspendBackups(
-                "jhlfzswpchwahf", "ousnfepgfewe", "wlyxgncxyk", new SuspendBackupRequest()
-                    .withResourceGuardOperationRequests(Arrays.asList("jhlimmbcxfhbcpo", "xvxcjzhq")),
+                "xvxevblbjednljla", "euaulxu", "smjbnkppxyn", new SuspendBackupRequest()
+                    .withResourceGuardOperationRequests(Arrays.asList("svxeizzgwklnsr", "ffeycx")),
                 com.azure.core.util.Context.NONE);
 
     }

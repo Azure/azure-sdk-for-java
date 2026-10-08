@@ -13,18 +13,18 @@ public final class FeatureValidationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FeatureValidationRequest model = BinaryData.fromString(
-            "{\"objectType\":\"FeatureValidationRequest\",\"featureType\":\"DataSourceType\",\"featureName\":\"pjui\"}")
+            "{\"objectType\":\"FeatureValidationRequest\",\"featureType\":\"Invalid\",\"featureName\":\"jtlvofqzhvfciby\"}")
             .toObject(FeatureValidationRequest.class);
-        Assertions.assertEquals(FeatureType.DATA_SOURCE_TYPE, model.featureType());
-        Assertions.assertEquals("pjui", model.featureName());
+        Assertions.assertEquals(FeatureType.INVALID, model.featureType());
+        Assertions.assertEquals("jtlvofqzhvfciby", model.featureName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FeatureValidationRequest model
-            = new FeatureValidationRequest().withFeatureType(FeatureType.DATA_SOURCE_TYPE).withFeatureName("pjui");
+            = new FeatureValidationRequest().withFeatureType(FeatureType.INVALID).withFeatureName("jtlvofqzhvfciby");
         model = BinaryData.fromObject(model).toObject(FeatureValidationRequest.class);
-        Assertions.assertEquals(FeatureType.DATA_SOURCE_TYPE, model.featureType());
-        Assertions.assertEquals("pjui", model.featureName());
+        Assertions.assertEquals(FeatureType.INVALID, model.featureType());
+        Assertions.assertEquals("jtlvofqzhvfciby", model.featureName());
     }
 }
