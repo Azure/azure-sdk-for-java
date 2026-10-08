@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2026-10-07)
 
 ### Features Added
 
@@ -8,8 +8,6 @@
   `AttestationAsyncClient`. They treat the TPM attestation request and response as opaque binary data, consistent with
   `attestOpenEnclave`, `attestSgxEnclave`, and the other Azure Attestation SDKs.
 - Added `TpmAttestationResult`, the result type returned by the new `BinaryData`-based TPM attestation overloads.
-
-### Breaking Changes
 
 ### Bugs Fixed
 
