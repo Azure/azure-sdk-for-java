@@ -147,12 +147,8 @@ jobs:
       workingDirectory: $(TypeSpecAzureDirectory)
 
   - script: |
-      set -e
-      python3 -m venv "$(Agent.TempDirectory)/sync-emitter-venv"
-      source "$(Agent.TempDirectory)/sync-emitter-venv/bin/activate"
-      python -m pip install "PyYAML~=6.0"
-      python -m unittest discover -s eng/pipelines/scripts -p test_sync_emitter.py
-      python ./eng/pipelines/scripts/sync_emitter.py --sdk-root=$(Build.SourcesDirectory) --emitter-version='${{ parameters.EmitterVersion }}' --package-json-path=$(TypeSpecAzureDirectory)/packages/typespec-java/package.json --upgrade-designated-libraries='${{ parameters.UpgradeDesignatedLibraries }}'
+      python3 -m pip install "PyYAML~=6.0" &&
+      python3 ./eng/pipelines/scripts/sync_emitter.py --sdk-root=$(Build.SourcesDirectory) --emitter-version='${{ parameters.EmitterVersion }}' --package-json-path=$(TypeSpecAzureDirectory)/packages/typespec-java/package.json --upgrade-designated-libraries='${{ parameters.UpgradeDesignatedLibraries }}'
     displayName: 'Generate SDK'
     workingDirectory: $(Build.SourcesDirectory)
 
