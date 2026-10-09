@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.jca;
 
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
+import com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,21 +12,16 @@ import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.api.parallel.Resources;
 
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.Field;
 import java.security.ProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
-
-import org.mockito.MockedConstruction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mockConstruction;
 
 @ResourceLock(Resources.SYSTEM_PROPERTIES)
 public class KeyVaultKeyStoreUnitTest {
@@ -112,22 +108,27 @@ public class KeyVaultKeyStoreUnitTest {
     }
 
     @Test
-    public void testEngineLoadPassesExplicitParameterToKeyVaultClient() {
+    public void testEngineLoadPassesExplicitParameterToKeyVaultClient() throws ReflectiveOperationException {
         System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, "https://ambient.vault.azure.net");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter("https://explicit.vault.azure.net");
         parameter.disableAiaDownload();
-        List<List<?>> constructorArguments = new ArrayList<>();
 
-        try (MockedConstruction<KeyVaultClient> mockedConstruction = mockConstruction(KeyVaultClient.class,
-            (mock, context) -> constructorArguments.add(context.arguments()))) {
-            KeyVaultKeyStore keyStore = new KeyVaultKeyStore();
-            keyStore.engineLoad(parameter);
-            assertEquals(2, mockedConstruction.constructed().size());
-        }
+        KeyVaultKeyStore keyStore = new KeyVaultKeyStore();
+        keyStore.engineLoad(parameter);
 
-        assertEquals(2, constructorArguments.size());
-        assertSame(parameter, constructorArguments.get(1).get(0));
-        assertTrue(((KeyVaultLoadStoreParameter) constructorArguments.get(1).get(0)).isAiaDownloadDisabled());
+        Field certificatesField = KeyVaultKeyStore.class.getDeclaredField("keyVaultCertificates");
+        certificatesField.setAccessible(true);
+        KeyVaultCertificates certificates = (KeyVaultCertificates) certificatesField.get(keyStore);
+        Field clientField = KeyVaultCertificates.class.getDeclaredField("keyVaultClient");
+        clientField.setAccessible(true);
+        KeyVaultClient client = (KeyVaultClient) clientField.get(certificates);
+        Field uriField = KeyVaultClient.class.getDeclaredField("keyVaultUri");
+        uriField.setAccessible(true);
+        Field disableAiaField = KeyVaultClient.class.getDeclaredField("disableAiaDownload");
+        disableAiaField.setAccessible(true);
+
+        assertEquals("https://explicit.vault.azure.net/", uriField.get(client));
+        assertTrue((Boolean) disableAiaField.get(client));
     }
 
     @BeforeEach
