@@ -63,7 +63,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void getLayout() {
-        StepVerifier.create(bc.getLayoutWithResponse(null).collectList()).assertNext(r -> {
+        StepVerifier.create(bc.getLayout(null).collectList()).assertNext(r -> {
             assertFalse(r.isEmpty());
             assertNotNull(r.get(0).getRange());
             assertNotNull(r.get(0).getEndpoint());
@@ -77,7 +77,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
 
         StepVerifier.create(emptyBlob.getBlockBlobAsyncClient()
             .commitBlockList(new ArrayList<>())
-            .thenMany(emptyBlob.getLayoutWithResponse(null))
+            .thenMany(emptyBlob.getLayout(null))
             .then()).verifyComplete();
     }
 
@@ -86,15 +86,14 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
     public void getLayoutRange() {
         StepVerifier.create(bc.getBlockBlobAsyncClient()
             .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
-            .thenMany(
-                bc.getLayoutWithResponse(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB))))
+            .thenMany(bc.getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB))))
             .then()).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void getLayoutPageSize() {
-        StepVerifier.create(bc.getLayoutWithResponse(null).byPage(1).collectList()).assertNext(r -> {
+        StepVerifier.create(bc.getLayout(null).byPage(1).collectList()).assertNext(r -> {
             assertFalse(r.isEmpty());
             r.forEach(page -> assertTrue(page.getValue().size() <= 1));
         }).verifyComplete();
@@ -103,10 +102,8 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void getLayoutContinuationToken() {
-        Flux<PagedResponse<BlobLayoutRange>> response = bc.getLayoutWithResponse(null)
-            .byPage(1)
-            .next()
-            .flatMapMany(r -> bc.getLayoutWithResponse(null).byPage(r.getContinuationToken()));
+        Flux<PagedResponse<BlobLayoutRange>> response
+            = bc.getLayout(null).byPage(1).next().flatMapMany(r -> bc.getLayout(null).byPage(r.getContinuationToken()));
 
         StepVerifier.create(response.then()).verifyComplete();
     }
@@ -130,7 +127,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
                     .setIfUnmodifiedSince(unmodified)
                     .setTagsConditions(tags);
 
-                return bc.getLayoutWithResponse(new BlobGetLayoutOptions().setRequestConditions(bac));
+                return bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac));
             });
 
         StepVerifier.create(response.then()).verifyComplete();
@@ -153,7 +150,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
                         .setIfUnmodifiedSince(unmodified)
                         .setTagsConditions(tags);
 
-                    return bc.getLayoutWithResponse(new BlobGetLayoutOptions().setRequestConditions(bac)).count();
+                    return bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac)).count();
                 });
 
         StepVerifier.create(response).verifyError(BlobStorageException.class);
@@ -164,7 +161,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
     public void getLayoutError() {
         BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient(generateBlobName());
 
-        StepVerifier.create(blobClient.getLayoutWithResponse(null)).verifyError(BlobStorageException.class);
+        StepVerifier.create(blobClient.getLayout(null)).verifyError(BlobStorageException.class);
     }
 }
 
@@ -192,7 +189,7 @@ class BlobAsyncClientBaseLayoutFailureTests {
 }
 
 /**
- * Verifies layout pagination for both the public {@code getLayoutWithResponse} paged API and the internal
+ * Verifies layout pagination for both the public {@code getLayout} paged API and the internal
  * {@code fetchLayoutCacheValueAsync} path used when setting up a locality-aware download. Continuation pages must
  * carry {@code If-Match} with the first page's ETag, preserve the caller's other request conditions, reuse the
  * initial range, and a single-page layout must not send {@code If-Match}.
@@ -254,7 +251,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
         BlobAsyncClient client = client(httpClient);
 
-        StepVerifier.create(client.getLayoutWithResponse(null).collectList())
+        StepVerifier.create(client.getLayout(null).collectList())
             .assertNext(layouts -> assertEquals(2, layouts.size()))
             .verifyComplete();
 
@@ -271,30 +268,25 @@ class BlobAsyncClientBaseLayoutPaginationTests {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
         BlobAsyncClient client = client(httpClient);
 
-        StepVerifier.create(client.getLayoutWithResponse(null).byPage(REQUESTED_PAGE_SIZE).next())
-            .assertNext(firstPage -> {
-                assertTrue(httpClient.captured.get(0).url.contains("maxresults=" + REQUESTED_PAGE_SIZE));
-                assertEquals(1, firstPage.getValue().size());
-                assertEquals("https://host-a:443", firstPage.getValue().get(0).getEndpoint());
-                assertEquals(NEXT_MARKER, firstPage.getContinuationToken());
-                assertNotNull(firstPage.getHeaders().getValue(HttpHeaderName.ETAG));
-                assertEquals(String.valueOf(LAYOUT_BLOB_SIZE),
-                    firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH));
-                assertEquals(LAYOUT_BLOB_CONTENT_TYPE, firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_TYPE));
-            })
-            .verifyComplete();
+        StepVerifier.create(client.getLayout(null).byPage(REQUESTED_PAGE_SIZE).next()).assertNext(firstPage -> {
+            assertTrue(httpClient.captured.get(0).url.contains("maxresults=" + REQUESTED_PAGE_SIZE));
+            assertEquals(1, firstPage.getValue().size());
+            assertEquals("https://host-a:443", firstPage.getValue().get(0).getEndpoint());
+            assertEquals(NEXT_MARKER, firstPage.getContinuationToken());
+            assertNotNull(firstPage.getHeaders().getValue(HttpHeaderName.ETAG));
+            assertEquals(String.valueOf(LAYOUT_BLOB_SIZE), firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH));
+            assertEquals(LAYOUT_BLOB_CONTENT_TYPE, firstPage.getHeaders().getValue(X_MS_BLOB_CONTENT_TYPE));
+        }).verifyComplete();
     }
 
     @Test
     public void getLayoutSinglePageHasNoContinuationToken() {
         BlobAsyncClient client = client(new LayoutPagesHttpClient(false));
 
-        StepVerifier.create(client.getLayoutWithResponse(null).byPage(REQUESTED_PAGE_SIZE).next())
-            .assertNext(firstPage -> {
-                assertNull(firstPage.getContinuationToken());
-                assertEquals(1, firstPage.getValue().size());
-            })
-            .verifyComplete();
+        StepVerifier.create(client.getLayout(null).byPage(REQUESTED_PAGE_SIZE).next()).assertNext(firstPage -> {
+            assertNull(firstPage.getContinuationToken());
+            assertEquals(1, firstPage.getValue().size());
+        }).verifyComplete();
     }
 
     @Test
@@ -305,9 +297,10 @@ class BlobAsyncClientBaseLayoutPaginationTests {
             .setIfNoneMatch(IF_NONE_MATCH)
             .setIfUnmodifiedSince(IF_UNMODIFIED_SINCE);
 
-        StepVerifier.create(client
-            .getLayoutWithResponse(new BlobGetLayoutOptions().setRequestConditions(requestConditions), Context.NONE)
-            .then()).verifyComplete();
+        StepVerifier
+            .create(client.getLayout(new BlobGetLayoutOptions().setRequestConditions(requestConditions), Context.NONE)
+                .then())
+            .verifyComplete();
 
         CapturedRequest second = httpClient.captured.get(1);
         assertEquals(FIRST_PAGE_ETAG, second.ifMatch);
@@ -321,7 +314,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(false);
         BlobAsyncClient client = client(httpClient);
 
-        StepVerifier.create(client.getLayoutWithResponse(null).collectList())
+        StepVerifier.create(client.getLayout(null).collectList())
             .assertNext(layouts -> assertEquals(1, layouts.size()))
             .verifyComplete();
 
@@ -334,7 +327,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
         ResumedLayoutPagesHttpClient httpClient = new ResumedLayoutPagesHttpClient();
         BlobAsyncClient client = client(httpClient);
 
-        StepVerifier.create(client.getLayoutWithResponse(null).byPage(NEXT_MARKER).collectList())
+        StepVerifier.create(client.getLayout(null).byPage(NEXT_MARKER).collectList())
             .assertNext(pages -> assertEquals(2, pages.size()))
             .verifyComplete();
 
@@ -392,7 +385,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
         LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true);
         BlobAsyncClient client = client(httpClient);
 
-        StepVerifier.create(client.getLayoutWithResponse(null).collectList())
+        StepVerifier.create(client.getLayout(null).collectList())
             .assertNext(layouts -> assertEquals(2, layouts.size()))
             .verifyComplete();
 

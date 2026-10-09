@@ -1917,7 +1917,7 @@ public class BlobAsyncClientBase {
      * @return A paged reactive response emitting the blob's layout ranges.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BlobLayoutRange> getLayoutWithResponse(BlobGetLayoutOptions options) {
+    public PagedFlux<BlobLayoutRange> getLayout(BlobGetLayoutOptions options) {
         return PagedFlux.create(layoutPageRetrieverProvider(options, null));
     }
 
@@ -1932,7 +1932,7 @@ public class BlobAsyncClientBase {
      * @param context {@link Context}
      * @return A paged reactive response emitting the blob's layout ranges.
      */
-    public PagedFlux<BlobLayoutRange> getLayoutWithResponse(BlobGetLayoutOptions options, Context context) {
+    public PagedFlux<BlobLayoutRange> getLayout(BlobGetLayoutOptions options, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         return PagedFlux.create(layoutPageRetrieverProvider(options, finalContext));
     }
