@@ -15,6 +15,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -171,6 +175,64 @@ public class UserAgentContainerTest {
         assertThat(userAgentContainer.getUserAgent()).contains("|F3");
         assertThat(userAgentContainer.getUserAgent()).contains("my-app");
         assertThat(userAgentContainer.getUserAgent()).contains("azure-cosmos-encryption/2.28.0");
+    }
+
+    @Test(groups = {"unit"})
+    public void appendSuffixAtomicallyPreservesFeatureFlags() {
+        UserAgentContainer userAgentContainer = new UserAgentContainer();
+        userAgentContainer.setSuffix("my-app");
+        userAgentContainer.setFeatureEnabledFlagsAsSuffix(
+            new HashSet<>(Arrays.asList(UserAgentFeatureFlags.PerPartitionCircuitBreaker)));
+
+        userAgentContainer.appendSuffix("azure-cosmos-encryption/2.28.0");
+        userAgentContainer.appendSuffix("azure-cosmos-encryption/2.28.0");
+
+        assertThat(userAgentContainer.getSuffix())
+            .isEqualTo("my-app azure-cosmos-encryption/2.28.0");
+        assertThat(userAgentContainer.getUserAgent())
+            .endsWith("my-app azure-cosmos-encryption/2.28.0|F2");
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void concurrentReadersObserveCompleteUserAgentSnapshots() throws Exception {
+        UserAgentContainer userAgentContainer = new UserAgentContainer();
+        userAgentContainer.setSuffix("my-app");
+        userAgentContainer.setFeatureEnabledFlagsAsSuffix(
+            new HashSet<>(Arrays.asList(UserAgentFeatureFlags.PerPartitionCircuitBreaker)));
+
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+        CountDownLatch start = new CountDownLatch(1);
+        List<Future<?>> futures = new ArrayList<>();
+
+        try {
+            futures.add(executor.submit(() -> {
+                start.await();
+                for (int i = 0; i < 1_000; i++) {
+                    userAgentContainer.appendSuffix("suffix-" + i);
+                }
+                return null;
+            }));
+
+            for (int reader = 0; reader < 4; reader++) {
+                futures.add(executor.submit(() -> {
+                    start.await();
+                    for (int i = 0; i < 10_000; i++) {
+                        String userAgent = userAgentContainer.getUserAgent();
+                        if (!userAgent.endsWith("|F2")) {
+                            throw new AssertionError("Observed incomplete user-agent snapshot: " + userAgent);
+                        }
+                    }
+                    return null;
+                }));
+            }
+
+            start.countDown();
+            for (Future<?> future : futures) {
+                future.get();
+            }
+        } finally {
+            executor.shutdownNow();
+        }
     }
 
     private String getUserAgentFixedPart() {
