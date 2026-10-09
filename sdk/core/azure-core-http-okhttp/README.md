@@ -60,15 +60,35 @@ add the direct dependency to your project as follows.
 The following sections provide several code snippets covering some of the most common client configuration scenarios.
 
 - [Create a Simple Client](#create-a-simple-client)
+- [Configure Timeouts](#configure-timeouts)
 - [Create a Client with Proxy](#create-a-client-with-proxy)
+- [Create a Client with Authenticated Proxy](#create-a-client-with-authenticated-proxy)
+- [Configure Proxy Bypass](#configure-proxy-bypass)
+- [Restrict the Client to HTTP/1.1](#restrict-the-client-to-http11)
 - [Create a Client with HTTP/2 Support](#create-a-client-with-http2-support)
+- [Customize the Underlying Client](#customize-the-underlying-client)
+- [Advanced Configuration](#advanced-configuration)
 
 ### Create a Simple Client
 
-Create an OkHttp client using a connection timeout of 60 seconds and a read timeout of 120 seconds.
+Create an OkHttp client with the default configuration.
 
 ```java readme-sample-createBasicClient
 HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
+```
+
+### Configure Timeouts
+
+Configure a 60-second connection timeout, 120-second idle write/read timeouts, and a 60-second response timeout.
+These settings apply to different stages of a request; they are not a single deadline for the entire operation.
+
+```java readme-sample-configureTimeouts
+HttpClient client = new OkHttpAsyncHttpClientBuilder()
+    .connectionTimeout(Duration.ofSeconds(60))
+    .writeTimeout(Duration.ofSeconds(120))
+    .responseTimeout(Duration.ofSeconds(60))
+    .readTimeout(Duration.ofSeconds(120))
+    .build();
 ```
 
 ### Create a Client with Proxy
@@ -78,6 +98,39 @@ Create an OkHttp client that is using a proxy.
 ```java readme-sample-createProxyClient
 HttpClient client = new OkHttpAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
+    .build();
+```
+
+### Create a Client with Authenticated Proxy
+
+Supply the credentials required by the HTTP proxy.
+
+```java readme-sample-createAuthenticatedProxyClient
+HttpClient client = new OkHttpAsyncHttpClientBuilder()
+    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888))
+        .setCredentials("<username>", "<password>"))
+    .build();
+```
+
+### Configure Proxy Bypass
+
+Configure hosts that should be contacted directly instead of through the proxy. Replace the placeholder with the
+non-proxy host pattern expected by `ProxyOptions.setNonProxyHosts`.
+
+```java readme-sample-createProxyWithNonProxyHostsClient
+HttpClient client = new OkHttpAsyncHttpClientBuilder()
+    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888))
+        .setNonProxyHosts("<nonProxyHostRegex>"))
+    .build();
+```
+
+### Restrict the Client to HTTP/1.1
+
+Use `com.azure.core.http.HttpProtocolVersion` to restrict the client to HTTP/1.1.
+
+```java readme-sample-useHttp1
+HttpClient client = new OkHttpAsyncHttpClientBuilder()
+    .maximumHttpVersion(HttpProtocolVersion.HTTP_1_1)
     .build();
 ```
 
@@ -95,7 +148,25 @@ HttpClient client = new OkHttpAsyncHttpClientBuilder()
 plain HTTP requests use HTTP/1.1. Use `HTTP_1_1` to limit the client to HTTP/1.1. Passing `null` clears the maximum,
 preserving OkHttp's default protocols or those of a supplied OkHttp client.
 
-You can also configure OkHttp directly:
+### Customize the Underlying Client
+
+Pass an application-configured OkHttp client to the Azure builder. This example disables OkHttp's own connection
+retries; retry policies in an Azure HTTP pipeline remain independently configurable.
+
+```java readme-sample-customizeUnderlyingClient
+OkHttpClient nativeClient = new OkHttpClient.Builder()
+    .retryOnConnectionFailure(false)
+    .build();
+HttpClient client = new OkHttpAsyncHttpClientBuilder(nativeClient).build();
+```
+
+### Advanced Configuration
+
+The following examples use OkHttp-specific protocol settings and are not portable to every HTTP transport.
+
+#### Configure HTTP/2 on a Native Client
+
+You can also configure the native protocol list directly instead of using `maximumHttpVersion`.
 
 ```java readme-sample-useHttp2WithConfiguredOkHttpClient 
 // Constructs an HttpClient that supports both HTTP/1.1 and HTTP/2 with HTTP/2 being the preferred protocol.
@@ -106,10 +177,15 @@ HttpClient client = new OkHttpAsyncHttpClientBuilder(new OkHttpClient.Builder()
     .build();
 ```
 
-It is also possible to create an OkHttp client that only supports HTTP/2.
+#### Create a Cleartext HTTP/2-Only Client
+
+`H2_PRIOR_KNOWLEDGE` sends cleartext HTTP/2 directly to a server already known to support that mode. It does not
+perform an HTTP/1.1 upgrade, does not fall back to HTTP/1.1, and cannot be used with HTTPS. OkHttp 4.12 requires
+`HTTP_1_1` in a negotiated protocol list, so replacing this value with a singleton `HTTP_2` list is not supported.
+For normal HTTPS traffic, use `maximumHttpVersion(HTTP_2)` or `[HTTP_2, HTTP_1_1]`.
 
 ```java readme-sample-useHttp2OnlyWithConfiguredOkHttpClient
-// Constructs an HttpClient that only supports HTTP/2.
+// Constructs a cleartext HTTP/2-only client. HTTPS and HTTP/1.1 fallback are not supported.
 HttpClient client = new OkHttpAsyncHttpClientBuilder(new OkHttpClient.Builder()
     .protocols(Collections.singletonList(Protocol.H2_PRIOR_KNOWLEDGE))
     .build())
@@ -145,4 +221,3 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
-

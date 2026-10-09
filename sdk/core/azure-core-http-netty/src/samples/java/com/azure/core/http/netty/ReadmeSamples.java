@@ -11,6 +11,7 @@ import io.netty.resolver.DefaultAddressResolverGroup;
 import reactor.netty.http.HttpProtocol;
 
 import java.net.InetSocketAddress;
+import java.time.Duration;
 
 /**
  * Class containing code snippets that will be injected to README.md.
@@ -56,7 +57,6 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-createProxyWithNonProxyHostsClient
         HttpClient client = new NettyAsyncHttpClientBuilder()
             .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888))
-                .setCredentials("<username>", "<password>")
                 .setNonProxyHosts("<nonProxyHostRegex>"))
             .build();
         // END: readme-sample-createProxyWithNonProxyHostsClient
@@ -162,5 +162,41 @@ public class ReadmeSamples {
             .maximumHttpVersion(HttpProtocolVersion.HTTP_2)
             .build();
         // END: readme-sample-configureHttpVersion
+    }
+
+    /**
+     * Configures connection, write, response and read timeouts.
+     */
+    public void configureTimeouts() {
+        // BEGIN: readme-sample-configureTimeouts
+        HttpClient client = new NettyAsyncHttpClientBuilder()
+            .connectTimeout(Duration.ofSeconds(60))
+            .writeTimeout(Duration.ofSeconds(120))
+            .responseTimeout(Duration.ofSeconds(60))
+            .readTimeout(Duration.ofSeconds(120))
+            .build();
+        // END: readme-sample-configureTimeouts
+    }
+
+    /**
+     * Restricts the client to HTTP/1.1.
+     */
+    public void useHttp1() {
+        // BEGIN: readme-sample-useHttp1
+        HttpClient client = new NettyAsyncHttpClientBuilder()
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_1_1)
+            .build();
+        // END: readme-sample-useHttp1
+    }
+
+    /**
+     * Wraps a Reactor Netty client with native response compression configured.
+     */
+    public void customizeUnderlyingClient() {
+        // BEGIN: readme-sample-customizeUnderlyingClient
+        reactor.netty.http.client.HttpClient nativeClient = reactor.netty.http.client.HttpClient.create()
+            .compress(true);
+        HttpClient client = new NettyAsyncHttpClientBuilder(nativeClient).build();
+        // END: readme-sample-customizeUnderlyingClient
     }
 }

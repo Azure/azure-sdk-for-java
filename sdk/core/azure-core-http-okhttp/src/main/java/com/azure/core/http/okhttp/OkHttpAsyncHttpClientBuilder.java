@@ -99,12 +99,13 @@ import static com.azure.core.implementation.util.HttpUtils.getTimeout;
  * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
  *
  * <p>
- * It is also possible to create a OkHttp HttpClient that only supports HTTP/2.
+ * It is also possible to create an OkHttp HttpClient that only supports cleartext HTTP/2. This prior-knowledge mode
+ * requires a server already known to support cleartext HTTP/2; HTTPS and HTTP/1.1 fallback are not supported.
  * </p>
  *
  * <!-- src_embed readme-sample-useHttp2OnlyWithConfiguredOkHttpClient -->
  * <pre>
- * &#47;&#47; Constructs an HttpClient that only supports HTTP&#47;2.
+ * &#47;&#47; Constructs a cleartext HTTP&#47;2-only client. HTTPS and HTTP&#47;1.1 fallback are not supported.
  * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;new OkHttpClient.Builder&#40;&#41;
  *     .protocols&#40;Collections.singletonList&#40;Protocol.H2_PRIOR_KNOWLEDGE&#41;&#41;
  *     .build&#40;&#41;&#41;

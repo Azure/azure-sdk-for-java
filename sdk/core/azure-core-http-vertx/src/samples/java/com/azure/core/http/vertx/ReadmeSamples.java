@@ -73,4 +73,66 @@ public class ReadmeSamples {
             .build();
         // END: readme-sample-configureHttpVersion
     }
+
+    /**
+     * Configures connection, write, response and read timeouts.
+     */
+    public void configureTimeouts() {
+        // BEGIN: readme-sample-configureTimeouts
+        HttpClient client = new VertxHttpClientBuilder()
+            .connectTimeout(Duration.ofSeconds(60))
+            .writeTimeout(Duration.ofSeconds(120))
+            .responseTimeout(Duration.ofSeconds(60))
+            .readTimeout(Duration.ofSeconds(120))
+            .build();
+        // END: readme-sample-configureTimeouts
+    }
+
+    /**
+     * Configures an authenticated HTTP proxy.
+     */
+    public void createAuthenticatedProxyClient() {
+        // BEGIN: readme-sample-createAuthenticatedProxyClient
+        HttpClient client = new VertxHttpClientBuilder()
+            .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888))
+                .setCredentials("<username>", "<password>"))
+            .build();
+        // END: readme-sample-createAuthenticatedProxyClient
+    }
+
+    /**
+     * Configures hosts that bypass the HTTP proxy.
+     */
+    public void createProxyWithNonProxyHostsClient() {
+        // BEGIN: readme-sample-createProxyWithNonProxyHostsClient
+        HttpClient client = new VertxHttpClientBuilder()
+            .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888))
+                .setNonProxyHosts("<nonProxyHostRegex>"))
+            .build();
+        // END: readme-sample-createProxyWithNonProxyHostsClient
+    }
+
+    /**
+     * Restricts the client to HTTP/1.1.
+     */
+    public void useHttp1() {
+        // BEGIN: readme-sample-useHttp1
+        HttpClient client = new VertxHttpClientBuilder()
+            .maximumHttpVersion(HttpProtocolVersion.HTTP_1_1)
+            .build();
+        // END: readme-sample-useHttp1
+    }
+
+    /**
+     * Customizes the native Vert.x options before creating the client.
+     */
+    public void customizeUnderlyingClient() {
+        // BEGIN: readme-sample-customizeUnderlyingClient
+        HttpClientOptions nativeOptions = new HttpClientOptions()
+            .setKeepAlive(false);
+        HttpClient client = new VertxHttpClientBuilder()
+            .httpClientOptions(nativeOptions)
+            .build();
+        // END: readme-sample-customizeUnderlyingClient
+    }
 }

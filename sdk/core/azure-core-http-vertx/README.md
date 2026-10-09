@@ -62,8 +62,14 @@ add the direct dependency to your project as follows.
 The following sections provide several code snippets covering some of the most common client configuration scenarios.
 
 - [Create a Simple Client](#create-a-simple-client)
+- [Configure Timeouts](#configure-timeouts)
 - [Create a Client with Proxy](#create-a-client-with-proxy)
+- [Create a Client with Authenticated Proxy](#create-a-client-with-authenticated-proxy)
+- [Configure Proxy Bypass](#configure-proxy-bypass)
+- [Restrict the Client to HTTP/1.1](#restrict-the-client-to-http11)
 - [Create a Client with HTTP/2 Support](#create-a-client-with-http2-support)
+- [Customize the Underlying Client](#customize-the-underlying-client)
+- [Advanced Configuration](#advanced-configuration)
 
 ### Create a Simple Client
 
@@ -73,7 +79,21 @@ Create a Vert.x HttpClient.
 HttpClient client = new VertxHttpClientBuilder().build();
 ```
 
-Create a Vert.x HttpClient using a connection timeout of 60 seconds.
+### Configure Timeouts
+
+Configure a 60-second connection timeout, 120-second idle write/read timeouts, and a 60-second response timeout.
+These settings apply to different stages of a request; they are not a single deadline for the entire operation.
+
+```java readme-sample-configureTimeouts
+HttpClient client = new VertxHttpClientBuilder()
+    .connectTimeout(Duration.ofSeconds(60))
+    .writeTimeout(Duration.ofSeconds(120))
+    .responseTimeout(Duration.ofSeconds(60))
+    .readTimeout(Duration.ofSeconds(120))
+    .build();
+```
+
+To change only the connection timeout:
 
 ```java readme-sample-createClientWithConnectionTimeout
 HttpClient client = new VertxHttpClientBuilder().connectTimeout(Duration.ofSeconds(60)).build();
@@ -86,6 +106,39 @@ Create a Vert.x client that is using a proxy.
 ```java readme-sample-createProxyClient
 HttpClient client = new VertxHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
+    .build();
+```
+
+### Create a Client with Authenticated Proxy
+
+Supply the credentials required by the HTTP proxy.
+
+```java readme-sample-createAuthenticatedProxyClient
+HttpClient client = new VertxHttpClientBuilder()
+    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888))
+        .setCredentials("<username>", "<password>"))
+    .build();
+```
+
+### Configure Proxy Bypass
+
+Configure hosts that should be contacted directly instead of through the proxy. Replace the placeholder with the
+non-proxy host pattern expected by `ProxyOptions.setNonProxyHosts`.
+
+```java readme-sample-createProxyWithNonProxyHostsClient
+HttpClient client = new VertxHttpClientBuilder()
+    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888))
+        .setNonProxyHosts("<nonProxyHostRegex>"))
+    .build();
+```
+
+### Restrict the Client to HTTP/1.1
+
+Use `com.azure.core.http.HttpProtocolVersion` to restrict the client to HTTP/1.1.
+
+```java readme-sample-useHttp1
+HttpClient client = new VertxHttpClientBuilder()
+    .maximumHttpVersion(HttpProtocolVersion.HTTP_1_1)
     .build();
 ```
 
@@ -104,7 +157,27 @@ applies. Use `HTTP_1_1` to limit the client to HTTP/1.1. Passing `null` clears t
 or the protocols in supplied Vert.x options. An explicit maximum overrides protocol and ALPN settings in a copy of
 those options without mutating the originals; unrelated settings are retained.
 
-### Create an HttpClient with custom maxHeaderSize
+### Customize the Underlying Client
+
+Supply application-configured Vert.x `HttpClientOptions` rather than an already-built native client. This example
+disables native keep-alive. You can also provide an application-owned Vert.x instance with `VertxHttpClientBuilder.vertx`.
+
+```java readme-sample-customizeUnderlyingClient
+HttpClientOptions nativeOptions = new HttpClientOptions()
+    .setKeepAlive(false);
+HttpClient client = new VertxHttpClientBuilder()
+    .httpClientOptions(nativeOptions)
+    .build();
+```
+
+### Advanced Configuration
+
+Native Vert.x options provide connection, read and write timeouts and proxy settings when supplied to the builder.
+The builder's response timeout still applies, and an explicit `maximumHttpVersion` overrides protocol/ALPN settings
+in a copy of the supplied options. HTTP/2 cleartext behavior is configured through native Vert.x options; there is
+no portable HTTP/2-only equivalent shared by all four transports.
+
+#### Customize the Maximum Header Size
 
 Create a Vert.x HttpClient that uses a custom maxHeaderSize. Use this sample if you're seeing an error such as
 
@@ -152,4 +225,3 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
-
